@@ -1,0 +1,29 @@
+{
+  "name": "cloud-carbon-footprint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --coverage --watchAll",
+    "build": "tsc",
+    "build:watch": "onchange 'src/**/*.ts' -- npm run build",
+    "view:coverage": "serve coverage/lcov-report",
+    "clean": "rm -rf coverage src/**/*.js src/**/*.map",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.4",
+    "@types/node": "^14.0.19",
+    "@types/source-map-support": "^0.5.2",
+    "jest": "^26.1.0",
+    "onchange": "^7.0.2",
+    "serve": "^11.3.2",
+    "source-map-support": "^0.5.19",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.6"
+  }
+}
