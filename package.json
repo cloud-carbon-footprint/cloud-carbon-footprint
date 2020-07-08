@@ -19,11 +19,15 @@
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.19",
     "@types/source-map-support": "^0.5.2",
+    "aws-sdk-mock": "^5.1.0",
     "jest": "^26.1.0",
     "onchange": "^7.0.2",
     "serve": "^11.3.2",
     "source-map-support": "^0.5.19",
     "ts-jest": "^26.1.1",
     "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.712.0"
   }
 }
