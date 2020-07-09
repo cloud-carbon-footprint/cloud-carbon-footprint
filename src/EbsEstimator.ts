@@ -1,4 +1,5 @@
 import { FootprintEstimator, FootprintEstimate, SSD_COEFFICIENT } from './common'
+import * as AWS from 'aws-sdk'
 
 export default class EbsEstimator implements FootprintEstimator {
   private readonly data: AWS.CostExplorer.GetCostAndUsageResponse
@@ -10,8 +11,9 @@ export default class EbsEstimator implements FootprintEstimator {
   estimate(): FootprintEstimate[] {
     return this.data.ResultsByTime
       .map(result => {
+        const amount = Number.parseFloat(result.Total.UsageQuantity.Amount)
         // *NOTE: Assuming all months have 30 days
-        const usageGb = Number.parseFloat(result.Total.UsageQuantity.Amount) * 30; 
+        const usageGb = amount * 30; 
         //apply formula -> TBh * 24 hrs
         const estimatedWattage = usageGb / 1000 * SSD_COEFFICIENT * 24; 
 

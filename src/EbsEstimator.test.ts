@@ -1,0 +1,41 @@
+import EbsEstimator from './EbsEstimator'
+import { FootprintEstimate } from './common'
+import * as AWS from 'aws-sdk'
+
+describe('EbsEstimator', () => {
+  describe('estimating a single result', () => {
+    const estimator: EbsEstimator = new EbsEstimator({
+      ResultsByTime: [
+        {
+          TimePeriod: {
+            Start: "1998-01-01",
+            End: "1234-56-78"
+          },
+          Total: {
+            UsageQuantity: {
+              Amount: "1.0"
+            }
+          }
+        }
+      ]
+    })
+
+    const results: FootprintEstimate[] = estimator.estimate()
+
+    it('creates one estimate', () => {
+      expect(results.length).toEqual(1)
+    })
+
+    it('uses the start date of the time period as the timestamp', () => {
+      expect(results[0].timestamp).toEqual(new Date('1998-01-01T00:00:00Z'))
+    })
+
+    it('calculates the wattage of an SSD using its GB per month usage for the start date of the time period', () => {
+      expect(results[0].wattage).toEqual(1.0944)
+    })
+
+    it('calculates the co2 emissions based on the wattage and a magic number for the start date of the time period', () => {
+      expect(results[0].co2).toEqual(0.0007737845760000001)
+    })
+  })
+})
