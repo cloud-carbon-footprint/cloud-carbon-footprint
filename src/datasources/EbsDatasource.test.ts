@@ -1,13 +1,13 @@
 import * as AWSMock from "aws-sdk-mock";
 import * as AWS from "aws-sdk";
 
-import AwsClient from './AwsClient'
+import EbsDatasource from './EbsDatasource'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
-describe('AwsClient', () => {
+describe('EbsDatasource', () => {
 
   it('gets EBS usage', async () => {
     AWSMock.mock(
@@ -33,17 +33,37 @@ describe('AwsClient', () => {
           }
         })
 
-        callback(null, 'beep boop')
+        callback(null, {
+          "ResultsByTime": [
+            {
+              "Estimated": false,
+              "Groups": [],
+              "TimePeriod": {
+                "End": "2020-06-28",
+                "Start": "2020-06-27"
+              },
+              "Total": {
+                "UsageQuantity": {
+                  "Amount": "1.2120679",
+                  "Unit": "GB-Month"
+                }
+              }
+            }
+          ]
+        })
       }
     )
 
-    const client = new AwsClient(new AWS.CostExplorer())
+    const datasource = new EbsDatasource()
 
-    const result = await client.getEbsUsage(
+    const result = await datasource.getUsage(
       new Date('2020-06-27T00:00:00Z'),
       new Date('2020-06-30T00:00:00Z')
     )
 
-    expect(result).toEqual('beep boop')
+    expect(result).toEqual([{
+      sizeGb: 1.2120679, //todo
+      timestamp: new Date('2020-06-27T00:00:00Z')
+    }])
   })
 })

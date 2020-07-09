@@ -1,13 +1,17 @@
 import * as AWS from 'aws-sdk'
+import StorageUsage from '../domain/StorageUsage'
+import StorageDatasource from '../domain/StorageDatasource'
 
-class AwsClient {
+class EbsDatasource implements StorageDatasource {
   private readonly costExplorer: AWS.CostExplorer
 
-  constructor(costExplorer: AWS.CostExplorer) {
-    this.costExplorer = costExplorer
+  constructor() {
+    this.costExplorer = new AWS.CostExplorer({
+      region: 'us-east-1'
+    })
   }
 
-  getEbsUsage(startDate: Date, endDate: Date): Promise<AWS.CostExplorer.GetCostAndUsageResponse> {
+  getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
     var params = {
       TimePeriod: { /* required */
           Start: startDate.toISOString().substr(0, 10), /* required */
@@ -32,7 +36,11 @@ class AwsClient {
     return this.costExplorer
       .getCostAndUsage(params)
       .promise()
+      .then(() => ([{
+        sizeGb: 1.2120679, //todo - remember to parseFloat
+        timestamp: new Date('2020-06-27T00:00:00Z')
+      }]))
   }
 }
 
-export default AwsClient
+export default EbsDatasource

@@ -1,24 +1,15 @@
-import EbsEstimator from './EbsEstimator'
-import { FootprintEstimate } from './common'
+import StorageEstimator from './StorageEstimator'
+import FootprintEstimate from './FootprintEstimate'
 import * as AWS from 'aws-sdk'
 
-describe('EbsEstimator', () => {
+describe('StorageEstimator', () => {
   describe('estimating a single result', () => {
-    const estimator: EbsEstimator = new EbsEstimator({
-      ResultsByTime: [
-        {
-          TimePeriod: {
-            Start: "1998-01-01",
-            End: "1234-56-78"
-          },
-          Total: {
-            UsageQuantity: {
-              Amount: "1.0"
-            }
-          }
-        }
-      ]
-    })
+    const estimator: StorageEstimator = new StorageEstimator([
+      {
+        sizeGb: 1.0,
+        timestamp: new Date("1998-01-01")
+      }
+    ])
 
     const results: FootprintEstimate[] = estimator.estimate()
 
