@@ -7,39 +7,39 @@ class EbsDatasource implements StorageDatasource {
 
   constructor() {
     this.costExplorer = new AWS.CostExplorer({
-      region: 'us-east-1'
+      region: 'us-east-1',
     })
   }
 
   getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
-    var params = {
-      TimePeriod: { /* required */
-          Start: startDate.toISOString().substr(0, 10), /* required */
-          End: endDate.toISOString().substr(0, 10) /* required */
+    const params = {
+      TimePeriod: {
+        /* required */ Start: startDate.toISOString().substr(0, 10) /* required */,
+        End: endDate.toISOString().substr(0, 10) /* required */,
       },
       Filter: {
-          "Dimensions": {
-              "Key": "USAGE_TYPE",
-              "Values": [
-                  "EBS:VolumeUsage.gp2"
-              ]
-          }
+        Dimensions: {
+          Key: 'USAGE_TYPE',
+          Values: ['EBS:VolumeUsage.gp2'],
+        },
       },
-      Granularity: "DAILY",
+      Granularity: 'DAILY',
       Metrics: [
-          'UsageQuantity',
-          /* more items */
+        'UsageQuantity',
+        /* more items */
       ],
       // NextPageToken: 'STRING_VALUE'
-    };
+    }
 
     return this.costExplorer
       .getCostAndUsage(params)
       .promise()
-      .then(() => ([{
-        sizeGb: 1.2120679, //todo - remember to parseFloat
-        timestamp: new Date('2020-06-27T00:00:00Z')
-      }]))
+      .then(() => [
+        {
+          sizeGb: 1.2120679, //todo - remember to parseFloat
+          timestamp: new Date('2020-06-27T00:00:00Z'),
+        },
+      ])
   }
 }
 

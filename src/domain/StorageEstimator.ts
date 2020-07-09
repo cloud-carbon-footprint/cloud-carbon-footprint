@@ -15,17 +15,16 @@ export default class StorageEstimator implements FootprintEstimator {
     return this.data
       .map((d: StorageUsage) => {
         // *NOTE: Assuming all months have 30 days
-        const usageGb = d.sizeGb * 30; 
+        const usageGb = d.sizeGb * 30
         //apply formula -> TBh * 24 hrs
-        const estimatedWattage = usageGb / 1000 * SSD_COEFFICIENT * 24; 
+        const estimatedWattage = (usageGb / 1000) * SSD_COEFFICIENT * 24
 
         return {
           timestamp: d.timestamp,
           wattage: estimatedWattage,
-          co2: estimatedWattage * 0.70704 / 1000
+          co2: (estimatedWattage * 0.70704) / 1000,
         }
       })
-      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
   }
 }
-

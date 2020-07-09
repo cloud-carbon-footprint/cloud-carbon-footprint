@@ -7,8 +7,8 @@ describe('StorageEstimator', () => {
     const estimator: StorageEstimator = new StorageEstimator([
       {
         sizeGb: 1.0,
-        timestamp: new Date("1998-01-01")
-      }
+        timestamp: new Date('1998-01-01'),
+      },
     ])
 
     const results: FootprintEstimate[] = estimator.estimate()

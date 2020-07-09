@@ -1,4 +1,3 @@
-
 import StorageEstimator from '../domain/StorageEstimator'
 import EbsDatasource from '../datasources/EbsDatasource'
 import FootprintEstimator from '../domain/FootprintEstimator'
@@ -13,4 +12,3 @@ function getEstimations(startDate, endDate, services) {
   const data: StorageUsage[] = await datasource.getUsage(startDate, endDate)
   const storageEstimator: FootprintEstimator = new StorageEstimator(data)
 }
-
