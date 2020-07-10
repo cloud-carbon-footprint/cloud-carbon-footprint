@@ -36,6 +36,7 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
-    "aws-sdk": "^2.712.0"
+    "aws-sdk": "^2.712.0",
+    "moment": "^2.27.0"
   }
 }
