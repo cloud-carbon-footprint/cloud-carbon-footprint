@@ -11,7 +11,7 @@ class EbsDatasource implements StorageDatasource {
     })
   }
 
-  getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
+  async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
     const params = {
       TimePeriod: {
         /* required */ Start: startDate.toISOString().substr(0, 10) /* required */,
@@ -31,15 +31,14 @@ class EbsDatasource implements StorageDatasource {
       // NextPageToken: 'STRING_VALUE'
     }
 
-    return this.costExplorer
-      .getCostAndUsage(params)
-      .promise()
-      .then(() => [
-        {
-          sizeGb: 1.2120679, //todo - remember to parseFloat
-          timestamp: new Date('2020-06-27T00:00:00Z'),
-        },
-      ])
+    const response = await this.costExplorer.getCostAndUsage(params).promise()
+
+    return response.ResultsByTime.map((result) => {
+      return {
+        sizeGb: Number.parseFloat(result.Total.UsageQuantity.Amount),
+        timestamp: new Date(result.TimePeriod.Start),
+      }
+    })
   }
 }
 
