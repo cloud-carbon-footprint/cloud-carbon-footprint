@@ -33,12 +33,16 @@ class EbsDatasource implements StorageDatasource {
 
     const response = await this.costExplorer.getCostAndUsage(params).promise()
 
-    return response.ResultsByTime.map((result) => {
-      return {
-        sizeGb: Number.parseFloat(result.Total.UsageQuantity.Amount),
-        timestamp: new Date(result.TimePeriod.Start),
-      }
-    })
+    return (
+      response.ResultsByTime?.map((result) => {
+        const sizeGb = Number.parseFloat(result?.Total?.UsageQuantity?.Amount)
+        const timestampString = result?.TimePeriod?.Start
+        return {
+          sizeGb,
+          timestamp: new Date(timestampString),
+        }
+      }).filter((r: StorageUsage) => r.sizeGb && r.timestamp) || []
+    )
   }
 }
 
