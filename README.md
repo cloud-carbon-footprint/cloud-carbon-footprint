@@ -9,7 +9,7 @@
   2. Lint your code by running `npm run lint:fix` and continue only if they pass
   3. Run all tests with `npm run test` and continue only if they pass
   4. `git add [your changed files]`
-  5. `git commit -m "[Card  #][Your name] Your commit message`
+  5. `git commit -m "Your commit message | Your name, Pair's name`
   6. `git pull --rebase`
   7. Run all tests with `npm run test` and continue only if they pass
   8. `git push`
