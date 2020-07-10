@@ -55,7 +55,7 @@ describe('EbsDatasource', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679, //todo
+        sizeGb: 1.2120679,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
