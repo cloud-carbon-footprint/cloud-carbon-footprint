@@ -1,7 +1,7 @@
 import * as AWSMock from 'aws-sdk-mock'
 import * as AWS from 'aws-sdk'
 
-import EbsDatasource from './EbsDatasource'
+import EbsDatasource from '../../../src/datasources/EbsDatasource'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

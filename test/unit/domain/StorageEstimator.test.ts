@@ -1,6 +1,5 @@
-import StorageEstimator from './StorageEstimator'
-import FootprintEstimate from './FootprintEstimate'
-import * as AWS from 'aws-sdk'
+import StorageEstimator from '../../../src/domain/StorageEstimator'
+import FootprintEstimate from '../../../src/domain/FootprintEstimate'
 
 describe('StorageEstimator', () => {
   describe('estimating a single result', () => {
