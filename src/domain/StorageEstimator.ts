@@ -5,22 +5,16 @@ import StorageUsage from './StorageUsage'
 const SSD_COEFFICIENT = 1.52
 const US_WATTAGE_CARBON_RATIO = 0.70704
 
-export default class StorageEstimator implements FootprintEstimator {
-  private readonly data: StorageUsage[]
-
-  constructor(data: StorageUsage[]) {
-    this.data = data
-  }
-
-  estimate(): FootprintEstimate[] {
-    return this.data.map((d: StorageUsage) => {
+export class StorageEstimator implements FootprintEstimator {
+  estimate(data: StorageUsage[]): FootprintEstimate[] {
+    return data.map((d: StorageUsage) => {
       const usageGb = StorageEstimator.estimateMonthlyUsage(d.sizeGb)
       const estimatedWattage = StorageEstimator.estimateWattage(usageGb)
 
       return {
         timestamp: d.timestamp,
-        wattage: estimatedWattage,
-        co2: StorageEstimator.estimateCo2(estimatedWattage),
+        wattHours: estimatedWattage,
+        co2e: StorageEstimator.estimateCo2(estimatedWattage),
       }
     })
   }

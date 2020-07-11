@@ -1,3 +1,3 @@
 export default interface FootprintEstimator {
-  estimate(): FootprintEstimate[]
+  estimate(data: UsageData[]): FootprintEstimate[]
 }

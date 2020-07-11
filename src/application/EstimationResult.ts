@@ -1,5 +1,3 @@
-import FootprintEstimate from '../domain/FootprintEstimate'
-
 export interface EstimationResult {
   readonly timestamp: Date
   readonly estimates: ServiceEstimate[]

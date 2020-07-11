@@ -3,11 +3,22 @@ import { App } from '../../../src/application/App'
 import { EstimationResult } from '../../../src/application/EstimationResult'
 import { EstimationRequest } from '../../../src/application/EstimationRequest'
 import { mocked } from 'ts-jest/utils'
-import { DatasourceFactory } from '../../../src/domain/DatasourceFactory'
-jest.mock('../../../src/domain/DatasourceFactory')
+import { DatasourceFactory } from '../../../src/datasources/DatasourceFactory'
+import EbsDatasource from '../../../src/datasources/EbsDatasource'
+import StorageUsage from '../../../src/domain/StorageUsage'
+import { FootprintEstimatorFactory } from '../../../src/domain/FootprintEstimatorFactory'
+import { StorageEstimator } from '../../../src/domain/StorageEstimator'
+import FootprintEstimate from '../../../src/domain/FootprintEstimate'
 
-// const datasourceFactoryMock = mocked(DatasourceFactory, true)
-// const datasourceFactoryMock = <jest.Mock<DatasourceFactory>>DatasourceFactory;
+jest.mock('../../../src/datasources/DatasourceFactory')
+jest.mock('../../../src/datasources/EbsDatasource')
+jest.mock('../../../src/domain/FootprintEstimatorFactory')
+jest.mock('../../../src/domain/StorageEstimator')
+
+const datasourceFactoryMock = mocked(DatasourceFactory, true)
+const ebsDatasourceMock = mocked(new EbsDatasource())
+const footprintEstimatorFactoryMock = mocked(FootprintEstimatorFactory, true)
+const storageEstimatorMock = mocked(new StorageEstimator(), true)
 
 describe('App', () => {
   let app: App
@@ -21,36 +32,49 @@ describe('App', () => {
       //setup
       const estimationRequest: EstimationRequest = {
         startDate: moment('2020-12-07').toDate(),
-        endDate: moment('2020-12-07').subtract(1, 'weeks').toDate(),
+        endDate: moment('2020-12-07').add(1, 'weeks').toDate(),
       }
-      // new DatasourceFactory().create();
-      //mock Datasourcefactory
 
-      // datasourceFactoryMock().create.mockReturnValueOnce("");
-      // datasourceFactory.create.mockReturnValueOnce('');
-      new DatasourceFactory()
-      expect(DatasourceFactory).toHaveBeenCalledTimes(1)
+      const expectedStorageUsage: StorageUsage[] = [...Array(7)].map((v, i) => {
+        return {
+          sizeGb: 1.0,
+          timestamp: moment('2020-12-07').add(i, 'days').toDate(),
+        }
+      })
 
-      //mock Datasource response
+      const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
+        return {
+          timestamp: moment('2020-12-07').add(i, 'days').toDate(),
+          wattHours: 1.0944,
+          co2e: 0.0007737845760000001,
+        }
+      })
+
+      datasourceFactoryMock.create.mockReturnValueOnce(ebsDatasourceMock)
+      ebsDatasourceMock.getUsage.mockResolvedValue(expectedStorageUsage)
+
+      footprintEstimatorFactoryMock.create.mockReturnValueOnce(storageEstimatorMock)
+      storageEstimatorMock.estimate.mockReturnValueOnce(expectedStorageEstimate)
 
       //run
       const estimationResult: EstimationResult[] = await app.getEstimate(estimationRequest)
 
       //assert
-      const expectedEstimateResults: EstimationResult[] = [...Array(7)].map((v, i) => {
+      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment('2020-12-07').add(i, 'days').toDate(),
           estimates: [
             {
               serviceName: 'ebs',
-              wattHours: 50,
-              co2e: 0.05,
+              wattHours: 1.0944,
+              co2e: 0.0007737845760000001,
             },
           ],
         }
       })
 
-      expect(estimationResult).toEqual(expectedEstimateResults)
+      expect(storageEstimatorMock.estimate).toHaveBeenCalledWith(expectedStorageUsage)
+      expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
 })

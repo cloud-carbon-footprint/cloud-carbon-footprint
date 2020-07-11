@@ -1,17 +1,25 @@
+import { DatasourceFactory } from '../datasources/DatasourceFactory'
+import { FootprintEstimatorFactory } from '../domain/FootprintEstimatorFactory'
+
 import { EstimationRequest } from './EstimationRequest'
 import { EstimationResult } from './EstimationResult'
-import moment = require('moment')
 
 export class App {
   async getEstimate(estimationRequest: EstimationRequest): Promise<EstimationResult[]> {
-    return [...Array(7)].map((v, i) => {
+    const ebsDatasource = DatasourceFactory.create()
+    const storageUsage = await ebsDatasource.getUsage(estimationRequest.startDate, estimationRequest.endDate)
+
+    const ebsFootPrintEstimator = FootprintEstimatorFactory.create()
+    const ebsStorageEstimates = ebsFootPrintEstimator.estimate(storageUsage)
+
+    return ebsStorageEstimates.map((estimate) => {
       return {
-        timestamp: moment('2020-12-07').add(i, 'days').toDate(),
+        timestamp: estimate.timestamp,
         estimates: [
           {
             serviceName: 'ebs',
-            wattHours: 50,
-            co2e: 0.05,
+            wattHours: estimate.wattHours,
+            co2e: estimate.co2e,
           },
         ],
       }
