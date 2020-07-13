@@ -25,6 +25,9 @@ describe('App', () => {
 
   beforeAll(() => {
     app = new App()
+
+    datasourceFactoryMock.create.mockReturnValueOnce(ebsDatasourceMock)
+    footprintEstimatorFactoryMock.create.mockReturnValueOnce(storageEstimatorMock)
   })
 
   describe('getEstimate', () => {
@@ -42,6 +45,8 @@ describe('App', () => {
         }
       })
 
+      ebsDatasourceMock.getUsage.mockResolvedValue(expectedStorageUsage)
+
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment('2020-12-07').add(i, 'days').toDate(),
@@ -49,11 +54,6 @@ describe('App', () => {
           co2e: 0.0007737845760000001,
         }
       })
-
-      datasourceFactoryMock.create.mockReturnValueOnce(ebsDatasourceMock)
-      ebsDatasourceMock.getUsage.mockResolvedValue(expectedStorageUsage)
-
-      footprintEstimatorFactoryMock.create.mockReturnValueOnce(storageEstimatorMock)
       storageEstimatorMock.estimate.mockReturnValueOnce(expectedStorageEstimate)
 
       //run
@@ -75,6 +75,57 @@ describe('App', () => {
 
       expect(storageEstimatorMock.estimate).toHaveBeenCalledWith(expectedStorageUsage)
       expect(estimationResult).toEqual(expectedEstimationResults)
+    })
+
+    it('should return error if start date is greater than end date', async () => {
+      //setup
+      const estimationRequest: EstimationRequest = {
+        startDate: moment('2020-12-07').toDate(),
+        endDate: moment('2020-12-06').toDate(),
+      }
+
+      //run
+      try {
+        await app.getEstimate(estimationRequest)
+        fail()
+      } catch (e) {
+        //assert
+        expect(e).toEqual('startDate cannot be greater than endDate')
+      }
+    })
+
+    it('should return error if start date is undefined', async () => {
+      //setup
+      const estimationRequest: EstimationRequest = {
+        startDate: undefined,
+        endDate: new Date(),
+      }
+
+      //run
+      try {
+        await app.getEstimate(estimationRequest)
+        fail()
+      } catch (e) {
+        //assert
+        expect(e).toEqual('startDate cannot be undefined')
+      }
+    })
+
+    it('should return error if end date is undefined', async () => {
+      //setup
+      const estimationRequest: EstimationRequest = {
+        startDate: new Date(),
+        endDate: undefined,
+      }
+
+      //run
+      try {
+        await app.getEstimate(estimationRequest)
+        fail()
+      } catch (e) {
+        //assert
+        expect(e).toEqual('endDate cannot be undefined')
+      }
     })
   })
 })

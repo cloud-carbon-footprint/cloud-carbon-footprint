@@ -1,7 +1,8 @@
 import EbsDatasource from './EbsDatasource'
+import Datasource from '../domain/Datasource'
 
 export class DatasourceFactory {
-  static create(): EbsDatasource {
+  static create(): Datasource {
     return new EbsDatasource()
   }
 }

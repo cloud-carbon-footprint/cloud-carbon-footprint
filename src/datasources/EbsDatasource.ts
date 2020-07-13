@@ -1,8 +1,8 @@
 import * as AWS from 'aws-sdk'
 import StorageUsage from '../domain/StorageUsage'
-import StorageDatasource from '../domain/StorageDatasource'
+import Datasource from '../domain/Datasource'
 
-export default class EbsDatasource implements StorageDatasource {
+export default class EbsDatasource implements Datasource {
   readonly costExplorer: AWS.CostExplorer
 
   constructor() {
