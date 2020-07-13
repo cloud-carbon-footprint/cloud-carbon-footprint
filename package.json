@@ -37,7 +37,9 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
+    "@types/cli-table": "^0.3.0",
     "aws-sdk": "^2.712.0",
+    "cli-table": "^0.3.1",
     "commander": "^5.1.0",
     "moment": "^2.27.0"
   }

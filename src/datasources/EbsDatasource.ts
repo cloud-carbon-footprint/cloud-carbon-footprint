@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk'
+import AWS from 'aws-sdk'
 import StorageUsage from '../domain/StorageUsage'
 import Datasource from '../domain/Datasource'
 

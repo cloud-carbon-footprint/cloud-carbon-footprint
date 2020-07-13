@@ -1,5 +1,5 @@
-import * as AWSMock from 'aws-sdk-mock'
-import * as AWS from 'aws-sdk'
+import AWSMock from 'aws-sdk-mock'
+import AWS from 'aws-sdk'
 
 import EbsDatasource from '../../../src/datasources/EbsDatasource'
 
