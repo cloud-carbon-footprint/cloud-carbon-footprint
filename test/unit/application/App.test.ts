@@ -4,7 +4,6 @@ import { EstimationResult } from '../../../src/application/EstimationResult'
 import { EstimationRequest } from '../../../src/application/EstimationRequest'
 import { mocked } from 'ts-jest/utils'
 import { DatasourceFactory } from '../../../src/datasources/DatasourceFactory'
-import EbsDatasource from '../../../src/datasources/EbsDatasource'
 import StorageUsage from '../../../src/domain/StorageUsage'
 import { FootprintEstimatorFactory } from '../../../src/domain/FootprintEstimatorFactory'
 import { StorageEstimator } from '../../../src/domain/StorageEstimator'
@@ -16,17 +15,18 @@ jest.mock('../../../src/domain/FootprintEstimatorFactory')
 jest.mock('../../../src/domain/StorageEstimator')
 
 const datasourceFactoryMock = mocked(DatasourceFactory, true)
-const ebsDatasourceMock = mocked(new EbsDatasource())
 const footprintEstimatorFactoryMock = mocked(FootprintEstimatorFactory, true)
 const storageEstimatorMock = mocked(new StorageEstimator(), true)
 
 describe('App', () => {
   let app: App
-
+  let mockGetUsage: jest.Mock<Promise<StorageUsage[]>>
   beforeAll(() => {
     app = new App()
+    mockGetUsage = jest.fn()
+    const mockDataSource = { getUsage: mockGetUsage }
 
-    datasourceFactoryMock.create.mockReturnValueOnce(ebsDatasourceMock)
+    datasourceFactoryMock.create.mockReturnValueOnce(mockDataSource)
     footprintEstimatorFactoryMock.create.mockReturnValueOnce(storageEstimatorMock)
   })
 
@@ -45,7 +45,7 @@ describe('App', () => {
         }
       })
 
-      ebsDatasourceMock.getUsage.mockResolvedValue(expectedStorageUsage)
+      mockGetUsage.mockResolvedValue(expectedStorageUsage)
 
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
