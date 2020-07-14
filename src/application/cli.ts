@@ -1,21 +1,20 @@
 import { program } from 'commander'
 import { App } from './App'
-import * as console from 'console'
 import * as process from 'process'
 import { RawRequest } from './EstimationRequest'
 import EmissionsTable from './EmissionsTable'
 import CliPrompts from './CliPrompts'
 
-program
-  .option('-s, --startDate <string>', 'Start date in ISO format')
-  .option('-e, --endDate <string>', 'End date in ISO format')
-  .option('-i, --interactive', 'Use interctive CLI prompts')
+export default async function cli(argv: string[] = process.argv) {
+  program
+    .option('-s, --startDate <string>', 'Start date in ISO format')
+    .option('-e, --endDate <string>', 'End date in ISO format')
+    .option('-i, --interactive', 'Use interactive CLI prompts')
 
-program.parse(process.argv)
+  program.parse(argv)
 
-let startDate, endDate
+  let startDate, endDate
 
-async function cli() {
   if (program.interactive) {
     ;[startDate, endDate] = await CliPrompts()
   } else {
@@ -23,7 +22,5 @@ async function cli() {
     endDate = program.endDate
   }
   const estimationRequest: RawRequest = { startDate, endDate }
-  new App().getEstimate(estimationRequest).then(EmissionsTable).then(console.log)
+  return await new App().getEstimate(estimationRequest).then(EmissionsTable)
 }
-
-cli()
