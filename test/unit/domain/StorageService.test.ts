@@ -7,6 +7,11 @@ describe('StorageService', () => {
   describe('getEstimates', () => {
     class TestService extends StorageService {
       serviceName = 'testService'
+      static COEFFICIENT = 1.2
+
+      constructor() {
+        super(TestService.COEFFICIENT)
+      }
 
       getUsage(start: Date, end: Date): Promise<StorageUsage[]> {
         return undefined
@@ -37,7 +42,7 @@ describe('StorageService', () => {
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(testService.SSD_COEFFICIENT, testService.US_WATTAGE_CARBON_RATIO).estimate([
+        new StorageEstimator(TestService.COEFFICIENT, testService.US_WATTAGE_CARBON_RATIO).estimate([
           {
             timestamp: date,
             sizeGb: 10,

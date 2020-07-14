@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'
 import StorageUsage from '../domain/StorageUsage'
-import StorageService from '../domain/StorageService'
+import { SSDStorageService } from '../domain/StorageService'
 
-export default class EBS extends StorageService {
+export default class EBS extends SSDStorageService {
   serviceName = 'EBS'
   readonly costExplorer: AWS.CostExplorer
 
