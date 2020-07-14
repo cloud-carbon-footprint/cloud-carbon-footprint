@@ -1,13 +1,11 @@
 import moment = require('moment')
 import { App } from '../../../src/application/App'
 import { EstimationResult } from '../../../src/application/EstimationResult'
-import { EstimationRequest } from '../../../src/application/EstimationRequest'
 import { mocked } from 'ts-jest/utils'
-import { FootprintEstimatorFactory } from '../../../src/domain/FootprintEstimatorFactory'
-import { StorageEstimator } from '../../../src/domain/StorageEstimator'
 import FootprintEstimate from '../../../src/domain/FootprintEstimate'
 import AWS from '../../../src/domain/AWS'
 import UsageData from '../../../src/domain/UsageData'
+import { RawRequest } from '../../../src/application/EstimationRequest'
 
 jest.mock('../../../src/domain/AWS')
 
@@ -29,9 +27,9 @@ describe('App', () => {
   describe('getEstimate', () => {
     it('should return ebs estimates for a week', async () => {
       //setup
-      const estimationRequest: EstimationRequest = {
-        startDate: moment('2020-12-07').toDate(),
-        endDate: moment('2020-12-07').add(1, 'weeks').toDate(),
+      const rawRequest: RawRequest = {
+        startDate: moment('2020-06-07').toISOString(),
+        endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
       }
 
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
@@ -44,7 +42,7 @@ describe('App', () => {
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
       //run
-      const estimationResult: EstimationResult[] = await app.getEstimate(estimationRequest)
+      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
       //assert
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
@@ -65,53 +63,12 @@ describe('App', () => {
 
     it('should return error if start date is greater than end date', async () => {
       //setup
-      const estimationRequest: EstimationRequest = {
-        startDate: moment('2020-12-07').toDate(),
-        endDate: moment('2020-12-06').toDate(),
+      const rawRequest: RawRequest = {
+        startDate: moment('2020-06-07').toISOString(),
+        endDate: moment('2020-06-06').toISOString(),
       }
 
-      //run
-      try {
-        await app.getEstimate(estimationRequest)
-        fail()
-      } catch (e) {
-        //assert
-        expect(e).toEqual('startDate cannot be greater than endDate')
-      }
-    })
-
-    it('should return error if start date is undefined', async () => {
-      //setup
-      const estimationRequest: EstimationRequest = {
-        startDate: undefined,
-        endDate: new Date(),
-      }
-
-      //run
-      try {
-        await app.getEstimate(estimationRequest)
-        fail()
-      } catch (e) {
-        //assert
-        expect(e).toEqual('startDate cannot be undefined')
-      }
-    })
-
-    it('should return error if end date is undefined', async () => {
-      //setup
-      const estimationRequest: EstimationRequest = {
-        startDate: new Date(),
-        endDate: undefined,
-      }
-
-      //run
-      try {
-        await app.getEstimate(estimationRequest)
-        fail()
-      } catch (e) {
-        //assert
-        expect(e).toEqual('endDate cannot be undefined')
-      }
+      await expect(() => app.getEstimate(rawRequest)).rejects.toThrow('Start date is not before end date')
     })
   })
 })

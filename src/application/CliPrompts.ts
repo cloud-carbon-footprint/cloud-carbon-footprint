@@ -1,4 +1,4 @@
-import { prompt, input, InputQuestion } from 'typed-prompts'
+import { input, InputQuestion, prompt } from 'typed-prompts'
 
 export default async function (): Promise<string[]> {
   const questions: InputQuestion[] = [
