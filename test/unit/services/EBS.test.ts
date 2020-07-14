@@ -7,7 +7,7 @@ beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
-describe('EbsDatasource', () => {
+describe('Ebs', () => {
   afterEach(() => {
     AWSMock.restore()
   })
