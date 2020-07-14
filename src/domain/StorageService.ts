@@ -1,7 +1,7 @@
 import CloudService from './CloudService'
-import UsageData from './UsageData'
 import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
+import StorageUsage from './StorageUsage'
 
 export default abstract class StorageService implements CloudService {
   estimator = new StorageEstimator()
@@ -10,7 +10,7 @@ export default abstract class StorageService implements CloudService {
     return this.getUsage(start, end).then(this.estimator.estimate)
   }
 
-  abstract getUsage(start: Date, end: Date): Promise<UsageData[]>
+  abstract getUsage(start: Date, end: Date): Promise<StorageUsage[]>
 
   abstract serviceName: string
 }
