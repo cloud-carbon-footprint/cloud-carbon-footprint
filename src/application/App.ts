@@ -1,13 +1,11 @@
-import { EstimationRequest } from './EstimationRequest'
+import { EstimationRequest, RawRequest, validate } from './EstimationRequest'
 import { EstimationResult } from './EstimationResult'
 import FootprintEstimate from '../domain/FootprintEstimate'
 import AWS from '../domain/AWS'
 
 export class App {
-  async getEstimate(estimationRequest: EstimationRequest): Promise<EstimationResult[]> {
-    if (estimationRequest.startDate > estimationRequest.endDate) throw 'startDate cannot be greater than endDate'
-    if (!estimationRequest.startDate) throw 'startDate cannot be undefined'
-    if (!estimationRequest.endDate) throw 'endDate cannot be undefined'
+  async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
+    const estimationRequest: EstimationRequest = validate(rawRequest)
 
     const estimates = await AWS()[0].getEstimates(estimationRequest.startDate, estimationRequest.endDate)
 

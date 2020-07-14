@@ -44,7 +44,7 @@ describe('StorageService', () => {
           },
         ]),
       )
-      expect(getUsageMock).toBeCalledWith(date,date)
+      expect(getUsageMock).toBeCalledWith(date, date)
     })
   })
 })
