@@ -39,7 +39,7 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
     })
 
     table.push([
-      moment(estimationResult.timestamp).format('YYYY-MM-DD'),
+      moment(estimationResult.timestamp).utc().format('YYYY-MM-DD'),
       displayWattHours(subTotals['ebs'].wattHours),
       displayCo2e(subTotals['ebs'].co2e),
     ])
