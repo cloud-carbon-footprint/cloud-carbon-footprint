@@ -3,3 +3,4 @@ node_modules
 src/**/*.js
 src/**/*.map
 coverage
+.DS_Store
