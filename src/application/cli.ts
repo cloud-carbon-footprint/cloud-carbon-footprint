@@ -5,16 +5,26 @@ import * as process from 'process'
 import CliParams from './CliParams'
 import { EstimationRequest } from './EstimationRequest'
 import EmissionsTable from './EmissionsTable'
+import CliPrompts from './CliPrompts'
 
 program
-  .requiredOption('-s, --startDate <string>', 'Start date in ISO format')
-  .requiredOption('-e, --endDate <string>', 'End date in ISO format')
+  .option('-s, --startDate <string>', 'Start date in ISO format')
+  .option('-e, --endDate <string>', 'End date in ISO format')
+  .option('-i, --interactive', 'Use interctive CLI prompts')
 
 program.parse(process.argv)
 
-const startDate = program.startDate
-const endDate = program.endDate
+let startDate, endDate
 
-const estimationRequest: EstimationRequest = CliParams({ startDate, endDate })
+async function cli() {
+  if (program.interactive) {
+    ;[startDate, endDate] = await CliPrompts()
+  } else {
+    startDate = program.startDate
+    endDate = program.endDate
+  }
+  const estimationRequest: EstimationRequest = CliParams({ startDate, endDate })
+  new App().getEstimate(estimationRequest).then(EmissionsTable).then(console.log)
+}
 
-new App().getEstimate(estimationRequest).then(EmissionsTable).then(console.log)
+cli()
