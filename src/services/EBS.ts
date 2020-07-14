@@ -1,11 +1,13 @@
 import AWS from 'aws-sdk'
 import StorageUsage from '../domain/StorageUsage'
-import Datasource from '../domain/Datasource'
+import StorageService from '../domain/StorageService'
 
-export default class EbsDatasource implements Datasource {
+export default class EBS extends StorageService {
+  serviceName = 'EBS'
   readonly costExplorer: AWS.CostExplorer
 
   constructor() {
+    super()
     this.costExplorer = new AWS.CostExplorer({
       region: 'us-east-1',
     })

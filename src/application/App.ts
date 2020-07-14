@@ -1,9 +1,7 @@
-import { DatasourceFactory } from '../datasources/DatasourceFactory'
-import { FootprintEstimatorFactory } from '../domain/FootprintEstimatorFactory'
-
 import { EstimationRequest } from './EstimationRequest'
 import { EstimationResult } from './EstimationResult'
 import FootprintEstimate from '../domain/FootprintEstimate'
+import AWS from '../domain/AWS'
 
 export class App {
   async getEstimate(estimationRequest: EstimationRequest): Promise<EstimationResult[]> {
@@ -11,13 +9,9 @@ export class App {
     if (!estimationRequest.startDate) throw 'startDate cannot be undefined'
     if (!estimationRequest.endDate) throw 'endDate cannot be undefined'
 
-    const ebsDatasource = DatasourceFactory.create()
-    const storageUsage = await ebsDatasource.getUsage(estimationRequest.startDate, estimationRequest.endDate)
+    const estimates = await AWS()[0].getEstimates(estimationRequest.startDate, estimationRequest.endDate)
 
-    const ebsFootPrintEstimator = FootprintEstimatorFactory.create()
-    const ebsStorageEstimates = ebsFootPrintEstimator.estimate(storageUsage)
-
-    return ebsStorageEstimates.map((estimate: FootprintEstimate) => {
+    return estimates.map((estimate: FootprintEstimate) => {
       return {
         timestamp: estimate.timestamp,
         estimates: [

@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
-import EbsDatasource from '../../../src/datasources/EbsDatasource'
+import EBS from '../../../src/services/EBS'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -53,7 +53,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-06-27T00:00:00Z'), new Date('2020-06-30T00:00:00Z'))
 
@@ -106,7 +106,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -127,7 +127,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -145,7 +145,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -188,7 +188,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -239,7 +239,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -285,7 +285,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -332,7 +332,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
@@ -383,7 +383,7 @@ describe('EbsDatasource', () => {
       },
     )
 
-    const datasource = new EbsDatasource()
+    const datasource = new EBS()
 
     const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 

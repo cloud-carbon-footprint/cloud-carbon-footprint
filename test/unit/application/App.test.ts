@@ -3,31 +3,27 @@ import { App } from '../../../src/application/App'
 import { EstimationResult } from '../../../src/application/EstimationResult'
 import { EstimationRequest } from '../../../src/application/EstimationRequest'
 import { mocked } from 'ts-jest/utils'
-import { DatasourceFactory } from '../../../src/datasources/DatasourceFactory'
-import StorageUsage from '../../../src/domain/StorageUsage'
 import { FootprintEstimatorFactory } from '../../../src/domain/FootprintEstimatorFactory'
 import { StorageEstimator } from '../../../src/domain/StorageEstimator'
 import FootprintEstimate from '../../../src/domain/FootprintEstimate'
+import AWS from '../../../src/domain/AWS'
+import UsageData from '../../../src/domain/UsageData'
 
-jest.mock('../../../src/datasources/DatasourceFactory')
-jest.mock('../../../src/datasources/EbsDatasource')
-jest.mock('../../../src/domain/FootprintEstimatorFactory')
-jest.mock('../../../src/domain/StorageEstimator')
+jest.mock('../../../src/domain/AWS')
 
-const datasourceFactoryMock = mocked(DatasourceFactory, true)
-const footprintEstimatorFactoryMock = mocked(FootprintEstimatorFactory, true)
-const storageEstimatorMock = mocked(new StorageEstimator(), true)
+const AWSMock = mocked(AWS, true)
 
 describe('App', () => {
   let app: App
-  let mockGetUsage: jest.Mock<Promise<StorageUsage[]>>
+  let mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>>
+  let mockGetUsage: jest.Mock<Promise<UsageData[]>>
   beforeAll(() => {
     app = new App()
-    mockGetUsage = jest.fn()
-    const mockDataSource = { getUsage: mockGetUsage }
 
-    datasourceFactoryMock.create.mockReturnValueOnce(mockDataSource)
-    footprintEstimatorFactoryMock.create.mockReturnValueOnce(storageEstimatorMock)
+    mockGetEstimates = jest.fn()
+    const mockCloudService = { getEstimates: mockGetEstimates, serviceName: 'ebs', getUsage: mockGetUsage }
+
+    AWSMock.mockReturnValueOnce([mockCloudService])
   })
 
   describe('getEstimate', () => {
@@ -38,15 +34,6 @@ describe('App', () => {
         endDate: moment('2020-12-07').add(1, 'weeks').toDate(),
       }
 
-      const expectedStorageUsage: StorageUsage[] = [...Array(7)].map((v, i) => {
-        return {
-          sizeGb: 1.0,
-          timestamp: moment('2020-12-07').add(i, 'days').toDate(),
-        }
-      })
-
-      mockGetUsage.mockResolvedValue(expectedStorageUsage)
-
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment('2020-12-07').add(i, 'days').toDate(),
@@ -54,7 +41,7 @@ describe('App', () => {
           co2e: 0.0007737845760000001,
         }
       })
-      storageEstimatorMock.estimate.mockReturnValueOnce(expectedStorageEstimate)
+      mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
       //run
       const estimationResult: EstimationResult[] = await app.getEstimate(estimationRequest)
@@ -73,7 +60,6 @@ describe('App', () => {
         }
       })
 
-      expect(storageEstimatorMock.estimate).toHaveBeenCalledWith(expectedStorageUsage)
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
