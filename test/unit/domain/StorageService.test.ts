@@ -37,14 +37,14 @@ describe('StorageService', () => {
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator().estimate([
+        new StorageEstimator(testService.SSD_COEFFICIENT, testService.US_WATTAGE_CARBON_RATIO).estimate([
           {
             timestamp: date,
             sizeGb: 10,
           },
         ]),
       )
-      expect(getUsageMock).toBeCalledWith(date,date)
+      expect(getUsageMock).toBeCalledWith(date, date)
     })
   })
 })

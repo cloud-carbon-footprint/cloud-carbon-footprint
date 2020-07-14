@@ -2,8 +2,10 @@ import { StorageEstimator } from '../../../src/domain/StorageEstimator'
 import FootprintEstimate from '../../../src/domain/FootprintEstimate'
 
 describe('StorageEstimator', () => {
+  const SSD_COEFFICIENT = 1.52
+  const US_WATTAGE_CARBON_RATIO = 0.70704
   describe('estimating a single result', () => {
-    const estimator: StorageEstimator = new StorageEstimator()
+    const estimator: StorageEstimator = new StorageEstimator(SSD_COEFFICIENT, US_WATTAGE_CARBON_RATIO)
 
     const results: FootprintEstimate[] = estimator.estimate([
       {
@@ -31,7 +33,7 @@ describe('StorageEstimator', () => {
 
   describe('estimating multiple results', () => {
     it('provides one result for each input', () => {
-      const estimator: StorageEstimator = new StorageEstimator()
+      const estimator: StorageEstimator = new StorageEstimator(SSD_COEFFICIENT, US_WATTAGE_CARBON_RATIO)
 
       const results = estimator.estimate([
         {
