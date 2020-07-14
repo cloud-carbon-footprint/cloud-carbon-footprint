@@ -115,6 +115,15 @@ describe('validate', () => {
     expect(() => validate(input)).toThrow('End date must be provided')
   })
 
+  it('ensures the start date is not more than 12 months ago', () => {
+    const input = {
+      startDate: '2000-07-10',
+      endDate: '2020-07-10',
+    }
+
+    expect(() => validate(input)).toThrow('Start date cannot be more than 12 months ago')
+  })
+
   it('reports multiple errors', () => {
     const input = {
       startDate: '3000-07-14',
