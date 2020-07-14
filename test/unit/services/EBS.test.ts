@@ -53,9 +53,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-06-27T00:00:00Z'), new Date('2020-06-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-06-27T00:00:00Z'), new Date('2020-06-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -106,9 +106,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -127,9 +127,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([])
   })
@@ -145,9 +145,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([])
   })
@@ -188,9 +188,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -239,9 +239,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -285,9 +285,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -332,9 +332,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -383,9 +383,9 @@ describe('Ebs', () => {
       },
     )
 
-    const datasource = new EBS()
+    const ebsService = new EBS()
 
-    const result = await datasource.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
+    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
 
     expect(result).toEqual([
       {
