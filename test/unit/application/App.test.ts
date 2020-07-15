@@ -13,20 +13,20 @@ const AWSMock = mocked(AWS, true)
 
 describe('App', () => {
   let app: App
-  let mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>>
-  let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-  beforeAll(() => {
+
+  beforeEach(() => {
     app = new App()
-
-    mockGetEstimates = jest.fn()
-    const mockCloudService = { getEstimates: mockGetEstimates, serviceName: 'ebs', getUsage: mockGetUsage }
-
-    AWSMock.mockReturnValueOnce([mockCloudService])
   })
 
   describe('getEstimate', () => {
     it('should return ebs estimates for a week', async () => {
       //setup
+      const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+      const mockCloudServices = { getEstimates: mockGetEstimates, serviceName: 'ebs', getUsage: mockGetUsage }
+
+      AWSMock.mockReturnValue([mockCloudServices])
+
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
@@ -57,6 +57,68 @@ describe('App', () => {
           ],
         }
       })
+
+      expect(estimationResult).toEqual(expectedEstimationResults)
+    })
+
+    it('should return estimates for 2 services', async () => {
+      //setup
+      const mockGetEstimates1: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+      const mockCloudServices = [
+        { getEstimates: mockGetEstimates1, serviceName: 'serviceOne', getUsage: mockGetUsage },
+        { getEstimates: mockGetEstimates2, serviceName: 'serviceTwo', getUsage: mockGetUsage },
+      ]
+
+      AWSMock.mockReturnValue(mockCloudServices)
+
+      const rawRequest: RawRequest = {
+        startDate: moment('2020-06-07').toISOString(),
+        endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
+      }
+
+      const expectedStorageEstimate: FootprintEstimate[] = [
+        {
+          timestamp: new Date('2019-01-01'),
+          wattHours: 0,
+          co2e: 0,
+        },
+      ]
+
+      mockGetEstimates1.mockResolvedValueOnce(expectedStorageEstimate)
+
+      const expectedStorageEstimate2: FootprintEstimate[] = [
+        {
+          timestamp: new Date('2019-01-01'),
+          wattHours: 1,
+          co2e: 1,
+        },
+      ]
+
+      mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
+
+      //run
+      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
+
+      //assert
+      const expectedEstimationResults: EstimationResult[] = [
+        {
+          timestamp: new Date('2019-01-01'),
+          estimates: [
+            {
+              serviceName: 'serviceOne',
+              wattHours: 0,
+              co2e: 0,
+            },
+            {
+              serviceName: 'serviceTwo',
+              wattHours: 1,
+              co2e: 1,
+            },
+          ],
+        },
+      ]
 
       expect(estimationResult).toEqual(expectedEstimationResults)
     })

@@ -3,7 +3,7 @@ import StorageUsage from '@domain/StorageUsage'
 import { SSDStorageService } from '@domain/StorageService'
 
 export default class EBS extends SSDStorageService {
-  serviceName = 'EBS'
+  serviceName = 'ebs'
   readonly costExplorer: AWS.CostExplorer
 
   constructor() {

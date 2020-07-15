@@ -3,7 +3,7 @@ export interface EstimationResult {
   readonly estimates: ServiceEstimate[]
 }
 
-interface ServiceEstimate {
+export interface ServiceEstimate {
   readonly serviceName: string
   readonly wattHours: number
   readonly co2e: number
