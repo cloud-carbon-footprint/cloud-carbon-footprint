@@ -7,3 +7,6 @@ script:
 cache:
   directories:
     - node_modules
+branches:
+  only:
+    - trunk
