@@ -1,5 +1,5 @@
-import { EstimationRequest, RawRequest, validate } from './EstimationRequest'
-import { EstimationResult, ServiceEstimate } from './EstimationResult'
+import { EstimationRequest, RawRequest, validate } from '@application/EstimationRequest'
+import { EstimationResult } from '@application/EstimationResult'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import AWS from '@domain/AWS'
 
