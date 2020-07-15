@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk'
-import StorageUsage from '../domain/StorageUsage'
-import { SSDStorageService } from '../domain/StorageService'
+import StorageUsage from '@domain/StorageUsage'
+import { SSDStorageService } from '@domain/StorageService'
 
 export default class EBS extends SSDStorageService {
   serviceName = 'EBS'

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
- npx ts-node src/index.ts "$@"
+ npx ts-node -r tsconfig-paths/register src/index.ts "$@"

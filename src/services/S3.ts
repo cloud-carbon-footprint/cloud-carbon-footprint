@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk'
-import StorageUsage from '../domain/StorageUsage'
-import { HDDStorageService } from '../domain/StorageService'
+import StorageUsage from '@domain/StorageUsage'
+import { HDDStorageService } from '@domain/StorageService'
 
 export default class S3 extends HDDStorageService {
   serviceName = 'S3'

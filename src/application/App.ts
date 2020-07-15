@@ -1,7 +1,7 @@
 import { EstimationRequest, RawRequest, validate } from './EstimationRequest'
 import { EstimationResult } from './EstimationResult'
-import FootprintEstimate from '../domain/FootprintEstimate'
-import AWS from '../domain/AWS'
+import FootprintEstimate from '@domain/FootprintEstimate'
+import AWS from '@domain/AWS'
 
 export class App {
   async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
