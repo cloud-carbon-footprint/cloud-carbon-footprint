@@ -54,10 +54,10 @@ describe('cli', () => {
     const result = await cli(['executable', 'file', '--startDate', '2020-07-10', '--endDate', '2020-07-13'])
 
     expect(result).toEqual(
-      '| Date (UTC)        | EBS Wattage       | EBS CO2e Emissions          | S3 Wattage        | S3 CO2e Emissions           \n' +
-        '| 2020-06-27        | 0.86 Watts        | 0.000611 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            \n' +
-        '| 2020-06-28        | 1.73 Watts        | 0.001222 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            \n' +
-        '| Total             | 2.59 Watts        | 0.001833 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            ',
+      '| Date (UTC)        | EBS Wattage       | EBS CO2e Emissions          | S3 Wattage        | S3 CO2e Emissions           | EC2 Wattage       | EC2 CO2e Emissions          \n' +
+        '| 2020-06-27        | 0.86 Watts        | 0.000611 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            \n' +
+        '| 2020-06-28        | 1.73 Watts        | 0.001222 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            \n' +
+        '| Total             | 2.59 Watts        | 0.001833 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            | 0.00 Watts        | 0.000000 Kg CO2e            ',
     )
   })
 })
