@@ -1,6 +1,6 @@
 import { EstimationResult } from '../../../src/application/EstimationResult'
-import moment = require('moment')
 import EmissionsTable from '../../../src/application/EmissionsTable'
+import moment = require('moment')
 
 describe('EmissionsTable', () => {
   it('do', () => {
@@ -20,13 +20,9 @@ describe('EmissionsTable', () => {
     const result: string = EmissionsTable(input)
 
     expect(result).toEqual(
-      '┌────────────────────┬────────────────────┬──────────────────────────────┐\n' +
-        '│ Date (UTC)         │ EBS Wattage        │ EBS CO2e Emissions           │\n' +
-        '├────────────────────┼────────────────────┼──────────────────────────────┤\n' +
-        '│ 2020-07-10         │ 1.00 Watts         │ 1.000000 Kg CO2e             │\n' +
-        '├────────────────────┼────────────────────┼──────────────────────────────┤\n' +
-        '│ Total              │ 1.00 Watts         │ 1.000000 Kg CO2e             │\n' +
-        '└────────────────────┴────────────────────┴──────────────────────────────┘',
+      '| Date (UTC)        | EBS Wattage       | EBS CO2e Emissions          \n' +
+        '| 2020-07-10        | 1.00 Watts        | 1.000000 Kg CO2e            \n' +
+        '| Total             | 1.00 Watts        | 1.000000 Kg CO2e            ',
     )
   })
 })

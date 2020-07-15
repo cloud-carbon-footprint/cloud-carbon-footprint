@@ -54,15 +54,10 @@ describe('cli', () => {
     const result = await cli(['executable', 'file', '--startDate', '2020-07-10', '--endDate', '2020-07-13'])
 
     expect(result).toEqual(
-      '┌────────────────────┬────────────────────┬──────────────────────────────┐\n'.normalize() +
-        '│ Date (UTC)         │ EBS Wattage        │ EBS CO2e Emissions           │\n'.normalize() +
-        '├────────────────────┼────────────────────┼──────────────────────────────┤\n'.normalize() +
-        '│ 2020-06-27         │ 0.86 Watts         │ 0.000611 Kg CO2e             │\n'.normalize() +
-        '├────────────────────┼────────────────────┼──────────────────────────────┤\n'.normalize() +
-        '│ 2020-06-28         │ 1.73 Watts         │ 0.001222 Kg CO2e             │\n'.normalize() +
-        '├────────────────────┼────────────────────┼──────────────────────────────┤\n'.normalize() +
-        '│ Total              │ 2.59 Watts         │ 0.001833 Kg CO2e             │\n'.normalize() +
-        '└────────────────────┴────────────────────┴──────────────────────────────┘'.normalize(),
+      '| Date (UTC)        | EBS Wattage       | EBS CO2e Emissions          \n' +
+        '| 2020-06-27        | 0.86 Watts        | 0.000611 Kg CO2e            \n' +
+        '| 2020-06-28        | 1.73 Watts        | 0.001222 Kg CO2e            \n' +
+        '| Total             | 2.59 Watts        | 0.001833 Kg CO2e            ',
     )
   })
 })

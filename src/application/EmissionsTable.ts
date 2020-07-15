@@ -1,6 +1,4 @@
 import { EstimationResult } from './EstimationResult'
-import * as console from 'console'
-import Table from 'cli-table'
 import moment from 'moment'
 
 interface Total {
@@ -21,10 +19,8 @@ const displayWattHours = (wattHours: number) => `${wattHours.toFixed(2)} Watts`
 const displayCo2e = (co2e: number) => `${co2e.toFixed(6)} Kg CO2e`
 
 export default function EmissionsTable(estimations: EstimationResult[]): string {
-  const table = new Table({
-    head: ['Date (UTC)', 'EBS Wattage', 'EBS CO2e Emissions'],
-    colWidths: [20, 20, 30],
-  })
+  const table: string[][] = [['Date (UTC)', 'EBS Wattage', 'EBS CO2e Emissions']]
+  const colWidths: number[] = [20, 20, 30]
 
   const grandTotals: Totals = initialTotals()
 
@@ -47,5 +43,5 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
 
   table.push(['Total', displayWattHours(grandTotals['ebs'].wattHours), displayCo2e(grandTotals['ebs'].co2e)])
 
-  return table.toString().normalize()
+  return table.map((row) => row.reduce((acc, data, i) => acc + `| ${data}`.padEnd(colWidths[i]), '')).join('\n')
 }
