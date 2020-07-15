@@ -48,6 +48,8 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
 
   const grandTotals: Totals = initialTotals()
 
+  estimations.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
+
   estimations.forEach((estimationResult) => {
     const subTotals: Totals = initialTotals()
 
