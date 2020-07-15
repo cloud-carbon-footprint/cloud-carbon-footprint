@@ -21,6 +21,10 @@ const initialTotals = () => ({
     wattHours: 0,
     co2e: 0,
   },
+  sum: {
+    wattHours: 0,
+    co2e: 0,
+  },
 })
 
 const displayWattHours = (wattHours: number) => `${wattHours.toFixed(2)} Watts`
@@ -36,9 +40,11 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
       'S3 CO2e Emissions',
       'EC2 Wattage',
       'EC2 CO2e Emissions',
+      'Sum Wattage',
+      'Sum CO2e Emissions',
     ],
   ]
-  const colWidths: number[] = [20, 20, 30, 20, 30, 20, 30]
+  const colWidths: number[] = [15, 15, 25, 15, 25, 15, 25, 15, 25]
 
   const grandTotals: Totals = initialTotals()
 
@@ -47,9 +53,14 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
 
     estimationResult.estimates.forEach((estimate) => {
       grandTotals[estimate.serviceName].wattHours += estimate.wattHours
-      subTotals[estimate.serviceName].wattHours += estimate.wattHours
+      grandTotals['sum'].wattHours += estimate.wattHours
+      subTotals[estimate.serviceName].wattHours = estimate.wattHours
+      subTotals['sum'].wattHours += estimate.wattHours
+
       grandTotals[estimate.serviceName].co2e += estimate.co2e
-      subTotals[estimate.serviceName].co2e += estimate.co2e
+      grandTotals['sum'].co2e += estimate.co2e
+      subTotals[estimate.serviceName].co2e = estimate.co2e
+      subTotals['sum'].co2e += estimate.co2e
     })
 
     table.push([
@@ -60,6 +71,8 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
       displayCo2e(subTotals['s3'].co2e),
       displayWattHours(subTotals['ec2'].wattHours),
       displayCo2e(subTotals['ec2'].co2e),
+      displayWattHours(subTotals['sum'].wattHours),
+      displayCo2e(subTotals['sum'].co2e),
     ])
   })
 
@@ -71,6 +84,8 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
     displayCo2e(grandTotals['s3'].co2e),
     displayWattHours(grandTotals['ec2'].wattHours),
     displayCo2e(grandTotals['ec2'].co2e),
+    displayWattHours(grandTotals['sum'].wattHours),
+    displayCo2e(grandTotals['sum'].co2e),
   ])
 
   return table.map((row) => row.reduce((acc, data, col) => acc + `| ${data}`.padEnd(colWidths[col]), '')).join('\n')
