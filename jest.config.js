@@ -12,4 +12,9 @@ module.exports = {
     },
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  moduleNameMapper: {
+    '^@application/(.*)$': '<rootDir>/src/application/$1',
+    '^@domain/(.*)$': '<rootDir>/src/domain/$1',
+    '^@services/(.*)$': '<rootDir>/src/services/$1',
+  },
 }

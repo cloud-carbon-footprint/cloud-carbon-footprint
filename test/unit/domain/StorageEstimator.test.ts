@@ -1,5 +1,5 @@
-import { StorageEstimator } from '../../../src/domain/StorageEstimator'
-import FootprintEstimate from '../../../src/domain/FootprintEstimate'
+import { StorageEstimator } from '@domain/StorageEstimator'
+import FootprintEstimate from '@domain/FootprintEstimate'
 
 describe('StorageEstimator', () => {
   const SSD_COEFFICIENT = 1.52

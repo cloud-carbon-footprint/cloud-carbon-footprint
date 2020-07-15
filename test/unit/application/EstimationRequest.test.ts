@@ -1,4 +1,4 @@
-import { validate } from '../../../src/application/EstimationRequest'
+import { validate } from '@application/EstimationRequest'
 import moment = require('moment')
 
 describe('validate', () => {

@@ -1,13 +1,13 @@
 import moment = require('moment')
-import { App } from '../../../src/application/App'
-import { EstimationResult } from '../../../src/application/EstimationResult'
+import { App } from '@application/App'
+import { EstimationResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
-import FootprintEstimate from '../../../src/domain/FootprintEstimate'
-import AWS from '../../../src/domain/AWS'
-import UsageData from '../../../src/domain/UsageData'
-import { RawRequest } from '../../../src/application/EstimationRequest'
+import FootprintEstimate from '@domain/FootprintEstimate'
+import AWS from '@domain/AWS'
+import UsageData from '@domain/UsageData'
+import { RawRequest } from '@application/EstimationRequest'
 
-jest.mock('../../../src/domain/AWS')
+jest.mock('@domain/AWS')
 
 const AWSMock = mocked(AWS, true)
 

@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
-import S3 from '../../../src/services/S3'
+import S3 from '@services/S3'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

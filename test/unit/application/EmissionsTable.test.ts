@@ -1,5 +1,5 @@
-import { EstimationResult } from '../../../src/application/EstimationResult'
-import EmissionsTable from '../../../src/application/EmissionsTable'
+import { EstimationResult } from '@application/EstimationResult'
+import EmissionsTable from '@application/EmissionsTable'
 import moment = require('moment')
 
 describe('EmissionsTable', () => {

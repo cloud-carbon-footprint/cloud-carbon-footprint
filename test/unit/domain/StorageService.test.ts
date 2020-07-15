@@ -1,7 +1,7 @@
-import StorageService from '../../../src/domain/StorageService'
-import StorageUsage from '../../../src/domain/StorageUsage'
-import FootprintEstimate from '../../../src/domain/FootprintEstimate'
-import { StorageEstimator } from '../../../src/domain/StorageEstimator'
+import StorageService from '@domain/StorageService'
+import StorageUsage from '@domain/StorageUsage'
+import FootprintEstimate from '@domain/FootprintEstimate'
+import { StorageEstimator } from '@domain/StorageEstimator'
 
 describe('StorageService', () => {
   describe('getEstimates', () => {

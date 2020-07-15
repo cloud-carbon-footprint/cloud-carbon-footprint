@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
-import EBS from '../../../src/services/EBS'
+import EBS from '@services/EBS'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
