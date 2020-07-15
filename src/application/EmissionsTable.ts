@@ -47,5 +47,5 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
 
   table.push(['Total', displayWattHours(grandTotals['ebs'].wattHours), displayCo2e(grandTotals['ebs'].co2e)])
 
-  return table.toString()
+  return table.toString().normalize()
 }
