@@ -25,3 +25,6 @@ Check the [CI pipeline builds](https://travis-ci.com/dtoakley/cloud-carbon-footp
 
 ### Our CI pipeline and environments
 We use TravisCI for our pipeline.
+
+### Module Aliasing
+We've set up module aliasing within the src folder, so modules within the subfolders can be accessed with the @ prefix, e.g. @application/Module/. We accomplished this by configuring tsconfig.json, jest.config.js and installing the `tsconfig-paths` package.

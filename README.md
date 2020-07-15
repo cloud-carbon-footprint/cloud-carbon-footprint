@@ -5,5 +5,5 @@
 This is an application that calculates the emissions of AWS services in realtime of an AWS account, given a start and end date (within the past year).
 
 ### To run
-  1. Interactive version: `npx ts-node src/index.ts -i`
-  2. Pass params on command line: `npx ts-node src/index.ts --startDate YYYY-MM-DD --endDate YYYY-MM-DD`
+  1. Interactive version: `./scripts/cli.bash -i`
+  2. Pass params on command line: `./scripts/cli.bash --startDate YYYY-MM-DD --endDate YYYY-MM-DD`
