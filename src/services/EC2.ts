@@ -15,21 +15,20 @@ export default class EC2 extends ComputeService {
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
     const params = {
-      StartTime: startDate /* required */,
-      EndTime: endDate /* required */,
+      StartTime: startDate,
+      EndTime: endDate,
       MetricDataQueries: [
-        /* required */
         {
-          Id: 'cpuUtilizationWithEmptyValues' /* required */,
+          Id: 'cpuUtilizationWithEmptyValues',
           Expression: "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
           ReturnData: false,
         },
         {
-          Id: 'cpuUtilization' /* required */,
+          Id: 'cpuUtilization',
           Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
         },
         {
-          Id: 'vCPUs' /* required */,
+          Id: 'vCPUs',
           Expression:
             'SEARCH(\'{AWS/Usage,Resource,Type,Service,Class } Resource="vCPU" MetricName="ResourceCount"\', \'Average\', 3600)',
         },
@@ -79,7 +78,6 @@ export default class EC2 extends ComputeService {
     Object.values(result).forEach((a) => {
       const timestamp = new Date(a.timestamp)
       const date = timestamp.toISOString().substr(0, 10)
-      // let date =`${timestamp.getFullYear()}-${timestamp.getMonth()+1}-${timestamp.getDate()}`; //get Local date in format YYYY-MM-DD for key
 
       if (!estimationsByDay[date]) {
         estimationsByDay[date] = {
