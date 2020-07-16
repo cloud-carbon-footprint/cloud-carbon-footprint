@@ -3,13 +3,13 @@ import { App } from '@application/App'
 import { EstimationResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import AWS from '@domain/AWS'
+import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/UsageData'
 import { RawRequest } from '@application/EstimationRequest'
 
-jest.mock('@domain/AWS')
+jest.mock('@application/AWSServices')
 
-const AWSMock = mocked(AWS, true)
+const AWSMock = mocked(AWSServices, true)
 
 describe('App', () => {
   let app: App

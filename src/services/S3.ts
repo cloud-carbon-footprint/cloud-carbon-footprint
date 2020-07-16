@@ -3,7 +3,7 @@ import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
 
 export default class S3 extends HDDStorageService {
-  serviceName = 'S3'
+  serviceName = 's3'
   readonly cloudWatch: AWS.CloudWatch
 
   constructor() {

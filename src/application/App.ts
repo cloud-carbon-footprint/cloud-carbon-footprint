@@ -1,14 +1,14 @@
 import { EstimationRequest, RawRequest, validate } from '@application/EstimationRequest'
 import { EstimationResult } from '@application/EstimationResult'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import AWS from '@domain/AWS'
+import AWSServices from '@application/AWSServices'
 
 export class App {
   async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
 
     const estimatesByService = await Promise.all(
-      AWS().map((service) => {
+      AWSServices().map((service) => {
         return service.getEstimates(estimationRequest.startDate, estimationRequest.endDate)
       }),
     )
@@ -19,7 +19,7 @@ export class App {
           timestamp: estimate.timestamp,
           estimates: [
             {
-              serviceName: AWS()[i].serviceName,
+              serviceName: AWSServices()[i].serviceName,
               wattHours: estimate.wattHours,
               co2e: estimate.co2e,
             },
