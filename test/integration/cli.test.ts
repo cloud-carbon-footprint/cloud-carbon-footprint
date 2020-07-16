@@ -1,11 +1,6 @@
 import cli from '@application/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-import { mocked } from 'ts-jest/utils'
-import AWSServices from '@application/AWSServices'
-import EBS from '@services/EBS'
-import S3 from '@services/S3'
-import EC2 from '@services/EC2'
 import { s3MockResponse, ec2MockResponse, ebsMockResponse } from '@fixtures'
 
 beforeAll(() => {
@@ -17,7 +12,7 @@ afterAll(() => {
 })
 
 describe('cli', () => {
-  test.only('ebs & s3', async () => {
+  test.only('ebs, s3 & ec2', async () => {
     const mockFunction = jest.fn()
     mockFunction.mockReturnValueOnce(s3MockResponse).mockReturnValueOnce(ec2MockResponse)
 

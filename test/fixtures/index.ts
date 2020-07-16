@@ -1,3 +1,5 @@
+import AWS from 'aws-sdk'
+
 export const s3MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
     {
