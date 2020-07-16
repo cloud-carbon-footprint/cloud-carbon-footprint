@@ -16,8 +16,8 @@ export interface EstimationRequest {
 moment.suppressDeprecationWarnings = true
 
 export function validate(request: RawRequest): EstimationRequest {
-  const startDate = moment(request.startDate)
-  const endDate = moment(request.endDate)
+  const startDate = moment.utc(request.startDate)
+  const endDate = moment.utc(request.endDate)
 
   const errors = []
   if (!request.startDate) {

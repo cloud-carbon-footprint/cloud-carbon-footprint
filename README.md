@@ -2,7 +2,7 @@
 
 # cloud-carbon-footprint
 
-This is an application that calculates the emissions of AWS services in realtime of an AWS account, given a start and end date (within the past year).
+This is an application that calculates the emissions of AWS services in realtime of an AWS account, given a start and end UTC dates (within the past year).
 
 ### To run
   1. Interactive version: `./scripts/cli.bash -i`

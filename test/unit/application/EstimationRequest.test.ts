@@ -2,7 +2,7 @@ import { validate } from '@application/EstimationRequest'
 import moment = require('moment')
 
 describe('validate', () => {
-  it('parses the start and end dates', () => {
+  it('parses the start and end dates in utc', () => {
     const input = {
       startDate: '2020-07-01',
       endDate: '2020-07-13',
@@ -11,8 +11,8 @@ describe('validate', () => {
     const result = validate(input)
 
     expect(result).toEqual({
-      startDate: moment('2020-07-01').toDate(),
-      endDate: moment('2020-07-13').toDate(),
+      startDate: moment.utc('2020-07-01').toDate(),
+      endDate: moment.utc('2020-07-13').toDate(),
     })
   })
 
