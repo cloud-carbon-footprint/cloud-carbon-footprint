@@ -16,5 +16,6 @@ module.exports = {
     '^@application/(.*)$': '<rootDir>/src/application/$1',
     '^@domain/(.*)$': '<rootDir>/src/domain/$1',
     '^@services/(.*)$': '<rootDir>/src/services/$1',
+    '^@fixtures$': '<rootDir>/test/fixtures',
   },
 }

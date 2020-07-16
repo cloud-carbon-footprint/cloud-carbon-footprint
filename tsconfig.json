@@ -7,11 +7,12 @@
     "sourceMap": true,
     "lib": ["es2015", "es2019.array"],
     "esModuleInterop": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-        "@application/*": ["./application/*"],
-        "@domain/*": ["./domain/*"],
-        "@services/*": ["./services/*"],
+        "@application/*": ["./src/application/*"],
+        "@domain/*": ["./src/domain/*"],
+        "@services/*": ["./src/services/*"],
+        "@fixtures": ["./test/fixtures"],
     }
   },
   "include": ["src/**/*"],

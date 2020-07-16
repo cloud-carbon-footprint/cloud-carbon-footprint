@@ -5,6 +5,7 @@ import { mocked } from 'ts-jest/utils'
 import AWSServices from '@application/AWSServices'
 import EBS from '@services/EBS'
 import S3 from '@services/S3'
+import { s3MockResponse, ec2MockResponse, ebsMockResponse } from '@fixtures'
 
 jest.mock('@application/AWSServices')
 const servicesRegistered = mocked(AWSServices, true)
@@ -20,60 +21,18 @@ afterAll(() => {
 describe('cli', () => {
   test('ebs & s3', async () => {
     AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, {
-          ResultsByTime: [
-            {
-              Estimated: false,
-              Groups: [],
-              TimePeriod: {
-                End: '2020-06-28',
-                Start: '2020-06-27',
-              },
-              Total: {
-                UsageQuantity: {
-                  Amount: '1.0',
-                  Unit: 'GB-Month',
-                },
-              },
-            },
-            {
-              Estimated: false,
-              Groups: [],
-              TimePeriod: {
-                End: '2020-06-29',
-                Start: '2020-06-28',
-              },
-              Total: {
-                UsageQuantity: {
-                  Amount: '2.0',
-                  Unit: 'GB-Month',
-                },
-              },
-            },
-          ],
-        })
+      'CloudWatch',
+      'getMetricData',
+      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
+        callback(null, s3MockResponse)
       },
     )
 
     AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        callback(null, {
-          MetricDataResults: [
-            {
-              Id: 's3Size',
-              Label: 's3Size',
-              Timestamps: ['2020-06-27T00:00:00.000Z'],
-              Values: [2586032500],
-              StatusCode: 'Complete',
-              Messages: [],
-            },
-          ],
-        })
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, ebsMockResponse)
       },
     )
 
