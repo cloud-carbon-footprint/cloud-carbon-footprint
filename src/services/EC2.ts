@@ -3,7 +3,7 @@ import ComputeService from '@domain/ComputeService'
 import ComputeUsage from '@domain/ComputeUsage'
 
 export default class EC2 extends ComputeService {
-  serviceName = 'EC2'
+  serviceName = 'ec2'
   readonly cloudWatch: AWS.CloudWatch
 
   constructor() {

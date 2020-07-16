@@ -16,7 +16,7 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
     {
       Id: 'cpuUtilization',
       Label: 'AWS/EC2 i-01914bfb56d65a9ae CPUUtilization',
-      Timestamps: [new Date('2020-07-10T22:00:00.000Z'), new Date('2020-07-10T23:00:00.000Z')],
+      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
       Values: [22.983333333333334, 31.435897435897434],
       StatusCode: 'Complete',
       Messages: [],
@@ -24,7 +24,7 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
     {
       Id: 'cpuUtilization',
       Label: 'AWS/EC2 i-0d1808334c391e056 CPUUtilization',
-      Timestamps: [new Date('2020-07-10T22:00:00.000Z'), new Date('2020-07-10T23:00:00.000Z')],
+      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
       Values: [11.566666666666666, 24.25],
       StatusCode: 'Complete',
       Messages: [],
@@ -32,13 +32,16 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
     {
       Id: 'vCPUs',
       Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-      Timestamps: [
-        new Date('2020-07-10T22:00:00.000Z'),
-        new Date('2020-07-10T23:00:00.000Z'),
-        new Date('2020-07-11T00:00:00.000Z'),
-        new Date('2020-07-11T01:00:00.000Z'),
-      ],
-      Values: [4, 4.5, 4, 4.333333333333333],
+      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
+      Values: [4, 4.5],
+      StatusCode: 'Complete',
+      Messages: [],
+    },
+    {
+      Id: 'cpuUtilization',
+      Label: 'AWS/EC2 i-0d1808334c391e056 CPUUtilization',
+      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
+      Values: [1000000, 9999999],
       StatusCode: 'Complete',
       Messages: [],
     },
