@@ -2,7 +2,7 @@
 
 exports[`cli ebs, s3 & ec2 1`] = `
 "| Date (UTC)   | EBS Wattage       | EBS CO2e Emissions     | S3 Wattage        | S3 CO2e Emissions      | EC2 Wattage       | EC2 CO2e Emissions     | Sum Wattage       | Sum CO2e Emissions     
-| 2020-06-27   | 0.86 Watts        | 0.000611 Kg CO2e       | 1.25 Watts        | 0.000882 Kg CO2e       | 16.93 Watts       | 0.011973 Kg CO2e       | 19.05 Watts       | 0.013466 Kg CO2e       
+| 2020-06-27   | 0.86 Watts        | 0.000611 Kg CO2e       | 0.04 Watts        | 0.000029 Kg CO2e       | 16.93 Watts       | 0.011973 Kg CO2e       | 17.84 Watts       | 0.012613 Kg CO2e       
 | 2020-06-28   | 1.73 Watts        | 0.001222 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 1.73 Watts        | 0.001222 Kg CO2e       
-| Total        | 2.59 Watts        | 0.001833 Kg CO2e       | 1.25 Watts        | 0.000882 Kg CO2e       | 16.93 Watts       | 0.011973 Kg CO2e       | 20.77 Watts       | 0.014688 Kg CO2e       "
+| Total        | 2.59 Watts        | 0.001833 Kg CO2e       | 0.04 Watts        | 0.000029 Kg CO2e       | 16.93 Watts       | 0.011973 Kg CO2e       | 19.57 Watts       | 0.013835 Kg CO2e       "
 `;

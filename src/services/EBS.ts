@@ -37,13 +37,22 @@ export default class EBS extends SSDStorageService {
 
     return (
       response.ResultsByTime?.map((result) => {
-        const sizeGb = Number.parseFloat(result?.Total?.UsageQuantity?.Amount)
+        const gbMonth = Number.parseFloat(result?.Total?.UsageQuantity?.Amount)
+        const sizeGb = this.estimateGigabyteUsage(gbMonth)
         const timestampString = result?.TimePeriod?.Start
+
         return {
           sizeGb,
           timestamp: new Date(timestampString),
         }
       }).filter((r: StorageUsage) => r.sizeGb && r.timestamp) || []
     )
+  }
+
+  private estimateGigabyteUsage(sizeGbMonth: number) {
+    // This function converts an AWS EBS Gigabyte-Month pricing metric into a Gigabyte value for a single day.
+    // We do this by assuming all months have 30 days, then multiplying the Gigabyte-month value by this.
+    // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
+    return sizeGbMonth * 30
   }
 }

@@ -17,6 +17,9 @@ export default abstract class StorageService implements CloudService {
     return this.estimator.estimate(usage)
   }
 
+  /**
+   * @returns a promise that returns an array of StorageUsage objects with timestamp per day and size in Gigabytes
+   */
   abstract getUsage(start: Date, end: Date): Promise<StorageUsage[]>
 
   abstract serviceName: string

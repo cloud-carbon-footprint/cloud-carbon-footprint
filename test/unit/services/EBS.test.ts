@@ -59,7 +59,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
@@ -112,7 +112,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
@@ -194,7 +194,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
@@ -245,7 +245,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
@@ -291,7 +291,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
@@ -338,7 +338,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
@@ -389,7 +389,7 @@ describe('Ebs', () => {
 
     expect(result).toEqual([
       {
-        sizeGb: 1.2120679,
+        sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
       },
     ])
