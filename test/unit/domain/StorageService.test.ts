@@ -2,6 +2,7 @@ import StorageService from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
+import { US_WATTAGE_CARBON_RATIO } from '@domain/constants'
 
 describe('StorageService', () => {
   describe('getEstimates', () => {
@@ -42,7 +43,7 @@ describe('StorageService', () => {
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(TestService.COEFFICIENT, testService.US_WATTAGE_CARBON_RATIO).estimate([
+        new StorageEstimator(TestService.COEFFICIENT, US_WATTAGE_CARBON_RATIO).estimate([
           {
             timestamp: date,
             sizeGb: 10,
