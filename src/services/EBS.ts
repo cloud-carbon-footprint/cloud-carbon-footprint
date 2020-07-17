@@ -16,8 +16,8 @@ export default class EBS extends SSDStorageService {
   async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
     const params = {
       TimePeriod: {
-        /* required */ Start: startDate.toISOString().substr(0, 10) /* required */,
-        End: endDate.toISOString().substr(0, 10) /* required */,
+        Start: startDate.toISOString().substr(0, 10),
+        End: endDate.toISOString().substr(0, 10),
       },
       Filter: {
         Dimensions: {
