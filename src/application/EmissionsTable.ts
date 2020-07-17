@@ -44,7 +44,7 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
       'Sum CO2e Emissions',
     ],
   ]
-  const colWidths: number[] = [15, 15, 25, 15, 25, 15, 25, 15, 25]
+  const colWidths: number[] = [15, 20, 25, 20, 25, 20, 25, 20, 25]
 
   const grandTotals: Totals = initialTotals()
 

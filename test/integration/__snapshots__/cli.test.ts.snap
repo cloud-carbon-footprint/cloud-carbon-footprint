@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`cli ebs, s3 & ec2 1`] = `
-"| Date (UTC)   | EBS Wattage  | EBS CO2e Emissions     | S3 Wattage   | S3 CO2e Emissions      | EC2 Wattage  | EC2 CO2e Emissions     | Sum Wattage  | Sum CO2e Emissions     
-| 2020-06-27   | 0.86 Watts   | 0.000611 Kg CO2e       | 1.25 Watts   | 0.000882 Kg CO2e       | 19.29 Watts  | 0.013640 Kg CO2e       | 21.40 Watts  | 0.015133 Kg CO2e       
-| 2020-06-28   | 1.73 Watts   | 0.001222 Kg CO2e       | 0.00 Watts   | 0.000000 Kg CO2e       | 0.00 Watts   | 0.000000 Kg CO2e       | 1.73 Watts   | 0.001222 Kg CO2e       
-| Total        | 2.59 Watts   | 0.001833 Kg CO2e       | 1.25 Watts   | 0.000882 Kg CO2e       | 19.29 Watts  | 0.013640 Kg CO2e       | 23.13 Watts  | 0.016355 Kg CO2e       "
+"| Date (UTC)   | EBS Wattage       | EBS CO2e Emissions     | S3 Wattage        | S3 CO2e Emissions      | EC2 Wattage       | EC2 CO2e Emissions     | Sum Wattage       | Sum CO2e Emissions     
+| 2020-06-27   | 0.86 Watts        | 0.000611 Kg CO2e       | 1.25 Watts        | 0.000882 Kg CO2e       | 19.29 Watts       | 0.013640 Kg CO2e       | 21.40 Watts       | 0.015133 Kg CO2e       
+| 2020-06-28   | 1.73 Watts        | 0.001222 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 1.73 Watts        | 0.001222 Kg CO2e       
+| Total        | 2.59 Watts        | 0.001833 Kg CO2e       | 1.25 Watts        | 0.000882 Kg CO2e       | 19.29 Watts       | 0.013640 Kg CO2e       | 23.13 Watts       | 0.016355 Kg CO2e       "
 `;
