@@ -1,4 +1,4 @@
-import ComputeEstimator from '../../../src/domain/ComputeEstimator'
+import ComputeEstimator from '@domain/ComputeEstimator'
 
 describe('ComputeEstimator', () => {
   it('do', () => {
