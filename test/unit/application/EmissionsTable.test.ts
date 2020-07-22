@@ -23,6 +23,11 @@ describe('EmissionsTable', () => {
             wattHours: 3,
             co2e: 3,
           },
+          {
+            serviceName: 'elasticache',
+            wattHours: 4,
+            co2e: 4,
+          },
         ],
       },
       {
@@ -42,6 +47,11 @@ describe('EmissionsTable', () => {
             serviceName: 'ec2',
             wattHours: 90,
             co2e: 77,
+          },
+          {
+            serviceName: 'elasticache',
+            wattHours: 747,
+            co2e: 787,
           },
         ],
       },

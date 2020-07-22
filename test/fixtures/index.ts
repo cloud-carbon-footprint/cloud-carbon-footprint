@@ -13,6 +13,27 @@ export const s3MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   ],
 }
 
+export const elastiCacheMockResponse: AWS.CloudWatch.GetMetricDataOutput = {
+  MetricDataResults: [
+    {
+      Id: 'cpuUtilization',
+      Label: 'AWS/ElastiCache CPUUtilization',
+      Timestamps: [new Date('2020-07-19T22:00:00.000Z'), new Date('2020-07-20T23:00:00.000Z')],
+      Values: [1.0456, 2.03242],
+      StatusCode: 'Complete',
+      Messages: [],
+    },
+    {
+      Id: 'vCPUs',
+      Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
+      Timestamps: [],
+      Values: [],
+      StatusCode: 'Complete',
+      Messages: [],
+    },
+  ],
+}
+
 export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
     {

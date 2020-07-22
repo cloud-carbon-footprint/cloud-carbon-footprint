@@ -21,6 +21,10 @@ const initialTotals = () => ({
     wattHours: 0,
     co2e: 0,
   },
+  elasticache: {
+    wattHours: 0,
+    co2e: 0,
+  },
   sum: {
     wattHours: 0,
     co2e: 0,
@@ -40,11 +44,13 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
       'S3 CO2e Emissions',
       'EC2 Wattage',
       'EC2 CO2e Emissions',
+      'ElastiCache Wattage',
+      'ElastiCache CO2e Emissions',
       'Sum Wattage',
       'Sum CO2e Emissions',
     ],
   ]
-  const colWidths: number[] = [15, 20, 25, 20, 25, 20, 25, 20, 25]
+  const colWidths: number[] = [15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25]
 
   const grandTotals: Totals = initialTotals()
 
@@ -73,6 +79,8 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
       displayCo2e(subTotals['s3'].co2e),
       displayWattHours(subTotals['ec2'].wattHours),
       displayCo2e(subTotals['ec2'].co2e),
+      displayWattHours(subTotals['elasticache'].wattHours),
+      displayCo2e(subTotals['elasticache'].co2e),
       displayWattHours(subTotals['sum'].wattHours),
       displayCo2e(subTotals['sum'].co2e),
     ])
@@ -86,6 +94,8 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
     displayCo2e(grandTotals['s3'].co2e),
     displayWattHours(grandTotals['ec2'].wattHours),
     displayCo2e(grandTotals['ec2'].co2e),
+    displayWattHours(grandTotals['elasticache'].wattHours),
+    displayCo2e(grandTotals['elasticache'].co2e),
     displayWattHours(grandTotals['sum'].wattHours),
     displayCo2e(grandTotals['sum'].co2e),
   ])

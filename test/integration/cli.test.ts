@@ -1,7 +1,7 @@
 import cli from '@application/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-import { s3MockResponse, ec2MockResponse, ebsMockResponse } from '@fixtures'
+import { s3MockResponse, ec2MockResponse, ebsMockResponse, elastiCacheMockResponse } from '@fixtures'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -12,9 +12,12 @@ afterAll(() => {
 })
 
 describe('cli', () => {
-  test.only('ebs, s3 & ec2', async () => {
+  test('ebs, s3, ec2, elasticache', async () => {
     const mockFunction = jest.fn()
-    mockFunction.mockReturnValueOnce(s3MockResponse).mockReturnValueOnce(ec2MockResponse)
+    mockFunction
+      .mockReturnValueOnce(s3MockResponse)
+      .mockReturnValueOnce(ec2MockResponse)
+      .mockReturnValueOnce(elastiCacheMockResponse)
 
     AWSMock.mock(
       'CloudWatch',
