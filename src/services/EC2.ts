@@ -8,9 +8,7 @@ export default class EC2 extends ComputeService {
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch({
-      region: 'us-east-1',
-    })
+    this.cloudWatch = new AWS.CloudWatch()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {

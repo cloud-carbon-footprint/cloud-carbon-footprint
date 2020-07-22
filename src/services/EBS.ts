@@ -9,7 +9,7 @@ export default class EBS extends SSDStorageService {
   constructor() {
     super()
     this.costExplorer = new AWS.CostExplorer({
-      region: 'us-east-1',
+      region: 'us-east-1', //must be us-east-1 to work
     })
   }
 

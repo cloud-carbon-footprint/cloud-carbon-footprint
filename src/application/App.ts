@@ -2,10 +2,12 @@ import { EstimationRequest, RawRequest, validate } from '@application/Estimation
 import { EstimationResult } from '@application/EstimationResult'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
+import AWS from 'aws-sdk'
 
 export class App {
   async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
+    AWS.config.update({ region: estimationRequest.region })
 
     const estimatesByService = await Promise.all(
       AWSServices().map((service) => {

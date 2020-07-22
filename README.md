@@ -7,3 +7,6 @@ This is an application that calculates the emissions of AWS services in realtime
 ### To run
   1. Interactive version: `./scripts/cli.bash -i`
   2. Pass params on command line: `./scripts/cli.bash --startDate YYYY-MM-DD --endDate YYYY-MM-DD`
+
+## Troubleshooting
+Make sure CostExplorer is enabled in the AWS region you specify.

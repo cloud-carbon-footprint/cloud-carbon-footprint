@@ -11,3 +11,4 @@ export const CACHE_NODE_TYPES: { [nodeType: string]: number } = {
   'cache.t3.small': 2,
   'cache.t3.medium': 2,
 }
+export const regions = ['us-east-1', 'us-east-2']

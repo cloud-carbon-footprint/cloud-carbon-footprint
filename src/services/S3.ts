@@ -8,9 +8,7 @@ export default class S3 extends HDDStorageService {
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch({
-      region: 'us-east-1',
-    })
+    this.cloudWatch = new AWS.CloudWatch()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {

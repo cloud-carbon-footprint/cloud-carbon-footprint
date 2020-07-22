@@ -30,6 +30,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
+        region: 'us-east-1',
       }
 
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
@@ -76,6 +77,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
+        region: 'us-east-1',
       }
 
       const expectedStorageEstimate: FootprintEstimate[] = [
@@ -128,6 +130,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-06').toISOString(),
+        region: 'us-east-1',
       }
 
       await expect(() => app.getEstimate(rawRequest)).rejects.toThrow('Start date is not before end date')

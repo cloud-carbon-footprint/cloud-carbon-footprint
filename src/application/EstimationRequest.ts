@@ -1,13 +1,16 @@
 import moment from 'moment'
+import { regions } from '@domain/constants'
 
 export interface RawRequest {
   startDate?: string
   endDate?: string
+  region?: string
 }
 
 export interface EstimationRequest {
   startDate: Date
   endDate: Date
+  region: string
   //cloudProvider?:CloudProviderEnum
 }
 
@@ -30,6 +33,12 @@ export function validate(request: RawRequest): EstimationRequest {
     errors.push('End date must be provided')
   } else if (!endDate.isValid()) {
     errors.push('End date is not in a recognized RFC2822 or ISO format')
+  }
+
+  if (!request.region) {
+    errors.push('Region must be provided')
+  } else if (!regions.includes(request.region)) {
+    errors.push('Not a valid region')
   }
 
   if (startDate.isAfter(endDate)) {
@@ -57,5 +66,6 @@ export function validate(request: RawRequest): EstimationRequest {
   return {
     startDate: startDate.toDate(),
     endDate: endDate.toDate(),
+    region: request.region,
   }
 }

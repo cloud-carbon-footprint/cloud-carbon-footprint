@@ -44,7 +44,16 @@ describe('cli', () => {
         callback(null, ebsMockResponse)
       },
     )
-    const result = await cli(['executable', 'file', '--startDate', '2020-07-10', '--endDate', '2020-07-13'])
+    const result = await cli([
+      'executable',
+      'file',
+      '--startDate',
+      '2020-07-10',
+      '--endDate',
+      '2020-07-13',
+      '--region',
+      'us-east-1',
+    ])
 
     expect(result).toMatchSnapshot()
   })

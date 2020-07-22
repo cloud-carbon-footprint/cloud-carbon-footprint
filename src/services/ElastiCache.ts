@@ -10,12 +10,8 @@ export default class ElastiCache extends ComputeService {
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch({
-      region: 'us-east-2',
-    })
-    this.elastiCache = new AWS.ElastiCache({
-      region: 'us-east-2',
-    })
+    this.cloudWatch = new AWS.CloudWatch()
+    this.elastiCache = new AWS.ElastiCache()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
