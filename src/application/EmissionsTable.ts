@@ -31,26 +31,30 @@ const initialTotals = () => ({
   },
 })
 
+const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
 const displayWattHours = (wattHours: number) => `${wattHours.toFixed(2)} Watts`
 const displayCo2e = (co2e: number) => `${co2e.toFixed(6)} Kg CO2e`
+const displayService = (totals: Totals, serviceName: string) => [
+  displayWattHours(totals[serviceName].wattHours),
+  displayCo2e(totals[serviceName].co2e),
+]
 
-export default function EmissionsTable(estimations: EstimationResult[]): string {
-  const table: string[][] = [
-    [
-      'Date (UTC)',
-      'EBS Wattage',
-      'EBS CO2e Emissions',
-      'S3 Wattage',
-      'S3 CO2e Emissions',
-      'EC2 Wattage',
-      'EC2 CO2e Emissions',
-      'ElastiCache Wattage',
-      'ElastiCache CO2e Emissions',
-      'Sum Wattage',
-      'Sum CO2e Emissions',
-    ],
-  ]
-  const colWidths: number[] = [15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25]
+export default function EmissionsTable(
+  estimations: EstimationResult[],
+  serviceNames = ['ebs', 's3', 'ec2', 'elasticache'],
+): string {
+  const headers = ['Date (UTC)']
+  const colWidths: number[] = [15]
+
+  serviceNames.forEach((serviceName) => {
+    headers.push(`${serviceName.toUpperCase()} Wattage`, `${serviceName.toUpperCase()} CO2e Emissions`)
+    colWidths.push(20, 25)
+  })
+
+  headers.push(`SUM Wattage`, `SUM CO2e Emissions`)
+  colWidths.push(20, 25)
+
+  const table: string[][] = [headers]
 
   const grandTotals: Totals = initialTotals()
 
@@ -72,32 +76,16 @@ export default function EmissionsTable(estimations: EstimationResult[]): string 
     })
 
     table.push([
-      moment(estimationResult.timestamp).utc().format('YYYY-MM-DD'),
-      displayWattHours(subTotals['ebs'].wattHours),
-      displayCo2e(subTotals['ebs'].co2e),
-      displayWattHours(subTotals['s3'].wattHours),
-      displayCo2e(subTotals['s3'].co2e),
-      displayWattHours(subTotals['ec2'].wattHours),
-      displayCo2e(subTotals['ec2'].co2e),
-      displayWattHours(subTotals['elasticache'].wattHours),
-      displayCo2e(subTotals['elasticache'].co2e),
-      displayWattHours(subTotals['sum'].wattHours),
-      displayCo2e(subTotals['sum'].co2e),
+      displayDate(estimationResult.timestamp),
+      ...serviceNames.map((serviceName) => displayService(subTotals, serviceName)).flat(),
+      ...displayService(subTotals, 'sum'),
     ])
   })
 
   table.push([
     'Total',
-    displayWattHours(grandTotals['ebs'].wattHours),
-    displayCo2e(grandTotals['ebs'].co2e),
-    displayWattHours(grandTotals['s3'].wattHours),
-    displayCo2e(grandTotals['s3'].co2e),
-    displayWattHours(grandTotals['ec2'].wattHours),
-    displayCo2e(grandTotals['ec2'].co2e),
-    displayWattHours(grandTotals['elasticache'].wattHours),
-    displayCo2e(grandTotals['elasticache'].co2e),
-    displayWattHours(grandTotals['sum'].wattHours),
-    displayCo2e(grandTotals['sum'].co2e),
+    ...serviceNames.map((serviceName) => displayService(grandTotals, serviceName)).flat(),
+    ...displayService(grandTotals, 'sum'),
   ])
 
   return table.map((row) => row.reduce((acc, data, col) => acc + `| ${data}`.padEnd(colWidths[col]), '')).join('\n')
