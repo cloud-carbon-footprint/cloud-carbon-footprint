@@ -72,6 +72,67 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   Messages: [],
 }
 
+export const elastiCacheMockDescribeCacheClusters: AWS.ElastiCache.CacheClusterMessage = {
+  CacheClusters: [
+    {
+      AtRestEncryptionEnabled: false,
+      AuthTokenEnabled: false,
+      AutoMinorVersionUpgrade: true,
+      CacheClusterCreateTime: new Date('2020-07-21T19:08:34.506Z'),
+      CacheClusterId: 'balu-redis',
+      CacheClusterStatus: 'available',
+      CacheNodeType: 'cache.t3.medium',
+      CacheNodes: [],
+      CacheParameterGroup: {
+        CacheNodeIdsToReboot: [],
+        CacheParameterGroupName: 'default.redis5.0',
+        ParameterApplyStatus: 'in-sync',
+      },
+      CacheSecurityGroups: [],
+      CacheSubnetGroupName: 'redis-subnet-group',
+      ClientDownloadLandingPage: 'https://console.aws.amazon.com/elasticache/home#client-download:',
+      Engine: 'redis',
+      EngineVersion: '5.0.6',
+      NumCacheNodes: 1,
+      PendingModifiedValues: {},
+      PreferredAvailabilityZone: 'us-east-2a',
+      PreferredMaintenanceWindow: 'wed:05:00-wed:06:00',
+      SecurityGroups: [{ SecurityGroupId: 'sg-089fe61dac048189c', Status: 'active' }],
+      SnapshotRetentionLimit: 0,
+      SnapshotWindow: '23:00-00:00',
+      TransitEncryptionEnabled: false,
+    },
+    {
+      AtRestEncryptionEnabled: false,
+      AuthTokenEnabled: false,
+      AutoMinorVersionUpgrade: true,
+      CacheClusterCreateTime: new Date('2020-07-21T20:56:11.741Z'),
+      CacheClusterId: 'small-redis-dummy',
+      CacheClusterStatus: 'available',
+      CacheNodeType: 'cache.t3.micro',
+      CacheNodes: [],
+      CacheParameterGroup: {
+        CacheNodeIdsToReboot: [],
+        CacheParameterGroupName: 'default.redis5.0',
+        ParameterApplyStatus: 'in-sync',
+      },
+      CacheSecurityGroups: [],
+      CacheSubnetGroupName: 'balu-subnet-group',
+      ClientDownloadLandingPage: 'https://console.aws.amazon.com/elasticache/home#client-download:',
+      Engine: 'redis',
+      EngineVersion: '5.0.6',
+      NumCacheNodes: 1,
+      PendingModifiedValues: {},
+      PreferredAvailabilityZone: 'us-east-2a',
+      PreferredMaintenanceWindow: 'sun:04:30-sun:05:30',
+      SecurityGroups: [{ SecurityGroupId: 'sg-211c765b', Status: 'active' }],
+      SnapshotRetentionLimit: 0,
+      SnapshotWindow: '23:30-00:30',
+      TransitEncryptionEnabled: false,
+    },
+  ],
+}
+
 export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {

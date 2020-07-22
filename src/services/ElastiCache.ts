@@ -1,15 +1,20 @@
 import AWS from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 import ComputeService from '@domain/ComputeService'
+import { CACHE_NODE_TYPES } from '@domain/constants'
 
 export default class ElastiCache extends ComputeService {
   serviceName = 'elasticache'
   readonly cloudWatch: AWS.CloudWatch
+  readonly elastiCache: AWS.ElastiCache
 
   constructor() {
     super()
     this.cloudWatch = new AWS.CloudWatch({
-      region: 'us-east-1',
+      region: 'us-east-2',
+    })
+    this.elastiCache = new AWS.ElastiCache({
+      region: 'us-east-2',
     })
   }
 
@@ -31,18 +36,25 @@ export default class ElastiCache extends ComputeService {
       ScanBy: 'TimestampAscending',
     }
 
-    const response = await this.cloudWatch.getMetricData(params).promise()
+    const responseMetricData = await this.cloudWatch.getMetricData(params).promise()
+    const responseCacheCluster = await this.elastiCache.describeCacheClusters().promise()
+
+    const vCPUPerCluster = responseCacheCluster.CacheClusters.map(
+      (cluster) => cluster.NumCacheNodes * CACHE_NODE_TYPES[cluster.CacheNodeType],
+    )
+
+    const totalNumberOfvCpus = vCPUPerCluster.reduce((acc, x) => acc + x, 0)
 
     interface RawComputeUsage {
       cpuUtilization?: number[]
-      // vCPUCount?: number
+      vCPUCount?: number
       timestamp?: Date
       cpuUtilizationAvg?: number
     }
     const result: { [key: string]: RawComputeUsage } = {}
 
     // Aggregate CPU Utilization
-    const metricDataResults = response.MetricDataResults
+    const metricDataResults = responseMetricData.MetricDataResults
     const cpuUtilizationData = metricDataResults.filter((a) => a.Id === 'cpuUtilization')
     cpuUtilizationData.forEach((instanceCPUUtilization) => {
       instanceCPUUtilization.Timestamps.forEach((timestamp, i) => {
@@ -78,7 +90,7 @@ export default class ElastiCache extends ComputeService {
         estimationsByDay[date] = {
           timestamp: new Date(date),
           cpuUtilizationAverage: a.cpuUtilizationAvg,
-          numberOfvCpus: 1,
+          numberOfvCpus: totalNumberOfvCpus,
         }
       } else {
         estimationsByDay[date].cpuUtilizationAverage += a.cpuUtilizationAvg

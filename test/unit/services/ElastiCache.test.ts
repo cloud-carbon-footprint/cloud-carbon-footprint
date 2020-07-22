@@ -2,7 +2,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
 import ElastiCache from '@services/ElastiCache'
-import { elastiCacheMockResponse } from '@fixtures'
+import { elastiCacheMockResponse, elastiCacheMockDescribeCacheClusters } from '@fixtures'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -39,6 +39,10 @@ describe('ElastiCache', () => {
       },
     )
 
+    AWSMock.mock('ElastiCache', 'describeCacheClusters', (callback: (a: Error, response: any) => any) => {
+      callback(null, elastiCacheMockDescribeCacheClusters)
+    })
+
     const elasticacheService = new ElastiCache()
 
     const result = await elasticacheService.getUsage(
@@ -47,8 +51,8 @@ describe('ElastiCache', () => {
     )
 
     expect(result).toEqual([
-      { cpuUtilizationAverage: 1.0456, numberOfvCpus: 1, timestamp: new Date('2020-07-19T00:00:00.000Z') },
-      { cpuUtilizationAverage: 2.03242, numberOfvCpus: 1, timestamp: new Date('2020-07-20T00:00:00.000Z') },
+      { cpuUtilizationAverage: 1.0456, numberOfvCpus: 4, timestamp: new Date('2020-07-19T00:00:00.000Z') },
+      { cpuUtilizationAverage: 2.03242, numberOfvCpus: 4, timestamp: new Date('2020-07-20T00:00:00.000Z') },
     ])
   })
 })
