@@ -1,7 +1,13 @@
 import cli from '@application/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-import { s3MockResponse, ec2MockResponse, ebsMockResponse, elastiCacheMockResponse } from '@fixtures'
+import {
+  s3MockResponse,
+  ec2MockResponse,
+  ebsMockResponse,
+  elastiCacheMockResponse,
+  elastiCacheMockDescribeCacheClusters,
+} from '@fixtures'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -26,6 +32,10 @@ describe('cli', () => {
         callback(null, mockFunction())
       },
     )
+
+    AWSMock.mock('ElastiCache', 'describeCacheClusters', (callback: (a: Error, response: any) => any) => {
+      callback(null, elastiCacheMockDescribeCacheClusters)
+    })
 
     AWSMock.mock(
       'CostExplorer',
