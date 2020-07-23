@@ -1,4 +1,4 @@
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@application/EstimationResult'
 import moment from 'moment'
 
 interface Total {

@@ -12,9 +12,10 @@
         "@application/*": ["./src/application/*"],
         "@domain/*": ["./src/domain/*"],
         "@services/*": ["./src/services/*"],
+        "@view/*": ["./src/view/*"],
         "@fixtures": ["./test/fixtures"],
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/unit/application/EmissionsTable.test.ts"],
   "exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts"]
 }

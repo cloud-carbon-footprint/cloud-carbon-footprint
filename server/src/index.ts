@@ -1,4 +1,4 @@
-import cli from '@application/cli'
+import cli from 'src/view/cli'
 import * as console from 'console'
 
 cli().then(console.log)

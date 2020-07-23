@@ -1,8 +1,8 @@
 import { program } from 'commander'
-import { App } from './App'
+import { App } from '@application/App'
 import * as process from 'process'
-import { RawRequest } from './EstimationRequest'
-import EmissionsTable from './EmissionsTable'
+import { RawRequest } from '@application/EstimationRequest'
+import EmissionsTable from '@view/EmissionsTable'
 import CliPrompts from './CliPrompts'
 
 export default async function cli(argv: string[] = process.argv) {

@@ -1,7 +1,7 @@
 import express from 'express'
 import { App } from '@application/App'
 import { RawRequest } from '@application/EstimationRequest'
-import EmissionsTable from '@application/EmissionsTable'
+import EmissionsTable from 'src/view/EmissionsTable'
 
 const app = express()
 const port = 4000

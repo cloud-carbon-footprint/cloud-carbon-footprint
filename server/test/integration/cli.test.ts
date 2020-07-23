@@ -1,4 +1,4 @@
-import cli from '@application/cli'
+import cli from '@view/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import {
