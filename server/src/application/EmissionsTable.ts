@@ -42,7 +42,7 @@ const displayService = (totals: Totals, serviceName: string) => [
 export default function EmissionsTable(
   estimations: EstimationResult[],
   serviceNames = ['ebs', 's3', 'ec2', 'elasticache'],
-): string {
+): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
   const colWidths: number[] = [15]
 
@@ -88,5 +88,5 @@ export default function EmissionsTable(
     ...displayService(grandTotals, 'sum'),
   ])
 
-  return table.map((row) => row.reduce((acc, data, col) => acc + `| ${data}`.padEnd(colWidths[col]), '')).join('\n')
+  return { table, colWidths }
 }

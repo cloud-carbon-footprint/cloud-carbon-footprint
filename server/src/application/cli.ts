@@ -25,5 +25,9 @@ export default async function cli(argv: string[] = process.argv) {
     region = program.region
   }
   const estimationRequest: RawRequest = { startDate, endDate, region }
-  return await new App().getEstimate(estimationRequest).then(EmissionsTable)
+  const { table, colWidths } = await new App().getEstimate(estimationRequest).then(EmissionsTable)
+
+  return table
+    .map((row: string[]) => row.reduce((acc, data, col) => acc + `| ${data}`.padEnd(colWidths[col]), ''))
+    .join('\n')
 }
