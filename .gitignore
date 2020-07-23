@@ -1,6 +1,7 @@
 .idea
-node_modules
-src/**/*.js
-src/**/*.map
+server/node_modules
+server/src/**/*.js
+server/src/**/*.map
 coverage
 .DS_Store
+.vscode
