@@ -31,7 +31,7 @@ interface TableProps {
 
 function SimpleTable(props: TableProps) {
   const classes = useStyles();
-  if(props.data.length == 0) return null
+  if(props.data.length === 0) return null
 
   const header = props.data[0]
   const rows = props.data.slice(1)

@@ -13,7 +13,8 @@
     "clean": "rm -rf coverage src/**/*.js src/**/*.map",
     "lint": "eslint '*/**/*.{js,ts}' --quiet",
     "lint:fix": "eslint '*/**/*.{js,ts}' --quiet --fix",
-    "start": "node src/index.js"
+    "start:web": "ts-node-dev -r tsconfig-paths/register src/view/api.ts",
+    "start:cli": "ts-node -r tsconfig-paths/register src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "source-map-support": "^0.5.19",
     "ts-jest": "^26.1.1",
     "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.0.0-pre.55",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.6"
   },
