@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - stable
 script:
+  - ./scripts/setup.bash
   - ./scripts/lint.bash
   - ./scripts.test.bash
 cache:
