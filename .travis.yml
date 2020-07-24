@@ -12,4 +12,3 @@ cache:
 branches:
   only:
     - trunk
-    - megan
