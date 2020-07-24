@@ -32,7 +32,7 @@ These scripts optionally take 1 argument with the value `both`|`client`|`server`
   - `./scripts/lint.bash`: linter + formatter
   - `./scripts/test.bash`: tests
 
-This script runs the website in dev mode, with unified logging output, watch mode, and hot reloading. Uses `ts-node-dev` for the backend and reacts built in dev mode for the frontend
+This script runs the website in dev mode, with unified logging output, watch mode, and hot reloading. Uses `ts-node-dev` for the backend and CRA's dev mode for the frontend
   - `./scripts/dev.bash`: tests
 
 ## Troubleshooting
