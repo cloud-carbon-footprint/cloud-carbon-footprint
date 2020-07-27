@@ -3,13 +3,13 @@ import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import FootprintEstimator from './FootprintEstimator'
-import { US_WATTAGE_CARBON_RATIO, HDDCOEFFICIENT, SSDCOEFFICIENT } from './constants'
+import { US_WATTAGE_CARBON_RATIO, HDDCOEFFICIENT, SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS } from './constants'
 
 export default abstract class StorageService implements CloudService {
   estimator: FootprintEstimator
 
   protected constructor(storageCoefficient: number) {
-    this.estimator = new StorageEstimator(storageCoefficient, US_WATTAGE_CARBON_RATIO)
+    this.estimator = new StorageEstimator(storageCoefficient, US_WATTAGE_CARBON_RATIO, AWS_POWER_USAGE_EFFECTIVENESS)
   }
 
   async getEstimates(start: Date, end: Date): Promise<FootprintEstimate[]> {
