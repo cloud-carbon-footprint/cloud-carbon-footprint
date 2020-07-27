@@ -5,10 +5,12 @@ import StorageUsage from './StorageUsage'
 export class StorageEstimator implements FootprintEstimator {
   coefficient: number
   wattage_carbon_ratio: number
+  power_usage_effectiveness: number
 
-  constructor(coefficient: number, us_wattage_carbon_ratio: number) {
+  constructor(coefficient: number, us_wattage_carbon_ratio: number, power_usage_effectiveness: number) {
     this.coefficient = coefficient
     this.wattage_carbon_ratio = us_wattage_carbon_ratio
+    this.power_usage_effectiveness = power_usage_effectiveness
   }
 
   estimate(data: StorageUsage[]): FootprintEstimate[] {
@@ -28,7 +30,8 @@ export class StorageEstimator implements FootprintEstimator {
     // 1. Convert the used gigabytes to terabytes
     // 2. Multiplies this by the SSD or HDD co-efficient
     // 3. Multiplies this to get the watt-hours in a single day.
-    return (usageGb / 1000) * this.coefficient * 24
+    // 4. Multiples this by PUE to account for extra power used by data center (lights, infrastructure, etc.)
+    return (usageGb / 1000) * this.coefficient * 24 * this.power_usage_effectiveness
   }
 
   private estimateCo2(estimatedWattHours: number) {
