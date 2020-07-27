@@ -69,6 +69,10 @@ export default class EC2 extends ComputeService {
         a.cpuUtilization.reduce((acc, a) => {
           return acc + a
         }, 0) / a.cpuUtilization.length
+
+      if (isNaN(a.cpuUtilizationAvg)) {
+        a.cpuUtilizationAvg = 0.0
+      }
     })
 
     // Aggregate by date
