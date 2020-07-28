@@ -2,12 +2,17 @@ import express from 'express'
 import { App } from '@application/App'
 import { RawRequest } from '@application/EstimationRequest'
 import EmissionsTable from 'src/view/EmissionsTable'
+import { AWS_REGIONS } from '@domain/constants'
 
 const app = express()
 const port = 4000
 
 app.get('/api', (req: express.Request, res: express.Response) => {
-  const estimationRequest: RawRequest = { startDate: '2020-07-10', endDate: '2020-07-21', region: 'us-east-1' }
+  const estimationRequest: RawRequest = {
+    startDate: '2020-07-10',
+    endDate: '2020-07-21',
+    region: AWS_REGIONS.US_EAST_1,
+  }
   new App().getEstimate(estimationRequest).then((result) => {
     const { table } = EmissionsTable(result)
     res.json(table)

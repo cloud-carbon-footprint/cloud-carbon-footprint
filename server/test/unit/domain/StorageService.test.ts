@@ -2,7 +2,7 @@ import StorageService from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS } from '@domain/constants'
 
 describe('StorageService', () => {
   describe('getEstimates', () => {
@@ -39,7 +39,7 @@ describe('StorageService', () => {
       getUsageMock.mockResolvedValueOnce(usage)
 
       //run
-      const estimates: FootprintEstimate[] = await testService.getEstimates(date, date, 'us-east-1')
+      const estimates: FootprintEstimate[] = await testService.getEstimates(date, date, AWS_REGIONS.US_EAST_1)
 
       //assert
       expect(estimates).toEqual(
@@ -50,7 +50,7 @@ describe('StorageService', () => {
               sizeGb: 10,
             },
           ],
-          'us-east-1',
+          AWS_REGIONS.US_EAST_1,
         ),
       )
       expect(getUsageMock).toBeCalledWith(date, date)

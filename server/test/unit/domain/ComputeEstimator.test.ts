@@ -1,4 +1,5 @@
 import ComputeEstimator from '@domain/ComputeEstimator'
+import { AWS_REGIONS } from '@domain/constants'
 
 describe('ComputeEstimator', () => {
   it('do', () => {
@@ -10,7 +11,7 @@ describe('ComputeEstimator', () => {
       },
     ]
 
-    const result = new ComputeEstimator().estimate(input, 'us-east-1')
+    const result = new ComputeEstimator().estimate(input, AWS_REGIONS.US_EAST_1)
 
     expect(result).toEqual([
       {

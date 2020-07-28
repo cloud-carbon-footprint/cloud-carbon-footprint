@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { regions } from '@domain/constants'
+import { AWS_REGIONS, regions } from '@domain/constants'
 
 export interface RawRequest {
   startDate?: string
