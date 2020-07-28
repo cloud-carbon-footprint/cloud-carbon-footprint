@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
 import { SSDStorageService } from '@domain/StorageService'
+import { AWS_REGIONS } from '@domain/constants'
 
 export default class EBS extends SSDStorageService {
   serviceName = 'ebs'
@@ -9,7 +10,7 @@ export default class EBS extends SSDStorageService {
   constructor() {
     super()
     this.costExplorer = new AWS.CostExplorer({
-      region: 'us-east-1', //must be us-east-1 to work
+      region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
     })
   }
 

@@ -6,6 +6,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/UsageData'
 import { RawRequest } from '@application/EstimationRequest'
+import { AWS_REGIONS } from '@domain/constants'
 
 jest.mock('@application/AWSServices')
 
@@ -30,7 +31,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
-        region: 'us-east-1',
+        region: AWS_REGIONS.US_EAST_1,
       }
 
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
@@ -77,7 +78,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
-        region: 'us-east-1',
+        region: AWS_REGIONS.US_EAST_1,
       }
 
       const expectedStorageEstimate: FootprintEstimate[] = [
@@ -130,7 +131,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment('2020-06-07').toISOString(),
         endDate: moment('2020-06-06').toISOString(),
-        region: 'us-east-1',
+        region: AWS_REGIONS.US_EAST_1,
       }
 
       await expect(() => app.getEstimate(rawRequest)).rejects.toThrow('Start date is not before end date')

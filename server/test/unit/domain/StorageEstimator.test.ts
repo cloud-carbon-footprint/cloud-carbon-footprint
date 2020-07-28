@@ -1,6 +1,6 @@
 import { StorageEstimator } from '@domain/StorageEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS } from '@domain/constants'
 
 describe('StorageEstimator', () => {
   const SSD_COEFFICIENT = 1.2
@@ -16,7 +16,7 @@ describe('StorageEstimator', () => {
           timestamp: new Date('1998-01-01'),
         },
       ],
-      'us-east-1',
+      AWS_REGIONS.US_EAST_1,
     )
 
     it('creates one estimate', () => {
@@ -46,7 +46,7 @@ describe('StorageEstimator', () => {
           timestamp: new Date('1998-01-01'),
         },
       ],
-      'us-east-1',
+      AWS_REGIONS.US_EAST_1,
     )
 
     it('creates one estimate', () => {
@@ -81,7 +81,7 @@ describe('StorageEstimator', () => {
             timestamp: new Date('1998-01-01'),
           },
         ],
-        'us-east-1',
+        AWS_REGIONS.US_EAST_1,
       )
 
       expect(results).toEqual([
@@ -112,7 +112,7 @@ describe('StorageEstimator', () => {
             timestamp: new Date('1998-01-01'),
           },
         ],
-        'us-east-1',
+        AWS_REGIONS.US_EAST_1,
       )
 
       expect(results).toEqual([

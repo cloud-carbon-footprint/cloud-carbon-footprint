@@ -8,6 +8,7 @@ import {
   elastiCacheMockResponse,
   elastiCacheMockDescribeCacheClusters,
 } from '@fixtures'
+import { AWS_REGIONS } from '../../src/domain/constants'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
