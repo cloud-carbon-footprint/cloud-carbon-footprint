@@ -2,9 +2,9 @@
 
 exports[`cli ebs, s3, ec2, elasticache 1`] = `
 "| Date (UTC)   | EBS Wattage       | EBS CO2e Emissions     | S3 Wattage        | S3 CO2e Emissions      | EC2 Wattage       | EC2 CO2e Emissions     | ELASTICACHE Wattage| ELASTICACHE CO2e Emissions| SUM Wattage       | SUM CO2e Emissions     
-| 2020-06-27   | 1.04 Watts        | 0.000349 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.014368 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 21.41 Watts       | 0.014734 Kg CO2e       
+| 2020-06-27   | 1.04 Watts        | 0.000349 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.006847 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 21.41 Watts       | 0.007213 Kg CO2e       
 | 2020-06-28   | 2.07 Watts        | 0.000699 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 2.07 Watts        | 0.000699 Kg CO2e       
-| 2020-07-19   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 3.06 Watts        | 0.002160 Kg CO2e       | 3.06 Watts        | 0.002160 Kg CO2e       
-| 2020-07-20   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 3.18 Watts        | 0.002245 Kg CO2e       | 3.18 Watts        | 0.002245 Kg CO2e       
-| Total        | 3.11 Watts        | 0.001048 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.014368 Kg CO2e       | 6.23 Watts        | 0.004406 Kg CO2e       | 29.71 Watts       | 0.019838 Kg CO2e       "
+| 2020-07-19   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 3.06 Watts        | 0.001029 Kg CO2e       | 3.06 Watts        | 0.001029 Kg CO2e       
+| 2020-07-20   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 3.18 Watts        | 0.001070 Kg CO2e       | 3.18 Watts        | 0.001070 Kg CO2e       
+| Total        | 3.11 Watts        | 0.001048 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.006847 Kg CO2e       | 6.23 Watts        | 0.002099 Kg CO2e       | 29.71 Watts       | 0.010011 Kg CO2e       "
 `;
