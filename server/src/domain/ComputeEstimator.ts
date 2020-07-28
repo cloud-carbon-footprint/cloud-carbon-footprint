@@ -16,7 +16,7 @@ export default class ComputeEstimator implements FootprintEstimator {
   estimate(data: ComputeUsage[], region: string): FootprintEstimate[] {
     return data.map((usage) => {
       const estimatedWattage = ENERGY_ESTIMATION_FORMULA(usage.cpuUtilizationAverage, usage.numberOfvCpus)
-      const estimatedCO2Emissions = (estimatedWattage * AWS_REGIONS_WATT_HOURS_CARBON_RATIO[region]) / 1000
+      const estimatedCO2Emissions = estimatedWattage * AWS_REGIONS_WATT_HOURS_CARBON_RATIO[region]
 
       return {
         timestamp: usage.timestamp,

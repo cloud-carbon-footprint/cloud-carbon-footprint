@@ -34,9 +34,8 @@ export class StorageEstimator implements FootprintEstimator {
   }
 
   private estimateCo2(estimatedWattHours: number, region: string) {
-    // This function does the following:
-    // 1. Multiplies the estimated watt-hours by the average CO2e emissions in the US, provided by the EPA
-    // 2. Divides that by 1000 to get the estimated CO2e emissions in kilograms (Kgs)
-    return (estimatedWattHours * AWS_REGIONS_WATT_HOURS_CARBON_RATIO[region]) / 1000
+    // This function multiplies the estimated watt-hours by the average CO2e emissions (Kgs) in the region being estimated,
+    // as provided by IEA and other energy reports
+    return estimatedWattHours * AWS_REGIONS_WATT_HOURS_CARBON_RATIO[region]
   }
 }
