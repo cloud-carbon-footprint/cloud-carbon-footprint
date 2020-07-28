@@ -11,7 +11,7 @@ export class App {
 
     const estimatesByService = await Promise.all(
       AWSServices().map((service) => {
-        return service.getEstimates(estimationRequest.startDate, estimationRequest.endDate)
+        return service.getEstimates(estimationRequest.startDate, estimationRequest.endDate, estimationRequest.region)
       }),
     )
 

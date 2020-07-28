@@ -13,7 +13,7 @@ const ENERGY_ESTIMATION_FORMULA = (averageCPUUtilization: number, virtualCPUHour
 }
 
 export default class ComputeEstimator implements FootprintEstimator {
-  estimate(data: ComputeUsage[]): FootprintEstimate[] {
+  estimate(data: ComputeUsage[], region: string): FootprintEstimate[] {
     return data.map((usage) => {
       const estimatedWattage = ENERGY_ESTIMATION_FORMULA(usage.cpuUtilizationAverage, usage.numberOfvCpus)
       const estimatedCO2Emissions = (estimatedWattage * US_WATTAGE_CARBON_RATIO) / 1000

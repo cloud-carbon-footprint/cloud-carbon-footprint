@@ -10,9 +10,9 @@ export default abstract class ComputeService implements CloudService {
     this.estimator = new ComputeEstimator()
   }
 
-  async getEstimates(start: Date, end: Date): Promise<FootprintEstimate[]> {
+  async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const usage = await this.getUsage(start, end)
-    return this.estimator.estimate(usage)
+    return this.estimator.estimate(usage, region)
   }
 
   abstract getUsage(start: Date, end: Date): Promise<ComputeUsage[]>
