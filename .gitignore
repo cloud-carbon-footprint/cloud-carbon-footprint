@@ -1,5 +1,5 @@
 .idea
-server/node_modules
+node_modules/
 server/src/**/*.js
 server/src/**/*.map
 coverage
