@@ -1,7 +1,8 @@
 .idea
 node_modules/
-server/src/**/*.js
-server/src/**/*.map
+server/**/*.js
+server/**/*.js.snap
+server/**/*.map
 coverage
 .DS_Store
 .vscode

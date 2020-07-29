@@ -11,8 +11,8 @@
     "build:watch": "onchange 'src/**/*.ts' -- npm run build",
     "view:coverage": "serve coverage/lcov-report",
     "clean": "rm -rf coverage src/**/*.js src/**/*.map",
-    "lint": "eslint '*/**/*.{js,ts}' --quiet",
-    "lint:fix": "eslint '*/**/*.{js,ts}' --quiet --fix",
+    "lint": "eslint '*/**/*.ts' --quiet",
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
     "start:web": "ts-node-dev -r tsconfig-paths/register src/view/api.ts",
     "start:cli": "ts-node -r tsconfig-paths/register src/index.ts"
   },
