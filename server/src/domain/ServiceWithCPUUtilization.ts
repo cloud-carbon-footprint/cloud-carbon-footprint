@@ -3,7 +3,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import ComputeUsage from '@domain/ComputeUsage'
 
-export default abstract class ComputeService implements CloudService {
+export default abstract class ServiceWithCPUUtilization implements CloudService {
   private readonly estimator: ComputeEstimator
 
   protected constructor() {

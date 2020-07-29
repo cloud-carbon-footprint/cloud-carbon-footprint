@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'
-import ComputeService from '@domain/ComputeService'
+import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 
-export default class EC2 extends ComputeService {
+export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
   readonly cloudWatch: AWS.CloudWatch
 

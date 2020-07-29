@@ -1,6 +1,6 @@
 import AWS, { CloudWatch } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
-import ComputeService from '@domain/ComputeService'
+import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { AWS_REGIONS, CACHE_NODE_TYPES } from '@domain/constants'
 
 interface RawComputeUsage {
@@ -10,7 +10,7 @@ interface RawComputeUsage {
   cpuUtilizationAvg?: number
 }
 
-export default class ElastiCache extends ComputeService {
+export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
   readonly cloudWatch: AWS.CloudWatch
   readonly costExplorer: AWS.CostExplorer
