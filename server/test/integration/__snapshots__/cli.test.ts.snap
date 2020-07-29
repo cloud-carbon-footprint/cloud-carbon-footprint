@@ -14,6 +14,6 @@ exports[`cli ebs, s3, ec2, elasticache grouped by service 1`] = `
 | EBS          | 3.11              | 0.001048               
 | S3           | 0.05              | 0.000017               
 | EC2          | 20.32             | 0.006847               
-| ElastiCache  | 5.47              | 0.001842
+| ElastiCache  | 5.47              | 0.001842               
 | Total        | 28.95             | 0.009754               "
 `;
