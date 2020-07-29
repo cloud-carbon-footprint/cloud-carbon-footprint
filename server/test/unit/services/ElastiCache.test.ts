@@ -376,6 +376,3 @@ describe('ElastiCache', () => {
     ])
   })
 })
-
-// TODO: parse float Amount?
-// TODO: add all cache type instances to constants
