@@ -8,13 +8,12 @@ import {
   elastiCacheMockResponse,
   elastiCacheMockGetCostAndUsageResponse,
 } from '@fixtures'
-import { AWS_REGIONS } from '../../src/domain/constants'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
-afterAll(() => {
+afterEach(() => {
   AWSMock.restore()
 })
 
@@ -55,6 +54,50 @@ describe('cli', () => {
       '2020-07-13',
       '--region',
       'us-east-1',
+    ])
+
+    expect(result).toMatchSnapshot()
+  })
+
+  test('ebs, s3, ec2, elasticache grouped by service', async () => {
+    const mockFunction = jest.fn()
+    mockFunction
+      .mockReturnValueOnce(s3MockResponse)
+      .mockReturnValueOnce(ec2MockResponse)
+      .mockReturnValueOnce(elastiCacheMockResponse)
+
+    AWSMock.mock(
+      'CloudWatch',
+      'getMetricData',
+      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
+        callback(null, mockFunction())
+      },
+    )
+
+    const mockGetCostAndUsageFunction = jest.fn()
+    mockGetCostAndUsageFunction
+      .mockReturnValueOnce(ebsMockResponse)
+      .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
+
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, mockGetCostAndUsageFunction())
+      },
+    )
+
+    const result = await cli([
+      'executable',
+      'file',
+      '--startDate',
+      '2020-07-10',
+      '--endDate',
+      '2020-07-13',
+      '--region',
+      'us-east-1',
+      '--groupBy',
+      'service',
     ])
 
     expect(result).toMatchSnapshot()

@@ -1,5 +1,5 @@
 import { EstimationResult } from '@application/EstimationResult'
-import EmissionsTable from '@view/EmissionsTable'
+import EmissionsByDayTable from '@view/EmissionsByDayTable'
 import moment = require('moment')
 
 describe('EmissionsTable', () => {
@@ -59,7 +59,7 @@ describe('EmissionsTable', () => {
   let result: { table: string[][]; colWidths: number[] }
 
   beforeEach(() => {
-    result = EmissionsTable(input)
+    result = EmissionsByDayTable(input)
   })
 
   it('prints out the given estimation results grouped by date', () => {

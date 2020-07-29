@@ -8,3 +8,12 @@ exports[`cli ebs, s3, ec2, elasticache 1`] = `
 | 2020-07-20   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 3.18 Watts        | 0.001070 Kg CO2e       | 3.18 Watts        | 0.001070 Kg CO2e       
 | Total        | 3.11 Watts        | 0.001048 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.006847 Kg CO2e       | 5.47 Watts        | 0.001842 Kg CO2e       | 28.95 Watts       | 0.009754 Kg CO2e       "
 `;
+
+exports[`cli ebs, s3, ec2, elasticache grouped by service 1`] = `
+"| Service      | Watt Hours        | Kg CO2e Emissions      
+| EBS          | 3.11              | 0.001048               
+| S3           | 0.05              | 0.000017               
+| EC2          | 20.32             | 0.006847               
+| ElastiCache  | 5.47              | 0.001842
+| Total        | 28.95             | 0.009754               "
+`;
