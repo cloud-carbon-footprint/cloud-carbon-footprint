@@ -14,6 +14,7 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
     --startDate YYYY-MM-DD \
     --endDate YYYY-MM-DD \
     --region [us-east-1 | us-east-2]`
+    --groupBy [day | service]
   ```
 
 ## To run (website)
