@@ -6,7 +6,7 @@ import {
   ec2MockResponse,
   ebsMockResponse,
   elastiCacheMockResponse,
-  elastiCacheMockDescribeCacheClusters,
+  elastiCacheMockGetCostAndUsageResponse,
 } from '@fixtures'
 import { AWS_REGIONS } from '../../src/domain/constants'
 
@@ -34,15 +34,16 @@ describe('cli', () => {
       },
     )
 
-    AWSMock.mock('ElastiCache', 'describeCacheClusters', (callback: (a: Error, response: any) => any) => {
-      callback(null, elastiCacheMockDescribeCacheClusters)
-    })
+    const mockGetCostAndUsageFunction = jest.fn()
+    mockGetCostAndUsageFunction
+      .mockReturnValueOnce(ebsMockResponse)
+      .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
 
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, ebsMockResponse)
+        callback(null, mockGetCostAndUsageFunction())
       },
     )
     const result = await cli([

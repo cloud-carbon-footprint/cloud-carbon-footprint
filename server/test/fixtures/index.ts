@@ -13,27 +13,6 @@ export const s3MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   ],
 }
 
-export const elastiCacheMockResponse: AWS.CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 'cpuUtilization',
-      Label: 'AWS/ElastiCache CPUUtilization',
-      Timestamps: [new Date('2020-07-19T22:00:00.000Z'), new Date('2020-07-20T23:00:00.000Z')],
-      Values: [1.0456, 2.03242],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-    {
-      Id: 'vCPUs',
-      Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-      Timestamps: [],
-      Values: [],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-  ],
-}
-
 export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
     {
@@ -72,63 +51,60 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   Messages: [],
 }
 
-export const elastiCacheMockDescribeCacheClusters: AWS.ElastiCache.CacheClusterMessage = {
-  CacheClusters: [
+export const elastiCacheMockResponse: AWS.CloudWatch.GetMetricDataOutput = {
+  MetricDataResults: [
     {
-      AtRestEncryptionEnabled: false,
-      AuthTokenEnabled: false,
-      AutoMinorVersionUpgrade: true,
-      CacheClusterCreateTime: new Date('2020-07-21T19:08:34.506Z'),
-      CacheClusterId: 'balu-redis',
-      CacheClusterStatus: 'available',
-      CacheNodeType: 'cache.t3.medium',
-      CacheNodes: [],
-      CacheParameterGroup: {
-        CacheNodeIdsToReboot: [],
-        CacheParameterGroupName: 'default.redis5.0',
-        ParameterApplyStatus: 'in-sync',
+      Id: 'cpuUtilization',
+      Label: 'AWS/ElastiCache CPUUtilization',
+      Timestamps: [new Date('2020-07-19T22:00:00.000Z'), new Date('2020-07-20T23:00:00.000Z')],
+      Values: [1.0456, 2.03242],
+      StatusCode: 'Complete',
+      Messages: [],
+    },
+  ],
+}
+
+export const elastiCacheMockGetCostAndUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-07-19',
+        End: '2020-07-20',
       },
-      CacheSecurityGroups: [],
-      CacheSubnetGroupName: 'redis-subnet-group',
-      ClientDownloadLandingPage: 'https://console.aws.amazon.com/elasticache/home#client-download:',
-      Engine: 'redis',
-      EngineVersion: '5.0.6',
-      NumCacheNodes: 1,
-      PendingModifiedValues: {},
-      PreferredAvailabilityZone: 'us-east-2a',
-      PreferredMaintenanceWindow: 'wed:05:00-wed:06:00',
-      SecurityGroups: [{ SecurityGroupId: 'sg-089fe61dac048189c', Status: 'active' }],
-      SnapshotRetentionLimit: 0,
-      SnapshotWindow: '23:00-00:00',
-      TransitEncryptionEnabled: false,
+      Groups: [
+        {
+          Keys: ['USE2-NodeUsage:cache.t3.medium'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+        {
+          Keys: ['USE2-NodeUsage:cache.t2.micro'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
     },
     {
-      AtRestEncryptionEnabled: false,
-      AuthTokenEnabled: false,
-      AutoMinorVersionUpgrade: true,
-      CacheClusterCreateTime: new Date('2020-07-21T20:56:11.741Z'),
-      CacheClusterId: 'small-redis-dummy',
-      CacheClusterStatus: 'available',
-      CacheNodeType: 'cache.t3.micro',
-      CacheNodes: [],
-      CacheParameterGroup: {
-        CacheNodeIdsToReboot: [],
-        CacheParameterGroupName: 'default.redis5.0',
-        ParameterApplyStatus: 'in-sync',
+      TimePeriod: {
+        Start: '2020-07-20',
+        End: '2020-07-21',
       },
-      CacheSecurityGroups: [],
-      CacheSubnetGroupName: 'balu-subnet-group',
-      ClientDownloadLandingPage: 'https://console.aws.amazon.com/elasticache/home#client-download:',
-      Engine: 'redis',
-      EngineVersion: '5.0.6',
-      NumCacheNodes: 1,
-      PendingModifiedValues: {},
-      PreferredAvailabilityZone: 'us-east-2a',
-      PreferredMaintenanceWindow: 'sun:04:30-sun:05:30',
-      SecurityGroups: [{ SecurityGroupId: 'sg-211c765b', Status: 'active' }],
-      SnapshotRetentionLimit: 0,
-      SnapshotWindow: '23:30-00:30',
-      TransitEncryptionEnabled: false,
+      Groups: [
+        {
+          Keys: ['USE2-NodeUsage:cache.t3.medium'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '2',
+            },
+          },
+        },
+      ],
     },
   ],
 }
