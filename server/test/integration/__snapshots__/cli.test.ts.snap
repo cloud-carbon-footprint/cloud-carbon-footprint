@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`cli ebs, s3, ec2, elasticache 1`] = `
-"| Date (UTC)   | EBS Wattage       | EBS CO2e Emissions     | S3 Wattage        | S3 CO2e Emissions      | EC2 Wattage       | EC2 CO2e Emissions     | ELASTICACHE Wattage| ELASTICACHE CO2e Emissions| SUM Wattage       | SUM CO2e Emissions     
-| 2020-06-27   | 1.04 Watts        | 0.000349 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.006847 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 21.41 Watts       | 0.007213 Kg CO2e       
-| 2020-06-28   | 2.07 Watts        | 0.000699 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 2.07 Watts        | 0.000699 Kg CO2e       
-| 2020-07-19   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 2.29 Watts        | 0.000772 Kg CO2e       | 2.29 Watts        | 0.000772 Kg CO2e       
-| 2020-07-20   | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 0.00 Watts        | 0.000000 Kg CO2e       | 3.18 Watts        | 0.001070 Kg CO2e       | 3.18 Watts        | 0.001070 Kg CO2e       
-| Total        | 3.11 Watts        | 0.001048 Kg CO2e       | 0.05 Watts        | 0.000017 Kg CO2e       | 20.32 Watts       | 0.006847 Kg CO2e       | 5.47 Watts        | 0.001842 Kg CO2e       | 28.95 Watts       | 0.009754 Kg CO2e       "
+"| Date (UTC)   | EBS Watt Hours    | EBS Kg CO2e Emissions  | S3 Watt Hours     | S3 Kg CO2e Emissions   | EC2 Watt Hours    | EC2 Kg CO2e Emissions  | ElastiCache Watt Hours| ElastiCache Kg CO2e Emissions| SUM Watt Hours    | SUM Kg CO2e Emissions  
+| 2020-06-27   | 1.04              | 0.000349               | 0.05              | 0.000017               | 20.32             | 0.006847               | 0.00              | 0.000000               | 21.41             | 0.007213               
+| 2020-06-28   | 2.07              | 0.000699               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 2.07              | 0.000699               
+| 2020-07-19   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 2.29              | 0.000772               | 2.29              | 0.000772               
+| 2020-07-20   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 3.18              | 0.001070               | 3.18              | 0.001070               
+| Total        | 3.11              | 0.001048               | 0.05              | 0.000017               | 20.32             | 0.006847               | 5.47              | 0.001842               | 28.95             | 0.009754               "
 `;
 
 exports[`cli ebs, s3, ec2, elasticache grouped by service 1`] = `
