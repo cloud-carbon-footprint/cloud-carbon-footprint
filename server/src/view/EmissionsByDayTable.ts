@@ -39,7 +39,7 @@ const displayService = (totals: Totals, serviceName: string) => [
   displayCo2e(totals[serviceName].co2e),
 ]
 
-export default function EmissionsTable(
+export default function EmissionsByDayTable(
   estimations: EstimationResult[],
   serviceNames = ['ebs', 's3', 'ec2', 'elasticache'],
 ): { table: string[][]; colWidths: number[] } {
