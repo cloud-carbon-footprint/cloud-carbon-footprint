@@ -307,5 +307,4 @@ describe('ElastiCache', () => {
       { cpuUtilizationAverage: 60, numberOfvCpus: 6, timestamp: new Date('2020-07-10T00:00:00.000Z') },
     ])
   })
-
 })
