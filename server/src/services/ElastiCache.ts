@@ -2,7 +2,7 @@ import AWS from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { AWS_REGIONS, CACHE_NODE_TYPES } from '@domain/constants'
-import { aggregateCPUUtilizationByDay } from '@services/RawComputeUsage'
+import { getComputeUsage } from '@services/ComputeUsageMapper'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
@@ -40,26 +40,8 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       startDate.toISOString().substr(0, 10),
       endDate.toISOString().substr(0, 10),
     )
-    const dataGroupByTimestamp = aggregateCPUUtilizationByDay(
-      getMetricDataResponse,
-      getCostAndUsageResponse,
-      CACHE_NODE_TYPES,
-    )
 
-    // Build result
-    const estimationsByDay: { [timestamp: string]: ComputeUsage } = {}
-    Object.values(dataGroupByTimestamp).forEach((a) => {
-      const timestamp = new Date(a.timestamp)
-      const date = timestamp.toISOString().substr(0, 10)
-
-      estimationsByDay[date] = {
-        timestamp: new Date(date),
-        cpuUtilizationAverage: a.cpuUtilizationAvg,
-        numberOfvCpus: a.vCPUCount,
-      }
-    })
-
-    return Object.values(estimationsByDay)
+    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponse, CACHE_NODE_TYPES)
   }
 
   private async getTotalVCpusByDate(

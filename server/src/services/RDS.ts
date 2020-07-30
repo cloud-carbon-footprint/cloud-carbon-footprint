@@ -2,7 +2,7 @@ import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 import AWS from 'aws-sdk'
 import { AWS_REGIONS, RDS_INSTANCE_TYPES } from '@domain/constants'
-import { aggregateCPUUtilizationByDay } from '@services/RawComputeUsage'
+import { getComputeUsage } from '@services/ComputeUsageMapper'
 
 export class RDSService extends ServiceWithCPUUtilization {
   serviceName: string
@@ -18,6 +18,16 @@ export class RDSService extends ServiceWithCPUUtilization {
   }
 
   async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
+    const getMetricDataResponse = await this.getVCPUs(start, end)
+    const getCostAndUsageResponse = await this.getTotalVCpusByDate(
+      start.toISOString().substr(0, 10),
+      end.toISOString().substr(0, 10),
+    )
+
+    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponse, RDS_INSTANCE_TYPES)
+  }
+
+  private async getVCPUs(start: Date, end: Date) {
     const params = {
       StartTime: start,
       EndTime: end,
@@ -36,30 +46,7 @@ export class RDSService extends ServiceWithCPUUtilization {
     }
 
     const getMetricDataResponse = await this.cloudWatch.getMetricData(params).promise()
-    const getCostAndUsageResponse = await this.getTotalVCpusByDate(
-      start.toISOString().substr(0, 10),
-      end.toISOString().substr(0, 10),
-    )
-    const dataGroupByTimestamp = aggregateCPUUtilizationByDay(
-      getMetricDataResponse,
-      getCostAndUsageResponse,
-      RDS_INSTANCE_TYPES,
-    )
-
-    // Build result
-    const estimationsByDay: { [timestamp: string]: ComputeUsage } = {}
-    Object.values(dataGroupByTimestamp).forEach((a) => {
-      const timestamp = new Date(a.timestamp)
-      const date = timestamp.toISOString().substr(0, 10)
-
-      estimationsByDay[date] = {
-        timestamp: new Date(date),
-        cpuUtilizationAverage: a.cpuUtilizationAvg,
-        numberOfvCpus: a.vCPUCount,
-      }
-    })
-
-    return Object.values(estimationsByDay)
+    return getMetricDataResponse
   }
 
   private async getTotalVCpusByDate(
