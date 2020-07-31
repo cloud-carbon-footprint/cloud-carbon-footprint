@@ -2,28 +2,6 @@ import AWS from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import { RDSStorage } from '@services/RDSStorage'
 
-function buildCostExplorerGetUsageHoursRequest(start: string, end: string) {
-  return {
-    TimePeriod: {
-      Start: start,
-      End: end,
-    },
-    Filter: {
-      And: [
-        { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
-        {
-          Dimensions: {
-            Key: 'USAGE_TYPE',
-            Values: ['USW1-RDS:GP2-Storage'],
-          },
-        },
-      ],
-    },
-    Granularity: 'DAILY',
-    Metrics: ['UsageQuantity'],
-  }
-}
-
 function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: number }[]) {
   return {
     GroupDefinitions: [
@@ -78,7 +56,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage('us-east-1')
+    const rdsStorage = new RDSStorage()
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
@@ -105,7 +83,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage('us-east-1')
+    const rdsStorage = new RDSStorage()
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
@@ -128,7 +106,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage('us-east-1')
+    const rdsStorage = new RDSStorage()
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
@@ -172,7 +150,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage('us-east-1')
+    const rdsStorage = new RDSStorage()
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
     expect(result).toEqual([
@@ -187,6 +165,8 @@ describe('RDSStorage', () => {
     const startDate = '2020-06-24'
     const endDate = '2020-06-25'
     const expectedRegion = 'my-region'
+    AWS.config.update({ region: expectedRegion })
+
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -201,7 +181,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage('my-region')
+    const rdsStorage = new RDSStorage()
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
   })
 })

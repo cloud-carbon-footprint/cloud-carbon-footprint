@@ -9,10 +9,10 @@ export class RDSStorage extends SSDStorageService {
   readonly costExplorer: AWS.CostExplorer
   serviceName = 'rds-storage'
 
-  constructor(private region: string) {
+  constructor() {
     super()
     this.costExplorer = new AWS.CostExplorer({
-      region: AWS_REGIONS.US_EAST_1,
+      region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
     })
   }
 
@@ -24,7 +24,7 @@ export class RDSStorage extends SSDStorageService {
       },
       Filter: {
         And: [
-          { Dimensions: { Key: 'REGION', Values: [this.region] } },
+          { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
           {
             Dimensions: {
               Key: 'USAGE_TYPE_GROUP',
