@@ -10,7 +10,7 @@ const displayService = (totals: Totals, serviceName: string) => [
 
 export default function EmissionsByDayTable(
   estimations: EstimationResult[],
-  serviceNames = ['ebs', 's3', 'ec2', 'elasticache'],
+  serviceNames = ['ebs', 's3', 'ec2', 'elasticache', 'rds'],
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
   const colWidths: number[] = [15]

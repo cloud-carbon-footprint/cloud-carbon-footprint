@@ -27,6 +27,11 @@ describe('EmissionsByServiceTable', () => {
           wattHours: 4,
           co2e: 4,
         },
+        {
+          serviceName: 'rds',
+          wattHours: 4,
+          co2e: 4,
+        },
       ],
     },
     {
@@ -52,6 +57,11 @@ describe('EmissionsByServiceTable', () => {
           wattHours: 747,
           co2e: 787,
         },
+        {
+          serviceName: 'rds',
+          wattHours: 747,
+          co2e: 787,
+        },
       ],
     },
   ]
@@ -69,7 +79,8 @@ describe('EmissionsByServiceTable', () => {
       ['S3', '57.00', '3.000000'],
       ['EC2', '93.00', '80.000000'],
       ['ElastiCache', '751.00', '791.000000'],
-      ['Total', '909.00', '883.000000'],
+      ['RDS', '751.00', '791.000000'],
+      ['Total', '1660.00', '1674.000000'],
     ])
   })
 

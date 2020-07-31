@@ -1,6 +1,6 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-import { RDSService } from '@services/RDS'
+import RDSComputeService from '@services/RDSCompute'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -137,7 +137,7 @@ describe('RDS', function () {
       },
     )
 
-    const rdsService = new RDSService()
+    const rdsService = new RDSComputeService()
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string))
 

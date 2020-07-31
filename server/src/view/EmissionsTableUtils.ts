@@ -22,6 +22,10 @@ export const initialTotals = () => ({
     wattHours: 0,
     co2e: 0,
   },
+  rds: {
+    wattHours: 0,
+    co2e: 0,
+  },
   total: {
     wattHours: 0,
     co2e: 0,
@@ -34,6 +38,7 @@ export const displayServiceName = (serviceName: string): string => {
     s3: 'S3',
     ec2: 'EC2',
     elasticache: 'ElastiCache',
+    rds: 'RDS',
     total: 'Total',
   }
   return mapping[serviceName]

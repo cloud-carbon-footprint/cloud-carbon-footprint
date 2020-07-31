@@ -141,3 +141,55 @@ export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     },
   ],
 }
+
+export const rdsCPUUtilizationResponse: AWS.CloudWatch.GetMetricDataOutput = {
+  MetricDataResults: [
+    {
+      Id: 'cpuUtilization',
+      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
+      Values: [22.983333333333334, 31.435897435897434],
+    },
+    {
+      Id: 'cpuUtilization',
+      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
+      Values: [11.566666666666666, 24.25],
+    },
+  ],
+}
+
+export const rdsCPUUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-06-27',
+        End: '2020-06-28',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-InstanceUsage:db.t3.medium'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-06-27',
+        End: '2020-06-28',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
+    },
+  ],
+}
