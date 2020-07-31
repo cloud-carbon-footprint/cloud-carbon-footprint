@@ -45,18 +45,16 @@ export class RDSStorage extends SSDStorageService {
 
     const response = await this.costExplorer.getCostAndUsage(params).promise()
 
-    return (
-      response.ResultsByTime?.map((result) => {
-        const gbMonth = Number.parseFloat(result.Groups[0].Metrics.UsageQuantity.Amount)
-        const timestampString = result?.TimePeriod?.Start
-        const sizeGb = this.estimateGigabyteUsage(gbMonth, timestampString)
+    return response.ResultsByTime.map((result) => {
+      const gbMonth = Number.parseFloat(result.Groups[0].Metrics.UsageQuantity.Amount)
+      const timestampString = result.TimePeriod.Start
+      const sizeGb = this.estimateGigabyteUsage(gbMonth, timestampString)
 
-        return {
-          sizeGb,
-          timestamp: new Date(timestampString),
-        }
-      }).filter((r: StorageUsage) => r.sizeGb && r.timestamp) || []
-    )
+      return {
+        sizeGb,
+        timestamp: new Date(timestampString),
+      }
+    }).filter((r: StorageUsage) => r.sizeGb && r.timestamp)
   }
 
   private estimateGigabyteUsage(sizeGbMonth: number, timestamp: string) {
