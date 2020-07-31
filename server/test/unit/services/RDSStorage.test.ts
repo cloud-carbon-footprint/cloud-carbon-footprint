@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
-import { RDSStorage } from '@services/RDSStorage'
+import RDSStorage from '@services/RDSStorage'
 
 function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: number }[]) {
   return {

@@ -9,6 +9,7 @@ import {
   elastiCacheMockGetCostAndUsageResponse,
   rdsCPUUtilizationResponse,
   rdsCPUUsageResponse,
+  rdsStorageResponse,
 } from '@fixtures'
 
 beforeAll(() => {
@@ -41,6 +42,7 @@ describe('cli', () => {
       .mockReturnValueOnce(ebsMockResponse)
       .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
       .mockReturnValueOnce(rdsCPUUsageResponse)
+      .mockReturnValueOnce(rdsStorageResponse)
 
     AWSMock.mock(
       'CostExplorer',
@@ -84,6 +86,7 @@ describe('cli', () => {
       .mockReturnValueOnce(ebsMockResponse)
       .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
       .mockReturnValueOnce(rdsCPUUsageResponse)
+      .mockReturnValueOnce(rdsStorageResponse)
 
     AWSMock.mock(
       'CostExplorer',
