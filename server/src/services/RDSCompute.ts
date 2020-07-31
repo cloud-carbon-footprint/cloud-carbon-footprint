@@ -4,8 +4,8 @@ import AWS from 'aws-sdk'
 import { AWS_REGIONS, RDS_INSTANCE_TYPES } from '@domain/constants'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 
-export class RDSService extends ServiceWithCPUUtilization {
-  serviceName: string
+export default class RDSComputeService extends ServiceWithCPUUtilization {
+  serviceName = 'rds'
   readonly cloudWatch: AWS.CloudWatch
   readonly costExplorer: AWS.CostExplorer
 
@@ -23,7 +23,6 @@ export class RDSService extends ServiceWithCPUUtilization {
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
     )
-
     return getComputeUsage(getMetricDataResponse, getCostAndUsageResponse, RDS_INSTANCE_TYPES)
   }
 

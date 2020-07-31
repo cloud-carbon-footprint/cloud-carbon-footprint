@@ -7,6 +7,8 @@ import {
   ebsMockResponse,
   elastiCacheMockResponse,
   elastiCacheMockGetCostAndUsageResponse,
+  rdsCPUUtilizationResponse,
+  rdsCPUUsageResponse,
 } from '@fixtures'
 
 beforeAll(() => {
@@ -18,12 +20,13 @@ afterEach(() => {
 })
 
 describe('cli', () => {
-  test('ebs, s3, ec2, elasticache', async () => {
+  test('ebs, s3, ec2, elasticache, rds', async () => {
     const mockFunction = jest.fn()
     mockFunction
       .mockReturnValueOnce(s3MockResponse)
       .mockReturnValueOnce(ec2MockResponse)
       .mockReturnValueOnce(elastiCacheMockResponse)
+      .mockReturnValueOnce(rdsCPUUtilizationResponse)
 
     AWSMock.mock(
       'CloudWatch',
@@ -37,6 +40,7 @@ describe('cli', () => {
     mockGetCostAndUsageFunction
       .mockReturnValueOnce(ebsMockResponse)
       .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
+      .mockReturnValueOnce(rdsCPUUsageResponse)
 
     AWSMock.mock(
       'CostExplorer',
@@ -59,12 +63,13 @@ describe('cli', () => {
     expect(result).toMatchSnapshot()
   })
 
-  test('ebs, s3, ec2, elasticache grouped by service', async () => {
+  test('ebs, s3, ec2, elasticache, rds grouped by service', async () => {
     const mockFunction = jest.fn()
     mockFunction
       .mockReturnValueOnce(s3MockResponse)
       .mockReturnValueOnce(ec2MockResponse)
       .mockReturnValueOnce(elastiCacheMockResponse)
+      .mockReturnValueOnce(rdsCPUUtilizationResponse)
 
     AWSMock.mock(
       'CloudWatch',
@@ -78,6 +83,7 @@ describe('cli', () => {
     mockGetCostAndUsageFunction
       .mockReturnValueOnce(ebsMockResponse)
       .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
+      .mockReturnValueOnce(rdsCPUUsageResponse)
 
     AWSMock.mock(
       'CostExplorer',
