@@ -2,13 +2,15 @@ import { EstimationRequest, RawRequest, validate } from '@application/Estimation
 import { EstimationResult } from '@application/EstimationResult'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
+import AWS from 'aws-sdk'
 
 export class App {
   async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
+    AWS.config.update({ region: estimationRequest.region })
 
     const estimatesByService = await Promise.all(
-      AWSServices(estimationRequest.region).map((service) => {
+      AWSServices().map((service) => {
         return service.getEstimates(estimationRequest.startDate, estimationRequest.endDate, estimationRequest.region)
       }),
     )
@@ -19,7 +21,7 @@ export class App {
           timestamp: estimate.timestamp,
           estimates: [
             {
-              serviceName: AWSServices(estimationRequest.region)[i].serviceName,
+              serviceName: AWSServices()[i].serviceName,
               wattHours: estimate.wattHours,
               co2e: estimate.co2e,
             },
