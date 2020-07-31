@@ -9,7 +9,7 @@ export class RDSStorage extends SSDStorageService {
   readonly costExplorer: AWS.CostExplorer
   serviceName = 'rds-storage'
 
-  constructor() {
+  constructor(private region: string) {
     super()
     this.costExplorer = new AWS.CostExplorer({
       region: AWS_REGIONS.US_EAST_1,
@@ -24,7 +24,7 @@ export class RDSStorage extends SSDStorageService {
       },
       Filter: {
         And: [
-          { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
+          { Dimensions: { Key: 'REGION', Values: [this.region] } },
           {
             Dimensions: {
               Key: 'USAGE_TYPE_GROUP',
@@ -34,19 +34,15 @@ export class RDSStorage extends SSDStorageService {
         ],
       },
       Granularity: 'DAILY',
-      GroupBy: [
-        {
-          Key: 'USAGE_TYPE',
-          Type: 'DIMENSION',
-        },
-      ],
       Metrics: ['UsageQuantity'],
     }
 
     const response = await this.costExplorer.getCostAndUsage(params).promise()
 
     return response.ResultsByTime.map((result) => {
-      const gbMonth = Number.parseFloat(result.Groups[0].Metrics.UsageQuantity.Amount)
+      const gbMonth = Number.parseFloat(
+        result.Groups.find((group) => group.Keys[0].endsWith('GP2-Storage')).Metrics.UsageQuantity.Amount,
+      )
       const timestampString = result.TimePeriod.Start
       const sizeGb = this.estimateGigabyteUsage(gbMonth, timestampString)
 
@@ -54,12 +50,12 @@ export class RDSStorage extends SSDStorageService {
         sizeGb,
         timestamp: new Date(timestampString),
       }
-    }).filter((r: StorageUsage) => r.sizeGb && r.timestamp)
+    }).filter((storageUsage: StorageUsage) => storageUsage.sizeGb)
   }
 
   private estimateGigabyteUsage(sizeGbMonth: number, timestamp: string) {
     // This function converts an AWS EBS Gigabyte-Month pricing metric into a Gigabyte value for a single day.
-    // We do this by assuming all months have 30 days, then multiplying the Gigabyte-month value by this.
+    // We do this by getting the number of days in the month, then multiplying the Gigabyte-month value by this.
     // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
     return sizeGbMonth * moment(timestamp).daysInMonth()
   }
