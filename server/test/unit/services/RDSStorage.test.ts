@@ -13,19 +13,13 @@ function buildCostExplorerGetUsageHoursRequest(start: string, end: string) {
         { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
         {
           Dimensions: {
-            Key: 'USAGE_TYPE_GROUP',
-            Values: ['RDS: Storage'],
+            Key: 'USAGE_TYPE',
+            Values: ['USW1-RDS:GP2-Storage'],
           },
         },
       ],
     },
     Granularity: 'DAILY',
-    GroupBy: [
-      {
-        Key: 'USAGE_TYPE',
-        Type: 'DIMENSION',
-      },
-    ],
     Metrics: ['UsageQuantity'],
   }
 }
@@ -45,6 +39,7 @@ function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: nu
         },
         Groups: [
           {
+            Keys: ['USW1-RDS:GP2-Storage'],
             Metrics: {
               UsageQuantity: {
                 Amount: value.toString(),
@@ -56,15 +51,6 @@ function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: nu
     }),
   }
 }
-// TODO: Test later
-// {
-//   Keys: ['USW1-RDS:IO-Storage'],
-//   Metrics: {
-//     UsageQuantity: {
-//       Amount: '0.16332',
-//     },
-//   },
-// },
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -82,7 +68,6 @@ describe('RDSStorage', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(buildCostExplorerGetUsageHoursRequest(startDate, endDate))
         callback(
           null,
           buildCostExplorerGetUsageHoursResponse([
@@ -93,7 +78,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage('us-east-1')
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
@@ -116,12 +101,11 @@ describe('RDSStorage', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(buildCostExplorerGetUsageHoursRequest(startDate, endDate))
         callback(null, buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 1.0 }]))
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage('us-east-1')
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
@@ -131,5 +115,93 @@ describe('RDSStorage', () => {
         timestamp: new Date('2020-06-24'),
       },
     ])
+  })
+
+  it('filters 0 gb of usage', async () => {
+    const startDate = '2020-06-24'
+    const endDate = '2020-06-25'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 0 }]))
+      },
+    )
+
+    const rdsStorage = new RDSStorage('us-east-1')
+
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+
+    expect(result).toEqual([])
+  })
+
+  it('should filter gp2 storage', async () => {
+    const startDate = '2020-06-24'
+    const endDate = '2020-06-25'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, {
+          ResultsByTime: [
+            {
+              TimePeriod: {
+                Start: startDate,
+              },
+              Groups: [
+                {
+                  Keys: ['regionless-RDS:magnetic-Storage'],
+                  Metrics: {
+                    UsageQuantity: {
+                      Amount: 5,
+                    },
+                  },
+                },
+                {
+                  Keys: ['USW1-RDS:GP2-Storage'],
+                  Metrics: {
+                    UsageQuantity: {
+                      Amount: 1,
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        })
+      },
+    )
+
+    const rdsStorage = new RDSStorage('us-east-1')
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+
+    expect(result).toEqual([
+      {
+        sizeGb: 30,
+        timestamp: new Date('2020-06-24'),
+      },
+    ])
+  })
+
+  it('should query for the specified region', async () => {
+    const startDate = '2020-06-24'
+    const endDate = '2020-06-25'
+    const expectedRegion = 'my-region'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        expect(params.Filter.And).toContainEqual({
+          Dimensions: {
+            Key: 'REGION',
+            Values: [expectedRegion],
+          },
+        })
+        callback(null, buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 0 }]))
+      },
+    )
+
+    const rdsStorage = new RDSStorage('my-region')
+    await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
   })
 })
