@@ -3,6 +3,7 @@ import { AWS_REGIONS } from '@domain/constants'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { SSDStorageService } from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
+import moment from 'moment'
 
 export class RDSStorage extends SSDStorageService {
   readonly costExplorer: AWS.CostExplorer
@@ -47,8 +48,8 @@ export class RDSStorage extends SSDStorageService {
     return (
       response.ResultsByTime?.map((result) => {
         const gbMonth = Number.parseFloat(result.Groups[0].Metrics.UsageQuantity.Amount)
-        const sizeGb = this.estimateGigabyteUsage(gbMonth)
         const timestampString = result?.TimePeriod?.Start
+        const sizeGb = this.estimateGigabyteUsage(gbMonth, timestampString)
 
         return {
           sizeGb,
@@ -58,10 +59,10 @@ export class RDSStorage extends SSDStorageService {
     )
   }
 
-  private estimateGigabyteUsage(sizeGbMonth: number) {
+  private estimateGigabyteUsage(sizeGbMonth: number, timestamp: string) {
     // This function converts an AWS EBS Gigabyte-Month pricing metric into a Gigabyte value for a single day.
     // We do this by assuming all months have 30 days, then multiplying the Gigabyte-month value by this.
     // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
-    return sizeGbMonth * 30
+    return sizeGbMonth * moment(timestamp).daysInMonth()
   }
 }
