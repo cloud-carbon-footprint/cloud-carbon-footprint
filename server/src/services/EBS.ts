@@ -4,6 +4,7 @@ import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, SSDCOEFFICIENT } from '@dom
 import { StorageEstimator } from '@domain/StorageEstimator'
 import CloudService from '@domain/CloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
+import moment from 'moment'
 
 export default class EBS implements CloudService {
   serviceName = 'ebs'
@@ -39,29 +40,32 @@ export default class EBS implements CloudService {
 
     const response = await this.costExplorer.getCostAndUsage(params).promise()
 
-    return (
-      response.ResultsByTime?.map((result) => {
-        const gbMonth = Number.parseFloat(result?.Total?.UsageQuantity?.Amount)
-        const sizeGb = this.estimateGigabyteUsage(gbMonth)
-        const timestampString = result?.TimePeriod?.Start
+    return response.ResultsByTime.map((result) => {
+      const timestampString = result.TimePeriod.Start
+      let sizeGb = 0
+      if (result.Groups.length > 0) {
+        const gbMonth = Number.parseFloat(
+          result.Groups.find((group) => group.Keys[0].endsWith('.gp2')).Metrics.UsageQuantity.Amount,
+        )
+        sizeGb = this.estimateGigabyteUsage(gbMonth, timestampString)
+      }
 
-        return {
-          sizeGb,
-          timestamp: new Date(timestampString),
-        }
-      }).filter((r: StorageUsage) => r.sizeGb && r.timestamp) || []
-    )
-  }
-
-  private estimateGigabyteUsage(sizeGbMonth: number) {
-    // This function converts an AWS EBS Gigabyte-Month pricing metric into a Gigabyte value for a single day.
-    // We do this by assuming all months have 30 days, then multiplying the Gigabyte-month value by this.
-    // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
-    return sizeGbMonth * 30
+      return {
+        sizeGb,
+        timestamp: new Date(timestampString),
+      }
+    }).filter((storageUsage: StorageUsage) => storageUsage.sizeGb)
   }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const usage = await this.getUsage(start, end)
     return this.ssdEstimator.estimate(usage, region)
+  }
+
+  private estimateGigabyteUsage(sizeGbMonth: number, timestamp: string) {
+    // This function converts an AWS EBS Gigabyte-Month pricing metric into a Gigabyte value for a single day.
+    // We do this by getting the number of days in the month, then multiplying the Gigabyte-month value by this.
+    // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
+    return sizeGbMonth * moment(timestamp).daysInMonth()
   }
 }
