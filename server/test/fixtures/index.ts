@@ -177,12 +177,49 @@ export const rdsCPUUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     },
     {
       TimePeriod: {
+        Start: '2020-06-28',
+        End: '2020-06-29',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const rdsStorageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
         Start: '2020-06-27',
         End: '2020-06-28',
       },
       Groups: [
         {
-          Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+          Keys: ['USW1-RDS:GP2-Storage'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-06-28',
+        End: '2020-06-29',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-RDS:GP2-Storage'],
           Metrics: {
             UsageQuantity: {
               Amount: '1',

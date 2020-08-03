@@ -5,7 +5,7 @@ import { SSDStorageService } from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import moment from 'moment'
 
-export class RDSStorage extends SSDStorageService {
+export default class RDSStorage extends SSDStorageService {
   readonly costExplorer: AWS.CostExplorer
   serviceName = 'rds-storage'
 
@@ -35,10 +35,15 @@ export class RDSStorage extends SSDStorageService {
       },
       Granularity: 'DAILY',
       Metrics: ['UsageQuantity'],
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
     }
 
     const response = await this.costExplorer.getCostAndUsage(params).promise()
-
     return response.ResultsByTime.map((result) => {
       const gbMonth = Number.parseFloat(
         result.Groups.find((group) => group.Keys[0].endsWith('GP2-Storage')).Metrics.UsageQuantity.Amount,
