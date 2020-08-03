@@ -3,8 +3,10 @@ import EBS from '@services/EBS'
 import S3 from '@services/S3'
 import EC2 from '@services/EC2'
 import ElastiCache from '@services/ElastiCache'
+import RDS from '@services/RDS'
 import RDSComputeService from '@services/RDSCompute'
+import RDSStorage from '@services/RDSStorage'
 
 export default function AWSServices(): CloudService[] {
-  return [new EBS(), new S3(), new EC2(), new ElastiCache(), new RDSComputeService()]
+  return [new EBS(), new S3(), new EC2(), new ElastiCache(), new RDS(new RDSComputeService(), new RDSStorage())]
 }
