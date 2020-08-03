@@ -12,7 +12,7 @@ export default class RDS implements CloudService {
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const rdsComputeEstimates = this.rdsComputeService.getEstimates(start, end, region)
     const rdsStorageEstimates = this.rdsStorageService.getEstimates(start, end, region)
-    let resolvedEstimates: FootprintEstimate[][] = await Promise.all([rdsComputeEstimates, rdsStorageEstimates])
+    const resolvedEstimates: FootprintEstimate[][] = await Promise.all([rdsComputeEstimates, rdsStorageEstimates])
     const combinedEstimates: FootprintEstimate[] = resolvedEstimates.flat()
 
     interface CalculatedFootprintEstimate {
@@ -24,7 +24,7 @@ export default class RDS implements CloudService {
     const result: { [key: number]: CalculatedFootprintEstimate } = {}
 
     combinedEstimates.forEach((estimate) => {
-      let timestamp: number = estimate.timestamp.getTime()
+      const timestamp: number = estimate.timestamp.getTime()
       if (result[timestamp]) {
         result[timestamp].co2e += estimate.co2e
         result[timestamp].wattHours += estimate.wattHours
