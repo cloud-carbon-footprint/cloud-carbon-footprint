@@ -1,14 +1,17 @@
 import AWS from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
-import { SSDStorageService } from '@domain/StorageService'
-import { AWS_REGIONS } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, SSDCOEFFICIENT } from '@domain/constants'
+import { StorageEstimator } from '@domain/StorageEstimator'
+import CloudService from '@domain/CloudService'
+import FootprintEstimate from '@domain/FootprintEstimate'
 
-export default class EBS extends SSDStorageService {
+export default class EBS implements CloudService {
   serviceName = 'ebs'
   readonly costExplorer: AWS.CostExplorer
+  readonly ssdEstimator: StorageEstimator
 
   constructor() {
-    super()
+    this.ssdEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
     this.costExplorer = new AWS.CostExplorer({
       region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
     })
@@ -55,5 +58,10 @@ export default class EBS extends SSDStorageService {
     // We do this by assuming all months have 30 days, then multiplying the Gigabyte-month value by this.
     // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
     return sizeGbMonth * 30
+  }
+
+  async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
+    const usage = await this.getUsage(start, end)
+    return this.ssdEstimator.estimate(usage, region)
   }
 }
