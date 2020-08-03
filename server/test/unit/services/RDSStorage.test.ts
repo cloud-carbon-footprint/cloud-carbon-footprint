@@ -184,4 +184,31 @@ describe('RDSStorage', () => {
     const rdsStorage = new RDSStorage()
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
   })
+
+  it('should return empty array if no usage', async () => {
+    const startDate = '2020-06-24'
+    const endDate = '2020-06-25'
+    AWSMock.mock(
+        'CostExplorer',
+        'getCostAndUsage',
+        (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+          callback(null, {
+            ResultsByTime: [
+              {
+                TimePeriod: {
+                  Start: startDate,
+                },
+                Groups: [],
+              },
+            ],
+          })
+        },
+    )
+
+    const rdsStorage = new RDSStorage()
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+
+    expect(result).toEqual([])
+  })
+
 })
