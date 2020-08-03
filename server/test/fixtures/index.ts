@@ -199,7 +199,7 @@ export const rdsStorageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     {
       TimePeriod: {
         Start: '2020-06-27',
-        End: '2020-06-28'
+        End: '2020-06-28',
       },
       Groups: [
         {
@@ -215,7 +215,7 @@ export const rdsStorageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     {
       TimePeriod: {
         Start: '2020-06-28',
-        End: '2020-06-29'
+        End: '2020-06-29',
       },
       Groups: [
         {
