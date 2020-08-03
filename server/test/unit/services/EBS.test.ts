@@ -2,6 +2,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
 import EBS from '@services/EBS'
+import { AWS_REGIONS } from '@domain/constants'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -349,37 +350,13 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, {
-          ResultsByTime: [
-            {
-              Estimated: false,
-              Groups: [],
-              TimePeriod: {
-                End: '2020-06-28',
-                Start: '2020-06-27',
-              },
-              Total: {
-                UsageQuantity: {
-                  Unit: 'GB-Month',
-                },
-              },
-            },
-            {
-              Estimated: false,
-              Groups: [],
-              TimePeriod: {
-                End: '2020-06-28',
-                Start: '2020-06-27',
-              },
-              Total: {
-                UsageQuantity: {
-                  Amount: '1.2120679',
-                  Unit: 'GB-Month',
-                },
-              },
-            },
-          ],
-        })
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: undefined },
+            { start: '2020-06-27', value: '1.2120679' },
+          ]),
+        )
       },
     )
 
@@ -394,4 +371,61 @@ describe('Ebs', () => {
       },
     ])
   })
+
+  it('', async () => {
+    const params = {
+      TimePeriod: {
+        Start: '2020-08-01',
+        End: '2020-08-03',
+      },
+      Filter: {
+        Dimensions: {
+          Key: 'USAGE_TYPE',
+          Values: ['EBS:VolumeUsage.gp2'],
+        },
+      },
+      Granularity: 'DAILY',
+      Metrics: [
+        'UsageQuantity',
+        /* more items */
+      ],
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+      // NextPageToken: 'STRING_VALUE'
+    }
+
+    const costExplorer = new AWS.CostExplorer({
+      region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
+    })
+    const response = await costExplorer.getCostAndUsage(params).promise()
+    console.log(response)
+  })
 })
+
+function buildAwsCostExplorerGetCostAndUsageResponse(data: { start: string; value: string }[]) {
+  return {
+    GroupDefinitions: [
+      {
+        Type: 'DIMENSION',
+        Key: 'USAGE_TYPE',
+      },
+    ],
+    ResultsByTime: data.map(({ start, value }) => {
+      return {
+        TimePeriod: {
+          Start: start,
+        },
+        Groups: [
+          {
+            Keys: ['EBS:VolumeUsage.gp2'],
+            Metrics: { UsageQuantity: { Amount: value, Unit: 'GB-Month' } },
+          },
+        ],
+      }
+    }),
+  }
+}
