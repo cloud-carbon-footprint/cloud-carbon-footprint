@@ -1,4 +1,4 @@
-import CloudService from '@domain/CloudService'
+import ICloudService from '@domain/ICloudService'
 import EBS from '@services/EBS'
 import S3 from '@services/S3'
 import EC2 from '@services/EC2'
@@ -7,6 +7,6 @@ import RDS from '@services/RDS'
 import RDSComputeService from '@services/RDSCompute'
 import RDSStorage from '@services/RDSStorage'
 
-export default function AWSServices(): CloudService[] {
+export default function AWSServices(): ICloudService[] {
   return [new EBS(), new S3(), new EC2(), new ElastiCache(), new RDS(new RDSComputeService(), new RDSStorage())]
 }

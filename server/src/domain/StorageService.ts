@@ -1,12 +1,12 @@
-import CloudService from './CloudService'
+import ICloudService from './ICloudService'
 import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
-import FootprintEstimator from './FootprintEstimator'
+import IFootprintEstimator from './IFootprintEstimator'
 import { HDDCOEFFICIENT, SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS } from './constants'
 
-export default abstract class StorageService implements CloudService {
-  estimator: FootprintEstimator
+export default abstract class StorageService implements ICloudService {
+  estimator: IFootprintEstimator
 
   protected constructor(storageCoefficient: number) {
     this.estimator = new StorageEstimator(storageCoefficient, AWS_POWER_USAGE_EFFECTIVENESS)

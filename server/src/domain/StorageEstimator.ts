@@ -1,9 +1,9 @@
 import FootprintEstimate from './FootprintEstimate'
-import FootprintEstimator from './FootprintEstimator'
+import IFootprintEstimator from './IFootprintEstimator'
 import StorageUsage from './StorageUsage'
 import { AWS_REGIONS_WATT_HOURS_CARBON_RATIO } from './constants'
 
-export class StorageEstimator implements FootprintEstimator {
+export class StorageEstimator implements IFootprintEstimator {
   coefficient: number
   power_usage_effectiveness: number
 

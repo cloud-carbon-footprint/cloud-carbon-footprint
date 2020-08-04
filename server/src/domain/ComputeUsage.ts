@@ -1,6 +1,6 @@
-import UsageData from '@domain/UsageData'
+import IUsageData from '@domain/IUsageData'
 
-export default interface ComputeUsage extends UsageData {
+export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number
   numberOfvCpus: number
 }
