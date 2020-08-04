@@ -100,7 +100,7 @@ export default class EBS implements ICloudService {
       awsGroupKey.endsWith('VolumeUsage')
     )
       return DiskType.HDD
-    throw new Error('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+    console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<EbsFootprintEstimate[]> {

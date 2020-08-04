@@ -62,10 +62,12 @@ describe('RDSStorage', () => {
 
     expect(result).toEqual([
       {
+        diskType: "SSD",
         sizeGb: 31,
         timestamp: new Date('2020-07-24'),
       },
       {
+        diskType: "SSD",
         sizeGb: 62,
         timestamp: new Date('2020-07-25'),
       },
@@ -131,6 +133,7 @@ describe('RDSStorage', () => {
 
     expect(result).toEqual([
       {
+        diskType: "SSD",
         sizeGb: 30,
         timestamp: new Date('2020-06-24'),
       },
@@ -153,54 +156,6 @@ describe('RDSStorage', () => {
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
     expect(result).toEqual([])
-  })
-
-  it('should filter gp2 storage', async () => {
-    const startDate = '2020-06-24'
-    const endDate = '2020-06-25'
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, {
-          ResultsByTime: [
-            {
-              TimePeriod: {
-                Start: startDate,
-              },
-              Groups: [
-                {
-                  Keys: ['regionless-RDS:magnetic-Storage'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: 5,
-                    },
-                  },
-                },
-                {
-                  Keys: ['USW1-RDS:GP2-Storage'],
-                  Metrics: {
-                    UsageQuantity: {
-                      Amount: 1,
-                    },
-                  },
-                },
-              ],
-            },
-          ],
-        })
-      },
-    )
-
-    const rdsStorage = new RDSStorage()
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
-
-    expect(result).toEqual([
-      {
-        sizeGb: 30,
-        timestamp: new Date('2020-06-24'),
-      },
-    ])
   })
 
   it('should query for the specified region', async () => {
