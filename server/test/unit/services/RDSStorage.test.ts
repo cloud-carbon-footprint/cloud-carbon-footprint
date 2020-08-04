@@ -1,8 +1,10 @@
 import AWS from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import RDSStorage from '@services/RDSStorage'
+import { StorageEstimator } from '@domain/StorageEstimator'
+import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/constants'
 
-function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: number }[]) {
+function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: number; types: string[] }[]) {
   return {
     GroupDefinitions: [
       {
@@ -10,14 +12,14 @@ function buildCostExplorerGetUsageHoursResponse(data: { start: string; value: nu
         Key: 'USAGE_TYPE',
       },
     ],
-    ResultsByTime: data.map(({ start, value }) => {
+    ResultsByTime: data.map(({ start, value, types }) => {
       return {
         TimePeriod: {
           Start: start,
         },
         Groups: [
           {
-            Keys: ['USW1-RDS:GP2-Storage'],
+            Keys: types,
             Metrics: {
               UsageQuantity: {
                 Amount: value.toString(),
@@ -49,8 +51,8 @@ describe('RDSStorage', () => {
         callback(
           null,
           buildCostExplorerGetUsageHoursResponse([
-            { start: '2020-07-24', value: 1 },
-            { start: '2020-07-25', value: 2 },
+            { start: '2020-07-24', value: 1, types: ['USW1-RDS:GP2-Storage'] },
+            { start: '2020-07-25', value: 2, types: ['USW1-RDS:GP2-Storage'] },
           ]),
         )
       },
@@ -62,12 +64,12 @@ describe('RDSStorage', () => {
 
     expect(result).toEqual([
       {
-        diskType: "SSD",
+        diskType: 'SSD',
         sizeGb: 31,
         timestamp: new Date('2020-07-24'),
       },
       {
-        diskType: "SSD",
+        diskType: 'SSD',
         sizeGb: 62,
         timestamp: new Date('2020-07-25'),
       },
@@ -123,7 +125,12 @@ describe('RDSStorage', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 1.0 }]))
+        callback(
+          null,
+          buildCostExplorerGetUsageHoursResponse([
+            { start: '2020-06-24', value: 1.0, types: ['USW1-RDS:GP2-Storage'] },
+          ]),
+        )
       },
     )
 
@@ -133,7 +140,7 @@ describe('RDSStorage', () => {
 
     expect(result).toEqual([
       {
-        diskType: "SSD",
+        diskType: 'SSD',
         sizeGb: 30,
         timestamp: new Date('2020-06-24'),
       },
@@ -147,7 +154,10 @@ describe('RDSStorage', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 0 }]))
+        callback(
+          null,
+          buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 0, types: ['USW1-RDS:GP2-Storage'] }]),
+        )
       },
     )
 
@@ -174,7 +184,10 @@ describe('RDSStorage', () => {
             Values: [expectedRegion],
           },
         })
-        callback(null, buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 0 }]))
+        callback(
+          null,
+          buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-24', value: 0, types: ['USW1-RDS:GP2-Storage'] }]),
+        )
       },
     )
 
@@ -206,5 +219,59 @@ describe('RDSStorage', () => {
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
 
     expect(result).toEqual([])
+  })
+
+  it('should get estimates for RDS IOPS SSD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-27', value: 1, types: ['USW1-RDS:IOPS-Storage'] }]),
+        )
+      },
+    )
+
+    const rdsService = new RDSStorage()
+    const ssdStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await rdsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual(
+      ssdStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
+    )
+  })
+
+  it('should get estimates for RDS standard HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageHoursResponse([
+            { start: '2020-06-27', value: 1, types: ['USW1-RDS:Standard-Storage'] },
+          ]),
+        )
+      },
+    )
+
+    const rdsService = new RDSStorage()
+    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await rdsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
+    )
   })
 })
