@@ -43,16 +43,21 @@ export default class EBS implements ICloudService {
         End: endDate.toISOString().substr(0, 10),
       },
       Filter: {
-        Dimensions: {
-          Key: 'USAGE_TYPE_GROUP',
-          Values: [
-            'EC2: EBS - SSD(gp2)',
-            'EC2: EBS - SSD(io1)',
-            'EC2: EBS - HDD(sc1)',
-            'EC2: EBS - HDD(st1)',
-            'EC2: EBS - Magnetic',
-          ],
-        },
+        And: [
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: [
+                'EC2: EBS - SSD(gp2)',
+                'EC2: EBS - SSD(io1)',
+                'EC2: EBS - HDD(sc1)',
+                'EC2: EBS - HDD(st1)',
+                'EC2: EBS - Magnetic',
+              ],
+            },
+          },
+          { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
+        ],
       },
       Granularity: 'DAILY',
       Metrics: [
