@@ -1,11 +1,11 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-
 import EBS from '@services/EBS'
 import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/constants'
 import { StorageEstimator } from '@domain/StorageEstimator'
 
 beforeAll(() => {
+  AWS.config.update({ region: 'us-west-1' })
   AWSMock.setSDKInstance(AWS)
 })
 
@@ -21,16 +21,21 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         expect(params).toEqual({
           Filter: {
-            Dimensions: {
-              Key: 'USAGE_TYPE_GROUP',
-              Values: [
-                'EC2: EBS - SSD(gp2)',
-                'EC2: EBS - SSD(io1)',
-                'EC2: EBS - HDD(sc1)',
-                'EC2: EBS - HDD(st1)',
-                'EC2: EBS - Magnetic',
-              ],
-            },
+            And: [
+              {
+                Dimensions: {
+                  Key: 'USAGE_TYPE_GROUP',
+                  Values: [
+                    'EC2: EBS - SSD(gp2)',
+                    'EC2: EBS - SSD(io1)',
+                    'EC2: EBS - HDD(sc1)',
+                    'EC2: EBS - HDD(st1)',
+                    'EC2: EBS - Magnetic',
+                  ],
+                },
+              },
+              { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
+            ],
           },
           Granularity: 'DAILY',
           Metrics: ['UsageQuantity'],
@@ -56,7 +61,6 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS()
-
     const result = await ebsService.getUsage(new Date('2020-06-27T00:00:00Z'), new Date('2020-06-30T00:00:00Z'))
 
     expect(result).toEqual([
