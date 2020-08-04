@@ -104,11 +104,11 @@ export default class RDSStorage implements ICloudService {
     })
       .flat()
       .filter((storageUsage: StorageUsage) => storageUsage.sizeGb)
-
   }
 
   private getDiskType(awsGroupKey: string) {
-    if (awsGroupKey.endsWith('GP2-Storage')) return DiskType.SSD
+    if (awsGroupKey.endsWith('GP2-Storage') || awsGroupKey.endsWith('IOPS-Storage')) return DiskType.SSD
+    if (awsGroupKey.endsWith('Standard-Storage')) return DiskType.HDD
     console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
