@@ -2,7 +2,8 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
 import EBS from '@services/EBS'
-import { AWS_REGIONS } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/constants'
+import { StorageEstimator } from '@domain/StorageEstimator'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -22,7 +23,7 @@ describe('Ebs', () => {
           Filter: {
             Dimensions: {
               Key: 'USAGE_TYPE',
-              Values: ['EBS:VolumeUsage.gp2'],
+              Values: ['EBS:VolumeUsage.gp2', 'EBS:VolumeUsage.sc1', 'EBS:VolumeUsage.st1', 'EBS:VolumeUsage.io1'],
             },
           },
           Granularity: 'DAILY',
@@ -31,9 +32,20 @@ describe('Ebs', () => {
             End: '2020-06-30',
             Start: '2020-06-27',
           },
+          GroupBy: [
+            {
+              Key: 'USAGE_TYPE',
+              Type: 'DIMENSION',
+            },
+          ],
         })
 
-        callback(null, buildAwsCostExplorerGetCostAndUsageResponse([{ start: '2020-06-27', value: '1.2120679' }]))
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] },
+          ]),
+        )
       },
     )
 
@@ -45,6 +57,7 @@ describe('Ebs', () => {
       {
         sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
+        diskType: 'SSD',
       },
     ])
   })
@@ -58,8 +71,8 @@ describe('Ebs', () => {
         callback(
           null,
           buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '0' },
-            { start: '2020-06-27', value: '1.2120679' },
+            { start: '2020-06-27', value: '0', types: ['EBS:VolumeUsage.gp2'] },
+            { start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -73,26 +86,9 @@ describe('Ebs', () => {
       {
         sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
+        diskType: 'SSD',
       },
     ])
-  })
-
-  it('returns empty list when empty ResultsByTime', async () => {
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, {
-          ResultsByTime: [],
-        })
-      },
-    )
-
-    const ebsService = new EBS()
-
-    const result = await ebsService.getUsage(new Date('2020-01-27T00:00:00Z'), new Date('2020-01-30T00:00:00Z'))
-
-    expect(result).toEqual([])
   })
 
   it('should return empty array if no usage', async () => {
@@ -100,16 +96,7 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, {
-          ResultsByTime: [
-            {
-              TimePeriod: {
-                Start: '2020-01-27',
-              },
-              Groups: [],
-            },
-          ],
-        })
+        callback(null, buildAwsCostExplorerGetCostAndUsageResponse([]))
       },
     )
 
@@ -128,8 +115,8 @@ describe('Ebs', () => {
         callback(
           null,
           buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: undefined },
-            { start: '2020-06-27', value: '1.2120679' },
+            { start: '2020-06-27', value: undefined, types: ['EBS:VolumeUsage.gp2'] },
+            { start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -143,45 +130,138 @@ describe('Ebs', () => {
       {
         sizeGb: 36.362037,
         timestamp: new Date('2020-06-27T00:00:00Z'),
+        diskType: 'SSD',
       },
     ])
   })
 
-  it('', async () => {
-    const params = {
-      TimePeriod: {
-        Start: '2020-08-01',
-        End: '2020-08-03',
+  it('should calculate EBS HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
+          ]),
+        )
       },
-      Filter: {
-        Dimensions: {
-          Key: 'USAGE_TYPE',
-          Values: ['EBS:VolumeUsage.gp2'],
-        },
-      },
-      Granularity: 'DAILY',
-      Metrics: [
-        'UsageQuantity',
-        /* more items */
-      ],
-      GroupBy: [
-        {
-          Key: 'USAGE_TYPE',
-          Type: 'DIMENSION',
-        },
-      ],
-      // NextPageToken: 'STRING_VALUE'
-    }
+    )
 
-    const costExplorer = new AWS.CostExplorer({
-      region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
-    })
-    const response = await costExplorer.getCostAndUsage(params).promise()
-    console.log(response)
+    const ebsService = new EBS()
+
+    const result = await ebsService.getUsage(new Date('2020-06-27T00:00:00Z'), new Date('2020-06-30T00:00:00Z'))
+
+    expect(result).toEqual([
+      {
+        sizeGb: 30,
+        timestamp: new Date('2020-06-27T00:00:00Z'),
+        diskType: 'HDD',
+      },
+    ])
+  })
+
+  it('should get estimates for EBS HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
+          ]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
+    )
+  })
+
+  it('should get estimates for EBS SSD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.io1'] },
+          ]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual(
+      sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
+    )
+  })
+
+  it('should get estimates for EBS SDD and HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.gp2'] },
+          ]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    const ssdEstimates = sddStorageEstimator.estimate(
+      [{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }],
+      AWS_REGIONS.US_EAST_1,
+    )
+    const hddEstimates = hddStorageEstimator.estimate(
+      [{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }],
+      AWS_REGIONS.US_EAST_1,
+    )
+    expect(result).toEqual([
+      {
+        timestamp: new Date('2020-06-27'),
+        wattHours: ssdEstimates[0].wattHours + hddEstimates[0].wattHours,
+        co2e: ssdEstimates[0].co2e + hddEstimates[0].co2e,
+      },
+    ])
   })
 })
 
-function buildAwsCostExplorerGetCostAndUsageResponse(data: { start: string; value: string }[]) {
+function buildAwsCostExplorerGetCostAndUsageResponse(data: { start: string; value: string; types: string[] }[]) {
   return {
     GroupDefinitions: [
       {
@@ -189,14 +269,14 @@ function buildAwsCostExplorerGetCostAndUsageResponse(data: { start: string; valu
         Key: 'USAGE_TYPE',
       },
     ],
-    ResultsByTime: data.map(({ start, value }) => {
+    ResultsByTime: data.map(({ start, value, types }) => {
       return {
         TimePeriod: {
           Start: start,
         },
         Groups: [
           {
-            Keys: ['EBS:VolumeUsage.gp2'],
+            Keys: types,
             Metrics: { UsageQuantity: { Amount: value, Unit: 'GB-Month' } },
           },
         ],
