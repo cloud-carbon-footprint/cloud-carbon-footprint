@@ -12,6 +12,7 @@ beforeAll(() => {
 describe('Ebs', () => {
   afterEach(() => {
     AWSMock.restore()
+    jest.restoreAllMocks()
   })
 
   it('gets EBS usage', async () => {
@@ -284,7 +285,8 @@ describe('Ebs', () => {
     )
   })
 
-  it('should throw error if unexpected cost explorer volume name', async () => {
+  it('should filter unexpected cost explorer volume name', async () => {
+    const consoleMock = (console.warn = jest.fn())
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -298,13 +300,39 @@ describe('Ebs', () => {
 
     const ebsService = new EBS()
     const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-    await expect(
-      ebsService.getEstimates(
-        new Date('2020-06-27T00:00:00Z'),
-        new Date('2020-06-30T00:00:00Z'),
-        AWS_REGIONS.US_EAST_1,
-      ),
-    ).rejects.toThrowError('Unexpected Cost explorer Dimension Name: EBS:anything')
+
+    const result = await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual([])
+  })
+
+  it('should log warning if unexpected cost explorer volume name', async () => {
+    const consoleMock = (console.warn = jest.fn())
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([{ start: '2020-06-27', value: '1', types: ['EBS:anything'] }]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(console.warn).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: EBS:anything')
   })
 
   it('should get estimates for EBS SDD and HDD storage', async () => {
