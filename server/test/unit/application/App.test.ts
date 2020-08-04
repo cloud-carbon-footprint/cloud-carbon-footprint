@@ -4,7 +4,7 @@ import { EstimationResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
-import UsageData from '@domain/UsageData'
+import UsageData from '@domain/IUsageData'
 import { RawRequest } from '@application/EstimationRequest'
 import { AWS_REGIONS } from '@domain/constants'
 
