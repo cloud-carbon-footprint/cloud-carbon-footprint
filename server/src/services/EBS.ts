@@ -44,8 +44,14 @@ export default class EBS implements ICloudService {
       },
       Filter: {
         Dimensions: {
-          Key: 'USAGE_TYPE',
-          Values: ['EBS:VolumeUsage.gp2', 'EBS:VolumeUsage.sc1', 'EBS:VolumeUsage.st1', 'EBS:VolumeUsage.io1'],
+          Key: 'USAGE_TYPE_GROUP',
+          Values: [
+            'EC2: EBS - SSD(gp2)',
+            'EC2: EBS - SSD(io1)',
+            'EC2: EBS - HDD(sc1)',
+            'EC2: EBS - HDD(st1)',
+            'EC2: EBS - Magnetic',
+          ],
         },
       },
       Granularity: 'DAILY',
@@ -83,7 +89,13 @@ export default class EBS implements ICloudService {
 
   private getDiskType(awsGroupKey: string) {
     if (awsGroupKey.endsWith('VolumeUsage.gp2') || awsGroupKey.endsWith('VolumeUsage.io1')) return DiskType.SSD
-    if (awsGroupKey.endsWith('VolumeUsage.st1') || awsGroupKey.endsWith('VolumeUsage.sc1')) return DiskType.HDD
+    if (
+      awsGroupKey.endsWith('VolumeUsage.st1') ||
+      awsGroupKey.endsWith('VolumeUsage.sc1') ||
+      awsGroupKey.endsWith('VolumeUsage')
+    )
+      return DiskType.HDD
+    throw new Error('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<EbsFootprintEstimate[]> {

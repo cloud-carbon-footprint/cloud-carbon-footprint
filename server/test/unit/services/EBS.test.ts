@@ -22,8 +22,14 @@ describe('Ebs', () => {
         expect(params).toEqual({
           Filter: {
             Dimensions: {
-              Key: 'USAGE_TYPE',
-              Values: ['EBS:VolumeUsage.gp2', 'EBS:VolumeUsage.sc1', 'EBS:VolumeUsage.st1', 'EBS:VolumeUsage.io1'],
+              Key: 'USAGE_TYPE_GROUP',
+              Values: [
+                'EC2: EBS - SSD(gp2)',
+                'EC2: EBS - SSD(io1)',
+                'EC2: EBS - HDD(sc1)',
+                'EC2: EBS - HDD(st1)',
+                'EC2: EBS - Magnetic',
+              ],
             },
           },
           Granularity: 'DAILY',
@@ -162,7 +168,7 @@ describe('Ebs', () => {
     ])
   })
 
-  it('should get estimates for EBS HDD storage', async () => {
+  it('should get estimates for ebs st1 HDD storage', async () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -171,6 +177,62 @@ describe('Ebs', () => {
           null,
           buildAwsCostExplorerGetCostAndUsageResponse([
             { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
+          ]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
+    )
+  })
+
+  it('should get estimates for magnetic EBS HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage'] },
+          ]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+
+    const result = await ebsService.getEstimates(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      AWS_REGIONS.US_EAST_1,
+    )
+
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
+    )
+  })
+
+  it('should get estimates for magnetic sc1 HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.sc1'] },
           ]),
         )
       },
@@ -216,6 +278,29 @@ describe('Ebs', () => {
     expect(result).toEqual(
       sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
     )
+  })
+
+  it('should throw error if unexpected cost explorer volume name', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildAwsCostExplorerGetCostAndUsageResponse([{ start: '2020-06-27', value: '1', types: ['EBS:anything'] }]),
+        )
+      },
+    )
+
+    const ebsService = new EBS()
+    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    await expect(
+      ebsService.getEstimates(
+        new Date('2020-06-27T00:00:00Z'),
+        new Date('2020-06-30T00:00:00Z'),
+        AWS_REGIONS.US_EAST_1,
+      ),
+    ).rejects.toThrowError('Unexpected Cost explorer Dimension Name: EBS:anything')
   })
 
   it('should get estimates for EBS SDD and HDD storage', async () => {
