@@ -112,32 +112,28 @@ export const elastiCacheMockGetCostAndUsageResponse: AWS.CostExplorer.GetCostAnd
 export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
-      Estimated: false,
-      Groups: [],
       TimePeriod: {
         End: '2020-06-28',
         Start: '2020-06-27',
       },
-      Total: {
-        UsageQuantity: {
-          Amount: '1.0',
-          Unit: 'GB-Month',
+      Groups: [
+        {
+          Keys: ['EBS:VolumeUsage.io1'],
+          Metrics: { UsageQuantity: { Amount: '1.0', Unit: 'GB-Month' } },
         },
-      },
+      ],
     },
     {
-      Estimated: false,
-      Groups: [],
       TimePeriod: {
         End: '2020-06-29',
         Start: '2020-06-28',
       },
-      Total: {
-        UsageQuantity: {
-          Amount: '2.0',
-          Unit: 'GB-Month',
+      Groups: [
+        {
+          Keys: ['EBS:VolumeUsage.io1'],
+          Metrics: { UsageQuantity: { Amount: '2.0', Unit: 'GB-Month' } },
         },
-      },
+      ],
     },
   ],
 }
