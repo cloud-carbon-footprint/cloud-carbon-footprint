@@ -72,6 +72,48 @@ describe('RDSStorage', () => {
     ])
   })
 
+  it('should call cost explorer with the expected request', async () => {
+    const startDate = '2020-07-24'
+    const endDate = '2020-07-26'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        expect(params).toEqual({
+          TimePeriod: {
+            Start: startDate,
+            End: endDate,
+          },
+          Filter: {
+            And: [
+              { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
+              {
+                Dimensions: {
+                  Key: 'USAGE_TYPE_GROUP',
+                  Values: ['RDS: Storage'],
+                },
+              },
+            ],
+          },
+          Granularity: 'DAILY',
+          Metrics: ['UsageQuantity'],
+          GroupBy: [
+            {
+              Key: 'USAGE_TYPE',
+              Type: 'DIMENSION',
+            },
+          ],
+        })
+
+        callback(null, buildCostExplorerGetUsageHoursResponse([]))
+      },
+    )
+
+    const rdsStorage = new RDSStorage()
+
+    await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+  })
+
   it('calculates GB-Month for shorter months', async () => {
     const startDate = '2020-06-24'
     const endDate = '2020-06-26'
@@ -189,20 +231,20 @@ describe('RDSStorage', () => {
     const startDate = '2020-06-24'
     const endDate = '2020-06-25'
     AWSMock.mock(
-        'CostExplorer',
-        'getCostAndUsage',
-        (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-          callback(null, {
-            ResultsByTime: [
-              {
-                TimePeriod: {
-                  Start: startDate,
-                },
-                Groups: [],
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, {
+          ResultsByTime: [
+            {
+              TimePeriod: {
+                Start: startDate,
               },
-            ],
-          })
-        },
+              Groups: [],
+            },
+          ],
+        })
+      },
     )
 
     const rdsStorage = new RDSStorage()
@@ -210,5 +252,4 @@ describe('RDSStorage', () => {
 
     expect(result).toEqual([])
   })
-
 })
