@@ -1,5 +1,5 @@
-import UsageData from './UsageData'
+import IUsageData from './IUsageData'
 
-export default interface StorageUsage extends UsageData {
+export default interface StorageUsage extends IUsageData {
   readonly sizeGb: number
 }

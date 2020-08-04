@@ -1,9 +1,9 @@
-import CloudService from '@domain/CloudService'
+import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import ComputeUsage from '@domain/ComputeUsage'
 
-export default abstract class ServiceWithCPUUtilization implements CloudService {
+export default abstract class ServiceWithCPUUtilization implements ICloudService {
   private readonly estimator: ComputeEstimator
 
   protected constructor() {

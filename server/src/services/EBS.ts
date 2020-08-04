@@ -2,10 +2,10 @@ import AWS from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
 import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, SSDCOEFFICIENT } from '@domain/constants'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import CloudService from '@domain/CloudService'
+import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 
-export default class EBS implements CloudService {
+export default class EBS implements ICloudService {
   serviceName = 'ebs'
   readonly costExplorer: AWS.CostExplorer
   readonly ssdEstimator: StorageEstimator
