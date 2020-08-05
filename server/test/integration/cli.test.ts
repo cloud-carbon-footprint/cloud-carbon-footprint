@@ -227,6 +227,7 @@ describe('cli', () => {
         'day',
       ])
 
+      console.log('File exists ', outputFilePath)
       // file should exist
       expect(fs.existsSync(outputFilePath)).toBe(true)
 
