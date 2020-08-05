@@ -2,9 +2,10 @@ import moment from 'moment'
 import AWS, { CostExplorer } from 'aws-sdk'
 
 import StorageUsage from '@domain/StorageUsage'
-import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConfig'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 export class VolumeUsage implements StorageUsage {
   readonly sizeGb: number

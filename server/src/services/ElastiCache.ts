@@ -1,8 +1,9 @@
 import AWS from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import { AWS_REGIONS, CACHE_NODE_TYPES } from '@domain/constants'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
+import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'

@@ -1,6 +1,7 @@
 import { StorageEstimator } from '@domain/StorageEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/FootprintEstimationConfig'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 describe('StorageEstimator', () => {
   const SSD_COEFFICIENT = 1.2

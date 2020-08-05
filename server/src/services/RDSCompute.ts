@@ -1,8 +1,9 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 import AWS from 'aws-sdk'
-import { AWS_REGIONS, RDS_INSTANCE_TYPES } from '@domain/constants'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
+import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'

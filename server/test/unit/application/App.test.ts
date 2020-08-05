@@ -6,7 +6,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
 import { RawRequest } from '@application/EstimationRequest'
-import { AWS_REGIONS } from '@domain/constants'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 jest.mock('@application/AWSServices')
 
