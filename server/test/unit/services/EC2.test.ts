@@ -140,6 +140,24 @@ describe('EC2', () => {
     ])
   })
 
+  it('should return an empty array if no vCPUs', async () => {
+    mockAwsCloudWatchGetMetricDataCall(new Date('2020-07-12T00:00:00.000Z'), new Date('2020-07-12T02:00:00.000Z'), {
+      MetricDataResults: [
+        {
+          Id: 'cpuUtilization',
+          Timestamps: [],
+          Values: [],
+        },
+      ],
+    })
+
+    const ec2Service = new EC2()
+
+    const result = await ec2Service.getUsage(new Date('2020-07-12T00:00:00Z'), new Date('2020-07-12T02:00:00Z'))
+
+    expect(result).toEqual([])
+  })
+
   function mockAwsCloudWatchGetMetricDataCall(startDate: Date, endDate: Date, response: any) {
     AWSMock.mock(
       'CloudWatch',
