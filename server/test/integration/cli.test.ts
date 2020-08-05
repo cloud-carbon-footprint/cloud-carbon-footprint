@@ -171,7 +171,7 @@ describe('cli', () => {
 
     beforeEach(() => {
       jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)
-      outputFilePath = path.join(process.cwd(), 'results-2020-08-05-16:41:31.csv')
+      outputFilePath = path.join(process.cwd(), 'results-2020-08-05-20:41:31.csv')
     })
     afterEach(() => {
       try {
