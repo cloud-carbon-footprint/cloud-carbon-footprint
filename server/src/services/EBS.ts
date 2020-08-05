@@ -53,7 +53,7 @@ export default class EBS implements ICloudService {
   }
 
   private getDiskType = (awsGroupKey: string) => {
-    if (awsGroupKey.endsWith('VolumeUsage.gp2') || awsGroupKey.endsWith('VolumeUsage.io1')) return DiskType.SSD
+    if (awsGroupKey.endsWith('VolumeUsage.gp2') || awsGroupKey.endsWith('VolumeUsage.piops')) return DiskType.SSD
     if (
       awsGroupKey.endsWith('VolumeUsage.st1') ||
       awsGroupKey.endsWith('VolumeUsage.sc1') ||

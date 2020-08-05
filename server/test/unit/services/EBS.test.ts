@@ -265,7 +265,7 @@ describe('Ebs', () => {
         callback(
           null,
           buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.io1'] },
+            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.piops'] },
           ]),
         )
       },
