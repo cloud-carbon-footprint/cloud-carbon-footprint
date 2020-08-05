@@ -5,6 +5,7 @@ import ElastiCache from '@services/ElastiCache'
 import { elastiCacheMockResponse } from '@fixtures'
 
 beforeAll(() => {
+  AWS.config.update({ region: 'us-west-1' })
   AWSMock.setSDKInstance(AWS)
 })
 
@@ -34,10 +35,10 @@ function costExplorerRequest(startDate: string, endDate: string) {
       End: endDate,
     },
     Filter: {
-      Dimensions: {
-        Key: 'USAGE_TYPE_GROUP',
-        Values: ['ElastiCache: Running Hours'],
-      },
+      And: [
+        { Dimensions: { Key: 'USAGE_TYPE_GROUP',Values: ['ElastiCache: Running Hours'] } },
+        { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
+      ]
     },
     Granularity: 'DAILY',
     GroupBy: [
