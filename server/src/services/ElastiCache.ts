@@ -55,10 +55,9 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       },
       Filter: {
         And: [
-          { Dimensions: { Key: 'USAGE_TYPE_GROUP',Values: ['ElastiCache: Running Hours'] } },
+          { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
           { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
-  
-        ]
+        ],
       },
       Granularity: 'DAILY',
       GroupBy: [

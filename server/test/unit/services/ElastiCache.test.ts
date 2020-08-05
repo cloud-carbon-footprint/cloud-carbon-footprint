@@ -36,9 +36,9 @@ function costExplorerRequest(startDate: string, endDate: string) {
     },
     Filter: {
       And: [
-        { Dimensions: { Key: 'USAGE_TYPE_GROUP',Values: ['ElastiCache: Running Hours'] } },
+        { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
         { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
-      ]
+      ],
     },
     Granularity: 'DAILY',
     GroupBy: [
