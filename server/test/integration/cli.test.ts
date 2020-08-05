@@ -167,12 +167,19 @@ describe('cli', () => {
   })
 
   describe('csv test', () => {
+    let outputFilePath: string
+
+    beforeEach(() => {
+      jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)
+      outputFilePath = path.join(process.cwd(), 'results-2020-08-05-16:41:31.csv')
+    })
     afterEach(() => {
       try {
-        fs.unlinkSync('output.csv')
+        fs.unlinkSync(outputFilePath)
       } catch (err) {
         console.error(err)
       }
+      jest.restoreAllMocks()
     })
 
     test('formats table into csv file', async () => {
@@ -205,7 +212,7 @@ describe('cli', () => {
 
       servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
-      const result = await cli([
+      await cli([
         'executable',
         'file',
         '--startDate',
@@ -220,13 +227,11 @@ describe('cli', () => {
         'day',
       ])
 
-      const outputFilePath = path.join(process.cwd(), 'output.csv')
-
       // file should exist
       expect(fs.existsSync(outputFilePath)).toBe(true)
 
       // csv generated should match snapshot
-      expect(fs.readFileSync('output.csv').toString()).toMatchSnapshot()
+      expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
     })
   })
 })
