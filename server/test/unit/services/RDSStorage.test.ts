@@ -255,7 +255,7 @@ describe('RDSStorage', () => {
         callback(
           null,
           buildCostExplorerGetUsageHoursResponse([
-            { start: '2020-06-27', value: 1, types: ['USW1-RDS:Standard-Storage'] },
+            { start: '2020-06-27', value: 1, types: ['USW1-RDS:StorageUsage'] },
           ]),
         )
       },

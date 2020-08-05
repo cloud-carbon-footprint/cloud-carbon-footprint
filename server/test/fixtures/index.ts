@@ -118,7 +118,7 @@ export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
       },
       Groups: [
         {
-          Keys: ['EBS:VolumeUsage.io1'],
+          Keys: ['EBS:VolumeUsage.piops'],
           Metrics: { UsageQuantity: { Amount: '1.0', Unit: 'GB-Month' } },
         },
       ],
@@ -130,7 +130,7 @@ export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
       },
       Groups: [
         {
-          Keys: ['EBS:VolumeUsage.io1'],
+          Keys: ['EBS:VolumeUsage.piops'],
           Metrics: { UsageQuantity: { Amount: '2.0', Unit: 'GB-Month' } },
         },
       ],
