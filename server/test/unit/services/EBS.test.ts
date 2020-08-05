@@ -1,8 +1,9 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import EBS from '@services/EBS'
-import { AWS_POWER_USAGE_EFFECTIVENESS, AWS_REGIONS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/constants'
+import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConfig'
 import { StorageEstimator } from '@domain/StorageEstimator'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 beforeAll(() => {
   AWS.config.update({ region: 'us-west-1' })

@@ -1,6 +1,6 @@
 import { validate } from '@application/EstimationRequest'
 import moment = require('moment')
-import { AWS_REGIONS } from '@domain/constants'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 describe('validate', () => {
   it('parses the start and end dates in utc', () => {

@@ -2,7 +2,7 @@ import express from 'express'
 import { App } from '@application/App'
 import { RawRequest } from '@application/EstimationRequest'
 import EmissionsByDayTable from '@view/EmissionsByDayTable'
-import { AWS_REGIONS } from '@domain/constants'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 const app = express()
 const port = 4000
