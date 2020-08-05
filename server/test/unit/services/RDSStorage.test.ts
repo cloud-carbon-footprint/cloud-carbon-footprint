@@ -228,7 +228,7 @@ describe('RDSStorage', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-27', value: 1, types: ['USW1-RDS:IOPS-Storage'] }]),
+          buildCostExplorerGetUsageHoursResponse([{ start: '2020-06-27', value: 1, types: ['USW1-RDS:PIOPS-Storage'] }]),
         )
       },
     )
