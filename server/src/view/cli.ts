@@ -6,6 +6,8 @@ import EmissionsByDayTable from '@view/EmissionsByDayTable'
 import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
 import CliPrompts from './CliPrompts'
 import { exportToCSV } from '@view/CSV'
+import moment from 'moment'
+import path from 'path'
 
 export default async function cli(argv: string[] = process.argv) {
   program
@@ -14,7 +16,7 @@ export default async function cli(argv: string[] = process.argv) {
     .option('-r, --region <string>', 'AWS region to analyze')
     .option('-g, --groupBy <string>', 'Group results by day or service. Default is day.')
     .option('-i, --interactive', 'Use interactive CLI prompts')
-    .option('-o, --format <string>', 'How to format the results [table, csv]. Default is table.')
+    .option('-f, --format <string>', 'How to format the results [table, csv]. Default is table.')
 
   program.parse(argv)
 
@@ -41,8 +43,9 @@ export default async function cli(argv: string[] = process.argv) {
   })
 
   if (format === 'csv') {
-    exportToCSV(table)
-    return ''
+    const filePath = path.join(process.cwd(), `results-${moment().format('YYYY-MM-DD-HH:mm:ss')}.csv`)
+    exportToCSV(table, filePath)
+    return `File saved to: ${filePath}`
   } else {
     return table
       .map((row: string[]) => row.reduce((acc, data, col) => acc + `| ${data}`.padEnd(colWidths[col]), ''))

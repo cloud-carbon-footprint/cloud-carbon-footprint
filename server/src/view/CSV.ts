@@ -1,10 +1,10 @@
 import fs from 'fs'
 
-export const exportToCSV = (table: string[][]): void => {
+export const exportToCSV = (contents: string[][], filePath: string): void => {
   let output = ''
-  table.forEach((row) => {
+  contents.forEach((row) => {
     output = output + row.join(',')
     output = output + '\n'
   })
-  fs.writeFileSync('output.csv', output)
+  fs.writeFileSync(filePath, output)
 }
