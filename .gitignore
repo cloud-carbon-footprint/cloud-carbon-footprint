@@ -6,3 +6,4 @@ server/**/*.map
 coverage
 .DS_Store
 .vscode
+*.csv
