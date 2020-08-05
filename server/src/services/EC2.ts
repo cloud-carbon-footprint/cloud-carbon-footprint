@@ -57,7 +57,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
 
     // Add vCPU to result object
     const vCPUData = metricDataResults.filter((a) => a.Id === 'vCPUs')
-    vCPUData[0].Timestamps.forEach((timestamp, i) => {
+    vCPUData[0]?.Timestamps.forEach((timestamp, i) => {
       const key = new Date(timestamp).toISOString()
       if (!result[key]) result[key] = { cpuUtilization: [], timestamp: timestamp }
       result[key].vCPUCount = vCPUData[0].Values[i]
