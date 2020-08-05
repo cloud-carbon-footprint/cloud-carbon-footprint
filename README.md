@@ -15,6 +15,7 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
     --endDate YYYY-MM-DD \
     --region [us-east-1 | us-east-2]`
     --groupBy [day | service]
+    --format [table | csv]
   ```
 
 ## To run (website)
