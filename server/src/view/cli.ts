@@ -44,7 +44,6 @@ export default async function cli(argv: string[] = process.argv) {
 
   if (format === 'csv') {
     const filePath = path.join(process.cwd(), `results-${moment().utc().format('YYYY-MM-DD-HH:mm:ss')}.csv`)
-    console.log('Saving file to', filePath)
     exportToCSV(table, filePath)
     return `File saved to: ${filePath}`
   } else {
