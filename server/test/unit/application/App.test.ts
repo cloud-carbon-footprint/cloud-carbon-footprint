@@ -147,7 +147,7 @@ describe('App', () => {
 
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
-          timestamp: new Date('2019-01-01T00:00:00Z'),
+          timestamp: new Date('2019-01-01T01:00:00Z'),
           wattHours: 1,
           co2e: 2,
         },
