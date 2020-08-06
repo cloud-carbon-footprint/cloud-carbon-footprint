@@ -14,9 +14,6 @@ describe('EC2', () => {
 
   it('gets EC2 usage', async () => {
     mockAwsCloudWatchGetMetricDataCall(new Date('2020-07-11T00:00:00.000Z'), new Date('2020-07-11T02:00:00.000Z'), {
-      ResponseMetadata: {
-        RequestId: '202758b8-af64-481d-ac9b-aeeb30dc5532',
-      },
       MetricDataResults: [
         {
           Id: 'cpuUtilization',
@@ -89,42 +86,42 @@ describe('EC2', () => {
 
     expect(result).toEqual([
       {
-        cpuUtilizationAverage: 54.419230769230765,
-        numberOfvCpus: 8.5,
-        timestamp: new Date('2020-07-10T00:00:00.000Z'),
+        cpuUtilizationAverage: (22.983333333333334 + 11.566666666666666) / 2, //should be the average of CPUUtilization accross vcpus per hour
+        numberOfvCpus: 4,
+        timestamp: new Date('2020-07-10T22:00:00.000Z'),
       },
       {
-        cpuUtilizationAverage: 30.17820512820513,
-        numberOfvCpus: 8.333333333333332,
+        cpuUtilizationAverage: (31.435897435897434 + 11.576923076923077 + 9.63265306122449 + 24.25) / 4,
+        numberOfvCpus: 4.5,
+        timestamp: new Date('2020-07-10T23:00:00.000Z'),
+      },
+      {
+        cpuUtilizationAverage: (9.716666666666667 + 13.083333333333334) / 2,
+        numberOfvCpus: 4,
         timestamp: new Date('2020-07-11T00:00:00.000Z'),
+      },
+      {
+        cpuUtilizationAverage: (20.46153846153846 + 32.44444444444444 + 10.26923076923077 + 9.75) / 4,
+        numberOfvCpus: 4.333333333333333,
+        timestamp: new Date('2020-07-11T01:00:00.000Z'),
       },
     ])
   })
 
   it('does not produce NaN when usage is 0', async () => {
     mockAwsCloudWatchGetMetricDataCall(new Date('2020-07-12T00:00:00.000Z'), new Date('2020-07-12T02:00:00.000Z'), {
-      ResponseMetadata: {
-        RequestId: '202758b8-af64-481d-ac9b-aeeb30dc5533',
-      },
       MetricDataResults: [
         {
           Id: 'cpuUtilization',
-          Label: 'AWS/EC2 i-0d1808334c391e056 CPUUtilization',
-          Timestamps: ['2020-07-12T01:00:00.000Z', '2020-07-12T02:00:00.000Z'],
+          Timestamps: ['2020-07-12T01:00:00.000Z'],
           Values: [],
-          StatusCode: 'Complete',
-          Messages: [],
         },
         {
           Id: 'vCPUs',
-          Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-          Timestamps: ['2020-07-12T01:00:00.000Z', '2020-07-12T02:00:00.000Z'],
-          Values: [0, 0],
-          StatusCode: 'Complete',
-          Messages: [],
+          Timestamps: ['2020-07-12T01:00:00.000Z'],
+          Values: [0],
         },
       ],
-      Messages: [],
     })
 
     const ec2Service = new EC2()
@@ -135,7 +132,7 @@ describe('EC2', () => {
       {
         cpuUtilizationAverage: 0,
         numberOfvCpus: 0,
-        timestamp: new Date('2020-07-12T00:00:00.000Z'),
+        timestamp: new Date('2020-07-12T01:00:00.000Z'),
       },
     ])
   })
