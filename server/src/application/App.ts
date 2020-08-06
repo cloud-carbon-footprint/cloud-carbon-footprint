@@ -16,7 +16,8 @@ export class App {
     )
 
     const estimates: EstimationResult[] = estimatesByService.flatMap((estimates, i) => {
-      return estimates.map((estimate: FootprintEstimate) => {
+      const estimatesByDay = this.aggregateByDay(estimates)
+      return estimatesByDay.map((estimate: FootprintEstimate) => {
         return {
           timestamp: estimate.timestamp,
           estimates: [
@@ -41,5 +42,38 @@ export class App {
     })
 
     return Array.from(aggregateByTimestamp.values())
+  }
+
+  private aggregateByDay(estimates: FootprintEstimate[]) {
+    const estimatesByDayMap = Object.values(estimates).reduce(
+      (
+        acc: {
+          [timestamp: string]: {
+            timestamp: Date
+            wattHours: number
+            co2e: number
+          }
+        },
+        estimate,
+      ) => {
+        const timestamp = new Date(estimate.timestamp)
+        const date = timestamp.toISOString().substr(0, 10)
+
+        if (!acc[date]) {
+          acc[date] = {
+            timestamp: new Date(date),
+            wattHours: estimate.wattHours,
+            co2e: estimate.co2e,
+          }
+        } else {
+          acc[date].wattHours += estimate.wattHours
+          acc[date].co2e += estimate.co2e
+        }
+        return acc
+      },
+      {},
+    )
+
+    return Object.values(estimatesByDayMap)
   }
 }

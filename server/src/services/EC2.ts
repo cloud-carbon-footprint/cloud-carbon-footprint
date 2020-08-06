@@ -49,9 +49,9 @@ export default class EC2 extends ServiceWithCPUUtilization {
     const cpuUtilizationData = metricDataResults.filter((a) => a.Id === 'cpuUtilization')
     cpuUtilizationData.forEach((instanceCPUUtilization) => {
       instanceCPUUtilization.Timestamps.forEach((timestamp, i) => {
-        const key = new Date(timestamp).toISOString()
-        if (!result[key]) result[key] = { cpuUtilization: [instanceCPUUtilization.Values[i]], timestamp: timestamp }
-        result[key].cpuUtilization.push()
+        const timestampkey = new Date(timestamp).toISOString()
+        if (!result[timestampkey]) result[timestampkey] = { cpuUtilization: [instanceCPUUtilization.Values[i]], timestamp: timestamp }
+        else result[timestampkey].cpuUtilization.push(instanceCPUUtilization.Values[i])
       })
     })
 
@@ -75,24 +75,12 @@ export default class EC2 extends ServiceWithCPUUtilization {
       }
     })
 
-    // Aggregate by date
-    const estimationsByDay: { [timestamp: string]: ComputeUsage } = {}
-    Object.values(result).forEach((a) => {
-      const timestamp = new Date(a.timestamp)
-      const date = timestamp.toISOString().substr(0, 10)
-
-      if (!estimationsByDay[date]) {
-        estimationsByDay[date] = {
-          timestamp: new Date(date),
-          cpuUtilizationAverage: a.cpuUtilizationAvg,
-          numberOfvCpus: a.vCPUCount,
-        }
-      } else {
-        estimationsByDay[date].cpuUtilizationAverage += a.cpuUtilizationAvg
-        estimationsByDay[date].numberOfvCpus += a.vCPUCount
+    return Object.values(result).map((estimate:RawComputeUsage)=>{
+      return {
+        cpuUtilizationAverage:estimate.cpuUtilizationAvg,
+        numberOfvCpus:estimate.vCPUCount,
+        timestamp:new Date(estimate.timestamp)
       }
     })
-
-    return Object.values(estimationsByDay)
   }
 }

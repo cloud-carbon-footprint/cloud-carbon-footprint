@@ -43,7 +43,7 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
       Id: 'cpuUtilization',
       Label: 'AWS/EC2 i-0d1808334c391e056 CPUUtilization',
       Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [1000000, 9999999],
+      Values: [100, 99.99999],
       StatusCode: 'Complete',
       Messages: [],
     },

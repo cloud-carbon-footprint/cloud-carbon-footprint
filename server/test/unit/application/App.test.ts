@@ -49,7 +49,7 @@ describe('App', () => {
       //assert
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
-          timestamp: moment('2020-12-07').add(i, 'days').toDate(),
+          timestamp: moment.utc('2020-12-07').add(i, 'days').toDate(),
           estimates: [
             {
               serviceName: 'ebs',
@@ -135,6 +135,55 @@ describe('App', () => {
       }
 
       await expect(() => app.getEstimate(rawRequest)).rejects.toThrow('Start date is not before end date')
+    })
+
+    it('should aggregate per day', async () => {
+      //setup
+      const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+      const mockCloudServices = [{ getEstimates: mockGetEstimates, serviceName: 'serviceOne', getUsage: mockGetUsage }]
+
+      AWSMock.mockReturnValue(mockCloudServices)
+
+      const expectedStorageEstimate: FootprintEstimate[] = [
+        {
+          timestamp: new Date('2019-01-01T00:00:00Z'),
+          wattHours: 1,
+          co2e: 2,
+        },
+        {
+          timestamp: new Date('2019-01-01T23:59:59Z'),
+          wattHours: 1,
+          co2e: 2,
+        },
+      ]
+
+      mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
+
+      const rawRequest: RawRequest = {
+        startDate: moment('2020-06-07').toISOString(),
+        endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
+        region: AWS_REGIONS.US_EAST_1,
+      }
+
+      //run
+      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
+
+      //assert
+      const expectedEstimationResults: EstimationResult[] = [
+        {
+          timestamp: new Date('2019-01-01'),
+          estimates: [
+            {
+              serviceName: 'serviceOne',
+              wattHours: 2,
+              co2e: 4,
+            }
+          ],
+        },
+      ]
+
+      expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
 })
