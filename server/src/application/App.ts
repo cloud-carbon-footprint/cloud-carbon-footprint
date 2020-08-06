@@ -61,7 +61,6 @@ export class App {
       getDayOfEstimate,
       estimates,
     )
-
     return Object.values(estimatesByDayMap)
   }
 }

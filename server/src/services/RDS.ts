@@ -2,7 +2,6 @@ import ICloudService from '@domain/ICloudService'
 import RDSComputeService from '@services/RDSCompute'
 import RDSStorage from '@services/RDSStorage'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import IUsageData from '@domain/IUsageData'
 
 export default class RDS implements ICloudService {
   serviceName = 'rds'
@@ -38,9 +37,5 @@ export default class RDS implements ICloudService {
     })
 
     return Object.values(result)
-  }
-
-  getUsage(start: Date, end: Date): Promise<IUsageData[]> {
-    throw `This getUsage implementation should not be called`
   }
 }
