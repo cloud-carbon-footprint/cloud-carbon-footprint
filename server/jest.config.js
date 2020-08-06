@@ -5,10 +5,10 @@ module.exports = {
   },
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      branches: 91,
+      functions: 97,
+      lines: 98,
+      statements: 98,
     },
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
@@ -19,4 +19,6 @@ module.exports = {
     '^@view/(.*)$': '<rootDir>/src/view/$1',
     '^@fixtures$': '<rootDir>/test/fixtures',
   },
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  coveragePathIgnorePatterns: ['<rootDir>/src/view/CliPrompts.ts'],
 }
