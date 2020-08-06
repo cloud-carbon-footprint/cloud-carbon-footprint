@@ -287,7 +287,7 @@ describe('Ebs', () => {
   })
 
   it('should filter unexpected cost explorer volume name', async () => {
-    const consoleMock = (console.warn = jest.fn())
+    jest.spyOn(global.console, 'warn').mockImplementation()
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -300,7 +300,6 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS()
-    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
 
     const result = await ebsService.getEstimates(
       new Date('2020-06-27T00:00:00Z'),
@@ -312,7 +311,7 @@ describe('Ebs', () => {
   })
 
   it('should log warning if unexpected cost explorer volume name', async () => {
-    const consoleMock = (console.warn = jest.fn())
+    jest.spyOn(global.console, 'warn').mockImplementation()
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -325,7 +324,6 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS()
-    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
 
     await ebsService.getEstimates(
       new Date('2020-06-27T00:00:00Z'),

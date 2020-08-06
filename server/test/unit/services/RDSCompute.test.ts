@@ -78,7 +78,7 @@ describe('RDS Compute', function () {
       [new Date('2020-01-25T05:00:00.000Z'), new Date('2020-01-26T23:00:00.000Z')],
       [32.34, 12.65],
     )
-    const cwMock = AWSMock.mock(
+    AWSMock.mock(
       'CloudWatch',
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {

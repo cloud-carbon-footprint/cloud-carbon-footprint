@@ -15,7 +15,7 @@ describe('StorageService', () => {
         super(TestService.COEFFICIENT)
       }
 
-      getUsage(start: Date, end: Date): Promise<StorageUsage[]> {
+      getUsage(): Promise<StorageUsage[]> {
         return undefined
       }
     }
