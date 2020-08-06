@@ -1,6 +1,5 @@
 import moment from 'moment'
 import AWS, { CostExplorer } from 'aws-sdk'
-
 import StorageUsage from '@domain/StorageUsage'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConfig'
 import FootprintEstimate from '@domain/FootprintEstimate'
@@ -32,21 +31,34 @@ export async function getUsageFromCostExplorer(
     region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
   })
 
-  const response: CostExplorer.GetCostAndUsageResponse = await costExplorer.getCostAndUsage(params).promise()
+  // loop thru pages
+  // const response: CostExplorer.GetCostAndUsageResponse = await costExplorer.getCostAndUsage(params).promise()
+  // let boop: AWS.CostExplorer.GetCostAndUsageResponse = {}
+  let response: AWS.CostExplorer.GetCostAndUsageResponse = {}
+  const responses: AWS.CostExplorer.GetCostAndUsageResponse[] = []
 
-  return response.ResultsByTime.map((result) => {
-    const timestampString = result.TimePeriod.Start
-    return result.Groups.map((group) => {
-      const gbMonth = Number.parseFloat(group.Metrics.UsageQuantity.Amount)
-      const sizeGb = estimateGigabyteUsage(gbMonth, timestampString)
-      const diskType = diskTypeCallBack(group.Keys[0]) // Should be improved
-      return {
-        sizeGb,
-        timestamp: new Date(timestampString),
-        diskType: diskType,
-      }
+  do {
+    response = await costExplorer.getCostAndUsage({ ...params, NextPageToken: response.NextPageToken }).promise()
+    responses.push(response)
+  } while (response.NextPageToken)
+
+  return responses
+    .map((response) => {
+      return response.ResultsByTime.map((result) => {
+        const timestampString = result.TimePeriod.Start
+        return result.Groups.map((group) => {
+          const gbMonth = Number.parseFloat(group.Metrics.UsageQuantity.Amount)
+          const sizeGb = estimateGigabyteUsage(gbMonth, timestampString)
+          const diskType = diskTypeCallBack(group.Keys[0]) // Should be improved
+          return {
+            sizeGb,
+            timestamp: new Date(timestampString),
+            diskType: diskType,
+          }
+        })
+      })
     })
-  })
+    .flat()
     .flat()
     .filter((storageUsage: StorageUsage) => storageUsage.sizeGb)
 }
