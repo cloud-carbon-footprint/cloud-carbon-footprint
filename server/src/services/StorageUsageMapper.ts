@@ -31,9 +31,6 @@ export async function getUsageFromCostExplorer(
     region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
   })
 
-  // loop thru pages
-  // const response: CostExplorer.GetCostAndUsageResponse = await costExplorer.getCostAndUsage(params).promise()
-  // let boop: AWS.CostExplorer.GetCostAndUsageResponse = {}
   let response: AWS.CostExplorer.GetCostAndUsageResponse = {}
   const responses: AWS.CostExplorer.GetCostAndUsageResponse[] = []
 
