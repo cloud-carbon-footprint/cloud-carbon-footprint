@@ -178,7 +178,7 @@ describe('App', () => {
               serviceName: 'serviceOne',
               wattHours: 2,
               co2e: 4,
-            }
+            },
           ],
         },
       ]

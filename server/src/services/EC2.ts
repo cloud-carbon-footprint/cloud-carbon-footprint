@@ -50,7 +50,8 @@ export default class EC2 extends ServiceWithCPUUtilization {
     cpuUtilizationData.forEach((instanceCPUUtilization) => {
       instanceCPUUtilization.Timestamps.forEach((timestamp, i) => {
         const timestampkey = new Date(timestamp).toISOString()
-        if (!result[timestampkey]) result[timestampkey] = { cpuUtilization: [instanceCPUUtilization.Values[i]], timestamp: timestamp }
+        if (!result[timestampkey])
+          result[timestampkey] = { cpuUtilization: [instanceCPUUtilization.Values[i]], timestamp: timestamp }
         else result[timestampkey].cpuUtilization.push(instanceCPUUtilization.Values[i])
       })
     })
@@ -75,11 +76,11 @@ export default class EC2 extends ServiceWithCPUUtilization {
       }
     })
 
-    return Object.values(result).map((estimate:RawComputeUsage)=>{
+    return Object.values(result).map((estimate: RawComputeUsage) => {
       return {
-        cpuUtilizationAverage:estimate.cpuUtilizationAvg,
-        numberOfvCpus:estimate.vCPUCount,
-        timestamp:new Date(estimate.timestamp)
+        cpuUtilizationAverage: estimate.cpuUtilizationAvg,
+        numberOfvCpus: estimate.vCPUCount,
+        timestamp: new Date(estimate.timestamp),
       }
     })
   }
