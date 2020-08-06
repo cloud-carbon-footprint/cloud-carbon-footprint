@@ -1,5 +1,5 @@
 export default interface FootprintEstimate {
-  readonly timestamp: Date
-  readonly wattHours: number
-  readonly co2e: number
+  timestamp: Date
+  wattHours: number
+  co2e: number
 }
