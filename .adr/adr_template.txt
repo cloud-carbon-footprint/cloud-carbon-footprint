@@ -1,0 +1,15 @@
+[INSTRUCTIONS AND TEMPLATE FOR LIGHTWEIGHT ARCHITECTURAL DECISION RECORDS]
+
+INSTRUCTIONS:
+- Use Case: when you are making a significant architectural decision
+- Create a adr file with the template specifications below
+- Keep it short and lightweight! A sentence for each topic max.
+
+
+TEMPLATE:
+Filename: ADR_{number}_{shortTitle}
+
+Title — Short title
+Decision — What decision was made?
+Context — What do I need to know about this decision?
+Consequences — What are the outcomes of the decision?
