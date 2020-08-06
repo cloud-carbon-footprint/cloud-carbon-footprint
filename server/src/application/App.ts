@@ -3,7 +3,7 @@ import { EstimationResult } from '@application/EstimationResult'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
 import AWS from 'aws-sdk'
-import { groupBy, reduceBy } from 'ramda'
+import { reduceBy } from 'ramda'
 
 export class App {
   async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
