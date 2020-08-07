@@ -27,7 +27,6 @@ export async function getUsageFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
 ): Promise<VolumeUsage[]> {
-
   const responses: CostExplorer.GetCostAndUsageResponse[] = await getCostAndUsageResponses(params)
 
   return responses
