@@ -1,30 +1,26 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
-import AWS from 'aws-sdk'
+import { CloudWatch, CostExplorer } from 'aws-sdk'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { getCostAndUsageResponses } from '@services/AWS'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
-  readonly cloudWatch: AWS.CloudWatch
-  readonly costExplorer: AWS.CostExplorer
+  readonly cloudWatch: CloudWatch
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch()
-    this.costExplorer = new AWS.CostExplorer({
-      region: AWS_REGIONS.US_EAST_1,
-    })
+    this.cloudWatch = new CloudWatch()
   }
 
   async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
     const getMetricDataResponse = await this.getVCPUs(start, end)
-    const getCostAndUsageResponse = await this.getTotalVCpusByDate(
+    const getCostAndUsageResponses = await this.getTotalVCpusByDate(
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
     )
-    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponse, RDS_INSTANCE_TYPES)
+    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponses, RDS_INSTANCE_TYPES)
   }
 
   private async getVCPUs(start: Date, end: Date) {
@@ -52,7 +48,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
   private async getTotalVCpusByDate(
     startDate: string,
     endDate: string,
-  ): Promise<AWS.CostExplorer.GetCostAndUsageResponse> {
+  ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
     const params = {
       TimePeriod: {
         Start: startDate,
@@ -84,6 +80,6 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       Metrics: ['UsageQuantity'],
     }
 
-    return await this.costExplorer.getCostAndUsage(params).promise()
+    return await getCostAndUsageResponses(params)
   }
 }
