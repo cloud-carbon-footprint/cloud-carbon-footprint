@@ -7,7 +7,7 @@ beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
-describe('Ebs', () => {
+describe('aws service helper', () => {
   const mockFunction = jest.fn()
   mockFunction
     .mockReturnValueOnce(
@@ -28,7 +28,7 @@ describe('Ebs', () => {
     jest.restoreAllMocks()
   })
 
-  it('test', async () => {
+  it('should follow next page tokens in GetCostAndUsage response', async () => {
     const params = {
       TimePeriod: {
         Start: '2019-08-06',

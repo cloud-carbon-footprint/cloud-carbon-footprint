@@ -1,10 +1,10 @@
 import moment from 'moment'
-import AWS, { CostExplorer } from 'aws-sdk'
+import { CostExplorer } from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConfig'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { getCostAndUsageResponses } from './AWS'
 
 export class VolumeUsage implements StorageUsage {
   readonly sizeGb: number
@@ -27,17 +27,8 @@ export async function getUsageFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
 ): Promise<VolumeUsage[]> {
-  const costExplorer = new AWS.CostExplorer({
-    region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
-  })
 
-  let response: AWS.CostExplorer.GetCostAndUsageResponse = {}
-  const responses: AWS.CostExplorer.GetCostAndUsageResponse[] = []
-
-  do {
-    response = await costExplorer.getCostAndUsage({ ...params, NextPageToken: response.NextPageToken }).promise()
-    responses.push(response)
-  } while (response.NextPageToken)
+  const responses: CostExplorer.GetCostAndUsageResponse[] = await getCostAndUsageResponses(params)
 
   return responses
     .map((response) => {
