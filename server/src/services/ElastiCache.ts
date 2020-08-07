@@ -1,21 +1,18 @@
-import AWS from 'aws-sdk'
+import { CostExplorer, CloudWatch, config } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { getCostAndUsageResponses } from '@services/AWS'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
-  readonly cloudWatch: AWS.CloudWatch
-  readonly costExplorer: AWS.CostExplorer
+  readonly cloudWatch: CloudWatch
+  readonly costExplorer: CostExplorer
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch()
-    this.costExplorer = new AWS.CostExplorer({
-      region: AWS_REGIONS.US_EAST_1,
-    })
+    this.cloudWatch = new CloudWatch()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
@@ -37,18 +34,18 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
     }
 
     const getMetricDataResponse = await this.cloudWatch.getMetricData(params).promise()
-    const getCostAndUsageResponse = await this.getTotalVCpusByDate(
+    const getCostAndUsageResponses = await this.getTotalVCpusByDate(
       startDate.toISOString().substr(0, 10),
       endDate.toISOString().substr(0, 10),
     )
 
-    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponse, CACHE_NODE_TYPES)
+    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponses, CACHE_NODE_TYPES)
   }
 
   private async getTotalVCpusByDate(
     startDate: string,
     endDate: string,
-  ): Promise<AWS.CostExplorer.GetCostAndUsageResponse> {
+  ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
     const params = {
       TimePeriod: {
         Start: startDate,
@@ -57,7 +54,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       Filter: {
         And: [
           { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
-          { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
+          { Dimensions: { Key: 'REGION', Values: [config.region] } },
         ],
       },
       Granularity: 'DAILY',
@@ -70,6 +67,6 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       Metrics: ['UsageQuantity'],
     }
 
-    return await this.costExplorer.getCostAndUsage(params).promise()
+    return await getCostAndUsageResponses(params)
   }
 }

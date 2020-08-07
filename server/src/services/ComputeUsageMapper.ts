@@ -1,5 +1,6 @@
 import { CloudWatch, CostExplorer } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
+import { getCostAndUsageResponses } from './AWS'
 
 function getCPUUtilizationByTimestamp(metricDataResponse: CloudWatch.GetMetricDataOutput) {
   const cpuUtilizationByTimestamp: { [key: string]: number[] } = {}
@@ -15,16 +16,18 @@ function getCPUUtilizationByTimestamp(metricDataResponse: CloudWatch.GetMetricDa
 }
 
 function getNumberVcpusByDate(
-  getCostAndUsageResponse: CostExplorer.GetCostAndUsageResponse,
+  getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
   NODE_TYPES: { [p: string]: number },
 ) {
   const vcpusByDate: { [timestamp: string]: number } = {}
-  getCostAndUsageResponse.ResultsByTime.reduce((acc, result) => {
-    acc[result.TimePeriod.Start] = result.Groups.reduce((sum, group) => {
-      return sum + Number.parseInt(group.Metrics.UsageQuantity.Amount) * NODE_TYPES[group.Keys[0].split(':')[1]]
-    }, 0)
-    return acc
-  }, vcpusByDate)
+  getCostAndUsageResponses.forEach((response) => {
+    response.ResultsByTime.reduce((acc, result) => {
+      acc[result.TimePeriod.Start] = result.Groups.reduce((sum, group) => {
+        return sum + Number.parseInt(group.Metrics.UsageQuantity.Amount) * NODE_TYPES[group.Keys[0].split(':')[1]]
+      }, 0)
+      return acc
+    }, vcpusByDate)
+  })
   return vcpusByDate
 }
 
@@ -51,10 +54,10 @@ function buildComputeUsage(cpuUtilizationByTimestamp: { [p: string]: number[] },
 
 export function getComputeUsage(
   metricDataResponse: CloudWatch.GetMetricDataOutput,
-  getCostAndUsageResponse: CostExplorer.GetCostAndUsageResponse,
+  getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
   NODE_TYPES: { [p: string]: number },
 ): ComputeUsage[] {
   const cpuUtilizationByTimestamp = getCPUUtilizationByTimestamp(metricDataResponse)
-  const vcpusByDate = getNumberVcpusByDate(getCostAndUsageResponse, NODE_TYPES)
+  const vcpusByDate = getNumberVcpusByDate(getCostAndUsageResponses, NODE_TYPES)
   return buildComputeUsage(cpuUtilizationByTimestamp, vcpusByDate)
 }
