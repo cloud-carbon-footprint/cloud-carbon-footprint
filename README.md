@@ -38,4 +38,4 @@ This script runs the website in dev mode, with unified logging output, watch mod
   - `./scripts/dev.bash`: tests
 
 ## Troubleshooting
-Make sure CostExplorer is enabled. Also ensure your AWS credentials, region, and profile are pointing to the right place.
+Make sure CostExplorer is enabled. Also ensure your AWS credentials, region, and profile are pointing to the right place (see: your [AWS config and credentials files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)).
