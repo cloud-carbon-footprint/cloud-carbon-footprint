@@ -1,6 +1,5 @@
 import { CloudWatch, CostExplorer } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
-import { getCostAndUsageResponses } from './AWS'
 
 function getCPUUtilizationByTimestamp(metricDataResponse: CloudWatch.GetMetricDataOutput) {
   const cpuUtilizationByTimestamp: { [key: string]: number[] } = {}
