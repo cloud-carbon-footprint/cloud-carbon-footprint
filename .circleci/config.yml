@@ -1,0 +1,32 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/cloud-carbon-footprint
+    docker:
+      - image: circleci/node:4.8.2
+    steps:
+      - checkout
+      - run:
+          name: setup
+          command: './scripts/setup.bash'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "client/package-lock.json" }}
+      - restore_cache:
+          key: dependency-cache-{{ checksum "server/package-lock.json" }}
+      - run:
+          name: npm-install
+          command: './scripts/setup.bash'
+      - save_cache:
+          key: dependency-cache-{{ checksum "client/package-lock.json" }}
+          paths:
+            - ./client/node_modules
+      - save_cache:
+          key: dependency-cache-{{ checksum "server/package-lock.json" }}
+          paths:
+            - ./server/node_modules
+      - run:
+          name: lint
+          command: './scripts/lint.bash'
+      - run:
+          name: test
+          command: './scripts/test.bash'
