@@ -1,4 +1,4 @@
-import { CostExplorer } from 'aws-sdk'
+import { CloudWatch, CostExplorer } from 'aws-sdk'
 import { AWS_REGIONS } from './AWSRegions'
 
 export async function getCostAndUsageResponses(
@@ -15,5 +15,21 @@ export async function getCostAndUsageResponses(
     response = await costExplorer.getCostAndUsage({ ...params, NextPageToken: response.NextPageToken }).promise()
     responses.push(response)
   } while (response.NextPageToken)
+  return responses
+}
+
+export async function getMetricDataResponses(
+  params: CloudWatch.GetMetricDataInput,
+): Promise<CloudWatch.GetMetricDataOutput[]> {
+  const cloudWatch = new CloudWatch()
+
+  let response: CloudWatch.GetMetricDataOutput = {}
+  const responses: CloudWatch.GetMetricDataOutput[] = []
+
+  do {
+    response = await cloudWatch.getMetricData({ ...params, NextToken: response.NextToken }).promise()
+    responses.push(response)
+  } while (response.NextToken)
+
   return responses
 }
