@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/cloud-carbon-footprint
     docker:
-      - image: circleci/node:12.18.2
+      - image: circleci/node:current
     steps:
       - checkout
       - restore_cache:
