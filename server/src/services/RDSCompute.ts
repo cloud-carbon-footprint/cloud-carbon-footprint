@@ -1,26 +1,24 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
-import { CloudWatch, CostExplorer } from 'aws-sdk'
+import { CostExplorer } from 'aws-sdk'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
-import { getCostAndUsageResponses } from '@services/AWS'
+import { getCostAndUsageResponses, getMetricDataResponses } from '@services/AWS'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
-  readonly cloudWatch: CloudWatch
 
   constructor() {
     super()
-    this.cloudWatch = new CloudWatch()
   }
 
   async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
-    const getMetricDataResponse = await this.getVCPUs(start, end)
-    const getCostAndUsageResponses = await this.getTotalVCpusByDate(
+    const metricDataResponses = await this.getVCPUs(start, end)
+    const costAndUsageResponses = await this.getTotalVCpusByDate(
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
     )
-    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponses, RDS_INSTANCE_TYPES)
+    return getComputeUsage(metricDataResponses, costAndUsageResponses, RDS_INSTANCE_TYPES)
   }
 
   private async getVCPUs(start: Date, end: Date) {
@@ -41,8 +39,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const getMetricDataResponse = await this.cloudWatch.getMetricData(params).promise()
-    return getMetricDataResponse
+    return await getMetricDataResponses(params)
   }
 
   private async getTotalVCpusByDate(

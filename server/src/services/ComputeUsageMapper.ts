@@ -1,9 +1,13 @@
 import { CloudWatch, CostExplorer } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 
-function getCPUUtilizationByTimestamp(metricDataResponse: CloudWatch.GetMetricDataOutput) {
+function getCPUUtilizationByTimestamp(metricDataResponses: CloudWatch.GetMetricDataOutput[]) {
   const cpuUtilizationByTimestamp: { [key: string]: number[] } = {}
-  const cpuUtilizationData = metricDataResponse.MetricDataResults.filter((a) => a.Id === 'cpuUtilization')
+
+  const cpuUtilizationData: CloudWatch.MetricDataResult[] = metricDataResponses.flatMap((metricDataResponse) => {
+    return metricDataResponse.MetricDataResults.filter((metricData) => metricData.Id === 'cpuUtilization')
+  })
+
   cpuUtilizationData.forEach((allClustersCPUUtilization) => {
     allClustersCPUUtilization.Timestamps.forEach((timestamp, i) => {
       const key = new Date(timestamp).toISOString().substr(0, 10)
@@ -52,11 +56,11 @@ function buildComputeUsage(cpuUtilizationByTimestamp: { [p: string]: number[] },
 }
 
 export function getComputeUsage(
-  metricDataResponse: CloudWatch.GetMetricDataOutput,
+  metricDataResponses: CloudWatch.GetMetricDataOutput[],
   getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
   NODE_TYPES: { [p: string]: number },
 ): ComputeUsage[] {
-  const cpuUtilizationByTimestamp = getCPUUtilizationByTimestamp(metricDataResponse)
+  const cpuUtilizationByTimestamp = getCPUUtilizationByTimestamp(metricDataResponses)
   const vcpusByDate = getNumberVcpusByDate(getCostAndUsageResponses, NODE_TYPES)
   return buildComputeUsage(cpuUtilizationByTimestamp, vcpusByDate)
 }

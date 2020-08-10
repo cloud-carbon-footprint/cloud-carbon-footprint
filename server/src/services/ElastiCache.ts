@@ -1,18 +1,15 @@
-import { CostExplorer, CloudWatch, config } from 'aws-sdk'
+import { CostExplorer, config } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
-import { getCostAndUsageResponses } from '@services/AWS'
+import { getCostAndUsageResponses, getMetricDataResponses } from '@services/AWS'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
-  readonly cloudWatch: CloudWatch
-  readonly costExplorer: CostExplorer
 
   constructor() {
     super()
-    this.cloudWatch = new CloudWatch()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
@@ -33,13 +30,14 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const getMetricDataResponse = await this.cloudWatch.getMetricData(params).promise()
-    const getCostAndUsageResponses = await this.getTotalVCpusByDate(
+    const metricDataResponses = await getMetricDataResponses(params)
+
+    const costAndUsageResponses = await this.getTotalVCpusByDate(
       startDate.toISOString().substr(0, 10),
       endDate.toISOString().substr(0, 10),
     )
 
-    return getComputeUsage(getMetricDataResponse, getCostAndUsageResponses, CACHE_NODE_TYPES)
+    return getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
   }
 
   private async getTotalVCpusByDate(
