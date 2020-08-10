@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
+import { getMetricDataResponses } from './AWS'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
@@ -25,8 +26,8 @@ export default class S3 extends HDDStorageService {
       ScanBy: 'TimestampAscending',
     }
 
-    const response = await this.cloudWatch.getMetricData(params).promise()
-    const s3ResponseData = response.MetricDataResults[0]
+    const responses = await getMetricDataResponses(params)
+    const s3ResponseData = responses[0].MetricDataResults[0]
 
     return (
       s3ResponseData.Timestamps.map((timestampString, i) => {

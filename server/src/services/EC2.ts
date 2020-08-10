@@ -1,14 +1,12 @@
-import AWS from 'aws-sdk'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
+import { getMetricDataResponses } from './AWS'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
-  readonly cloudWatch: AWS.CloudWatch
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
@@ -34,7 +32,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const response = await this.cloudWatch.getMetricData(params).promise()
+    const responses = await getMetricDataResponses(params)
 
     interface RawComputeUsage {
       cpuUtilization?: number[]
@@ -45,7 +43,10 @@ export default class EC2 extends ServiceWithCPUUtilization {
     const result: { [key: string]: RawComputeUsage } = {}
 
     // Aggregate CPU Utilization
-    const metricDataResults = response.MetricDataResults
+    const metricDataResults = responses.flatMap((response) => {
+      return response.MetricDataResults
+    })
+
     const cpuUtilizationData = metricDataResults.filter((a) => a.Id === 'cpuUtilization')
     cpuUtilizationData.forEach((instanceCPUUtilization) => {
       instanceCPUUtilization.Timestamps.forEach((timestamp, i) => {
