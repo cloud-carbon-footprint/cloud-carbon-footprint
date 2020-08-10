@@ -1,15 +1,14 @@
-import AWS from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
-import { getMetricDataResponses } from './AWS'
+import { AwsDecorator } from './AwsDecorator'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
-  readonly cloudWatch: AWS.CloudWatch
+  readonly aws: AwsDecorator
 
   constructor() {
     super()
-    this.cloudWatch = new AWS.CloudWatch()
+    this.aws = new AwsDecorator()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
@@ -26,7 +25,7 @@ export default class S3 extends HDDStorageService {
       ScanBy: 'TimestampAscending',
     }
 
-    const responses = await getMetricDataResponses(params)
+    const responses = await this.aws.getMetricDataResponses(params)
     const s3ResponseData = responses[0].MetricDataResults[0]
 
     return (

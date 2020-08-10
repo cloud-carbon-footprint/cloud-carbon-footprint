@@ -1,6 +1,6 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch } from 'aws-sdk'
-import { getMetricDataResponses, getCostAndUsageResponses } from '@services/AWS'
+import { AwsDecorator } from '@services/AwsDecorator'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
 
 beforeAll(() => {
@@ -14,7 +14,7 @@ describe('aws service helper', () => {
     jest.restoreAllMocks()
   })
 
-  it('should follow next page tokens in GetCostAndUsage response', async () => {
+  it('followPages decorator should follow CostExplorer next pages', async () => {
     const costExplorerMockFunction = jest.fn()
     const firstPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
       [{ start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
@@ -33,12 +33,12 @@ describe('aws service helper', () => {
         callback(null, costExplorerMockFunction())
       },
     )
-    const responses = await getCostAndUsageResponses(buildAwsCostExplorerGetCostAndUsageRequest())
+    const responses = await new AwsDecorator().getCostAndUsageResponses(buildAwsCostExplorerGetCostAndUsageRequest())
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 
-  it('should follow next pages in getMetricData', async () => {
+  it('followPages decorator should follow CloudWatch next pages', async () => {
     const cloudWatchMockFunction = jest.fn()
     const firstPageResponse = buildAwsCloudWatchGetMetricDataResponse('tokenToNextPage')
     const secondPageResponse = buildAwsCloudWatchGetMetricDataResponse(null)
@@ -51,7 +51,7 @@ describe('aws service helper', () => {
         callback(null, cloudWatchMockFunction())
       },
     )
-    const responses = await getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
+    const responses = await new AwsDecorator().getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })

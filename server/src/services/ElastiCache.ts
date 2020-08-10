@@ -1,19 +1,21 @@
-import { CostExplorer, config } from 'aws-sdk'
+import { config } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
-import { getCostAndUsageResponses, getMetricDataResponses } from '@services/AWS'
+import { AwsDecorator } from '@services/AwsDecorator'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
+  readonly aws: AwsDecorator
 
   constructor() {
     super()
+    this.aws = new AwsDecorator()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
-    const params = {
+    const cloudWatchParams = {
       StartTime: startDate,
       EndTime: endDate,
       MetricDataQueries: [
@@ -30,24 +32,12 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const metricDataResponses = await getMetricDataResponses(params)
+    const metricDataResponses = await this.aws.getMetricDataResponses(cloudWatchParams)
 
-    const costAndUsageResponses = await this.getTotalVCpusByDate(
-      startDate.toISOString().substr(0, 10),
-      endDate.toISOString().substr(0, 10),
-    )
-
-    return getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
-  }
-
-  private async getTotalVCpusByDate(
-    startDate: string,
-    endDate: string,
-  ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
-    const params = {
+    const costExplorerParams = {
       TimePeriod: {
-        Start: startDate,
-        End: endDate,
+        Start: startDate.toISOString().substr(0, 10),
+        End: endDate.toISOString().substr(0, 10),
       },
       Filter: {
         And: [
@@ -64,7 +54,8 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ],
       Metrics: ['UsageQuantity'],
     }
+    const costAndUsageResponses = await this.aws.getCostAndUsageResponses(costExplorerParams)
 
-    return await getCostAndUsageResponses(params)
+    return getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
   }
 }

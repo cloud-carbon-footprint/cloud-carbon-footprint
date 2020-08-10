@@ -1,12 +1,14 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
-import { getMetricDataResponses } from './AWS'
+import { AwsDecorator } from './AwsDecorator'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
+  readonly aws: AwsDecorator
 
   constructor() {
     super()
+    this.aws = new AwsDecorator()
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<ComputeUsage[]> {
@@ -32,7 +34,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const responses = await getMetricDataResponses(params)
+    const responses = await this.aws.getMetricDataResponses(params)
 
     interface RawComputeUsage {
       cpuUtilization?: number[]
