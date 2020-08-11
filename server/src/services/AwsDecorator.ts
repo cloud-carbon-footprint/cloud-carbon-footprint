@@ -5,7 +5,7 @@ import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
 
 export class AwsDecorator {
-  async getCostAndUsageResponse(
+  private async getCostAndUsageResponse(
     params: CostExplorer.GetCostAndUsageRequest,
   ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
     const costExplorer = new CostExplorer({
@@ -15,23 +15,25 @@ export class AwsDecorator {
     return [await costExplorer.getCostAndUsage(params).promise()]
   }
 
-  async getMetricDataResponse(params: CloudWatch.GetMetricDataInput): Promise<CloudWatch.GetMetricDataOutput[]> {
+  private async getMetricDataResponse(
+    params: CloudWatch.GetMetricDataInput,
+  ): Promise<CloudWatch.GetMetricDataOutput[]> {
     const cloudWatch = new CloudWatch()
     return [await cloudWatch.getMetricData(params).promise()]
   }
 
   @enablePagination('NextPageToken')
-  async getCostAndUsageResponses(params: GetCostAndUsageRequest): Promise<GetCostAndUsageResponse[]> {
+  public async getCostAndUsageResponses(params: GetCostAndUsageRequest): Promise<GetCostAndUsageResponse[]> {
     return await this.getCostAndUsageResponse(params)
   }
 
   @enablePagination('NextToken')
-  async getMetricDataResponses(params: GetMetricDataInput): Promise<GetMetricDataOutput[]> {
+  public async getMetricDataResponses(params: GetMetricDataInput): Promise<GetMetricDataOutput[]> {
     return await this.getMetricDataResponse(params)
   }
 }
 
-export function enablePagination<RequestType, ResponseType>(nextPageProperty: string) {
+function enablePagination<RequestType, ResponseType>(nextPageProperty: string) {
   return (target: unknown, propertyKey: string, descriptor?: PropertyDescriptor) => {
     const originalMethod = descriptor.value
     descriptor.value = async function (props: RequestType) {
