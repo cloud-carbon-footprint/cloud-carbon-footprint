@@ -5,7 +5,7 @@ export default async function (): Promise<string[]> {
     input('startDate', 'Please enter start date: '),
     input('endDate', 'Please enter end date: '),
     input('region', 'Please enter AWS region (default is all regions): '),
-    input('groupBy', 'Please enter how to group results by [day|service]: '),
+    input('groupBy', 'Please enter how to group results by [day|dayAndService]: '),
     input('format', 'Please enter the desired format for the data [table|csv]: '),
   ]
 
