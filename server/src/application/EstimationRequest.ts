@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { regions } from '@services/AWSRegions'
+import { AWS_REGIONS } from '@services/AWSRegions'
 
 export interface RawRequest {
   startDate?: string
@@ -35,7 +35,7 @@ export function validate(request: RawRequest): EstimationRequest {
     errors.push('End date is not in a recognized RFC2822 or ISO format')
   }
 
-  if (request.region && !regions.includes(request.region)) {
+  if (request.region && !(<any>Object).values(AWS_REGIONS).includes(request.region)) {
     errors.push('Not a valid region')
   }
 
