@@ -224,7 +224,7 @@ describe('cli', () => {
         '--format',
         'csv',
         '--groupBy',
-        'day',
+        'dayAndService',
       ])
 
       // file should exist

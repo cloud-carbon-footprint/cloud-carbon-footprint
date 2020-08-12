@@ -2,7 +2,7 @@ import { program } from 'commander'
 import { App } from '@application/App'
 import * as process from 'process'
 import { RawRequest } from '@application/EstimationRequest'
-import EmissionsByDayTable from '@view/EmissionsByDayTable'
+import EmissionsByDayAndServiceTable from '@view/EmissionsByDayAndServiceTable'
 import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
 import CliPrompts from './CliPrompts'
 import { exportToCSV } from '@view/CSV'
@@ -39,7 +39,7 @@ export default async function cli(argv: string[] = process.argv) {
     if (groupBy === 'service') {
       return EmissionsByServiceTable(estimations)
     }
-    return EmissionsByDayTable(estimations)
+    return EmissionsByDayAndServiceTable(estimations)
   })
 
   if (format === 'csv') {
