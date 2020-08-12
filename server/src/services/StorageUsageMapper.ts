@@ -26,8 +26,11 @@ export enum DiskType {
 export async function getUsageFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
+  region: string,
 ): Promise<VolumeUsage[]> {
-  const responses: CostExplorer.GetCostAndUsageResponse[] = await new AwsDecorator().getCostAndUsageResponses(params)
+  const responses: CostExplorer.GetCostAndUsageResponse[] = await new AwsDecorator(region).getCostAndUsageResponses(
+    params,
+  )
 
   return responses
     .map((response) => {

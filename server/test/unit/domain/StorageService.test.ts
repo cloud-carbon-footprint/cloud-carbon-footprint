@@ -54,7 +54,7 @@ describe('StorageService', () => {
           AWS_REGIONS.US_EAST_1,
         ),
       )
-      expect(getUsageMock).toBeCalledWith(date, date)
+      expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)
     })
   })
 })

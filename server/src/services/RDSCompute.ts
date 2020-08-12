@@ -7,23 +7,22 @@ import { AwsDecorator } from '@services/AwsDecorator'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
-  readonly aws: AwsDecorator
 
   constructor() {
     super()
-    this.aws = new AwsDecorator()
   }
 
-  async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
-    const metricDataResponses = await this.getVCPUs(start, end)
+  async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
+    const metricDataResponses = await this.getVCPUs(start, end, region)
     const costAndUsageResponses = await this.getTotalVCpusByDate(
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
+      region,
     )
     return getComputeUsage(metricDataResponses, costAndUsageResponses, RDS_INSTANCE_TYPES)
   }
 
-  private async getVCPUs(start: Date, end: Date) {
+  private async getVCPUs(start: Date, end: Date, region: string) {
     const params = {
       StartTime: start,
       EndTime: end,
@@ -41,12 +40,13 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    return await this.aws.getMetricDataResponses(params)
+    return await new AwsDecorator(region).getMetricDataResponses(params)
   }
 
   private async getTotalVCpusByDate(
     startDate: string,
     endDate: string,
+    region: string,
   ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
     const params = {
       TimePeriod: {
@@ -58,7 +58,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
           {
             Dimensions: {
               Key: 'REGION',
-              Values: ['us-west-1'],
+              Values: [region],
             },
           },
           {
@@ -79,6 +79,6 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       Metrics: ['UsageQuantity'],
     }
 
-    return await this.aws.getCostAndUsageResponses(params)
+    return await new AwsDecorator(region).getCostAndUsageResponses(params)
   }
 }

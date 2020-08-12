@@ -1,4 +1,3 @@
-import AWS from 'aws-sdk'
 import ICloudService from '@domain/ICloudService'
 import {
   DiskType,
@@ -12,11 +11,11 @@ export default class EBS implements ICloudService {
   serviceName = 'ebs'
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const usage: VolumeUsage[] = await this.getUsage(start, end)
+    const usage: VolumeUsage[] = await this.getUsage(start, end, region)
     return getEstimatesFromCostExplorer(start, end, region, usage)
   }
 
-  async getUsage(startDate: Date, endDate: Date): Promise<VolumeUsage[]> {
+  async getUsage(startDate: Date, endDate: Date, region: string): Promise<VolumeUsage[]> {
     const params = {
       TimePeriod: {
         Start: startDate.toISOString().substr(0, 10),
@@ -36,7 +35,7 @@ export default class EBS implements ICloudService {
               ],
             },
           },
-          { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
+          { Dimensions: { Key: 'REGION', Values: [region] } },
         ],
       },
       Granularity: 'DAILY',
@@ -49,7 +48,7 @@ export default class EBS implements ICloudService {
       ],
     }
 
-    return await getUsageFromCostExplorer(params, this.getDiskType)
+    return await getUsageFromCostExplorer(params, this.getDiskType, region)
   }
 
   private getDiskType = (awsGroupKey: string) => {

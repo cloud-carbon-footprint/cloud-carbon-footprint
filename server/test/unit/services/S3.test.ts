@@ -52,7 +52,11 @@ describe('S3', () => {
 
     const s3Service = new S3()
 
-    const result = await s3Service.getUsage(new Date('2020-06-27T00:00:00Z'), new Date('2020-06-30T00:00:00Z'))
+    const result = await s3Service.getUsage(
+      new Date('2020-06-27T00:00:00Z'),
+      new Date('2020-06-30T00:00:00Z'),
+      'us-east-1',
+    )
 
     expect(result).toEqual([
       {

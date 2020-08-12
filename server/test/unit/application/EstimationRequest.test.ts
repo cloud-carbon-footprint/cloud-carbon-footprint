@@ -1,6 +1,6 @@
 import { validate } from '@application/EstimationRequest'
-import moment = require('moment')
 import { AWS_REGIONS } from '@services/AWSRegions'
+import moment = require('moment')
 
 describe('validate', () => {
   it('parses the start and end dates in utc', () => {
@@ -157,15 +157,5 @@ describe('validate', () => {
     }
 
     expect(() => validate(input)).toThrow('Not a valid region')
-  })
-
-  it('ensures the region is valid', () => {
-    const input = {
-      startDate: '2000-07-10',
-      endDate: '2020-07-10',
-      region: '',
-    }
-
-    expect(() => validate(input)).toThrow('Region must be provided')
   })
 })

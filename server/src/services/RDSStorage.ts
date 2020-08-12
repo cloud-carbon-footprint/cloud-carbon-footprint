@@ -1,4 +1,3 @@
-import AWS from 'aws-sdk'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import ICloudService from '@domain/ICloudService'
 import {
@@ -13,11 +12,11 @@ export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const usage: VolumeUsage[] = await this.getUsage(start, end)
+    const usage: VolumeUsage[] = await this.getUsage(start, end, region)
     return getEstimatesFromCostExplorer(start, end, region, usage)
   }
 
-  async getUsage(startDate: Date, endDate: Date): Promise<VolumeUsage[]> {
+  async getUsage(startDate: Date, endDate: Date, region: string): Promise<VolumeUsage[]> {
     const params: GetCostAndUsageRequest = {
       TimePeriod: {
         Start: startDate.toISOString().substr(0, 10),
@@ -25,7 +24,7 @@ export default class RDSStorage implements ICloudService {
       },
       Filter: {
         And: [
-          { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
+          { Dimensions: { Key: 'REGION', Values: [region] } },
           {
             Dimensions: {
               Key: 'USAGE_TYPE_GROUP',
@@ -44,7 +43,7 @@ export default class RDSStorage implements ICloudService {
       ],
     }
 
-    return await getUsageFromCostExplorer(params, this.getDiskType)
+    return await getUsageFromCostExplorer(params, this.getDiskType, region)
   }
 
   private getDiskType = (awsGroupKey: string) => {

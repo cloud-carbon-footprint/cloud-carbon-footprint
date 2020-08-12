@@ -11,10 +11,10 @@ export default abstract class ServiceWithCPUUtilization implements ICloudService
   }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const usage = await this.getUsage(start, end)
+    const usage = await this.getUsage(start, end, region)
     return this.estimator.estimate(usage, region)
   }
 
-  abstract getUsage(start: Date, end: Date): Promise<ComputeUsage[]>
+  abstract getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]>
   abstract serviceName: string
 }
