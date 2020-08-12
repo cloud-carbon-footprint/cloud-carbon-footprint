@@ -166,6 +166,47 @@ describe('cli', () => {
     expect(result).toMatchSnapshot()
   })
 
+  test('rds group by day', async () => {
+    const mockFunction = jest.fn()
+    mockFunction.mockReturnValueOnce(rdsCPUUtilizationResponse)
+
+    AWSMock.mock(
+      'CloudWatch',
+      'getMetricData',
+      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
+        callback(null, mockFunction())
+      },
+    )
+
+    const mockGetCostAndUsageFunction = jest.fn()
+    mockGetCostAndUsageFunction.mockReturnValueOnce(rdsStorageResponse).mockReturnValueOnce(rdsCPUUsageResponse)
+
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, mockGetCostAndUsageFunction())
+      },
+    )
+
+    servicesRegistered.mockReturnValue([new RDS(new RDSComputeService(), new RDSStorage())])
+
+    const result = await cli([
+      'executable',
+      'file',
+      '--startDate',
+      '2020-07-10',
+      '--endDate',
+      '2020-07-13',
+      '--region',
+      'us-east-1',
+      '--groupBy',
+      'day',
+    ])
+
+    expect(result).toMatchSnapshot()
+  })
+
   describe('csv test', () => {
     let outputFilePath: string
 

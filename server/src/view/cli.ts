@@ -4,6 +4,7 @@ import * as process from 'process'
 import { RawRequest } from '@application/EstimationRequest'
 import EmissionsByDayAndServiceTable from '@view/EmissionsByDayAndServiceTable'
 import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
+import EmissionsByDayTable from '@view/EmissionsByDayTable'
 import CliPrompts from './CliPrompts'
 import { exportToCSV } from '@view/CSV'
 import moment from 'moment'
@@ -38,6 +39,9 @@ export default async function cli(argv: string[] = process.argv) {
   const { table, colWidths } = await new App().getEstimate(estimationRequest).then((estimations) => {
     if (groupBy === 'service') {
       return EmissionsByServiceTable(estimations)
+    }
+    if (groupBy === 'day') {
+      return EmissionsByDayTable(estimations)
     }
     return EmissionsByDayAndServiceTable(estimations)
   })
