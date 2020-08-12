@@ -29,6 +29,13 @@ exports[`cli ebs, s3, ec2, elasticache grouped by service 1`] = `
 | Total        | 27.44             | 0.009244               "
 `;
 
+exports[`cli rds group by day 1`] = `
+"| Date         | Watt Hours        | Kg CO2e Emissions      
+| 2020-06-27   | 3.88              | 0.001306               
+| 2020-06-28   | 1.04              | 0.000349               
+| Total        | 4.91              | 0.001655               "
+`;
+
 exports[`cli rds group by service 1`] = `
 "| Service      | Watt Hours        | Kg CO2e Emissions      
 | EBS          | 0.00              | 0.000000               
