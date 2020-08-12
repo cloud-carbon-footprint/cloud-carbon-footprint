@@ -25,9 +25,3 @@ export enum AWS_REGIONS {
   US_GOV_EAST_1 = 'us-gov-east-1',
   US_GOV_WEST_1 = 'us-gov-west-1',
 }
-
-export const regions = [
-  AWS_REGIONS.US_EAST_1.toString(),
-  AWS_REGIONS.US_EAST_2.toString(),
-  AWS_REGIONS.US_WEST_1.toString(),
-]
