@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/dtoakley/cloud-carbon-footprint.svg?token=NzrMQqD3umSypwStq1MQ&branch=trunk)](https://travis-ci.com/dtoakley/cloud-carbon-footprint)
+[![CircleCI](https://circleci.com/gh/dtoakley-tw/cloud-carbon-footprint.svg?style=shield&circle-token=38b9b1f6f25130adb690aaee3674a17f1bff9ac4)](https://circleci.com/gh/dtoakley-tw/cloud-carbon-footprint/tree/trunk)
 
 # cloud-carbon-footprint
 
