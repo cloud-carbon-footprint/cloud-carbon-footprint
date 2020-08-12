@@ -1,6 +1,6 @@
 import { EstimationResult } from '@application/EstimationResult'
-import moment = require('moment')
 import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
+import moment = require('moment')
 
 describe('EmissionsByServiceTable', () => {
   const input: EstimationResult[] = [

@@ -3,14 +3,14 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import path from 'path'
 import {
-  s3MockResponse,
-  ec2MockResponse,
   ebsMockResponse,
-  elastiCacheMockResponse,
+  ec2MockResponse,
   elastiCacheMockGetCostAndUsageResponse,
-  rdsCPUUtilizationResponse,
+  elastiCacheMockResponse,
   rdsCPUUsageResponse,
+  rdsCPUUtilizationResponse,
   rdsStorageResponse,
+  s3MockResponse,
 } from '@fixtures'
 import AWSServices from '@application/AWSServices'
 import RDS from '@services/RDS'

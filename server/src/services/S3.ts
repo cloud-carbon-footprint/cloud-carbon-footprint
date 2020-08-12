@@ -4,14 +4,12 @@ import { AwsDecorator } from './AwsDecorator'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
-  readonly aws: AwsDecorator
 
   constructor() {
     super()
-    this.aws = new AwsDecorator()
   }
 
-  async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
+  async getUsage(startDate: Date, endDate: Date, region: string): Promise<StorageUsage[]> {
     const params = {
       StartTime: startDate,
       EndTime: endDate,
@@ -25,7 +23,7 @@ export default class S3 extends HDDStorageService {
       ScanBy: 'TimestampAscending',
     }
 
-    const responses = await this.aws.getMetricDataResponses(params)
+    const responses = await new AwsDecorator(region).getMetricDataResponses(params)
     const s3ResponseData = responses[0].MetricDataResults[0]
 
     return (

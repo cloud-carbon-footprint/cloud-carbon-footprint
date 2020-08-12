@@ -61,7 +61,7 @@ describe('RDSStorage', () => {
 
     const rdsStorage = new RDSStorage()
 
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(result).toEqual([
       {
@@ -91,7 +91,7 @@ describe('RDSStorage', () => {
           },
           Filter: {
             And: [
-              { Dimensions: { Key: 'REGION', Values: [AWS.config.region] } },
+              { Dimensions: { Key: 'REGION', Values: ['us-east-1'] } },
               {
                 Dimensions: {
                   Key: 'USAGE_TYPE_GROUP',
@@ -116,7 +116,7 @@ describe('RDSStorage', () => {
 
     const rdsStorage = new RDSStorage()
 
-    await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+    await rdsStorage.getUsage(new Date(startDate), new Date(endDate), 'us-east-1')
   })
 
   it('calculates GB-Month for shorter months', async () => {
@@ -137,7 +137,7 @@ describe('RDSStorage', () => {
 
     const rdsStorage = new RDSStorage()
 
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(result).toEqual([
       {
@@ -164,7 +164,7 @@ describe('RDSStorage', () => {
 
     const rdsStorage = new RDSStorage()
 
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(result).toEqual([])
   })
@@ -172,8 +172,7 @@ describe('RDSStorage', () => {
   it('should query for the specified region', async () => {
     const startDate = '2020-06-24'
     const endDate = '2020-06-25'
-    const expectedRegion = 'my-region'
-    AWS.config.update({ region: expectedRegion })
+    const expectedRegion = 'us-east-1'
 
     AWSMock.mock(
       'CostExplorer',
@@ -193,7 +192,7 @@ describe('RDSStorage', () => {
     )
 
     const rdsStorage = new RDSStorage()
-    await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+    await rdsStorage.getUsage(new Date(startDate), new Date(endDate), 'us-east-1')
   })
 
   it('should return empty array if no usage', async () => {
@@ -217,7 +216,7 @@ describe('RDSStorage', () => {
     )
 
     const rdsStorage = new RDSStorage()
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate))
+    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(result).toEqual([])
   })

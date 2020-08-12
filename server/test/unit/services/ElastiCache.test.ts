@@ -5,7 +5,6 @@ import ElastiCache from '@services/ElastiCache'
 import { elastiCacheMockResponse } from '@fixtures'
 
 beforeAll(() => {
-  AWS.config.update({ region: 'us-west-1' })
   AWSMock.setSDKInstance(AWS)
 })
 
@@ -116,6 +115,7 @@ describe('ElastiCache', () => {
     const usageByHour = await elasticacheService.getUsage(
       new Date('2020-07-19T00:00:00.000Z'),
       new Date('2020-07-21T00:00:00.000Z'),
+      'us-west-1',
     )
 
     expect(usageByHour).toEqual([
@@ -168,6 +168,7 @@ describe('ElastiCache', () => {
     const usageByHour = await elasticacheService.getUsage(
       new Date('2020-07-10T00:00:00.000Z'),
       new Date('2020-07-11T00:00:00.000Z'),
+      'us-west-1',
     )
 
     expect(usageByHour).toEqual([])
@@ -234,6 +235,7 @@ describe('ElastiCache', () => {
     const usageByHour = await elasticacheService.getUsage(
       new Date('2020-07-10T00:00:00.000Z'),
       new Date('2020-07-11T00:00:00.000Z'),
+      'us-west-1',
     )
 
     expect(usageByHour).toEqual([
@@ -302,6 +304,7 @@ describe('ElastiCache', () => {
     const usageByHour = await elasticacheService.getUsage(
       new Date('2020-07-10T00:00:00.000Z'),
       new Date('2020-07-11T00:00:00.000Z'),
+      'us-west-1',
     )
 
     expect(usageByHour).toEqual([

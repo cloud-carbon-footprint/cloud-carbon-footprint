@@ -186,4 +186,40 @@ describe('App', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
+
+  it('should return estimates for multiple regions', async () => {
+    //setup
+    const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+    let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+    const mockCloudService = [{ getEstimates: mockGetEstimates, serviceName: 'serviceOne', getUsage: mockGetUsage }]
+
+    const startDate = moment('2020-06-07').toISOString()
+    const endDate = moment('2020-06-07').add(1, 'weeks').toISOString()
+
+    AWSMock.mockReturnValue(mockCloudService)
+
+    const rawRequest: RawRequest = {
+      startDate,
+      endDate,
+      region: null,
+    }
+
+    const expectedStorageEstimate: FootprintEstimate[] = [
+      {
+        timestamp: new Date('2019-01-01'),
+        wattHours: 0,
+        co2e: 0,
+      },
+    ]
+
+    mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
+
+    //run
+    await app.getEstimate(rawRequest)
+
+    // assert
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(startDate), new Date(endDate), 'us-east-1')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(startDate), new Date(endDate), 'us-east-2')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(3, new Date(startDate), new Date(endDate), 'us-west-1')
+  })
 })

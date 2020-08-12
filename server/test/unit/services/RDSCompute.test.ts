@@ -90,7 +90,7 @@ describe('RDS Compute', function () {
     const costExplorerRequest = buildRDSCostExplorerRequest(
       start_date_string.substr(0, 10),
       end_date_string.substr(0, 10),
-      'us-west-1',
+      'us-east-1',
     )
     AWSMock.mock(
       'CostExplorer',
@@ -139,7 +139,7 @@ describe('RDS Compute', function () {
 
     const rdsService = new RDSComputeService()
 
-    const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string))
+    const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
     expect(usageByHour).toEqual([
       { cpuUtilizationAverage: 32.34, numberOfvCpus: 2, timestamp: new Date('2020-01-25T00:00:00.000Z') },

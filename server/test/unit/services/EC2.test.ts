@@ -82,7 +82,11 @@ describe('EC2', () => {
 
     const ec2Service = new EC2()
 
-    const result = await ec2Service.getUsage(new Date('2020-07-11T00:00:00Z'), new Date('2020-07-11T02:00:00Z'))
+    const result = await ec2Service.getUsage(
+      new Date('2020-07-11T00:00:00Z'),
+      new Date('2020-07-11T02:00:00Z'),
+      'us-east-1',
+    )
 
     expect(result).toEqual([
       {
@@ -126,7 +130,11 @@ describe('EC2', () => {
 
     const ec2Service = new EC2()
 
-    const result = await ec2Service.getUsage(new Date('2020-07-12T00:00:00Z'), new Date('2020-07-12T02:00:00Z'))
+    const result = await ec2Service.getUsage(
+      new Date('2020-07-12T00:00:00Z'),
+      new Date('2020-07-12T02:00:00Z'),
+      'us-east-1',
+    )
 
     expect(result).toEqual([
       {
@@ -150,7 +158,11 @@ describe('EC2', () => {
 
     const ec2Service = new EC2()
 
-    const result = await ec2Service.getUsage(new Date('2020-07-12T00:00:00Z'), new Date('2020-07-12T02:00:00Z'))
+    const result = await ec2Service.getUsage(
+      new Date('2020-07-12T00:00:00Z'),
+      new Date('2020-07-12T02:00:00Z'),
+      'us-east-1',
+    )
 
     expect(result).toEqual([])
   })

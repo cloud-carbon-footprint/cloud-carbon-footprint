@@ -2,10 +2,10 @@ import IFootprintEstimator from '@domain/IFootprintEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeUsage from '@domain/ComputeUsage'
 import {
+  AWS_POWER_USAGE_EFFECTIVENESS,
+  AWS_REGIONS_WATT_HOURS_CARBON_RATIO,
   MAX_WATTS,
   MIN_WATTS,
-  AWS_REGIONS_WATT_HOURS_CARBON_RATIO,
-  AWS_POWER_USAGE_EFFECTIVENESS,
 } from './FootprintEstimationConfig'
 
 //averageCPUUtilization expected to be in percentage

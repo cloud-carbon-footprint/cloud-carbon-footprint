@@ -3,7 +3,7 @@ import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import IFootprintEstimator from './IFootprintEstimator'
-import { HDDCOEFFICIENT, SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS } from './FootprintEstimationConfig'
+import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from './FootprintEstimationConfig'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator
@@ -13,14 +13,14 @@ export default abstract class StorageService implements ICloudService {
   }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const usage = await this.getUsage(start, end)
+    const usage = await this.getUsage(start, end, region)
     return this.estimator.estimate(usage, region)
   }
 
   /**
    * @returns a promise that returns an array of StorageUsage objects with timestamp per day and size in Gigabytes
    */
-  abstract getUsage(start: Date, end: Date): Promise<StorageUsage[]>
+  abstract getUsage(start: Date, end: Date, region: string): Promise<StorageUsage[]>
 
   abstract serviceName: string
 }
@@ -30,7 +30,7 @@ export abstract class SSDStorageService extends StorageService {
     super(SSDCOEFFICIENT)
   }
 
-  abstract getUsage(start: Date, end: Date): Promise<StorageUsage[]>
+  abstract getUsage(start: Date, end: Date, region: string): Promise<StorageUsage[]>
 
   abstract serviceName: string
 }
@@ -40,7 +40,7 @@ export abstract class HDDStorageService extends StorageService {
     super(HDDCOEFFICIENT)
   }
 
-  abstract getUsage(start: Date, end: Date): Promise<StorageUsage[]>
+  abstract getUsage(start: Date, end: Date, region: string): Promise<StorageUsage[]>
 
   abstract serviceName: string
 }
