@@ -2,7 +2,7 @@ import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
-import { AwsDecorator } from '@services/AwsDecorator'
+import { AWSDecorator } from '@services/AWSDecorator'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
@@ -29,7 +29,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const metricDataResponses = await new AwsDecorator(region).getMetricDataResponses(cloudWatchParams)
+    const metricDataResponses = await new AWSDecorator(region).getMetricDataResponses(cloudWatchParams)
 
     const costExplorerParams = {
       TimePeriod: {
@@ -51,7 +51,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ],
       Metrics: ['UsageQuantity'],
     }
-    const costAndUsageResponses = await new AwsDecorator(region).getCostAndUsageResponses(costExplorerParams)
+    const costAndUsageResponses = await new AWSDecorator(region).getCostAndUsageResponses(costExplorerParams)
 
     return await getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
   }

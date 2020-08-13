@@ -4,7 +4,7 @@ import { path } from 'ramda'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
 
-export class AwsDecorator {
+export class AWSDecorator {
   private cloudWatch: CloudWatch
   private costExplorer: CostExplorer
 

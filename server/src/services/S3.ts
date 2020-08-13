@@ -1,6 +1,6 @@
 import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
-import { AwsDecorator } from './AwsDecorator'
+import { AWSDecorator } from './AWSDecorator'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
@@ -23,7 +23,7 @@ export default class S3 extends HDDStorageService {
       ScanBy: 'TimestampAscending',
     }
 
-    const responses = await new AwsDecorator(region).getMetricDataResponses(params)
+    const responses = await new AWSDecorator(region).getMetricDataResponses(params)
     const s3ResponseData = responses[0].MetricDataResults[0]
 
     return (
