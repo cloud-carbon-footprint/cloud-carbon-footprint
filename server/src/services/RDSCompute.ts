@@ -3,7 +3,7 @@ import ComputeUsage from '@domain/ComputeUsage'
 import { CostExplorer } from 'aws-sdk'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
-import { AwsDecorator } from '@services/AwsDecorator'
+import { AWSDecorator } from '@services/AWSDecorator'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
@@ -40,7 +40,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    return await new AwsDecorator(region).getMetricDataResponses(params)
+    return await new AWSDecorator(region).getMetricDataResponses(params)
   }
 
   private async getTotalVCpusByDate(
@@ -79,6 +79,6 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       Metrics: ['UsageQuantity'],
     }
 
-    return await new AwsDecorator(region).getCostAndUsageResponses(params)
+    return await new AWSDecorator(region).getCostAndUsageResponses(params)
   }
 }
