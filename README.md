@@ -17,6 +17,7 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
     --groupBy [day | service]
     --format [table | csv]
   ```
+- To configure regions for your AWS account, edit the list of current regions in `App.ts`. 
 
 ## To run (website)
   1. ./scripts/dev.bash
