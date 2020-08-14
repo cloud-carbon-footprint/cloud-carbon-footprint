@@ -2,6 +2,7 @@ import { EstimationRequest, RawRequest, validate } from '@application/Estimation
 import { EstimationResult } from '@application/EstimationResult'
 import AWSServices from '@application/AWSServices'
 import { reduceBy } from 'ramda'
+import { CURRENT_REGIONS } from '@application/Config.json'
 
 interface ServiceEstimate {
   serviceName: string
@@ -11,12 +12,10 @@ interface ServiceEstimate {
 }
 
 export class App {
-  private CURRENT_AWS_REGIONS = ['us-east-1', 'us-east-2', 'us-west-1']
-
   async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
 
-    const regions: string[] = rawRequest.region ? [rawRequest.region] : this.CURRENT_AWS_REGIONS
+    const regions: string[] = rawRequest.region ? [rawRequest.region] : CURRENT_REGIONS
 
     const estimatesByService = await Promise.all(
       regions.map(async (region) => {
