@@ -1,3 +1,6 @@
+import { CURRENT_SERVICES } from '@application/Config.json'
+import { find, propEq, propOr, prop } from 'ramda'
+
 export interface Total {
   wattHours: number
   co2e: number
@@ -5,43 +8,29 @@ export interface Total {
 
 export type Totals = { [key: string]: Total }
 
-export const initialTotals = () => ({
-  ebs: {
-    wattHours: 0,
-    co2e: 0,
-  },
-  s3: {
-    wattHours: 0,
-    co2e: 0,
-  },
-  ec2: {
-    wattHours: 0,
-    co2e: 0,
-  },
-  elasticache: {
-    wattHours: 0,
-    co2e: 0,
-  },
-  rds: {
-    wattHours: 0,
-    co2e: 0,
-  },
-  total: {
-    wattHours: 0,
-    co2e: 0,
-  },
-})
+export function initialTotals(): Totals {
+  const initialTotals: Totals = {}
 
-export const displayServiceName = (serviceName: string): string => {
-  const mapping: Record<string, string> = {
-    ebs: 'EBS',
-    s3: 'S3',
-    ec2: 'EC2',
-    elasticache: 'ElastiCache',
-    rds: 'RDS',
-    total: 'Total',
+  CURRENT_SERVICES.forEach((service) => {
+    const key: string = prop('key', service)
+    const total: Total = { wattHours: 0, co2e: 0 }
+    initialTotals[key] = total
+  })
+
+  initialTotals['total'] = { wattHours: 0, co2e: 0 }
+  return initialTotals
+}
+
+export const displayServiceName = (key: string): string => {
+  const service = find(propEq('key', key), CURRENT_SERVICES)
+
+  if (key === 'total') return 'Total'
+
+  if (!prop('key', service) || !prop('name', service)) {
+    throw new Error('You entered an Invalid AWS Service Name.')
   }
-  return mapping[serviceName]
+
+  return propOr('', 'name', service)
 }
 
 export const displayWattHours = (wattHours: number) => wattHours.toFixed(2).toString()
