@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import Lambda from '@services/Lambda'
-import { estimateCo2 } from '@domain/FootprintEstimationConfig'
+import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
