@@ -34,7 +34,6 @@ const AWS_REGIONS_WATT_HOURS_CARBON_RATIO: { [region: string]: number } = {
   [AWS_REGIONS.US_GOV_WEST_1]: 0.0001914159801,
 }
 
-
 export function estimateCo2(estimatedWattHours: number, region: string): number {
   return estimatedWattHours * AWS_REGIONS_WATT_HOURS_CARBON_RATIO[region]
 }
