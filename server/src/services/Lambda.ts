@@ -1,6 +1,6 @@
 import ICloudService from "@domain/ICloudService";
 import FootprintEstimate from '@domain/FootprintEstimate'
-import {estimateCo2} from '@domain/FootprintEstimationConfig'
+import {estimateCo2} from '@domain/FootprintEstimationConstants'
 import AWS from "aws-sdk"
 
 export default class Lambda implements ICloudService {
