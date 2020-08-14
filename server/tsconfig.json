@@ -15,7 +15,8 @@
         "@view/*": ["./src/view/*"],
         "@fixtures": ["./test/fixtures"]
     },
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

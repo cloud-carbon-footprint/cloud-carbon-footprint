@@ -6,7 +6,7 @@ export const MIN_WATTS = 0.61
 export const MAX_WATTS = 3.15
 export const AWS_POWER_USAGE_EFFECTIVENESS = 1.2
 
-const AWS_REGIONS_WATT_HOURS_CARBON_RATIO: { [region: string]: number } = {
+export const AWS_REGIONS_WATT_HOURS_CARBON_RATIO: { [region: string]: number } = {
   [AWS_REGIONS.US_EAST_1]: 0.0003369284124,
   [AWS_REGIONS.US_EAST_2]: 0.0006031871336,
   [AWS_REGIONS.US_WEST_1]: 0.0001914159801,
