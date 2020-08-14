@@ -2,7 +2,7 @@ import StorageService from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/FootprintEstimationConfig'
+import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/FootprintEstimationConstants'
 import { AWS_REGIONS } from '@services/AWSRegions'
 
 describe('StorageService', () => {

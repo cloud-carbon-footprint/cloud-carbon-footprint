@@ -1,7 +1,7 @@
 import IFootprintEstimator from '@domain/IFootprintEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeUsage from '@domain/ComputeUsage'
-import { AWS_POWER_USAGE_EFFECTIVENESS, estimateCo2, MAX_WATTS, MIN_WATTS } from './FootprintEstimationConfig'
+import { AWS_POWER_USAGE_EFFECTIVENESS, estimateCo2, MAX_WATTS, MIN_WATTS } from './FootprintEstimationConstants'
 
 //averageCPUUtilization expected to be in percentage
 const ENERGY_ESTIMATION_FORMULA = (averageCPUUtilization: number, virtualCPUHours: number) => {

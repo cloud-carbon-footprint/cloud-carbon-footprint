@@ -3,7 +3,7 @@ import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import IFootprintEstimator from './IFootprintEstimator'
-import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from './FootprintEstimationConfig'
+import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from './FootprintEstimationConstants'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator
