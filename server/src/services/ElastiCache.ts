@@ -3,6 +3,8 @@ import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
 import { AWSDecorator } from '@services/AWSDecorator'
+import Cost from '@domain/Cost'
+import { getCostFromCostExplorer } from '@services/CostMapper'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
@@ -54,5 +56,30 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
     const costAndUsageResponses = await new AWSDecorator(region).getCostAndUsageResponses(costExplorerParams)
 
     return await getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
+  }
+
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
+    const costExplorerParams = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
+          { Dimensions: { Key: 'REGION', Values: [region] } },
+        ],
+      },
+      Granularity: 'DAILY',
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+      Metrics: ['AmortizedCost'],
+    }
+
+    return getCostFromCostExplorer(costExplorerParams, region)
   }
 }

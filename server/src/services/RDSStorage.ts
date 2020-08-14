@@ -7,6 +7,7 @@ import {
   VolumeUsage,
 } from '@services/StorageUsageMapper'
 import FootprintEstimate from '@domain/FootprintEstimate'
+import Cost from '@domain/Cost'
 
 export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'
@@ -50,5 +51,9 @@ export default class RDSStorage implements ICloudService {
     if (awsGroupKey.endsWith('GP2-Storage') || awsGroupKey.endsWith('PIOPS-Storage')) return DiskType.SSD
     if (awsGroupKey.endsWith('StorageUsage')) return DiskType.HDD
     console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+  }
+
+  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+    return []
   }
 }

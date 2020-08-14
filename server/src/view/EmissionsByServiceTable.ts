@@ -1,8 +1,8 @@
-import { EstimationResult } from '@application/EstimationResult'
 import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from '@view/EmissionsTableUtils'
+import { ServiceDailyMetricResult } from '@application/App'
 
 export default function EmissionsByServiceTable(
-  estimationResults: EstimationResult[],
+  estimationResults: ServiceDailyMetricResult[],
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Service', 'Watt Hours', 'Kg CO2e Emissions']
   const colWidths: number[] = [15, 20, 25]

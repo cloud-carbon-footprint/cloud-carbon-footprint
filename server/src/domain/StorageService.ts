@@ -4,6 +4,7 @@ import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import IFootprintEstimator from './IFootprintEstimator'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from './FootprintEstimationConstants'
+import Cost from '@domain/Cost'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator
@@ -21,6 +22,7 @@ export default abstract class StorageService implements ICloudService {
    * @returns a promise that returns an array of StorageUsage objects with timestamp per day and size in Gigabytes
    */
   abstract getUsage(start: Date, end: Date, region: string): Promise<StorageUsage[]>
+  abstract getCosts(start: Date, end: Date, region: string): Promise<Cost[]>
 
   abstract serviceName: string
 }

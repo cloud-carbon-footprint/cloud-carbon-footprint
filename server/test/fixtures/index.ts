@@ -109,6 +109,39 @@ export const elastiCacheMockGetCostAndUsageResponse: AWS.CostExplorer.GetCostAnd
   ],
 }
 
+export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-07-19',
+        End: '2020-07-20',
+      },
+      Groups: [
+        {
+          Keys: ['USE2-NodeUsage:cache.t3.medium'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+        {
+          Keys: ['USE2-NodeUsage:cache.t2.micro'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-07-20',
+        End: '2020-07-21',
+      },
+      Groups: [
+        {
+          Keys: ['USE2-NodeUsage:cache.t3.medium'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+      ],
+    },
+  ],
+}
+
 export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
@@ -132,6 +165,35 @@ export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
         {
           Keys: ['EBS:VolumeUsage.piops'],
           Metrics: { UsageQuantity: { Amount: '2.0', Unit: 'GB-Month' } },
+        },
+      ],
+    },
+  ],
+}
+
+export const ebsMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        End: '2020-06-28',
+        Start: '2020-06-27',
+      },
+      Groups: [
+        {
+          Keys: ['EBS:VolumeUsage.piops'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        End: '2020-06-29',
+        Start: '2020-06-28',
+      },
+      Groups: [
+        {
+          Keys: ['EBS:VolumeUsage.piops'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
         },
       ],
     },

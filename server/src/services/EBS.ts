@@ -6,6 +6,8 @@ import {
   VolumeUsage,
 } from '@services/StorageUsageMapper'
 import FootprintEstimate from '@domain/FootprintEstimate'
+import Cost from '@domain/Cost'
+import { getCostFromCostExplorer } from '@services/CostMapper'
 
 export default class EBS implements ICloudService {
   serviceName = 'ebs'
@@ -60,5 +62,41 @@ export default class EBS implements ICloudService {
     )
       return DiskType.HDD
     console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+  }
+
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
+    const params = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: [
+                'EC2: EBS - SSD(gp2)',
+                'EC2: EBS - SSD(io1)',
+                'EC2: EBS - HDD(sc1)',
+                'EC2: EBS - HDD(st1)',
+                'EC2: EBS - Magnetic',
+              ],
+            },
+          },
+          { Dimensions: { Key: 'REGION', Values: [region] } },
+        ],
+      },
+      Granularity: 'DAILY',
+      Metrics: ['AmortizedCost'],
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+    }
+
+    return await getCostFromCostExplorer(params, region)
   }
 }

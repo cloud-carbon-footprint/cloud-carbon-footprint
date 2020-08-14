@@ -4,6 +4,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/FootprintEstimationConstants'
 import { AWS_REGIONS } from '@services/AWSRegions'
+import Cost from '@domain/Cost'
 
 describe('StorageService', () => {
   describe('getEstimates', () => {
@@ -16,6 +17,10 @@ describe('StorageService', () => {
       }
 
       getUsage(): Promise<StorageUsage[]> {
+        return undefined
+      }
+
+      getCosts(): Promise<Cost[]> {
         return undefined
       }
     }

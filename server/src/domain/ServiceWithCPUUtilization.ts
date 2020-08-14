@@ -2,6 +2,7 @@ import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import ComputeUsage from '@domain/ComputeUsage'
+import Cost from '@domain/Cost'
 
 export default abstract class ServiceWithCPUUtilization implements ICloudService {
   private readonly estimator: ComputeEstimator
@@ -16,5 +17,6 @@ export default abstract class ServiceWithCPUUtilization implements ICloudService
   }
 
   abstract getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]>
+  abstract getCosts(start: Date, end: Date, region: string): Promise<Cost[]>
   abstract serviceName: string
 }

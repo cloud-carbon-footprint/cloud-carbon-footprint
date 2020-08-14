@@ -2,6 +2,7 @@ import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 import AWS from 'aws-sdk'
+import Cost from '@domain/Cost'
 
 export default class Lambda implements ICloudService {
   serviceName: 'lambda'
@@ -25,6 +26,10 @@ export default class Lambda implements ICloudService {
         co2e,
       }
     })
+  }
+
+  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+    return []
   }
 
   private async getLambdaLogGroupNames(cw: AWS.CloudWatchLogs): Promise<string[]> {

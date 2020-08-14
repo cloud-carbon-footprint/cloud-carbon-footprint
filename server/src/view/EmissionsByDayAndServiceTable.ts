@@ -1,8 +1,8 @@
-import { EstimationResult } from '@application/EstimationResult'
 import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from '@view/EmissionsTableUtils'
 import { CURRENT_SERVICES } from '@application/Config.json'
 import { pluck } from 'ramda'
 import moment from 'moment'
+import { ServiceDailyMetricResult } from '@application/App'
 
 const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
 const displayService = (totals: Totals, serviceName: string) => [
@@ -11,7 +11,7 @@ const displayService = (totals: Totals, serviceName: string) => [
 ]
 
 export default function EmissionsByDayAndServiceTable(
-  estimationResults: EstimationResult[],
+  estimationResults: ServiceDailyMetricResult[],
   serviceNames = pluck('key', CURRENT_SERVICES),
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
