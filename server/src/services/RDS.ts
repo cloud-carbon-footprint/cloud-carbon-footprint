@@ -2,6 +2,7 @@ import ICloudService from '@domain/ICloudService'
 import RDSComputeService from '@services/RDSCompute'
 import RDSStorage from '@services/RDSStorage'
 import FootprintEstimate from '@domain/FootprintEstimate'
+import Cost from '@domain/Cost'
 
 export default class RDS implements ICloudService {
   serviceName = 'rds'
@@ -37,5 +38,9 @@ export default class RDS implements ICloudService {
     })
 
     return Object.values(result)
+  }
+
+  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+    return []
   }
 }

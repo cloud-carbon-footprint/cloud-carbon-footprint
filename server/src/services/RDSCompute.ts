@@ -4,6 +4,7 @@ import { CostExplorer } from 'aws-sdk'
 import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
 import { AWSDecorator } from '@services/AWSDecorator'
+import Cost from '@domain/Cost'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
@@ -80,5 +81,9 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     }
 
     return await new AWSDecorator(region).getCostAndUsageResponses(params)
+  }
+
+  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+    return []
   }
 }

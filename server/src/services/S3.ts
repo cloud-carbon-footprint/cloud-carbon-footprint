@@ -1,6 +1,7 @@
 import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
 import { AWSDecorator } from './AWSDecorator'
+import Cost from '@domain/Cost'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
@@ -34,5 +35,9 @@ export default class S3 extends HDDStorageService {
         }
       }).filter((r: StorageUsage) => r.sizeGb && r.timestamp) || []
     )
+  }
+
+  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+    return []
   }
 }

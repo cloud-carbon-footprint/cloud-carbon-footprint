@@ -1,6 +1,7 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 import { AWSDecorator } from './AWSDecorator'
+import Cost from '@domain/Cost'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
@@ -84,5 +85,9 @@ export default class EC2 extends ServiceWithCPUUtilization {
         timestamp: new Date(estimate.timestamp),
       }
     })
+  }
+
+  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+    return []
   }
 }

@@ -3,9 +3,11 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import path from 'path'
 import {
+  ebsMockGetCostResponse,
   ebsMockResponse,
   ec2MockResponse,
   elastiCacheMockGetCostAndUsageResponse,
+  elastiCacheMockGetCostResponse,
   elastiCacheMockResponse,
   rdsCPUUsageResponse,
   rdsCPUUtilizationResponse,
@@ -22,6 +24,7 @@ import S3 from '@services/S3'
 import EC2 from '@services/EC2'
 import ElastiCache from '@services/ElastiCache'
 import fs from 'fs'
+import { when } from 'jest-when'
 
 jest.mock('@application/AWSServices')
 const servicesRegistered = mocked(AWSServices, true)
@@ -50,18 +53,7 @@ describe('cli', () => {
       },
     )
 
-    const mockGetCostAndUsageFunction = jest.fn()
-    mockGetCostAndUsageFunction
-      .mockReturnValueOnce(ebsMockResponse)
-      .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
-
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, mockGetCostAndUsageFunction())
-      },
-    )
+    mockAwsGetCostAndUsage()
 
     servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
@@ -93,19 +85,7 @@ describe('cli', () => {
         callback(null, mockFunction())
       },
     )
-
-    const mockGetCostAndUsageFunction = jest.fn()
-    mockGetCostAndUsageFunction
-      .mockReturnValueOnce(ebsMockResponse)
-      .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
-
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, mockGetCostAndUsageFunction())
-      },
-    )
+    mockAwsGetCostAndUsage()
 
     servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
@@ -238,18 +218,7 @@ describe('cli', () => {
         },
       )
 
-      const mockGetCostAndUsageFunction = jest.fn()
-      mockGetCostAndUsageFunction
-        .mockReturnValueOnce(ebsMockResponse)
-        .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
-
-      AWSMock.mock(
-        'CostExplorer',
-        'getCostAndUsage',
-        (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-          callback(null, mockGetCostAndUsageFunction())
-        },
-      )
+      mockAwsGetCostAndUsage()
 
       servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
@@ -276,3 +245,47 @@ describe('cli', () => {
     })
   })
 })
+
+function mockAwsGetCostAndUsage() {
+  const mockGetCostAndUsageFunction = jest.fn()
+  when(mockGetCostAndUsageFunction)
+    .calledWith(expect.objectContaining({ Metrics: ['AmortizedCost'] }))
+    .mockReturnValueOnce(ebsMockGetCostResponse)
+    .mockReturnValueOnce(elastiCacheMockGetCostResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(expect.objectContaining({ Metrics: ['UsageQuantity'] }))
+    .mockReturnValueOnce(ebsMockResponse)
+    .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        MetricDataQueries: [
+          {
+            Id: 's3Size',
+          },
+        ],
+      }),
+    )
+    .mockReturnValueOnce(s3MockResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        MetricDataQueries: [
+          {
+            Id: 'cpuUtilizationWithEmptyValues',
+          },
+        ],
+      }),
+    )
+    .mockReturnValueOnce(ec2MockResponse)
+  AWSMock.mock(
+    'CostExplorer',
+    'getCostAndUsage',
+    (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      callback(null, mockGetCostAndUsageFunction(params))
+    },
+  )
+}
