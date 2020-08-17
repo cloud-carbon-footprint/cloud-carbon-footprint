@@ -2,7 +2,7 @@ import { EstimationResult } from '@application/EstimationResult'
 import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from '@view/EmissionsTableUtils'
 
 export default function EmissionsByServiceTable(
-  estimations: EstimationResult[],
+  estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Service', 'Watt Hours', 'Kg CO2e Emissions']
   const colWidths: number[] = [15, 20, 25]
@@ -10,12 +10,12 @@ export default function EmissionsByServiceTable(
 
   const grandTotals: Totals = initialTotals()
 
-  estimations.forEach((estimationResult) => {
-    estimationResult.estimates.forEach((estimate) => {
-      grandTotals[estimate.serviceName].wattHours += estimate.wattHours
-      grandTotals['total'].wattHours += estimate.wattHours
-      grandTotals[estimate.serviceName].co2e += estimate.co2e
-      grandTotals['total'].co2e += estimate.co2e
+  estimationResults.forEach((estimationResult) => {
+    estimationResult.estimates.forEach((serviceEstimate) => {
+      grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
+      grandTotals['total'].wattHours += serviceEstimate.wattHours
+      grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
+      grandTotals['total'].co2e += serviceEstimate.co2e
     })
   })
 
