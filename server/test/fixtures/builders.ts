@@ -17,7 +17,7 @@ export function buildCostExplorerGetCostResponse(data: { start: string; amount: 
             Metrics: {
               AmortizedCost: {
                 Unit: 'USD',
-                Amount: amount.toString(),
+                Amount: amount ? amount.toString() : amount,
               },
             },
           },
@@ -45,7 +45,7 @@ export function buildCostExplorerGetUsageResponse(data: { start: string; amount:
             Keys: keys,
             Metrics: {
               UsageQuantity: {
-                Amount: amount.toString(),
+                Amount: amount ? amount.toString() : amount,
               },
             },
           },
