@@ -8,6 +8,7 @@ import {
 } from '@services/StorageUsageMapper'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
+import { getCostFromCostExplorer } from '@services/CostMapper'
 
 export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'
@@ -53,8 +54,33 @@ export default class RDSStorage implements ICloudService {
     console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
-  // eslint-disable-next-line
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    return []
+    const params: GetCostAndUsageRequest = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          { Dimensions: { Key: 'REGION', Values: [region] } },
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: ['RDS: Storage'],
+            },
+          },
+        ],
+      },
+      Granularity: 'DAILY',
+      Metrics: ['AmortizedCost'],
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+    }
+
+    return getCostFromCostExplorer(params, region)
   }
 }
