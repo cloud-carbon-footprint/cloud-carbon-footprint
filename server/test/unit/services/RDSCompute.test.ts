@@ -1,7 +1,11 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import RDSComputeService from '@services/RDSCompute'
-import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '@builders'
+import {
+  buildCostExplorerGetCostRequest,
+  buildCostExplorerGetCostResponse,
+  buildCostExplorerGetUsageResponse,
+} from '@builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -66,34 +70,6 @@ function buildRdsCostExplorerGetUsageRequest(startDate: string, endDate: string,
   }
 }
 
-function buildRdsCostExplorerGetCostRequest(startDate: string, endDate: string, region: string) {
-  return {
-    TimePeriod: {
-      Start: startDate,
-      End: endDate,
-    },
-    Filter: {
-      And: [
-        { Dimensions: { Key: 'REGION', Values: [region] } },
-        {
-          Dimensions: {
-            Key: 'USAGE_TYPE_GROUP',
-            Values: ['RDS: Running Hours'],
-          },
-        },
-      ],
-    },
-    Granularity: 'DAILY',
-    GroupBy: [
-      {
-        Key: 'USAGE_TYPE',
-        Type: 'DIMENSION',
-      },
-    ],
-    Metrics: ['AmortizedCost'],
-  }
-}
-
 describe('RDS Compute', function () {
   afterEach(() => {
     AWSMock.restore()
@@ -148,19 +124,15 @@ describe('RDS Compute', function () {
   })
 
   it('should get rds cost', async () => {
-    const start_date_string = '2020-01-25T00:00:00.000Z'
-    const end_date_string = '2020-01-27T00:00:00.000Z'
+    const start = '2020-01-25T00:00:00.000Z'
+    const end = '2020-01-27T00:00:00.000Z'
 
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         expect(params).toEqual(
-          buildRdsCostExplorerGetCostRequest(
-            start_date_string.substr(0, 10),
-            end_date_string.substr(0, 10),
-            'us-east-1',
-          ),
+          buildCostExplorerGetCostRequest(start.substr(0, 10), end.substr(0, 10), 'us-east-1', ['RDS: Running Hours']),
         )
         callback(
           null,
@@ -174,9 +146,9 @@ describe('RDS Compute', function () {
 
     const rdsService = new RDSComputeService()
 
-    const usageByHour = await rdsService.getCosts(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
+    const rdsCosts = await rdsService.getCosts(new Date(start), new Date(end), 'us-east-1')
 
-    expect(usageByHour).toEqual([
+    expect(rdsCosts).toEqual([
       { amount: 2.3081821243, currency: 'USD', timestamp: new Date('2020-01-25T00:00:00.000Z') },
       { amount: 2.3081821243, currency: 'USD', timestamp: new Date('2020-01-26T00:00:00.000Z') },
     ])
