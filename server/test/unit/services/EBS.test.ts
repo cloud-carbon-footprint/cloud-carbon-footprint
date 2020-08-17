@@ -4,6 +4,7 @@ import EBS from '@services/EBS'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_REGIONS } from '@services/AWSRegions'
+import { buildCostExplorerGetUsageResponse } from 'test/fixtures/builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -54,8 +55,8 @@ describe('Ebs', () => {
 
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] },
+          buildCostExplorerGetUsageResponse([
+            { start: '2020-06-27', amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -85,9 +86,9 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '0', types: ['EBS:VolumeUsage.gp2'] },
-            { start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] },
+          buildCostExplorerGetUsageResponse([
+            { start: '2020-06-27', amount: 0, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: '2020-06-27', amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -115,7 +116,7 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildAwsCostExplorerGetCostAndUsageResponse([]))
+        callback(null, buildCostExplorerGetUsageResponse([]))
       },
     )
 
@@ -137,9 +138,9 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: undefined, types: ['EBS:VolumeUsage.gp2'] },
-            { start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] },
+          buildCostExplorerGetUsageResponse([
+            { start: '2020-06-27', amount: undefined, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: '2020-06-27', amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -169,9 +170,7 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
-          ]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
         )
       },
     )
@@ -200,9 +199,7 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
-          ]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
         )
       },
     )
@@ -228,9 +225,7 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage'] },
-          ]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage'] }]),
         )
       },
     )
@@ -256,9 +251,7 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.sc1'] },
-          ]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.sc1'] }]),
         )
       },
     )
@@ -284,9 +277,7 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.piops'] },
-          ]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.piops'] }]),
         )
       },
     )
@@ -311,10 +302,7 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(
-          null,
-          buildAwsCostExplorerGetCostAndUsageResponse([{ start: '2020-06-27', value: '1', types: ['EBS:anything'] }]),
-        )
+        callback(null, buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:anything'] }]))
       },
     )
 
@@ -335,10 +323,7 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(
-          null,
-          buildAwsCostExplorerGetCostAndUsageResponse([{ start: '2020-06-27', value: '1', types: ['EBS:anything'] }]),
-        )
+        callback(null, buildCostExplorerGetUsageResponse([{ start: '2020-06-27', value: 1, keys: ['EBS:anything'] }]))
       },
     )
 
@@ -360,9 +345,9 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildAwsCostExplorerGetCostAndUsageResponse([
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.st1'] },
-            { start: '2020-06-27', value: '1', types: ['EBS:VolumeUsage.gp2'] },
+          buildCostExplorerGetUsageResponse([
+            { start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.st1'] },
+            { start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -395,27 +380,3 @@ describe('Ebs', () => {
     ])
   })
 })
-
-function buildAwsCostExplorerGetCostAndUsageResponse(data: { start: string; value: string; types: string[] }[]) {
-  return {
-    GroupDefinitions: [
-      {
-        Type: 'DIMENSION',
-        Key: 'USAGE_TYPE',
-      },
-    ],
-    ResultsByTime: data.map(({ start, value, types }) => {
-      return {
-        TimePeriod: {
-          Start: start,
-        },
-        Groups: [
-          {
-            Keys: types,
-            Metrics: { UsageQuantity: { Amount: value, Unit: 'GB-Month' } },
-          },
-        ],
-      }
-    }),
-  }
-}
