@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import RDSComputeService from '@services/RDSCompute'
-import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '../../fixtures/builders'
+import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '@builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

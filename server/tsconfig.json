@@ -13,7 +13,8 @@
         "@domain/*": ["./src/domain/*"],
         "@services/*": ["./src/services/*"],
         "@view/*": ["./src/view/*"],
-        "@fixtures": ["./test/fixtures"]
+        "@fixtures": ["./test/fixtures"],
+        "@builders": ["./test/builders"]
     },
     "experimentalDecorators": true,
     "resolveJsonModule": true

@@ -4,7 +4,7 @@ import RDSStorage from '@services/RDSStorage'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 import { AWS_REGIONS } from '@services/AWSRegions'
-import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '../../fixtures/builders'
+import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '@builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

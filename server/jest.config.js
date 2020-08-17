@@ -18,6 +18,7 @@ module.exports = {
     '^@services/(.*)$': '<rootDir>/src/services/$1',
     '^@view/(.*)$': '<rootDir>/src/view/$1',
     '^@fixtures$': '<rootDir>/test/fixtures',
+    '^@builders': '<rootDir>/test/builders',
   },
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coveragePathIgnorePatterns: ['<rootDir>/src/view/CliPrompts.ts'],
