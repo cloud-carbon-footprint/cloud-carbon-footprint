@@ -4,7 +4,7 @@ import EBS from '@services/EBS'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_REGIONS } from '@services/AWSRegions'
-import { buildCostExplorerGetUsageResponse } from 'test/fixtures/builders'
+import { buildCostExplorerGetUsageResponse } from '../../fixtures/builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
