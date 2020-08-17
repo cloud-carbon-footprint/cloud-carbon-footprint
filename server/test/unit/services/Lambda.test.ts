@@ -221,6 +221,24 @@ describe('Lambda', () => {
     ])
   })
 
+  it('gets Lambda usage for one function and one day when there are no group names for that region', async () => {
+    mockDescribeLogGroups([])
+
+    const lambdaService = new Lambda()
+    const result = await lambdaService.getEstimates(
+      new Date('2020-08-09T00:00:00Z'),
+      new Date('2020-08-10T00:00:00Z'),
+      'us-west-1',
+    )
+
+    expect(result).toEqual([
+      {
+        timestamp: new Date('2020-08-09T00:00:00Z'),
+        wattHours: 0.0,
+        co2e: 0.0,
+      },
+    ])
+  })
 })
 
 // handle different statuses

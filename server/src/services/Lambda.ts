@@ -3,6 +3,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 import AWS from 'aws-sdk'
 import Cost from '@domain/Cost'
+import { isEmpty } from 'ramda'
 
 const MAX_WATT_HOURS = 2.35
 
@@ -10,8 +11,13 @@ export default class Lambda implements ICloudService {
   serviceName: 'lambda'
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const cloudWatchLogs = new AWS.CloudWatchLogs()
+    const cloudWatchLogs = new AWS.CloudWatchLogs({ region: region }) //TODO: dependency injection
     const groupNames = await this.getLambdaLogGroupNames(cloudWatchLogs)
+
+    if (isEmpty(groupNames)) {
+      return [{ timestamp: start, wattHours: 0.0, co2e: 0.0 }]
+    }
+
     const queryId = await this.runQuery(cloudWatchLogs, start, end, groupNames)
     const usage = await this.getResults(cloudWatchLogs, queryId)
 
