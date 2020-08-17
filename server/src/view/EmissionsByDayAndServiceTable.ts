@@ -11,8 +11,8 @@ const displayService = (totals: Totals, serviceName: string) => [
 ]
 
 export default function EmissionsByDayAndServiceTable(
-  estimations: EstimationResult[],
-  serviceNames = pluck('key', CURRENT_SERVICES), //['ebs', 's3'],
+  estimationResults: EstimationResult[],
+  serviceNames = pluck('key', CURRENT_SERVICES),
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
   const colWidths: number[] = [15]
@@ -32,21 +32,21 @@ export default function EmissionsByDayAndServiceTable(
 
   const grandTotals: Totals = initialTotals()
 
-  estimations.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
+  estimationResults.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
 
-  estimations.forEach((estimationResult) => {
+  estimationResults.forEach((estimationResult) => {
     const subTotals: Totals = initialTotals()
 
-    estimationResult.estimates.forEach((estimate) => {
-      grandTotals[estimate.serviceName].wattHours += estimate.wattHours
-      grandTotals['total'].wattHours += estimate.wattHours
-      subTotals[estimate.serviceName].wattHours = estimate.wattHours
-      subTotals['total'].wattHours += estimate.wattHours
+    estimationResult.estimates.forEach((serviceEstimate) => {
+      grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
+      grandTotals['total'].wattHours += serviceEstimate.wattHours
+      subTotals[serviceEstimate.serviceName].wattHours = serviceEstimate.wattHours
+      subTotals['total'].wattHours += serviceEstimate.wattHours
 
-      grandTotals[estimate.serviceName].co2e += estimate.co2e
-      grandTotals['total'].co2e += estimate.co2e
-      subTotals[estimate.serviceName].co2e = estimate.co2e
-      subTotals['total'].co2e += estimate.co2e
+      grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
+      grandTotals['total'].co2e += serviceEstimate.co2e
+      subTotals[serviceEstimate.serviceName].co2e = serviceEstimate.co2e
+      subTotals['total'].co2e += serviceEstimate.co2e
     })
 
     table.push([
