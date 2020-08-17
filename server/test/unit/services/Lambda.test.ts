@@ -220,9 +220,9 @@ describe('Lambda', () => {
       },
     ])
   })
+
 })
 
 // handle different statuses
 //TODO: add test for region - services should be called with the region set on the AWSMock - might need to create factories
-//TODO: verify that max wattage is injected into the query
 //verify the query - has watts and date
