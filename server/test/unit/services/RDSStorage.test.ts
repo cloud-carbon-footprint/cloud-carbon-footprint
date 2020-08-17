@@ -4,63 +4,7 @@ import RDSStorage from '@services/RDSStorage'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 import { AWS_REGIONS } from '@services/AWSRegions'
-
-function buildCostExplorerGetCostResponse(data: { timestamp: string; amount: number }[]) {
-  return {
-    GroupDefinitions: [
-      {
-        Type: 'DIMENSION',
-        Key: 'USAGE_TYPE',
-      },
-    ],
-    ResultsByTime: data.map(({ timestamp, amount }) => {
-      return {
-        TimePeriod: {
-          Start: timestamp,
-        },
-        Groups: [
-          {
-            Keys: [],
-            Metrics: {
-              AmortizedCost: {
-                Unit: 'USD',
-                Amount: amount.toString(),
-              },
-            },
-          },
-        ],
-      }
-    }),
-  }
-}
-
-function buildCostExplorerGetUsageResponse(data: { start: string; value: number; types: string[] }[]) {
-  return {
-    GroupDefinitions: [
-      {
-        Type: 'DIMENSION',
-        Key: 'USAGE_TYPE',
-      },
-    ],
-    ResultsByTime: data.map(({ start, value, types }) => {
-      return {
-        TimePeriod: {
-          Start: start,
-        },
-        Groups: [
-          {
-            Keys: types,
-            Metrics: {
-              UsageQuantity: {
-                Amount: value.toString(),
-              },
-            },
-          },
-        ],
-      }
-    }),
-  }
-}
+import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '../../fixtures/builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -81,8 +25,8 @@ describe('RDSStorage', () => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
-            { start: '2020-07-24', value: 1, types: ['USW1-RDS:GP2-Storage'] },
-            { start: '2020-07-25', value: 2, types: ['USW1-RDS:GP2-Storage'] },
+            { start: '2020-07-24', amount: 1, keys: ['USW1-RDS:GP2-Storage'] },
+            { start: '2020-07-25', amount: 2, keys: ['USW1-RDS:GP2-Storage'] },
           ]),
         )
       },
@@ -157,7 +101,7 @@ describe('RDSStorage', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-24', value: 1.0, types: ['USW1-RDS:GP2-Storage'] }]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-24', amount: 1.0, keys: ['USW1-RDS:GP2-Storage'] }]),
         )
       },
     )
@@ -184,7 +128,7 @@ describe('RDSStorage', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-24', value: 0, types: ['USW1-RDS:GP2-Storage'] }]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-24', amount: 0, keys: ['USW1-RDS:GP2-Storage'] }]),
         )
       },
     )
@@ -213,7 +157,7 @@ describe('RDSStorage', () => {
         })
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-24', value: 0, types: ['USW1-RDS:GP2-Storage'] }]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-24', amount: 0, keys: ['USW1-RDS:GP2-Storage'] }]),
         )
       },
     )
@@ -255,7 +199,7 @@ describe('RDSStorage', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', value: 1, types: ['USW1-RDS:PIOPS-Storage'] }]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['USW1-RDS:PIOPS-Storage'] }]),
         )
       },
     )
@@ -281,7 +225,7 @@ describe('RDSStorage', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', value: 1, types: ['USW1-RDS:StorageUsage'] }]),
+          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['USW1-RDS:StorageUsage'] }]),
         )
       },
     )
@@ -310,8 +254,8 @@ describe('RDSStorage', () => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
-            { timestamp: '2020-07-24', amount: 0.2 },
-            { timestamp: '2020-07-25', amount: 1.8 },
+            { start: '2020-07-24', amount: 0.2, keys: ['USW1-RDS:GP2-Storage'] },
+            { start: '2020-07-25', amount: 1.8, keys: ['USW1-RDS:GP2-Storage'] },
           ]),
         )
       },

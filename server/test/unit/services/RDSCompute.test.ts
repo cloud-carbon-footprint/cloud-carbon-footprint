@@ -1,6 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import RDSComputeService from '@services/RDSCompute'
+import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '../../fixtures/builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -93,76 +94,6 @@ function buildRdsCostExplorerGetCostRequest(startDate: string, endDate: string, 
   }
 }
 
-function buildRdsCostExplorerGetUsageResponse() {
-  return {
-    ResultsByTime: [
-      {
-        TimePeriod: {
-          Start: '2020-01-25',
-          End: '2020-01-26',
-        },
-        Groups: [
-          {
-            Keys: ['USW1-InstanceUsage:db.t3.medium'],
-            Metrics: {
-              UsageQuantity: {
-                Amount: '1',
-              },
-            },
-          },
-        ],
-      },
-      {
-        TimePeriod: {
-          Start: '2020-01-26',
-          End: '2020-01-27',
-        },
-        Groups: [
-          {
-            Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
-            Metrics: {
-              UsageQuantity: {
-                Amount: '1',
-              },
-            },
-          },
-        ],
-      },
-    ],
-  }
-}
-
-function buildRdsCostExplorerGetCostResponse() {
-  return {
-    ResultsByTime: [
-      {
-        TimePeriod: {
-          Start: '2020-01-25',
-          End: '2020-01-26',
-        },
-        Groups: [
-          {
-            Keys: ['USW1-InstanceUsage:db.t3.medium'],
-            Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
-          },
-        ],
-      },
-      {
-        TimePeriod: {
-          Start: '2020-01-26',
-          End: '2020-01-27',
-        },
-        Groups: [
-          {
-            Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
-            Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
-          },
-        ],
-      },
-    ],
-  }
-}
-
 describe('RDS Compute', function () {
   afterEach(() => {
     AWSMock.restore()
@@ -196,7 +127,13 @@ describe('RDS Compute', function () {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         expect(params).toEqual(costExplorerRequest)
 
-        callback(null, buildRdsCostExplorerGetUsageResponse())
+        callback(
+          null,
+          buildCostExplorerGetUsageResponse([
+            { start: '2020-01-25', amount: 1, keys: ['USW1-InstanceUsage:db.t3.medium'] },
+            { start: '2020-01-26', amount: 1, keys: ['USW1-InstanceUsage:db.r5.24xlarge'] },
+          ]),
+        )
       },
     )
 
@@ -225,7 +162,13 @@ describe('RDS Compute', function () {
             'us-east-1',
           ),
         )
-        callback(null, buildRdsCostExplorerGetCostResponse())
+        callback(
+          null,
+          buildCostExplorerGetCostResponse([
+            { start: '2020-01-25', amount: 2.3081821243, keys: ['USW1-InstanceUsage:db.t3.medium'] },
+            { start: '2020-01-26', amount: 2.3081821243, keys: ['USW1-InstanceUsage:db.t3.medium'] },
+          ]),
+        )
       },
     )
 
