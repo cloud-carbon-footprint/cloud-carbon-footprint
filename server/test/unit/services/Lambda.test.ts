@@ -239,8 +239,44 @@ describe('Lambda', () => {
       },
     ])
   })
-})
 
-// handle different statuses
-//TODO: add test for region - services should be called with the region set on the AWSMock - might need to create factories
-//verify the query - has watts and date
+  it('throws an error if status is not complete after 10 seconds', async () => {
+    const logGroups = [
+      {
+        logGroupName: '/aws/lambda/sample-function-name',
+      },
+    ]
+    const response = {
+      queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
+    }
+    const results = {
+      results: [
+        [
+          {
+            field: 'Date',
+            value: '2020-08-09 00:00:00.000',
+          },
+          {
+            field: 'Watts',
+            value: '0.10',
+          },
+        ],
+      ],
+      status: 'Incomplete',
+    }
+
+    mockDescribeLogGroups(logGroups)
+    mockStartQuery(response)
+    mockGetResults(results)
+
+    const lambdaService = new Lambda()
+
+    const expectedError = new Error('CloudWatchLog request failed, status: Incomplete')
+
+    try {
+      await lambdaService.getEstimates(new Date('2020-08-09T00:00:00Z'), new Date('2020-08-10T00:00:00Z'), 'us-west-1')
+    } catch (error) {
+      expect(error).toEqual(expectedError)
+    }
+  }, 15000)
+})

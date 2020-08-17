@@ -6,6 +6,7 @@ import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 
 const MAX_WATT_HOURS = 2.35
+const QUERY_LIMIT = 10
 
 export default class Lambda implements ICloudService {
   serviceName: 'lambda'
@@ -72,10 +73,16 @@ export default class Lambda implements ICloudService {
     }
     let status = ''
     let data
+    let waitCount = 0
+
     while (status !== 'Complete') {
       await wait(1000)
       data = await cw.getQueryResults(params).promise()
       status = data.status
+      if (waitCount === QUERY_LIMIT) {
+        throw new Error(`CloudWatchLog request failed, status: ${data.status}`)
+      }
+      waitCount = waitCount + 1
     }
     return data
   }
