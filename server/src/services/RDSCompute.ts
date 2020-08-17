@@ -5,6 +5,8 @@ import { getComputeUsage } from '@services/ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
 import { AWSDecorator } from '@services/AWSDecorator'
 import Cost from '@domain/Cost'
+import { getCostFromCostExplorer } from '@services/CostMapper'
+import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
@@ -83,8 +85,38 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     return await new AWSDecorator(region).getCostAndUsageResponses(params)
   }
 
-  // eslint-disable-next-line
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    return []
+    const params: GetCostAndUsageRequest = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          {
+            Dimensions: {
+              Key: 'REGION',
+              Values: [region],
+            },
+          },
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: ['RDS: Running Hours'],
+            },
+          },
+        ],
+      },
+      Granularity: 'DAILY',
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+      Metrics: ['AmortizedCost'],
+    }
+
+    return getCostFromCostExplorer(params, region)
   }
 }

@@ -252,7 +252,36 @@ export const rdsCPUUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const rdsStorageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const rdsCPUCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-06-27',
+        End: '2020-06-28',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-InstanceUsage:db.t3.medium'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-06-28',
+        End: '2020-06-29',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+      ],
+    },
+  ],
+}
+
+export const rdsStorageUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
@@ -283,6 +312,35 @@ export const rdsStorageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
               Amount: '1',
             },
           },
+        },
+      ],
+    },
+  ],
+}
+
+export const rdsStorageCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-06-27',
+        End: '2020-06-28',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-RDS:GP2-Storage'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-06-28',
+        End: '2020-06-29',
+      },
+      Groups: [
+        {
+          Keys: ['USW1-RDS:GP2-Storage'],
+          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
         },
       ],
     },

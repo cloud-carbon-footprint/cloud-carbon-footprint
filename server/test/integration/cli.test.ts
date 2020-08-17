@@ -9,9 +9,11 @@ import {
   elastiCacheMockGetCostAndUsageResponse,
   elastiCacheMockGetCostResponse,
   elastiCacheMockResponse,
+  rdsCPUCostResponse,
   rdsCPUUsageResponse,
   rdsCPUUtilizationResponse,
-  rdsStorageResponse,
+  rdsStorageCostResponse,
+  rdsStorageUsageResponse,
   s3MockResponse,
 } from '@fixtures'
 import AWSServices from '@application/AWSServices'
@@ -118,7 +120,11 @@ describe('cli', () => {
     )
 
     const mockGetCostAndUsageFunction = jest.fn()
-    mockGetCostAndUsageFunction.mockReturnValueOnce(rdsStorageResponse).mockReturnValueOnce(rdsCPUUsageResponse)
+    mockGetCostAndUsageFunction
+      .mockReturnValueOnce(rdsCPUCostResponse)
+      .mockReturnValueOnce(rdsStorageCostResponse)
+      .mockReturnValueOnce(rdsStorageUsageResponse)
+      .mockReturnValueOnce(rdsCPUUsageResponse)
 
     AWSMock.mock(
       'CostExplorer',
@@ -159,7 +165,11 @@ describe('cli', () => {
     )
 
     const mockGetCostAndUsageFunction = jest.fn()
-    mockGetCostAndUsageFunction.mockReturnValueOnce(rdsStorageResponse).mockReturnValueOnce(rdsCPUUsageResponse)
+    mockGetCostAndUsageFunction
+      .mockReturnValueOnce(rdsCPUCostResponse)
+      .mockReturnValueOnce(rdsStorageCostResponse)
+      .mockReturnValueOnce(rdsStorageUsageResponse)
+      .mockReturnValueOnce(rdsCPUUsageResponse)
 
     AWSMock.mock(
       'CostExplorer',
