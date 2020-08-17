@@ -323,7 +323,7 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: '2020-06-27', value: 1, keys: ['EBS:anything'] }]))
+        callback(null, buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:anything'] }]))
       },
     )
 
