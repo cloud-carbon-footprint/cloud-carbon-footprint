@@ -3,6 +3,8 @@ import RDSComputeService from '@services/RDSCompute'
 import RDSStorage from '@services/RDSStorage'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
+import moment from 'moment'
+import { reduceBy, concat } from 'ramda'
 
 export default class RDS implements ICloudService {
   serviceName = 'rds'
@@ -40,7 +42,25 @@ export default class RDS implements ICloudService {
     return Object.values(result)
   }
 
-  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
-    return []
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
+    const rdsComputeCosts = await this.rdsComputeService.getCosts(start, end, region)
+    const rdsStorageCosts = await this.rdsStorageService.getCosts(start, end, region)
+
+    const rdsCosts = concat(rdsComputeCosts, rdsStorageCosts)
+
+    const groupingFn = (cost: Cost) => {
+      return moment(cost.timestamp).utc().format('YYYY-MM-DD')
+    }
+
+    const accumulatingFn = (accumulator: Cost, cost: Cost): Cost => {
+      accumulator.timestamp = accumulator.timestamp || new Date(moment(cost.timestamp).utc().format('YYYY-MM-DD'))
+      accumulator.amount += cost.amount
+      accumulator.currency = cost.currency || 'USD'
+      return accumulator
+    }
+
+    return Object.values(
+      reduceBy(accumulatingFn, { amount: 0, currency: undefined, timestamp: undefined }, groupingFn, rdsCosts),
+    )
   }
 }

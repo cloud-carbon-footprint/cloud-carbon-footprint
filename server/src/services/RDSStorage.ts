@@ -53,7 +53,8 @@ export default class RDSStorage implements ICloudService {
     console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
-  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+  // eslint-disable-next-line
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
     return []
   }
 }

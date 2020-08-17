@@ -83,7 +83,8 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     return await new AWSDecorator(region).getCostAndUsageResponses(params)
   }
 
-  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
+  // eslint-disable-next-line
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
     return []
   }
 }
