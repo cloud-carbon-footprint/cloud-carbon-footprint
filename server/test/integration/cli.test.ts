@@ -1,7 +1,4 @@
 import cli from '@view/cli'
-import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
-import path from 'path'
 import {
   ebsMockGetCostResponse,
   ebsMockUsageResponse,
@@ -23,11 +20,14 @@ import AWSServices from '@application/AWSServices'
 import RDS from '@services/RDS'
 import RDSStorage from '@services/RDSStorage'
 import RDSComputeService from '@services/RDSCompute'
-import { mocked } from 'ts-jest/utils'
 import EBS from '@services/EBS'
 import S3 from '@services/S3'
 import EC2 from '@services/EC2'
 import ElastiCache from '@services/ElastiCache'
+import AWSMock from 'aws-sdk-mock'
+import AWS from 'aws-sdk'
+import path from 'path'
+import { mocked } from 'ts-jest/utils'
 import fs from 'fs'
 import { when } from 'jest-when'
 
@@ -43,22 +43,23 @@ afterEach(() => {
 })
 
 describe('cli', () => {
+  const rawRequest = [
+    'executable',
+    'file',
+    '--startDate',
+    '2020-07-10',
+    '--endDate',
+    '2020-07-13',
+    '--region',
+    'us-east-1',
+  ]
+
   test('ebs, s3, ec2, elasticache', async () => {
     mockAwsCloudWatchGetMetricData()
     mockAwsCostExplorerGetCostAndUsage()
-
     servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
-    const result = await cli([
-      'executable',
-      'file',
-      '--startDate',
-      '2020-07-10',
-      '--endDate',
-      '2020-07-13',
-      '--region',
-      'us-east-1',
-    ])
+    const result = await cli(rawRequest)
 
     expect(result).toMatchSnapshot()
   })
@@ -66,111 +67,25 @@ describe('cli', () => {
   test('ebs, s3, ec2, elasticache grouped by service', async () => {
     mockAwsCloudWatchGetMetricData()
     mockAwsCostExplorerGetCostAndUsage()
-
     servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
-    const result = await cli([
-      'executable',
-      'file',
-      '--startDate',
-      '2020-07-10',
-      '--endDate',
-      '2020-07-13',
-      '--region',
-      'us-east-1',
-      '--groupBy',
-      'service',
-    ])
+    const result = await cli([...rawRequest, '--groupBy', 'service'])
 
     expect(result).toMatchSnapshot()
   })
 
   test('rds group by service', async () => {
-    const mockFunction = jest.fn()
-    mockFunction.mockReturnValueOnce(rdsCPUUtilizationResponse)
+    rdsTestSetup()
 
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
-        callback(null, mockFunction())
-      },
-    )
-
-    const mockGetCostAndUsageFunction = jest.fn()
-    mockGetCostAndUsageFunction
-      .mockReturnValueOnce(rdsCPUCostResponse)
-      .mockReturnValueOnce(rdsStorageCostResponse)
-      .mockReturnValueOnce(rdsStorageUsageResponse)
-      .mockReturnValueOnce(rdsCPUUsageResponse)
-
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, mockGetCostAndUsageFunction())
-      },
-    )
-
-    servicesRegistered.mockReturnValue([new RDS(new RDSComputeService(), new RDSStorage())])
-
-    const result = await cli([
-      'executable',
-      'file',
-      '--startDate',
-      '2020-07-10',
-      '--endDate',
-      '2020-07-13',
-      '--region',
-      'us-east-1',
-      '--groupBy',
-      'service',
-    ])
+    const result = await cli([...rawRequest, '--groupBy', 'service'])
 
     expect(result).toMatchSnapshot()
   })
 
   test('rds group by day', async () => {
-    const mockFunction = jest.fn()
-    mockFunction.mockReturnValueOnce(rdsCPUUtilizationResponse)
+    rdsTestSetup()
 
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
-        callback(null, mockFunction())
-      },
-    )
-
-    const mockGetCostAndUsageFunction = jest.fn()
-    mockGetCostAndUsageFunction
-      .mockReturnValueOnce(rdsCPUCostResponse)
-      .mockReturnValueOnce(rdsStorageCostResponse)
-      .mockReturnValueOnce(rdsStorageUsageResponse)
-      .mockReturnValueOnce(rdsCPUUsageResponse)
-
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, mockGetCostAndUsageFunction())
-      },
-    )
-
-    servicesRegistered.mockReturnValue([new RDS(new RDSComputeService(), new RDSStorage())])
-
-    const result = await cli([
-      'executable',
-      'file',
-      '--startDate',
-      '2020-07-10',
-      '--endDate',
-      '2020-07-13',
-      '--region',
-      'us-east-1',
-      '--groupBy',
-      'day',
-    ])
+    const result = await cli([...rawRequest, '--groupBy', 'day'])
 
     expect(result).toMatchSnapshot()
   })
@@ -194,28 +109,11 @@ describe('cli', () => {
     test('formats table into csv file', async () => {
       mockAwsCloudWatchGetMetricData()
       mockAwsCostExplorerGetCostAndUsage()
-
       servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
-      await cli([
-        'executable',
-        'file',
-        '--startDate',
-        '2020-07-10',
-        '--endDate',
-        '2020-07-13',
-        '--region',
-        'us-east-1',
-        '--format',
-        'csv',
-        '--groupBy',
-        'dayAndService',
-      ])
+      await cli([...rawRequest, '--format', 'csv', '--groupBy', 'dayAndService'])
 
-      // file should exist
       expect(fs.existsSync(outputFilePath)).toBe(true)
-
-      // csv generated should match snapshot
       expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
     })
   })
@@ -278,6 +176,35 @@ function mockAwsCostExplorerGetCostAndUsage() {
     'getCostAndUsage',
     (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
       callback(null, mockGetCostAndUsageFunction(params))
+    },
+  )
+}
+
+function rdsTestSetup() {
+  servicesRegistered.mockReturnValue([new RDS(new RDSComputeService(), new RDSStorage())])
+  const mockAwsCloudWatchGetMetricDataFunction = jest.fn()
+  mockAwsCloudWatchGetMetricDataFunction.mockReturnValueOnce(rdsCPUUtilizationResponse)
+
+  AWSMock.mock(
+    'CloudWatch',
+    'getMetricData',
+    (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
+      callback(null, mockAwsCloudWatchGetMetricDataFunction())
+    },
+  )
+
+  const mockAwsCostExplorerGetCostAndUsageFunction = jest.fn()
+  mockAwsCostExplorerGetCostAndUsageFunction
+    .mockReturnValueOnce(rdsCPUCostResponse)
+    .mockReturnValueOnce(rdsStorageCostResponse)
+    .mockReturnValueOnce(rdsStorageUsageResponse)
+    .mockReturnValueOnce(rdsCPUUsageResponse)
+
+  AWSMock.mock(
+    'CostExplorer',
+    'getCostAndUsage',
+    (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      callback(null, mockAwsCostExplorerGetCostAndUsageFunction())
     },
   )
 }
