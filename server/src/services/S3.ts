@@ -2,6 +2,8 @@ import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
 import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
+import { getCostFromCostExplorer } from '@services/CostMapper'
+import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
@@ -37,7 +39,34 @@ export default class S3 extends HDDStorageService {
     )
   }
 
-  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
-    return []
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
+    // This request includes all s3 types/keys combined together
+    const params: GetCostAndUsageRequest = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          { Dimensions: { Key: 'REGION', Values: [region] } },
+          {
+            Dimensions: {
+              Key: 'SERVICE',
+              Values: ['Amazon Simple Storage Service'],
+            },
+          },
+        ],
+      },
+      Granularity: 'DAILY',
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+      Metrics: ['AmortizedCost'],
+    }
+
+    return getCostFromCostExplorer(params, region)
   }
 }
