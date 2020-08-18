@@ -1,8 +1,7 @@
 import express from 'express'
 import { App } from '@application/App'
 import { RawRequest } from '@application/EstimationRequest'
-import EmissionsByDayAndServiceTable from '@view/EmissionsByDayAndServiceTable'
-
+import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
 const app = express()
 const port = 4000
 
@@ -12,7 +11,7 @@ app.get('/api', (req: express.Request, res: express.Response) => {
     endDate: '2020-08-10',
   }
   new App().getEstimate(estimationRequest).then((result) => {
-    const { table } = EmissionsByDayAndServiceTable(result)
+    const { table } = EmissionsByServiceTable(result)
     res.json(table)
   })
 })
