@@ -42,6 +42,11 @@ describe('EmissionsByDayTable', () => {
           cost: 0,
           timestamp: moment('2020-07-10').toDate(),
         },
+        {
+          serviceName: 'lambda',
+          wattHours: 1,
+          co2e: 1,
+        },
       ],
     },
     {
@@ -82,6 +87,11 @@ describe('EmissionsByDayTable', () => {
           cost: 6,
           timestamp: moment('2020-07-10').toDate(),
         },
+        {
+          serviceName: 'lambda',
+          wattHours: 300,
+          co2e: 300,
+        },
       ],
     },
   ]
@@ -95,9 +105,9 @@ describe('EmissionsByDayTable', () => {
   it('prints out the given estimation results grouped by service', () => {
     expect(result.table).toEqual([
       ['Date', 'Watt Hours', 'Kg CO2e Emissions'],
-      ['2020-07-10', '14.00', '14.000000'],
-      ['2020-07-09', '1646.00', '1660.000000'],
-      ['Total', '1660.00', '1674.000000'],
+      ['2020-07-10', '15.00', '15.000000'],
+      ['2020-07-09', '1946.00', '1960.000000'],
+      ['Total', '1961.00', '1975.000000'],
     ])
   })
 

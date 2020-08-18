@@ -24,6 +24,10 @@
     {
       "key": "rds",
       "name": "RDS"
+    },
+    {
+      "key": "lambda",
+      "name": "Lambda"
     }
   ]
 }

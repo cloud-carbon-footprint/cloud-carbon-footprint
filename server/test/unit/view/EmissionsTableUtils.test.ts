@@ -28,6 +28,10 @@ describe('emissions table utils', () => {
         co2e: 0,
         cost: 0,
       },
+      lambda: {
+        wattHours: 0,
+        co2e: 0,
+      },
       total: {
         wattHours: 0,
         co2e: 0,

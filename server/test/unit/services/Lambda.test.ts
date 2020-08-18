@@ -35,6 +35,9 @@ function mockGetResults(results: { results: { field: string; value: string }[][]
 describe('Lambda', () => {
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
+    jest.mock('@domain/FootprintEstimationConstants', () => {
+      WATT_HOURS: 2.35
+    })
   })
 
   afterEach(() => {
@@ -240,7 +243,7 @@ describe('Lambda', () => {
     ])
   })
 
-  it('throws an error if status is not complete after 10 seconds', async () => {
+  it('throws an error if status is not complete after 100 ms', async () => {
     const logGroups = [
       {
         logGroupName: '/aws/lambda/sample-function-name',
@@ -262,21 +265,21 @@ describe('Lambda', () => {
           },
         ],
       ],
-      status: 'Incomplete',
+      status: 'Running',
     }
 
     mockDescribeLogGroups(logGroups)
     mockStartQuery(response)
     mockGetResults(results)
 
-    const lambdaService = new Lambda()
+    const lambdaService = new Lambda(100, 50)
 
-    const expectedError = new Error('CloudWatchLog request failed, status: Incomplete')
+    const expectedError = new Error('CloudWatchLog request failed, status: Running')
 
     try {
       await lambdaService.getEstimates(new Date('2020-08-09T00:00:00Z'), new Date('2020-08-10T00:00:00Z'), 'us-west-1')
     } catch (error) {
       expect(error).toEqual(expectedError)
     }
-  }, 15000)
+  })
 })

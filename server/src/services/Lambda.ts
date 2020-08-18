@@ -1,15 +1,14 @@
 import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { estimateCo2 } from '@domain/FootprintEstimationConstants'
+import { estimateCo2, MAX_WATTS } from '@domain/FootprintEstimationConstants'
 import AWS from 'aws-sdk'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 
-const MAX_WATT_HOURS = 2.35
-const QUERY_LIMIT = 10
-
 export default class Lambda implements ICloudService {
-  serviceName: 'lambda'
+  serviceName = 'lambda'
+
+  constructor(private TIMEOUT = 10000, private POLL_INTERVAL = 1000) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const cloudWatchLogs = new AWS.CloudWatchLogs({ region: region }) //TODO: dependency injection
@@ -53,7 +52,7 @@ export default class Lambda implements ICloudService {
   private async runQuery(cw: AWS.CloudWatchLogs, start: Date, end: Date, groupNames: string[]): Promise<string> {
     const query = `
             filter @type = "REPORT"
-            | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${MAX_WATT_HOURS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
+            | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
             | stats sum(wattsPerFunction) as Watts by Date 
             | sort Date asc`
 
@@ -71,18 +70,16 @@ export default class Lambda implements ICloudService {
     const params = {
       queryId: queryId /* required */,
     }
-    let status = ''
     let data
-    let waitCount = 0
+    const startTime = Date.now()
 
-    while (status !== 'Complete') {
-      await wait(1000)
+    while (true) {
       data = await cw.getQueryResults(params).promise()
-      status = data.status
-      if (waitCount === QUERY_LIMIT) {
+      if (data.status !== 'Running' && data.status !== 'Scheduled') break
+      if (Date.now() - startTime > this.TIMEOUT) {
         throw new Error(`CloudWatchLog request failed, status: ${data.status}`)
       }
-      waitCount = waitCount + 1
+      await wait(this.POLL_INTERVAL)
     }
     return data
   }
