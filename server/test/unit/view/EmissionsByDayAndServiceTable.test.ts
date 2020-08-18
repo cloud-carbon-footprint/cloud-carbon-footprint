@@ -43,9 +43,11 @@ describe('EmissionsTable', () => {
           cost: 7,
         },
         {
+          timestamp: moment('2020-07-10').toDate(),
           serviceName: 'lambda',
           wattHours: 1,
           co2e: 1,
+          cost: 7,
         },
       ],
     },
@@ -88,9 +90,11 @@ describe('EmissionsTable', () => {
           cost: 7,
         },
         {
+          timestamp: moment('2020-07-09').toDate(),
           serviceName: 'lambda',
           wattHours: 300,
           co2e: 300,
+          cost: 7,
         },
       ],
     },
