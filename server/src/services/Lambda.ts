@@ -8,7 +8,7 @@ import { isEmpty } from 'ramda'
 export default class Lambda implements ICloudService {
   serviceName = 'lambda'
 
-  constructor(private TIMEOUT = 10000, private POLL_INTERVAL = 1000) {}
+  constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const cloudWatchLogs = new AWS.CloudWatchLogs({ region: region }) //TODO: dependency injection
