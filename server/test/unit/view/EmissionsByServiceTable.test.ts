@@ -42,6 +42,13 @@ describe('EmissionsByServiceTable', () => {
           timestamp: moment('2020-07-10').toDate(),
           cost: 5,
         },
+        {
+          serviceName: 'lambda',
+          wattHours: 100,
+          co2e: 100,
+          timestamp: moment('2020-07-10').toDate(),
+          cost: 5,
+        },
       ],
     },
     {
@@ -82,6 +89,13 @@ describe('EmissionsByServiceTable', () => {
           timestamp: moment('2020-07-09').toDate(),
           cost: 9,
         },
+        {
+          serviceName: 'lambda',
+          wattHours: 200,
+          co2e: 300,
+          timestamp: moment('2020-07-09').toDate(),
+          cost: 10,
+        },
       ],
     },
   ]
@@ -100,7 +114,8 @@ describe('EmissionsByServiceTable', () => {
       ['EC2', '93.00', '80.000000', '$14.00'],
       ['ElastiCache', '751.00', '791.000000', '$14.00'],
       ['RDS', '751.00', '791.000000', '$14.00'],
-      ['Total', '1660.00', '1674.000000', '$70.00'],
+      ['Lambda',  '300.00', '400.000000', '$15.00'],
+      ['Total', '1960.00', '2074.000000', '$85.00'],
     ])
   })
 

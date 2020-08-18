@@ -42,6 +42,11 @@ describe('EmissionsTable', () => {
           co2e: 4,
           cost: 7,
         },
+        {
+          serviceName: 'lambda',
+          wattHours: 1,
+          co2e: 1,
+        },
       ],
     },
     {
@@ -82,6 +87,11 @@ describe('EmissionsTable', () => {
           co2e: 787,
           cost: 7,
         },
+        {
+          serviceName: 'lambda',
+          wattHours: 300,
+          co2e: 300,
+        },
       ],
     },
   ]
@@ -106,6 +116,8 @@ describe('EmissionsTable', () => {
         'ElastiCache Kg CO2e Emissions',
         'RDS Watt Hours',
         'RDS Kg CO2e Emissions',
+        'Lambda Watt Hours',
+        'Lambda Kg CO2e Emissions',
         'SUM Watt Hours',
         'SUM Kg CO2e Emissions',
       ],
@@ -121,8 +133,10 @@ describe('EmissionsTable', () => {
         '787.000000',
         '747.00',
         '787.000000',
-        '1646.00',
-        '1660.000000',
+        '300.00',
+        '300.000000',
+        '1946.00',
+        '1960.000000',
       ],
       [
         '2020-07-10',
@@ -136,8 +150,10 @@ describe('EmissionsTable', () => {
         '4.000000',
         '4.00',
         '4.000000',
-        '14.00',
-        '14.000000',
+        '1.00',
+        '1.000000',
+        '15.00',
+        '15.000000',
       ],
       [
         'Total',
@@ -151,13 +167,15 @@ describe('EmissionsTable', () => {
         '791.000000',
         '751.00',
         '791.000000',
-        '1660.00',
-        '1674.000000',
+        '301.00',
+        '301.000000',
+        '1961.00',
+        '1975.000000',
       ],
     ])
   })
 
   it('does the right columns', () => {
-    expect(result.colWidths).toEqual([15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25])
+    expect(result.colWidths).toEqual([15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25])
   })
 })
