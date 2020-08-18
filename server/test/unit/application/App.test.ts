@@ -1,11 +1,12 @@
 import moment = require('moment')
-import { App, ServiceDailyMetricResult } from '@application/App'
+import { App } from '@application/App'
 import { mocked } from 'ts-jest/utils'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
 import { RawRequest } from '@application/EstimationRequest'
 import { AWS_REGIONS } from '@services/AWSRegions'
+import { EstimationResult } from '@application/EstimationResult'
 
 jest.mock('@application/AWSServices')
 
@@ -48,14 +49,15 @@ describe('App', () => {
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
       //run
-      const estimationResult: ServiceDailyMetricResult[] = await app.getEstimate(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
       //assert
-      const expectedEstimationResults: ServiceDailyMetricResult[] = [...Array(7)].map((v, i) => {
+      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment.utc('2020-12-07').add(i, 'days').toDate(),
-          estimates: [
+          serviceEstimates: [
             {
+              timestamp: moment.utc('2020-12-07').add(i, 'days').toDate(),
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -117,20 +119,22 @@ describe('App', () => {
       mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
 
       //run
-      const estimationResult: ServiceDailyMetricResult[] = await app.getEstimate(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
       //assert
       const expectedEstimationResults = [
         {
           timestamp: new Date('2019-01-01'),
-          estimates: [
+          serviceEstimates: [
             {
+              timestamp: new Date('2019-01-01'),
               serviceName: 'serviceOne',
               wattHours: 0,
               co2e: 0,
               cost: 0,
             },
             {
+              timestamp: new Date('2019-01-01'),
               serviceName: 'serviceTwo',
               wattHours: 1,
               co2e: 1,
@@ -191,14 +195,15 @@ describe('App', () => {
       }
 
       //run
-      const estimationResult: ServiceDailyMetricResult[] = await app.getEstimate(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
       //assert
       const expectedEstimationResults = [
         {
           timestamp: new Date('2019-01-01'),
-          estimates: [
+          serviceEstimates: [
             {
+              timestamp: new Date('2019-01-01'),
               serviceName: 'serviceOne',
               wattHours: 2,
               co2e: 4,

@@ -1,21 +1,30 @@
-import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from '@view/EmissionsTableUtils'
-import { ServiceDailyMetricResult } from '@application/App'
+import {
+  displayCo2e,
+  displayCost,
+  displayServiceName,
+  displayWattHours,
+  initialTotals,
+  Totals,
+} from '@view/EmissionsTableUtils'
+import { EstimationResult } from '@application/EstimationResult'
 
 export default function EmissionsByServiceTable(
-  estimationResults: ServiceDailyMetricResult[],
+  estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
-  const headers = ['Service', 'Watt Hours', 'Kg CO2e Emissions']
-  const colWidths: number[] = [15, 20, 25]
+  const headers = ['Service', 'Watt Hours', 'Kg CO2e Emissions', 'Cost']
+  const colWidths: number[] = [15, 20, 25, 20]
   const table: string[][] = [headers]
 
   const grandTotals: Totals = initialTotals()
 
   estimationResults.forEach((estimationResult) => {
-    estimationResult.estimates.forEach((serviceEstimate) => {
+    estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
       grandTotals['total'].wattHours += serviceEstimate.wattHours
       grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
       grandTotals['total'].co2e += serviceEstimate.co2e
+      grandTotals[serviceEstimate.serviceName].cost += serviceEstimate.cost
+      grandTotals['total'].cost += serviceEstimate.cost
     })
   })
 
@@ -24,6 +33,7 @@ export default function EmissionsByServiceTable(
       displayServiceName(serviceName),
       displayWattHours(serviceData.wattHours),
       displayCo2e(serviceData.co2e),
+      displayCost(serviceData.cost),
     ])
   })
 

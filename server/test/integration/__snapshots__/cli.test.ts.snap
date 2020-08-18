@@ -20,13 +20,13 @@ exports[`cli ebs, s3, ec2, elasticache 1`] = `
 `;
 
 exports[`cli ebs, s3, ec2, elasticache grouped by service 1`] = `
-"| Service      | Watt Hours        | Kg CO2e Emissions      
-| EBS          | 3.11              | 0.001048               
-| S3           | 0.05              | 0.000017               
-| EC2          | 18.81             | 0.006337               
-| ElastiCache  | 5.47              | 0.001842               
-| RDS          | 0.00              | 0.000000               
-| Total        | 27.44             | 0.009244               "
+"| Service      | Watt Hours        | Kg CO2e Emissions      | Cost              
+| EBS          | 3.11              | 0.001048               | $4.62             
+| S3           | 0.05              | 0.000017               | $0.00             
+| EC2          | 18.81             | 0.006337               | $0.00             
+| ElastiCache  | 5.47              | 0.001842               | $6.00             
+| RDS          | 0.00              | 0.000000               | $0.00             
+| Total        | 27.44             | 0.009244               | $10.62            "
 `;
 
 exports[`cli rds group by day 1`] = `
@@ -37,11 +37,11 @@ exports[`cli rds group by day 1`] = `
 `;
 
 exports[`cli rds group by service 1`] = `
-"| Service      | Watt Hours        | Kg CO2e Emissions      
-| EBS          | 0.00              | 0.000000               
-| S3           | 0.00              | 0.000000               
-| EC2          | 0.00              | 0.000000               
-| ElastiCache  | 0.00              | 0.000000               
-| RDS          | 4.91              | 0.001655               
-| Total        | 4.91              | 0.001655               "
+"| Service      | Watt Hours        | Kg CO2e Emissions      | Cost              
+| EBS          | 0.00              | 0.000000               | $0.00             
+| S3           | 0.00              | 0.000000               | $0.00             
+| EC2          | 0.00              | 0.000000               | $0.00             
+| ElastiCache  | 0.00              | 0.000000               | $0.00             
+| RDS          | 4.91              | 0.001655               | $9.23             
+| Total        | 4.91              | 0.001655               | $9.23             "
 `;

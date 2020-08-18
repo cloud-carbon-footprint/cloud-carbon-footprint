@@ -119,11 +119,11 @@ export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageRes
       Groups: [
         {
           Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          Metrics: { AmortizedCost: { Amount: '1.0', Unit: 'USD' } },
         },
         {
           Keys: ['USE2-NodeUsage:cache.t2.micro'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          Metrics: { AmortizedCost: { Amount: '2.0', Unit: 'USD' } },
         },
       ],
     },
@@ -135,7 +135,7 @@ export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageRes
       Groups: [
         {
           Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          Metrics: { AmortizedCost: { Amount: '3.0', Unit: 'USD' } },
         },
       ],
     },

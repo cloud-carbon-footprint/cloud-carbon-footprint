@@ -6,61 +6,81 @@ describe('EmissionsByDayTable', () => {
   const input: EstimationResult[] = [
     {
       timestamp: moment('2020-07-10').toDate(),
-      estimates: [
+      serviceEstimates: [
         {
           serviceName: 'ebs',
           wattHours: 1,
           co2e: 1,
+          cost: 0,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 's3',
           wattHours: 2,
           co2e: 2,
+          cost: 0,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 'ec2',
           wattHours: 3,
           co2e: 3,
+          cost: 0,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 'elasticache',
           wattHours: 4,
           co2e: 4,
+          cost: 0,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 'rds',
           wattHours: 4,
           co2e: 4,
+          cost: 0,
+          timestamp: moment('2020-07-10').toDate(),
         },
       ],
     },
     {
       timestamp: moment('2020-07-09').toDate(),
-      estimates: [
+      serviceEstimates: [
         {
           serviceName: 'ebs',
           wattHours: 7,
           co2e: 8,
+          cost: 6,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 's3',
           wattHours: 55,
           co2e: 1,
+          cost: 6,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 'ec2',
           wattHours: 90,
           co2e: 77,
+          cost: 6,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 'elasticache',
           wattHours: 747,
           co2e: 787,
+          cost: 6,
+          timestamp: moment('2020-07-10').toDate(),
         },
         {
           serviceName: 'rds',
           wattHours: 747,
           co2e: 787,
+          cost: 6,
+          timestamp: moment('2020-07-10').toDate(),
         },
       ],
     },
