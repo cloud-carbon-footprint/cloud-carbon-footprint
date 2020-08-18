@@ -4,17 +4,20 @@ import AWS from 'aws-sdk'
 import path from 'path'
 import {
   ebsMockGetCostResponse,
-  ebsMockResponse,
-  ec2MockResponse,
-  elastiCacheMockGetCostAndUsageResponse,
+  ebsMockUsageResponse,
+  ec2MockGetUsageResponse,
+  ec2MockGetMetricDataResponse,
   elastiCacheMockGetCostResponse,
-  elastiCacheMockResponse,
+  elastiCacheMockGetMetricDataResponse,
+  elastiCacheMockGetUsageResponse,
   rdsCPUCostResponse,
   rdsCPUUsageResponse,
   rdsCPUUtilizationResponse,
   rdsStorageCostResponse,
   rdsStorageUsageResponse,
-  s3MockResponse,
+  s3MockGetCostResponse,
+  s3MockGetMetricDataResponse,
+  s3MockGetUsageResponse,
 } from '@fixtures'
 import AWSServices from '@application/AWSServices'
 import RDS from '@services/RDS'
@@ -41,21 +44,8 @@ afterEach(() => {
 
 describe('cli', () => {
   test('ebs, s3, ec2, elasticache', async () => {
-    const mockFunction = jest.fn()
-    mockFunction
-      .mockReturnValueOnce(s3MockResponse)
-      .mockReturnValueOnce(ec2MockResponse)
-      .mockReturnValueOnce(elastiCacheMockResponse)
-
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
-        callback(null, mockFunction())
-      },
-    )
-
-    mockAwsGetCostAndUsage()
+    mockAwsCloudWatchGetMetricData()
+    mockAwsCostExplorerGetCostAndUsage()
 
     servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
@@ -74,20 +64,8 @@ describe('cli', () => {
   })
 
   test('ebs, s3, ec2, elasticache grouped by service', async () => {
-    const mockFunction = jest.fn()
-    mockFunction
-      .mockReturnValueOnce(s3MockResponse)
-      .mockReturnValueOnce(ec2MockResponse)
-      .mockReturnValueOnce(elastiCacheMockResponse)
-
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
-        callback(null, mockFunction())
-      },
-    )
-    mockAwsGetCostAndUsage()
+    mockAwsCloudWatchGetMetricData()
+    mockAwsCostExplorerGetCostAndUsage()
 
     servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
@@ -214,21 +192,8 @@ describe('cli', () => {
     })
 
     test('formats table into csv file', async () => {
-      const mockFunction = jest.fn()
-      mockFunction
-        .mockReturnValueOnce(s3MockResponse)
-        .mockReturnValueOnce(ec2MockResponse)
-        .mockReturnValueOnce(elastiCacheMockResponse)
-
-      AWSMock.mock(
-        'CloudWatch',
-        'getMetricData',
-        (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
-          callback(null, mockFunction())
-        },
-      )
-
-      mockAwsGetCostAndUsage()
+      mockAwsCloudWatchGetMetricData()
+      mockAwsCostExplorerGetCostAndUsage()
 
       servicesRegistered.mockReturnValue([new EBS(), new S3(), new EC2(), new ElastiCache()])
 
@@ -256,41 +221,58 @@ describe('cli', () => {
   })
 })
 
-function mockAwsGetCostAndUsage() {
+function mockAwsCloudWatchGetMetricData() {
+  const mockGetMetricDataFunction = jest.fn()
+  mockGetMetricDataFunction
+    .mockReturnValueOnce(ec2MockGetMetricDataResponse)
+    .mockReturnValueOnce(s3MockGetMetricDataResponse)
+    .mockReturnValueOnce(elastiCacheMockGetMetricDataResponse)
+
+  AWSMock.mock(
+    'CloudWatch',
+    'getMetricData',
+    (params: AWS.CloudWatch.GetMetricDataOutput, callback: (a: Error, response: any) => any) => {
+      callback(null, mockGetMetricDataFunction())
+    },
+  )
+}
+
+function mockAwsCostExplorerGetCostAndUsage() {
   const mockGetCostAndUsageFunction = jest.fn()
   when(mockGetCostAndUsageFunction)
     .calledWith(expect.objectContaining({ Metrics: ['AmortizedCost'] }))
     .mockReturnValueOnce(ebsMockGetCostResponse)
+    .mockReturnValueOnce(s3MockGetCostResponse)
     .mockReturnValueOnce(elastiCacheMockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(expect.objectContaining({ Metrics: ['UsageQuantity'] }))
-    .mockReturnValueOnce(ebsMockResponse)
-    .mockReturnValueOnce(elastiCacheMockGetCostAndUsageResponse)
+    .mockReturnValueOnce(ebsMockUsageResponse)
+    .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
       expect.objectContaining({
         MetricDataQueries: [
           {
-            Id: 's3Size',
+            Id: 'cpuUtilization',
           },
         ],
       }),
     )
-    .mockReturnValueOnce(s3MockResponse)
+    .mockReturnValueOnce(ec2MockGetUsageResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
       expect.objectContaining({
-        MetricDataQueries: [
-          {
-            Id: 'cpuUtilizationWithEmptyValues',
-          },
-        ],
+        Dimensions: {
+          Key: 'SERVICE',
+          Values: ['Amazon Simple Storage Service'],
+        },
       }),
     )
-    .mockReturnValueOnce(ec2MockResponse)
+    .mockReturnValueOnce(s3MockGetUsageResponse)
+
   AWSMock.mock(
     'CostExplorer',
     'getCostAndUsage',

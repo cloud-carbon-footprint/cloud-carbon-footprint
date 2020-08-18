@@ -2,6 +2,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
 import S3 from '@services/S3'
+import { buildCostExplorerGetCostResponse } from '@builders'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -75,6 +76,32 @@ describe('S3', () => {
         sizeGb: 4.2860325,
         timestamp: new Date('2020-06-30T00:00:00Z'),
       },
+    ])
+  })
+
+  it('gets S3 cost for two days', async () => {
+    const start = '2020-07-01T00:00:00.000Z'
+    const end = '2020-07-02T00:00:00.000Z'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildCostExplorerGetCostResponse([
+            { start: '2020-07-01T00:00:00.000Z', amount: 2.3, keys: ['Amazon Simple Storage Service'] },
+            { start: '2020-07-02T00:00:00.000Z', amount: 4.6, keys: ['test'] },
+          ]),
+        )
+      },
+    )
+
+    const s3Service = new S3()
+    const s3Costs = await s3Service.getCosts(new Date(start), new Date(end), 'us-east-1')
+
+    expect(s3Costs).toEqual([
+      { amount: 2.3, currency: 'USD', timestamp: new Date('2020-07-01T00:00:00.000Z') },
+      { amount: 4.6, currency: 'USD', timestamp: new Date('2020-07-02T00:00:00.000Z') },
     ])
   })
 })

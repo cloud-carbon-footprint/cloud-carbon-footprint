@@ -2,7 +2,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
 import ElastiCache from '@services/ElastiCache'
-import { elastiCacheMockResponse } from '@fixtures'
+import { elastiCacheMockGetMetricDataResponse } from '@fixtures'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -61,7 +61,7 @@ describe('ElastiCache', () => {
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
         expect(params).toEqual(cloudwatchRequest('2020-07-19T00:00:00.000Z', '2020-07-21T00:00:00.000Z'))
-        callback(null, elastiCacheMockResponse)
+        callback(null, elastiCacheMockGetMetricDataResponse)
       },
     )
 

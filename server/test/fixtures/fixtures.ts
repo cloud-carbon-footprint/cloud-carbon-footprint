@@ -1,19 +1,51 @@
 import AWS from 'aws-sdk'
 
-export const s3MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
+export const ec2MockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
     {
-      Id: 's3Size',
-      Label: 's3Size',
-      Timestamps: [new Date('2020-06-27T00:00:00.000Z')],
-      Values: [2586032500],
-      StatusCode: 'Complete',
-      Messages: [],
+      TimePeriod: {
+        Start: '2020-07-19',
+        End: '2020-07-20',
+      },
+      Groups: [
+        {
+          Keys: ['ec2'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+        {
+          Keys: ['ec2'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-07-20',
+        End: '2020-07-21',
+      },
+      Groups: [
+        {
+          Keys: ['ec2'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '2',
+            },
+          },
+        },
+      ],
     },
   ],
 }
 
-export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
+export const ec2MockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
     {
       Id: 'cpuUtilization',
@@ -51,7 +83,7 @@ export const ec2MockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   Messages: [],
 }
 
-export const elastiCacheMockResponse: AWS.CloudWatch.GetMetricDataOutput = {
+export const elastiCacheMockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
     {
       Id: 'cpuUtilization',
@@ -64,7 +96,7 @@ export const elastiCacheMockResponse: AWS.CloudWatch.GetMetricDataOutput = {
   ],
 }
 
-export const elastiCacheMockGetCostAndUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const elastiCacheMockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
@@ -142,7 +174,98 @@ export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageRes
   ],
 }
 
-export const ebsMockResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const s3MockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
+  MetricDataResults: [
+    {
+      Id: 's3Size',
+      Label: 's3Size',
+      Timestamps: [new Date('2020-06-27T00:00:00.000Z')],
+      Values: [2586032500],
+      StatusCode: 'Complete',
+      Messages: [],
+    },
+  ],
+}
+
+export const s3MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-07-19',
+        End: '2020-07-20',
+      },
+      Groups: [
+        {
+          Keys: [''],
+          Metrics: { AmortizedCost: { Amount: '1.0', Unit: 'USD' } },
+        },
+        {
+          Keys: ['Amazon Simple Storage Service'],
+          Metrics: { AmortizedCost: { Amount: '2.0', Unit: 'USD' } },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-07-20',
+        End: '2020-07-21',
+      },
+      Groups: [
+        {
+          Keys: ['Amazon Simple Storage Service'],
+          Metrics: { AmortizedCost: { Amount: '3.0', Unit: 'USD' } },
+        },
+      ],
+    },
+  ],
+}
+
+export const s3MockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: '2020-07-19',
+        End: '2020-07-20',
+      },
+      Groups: [
+        {
+          Keys: ['USE2-NodeUsage:cache.t3.medium'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+        {
+          Keys: ['USE2-NodeUsage:cache.t2.micro'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '1',
+            },
+          },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: '2020-07-20',
+        End: '2020-07-21',
+      },
+      Groups: [
+        {
+          Keys: ['USE2-NodeUsage:cache.t3.medium'],
+          Metrics: {
+            UsageQuantity: {
+              Amount: '2',
+            },
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const ebsMockUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
