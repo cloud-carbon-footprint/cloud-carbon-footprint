@@ -2,7 +2,7 @@ import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Total
 import { CURRENT_SERVICES } from '@application/Config.json'
 import { pluck } from 'ramda'
 import moment from 'moment'
-import { ServiceDailyMetricResult } from '@application/App'
+import { EstimationResult } from '@application/EstimationResult'
 
 const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
 const displayService = (totals: Totals, serviceName: string) => [
@@ -11,7 +11,7 @@ const displayService = (totals: Totals, serviceName: string) => [
 ]
 
 export default function EmissionsByDayAndServiceTable(
-  estimationResults: ServiceDailyMetricResult[],
+  estimationResults: EstimationResult[],
   serviceNames = pluck('key', CURRENT_SERVICES),
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
@@ -37,7 +37,7 @@ export default function EmissionsByDayAndServiceTable(
   estimationResults.forEach((estimationResult) => {
     const subTotals: Totals = initialTotals()
 
-    estimationResult.estimates.forEach((serviceEstimate) => {
+    estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
       grandTotals['total'].wattHours += serviceEstimate.wattHours
       subTotals[serviceEstimate.serviceName].wattHours = serviceEstimate.wattHours
