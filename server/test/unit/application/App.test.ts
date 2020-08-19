@@ -1,16 +1,17 @@
-import moment = require('moment')
 import { App } from '@application/App'
-import { mocked } from 'ts-jest/utils'
-import FootprintEstimate from '@domain/FootprintEstimate'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
 import { RawRequest } from '@application/EstimationRequest'
+import FootprintEstimate from '@domain/FootprintEstimate'
 import { AWS_REGIONS } from '@services/AWSRegions'
 import { EstimationResult } from '@application/EstimationResult'
+import { mocked } from 'ts-jest/utils'
+import moment = require('moment')
+import ICloudService from '@domain/ICloudService'
 
 jest.mock('@application/AWSServices')
 
-const AWSMock = mocked(AWSServices, true)
+const servicesRegistered = mocked(AWSServices, true)
 
 describe('App', () => {
   let app: App
@@ -20,24 +21,15 @@ describe('App', () => {
   })
 
   describe('getEstimate', () => {
+    const rawRequest: RawRequest = {
+      startDate: moment('2020-06-07').toISOString(),
+      endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
+      region: AWS_REGIONS.US_EAST_1,
+    }
+
     it('should return ebs estimates for a week', async () => {
-      //setup
       const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-      let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-      const mockCloudServices = {
-        getEstimates: mockGetEstimates,
-        serviceName: 'ebs',
-        getUsage: mockGetUsage,
-        getCosts: jest.fn().mockResolvedValue([]),
-      }
-
-      AWSMock.mockReturnValue([mockCloudServices])
-
-      const rawRequest: RawRequest = {
-        startDate: moment('2020-06-07').toISOString(),
-        endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
-        region: AWS_REGIONS.US_EAST_1,
-      }
+      setUpServices([mockGetEstimates], ['ebs'])
 
       const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
@@ -48,10 +40,8 @@ describe('App', () => {
       })
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      //run
       const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
-      //assert
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment.utc('2020-12-07').add(i, 'days').toDate(),
@@ -71,32 +61,9 @@ describe('App', () => {
     })
 
     it('should return estimates for 2 services', async () => {
-      //setup
       const mockGetEstimates1: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-      let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-      const mockCloudServices = [
-        {
-          getEstimates: mockGetEstimates1,
-          serviceName: 'serviceOne',
-          getUsage: mockGetUsage,
-          getCosts: jest.fn().mockResolvedValue([]),
-        },
-        {
-          getEstimates: mockGetEstimates2,
-          serviceName: 'serviceTwo',
-          getUsage: mockGetUsage,
-          getCosts: jest.fn().mockResolvedValue([]),
-        },
-      ]
-
-      AWSMock.mockReturnValue(mockCloudServices)
-
-      const rawRequest: RawRequest = {
-        startDate: moment('2020-06-07').toISOString(),
-        endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
-        region: AWS_REGIONS.US_EAST_1,
-      }
+      setUpServices([mockGetEstimates1, mockGetEstimates2], ['serviceOne', 'serviceTwo'])
 
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
@@ -118,10 +85,8 @@ describe('App', () => {
 
       mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
 
-      //run
       const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
-      //assert
       const expectedEstimationResults = [
         {
           timestamp: new Date('2019-01-01'),
@@ -159,20 +124,8 @@ describe('App', () => {
     })
 
     it('should aggregate per day', async () => {
-      //setup
       const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-      let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-      const mockCloudServices = [
-        {
-          getEstimates: mockGetEstimates,
-          serviceName: 'serviceOne',
-          getUsage: mockGetUsage,
-          getCosts: jest.fn().mockResolvedValue([]),
-        },
-      ]
-
-      AWSMock.mockReturnValue(mockCloudServices)
-
+      setUpServices([mockGetEstimates], ['serviceOne'])
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
           timestamp: new Date('2019-01-01T01:00:00Z'),
@@ -188,16 +141,8 @@ describe('App', () => {
 
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const rawRequest: RawRequest = {
-        startDate: moment('2020-06-07').toISOString(),
-        endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
-        region: AWS_REGIONS.US_EAST_1,
-      }
-
-      //run
       const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
 
-      //assert
       const expectedEstimationResults = [
         {
           timestamp: new Date('2019-01-01'),
@@ -212,34 +157,13 @@ describe('App', () => {
           ],
         },
       ]
-
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
 
   it('should return estimates for multiple regions', async () => {
-    //setup
     const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-    let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-    const mockCloudService = [
-      {
-        getEstimates: mockGetEstimates,
-        serviceName: 'serviceOne',
-        getUsage: mockGetUsage,
-        getCosts: jest.fn().mockResolvedValue([]),
-      },
-    ]
-
-    const startDate = moment('2020-06-07').toISOString()
-    const endDate = moment('2020-06-07').add(1, 'weeks').toISOString()
-
-    AWSMock.mockReturnValue(mockCloudService)
-
-    const rawRequest: RawRequest = {
-      startDate,
-      endDate,
-      region: null,
-    }
+    setUpServices([mockGetEstimates], ['serviceOne'])
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
@@ -248,15 +172,33 @@ describe('App', () => {
         co2e: 0,
       },
     ]
-
     mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
 
-    //run
+    const startDate = moment('2020-06-07').toISOString()
+    const endDate = moment('2020-06-07').add(1, 'weeks').toISOString()
+    const rawRequest: RawRequest = {
+      startDate,
+      endDate,
+      region: null,
+    }
+
     await app.getEstimate(rawRequest)
 
-    // assert
     expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(startDate), new Date(endDate), 'us-east-1')
     expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(startDate), new Date(endDate), 'us-east-2')
     expect(mockGetEstimates).toHaveBeenNthCalledWith(3, new Date(startDate), new Date(endDate), 'us-west-1')
   })
 })
+
+function setUpServices(mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>>[], serviceNames: string[]) {
+  let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+  const mockCloudServices: ICloudService[] = mockGetEstimates.map((mockGetEstimate, i) => {
+    return {
+      getEstimates: mockGetEstimate,
+      serviceName: serviceNames[i],
+      getUsage: mockGetUsage,
+      getCosts: jest.fn().mockResolvedValue([]),
+    }
+  })
+  servicesRegistered.mockReturnValue(mockCloudServices)
+}

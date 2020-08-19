@@ -11,6 +11,12 @@ beforeAll(() => {
 })
 
 describe('Ebs', () => {
+  const startDate = new Date('2020-06-27T00:00:00Z')
+  const endDate = new Date('2020-06-30T00:00:00Z')
+  const startString = startDate.toISOString().substr(0, 10)
+  const endString = endDate.toISOString().substr(0, 10)
+  const region = AWS_REGIONS.US_EAST_1
+
   afterEach(() => {
     AWSMock.restore()
     jest.restoreAllMocks()
@@ -36,14 +42,14 @@ describe('Ebs', () => {
                   ],
                 },
               },
-              { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
+              { Dimensions: { Key: 'REGION', Values: [region] } },
             ],
           },
           Granularity: 'DAILY',
           Metrics: ['UsageQuantity'],
           TimePeriod: {
-            End: '2020-06-30',
-            Start: '2020-06-27',
+            End: endString,
+            Start: startString,
           },
           GroupBy: [
             {
@@ -55,24 +61,18 @@ describe('Ebs', () => {
 
         callback(
           null,
-          buildCostExplorerGetUsageResponse([
-            { start: '2020-06-27', amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
-          ]),
+          buildCostExplorerGetUsageResponse([{ start: startString, amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] }]),
         )
       },
     )
 
     const ebsService = new EBS()
-    const result = await ebsService.getUsage(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      'us-west-1',
-    )
+    const result = await ebsService.getUsage(startDate, endDate, region)
 
     expect(result).toEqual([
       {
         sizeGb: 36.362037,
-        timestamp: new Date('2020-06-27T00:00:00Z'),
+        timestamp: startDate,
         diskType: 'SSD',
       },
     ])
@@ -87,8 +87,8 @@ describe('Ebs', () => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
-            { start: '2020-06-27', amount: 0, keys: ['EBS:VolumeUsage.gp2'] },
-            { start: '2020-06-27', amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: startString, amount: 0, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: startString, amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -96,16 +96,11 @@ describe('Ebs', () => {
 
     const ebsService = new EBS()
 
-    const result = await ebsService.getUsage(
-      new Date('2020-01-27T00:00:00Z'),
-      new Date('2020-01-30T00:00:00Z'),
-      'us-west-1',
-    )
-
+    const result = await ebsService.getUsage(startDate, startDate, region)
     expect(result).toEqual([
       {
         sizeGb: 36.362037,
-        timestamp: new Date('2020-06-27T00:00:00Z'),
+        timestamp: startDate,
         diskType: 'SSD',
       },
     ])
@@ -121,13 +116,7 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS()
-
-    const result = await ebsService.getUsage(
-      new Date('2020-01-27T00:00:00Z'),
-      new Date('2020-01-30T00:00:00Z'),
-      'us-east-1',
-    )
-
+    const result = await ebsService.getUsage(startDate, endDate, region)
     expect(result).toEqual([])
   })
 
@@ -139,25 +128,19 @@ describe('Ebs', () => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
-            { start: '2020-06-27', amount: undefined, keys: ['EBS:VolumeUsage.gp2'] },
-            { start: '2020-06-27', amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: startString, amount: undefined, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: startString, amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
     )
 
     const ebsService = new EBS()
-
-    const result = await ebsService.getUsage(
-      new Date('2020-01-27T00:00:00Z'),
-      new Date('2020-01-30T00:00:00Z'),
-      'us-west-1',
-    )
-
+    const result = await ebsService.getUsage(startDate, endDate, region)
     expect(result).toEqual([
       {
         sizeGb: 36.362037,
-        timestamp: new Date('2020-06-27T00:00:00Z'),
+        timestamp: startDate,
         diskType: 'SSD',
       },
     ])
@@ -170,23 +153,17 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
+          buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
         )
       },
     )
 
     const ebsService = new EBS()
-
-    const result = await ebsService.getUsage(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      'us-west-1',
-    )
-
+    const result = await ebsService.getUsage(startDate, endDate, region)
     expect(result).toEqual([
       {
         sizeGb: 30,
-        timestamp: new Date('2020-06-27T00:00:00Z'),
+        timestamp: startDate,
         diskType: 'HDD',
       },
     ])
@@ -199,23 +176,15 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
+          buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
         )
       },
     )
 
     const ebsService = new EBS()
     const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-
-    const result = await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
-
-    expect(result).toEqual(
-      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
-    )
+    const result = await ebsService.getEstimates(startDate, endDate, region)
+    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: startDate }], region))
   })
 
   it('should get estimates for magnetic EBS HDD storage', async () => {
@@ -225,23 +194,15 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage'] }]),
+          buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:VolumeUsage'] }]),
         )
       },
     )
 
     const ebsService = new EBS()
     const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-
-    const result = await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
-
-    expect(result).toEqual(
-      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
-    )
+    const result = await ebsService.getEstimates(startDate, endDate, region)
+    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: startDate }], region))
   })
 
   it('should get estimates for magnetic sc1 HDD storage', async () => {
@@ -251,23 +212,15 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.sc1'] }]),
+          buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:VolumeUsage.sc1'] }]),
         )
       },
     )
 
     const ebsService = new EBS()
     const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-
-    const result = await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
-
-    expect(result).toEqual(
-      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
-    )
+    const result = await ebsService.getEstimates(startDate, endDate, region)
+    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: startDate }], region))
   })
 
   it('should get estimates for EBS SSD storage', async () => {
@@ -277,23 +230,15 @@ describe('Ebs', () => {
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.piops'] }]),
+          buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:VolumeUsage.piops'] }]),
         )
       },
     )
 
     const ebsService = new EBS()
     const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-
-    const result = await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
-
-    expect(result).toEqual(
-      sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }], AWS_REGIONS.US_EAST_1),
-    )
+    const result = await ebsService.getEstimates(startDate, endDate, region)
+    expect(result).toEqual(sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: startDate }], region))
   })
 
   it('should filter unexpected cost explorer volume name', async () => {
@@ -302,18 +247,12 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:anything'] }]))
+        callback(null, buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:anything'] }]))
       },
     )
 
     const ebsService = new EBS()
-
-    const result = await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
-
+    const result = await ebsService.getEstimates(startDate, endDate, region)
     expect(result).toEqual([])
   })
 
@@ -323,18 +262,12 @@ describe('Ebs', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: '2020-06-27', amount: 1, keys: ['EBS:anything'] }]))
+        callback(null, buildCostExplorerGetUsageResponse([{ start: startString, amount: 1, keys: ['EBS:anything'] }]))
       },
     )
 
     const ebsService = new EBS()
-
-    await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
-
+    await ebsService.getEstimates(startDate, endDate, region)
     expect(console.warn).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: EBS:anything')
   })
 
@@ -346,8 +279,8 @@ describe('Ebs', () => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
-            { start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.st1'] },
-            { start: '2020-06-27', amount: 1, keys: ['EBS:VolumeUsage.gp2'] },
+            { start: startString, amount: 1, keys: ['EBS:VolumeUsage.st1'] },
+            { start: startString, amount: 1, keys: ['EBS:VolumeUsage.gp2'] },
           ]),
         )
       },
@@ -357,23 +290,13 @@ describe('Ebs', () => {
     const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
     const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
 
-    const result = await ebsService.getEstimates(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      AWS_REGIONS.US_EAST_1,
-    )
+    const result = await ebsService.getEstimates(startDate, endDate, region)
 
-    const ssdEstimates = sddStorageEstimator.estimate(
-      [{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }],
-      AWS_REGIONS.US_EAST_1,
-    )
-    const hddEstimates = hddStorageEstimator.estimate(
-      [{ sizeGb: 30.0, timestamp: new Date('2020-06-27') }],
-      AWS_REGIONS.US_EAST_1,
-    )
+    const ssdEstimates = sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: startDate }], region)
+    const hddEstimates = hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: startDate }], region)
     expect(result).toEqual([
       {
-        timestamp: new Date('2020-06-27'),
+        timestamp: startDate,
         wattHours: ssdEstimates[0].wattHours + hddEstimates[0].wattHours,
         co2e: ssdEstimates[0].co2e + hddEstimates[0].co2e,
       },
