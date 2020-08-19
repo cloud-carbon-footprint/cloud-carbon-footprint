@@ -145,6 +145,49 @@ describe('EC2', () => {
     ])
   })
 
+  it('should set numberOfvCpus to 0 if no vCPU data is provided for a given timestamp', async () => {
+    mockAwsCloudWatchGetMetricDataCall(new Date('2020-07-12T00:00:00.000Z'), new Date('2020-07-12T02:00:00.000Z'), {
+      MetricDataResults: [
+        {
+          Id: 'cpuUtilization',
+          Timestamps: ['2020-07-12T00:00:00.000Z'],
+          Values: [0],
+        },
+        {
+          Id: 'cpuUtilization',
+          Timestamps: ['2020-07-12T01:00:00.000Z'],
+          Values: [1],
+        },
+        {
+          Id: 'vCPUs',
+          Timestamps: ['2020-07-12T01:00:00.000Z'],
+          Values: [1],
+        },
+      ],
+    })
+
+    const ec2Service = new EC2()
+
+    const result = await ec2Service.getUsage(
+      new Date('2020-07-12T00:00:00Z'),
+      new Date('2020-07-12T02:00:00Z'),
+      'us-east-1',
+    )
+
+    expect(result).toEqual([
+      {
+        cpuUtilizationAverage: 0,
+        numberOfvCpus: 0,
+        timestamp: new Date('2020-07-12T00:00:00.000Z'),
+      },
+      {
+        cpuUtilizationAverage: 1,
+        numberOfvCpus: 1,
+        timestamp: new Date('2020-07-12T01:00:00.000Z'),
+      },
+    ])
+  })
+
   it('should return an empty array if no vCPUs', async () => {
     mockAwsCloudWatchGetMetricDataCall(new Date('2020-07-12T00:00:00.000Z'), new Date('2020-07-12T02:00:00.000Z'), {
       MetricDataResults: [
