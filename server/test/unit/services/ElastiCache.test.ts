@@ -1,56 +1,17 @@
-import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
-
 import ElastiCache from '@services/ElastiCache'
 import { elastiCacheMockGetMetricDataResponse } from '@fixtures'
+import AWSMock from 'aws-sdk-mock'
+import AWS from 'aws-sdk'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
-function cloudwatchRequest(startTimestamp: string, endTimestamp: string) {
-  return {
-    StartTime: new Date(startTimestamp),
-    EndTime: new Date(endTimestamp),
-    MetricDataQueries: [
-      {
-        Id: 'cpuUtilizationWithEmptyValues',
-        Expression: "SEARCH('{AWS/ElastiCache} MetricName=\"CPUUtilization\"', 'Average', 3600)",
-        ReturnData: false,
-      },
-      {
-        Id: 'cpuUtilization',
-        Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
-      },
-    ],
-    ScanBy: 'TimestampAscending',
-  }
-}
-
-function costExplorerRequest(startDate: string, endDate: string) {
-  return {
-    TimePeriod: {
-      Start: startDate,
-      End: endDate,
-    },
-    Filter: {
-      And: [
-        { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
-        { Dimensions: { Key: 'REGION', Values: ['us-west-1'] } },
-      ],
-    },
-    Granularity: 'DAILY',
-    GroupBy: [
-      {
-        Key: 'USAGE_TYPE',
-        Type: 'DIMENSION',
-      },
-    ],
-    Metrics: ['UsageQuantity'],
-  }
-}
-
 describe('ElastiCache', () => {
+  const startString = '2020-07-10'
+  const endString = '2020-07-11'
+  const region = 'us-west-1'
+
   afterEach(() => {
     AWSMock.restore()
   })
@@ -60,7 +21,7 @@ describe('ElastiCache', () => {
       'CloudWatch',
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(cloudwatchRequest('2020-07-19T00:00:00.000Z', '2020-07-21T00:00:00.000Z'))
+        expect(params).toEqual(cloudwatchRequest('2020-07-19', '2020-07-21'))
         callback(null, elastiCacheMockGetMetricDataResponse)
       },
     )
@@ -69,7 +30,7 @@ describe('ElastiCache', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(costExplorerRequest('2020-07-19', '2020-07-21'))
+        expect(params).toEqual(costExplorerRequest('2020-07-19', '2020-07-21', region))
 
         callback(null, {
           ResultsByTime: [
@@ -111,16 +72,11 @@ describe('ElastiCache', () => {
     )
 
     const elasticacheService = new ElastiCache()
-
-    const usageByHour = await elasticacheService.getUsage(
-      new Date('2020-07-19T00:00:00.000Z'),
-      new Date('2020-07-21T00:00:00.000Z'),
-      'us-west-1',
-    )
+    const usageByHour = await elasticacheService.getUsage(new Date('2020-07-19'), new Date('2020-07-21'), region)
 
     expect(usageByHour).toEqual([
-      { cpuUtilizationAverage: 1.0456, numberOfvCpus: 4, timestamp: new Date('2020-07-19T00:00:00.000Z') },
-      { cpuUtilizationAverage: 2.03242, numberOfvCpus: 4, timestamp: new Date('2020-07-20T00:00:00.000Z') },
+      { cpuUtilizationAverage: 1.0456, numberOfvCpus: 4, timestamp: new Date('2020-07-19') },
+      { cpuUtilizationAverage: 2.03242, numberOfvCpus: 4, timestamp: new Date('2020-07-20') },
     ])
   })
 
@@ -129,7 +85,7 @@ describe('ElastiCache', () => {
       'CloudWatch',
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(cloudwatchRequest('2020-07-10T00:00:00.000Z', '2020-07-11T00:00:00.000Z'))
+        expect(params).toEqual(cloudwatchRequest(startString, endString))
 
         callback(null, {
           MetricDataResults: [
@@ -148,13 +104,13 @@ describe('ElastiCache', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(costExplorerRequest('2020-07-10', '2020-07-11'))
+        expect(params).toEqual(costExplorerRequest(startString, endString, region))
         callback(null, {
           ResultsByTime: [
             {
               TimePeriod: {
-                Start: '2020-07-10',
-                End: '2020-07-11',
+                Start: startString,
+                End: endString,
               },
               Groups: [],
             },
@@ -164,12 +120,7 @@ describe('ElastiCache', () => {
     )
 
     const elasticacheService = new ElastiCache()
-
-    const usageByHour = await elasticacheService.getUsage(
-      new Date('2020-07-10T00:00:00.000Z'),
-      new Date('2020-07-11T00:00:00.000Z'),
-      'us-west-1',
-    )
+    const usageByHour = await elasticacheService.getUsage(new Date(startString), new Date(endString), region)
 
     expect(usageByHour).toEqual([])
   })
@@ -179,7 +130,7 @@ describe('ElastiCache', () => {
       'CloudWatch',
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(cloudwatchRequest('2020-07-10T00:00:00.000Z', '2020-07-11T00:00:00.000Z'))
+        expect(params).toEqual(cloudwatchRequest(startString, endString))
 
         callback(null, {
           MetricDataResults: [
@@ -198,13 +149,13 @@ describe('ElastiCache', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(costExplorerRequest('2020-07-10', '2020-07-11'))
+        expect(params).toEqual(costExplorerRequest(startString, endString, region))
         callback(null, {
           ResultsByTime: [
             {
               TimePeriod: {
-                Start: '2020-07-10',
-                End: '2020-07-11',
+                Start: startString,
+                End: endString,
               },
               Groups: [
                 {
@@ -231,16 +182,9 @@ describe('ElastiCache', () => {
     )
 
     const elasticacheService = new ElastiCache()
+    const usageByHour = await elasticacheService.getUsage(new Date(startString), new Date(endString), region)
 
-    const usageByHour = await elasticacheService.getUsage(
-      new Date('2020-07-10T00:00:00.000Z'),
-      new Date('2020-07-11T00:00:00.000Z'),
-      'us-west-1',
-    )
-
-    expect(usageByHour).toEqual([
-      { cpuUtilizationAverage: 50, numberOfvCpus: 8, timestamp: new Date('2020-07-10T00:00:00.000Z') },
-    ])
+    expect(usageByHour).toEqual([{ cpuUtilizationAverage: 50, numberOfvCpus: 8, timestamp: new Date(startString) }])
   })
 
   it('should return the usage when two different cache instances types in different hours were used', async () => {
@@ -248,7 +192,7 @@ describe('ElastiCache', () => {
       'CloudWatch',
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(cloudwatchRequest('2020-07-10T00:00:00.000Z', '2020-07-11T00:00:00.000Z'))
+        expect(params).toEqual(cloudwatchRequest(startString, endString))
 
         callback(null, {
           MetricDataResults: [
@@ -267,13 +211,13 @@ describe('ElastiCache', () => {
       'CostExplorer',
       'getCostAndUsage',
       (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(costExplorerRequest('2020-07-10', '2020-07-11'))
+        expect(params).toEqual(costExplorerRequest(startString, endString, region))
         callback(null, {
           ResultsByTime: [
             {
               TimePeriod: {
-                Start: '2020-07-10',
-                End: '2020-07-11',
+                Start: startString,
+                End: endString,
               },
               Groups: [
                 {
@@ -300,15 +244,50 @@ describe('ElastiCache', () => {
     )
 
     const elasticacheService = new ElastiCache()
+    const usageByHour = await elasticacheService.getUsage(new Date(startString), new Date(endString), region)
 
-    const usageByHour = await elasticacheService.getUsage(
-      new Date('2020-07-10T00:00:00.000Z'),
-      new Date('2020-07-11T00:00:00.000Z'),
-      'us-west-1',
-    )
-
-    expect(usageByHour).toEqual([
-      { cpuUtilizationAverage: 60, numberOfvCpus: 6, timestamp: new Date('2020-07-10T00:00:00.000Z') },
-    ])
+    expect(usageByHour).toEqual([{ cpuUtilizationAverage: 60, numberOfvCpus: 6, timestamp: new Date(startString) }])
   })
 })
+
+function cloudwatchRequest(startTimestamp: string, endTimestamp: string) {
+  return {
+    StartTime: new Date(startTimestamp),
+    EndTime: new Date(endTimestamp),
+    MetricDataQueries: [
+      {
+        Id: 'cpuUtilizationWithEmptyValues',
+        Expression: "SEARCH('{AWS/ElastiCache} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+        ReturnData: false,
+      },
+      {
+        Id: 'cpuUtilization',
+        Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
+      },
+    ],
+    ScanBy: 'TimestampAscending',
+  }
+}
+
+function costExplorerRequest(startDate: string, endDate: string, region: string) {
+  return {
+    TimePeriod: {
+      Start: startDate,
+      End: endDate,
+    },
+    Filter: {
+      And: [
+        { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
+        { Dimensions: { Key: 'REGION', Values: [region] } },
+      ],
+    },
+    Granularity: 'DAILY',
+    GroupBy: [
+      {
+        Key: 'USAGE_TYPE',
+        Type: 'DIMENSION',
+      },
+    ],
+    Metrics: ['UsageQuantity'],
+  }
+}
