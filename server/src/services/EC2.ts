@@ -81,7 +81,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
     return Object.values(result).map((estimate: RawComputeUsage) => {
       return {
         cpuUtilizationAverage: estimate.cpuUtilizationAvg,
-        numberOfvCpus: estimate.vCPUCount,
+        numberOfvCpus: estimate.vCPUCount || 0,
         timestamp: new Date(estimate.timestamp),
       }
     })
