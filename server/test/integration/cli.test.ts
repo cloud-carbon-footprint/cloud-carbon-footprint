@@ -2,7 +2,6 @@ import cli from '@view/cli'
 import {
   ebsMockGetCostResponse,
   ebsMockUsageResponse,
-  ec2MockGetUsageResponse,
   ec2MockGetMetricDataResponse,
   elastiCacheMockGetCostResponse,
   elastiCacheMockGetMetricDataResponse,
@@ -14,7 +13,7 @@ import {
   rdsStorageUsageResponse,
   s3MockGetCostResponse,
   s3MockGetMetricDataResponse,
-  s3MockGetUsageResponse,
+  ec2MockGetCostResponse,
 } from '@fixtures'
 import AWSServices from '@application/AWSServices'
 import RDS from '@services/RDS'
@@ -122,8 +121,8 @@ describe('cli', () => {
 function mockAwsCloudWatchGetMetricData() {
   const mockGetMetricDataFunction = jest.fn()
   mockGetMetricDataFunction
-    .mockReturnValueOnce(ec2MockGetMetricDataResponse)
     .mockReturnValueOnce(s3MockGetMetricDataResponse)
+    .mockReturnValueOnce(ec2MockGetMetricDataResponse)
     .mockReturnValueOnce(elastiCacheMockGetMetricDataResponse)
 
   AWSMock.mock(
@@ -141,35 +140,13 @@ function mockAwsCostExplorerGetCostAndUsage() {
     .calledWith(expect.objectContaining({ Metrics: ['AmortizedCost'] }))
     .mockReturnValueOnce(ebsMockGetCostResponse)
     .mockReturnValueOnce(s3MockGetCostResponse)
+    .mockReturnValueOnce(ec2MockGetCostResponse)
     .mockReturnValueOnce(elastiCacheMockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(expect.objectContaining({ Metrics: ['UsageQuantity'] }))
     .mockReturnValueOnce(ebsMockUsageResponse)
     .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
-
-  when(mockGetCostAndUsageFunction)
-    .calledWith(
-      expect.objectContaining({
-        MetricDataQueries: [
-          {
-            Id: 'cpuUtilization',
-          },
-        ],
-      }),
-    )
-    .mockReturnValueOnce(ec2MockGetUsageResponse)
-
-  when(mockGetCostAndUsageFunction)
-    .calledWith(
-      expect.objectContaining({
-        Dimensions: {
-          Key: 'SERVICE',
-          Values: ['Amazon Simple Storage Service'],
-        },
-      }),
-    )
-    .mockReturnValueOnce(s3MockGetUsageResponse)
 
   AWSMock.mock(
     'CostExplorer',

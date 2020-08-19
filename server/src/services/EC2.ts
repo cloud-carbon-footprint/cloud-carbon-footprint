@@ -2,6 +2,8 @@ import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
+import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import { getCostFromCostExplorer } from '@services/CostMapper'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
@@ -87,7 +89,37 @@ export default class EC2 extends ServiceWithCPUUtilization {
     })
   }
 
-  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
-    return []
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
+    const params: GetCostAndUsageRequest = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          {
+            Dimensions: {
+              Key: 'REGION',
+              Values: [region],
+            },
+          },
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: ['EC2: Running Hours'],
+            },
+          },
+        ],
+      },
+      Granularity: 'DAILY',
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+      Metrics: ['AmortizedCost'],
+    }
+    return getCostFromCostExplorer(params, region)
   }
 }
