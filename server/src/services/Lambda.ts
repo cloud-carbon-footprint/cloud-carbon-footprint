@@ -4,6 +4,8 @@ import { estimateCo2, MAX_WATTS } from '@domain/FootprintEstimationConstants'
 import AWS from 'aws-sdk'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
+import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import { getCostFromCostExplorer } from '@services/CostMapper'
 
 export default class Lambda implements ICloudService {
   serviceName = 'lambda'
@@ -34,10 +36,6 @@ export default class Lambda implements ICloudService {
         co2e,
       }
     })
-  }
-
-  async getCosts(/* start: Date, end: Date, region: string */): Promise<Cost[]> {
-    return []
   }
 
   private async getLambdaLogGroupNames(cw: AWS.CloudWatchLogs): Promise<string[]> {
@@ -82,6 +80,40 @@ export default class Lambda implements ICloudService {
       await wait(this.POLL_INTERVAL)
     }
     return data
+  }
+
+  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
+    const params: GetCostAndUsageRequest = {
+      TimePeriod: {
+        Start: start.toISOString().substr(0, 10),
+        End: end.toISOString().substr(0, 10),
+      },
+      Filter: {
+        And: [
+          {
+            Dimensions: {
+              Key: 'REGION',
+              Values: [region],
+            },
+          },
+          {
+            Dimensions: {
+              Key: 'SERVICE',
+              Values: ['AWS Lambda'],
+            },
+          },
+        ],
+      },
+      Granularity: 'DAILY',
+      GroupBy: [
+        {
+          Key: 'USAGE_TYPE',
+          Type: 'DIMENSION',
+        },
+      ],
+      Metrics: ['AmortizedCost'],
+    }
+    return getCostFromCostExplorer(params, region)
   }
 }
 

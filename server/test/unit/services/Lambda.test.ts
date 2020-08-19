@@ -2,6 +2,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import Lambda from '@services/Lambda'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
+import { buildCostExplorerGetCostResponse } from '@builders'
 
 function mockDescribeLogGroups(logGroups: { logGroupName: string }[]) {
   AWSMock.mock(
@@ -281,5 +282,31 @@ describe('Lambda', () => {
     } catch (error) {
       expect(error).toEqual(expectedError)
     }
+  })
+
+  it('gets Lambda cost', async () => {
+    const start = '2020-08-15'
+    const end = '2020-08-19'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildCostExplorerGetCostResponse([
+            { start: start, amount: 100.0, keys: ['AWS Lambda'] },
+            { start: end, amount: 50.0, keys: ['test'] },
+          ]),
+        )
+      },
+    )
+
+    const lambdaService = new Lambda()
+    const lambdaCosts = await lambdaService.getCosts(new Date(start), new Date(end), 'us-east-1')
+
+    expect(lambdaCosts).toEqual([
+      { amount: 100.0, currency: 'USD', timestamp: new Date(start) },
+      { amount: 50.0, currency: 'USD', timestamp: new Date(end) },
+    ])
   })
 })
