@@ -4,35 +4,6 @@ import Lambda from '@services/Lambda'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 import { buildCostExplorerGetCostResponse } from '@builders'
 
-function mockDescribeLogGroups(logGroups: { logGroupName: string }[]) {
-  AWSMock.mock(
-    'CloudWatchLogs',
-    'describeLogGroups',
-    (params: AWS.CloudWatchLogs.DescribeLogGroupsRequest, callback: (a: Error, response: any) => any) => {
-      callback(null, {
-        logGroups: logGroups,
-      })
-    },
-  )
-}
-
-const startQuerySpy = jest.fn()
-
-function mockStartQuery(response: { queryId: string }) {
-  startQuerySpy.mockResolvedValue(response)
-  return AWSMock.mock('CloudWatchLogs', 'startQuery', startQuerySpy)
-}
-
-function mockGetResults(results: { results: { field: string; value: string }[][]; status: string }) {
-  AWSMock.mock(
-    'CloudWatchLogs',
-    'getQueryResults',
-    (params: AWS.CloudWatchLogs.GetQueryResultsRequest, callback: (a: Error, response: any) => any) => {
-      callback(null, results)
-    },
-  )
-}
-
 describe('Lambda', () => {
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
@@ -309,4 +280,33 @@ describe('Lambda', () => {
       { amount: 50.0, currency: 'USD', timestamp: new Date(end) },
     ])
   })
+
+  function mockDescribeLogGroups(logGroups: { logGroupName: string }[]) {
+    AWSMock.mock(
+      'CloudWatchLogs',
+      'describeLogGroups',
+      (params: AWS.CloudWatchLogs.DescribeLogGroupsRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, {
+          logGroups: logGroups,
+        })
+      },
+    )
+  }
+
+  const startQuerySpy = jest.fn()
+
+  function mockStartQuery(response: { queryId: string }) {
+    startQuerySpy.mockResolvedValue(response)
+    return AWSMock.mock('CloudWatchLogs', 'startQuery', startQuerySpy)
+  }
+
+  function mockGetResults(results: { results: { field: string; value: string }[][]; status: string }) {
+    AWSMock.mock(
+      'CloudWatchLogs',
+      'getQueryResults',
+      (params: AWS.CloudWatchLogs.GetQueryResultsRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, results)
+      },
+    )
+  }
 })

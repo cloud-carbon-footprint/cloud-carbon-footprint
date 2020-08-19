@@ -1,62 +1,48 @@
-import AWS from 'aws-sdk'
+import { CostExplorer } from 'aws-sdk'
 
-export const ec2MockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 'cpuUtilization',
-      Label: 'AWS/EC2 i-01914bfb56d65a9ae CPUUtilization',
-      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [22.983333333333334, 31.435897435897434],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-    {
-      Id: 'cpuUtilization',
-      Label: 'AWS/EC2 i-0d1808334c391e056 CPUUtilization',
-      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [11.566666666666666, 24.25],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-    {
-      Id: 'vCPUs',
-      Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [4, 4.5],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-    {
-      Id: 'cpuUtilization',
-      Label: 'AWS/EC2 i-0d1808334c391e056 CPUUtilization',
-      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [100, 99.99999],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-  ],
-  Messages: [],
-}
+const dayOne = '2020-07-01'
+const dayTwo = '2020-07-02'
+const dayThree = '2020-07-03'
 
-export const elastiCacheMockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 'cpuUtilization',
-      Label: 'AWS/ElastiCache CPUUtilization',
-      Timestamps: [new Date('2020-07-19T22:00:00.000Z'), new Date('2020-07-20T23:00:00.000Z')],
-      Values: [1.0456, 2.03242],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-  ],
-}
-
-export const elastiCacheMockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const lambdaMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-07-19',
-        End: '2020-07-20',
+        Start: dayOne,
+        End: dayTwo,
+      },
+      Groups: [
+        {
+          Keys: ['AWS Lambda'],
+          Metrics: { AmortizedCost: { Amount: '20.0', Unit: 'USD' } },
+        },
+        {
+          Keys: ['AWS Lambda'],
+          Metrics: { AmortizedCost: { Amount: '40.0', Unit: 'USD' } },
+        },
+      ],
+    },
+    {
+      TimePeriod: {
+        Start: dayTwo,
+        End: dayThree,
+      },
+      Groups: [
+        {
+          Keys: ['AWS Lambda'],
+          Metrics: { AmortizedCost: { Amount: '60.0', Unit: 'USD' } },
+        },
+      ],
+    },
+  ],
+}
+
+export const elastiCacheMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
+  ResultsByTime: [
+    {
+      TimePeriod: {
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
@@ -79,8 +65,8 @@ export const elastiCacheMockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageRe
     },
     {
       TimePeriod: {
-        Start: '2020-07-20',
-        End: '2020-07-21',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {
@@ -96,12 +82,12 @@ export const elastiCacheMockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageRe
   ],
 }
 
-export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const elastiCacheMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-07-19',
-        End: '2020-07-20',
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
@@ -116,8 +102,8 @@ export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageRes
     },
     {
       TimePeriod: {
-        Start: '2020-07-20',
-        End: '2020-07-21',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {
@@ -129,25 +115,12 @@ export const elastiCacheMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageRes
   ],
 }
 
-export const s3MockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 's3Size',
-      Label: 's3Size',
-      Timestamps: [new Date('2020-06-27T00:00:00.000Z')],
-      Values: [2586032500],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-  ],
-}
-
-export const s3MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const s3MockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-07-19',
-        End: '2020-07-20',
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
@@ -162,8 +135,8 @@ export const s3MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     },
     {
       TimePeriod: {
-        Start: '2020-07-20',
-        End: '2020-07-21',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {
@@ -175,32 +148,32 @@ export const s3MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const ec2MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const ec2MockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-07-19',
-        End: '2020-07-20',
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
-          Keys: [''],
-          Metrics: { AmortizedCost: { Amount: '10.0', Unit: 'USD' } },
+          Keys: ['EC2: Running Hours'],
+          Metrics: { AmortizedCost: { Amount: '5.0', Unit: 'USD' } },
         },
         {
-          Keys: ['ec2'],
-          Metrics: { AmortizedCost: { Amount: '20.0', Unit: 'USD' } },
+          Keys: ['EC2: Running Hours'],
+          Metrics: { AmortizedCost: { Amount: '2.0', Unit: 'USD' } },
         },
       ],
     },
     {
       TimePeriod: {
-        Start: '2020-07-20',
-        End: '2020-07-21',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {
-          Keys: ['ec2'],
+          Keys: ['EC2: Running Hours'],
           Metrics: { AmortizedCost: { Amount: '30.0', Unit: 'USD' } },
         },
       ],
@@ -208,12 +181,12 @@ export const ec2MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = 
   ],
 }
 
-export const ebsMockUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const ebsMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        End: '2020-06-28',
-        Start: '2020-06-27',
+        End: dayTwo,
+        Start: dayOne,
       },
       Groups: [
         {
@@ -224,8 +197,8 @@ export const ebsMockUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     },
     {
       TimePeriod: {
-        End: '2020-06-29',
-        Start: '2020-06-28',
+        End: dayThree,
+        Start: dayTwo,
       },
       Groups: [
         {
@@ -237,12 +210,12 @@ export const ebsMockUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const ebsMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const ebsMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        End: '2020-06-28',
-        Start: '2020-06-27',
+        End: dayTwo,
+        Start: dayOne,
       },
       Groups: [
         {
@@ -253,8 +226,8 @@ export const ebsMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = 
     },
     {
       TimePeriod: {
-        End: '2020-06-29',
-        Start: '2020-06-28',
+        End: dayThree,
+        Start: dayTwo,
       },
       Groups: [
         {
@@ -266,27 +239,12 @@ export const ebsMockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = 
   ],
 }
 
-export const rdsCPUUtilizationResponse: AWS.CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 'cpuUtilization',
-      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [22.983333333333334, 31.435897435897434],
-    },
-    {
-      Id: 'cpuUtilization',
-      Timestamps: [new Date('2020-06-27T22:00:00.000Z'), new Date('2020-06-27T23:00:00.000Z')],
-      Values: [11.566666666666666, 24.25],
-    },
-  ],
-}
-
-export const rdsCPUUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const rdsComputeMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-06-27',
-        End: '2020-06-28',
+        End: dayTwo,
+        Start: dayOne,
       },
       Groups: [
         {
@@ -301,8 +259,8 @@ export const rdsCPUUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     },
     {
       TimePeriod: {
-        Start: '2020-06-28',
-        End: '2020-06-29',
+        End: dayThree,
+        Start: dayTwo,
       },
       Groups: [
         {
@@ -318,12 +276,12 @@ export const rdsCPUUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const rdsCPUCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const rdsComputeMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-06-27',
-        End: '2020-06-28',
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
@@ -334,8 +292,8 @@ export const rdsCPUCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
     },
     {
       TimePeriod: {
-        Start: '2020-06-28',
-        End: '2020-06-29',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {
@@ -347,12 +305,12 @@ export const rdsCPUCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const rdsStorageUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const rdsStorageMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-06-27',
-        End: '2020-06-28',
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
@@ -367,8 +325,8 @@ export const rdsStorageUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse =
     },
     {
       TimePeriod: {
-        Start: '2020-06-28',
-        End: '2020-06-29',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {
@@ -384,12 +342,12 @@ export const rdsStorageUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse =
   ],
 }
 
-export const rdsStorageCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const rdsStorageMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
-        Start: '2020-06-27',
-        End: '2020-06-28',
+        Start: dayOne,
+        End: dayTwo,
       },
       Groups: [
         {
@@ -400,8 +358,8 @@ export const rdsStorageCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = 
     },
     {
       TimePeriod: {
-        Start: '2020-06-28',
-        End: '2020-06-29',
+        Start: dayTwo,
+        End: dayThree,
       },
       Groups: [
         {

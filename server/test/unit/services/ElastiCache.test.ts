@@ -1,5 +1,4 @@
 import ElastiCache from '@services/ElastiCache'
-import { elastiCacheMockGetMetricDataResponse } from '@fixtures'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 
@@ -22,7 +21,18 @@ describe('ElastiCache', () => {
       'getMetricData',
       (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
         expect(params).toEqual(cloudwatchRequest('2020-07-19', '2020-07-21'))
-        callback(null, elastiCacheMockGetMetricDataResponse)
+        callback(null, {
+          MetricDataResults: [
+            {
+              Id: 'cpuUtilization',
+              Label: 'AWS/ElastiCache CPUUtilization',
+              Timestamps: [new Date('2020-07-19T22:00:00.000Z'), new Date('2020-07-20T23:00:00.000Z')],
+              Values: [1.0456, 2.03242],
+              StatusCode: 'Complete',
+              Messages: [],
+            },
+          ],
+        })
       },
     )
 
