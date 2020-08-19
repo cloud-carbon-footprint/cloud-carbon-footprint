@@ -24,10 +24,3 @@ exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grou
 | 2020-07-02   | 2.14              | 0.000722               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 1.07              | 0.000361               | 0.00              | 0.000000               | 3.21              | 0.001083               
 | Total        | 3.21              | 0.001083               | 0.05              | 0.000017               | 18.81             | 0.006337               | 2.34              | 0.000787               | 4.98              | 0.001679               | 0.00              | 0.000000               | 29.39             | 0.009903               "
 `;
-
-exports[`cli lambda lambda cli test 1`] = `
-"| Date (UTC)   | EBS Watt Hours    | EBS Kg CO2e Emissions  | S3 Watt Hours     | S3 Kg CO2e Emissions   | EC2 Watt Hours    | EC2 Kg CO2e Emissions  | ElastiCache Watt Hours| ElastiCache Kg CO2e Emissions| RDS Watt Hours    | RDS Kg CO2e Emissions  | Lambda Watt Hours | Lambda Kg CO2e Emissions| SUM Watt Hours    | SUM Kg CO2e Emissions  
-| 2020-07-01   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.20              | 0.000067               | 0.20              | 0.000067               
-| 2020-07-02   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.23              | 0.000077               | 0.23              | 0.000077               
-| Total        | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.43              | 0.000145               | 0.43              | 0.000145               "
-`;
