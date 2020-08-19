@@ -17,7 +17,7 @@ module.exports = {
     '^@domain/(.*)$': '<rootDir>/src/domain/$1',
     '^@services/(.*)$': '<rootDir>/src/services/$1',
     '^@view/(.*)$': '<rootDir>/src/view/$1',
-    '^@fixtures$': '<rootDir>/test/fixtures/fixtures.ts',
+    '^@fixtures$': '<rootDir>/test/fixtures/cloudwatch.fixtures.ts',
     '^@builders$': '<rootDir>/test/fixtures/builders.ts',
   },
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
