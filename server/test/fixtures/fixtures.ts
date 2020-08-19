@@ -1,50 +1,5 @@
 import AWS from 'aws-sdk'
 
-export const ec2MockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        Start: '2020-07-19',
-        End: '2020-07-20',
-      },
-      Groups: [
-        {
-          Keys: ['ec2'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1',
-            },
-          },
-        },
-        {
-          Keys: ['ec2'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1',
-            },
-          },
-        },
-      ],
-    },
-    {
-      TimePeriod: {
-        Start: '2020-07-20',
-        End: '2020-07-21',
-      },
-      Groups: [
-        {
-          Keys: ['ec2'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '2',
-            },
-          },
-        },
-      ],
-    },
-  ],
-}
-
 export const ec2MockGetMetricDataResponse: AWS.CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
     {
@@ -220,7 +175,7 @@ export const s3MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const s3MockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
+export const ec2MockGetCostResponse: AWS.CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
     {
       TimePeriod: {
@@ -229,20 +184,12 @@ export const s3MockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = 
       },
       Groups: [
         {
-          Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1',
-            },
-          },
+          Keys: [''],
+          Metrics: { AmortizedCost: { Amount: '10.0', Unit: 'USD' } },
         },
         {
-          Keys: ['USE2-NodeUsage:cache.t2.micro'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1',
-            },
-          },
+          Keys: ['ec2'],
+          Metrics: { AmortizedCost: { Amount: '20.0', Unit: 'USD' } },
         },
       ],
     },
@@ -253,12 +200,8 @@ export const s3MockGetUsageResponse: AWS.CostExplorer.GetCostAndUsageResponse = 
       },
       Groups: [
         {
-          Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '2',
-            },
-          },
+          Keys: ['ec2'],
+          Metrics: { AmortizedCost: { Amount: '30.0', Unit: 'USD' } },
         },
       ],
     },

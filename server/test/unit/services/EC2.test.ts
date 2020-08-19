@@ -1,7 +1,7 @@
+import EC2 from '@services/EC2'
+import { buildCostExplorerGetCostResponse } from '@builders'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-
-import EC2 from '@services/EC2'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -208,6 +208,32 @@ describe('EC2', () => {
     )
 
     expect(result).toEqual([])
+  })
+
+  it('gets ec2 cost', async () => {
+    const start = '2020-07-01'
+    const end = '2020-07-04'
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(
+          null,
+          buildCostExplorerGetCostResponse([
+            { start: start, amount: 100.0, keys: ['EC2: Running Hours'] },
+            { start: end, amount: 50.0, keys: ['test'] },
+          ]),
+        )
+      },
+    )
+
+    const ec2Service = new EC2()
+    const ec2Costs = await ec2Service.getCosts(new Date(start), new Date(end), 'us-east-1')
+
+    expect(ec2Costs).toEqual([
+      { amount: 100.0, currency: 'USD', timestamp: new Date(start) },
+      { amount: 50.0, currency: 'USD', timestamp: new Date(end) },
+    ])
   })
 
   function mockAwsCloudWatchGetMetricDataCall(startDate: Date, endDate: Date, response: any) {
