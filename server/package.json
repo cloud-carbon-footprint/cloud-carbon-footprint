@@ -31,6 +31,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-unused-imports": "^0.1.3",
+    "husky": "^4.2.5",
     "jest": "^26.1.0",
     "jest-when": "^2.7.2",
     "onchange": "^7.0.2",
@@ -56,5 +57,10 @@
     "moment": "^2.27.0",
     "ramda": "^0.27.1",
     "typed-prompts": "^1.5.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cd .. && ./scripts/lint.bash && cd server && ./scripts/test.bash"
+    }
   }
 }
