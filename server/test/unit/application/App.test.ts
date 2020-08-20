@@ -15,6 +15,8 @@ const servicesRegistered = mocked(AWSServices, true)
 
 describe('App', () => {
   let app: App
+  const startDate = '2020-08-07'
+  const endDate = '2020-08-10'
 
   beforeEach(() => {
     app = new App()
@@ -22,32 +24,32 @@ describe('App', () => {
 
   describe('getEstimate', () => {
     const rawRequest: RawRequest = {
-      startDate: moment('2020-06-07').toISOString(),
-      endDate: moment('2020-06-07').add(1, 'weeks').toISOString(),
+      startDate: moment(startDate).toISOString(),
+      endDate: moment(endDate).add(1, 'weeks').toISOString(),
       region: AWS_REGIONS.US_EAST_1,
     }
 
     it('should return ebs estimates for a week', async () => {
-      const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-      setUpServices([mockGetEstimates], ['ebs'])
+      const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      setUpServices([mockGetCostAndEstimatesPerService], ['ebs'])
 
-      const expectedStorageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
+      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
-          timestamp: moment('2020-12-07').add(i, 'days').toDate(),
+          timestamp: moment(startDate).add(i, 'days').toDate(),
           wattHours: 1.0944,
           co2e: 0.0007737845760000001,
         }
       })
-      mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
+      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(expectedUsageEstimate)
 
       const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
-          timestamp: moment.utc('2020-12-07').add(i, 'days').toDate(),
+          timestamp: moment.utc(startDate).add(i, 'days').toDate(),
           serviceEstimates: [
             {
-              timestamp: moment.utc('2020-12-07').add(i, 'days').toDate(),
+              timestamp: moment.utc(startDate).add(i, 'days').toDate(),
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -67,39 +69,37 @@ describe('App', () => {
 
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
-          timestamp: new Date('2019-01-01'),
-          wattHours: 0,
-          co2e: 0,
+          timestamp: new Date(startDate),
+          wattHours: 2,
+          co2e: 2,
         },
       ]
-
       mockGetEstimates1.mockResolvedValueOnce(expectedStorageEstimate)
 
       const expectedStorageEstimate2: FootprintEstimate[] = [
         {
-          timestamp: new Date('2019-01-01'),
+          timestamp: new Date(startDate),
           wattHours: 1,
           co2e: 1,
         },
       ]
-
       mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
 
       const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
 
       const expectedEstimationResults = [
         {
-          timestamp: new Date('2019-01-01'),
+          timestamp: new Date(startDate),
           serviceEstimates: [
             {
-              timestamp: new Date('2019-01-01'),
+              timestamp: new Date(startDate),
               serviceName: 'serviceOne',
-              wattHours: 0,
-              co2e: 0,
+              wattHours: 2,
+              co2e: 2,
               cost: 0,
             },
             {
-              timestamp: new Date('2019-01-01'),
+              timestamp: new Date(startDate),
               serviceName: 'serviceTwo',
               wattHours: 1,
               co2e: 1,
@@ -113,10 +113,9 @@ describe('App', () => {
     })
 
     it('should return error if start date is greater than end date', async () => {
-      //setup
       const rawRequest: RawRequest = {
-        startDate: moment('2020-06-07').toISOString(),
-        endDate: moment('2020-06-06').toISOString(),
+        startDate: moment(endDate).toISOString(),
+        endDate: moment(startDate).toISOString(),
         region: AWS_REGIONS.US_EAST_1,
       }
 
@@ -128,12 +127,17 @@ describe('App', () => {
       setUpServices([mockGetEstimates], ['serviceOne'])
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
-          timestamp: new Date('2019-01-01T01:00:00Z'),
+          timestamp: new Date(startDate + 'T01:00:00Z'),
           wattHours: 1,
           co2e: 2,
         },
         {
-          timestamp: new Date('2019-01-01T23:59:59Z'),
+          timestamp: new Date(startDate + 'T12:59:59Z'),
+          wattHours: 1,
+          co2e: 2,
+        },
+        {
+          timestamp: new Date(startDate + 'T23:59:59Z'),
           wattHours: 1,
           co2e: 2,
         },
@@ -144,13 +148,13 @@ describe('App', () => {
 
       const expectedEstimationResults = [
         {
-          timestamp: new Date('2019-01-01'),
+          timestamp: new Date(startDate),
           serviceEstimates: [
             {
-              timestamp: new Date('2019-01-01'),
+              timestamp: new Date(startDate),
               serviceName: 'serviceOne',
-              wattHours: 2,
-              co2e: 4,
+              wattHours: 3,
+              co2e: 6,
               cost: 0,
             },
           ],
@@ -166,34 +170,34 @@ describe('App', () => {
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
-        timestamp: new Date('2019-01-01'),
+        timestamp: new Date(startDate),
         wattHours: 0,
         co2e: 0,
       },
     ]
     mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
 
-    const startDate = moment('2020-06-07').toISOString()
-    const endDate = moment('2020-06-07').add(1, 'weeks').toISOString()
+    const start = moment(startDate).toISOString()
+    const end = moment(startDate).add(1, 'weeks').toISOString()
     const rawRequest: RawRequest = {
-      startDate,
-      endDate,
+      startDate: start,
+      endDate: end,
       region: null,
     }
 
     await app.getCostAndEstimates(rawRequest)
 
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(startDate), new Date(endDate), 'us-east-1')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(startDate), new Date(endDate), 'us-east-2')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(3, new Date(startDate), new Date(endDate), 'us-west-1')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(3, new Date(start), new Date(end), 'us-west-1')
   })
 })
 
-function setUpServices(mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>>[], serviceNames: string[]) {
+function setUpServices(mockGetCostAndEstimates: jest.Mock<Promise<FootprintEstimate[]>>[], serviceNames: string[]) {
   let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-  const mockCloudServices: ICloudService[] = mockGetEstimates.map((mockGetEstimate, i) => {
+  const mockCloudServices: ICloudService[] = mockGetCostAndEstimates.map((mockGetCostAndEstimate, i) => {
     return {
-      getEstimates: mockGetEstimate,
+      getEstimates: mockGetCostAndEstimate,
       serviceName: serviceNames[i],
       getUsage: mockGetUsage,
       getCosts: jest.fn().mockResolvedValue([]),
