@@ -1,11 +1,11 @@
 import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { estimateCo2, MAX_WATTS } from '@domain/FootprintEstimationConstants'
-import AWS from 'aws-sdk'
+import { getCostFromCostExplorer } from '@services/CostMapper'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import AWS from 'aws-sdk'
 
 export default class Lambda implements ICloudService {
   serviceName = 'lambda'
@@ -43,8 +43,8 @@ export default class Lambda implements ICloudService {
       logGroupNamePrefix: '/aws/lambda',
     }
 
-    const data = await cw.describeLogGroups(params).promise()
-    return data.logGroups.map(({ logGroupName }) => logGroupName)
+    const logGroupData = await cw.describeLogGroups(params).promise()
+    return logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
   }
 
   private async runQuery(cw: AWS.CloudWatchLogs, start: Date, end: Date, groupNames: string[]): Promise<string> {
@@ -55,31 +55,31 @@ export default class Lambda implements ICloudService {
             | sort Date asc`
 
     const params = {
-      startTime: start.getTime() /* required */,
-      endTime: end.getTime() /* required */,
-      queryString: query /* required */,
+      startTime: start.getTime(),
+      endTime: end.getTime(),
+      queryString: query,
       logGroupNames: groupNames,
     }
-    const data = await cw.startQuery(params).promise()
-    return data.queryId
+    const queryData = await cw.startQuery(params).promise()
+    return queryData.queryId
   }
 
   private async getResults(cw: AWS.CloudWatchLogs, queryId: string) {
     const params = {
-      queryId: queryId /* required */,
+      queryId: queryId,
     }
-    let data
+    let cwResultsData
     const startTime = Date.now()
 
     while (true) {
-      data = await cw.getQueryResults(params).promise()
-      if (data.status !== 'Running' && data.status !== 'Scheduled') break
+      cwResultsData = await cw.getQueryResults(params).promise()
+      if (cwResultsData.status !== 'Running' && cwResultsData.status !== 'Scheduled') break
       if (Date.now() - startTime > this.TIMEOUT) {
-        throw new Error(`CloudWatchLog request failed, status: ${data.status}`)
+        throw new Error(`CloudWatchLog request failed, status: ${cwResultsData.status}`)
       }
       await wait(this.POLL_INTERVAL)
     }
-    return data
+    return cwResultsData
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
