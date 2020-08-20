@@ -5,7 +5,7 @@ import {
   s3MockGetMetricDataResponse,
 } from './cloudwatch.fixtures'
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
+import AWS, { CostExplorer } from 'aws-sdk'
 import { when } from 'jest-when'
 import {
   ebsMockGetCostResponse,
@@ -103,6 +103,16 @@ function mockLambdaGetQueryResults(mockGetQueryResults: {
     'getQueryResults',
     (params: AWS.CloudWatchLogs.GetQueryResultsRequest, callback: (a: Error, response: any) => any) => {
       callback(null, mockGetQueryResultsFunction())
+    },
+  )
+}
+
+export function mockAwsCostExplorerGetCostAndUsageResponse(response: CostExplorer.GetCostAndUsageResponse) {
+  AWSMock.mock(
+    'CostExplorer',
+    'getCostAndUsage',
+    (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      callback(null, response)
     },
   )
 }
