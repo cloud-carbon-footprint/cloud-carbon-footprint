@@ -6,7 +6,7 @@ import moment from 'moment'
 import { EstimationResult, ServiceEstimate } from '@application/EstimationResult'
 
 export class App {
-  async getEstimate(rawRequest: RawRequest): Promise<EstimationResult[]> {
+  async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
 
     const regions: string[] = rawRequest.region ? [rawRequest.region] : CURRENT_REGIONS

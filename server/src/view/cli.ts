@@ -36,7 +36,7 @@ export default async function cli(argv: string[] = process.argv) {
     format = program.format
   }
   const estimationRequest: RawRequest = { startDate, endDate, region }
-  const { table, colWidths } = await new App().getEstimate(estimationRequest).then((estimations) => {
+  const { table, colWidths } = await new App().getCostAndEstimates(estimationRequest).then((estimations) => {
     if (groupBy === 'service') {
       return EmissionsByServiceTable(estimations)
     }
