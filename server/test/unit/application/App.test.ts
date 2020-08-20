@@ -40,7 +40,7 @@ describe('App', () => {
       })
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
@@ -85,7 +85,7 @@ describe('App', () => {
 
       mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
 
-      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
 
       const expectedEstimationResults = [
         {
@@ -120,7 +120,7 @@ describe('App', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      await expect(() => app.getEstimate(rawRequest)).rejects.toThrow('Start date is not before end date')
+      await expect(() => app.getCostAndEstimates(rawRequest)).rejects.toThrow('Start date is not before end date')
     })
 
     it('should aggregate per day', async () => {
@@ -138,10 +138,9 @@ describe('App', () => {
           co2e: 2,
         },
       ]
-
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getEstimate(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
 
       const expectedEstimationResults = [
         {
@@ -182,7 +181,7 @@ describe('App', () => {
       region: null,
     }
 
-    await app.getEstimate(rawRequest)
+    await app.getCostAndEstimates(rawRequest)
 
     expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(startDate), new Date(endDate), 'us-east-1')
     expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(startDate), new Date(endDate), 'us-east-2')
