@@ -11,7 +11,14 @@ import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import { mocked } from 'ts-jest/utils'
 
-import { mockAwsCloudWatchGetMetricData, mockAwsCostExplorerGetCostAndUsage } from '../fixtures/awsMockFunctions'
+import {
+  mockAwsCloudWatchGetMetricData,
+  mockAwsCloudWatchGetQueryResultsForLambda,
+  mockAwsCostExplorerGetCostAndUsage,
+  mockAwsCostExplorerGetCostAndUsageResponse,
+} from '../fixtures/awsMockFunctions'
+import Lambda from '@services/Lambda'
+import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
 
 jest.mock('@application/AWSServices')
 
@@ -66,14 +73,21 @@ describe('cli', () => {
     })
   })
 
-  // describe('lambda', () => {
-  //   it('lambda cli test', async () => {
-  //     servicesRegistered.mockReturnValue([new Lambda()])
-  //     mockAwsCloudWatchGetQueryResultsForLambda()
-  //
-  //     const result = await cli([...rawRequest, '--groupBy', 'dayAndService'])
-  //
-  //     expect(result).toMatchSnapshot()
-  //   })
-  // })
+  describe('lambda', () => {
+    beforeEach(() => {
+      servicesRegistered.mockReturnValue([new Lambda()])
+      mockAwsCloudWatchGetQueryResultsForLambda()
+      mockAwsCostExplorerGetCostAndUsageResponse(lambdaMockGetCostResponse)
+    })
+
+    it('lambda estimates', async () => {
+      const result = await cli([...rawRequest, '--groupBy', 'dayAndService'])
+      expect(result).toMatchSnapshot()
+    })
+
+    it('lambda cost', async () => {
+      const result = await cli([...rawRequest, '--groupBy', 'service'])
+      expect(result).toMatchSnapshot()
+    })
+  })
 })
