@@ -7,16 +7,11 @@ import EBS from '@services/EBS'
 import S3 from '@services/S3'
 import EC2 from '@services/EC2'
 import ElastiCache from '@services/ElastiCache'
-import Lambda from '@services/Lambda'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import { mocked } from 'ts-jest/utils'
 
-import {
-  mockAwsCloudWatchGetMetricData,
-  mockAwsCostExplorerGetCostAndUsage,
-  mockAwsCloudWatchGetQueryResultsForLambda,
-} from '../fixtures/awsMockFunctions'
+import { mockAwsCloudWatchGetMetricData, mockAwsCostExplorerGetCostAndUsage } from '../fixtures/awsMockFunctions'
 
 jest.mock('@application/AWSServices')
 
@@ -71,14 +66,14 @@ describe('cli', () => {
     })
   })
 
-  describe('lambda', () => {
-    it('lambda cli test', async () => {
-      servicesRegistered.mockReturnValue([new Lambda()])
-      mockAwsCloudWatchGetQueryResultsForLambda()
-
-      const result = await cli([...rawRequest, '--groupBy', 'dayAndService'])
-
-      expect(result).toMatchSnapshot()
-    })
-  })
+  // describe('lambda', () => {
+  //   it('lambda cli test', async () => {
+  //     servicesRegistered.mockReturnValue([new Lambda()])
+  //     mockAwsCloudWatchGetQueryResultsForLambda()
+  //
+  //     const result = await cli([...rawRequest, '--groupBy', 'dayAndService'])
+  //
+  //     expect(result).toMatchSnapshot()
+  //   })
+  // })
 })
