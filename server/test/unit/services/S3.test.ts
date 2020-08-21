@@ -1,5 +1,5 @@
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
+import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 
 import S3 from '@services/S3'
 import { buildCostExplorerGetCostResponse } from '@builders'
@@ -13,14 +13,20 @@ describe('S3', () => {
     AWSMock.restore()
   })
 
+  const region = 'us-east-1'
+  const start = '2020-08-01T00:00:00.000Z'
+  const dayTwo = '2020-08-02T00:00:00.000Z'
+  const dayThree = '2020-08-03T00:00:00.000Z'
+  const end = '2020-08-04T00:00:00.000Z'
+
   it('gets S3 usage', async () => {
     AWSMock.mock(
       'CloudWatch',
       'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
+      (params: CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
         expect(params).toEqual({
-          StartTime: new Date('2020-06-27T00:00:00.000Z'),
-          EndTime: new Date('2020-06-30T00:00:00.000Z'),
+          StartTime: new Date(start),
+          EndTime: new Date(end),
           MetricDataQueries: [
             {
               Id: 's3Size',
@@ -36,12 +42,7 @@ describe('S3', () => {
             {
               Id: 's3Size',
               Label: 's3Size',
-              Timestamps: [
-                '2020-06-27T00:00:00.000Z',
-                '2020-06-28T00:00:00.000Z',
-                '2020-06-29T00:00:00.000Z',
-                '2020-06-30T00:00:00.000Z',
-              ],
+              Timestamps: [start, dayTwo, dayThree, end],
               Values: [2586032500, 3286032500, 7286032500, 4286032500],
               StatusCode: 'Complete',
               Messages: [],
@@ -52,56 +53,48 @@ describe('S3', () => {
     )
 
     const s3Service = new S3()
-
-    const result = await s3Service.getUsage(
-      new Date('2020-06-27T00:00:00Z'),
-      new Date('2020-06-30T00:00:00Z'),
-      'us-east-1',
-    )
-
+    const result = await s3Service.getUsage(new Date(start), new Date(end), region)
     expect(result).toEqual([
       {
         sizeGb: 2.5860325,
-        timestamp: new Date('2020-06-27T00:00:00Z'),
+        timestamp: new Date(start),
       },
       {
         sizeGb: 3.2860325,
-        timestamp: new Date('2020-06-28T00:00:00Z'),
+        timestamp: new Date(dayTwo),
       },
       {
         sizeGb: 7.2860325,
-        timestamp: new Date('2020-06-29T00:00:00Z'),
+        timestamp: new Date(dayThree),
       },
       {
         sizeGb: 4.2860325,
-        timestamp: new Date('2020-06-30T00:00:00Z'),
+        timestamp: new Date(end),
       },
     ])
   })
 
   it('gets S3 cost for two days', async () => {
-    const start = '2020-07-01T00:00:00.000Z'
-    const end = '2020-07-02T00:00:00.000Z'
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
-            { start: '2020-07-01T00:00:00.000Z', amount: 2.3, keys: ['Amazon Simple Storage Service'] },
-            { start: '2020-07-02T00:00:00.000Z', amount: 4.6, keys: ['test'] },
+            { start, amount: 2.3, keys: ['Amazon Simple Storage Service'] },
+            { start: dayTwo, amount: 4.6, keys: ['test'] },
           ]),
         )
       },
     )
 
     const s3Service = new S3()
-    const s3Costs = await s3Service.getCosts(new Date(start), new Date(end), 'us-east-1')
+    const s3Costs = await s3Service.getCosts(new Date(start), new Date(end), region)
 
     expect(s3Costs).toEqual([
-      { amount: 2.3, currency: 'USD', timestamp: new Date('2020-07-01T00:00:00.000Z') },
-      { amount: 4.6, currency: 'USD', timestamp: new Date('2020-07-02T00:00:00.000Z') },
+      { amount: 2.3, currency: 'USD', timestamp: new Date(start) },
+      { amount: 4.6, currency: 'USD', timestamp: new Date(dayTwo) },
     ])
   })
 })
