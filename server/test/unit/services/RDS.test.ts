@@ -5,16 +5,15 @@ import RDSComputeService from '@services/RDSCompute'
 import Cost from '@domain/Cost'
 
 describe('RDS Service', function () {
-  it('Combines the results from both the RDSCompute and RDSStorage services ', async () => {
-    // given
-    const startDate = new Date('2020-01-01')
-    const endDate = new Date('2020-01-02')
-    const region = 'us-east-1'
+  const startDate = '2020-08-16'
+  const endDate = '2020-08-17'
+  const region = 'us-east-1'
 
+  it('Combines the results from both the RDSCompute and RDSStorage services ', async () => {
     const rdsComputeEstimate: FootprintEstimate[] = [
       {
         co2e: 1,
-        timestamp: new Date('2020-01-01T00:00:00.000Z'),
+        timestamp: new Date(startDate),
         wattHours: 4,
       },
     ]
@@ -22,7 +21,7 @@ describe('RDS Service', function () {
     const rdsStorageEstimate: FootprintEstimate[] = [
       {
         co2e: 2,
-        timestamp: new Date('2020-01-01T00:00:00.000Z'),
+        timestamp: new Date(startDate),
         wattHours: 1,
       },
     ]
@@ -34,33 +33,28 @@ describe('RDS Service', function () {
 
     const rdsStorageMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
     const rdsStorageMock: RDSStorage = new RDSStorage()
-
     rdsStorageMock.getEstimates = rdsStorageMockGetEstimates
     rdsStorageMockGetEstimates.mockResolvedValueOnce(rdsStorageEstimate)
 
-    // when
     const rdsService: RDS = new RDS(rdsComputeMock, rdsStorageMock)
+    const rdsEstimates = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
-    const rdsEstimates = await rdsService.getEstimates(startDate, endDate, region)
-
-    // then
     expect(rdsEstimates).toEqual([
       {
         co2e: 3,
-        timestamp: new Date('2020-01-01T00:00:00.000Z'),
+        timestamp: new Date(startDate),
         wattHours: 5,
       },
     ])
   })
 
   it('combines the cost from RDS compute and RDS storage', async () => {
-    // given
     const rdsComputeMockGetCost: jest.Mock<Promise<Cost[]>> = jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService()
     rdsComputeMock.getCosts = rdsComputeMockGetCost
     rdsComputeMockGetCost.mockResolvedValueOnce([
       {
-        timestamp: new Date('2020-08-17'),
+        timestamp: new Date(startDate),
         amount: 33.33,
         currency: 'USD',
       },
@@ -71,23 +65,20 @@ describe('RDS Service', function () {
     rdsStorageMock.getCosts = rdsStorageMockGetCost
     rdsStorageMockGetCost.mockResolvedValueOnce([
       {
-        timestamp: new Date('2020-08-17'),
+        timestamp: new Date(startDate),
         amount: 66.66,
         currency: 'USD',
       },
     ])
 
     const rdsService: RDS = new RDS(rdsComputeMock, rdsStorageMock)
+    const res = await rdsService.getCosts(new Date(startDate), new Date(startDate), region)
 
-    // when
-    const res = await rdsService.getCosts(new Date('2020-08-17'), new Date('2020-08-17'), 'us-east-1')
-
-    // then
-    expect(rdsComputeMockGetCost).toBeCalledWith(new Date('2020-08-17'), new Date('2020-08-17'), 'us-east-1')
-    expect(rdsStorageMockGetCost).toBeCalledWith(new Date('2020-08-17'), new Date('2020-08-17'), 'us-east-1')
+    expect(rdsComputeMockGetCost).toBeCalledWith(new Date(startDate), new Date(startDate), region)
+    expect(rdsStorageMockGetCost).toBeCalledWith(new Date(startDate), new Date(startDate), region)
     expect(res).toEqual([
       {
-        timestamp: new Date('2020-08-17'),
+        timestamp: new Date(startDate),
         amount: 99.99,
         currency: 'USD',
       },
@@ -95,18 +86,17 @@ describe('RDS Service', function () {
   })
 
   it('combines the cost from RDS compute and RDS storage for 2 days', async () => {
-    // given
     const rdsComputeMockGetCost: jest.Mock<Promise<Cost[]>> = jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService()
     rdsComputeMock.getCosts = rdsComputeMockGetCost
     rdsComputeMockGetCost.mockResolvedValueOnce([
       {
-        timestamp: new Date('2020-08-16'),
+        timestamp: new Date(startDate),
         amount: 33.33,
         currency: 'USD',
       },
       {
-        timestamp: new Date('2020-08-17'),
+        timestamp: new Date(endDate),
         amount: 11.11,
         currency: 'USD',
       },
@@ -117,12 +107,12 @@ describe('RDS Service', function () {
     rdsStorageMock.getCosts = rdsStorageMockGetCost
     rdsStorageMockGetCost.mockResolvedValueOnce([
       {
-        timestamp: new Date('2020-08-16'),
+        timestamp: new Date(startDate),
         amount: 66.66,
         currency: 'USD',
       },
       {
-        timestamp: new Date('2020-08-17'),
+        timestamp: new Date(endDate),
         amount: 22.22,
         currency: 'USD',
       },
@@ -130,20 +120,18 @@ describe('RDS Service', function () {
 
     const rdsService: RDS = new RDS(rdsComputeMock, rdsStorageMock)
 
-    // when
-    const res = await rdsService.getCosts(new Date('2020-08-17'), new Date('2020-08-17'), 'us-east-1')
+    const res = await rdsService.getCosts(new Date(startDate), new Date(endDate), region)
 
-    // then
-    expect(rdsComputeMockGetCost).toBeCalledWith(new Date('2020-08-17'), new Date('2020-08-17'), 'us-east-1')
-    expect(rdsStorageMockGetCost).toBeCalledWith(new Date('2020-08-17'), new Date('2020-08-17'), 'us-east-1')
+    expect(rdsComputeMockGetCost).toBeCalledWith(new Date(startDate), new Date(endDate), region)
+    expect(rdsStorageMockGetCost).toBeCalledWith(new Date(startDate), new Date(endDate), region)
     expect(res).toEqual([
       {
-        timestamp: new Date('2020-08-16'),
+        timestamp: new Date(startDate),
         amount: 99.99,
         currency: 'USD',
       },
       {
-        timestamp: new Date('2020-08-17'),
+        timestamp: new Date(endDate),
         amount: 33.33,
         currency: 'USD',
       },
