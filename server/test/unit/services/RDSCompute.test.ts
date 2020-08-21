@@ -11,65 +11,6 @@ beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
-function buildCloudwatchCPUUtilizationRequest(startTimestamp: string, endTimestamp: string) {
-  return {
-    StartTime: new Date(startTimestamp),
-    EndTime: new Date(endTimestamp),
-    MetricDataQueries: [
-      {
-        Id: 'cpuUtilizationWithEmptyValues',
-        Expression: "SEARCH('{AWS/RDS} MetricName=\"CPUUtilization\"', 'Average', 3600)",
-        ReturnData: false,
-      },
-      {
-        Id: 'cpuUtilization',
-        Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
-      },
-    ],
-    ScanBy: 'TimestampAscending',
-  }
-}
-
-function buildCloudwatchCPUUtilizationResponse(timestamps: Date[], values: number[]) {
-  return {
-    MetricDataResults: [
-      {
-        Id: 'cpuUtilization',
-        Timestamps: timestamps,
-        Values: values,
-      },
-    ],
-  }
-}
-
-function buildRdsCostExplorerGetUsageRequest(startDate: string, endDate: string, region: string) {
-  return {
-    TimePeriod: {
-      Start: startDate,
-      End: endDate,
-    },
-    Filter: {
-      And: [
-        { Dimensions: { Key: 'REGION', Values: [region] } },
-        {
-          Dimensions: {
-            Key: 'USAGE_TYPE_GROUP',
-            Values: ['RDS: Running Hours'],
-          },
-        },
-      ],
-    },
-    Granularity: 'DAILY',
-    GroupBy: [
-      {
-        Key: 'USAGE_TYPE',
-        Type: 'DIMENSION',
-      },
-    ],
-    Metrics: ['UsageQuantity'],
-  }
-}
-
 describe('RDS Compute', function () {
   afterEach(() => {
     AWSMock.restore()
@@ -154,3 +95,62 @@ describe('RDS Compute', function () {
     ])
   })
 })
+
+function buildCloudwatchCPUUtilizationRequest(startTimestamp: string, endTimestamp: string) {
+  return {
+    StartTime: new Date(startTimestamp),
+    EndTime: new Date(endTimestamp),
+    MetricDataQueries: [
+      {
+        Id: 'cpuUtilizationWithEmptyValues',
+        Expression: "SEARCH('{AWS/RDS} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+        ReturnData: false,
+      },
+      {
+        Id: 'cpuUtilization',
+        Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
+      },
+    ],
+    ScanBy: 'TimestampAscending',
+  }
+}
+
+function buildCloudwatchCPUUtilizationResponse(timestamps: Date[], values: number[]) {
+  return {
+    MetricDataResults: [
+      {
+        Id: 'cpuUtilization',
+        Timestamps: timestamps,
+        Values: values,
+      },
+    ],
+  }
+}
+
+function buildRdsCostExplorerGetUsageRequest(startDate: string, endDate: string, region: string) {
+  return {
+    TimePeriod: {
+      Start: startDate,
+      End: endDate,
+    },
+    Filter: {
+      And: [
+        { Dimensions: { Key: 'REGION', Values: [region] } },
+        {
+          Dimensions: {
+            Key: 'USAGE_TYPE_GROUP',
+            Values: ['RDS: Running Hours'],
+          },
+        },
+      ],
+    },
+    Granularity: 'DAILY',
+    GroupBy: [
+      {
+        Key: 'USAGE_TYPE',
+        Type: 'DIMENSION',
+      },
+    ],
+    Metrics: ['UsageQuantity'],
+  }
+}
