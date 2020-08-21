@@ -1,15 +1,18 @@
 import { getCostFromCostExplorer } from '@services/CostMapper'
 import { AWS_REGIONS } from '@services/AWSRegions'
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
+import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
+
+const startDate = '2020-08-06'
+const endDate = '2020-08-07'
 
 describe('CostMapper', function () {
   it('calculates cost ', async () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(null, buildResponseBody())
       },
     )
@@ -17,8 +20,8 @@ describe('CostMapper', function () {
     const costs = await getCostFromCostExplorer(buildRequestParams(), AWS_REGIONS.US_EAST_1)
 
     expect(costs).toEqual([
-      { amount: 2.3081821243, currency: 'USD', timestamp: new Date('2020-08-04T00:00:00.000Z') },
-      { amount: 1.5, currency: 'USD', timestamp: new Date('2020-08-04T00:00:00.000Z') },
+      { amount: 2.3081821243, currency: 'USD', timestamp: new Date(startDate) },
+      { amount: 1.5, currency: 'USD', timestamp: new Date(startDate) },
     ])
   })
 })
@@ -26,8 +29,8 @@ describe('CostMapper', function () {
 function buildRequestParams(): GetCostAndUsageRequest {
   return {
     TimePeriod: {
-      Start: '2020-08-04',
-      End: '2020-08-05',
+      Start: startDate,
+      End: endDate,
     },
     Filter: {
       And: [
@@ -61,7 +64,7 @@ function buildResponseBody(): GetCostAndUsageResponse {
   return {
     ResultsByTime: [
       {
-        TimePeriod: { Start: '2020-08-04', End: '2020-08-05' },
+        TimePeriod: { Start: startDate, End: endDate },
         Total: {},
         Groups: [
           {
