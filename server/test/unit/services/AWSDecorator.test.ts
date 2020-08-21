@@ -1,7 +1,11 @@
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch } from 'aws-sdk'
+import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 import { AWSDecorator } from '@services/AWSDecorator'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
+
+const startDate = '2020-08-06'
+const endDate = '2020-08-07'
+const region = 'us-east-1'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -16,11 +20,11 @@ describe('aws service helper', () => {
   it('followPages decorator should follow CostExplorer next pages', async () => {
     const costExplorerMockFunction = jest.fn()
     const firstPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
-      [{ start: '2020-06-27', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
+      [{ start: startDate, value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
       'tokenToNextPage',
     )
     const secondPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
-      [{ start: '2020-06-28', value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
+      [{ start: startDate, value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
       null,
     )
     costExplorerMockFunction.mockReturnValueOnce(firstPageResponse).mockReturnValueOnce(secondPageResponse)
@@ -28,11 +32,11 @@ describe('aws service helper', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (request: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (request: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(null, costExplorerMockFunction())
       },
     )
-    const responses = await new AWSDecorator('us-east-1').getCostAndUsageResponses(
+    const responses = await new AWSDecorator(region).getCostAndUsageResponses(
       buildAwsCostExplorerGetCostAndUsageRequest(),
     )
 
@@ -48,13 +52,11 @@ describe('aws service helper', () => {
     AWSMock.mock(
       'CloudWatch',
       'getMetricData',
-      (request: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
+      (request: CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
         callback(null, cloudWatchMockFunction())
       },
     )
-    const responses = await new AWSDecorator('us-east-1').getMetricDataResponses(
-      buildAwsCloudWatchGetMetricDataRequest(),
-    )
+    const responses = await new AWSDecorator(region).getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
@@ -63,8 +65,8 @@ describe('aws service helper', () => {
 function buildAwsCostExplorerGetCostAndUsageRequest() {
   return {
     TimePeriod: {
-      Start: '2019-08-06',
-      End: '2020-08-06',
+      Start: startDate,
+      End: endDate,
     },
     Granularity: 'DAILY',
     Metrics: [
@@ -120,7 +122,7 @@ function buildAwsCloudWatchGetMetricDataResponse(nextPageToken: string): CloudWa
       {
         Id: 'cpuUtilization',
         Label: 'AWS/ElastiCache CPUUtilization',
-        Timestamps: [new Date('2020-07-19T22:00:00.000Z'), new Date('2020-07-20T23:00:00.000Z')],
+        Timestamps: [new Date(startDate), new Date(endDate)],
         Values: [1.0456, 2.03242],
         StatusCode: 'Complete',
         Messages: [],
@@ -131,8 +133,8 @@ function buildAwsCloudWatchGetMetricDataResponse(nextPageToken: string): CloudWa
 
 function buildAwsCloudWatchGetMetricDataRequest(): GetMetricDataInput {
   return {
-    StartTime: new Date('2020-08-07'),
-    EndTime: new Date('2020-08-07'),
+    StartTime: new Date(startDate),
+    EndTime: new Date(endDate),
     MetricDataQueries: [
       {
         Id: 'cpuUtilizationWithEmptyValues',
