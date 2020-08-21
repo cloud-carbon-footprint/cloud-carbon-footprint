@@ -1,5 +1,5 @@
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
+import AWS, { CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import Lambda from '@services/Lambda'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 import { buildCostExplorerGetCostResponse } from '@builders'
@@ -18,21 +18,25 @@ describe('Lambda', () => {
     startQuerySpy.mockClear()
   })
 
+  const startDate = '2020-08-09T00:00:00Z'
+  const endDate = '2020-08-10T00:00:00Z'
+  const dayThree = '2020-08-11T00:00:00Z'
+  const region = 'us-west-1'
+  const queryResponse = {
+    queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
+  }
+  const logGroup = {
+    logGroupName: '/aws/lambda/sample-function-name',
+  }
+
   it('gets Lambda usage for one function and one day', async () => {
-    const logGroups = [
-      {
-        logGroupName: '/aws/lambda/sample-function-name',
-      },
-    ]
-    const response = {
-      queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
-    }
+    const logGroups = [logGroup]
     const results = {
       results: [
         [
           {
             field: 'Date',
-            value: '2020-08-09 00:00:00.000',
+            value: startDate,
           },
           {
             field: 'Watts',
@@ -44,40 +48,29 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
-    mockStartQuery(response)
+    mockStartQuery(queryResponse)
     mockGetResults(results)
 
     const lambdaService = new Lambda()
-    const result = await lambdaService.getEstimates(
-      new Date('2020-08-09T00:00:00Z'),
-      new Date('2020-08-10T00:00:00Z'),
-      'us-west-1',
-    )
+    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual([
       {
-        timestamp: new Date('2020-08-09T00:00:00Z'),
+        timestamp: new Date(startDate),
         wattHours: 0.1,
-        co2e: estimateCo2(0.1, 'us-west-1'),
+        co2e: estimateCo2(0.1, region),
       },
     ])
   })
 
   it('gets Lambda usage for one function and two days', async () => {
-    const logGroups = [
-      {
-        logGroupName: '/aws/lambda/sample-function-name',
-      },
-    ]
-    const response = {
-      queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
-    }
+    const logGroups = [logGroup]
     const results = {
       results: [
         [
           {
             field: 'Date',
-            value: '2020-08-09 00:00:00.000',
+            value: startDate,
           },
           {
             field: 'Watts',
@@ -87,7 +80,7 @@ describe('Lambda', () => {
         [
           {
             field: 'Date',
-            value: '2020-08-10 00:00:00.000',
+            value: endDate,
           },
           {
             field: 'Watts',
@@ -99,48 +92,39 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
-    mockStartQuery(response)
+    mockStartQuery(queryResponse)
     mockGetResults(results)
 
     const lambdaService = new Lambda()
-    const result = await lambdaService.getEstimates(
-      new Date('2020-08-09T00:00:00Z'),
-      new Date('2020-08-11T00:00:00Z'),
-      'us-west-1',
-    )
+    const result = await lambdaService.getEstimates(new Date(startDate), new Date(dayThree), region)
 
     expect(result).toEqual([
       {
-        timestamp: new Date('2020-08-09T00:00:00Z'),
+        timestamp: new Date(startDate),
         wattHours: 0.1,
-        co2e: estimateCo2(0.1, 'us-west-1'),
+        co2e: estimateCo2(0.1, region),
       },
       {
-        timestamp: new Date('2020-08-10T00:00:00Z'),
+        timestamp: new Date(endDate),
         wattHours: 0.4,
-        co2e: estimateCo2(0.4, 'us-west-1'),
+        co2e: estimateCo2(0.4, region),
       },
     ])
   })
 
   it('gets results from 2 Lambda log group names', async () => {
     const logGroups = [
-      {
-        logGroupName: '/aws/lambda/sample-function-name',
-      },
+      logGroup,
       {
         logGroupName: '/aws/lambda/sample-function-name-2',
       },
     ]
-    const response = {
-      queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
-    }
     const results = {
       results: [
         [
           {
             field: 'Date',
-            value: '2020-08-09 00:00:00.000',
+            value: startDate,
           },
           {
             field: 'Watts',
@@ -150,7 +134,7 @@ describe('Lambda', () => {
         [
           {
             field: 'Date',
-            value: '2020-08-09 00:00:00.000',
+            value: startDate,
           },
           {
             field: 'Watts',
@@ -162,15 +146,11 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
-    mockStartQuery(response)
+    mockStartQuery(queryResponse)
     mockGetResults(results)
 
     const lambdaService = new Lambda()
-    const result = await lambdaService.getEstimates(
-      new Date('2020-08-09T00:00:00Z'),
-      new Date('2020-08-10T00:00:00Z'),
-      'us-west-1',
-    )
+    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(startQuerySpy).toHaveBeenCalledWith(
       {
@@ -184,14 +164,14 @@ describe('Lambda', () => {
 
     expect(result).toEqual([
       {
-        timestamp: new Date('2020-08-09T00:00:00Z'),
+        timestamp: new Date(startDate),
         wattHours: 0.2,
-        co2e: estimateCo2(0.2, 'us-west-1'),
+        co2e: estimateCo2(0.2, region),
       },
       {
-        timestamp: new Date('2020-08-09T00:00:00Z'),
+        timestamp: new Date(startDate),
         wattHours: 0.23,
-        co2e: estimateCo2(0.23, 'us-west-1'),
+        co2e: estimateCo2(0.23, region),
       },
     ])
   })
@@ -200,15 +180,11 @@ describe('Lambda', () => {
     mockDescribeLogGroups([])
 
     const lambdaService = new Lambda()
-    const result = await lambdaService.getEstimates(
-      new Date('2020-08-09T00:00:00Z'),
-      new Date('2020-08-10T00:00:00Z'),
-      'us-west-1',
-    )
+    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual([
       {
-        timestamp: new Date('2020-08-09T00:00:00Z'),
+        timestamp: new Date(startDate),
         wattHours: 0.0,
         co2e: 0.0,
       },
@@ -221,15 +197,12 @@ describe('Lambda', () => {
         logGroupName: '/aws/lambda/sample-function-name',
       },
     ]
-    const response = {
-      queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
-    }
     const results = {
       results: [
         [
           {
             field: 'Date',
-            value: '2020-08-09 00:00:00.000',
+            value: startDate,
           },
           {
             field: 'Watts',
@@ -241,7 +214,7 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
-    mockStartQuery(response)
+    mockStartQuery(queryResponse)
     mockGetResults(results)
 
     const lambdaService = new Lambda(100, 50)
@@ -249,35 +222,33 @@ describe('Lambda', () => {
     const expectedError = new Error('CloudWatchLog request failed, status: Running')
 
     try {
-      await lambdaService.getEstimates(new Date('2020-08-09T00:00:00Z'), new Date('2020-08-10T00:00:00Z'), 'us-west-1')
+      await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
     } catch (error) {
       expect(error).toEqual(expectedError)
     }
   })
 
   it('gets Lambda cost', async () => {
-    const start = '2020-08-15'
-    const end = '2020-08-19'
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
-            { start: start, amount: 100.0, keys: ['AWS Lambda'] },
-            { start: end, amount: 50.0, keys: ['test'] },
+            { start: startDate, amount: 100.0, keys: ['AWS Lambda'] },
+            { start: endDate, amount: 50.0, keys: ['test'] },
           ]),
         )
       },
     )
 
     const lambdaService = new Lambda()
-    const lambdaCosts = await lambdaService.getCosts(new Date(start), new Date(end), 'us-east-1')
+    const lambdaCosts = await lambdaService.getCosts(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(lambdaCosts).toEqual([
-      { amount: 100.0, currency: 'USD', timestamp: new Date(start) },
-      { amount: 50.0, currency: 'USD', timestamp: new Date(end) },
+      { amount: 100.0, currency: 'USD', timestamp: new Date(startDate) },
+      { amount: 50.0, currency: 'USD', timestamp: new Date(endDate) },
     ])
   })
 
@@ -285,7 +256,7 @@ describe('Lambda', () => {
     AWSMock.mock(
       'CloudWatchLogs',
       'describeLogGroups',
-      (params: AWS.CloudWatchLogs.DescribeLogGroupsRequest, callback: (a: Error, response: any) => any) => {
+      (params: CloudWatchLogs.DescribeLogGroupsRequest, callback: (a: Error, response: any) => any) => {
         callback(null, {
           logGroups: logGroups,
         })
@@ -304,7 +275,7 @@ describe('Lambda', () => {
     AWSMock.mock(
       'CloudWatchLogs',
       'getQueryResults',
-      (params: AWS.CloudWatchLogs.GetQueryResultsRequest, callback: (a: Error, response: any) => any) => {
+      (params: CloudWatchLogs.GetQueryResultsRequest, callback: (a: Error, response: any) => any) => {
         callback(null, results)
       },
     )
