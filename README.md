@@ -6,28 +6,65 @@ This is an application that calculates the emissions of AWS services in realtime
 
 There core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `server/`, and the website is split between `server/` and `client/`
 
-## To run (CLI)
-  1. Interactive version: `./scripts/cli.bash -i`
-  2. Pass params on command line: 
-  ```
-  ./scripts/cli.bash \
+## To set up the server
+**Prerequisites**:
+  - node >= 14
+  
+You can set up the server on a docker container or run it locally. 
+
+### Setup with Docker:
+**Prerequisites**:
+  - docker >= 19
+  
+```
+cd server
+npm run docker:start //creates a docker container named ccf_base
+npm run docker:setup //install dependencies
+```
+
+### Setup locally:
+```
+cd server
+npm install
+```
+
+## To run the CLI
+
+- Configure AWS credentials with: 
+    ```
+    aws configure
+    ```
+- Specify the services and regions that the tool runs on in server/src/application/Config.json 
+
+### CLI Options
+1. You can run the tool interactively with the `-i` flag; CLI will ask for the options/parameters
+
+2. Or you can choose to pass the parameters in a single line:
+    ```
     --startDate YYYY-MM-DD \
     --endDate YYYY-MM-DD \
     --region [us-east-1 | us-east-2]`
     --groupBy [day | dayAndService | service]
     --format [table | csv]
-  ```
-- To configure regions for your AWS account, edit the list of regions in `server/application/Config.json`. 
+    ```
 
-## To run (website)
-  1. ./scripts/dev.bash
+### Run CLI with Docker
+```
+cd server
+npm run docker:cli -- <options>
+```
 
-## Development
+### Run CLI locally
+`./scripts/cli.bash`
+
+
+## To run the website
+`./scripts/dev.bash`
+
+## Utilities for running from the project root
 **Prerequisites**:
   - node >= 14
   - bash
-
-**Workflow**:
 
 These scripts optionally take 1 argument with the value `both`|`client`|`server`, indicating which folder(s) to run the scripts in. The default value is `both`
   - `./scripts/setup.bash`: install dependencies

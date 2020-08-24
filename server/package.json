@@ -14,7 +14,12 @@
     "lint": "eslint '*/**/*.ts' --quiet",
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
     "start:web": "ts-node-dev -r tsconfig-paths/register src/view/api.ts",
-    "start:cli": "ts-node -r tsconfig-paths/register src/index.ts"
+    "start:cli": "ts-node -r tsconfig-paths/register src/index.ts",
+    "docker:start": "docker run --name ccf_base -dt -v $(pwd):/cloud-carbon-footprint/server -v $HOME/.aws/credentials:/home/circleci/.aws/credentials circleci/node:current bash",
+    "docker:setup": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm install",
+    "docker:test": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm run test",
+    "docker:cli": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm run start:cli -- ",
+    "docker:stop": "docker stop ccf_base"
   },
   "keywords": [],
   "author": "",
