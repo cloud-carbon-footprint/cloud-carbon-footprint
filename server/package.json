@@ -65,7 +65,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cd .. && ./scripts/lint.bash && cd server && npm run test:clean &&  npm run test"
+      "pre-commit": "cd .. && ./scripts/li nt.bash && cd server && npm run test:clean &&  npm run test"
     }
   }
 }
