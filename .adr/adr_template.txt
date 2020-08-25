@@ -7,7 +7,7 @@ INSTRUCTIONS:
 
 
 TEMPLATE:
-Filename: ADR_{number}_{shortTitle}
+Filename: adr_{number}_{shortTitle}
 
 Title — Short title
 Decision — What decision was made?
