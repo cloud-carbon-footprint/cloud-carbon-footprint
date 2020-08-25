@@ -11,16 +11,16 @@ PACKAGE=${1:-both}
 
 client() {
   header "Client"
-  cd client
-  npm install
-  cd ..
+  pushd client
+  npm ci
+  popd
 }
 
 server() {
   header "Server"
-  cd server
-  npm install
-  cd ..
+  pushd server
+  npm ci
+  popd
 }
 
 

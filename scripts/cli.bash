@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-cd server
+pushd server
 npm run start:cli -- "$@"
-cd ..
+popd

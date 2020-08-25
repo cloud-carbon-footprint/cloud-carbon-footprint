@@ -11,16 +11,16 @@ PACKAGE=${1:-both}
 
 client() {
   header "Client"
-  cd client
+  pushd client
   rm -rf node_modules
-  cd ..
+  popd
 }
 
 server() {
   header "Server"
-  cd server
+  pushd server
   rm -rf node_modules
-  cd ..
+  popd
 }
 
 

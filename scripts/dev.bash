@@ -11,10 +11,10 @@ log() {
   awk -v c=$1 -v n=$NONE -v l=$2 '{print c l " " n $0}'
 }
 
-cd client
+pushd client
 npm run start | log $PINK "[CLIENT]"  &
+popd
 
-cd ../server
+pushd server
 npm run start:web | log $GREEN "[SERVER]"
-
-
+popd

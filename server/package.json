@@ -16,7 +16,7 @@
     "start:web": "ts-node-dev -r tsconfig-paths/register src/view/api.ts",
     "start:cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/server -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
-    "docker:setup": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm install",
+    "docker:setup": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm ci",
     "docker:test": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm run test",
     "docker:cli": "docker exec -w /cloud-carbon-footprint/server -e AWS_PROFILE -it ccf_base npm run start:cli -- ",
     "docker:stop": "docker stop ccf_base"

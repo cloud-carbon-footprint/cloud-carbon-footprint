@@ -9,7 +9,7 @@
   5. `git commit -m "Your commit message | Your name, Pair's name`
   6. `git pull --rebase`
   7. Run all tests from the top level directory with `./scripts/test.bash` and continue only if they pass
-  8. Run the app from the top level directory with `./scripts.cli.bash` 
+  8. Run the app from the top level directory with `./scripts.cli.bash`
   9. `git push`
 
 Check the [CI pipeline builds](https://travis-ci.com/dtoakley/cloud-carbon-footprint)
@@ -21,14 +21,14 @@ Check the [CI pipeline builds](https://travis-ci.com/dtoakley/cloud-carbon-footp
 
 ### Package management
 * Packages are managed using npm
-* To install a new package, use `npm install package-name` inside either the client or server directory
-* To make sure all pagages are installed locally, run `npm install` inside either the client or server directory
+* To install a new package, use `npm install --save package-name` inside either the client or server directory
+* To make sure all packages are installed locally, run `npm ci` inside either the client or server directory
 
 ### Our CI pipeline and environments
 We use TravisCI for our pipeline.
 
 ### Module Aliasing
-We've set up module aliasing within the src folder, so modules within the subfolders can be accessed with the @ prefix, e.g. @application/Module/. We implemeneted this by configuring tsconfig.json, jest.config.js and installing the `tsconfig-paths` package.
+We've set up module aliasing within the src folder, so modules within the subfolders can be accessed with the @ prefix, e.g. @application/Module/. We implemented this by configuring tsconfig.json, jest.config.js and installing the `tsconfig-paths` package.
 
 ## Lightweight ADR's (Architectural Decision Records)
-We record any significant architecural choices we make with lightweight adr files, located in the .adr folder. There is a template included as well. For more information about Lightweight ADR's, see [ThoughtWork's Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records)
+We record any significant architectural choices we make with lightweight adr files, located in the .adr folder. There is a template included as well. For more information about Lightweight ADR's, see [ThoughtWork's Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records)
