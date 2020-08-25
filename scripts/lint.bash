@@ -11,16 +11,16 @@ PACKAGE=${1:-both}
 
 client() {
   header "Client"
-  cd client
+  pushd client
   npm run lint:fix
-  cd ..
+  popd
 }
 
 server() {
   header "Server"
-  cd server
+  pushd server
   npm run lint:fix
-  cd ..
+  popd
 }
 
 

@@ -9,13 +9,13 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
 ## To set up the server
 **Prerequisites**:
   - node >= 14
-  
-You can set up the server on a docker container or run it locally. 
+
+You can set up the server on a docker container or run it locally.
 
 ### Setup with Docker:
 **Prerequisites**:
   - docker >= 19
-  
+
 ```
 cd server
 npm run docker:start //creates a docker container named ccf_base
@@ -25,16 +25,16 @@ npm run docker:setup //install dependencies
 ### Setup locally:
 ```
 cd server
-npm install
+npm ci
 ```
 
 ## To run the CLI
 
-- Configure AWS credentials with: 
+- Configure AWS credentials with:
     ```
     aws configure
     ```
-- Specify the services and regions that the tool runs on in server/src/application/Config.json 
+- Specify the services and regions that the tool runs on in server/src/application/Config.json
 
 ### CLI Options
 1. You can run the tool interactively with the `-i` flag; CLI will ask for the options/parameters
