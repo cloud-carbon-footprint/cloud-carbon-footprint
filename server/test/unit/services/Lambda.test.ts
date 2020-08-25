@@ -219,16 +219,12 @@ describe('Lambda', () => {
 
     const lambdaService = new Lambda(100, 50)
 
-    const expectedError = new Error("CloudWatchLog request failed, status: Running")
+    const expectedError = new Error('CloudWatchLog request failed, status: Running')
 
     try {
       await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
     } catch (error) {
       expect(error).toEqual(expectedError)
-
-
-
-
     }
   })
 
@@ -251,7 +247,7 @@ describe('Lambda', () => {
     const lambdaCosts = await lambdaService.getCosts(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(lambdaCosts).toEqual([
-      { amount: 80.0, currency: 'USD', timestamp: new Date(startDate) },
+      { amount: 100.0, currency: 'USD', timestamp: new Date(startDate) },
       { amount: 50.0, currency: 'USD', timestamp: new Date(endDate) },
     ])
   })
