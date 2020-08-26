@@ -1,0 +1,82 @@
+{
+  "api": [
+    {
+      "timestamp": "2020-07-10T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "timestamp": "2020-07-10T00:00:00.000Z",
+          "serviceName": "ebs",
+          "wattHours": 0.85506240214656,
+          "co2e": 5,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-10T00:00:00.000Z",
+          "serviceName": "s3",
+          "wattHours": 0.000055192831200000006,
+          "co2e": 1,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-10T00:00:00.000Z",
+          "serviceName": "ec2",
+          "wattHours": 73.07799999999997,
+          "co2e": 2,
+          "cost": 1.8757490568
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-07-11T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "timestamp": "2020-07-11T00:00:00.000Z",
+          "serviceName": "ebs",
+          "wattHours": 0.8446752018270719,
+          "co2e": 6,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-11T00:00:00.000Z",
+          "serviceName": "s3",
+          "wattHours": 0.000055192831200000006,
+          "co2e": 6,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-11T00:00:00.000Z",
+          "serviceName": "ec2",
+          "wattHours": 73.07799999999997,
+          "co2e": 6,
+          "cost": 1.8411780376
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-07-12T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "timestamp": "2020-07-12T00:00:00.000Z",
+          "serviceName": "ebs",
+          "wattHours": 0.8446752018270719,
+          "co2e": 3,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-12T00:00:00.000Z",
+          "serviceName": "s3",
+          "wattHours": 0.000055192831200000006,
+          "co2e": 1,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-12T00:00:00.000Z",
+          "serviceName": "ec2",
+          "wattHours": 73.07799999999997,
+          "co2e": 0,
+          "cost": 1.8411780376
+        }
+      ]
+    }
+  ]
+}
