@@ -14,7 +14,20 @@ test("should send request to /api endpoint", async () => {
 
     await waitForNextUpdate();
     
+    expect(wfetch).toBeCalledWith('/api/footprint')
     expect(result.current).toEqual({
         data: ['data'], loading: false, error: false
+    })
+});
+
+test("should notify of erronous response", async () => {
+    wfetch.mockRejectedValue([]) 
+
+    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([]));
+
+    await waitForNextUpdate();
+    
+    expect(result.current).toEqual({
+        data: [], loading: false, error: true
     })
 });
