@@ -5,7 +5,7 @@ import { CURRENT_REGIONS } from '@application/Config.json'
 import moment from 'moment'
 import { EstimationResult, ServiceEstimate } from '@application/EstimationResult'
 
-export class App {
+export default class App {
   async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
 

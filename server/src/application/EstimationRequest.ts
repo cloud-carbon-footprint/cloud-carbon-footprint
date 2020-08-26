@@ -15,6 +15,14 @@ export interface EstimationRequest {
   //cloudProvider?:CloudProviderEnum
 }
 
+export class EstimationRequestValidationError extends Error {
+  constructor(...params: any) {
+    super(...params)
+    this.name = 'EstimationRequestValidationError'
+    Object.setPrototypeOf(this, EstimationRequestValidationError.prototype)
+  }
+}
+
 // eslint-disable-next-line
 // @ts-ignore
 moment.suppressDeprecationWarnings = true
@@ -59,7 +67,7 @@ export function validate(request: RawRequest): EstimationRequest {
   }
 
   if (errors.length > 0) {
-    throw new Error(errors.join(', '))
+    throw new EstimationRequestValidationError(errors.join(', '))
   }
 
   return {

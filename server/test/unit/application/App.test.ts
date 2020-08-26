@@ -1,4 +1,4 @@
-import { App } from '@application/App'
+import App from '@application/App'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
 import { RawRequest } from '@application/EstimationRequest'
