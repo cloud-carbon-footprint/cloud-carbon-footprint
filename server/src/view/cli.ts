@@ -1,5 +1,5 @@
 import { program } from 'commander'
-import { App } from '@application/App'
+import App from '@application/App'
 import * as process from 'process'
 import { RawRequest } from '@application/EstimationRequest'
 import EmissionsByDayAndServiceTable from '@view/EmissionsByDayAndServiceTable'
