@@ -13,7 +13,7 @@ const useRemoteService = (initial: []) => {
             setLoading(true)
 
             try{
-                const res = await wfetch('http://localhost:4000/api')
+                const res = await wfetch('/api/footprint')
                 console.log(res.data)
                 setData(res.data)
             } catch (e) {
