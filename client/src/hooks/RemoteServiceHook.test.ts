@@ -1,8 +1,6 @@
-import React from "react";
-import axios from 'axios'
+
 import useRemoteService from './RemoteServiceHook';
 import { renderHook } from '@testing-library/react-hooks'
-import { render } from "@testing-library/react";
 import wfetch from '../wfetch'
 
 jest.mock('../wfetch.ts')
