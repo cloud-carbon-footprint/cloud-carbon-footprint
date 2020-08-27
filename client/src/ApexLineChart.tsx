@@ -2,6 +2,8 @@ import React, {FunctionComponent} from "react"
 import Chart from 'react-apexcharts'
 import { transformData } from './transformData'
 import {EstimationResult} from './types'
+
+
 const options = {
     chart: {
         id: 'apexchart-example',
