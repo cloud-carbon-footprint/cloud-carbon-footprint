@@ -29,7 +29,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint '*/**/*.{js,ts}' --quiet",
     "lint:fix": "eslint '*/**/*.{js,ts}' --quiet --fix",
-    "start-stub-server": "json-server src/stub-server/co2estimations.json --port 4000"
+    "start-stub-server": "json-server src/stub-server/co2estimations.json --port 4000 --routes src/stub-server/routes.json"
   },
   "eslintConfig": {
     "extends": "react-app"
