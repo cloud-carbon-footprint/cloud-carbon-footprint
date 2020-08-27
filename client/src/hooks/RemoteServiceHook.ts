@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 
-const useRemoteService = (initial: []) => {
+const useRemoteService = (initial: [], startTime: string, endTime: string) => {
     const [data, setData] = useState(initial)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
@@ -12,7 +12,12 @@ const useRemoteService = (initial: []) => {
             setLoading(true)
 
             try{
-                const res = await axios.get('/api/footprint?start=2020-08-26&end=2020-08-27')
+                const res = await axios.get('/api/footprint', {
+                    params: {
+                        start: startTime,
+                        end: endTime
+                    }
+                })
                 console.log(res.data)
                 setData(res.data)
             } catch (e) {
