@@ -1,9 +1,9 @@
 import React from "react"
-import getEstimatesAndCosts from "./hooks/FootprintEstimatorHook"
+import useRemoteService from "./hooks/RemoteServiceHook"
 import {ApexLineChart} from "./ApexLineChart"
 
 const CloudCarbonContainer = () => {
-    const {data, loading, error} = getEstimatesAndCosts([]);
+    const {data, loading, error} = useRemoteService([]);
 
     return (
         <div>

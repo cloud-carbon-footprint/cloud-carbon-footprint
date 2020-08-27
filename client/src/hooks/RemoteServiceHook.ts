@@ -12,7 +12,7 @@ const useRemoteService = (initial: []) => {
             setLoading(true)
 
             try{
-                const res = await axios.get('/api/footprint')
+                const res = await axios.get('/api/footprint?start=2020-08-26&end=2020-08-27')
                 console.log(res.data)
                 setData(res.data)
             } catch (e) {
