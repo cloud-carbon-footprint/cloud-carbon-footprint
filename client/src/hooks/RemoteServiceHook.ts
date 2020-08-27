@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import wfetch from '../wfetch'
+import axios from 'axios'
 
 const useRemoteService = (initial: []) => {
     const [data, setData] = useState(initial)
@@ -12,7 +12,7 @@ const useRemoteService = (initial: []) => {
             setLoading(true)
 
             try{
-                const res = await wfetch('/api/footprint')
+                const res = await axios.get('/api/footprint')
                 console.log(res.data)
                 setData(res.data)
             } catch (e) {

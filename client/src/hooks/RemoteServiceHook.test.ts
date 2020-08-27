@@ -1,25 +1,25 @@
-
 import useRemoteService from './RemoteServiceHook';
 import { renderHook } from '@testing-library/react-hooks'
-import wfetch from '../wfetch'
+import axios from 'axios'
 
-jest.mock('../wfetch.ts')
+jest.mock('axios')
+const axiosMocked = axios as jest.Mocked<typeof axios>
 
 test("should send request to /api endpoint", async () => {
-    wfetch.mockResolvedValue({data: ['data']}) 
+    axiosMocked.get.mockResolvedValue({data: ['data']})
 
     const { result, waitForNextUpdate } = renderHook(() => useRemoteService([]));
 
     await waitForNextUpdate();
     
-    expect(wfetch).toBeCalledWith('/api/footprint')
     expect(result.current).toEqual({
         data: ['data'], loading: false, error: false
     })
+    expect(axiosMocked.get).toBeCalledWith('/api/footprint')
 });
 
 test("should notify of erronous response", async () => {
-    wfetch.mockRejectedValue([]) 
+    axiosMocked.get.mockRejectedValue() 
 
     const { result, waitForNextUpdate } = renderHook(() => useRemoteService([]));
 
