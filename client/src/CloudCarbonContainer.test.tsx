@@ -25,6 +25,12 @@ describe('CloudCarbonContainer', () => {
         mockedUseRemoteService.mockReturnValue(mockReturnValue)
     })
 
+    test('match against snapshot', () => {
+        const {container} = render(<CloudCarbonContainer/>)
+
+        expect(container).toMatchSnapshot()
+    })
+
     test("initial timeframe should be 12 months", () => {
         render(<CloudCarbonContainer />)
 
