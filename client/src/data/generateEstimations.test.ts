@@ -21,6 +21,17 @@ test('should generate three months of data', () => {
   expect(result[3].timestamp).toStrictEqual(today.clone().subtract(3, 'M').toDate())
 })
 
+test('should work with JS Date', () => {
+    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+    const result = generateEstimations(new Date(), 3)
+
+  expect(result.length).toEqual(4)
+  expect(result[0].timestamp).toStrictEqual(today.toDate())
+  expect(result[1].timestamp).toStrictEqual(today.clone().subtract(1, 'M').toDate())
+  expect(result[2].timestamp).toStrictEqual(today.clone().subtract(2, 'M').toDate())
+  expect(result[3].timestamp).toStrictEqual(today.clone().subtract(3, 'M').toDate())
+})
+
 // TODO: Call generateEstimations from stub-server index.js file instead of static file
 test.skip('print to JSON', () => {
     const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)

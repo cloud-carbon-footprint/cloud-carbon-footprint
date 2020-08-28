@@ -6,7 +6,7 @@ import moment from 'moment'
 import { EstimationResult } from './types'
 
 const CloudCarbonContainer = () => {
-  const { data, loading, error } = useRemoteService([], '2020-08-26', '2020-08-27')
+  const { data } = useRemoteService([], '2020-08-26', '2020-08-27')
 
   const [dataInTimeframe, setDataInTimeframe] = useState(data)
   const [timeframe, setTimeframe] = useState(12)
