@@ -46,13 +46,9 @@ describe('transformData', () => {
       },
     ]
     const expected = [
-      {
-        data: [
           { x: date1, y: 20 },
           { x: date2, y: 10 },
-        ],
-      },
-    ]
+        ]
     expect(transformData(data)).toEqual(expected)
   })
 })
