@@ -53,6 +53,84 @@
       ]
     },
     {
+      "timestamp": "2020-07-27T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "timestamp": "2020-07-27T00:00:00.000Z",
+          "serviceName": "ebs",
+          "wattHours": 0.8705883125348177,
+          "co2e": 1,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-27T00:00:00.000Z",
+          "serviceName": "s3",
+          "wattHours": 0.00039092875302897356,
+          "co2e": 1,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-27T00:00:00.000Z",
+          "serviceName": "ec2",
+          "wattHours": 50.09388095015559,
+          "co2e": 1,
+          "cost": 1.7894634022754492
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-07-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "timestamp": "2020-07-25T00:00:00.000Z",
+          "serviceName": "ebs",
+          "wattHours": 0.8705883125348177,
+          "co2e": 7,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-25T00:00:00.000Z",
+          "serviceName": "s3",
+          "wattHours": 0.00039092875302897356,
+          "co2e": 3,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-25T00:00:00.000Z",
+          "serviceName": "ec2",
+          "wattHours": 50.09388095015559,
+          "co2e": 7,
+          "cost": 1.7894634022754492
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-07-23T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "timestamp": "2020-07-23T00:00:00.000Z",
+          "serviceName": "ebs",
+          "wattHours": 0.8705883125348177,
+          "co2e": 0,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-23T00:00:00.000Z",
+          "serviceName": "s3",
+          "wattHours": 0.00039092875302897356,
+          "co2e": 2,
+          "cost": 0
+        },
+        {
+          "timestamp": "2020-07-23T00:00:00.000Z",
+          "serviceName": "ec2",
+          "wattHours": 50.09388095015559,
+          "co2e": 1,
+          "cost": 1.7894634022754492
+        }
+      ]
+    },
+    {
       "timestamp": "2020-06-28T00:00:00.000Z",
       "serviceEstimates": [
         {
