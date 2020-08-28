@@ -1,13 +1,10 @@
 import React from 'react'
 import { render } from "@testing-library/react";
 import CloudCarbonContainer from './CloudCarbonContainer'
-import {ApexLineChart} from "./ApexLineChart"
 import useRemoteService from './hooks/RemoteServiceHook'
 import co2Estimations from './stub-server/co2estimations.json'
 
-jest.mock("./ApexLineChart", () => ({
-    ApexLineChart: jest.fn()
-}))
+jest.mock('./ApexLineChart')
 jest.mock('./hooks/RemoteServiceHook')
 
 beforeEach(() => {
@@ -15,7 +12,7 @@ beforeEach(() => {
 })
 
 test("initial timeframe should be 12 months", () => {
+    const {container} = render(<CloudCarbonContainer/>)
 
-    const {getByText} = render(<CloudCarbonContainer/>)
-    expect(ApexLineChart).toBeCalledWith({data: []})
+    expect(container).toMatchSnapshot()
 });
