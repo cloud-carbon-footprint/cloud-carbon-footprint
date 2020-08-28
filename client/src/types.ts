@@ -6,6 +6,12 @@ export interface serviceEstimate{
     cost: number
 }
 
+export interface ServiceResult{
+    data: EstimationResult[],
+    loading: boolean,
+    error: boolean
+}
+
 export interface EstimationResult{
     timestamp:Date,
     serviceEstimates: serviceEstimate[]
