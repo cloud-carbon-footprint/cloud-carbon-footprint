@@ -29,7 +29,7 @@ const useRemoteService = (initial: EstimationResult[], startTime: string, endTim
     }
 
     fetchEstimates()
-  }, [])
+  }, [endTime, startTime])
 
   return { data, loading, error }
 }

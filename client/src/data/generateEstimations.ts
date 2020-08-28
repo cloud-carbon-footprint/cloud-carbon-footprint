@@ -9,13 +9,13 @@ const getRandomNumberInRange = (minValue: number, maxValue: number): number => {
   return Math.max(Math.random() * maxValue, minValue + Math.random())
 }
 
-const generateEstimations = (today: moment.Moment, monthsBack: number): EstimationResult[] => {
+const generateEstimations = (today: moment.Moment | Date, monthsBack: number): EstimationResult[] => {
   const todayAsMoment: moment.Moment = moment(today)
 
   const estimationResults: EstimationResult[] = []
 
   for (let i: number = 0; i <= monthsBack; i++) {
-    const timestamp: Date = today.clone().utc().subtract(i, 'M').hours(0).minutes(0).seconds(0).millisecond(0).toDate()
+    const timestamp: Date = todayAsMoment.clone().utc().subtract(i, 'M').hours(0).minutes(0).seconds(0).millisecond(0).toDate()
     const estimationsForMonth: EstimationResult = {
       timestamp,
       serviceEstimates: [
