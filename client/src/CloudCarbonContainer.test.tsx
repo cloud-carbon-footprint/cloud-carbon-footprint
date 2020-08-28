@@ -1,20 +1,38 @@
 import React from 'react'
 import { render } from "@testing-library/react";
 import CloudCarbonContainer from './CloudCarbonContainer'
+import { ApexLineChart } from "./ApexLineChart"
 import useRemoteService from './hooks/RemoteServiceHook'
 import generateEstimations from './data/generateEstimations'
+import { ServiceResult, EstimationResult } from './types';
+import moment from 'moment';
 
-jest.mock('./ApexLineChart')
+jest.mock("./ApexLineChart", () => ({
+    ApexLineChart: jest.fn(() => null)
+}))
 jest.mock('./hooks/RemoteServiceHook')
 
-beforeEach(() => {
-    useRemoteService.mockReturnValue({loading: false, error: false, data: co2Estimations.footprint})
-})
 
-test("initial timeframe should be 12 months", () => {
-    const {container} = render(<CloudCarbonContainer/>)
+const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
+const mockedApexLineChart = ApexLineChart as jest.Mocked<typeof ApexLineChart>
 
-    expect(container).toMatchSnapshot()
+describe('CloudCarbonContainer', () => {
+    let data: EstimationResult[];
 
-    expect(ApexLineChart).toBeCalledWith({data: []})
+    beforeEach(() => {
+        data = generateEstimations(moment.utc(), 14)
+        const mockReturnValue: ServiceResult = { loading: false, error: false, data: data }
+        mockedUseRemoteService.mockReturnValue(mockReturnValue)
+    })
+
+    test("initial timeframe should be 12 months", () => {
+        render(<CloudCarbonContainer />)
+
+        expect(mockedApexLineChart).toBeCalledWith(
+            {
+                data: data.slice(0, 12)
+            },
+            expect.anything())
+    });
 });
+
