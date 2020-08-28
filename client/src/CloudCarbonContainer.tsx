@@ -20,7 +20,7 @@ const CloudCarbonContainer = () => {
             data.filter((estimationResult : EstimationResult) => 
                 moment.utc(estimationResult.timestamp).isBetween(todayMinusXMonths, today, 'day', '[]')))
             
-    }, [timeframe])
+    }, [timeframe, data])
 
   return (
     <div>

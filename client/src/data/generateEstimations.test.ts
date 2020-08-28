@@ -1,9 +1,9 @@
-import generateData from './generateEstimations'
+import generateEstimations from './generateEstimations'
 import moment from 'moment'
 
 test('should generate data up to one month prior', () => {
-  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-  const result = generateData(today, 1)
+    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+    const result = generateEstimations(today, 1)
 
   expect(result.length).toEqual(2)
   expect(result[0].timestamp).toStrictEqual(today.toDate())
@@ -11,8 +11,8 @@ test('should generate data up to one month prior', () => {
 })
 
 test('should generate three months of data', () => {
-  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-  const result = generateData(today, 3)
+    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+    const result = generateEstimations(today, 3)
 
   expect(result.length).toEqual(4)
   expect(result[0].timestamp).toStrictEqual(today.toDate())
@@ -20,3 +20,12 @@ test('should generate three months of data', () => {
   expect(result[2].timestamp).toStrictEqual(today.clone().subtract(2, 'M').toDate())
   expect(result[3].timestamp).toStrictEqual(today.clone().subtract(3, 'M').toDate())
 })
+
+// TODO: Call generateEstimations from stub-server index.js file instead of static file
+test.skip('print to JSON', () => {
+    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+    const result = generateEstimations(today, 15)
+
+    console.log(JSON.stringify(result))
+})
+
