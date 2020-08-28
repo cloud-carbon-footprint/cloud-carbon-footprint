@@ -23,7 +23,7 @@ test('should send request to /api endpoint', async () => {
 })
 
 test('should notify of erronous response', async () => {
-  axiosMocked.get.mockRejectedValue()
+  axiosMocked.get.mockRejectedValue(null)
 
   const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], '2020-08-26', '2020-08-27'))
 
