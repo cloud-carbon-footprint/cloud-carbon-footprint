@@ -1,0 +1,20 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lerna": "^3.22.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run precommit --parallel --stream"
+    }
+  },
+  "scripts": {
+    "bootstrap": "npm ci && npx lerna bootstrap --ci --nohoist client --nohoist server",
+    "clean": "lerna clean --yes",
+    "lint": "lerna run lint --parallel",
+    "start": "lerna run start --stream",
+    "test": "lerna run test --parallel"
+  }
+}

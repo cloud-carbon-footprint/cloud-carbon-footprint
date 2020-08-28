@@ -9,12 +9,12 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-        "@application/*": ["./src/application/*"],
-        "@domain/*": ["./src/domain/*"],
-        "@services/*": ["./src/services/*"],
-        "@view/*": ["./src/view/*"],
-        "@fixtures": ["./test/fixtures/fixtures.ts"],
-        "@builders": ["./test/fixtures/builders.ts"]
+      "@application/*": ["./src/application/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@services/*": ["./src/services/*"],
+      "@view/*": ["./src/view/*"],
+      "@fixtures": ["./test/fixtures/fixtures.ts"],
+      "@builders": ["./test/fixtures/builders.ts"]
     },
     "experimentalDecorators": true,
     "resolveJsonModule": true
