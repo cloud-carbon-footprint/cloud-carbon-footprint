@@ -32,7 +32,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./",
-    "start-stub-server": "json-server src/stub-server/co2estimations.json --port 4000 --routes src/stub-server/routes.json"
+    "start-stub-server": "json-server stub-server/co2estimations.json --port 4000 --routes stub-server/routes.json"
   },
   "eslintConfig": {
     "extends": "react-app"
