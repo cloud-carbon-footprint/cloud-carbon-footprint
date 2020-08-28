@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from "@testing-library/react";
+import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
 import { ApexLineChart } from './ApexLineChart'
 import useRemoteService from './hooks/RemoteServiceHook'
@@ -16,101 +16,49 @@ const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof us
 const mockedApexLineChart = ApexLineChart as jest.Mocked<typeof ApexLineChart>
 
 describe('CloudCarbonContainer', () => {
-    let data: EstimationResult[];
+  let data: EstimationResult[]
 
-    beforeEach(() => {
-        data = generateEstimations(moment.utc(), 14)
+  beforeEach(() => {
+    data = generateEstimations(moment.utc(), 14)
 
-        const mockReturnValue: ServiceResult = { loading: false, error: false, data: data }
-        mockedUseRemoteService.mockReturnValue(mockReturnValue)
-    })
+    const mockReturnValue: ServiceResult = { loading: false, error: false, data: data }
+    mockedUseRemoteService.mockReturnValue(mockReturnValue)
+  })
 
-    afterEach(() => {
-        mockedUseRemoteService.mockClear()
-    })
+  afterEach(() => {
+    mockedUseRemoteService.mockClear()
+  })
 
-    test('match against snapshot', () => {
-        const {container} = render(<CloudCarbonContainer/>)
+  test('match against snapshot', () => {
+    const { container } = render(<CloudCarbonContainer />)
 
-        expect(container).toMatchSnapshot()
-    })
+    expect(container).toMatchSnapshot()
+  })
 
-    test('today and year prior to today should be passed in to remote service hook', () => {
-        render(<CloudCarbonContainer/>)
+  test('today and year prior to today should be passed in to remote service hook', () => {
+    render(<CloudCarbonContainer />)
 
-        const parameters = mockedUseRemoteService.mock.calls[0]
+    const parameters = mockedUseRemoteService.mock.calls[0]
 
-        expect(parameters.length).toEqual(3)
-        
-        const initial = parameters[0]
-        const startDate = parameters[1]
-        const endDate = parameters[2]
+    expect(parameters.length).toEqual(3)
 
-        expect(initial).toEqual([])
-        expect(startDate.isSame(moment.utc().subtract(1, 'year'), 'day')).toBeTruthy()
-        expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
-    })
+    const initial = parameters[0]
+    const startDate = parameters[1]
+    const endDate = parameters[2]
 
-    test("initial timeframe should filter up to 12 months prior", () => {
-        render(<CloudCarbonContainer />)
+    expect(initial).toEqual([])
+    expect(startDate.isSame(moment.utc().subtract(1, 'year'), 'day')).toBeTruthy()
+    expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+  })
 
-        expect(mockedApexLineChart).toHaveBeenLastCalledWith(
-            {
-                data: data.slice(0, 13)
-            },
-            expect.anything())
-    });
+  test('initial timeframe should filter up to 12 months prior and pass into ApexLineChart', () => {
+    render(<CloudCarbonContainer />)
 
-    test("clicking 1M button should filter up to 1 month prior", () => {
-        const { getByText } = render(<CloudCarbonContainer />)
-
-        fireEvent.click(getByText('1M'))
-    
-        expect(mockedApexLineChart).toHaveBeenLastCalledWith(
-            {
-                data: data.slice(0, 2)
-            },
-            expect.anything())
-    });
-
-    test("clicking 3M button should filter up to 3 months prior", () => {
-        const { getByText } = render(<CloudCarbonContainer />)
-
-        fireEvent.click(getByText('3M'))
-    
-        expect(mockedApexLineChart).toHaveBeenLastCalledWith(
-            {
-                data: data.slice(0, 4)
-            },
-            expect.anything())
-    });
-
-    test("clicking 6M button should filter up to 3 months prior", () => {
-        const { getByText } = render(<CloudCarbonContainer />)
-
-        fireEvent.click(getByText('6M'))
-    
-        expect(mockedApexLineChart).toHaveBeenLastCalledWith(
-            {
-                data: data.slice(0, 7)
-            },
-            expect.anything())
-    });
-
-    test("clicking 12M button should filter up to 12 months prior", () => {
-        const { getByText } = render(<CloudCarbonContainer />)
-
-        // click away from initial state
-        fireEvent.click(getByText('1M'))
-
-        // click to filter up to 12M prior
-        fireEvent.click(getByText('12M'))
-    
-        expect(mockedApexLineChart).toHaveBeenLastCalledWith(
-            {
-                data: data.slice(0, 13)
-            },
-            expect.anything())
-    });
-});
-
+    expect(mockedApexLineChart).toHaveBeenLastCalledWith(
+      {
+        data: data.slice(0, 13),
+      },
+      expect.anything(),
+    )
+  })
+})

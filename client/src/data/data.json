@@ -1,0 +1,54 @@
+[
+    {
+        "serviceEstimates": [
+            {
+                "co2e": 2,
+                "cost": 0,
+                "serviceName": "ebs",
+                "timestamp": "2020-08-28T00: 00: 00.000Z",
+                "wattHours": 0.5108360883835144
+            },
+            {
+                "co2e": 1,
+                "cost": 0,
+                "serviceName": "s3",
+                "timestamp": "2020-08-28T00: 00: 00.000Z",
+                "wattHours": 0.00026440008612119945
+            },
+            {
+                "co2e": 0,
+                "cost": 2.330506638787581,
+                "serviceName": "ec2",
+                "timestamp": "2020-08-28T00: 00: 00.000Z",
+                "wattHours": 50.5206029585591
+            }
+        ],
+        "timestamp": "2020-08-28T00: 00: 00.000Z"
+    },
+    {
+        "serviceEstimates": [
+            {
+                "co2e": 4,
+                "cost": 0,
+                "serviceName": "ebs",
+                "timestamp": "2020-07-28T00: 00: 00.000Z",
+                "wattHours": 0.23268313620749437
+            },
+            {
+                "co2e": 4,
+                "cost": 0,
+                "serviceName": "s3",
+                "timestamp": "2020-07-28T00: 00: 00.000Z",
+                "wattHours": 0.0001680875709602132
+            },
+            {
+                "co2e": 4,
+                "cost": 1.9776640256171394,
+                "serviceName": "ec2",
+                "timestamp": "2020-07-28T00: 00: 00.000Z",
+                "wattHours": 50.10627201163577
+            }
+        ],
+        "timestamp": "2020-07-28T00: 00: 00.000Z"
+    }
+]
