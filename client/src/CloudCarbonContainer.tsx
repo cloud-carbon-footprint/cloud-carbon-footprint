@@ -11,23 +11,16 @@ const CloudCarbonContainer = () => {
   const [dataInTimeframe, setDataInTimeframe] = useState(data)
   const [timeframe, setTimeframe] = useState(12)
 
-  useEffect(() => {
-    // Assumption: API always returns timestamps at start of day, i.e. YYYY-MM-DDT00:00:00.000Z
-    const today: moment.Moment = moment.utc()
-    const todayMinusXMonths: moment.Moment = today
-      .clone()
-      .subtract(12, 'M')
-      .hours(0)
-      .minutes(0)
-      .seconds(0)
-      .milliseconds(0)
+    useEffect(() => {
+        // Assumption: API always returns timestamps at start of day, i.e. YYYY-MM-DDT00:00:00.000Z
+        const today : moment.Moment = moment.utc()
+        const todayMinusXMonths : moment.Moment = today.clone().subtract(timeframe, 'M')
 
-    setDataInTimeframe(
-      data.filter((estimationResult: EstimationResult) =>
-        moment.utc(estimationResult.timestamp).isBetween(todayMinusXMonths, today),
-      ),
-    )
-  }, [timeframe])
+        setDataInTimeframe(
+            data.filter((estimationResult : EstimationResult) => 
+                moment.utc(estimationResult.timestamp).isBetween(todayMinusXMonths, today, 'day', '[]')))
+            
+    }, [timeframe])
 
   return (
     <div>
