@@ -4,15 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "precommit": "lint-staged",
     "test": "jest --coverage --maxWorkers 2",
     "test:watch": "jest --coverage --watchAll",
     "test:clean": "jest --clearCache",
+    "test:precommit": "jest --clearCache --bail --findRelatedTests",
     "build": "tsc",
     "build:watch": "onchange 'src/**/*.ts' -- npm run build",
     "view:coverage": "serve coverage/lcov-report",
     "clean": "rm -rf coverage src/**/*.js src/**/*.map",
     "lint": "eslint '*/**/*.ts' --quiet",
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
+    "start": "npm run start:web",
     "start:web": "ts-node-dev -r tsconfig-paths/register src/view/server.ts",
     "start:cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/server -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
@@ -37,11 +40,11 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-unused-imports": "^0.1.3",
-    "husky": "^4.2.5",
     "jest": "^26.1.0",
     "jest-when": "^2.7.2",
+    "lint-staged": "^10.2.13",
     "onchange": "^7.0.2",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.1",
     "serve": "^11.3.2",
     "source-map-support": "^0.5.19",
     "supertest": "^4.0.2",
@@ -65,9 +68,11 @@
     "ramda": "^0.27.1",
     "typed-prompts": "^1.5.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "cd .. && ./scripts/lint.bash && cd server && npm run test:clean &&  npm run test"
-    }
+  "lint-staged": {
+    "*.{js,ts,md}": [
+      "npm run lint",
+      "prettier --write --ignore-unknown --config ../.prettierrc.json",
+      "npm run test:precommit"
+    ]
   }
 }

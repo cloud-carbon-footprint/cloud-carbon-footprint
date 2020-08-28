@@ -12,7 +12,7 @@ jobs:
           key: dependency-cache-{{ checksum "server/package-lock.json" }}
       - run:
           name: setup
-          command: './scripts/setup.bash'
+          command: 'npm run bootstrap'
       - save_cache:
           key: dependency-cache-{{ checksum "client/package-lock.json" }}
           paths:
@@ -23,7 +23,7 @@ jobs:
             - ./server/node_modules
       - run:
           name: lint
-          command: './scripts/lint.bash'
+          command: 'npm run lint'
       - run:
           name: test
-          command: './scripts/test.bash'
+          command: 'npm test'

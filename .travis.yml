@@ -2,9 +2,9 @@ language: node_js
 node_js:
   - stable
 script:
-  - ./scripts/setup.bash
-  - ./scripts/lint.bash
-  - ./scripts/test.bash
+  - npm run bootstrap
+  - npm run lint
+  - npm test
 cache:
   directories:
     - client/node_modules
