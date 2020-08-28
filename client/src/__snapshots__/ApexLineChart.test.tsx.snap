@@ -45,7 +45,6 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       },
       "yaxis": Object {
         "title": Object {
-          "offsetX": -5,
           "style": Object {
             "fontSize": "15px",
           },

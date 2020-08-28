@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, getByText } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
 import { ApexLineChart } from './ApexLineChart'
 import useRemoteService from './hooks/RemoteServiceHook'
