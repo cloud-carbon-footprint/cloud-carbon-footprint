@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import Chart from 'react-apexcharts'
+import { Box } from '@material-ui/core'
 import { transformData } from './transformData'
 import { EstimationResult } from './types'
 
@@ -34,12 +35,11 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({data}) => 
                 style: {
                     fontSize: '15px'
                 }
-            }
+            },
         },
         yaxis:{
             title: {
                 text: 'Daily co2e',
-                offsetX: -5,
                 style: {
                     fontSize: '15px'
                 }
@@ -52,5 +52,5 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({data}) => 
 }
 
 type ApexLineChartProps = {
-  data: EstimationResult[]
+    data: EstimationResult[],
 }

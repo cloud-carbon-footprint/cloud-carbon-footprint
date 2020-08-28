@@ -9,7 +9,7 @@ const useRemoteService = (initial: EstimationResult[], startDate: moment.Moment,
 
   const start: string = startDate.format('YYYY-MM-DD').toString()
   const end : string = endDate.format('YYYY-MM-DD').toString()
-    
+
   useEffect(() => {
     const fetchEstimates = async () => {
       setError(false)
