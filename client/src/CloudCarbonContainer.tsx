@@ -6,7 +6,10 @@ import moment from 'moment'
 import { EstimationResult } from './types'
 
 const CloudCarbonContainer = () => {
-  const { data } = useRemoteService([], '2020-08-26', '2020-08-27')
+  const startDate : moment.Moment = moment.utc().subtract(1, 'year')
+  const endDate : moment.Moment = moment.utc()
+
+  const { data } = useRemoteService([], startDate, endDate)
 
   const [dataInTimeframe, setDataInTimeframe] = useState(data)
   const [timeframe, setTimeframe] = useState(12)
