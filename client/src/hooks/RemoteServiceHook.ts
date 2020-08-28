@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react'
 import axios from 'axios'
+import { EstimationResult, ServiceResult } from '../types'
 
-const useRemoteService = (initial: [], startTime: string, endTime: string) => {
+const useRemoteService = (initial: EstimationResult[], startTime: string, endTime: string) : ServiceResult => {
     const [data, setData] = useState(initial)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)

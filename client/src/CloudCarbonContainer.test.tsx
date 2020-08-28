@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from "@testing-library/react";
 import CloudCarbonContainer from './CloudCarbonContainer'
 import useRemoteService from './hooks/RemoteServiceHook'
-import co2Estimations from './stub-server/co2estimations.json'
+import generateEstimations from './data/generateEstimations'
 
 jest.mock('./ApexLineChart')
 jest.mock('./hooks/RemoteServiceHook')
@@ -15,4 +15,6 @@ test("initial timeframe should be 12 months", () => {
     const {container} = render(<CloudCarbonContainer/>)
 
     expect(container).toMatchSnapshot()
+
+    expect(ApexLineChart).toBeCalledWith({data: []})
 });
