@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApexLineChart renders with correct configuration 1`] = `
+<div
+  height={320}
+  options={
+    Object {
+      "chart": Object {
+        "id": "apexchart-example",
+      },
+      "xaxis": Object {
+        "convertedCatToNumeric": false,
+        "type": "datetime",
+      },
+    }
+  }
+  series={
+    Array [
+      Object {
+        "data": Array [
+          Object {
+            "x": 2019-08-10T00:00:00.000Z,
+            "y": 7,
+          },
+        ],
+      },
+    ]
+  }
+  type="line"
+  width="100%"
+/>
+`;

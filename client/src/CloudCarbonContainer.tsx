@@ -12,7 +12,7 @@ const CloudCarbonContainer = () => {
     const [timeframe, setTimeframe] = useState(12)
 
     useEffect(() => {
-        alert(timeframe)
+        console.log(timeframe)
     }, [timeframe])
 
     return (
