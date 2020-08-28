@@ -2,15 +2,55 @@
 
 exports[`ApexLineChart renders with correct configuration 1`] = `
 <div
-  height={320}
+  height="500px"
   options={
     Object {
       "chart": Object {
         "id": "apexchart-example",
       },
+      "height": "500px",
+      "markers": Object {
+        "size": 5,
+      },
+      "series": Array [
+        Object {
+          "data": Array [
+            Object {
+              "x": 2019-08-10T00:00:00.000Z,
+              "y": 7,
+            },
+          ],
+          "name": "co2e",
+        },
+      ],
+      "stroke": Object {
+        "width": 2,
+      },
+      "title": Object {
+        "style": Object {
+          "fontSize": "24px",
+        },
+        "text": "Cloud Emissions",
+      },
       "xaxis": Object {
         "convertedCatToNumeric": false,
+        "title": Object {
+          "offsetY": 10,
+          "style": Object {
+            "fontSize": "15px",
+          },
+          "text": "Date",
+        },
         "type": "datetime",
+      },
+      "yaxis": Object {
+        "title": Object {
+          "offsetX": -5,
+          "style": Object {
+            "fontSize": "15px",
+          },
+          "text": "Daily co2e",
+        },
       },
     }
   }
@@ -23,6 +63,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "y": 7,
           },
         ],
+        "name": "co2e",
       },
     ]
   }

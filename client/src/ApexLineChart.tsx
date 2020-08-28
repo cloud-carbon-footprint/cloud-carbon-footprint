@@ -14,9 +14,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({data}) => 
             id: 'apexchart-example',
         },
         height: '500px',
-        legend: {
-          show: true
-        },
         markers: {
             size: 5,
         },
