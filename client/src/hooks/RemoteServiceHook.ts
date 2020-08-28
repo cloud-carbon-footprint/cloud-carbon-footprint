@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { EstimationResult, ServiceResult } from '../types'
 
-const useRemoteService = (initial: EstimationResult[], startTime: string, endTime: string): ServiceResult => {
+const useRemoteService = (initial: EstimationResult[], startDate: moment.Moment, endDate: moment.Moment): ServiceResult => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
+  const start: string = startDate.format('YYYY-MM-DD').toString()
+  const end : string = endDate.format('YYYY-MM-DD').toString()
+    
   useEffect(() => {
     const fetchEstimates = async () => {
       setError(false)
@@ -15,8 +18,8 @@ const useRemoteService = (initial: EstimationResult[], startTime: string, endTim
       try {
         const res = await axios.get('/api/footprint', {
           params: {
-            start: startTime,
-            end: endTime,
+            start: start,
+            end: end,
           },
         })
         console.log(res.data)
@@ -29,7 +32,7 @@ const useRemoteService = (initial: EstimationResult[], startTime: string, endTim
     }
 
     fetchEstimates()
-  }, [endTime, startTime])
+  }, [end, start])
 
   return { data, loading, error }
 }
