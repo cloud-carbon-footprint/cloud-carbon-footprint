@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
 import Chart from 'react-apexcharts'
-import { Box } from '@material-ui/core'
 import { transformData } from './transformData'
 import { EstimationResult } from './types'
 
