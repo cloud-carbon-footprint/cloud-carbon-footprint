@@ -1,5 +1,5 @@
 import React, { FunctionComponent, Dispatch, SetStateAction, useState, useEffect } from 'react'
-import { Button, ButtonGroup } from '@material-ui/core'
+import { Button, ButtonGroup, Box } from '@material-ui/core'
 import moment from 'moment'
 import { EstimationResult } from './types'
 
@@ -19,20 +19,22 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
   }, [timeframe, dataFromRemoteService, setDataInTimeframe])
 
   return (
-    <ButtonGroup>
-      <Button color={timeframe === 1 ? 'primary' : 'default'} onClick={() => setTimeframe(1)}>
-        1M
-      </Button>
-      <Button color={timeframe === 3 ? 'primary' : 'default'} onClick={() => setTimeframe(3)}>
-        3M
-      </Button>
-      <Button color={timeframe === 6 ? 'primary' : 'default'} onClick={() => setTimeframe(6)}>
-        6M
-      </Button>
-      <Button color={timeframe === 12 ? 'primary' : 'default'} onClick={() => setTimeframe(12)}>
-        12M
-      </Button>
-    </ButtonGroup>
+      <Box m={5} >
+        <ButtonGroup>
+          <Button color={timeframe === 1 ? 'primary' : 'default'} onClick={() => setTimeframe(1)}>
+            1M
+          </Button>
+          <Button color={timeframe === 3 ? 'primary' : 'default'} onClick={() => setTimeframe(3)}>
+            3M
+          </Button>
+          <Button color={timeframe === 6 ? 'primary' : 'default'} onClick={() => setTimeframe(6)}>
+            6M
+          </Button>
+          <Button color={timeframe === 12 ? 'primary' : 'default'} onClick={() => setTimeframe(12)}>
+            12M
+          </Button>
+        </ButtonGroup>
+      </Box>
   )
 }
 

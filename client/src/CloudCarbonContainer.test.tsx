@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, getByText } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
 import { ApexLineChart } from './ApexLineChart'
 import useRemoteService from './hooks/RemoteServiceHook'
@@ -60,5 +60,14 @@ describe('CloudCarbonContainer', () => {
       },
       expect.anything(),
     )
+  })
+
+  test('show loading text if data has not been returned', () => {
+    const mockLoading: ServiceResult = { loading: true, error: false, data: data }
+    mockedUseRemoteService.mockReturnValue(mockLoading)
+
+    const { getByText } = render(<CloudCarbonContainer />)
+
+    expect(getByText('Your cloud carbon footprint data is loading')).toBeInTheDocument()
   })
 })
