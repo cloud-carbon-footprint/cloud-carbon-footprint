@@ -15,9 +15,11 @@ const CloudCarbonContainer = () => {
   const [dataInTimeframe, setDataInTimeframe] = useState(data)
 
   return (
-    <div>
-      <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
-      <Box m={5} border={1}>
+    <>
+      <Box marginBottom={4}>
+        <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
+      </Box>
+      <Box padding={1} border={1}>
         {loading ? (
           <Container>
             <CachedIcon fontSize={'large'} /> Your cloud carbon footprint data is loading
@@ -26,7 +28,7 @@ const CloudCarbonContainer = () => {
           <ApexLineChart data={dataInTimeframe} />
         )}
       </Box>
-    </div>
+    </>
   )
 }
 

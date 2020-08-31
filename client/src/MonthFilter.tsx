@@ -19,7 +19,7 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
   }, [timeframe, dataFromRemoteService, setDataInTimeframe])
 
   return (
-    <Box m={5}>
+    <>
       <ButtonGroup>
         <Button
           disableElevation
@@ -28,7 +28,7 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
           onClick={() => setTimeframe(1)}
         >
           1M
-      </Button>
+        </Button>
         <Button
           disableElevation
           variant={timeframe === 3 ? 'contained' : undefined}
@@ -36,7 +36,7 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
           onClick={() => setTimeframe(3)}
         >
           3M
-      </Button>
+        </Button>
         <Button
           disableElevation
           variant={timeframe === 6 ? 'contained' : undefined}
@@ -44,7 +44,7 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
           onClick={() => setTimeframe(6)}
         >
           6M
-      </Button>
+        </Button>
         <Button
           disableElevation
           variant={timeframe === 12 ? 'contained' : undefined}
@@ -52,9 +52,9 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
           onClick={() => setTimeframe(12)}
         >
           12M
-      </Button>
+        </Button>
       </ButtonGroup>
-    </Box>
+    </>
   )
 }
 
