@@ -1,7 +1,8 @@
 import api from '@view/api'
 import request from 'supertest'
 import { EstimationResult } from '@application/EstimationResult'
-import { EstimationRequestValidationError, RawRequest } from '@application/EstimationRequest'
+import { EstimationRequestValidationError } from '@application/EstimationRequest'
+import { RawRequest } from '@view/RawRequest'
 
 const mockGetCostAndEstimates = jest.fn()
 jest.mock('@application/App', () => {
