@@ -1,12 +1,7 @@
 import moment from 'moment'
 import { values, contains } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
-
-export interface RawRequest {
-  startDate?: string
-  endDate?: string
-  region?: string
-}
+import { RawRequest } from '@view/RawRequest'
 
 export interface EstimationRequest {
   startDate: Date
