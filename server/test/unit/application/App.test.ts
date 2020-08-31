@@ -1,13 +1,14 @@
 import App from '@application/App'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
-import { RawRequest } from '@application/EstimationRequest'
+import { RawRequest, validate } from '@application/EstimationRequest'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { AWS_REGIONS } from '@services/AWSRegions'
+
 import { EstimationResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
 import moment = require('moment')
 import ICloudService from '@domain/ICloudService'
+import Cost from '@domain/Cost'
 
 jest.mock('@application/AWSServices')
 
@@ -17,18 +18,19 @@ describe('App', () => {
   let app: App
   const startDate = '2020-08-07'
   const endDate = '2020-08-10'
+  const region = 'us-east-1'
+  const rawRequest: RawRequest = {
+    startDate: moment(startDate).toISOString(),
+    endDate: moment(endDate).add(1, 'weeks').toISOString(),
+    region: region,
+  }
+  const estimationRequest = validate(rawRequest)
 
   beforeEach(() => {
     app = new App()
   })
 
   describe('getEstimate', () => {
-    const rawRequest: RawRequest = {
-      startDate: moment(startDate).toISOString(),
-      endDate: moment(endDate).add(1, 'weeks').toISOString(),
-      region: AWS_REGIONS.US_EAST_1,
-    }
-
     it('should return ebs estimates for a week', async () => {
       const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       setUpServices([mockGetCostAndEstimatesPerService], ['ebs'])
@@ -116,7 +118,7 @@ describe('App', () => {
       const rawRequest: RawRequest = {
         startDate: moment(endDate).toISOString(),
         endDate: moment(startDate).toISOString(),
-        region: AWS_REGIONS.US_EAST_1,
+        region: region,
       }
 
       await expect(() => app.getCostAndEstimates(rawRequest)).rejects.toThrow('Start date is not before end date')
@@ -191,6 +193,15 @@ describe('App', () => {
     expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
     expect(mockGetEstimates).toHaveBeenNthCalledWith(3, new Date(start), new Date(end), 'us-west-1')
   })
+
+  it('gets costs', async () => {
+    const mockGetCosts: jest.Mock<Promise<Cost[]>> = jest.fn()
+    setUpServicesCost([mockGetCosts], ['serviceOne'])
+
+    app.getCosts(AWSServices()[0], estimationRequest, region)
+
+    expect(mockGetCosts).toHaveBeenCalled()
+  })
 })
 
 function setUpServices(mockGetCostAndEstimates: jest.Mock<Promise<FootprintEstimate[]>>[], serviceNames: string[]) {
@@ -201,6 +212,19 @@ function setUpServices(mockGetCostAndEstimates: jest.Mock<Promise<FootprintEstim
       serviceName: serviceNames[i],
       getUsage: mockGetUsage,
       getCosts: jest.fn().mockResolvedValue([]),
+    }
+  })
+  servicesRegistered.mockReturnValue(mockCloudServices)
+}
+
+function setUpServicesCost(mockGetCosts: jest.Mock<Promise<Cost[]>>[], serviceNames: string[]) {
+  let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+  const mockCloudServices: ICloudService[] = mockGetCosts.map((mockGetCost, i) => {
+    return {
+      getEstimates: jest.fn().mockResolvedValue([]),
+      serviceName: serviceNames[i],
+      getUsage: mockGetUsage,
+      getCosts: mockGetCost,
     }
   })
   servicesRegistered.mockReturnValue(mockCloudServices)
