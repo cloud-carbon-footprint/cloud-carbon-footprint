@@ -1,6 +1,7 @@
 import express from 'express'
 import App from '@application/App'
-import { EstimationRequestValidationError, RawRequest } from '@application/EstimationRequest'
+import { EstimationRequestValidationError } from '@application/EstimationRequest'
+import { RawRequest } from '@view/RawRequest'
 const httpApp = express()
 
 /**
@@ -11,14 +12,14 @@ const httpApp = express()
  * end - Required, UTC start date in format YYYY-MM-DD
  */
 httpApp.get('/api/footprint', async (req: express.Request, res: express.Response) => {
-  const estimationRequest: RawRequest = {
+  const rawRequest: RawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
   }
 
   const footprintApp = new App()
   try {
-    const estimates = await footprintApp.getCostAndEstimates(estimationRequest)
+    const estimates = await footprintApp.getCostAndEstimates(rawRequest)
     res.json(estimates)
   } catch (e) {
     console.error(e)

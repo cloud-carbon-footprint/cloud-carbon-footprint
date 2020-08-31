@@ -1,7 +1,7 @@
 import App from '@application/App'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
-import { RawRequest, validate } from '@application/EstimationRequest'
+import { validate } from '@application/EstimationRequest'
 import FootprintEstimate from '@domain/FootprintEstimate'
 
 import { EstimationResult } from '@application/EstimationResult'
@@ -9,6 +9,7 @@ import { mocked } from 'ts-jest/utils'
 import moment = require('moment')
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
+import { RawRequest } from '@view/RawRequest'
 
 jest.mock('@application/AWSServices')
 

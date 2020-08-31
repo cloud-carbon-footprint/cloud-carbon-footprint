@@ -1,4 +1,4 @@
-import { EstimationRequest, RawRequest, validate } from '@application/EstimationRequest'
+import { EstimationRequest, validate } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
 import { reduceBy } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
@@ -7,6 +7,7 @@ import { EstimationResult, ServiceEstimate } from '@application/EstimationResult
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
+import { RawRequest } from '@view/RawRequest'
 
 export default class App {
   async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
