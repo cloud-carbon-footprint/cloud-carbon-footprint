@@ -29,7 +29,7 @@
     "start": "CI=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --no-watch-all --coverage",
-    "test:precommit": "jest --clearCache --bail --findRelatedTests",
+    "test:precommit": "react-scripts test --no-watch-all --coverage --bail --findRelatedTests",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./",
