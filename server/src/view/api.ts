@@ -19,8 +19,8 @@ httpApp.get('/api/footprint', async (req: express.Request, res: express.Response
 
   const footprintApp = new App()
   try {
-    const estimates = await footprintApp.getCostAndEstimates(rawRequest)
-    res.json(estimates)
+    const estimationResults = await footprintApp.getCostAndEstimates(rawRequest)
+    res.json(estimationResults)
   } catch (e) {
     console.error(e)
     if (e instanceof EstimationRequestValidationError) {

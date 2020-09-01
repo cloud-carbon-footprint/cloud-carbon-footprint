@@ -4,6 +4,7 @@ export interface serviceEstimate {
   wattHours: number
   co2e: number
   cost: number
+  region: string
 }
 
 export interface ServiceResult {

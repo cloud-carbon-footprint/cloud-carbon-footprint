@@ -15,7 +15,15 @@ const generateEstimations = (today: moment.Moment | Date, monthsBack: number): E
   const estimationResults: EstimationResult[] = []
 
   for (let i: number = 0; i <= monthsBack; i++) {
-    const timestamp: Date = todayAsMoment.clone().utc().subtract(i, 'M').hours(0).minutes(0).seconds(0).millisecond(0).toDate()
+    const timestamp: Date = todayAsMoment
+      .clone()
+      .utc()
+      .subtract(i, 'M')
+      .hours(0)
+      .minutes(0)
+      .seconds(0)
+      .millisecond(0)
+      .toDate()
     const estimationsForMonth: EstimationResult = {
       timestamp,
       serviceEstimates: [
@@ -25,6 +33,7 @@ const generateEstimations = (today: moment.Moment | Date, monthsBack: number): E
           wattHours: Math.random(),
           co2e: getRandomInt(6),
           cost: 0,
+          region: 'us-east-1',
         },
         {
           timestamp,
@@ -32,6 +41,7 @@ const generateEstimations = (today: moment.Moment | Date, monthsBack: number): E
           wattHours: Math.random() / 1000,
           co2e: getRandomInt(6),
           cost: 0,
+          region: 'us-east-1',
         },
         {
           timestamp,
@@ -39,6 +49,7 @@ const generateEstimations = (today: moment.Moment | Date, monthsBack: number): E
           wattHours: getRandomNumberInRange(50, 75),
           co2e: getRandomInt(6),
           cost: getRandomNumberInRange(1.5, 2),
+          region: 'us-east-1',
         },
       ],
     }
