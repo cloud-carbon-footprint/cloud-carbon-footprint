@@ -3,98 +3,114 @@ import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
 import moment = require('moment')
 
 describe('EmissionsByServiceTable', () => {
+  const region = 'us-east-1'
+  const timestamp1 = moment('2020-07-10').toDate()
+  const timestamp2 = moment('2020-07-09').toDate()
+
   const input: EstimationResult[] = [
     {
-      timestamp: moment('2020-07-10').toDate(),
+      timestamp: timestamp1,
       serviceEstimates: [
         {
           serviceName: 'ebs',
           wattHours: 1,
           co2e: 1,
-          timestamp: moment('2020-07-10').toDate(),
+          timestamp: timestamp1,
           cost: 5,
+          region: region,
         },
         {
           serviceName: 's3',
           wattHours: 2,
           co2e: 2,
-          timestamp: moment('2020-07-10').toDate(),
+          timestamp: timestamp1,
           cost: 5,
+          region: region,
         },
         {
           serviceName: 'ec2',
           wattHours: 3,
           co2e: 3,
-          timestamp: moment('2020-07-10').toDate(),
+          timestamp: timestamp1,
           cost: 5,
+          region: region,
         },
         {
           serviceName: 'elasticache',
           wattHours: 4,
           co2e: 4,
-          timestamp: moment('2020-07-10').toDate(),
+          timestamp: timestamp1,
           cost: 5,
+          region: region,
         },
         {
           serviceName: 'rds',
           wattHours: 4,
           co2e: 4,
-          timestamp: moment('2020-07-10').toDate(),
+          timestamp: timestamp1,
           cost: 5,
+          region: region,
         },
         {
           serviceName: 'lambda',
           wattHours: 100,
           co2e: 100,
-          timestamp: moment('2020-07-10').toDate(),
+          timestamp: timestamp1,
           cost: 5,
+          region: region,
         },
       ],
     },
     {
-      timestamp: moment('2020-07-09').toDate(),
+      timestamp: timestamp2,
       serviceEstimates: [
         {
           serviceName: 'ebs',
           wattHours: 7,
           co2e: 8,
-          timestamp: moment('2020-07-09').toDate(),
+          timestamp: timestamp2,
           cost: 9,
+          region: region,
         },
         {
           serviceName: 's3',
           wattHours: 55,
           co2e: 1,
-          timestamp: moment('2020-07-09').toDate(),
+          timestamp: timestamp2,
           cost: 9,
+          region: region,
         },
         {
           serviceName: 'ec2',
           wattHours: 90,
           co2e: 77,
-          timestamp: moment('2020-07-09').toDate(),
+          timestamp: timestamp2,
           cost: 9,
+          region: region,
         },
         {
           serviceName: 'elasticache',
           wattHours: 747,
           co2e: 787,
-          timestamp: moment('2020-07-09').toDate(),
+          timestamp: timestamp2,
           cost: 9,
+          region: region,
         },
         {
           serviceName: 'rds',
           wattHours: 747,
           co2e: 787,
-          timestamp: moment('2020-07-09').toDate(),
+          timestamp: timestamp2,
           cost: 9,
+          region: region,
         },
         {
           serviceName: 'lambda',
           wattHours: 200,
           co2e: 300,
-          timestamp: moment('2020-07-09').toDate(),
+          timestamp: timestamp2,
           cost: 10,
+          region: region,
         },
       ],
     },

@@ -3,7 +3,7 @@ import AWSServices from '@application/AWSServices'
 import { reduceBy } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
 import moment from 'moment'
-import { EstimationResult, ServiceEstimate } from '@application/EstimationResult'
+import { EstimationResult, ServiceData } from '@application/EstimationResult'
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
@@ -20,7 +20,7 @@ export default class App {
           AWSServices().map(async (service) => {
             const costs = await this.getCosts(service, estimationRequest, region)
             const estimates = await this.getEstimates(service, estimationRequest, region)
-            return this.combineCostsAndEstimatesByTimestamp(service, estimates, costs)
+            return this.combineCostsAndEstimatesByTimestamp(service, region, estimates, costs)
           }),
         )
       }),
@@ -45,11 +45,16 @@ export default class App {
     return estimates
   }
 
-  private combineCostsAndEstimatesByTimestamp(service: ICloudService, estimates: FootprintEstimate[], costs: Cost[]) {
+  private combineCostsAndEstimatesByTimestamp(
+    service: ICloudService,
+    region: string,
+    estimates: FootprintEstimate[],
+    costs: Cost[],
+  ) {
     return estimates.map((estimate) => {
       const estimateCosts = costs.filter((cost) => moment(cost.timestamp).isSame(estimate.timestamp))
       const cost = estimateCosts.reduce((acc, cost) => acc + cost.amount, 0)
-      return { ...estimate, cost, serviceName: service.serviceName }
+      return { ...estimate, cost, serviceName: service.serviceName, region: region }
     })
   }
 
@@ -60,20 +65,22 @@ export default class App {
       timestamp: Date
       wattHours: number
       co2e: number
+      region: string
     }[][][],
   ): EstimationResult[] {
     const estimationResultsByDay = estimatesByServiceByRegion.flat().flatMap((estimates) => {
       const serviceEstimatesByDay = this.aggregateServiceEstimatesByDay(estimates)
-      return serviceEstimatesByDay.map((estimate) => {
+      return serviceEstimatesByDay.map((serviceDataResult) => {
         return {
-          timestamp: estimate.timestamp,
+          timestamp: serviceDataResult.timestamp,
           serviceEstimates: [
             {
-              timestamp: estimate.timestamp,
-              serviceName: estimate.serviceName,
-              wattHours: estimate.wattHours,
-              co2e: estimate.co2e,
-              cost: estimate.cost,
+              timestamp: serviceDataResult.timestamp,
+              serviceName: serviceDataResult.serviceName,
+              wattHours: serviceDataResult.wattHours,
+              co2e: serviceDataResult.co2e,
+              cost: serviceDataResult.cost,
+              region: serviceDataResult.region,
             },
           ],
         }
@@ -96,24 +103,24 @@ export default class App {
     return estimationResultsByTimestamp
   }
 
-  private aggregateServiceEstimatesByDay(estimationResults: ServiceEstimate[]): ServiceEstimate[] {
-    const getDayOfEstimate = (estimationResult: ServiceEstimate) =>
-      estimationResult.timestamp.toISOString().substr(0, 10)
+  private aggregateServiceEstimatesByDay(serviceDataResults: ServiceData[]): ServiceData[] {
+    const getDayOfEstimate = (serviceDataResult: ServiceData) => serviceDataResult.timestamp.toISOString().substr(0, 10)
 
-    const accumulatingFn = (acc: ServiceEstimate, value: ServiceEstimate) => {
+    const accumulatingFn = (acc: ServiceData, value: ServiceData) => {
       const timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
       const wattHours = acc.wattHours + value.wattHours
       const co2e = acc.co2e + value.co2e
       const serviceName = value.serviceName
       const cost = acc.cost + value.cost
-      return { timestamp, wattHours, co2e, serviceName, cost }
+      const region = value.region
+      return { timestamp, wattHours, co2e, serviceName, cost, region }
     }
 
     const estimatesByDayMap = reduceBy(
       accumulatingFn,
-      { wattHours: 0, co2e: 0, timestamp: undefined, serviceName: undefined, cost: 0 },
+      { wattHours: 0, co2e: 0, timestamp: undefined, serviceName: undefined, cost: 0, region: undefined },
       getDayOfEstimate,
-      estimationResults,
+      serviceDataResults,
     )
     return Object.values(estimatesByDayMap)
   }

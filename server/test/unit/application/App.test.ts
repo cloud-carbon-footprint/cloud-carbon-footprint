@@ -3,7 +3,6 @@ import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
 import { validate } from '@application/EstimationRequest'
 import FootprintEstimate from '@domain/FootprintEstimate'
-
 import { EstimationResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
 import moment = require('moment')
@@ -57,6 +56,7 @@ describe('App', () => {
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
               cost: 0,
+              region: region,
             },
           ],
         }
@@ -100,6 +100,7 @@ describe('App', () => {
               wattHours: 2,
               co2e: 2,
               cost: 0,
+              region: region,
             },
             {
               timestamp: new Date(startDate),
@@ -107,6 +108,7 @@ describe('App', () => {
               wattHours: 1,
               co2e: 1,
               cost: 0,
+              region: region,
             },
           ],
         },
@@ -159,6 +161,7 @@ describe('App', () => {
               wattHours: 3,
               co2e: 6,
               cost: 0,
+              region: region,
             },
           ],
         },

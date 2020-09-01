@@ -15,6 +15,7 @@ describe('transformData', () => {
             wattHours: 12,
             co2e: 15,
             cost: 0,
+            region: 'us-east-1',
           },
           {
             timestamp: date1,
@@ -22,6 +23,7 @@ describe('transformData', () => {
             wattHours: 4,
             co2e: 5,
             cost: 0,
+            region: 'us-east-1',
           },
         ],
       },
@@ -34,6 +36,7 @@ describe('transformData', () => {
             wattHours: 25,
             co2e: 3,
             cost: 0,
+            region: 'us-east-1',
           },
           {
             timestamp: date2,
@@ -41,14 +44,15 @@ describe('transformData', () => {
             wattHours: 2,
             co2e: 7,
             cost: 0,
+            region: 'us-east-1',
           },
         ],
       },
     ]
     const expected = [
-          { x: date1, y: 20 },
-          { x: date2, y: 10 },
-        ]
+      { x: date1, y: 20 },
+      { x: date2, y: 10 },
+    ]
     expect(transformData(data)).toEqual(expected)
   })
 })
