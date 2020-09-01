@@ -18,9 +18,11 @@ export default class App {
       regions.map(async (region) => {
         return await Promise.all(
           AWSServices().map(async (service) => {
-            const costs = await this.getCosts(service, estimationRequest, region)
-            const estimates = await this.getEstimates(service, estimationRequest, region)
-            return this.combineCostsAndEstimatesByTimestamp(service, region, estimates, costs)
+            const [costs, estimates] = await Promise.all([
+              await this.getCosts(service, estimationRequest, region),
+              await this.getEstimates(service, estimationRequest, region),
+            ])
+            return this.combineCostsAndEstimatesByTimestamp(service, region, costs, estimates)
           }),
         )
       }),
@@ -48,8 +50,8 @@ export default class App {
   private combineCostsAndEstimatesByTimestamp(
     service: ICloudService,
     region: string,
-    estimates: FootprintEstimate[],
     costs: Cost[],
+    estimates: FootprintEstimate[],
   ) {
     return estimates.map((estimate) => {
       const estimateCosts = costs.filter((cost) => moment(cost.timestamp).isSame(estimate.timestamp))
