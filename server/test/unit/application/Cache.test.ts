@@ -97,8 +97,27 @@ describe('Cache', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    //todo: cache new data
-    //todo: test cache by service
-    //todo: test cache by region
+    it('should save new data into cache', async () => {
+      //setup
+      const rawRequest: RawRequest = {
+        startDate: moment.utc('2019-12-31').toISOString(),
+        endDate: moment.utc('2020-01-01').toISOString(),
+        region: 'us-east-1',
+      }
+
+      const cachedEstimates: EstimationResult[] = []
+
+      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+
+      const computedEstimates = buildFootprintEstimates('2019-12-31', 1)
+      originalFunction.mockResolvedValueOnce(computedEstimates)
+
+      //run
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+      const estimationResult: EstimationResult[] = await propertyDescriptor.value(rawRequest)
+
+      //assert
+      expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates)
+    })
   })
 })
