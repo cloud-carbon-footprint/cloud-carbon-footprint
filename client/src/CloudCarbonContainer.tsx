@@ -16,7 +16,7 @@ const CloudCarbonContainer = () => {
   const [dataInTimeframe, setDataInTimeframe] = useState(data)
 
   return (
-    <>
+    <Box marginTop={4}>
       <Box marginBottom={4}>
         <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
       </Box>
@@ -29,7 +29,7 @@ const CloudCarbonContainer = () => {
           <ApexLineChart data={dataInTimeframe} />
         )}
       </Box>
-    </>
+    </Box>
   )
 }
 
