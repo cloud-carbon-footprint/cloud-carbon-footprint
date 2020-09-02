@@ -20,7 +20,7 @@ const CloudCarbonContainer = () => {
       <Box marginBottom={4}>
         <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
       </Box>
-      <Box padding={1} border={1}>
+      <Box padding={3} border={1} borderColor="grey.400">
         {loading ? (
           <Container>
             <CachedIcon fontSize={'large'} /> Your cloud carbon footprint data is loading
