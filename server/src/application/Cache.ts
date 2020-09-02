@@ -89,15 +89,8 @@ export default function cache(): any {
       })
 
       const estimates: EstimationResult[] = await computeEstimates(originalRequests)
-
+      cacheService.setEstimates(estimates)
       return concat(cachedEstimates, estimates)
-
-      // const request: RawRequest = args[0]
-      // const cachedEstimates: EstimationResult[] = cacheService.getEstimates(request)
-      // const missingDataRequests: RawRequest[] = getMissingData(cachedEstimates)
-      // const newData: EstimationResult[] = await calculateEstimates(missingDataRequests)
-      // cacheService.setEstimates(newData)
-      // return joinCacheAndNewData(cachedEstimates, newData)
     }
   }
 }
