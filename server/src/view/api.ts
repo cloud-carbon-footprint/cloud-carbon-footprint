@@ -15,6 +15,7 @@ httpApp.get('/api/footprint', async (req: express.Request, res: express.Response
   const rawRequest: RawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
+    region: req.query.region?.toString(),
   }
 
   const footprintApp = new App()
