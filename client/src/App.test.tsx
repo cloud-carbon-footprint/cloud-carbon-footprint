@@ -21,9 +21,9 @@ describe('App', () => {
     mockedUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
-  test('renders the page title', () => {
+  it('renders the page title', () => {
     const { getByText } = render(<App />)
-    const linkElement = getByText(/AWS Emissions and Wattage and Cost/i)
+    const linkElement = getByText(/Cloud Carbon Footprint/i)
     expect(linkElement).toBeInTheDocument()
   })
 })

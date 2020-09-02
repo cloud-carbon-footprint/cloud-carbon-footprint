@@ -7,6 +7,13 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
     Object {
       "chart": Object {
         "id": "apexchart-example",
+        "toolbar": Object {
+          "tools": Object {
+            "customIcons": Array [],
+            "zoomin": false,
+            "zoomout": false,
+          },
+        },
       },
       "height": "500px",
       "markers": Object {
@@ -35,12 +42,15 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       },
       "xaxis": Object {
         "convertedCatToNumeric": false,
+        "labels": Object {
+          "formatter": [Function],
+        },
         "title": Object {
           "offsetY": 8,
           "style": Object {
             "fontSize": "15px",
           },
-          "text": "Date",
+          "text": "",
         },
         "type": "datetime",
       },
@@ -50,7 +60,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           "style": Object {
             "fontSize": "15px",
           },
-          "text": "Daily co2e",
+          "text": "CO2e (kg)",
         },
       },
     }

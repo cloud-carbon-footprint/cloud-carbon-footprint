@@ -1,5 +1,5 @@
 import React, { FunctionComponent, Dispatch, SetStateAction, useState, useEffect } from 'react'
-import { Button, ButtonGroup, Box } from '@material-ui/core'
+import { Button, ButtonGroup } from '@material-ui/core'
 import moment from 'moment'
 import { EstimationResult } from './types'
 
