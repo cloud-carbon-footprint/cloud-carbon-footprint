@@ -7,7 +7,7 @@ import CachedIcon from '@material-ui/icons/Cached'
 import { Box, Container } from '@material-ui/core'
 
 const CloudCarbonContainer = () => {
-  const startDate: moment.Moment = moment.utc().subtract(1, 'year')
+  const startDate: moment.Moment = moment.utc().subtract(11, 'month')
   const endDate: moment.Moment = moment.utc()
   const region: string = 'us-east-1'
 

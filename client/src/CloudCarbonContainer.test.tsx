@@ -50,7 +50,7 @@ describe('CloudCarbonContainer', () => {
     const region = parameters[3]
 
     expect(initial).toEqual([])
-    expect(startDate.isSame(moment.utc().subtract(1, 'year'), 'day')).toBeTruthy()
+    expect(startDate.isSame(moment.utc().subtract(11, 'month'), 'day')).toBeTruthy()
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
     expect(region).toEqual(REGION_US_EAST_1)
   })
