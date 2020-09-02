@@ -1,17 +1,21 @@
 import React from 'react'
-import { Container, Typography } from '@material-ui/core'
+import { AppBar, Container, Toolbar, Typography } from '@material-ui/core'
 import CloudCarbonContainer from './CloudCarbonContainer'
-
-// TO
 
 function App() {
   return (
-    <Container maxWidth={'xl'}>
-      <Typography gutterBottom={true} variant="h2">
-        Cloud Carbon Footprint
-      </Typography>
-      <CloudCarbonContainer />
-    </Container>
+    <>
+      <AppBar position="sticky" square={true}>
+        <Toolbar>
+          <Typography component="h1" variant="h5">
+            Cloud Carbon Footprint
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth={'xl'}>
+        <CloudCarbonContainer />
+      </Container>
+    </>
   )
 }
 
