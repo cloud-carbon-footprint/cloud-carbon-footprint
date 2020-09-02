@@ -28,7 +28,6 @@ const useRemoteService = (
             region: region,
           },
         })
-        console.log(res.data)
         setData(res.data)
       } catch (e) {
         setError(true)
