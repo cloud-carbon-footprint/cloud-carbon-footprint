@@ -15,6 +15,8 @@ jest.mock('./hooks/RemoteServiceHook')
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 const mockedApexLineChart = ApexLineChart as jest.Mocked<typeof ApexLineChart>
 
+const REGION_US_EAST_1 = 'us-east-1'
+
 describe('CloudCarbonContainer', () => {
   let data: EstimationResult[]
 
@@ -40,15 +42,17 @@ describe('CloudCarbonContainer', () => {
 
     const parameters = mockedUseRemoteService.mock.calls[0]
 
-    expect(parameters.length).toEqual(3)
+    expect(parameters.length).toEqual(4)
 
     const initial = parameters[0]
     const startDate = parameters[1]
     const endDate = parameters[2]
+    const region = parameters[3]
 
     expect(initial).toEqual([])
     expect(startDate.isSame(moment.utc().subtract(1, 'year'), 'day')).toBeTruthy()
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+    expect(region).toEqual(REGION_US_EAST_1)
   })
 
   test('initial timeframe should filter up to 12 months prior and pass into ApexLineChart', () => {
