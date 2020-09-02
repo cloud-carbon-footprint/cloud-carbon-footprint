@@ -10,6 +10,7 @@
           "co2e": 0,
           "cost": 0,
           "region": "us-east-1"
+        },
         {
           "timestamp": "2020-08-28T00:00:00.000Z",
           "serviceName": "s3",
