@@ -51,7 +51,7 @@ npm run docker:setup //install dependencies
 
 ```
 cd server
-npm run cli -- <options>
+npm run start:cli -- <options>
 ```
 
 #### Docker
@@ -68,8 +68,8 @@ npm run docker:cli -- <options>
    ```
    --startDate YYYY-MM-DD \
    --endDate YYYY-MM-DD \
-   --region [us-east-1 | us-east-2]`
-   --groupBy [day | dayAndService | service]
+   --region [us-east-1 | us-east-2] \
+   --groupBy [day | dayAndService | service] \
    --format [table | csv]
    ```
 
