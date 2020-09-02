@@ -114,7 +114,7 @@ describe('Cache', () => {
 
       //run
       cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(rawRequest)
+      await propertyDescriptor.value(rawRequest)
 
       //assert
       expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates)
