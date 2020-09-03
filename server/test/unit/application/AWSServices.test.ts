@@ -75,5 +75,5 @@ function expectService(key: string) {
 
   const AWSServices = require('@application/AWSServices').default
   const services = AWSServices()
-  return expect(services[0].service)
+  return expect(services[0])
 }

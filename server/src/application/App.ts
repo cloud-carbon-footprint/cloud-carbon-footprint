@@ -1,36 +1,35 @@
 import { EstimationRequest, validate } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
+
 import { CURRENT_REGIONS } from '@application/Config.json'
-import { RegionResult } from '@application/EstimationResult'
+
+import { EstimationResult } from '@application/EstimationResult'
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { RawRequest } from '@view/RawRequest'
+import { transformToServiceData, transformToEstimationResults } from './Transformer'
 
 export default class App {
-  async getCostAndEstimates(rawRequest: RawRequest): Promise<RegionResult[]> {
+  async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
     const regions: string[] = estimationRequest.region ? [estimationRequest.region] : CURRENT_REGIONS
 
-    const regionResults: RegionResult[] = await Promise.all(
+    const estimatesByServiceByRegion = await Promise.all(
       regions.map(async (region) => {
-        return {
-          region: region,
-          serviceResults: await Promise.all(
-            AWSServices().map(async ({ service, transformer }) => {
-              const [costs, estimates] = await Promise.all([
-                await this.getCosts(service, estimationRequest, region),
-                await this.getEstimates(service, estimationRequest, region),
-              ])
-
-              return transformer(service, costs, estimates)
-            }),
-          ),
-        }
+        return await Promise.all(
+          AWSServices().map(async (service) => {
+            const [costs, estimates] = await Promise.all([
+              await this.getCosts(service, estimationRequest, region),
+              await this.getEstimates(service, estimationRequest, region),
+            ])
+            return transformToServiceData(service, region, costs, estimates)
+          }),
+        )
       }),
     )
 
-    return regionResults
+    return transformToEstimationResults(estimatesByServiceByRegion.flat().flat())
   }
 
   async getCosts(service: ICloudService, estimationRequest: EstimationRequest, region: string): Promise<Cost[]> {

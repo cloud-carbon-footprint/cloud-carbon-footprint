@@ -1,58 +1,129 @@
-import { ServiceResponseTransformer } from './ServiceCall'
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { ServiceResult, EstimationResult } from './EstimationResult'
+import { ServiceData, EstimationResult } from './EstimationResult'
 import moment from 'moment'
+import {
+  CostAggregator,
+  CostAggregate,
+  FootprintEstimateAggregator,
+  FootprintEstimateAggregate,
+  CostAndEstimateJoiner,
+  ServiceDataTransformer,
+  EstimationResultsTransformer,
+} from './TransformerTypes'
 
-export const defaultTransformer: ServiceResponseTransformer = (
-  service: ICloudService,
-  costs: Cost[],
-  footprintEstimates: FootprintEstimate[],
-): ServiceResult => {
-  const aggregationByDate = new Map()
+const aggregateCosts: CostAggregator = (costs: Cost[]) => {
+  const costAggregates = new Map<string, CostAggregate>()
 
-  footprintEstimates.forEach((footprintEstimate) => {
-    const matchedCosts = costs.filter((cost) => moment(cost.timestamp).isSame(footprintEstimate.timestamp))
-    const accumulatedCost = matchedCosts.reduce((acc, cost) => acc + cost.amount, 0)
-    const timestamp = new Date(footprintEstimate.timestamp.toISOString().substr(0, 10))
-    const timestampAsString = timestamp.toISOString().substr(0, 10)
+  costs.forEach((cost) => {
+    const utcDateString = moment.utc(cost.timestamp).toISOString().substr(0, 10)
 
-    if (!aggregationByDate.has(timestampAsString)) {
-      aggregationByDate.set(timestampAsString, {
-        timestampAsDate: timestamp,
-        co2e: footprintEstimate.co2e,
-        wattHours: footprintEstimate.wattHours,
-        cost: accumulatedCost,
+    if (!costAggregates.has(utcDateString)) {
+      costAggregates.set(utcDateString, {
+        timestamp: new Date(cost.timestamp.toISOString().substr(0, 10)),
+        cost: cost.amount,
       })
     } else {
-      const { co2e, wattHours, cost } = aggregationByDate.get(timestampAsString)
-      aggregationByDate.set(timestampAsString, {
-        timestampAsDate: timestamp,
-        co2e: co2e + footprintEstimate.co2e,
-        wattHours: wattHours + footprintEstimate.wattHours,
-        cost: cost + accumulatedCost,
+      costAggregates.set(utcDateString, {
+        timestamp: costAggregates.get(utcDateString).timestamp,
+        cost: costAggregates.get(utcDateString).cost + cost.amount,
       })
     }
   })
 
-  const estimateResults: EstimationResult[] = []
-  aggregationByDate.forEach((usageData) => {
-    estimateResults.push({
-      timestamp: usageData.timestampAsDate,
-      serviceData: [
-        {
-          co2e: usageData.co2e,
-          cost: usageData.cost,
-          wattHours: usageData.wattHours,
-        },
-      ],
+  return costAggregates
+}
+
+const aggregateEstimates: FootprintEstimateAggregator = (estimates: FootprintEstimate[]) => {
+  const estimateAggregates = new Map<string, FootprintEstimateAggregate>()
+
+  estimates.forEach((estimate) => {
+    const utcDateString = moment.utc(estimate.timestamp).toISOString().substr(0, 10)
+
+    if (!estimateAggregates.has(utcDateString)) {
+      estimateAggregates.set(utcDateString, {
+        timestamp: new Date(estimate.timestamp.toISOString().substr(0, 10)),
+        wattHours: estimate.wattHours,
+        co2e: estimate.co2e,
+      })
+    } else {
+      estimateAggregates.set(utcDateString, {
+        timestamp: estimateAggregates.get(utcDateString).timestamp,
+        wattHours: estimateAggregates.get(utcDateString).wattHours + estimate.wattHours,
+        co2e: estimateAggregates.get(utcDateString).co2e + estimate.co2e,
+      })
+    }
+  })
+
+  return estimateAggregates
+}
+
+const joinCostsAndEstimations: CostAndEstimateJoiner = (
+  serviceName: string,
+  region: string,
+  costAggregates: Map<string, CostAggregate>,
+  estimateAggregates: Map<string, FootprintEstimateAggregate>,
+) => {
+  const utcDateStrings = new Set()
+
+  costAggregates.forEach((_aggregate, utcDateString) => utcDateStrings.add(utcDateString))
+  estimateAggregates.forEach((_aggregate, utcDateString) => utcDateStrings.add(utcDateString))
+
+  return Array.from(utcDateStrings).map((utcDateString: string) => {
+    const costAggregate = costAggregates.has(utcDateString)
+      ? costAggregates.get(utcDateString)
+      : { cost: 0, timestamp: null }
+    const estimateAggregate = estimateAggregates.has(utcDateString)
+      ? estimateAggregates.get(utcDateString)
+      : { wattHours: 0, co2e: 0, timestamp: null }
+
+    return {
+      timestamp: costAggregate.timestamp || estimateAggregate.timestamp,
+      serviceName: serviceName,
+      region: region,
+      cost: costAggregate.cost,
+      co2e: estimateAggregate.co2e,
+      wattHours: estimateAggregate.wattHours,
+    }
+  })
+}
+
+export const transformToServiceData: ServiceDataTransformer = (
+  service: ICloudService,
+  region: string,
+  costs: Cost[],
+  estimates: FootprintEstimate[],
+): ServiceData[] => {
+  const costAggregates: Map<string, CostAggregate> = aggregateCosts(costs)
+  const estimateAggregates: Map<string, FootprintEstimateAggregate> = aggregateEstimates(estimates)
+
+  return joinCostsAndEstimations(service.serviceName, region, costAggregates, estimateAggregates)
+}
+
+export const transformToEstimationResults: EstimationResultsTransformer = (
+  serviceData: ServiceData[],
+): EstimationResult[] => {
+  const serviceDataByTimestamp = new Map<string, ServiceData[]>()
+  const estimationResults: EstimationResult[] = []
+
+  serviceData.forEach((serviceDatum) => {
+    const timestampString = moment.utc(serviceDatum.timestamp).toISOString().substr(0, 10)
+    if (!serviceDataByTimestamp.has(timestampString)) {
+      serviceDataByTimestamp.set(timestampString, [serviceDatum])
+    } else {
+      serviceDataByTimestamp.get(timestampString).push(serviceDatum)
+    }
+  })
+
+  serviceDataByTimestamp.forEach((serviceData: ServiceData[], timestamp: string) => {
+    estimationResults.push({
+      timestamp: new Date(timestamp),
+      serviceEstimates: serviceData,
     })
   })
-  estimateResults.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
 
-  return {
-    serviceName: service.serviceName,
-    estimationResults: estimateResults,
-  }
+  estimationResults.sort((a: EstimationResult, b: EstimationResult) => (a.timestamp < b.timestamp ? -1 : 1))
+
+  return estimationResults
 }

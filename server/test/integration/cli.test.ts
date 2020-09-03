@@ -19,7 +19,6 @@ import {
 } from '../fixtures/awsMockFunctions'
 import Lambda from '@services/Lambda'
 import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
-import { defaultTransformer } from '@application/Transformer'
 
 jest.mock('@application/AWSServices')
 
@@ -39,26 +38,11 @@ describe('cli', () => {
 
   describe('ebs, s3, ec3, elasticache, rds', () => {
     servicesRegistered.mockReturnValue([
-      {
-        service: new EBS(),
-        transformer: defaultTransformer,
-      },
-      {
-        service: new S3(),
-        transformer: defaultTransformer,
-      },
-      {
-        service: new EC2(),
-        transformer: defaultTransformer,
-      },
-      {
-        service: new ElastiCache(),
-        transformer: defaultTransformer,
-      },
-      {
-        service: new RDS(new RDSComputeService(), new RDSStorage()),
-        transformer: defaultTransformer,
-      },
+      new EBS(),
+      new S3(),
+      new EC2(),
+      new ElastiCache(),
+      new RDS(new RDSComputeService(), new RDSStorage()),
     ])
 
     test('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
@@ -91,12 +75,7 @@ describe('cli', () => {
 
   describe('lambda', () => {
     beforeEach(() => {
-      servicesRegistered.mockReturnValue([
-        {
-          service: new Lambda(),
-          transformer: defaultTransformer,
-        },
-      ])
+      servicesRegistered.mockReturnValue([new Lambda()])
       mockAwsCloudWatchGetQueryResultsForLambda()
       mockAwsCostExplorerGetCostAndUsageResponse(lambdaMockGetCostResponse)
     })

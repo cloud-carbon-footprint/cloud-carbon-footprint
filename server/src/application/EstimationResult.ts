@@ -1,20 +1,13 @@
-export interface RegionResult {
-  readonly region: string
-  readonly serviceResults: ServiceResult[]
-}
-
-export interface ServiceResult {
-  readonly serviceName: string
-  readonly estimationResults: EstimationResult[]
-}
-
 export interface EstimationResult {
   readonly timestamp: Date
-  readonly serviceData: CostAndUsageData[]
+  readonly serviceEstimates: ServiceData[]
 }
 
-export interface CostAndUsageData {
+export interface ServiceData {
+  readonly timestamp: Date
+  readonly serviceName: string
   readonly wattHours: number
   readonly co2e: number
   readonly cost: number
+  readonly region: string
 }
