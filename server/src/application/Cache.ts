@@ -1,17 +1,18 @@
 import { EstimationResult } from '@application/EstimationResult'
-import EstimatorCacheInMemory from '@application/EstimatorCacheInMemory'
+import EstimatorCacheFileSystem from '@application/EstimatorCacheFileSystem'
 import EstimatorCache from '@application/EstimatorCache'
 import moment, { Moment } from 'moment'
 import { RawRequest } from '@view/RawRequest'
+import R from 'ramda'
 
-const cacheService: EstimatorCache = new EstimatorCacheInMemory()
+const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 
-function getMissingDataRequests(cachedEstimates: EstimationResult[], request: RawRequest): RawRequest[] {
+function getMissingDates(cachedEstimates: EstimationResult[], request: RawRequest): Moment[] {
   const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
   })
   cachedDates.sort((a, b) => {
-    return a.date() - b.date()
+    return a.valueOf() - b.valueOf()
   })
 
   const missingDates: Moment[] = []
@@ -28,7 +29,10 @@ function getMissingDataRequests(cachedEstimates: EstimationResult[], request: Ra
     missingDates.push(moment.utc(dateIndex.toDate()))
     dateIndex.add(1, 'day')
   }
+  return missingDates
+}
 
+function getMissingDataRequests(missingDates: Moment[], request: RawRequest): RawRequest[] {
   const groupMissingDates = missingDates.reduce((acc, date) => {
     const lastSubArray = acc[acc.length - 1]
 
@@ -50,7 +54,7 @@ function getMissingDataRequests(cachedEstimates: EstimationResult[], request: Ra
   const requestDates = groupMissingDates.map((group) => {
     return {
       start: group[0],
-      end: group[group.length - 1].add('1', 'day'),
+      end: moment(group[group.length - 1]).add('1', 'day'),
     }
   })
 
@@ -68,9 +72,24 @@ async function computeEstimates(originalRequests: any[]) {
 }
 
 function concat(cachedEstimates: EstimationResult[], estimates: EstimationResult[]) {
-  return cachedEstimates.concat(estimates).sort((a, b) => {
+  return [...cachedEstimates, ...estimates].sort((a, b) => {
     return a.timestamp.getTime() - b.timestamp.getTime()
   })
+}
+
+function fillDates(missingDates: Moment[], estimates: EstimationResult[]): EstimationResult[] {
+  const dates: Moment[] = estimates.map(({ timestamp }) => {
+    return moment.utc(timestamp)
+  })
+
+  const difference = R.difference(missingDates, dates)
+  const emptyEstimates = difference.map((timestamp) => {
+    return {
+      timestamp: timestamp.toDate(),
+      serviceEstimates: [],
+    }
+  })
+  return [...emptyEstimates, ...estimates].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
 }
 
 export default function cache(): any {
@@ -83,14 +102,19 @@ export default function cache(): any {
 
       if (!cachedEstimates) return await originalFunction.apply(target, args)
 
-      const middlewareRequest = getMissingDataRequests(cachedEstimates, request)
+      const missingDates = getMissingDates(cachedEstimates, request)
+      const middlewareRequest = getMissingDataRequests(missingDates, request)
       const originalRequests = middlewareRequest.map((request) => {
         return originalFunction.apply(target, [request])
       })
 
       const estimates: EstimationResult[] = await computeEstimates(originalRequests)
-      cacheService.setEstimates(estimates)
-      return concat(cachedEstimates, estimates)
+      const estimatesToPersist = fillDates(missingDates, estimates)
+      cacheService.setEstimates(estimatesToPersist)
+      const filteredCachedEstimates = cachedEstimates.filter(({ serviceEstimates }) => {
+        return serviceEstimates.length !== 0
+      })
+      return concat(filteredCachedEstimates, estimates)
     }
   }
 }

@@ -16,6 +16,9 @@ import AWS from 'aws-sdk'
 
 jest.mock('@application/AWSServices')
 
+//disable cache
+jest.mock('@application/Cache')
+
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })

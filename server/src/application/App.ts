@@ -8,9 +8,11 @@ import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { RawRequest } from '@view/RawRequest'
+import cache from '@application/Cache'
 import { transformToServiceData, transformToEstimationResults } from './Transformer'
 
 export default class App {
+  @cache()
   async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
     const regions: string[] = estimationRequest.region ? [estimationRequest.region] : CURRENT_REGIONS

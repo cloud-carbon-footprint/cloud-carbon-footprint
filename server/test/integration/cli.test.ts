@@ -22,6 +22,9 @@ import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
 
 jest.mock('@application/AWSServices')
 
+//disable cache
+jest.mock('@application/Cache')
+
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })

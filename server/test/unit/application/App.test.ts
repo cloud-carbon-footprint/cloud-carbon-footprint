@@ -9,8 +9,10 @@ import moment = require('moment')
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import { RawRequest } from '@view/RawRequest'
+import cache from '@application/Cache'
 
 jest.mock('@application/AWSServices')
+jest.mock('@application/Cache')
 
 const servicesRegistered = mocked(AWSServices, true)
 
@@ -167,6 +169,15 @@ describe('App', () => {
         },
       ]
       expect(estimationResult).toEqual(expectedEstimationResults)
+    })
+
+    it('should use cache decorator', async () => {
+      const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      setUpServices([mockGetCostAndEstimatesPerService], ['ebs'])
+      mockGetCostAndEstimatesPerService.mockResolvedValueOnce([])
+
+      await app.getCostAndEstimates(rawRequest)
+      expect(cache).toHaveBeenCalled()
     })
   })
 
