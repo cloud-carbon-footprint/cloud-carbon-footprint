@@ -7,7 +7,7 @@ export default class EstimatorCacheInMemory implements EstimatorCache {
     return [
       {
         timestamp: new Date('2020-07-10T00:00:00.000Z'),
-        serviceData: [
+        serviceEstimates: [
           {
             timestamp: new Date('2020-07-10T00:00:00.000Z'),
             serviceName: 'ebs',
@@ -36,7 +36,7 @@ export default class EstimatorCacheInMemory implements EstimatorCache {
       },
       {
         timestamp: new Date('2020-07-11T00:00:00.000Z'),
-        serviceData: [
+        serviceEstimates: [
           {
             timestamp: new Date('2020-07-11T00:00:00.000Z'),
             serviceName: 'ebs',

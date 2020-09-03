@@ -3,12 +3,12 @@
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds grouped by service 1`] = `
 "| Service      | Watt Hours        | Kg CO2e Emissions      | Cost              
 | EBS          | 3.21              | 0.001083               | $4.62             
-| S3           | 0.05              | 0.000017               | $3.00             
-| EC2          | 18.81             | 0.006337               | $0.00             
-| ElastiCache  | 2.34              | 0.000787               | $3.00             
+| S3           | 0.05              | 0.000017               | $6.00             
+| EC2          | 18.81             | 0.006337               | $37.00            
+| ElastiCache  | 2.34              | 0.000787               | $6.00             
 | RDS          | 4.98              | 0.001679               | $9.23             
 | Lambda       | 0.00              | 0.000000               | $0.00             
-| Total        | 29.39             | 0.009903               | $19.85            "
+| Total        | 29.39             | 0.009903               | $62.85            "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day 1`] = `

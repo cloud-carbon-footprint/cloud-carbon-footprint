@@ -1,9 +1,9 @@
-import generateEstimations, { generateRegion } from './generateEstimations'
+import generateEstimations from './generateEstimations'
 import moment from 'moment'
 
 test('should generate data up to one month prior', () => {
-    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-    const result = generateEstimations(today, 1)
+  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+  const result = generateEstimations(today, 1)
 
   expect(result.length).toEqual(2)
   expect(result[0].timestamp).toStrictEqual(today.toDate())
@@ -11,8 +11,8 @@ test('should generate data up to one month prior', () => {
 })
 
 test('should generate three months of data', () => {
-    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-    const result = generateEstimations(today, 3)
+  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+  const result = generateEstimations(today, 3)
 
   expect(result.length).toEqual(4)
   expect(result[0].timestamp).toStrictEqual(today.toDate())
@@ -22,8 +22,8 @@ test('should generate three months of data', () => {
 })
 
 test('should work with JS Date', () => {
-    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-    const result = generateEstimations(new Date(), 3)
+  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+  const result = generateEstimations(new Date(), 3)
 
   expect(result.length).toEqual(4)
   expect(result[0].timestamp).toStrictEqual(today.toDate())
@@ -34,16 +34,8 @@ test('should work with JS Date', () => {
 
 // TODO: Call generateEstimations from stub-server index.js file instead of static file
 test.skip('print to JSON', () => {
-    const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-    const result = generateEstimations(today, 15)
-
-    console.log(JSON.stringify(result))
-})
-
-test('print region to JSON', () => {
   const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-  const result = generateRegion(today, 15)
-  
+  const result = generateEstimations(today, 15)
+
   console.log(JSON.stringify(result))
 })
-
