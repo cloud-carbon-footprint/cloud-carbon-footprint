@@ -1,4 +1,4 @@
-import { EstimationResult } from '@application/EstimationResult'
+import { RegionResult } from '@application/EstimationResult'
 import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
 import moment = require('moment')
 
@@ -7,110 +7,159 @@ describe('EmissionsByServiceTable', () => {
   const timestamp1 = moment('2020-07-10').toDate()
   const timestamp2 = moment('2020-07-09').toDate()
 
-  const input: EstimationResult[] = [
+  const input: RegionResult[] = [
     {
-      timestamp: timestamp1,
-      serviceEstimates: [
+      region: region,
+      serviceResults: [
         {
           serviceName: 'ebs',
-          wattHours: 1,
-          co2e: 1,
-          timestamp: timestamp1,
-          cost: 5,
-          region: region,
+          estimationResults: [
+            {
+              timestamp: timestamp1,
+              serviceData: [
+                {
+                  wattHours: 1,
+                  co2e: 1,
+                  cost: 5,
+                },
+              ],
+            },
+            {
+              timestamp: timestamp2,
+              serviceData: [
+                {
+                  wattHours: 7,
+                  co2e: 8,
+                  cost: 9,
+                },
+              ],
+            },
+          ],
         },
         {
           serviceName: 's3',
-          wattHours: 2,
-          co2e: 2,
-          timestamp: timestamp1,
-          cost: 5,
-          region: region,
+          estimationResults: [
+            {
+              timestamp: timestamp1,
+              serviceData: [
+                {
+                  wattHours: 2,
+                  co2e: 2,
+                  cost: 5,
+                },
+              ],
+            },
+            {
+              timestamp: timestamp2,
+              serviceData: [
+                {
+                  wattHours: 55,
+                  co2e: 1,
+                  cost: 9,
+                },
+              ],
+            },
+          ],
         },
         {
           serviceName: 'ec2',
-          wattHours: 3,
-          co2e: 3,
-          timestamp: timestamp1,
-          cost: 5,
-          region: region,
+          estimationResults: [
+            {
+              timestamp: timestamp1,
+              serviceData: [
+                {
+                  wattHours: 3,
+                  co2e: 3,
+                  cost: 5,
+                },
+              ],
+            },
+            {
+              timestamp: timestamp2,
+              serviceData: [
+                {
+                  wattHours: 90,
+                  co2e: 77,
+                  cost: 9,
+                },
+              ],
+            },
+          ],
         },
         {
           serviceName: 'elasticache',
-          wattHours: 4,
-          co2e: 4,
-          timestamp: timestamp1,
-          cost: 5,
-          region: region,
+          estimationResults: [
+            {
+              timestamp: timestamp1,
+              serviceData: [
+                {
+                  wattHours: 4,
+                  co2e: 4,
+                  cost: 5,
+                },
+              ],
+            },
+            {
+              timestamp: timestamp2,
+              serviceData: [
+                {
+                  wattHours: 747,
+                  co2e: 787,
+                  cost: 9,
+                },
+              ],
+            },
+          ],
         },
         {
           serviceName: 'rds',
-          wattHours: 4,
-          co2e: 4,
-          timestamp: timestamp1,
-          cost: 5,
-          region: region,
+          estimationResults: [
+            {
+              timestamp: timestamp1,
+              serviceData: [
+                {
+                  wattHours: 4,
+                  co2e: 4,
+                  cost: 5,
+                },
+              ],
+            },
+            {
+              timestamp: timestamp2,
+              serviceData: [
+                {
+                  wattHours: 747,
+                  co2e: 787,
+                  cost: 9,
+                },
+              ],
+            },
+          ],
         },
         {
           serviceName: 'lambda',
-          wattHours: 100,
-          co2e: 100,
-          timestamp: timestamp1,
-          cost: 5,
-          region: region,
-        },
-      ],
-    },
-    {
-      timestamp: timestamp2,
-      serviceEstimates: [
-        {
-          serviceName: 'ebs',
-          wattHours: 7,
-          co2e: 8,
-          timestamp: timestamp2,
-          cost: 9,
-          region: region,
-        },
-        {
-          serviceName: 's3',
-          wattHours: 55,
-          co2e: 1,
-          timestamp: timestamp2,
-          cost: 9,
-          region: region,
-        },
-        {
-          serviceName: 'ec2',
-          wattHours: 90,
-          co2e: 77,
-          timestamp: timestamp2,
-          cost: 9,
-          region: region,
-        },
-        {
-          serviceName: 'elasticache',
-          wattHours: 747,
-          co2e: 787,
-          timestamp: timestamp2,
-          cost: 9,
-          region: region,
-        },
-        {
-          serviceName: 'rds',
-          wattHours: 747,
-          co2e: 787,
-          timestamp: timestamp2,
-          cost: 9,
-          region: region,
-        },
-        {
-          serviceName: 'lambda',
-          wattHours: 200,
-          co2e: 300,
-          timestamp: timestamp2,
-          cost: 10,
-          region: region,
+          estimationResults: [
+            {
+              timestamp: timestamp1,
+              serviceData: [
+                {
+                  wattHours: 100,
+                  co2e: 100,
+                  cost: 5,
+                },
+              ],
+            },
+            {
+              timestamp: timestamp2,
+              serviceData: [
+                {
+                  wattHours: 200,
+                  co2e: 300,
+                  cost: 10,
+                },
+              ],
+            },
+          ],
         },
       ],
     },

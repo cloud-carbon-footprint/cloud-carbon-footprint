@@ -13,6 +13,7 @@ import { mockAwsCloudWatchGetMetricData, mockAwsCostExplorerGetCostAndUsage } fr
 import cli from '@view/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
+import { defaultTransformer } from '@application/Transformer'
 
 jest.mock('@application/AWSServices')
 
@@ -31,11 +32,26 @@ describe('csv test', () => {
   const rawRequest = ['executable', 'file', '--startDate', start, '--endDate', end, '--region', 'us-east-1']
 
   servicesRegistered.mockReturnValue([
-    new EBS(),
-    new S3(),
-    new EC2(),
-    new ElastiCache(),
-    new RDS(new RDSComputeService(), new RDSStorage()),
+    {
+      service: new EBS(),
+      transformer: defaultTransformer,
+    },
+    {
+      service: new S3(),
+      transformer: defaultTransformer,
+    },
+    {
+      service: new EC2(),
+      transformer: defaultTransformer,
+    },
+    {
+      service: new ElastiCache(),
+      transformer: defaultTransformer,
+    },
+    {
+      service: new RDS(new RDSComputeService(), new RDSStorage()),
+      transformer: defaultTransformer,
+    },
   ])
 
   let outputFilePath: string

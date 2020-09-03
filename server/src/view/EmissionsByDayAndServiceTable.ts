@@ -2,7 +2,7 @@ import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Total
 import { CURRENT_SERVICES } from '@application/Config.json'
 import { pluck } from 'ramda'
 import moment from 'moment'
-import { EstimationResult } from '@application/EstimationResult'
+import { RegionResult } from '@application/EstimationResult'
 
 const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
 const displayService = (totals: Totals, serviceName: string) => [
@@ -11,7 +11,7 @@ const displayService = (totals: Totals, serviceName: string) => [
 ]
 
 export default function EmissionsByDayAndServiceTable(
-  estimationResults: EstimationResult[],
+  regionResults: RegionResult[],
   serviceNames = pluck('key', CURRENT_SERVICES),
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
@@ -32,29 +32,48 @@ export default function EmissionsByDayAndServiceTable(
 
   const grandTotals: Totals = initialTotals()
 
-  estimationResults.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
+  const dataByDate = new Map()
 
-  estimationResults.forEach((estimationResult) => {
-    const subTotals: Totals = initialTotals()
+  regionResults.forEach((regionResult) => {
+    regionResult.serviceResults.forEach((serviceResult) => {
+      const serviceName: string = serviceResult.serviceName
 
-    estimationResult.serviceEstimates.forEach((serviceEstimate) => {
-      grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
-      grandTotals['total'].wattHours += serviceEstimate.wattHours
-      subTotals[serviceEstimate.serviceName].wattHours = serviceEstimate.wattHours
-      subTotals['total'].wattHours += serviceEstimate.wattHours
+      serviceResult.estimationResults.forEach((estimationResult) => {
+        const dateAsString = estimationResult.timestamp.toISOString().substr(0, 10)
 
-      grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
-      grandTotals['total'].co2e += serviceEstimate.co2e
-      subTotals[serviceEstimate.serviceName].co2e = serviceEstimate.co2e
-      subTotals['total'].co2e += serviceEstimate.co2e
+        if (!dataByDate.has(dateAsString)) {
+          dataByDate.set(dateAsString, initialTotals())
+        }
+
+        estimationResult.serviceData.forEach((usage) => {
+          const subTotals = dataByDate.get(dateAsString)
+
+          subTotals[serviceName].wattHours += usage.wattHours
+          subTotals[serviceName].co2e += usage.co2e
+          subTotals['total'].wattHours += usage.wattHours
+          subTotals['total'].co2e += usage.co2e
+
+          grandTotals[serviceName].wattHours += usage.wattHours
+          grandTotals[serviceName].co2e += usage.co2e
+          grandTotals['total'].wattHours += usage.wattHours
+          grandTotals['total'].co2e += usage.co2e
+
+          dataByDate.set(dateAsString, subTotals)
+        })
+      })
     })
+  })
 
-    table.push([
-      displayDate(estimationResult.timestamp),
-      ...serviceNames.map((serviceName) => displayService(subTotals, serviceName)).flat(),
-      ...displayService(subTotals, 'total'),
+  const rowsToInsert: string[][] = []
+  dataByDate.forEach((subtotal, timestamp) => {
+    rowsToInsert.push([
+      displayDate(new Date(timestamp)),
+      ...serviceNames.map((serviceName) => displayService(subtotal, serviceName)).flat(),
+      ...displayService(subtotal, 'total'),
     ])
   })
+  rowsToInsert.sort((a, b) => (new Date(a[0]) < new Date(b[0]) ? -1 : 1))
+  rowsToInsert.forEach((row) => table.push(row))
 
   table.push([
     'Total',

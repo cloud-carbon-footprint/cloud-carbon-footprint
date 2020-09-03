@@ -20,7 +20,7 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   return [...Array(consecutiveDays)].map((v, i) => {
     return {
       timestamp: moment.utc(startDate).add(i, 'days').toDate(),
-      serviceEstimates: [],
+      serviceData: [],
     }
   })
 }

@@ -1,4 +1,4 @@
-import generateEstimations from './generateEstimations'
+import generateEstimations, { generateRegion } from './generateEstimations'
 import moment from 'moment'
 
 test('should generate data up to one month prior', () => {
@@ -38,5 +38,12 @@ test.skip('print to JSON', () => {
     const result = generateEstimations(today, 15)
 
     console.log(JSON.stringify(result))
+})
+
+test('print region to JSON', () => {
+  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
+  const result = generateRegion(today, 15)
+  
+  console.log(JSON.stringify(result))
 })
 
