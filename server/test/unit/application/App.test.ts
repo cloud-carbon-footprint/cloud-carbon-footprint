@@ -3,16 +3,43 @@ import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
 import { validate } from '@application/EstimationRequest'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { EstimationResult } from '@application/EstimationResult'
+import { EstimationResult, RegionResult, ServiceResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
 import moment = require('moment')
-import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import { RawRequest } from '@view/RawRequest'
+import { ServiceCall } from '@application/ServiceCall'
+import { defaultTransformer } from '@application/Transformer'
 
 jest.mock('@application/AWSServices')
 
 const servicesRegistered = mocked(AWSServices, true)
+const wrapEstimationResultsAsRegionResults = (
+  region: string,
+  serviceName: string,
+  estimationResults: EstimationResult[],
+): RegionResult[] => {
+  return [
+    {
+      region: region,
+      serviceResults: [
+        {
+          serviceName: serviceName,
+          estimationResults: estimationResults,
+        },
+      ],
+    },
+  ]
+}
+
+const wrapServiceResultsAsRegionResults = (region: string, serviceResults: ServiceResult[]): RegionResult[] => {
+  return [
+    {
+      region: region,
+      serviceResults: serviceResults,
+    },
+  ]
+}
 
 describe('App', () => {
   let app: App
@@ -44,25 +71,26 @@ describe('App', () => {
       })
       mockGetCostAndEstimatesPerService.mockResolvedValueOnce(expectedUsageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const regionResults: RegionResult[] = await app.getCostAndEstimates(rawRequest)
 
-      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
-        return {
-          timestamp: moment.utc(startDate).add(i, 'days').toDate(),
-          serviceEstimates: [
-            {
-              timestamp: moment.utc(startDate).add(i, 'days').toDate(),
-              serviceName: 'ebs',
-              wattHours: 1.0944,
-              co2e: 0.0007737845760000001,
-              cost: 0,
-              region: region,
-            },
-          ],
-        }
-      })
+      const expectedRegionResults: RegionResult[] = wrapEstimationResultsAsRegionResults(
+        region,
+        'ebs',
+        [...Array(7)].map((v, i) => {
+          return {
+            timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+            serviceData: [
+              {
+                wattHours: 1.0944,
+                co2e: 0.0007737845760000001,
+                cost: 0,
+              },
+            ],
+          }
+        }),
+      )
 
-      expect(estimationResult).toEqual(expectedEstimationResults)
+      expect(regionResults).toEqual(expectedRegionResults)
     })
 
     it('should return estimates for 2 services', async () => {
@@ -88,33 +116,42 @@ describe('App', () => {
       ]
       mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const regionResults: RegionResult[] = await app.getCostAndEstimates(rawRequest)
 
-      const expectedEstimationResults = [
+      const expectedRegionResults = wrapServiceResultsAsRegionResults(region, [
         {
-          timestamp: new Date(startDate),
-          serviceEstimates: [
+          serviceName: 'serviceOne',
+          estimationResults: [
             {
               timestamp: new Date(startDate),
-              serviceName: 'serviceOne',
-              wattHours: 2,
-              co2e: 2,
-              cost: 0,
-              region: region,
-            },
-            {
-              timestamp: new Date(startDate),
-              serviceName: 'serviceTwo',
-              wattHours: 1,
-              co2e: 1,
-              cost: 0,
-              region: region,
+              serviceData: [
+                {
+                  wattHours: 2,
+                  co2e: 2,
+                  cost: 0,
+                },
+              ],
             },
           ],
         },
-      ]
+        {
+          serviceName: 'serviceTwo',
+          estimationResults: [
+            {
+              timestamp: new Date(startDate),
+              serviceData: [
+                {
+                  wattHours: 1,
+                  co2e: 1,
+                  cost: 0,
+                },
+              ],
+            },
+          ],
+        },
+      ])
 
-      expect(estimationResult).toEqual(expectedEstimationResults)
+      expect(regionResults).toEqual(expectedRegionResults)
     })
 
     it('should return error if start date is greater than end date', async () => {
@@ -149,24 +186,22 @@ describe('App', () => {
       ]
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const regionResults: RegionResult[] = await app.getCostAndEstimates(rawRequest)
 
-      const expectedEstimationResults = [
+      const expectedRegionResults = wrapEstimationResultsAsRegionResults(region, 'serviceOne', [
         {
           timestamp: new Date(startDate),
-          serviceEstimates: [
+          serviceData: [
             {
-              timestamp: new Date(startDate),
-              serviceName: 'serviceOne',
               wattHours: 3,
               co2e: 6,
               cost: 0,
-              region: region,
             },
           ],
         },
-      ]
-      expect(estimationResult).toEqual(expectedEstimationResults)
+      ])
+
+      expect(regionResults).toEqual(expectedRegionResults)
     })
   })
 
@@ -202,7 +237,7 @@ describe('App', () => {
     const mockGetCosts: jest.Mock<Promise<Cost[]>> = jest.fn()
     setUpServicesCost([mockGetCosts], ['serviceOne'])
 
-    app.getCosts(AWSServices()[0], estimationRequest, region)
+    app.getCosts(AWSServices()[0].service, estimationRequest, region)
 
     expect(mockGetCosts).toHaveBeenCalled()
   })
@@ -210,26 +245,32 @@ describe('App', () => {
 
 function setUpServices(mockGetCostAndEstimates: jest.Mock<Promise<FootprintEstimate[]>>[], serviceNames: string[]) {
   let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-  const mockCloudServices: ICloudService[] = mockGetCostAndEstimates.map((mockGetCostAndEstimate, i) => {
+  const mockServiceCall: ServiceCall[] = mockGetCostAndEstimates.map((mockGetCostAndEstimate, i) => {
     return {
-      getEstimates: mockGetCostAndEstimate,
-      serviceName: serviceNames[i],
-      getUsage: mockGetUsage,
-      getCosts: jest.fn().mockResolvedValue([]),
+      service: {
+        getEstimates: mockGetCostAndEstimate,
+        serviceName: serviceNames[i],
+        getUsage: mockGetUsage,
+        getCosts: jest.fn().mockResolvedValue([]),
+      },
+      transformer: defaultTransformer,
     }
   })
-  servicesRegistered.mockReturnValue(mockCloudServices)
+  servicesRegistered.mockReturnValue(mockServiceCall)
 }
 
 function setUpServicesCost(mockGetCosts: jest.Mock<Promise<Cost[]>>[], serviceNames: string[]) {
   let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-  const mockCloudServices: ICloudService[] = mockGetCosts.map((mockGetCost, i) => {
+  const mockServiceCall: ServiceCall[] = mockGetCosts.map((mockGetCost, i) => {
     return {
-      getEstimates: jest.fn().mockResolvedValue([]),
-      serviceName: serviceNames[i],
-      getUsage: mockGetUsage,
-      getCosts: mockGetCost,
+      service: {
+        getEstimates: jest.fn().mockResolvedValue([]),
+        serviceName: serviceNames[i],
+        getUsage: mockGetUsage,
+        getCosts: mockGetCost,
+      },
+      transformer: defaultTransformer,
     }
   })
-  servicesRegistered.mockReturnValue(mockCloudServices)
+  servicesRegistered.mockReturnValue(mockServiceCall)
 }

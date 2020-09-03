@@ -6,10 +6,10 @@ import {
   initialTotals,
   Totals,
 } from '@view/EmissionsTableUtils'
-import { EstimationResult } from '@application/EstimationResult'
+import { RegionResult } from '@application/EstimationResult'
 
 export default function EmissionsByServiceTable(
-  estimationResults: EstimationResult[],
+  regionResults: RegionResult[],
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Service', 'Watt Hours', 'Kg CO2e Emissions', 'Cost']
   const colWidths: number[] = [15, 20, 25, 20]
@@ -17,14 +17,20 @@ export default function EmissionsByServiceTable(
 
   const grandTotals: Totals = initialTotals()
 
-  estimationResults.forEach((estimationResult) => {
-    estimationResult.serviceEstimates.forEach((serviceEstimate) => {
-      grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
-      grandTotals['total'].wattHours += serviceEstimate.wattHours
-      grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
-      grandTotals['total'].co2e += serviceEstimate.co2e
-      grandTotals[serviceEstimate.serviceName].cost += serviceEstimate.cost
-      grandTotals['total'].cost += serviceEstimate.cost
+  regionResults.forEach((regionResult) => {
+    regionResult.serviceResults.forEach((serviceResult) => {
+      const serviceName: string = serviceResult.serviceName
+
+      serviceResult.estimationResults.forEach((estimationResult) => {
+        estimationResult.serviceData.forEach((usage) => {
+          grandTotals[serviceName].wattHours += usage.wattHours
+          grandTotals['total'].wattHours += usage.wattHours
+          grandTotals[serviceName].co2e += usage.co2e
+          grandTotals['total'].co2e += usage.co2e
+          grandTotals[serviceName].cost += usage.cost
+          grandTotals['total'].cost += usage.cost
+        })
+      })
     })
   })
 
