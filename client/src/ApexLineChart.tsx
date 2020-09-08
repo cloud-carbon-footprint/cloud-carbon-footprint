@@ -60,7 +60,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       },
       labels: {
         formatter: function (value: any, timestamp: any, index: any) {
-          return moment(new Date(timestamp)).format('DD-MMM-YY')
+          return moment.utc(timestamp).format('DD-MMM-YY')
         },
       },
     },
