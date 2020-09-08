@@ -40,21 +40,190 @@ export function mockAwsCloudWatchGetMetricData() {
 
 export function mockAwsCostExplorerGetCostAndUsage() {
   const mockGetCostAndUsageFunction = jest.fn()
+
+  // COST
   when(mockGetCostAndUsageFunction)
-    .calledWith(expect.objectContaining({ Metrics: ['AmortizedCost'] }))
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['AmortizedCost'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: [
+                  'EC2: EBS - SSD(gp2)',
+                  'EC2: EBS - SSD(io1)',
+                  'EC2: EBS - HDD(sc1)',
+                  'EC2: EBS - HDD(st1)',
+                  'EC2: EBS - Magnetic',
+                ],
+              },
+            },
+          ]),
+        },
+      }),
+    )
     .mockReturnValueOnce(ebsMockGetCostResponse)
-    .mockReturnValueOnce(s3MockGetCostResponse)
-    .mockReturnValueOnce(ec2MockGetCostResponse)
-    .mockReturnValueOnce(elastiCacheMockGetCostResponse)
-    .mockReturnValueOnce(rdsComputeMockGetCostResponse)
-    .mockReturnValueOnce(rdsStorageMockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
-    .calledWith(expect.objectContaining({ Metrics: ['UsageQuantity'] }))
-    .mockReturnValueOnce(ebsMockGetUsageResponse)
-    .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
-    .mockReturnValueOnce(rdsStorageMockGetUsageResponse)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['AmortizedCost'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'SERVICE',
+                Values: ['Amazon Simple Storage Service'],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(s3MockGetCostResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['AmortizedCost'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: ['EC2: Running Hours'],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(ec2MockGetCostResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['AmortizedCost'],
+        Filter: {
+          And: expect.arrayContaining([
+            { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(elastiCacheMockGetCostResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['AmortizedCost'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: ['RDS: Running Hours'],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(rdsComputeMockGetCostResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['AmortizedCost'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: ['RDS: Storage'],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(rdsStorageMockGetCostResponse)
+
+  // USAGE
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['UsageQuantity'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: ['RDS: Running Hours'],
+              },
+            },
+          ]),
+        },
+      }),
+    )
     .mockReturnValueOnce(rdsComputeMockGetUsageResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['UsageQuantity'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: ['RDS: Storage'],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(rdsStorageMockGetUsageResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['UsageQuantity'],
+        Filter: {
+          And: expect.arrayContaining([
+            {
+              Dimensions: {
+                Key: 'USAGE_TYPE_GROUP',
+                Values: [
+                  'EC2: EBS - SSD(gp2)',
+                  'EC2: EBS - SSD(io1)',
+                  'EC2: EBS - HDD(sc1)',
+                  'EC2: EBS - HDD(st1)',
+                  'EC2: EBS - Magnetic',
+                ],
+              },
+            },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(ebsMockGetUsageResponse)
+
+  when(mockGetCostAndUsageFunction)
+    .calledWith(
+      expect.objectContaining({
+        Metrics: ['UsageQuantity'],
+        Filter: {
+          And: expect.arrayContaining([
+            { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
+          ]),
+        },
+      }),
+    )
+    .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
 
   AWSMock.mock(
     'CostExplorer',
