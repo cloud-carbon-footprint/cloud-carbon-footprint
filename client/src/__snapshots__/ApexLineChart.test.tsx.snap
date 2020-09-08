@@ -2,6 +2,7 @@
 
 exports[`ApexLineChart renders with correct configuration 1`] = `
 <div
+  data-testid="fake chart"
   height="500px"
   options={
     Object {
@@ -43,7 +44,6 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "text": "Cloud Emissions (Kgs CO2e)",
       },
       "xaxis": Object {
-        "convertedCatToNumeric": false,
         "labels": Object {
           "formatter": [Function],
         },
@@ -82,6 +82,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
     ]
   }
   type="line"
-  width="100%"
-/>
+>
+  fake chart
+</div>
 `;
