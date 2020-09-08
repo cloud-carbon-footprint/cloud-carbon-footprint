@@ -2,7 +2,7 @@
 
 exports[`ApexLineChart renders with correct configuration 1`] = `
 <div
-  data-testid="fake chart"
+  data-testid="fake-line-chart"
   height="500px"
   options={
     Object {

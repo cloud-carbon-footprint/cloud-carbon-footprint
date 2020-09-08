@@ -37,7 +37,7 @@ const useRemoteService = (
     }
 
     fetchEstimates()
-  }, [end, start])
+  }, [end, start, region])
 
   return { data, loading, error }
 }

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApexDonutChart renders with correct configuration 1`] = `
+<div
+  data-testid="fake-donut-chart"
+  height="500px"
+  options={
+    Object {
+      "height": "500px",
+      "labels": Array [
+        "ebs",
+        "s3",
+        "ec2",
+      ],
+      "legend": Object {
+        "offsetY": -8,
+        "position": "top",
+      },
+      "series": Array [
+        5,
+        0,
+        2,
+      ],
+      "title": Object {
+        "offsetY": -8,
+        "style": Object {
+          "fontSize": "24px",
+        },
+        "text": "Carbon Emissions by Service",
+      },
+      "tooltip": Object {
+        "y": Object {
+          "formatter": [Function],
+        },
+      },
+    }
+  }
+  series={
+    Array [
+      5,
+      0,
+      2,
+    ]
+  }
+  type="donut"
+>
+  fake chart
+</div>
+`;

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
+import { ApexDonutChart } from './ApexDonutChart'
 import { ApexLineChart } from './ApexLineChart'
 import useRemoteService from './hooks/RemoteServiceHook'
 import generateEstimations from './data/generateEstimations'
@@ -8,13 +9,14 @@ import { ServiceResult, EstimationResult } from './types'
 import moment from 'moment'
 
 jest.mock('./ApexLineChart', () => ({
-  ApexLineChart: jest.fn(() => null),
+  ApexLineChart: jest.fn(() => <div>line chart here</div>),
+}))
+jest.mock('./ApexDonutChart', () => ({
+  ApexDonutChart: jest.fn(() => <div>donut chart here</div>),
 }))
 jest.mock('./hooks/RemoteServiceHook')
 
-const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
-const mockedApexLineChart = ApexLineChart as jest.Mocked<typeof ApexLineChart>
-
+const mockUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 const REGION_US_EAST_1 = 'us-east-1'
 
 describe('CloudCarbonContainer', () => {
@@ -24,11 +26,11 @@ describe('CloudCarbonContainer', () => {
     data = generateEstimations(moment.utc(), 14)
 
     const mockReturnValue: ServiceResult = { loading: false, error: false, data: data }
-    mockedUseRemoteService.mockReturnValue(mockReturnValue)
+    mockUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
   afterEach(() => {
-    mockedUseRemoteService.mockClear()
+    mockUseRemoteService.mockClear()
   })
 
   test('match against snapshot', () => {
@@ -40,7 +42,7 @@ describe('CloudCarbonContainer', () => {
   test('today and year prior to today should be passed in to remote service hook', () => {
     render(<CloudCarbonContainer />)
 
-    const parameters = mockedUseRemoteService.mock.calls[0]
+    const parameters = mockUseRemoteService.mock.calls[0]
 
     expect(parameters.length).toEqual(4)
 
@@ -55,10 +57,25 @@ describe('CloudCarbonContainer', () => {
     expect(region).toEqual(REGION_US_EAST_1)
   })
 
-  test('initial timeframe should filter up to 12 months prior and pass into ApexLineChart', () => {
+  test('initial timeframe should filter up to 12 months prior and pass into line chart', () => {
+    const mockApexLineChart = ApexLineChart as jest.Mocked<typeof ApexLineChart>
+
     render(<CloudCarbonContainer />)
 
-    expect(mockedApexLineChart).toHaveBeenLastCalledWith(
+    expect(mockApexLineChart).toHaveBeenLastCalledWith(
+      {
+        data: data.slice(0, 13),
+      },
+      expect.anything(),
+    )
+  })
+
+  test('initial timeframe should filter up to 12 months prior and pass into donut chart', () => {
+    const mockApexDonutChart = ApexLineChart as jest.Mocked<typeof ApexDonutChart>
+
+    render(<CloudCarbonContainer />)
+
+    expect(mockApexDonutChart).toHaveBeenLastCalledWith(
       {
         data: data.slice(0, 13),
       },
@@ -68,10 +85,10 @@ describe('CloudCarbonContainer', () => {
 
   test('show loading text if data has not been returned', () => {
     const mockLoading: ServiceResult = { loading: true, error: false, data: data }
-    mockedUseRemoteService.mockReturnValue(mockLoading)
+    mockUseRemoteService.mockReturnValue(mockLoading)
 
-    const { getByText } = render(<CloudCarbonContainer />)
+    const { getByRole } = render(<CloudCarbonContainer />)
 
-    expect(getByText('Your cloud carbon footprint data is loading')).toBeInTheDocument()
+    expect(getByRole('progressbar')).toBeInTheDocument()
   })
 })
