@@ -32,7 +32,7 @@ describe('App', () => {
     app = new App()
   })
 
-  describe('getEstimate', () => {
+  describe('getCostAndEstimates', () => {
     it('should return ebs estimates for a week', async () => {
       const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       setUpServices([mockGetCostAndEstimatesPerService], ['ebs'])
@@ -178,6 +178,46 @@ describe('App', () => {
 
       await app.getCostAndEstimates(rawRequest)
       expect(cache).toHaveBeenCalled()
+    })
+
+    it('should return ebs estimates ordered by timestamp ascending', async () => {
+      const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      setUpServices([mockGetCostAndEstimatesPerService], ['ebs'])
+
+      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
+        return {
+          timestamp: moment(startDate).subtract(i, 'days').toDate(),
+          wattHours: 1.0944,
+          co2e: 0.0007737845760000001,
+        }
+      })
+      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(expectedUsageEstimate)
+
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+
+      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
+        return {
+          timestamp: moment
+            .utc(startDate)
+            .subtract(6 - i, 'days')
+            .toDate(),
+          serviceEstimates: [
+            {
+              timestamp: moment
+                .utc(startDate)
+                .subtract(6 - i, 'days')
+                .toDate(),
+              serviceName: 'ebs',
+              wattHours: 1.0944,
+              co2e: 0.0007737845760000001,
+              cost: 0,
+              region: region,
+            },
+          ],
+        }
+      })
+
+      expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
 

@@ -14,7 +14,7 @@ describe('Transformer', () => {
       services1.forEach((service: string) => {
         for (let i = 0; i < 3; i++) {
           serviceData1.push({
-            timestamp: moment.utc(startDate).add(i, 'day').toDate(),
+            timestamp: moment.utc(startDate).subtract(i, 'day').toDate(),
             region: region,
             serviceName: service,
             wattHours: Math.random() * 30,
@@ -26,7 +26,7 @@ describe('Transformer', () => {
       services2.forEach((service: string) => {
         for (let i = 0; i < 3; i++) {
           serviceData2.push({
-            timestamp: moment.utc(startDate).add(i, 'day').toDate(),
+            timestamp: moment.utc(startDate).subtract(i, 'day').toDate(),
             region: region,
             serviceName: service,
             wattHours: Math.random() * 30,
@@ -40,18 +40,18 @@ describe('Transformer', () => {
 
       expect(result).toEqual([
         {
-          timestamp: moment.utc(startDate).toDate(),
+          timestamp: moment.utc(startDate).subtract(2, 'day').toDate(),
           serviceEstimates: [
-            serviceData1[0],
-            serviceData1[3],
-            serviceData1[6],
-            serviceData2[0],
-            serviceData2[3],
-            serviceData2[6],
+            serviceData1[2],
+            serviceData1[5],
+            serviceData1[8],
+            serviceData2[2],
+            serviceData2[5],
+            serviceData2[8],
           ],
         },
         {
-          timestamp: moment.utc(startDate).add(1, 'day').toDate(),
+          timestamp: moment.utc(startDate).subtract(1, 'day').toDate(),
           serviceEstimates: [
             serviceData1[1],
             serviceData1[4],
@@ -61,16 +61,15 @@ describe('Transformer', () => {
             serviceData2[7],
           ],
         },
-
         {
-          timestamp: moment.utc(startDate).add(2, 'day').toDate(),
+          timestamp: moment.utc(startDate).toDate(),
           serviceEstimates: [
-            serviceData1[2],
-            serviceData1[5],
-            serviceData1[8],
-            serviceData2[2],
-            serviceData2[5],
-            serviceData2[8],
+            serviceData1[0],
+            serviceData1[3],
+            serviceData1[6],
+            serviceData2[0],
+            serviceData2[3],
+            serviceData2[6],
           ],
         },
       ])
