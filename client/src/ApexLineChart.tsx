@@ -19,7 +19,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const options = {
     series: [
       {
-        name: 'CO2e',
+        name: 'AWS CO2e',
         data: timeSeriesData,
       },
     ],
@@ -43,7 +43,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       width: 2,
     },
     title: {
-      text: 'Cloud Emissions',
+      text: 'Cloud Emissions (Kgs CO2e)',
       offsetY: -8,
       style: {
         fontSize: '24px',
@@ -72,6 +72,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           fontSize: '15px',
         },
       },
+      decimalsInFloat: 5,
     },
   }
   return <Chart options={options} series={options.series} type="line" height={options.height} />

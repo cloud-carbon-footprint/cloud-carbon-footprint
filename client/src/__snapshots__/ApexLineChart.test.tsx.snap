@@ -29,7 +29,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
               "y": 7,
             },
           ],
-          "name": "CO2e",
+          "name": "AWS CO2e",
         },
       ],
       "stroke": Object {
@@ -40,7 +40,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "style": Object {
           "fontSize": "24px",
         },
-        "text": "Cloud Emissions",
+        "text": "Cloud Emissions (Kgs CO2e)",
       },
       "xaxis": Object {
         "convertedCatToNumeric": false,
@@ -57,6 +57,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "type": "datetime",
       },
       "yaxis": Object {
+        "decimalsInFloat": 5,
         "title": Object {
           "offsetX": -8,
           "style": Object {
@@ -76,7 +77,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "y": 7,
           },
         ],
-        "name": "CO2e",
+        "name": "AWS CO2e",
       },
     ]
   }
