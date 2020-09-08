@@ -2,7 +2,7 @@ import { EstimationRequest, validate } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
 import { reduceBy } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
-import { EstimationResult, ServiceData } from '@application/EstimationResult'
+import { EstimationResult } from '@application/EstimationResult'
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
@@ -43,9 +43,9 @@ export default class App {
   }
 
   public async getEstimates(
-      service: ICloudService,
-      estimationRequest: EstimationRequest,
-      region: string,
+    service: ICloudService,
+    estimationRequest: EstimationRequest,
+    region: string,
   ): Promise<{ [date: string]: FootprintEstimate }> {
     const estimates = await service.getEstimates(estimationRequest.startDate, estimationRequest.endDate, region)
     return this.aggregateEstimatesByDay(estimates)
@@ -78,26 +78,33 @@ export default class App {
     const accumulatingFn = (acc: Cost, value: Cost) => {
       acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
       acc.amount += value.amount
-      acc.currency += acc.currency || value.currency
+      acc.currency = acc.currency || value.currency
       return acc
     }
 
     return reduceBy(
-        accumulatingFn,
-        { amount: 0, currency: undefined, timestamp: undefined },
-        getDayOfEstimate,
-        estimates,
+      accumulatingFn,
+      { amount: 0, currency: undefined, timestamp: undefined },
+      getDayOfEstimate,
+      estimates,
     )
   }
 
   private attachCosts(
-      estimatesByDay: { [date: string]: FootprintEstimate },
-      costsByDay: { [p: string]: Cost },
-      service: ICloudService,
-      region: string,
+    estimatesByDay: { [date: string]: FootprintEstimate },
+    costsByDay: { [p: string]: Cost },
+    service: ICloudService,
+    region: string,
   ) {
-    //attach costs
-    let estimationResults: EstimationResult[] = Object.entries(estimatesByDay).map(([day, estimate]) => {
+    // @jose -- the issue is here, we are losing some of the costs when we are attaching
+    // see difference between costs coming in and when we have attached them
+    // eslint-disable-next-line
+    const util = require('util')
+    console.log('*******RAW COSTS********')
+    console.log(service.serviceName)
+    console.log(costsByDay)
+
+    const estimationResults: EstimationResult[] = Object.entries(estimatesByDay).map(([day, estimate]) => {
       const cost = costsByDay[day]?.amount || 0
 
       return {
@@ -114,6 +121,9 @@ export default class App {
         ],
       }
     })
+
+    console.log('*******ATTACHING********')
+    console.log(util.inspect(estimationResults, { showHidden: false, depth: null }))
     return estimationResults
   }
 
@@ -129,6 +139,4 @@ export default class App {
     })
     return estimationResultsByTimestamp
   }
-
-
 }
