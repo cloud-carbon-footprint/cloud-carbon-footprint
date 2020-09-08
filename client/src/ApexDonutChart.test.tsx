@@ -2,9 +2,9 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 import moment from 'moment'
 
-import { ApexLineChart } from './ApexLineChart'
+import { ApexDonutChart } from './ApexDonutChart'
 
-describe('ApexLineChart', () => {
+describe('ApexDonutChart', () => {
   it('renders with correct configuration', () => {
     const data = [
       {
@@ -37,7 +37,7 @@ describe('ApexLineChart', () => {
         ],
       },
     ]
-    const root = create(<ApexLineChart data={data} />)
+    const root = create(<ApexDonutChart data={data} />)
 
     expect(root.toJSON()).toMatchSnapshot()
   })

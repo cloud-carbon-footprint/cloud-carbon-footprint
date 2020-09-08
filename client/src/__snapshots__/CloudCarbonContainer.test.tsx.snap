@@ -72,7 +72,22 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
     </div>
     <div
       class="MuiBox-root MuiBox-root-3"
-    />
+    >
+      <div
+        class="MuiBox-root MuiBox-root-4"
+      >
+        <div>
+          line chart here
+        </div>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-5"
+      >
+        <div>
+          donut chart here
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
