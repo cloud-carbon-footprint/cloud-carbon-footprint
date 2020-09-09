@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import useRemoteService from './hooks/RemoteServiceHook'
+import useFilters from './hooks/FilterHook'
 import { ApexLineChart } from './ApexLineChart'
 import { ApexDonutChart } from './ApexDonutChart'
 import moment from 'moment'
@@ -12,23 +13,22 @@ const CloudCarbonContainer = () => {
   const region: string = 'us-east-1'
 
   const { data, loading } = useRemoteService([], startDate, endDate, region)
-
-  const [dataInTimeframe, setDataInTimeframe] = useState(data)
+  const { filteredData, filters, setFilters } = useFilters(data)
 
   return (
     <Box marginTop={4}>
       <Box marginBottom={4}>
-        <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
+        <MonthFilter filters={filters} setFilters={setFilters} />
       </Box>
       {loading ? (
         <CircularProgress />
       ) : (
         <Box>
           <Box padding={3} border={1} marginBottom={4} borderColor="grey.400">
-            <ApexLineChart data={dataInTimeframe} />
+            <ApexLineChart data={filteredData} />
           </Box>
           <Box padding={3} border={1} borderColor="grey.400">
-            <ApexDonutChart data={dataInTimeframe} />
+            <ApexDonutChart data={filteredData} />
           </Box>
         </Box>
       )}
