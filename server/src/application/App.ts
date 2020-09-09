@@ -1,6 +1,6 @@
 import { EstimationRequest, validate } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
-import { reduceBy } from 'ramda'
+import { reduceBy, union } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
 import { EstimationResult } from '@application/EstimationResult'
 import ICloudService from '@domain/ICloudService'
@@ -8,6 +8,7 @@ import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { RawRequest } from '@view/RawRequest'
 import cache from '@application/Cache'
+import moment from 'moment'
 
 export default class App {
   @cache()
@@ -96,34 +97,24 @@ export default class App {
     service: ICloudService,
     region: string,
   ) {
-    // @jose -- the issue is here, we are losing some of the costs when we are attaching
-    // see difference between costs coming in and when we have attached them
-    // eslint-disable-next-line
-    const util = require('util')
-    console.log('*******RAW COSTS********')
-    console.log(service.serviceName)
-    console.log(costsByDay)
+    const dates = union(Object.keys(estimatesByDay), Object.keys(costsByDay))
 
-    const estimationResults: EstimationResult[] = Object.entries(estimatesByDay).map(([day, estimate]) => {
-      const cost = costsByDay[day]?.amount || 0
-
+    const estimationResults: EstimationResult[] = dates.map((date) => {
       return {
-        timestamp: estimate.timestamp,
+        timestamp: moment.utc(date).toDate(),
         serviceEstimates: [
           {
-            timestamp: estimate.timestamp,
+            timestamp: moment.utc(date).toDate(),
             serviceName: service.serviceName,
-            wattHours: estimate.wattHours,
-            co2e: estimate.co2e,
-            cost: cost,
+            wattHours: estimatesByDay[date]?.wattHours || 0,
+            co2e: estimatesByDay[date]?.co2e || 0,
+            cost: costsByDay[date]?.amount || 0,
             region: region,
           },
         ],
       }
     })
 
-    console.log('*******ATTACHING********')
-    console.log(util.inspect(estimationResults, { showHidden: false, depth: null }))
     return estimationResults
   }
 
