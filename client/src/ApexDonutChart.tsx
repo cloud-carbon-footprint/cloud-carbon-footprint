@@ -7,6 +7,13 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
   const donutData = sumCO2ByService(data)
 
   const options = {
+    height: '500px',
+    labels: Object.keys(donutData),
+    legend: {
+      position: 'top',
+      offsetY: -8,
+    },
+    series: Object.values(donutData),
     title: {
       text: 'Carbon Emissions by Service',
       offsetY: -8,
@@ -14,14 +21,8 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
         fontSize: '24px',
       },
     },
-    height: '500px',
-    series: Object.values(donutData),
-    labels: Object.keys(donutData),
-    legend: {
-      position: 'top',
-      offsetY: -8,
-    },
     tooltip: {
+      fillSeriesColor: false,
       y: {
         formatter: function (value: string) {
           return `${value} kg CO2e`

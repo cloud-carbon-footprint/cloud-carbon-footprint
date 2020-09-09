@@ -29,6 +29,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
         "text": "Carbon Emissions by Service",
       },
       "tooltip": Object {
+        "fillSeriesColor": false,
         "y": Object {
           "formatter": [Function],
         },
