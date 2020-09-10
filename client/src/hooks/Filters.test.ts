@@ -86,13 +86,22 @@ describe('Filters', () => {
       expect(filteredData).toOnlyHaveServices(['ebs'])
       expect(filteredData).toBeWithinTimeframe(3)
     })
+
+    it('should filter by timeframe = 12 by default', () => {
+      const estimationResults = generateEstimations(moment.utc(), 13)
+      const filters = new Filters()
+
+      const filteredData = filters.filter(estimationResults)
+
+      expect(filteredData).toBeWithinTimeframe(12)
+    })
   })
 
   describe('withServices', () => {
     it('should default to All Services', () => {
       const filters = new Filters()
 
-      expect(filters.services).toEqual([ALL_SERVICES])
+      expect(filters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
     })
 
     it('should unselect All Services', () => {
@@ -106,9 +115,7 @@ describe('Filters', () => {
     it('should unselect one service when all services is already selected', () => {
       const filters = new Filters()
 
-      // even though the dropdown shows all options as checked, only 'all' is actually selected.
-      // this means that when you click a checked option in this state, the dropdown thinks you are selecting it
-      const newFilters = filters.withServices(['all', 'ebs'])
+      const newFilters = filters.withServices([ALL_SERVICES, 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
 
       expect(newFilters.services).toEqual(['s3', 'ec2', 'elasticache', 'rds', 'lambda'])
     })
@@ -116,17 +123,37 @@ describe('Filters', () => {
     it('should select an unselected service', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([]).withServices(['ebs'])
+      const newFilters = filters.withServices([]).withServices(['ebs']).withServices(['ebs', 'rds'])
 
-      expect(newFilters.services).toEqual(['ebs'])
+      expect(newFilters.services).toEqual(['ebs', 'rds'])
+    })
+
+    it('should unselect an selected service', () => {
+      const filters = new Filters()
+
+      const newFilters = filters
+        .withServices([])
+        .withServices(['ebs'])
+        .withServices(['ebs', 'rds'])
+        .withServices(['rds'])
+
+      expect(newFilters.services).toEqual(['rds'])
     })
 
     it('should select all services when a service has already been selected', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([]).withServices(['ebs']).withServices(['ebs', 'all'])
+      const newFilters = filters.withServices([]).withServices(['ebs']).withServices(['ebs', ALL_SERVICES])
 
-      expect(newFilters.services).toEqual(['all'])
+      expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+    })
+
+    it('should add ALL_SERVICES when all services are selected', () => {
+      const filters = new Filters()
+
+      const newFilters = filters.withServices([]).withServices(['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+
+      expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
     })
   })
 })

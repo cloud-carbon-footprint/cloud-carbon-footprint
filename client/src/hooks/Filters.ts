@@ -1,6 +1,6 @@
 import { EstimationResult } from '../types'
 import moment from 'moment'
-import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
+import { ALL_SERVICES, SERVICE_OPTIONS, ServiceOption } from '../services'
 
 interface FiltersConfig {
   timeframe: number
@@ -9,8 +9,18 @@ interface FiltersConfig {
 
 const defaultFiltersConfig = {
   timeframe: 12,
-  services: [ALL_SERVICES],
+  services: SERVICE_OPTIONS.map((o) => o.key),
 }
+
+function numSelectedLabel(length: number, totalLength: number) {
+  const lengthWithoutAllOption = totalLength - 1
+  if (length === totalLength) {
+    return `Services: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`
+  } else {
+    return `Services: ${length} of ${lengthWithoutAllOption}`
+  }
+}
+
 export class Filters {
   readonly timeframe: number
   readonly services: string[]
@@ -25,35 +35,14 @@ export class Filters {
   }
 
   withServices(services: string[]): Filters {
-    const oldServices = this.services
-    let newServices
-    if (services.includes(ALL_SERVICES)) {
-      // deselecting one of the services
-      if (oldServices.includes(ALL_SERVICES)) {
-        newServices = SERVICE_OPTIONS.map((option) => option.key).filter((service) => !services.includes(service))
-      } else {
-        // turning on all services
-        newServices = services.filter((service) => service === ALL_SERVICES)
-      }
-    }
-    // turning off all services
-    else if (oldServices.includes(ALL_SERVICES)) {
-      newServices = services.filter((service) => service !== ALL_SERVICES)
-    }
-    // selecting / deselecting a single service
-    else {
-      newServices = services
-    }
-
-    return new Filters({ ...this, services: newServices })
+    return new Filters({
+      ...this,
+      services: handleSelection(services, this.services, ALL_SERVICES, SERVICE_OPTIONS),
+    })
   }
 
-  allServicesSelected(): boolean {
-    return this.services.includes(ALL_SERVICES)
-  }
-
-  noServicesSelected(): boolean {
-    return this.services.length === 0
+  serviceLabel(): string {
+    return numSelectedLabel(this.services.length, SERVICE_OPTIONS.length)
   }
 
   filter(rawResults: EstimationResult[]) {
@@ -73,4 +62,30 @@ export class Filters {
 
     return resultsFilteredByTimestampAndService
   }
+}
+
+function handleSelection(keys: string[], oldKeys: string[], allValue: string, options: ServiceOption[]) {
+  let newKeys: string[]
+  if (keys.includes(allValue)) {
+    // deselecting one of the services
+    if (oldKeys.includes(allValue)) {
+      newKeys = keys.filter((service) => service !== allValue)
+    } else {
+      // turning on all services
+      newKeys = options.map((o) => o.key)
+    }
+  }
+  // turning off all services
+  else if (oldKeys.includes(allValue)) {
+    newKeys = []
+  }
+  // selecting / deselecting a single service
+  else {
+    if (keys.length === options.length - 1) {
+      newKeys = options.map((o) => o.key)
+    } else {
+      newKeys = keys
+    }
+  }
+  return newKeys
 }

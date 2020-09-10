@@ -41,6 +41,7 @@ describe('ServiceFilter', () => {
 
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
 
+    expect(page.getByText('Services: 0 of 6')).toBeInTheDocument()
     await assertCheckbox(page, 'All Services', false)
     await assertCheckbox(page, 'EBS', false)
     await assertCheckbox(page, 'S3', false)
@@ -55,11 +56,12 @@ describe('ServiceFilter', () => {
 
     fireEvent.click(page.getByRole('checkbox-ebs'))
 
-    const newFilters = filters.withServices(['s3', 'ec2', 'elasticache', 'rds', 'lambda'])
+    const newFilters = filters.withServices(['all', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
 
+    expect(page.getByText('Services: 5 of 6')).toBeInTheDocument()
     await assertCheckbox(page, 'All Services', false)
     await assertCheckbox(page, 'EBS', false)
     await assertCheckbox(page, 'S3', true)
