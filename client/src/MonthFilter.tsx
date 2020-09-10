@@ -1,11 +1,13 @@
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
 import { Filters } from './hooks/Filters'
+import { useFilterStyles } from './styles'
 
 const MonthFilter: FunctionComponent<MonthFilterProps> = ({ filters, setFilters }) => {
+  const classes = useFilterStyles()
   return (
     <>
-      <ButtonGroup>
+      <ButtonGroup className={classes.filterWidth}>
         <Button
           disableElevation
           variant={filters.timeframe === 1 ? 'contained' : undefined}

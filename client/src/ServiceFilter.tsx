@@ -6,8 +6,10 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import { serviceLabels, ServiceOption, SERVICE_OPTIONS, NUM_SERVICES } from './services'
 import { Filters } from './hooks/Filters'
+import { useFilterStyles } from './styles'
 
 const ServiceFilter: FunctionComponent<ServiceFilterProps> = ({ filters, setFilters }) => {
+  const classes = useFilterStyles()
   const displayNumSelected = (numSelected: number) =>
     `Services: ${filters.allServicesSelected() ? NUM_SERVICES : numSelected} of ${NUM_SERVICES}`
 
@@ -42,7 +44,7 @@ const ServiceFilter: FunctionComponent<ServiceFilterProps> = ({ filters, setFilt
         </React.Fragment>
       )}
       renderTags={(value: ServiceOption[], getTagProps: AutocompleteGetTagProps) => displayNumSelected(value.length)}
-      style={{ width: 500 }}
+      className={classes.filterWidth}
       renderInput={(params: any) => {
         return (
           <TextField
