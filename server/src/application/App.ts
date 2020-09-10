@@ -3,53 +3,84 @@ import AWSServices from '@application/AWSServices'
 import { reduceBy, union } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
 import { EstimationResult } from '@application/EstimationResult'
-import ICloudService from '@domain/ICloudService'
+
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { RawRequest } from '@view/RawRequest'
 import cache from '@application/Cache'
 import moment from 'moment'
+import Region from '@domain/Region'
 
 export default class App {
   @cache()
   async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
     const estimationRequest: EstimationRequest = validate(rawRequest)
 
+    const services = AWSServices()
+
+    const startDate = estimationRequest.startDate
+    const endDate = estimationRequest.endDate
+
     if (estimationRequest.region) {
-      return await this.getEstimatesByRegion(estimationRequest, estimationRequest.region)
+      const region = new Region(estimationRequest.region, services)
+      return this.getRegionData(region, startDate, endDate)
     } else {
       const estimatesByRegion = await Promise.all(
-        CURRENT_REGIONS.map(async (region) => {
-          return await this.getEstimatesByRegion(estimationRequest, region)
+        CURRENT_REGIONS.map(async (regionId) => {
+          const region = new Region(regionId, services)
+          return this.getRegionData(region, estimationRequest.startDate, estimationRequest.endDate)
         }),
       )
       return estimatesByRegion.flat()
     }
   }
 
-  private async getEstimatesByRegion(estimationRequest: EstimationRequest, region: string) {
-    const estimatesByService: EstimationResult[][] = await Promise.all(
-      AWSServices().map((service) => {
-        return this.getServiceData(service, estimationRequest, region)
-      }),
-    )
-    const estimatesByTimestamp = this.groupByTimestamp(estimatesByService.flat())
-    return Array.from(estimatesByTimestamp.values())
-  }
+  private async getRegionData(region: Region, startDate: Date, endDate: Date) {
+    const data = await Promise.all([region.getEstimates(startDate, endDate), region.getCosts(startDate, endDate)])
 
-  private async getServiceData(service: ICloudService, estimationRequest: EstimationRequest, region: string) {
-    const estimates = await this.getEstimates(service, estimationRequest, region)
-    const costs = await this.getCosts(service, estimationRequest, region)
-    return this.attachCosts(estimates, costs, service, region)
-  }
+    const regionEstimates = data[0]
+    const regionCosts = data[1]
 
-  public async getEstimates(
-    service: ICloudService,
-    estimationRequest: EstimationRequest,
-    region: string,
-  ): Promise<{ [date: string]: FootprintEstimate }> {
-    const estimates = await service.getEstimates(estimationRequest.startDate, estimationRequest.endDate, region)
-    return this.aggregateEstimatesByDay(estimates)
+    const estimatesGroupByService: EstimationResult[][] = region.services.map((service) => {
+      const estimates: FootprintEstimate[] = regionEstimates[service.serviceName]
+      const estimatesByDay = this.aggregateEstimatesByDay(estimates)
+
+      const costs: Cost[] = regionCosts[service.serviceName]
+      const costsByDay = this.aggregateCostsByDay(costs)
+
+      const dates = union(Object.keys(estimatesByDay), Object.keys(costsByDay))
+
+      const dataByDay = dates.reduce((acc: { [date: string]: { estimate: FootprintEstimate; cost: Cost } }, date) => {
+        acc[date] = {
+          estimate: estimatesByDay[date],
+          cost: costsByDay[date],
+        }
+        return acc
+      }, {})
+
+      const estimationResults: EstimationResult[] = Object.entries(dataByDay).map(([date, { estimate, cost }]) => {
+        return {
+          timestamp: moment.utc(date).toDate(),
+          serviceEstimates: [
+            {
+              timestamp: moment.utc(date).toDate(),
+              serviceName: service.serviceName,
+              region: region.id,
+              wattHours: estimate?.wattHours || 0,
+              co2e: estimate?.co2e || 0,
+              cost: cost?.amount || 0,
+            },
+          ],
+        }
+      })
+
+      return estimationResults
+    })
+
+    const estimatesGroupByTimestamp = this.groupByTimestamp(estimatesGroupByService.flat())
+    let estimationResults = Array.from(estimatesGroupByTimestamp.values())
+    estimationResults = estimationResults.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+    return estimationResults
   }
 
   private aggregateEstimatesByDay(estimates: FootprintEstimate[]): { [date: string]: FootprintEstimate } {
@@ -63,15 +94,6 @@ export default class App {
     }
 
     return reduceBy(accumulatingFn, { wattHours: 0, co2e: 0, timestamp: undefined }, getDayOfEstimate, estimates)
-  }
-
-  public async getCosts(
-    service: ICloudService,
-    estimationRequest: EstimationRequest,
-    region: string,
-  ): Promise<{ [date: string]: Cost }> {
-    const costs = await service.getCosts(estimationRequest.startDate, estimationRequest.endDate, region)
-    return this.aggregateCostsByDay(costs)
   }
 
   private aggregateCostsByDay(estimates: Cost[]): { [date: string]: Cost } {
@@ -91,35 +113,8 @@ export default class App {
     )
   }
 
-  private attachCosts(
-    estimatesByDay: { [date: string]: FootprintEstimate },
-    costsByDay: { [p: string]: Cost },
-    service: ICloudService,
-    region: string,
-  ) {
-    const dates = union(Object.keys(estimatesByDay), Object.keys(costsByDay))
-
-    const estimationResults: EstimationResult[] = dates.map((date) => {
-      return {
-        timestamp: moment.utc(date).toDate(),
-        serviceEstimates: [
-          {
-            timestamp: moment.utc(date).toDate(),
-            serviceName: service.serviceName,
-            wattHours: estimatesByDay[date]?.wattHours || 0,
-            co2e: estimatesByDay[date]?.co2e || 0,
-            cost: costsByDay[date]?.amount || 0,
-            region: region,
-          },
-        ],
-      }
-    })
-
-    return estimationResults
-  }
-
-  private groupByTimestamp(estimationResultsByDay: EstimationResult[]): Map<any, any> {
-    const estimationResultsByTimestamp = new Map()
+  private groupByTimestamp(estimationResultsByDay: EstimationResult[]): EstimationResult[] {
+    const estimationResultsByTimestamp = new Map<any, EstimationResult>()
     estimationResultsByDay.forEach((estimationResult) => {
       const time = estimationResult.timestamp.getTime()
       if (!estimationResultsByTimestamp.has(time)) estimationResultsByTimestamp.set(time, estimationResult)
@@ -128,6 +123,6 @@ export default class App {
         serviceEstimates.serviceEstimates.push(...estimationResult.serviceEstimates)
       }
     })
-    return estimationResultsByTimestamp
+    return Array.from(estimationResultsByTimestamp.values())
   }
 }
