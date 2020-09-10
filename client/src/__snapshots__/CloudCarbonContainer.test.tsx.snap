@@ -12,7 +12,86 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
         class="MuiBox-root MuiBox-root-1"
       >
         <div
-          class="MuiButtonGroup-root"
+          aria-expanded="false"
+          class="MuiAutocomplete-root makeStyles-filterWidth-2 MuiAutocomplete-hasPopupIcon"
+          role="combobox"
+        >
+          <div
+            class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-marginDense MuiInputLabel-outlined"
+              data-shrink="true"
+              for="services-filter"
+              id="services-filter-label"
+            >
+              AWS Services
+            </label>
+            <div
+              class="MuiInputBase-root MuiOutlinedInput-root MuiAutocomplete-inputRoot MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-adornedStart MuiOutlinedInput-adornedStart MuiInputBase-adornedEnd MuiOutlinedInput-adornedEnd MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+            >
+              Services: 6 of 6
+              <input
+                aria-autocomplete="list"
+                aria-invalid="false"
+                autocapitalize="none"
+                autocomplete="off"
+                class="MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused MuiInputBase-inputAdornedStart MuiOutlinedInput-inputAdornedStart MuiInputBase-inputAdornedEnd MuiOutlinedInput-inputAdornedEnd MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                id="services-filter"
+                spellcheck="false"
+                type="text"
+                value=""
+              />
+              <div
+                class="MuiAutocomplete-endAdornment"
+              >
+                <button
+                  aria-label="Open"
+                  class="MuiButtonBase-root MuiIconButton-root MuiAutocomplete-popupIndicator"
+                  tabindex="-1"
+                  title="Open"
+                  type="button"
+                >
+                  <span
+                    class="MuiIconButton-label"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M7 10l5 5 5-5z"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+              <fieldset
+                aria-hidden="true"
+                class="PrivateNotchedOutline-root-3 MuiOutlinedInput-notchedOutline"
+              >
+                <legend
+                  class="PrivateNotchedOutline-legendLabelled-5 PrivateNotchedOutline-legendNotched-6"
+                >
+                  <span>
+                    AWS Services
+                  </span>
+                </legend>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-7"
+      >
+        <div
+          class="MuiButtonGroup-root makeStyles-filterWidth-2"
           role="group"
         >
           <button
@@ -81,7 +160,7 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
         class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
       >
         <div
-          class="MuiBox-root MuiBox-root-2"
+          class="MuiBox-root MuiBox-root-8"
         >
           <div>
             line chart here
@@ -92,37 +171,37 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
         class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
       >
         <div
-          class="MuiPaper-root MuiCard-root makeStyles-root-3 MuiPaper-elevation1 MuiPaper-rounded"
+          class="MuiPaper-root MuiCard-root makeStyles-root-9 MuiPaper-elevation1 MuiPaper-rounded"
         >
           <div
-            class="MuiCardContent-root makeStyles-topContainer-8"
+            class="MuiCardContent-root makeStyles-topContainer-14"
           >
             <p
-              class="MuiTypography-root makeStyles-title-5 MuiTypography-body1 MuiTypography-gutterBottom"
+              class="MuiTypography-root makeStyles-title-11 MuiTypography-body1 MuiTypography-gutterBottom"
             >
               Your Cumulative Emissions are
             </p>
             <h2
-              class="MuiTypography-root makeStyles-metricOne-11 MuiTypography-h4"
+              class="MuiTypography-root makeStyles-metricOne-17 MuiTypography-h4"
             >
-              84
+              1.8e+2
                kg CO2e
             </h2>
             <p
-              class="MuiTypography-root makeStyles-posOne-6 MuiTypography-body1"
+              class="MuiTypography-root makeStyles-posOne-12 MuiTypography-body1"
             >
               that is equivalent to
             </p>
           </div>
           <div
-            class="MuiCardContent-root makeStyles-bottomContainer-9"
+            class="MuiCardContent-root makeStyles-bottomContainer-15"
           >
             <p
               class="MuiTypography-root MuiTypography-body1"
             >
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root makeStyles-icon-13"
+                class="MuiSvgIcon-root makeStyles-icon-19"
                 data-testid="milesIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -136,27 +215,27 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
               class="MuiCardContent-root"
             >
               <h2
-                class="MuiTypography-root makeStyles-posTwo-7 MuiTypography-h5"
+                class="MuiTypography-root makeStyles-posTwo-13 MuiTypography-h5"
               >
                 greenhouse gas emissions from
               </h2>
               <h2
-                class="MuiTypography-root makeStyles-metricTwo-12 MuiTypography-h3"
+                class="MuiTypography-root makeStyles-metricTwo-18 MuiTypography-h3"
               >
-                2.1e+2
+                4.5e+2
               </h2>
               <h2
-                class="MuiTypography-root makeStyles-posTwo-7 MuiTypography-h5"
+                class="MuiTypography-root makeStyles-posTwo-13 MuiTypography-h5"
               >
                 miles driven by an average passenger vehicle
               </h2>
             </div>
           </div>
           <div
-            class="MuiCardActions-root makeStyles-buttonContainer-10 MuiCardActions-spacing"
+            class="MuiCardActions-root makeStyles-buttonContainer-16 MuiCardActions-spacing"
           >
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-activeButton-15"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-activeButton-21"
               tabindex="0"
               type="button"
             >
@@ -170,7 +249,7 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
               />
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-14"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-20"
               tabindex="0"
               type="button"
             >
@@ -184,7 +263,7 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
               />
             </button>
             <button
-              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-14"
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-20"
               tabindex="0"
               type="button"
             >
@@ -204,7 +283,7 @@ exports[`CloudCarbonContainer match against snapshot 1`] = `
         class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
       >
         <div
-          class="MuiBox-root MuiBox-root-16"
+          class="MuiBox-root MuiBox-root-22"
         >
           <div>
             donut chart here

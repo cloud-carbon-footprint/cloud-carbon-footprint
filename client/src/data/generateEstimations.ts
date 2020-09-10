@@ -1,5 +1,5 @@
 import moment, { Moment } from 'moment'
-import { EstimationResult } from '../types'
+import { EstimationResult, serviceEstimate } from '../types'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))
@@ -9,7 +9,64 @@ const getRandomNumberInRange = (minValue: number, maxValue: number): number => {
   return Math.max(Math.random() * maxValue, minValue + Math.random())
 }
 
-const generateEstimations = (today: moment.Moment | Date, monthsBack: number): EstimationResult[] => {
+const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = (timestamp: Date) => {
+  return {
+    ebs: {
+      timestamp,
+      serviceName: 'ebs',
+      wattHours: Math.random(),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east-1',
+    },
+    s3: {
+      timestamp,
+      serviceName: 's3',
+      wattHours: Math.random() / 1000,
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east-1',
+    },
+    ec2: {
+      timestamp,
+      serviceName: 'ec2',
+      wattHours: getRandomNumberInRange(50, 75),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east-1',
+    },
+    rds: {
+      timestamp,
+      serviceName: 'rds',
+      wattHours: getRandomNumberInRange(50, 75),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east-1',
+    },
+    lambda: {
+      timestamp,
+      serviceName: 'lambda',
+      wattHours: getRandomNumberInRange(50, 75),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east-1',
+    },
+    elasticache: {
+      timestamp,
+      serviceName: 'elasticache',
+      wattHours: getRandomNumberInRange(50, 75),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east-1',
+    },
+  }
+}
+
+const generateEstimations = (
+  today: moment.Moment | Date,
+  monthsBack: number,
+  servicesToTest: string[] = ['ebs', 's3', 'ec2', 'rds', 'lambda', 'elasticache'],
+): EstimationResult[] => {
   const todayAsMoment: moment.Moment = moment(today)
 
   const estimationResults: EstimationResult[] = []
@@ -26,32 +83,9 @@ const generateEstimations = (today: moment.Moment | Date, monthsBack: number): E
       .toDate()
     const estimationsForMonth: EstimationResult = {
       timestamp,
-      serviceEstimates: [
-        {
-          timestamp,
-          serviceName: 'ebs',
-          wattHours: Math.random(),
-          co2e: getRandomInt(6),
-          cost: 0,
-          region: 'us-east-1',
-        },
-        {
-          timestamp,
-          serviceName: 's3',
-          wattHours: Math.random() / 1000,
-          co2e: getRandomInt(6),
-          cost: 0,
-          region: 'us-east-1',
-        },
-        {
-          timestamp,
-          serviceName: 'ec2',
-          wattHours: getRandomNumberInRange(50, 75),
-          co2e: getRandomInt(6),
-          cost: getRandomNumberInRange(1.5, 2),
-          region: 'us-east-1',
-        },
-      ],
+      serviceEstimates: servicesToTest.map((serviceToTest: string) => {
+        return fakeServiceMap(timestamp)[serviceToTest]
+      }),
     }
 
     estimationResults.push(estimationsForMonth)

@@ -15,7 +15,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 1,
           co2e: 1,
           cost: 0,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -23,7 +22,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 2,
           co2e: 2,
           cost: 0,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -31,7 +29,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 3,
           co2e: 3,
           cost: 0,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -39,7 +36,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 4,
           co2e: 4,
           cost: 0,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -47,7 +43,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 4,
           co2e: 4,
           cost: 0,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -55,7 +50,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 1,
           co2e: 1,
           cost: 0,
-          timestamp: timestamp,
           region: region,
         },
       ],
@@ -68,7 +62,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 7,
           co2e: 8,
           cost: 6,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -76,7 +69,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 55,
           co2e: 1,
           cost: 6,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -84,7 +76,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 90,
           co2e: 77,
           cost: 6,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -92,7 +83,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 747,
           co2e: 787,
           cost: 6,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -100,7 +90,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 747,
           co2e: 787,
           cost: 6,
-          timestamp: timestamp,
           region: region,
         },
         {
@@ -108,7 +97,6 @@ describe('EmissionsByDayTable', () => {
           wattHours: 300,
           co2e: 300,
           cost: 6,
-          timestamp: timestamp,
           region: region,
         },
       ],

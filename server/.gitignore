@@ -1,0 +1,5 @@
+server/**/*.js
+server/**/*.js.snap
+server/**/*.map
+*.csv
+*.cache.json

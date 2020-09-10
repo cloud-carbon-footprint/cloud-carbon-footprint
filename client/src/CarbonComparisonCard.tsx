@@ -22,7 +22,6 @@ const useStyles = makeStyles({
   posOne: {
     fontSize: 16,
     color: '#FFFFFF',
-    marginBottom: 12,
   },
   posTwo: {
     maxWidth: 250,

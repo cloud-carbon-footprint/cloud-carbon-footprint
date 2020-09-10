@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/react-hooks": "^3.4.1",
@@ -25,11 +26,11 @@
   },
   "proxy": "http://localhost:4000",
   "scripts": {
-    "precommit": "lint-staged",
+    "precommit": "lint-staged --debug && npm run test:precommit",
     "start": "CI=true react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --no-watch-all --coverage",
-    "test:precommit": "react-scripts test --no-watch-all --coverage --bail --findRelatedTests",
+    "test": "react-scripts test --coverage --watchAll=false",
+    "test:precommit": "npm test -- --bail",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./",
@@ -58,8 +59,7 @@
   "lint-staged": {
     "*.{js,jsx,md,ts,tsx}": [
       "npm run lint",
-      "prettier --write --ignore-unknown --config ../.prettierrc.json",
-      "npm run test:precommit"
+      "prettier --write --ignore-unknown --config ../.prettierrc.json"
     ]
   }
 }

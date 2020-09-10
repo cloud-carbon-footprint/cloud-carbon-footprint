@@ -256,9 +256,6 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/node,react,macos,intellij+all,visualstudiocode
 
 # Custom
- server/**/*.js
- server/**/*.js.snap
- server/**/*.map
  coverage
  *.csv
 .config
