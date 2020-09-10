@@ -63,7 +63,6 @@ export default class App {
           timestamp: moment.utc(date).toDate(),
           serviceEstimates: [
             {
-              timestamp: moment.utc(date).toDate(),
               serviceName: service.serviceName,
               region: region.id,
               wattHours: estimate?.wattHours || 0,
