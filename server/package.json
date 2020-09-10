@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "precommit": "lint-staged",
+    "precommit": "lint-staged --debug",
     "test": "jest --coverage --maxWorkers 2",
     "test:watch": "jest --coverage --watchAll",
     "test:clean": "jest --clearCache",
