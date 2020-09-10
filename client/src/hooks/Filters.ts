@@ -56,12 +56,21 @@ export class Filters {
     return this.services.length === 0
   }
 
-  filter(results: EstimationResult[]) {
+  filter(rawResults: EstimationResult[]) {
     const today: moment.Moment = moment.utc()
     const todayMinusXMonths: moment.Moment = today.clone().subtract(this.timeframe, 'M')
 
-    return results.filter((estimationResult: EstimationResult) =>
+    const resultsFilteredByTimestamp = rawResults.filter((estimationResult: EstimationResult) =>
       moment.utc(estimationResult.timestamp).isBetween(todayMinusXMonths, today, 'day', '[]'),
     )
+
+    const resultsFilteredByTimestampAndService = resultsFilteredByTimestamp.map((estimationResult) => {
+      const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
+        return this.services.includes(serviceEstimate.serviceName) || this.services.includes(ALL_SERVICES)
+      })
+      return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
+    })
+
+    return resultsFilteredByTimestampAndService
   }
 }
