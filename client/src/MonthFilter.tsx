@@ -1,55 +1,42 @@
-import React, { FunctionComponent, Dispatch, SetStateAction, useState, useEffect } from 'react'
+import React, { Dispatch, FunctionComponent, SetStateAction } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
-import moment from 'moment'
-import { EstimationResult } from './types'
+import { Filters } from './hooks/Filters'
+import { useFilterStyles } from './styles'
 
-const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteService, setDataInTimeframe }) => {
-  const [timeframe, setTimeframe] = useState(12)
-
-  useEffect(() => {
-    // Assumption: API always returns timestamps at start of day, i.e. YYYY-MM-DDT00:00:00.000Z
-    const today: moment.Moment = moment.utc()
-    const todayMinusXMonths: moment.Moment = today.clone().subtract(timeframe, 'M')
-
-    const dataInTimeframe: EstimationResult[] = dataFromRemoteService.filter((estimationResult: EstimationResult) =>
-      moment.utc(estimationResult.timestamp).isBetween(todayMinusXMonths, today, 'day', '[]'),
-    )
-
-    setDataInTimeframe(dataInTimeframe)
-  }, [timeframe, dataFromRemoteService, setDataInTimeframe])
-
+const MonthFilter: FunctionComponent<MonthFilterProps> = ({ filters, setFilters }) => {
+  const classes = useFilterStyles()
   return (
     <>
-      <ButtonGroup>
+      <ButtonGroup className={classes.filterWidth}>
         <Button
           disableElevation
-          variant={timeframe === 1 ? 'contained' : undefined}
-          color={timeframe === 1 ? 'primary' : 'default'}
-          onClick={() => setTimeframe(1)}
+          variant={filters.timeframe === 1 ? 'contained' : undefined}
+          color={filters.timeframe === 1 ? 'primary' : 'default'}
+          onClick={() => setFilters(filters.withTimeFrame(1))}
         >
           1M
         </Button>
         <Button
           disableElevation
-          variant={timeframe === 3 ? 'contained' : undefined}
-          color={timeframe === 3 ? 'primary' : 'default'}
-          onClick={() => setTimeframe(3)}
+          variant={filters.timeframe === 3 ? 'contained' : undefined}
+          color={filters.timeframe === 3 ? 'primary' : 'default'}
+          onClick={() => setFilters(filters.withTimeFrame(3))}
         >
           3M
         </Button>
         <Button
           disableElevation
-          variant={timeframe === 6 ? 'contained' : undefined}
-          color={timeframe === 6 ? 'primary' : 'default'}
-          onClick={() => setTimeframe(6)}
+          variant={filters.timeframe === 6 ? 'contained' : undefined}
+          color={filters.timeframe === 6 ? 'primary' : 'default'}
+          onClick={() => setFilters(filters.withTimeFrame(6))}
         >
           6M
         </Button>
         <Button
           disableElevation
-          variant={timeframe === 12 ? 'contained' : undefined}
-          color={timeframe === 12 ? 'primary' : 'default'}
-          onClick={() => setTimeframe(12)}
+          variant={filters.timeframe === 12 ? 'contained' : undefined}
+          color={filters.timeframe === 12 ? 'primary' : 'default'}
+          onClick={() => setFilters(filters.withTimeFrame(12))}
         >
           12M
         </Button>
@@ -59,8 +46,8 @@ const MonthFilter: FunctionComponent<MonthFilterProps> = ({ dataFromRemoteServic
 }
 
 type MonthFilterProps = {
-  dataFromRemoteService: EstimationResult[]
-  setDataInTimeframe: Dispatch<SetStateAction<EstimationResult[]>>
+  filters: Filters
+  setFilters: Dispatch<SetStateAction<Filters>>
 }
 
 export default MonthFilter

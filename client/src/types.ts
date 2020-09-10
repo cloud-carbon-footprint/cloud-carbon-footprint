@@ -1,5 +1,4 @@
 export interface serviceEstimate {
-  timestamp: Date
   serviceName: string
   wattHours: number
   co2e: number

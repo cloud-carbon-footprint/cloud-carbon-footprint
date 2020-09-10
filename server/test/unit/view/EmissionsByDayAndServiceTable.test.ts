@@ -12,7 +12,6 @@ describe('EmissionsTable', () => {
       timestamp: timestamp1,
       serviceEstimates: [
         {
-          timestamp: timestamp1,
           serviceName: 'ebs',
           wattHours: 1,
           co2e: 1,
@@ -20,7 +19,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp1,
           serviceName: 's3',
           wattHours: 2,
           co2e: 2,
@@ -28,7 +26,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp1,
           serviceName: 'ec2',
           wattHours: 3,
           co2e: 3,
@@ -36,7 +33,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp1,
           serviceName: 'elasticache',
           wattHours: 4,
           co2e: 4,
@@ -44,7 +40,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp1,
           serviceName: 'rds',
           wattHours: 4,
           co2e: 4,
@@ -52,7 +47,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp1,
           serviceName: 'lambda',
           wattHours: 1,
           co2e: 1,
@@ -65,7 +59,6 @@ describe('EmissionsTable', () => {
       timestamp: timestamp2,
       serviceEstimates: [
         {
-          timestamp: timestamp2,
           serviceName: 'ebs',
           wattHours: 7,
           co2e: 8,
@@ -73,7 +66,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp2,
           serviceName: 's3',
           wattHours: 55,
           co2e: 1,
@@ -81,7 +73,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp2,
           serviceName: 'ec2',
           wattHours: 90,
           co2e: 77,
@@ -89,7 +80,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp2,
           serviceName: 'elasticache',
           wattHours: 747,
           co2e: 787,
@@ -97,7 +87,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp2,
           serviceName: 'rds',
           wattHours: 747,
           co2e: 787,
@@ -105,7 +94,6 @@ describe('EmissionsTable', () => {
           region: region,
         },
         {
-          timestamp: timestamp2,
           serviceName: 'lambda',
           wattHours: 300,
           co2e: 300,

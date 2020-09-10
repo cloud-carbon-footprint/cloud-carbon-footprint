@@ -1,66 +1,85 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import MonthFilter from './MonthFilter'
-import generateEstimations from './data/generateEstimations'
-import { EstimationResult } from './types'
-import moment from 'moment'
+import { Filters } from './hooks/Filters'
 
 describe('MonthFilter', () => {
-  let data: EstimationResult[]
-  let mockSetDataInTimeframe: jest.Mocked<Dispatch<SetStateAction<EstimationResult[]>>>
+  let filters: Filters
+  let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
 
   beforeEach(() => {
-    data = generateEstimations(moment.utc(), 14)
-    mockSetDataInTimeframe = jest.fn()
+    filters = new Filters()
+    mockSetFilters = jest.fn()
   })
 
   test('initial timeframe should filter up to 12 months prior', () => {
-    render(<MonthFilter dataFromRemoteService={data} setDataInTimeframe={mockSetDataInTimeframe} />)
+    const page = render(<MonthFilter filters={filters} setFilters={mockSetFilters} />)
 
-    expect(mockSetDataInTimeframe).toHaveBeenCalledWith(data.slice(0, 13))
+    expect(mockSetFilters).not.toHaveBeenCalled()
+
+    expect(page.getByText('1M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('3M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('6M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('12M').closest('button')).toHaveClass('MuiButton-containedPrimary')
   })
 
   test('clicking 1M button should filter up to 1 month prior', () => {
-    const { getByText } = render(
-      <MonthFilter dataFromRemoteService={data} setDataInTimeframe={mockSetDataInTimeframe} />,
-    )
+    const page = render(<MonthFilter filters={filters} setFilters={mockSetFilters} />)
 
-    fireEvent.click(getByText('1M'))
+    fireEvent.click(page.getByText('1M'))
 
-    expect(mockSetDataInTimeframe).toHaveBeenCalledWith(data.slice(0, 2))
+    let newFilters = filters.withTimeFrame(1)
+    expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
+
+    page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
+    expect(page.getByText('1M').closest('button')).toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('3M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('6M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('12M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
   })
 
   test('clicking 3M button should filter up to 3 months prior', () => {
-    const { getByText } = render(
-      <MonthFilter dataFromRemoteService={data} setDataInTimeframe={mockSetDataInTimeframe} />,
-    )
+    const page = render(<MonthFilter filters={filters} setFilters={mockSetFilters} />)
 
-    fireEvent.click(getByText('3M'))
+    fireEvent.click(page.getByText('3M'))
 
-    expect(mockSetDataInTimeframe).toHaveBeenCalledWith(data.slice(0, 4))
+    let newFilters = filters.withTimeFrame(3)
+    expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
+
+    page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
+    expect(page.getByText('1M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('3M').closest('button')).toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('6M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('12M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
   })
 
   test('clicking 6M button should filter up to 3 months prior', () => {
-    const { getByText } = render(
-      <MonthFilter dataFromRemoteService={data} setDataInTimeframe={mockSetDataInTimeframe} />,
-    )
+    const page = render(<MonthFilter filters={filters} setFilters={mockSetFilters} />)
 
-    fireEvent.click(getByText('6M'))
+    fireEvent.click(page.getByText('6M'))
 
-    expect(mockSetDataInTimeframe).toHaveBeenCalledWith(data.slice(0, 7))
+    let newFilters = filters.withTimeFrame(6)
+    expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
+
+    page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
+    expect(page.getByText('1M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('3M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('6M').closest('button')).toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('12M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
   })
 
   test('clicking 12M button should filter up to 12 months prior', () => {
-    const { getByText } = render(
-      <MonthFilter dataFromRemoteService={data} setDataInTimeframe={mockSetDataInTimeframe} />,
-    )
+    const page = render(<MonthFilter filters={filters} setFilters={mockSetFilters} />)
 
-    // click away from initial state
-    fireEvent.click(getByText('1M'))
+    fireEvent.click(page.getByText('12M'))
 
-    // click to filter up to 12M prior
-    fireEvent.click(getByText('12M'))
+    let newFilters = filters.withTimeFrame(12)
+    expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
-    expect(mockSetDataInTimeframe).toHaveBeenCalledWith(data.slice(0, 13))
+    page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
+    expect(page.getByText('1M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('3M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('6M').closest('button')).not.toHaveClass('MuiButton-containedPrimary')
+    expect(page.getByText('12M').closest('button')).toHaveClass('MuiButton-containedPrimary')
   })
 })

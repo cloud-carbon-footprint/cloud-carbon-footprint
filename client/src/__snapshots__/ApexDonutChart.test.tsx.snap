@@ -5,6 +5,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
   data-testid="fake-donut-chart"
   options={
     Object {
+      "height": "500px",
       "labels": Array [
         "ebs",
         "s3",
@@ -27,6 +28,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
         "text": "Carbon Emissions by Service",
       },
       "tooltip": Object {
+        "fillSeriesColor": false,
         "y": Object {
           "formatter": [Function],
         },

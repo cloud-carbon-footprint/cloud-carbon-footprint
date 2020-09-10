@@ -31,11 +31,3 @@ test('should work with JS Date', () => {
   expect(result[2].timestamp).toStrictEqual(today.clone().subtract(2, 'M').toDate())
   expect(result[3].timestamp).toStrictEqual(today.clone().subtract(3, 'M').toDate())
 })
-
-// TODO: Call generateEstimations from stub-server index.js file instead of static file
-test.skip('print to JSON', () => {
-  const today = moment.utc().hours(0).minutes(0).seconds(0).millisecond(0)
-  const result = generateEstimations(today, 15)
-
-  console.log(JSON.stringify(result))
-})
