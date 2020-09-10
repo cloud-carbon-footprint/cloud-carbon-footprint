@@ -48,19 +48,8 @@ describe('Cache', () => {
     propertyDescriptor = { value: originalFunction }
   })
 
-  describe('cache returned function', () => {
-    it('should call original function if cache returns undefined', async () => {
-      //setup
-
-      //run
-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const request = {}
-      await propertyDescriptor.value(request)
-      //assert
-      expect(originalFunction).toHaveBeenCalledWith(request)
-    })
-
-    it('should return cached data from cache service instead of calling the real method', async () => {
+  describe('cache-returned function', () => {
+    it('returns cached data from cache service instead of calling the real method', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2020-01-01').toISOString(),
@@ -84,7 +73,7 @@ describe('Cache', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    it('should fetch dates not stored in cache', async () => {
+    it('fetches dates not stored in cache', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2019-12-31').toISOString(),
@@ -114,7 +103,7 @@ describe('Cache', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    it('should call original function with the expected request', async () => {
+    it('calls original function with the expected request', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2019-12-31').toISOString(),
@@ -141,7 +130,7 @@ describe('Cache', () => {
       })
     })
 
-    it('should not fetch dates when cache service return unordered estimates', async () => {
+    it('does not fetch dates when cache service returns unordered estimates', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2020-07-31').toISOString(),
@@ -171,7 +160,7 @@ describe('Cache', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    it('should save new data into cache', async () => {
+    it('saves new data into cache', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2019-12-31').toISOString(),
@@ -194,7 +183,7 @@ describe('Cache', () => {
       expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates)
     })
 
-    it('should cache dates with empty estimates if original function returns no results', async () => {
+    it('caches dates with empty estimates if original function returns no results', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2020-07-10').toISOString(),
@@ -225,7 +214,7 @@ describe('Cache', () => {
       expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates.concat(buildFootprintEstimates('2020-07-15', 5)))
     })
 
-    it('should remove empty estimates', async () => {
+    it('removes empty estimates', async () => {
       //setup
       const rawRequest: RawRequest = {
         startDate: moment.utc('2020-07-10').toISOString(),
@@ -254,6 +243,24 @@ describe('Cache', () => {
 
       //assert
       expect(results).toEqual(computedEstimates)
+    })
+  })
+
+  describe('given invalid request', () => {
+    it('throws an estimation validation error', async () => {
+      // setup
+      const invalidRequest: RawRequest = {
+        startDate: moment.utc('2020-07-10').toISOString(),
+        endDate: moment.utc('2020-07-10').toISOString(),
+        region: 'us-east-1',
+      }
+
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+
+      //assert
+      await expect(() => {
+        return propertyDescriptor.value(invalidRequest)
+      }).rejects.toThrow('Start date is not before end date')
     })
   })
 })
