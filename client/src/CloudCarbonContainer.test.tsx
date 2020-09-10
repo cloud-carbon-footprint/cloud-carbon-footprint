@@ -1,19 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
-import { ApexDonutChart } from './ApexDonutChart'
-import { ApexLineChart } from './ApexLineChart'
 import useRemoteService from './hooks/RemoteServiceHook'
 import generateEstimations from './data/generateEstimations'
 import { ServiceResult, EstimationResult } from './types'
 import moment from 'moment'
 
-jest.mock('./ApexLineChart', () => ({
-  ApexLineChart: jest.fn(() => <div>line chart here</div>),
-}))
-jest.mock('./ApexDonutChart', () => ({
-  ApexDonutChart: jest.fn(() => <div>donut chart here</div>),
-}))
 jest.mock('./hooks/RemoteServiceHook')
 
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
@@ -34,9 +26,10 @@ describe('CloudCarbonContainer', () => {
   })
 
   test('match against snapshot', () => {
-    const { container } = render(<CloudCarbonContainer />)
+    const { getByTestId } = render(<CloudCarbonContainer />)
 
-    expect(container).toMatchSnapshot()
+    expect(getByTestId('fake-line-chart')).toBeInTheDocument()
+    expect(getByTestId('fake-donut-chart')).toBeInTheDocument()
   })
 
   test('today and year prior to today should be passed in to remote service hook', () => {
@@ -57,33 +50,7 @@ describe('CloudCarbonContainer', () => {
     expect(region).toEqual(REGION_US_EAST_1)
   })
 
-  test('initial timeframe should filter up to 12 months prior and pass into line chart', () => {
-    const mockApexLineChart = ApexLineChart as jest.Mocked<typeof ApexLineChart>
-
-    render(<CloudCarbonContainer />)
-
-    expect(mockApexLineChart).toHaveBeenLastCalledWith(
-      {
-        data: data.slice(0, 13),
-      },
-      expect.anything(),
-    )
-  })
-
-  test('initial timeframe should filter up to 12 months prior and pass into donut chart', () => {
-    const mockApexDonutChart = ApexLineChart as jest.Mocked<typeof ApexDonutChart>
-
-    render(<CloudCarbonContainer />)
-
-    expect(mockApexDonutChart).toHaveBeenLastCalledWith(
-      {
-        data: data.slice(0, 13),
-      },
-      expect.anything(),
-    )
-  })
-
-  test('show loading text if data has not been returned', () => {
+  test('show loading icon if data has not been returned', () => {
     const mockLoading: ServiceResult = { loading: true, error: false, data: data }
     mockUseRemoteService.mockReturnValue(mockLoading)
 
