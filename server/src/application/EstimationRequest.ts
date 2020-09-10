@@ -11,8 +11,8 @@ export interface EstimationRequest {
 }
 
 export class EstimationRequestValidationError extends Error {
-  constructor(...params: any) {
-    super(...params)
+  constructor(message: string) {
+    super(message)
     this.name = 'EstimationRequestValidationError'
     Object.setPrototypeOf(this, EstimationRequestValidationError.prototype)
   }
@@ -43,7 +43,7 @@ export function validate(request: RawRequest): EstimationRequest {
     errors.push('Not a valid region for this account')
   }
 
-  if (startDate.isAfter(endDate)) {
+  if (startDate.isSameOrAfter(endDate)) {
     errors.push('Start date is not before end date')
   }
 

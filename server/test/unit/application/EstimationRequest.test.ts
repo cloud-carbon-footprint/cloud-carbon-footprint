@@ -29,6 +29,16 @@ describe('validate', () => {
     expect(() => validate(input)).toThrow('Start date is not before end date')
   })
 
+  it('ensures the start date is not the end date', () => {
+    const input = {
+      startDate: '2020-07-13',
+      endDate: '2020-07-13',
+      region: AWS_REGIONS.US_EAST_1,
+    }
+
+    expect(() => validate(input)).toThrow('Start date is not before end date')
+  })
+
   it('ensures the start date is in the past', () => {
     const input = {
       startDate: '3000-07-14',
