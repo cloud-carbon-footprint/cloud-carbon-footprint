@@ -18,7 +18,6 @@ jest.mock('@application/EstimatorCacheFileSystem', () => {
 
 const dummyServiceEstimate: ServiceData[] = [
   {
-    timestamp: new Date(),
     serviceName: '',
     wattHours: 0,
     co2e: 0,
@@ -196,7 +195,6 @@ describe('Cache', () => {
 
       const computedEstimates: EstimationResult[] = buildFootprintEstimates('2020-07-10', 5, [
         {
-          timestamp: new Date(),
           serviceName: '',
           wattHours: 0,
           co2e: 0,
@@ -227,7 +225,6 @@ describe('Cache', () => {
 
       const computedEstimates: EstimationResult[] = buildFootprintEstimates('2020-07-10', 5, [
         {
-          timestamp: new Date(),
           serviceName: '',
           wattHours: 0,
           co2e: 0,

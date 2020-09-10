@@ -61,7 +61,6 @@ describe('App', () => {
           timestamp: moment.utc(startDate).add(i, 'days').toDate(),
           serviceEstimates: [
             {
-              timestamp: moment.utc(startDate).add(i, 'days').toDate(),
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -129,7 +128,6 @@ describe('App', () => {
           timestamp: new Date(startDate),
           serviceEstimates: [
             {
-              timestamp: new Date(startDate),
               serviceName: 'serviceOne',
               wattHours: 2,
               co2e: 2,
@@ -137,7 +135,6 @@ describe('App', () => {
               region: region,
             },
             {
-              timestamp: new Date(startDate),
               serviceName: 'serviceTwo',
               wattHours: 1,
               co2e: 1,
@@ -190,7 +187,6 @@ describe('App', () => {
           timestamp: new Date(startDate),
           serviceEstimates: [
             {
-              timestamp: new Date(startDate),
               serviceName: 'serviceOne',
               wattHours: 3,
               co2e: 6,
@@ -235,10 +231,6 @@ describe('App', () => {
             .toDate(),
           serviceEstimates: [
             {
-              timestamp: moment
-                .utc(startDate)
-                .subtract(6 - i, 'days')
-                .toDate(),
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
