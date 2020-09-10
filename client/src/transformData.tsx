@@ -29,4 +29,9 @@ const sumCO2ByService = (data: EstimationResult[]): { string: number } => {
   }, Object.create({}))
 }
 
-export { sumCO2ByService, transformData }
+const sumCO2 = (data: EstimationResult[]): number => {
+  const serviceEstimates = data.flatMap((estimationResult) => estimationResult.serviceEstimates)
+  return serviceEstimates.reduce((acc, currentValue) => acc + currentValue.co2e, 0)
+}
+
+export { sumCO2,sumCO2ByService, transformData }

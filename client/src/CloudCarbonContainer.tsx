@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import useRemoteService from './hooks/RemoteServiceHook'
 import { ApexLineChart } from './ApexLineChart'
 import { ApexDonutChart } from './ApexDonutChart'
+import { CarbonComparisonCard } from './CarbonComparisonCard'
 import moment from 'moment'
 import MonthFilter from './MonthFilter'
-import { Box, CircularProgress } from '@material-ui/core'
+import { Grid, Box, CircularProgress } from '@material-ui/core'
 
 const CloudCarbonContainer = () => {
   const startDate: moment.Moment = moment.utc().subtract(11, 'month')
@@ -16,23 +17,32 @@ const CloudCarbonContainer = () => {
   const [dataInTimeframe, setDataInTimeframe] = useState(data)
 
   return (
-    <Box marginTop={4}>
-      <Box marginBottom={4}>
-        <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
-      </Box>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Box marginBottom={4} marginTop={4}>
+          <MonthFilter dataFromRemoteService={data} setDataInTimeframe={setDataInTimeframe} />
+        </Box>
+      </Grid>
       {loading ? (
         <CircularProgress />
       ) : (
-        <Box>
-          <Box padding={3} border={1} marginBottom={4} borderColor="grey.400">
-            <ApexLineChart data={dataInTimeframe} />
-          </Box>
-          <Box padding={3} border={1} borderColor="grey.400">
-            <ApexDonutChart data={dataInTimeframe} />
-          </Box>
-        </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Box padding={3} border={1} marginBottom={4} borderColor="grey.400">
+              <ApexLineChart data={dataInTimeframe} />
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <CarbonComparisonCard data={dataInTimeframe} />
+          </Grid>
+          <Grid item xs={6}>
+            <Box padding={3} border={1} borderColor="grey.400">
+              <ApexDonutChart data={dataInTimeframe} />
+            </Box>
+          </Grid>
+        </Grid>
       )}
-    </Box>
+    </Grid>
   )
 }
 
