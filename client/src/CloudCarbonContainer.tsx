@@ -6,8 +6,9 @@ import { ApexDonutChart } from './ApexDonutChart'
 import moment from 'moment'
 import MonthFilter from './MonthFilter'
 import { Box, CircularProgress } from '@material-ui/core'
+import ServiceFilter from './ServiceFilter'
 
-const CloudCarbonContainer = () => {
+export default function CloudCarbonContainer() {
   const startDate: moment.Moment = moment.utc().subtract(11, 'month')
   const endDate: moment.Moment = moment.utc()
   const region: string = 'us-east-1'
@@ -18,6 +19,7 @@ const CloudCarbonContainer = () => {
   return (
     <Box marginTop={4}>
       <Box marginBottom={4}>
+        <ServiceFilter filters={filters} setFilters={setFilters} />
         <MonthFilter filters={filters} setFilters={setFilters} />
       </Box>
       {loading ? (
@@ -35,5 +37,3 @@ const CloudCarbonContainer = () => {
     </Box>
   )
 }
-
-export default CloudCarbonContainer
