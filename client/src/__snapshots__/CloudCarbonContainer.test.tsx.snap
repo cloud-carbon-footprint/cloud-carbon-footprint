@@ -3,88 +3,212 @@
 exports[`CloudCarbonContainer match against snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root MuiBox-root-1"
+    class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
   >
     <div
-      class="MuiBox-root MuiBox-root-2"
+      class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
     >
       <div
-        class="MuiButtonGroup-root"
-        role="group"
+        class="MuiBox-root MuiBox-root-1"
       >
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-disableElevation"
-          tabindex="0"
-          type="button"
+        <div
+          class="MuiButtonGroup-root"
+          role="group"
         >
-          <span
-            class="MuiButton-label"
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-disableElevation"
+            tabindex="0"
+            type="button"
           >
-            1M
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </button>
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-disableElevation"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="MuiButton-label"
+            <span
+              class="MuiButton-label"
+            >
+              1M
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-disableElevation"
+            tabindex="0"
+            type="button"
           >
-            3M
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </button>
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-disableElevation"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="MuiButton-label"
+            <span
+              class="MuiButton-label"
+            >
+              3M
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-disableElevation"
+            tabindex="0"
+            type="button"
           >
-            6M
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </button>
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-containedPrimary MuiButton-disableElevation"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="MuiButton-label"
+            <span
+              class="MuiButton-label"
+            >
+              6M
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedOutlined MuiButtonGroup-groupedOutlinedHorizontal MuiButtonGroup-groupedOutlined MuiButton-containedPrimary MuiButton-disableElevation"
+            tabindex="0"
+            type="button"
           >
-            12M
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </button>
+            <span
+              class="MuiButton-label"
+            >
+              12M
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
       </div>
     </div>
     <div
-      class="MuiBox-root MuiBox-root-3"
+      class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
     >
       <div
-        class="MuiBox-root MuiBox-root-4"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
       >
-        <div>
-          line chart here
+        <div
+          class="MuiBox-root MuiBox-root-2"
+        >
+          <div>
+            line chart here
+          </div>
         </div>
       </div>
       <div
-        class="MuiBox-root MuiBox-root-5"
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
       >
-        <div>
-          donut chart here
+        <div
+          class="MuiPaper-root MuiCard-root makeStyles-root-3 MuiPaper-elevation1 MuiPaper-rounded"
+        >
+          <div
+            class="MuiCardContent-root makeStyles-topContainer-8"
+          >
+            <p
+              class="MuiTypography-root makeStyles-title-5 MuiTypography-body1 MuiTypography-gutterBottom"
+            >
+              Your Cumulative Emissions are
+            </p>
+            <h2
+              class="MuiTypography-root makeStyles-metricOne-11 MuiTypography-h4"
+            >
+              84
+               kg CO2e
+            </h2>
+            <p
+              class="MuiTypography-root makeStyles-posOne-6 MuiTypography-body1"
+            >
+              that is equivalent to
+            </p>
+          </div>
+          <div
+            class="MuiCardContent-root makeStyles-bottomContainer-9"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root makeStyles-icon-13"
+                data-testid="milesIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"
+                />
+              </svg>
+            </p>
+            <div
+              class="MuiCardContent-root"
+            >
+              <h2
+                class="MuiTypography-root makeStyles-posTwo-7 MuiTypography-h5"
+              >
+                greenhouse gas emissions from
+              </h2>
+              <h2
+                class="MuiTypography-root makeStyles-metricTwo-12 MuiTypography-h3"
+              >
+                2.1e+2
+              </h2>
+              <h2
+                class="MuiTypography-root makeStyles-posTwo-7 MuiTypography-h5"
+              >
+                miles driven by an average passenger vehicle
+              </h2>
+            </div>
+          </div>
+          <div
+            class="MuiCardActions-root makeStyles-buttonContainer-10 MuiCardActions-spacing"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-activeButton-15"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Miles
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-14"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Gas
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-14"
+              tabindex="0"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Trees
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-16"
+        >
+          <div>
+            donut chart here
+          </div>
         </div>
       </div>
     </div>

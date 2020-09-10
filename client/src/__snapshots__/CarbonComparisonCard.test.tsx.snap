@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CarbonComparisonCard renders with correct configuration 1`] = `
+<div
+  className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
+>
+  <div
+    className="MuiCardContent-root makeStyles-topContainer-6"
+  >
+    <p
+      className="MuiTypography-root makeStyles-title-3 MuiTypography-body1 MuiTypography-gutterBottom"
+    >
+      Your Cumulative Emissions are
+    </p>
+    <h2
+      className="MuiTypography-root makeStyles-metricOne-9 MuiTypography-h4"
+    >
+      7.0
+       kg CO2e
+    </h2>
+    <p
+      className="MuiTypography-root makeStyles-posOne-4 MuiTypography-body1"
+    >
+      that is equivalent to
+    </p>
+  </div>
+  <div
+    className="MuiCardContent-root makeStyles-bottomContainer-7"
+  >
+    <p
+      className="MuiTypography-root MuiTypography-body1"
+    >
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root makeStyles-icon-11"
+        data-testid="milesIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"
+        />
+      </svg>
+    </p>
+    <div
+      className="MuiCardContent-root"
+    >
+      <h2
+        className="MuiTypography-root makeStyles-posTwo-5 MuiTypography-h5"
+      >
+        greenhouse gas emissions from
+      </h2>
+      <h2
+        className="MuiTypography-root makeStyles-metricTwo-10 MuiTypography-h3"
+      >
+        17
+      </h2>
+      <h2
+        className="MuiTypography-root makeStyles-posTwo-5 MuiTypography-h5"
+      >
+        miles driven by an average passenger vehicle
+      </h2>
+    </div>
+  </div>
+  <div
+    className="MuiCardActions-root makeStyles-buttonContainer-8 MuiCardActions-spacing"
+  >
+    <button
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-activeButton-13"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <span
+        className="MuiButton-label"
+      >
+        Miles
+      </span>
+    </button>
+    <button
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-12"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <span
+        className="MuiButton-label"
+      >
+        Gas
+      </span>
+    </button>
+    <button
+      className="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-defaultButton-12"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <span
+        className="MuiButton-label"
+      >
+        Trees
+      </span>
+    </button>
+  </div>
+</div>
+`;

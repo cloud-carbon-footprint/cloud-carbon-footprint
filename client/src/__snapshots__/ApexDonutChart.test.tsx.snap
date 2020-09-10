@@ -3,10 +3,8 @@
 exports[`ApexDonutChart renders with correct configuration 1`] = `
 <div
   data-testid="fake-donut-chart"
-  height="500px"
   options={
     Object {
-      "height": "500px",
       "labels": Array [
         "ebs",
         "s3",
@@ -33,6 +31,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
           "formatter": [Function],
         },
       },
+      "width": "100%",
     }
   }
   series={
@@ -43,6 +42,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
     ]
   }
   type="donut"
+  width="100%"
 >
   fake chart
 </div>

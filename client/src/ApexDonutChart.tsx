@@ -14,7 +14,7 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
         fontSize: '24px',
       },
     },
-    height: '500px',
+    width: '100%',
     series: Object.values(donutData),
     labels: Object.keys(donutData),
     legend: {
@@ -29,7 +29,7 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
       },
     },
   }
-  return <Chart options={options} series={options.series} type="donut" height={options.height} />
+  return <Chart options={options} series={options.series} type="donut" width={options.width} />
 }
 
 type ApexDonutChartProps = {
