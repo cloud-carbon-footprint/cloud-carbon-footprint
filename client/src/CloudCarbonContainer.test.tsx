@@ -7,6 +7,7 @@ import { ServiceResult, EstimationResult } from './types'
 import moment from 'moment'
 
 jest.mock('./hooks/RemoteServiceHook')
+jest.mock('./themes')
 
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 

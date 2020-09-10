@@ -3,8 +3,29 @@
 exports[`ApexDonutChart renders with correct configuration 1`] = `
 <div
   data-testid="fake-donut-chart"
+  height="500px"
   options={
     Object {
+      "chart": Object {
+        "background": "#fafafa",
+      },
+      "colors": Array [
+        "#000000",
+        "#FFFFFF",
+      ],
+      "dataLabels": Object {
+        "dropShadow": Object {
+          "blur": 3,
+          "color": "#424242",
+          "enabled": true,
+          "left": 0,
+          "opacity": 0.5,
+          "top": 0,
+        },
+        "style": Object {
+          "fontSize": "1rem",
+        },
+      },
       "height": "500px",
       "labels": Array [
         "ebs",
@@ -20,6 +41,14 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
         0,
         2,
       ],
+      "stroke": Object {
+        "colors": Array [
+          "#fafafa",
+        ],
+      },
+      "theme": Object {
+        "mode": "light",
+      },
       "title": Object {
         "offsetY": -8,
         "style": Object {
@@ -33,7 +62,6 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
           "formatter": [Function],
         },
       },
-      "width": "100%",
     }
   }
   series={
@@ -44,7 +72,6 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
     ]
   }
   type="donut"
-  width="100%"
 >
   fake chart
 </div>
