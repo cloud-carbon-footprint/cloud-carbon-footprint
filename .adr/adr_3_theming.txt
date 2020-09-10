@@ -1,0 +1,15 @@
+[INSTRUCTIONS AND TEMPLATE FOR LIGHTWEIGHT ARCHITECTURAL DECISION RECORDS]
+
+INSTRUCTIONS:
+- Use Case: when you are making a significant architectural decision
+- Create a adr file with the template specifications below
+- Keep it short and lightweight! A sentence for each topic max.
+
+
+TEMPLATE:
+Filename: adr_{number}_{shortTitle}
+
+Title — Theming
+Decision — Use Material UI's theming support to define the app's look and feel.
+Context — We wanted to have a dark theme to our application as well as define more colors for our charts and graphs.
+Consequences — We use Material UI's default dark and light theme, switchable by the OS's mode (light/dark). The chart colors are an custom extension of Material UI's palette and are defined by design.

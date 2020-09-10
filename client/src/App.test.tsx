@@ -6,12 +6,8 @@ import moment from 'moment'
 import useRemoteService from './hooks/RemoteServiceHook'
 import { ServiceResult } from './types'
 
-jest.mock('react-apexcharts', () =>
-  jest.fn(() => {
-    return null
-  }),
-)
 jest.mock('./hooks/RemoteServiceHook')
+jest.mock('./themes')
 
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 
