@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render } from '@testing-library/react'
 import MonthFilter from './MonthFilter'
-import { Filters } from './hooks/FilterHook'
+import { Filters } from './hooks/Filters'
 
 describe('MonthFilter', () => {
   let filters: Filters

@@ -1,6 +1,6 @@
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
-import { Filters } from './hooks/FilterHook'
+import { Filters } from './hooks/Filters'
 
 const MonthFilter: FunctionComponent<MonthFilterProps> = ({ filters, setFilters }) => {
   return (
