@@ -26,7 +26,7 @@
   },
   "proxy": "http://localhost:4000",
   "scripts": {
-    "precommit": "lint-staged",
+    "precommit": "lint-staged --debug",
     "start": "CI=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false",
