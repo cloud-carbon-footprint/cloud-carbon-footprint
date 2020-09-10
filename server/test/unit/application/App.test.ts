@@ -1,7 +1,6 @@
 import App from '@application/App'
 import AWSServices from '@application/AWSServices'
 import UsageData from '@domain/IUsageData'
-import { validate } from '@application/EstimationRequest'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { EstimationResult } from '@application/EstimationResult'
 import { mocked } from 'ts-jest/utils'
@@ -26,7 +25,6 @@ describe('App', () => {
     endDate: moment(endDate).add(1, 'weeks').toISOString(),
     region: region,
   }
-  validate(rawRequest)
 
   beforeEach(() => {
     app = new App()

@@ -4,6 +4,7 @@ import EstimatorCache from '@application/EstimatorCache'
 import moment, { Moment } from 'moment'
 import { RawRequest } from '@view/RawRequest'
 import R from 'ramda'
+import { validate } from '@application/EstimationRequest'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 
@@ -98,9 +99,8 @@ export default function cache(): any {
 
     descriptor.value = async (...args: any[]): Promise<EstimationResult[]> => {
       const request: RawRequest = args[0]
+      validate(request)
       const cachedEstimates: EstimationResult[] = await cacheService.getEstimates(request)
-
-      if (!cachedEstimates) return await originalFunction.apply(target, args)
 
       const missingDates = getMissingDates(cachedEstimates, request)
       const middlewareRequest = getMissingDataRequests(missingDates, request)
