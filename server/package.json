@@ -8,7 +8,7 @@
     "test": "jest --coverage --maxWorkers 2",
     "test:watch": "jest --coverage --watchAll",
     "test:clean": "jest --clearCache",
-    "test:precommit": "npm run test:clean && jest --bail --findRelatedTests",
+    "test:precommit": "npm run test:clean && npm test -- --bail",
     "build": "tsc",
     "build:watch": "onchange 'src/**/*.ts' -- npm run build",
     "view:coverage": "serve coverage/lcov-report",
