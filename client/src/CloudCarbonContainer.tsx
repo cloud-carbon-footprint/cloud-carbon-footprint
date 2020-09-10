@@ -19,8 +19,12 @@ export default function CloudCarbonContainer() {
   return (
     <Box marginTop={4}>
       <Box marginBottom={4}>
-        <ServiceFilter filters={filters} setFilters={setFilters} />
-        <MonthFilter filters={filters} setFilters={setFilters} />
+        <Box marginBottom={4}>
+          <ServiceFilter filters={filters} setFilters={setFilters} />
+        </Box>
+        <Box>
+          <MonthFilter filters={filters} setFilters={setFilters} />
+        </Box>
       </Box>
       {loading ? (
         <CircularProgress />
