@@ -6,16 +6,19 @@ import { sumCO2 } from './transformData'
 import { EstimationResult } from './types'
 
 type Selection = 'miles' | 'gas' | 'trees'
+
 type ComparisionItem = {
   icon: React.ReactNode
   total: string
   textOne: string
   textTwo: string
 }
+
 type Comparision = {
-  [gas: string]: ComparisionItem
-  // [miles: string]: ComparisionItem
-  // [trees: string]: ComparisionItem
+  [char: string]: ComparisionItem
+  gas: ComparisionItem
+  miles: ComparisionItem
+  trees: ComparisionItem
 }
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -59,14 +62,14 @@ const useStyles = makeStyles(({ palette }) => ({
     fontWeight: 'bold',
   },
   metricTwo: {
-    color: palette.primary.main,
+    color: palette.primary.light,
     fontWeight: 'bold',
     margin: '1.25rem 0',
   },
   icon: {
     height: 100,
     width: 100,
-    color: palette.primary.main,
+    color: palette.primary.light,
     padding: 20,
   },
 }))
@@ -76,14 +79,14 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   const [selection, setSelection] = useState('miles')
   const kgSum: number = sumCO2(data)
 
-  const milesSum: any = (kgSum * 2.48138958).toPrecision(2)
-  const gallonsSum: any = (kgSum * 0.1125239).toPrecision(2)
-  const treesSum: any = (kgSum * 0.0165352).toPrecision(2)
+  const milesSum: string = (kgSum * 2.48138958).toPrecision(2)
+  const gasSum: string = (kgSum * 0.1125239).toPrecision(2)
+  const treesSum: string = (kgSum * 0.0165352).toPrecision(2)
 
   const comparisons: Comparision = {
     gas: {
       icon: <LocalGasStation className={classes.icon} data-testid="gasIcon" />,
-      total: gallonsSum,
+      total: gasSum,
       textOne: 'CO2 emissions from',
       textTwo: 'gallons of gasoline consumed',
     },
