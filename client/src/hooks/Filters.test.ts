@@ -1,4 +1,4 @@
-import { Filters } from './Filters'
+import { DateRange, Filters } from './Filters'
 import moment from 'moment'
 import generateEstimations from '../data/generateEstimations'
 import { EstimationResult } from '../types'
@@ -95,6 +95,17 @@ describe('Filters', () => {
 
       expect(filteredData).toBeWithinTimeframe(12)
     })
+
+    it('should filter by dateRange', () => {
+      const estimationResults = generateEstimations(moment.utc(), 13)
+
+      const startDate = moment.utc().subtract(4, 'M')
+      const endDate = moment.utc().subtract(2, 'M')
+      const filters = new Filters().withDateRange(new DateRange(startDate, endDate))
+
+      const filteredData = filters.filter(estimationResults)
+      expect(filteredData).toEqual(estimationResults.slice(2, 5))
+    })
   })
 
   describe('withServices', () => {
@@ -154,6 +165,54 @@ describe('Filters', () => {
       const newFilters = filters.withServices([]).withServices(['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
 
       expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+    })
+  })
+
+  describe('timeframe vs dateRange', () => {
+    it('selects the timeframe filter by default', () => {
+      const filters = new Filters()
+
+      expect(filters.timeframe).toEqual(12)
+      expect(filters.dateRange).toBeNull()
+    })
+
+    it('keeps timeframe filter when the dateRange filter is incomplete', () => {
+      const startDate = moment.utc()
+      const filters = new Filters().withDateRange(new DateRange(startDate, null))
+
+      expect(filters.timeframe).toEqual(12)
+      expect(filters.dateRange?.isComplete()).toEqual(false)
+      expect(filters.dateRange?.startDate).toEqual(startDate)
+      expect(filters.dateRange?.endDate).toEqual(null)
+    })
+
+    it('unselects the timeframe filter when the dateRange filter is complete', () => {
+      const startDate = moment.utc()
+      const filters = new Filters().withDateRange(new DateRange(startDate, startDate))
+
+      expect(filters.timeframe).toEqual(-1)
+      expect(filters.dateRange?.isComplete()).toEqual(true)
+      expect(filters.dateRange?.startDate).toEqual(startDate)
+      expect(filters.dateRange?.endDate).toEqual(startDate)
+    })
+
+    it('unselects the dateRange filter when the timeframe filter is set', () => {
+      const startDate = moment.utc()
+      const filters = new Filters().withDateRange(new DateRange(startDate)).withTimeFrame(3)
+
+      expect(filters.timeframe).toEqual(3)
+      expect(filters.dateRange).toBeNull()
+    })
+
+    it('does not change a valid dateRange when an invalid dateRange is provided', () => {
+      const startDate = moment.utc()
+      const filters = new Filters()
+        .withDateRange(new DateRange(startDate, startDate))
+        .withDateRange(new DateRange(startDate, null))
+
+      expect(filters.timeframe).toEqual(-1)
+      expect(filters.dateRange?.startDate).toEqual(startDate)
+      expect(filters.dateRange?.endDate).toEqual(startDate)
     })
   })
 })
