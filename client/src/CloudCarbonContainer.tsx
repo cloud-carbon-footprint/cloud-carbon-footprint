@@ -18,34 +18,36 @@ export default function CloudCarbonContainer() {
   const { filteredData, filters, setFilters } = useFilters(data)
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Box marginBottom={4}>
-          <ServiceFilter filters={filters} setFilters={setFilters} />
-        </Box>
-        <Box>
-          <MonthFilter filters={filters} setFilters={setFilters} />
-        </Box>
-      </Grid>
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Box padding={3} border={1} marginBottom={4} borderColor="grey.400">
-              <ApexLineChart data={filteredData} />
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <CarbonComparisonCard data={filteredData} />
-          </Grid>
-          <Grid item xs={6}>
-            <Box padding={3} border={1} borderColor="grey.400">
-              <ApexDonutChart data={filteredData} />
-            </Box>
-          </Grid>
+    <Box paddingTop={3}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Box marginBottom={4}>
+            <ServiceFilter filters={filters} setFilters={setFilters} />
+          </Box>
+          <Box>
+            <MonthFilter filters={filters} setFilters={setFilters} />
+          </Box>
         </Grid>
-      )}
-    </Grid>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Box padding={3} border={1} marginBottom={4} borderColor="grey.400">
+                <ApexLineChart data={filteredData} />
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <CarbonComparisonCard data={filteredData} />
+            </Grid>
+            <Grid item xs={6}>
+              <Box padding={3} border={1} borderColor="grey.400">
+                <ApexDonutChart data={filteredData} />
+              </Box>
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   )
 }
