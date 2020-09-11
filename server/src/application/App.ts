@@ -2,7 +2,7 @@ import { EstimationRequest, validate } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
 import { reduceBy, union } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
-import { EstimationResult } from '@application/EstimationResult'
+import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 
 import Cost from '@domain/Cost'
 import FootprintEstimate from '@domain/FootprintEstimate'
@@ -31,7 +31,7 @@ export default class App {
           return this.getRegionData(region, estimationRequest.startDate, estimationRequest.endDate)
         }),
       )
-      return this.groupByTimestamp(estimatesByRegion.flat())
+      return reduceByTimestamp(estimatesByRegion.flat())
     }
   }
 
@@ -76,7 +76,7 @@ export default class App {
       return estimationResults
     })
 
-    const estimatesGroupByTimestamp = this.groupByTimestamp(estimatesGroupByService.flat())
+    const estimatesGroupByTimestamp = reduceByTimestamp(estimatesGroupByService.flat())
     let estimationResults = Array.from(estimatesGroupByTimestamp.values())
     estimationResults = estimationResults.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
     return estimationResults
@@ -110,18 +110,5 @@ export default class App {
       getDayOfEstimate,
       estimates,
     )
-  }
-
-  private groupByTimestamp(estimationResultsByDay: EstimationResult[]): EstimationResult[] {
-    const estimationResultsByTimestamp = new Map<any, EstimationResult>()
-    estimationResultsByDay.forEach((estimationResult) => {
-      const time = estimationResult.timestamp.getTime()
-      if (!estimationResultsByTimestamp.has(time)) estimationResultsByTimestamp.set(time, estimationResult)
-      else {
-        const serviceEstimates = estimationResultsByTimestamp.get(time)
-        serviceEstimates.serviceEstimates.push(...estimationResult.serviceEstimates)
-      }
-    })
-    return Array.from(estimationResultsByTimestamp.values())
   }
 }
