@@ -13,8 +13,8 @@ export interface ServiceData {
   readonly region: string
 }
 
-export const reduceByTimestamp = (estimationResultsByDay: EstimationResult[]): EstimationResult[] => {
-  // We need this mutable type in order to set the first timestamp based on the estimationResultsByDay values.
+export const reduceByTimestamp = (estimationResults: EstimationResult[]): EstimationResult[] => {
+  // We need this mutable type in order to set the first timestamp based on the estimationResults values.
   interface MutableEstimationResult {
     timestamp: Date
     serviceEstimates: ServiceData[]
@@ -31,7 +31,7 @@ export const reduceByTimestamp = (estimationResultsByDay: EstimationResult[]): E
     accumulatingFn,
     { timestamp: undefined, serviceEstimates: [] },
     getTimeOfEstimate,
-    estimationResultsByDay,
+    estimationResults,
   )
 
   return Object.values(result)

@@ -35,11 +35,11 @@ export default class App {
     }
   }
 
-  private async getRegionData(region: Region, startDate: Date, endDate: Date) {
-    const data = await Promise.all([region.getEstimates(startDate, endDate), region.getCosts(startDate, endDate)])
-
-    const regionEstimates = data[0]
-    const regionCosts = data[1]
+  private async getRegionData(region: Region, startDate: Date, endDate: Date): Promise<EstimationResult[]> {
+    const [regionEstimates, regionCosts] = await Promise.all([
+      region.getEstimates(startDate, endDate),
+      region.getCosts(startDate, endDate),
+    ])
 
     const estimatesGroupByService: EstimationResult[][] = region.services.map((service) => {
       const estimates: FootprintEstimate[] = regionEstimates[service.serviceName]
@@ -76,9 +76,8 @@ export default class App {
       return estimationResults
     })
 
-    const estimatesGroupByTimestamp = reduceByTimestamp(estimatesGroupByService.flat())
-    let estimationResults = Array.from(estimatesGroupByTimestamp.values())
-    estimationResults = estimationResults.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
-    return estimationResults
+    let estimates = reduceByTimestamp(estimatesGroupByService.flat())
+    estimates = estimates.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+    return estimates
   }
 }
