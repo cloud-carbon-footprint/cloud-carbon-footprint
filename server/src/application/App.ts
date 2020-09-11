@@ -1,11 +1,11 @@
 import { EstimationRequest, validate } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
-import { reduceBy, union } from 'ramda'
+import { union } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
 import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 
-import Cost from '@domain/Cost'
-import FootprintEstimate from '@domain/FootprintEstimate'
+import Cost, { aggregateCostsByDay } from '@domain/Cost'
+import FootprintEstimate, { aggregateEstimatesByDay } from '@domain/FootprintEstimate'
 import { RawRequest } from '@view/RawRequest'
 import cache from '@application/Cache'
 import moment from 'moment'
@@ -43,10 +43,10 @@ export default class App {
 
     const estimatesGroupByService: EstimationResult[][] = region.services.map((service) => {
       const estimates: FootprintEstimate[] = regionEstimates[service.serviceName]
-      const estimatesByDay = this.aggregateEstimatesByDay(estimates)
+      const estimatesByDay = aggregateEstimatesByDay(estimates)
 
       const costs: Cost[] = regionCosts[service.serviceName]
-      const costsByDay = this.aggregateCostsByDay(costs)
+      const costsByDay = aggregateCostsByDay(costs)
 
       const dates = union(Object.keys(estimatesByDay), Object.keys(costsByDay))
 
@@ -80,35 +80,5 @@ export default class App {
     let estimationResults = Array.from(estimatesGroupByTimestamp.values())
     estimationResults = estimationResults.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
     return estimationResults
-  }
-
-  private aggregateEstimatesByDay(estimates: FootprintEstimate[]): { [date: string]: FootprintEstimate } {
-    const getDayOfEstimate = (estimate: { timestamp: Date }) => estimate.timestamp.toISOString().substr(0, 10)
-
-    const accumulatingFn = (acc: FootprintEstimate, value: FootprintEstimate) => {
-      acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
-      acc.wattHours += value.wattHours
-      acc.co2e += value.co2e
-      return acc
-    }
-
-    return reduceBy(accumulatingFn, { wattHours: 0, co2e: 0, timestamp: undefined }, getDayOfEstimate, estimates)
-  }
-
-  private aggregateCostsByDay(estimates: Cost[]): { [date: string]: Cost } {
-    const getDayOfEstimate = (estimate: { timestamp: Date }) => estimate.timestamp.toISOString().substr(0, 10)
-    const accumulatingFn = (acc: Cost, value: Cost) => {
-      acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
-      acc.amount += value.amount
-      acc.currency = acc.currency || value.currency
-      return acc
-    }
-
-    return reduceBy(
-      accumulatingFn,
-      { amount: 0, currency: undefined, timestamp: undefined },
-      getDayOfEstimate,
-      estimates,
-    )
   }
 }
