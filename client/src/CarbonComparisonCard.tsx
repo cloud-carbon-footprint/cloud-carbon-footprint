@@ -26,6 +26,12 @@ const useStyles = makeStyles(({ palette }) => ({
     width: '100%',
     height: '100%',
   },
+  title: {
+    color: palette.primary.contrastText,
+  },
+  posOne: {
+    color: palette.primary.contrastText,
+  },
   posTwo: {
     maxWidth: 250,
   },
@@ -101,11 +107,13 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   return (
     <Card className={classes.root}>
       <CardContent className={classes.topContainer}>
-        <Typography gutterBottom>Your Cumulative Emissions are</Typography>
+        <Typography className={classes.title} gutterBottom>
+          Your Cumulative Emissions are
+        </Typography>
         <Typography className={classes.metricOne} variant="h4" component="p">
           {kgSum.toPrecision(2)} kg CO2e
         </Typography>
-        <Typography>that is equivalent to</Typography>
+        <Typography className={classes.posOne}>that is equivalent to</Typography>
       </CardContent>
       <CardContent className={classes.bottomContainer}>
         <Typography>{comparisons[selection].icon}</Typography>
