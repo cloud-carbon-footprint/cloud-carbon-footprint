@@ -1,14 +1,9 @@
-import React, { Dispatch, FunctionComponent, SetStateAction } from 'react'
+import React, { FunctionComponent } from 'react'
 import { SERVICE_LABELS, SERVICE_OPTIONS } from './services'
-import { Filters } from './hooks/Filters'
+import { FilterProps } from './hooks/Filters'
 import DropdownFilter from './DropdownFilter'
 
-type ServiceFilterProps = {
-  filters: Filters
-  setFilters: Dispatch<SetStateAction<Filters>>
-}
-
-const ServiceFilter: FunctionComponent<ServiceFilterProps> = ({ filters, setFilters }) => {
+const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
   return (
     <DropdownFilter
       id="services-filter"
