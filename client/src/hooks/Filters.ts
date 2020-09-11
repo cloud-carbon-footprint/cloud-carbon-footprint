@@ -1,6 +1,7 @@
 import { EstimationResult } from '../types'
 import moment from 'moment'
-import { ALL_SERVICES, SERVICE_OPTIONS, ServiceOption } from '../services'
+import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
+import { DropdownOption } from '../DropdownFilter'
 
 interface FiltersConfig {
   timeframe: number
@@ -10,15 +11,6 @@ interface FiltersConfig {
 const defaultFiltersConfig = {
   timeframe: 12,
   services: SERVICE_OPTIONS.map((o) => o.key),
-}
-
-function numSelectedLabel(length: number, totalLength: number) {
-  const lengthWithoutAllOption = totalLength - 1
-  if (length === totalLength) {
-    return `Services: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`
-  } else {
-    return `Services: ${length} of ${lengthWithoutAllOption}`
-  }
 }
 
 export class Filters {
@@ -53,18 +45,16 @@ export class Filters {
       moment.utc(estimationResult.timestamp).isBetween(todayMinusXMonths, today, 'day', '[]'),
     )
 
-    const resultsFilteredByTimestampAndService = resultsFilteredByTimestamp.map((estimationResult) => {
+    return resultsFilteredByTimestamp.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
         return this.services.includes(serviceEstimate.serviceName) || this.services.includes(ALL_SERVICES)
       })
       return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
     })
-
-    return resultsFilteredByTimestampAndService
   }
 }
 
-function handleSelection(keys: string[], oldKeys: string[], allValue: string, options: ServiceOption[]) {
+function handleSelection(keys: string[], oldKeys: string[], allValue: string, options: DropdownOption[]) {
   let newKeys: string[]
   if (keys.includes(allValue)) {
     // deselecting one of the services
@@ -88,4 +78,13 @@ function handleSelection(keys: string[], oldKeys: string[], allValue: string, op
     }
   }
   return newKeys
+}
+
+function numSelectedLabel(length: number, totalLength: number) {
+  const lengthWithoutAllOption = totalLength - 1
+  if (length === totalLength) {
+    return `Services: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`
+  } else {
+    return `Services: ${length} of ${lengthWithoutAllOption}`
+  }
 }

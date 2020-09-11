@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import ServiceFilter from './ServiceFilter'
 import { Filters } from './hooks/Filters'
-import { fireEvent, render, RenderResult } from '@testing-library/react'
+import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 describe('ServiceFilter', () => {
   let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
@@ -19,22 +19,26 @@ describe('ServiceFilter', () => {
   })
 
   it('displays the options when opened', async () => {
-    fireEvent.click(page.getByLabelText('Open'))
+    act(() => {
+      fireEvent.click(page.getByLabelText('Open'))
+    })
 
-    await assertCheckbox(page, 'All Services', true)
-    await assertCheckbox(page, 'EBS', true)
-    await assertCheckbox(page, 'S3', true)
-    await assertCheckbox(page, 'EC2', true)
-    await assertCheckbox(page, 'ElastiCache', true)
-    await assertCheckbox(page, 'RDS', true)
-    await assertCheckbox(page, 'Lambda', true)
+    assertCheckbox(page, 'All Services', true)
+    assertCheckbox(page, 'EBS', true)
+    assertCheckbox(page, 'S3', true)
+    assertCheckbox(page, 'EC2', true)
+    assertCheckbox(page, 'ElastiCache', true)
+    assertCheckbox(page, 'RDS', true)
+    assertCheckbox(page, 'Lambda', true)
   })
 
   it('updates the filters when All Services is unselected', async () => {
-    fireEvent.click(page.getByLabelText('Open'))
-    await assertCheckbox(page, 'All Services', true)
-
-    fireEvent.click(page.getByRole('checkbox-all'))
+    act(() => {
+      fireEvent.click(page.getByLabelText('Open'))
+    })
+    act(() => {
+      fireEvent.click(page.getByRole('checkbox-all'))
+    })
 
     const newFilters = filters.withServices([])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
@@ -42,19 +46,22 @@ describe('ServiceFilter', () => {
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
 
     expect(page.getByText('Services: 0 of 6')).toBeInTheDocument()
-    await assertCheckbox(page, 'All Services', false)
-    await assertCheckbox(page, 'EBS', false)
-    await assertCheckbox(page, 'S3', false)
-    await assertCheckbox(page, 'EC2', false)
-    await assertCheckbox(page, 'ElastiCache', false)
-    await assertCheckbox(page, 'RDS', false)
-    await assertCheckbox(page, 'Lambda', false)
+    assertCheckbox(page, 'All Services', false)
+    assertCheckbox(page, 'EBS', false)
+    assertCheckbox(page, 'S3', false)
+    assertCheckbox(page, 'EC2', false)
+    assertCheckbox(page, 'ElastiCache', false)
+    assertCheckbox(page, 'RDS', false)
+    assertCheckbox(page, 'Lambda', false)
   })
 
   it('updates the filters when an option is unselected', async () => {
-    fireEvent.click(page.getByLabelText('Open'))
-
-    fireEvent.click(page.getByRole('checkbox-ebs'))
+    act(() => {
+      fireEvent.click(page.getByLabelText('Open'))
+    })
+    act(() => {
+      fireEvent.click(page.getByRole('checkbox-ebs'))
+    })
 
     const newFilters = filters.withServices(['all', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
@@ -62,17 +69,17 @@ describe('ServiceFilter', () => {
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
 
     expect(page.getByText('Services: 5 of 6')).toBeInTheDocument()
-    await assertCheckbox(page, 'All Services', false)
-    await assertCheckbox(page, 'EBS', false)
-    await assertCheckbox(page, 'S3', true)
-    await assertCheckbox(page, 'EC2', true)
-    await assertCheckbox(page, 'ElastiCache', true)
-    await assertCheckbox(page, 'RDS', true)
-    await assertCheckbox(page, 'Lambda', true)
+    assertCheckbox(page, 'All Services', false)
+    assertCheckbox(page, 'EBS', false)
+    assertCheckbox(page, 'S3', true)
+    assertCheckbox(page, 'EC2', true)
+    assertCheckbox(page, 'ElastiCache', true)
+    assertCheckbox(page, 'RDS', true)
+    assertCheckbox(page, 'Lambda', true)
   })
 
-  const assertCheckbox = async (page: RenderResult, option: string, selected: boolean) => {
-    const li = await page.findByText(option)
+  const assertCheckbox = (page: RenderResult, option: string, selected: boolean) => {
+    const li = page.getByText(option)
 
     if (selected) {
       expect(li.firstChild).toHaveClass('Mui-checked')
