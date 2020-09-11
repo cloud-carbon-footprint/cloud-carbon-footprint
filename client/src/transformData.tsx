@@ -34,4 +34,4 @@ const sumCO2 = (data: EstimationResult[]): number => {
   return serviceEstimates.reduce((acc, currentValue) => acc + currentValue.co2e, 0)
 }
 
-export { sumCO2,sumCO2ByService, transformData }
+export { sumCO2, sumCO2ByService, transformData }
