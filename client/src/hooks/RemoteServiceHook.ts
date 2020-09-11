@@ -6,7 +6,7 @@ const useRemoteService = (
   initial: EstimationResult[],
   startDate: moment.Moment,
   endDate: moment.Moment,
-  region: string,
+  region?: string,
 ): ServiceResult => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)

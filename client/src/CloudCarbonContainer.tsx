@@ -12,9 +12,8 @@ import ServiceFilter from './ServiceFilter'
 export default function CloudCarbonContainer() {
   const startDate: moment.Moment = moment.utc().subtract(11, 'month')
   const endDate: moment.Moment = moment.utc()
-  const region: string = 'us-east-1'
 
-  const { data, loading } = useRemoteService([], startDate, endDate, region)
+  const { data, loading } = useRemoteService([], startDate, endDate)
   const { filteredData, filters, setFilters } = useFilters(data)
 
   return (
