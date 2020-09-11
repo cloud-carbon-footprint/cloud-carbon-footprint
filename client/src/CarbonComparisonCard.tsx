@@ -26,19 +26,6 @@ const useStyles = makeStyles(({ palette }) => ({
     width: '100%',
     height: '100%',
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 0.125rem',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 16,
-    color: palette.primary.contrastText,
-  },
-  posOne: {
-    fontSize: 16,
-    color: palette.primary.contrastText,
-  },
   posTwo: {
     maxWidth: 250,
   },
@@ -54,7 +41,6 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   buttonContainer: {
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
   },
   metricOne: {
@@ -70,7 +56,7 @@ const useStyles = makeStyles(({ palette }) => ({
     height: 100,
     width: 100,
     color: palette.primary.light,
-    padding: 20,
+    padding: '1.25rem',
   },
 }))
 
@@ -115,24 +101,22 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   return (
     <Card className={classes.root}>
       <CardContent className={classes.topContainer}>
-        <Typography className={classes.title} gutterBottom>
-          Your Cumulative Emissions are
-        </Typography>
-        <Typography className={classes.metricOne} variant="h4" component="h2">
+        <Typography gutterBottom>Your Cumulative Emissions are</Typography>
+        <Typography className={classes.metricOne} variant="h4" component="p">
           {kgSum.toPrecision(2)} kg CO2e
         </Typography>
-        <Typography className={classes.posOne}>that is equivalent to</Typography>
+        <Typography>that is equivalent to</Typography>
       </CardContent>
       <CardContent className={classes.bottomContainer}>
         <Typography>{comparisons[selection].icon}</Typography>
         <CardContent>
-          <Typography className={classes.posTwo} variant="h5" component="h2">
+          <Typography className={classes.posTwo} variant="h5" component="p">
             {comparisons[selection].textOne}
           </Typography>
-          <Typography className={classes.metricTwo} variant="h3" component="h2">
+          <Typography className={classes.metricTwo} variant="h3" component="p">
             {comparisons[selection].total}
           </Typography>
-          <Typography className={classes.posTwo} variant="h5" component="h2">
+          <Typography className={classes.posTwo} variant="h5" component="p">
             {comparisons[selection].textTwo}
           </Typography>
         </CardContent>

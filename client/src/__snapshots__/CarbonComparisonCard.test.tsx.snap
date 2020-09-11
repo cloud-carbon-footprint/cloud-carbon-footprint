@@ -5,34 +5,34 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
 >
   <div
-    className="MuiCardContent-root makeStyles-topContainer-6"
+    className="MuiCardContent-root makeStyles-topContainer-3"
   >
     <p
-      className="MuiTypography-root makeStyles-title-3 MuiTypography-body1 MuiTypography-gutterBottom"
+      className="MuiTypography-root MuiTypography-body1 MuiTypography-gutterBottom"
     >
       Your Cumulative Emissions are
     </p>
-    <h2
-      className="MuiTypography-root makeStyles-metricOne-9 MuiTypography-h4"
+    <p
+      className="MuiTypography-root makeStyles-metricOne-6 MuiTypography-h4"
     >
       7.0
        kg CO2e
-    </h2>
+    </p>
     <p
-      className="MuiTypography-root makeStyles-posOne-4 MuiTypography-body1"
+      className="MuiTypography-root MuiTypography-body1"
     >
       that is equivalent to
     </p>
   </div>
   <div
-    className="MuiCardContent-root makeStyles-bottomContainer-7"
+    className="MuiCardContent-root makeStyles-bottomContainer-4"
   >
     <p
       className="MuiTypography-root MuiTypography-body1"
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root makeStyles-icon-11"
+        className="MuiSvgIcon-root makeStyles-icon-8"
         data-testid="milesIcon"
         focusable="false"
         viewBox="0 0 24 24"
@@ -45,25 +45,25 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
     <div
       className="MuiCardContent-root"
     >
-      <h2
-        className="MuiTypography-root makeStyles-posTwo-5 MuiTypography-h5"
+      <p
+        className="MuiTypography-root makeStyles-posTwo-2 MuiTypography-h5"
       >
         greenhouse gas emissions from
-      </h2>
-      <h2
-        className="MuiTypography-root makeStyles-metricTwo-10 MuiTypography-h3"
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-metricTwo-7 MuiTypography-h3"
       >
         17
-      </h2>
-      <h2
-        className="MuiTypography-root makeStyles-posTwo-5 MuiTypography-h5"
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-posTwo-2 MuiTypography-h5"
       >
         miles driven by an average passenger vehicle
-      </h2>
+      </p>
     </div>
   </div>
   <div
-    className="MuiCardActions-root makeStyles-buttonContainer-8 MuiCardActions-spacing"
+    className="MuiCardActions-root makeStyles-buttonContainer-5 MuiCardActions-spacing"
   >
     <button
       className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
