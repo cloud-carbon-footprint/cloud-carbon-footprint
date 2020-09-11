@@ -13,6 +13,13 @@ import cache from '@application/Cache'
 jest.mock('@application/AWSServices')
 jest.mock('@application/Cache')
 
+const testRegions = ['us-east-1', 'us-east-2']
+jest.mock('@application/Config.json', () => {
+  return {
+    CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+  }
+})
+
 const servicesRegistered = mocked(AWSServices, true)
 
 describe('App', () => {
@@ -252,25 +259,48 @@ describe('App', () => {
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
         timestamp: new Date(startDate),
-        wattHours: 0,
-        co2e: 0,
+        wattHours: 3,
+        co2e: 6,
       },
     ]
     mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
 
     const start = moment(startDate).toISOString()
-    const end = moment(startDate).add(1, 'weeks').toISOString()
+    const end = moment(startDate).add(1, 'day').toISOString()
     const rawRequest: RawRequest = {
       startDate: start,
       endDate: end,
       region: null,
     }
 
-    await app.getCostAndEstimates(rawRequest)
+    const result = await app.getCostAndEstimates(rawRequest)
+
+    const expectedEstimationResults = [
+      {
+        timestamp: new Date(startDate),
+        serviceEstimates: [
+          {
+            serviceName: 'serviceOne',
+            wattHours: 3,
+            co2e: 6,
+            cost: 0,
+            region: testRegions[0],
+          },
+          {
+            serviceName: 'serviceOne',
+            wattHours: 3,
+            co2e: 6,
+            cost: 0,
+            region: testRegions[1],
+          },
+        ],
+      },
+    ]
 
     expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1')
     expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(3, new Date(start), new Date(end), 'us-west-1')
+
+    expect(result).toEqual(expectedEstimationResults)
   })
 })
 

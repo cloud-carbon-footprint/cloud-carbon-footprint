@@ -31,7 +31,7 @@ export default class App {
           return this.getRegionData(region, estimationRequest.startDate, estimationRequest.endDate)
         }),
       )
-      return estimatesByRegion.flat()
+      return this.groupByTimestamp(estimatesByRegion.flat())
     }
   }
 
