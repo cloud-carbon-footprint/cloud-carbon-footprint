@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { Filters } from './hooks/Filters'
-import { act, fireEvent, render, RenderResult } from '@testing-library/react'
+import { Filters } from './Filters'
+import { render, RenderResult } from '@testing-library/react'
 
 import DateFilter from './DateFilter'
 

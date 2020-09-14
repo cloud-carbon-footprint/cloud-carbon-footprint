@@ -3,7 +3,7 @@ import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
-import { DateRange, FilterProps } from './hooks/Filters'
+import { DateRange, FilterProps } from './Filters'
 
 const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
   const aYearAgo = moment.utc().subtract(12, 'M')

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
-import { FilterProps } from './hooks/Filters'
-import { useFilterStyles } from './styles'
+import { FilterProps } from './Filters'
+import { useFilterStyles } from '../../styles'
 
 const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
   const classes = useFilterStyles()

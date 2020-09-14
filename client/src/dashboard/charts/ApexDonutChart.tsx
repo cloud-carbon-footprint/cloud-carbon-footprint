@@ -2,9 +2,9 @@ import React, { FunctionComponent } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
-import { getChartColors } from './themes'
-import { sumCO2ByService } from './transformData'
-import { EstimationResult } from './types'
+import { getChartColors } from '../../themes'
+import { sumCO2ByService } from '../transformData'
+import { EstimationResult } from '../../types'
 
 export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data }) => {
   const theme = useTheme()

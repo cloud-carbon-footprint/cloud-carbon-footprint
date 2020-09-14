@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppBar, Container, Toolbar, Typography } from '@material-ui/core'
-import CloudCarbonContainer from './CloudCarbonContainer'
+import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
 
 function App() {
   return (

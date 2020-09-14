@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
-import { SERVICE_LABELS, SERVICE_OPTIONS } from './services'
-import { FilterProps } from './hooks/Filters'
+import { SERVICE_LABELS, SERVICE_OPTIONS } from '../services'
+import { FilterProps } from './Filters'
 import DropdownFilter from './DropdownFilter'
 
 const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {

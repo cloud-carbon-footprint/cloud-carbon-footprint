@@ -46,10 +46,7 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('selects carbon comparison correctly', async () => {
-    const {
-      getByText,
-      getByTestId,
-    } = render(<CarbonComparisonCard data={data} />)
+    const { getByText, getByTestId } = render(<CarbonComparisonCard data={data} />)
 
     const gasButton = getByText('Gas')
     const milesIcon = getByTestId('milesIcon')

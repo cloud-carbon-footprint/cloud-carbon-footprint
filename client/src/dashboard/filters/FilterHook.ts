@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { EstimationResult } from '../types'
+import { EstimationResult } from '../../types'
 import { Filters } from './Filters'
 
 const useFilters = (data: EstimationResult[]) => {

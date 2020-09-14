@@ -1,5 +1,5 @@
-import Config from './Config.json'
-import { DropdownOption } from './DropdownFilter'
+import Config from '../Config.json'
+import { DropdownOption } from './filters/DropdownFilter'
 
 export const ALL_SERVICES = 'all'
 export const SERVICE_OPTIONS: DropdownOption[] = [

@@ -1,7 +1,7 @@
 import { renderHook, act, HookResult } from '@testing-library/react-hooks'
-import useFilters, { UseFiltersResults } from '../hooks/FilterHook'
+import useFilters, { UseFiltersResults } from './FilterHook'
 import moment from 'moment'
-import generateEstimations from '../data/generateEstimations'
+import generateEstimations from '../../data/generateEstimations'
 
 describe('useFilters', () => {
   describe('changing timeframe', () => {

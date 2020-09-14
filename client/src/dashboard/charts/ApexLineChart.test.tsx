@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { ApexLineChart } from './ApexLineChart'
 
-jest.mock('./themes')
+jest.mock('../../themes')
 
 describe('ApexLineChart', () => {
   it('renders with correct configuration', () => {

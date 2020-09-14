@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { useFilterStyles } from './styles'
+import { useFilterStyles } from '../../styles'
 import Autocomplete, { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
