@@ -1,7 +1,7 @@
 import { DateRange, Filters } from './Filters'
 import moment from 'moment'
-import generateEstimations from '../data/generateEstimations'
-import { EstimationResult } from '../types'
+import generateEstimations from '../../data/generateEstimations'
+import { EstimationResult } from '../../types'
 import { ALL_SERVICES } from '../services'
 
 expect.extend({

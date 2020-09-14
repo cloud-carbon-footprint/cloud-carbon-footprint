@@ -3,10 +3,10 @@ import { render } from '@testing-library/react'
 import App from './App'
 import generateEstimations from './data/generateEstimations'
 import moment from 'moment'
-import useRemoteService from './hooks/RemoteServiceHook'
+import useRemoteService from './dashboard/client/RemoteServiceHook'
 import { ServiceResult } from './types'
 
-jest.mock('./hooks/RemoteServiceHook')
+jest.mock('./dashboard/client/RemoteServiceHook')
 jest.mock('./themes')
 
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>

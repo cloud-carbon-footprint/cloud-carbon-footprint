@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import ServiceFilter from './ServiceFilter'
-import { Filters } from './hooks/Filters'
+import { Filters } from './Filters'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 describe('ServiceFilter', () => {

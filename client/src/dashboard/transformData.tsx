@@ -1,4 +1,4 @@
-import { EstimationResult, co2PerDay } from './types'
+import { EstimationResult, co2PerDay } from '../types'
 
 const transformData = (data: EstimationResult[]): {}[] => {
   let co2DailyTotals: co2PerDay[] = []

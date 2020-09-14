@@ -5,9 +5,9 @@ import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
 import Chart from 'react-apexcharts'
 import moment from 'moment'
 
-import { getChartColors } from './themes'
-import { transformData } from './transformData'
-import { EstimationResult } from './types'
+import { getChartColors } from '../../themes'
+import { transformData } from '../transformData'
+import { EstimationResult } from '../../types'
 
 export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
   const theme = useTheme()

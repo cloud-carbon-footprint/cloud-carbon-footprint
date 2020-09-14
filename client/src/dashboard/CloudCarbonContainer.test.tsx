@@ -1,13 +1,13 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
-import useRemoteService from './hooks/RemoteServiceHook'
-import generateEstimations from './data/generateEstimations'
-import { ServiceResult, EstimationResult } from './types'
+import useRemoteService from './client/RemoteServiceHook'
+import generateEstimations from '../data/generateEstimations'
+import { ServiceResult, EstimationResult } from '../types'
 import moment from 'moment'
 
-jest.mock('./hooks/RemoteServiceHook')
-jest.mock('./themes')
+jest.mock('./client/RemoteServiceHook')
+jest.mock('../themes')
 
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 

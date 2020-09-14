@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { ApexDonutChart } from './ApexDonutChart'
 
-jest.mock('./themes')
+jest.mock('../../themes')
 
 describe('ApexDonutChart', () => {
   it('renders with correct configuration', () => {

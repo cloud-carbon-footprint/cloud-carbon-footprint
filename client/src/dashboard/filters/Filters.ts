@@ -1,7 +1,7 @@
-import { EstimationResult } from '../types'
+import { EstimationResult } from '../../types'
 import moment from 'moment'
 import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
-import { DropdownOption } from '../DropdownFilter'
+import { DropdownOption } from './DropdownFilter'
 import { Dispatch, SetStateAction } from 'react'
 
 export type FilterProps = {
