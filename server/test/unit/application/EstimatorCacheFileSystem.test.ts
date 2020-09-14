@@ -1,9 +1,9 @@
 import EstimatorCacheFileSystem, { cachePath } from '@application/EstimatorCacheFileSystem'
 import { promises } from 'fs'
 import EstimatorCache from '@application/EstimatorCache'
-import { RawRequest } from '@view/RawRequest'
 import moment from 'moment'
 import { EstimationResult } from '@application/EstimationResult'
+import { EstimationRequest } from '@application/CreateValidRequest'
 
 jest.mock('fs', () => {
   return { promises: { readFile: jest.fn(), writeFile: jest.fn() } }
@@ -40,13 +40,12 @@ describe('EstimatorCacheFileSystem', () => {
       const endDate = '2020-10-02'
 
       const cachedData: EstimationResult[] = buildFootprintEstimates(startDate, 1)
-
       mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
 
       //run
-      const request: RawRequest = {
-        startDate: startDate,
-        endDate: endDate,
+      const request: EstimationRequest = {
+        startDate: moment.utc(startDate).toDate(),
+        endDate: moment.utc(endDate).toDate(),
       }
       const estimates = await estimatorCache.getEstimates(request)
 
@@ -63,9 +62,9 @@ describe('EstimatorCacheFileSystem', () => {
       mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
 
       //run
-      const request: RawRequest = {
-        startDate: startDate,
-        endDate: endDate,
+      const request: EstimationRequest = {
+        startDate: moment.utc(startDate).toDate(),
+        endDate: moment.utc(endDate).toDate(),
       }
       const estimates = await estimatorCache.getEstimates(request)
 
@@ -78,7 +77,7 @@ describe('EstimatorCacheFileSystem', () => {
       mockFs.readFile.mockResolvedValueOnce('[]')
 
       //run
-      await estimatorCache.getEstimates({})
+      await estimatorCache.getEstimates({} as EstimationRequest)
 
       //assert
       expect(mockFs.readFile).toHaveBeenCalledWith(cachePath, 'utf8')
@@ -90,7 +89,7 @@ describe('EstimatorCacheFileSystem', () => {
       console.warn = jest.fn()
 
       //run
-      const estimates = await estimatorCache.getEstimates({})
+      const estimates = await estimatorCache.getEstimates({} as EstimationRequest)
 
       //assert
       expect(estimates).toEqual([])
@@ -103,7 +102,7 @@ describe('EstimatorCacheFileSystem', () => {
       console.warn = jest.fn()
 
       //run
-      await estimatorCache.getEstimates({})
+      await estimatorCache.getEstimates({} as EstimationRequest)
 
       //assert
       expect(mockFs.writeFile).toHaveBeenCalledWith(cachePath, '[]', 'utf8')

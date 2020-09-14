@@ -19,7 +19,7 @@ import {
 } from '../fixtures/awsMockFunctions'
 import Lambda from '@services/Lambda'
 import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
-import { EstimationRequestValidationError } from '@application/EstimationRequest'
+import { EstimationRequestValidationError } from '@application/CreateValidRequest'
 
 jest.mock('@application/AWSServices')
 

@@ -2,7 +2,7 @@ import EstimatorCache from '@application/EstimatorCache'
 import cache from '@application/Cache'
 import { EstimationResult, ServiceData } from '@application/EstimationResult'
 import moment from 'moment'
-import { RawRequest } from '@view/RawRequest'
+import { EstimationRequest } from '@application/CreateValidRequest'
 
 let mockSetEstimates: jest.Mock
 let mockGetEstimates: jest.Mock
@@ -50,9 +50,9 @@ describe('Cache', () => {
   describe('cache-returned function', () => {
     it('returns cached data from cache service instead of calling the real method', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2020-01-01').toISOString(),
-        endDate: moment.utc('2020-01-02').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-01-01').toDate(),
+        endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
       }
 
@@ -74,9 +74,9 @@ describe('Cache', () => {
 
     it('fetches dates not stored in cache', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2019-12-31').toISOString(),
-        endDate: moment.utc('2020-01-08').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2019-12-31').toDate(),
+        endDate: moment.utc('2020-01-08').toDate(),
         region: 'us-east-1',
       }
 
@@ -104,9 +104,9 @@ describe('Cache', () => {
 
     it('calls original function with the expected request', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2019-12-31').toISOString(),
-        endDate: moment.utc('2020-01-02').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2019-12-31').toDate(),
+        endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
       }
 
@@ -123,17 +123,17 @@ describe('Cache', () => {
 
       //assert
       expect(originalFunction).toHaveBeenCalledWith({
-        startDate: moment.utc('2020-01-01').toISOString(),
-        endDate: moment.utc('2020-01-02').toISOString(),
+        startDate: moment.utc('2020-01-01').toDate(),
+        endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
       })
     })
 
     it('does not fetch dates when cache service returns unordered estimates', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2020-07-31').toISOString(),
-        endDate: moment.utc('2020-08-01').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-07-31').toDate(),
+        endDate: moment.utc('2020-08-01').toDate(),
         region: 'us-east-1',
       }
 
@@ -161,9 +161,9 @@ describe('Cache', () => {
 
     it('saves new data into cache', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2019-12-31').toISOString(),
-        endDate: moment.utc('2020-01-01').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2019-12-31').toDate(),
+        endDate: moment.utc('2020-01-01').toDate(),
         region: 'us-east-1',
       }
 
@@ -184,9 +184,9 @@ describe('Cache', () => {
 
     it('caches dates with empty estimates if original function returns no results', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2020-07-10').toISOString(),
-        endDate: moment.utc('2020-07-20').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-07-10').toDate(),
+        endDate: moment.utc('2020-07-20').toDate(),
         region: 'us-east-1',
       }
 
@@ -214,9 +214,9 @@ describe('Cache', () => {
 
     it('removes empty estimates', async () => {
       //setup
-      const rawRequest: RawRequest = {
-        startDate: moment.utc('2020-07-10').toISOString(),
-        endDate: moment.utc('2020-07-20').toISOString(),
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-07-10').toDate(),
+        endDate: moment.utc('2020-07-20').toDate(),
         region: 'us-east-1',
       }
 
@@ -246,9 +246,9 @@ describe('Cache', () => {
   describe('given invalid request', () => {
     it('throws an estimation validation error', async () => {
       // setup
-      const invalidRequest: RawRequest = {
-        startDate: moment.utc('2020-07-10').toISOString(),
-        endDate: moment.utc('2020-07-10').toISOString(),
+      const invalidRequest: EstimationRequest = {
+        startDate: moment.utc('2020-07-10').toDate(),
+        endDate: moment.utc('2020-07-10').toDate(),
         region: 'us-east-1',
       }
 

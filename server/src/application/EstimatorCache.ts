@@ -1,7 +1,7 @@
 import { EstimationResult } from '@application/EstimationResult'
-import { RawRequest } from '@view/RawRequest'
+import { EstimationRequest } from '@application/CreateValidRequest'
 
 export default interface EstimatorCache {
-  getEstimates(request: RawRequest): Promise<EstimationResult[]>
+  getEstimates(request: EstimationRequest): Promise<EstimationResult[]>
   setEstimates(data: EstimationResult[]): void
 }
