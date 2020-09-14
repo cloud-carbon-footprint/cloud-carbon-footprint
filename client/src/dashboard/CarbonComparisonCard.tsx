@@ -21,7 +21,7 @@ type Comparision = {
   trees: ComparisionItem
 }
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   root: {
     width: '100%',
     height: '100%',
@@ -51,18 +51,17 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   metricOne: {
     color: palette.primary.contrastText,
-    fontWeight: 'bold',
+    fontWeight: typography.fontWeightBold,
   },
   metricTwo: {
     color: palette.primary.light,
-    fontWeight: 'bold',
-    margin: '1.25rem 0',
+    fontWeight: typography.fontWeightBold,
+    padding: spacing(2),
   },
   icon: {
-    height: 100,
-    width: 100,
+    height: 60,
+    width: 60,
     color: palette.primary.light,
-    padding: '1.25rem',
   },
 }))
 
@@ -116,7 +115,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
         <Typography className={classes.posOne}>that is equivalent to</Typography>
       </CardContent>
       <CardContent className={classes.bottomContainer}>
-        <Typography>{comparisons[selection].icon}</Typography>
+        <CardContent>{comparisons[selection].icon}</CardContent>
         <CardContent>
           <Typography className={classes.posTwo} variant="h5" component="p">
             {comparisons[selection].textOne}
