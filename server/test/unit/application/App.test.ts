@@ -8,7 +8,7 @@ import moment = require('moment')
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
 import cache from '@application/Cache'
-import { EstimationRequest } from '@application/EstimationRequest'
+import { EstimationRequest } from '@application/CreateValidRequest'
 
 jest.mock('@application/AWSServices')
 jest.mock('@application/Cache')
