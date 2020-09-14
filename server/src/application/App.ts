@@ -1,4 +1,4 @@
-import { EstimationRequest } from '@application/EstimationRequest'
+import { EstimationRequest } from '@application/CreateValidRequest'
 import AWSServices from '@application/AWSServices'
 import { union } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
@@ -25,7 +25,7 @@ export default class App {
       const estimatesByRegion = await Promise.all(
         CURRENT_REGIONS.map(async (regionId) => {
           const region = new Region(regionId, services)
-          return this.getRegionData(region, request.startDate, request.endDate)
+          return this.getRegionData(region, startDate, endDate)
         }),
       )
       return reduceByTimestamp(estimatesByRegion.flat())

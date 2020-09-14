@@ -1,22 +1,20 @@
 import EstimatorCache from '@application/EstimatorCache'
 import { EstimationResult } from '@application/EstimationResult'
 import { promises as fs } from 'fs'
-import { RawRequest } from '@view/RawRequest'
 import moment from 'moment'
+import { EstimationRequest } from '@application/CreateValidRequest'
 
 export const cachePath = 'estimates.cache.json'
 
 export default class EstimatorCacheFileSystem implements EstimatorCache {
-  async getEstimates(request: RawRequest): Promise<EstimationResult[]> {
+  async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
     const estimates = await this.loadEstimates()
+    const startDate = moment.utc(request.startDate)
+    const endDate = moment.utc(request.endDate)
 
-    const filteredEstimates = estimates.filter(({ timestamp }) => {
-      const startDate = moment.utc(request.startDate)
-      const endDate = moment.utc(request.endDate)
+    return estimates.filter(({ timestamp }) => {
       return moment.utc(timestamp).isBetween(startDate, endDate, undefined, '[)')
     })
-
-    return filteredEstimates
   }
 
   async setEstimates(estimates: EstimationResult[]) {

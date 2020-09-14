@@ -22,24 +22,21 @@ export class EstimationRequestValidationError extends Error {
 // @ts-ignore
 moment.suppressDeprecationWarnings = true
 
-export function validate(request: RawRequest): EstimationRequest {
-  const startDate = moment.utc(request.startDate)
-  const endDate = moment.utc(request.endDate)
-
+function validate(
+  startDate: moment.Moment,
+  endDate: moment.Moment,
+  region?: string,
+): void | EstimationRequestValidationError {
   const errors = []
-  if (!request.startDate) {
-    errors.push('Start date must be provided')
-  } else if (!startDate.isValid()) {
+  if (!startDate.isValid()) {
     errors.push('Start date is not in a recognized RFC2822 or ISO format')
   }
 
-  if (!request.endDate) {
-    errors.push('End date must be provided')
-  } else if (!endDate.isValid()) {
+  if (!endDate.isValid()) {
     errors.push('End date is not in a recognized RFC2822 or ISO format')
   }
 
-  if (request.region && !contains(request.region, values(CURRENT_REGIONS))) {
+  if (region && !contains(region, values(CURRENT_REGIONS))) {
     errors.push('Not a valid region for this account')
   }
 
@@ -64,10 +61,38 @@ export function validate(request: RawRequest): EstimationRequest {
   if (errors.length > 0) {
     throw new EstimationRequestValidationError(errors.join(', '))
   }
+}
 
+function rawRequestToEstimationRequest(request: RawRequest): EstimationRequest {
   return {
-    startDate: startDate.toDate(),
-    endDate: endDate.toDate(),
+    startDate: moment.utc(request.startDate).toDate(),
+    endDate: moment.utc(request.endDate).toDate(),
     region: request.region,
   }
+}
+
+function validateDatesPresent(startDate: string, endDate: string): void | EstimationRequestValidationError {
+  const errors = []
+  if (!startDate) {
+    errors.push('Start date must be provided')
+  }
+
+  if (!endDate) {
+    errors.push('End date must be provided')
+  }
+
+  if (errors.length > 0) {
+    throw new EstimationRequestValidationError(errors.join(', '))
+  }
+}
+
+// throws EstimationRequestValidationError if either validation fails
+export default function CreateValidRequest(request: RawRequest): EstimationRequest {
+  validateDatesPresent(request.startDate, request.endDate)
+
+  const startDate = moment.utc(request.startDate)
+  const endDate = moment.utc(request.endDate)
+
+  validate(startDate, endDate, request.region)
+  return rawRequestToEstimationRequest(request)
 }

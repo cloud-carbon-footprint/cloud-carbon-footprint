@@ -2,13 +2,12 @@ import { EstimationResult } from '@application/EstimationResult'
 import EstimatorCacheFileSystem from '@application/EstimatorCacheFileSystem'
 import EstimatorCache from '@application/EstimatorCache'
 import moment, { Moment } from 'moment'
-import { RawRequest } from '@view/RawRequest'
 import R from 'ramda'
-import { validate } from '@application/EstimationRequest'
+import CreateValidRequest, { EstimationRequest } from '@application/CreateValidRequest'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 
-function getMissingDates(cachedEstimates: EstimationResult[], request: RawRequest): Moment[] {
+function getMissingDates(cachedEstimates: EstimationResult[], request: EstimationRequest): Moment[] {
   const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
   })
@@ -33,7 +32,7 @@ function getMissingDates(cachedEstimates: EstimationResult[], request: RawReques
   return missingDates
 }
 
-function getMissingDataRequests(missingDates: Moment[], request: RawRequest): RawRequest[] {
+function getMissingDataRequests(missingDates: Moment[], request: EstimationRequest): EstimationRequest[] {
   const groupMissingDates = missingDates.reduce((acc, date) => {
     const lastSubArray = acc[acc.length - 1]
 
@@ -61,8 +60,8 @@ function getMissingDataRequests(missingDates: Moment[], request: RawRequest): Ra
 
   return requestDates.map((dates) => {
     return {
-      startDate: dates.start.utc().toISOString(),
-      endDate: dates.end.utc().toISOString(),
+      startDate: dates.start.utc().toDate(),
+      endDate: dates.end.utc().toDate(),
       region: request.region,
     }
   })
@@ -98,8 +97,7 @@ export default function cache(): any {
     const originalFunction = descriptor.value
 
     descriptor.value = async (...args: any[]): Promise<EstimationResult[]> => {
-      const request: RawRequest = args[0]
-      validate(request)
+      const request: EstimationRequest = CreateValidRequest(args[0])
       const cachedEstimates: EstimationResult[] = await cacheService.getEstimates(request)
 
       const missingDates = getMissingDates(cachedEstimates, request)
