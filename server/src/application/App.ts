@@ -1,4 +1,4 @@
-import { EstimationRequest, validate } from '@application/EstimationRequest'
+import { EstimationRequest } from '@application/EstimationRequest'
 import AWSServices from '@application/AWSServices'
 import { union } from 'ramda'
 import { CURRENT_REGIONS } from '@application/Config.json'
@@ -6,29 +6,26 @@ import { EstimationResult, reduceByTimestamp } from '@application/EstimationResu
 
 import Cost, { aggregateCostsByDay } from '@domain/Cost'
 import FootprintEstimate, { aggregateEstimatesByDay } from '@domain/FootprintEstimate'
-import { RawRequest } from '@view/RawRequest'
 import cache from '@application/Cache'
 import moment from 'moment'
 import Region from '@domain/Region'
 
 export default class App {
   @cache()
-  async getCostAndEstimates(rawRequest: RawRequest): Promise<EstimationResult[]> {
-    const estimationRequest: EstimationRequest = validate(rawRequest)
-
+  async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
     const services = AWSServices()
 
-    const startDate = estimationRequest.startDate
-    const endDate = estimationRequest.endDate
+    const startDate = request.startDate
+    const endDate = request.endDate
 
-    if (estimationRequest.region) {
-      const region = new Region(estimationRequest.region, services)
+    if (request.region) {
+      const region = new Region(request.region, services)
       return this.getRegionData(region, startDate, endDate)
     } else {
       const estimatesByRegion = await Promise.all(
         CURRENT_REGIONS.map(async (regionId) => {
           const region = new Region(regionId, services)
-          return this.getRegionData(region, estimationRequest.startDate, estimationRequest.endDate)
+          return this.getRegionData(region, request.startDate, request.endDate)
         }),
       )
       return reduceByTimestamp(estimatesByRegion.flat())

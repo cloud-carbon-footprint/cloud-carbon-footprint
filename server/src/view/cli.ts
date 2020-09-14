@@ -8,7 +8,7 @@ import CliPrompts from './CliPrompts'
 import { exportToCSV } from '@view/CSV'
 import moment from 'moment'
 import path from 'path'
-import { RawRequest } from '@view/RawRequest'
+import { EstimationRequest, validate } from '@application/EstimationRequest'
 
 export default async function cli(argv: string[] = process.argv) {
   program
@@ -35,7 +35,7 @@ export default async function cli(argv: string[] = process.argv) {
     groupBy = program.groupBy
     format = program.format
   }
-  const estimationRequest: RawRequest = { startDate, endDate, region }
+  const estimationRequest: EstimationRequest = validate({ startDate, endDate, region })
   const { table, colWidths } = await new App().getCostAndEstimates(estimationRequest).then((estimations) => {
     if (groupBy === 'service') {
       return EmissionsByServiceTable(estimations)
