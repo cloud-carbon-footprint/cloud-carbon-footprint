@@ -19,6 +19,7 @@ import {
 } from '../fixtures/awsMockFunctions'
 import Lambda from '@services/Lambda'
 import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
+import { EstimationRequestValidationError } from '@application/EstimationRequest'
 
 jest.mock('@application/AWSServices')
 
@@ -91,6 +92,22 @@ describe('cli', () => {
     it('lambda cost', async () => {
       const result = await cli([...rawRequest, '--groupBy', 'service'])
       expect(result).toMatchSnapshot()
+    })
+  })
+
+  describe('start and end date parameter validation', () => {
+    describe('given: invalid dates', () => {
+      it('throws an estimation validation error', async () => {
+        // setup
+        const start = '2020-06-16'
+        const end = '2020-06-16'
+        const command = ['executable', 'file', '--startDate', start, '--endDate', end]
+
+        //assert
+        await expect(() => {
+          return cli([...command])
+        }).rejects.toThrow(EstimationRequestValidationError)
+      })
     })
   })
 })

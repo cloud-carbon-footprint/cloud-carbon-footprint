@@ -1,6 +1,6 @@
 import express from 'express'
 import App from '@application/App'
-import { EstimationRequestValidationError } from '@application/EstimationRequest'
+import { EstimationRequestValidationError, validate } from '@application/EstimationRequest'
 import { RawRequest } from '@view/RawRequest'
 const httpApp = express()
 
@@ -20,7 +20,8 @@ httpApp.get('/api/footprint', async (req: express.Request, res: express.Response
 
   const footprintApp = new App()
   try {
-    const estimationResults = await footprintApp.getCostAndEstimates(rawRequest)
+    const estimationRequest = validate(rawRequest)
+    const estimationResults = await footprintApp.getCostAndEstimates(estimationRequest)
     res.json(estimationResults)
   } catch (e) {
     console.error(e)

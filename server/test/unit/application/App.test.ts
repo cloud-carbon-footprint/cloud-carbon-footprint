@@ -7,8 +7,8 @@ import { mocked } from 'ts-jest/utils'
 import moment = require('moment')
 import ICloudService from '@domain/ICloudService'
 import Cost from '@domain/Cost'
-import { RawRequest } from '@view/RawRequest'
 import cache from '@application/Cache'
+import { EstimationRequest } from '@application/EstimationRequest'
 
 jest.mock('@application/AWSServices')
 jest.mock('@application/Cache')
@@ -27,9 +27,9 @@ describe('App', () => {
   const startDate = '2020-08-07'
   const endDate = '2020-08-10'
   const region = 'us-east-1'
-  const rawRequest: RawRequest = {
-    startDate: moment(startDate).toISOString(),
-    endDate: moment(endDate).add(1, 'weeks').toISOString(),
+  const request: EstimationRequest = {
+    startDate: moment(startDate).toDate(),
+    endDate: moment(endDate).add(1, 'weeks').toDate(),
     region: region,
   }
 
@@ -38,7 +38,7 @@ describe('App', () => {
   })
 
   describe('getCostAndEstimates', () => {
-    it('should return ebs estimates for a week', async () => {
+    it('returns ebs estimates for a week', async () => {
       const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       const mockGetCostPerService: jest.Mock<Promise<Cost[]>> = jest.fn()
       setUpServices([mockGetCostAndEstimatesPerService], ['ebs'], [mockGetCostPerService])
@@ -61,7 +61,7 @@ describe('App', () => {
       })
       mockGetCostPerService.mockResolvedValueOnce(costs)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
@@ -81,7 +81,7 @@ describe('App', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    it('should return estimates for 2 services', async () => {
+    it('returns estimates for 2 services', async () => {
       const mockGetEstimates1: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       const mockGetCostPerService1: jest.Mock<Promise<Cost[]>> = jest.fn()
@@ -128,7 +128,7 @@ describe('App', () => {
       ]
       mockGetCostPerService2.mockResolvedValueOnce(expectedCosts2)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
 
       const expectedEstimationResults = [
         {
@@ -155,17 +155,7 @@ describe('App', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    it('should return error if start date is greater than end date', async () => {
-      const rawRequest: RawRequest = {
-        startDate: moment(endDate).toISOString(),
-        endDate: moment(startDate).toISOString(),
-        region: region,
-      }
-
-      await expect(() => app.getCostAndEstimates(rawRequest)).rejects.toThrow('Start date is not before end date')
-    })
-
-    it('should aggregate per day', async () => {
+    it('aggregates per day', async () => {
       const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       setUpServices([mockGetEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
       const expectedStorageEstimate: FootprintEstimate[] = [
@@ -187,7 +177,7 @@ describe('App', () => {
       ]
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
 
       const expectedEstimationResults = [
         {
@@ -206,16 +196,16 @@ describe('App', () => {
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
-    it('should use cache decorator', async () => {
+    it('uses cache decorator', async () => {
       const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       setUpServices([mockGetCostAndEstimatesPerService], ['ebs'], [jest.fn().mockResolvedValue([])])
       mockGetCostAndEstimatesPerService.mockResolvedValueOnce([])
 
-      await app.getCostAndEstimates(rawRequest)
+      await app.getCostAndEstimates(request)
       expect(cache).toHaveBeenCalled()
     })
 
-    it('should return ebs estimates ordered by timestamp ascending', async () => {
+    it('returns ebs estimates ordered by timestamp ascending', async () => {
       const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
       setUpServices([mockGetCostAndEstimatesPerService], ['ebs'], [jest.fn().mockResolvedValue([])])
 
@@ -228,7 +218,7 @@ describe('App', () => {
       })
       mockGetCostAndEstimatesPerService.mockResolvedValueOnce(expectedUsageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(rawRequest)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
         return {
@@ -252,7 +242,7 @@ describe('App', () => {
     })
   })
 
-  it('should return estimates for multiple regions', async () => {
+  it('returns estimates for multiple regions', async () => {
     const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
     setUpServices([mockGetEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
 
@@ -265,15 +255,15 @@ describe('App', () => {
     ]
     mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
 
-    const start = moment(startDate).toISOString()
-    const end = moment(startDate).add(1, 'day').toISOString()
-    const rawRequest: RawRequest = {
+    const start = moment(startDate).toDate()
+    const end = moment(startDate).add(1, 'day').toDate()
+    const request: EstimationRequest = {
       startDate: start,
       endDate: end,
       region: null,
     }
 
-    const result = await app.getCostAndEstimates(rawRequest)
+    const result = await app.getCostAndEstimates(request)
 
     const expectedEstimationResults = [
       {
