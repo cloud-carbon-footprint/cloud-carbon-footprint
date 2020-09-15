@@ -3,7 +3,7 @@ import EstimatorCacheFileSystem from '@application/EstimatorCacheFileSystem'
 import EstimatorCache from '@application/EstimatorCache'
 import moment, { Moment } from 'moment'
 import R from 'ramda'
-import CreateValidRequest, { EstimationRequest } from '@application/CreateValidRequest'
+import { EstimationRequest } from '@application/CreateValidRequest'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 
@@ -67,10 +67,6 @@ function getMissingDataRequests(missingDates: Moment[], request: EstimationReque
   })
 }
 
-async function computeEstimates(originalRequests: any[]) {
-  return (await Promise.all(originalRequests)).flat()
-}
-
 function concat(cachedEstimates: EstimationResult[], estimates: EstimationResult[]) {
   return [...cachedEstimates, ...estimates].sort((a, b) => {
     return a.timestamp.getTime() - b.timestamp.getTime()
@@ -92,26 +88,34 @@ function fillDates(missingDates: Moment[], estimates: EstimationResult[]): Estim
   return [...emptyEstimates, ...estimates].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
 }
 
+/*
+ This function provides a decorator. When this decorates a function, that
+ function passes itself into the cache() as @descriptor. The cache() function
+ then combines and returns data from the cache and decorated function.
+ */
 export default function cache(): any {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const originalFunction = descriptor.value
+    const decoratedFunction = descriptor.value
 
-    descriptor.value = async (...args: any[]): Promise<EstimationResult[]> => {
-      const request: EstimationRequest = CreateValidRequest(args[0])
+    descriptor.value = async (request: EstimationRequest): Promise<EstimationResult[]> => {
       const cachedEstimates: EstimationResult[] = await cacheService.getEstimates(request)
 
+      // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)
-      const middlewareRequest = getMissingDataRequests(missingDates, request)
-      const originalRequests = middlewareRequest.map((request) => {
-        return originalFunction.apply(target, [request])
+      const missingEstimates = getMissingDataRequests(missingDates, request).map((request) => {
+        return decoratedFunction.apply(target, [request])
       })
+      const estimates: EstimationResult[] = (await Promise.all(missingEstimates)).flat()
 
-      const estimates: EstimationResult[] = await computeEstimates(originalRequests)
+      // write missing estimates to cache
       const estimatesToPersist = fillDates(missingDates, estimates)
       cacheService.setEstimates(estimatesToPersist)
+
+      // so we don't return results with no estimates
       const filteredCachedEstimates = cachedEstimates.filter(({ serviceEstimates }) => {
         return serviceEstimates.length !== 0
       })
+
       return concat(filteredCachedEstimates, estimates)
     }
   }
