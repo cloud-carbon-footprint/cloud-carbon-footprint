@@ -9,7 +9,7 @@ type Selection = 'miles' | 'gas' | 'trees'
 
 type ComparisionItem = {
   icon: React.ReactNode
-  total: string
+  total: number
   textOne: string
   textTwo: string
 }
@@ -70,9 +70,9 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   const [selection, setSelection] = useState('miles')
   const kgSum: number = sumCO2(data)
 
-  const milesSum: string = (kgSum * 2.48138958).toPrecision(2)
-  const gasSum: string = (kgSum * 0.1125239).toPrecision(2)
-  const treesSum: string = (kgSum * 0.0165352).toPrecision(2)
+  const milesSum = kgSum * 2.48138958
+  const gasSum = kgSum * 0.1125239
+  const treesSum = kgSum * 0.0165352
 
   const comparisons: Comparision = {
     gas: {
@@ -109,8 +109,8 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
         <Typography className={classes.title} gutterBottom>
           Your Cumulative Emissions are
         </Typography>
-        <Typography className={classes.metricOne} variant="h4" component="p">
-          {kgSum.toPrecision(2)} kg CO2e
+        <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
+          {kgSum.toLocaleString(undefined, { maximumFractionDigits: 1 })} kg CO2e
         </Typography>
         <Typography className={classes.posOne}>that is equivalent to</Typography>
       </CardContent>
@@ -120,8 +120,8 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           <Typography className={classes.posTwo} variant="h5" component="p">
             {comparisons[selection].textOne}
           </Typography>
-          <Typography className={classes.metricTwo} variant="h3" component="p">
-            {comparisons[selection].total}
+          <Typography className={classes.metricTwo} variant="h3" component="p" data-testid="comparison">
+            {comparisons[selection].total.toLocaleString(undefined, { maximumFractionDigits: 1 })}
           </Typography>
           <Typography className={classes.posTwo} variant="h5" component="p">
             {comparisons[selection].textTwo}

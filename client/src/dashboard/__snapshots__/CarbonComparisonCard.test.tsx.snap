@@ -14,8 +14,9 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
     </p>
     <p
       className="MuiTypography-root makeStyles-metricOne-8 MuiTypography-h4"
+      data-testid="co2"
     >
-      7.0
+      7
        kg CO2e
     </p>
     <p
@@ -52,8 +53,9 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       </p>
       <p
         className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
+        data-testid="comparison"
       >
-        17
+        17.4
       </p>
       <p
         className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
