@@ -242,22 +242,4 @@ describe('Cache', () => {
       expect(results).toEqual(computedEstimates)
     })
   })
-
-  describe('given invalid request', () => {
-    it('throws an estimation validation error', async () => {
-      // setup
-      const invalidRequest: EstimationRequest = {
-        startDate: moment.utc('2020-07-10').toDate(),
-        endDate: moment.utc('2020-07-10').toDate(),
-        region: 'us-east-1',
-      }
-
-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
-
-      //assert
-      await expect(() => {
-        return propertyDescriptor.value(invalidRequest)
-      }).rejects.toThrow('Start date is not before end date')
-    })
-  })
 })
