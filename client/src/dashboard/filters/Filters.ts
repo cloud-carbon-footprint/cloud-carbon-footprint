@@ -53,8 +53,6 @@ export class Filters {
         timeframe: -1,
         dateRange,
       })
-    } else if (this.dateRange?.isComplete()) {
-      return this
     } else {
       return new Filters({
         ...this,
@@ -68,13 +66,14 @@ export class Filters {
   }
 
   filter(rawResults: EstimationResult[]) {
+    const today = moment.utc()
     let start: moment.Moment
     let end: moment.Moment
     if (this.timeframe < 0 && this.dateRange) {
       start = this.dateRange.getStartDate()
-      end = this.dateRange.getEndDate()
+      end = this.dateRange.endDate || today
     } else {
-      end = moment.utc()
+      end = today
       start = end.clone().subtract(this.timeframe, 'M')
     }
 

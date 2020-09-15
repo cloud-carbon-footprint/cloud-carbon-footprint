@@ -106,6 +106,20 @@ describe('Filters', () => {
       const filteredData = filters.filter(estimationResults)
       expect(filteredData).toEqual(estimationResults.slice(2, 5))
     })
+
+    it('should filter between start date and today when selecting a new start date after the current end date', () => {
+      const estimationResults = generateEstimations(moment.utc(), 13)
+
+      const startDate = moment.utc().subtract(6, 'M')
+      const endDate = moment.utc().subtract(4, 'M')
+      const newStartDate = moment.utc().subtract(3, 'M')
+      const filters = new Filters()
+        .withDateRange(new DateRange(startDate, endDate))
+        .withDateRange(new DateRange(newStartDate, null))
+
+      const filteredData = filters.filter(estimationResults)
+      expect(filteredData).toEqual(estimationResults.slice(0, 4))
+    })
   })
 
   describe('withServices', () => {
@@ -204,7 +218,7 @@ describe('Filters', () => {
       expect(filters.dateRange).toBeNull()
     })
 
-    it('does not change a valid dateRange when an invalid dateRange is provided', () => {
+    it('unsets end date without selecting timeframe filter when selecting a new start date after the current end date', () => {
       const startDate = moment.utc()
       const filters = new Filters()
         .withDateRange(new DateRange(startDate, startDate))
@@ -212,7 +226,7 @@ describe('Filters', () => {
 
       expect(filters.timeframe).toEqual(-1)
       expect(filters.dateRange?.startDate).toEqual(startDate)
-      expect(filters.dateRange?.endDate).toEqual(startDate)
+      expect(filters.dateRange?.endDate).toEqual(null)
     })
   })
 })
