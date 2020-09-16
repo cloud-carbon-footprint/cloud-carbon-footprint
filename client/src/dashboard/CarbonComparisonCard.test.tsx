@@ -4,7 +4,7 @@ import moment from 'moment'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { CarbonComparisonCard } from './CarbonComparisonCard'
+import { CarbonComparisonCard, toGas, toMiles, toTrees } from './CarbonComparisonCard'
 import { EstimationResult } from '../types'
 
 const data = [
@@ -80,6 +80,7 @@ describe('CarbonComparisonCard', () => {
 
   describe('number formatting', () => {
     let data: EstimationResult[]
+    let co2kg: number
     beforeEach(() => {
       data = [
         {
@@ -95,19 +96,22 @@ describe('CarbonComparisonCard', () => {
           ],
         },
       ]
+      co2kg = data[0].serviceEstimates[0].co2e
     })
 
-    it('should format 999999.99999 CO2 number to 999,999.9', async () => {
-      data[0].serviceEstimates[0].co2e = 999999.55555555555
+    it('should format co2e to default locale integer', async () => {
+      const co2e = 999999.55555555555
+      data[0].serviceEstimates[0].co2e = co2e
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('co2')
-      expect(co2).toHaveTextContent('999,999.6')
+      expect(co2).toHaveTextContent(co2e.toLocaleString(undefined, { maximumFractionDigits: 0 }))
     })
 
     it('should format miles', async () => {
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('comparison')
-      expect(co2).toHaveTextContent('24,813.9')
+      const expected = toMiles(co2kg).toLocaleString(undefined, { maximumFractionDigits: 0 })
+      expect(co2).toHaveTextContent(expected)
     })
 
     it('should format gas', async () => {
@@ -116,7 +120,8 @@ describe('CarbonComparisonCard', () => {
         fireEvent.click(getByText('Gas'))
       })
       const co2 = getByTestId('comparison')
-      expect(co2).toHaveTextContent('1,125.2')
+      const expected = toGas(co2kg).toLocaleString(undefined, { maximumFractionDigits: 0 })
+      expect(co2).toHaveTextContent(expected)
     })
 
     it('should format trees', async () => {
@@ -125,7 +130,8 @@ describe('CarbonComparisonCard', () => {
         fireEvent.click(getByText('Trees'))
       })
       const co2 = getByTestId('comparison')
-      expect(co2).toHaveTextContent('165.4')
+      const expected = toTrees(co2kg).toLocaleString(undefined, { maximumFractionDigits: 0 })
+      expect(co2).toHaveTextContent(expected)
     })
   })
 })
