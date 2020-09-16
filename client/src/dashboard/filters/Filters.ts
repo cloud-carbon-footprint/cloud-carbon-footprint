@@ -69,8 +69,8 @@ export class Filters {
     const today = moment.utc()
     let start: moment.Moment
     let end: moment.Moment
-    if (this.timeframe < 0 && this.dateRange) {
-      start = this.dateRange.getStartDate()
+    if (this.timeframe < 0 && this.dateRange?.startDate) {
+      start = this.dateRange.startDate
       end = this.dateRange.endDate || today
     } else {
       end = today
@@ -130,28 +130,12 @@ export class DateRange {
   readonly startDate: MaybeMoment
   readonly endDate: MaybeMoment
 
-  constructor(startDate: MaybeMoment = null, endDate: MaybeMoment = null) {
+  constructor(startDate: MaybeMoment, endDate: MaybeMoment) {
     this.startDate = startDate
     this.endDate = endDate
   }
 
   isComplete() {
     return this.startDate !== null && this.endDate !== null
-  }
-
-  getStartDate(): moment.Moment {
-    if (this.startDate !== null) {
-      return this.startDate
-    } else {
-      throw new Error('Start date is not set')
-    }
-  }
-
-  getEndDate(): moment.Moment {
-    if (this.endDate !== null) {
-      return this.endDate
-    } else {
-      throw new Error('End date is not set')
-    }
   }
 }

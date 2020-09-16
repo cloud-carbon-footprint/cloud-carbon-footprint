@@ -5,6 +5,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import TextField from '@material-ui/core/TextField'
+import { Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 export interface DropdownOption {
   key: string
@@ -20,8 +22,18 @@ interface DropdownFilterProps {
   updateSelections: (selections: string[]) => void
 }
 
+const useStyles = makeStyles((theme) => ({
+  checkbox: {
+    marginRight: theme.spacing(1),
+  },
+  inputLabel: {
+    textTransform: 'none',
+  },
+}))
+
 const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
-  const classes = useFilterStyles()
+  const filterClasses = useFilterStyles()
+  const localClasses = useStyles()
 
   return (
     <Autocomplete
@@ -43,7 +55,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
           <Checkbox
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
-            style={{ marginRight: 8 }}
+            className={localClasses.checkbox}
             inputProps={{ role: `checkbox-${option.key}` }}
             checked={state.selected}
           />
@@ -51,7 +63,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
         </React.Fragment>
       )}
       renderTags={() => null}
-      className={classes.filterWidth}
+      className={filterClasses.filterHeight}
       renderInput={(params: any) => {
         return (
           <TextField
@@ -60,7 +72,11 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
             {...params}
             InputProps={{
               ...params.InputProps,
-              startAdornment: props.displayValue,
+              startAdornment: (
+                <Typography variant={'button'} align={'center'} className={localClasses.inputLabel}>
+                  {props.displayValue}
+                </Typography>
+              ),
             }}
           />
         )
