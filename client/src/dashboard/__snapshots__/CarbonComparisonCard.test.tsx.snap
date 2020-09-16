@@ -10,7 +10,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
     <p
       className="MuiTypography-root makeStyles-title-2 MuiTypography-body1 MuiTypography-gutterBottom"
     >
-      Your Cumulative Emissions are
+      Your cumulative emissions are
     </p>
     <p
       className="MuiTypography-root makeStyles-metricOne-8 MuiTypography-h4"
@@ -55,7 +55,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
         data-testid="comparison"
       >
-        17.4
+        17
       </p>
       <p
         className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"

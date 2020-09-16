@@ -65,14 +65,20 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   },
 }))
 
+export const toMiles = (co2kg: number) => co2kg * 2.48138958
+export const toGas = (co2kg: number) => co2kg * 0.1125239
+export const toTrees = (co2kg: number) => co2kg * 0.0165352
+
 export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({ data }) => {
   const classes = useStyles()
   const [selection, setSelection] = useState('miles')
   const kgSum: number = sumCO2(data)
 
-  const milesSum = kgSum * 2.48138958
-  const gasSum = kgSum * 0.1125239
-  const treesSum = kgSum * 0.0165352
+  const milesSum = toMiles(kgSum)
+  const gasSum = toGas(kgSum)
+  const treesSum = toTrees(kgSum)
+
+  const formatNumber = (number: number) => number.toLocaleString(undefined, { maximumFractionDigits: 0 })
 
   const comparisons: Comparison = {
     gas: {
@@ -107,10 +113,10 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
     <Card className={classes.root}>
       <CardContent className={classes.topContainer}>
         <Typography className={classes.title} gutterBottom>
-          Your Cumulative Emissions are
+          Your cumulative emissions are
         </Typography>
         <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
-          {kgSum.toLocaleString(undefined, { maximumFractionDigits: 1 })} kg CO2e
+          {formatNumber(kgSum)} kg CO2e
         </Typography>
         <Typography className={classes.posOne}>that is equivalent to</Typography>
       </CardContent>
@@ -121,7 +127,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             {comparisons[selection].textOne}
           </Typography>
           <Typography className={classes.metricTwo} variant="h3" component="p" data-testid="comparison">
-            {comparisons[selection].total.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+            {formatNumber(comparisons[selection].total)}
           </Typography>
           <Typography className={classes.posTwo} variant="h5" component="p">
             {comparisons[selection].textTwo}
