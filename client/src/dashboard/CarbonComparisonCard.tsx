@@ -7,18 +7,18 @@ import { EstimationResult } from '../types'
 
 type Selection = 'miles' | 'gas' | 'trees'
 
-type ComparisionItem = {
+type ComparisonItem = {
   icon: React.ReactNode
   total: number
   textOne: string
   textTwo: string
 }
 
-type Comparision = {
-  [char: string]: ComparisionItem
-  gas: ComparisionItem
-  miles: ComparisionItem
-  trees: ComparisionItem
+type Comparison = {
+  [char: string]: ComparisonItem
+  gas: ComparisonItem
+  miles: ComparisonItem
+  trees: ComparisonItem
 }
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => ({
@@ -74,7 +74,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   const gasSum = kgSum * 0.1125239
   const treesSum = kgSum * 0.0165352
 
-  const comparisons: Comparision = {
+  const comparisons: Comparison = {
     gas: {
       icon: <LocalGasStation className={classes.icon} data-testid="gasIcon" />,
       total: gasSum,
