@@ -7,7 +7,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) =>
   const classes = useFilterStyles()
   return (
     <>
-      <ButtonGroup className={classes.filterWidth}>
+      <ButtonGroup className={classes.filterHeight}>
         <Button
           disableElevation
           variant={filters.timeframe === 1 ? 'contained' : undefined}
