@@ -125,6 +125,8 @@ const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => 
     <StyledWrapper>
       <DateRangePicker
         keepOpenOnDateSelect
+        withPortal={false}
+        withFullScreenPortal={false}
         minDate={aYearAgo}
         maxDate={today}
         initialVisibleMonth={() => {
