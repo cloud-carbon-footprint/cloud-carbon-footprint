@@ -40,7 +40,7 @@ const StyledWrapper = withTheme(styled.div`
       background-color: ${theme.palette.background.default};
     }
     .CalendarDay__default {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
       color: ${theme.palette.text.primary};
       border: 1px double ${theme.palette.grey[400]};
     }
@@ -67,21 +67,21 @@ const StyledWrapper = withTheme(styled.div`
       color: ${theme.palette.common.white};
     }
     .CalendarMonthGrid {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     .CalendarMonth_caption {
       color: ${theme.palette.text.primary};
     }
     .CalendarMonthGrid_month__horizontal {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     .DayPicker {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
       border-radius: ${theme.shape.borderRadius}px;
       overflow: hidden;
     }
     .DateRangePicker_picker {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
       border-radius: ${theme.shape.borderRadius}px;
       border: 1px solid ${theme.palette.divider};
       overflow: hidden;
@@ -100,13 +100,13 @@ const StyledWrapper = withTheme(styled.div`
       border: 1px solid ${theme.palette.action.disabled};
     }
     .DayPickerNavigation_button__default {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     .CalendarMonth {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     .DayPickerKeyboardShortcuts_panel {
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     .DayPickerKeyboardShortcuts_show__bottomRight::before {
       border-right: 33px solid ${theme.palette.primary.main}
@@ -124,7 +124,6 @@ const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => 
   return (
     <StyledWrapper>
       <DateRangePicker
-        keepOpenOnDateSelect
         withPortal={false}
         withFullScreenPortal={false}
         minDate={aYearAgo}
