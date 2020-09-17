@@ -21,7 +21,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       },
       "colors": Array [
         "#000000",
-        "#FFFFFF",
+        undefined,
+        undefined,
       ],
       "height": "500px",
       "markers": Object {
@@ -36,6 +37,24 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             },
           ],
           "name": "AWS CO2e",
+        },
+        Object {
+          "data": Array [
+            Object {
+              "x": 2019-08-10T00:00:00.000Z,
+              "y": 0,
+            },
+          ],
+          "name": "AWS Watt Hours",
+        },
+        Object {
+          "data": Array [
+            Object {
+              "x": 2019-08-10T00:00:00.000Z,
+              "y": 0,
+            },
+          ],
+          "name": "AWS Cost",
         },
       ],
       "stroke": Object {
@@ -64,16 +83,56 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         },
         "type": "datetime",
       },
-      "yaxis": Object {
-        "decimalsInFloat": 5,
-        "title": Object {
-          "offsetX": -8,
-          "style": Object {
-            "fontSize": "15px",
+      "yaxis": Array [
+        Object {
+          "decimalsInFloat": 5,
+          "title": Object {
+            "offsetX": -8,
+            "style": Object {
+              "fontSize": "15px",
+            },
+            "text": "CO2e (kg)",
           },
-          "text": "CO2e (kg)",
         },
-      },
+        Object {
+          "axisBorder": Object {
+            "color": undefined,
+            "show": true,
+          },
+          "axisTicks": Object {
+            "show": true,
+          },
+          "decimalsInFloat": 5,
+          "opposite": true,
+          "title": Object {
+            "opposite": -8,
+            "style": Object {
+              "color": undefined,
+              "fontSize": "15px",
+            },
+            "text": "Watt hours (Wh)",
+          },
+        },
+        Object {
+          "axisBorder": Object {
+            "color": undefined,
+            "show": true,
+          },
+          "axisTicks": Object {
+            "show": true,
+          },
+          "decimalsInFloat": 5,
+          "opposite": true,
+          "title": Object {
+            "offsetX": -8,
+            "style": Object {
+              "color": undefined,
+              "fontSize": "15px",
+            },
+            "text": "Cost ($)",
+          },
+        },
+      ],
     }
   }
   series={
@@ -86,6 +145,24 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           },
         ],
         "name": "AWS CO2e",
+      },
+      Object {
+        "data": Array [
+          Object {
+            "x": 2019-08-10T00:00:00.000Z,
+            "y": 0,
+          },
+        ],
+        "name": "AWS Watt Hours",
+      },
+      Object {
+        "data": Array [
+          Object {
+            "x": 2019-08-10T00:00:00.000Z,
+            "y": 0,
+          },
+        ],
+        "name": "AWS Cost",
       },
     ]
   }
