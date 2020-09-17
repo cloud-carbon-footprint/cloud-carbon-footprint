@@ -17,7 +17,13 @@ export interface EstimationResult {
   serviceEstimates: serviceEstimate[]
 }
 
-export interface co2PerDay {
+export interface cloudEstPerDay {
   x: Date
   y: number
+}
+
+enum CloudEstimationTypes {
+  co2e = 'co2e',
+  wattHours = 'wattHours',
+  cost = 'cost',
 }

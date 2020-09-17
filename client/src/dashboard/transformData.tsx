@@ -1,16 +1,29 @@
-import { EstimationResult, co2PerDay } from '../types'
+import { EstimationResult, cloudEstPerDay } from '../types'
 
-const transformData = (data: EstimationResult[]): {}[] => {
-  let co2DailyTotals: co2PerDay[] = []
+enum CloudEstimationTypes {
+  co2e = 'co2e',
+  wattHours = 'wattHours',
+  cost = 'cost',
+}
+const dailyTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
+  return {
+    co2e: dailyTotalsFor(CloudEstimationTypes.co2e, data),
+    wattHours: dailyTotalsFor(CloudEstimationTypes.wattHours, data),
+    cost: dailyTotalsFor(CloudEstimationTypes.cost, data),
+  }
+}
+
+const dailyTotalsFor = (costType: CloudEstimationTypes, data: EstimationResult[]) => {
+  let dailyTotals: cloudEstPerDay[] = []
 
   data.forEach((EstimationResult) => {
-    let co2eTotal = 0
+    let total = 0
     EstimationResult.serviceEstimates.forEach((serviceEstimate) => {
-      co2eTotal += serviceEstimate.co2e
+      total += serviceEstimate[costType]
     })
-    co2DailyTotals.push({ x: EstimationResult.timestamp, y: co2eTotal })
+    dailyTotals.push({ x: EstimationResult.timestamp, y: total })
   })
-  return co2DailyTotals
+  return dailyTotals
 }
 
 const sumCO2ByService = (data: EstimationResult[]): { string: number } => {
@@ -34,4 +47,4 @@ const sumCO2 = (data: EstimationResult[]): number => {
   return serviceEstimates.reduce((acc, currentValue) => acc + currentValue.co2e, 0)
 }
 
-export { sumCO2, sumCO2ByService, transformData }
+export { sumCO2, sumCO2ByService, dailyTotals }
