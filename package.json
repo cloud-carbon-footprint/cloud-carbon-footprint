@@ -15,6 +15,7 @@
     "clean": "lerna clean --yes",
     "lint": "lerna run lint --parallel",
     "start": "lerna run start --stream",
-    "test": "lerna run test --parallel"
+    "test": "lerna run test --parallel",
+    "deploy": "cd terraform && ./run.sh apply "
   }
 }
