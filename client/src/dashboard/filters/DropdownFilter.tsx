@@ -53,6 +53,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
       renderOption={(option: DropdownOption, state: AutocompleteRenderOptionState) => (
         <React.Fragment>
           <Checkbox
+            color="primary"
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             className={localClasses.checkbox}
