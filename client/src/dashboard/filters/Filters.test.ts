@@ -212,7 +212,7 @@ describe('Filters', () => {
 
     it('unselects the dateRange filter when the timeframe filter is set', () => {
       const startDate = moment.utc()
-      const filters = new Filters().withDateRange(new DateRange(startDate)).withTimeFrame(3)
+      const filters = new Filters().withDateRange(new DateRange(startDate, null)).withTimeFrame(3)
 
       expect(filters.timeframe).toEqual(3)
       expect(filters.dateRange).toBeNull()
