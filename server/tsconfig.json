@@ -18,6 +18,7 @@
       "@builders": ["./test/fixtures/builders.ts"]
     },
     "experimentalDecorators": true,
+    "target": "ES5",
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],

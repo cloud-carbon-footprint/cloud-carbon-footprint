@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV === 'production') {
+  require('module-alias/register')
+}
+
 const port = 4000
 import httpApp from '@view/api'
 
