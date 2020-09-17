@@ -259,3 +259,6 @@ sketch
  coverage
  *.csv
 .config
+
+#terraform
+terraform/.terraform/
