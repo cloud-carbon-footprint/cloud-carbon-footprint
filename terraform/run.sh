@@ -21,7 +21,7 @@ subcommand=$1; shift  # Remove 'run' from the argument list
 case "$subcommand" in
   # Parse options to the install sub command
   plan | apply | destroy)
-    
+    export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
     rm -rf .terraform
     terraform init -backend-config=vars/backend.hcl
     terraform $subcommand -var-file=vars/config.tfvars

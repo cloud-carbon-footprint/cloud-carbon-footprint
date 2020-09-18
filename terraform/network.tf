@@ -42,7 +42,7 @@ resource "google_compute_firewall" "allow_server_ingress" {
   network = module.vpc.network_name
   allow {
     protocol = "tcp"
-    ports    = ["4000"]
+    ports    = ["8080"]
   }
 
   source_ranges = ["0.0.0.0/0"]
