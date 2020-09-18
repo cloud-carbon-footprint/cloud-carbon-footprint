@@ -9,9 +9,10 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
 ## Prerequisites
 
 - [Homebrew](https://brew.sh)
-- Node.js >= 14 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
+- Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
 - Docker `brew cask install docker`
 - AWS CLI `brew install awscli`
+- Terraform `brew install terraform`
 
 ## Setup
 
