@@ -12,10 +12,10 @@ resource "google_compute_instance" "server" {
     auto_delete  = true
   }
   
-service_account {
-  scopes = ["cloud-platform"]
-  email = data.google_service_account.gcp2aws.email
-}
+  service_account {
+    scopes = ["cloud-platform"]
+    email = data.google_service_account.gcp2aws.email
+  }
 
   network_interface {
     network = module.vpc.network_name
