@@ -13,6 +13,7 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
 - Docker `brew cask install docker`
 - AWS CLI `brew install awscli`
 - Terraform `brew install terraform`
+- docker-compose (should be bundled with ddocker if you installed it on a Mac)
 
 ## Setup
 
@@ -32,10 +33,18 @@ This will install dependencies in both the `client` and `server`. We use [Lerna]
 
 ## Run
 
-### Client and Server
+### Client and Server (with mock data)
 
 ```
 npm start
+```
+
+### Client and Server (with live data)
+Make sure you have configured your AWS credentials (see above)
+> :warning: **This will incure cost**: Data will come from AWS and will cost money to our project. Use this sparingly if you wish to test with live data. If not, use the command above
+
+```
+docker-compose up
 ```
 
 ### Server in Docker

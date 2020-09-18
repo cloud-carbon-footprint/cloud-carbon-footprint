@@ -19,4 +19,27 @@ aws_session_token = $SessionToken
 EOF
 
 gcloud auth configure-docker -q
-docker run -d -p 4000:4000 -v /root/.aws/credentials:/root/.aws/credentials gcr.io/cloud-carbon-footprint/server:${server_version}
+
+cat << COMPOSE > docker-compose.yml
+version: "3.7"
+ 
+services:
+  server:
+    image: gcr.io/cloud-carbon-footprint/server:0.0.1
+    ports:
+      - "4000:4000"
+    volumes:
+      - /root/.aws/credentials:/root/.aws/credentials
+  client:
+    image: gcr.io/cloud-carbon-footprint/client:0.0.1
+    ports:
+      - "8080:8080"
+    environment: 
+      SERVER_HOST: server
+      SERVER_PORT: 4000
+    links: 
+      - "server"
+
+COMPOSE
+
+    /usr/bin/env docker-compose up -d

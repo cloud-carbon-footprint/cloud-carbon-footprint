@@ -1,0 +1,18 @@
+version: "3.7"
+ 
+services:
+  server:
+    build: ./server
+    ports:
+      - "4000:4000"
+    volumes:
+      - $HOME/.aws/credentials:/root/.aws/credentials
+  client:
+    build: ./client
+    ports:
+      - "8080:8080"
+    environment: 
+      SERVER_HOST: server
+      SERVER_PORT: 4000
+    links: 
+      - "server"
