@@ -7,7 +7,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run precommit --parallel --stream && cd terraform && ./run.sh validate"
+      "pre-commit": "lerna run precommit --parallel --stream"
     }
   },
   "scripts": {

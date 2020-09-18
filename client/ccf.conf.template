@@ -1,0 +1,10 @@
+
+
+server {
+    listen 8080;
+    root /data/www;
+
+    location /api {
+        proxy_pass http://${SERVER_HOST}:${SERVER_PORT};
+    }
+}
