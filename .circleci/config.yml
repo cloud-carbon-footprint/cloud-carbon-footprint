@@ -44,7 +44,7 @@ jobs:
           name: build
           command: |
             npm install
-            npm run build
+            npm run-script build
       - gcr/gcr-auth
       - gcr/build-image:
           image: client
