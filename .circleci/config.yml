@@ -1,4 +1,8 @@
 version: 2.1
+orbs:
+  node: circleci/node@1.0.1
+  gcp-gke: circleci/gcp-gke@0.1.0
+  gcr: circleci/gcp-gcr@0.0.2
 jobs:
   build:
     working_directory: ~/cloud-carbon-footprint
@@ -31,39 +35,28 @@ jobs:
           name: test
           command: 'npm test'
   publish:
-    working_directory: ~/cloud-carbon-footprint
-    docker:
-      - image: node:12-alpine
-        auth:
-          username: _json_key  # default username when using a JSON key file to authenticate
-          password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
-    environment:
-      MAJOR_REVISION: 0
-      MINOR_REVISION: 0
-      GIT_HASH: <<pipeline.git.revision>>
+    description: Build and push image to Google Container Registry
+    machine: true
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
       - checkout
-      - run:
-          command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-            npm run build
-            cd client
-            docker build client -t gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
-            docker push gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
-            cd .. && cd server
-            npm install -g rimraf
-            npm run build
-            docker build server -t gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
-            docker push gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
+      - node/install
+      # Install npm
+      - node/install-npm
+      - run: |
+          cd client
+          npm run build
+      - gcr/gcr-auth
+      - gcr/build-image:
+          image: client
+          tag: 0.0.<<pipeline.git.revision>>
+      - gcr/push-image:
+          image: client
+          tag: 0.0.<<pipeline.git.revision>>
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
+      #- build
       - publish:
-          requires:
-            - build
+          # requires:
+          #   - build
