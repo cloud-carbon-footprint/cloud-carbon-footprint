@@ -26,3 +26,18 @@ jobs:
       - run:
           name: test
           command: 'npm test'
+  publish:
+    working_directory: ~/cloud-carbon-footprint
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+workflows:
+  version: 2
+  validate:
+    jobs:
+      - build
+      - publish
