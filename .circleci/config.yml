@@ -40,7 +40,8 @@ jobs:
     machine: true
     steps:
       - checkout
-      -  node/install
+      # - node/install:
+      #     node-version: 12.18.4
       - run:
           name: build
           command: |
