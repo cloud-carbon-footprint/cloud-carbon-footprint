@@ -42,9 +42,11 @@ jobs:
       - checkout
       - run: |
           cd client
+          npm install
           npm run build
       - gcr/gcr-auth
       - gcr/build-image:
+          docker-context: client
           image: client
           tag: 0.0.<<pipeline.git.revision>>
       - gcr/push-image:
