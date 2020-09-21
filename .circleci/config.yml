@@ -30,13 +30,13 @@ jobs:
     working_directory: ~/cloud-carbon-footprint
     docker:
       - image: google/cloud-sdk
+    environment:
+      MAJOR_REVISION: 0
+      MINOR_REVISION: 0
+      SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
     steps:
       - checkout
       - run:
-          environement:
-            MAJOR_REVISION: 0
-            MINOR_REVISION: 0
-            SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
           command: |
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
