@@ -37,7 +37,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-        docker_layer_caching: true
+          docker_layer_caching: true
       - run:
           command: |
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
