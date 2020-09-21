@@ -1,6 +1,4 @@
 #!/bin/bash
-apt install awscli jq -y
-docker rm -f balu
 
 token=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity?audience=potato&format=full)
 aws sts assume-role-with-web-identity --role-arn arn:aws:iam::921261756131:role/GCPServiceAccount --role-session-name gcp --web-identity-token $token > sts.json
