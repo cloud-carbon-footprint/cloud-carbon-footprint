@@ -41,10 +41,10 @@ jobs:
     steps:
       - checkout
       - run:
-        name: build
-        command: |
-          npm install
-          npm run build
+          name: build
+          command: |
+            npm install
+            npm run build
       - gcr/gcr-auth
       - gcr/build-image:
           image: client
