@@ -20,7 +20,7 @@ jobs:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       - run:
           name: setup
-          command: "[ ! -d node_modules ] && echo npm run bootstrap || echo NPM packages unchanged. Using cache."
+          command: "[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache."
       # - save_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       #     paths:
@@ -29,10 +29,10 @@ jobs:
       #       - ./server/node_modules
       - run:
           name: lint
-          command: 'echo npm run lint'
+          command: 'npm run lint'
       - run:
           name: test
-          command: 'echo npm test'
+          command: 'npm test'
   publish-client:
     description: Build and push image to Google Container Registry
     machine:
@@ -63,7 +63,7 @@ jobs:
       - run:
           name: build
           command: |
-            cd client
+            cd server
             npm install
             npm run-script build
       - gcr/gcr-auth
