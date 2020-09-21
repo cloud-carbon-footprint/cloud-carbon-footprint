@@ -33,7 +33,7 @@ jobs:
     environment:
       MAJOR_REVISION: 0
       MINOR_REVISION: 0
-      SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
+      GIT_HASH: <<pipeline.git.revision>>
     steps:
       - checkout
       - run:
@@ -41,10 +41,10 @@ jobs:
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-            docker build client -t gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$SHORT_GIT_HASH
-            docker push gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$SHORT_GIT_HASH
-            docker build server -t gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$SHORT_GIT_HASH
-            docker push gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$SHORT_GIT_HASH
+            docker build client -t gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
+            docker push gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
+            docker build server -t gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
+            docker push gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
 workflows:
   version: 2
   build-and-deploy:
