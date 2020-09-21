@@ -35,10 +35,12 @@ jobs:
           command: 'echo npm test'
   publish-client:
     description: Build and push image to Google Container Registry
-    docker:
-      - image: circleci/node:current
+    # docker:
+    #   - image: circleci/node:current
+    machine: true
     steps:
       - checkout
+      -  node/install
       - run:
           name: build
           command: |
