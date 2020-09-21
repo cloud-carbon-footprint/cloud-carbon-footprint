@@ -41,5 +41,5 @@ workflows:
     jobs:
       - build
       - publish:
-        requires:
-          - build
+          requires:
+            - build
