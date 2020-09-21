@@ -36,11 +36,10 @@ jobs:
           command: 'echo npm test'
   publish:
     description: Build and push image to Google Container Registry
-    machine: true
+    docker:
+      - image: circleci/node:current
     steps:
       - checkout
-      - node/install:
-          install-npm: true
       - run: |
           cd client
           npm run build
