@@ -37,7 +37,8 @@ jobs:
     description: Build and push image to Google Container Registry
     # docker:
     #   - image: circleci/node:current
-    machine: true
+    machine:
+      image: ubuntu-1604:202007-01
     steps:
       - checkout
       # - node/install:
