@@ -35,7 +35,6 @@ jobs:
           command: 'echo npm test'
   publish-client:
     description: Build and push image to Google Container Registry
-    working_directory: ~/cloud-carbon-footprint/client
     docker:
       - image: circleci/node:current
     steps:
@@ -43,10 +42,13 @@ jobs:
       - run:
           name: build
           command: |
+            cd client
             npm install
             npm run-script build
       - gcr/gcr-auth
       - gcr/build-image:
+          docker-context: client
+          path:  client
           image: client
           tag: 0.0.<<pipeline.git.revision>>
       - gcr/push-image:
