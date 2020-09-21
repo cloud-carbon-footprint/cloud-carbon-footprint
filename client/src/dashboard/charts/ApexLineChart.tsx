@@ -66,7 +66,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       mode: theme.palette.type,
     },
     title: {
-      text: 'Cloud Emissions (Kgs CO2e)',
+      text: 'Cloud Usage',
       offsetY: -8,
       style: {
         fontSize: '24px',
@@ -96,7 +96,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
             fontSize: '15px',
           },
         },
-        decimalsInFloat: 5,
+        decimalsInFloat: 3,
       },
       {
         title: {
@@ -107,7 +107,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
             color: yellow,
           },
         },
-        decimalsInFloat: 5,
+        decimalsInFloat: 2,
         opposite: true,
         axisBorder: {
           show: true,
@@ -126,7 +126,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
             color: green,
           },
         },
-        decimalsInFloat: 5,
+        decimalsInFloat: 2,
         opposite: true,
         axisBorder: {
           show: true,
