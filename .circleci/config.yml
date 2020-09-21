@@ -4,6 +4,10 @@ jobs:
     working_directory: ~/cloud-carbon-footprint
     docker:
       - image: circleci/node:current
+    environment:
+      MAJOR_REVISION: 0
+      MINOR_REVISION: 0
+      GIT_HASH: <<pipeline.git.revision>>
     # Currently, the cache is commented out since it's slower than installing dependencies every time. Once the
     # dependency list grows and build time increases, we can start using the cache again. Caching takes about ~30s to
     # resolve and use as of this comment.
@@ -29,22 +33,30 @@ jobs:
   publish:
     working_directory: ~/cloud-carbon-footprint
     docker:
-      - image: google/cloud-sdk
+      - image: node:12-alpine
+        auth:
+          username: _json_key  # default username when using a JSON key file to authenticate
+          password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
     environment:
       MAJOR_REVISION: 0
       MINOR_REVISION: 0
       GIT_HASH: <<pipeline.git.revision>>
     steps:
-      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
+      - checkout
       - run:
           command: |
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            npm run build
+            cd client
             docker build client -t gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
             docker push gcr.io/cloud-carbon-footprint/client:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
+            cd .. && cd server
+            npm install -g rimraf
+            npm run build
             docker build server -t gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
             docker push gcr.io/cloud-carbon-footprint/server:$MAJOR_REVISION.$MINOR_REVISION.$GIT_HASH
 workflows:
