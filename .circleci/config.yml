@@ -35,14 +35,10 @@ jobs:
           command: 'echo npm test'
   publish-client:
     description: Build and push image to Google Container Registry
-    # docker:
-    #   - image: circleci/node:current
     machine:
       image: ubuntu-1604:202007-01
     steps:
       - checkout
-      # - node/install:
-      #     node-version: 12.18.4
       - run:
           name: build
           command: |
@@ -58,11 +54,35 @@ jobs:
       - gcr/push-image:
           image: client
           tag: 0.0.<<pipeline.git.revision>>
+  publish-server:
+    description: Build and push image to Google Container Registry
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: |
+            cd client
+            npm install
+            npm run-script build
+      - gcr/gcr-auth
+      - gcr/build-image:
+          docker-context: server
+          path:  server
+          image: server
+          tag: 0.0.<<pipeline.git.revision>>
+      - gcr/push-image:
+          image: server
+          tag: 0.0.<<pipeline.git.revision>>
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - build
       - publish-client:
+          requires:
+            - build
+      - publish-server:
           requires:
             - build
