@@ -1,13 +1,16 @@
-import { EstimationResult, cloudEstPerDay } from '../types'
+import { EstimationResult, cloudEstPerDay, CloudEstimationTypes } from '../types'
 
-enum CloudEstimationTypes {
-  co2e = 'co2e',
-  wattHours = 'wattHours',
-  cost = 'cost',
-}
-const dailyTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
+const dailyTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] | number } => {
+  const co2e = dailyTotalsFor(CloudEstimationTypes.co2e, data)
+  const maxCo2e = Math.max(
+    ...co2e.map((dataPair) => {
+      return dataPair.y
+    }),
+  )
+
   return {
-    co2e: dailyTotalsFor(CloudEstimationTypes.co2e, data),
+    co2e,
+    maxCo2e,
     wattHours: dailyTotalsFor(CloudEstimationTypes.wattHours, data),
     cost: dailyTotalsFor(CloudEstimationTypes.cost, data),
   }

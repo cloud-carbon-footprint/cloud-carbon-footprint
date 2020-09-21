@@ -86,6 +86,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "yaxis": Array [
         Object {
           "decimalsInFloat": 3,
+          "max": 7,
           "title": Object {
             "offsetX": -8,
             "style": Object {

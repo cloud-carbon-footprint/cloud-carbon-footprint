@@ -22,7 +22,7 @@ export interface cloudEstPerDay {
   y: number
 }
 
-enum CloudEstimationTypes {
+export enum CloudEstimationTypes {
   co2e = 'co2e',
   wattHours = 'wattHours',
   cost = 'cost',

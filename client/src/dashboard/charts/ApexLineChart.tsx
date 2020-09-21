@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
@@ -19,9 +19,12 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const RotateLeftIconHTML = renderToStaticMarkup(<RotateLeft />)
   const ZoomInIconHTML = renderToStaticMarkup(<ZoomIn />)
 
-  const co2SeriesData = dailyTotals(data).co2e
-  const wattHoursSeriesData = dailyTotals(data).wattHours
-  const CostSeriesData = dailyTotals(data).cost
+  const cloudEstimationData = dailyTotals(data)
+  const [getMaxCo2] = useState(cloudEstimationData.maxCo2e)
+
+  const co2SeriesData = cloudEstimationData.co2e
+  const wattHoursSeriesData = cloudEstimationData.wattHours
+  const costSeriesData = cloudEstimationData.cost
 
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
@@ -56,7 +59,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       },
       {
         name: 'AWS Cost',
-        data: CostSeriesData,
+        data: costSeriesData,
       },
     ],
     stroke: {
@@ -89,6 +92,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     },
     yaxis: [
       {
+        max: getMaxCo2,
         title: {
           text: 'CO2e (kg)',
           offsetX: -8,
