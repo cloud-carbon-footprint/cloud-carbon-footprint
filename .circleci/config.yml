@@ -37,7 +37,9 @@ jobs:
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
 workflows:
   version: 2
-  validate:
+  build-and-deploy:
     jobs:
       - build
-      - publish
+      - publish:
+        requires:
+          - build
