@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 set -e
+
+auto_approve_flag=""
 # Parse options to the `run` command
 while getopts ":h" opt; do
   case ${opt} in
@@ -21,15 +23,18 @@ subcommand=$1; shift  # Remove 'run' from the argument list
 case "$subcommand" in
   # Parse options to the install sub command
   plan | apply | destroy)
-    export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+
+    if [ $subcommand == "apply" ] || [ $subcommand == "destroy" ]
+    then
+      auto_approve_flag="--auto-approve"
+    fi
+
     rm -rf .terraform
+    export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
     terraform init -backend-config=vars/backend.hcl
-    terraform $subcommand -var-file=vars/config.tfvars
+    terraform $subcommand -var-file=vars/config.tfvars $auto_approve_flag
     ;;
 
-  validate)
-    terraform validate
-    ;;
   *)
     echo "plan and apply are the only acceptable subcommands"
     exit 1

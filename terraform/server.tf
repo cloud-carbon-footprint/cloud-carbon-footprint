@@ -7,7 +7,7 @@ resource "google_compute_instance" "server" {
   name = "server"
   boot_disk {
     initialize_params {
-      image =  "${var.project_id}/chatbot"
+      image =  "${var.project_id}/docker-awscli"
     }
     auto_delete  = true
   }
