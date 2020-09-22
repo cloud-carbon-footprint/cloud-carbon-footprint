@@ -82,8 +82,12 @@ jobs:
       - image: hashicorp/terraform:0.12.28
     steps:
       - checkout
-      - run: apk add --update curl
-      - gcp-cli/install
+      - run: 
+          name: install gcloud
+          command: |
+            apk add --update curl
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com | bash
       - gcp-cli/initialize
       - run:
           environment:
@@ -91,20 +95,21 @@ jobs:
             TF_VAR_client_version: 0.0.<<pipeline.git.revision>>
           name: deploy
           command: |
+
             cd terraform
             ./run.sh apply
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
-      - publish-client:
-          requires:
-            - build
-      - publish-server:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - publish-client
-            - publish-server
+      # - build
+      # - publish-client:
+      #     requires:
+      #       - build
+      # - publish-server:
+      #     requires:
+      #       - build
+      - deploy
+          # requires:
+          #   - publish-client
+          #   - publish-server
