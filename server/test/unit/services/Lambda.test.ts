@@ -1,6 +1,6 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatchLogs, CostExplorer } from 'aws-sdk'
-import Lambda from '@services/Lambda'
+import Lambda from '@services/aws/Lambda'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 import { buildCostExplorerGetCostResponse } from '@builders'
 

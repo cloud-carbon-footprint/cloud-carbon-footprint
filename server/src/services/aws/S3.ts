@@ -2,7 +2,7 @@ import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
 import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 
 export default class S3 extends HDDStorageService {

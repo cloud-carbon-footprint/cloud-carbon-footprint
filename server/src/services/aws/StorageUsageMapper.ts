@@ -4,7 +4,7 @@ import StorageUsage from '@domain/StorageUsage'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWSDecorator } from '@services/AWSDecorator'
+import { AWSDecorator } from '@services/aws/AWSDecorator'
 
 export class VolumeUsage implements StorageUsage {
   readonly sizeGb: number

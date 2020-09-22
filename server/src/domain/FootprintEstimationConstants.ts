@@ -1,4 +1,4 @@
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { AWS_REGIONS } from '@services/aws/AWSRegions'
 
 export const SSDCOEFFICIENT = 1.2
 export const HDDCOEFFICIENT = 0.67

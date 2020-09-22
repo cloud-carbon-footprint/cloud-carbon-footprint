@@ -5,10 +5,10 @@ import {
   getEstimatesFromCostExplorer,
   getUsageFromCostExplorer,
   VolumeUsage,
-} from '@services/StorageUsageMapper'
+} from '@services/aws/StorageUsageMapper'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 
 export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'

@@ -1,5 +1,5 @@
-import { getCostFromCostExplorer } from '@services/CostMapper'
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import AWSMock from 'aws-sdk-mock'
 import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'

@@ -1,10 +1,10 @@
 import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import { getComputeUsage } from '@services/ComputeUsageMapper'
-import { CACHE_NODE_TYPES } from '@services/AWSInstanceTypes'
-import { AWSDecorator } from '@services/AWSDecorator'
+import { getComputeUsage } from '@services/aws/ComputeUsageMapper'
+import { CACHE_NODE_TYPES } from '@services/aws/AWSInstanceTypes'
+import { AWSDecorator } from '@services/aws/AWSDecorator'
 import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'

@@ -1,4 +1,4 @@
-import EC2 from '@services/EC2'
+import EC2 from '@services/aws/EC2'
 import { buildCostExplorerGetCostResponse } from '@builders'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'

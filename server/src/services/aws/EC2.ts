@@ -3,7 +3,7 @@ import ComputeUsage from '@domain/ComputeUsage'
 import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'

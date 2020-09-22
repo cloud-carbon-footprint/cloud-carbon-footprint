@@ -1,4 +1,4 @@
-import ElastiCache from '@services/ElastiCache'
+import ElastiCache from '@services/aws/ElastiCache'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 

@@ -1,6 +1,6 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
-import { AWSDecorator } from '@services/AWSDecorator'
+import { AWSDecorator } from '@services/aws/AWSDecorator'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
 
 const startDate = '2020-08-06'

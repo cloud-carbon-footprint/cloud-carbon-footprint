@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 
-import S3 from '@services/S3'
+import S3 from '@services/aws/S3'
 import { buildCostExplorerGetCostResponse } from '@builders'
 
 beforeAll(() => {

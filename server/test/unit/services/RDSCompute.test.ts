@@ -1,6 +1,6 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-import RDSComputeService from '@services/RDSCompute'
+import RDSComputeService from '@services/aws/RDSCompute'
 import {
   buildCostExplorerGetCostRequest,
   buildCostExplorerGetCostResponse,
