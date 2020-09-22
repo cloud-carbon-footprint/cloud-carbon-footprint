@@ -16,12 +16,15 @@ jest.mock('@application/GCPServices')
 jest.mock('@application/Cache')
 
 const testRegions = ['us-east-1', 'us-east-2']
+
 jest.mock('@application/Config.json', () => {
   return {
     AWS: {
+      NAME: 'aws',
       CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
     },
     GCP: {
+      NAME: 'gcp',
       CURRENT_REGIONS: ['us-east1'],
     },
   }
@@ -76,6 +79,7 @@ describe('App', () => {
           timestamp: moment.utc(startDate).add(i, 'days').toDate(),
           serviceEstimates: [
             {
+              cloudProvider: 'aws',
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -144,6 +148,7 @@ describe('App', () => {
           timestamp: new Date(startDate),
           serviceEstimates: [
             {
+              cloudProvider: 'aws',
               serviceName: 'serviceOne',
               wattHours: 2,
               co2e: 2,
@@ -151,6 +156,7 @@ describe('App', () => {
               region: region,
             },
             {
+              cloudProvider: 'aws',
               serviceName: 'serviceTwo',
               wattHours: 1,
               co2e: 1,
@@ -193,6 +199,7 @@ describe('App', () => {
           timestamp: new Date(startDate),
           serviceEstimates: [
             {
+              cloudProvider: 'aws',
               serviceName: 'serviceOne',
               wattHours: 3,
               co2e: 6,
@@ -247,6 +254,7 @@ describe('App', () => {
             .toDate(),
           serviceEstimates: [
             {
+              cloudProvider: 'aws',
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -264,6 +272,7 @@ describe('App', () => {
   it('returns estimates for multiple regions', async () => {
     const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
     setUpServices(AWSServicesRegistered, [mockGetEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
+    setUpServices(GCPServicesRegistered, [jest.fn().mockResolvedValue([])], [], [jest.fn().mockResolvedValue([])])
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
@@ -288,6 +297,7 @@ describe('App', () => {
         timestamp: new Date(startDate),
         serviceEstimates: [
           {
+            cloudProvider: 'aws',
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -295,6 +305,7 @@ describe('App', () => {
             region: testRegions[0],
           },
           {
+            cloudProvider: 'aws',
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -323,6 +334,7 @@ describe('App', () => {
       ['serviceOne', 'serviceTwo'],
       [mockGetCostPerService1, mockGetCostPerService2],
     )
+    setUpServices(GCPServicesRegistered, [jest.fn().mockResolvedValue([])], [], [jest.fn().mockResolvedValue([])])
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
@@ -366,6 +378,7 @@ describe('App', () => {
         timestamp: new Date(startDate),
         serviceEstimates: [
           {
+            cloudProvider: 'aws',
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -373,6 +386,7 @@ describe('App', () => {
             region: testRegions[0],
           },
           {
+            cloudProvider: 'aws',
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -380,6 +394,7 @@ describe('App', () => {
             region: testRegions[0],
           },
           {
+            cloudProvider: 'aws',
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -387,6 +402,7 @@ describe('App', () => {
             region: testRegions[1],
           },
           {
+            cloudProvider: 'aws',
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -403,7 +419,7 @@ describe('App', () => {
     expect(result).toEqual(expectedEstimationResults)
   })
 
-  it.skip('returns estimates for multiple regions in multiple cloud providers', async () => {
+  it('returns estimates for multiple regions in multiple cloud providers', async () => {
     const mockGetAWSEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
     setUpServices(AWSServicesRegistered, [mockGetAWSEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
 
@@ -450,6 +466,14 @@ describe('App', () => {
             region: 'us-east-1',
           },
           {
+            cloudProvider: 'aws',
+            serviceName: 'serviceOne',
+            wattHours: 3,
+            co2e: 6,
+            cost: 0,
+            region: 'us-east-2',
+          },
+          {
             cloudProvider: 'gcp',
             serviceName: 'serviceTwo',
             wattHours: 4,
@@ -471,14 +495,14 @@ describe('App', () => {
 
 function setUpServices(
   servicesRegistered: jest.Mock<ICloudService[]>,
-  mockGetCostAndEstimates: jest.Mock<Promise<FootprintEstimate[]>>[],
+  mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>>[],
   serviceNames: string[],
   mockGetCosts: jest.Mock<Promise<Cost[]>>[],
 ) {
   let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-  const mockCloudServices: ICloudService[] = mockGetCostAndEstimates.map((mockGetCostAndEstimate, i) => {
+  const mockCloudServices: ICloudService[] = mockGetEstimates.map((mockGetEstimate, i) => {
     return {
-      getEstimates: mockGetCostAndEstimate,
+      getEstimates: mockGetEstimate,
       serviceName: serviceNames[i],
       getUsage: mockGetUsage,
       getCosts: mockGetCosts[i],

@@ -6,6 +6,7 @@ export interface EstimationResult {
 }
 
 export interface ServiceData {
+  readonly cloudProvider: string
   readonly serviceName: string
   readonly wattHours: number
   readonly co2e: number

@@ -12,6 +12,7 @@ describe('EmissionsByServiceTable', () => {
       timestamp: timestamp1,
       serviceEstimates: [
         {
+          cloudProvider: 'aws',
           serviceName: 'ebs',
           wattHours: 1,
           co2e: 1,
@@ -19,6 +20,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 's3',
           wattHours: 2,
           co2e: 2,
@@ -26,6 +28,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'ec2',
           wattHours: 3,
           co2e: 3,
@@ -33,6 +36,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'elasticache',
           wattHours: 4,
           co2e: 4,
@@ -40,6 +44,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'rds',
           wattHours: 4,
           co2e: 4,
@@ -47,6 +52,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'lambda',
           wattHours: 100,
           co2e: 100,
@@ -59,6 +65,7 @@ describe('EmissionsByServiceTable', () => {
       timestamp: timestamp2,
       serviceEstimates: [
         {
+          cloudProvider: 'aws',
           serviceName: 'ebs',
           wattHours: 7,
           co2e: 8,
@@ -66,6 +73,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 's3',
           wattHours: 55,
           co2e: 1,
@@ -73,6 +81,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'ec2',
           wattHours: 90,
           co2e: 77,
@@ -80,6 +89,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'elasticache',
           wattHours: 747,
           co2e: 787,
@@ -87,6 +97,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'rds',
           wattHours: 747,
           co2e: 787,
@@ -94,6 +105,7 @@ describe('EmissionsByServiceTable', () => {
           region: region,
         },
         {
+          cloudProvider: 'aws',
           serviceName: 'lambda',
           wattHours: 200,
           co2e: 300,
