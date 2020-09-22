@@ -32,7 +32,7 @@ function getMissingDates(cachedEstimates: EstimationResult[], request: Estimatio
   return missingDates
 }
 
-function getMissingDataRequests(missingDates: Moment[], request: EstimationRequest): EstimationRequest[] {
+function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
   const groupMissingDates = missingDates.reduce((acc, date) => {
     const lastSubArray = acc[acc.length - 1]
 
@@ -62,7 +62,6 @@ function getMissingDataRequests(missingDates: Moment[], request: EstimationReque
     return {
       startDate: dates.start.utc().toDate(),
       endDate: dates.end.utc().toDate(),
-      region: request.region,
     }
   })
 }
@@ -102,7 +101,7 @@ export default function cache(): any {
 
       // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)
-      const missingEstimates = getMissingDataRequests(missingDates, request).map((request) => {
+      const missingEstimates = getMissingDataRequests(missingDates).map((request) => {
         return decoratedFunction.apply(target, [request])
       })
       const estimates: EstimationResult[] = (await Promise.all(missingEstimates)).flat()

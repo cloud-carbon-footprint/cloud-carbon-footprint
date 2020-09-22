@@ -7,7 +7,9 @@ describe('AWSServices', () => {
   it('should return empty if no service in config file', () => {
     jest.doMock('@application/Config.json', () => {
       return {
-        CURRENT_SERVICES: [],
+        AWS: {
+          CURRENT_SERVICES: [],
+        },
       }
     })
 
@@ -19,11 +21,13 @@ describe('AWSServices', () => {
   it('should throw error if unknown service', () => {
     jest.doMock('@application/Config.json', () => {
       return {
-        CURRENT_SERVICES: [
-          {
-            key: 'duck',
-          },
-        ],
+        AWS: {
+          CURRENT_SERVICES: [
+            {
+              key: 'duck',
+            },
+          ],
+        },
       }
     })
 
@@ -33,43 +37,45 @@ describe('AWSServices', () => {
 
   it('should return instances from registered services in configuration file', () => {
     const EBS = require('@services/EBS').default
-    expectService('ebs').toBeInstanceOf(EBS)
+    expectAWSService('ebs').toBeInstanceOf(EBS)
   })
 
   it('should return s3 instance', () => {
     const S3 = require('@services/S3').default
-    expectService('s3').toBeInstanceOf(S3)
+    expectAWSService('s3').toBeInstanceOf(S3)
   })
 
   it('should return ec2 instance', () => {
     const EC2 = require('@services/EC2').default
-    expectService('ec2').toBeInstanceOf(EC2)
+    expectAWSService('ec2').toBeInstanceOf(EC2)
   })
 
   it('should return elasticache instance', () => {
     const ElastiCache = require('@services/ElastiCache').default
-    expectService('elasticache').toBeInstanceOf(ElastiCache)
+    expectAWSService('elasticache').toBeInstanceOf(ElastiCache)
   })
 
   it('should return rds instance', () => {
     const RDS = require('@services/RDS').default
-    expectService('rds').toBeInstanceOf(RDS)
+    expectAWSService('rds').toBeInstanceOf(RDS)
   })
 
   it('should return lambda instance', () => {
     const Lambda = require('@services/Lambda').default
-    expectService('lambda').toBeInstanceOf(Lambda)
+    expectAWSService('lambda').toBeInstanceOf(Lambda)
   })
 })
 
-function expectService(key: string) {
+function expectAWSService(key: string) {
   jest.doMock('@application/Config.json', () => {
     return {
-      CURRENT_SERVICES: [
-        {
-          key: key,
-        },
-      ],
+      AWS: {
+        CURRENT_SERVICES: [
+          {
+            key: key,
+          },
+        ],
+      },
     }
   })
 
