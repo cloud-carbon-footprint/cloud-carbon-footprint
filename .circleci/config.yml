@@ -83,7 +83,10 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: install gcloud
+          environment:
+            TF_VAR_server_version: 0.0.<<pipeline.git.revision>>
+            TF_VAR_client_version: 0.0.<<pipeline.git.revision>>
+          name: deploy
           command: |
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -98,15 +101,9 @@ jobs:
             gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-      - run:
-          environment:
-            TF_VAR_server_version: 0.0.<<pipeline.git.revision>>
-            TF_VAR_client_version: 0.0.<<pipeline.git.revision>>
-          name: deploy
-          command: |
-
             cd terraform
             ./run.sh apply
+
 workflows:
   version: 2
   build-and-deploy:
