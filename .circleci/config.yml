@@ -82,13 +82,12 @@ jobs:
       - image: hashicorp/terraform:0.12.28
     steps:
       - checkout
-      # - run: 
-      #     name: install gcloud
-      #     command: |
-      #       apk add --update curl bash python3
-      #       export PATH=$PATH:/root/google-cloud-sdk/bin
-      #       curl -sSL https://sdk.cloud.google.com | bash
-      - gcp-cli/install
+      - run: 
+          name: install gcloud
+          command: |
+            apk add --update python3 py-crcmod bash libc6-compat curl
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
       - gcp-cli/initialize
       - run:
           environment:
