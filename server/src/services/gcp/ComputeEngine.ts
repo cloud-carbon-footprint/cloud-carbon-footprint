@@ -10,10 +10,12 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
   }
 
   async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
-    throw new Error(`getUsage not Implemented. Called with start: ${start}, end: ${end}, region:${region}`)
+    console.log(`getUsage not Implemented. Called with start: ${start}, end: ${end}, region: ${region}`)
+    return []
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    throw new Error(`getCosts not Implemented. Called with start: ${start}, end: ${end}, region:${region}`)
+    console.log(`getCosts not Implemented. Called with start: ${start}, end: ${end}, region: ${region}`)
+    return []
   }
 }
