@@ -24,7 +24,8 @@ resource "google_compute_instance" "server" {
   }
 
   metadata_startup_script = templatefile("templates/launch.sh.tpl", {
-    server_version = var.server_version
+    server_version = var.server_version,
+    client_version = var.client_version
   })
 
   tags = ["server"]

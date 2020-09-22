@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@4.0.0
   gcr: circleci/gcp-gcr@0.8.0
+  gcp-cli: circleci/gcp-cli@1.8.4
 jobs:
   build:
     working_directory: ~/cloud-carbon-footprint
@@ -34,7 +35,7 @@ jobs:
           name: test
           command: 'npm test'
   publish-client:
-    description: Build and push image to Google Container Registry
+    description: Build and push client image to Google Container Registry
     machine:
       image: ubuntu-1604:202007-01
     steps:
@@ -55,7 +56,7 @@ jobs:
           image: client
           tag: 0.0.<<pipeline.git.revision>>
   publish-server:
-    description: Build and push image to Google Container Registry
+    description: Build and push server image to Google Container Registry
     machine:
       image: ubuntu-1604:202007-01
     steps:
@@ -75,6 +76,22 @@ jobs:
       - gcr/push-image:
           image: server
           tag: 0.0.<<pipeline.git.revision>>
+  deploy:
+    description: Deploy app to gcp
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run:
+          environment:
+            TF_VAR_server_version: 0.0.<<pipeline.git.revision>>
+            TF_VAR_client_version: 0.0.<<pipeline.git.revision>>
+          name: deploy
+          command: |
+            cd terraform
+            ./run.sh apply
 workflows:
   version: 2
   build-and-deploy:
@@ -86,3 +103,7 @@ workflows:
       - publish-server:
           requires:
             - build
+      - deploy:
+          requires:
+            - publish-client
+            - publish-server
