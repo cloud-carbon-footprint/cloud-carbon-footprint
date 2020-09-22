@@ -88,7 +88,16 @@ jobs:
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-      - gcp-cli/initialize
+            # Store service account
+
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+            # Initialize gcloud CLI
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
       - run:
           environment:
             TF_VAR_server_version: 0.0.<<pipeline.git.revision>>
