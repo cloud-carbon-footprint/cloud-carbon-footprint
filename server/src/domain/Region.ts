@@ -3,7 +3,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
 
 export default class Region {
-  constructor(public id: string, public services: ICloudService[]) {}
+  constructor(public id: string, public services: ICloudService[], public cloudProvider: string) {}
 
   public async getEstimates(startDate: Date, endDate: Date): Promise<{ [service: string]: FootprintEstimate[] }> {
     const estimates: FootprintEstimate[][] = await Promise.all(

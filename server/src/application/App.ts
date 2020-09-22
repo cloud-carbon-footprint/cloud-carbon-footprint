@@ -1,7 +1,8 @@
 import { EstimationRequest } from '@application/CreateValidRequest'
 import AWSServices from '@application/AWSServices'
+import GCPServices from '@application/GCPServices'
 import { union } from 'ramda'
-import { AWS } from '@application/Config.json'
+import { AWS, GCP } from '@application/Config.json'
 import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 
 import Cost, { aggregateCostsByDay } from '@domain/Cost'
@@ -13,22 +14,30 @@ import Region from '@domain/Region'
 export default class App {
   @cache()
   async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
-    const services = AWSServices()
+    const AWSSupportedServices = AWSServices()
+    const GCPSupportedServices = GCPServices()
 
     const startDate = request.startDate
     const endDate = request.endDate
 
     if (request.region) {
-      const region = new Region(request.region, services)
+      const region = new Region(request.region, AWSSupportedServices, AWS.NAME)
       return this.getRegionData(region, startDate, endDate)
     } else {
-      const estimatesByRegion = await Promise.all(
+      const AWSEstimatesByRegion = await Promise.all(
         AWS.CURRENT_REGIONS.map(async (regionId) => {
-          const region = new Region(regionId, services)
+          const region = new Region(regionId, AWSSupportedServices, AWS.NAME)
           return this.getRegionData(region, startDate, endDate)
         }),
       )
-      return reduceByTimestamp(estimatesByRegion.flat())
+
+      const GCPEstimatesByRegion = await Promise.all(
+        GCP.CURRENT_REGIONS.map(async (regionId) => {
+          const region = new Region(regionId, GCPSupportedServices, GCP.NAME)
+          return this.getRegionData(region, startDate, endDate)
+        }),
+      )
+      return reduceByTimestamp(AWSEstimatesByRegion.flat().concat(GCPEstimatesByRegion.flat()))
     }
   }
 
@@ -60,6 +69,7 @@ export default class App {
           timestamp: moment.utc(date).toDate(),
           serviceEstimates: [
             {
+              cloudProvider: region.cloudProvider,
               serviceName: service.serviceName,
               region: region.id,
               wattHours: estimate?.wattHours || 0,
