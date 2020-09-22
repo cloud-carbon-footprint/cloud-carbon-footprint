@@ -11,19 +11,16 @@ jest.mock('@application/App', () => {
 
 describe('api', () => {
   describe('/footprint', () => {
-    it('returns footprint estimates for a period of time and region', async () => {
+    it('returns footprint estimates for a period of time', async () => {
       //setup
       const startDate = '2020-07-12'
       const endDate = '2020-07-13'
-      const region = 'us-east-1'
 
       const expectedResponse: EstimationResult[] = []
       mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
 
       //run
-      const response = await request(api).get(
-        encodeURI(`/api/footprint?start=${startDate}&end=${endDate}&region=${region}`),
-      )
+      const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}&end=${endDate}`))
 
       //assert
       expect(response.status).toBe(200)
@@ -38,10 +35,9 @@ describe('api', () => {
       it('returns bad request if start date is not specified', async () => {
         //setup
         const endDate = '2020-07-13'
-        const region = 'us-east-2'
 
         //run
-        const response = await request(api).get(encodeURI(`/api/footprint?end=${endDate}&region=${region}`))
+        const response = await request(api).get(encodeURI(`/api/footprint?end=${endDate}`))
 
         //assert
         expect(response.status).toBe(400)
@@ -50,10 +46,9 @@ describe('api', () => {
       it('returns bad request if end date is not specified', async () => {
         //setup
         const startDate = '2020-07-12'
-        const region = 'us-east-2'
 
         //run
-        const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}&region=${region}`))
+        const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}`))
 
         //assert
         expect(response.status).toBe(400)
@@ -63,13 +58,10 @@ describe('api', () => {
         //setup
         const startDate = '2020-07-12'
         const endDate = '2020-07-13'
-        const region = 'us-east-2'
 
         //run
         mockGetCostAndEstimates.mockRejectedValueOnce(new Error('error'))
-        const response = await request(api).get(
-          encodeURI(`/api/footprint?start=${startDate}&end=${endDate}&region=${region}`),
-        )
+        const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}&end=${endDate}`))
 
         //assert
         expect(response.status).toBe(500)

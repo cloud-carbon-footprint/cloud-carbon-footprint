@@ -7,10 +7,10 @@ import RDS from '@services/RDS'
 import RDSComputeService from '@services/RDSCompute'
 import RDSStorage from '@services/RDSStorage'
 import Lambda from '@services/Lambda'
-import { CURRENT_SERVICES } from '@application/Config.json'
+import { AWS } from '@application/Config.json'
 
 export default function AWSServices(): ICloudService[] {
-  return CURRENT_SERVICES.map(({ key }) => {
+  return AWS.CURRENT_SERVICES.map(({ key }) => {
     return getService(key)
   })
 }

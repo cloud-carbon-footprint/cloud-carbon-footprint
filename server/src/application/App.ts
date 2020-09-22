@@ -1,7 +1,7 @@
 import { EstimationRequest } from '@application/CreateValidRequest'
 import AWSServices from '@application/AWSServices'
 import { union } from 'ramda'
-import { CURRENT_REGIONS } from '@application/Config.json'
+import { AWS } from '@application/Config.json'
 import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 
 import Cost, { aggregateCostsByDay } from '@domain/Cost'
@@ -23,7 +23,7 @@ export default class App {
       return this.getRegionData(region, startDate, endDate)
     } else {
       const estimatesByRegion = await Promise.all(
-        CURRENT_REGIONS.map(async (regionId) => {
+        AWS.CURRENT_REGIONS.map(async (regionId) => {
           const region = new Region(regionId, services)
           return this.getRegionData(region, startDate, endDate)
         }),
