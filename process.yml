@@ -1,0 +1,166 @@
+# Orb 'circleci/node@4.0.0' resolved to 'circleci/node@4.0.0'
+# Orb 'circleci/gcp-gcr@0.8.0' resolved to 'circleci/gcp-gcr@0.8.0'
+# Orb 'circleci/gcp-cli@1.8.4' resolved to 'circleci/gcp-cli@1.8.4'
+version: 2
+jobs:
+  deploy:
+    docker:
+    - image: hashicorp/terraform:0.12.28
+    steps:
+    - checkout
+    - run:
+        name: install gcloud
+        command: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+    - run:
+        command: |
+          IFS="," read -ra PARAMS <<< "GCLOUD_SERVICE_KEY,GOOGLE_PROJECT_ID,GOOGLE_COMPUTE_ZONE"
+
+          for i in "${PARAMS[@]}"; do
+            if [[ -z "${i}" ]]; then
+              echo "ERROR: Missing environment variable {i}" >&2
+
+              if [[ -n "" ]]; then
+                echo "" >&2
+              fi
+
+              exit 1
+            else
+              echo "Yes, ${i} is defined!"
+            fi
+          done
+        name: Checking whether required env vars are set to initialize gcloud CLI...
+    - run:
+        command: |
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+        name: Initialize gcloud CLI to connect to Google Cloud
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+    - deploy
+
+# Original config.yml file:
+# version: 2.1
+# orbs:
+#   node: circleci/node@4.0.0
+#   gcr: circleci/gcp-gcr@0.8.0
+#   gcp-cli: circleci/gcp-cli@1.8.4
+# jobs:
+#   build:
+#     working_directory: ~/cloud-carbon-footprint
+#     docker:
+#       - image: circleci/node:current
+#     environment:
+#       MAJOR_REVISION: 0
+#       MINOR_REVISION: 0
+#       GIT_HASH: <<pipeline.git.revision>>
+#     # Currently, the cache is commented out since it's slower than installing dependencies every time. Once the
+#     # dependency list grows and build time increases, we can start using the cache again. Caching takes about ~30s to
+#     # resolve and use as of this comment.
+#     steps:
+#       - checkout
+#       # - restore_cache:
+#       #     key: dependency-cache-{{ checksum \"package-lock.json\" }}-{{ checksum \"client/package-lock.json\" }}-{{ checksum \"server/package-lock.json\" }}
+#       - run:
+#           name: setup
+#           command: \"[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache.\"
+#       # - save_cache:
+#       #     key: dependency-cache-{{ checksum \"package-lock.json\" }}-{{ checksum \"client/package-lock.json\" }}-{{ checksum \"server/package-lock.json\" }}
+#       #     paths:
+#       #       - ./node_modules
+#       #       - ./client/node_modules
+#       #       - ./server/node_modules
+#       - run:
+#           name: lint
+#           command: 'npm run lint'
+#       - run:
+#           name: test
+#           command: 'npm test'
+#   publish-client:
+#     description: Build and push client image to Google Container Registry
+#     machine:
+#       image: ubuntu-1604:202007-01
+#     steps:
+#       - checkout
+#       - run:
+#           name: build
+#           command: |
+#             cd client
+#             npm install
+#             npm run-script build
+#       - gcr/gcr-auth
+#       - gcr/build-image:
+#           docker-context: client
+#           path:  client
+#           image: client
+#           tag: 0.0.<<pipeline.git.revision>>
+#       - gcr/push-image:
+#           image: client
+#           tag: 0.0.<<pipeline.git.revision>>
+#   publish-server:
+#     description: Build and push server image to Google Container Registry
+#     machine:
+#       image: ubuntu-1604:202007-01
+#     steps:
+#       - checkout
+#       - run:
+#           name: build
+#           command: |
+#             cd server
+#             npm install
+#             npm run-script build
+#       - gcr/gcr-auth
+#       - gcr/build-image:
+#           docker-context: server
+#           path:  server
+#           image: server
+#           tag: 0.0.<<pipeline.git.revision>>
+#       - gcr/push-image:
+#           image: server
+#           tag: 0.0.<<pipeline.git.revision>>
+#   deploy:
+#     description: Deploy app to gcp
+#     docker:
+#       - image: hashicorp/terraform:0.12.28
+#     steps:
+#       - checkout
+#       - run: 
+#           name: install gcloud
+#           command: |
+#             apk add --update python3 py-crcmod bash libc6-compat curl
+#             export PATH=$PATH:/root/google-cloud-sdk/bin
+#             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+#       - gcp-cli/initialize
+#       # - run:
+#       #     environment:
+#       #       TF_VAR_server_version: 0.0.<<pipeline.git.revision>>
+#       #       TF_VAR_client_version: 0.0.<<pipeline.git.revision>>
+#       #     name: deploy
+#       #     command: |
+# 
+#       #       cd terraform
+#       #       ./run.sh apply
+# workflows:
+#   version: 2
+#   build-and-deploy:
+#     jobs:
+#       # - build
+#       # - publish-client:
+#       #     requires:
+#       #       - build
+#       # - publish-server:
+#       #     requires:
+#       #       - build
+#       - deploy
+#           # requires:
+#           #   - publish-client
+#           #   - publish-server
