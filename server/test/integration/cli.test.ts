@@ -1,12 +1,12 @@
 import cli from '@view/cli'
 import AWSServices from '@application/AWSServices'
-import RDS from '@services/RDS'
-import RDSStorage from '@services/RDSStorage'
-import RDSComputeService from '@services/RDSCompute'
-import EBS from '@services/EBS'
-import S3 from '@services/S3'
-import EC2 from '@services/EC2'
-import ElastiCache from '@services/ElastiCache'
+import RDS from '@services/aws/RDS'
+import RDSStorage from '@services/aws/RDSStorage'
+import RDSComputeService from '@services/aws/RDSCompute'
+import EBS from '@services/aws/EBS'
+import S3 from '@services/aws/S3'
+import EC2 from '@services/aws/EC2'
+import ElastiCache from '@services/aws/ElastiCache'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import { mocked } from 'ts-jest/utils'
@@ -17,7 +17,7 @@ import {
   mockAwsCostExplorerGetCostAndUsage,
   mockAwsCostExplorerGetCostAndUsageResponse,
 } from '../fixtures/awsMockFunctions'
-import Lambda from '@services/Lambda'
+import Lambda from '@services/aws/Lambda'
 import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
 import { EstimationRequestValidationError } from '@application/CreateValidRequest'
 

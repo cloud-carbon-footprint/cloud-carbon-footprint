@@ -36,32 +36,32 @@ describe('AWSServices', () => {
   })
 
   it('should return instances from registered services in configuration file', () => {
-    const EBS = require('@services/EBS').default
+    const EBS = require('@services/aws/EBS').default
     expectAWSService('ebs').toBeInstanceOf(EBS)
   })
 
   it('should return s3 instance', () => {
-    const S3 = require('@services/S3').default
+    const S3 = require('@services/aws/S3').default
     expectAWSService('s3').toBeInstanceOf(S3)
   })
 
   it('should return ec2 instance', () => {
-    const EC2 = require('@services/EC2').default
+    const EC2 = require('@services/aws/EC2').default
     expectAWSService('ec2').toBeInstanceOf(EC2)
   })
 
   it('should return elasticache instance', () => {
-    const ElastiCache = require('@services/ElastiCache').default
+    const ElastiCache = require('@services/aws/ElastiCache').default
     expectAWSService('elasticache').toBeInstanceOf(ElastiCache)
   })
 
   it('should return rds instance', () => {
-    const RDS = require('@services/RDS').default
+    const RDS = require('@services/aws/RDS').default
     expectAWSService('rds').toBeInstanceOf(RDS)
   })
 
   it('should return lambda instance', () => {
-    const Lambda = require('@services/Lambda').default
+    const Lambda = require('@services/aws/Lambda').default
     expectAWSService('lambda').toBeInstanceOf(Lambda)
   })
 })

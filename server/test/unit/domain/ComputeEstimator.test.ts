@@ -1,5 +1,5 @@
 import ComputeEstimator from '@domain/ComputeEstimator'
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { AWS_REGIONS } from '@services/aws/AWSRegions'
 
 describe('ComputeEstimator', () => {
   it('do', () => {

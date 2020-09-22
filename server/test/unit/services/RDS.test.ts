@@ -1,7 +1,7 @@
-import RDS from '@services/RDS'
+import RDS from '@services/aws/RDS'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import RDSStorage from '@services/RDSStorage'
-import RDSComputeService from '@services/RDSCompute'
+import RDSStorage from '@services/aws/RDSStorage'
+import RDSComputeService from '@services/aws/RDSCompute'
 import Cost from '@domain/Cost'
 
 describe('RDS Service', function () {

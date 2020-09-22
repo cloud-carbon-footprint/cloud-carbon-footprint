@@ -1,6 +1,6 @@
 import AWS, { CostExplorer } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
-import RDSStorage from '@services/RDSStorage'
+import RDSStorage from '@services/aws/RDSStorage'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 

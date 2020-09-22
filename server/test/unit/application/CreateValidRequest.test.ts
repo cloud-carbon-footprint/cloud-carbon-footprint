@@ -1,5 +1,5 @@
 import CreateValidRequest from '@application/CreateValidRequest'
-import { AWS_REGIONS } from '@services/AWSRegions'
+import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import moment = require('moment')
 
 describe('CreateValidRequest', () => {

@@ -1,6 +1,6 @@
 import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
-import { AWSDecorator } from '@services/AWSDecorator'
+import { AWSDecorator } from '@services/aws/AWSDecorator'
 import Cost from '@domain/Cost'
 
 export async function getCostFromCostExplorer(

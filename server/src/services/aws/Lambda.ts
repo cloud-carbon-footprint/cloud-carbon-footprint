@@ -1,7 +1,7 @@
 import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { estimateCo2, MAX_WATTS } from '@domain/FootprintEstimationConstants'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'

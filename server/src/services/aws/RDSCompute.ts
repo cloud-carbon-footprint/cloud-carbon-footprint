@@ -1,11 +1,11 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 import { CostExplorer } from 'aws-sdk'
-import { getComputeUsage } from '@services/ComputeUsageMapper'
-import { RDS_INSTANCE_TYPES } from '@services/AWSInstanceTypes'
-import { AWSDecorator } from '@services/AWSDecorator'
+import { getComputeUsage } from '@services/aws/ComputeUsageMapper'
+import { RDS_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
+import { AWSDecorator } from '@services/aws/AWSDecorator'
 import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/CostMapper'
+import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {
