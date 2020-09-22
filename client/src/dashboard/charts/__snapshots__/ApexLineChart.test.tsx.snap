@@ -68,7 +68,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "style": Object {
           "fontSize": "24px",
         },
-        "text": "Cloud Emissions (Kgs CO2e)",
+        "text": "Cloud Usage",
       },
       "xaxis": Object {
         "labels": Object {
@@ -85,7 +85,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       },
       "yaxis": Array [
         Object {
-          "decimalsInFloat": 5,
+          "decimalsInFloat": 3,
+          "max": 7,
           "title": Object {
             "offsetX": -8,
             "style": Object {
@@ -102,7 +103,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           "axisTicks": Object {
             "show": true,
           },
-          "decimalsInFloat": 5,
+          "decimalsInFloat": 2,
           "opposite": true,
           "title": Object {
             "opposite": -8,
@@ -121,7 +122,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           "axisTicks": Object {
             "show": true,
           },
-          "decimalsInFloat": 5,
+          "decimalsInFloat": 2,
           "opposite": true,
           "title": Object {
             "offsetX": -8,
