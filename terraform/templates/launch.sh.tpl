@@ -23,13 +23,13 @@ version: "3.7"
  
 services:
   server:
-    image: gcr.io/cloud-carbon-footprint/server:0.0.1
+    image: gcr.io/cloud-carbon-footprint/server:$server_version
     ports:
       - "4000:4000"
     volumes:
       - /root/.aws/credentials:/root/.aws/credentials
   client:
-    image: gcr.io/cloud-carbon-footprint/client:0.0.1
+    image: gcr.io/cloud-carbon-footprint/client:$client_version
     ports:
       - "8080:8080"
     environment: 
