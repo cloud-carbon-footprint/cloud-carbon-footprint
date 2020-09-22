@@ -85,7 +85,7 @@ jobs:
       - run: 
           name: install gcloud
           command: |
-            apk add --update curl
+            apk add --update curl bash
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com | bash
       - gcp-cli/initialize
