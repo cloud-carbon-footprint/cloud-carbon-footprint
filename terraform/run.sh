@@ -33,6 +33,8 @@ case "$subcommand" in
     export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
     terraform init -backend-config=vars/backend.hcl
     terraform $subcommand -var-file=vars/config.tfvars $auto_approve_flag
+    instance_ip=$(terraform output instance_ip)
+    echo "URL is http://${instance_ip}:8080"
     ;;
 
   *)
