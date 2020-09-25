@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, CardContent, CardActions, Typography, Button } from '@material-ui/core'
-import { DriveEta, LocalGasStation, Eco } from '@material-ui/icons'
+import { Card, CardContent, CardActions, Typography, Button, Link, Box } from '@material-ui/core'
+import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
 import { EstimationResult } from '../types'
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '60%',
+    height: '55%',
   },
   buttonContainer: {
     display: 'flex',
@@ -62,6 +62,14 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
     height: 60,
     width: 60,
     color: palette.primary.light,
+  },
+  source: {
+    padding: spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  sourceLink: {
+    display: 'inline-flex',
   },
 }))
 
@@ -160,6 +168,19 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           Trees
         </Button>
       </CardActions>
+      <Typography className={classes.source} data-testid="epa-source">
+        <Box>
+          Source:{' '}
+          <Link
+            href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+            target="_blank"
+            rel="noopener"
+            className={classes.sourceLink}
+          >
+            EPA Equivalencies Calculator <OpenInNew></OpenInNew>
+          </Link>
+        </Box>
+      </Typography>
     </Card>
   )
 }
