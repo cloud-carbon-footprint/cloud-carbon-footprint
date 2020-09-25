@@ -16,7 +16,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
   }
 
   async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
-    const metricDataResponses = await this.getVCPUs(start, end, region)
+    const metricDataResponses = await this.getCpuUtilization(start, end, region)
     const costAndUsageResponses = await this.getTotalVCpusByDate(
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
@@ -25,7 +25,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     return getComputeUsage(metricDataResponses, costAndUsageResponses, RDS_INSTANCE_TYPES)
   }
 
-  private async getVCPUs(start: Date, end: Date, region: string) {
+  private async getCpuUtilization(start: Date, end: Date, region: string) {
     const params = {
       StartTime: start,
       EndTime: end,
