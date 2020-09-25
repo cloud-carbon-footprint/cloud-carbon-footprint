@@ -12,12 +12,15 @@ import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
+  boxContainer: {
+    padding: theme.spacing(3, 10),
+  },
   filterContainer: {
     display: 'flex',
-    padding: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
   },
   filter: {
-    margin: theme.spacing(0.5),
+    marginRight: theme.spacing(0.5),
   },
 }))
 
@@ -30,8 +33,8 @@ export default function CloudCarbonContainer() {
   const { filteredData, filters, setFilters } = useFilters(data)
 
   return (
-    <Box paddingTop={3}>
-      <Grid container spacing={3}>
+    <Box className={classes.boxContainer}>
+      <Grid container>
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
             {[ServiceFilter, DateFilter, MonthFilter].map((FilterComponent, i) => (
@@ -46,7 +49,7 @@ export default function CloudCarbonContainer() {
         ) : (
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Box padding={3} border={1} marginBottom={4} borderColor="grey.400">
+              <Box padding={3} paddingRight={0} border={1} marginBottom={4} borderColor="grey.400">
                 <ApexLineChart data={filteredData} />
               </Box>
             </Grid>
