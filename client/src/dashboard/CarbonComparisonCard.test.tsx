@@ -78,6 +78,21 @@ describe('CarbonComparisonCard', () => {
     expect(milesIcon).toBeInstanceOf(SVGSVGElement)
   })
 
+  it('should show EPA source', async () => {
+    const { getByTestId } = render(<CarbonComparisonCard data={data} />)
+    const source = getByTestId('epa-source')
+    expect(source).toHaveTextContent('Source: EPA Equivalencies Calculator')
+  })
+
+  it('should open EPA page in other tab when clicking EPA link', async () => {
+    const { getByText } = render(<CarbonComparisonCard data={data} />)
+    const epaLink = getByText('EPA Equivalencies Calculator').closest('a')
+    expect(epaLink).toHaveAttribute('href', 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator')
+    expect(epaLink).toHaveAttribute('target', '_blank')
+    //for security reasons https://web.dev/external-anchors-use-rel-noopener/
+    expect(epaLink).toHaveAttribute('rel', 'noopener')
+  })
+
   describe('number formatting', () => {
     let data: EstimationResult[]
     let co2kg: number
