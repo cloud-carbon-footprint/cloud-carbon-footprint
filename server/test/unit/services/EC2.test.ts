@@ -179,13 +179,13 @@ describe('EC2', () => {
     })
   })
 
-  it('should set numberOfvCpus to 0 if no vCPU data is provided for a given timestamp', async () => {
+  it('should not return an estimate for a given timestamp if no vCPU data is provided for that timestamp', async () => {
     mockAwsCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), {
       MetricDataResults: [
         {
           Id: 'cpuUtilization',
           Timestamps: [dayTwoHourOne],
-          Values: [0],
+          Values: [1],
         },
         {
           Id: 'cpuUtilization',
@@ -205,11 +205,6 @@ describe('EC2', () => {
     const result = await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree), region)
 
     expect(result).toEqual([
-      {
-        cpuUtilizationAverage: 0,
-        numberOfvCpus: 0,
-        timestamp: new Date(dayTwoHourOne),
-      },
       {
         cpuUtilizationAverage: 1,
         numberOfvCpus: 1,
