@@ -1,5 +1,6 @@
 import { CloudWatch, CostExplorer } from 'aws-sdk'
 import ComputeUsage from '@domain/ComputeUsage'
+import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
 
 function getCPUUtilizationByTimestamp(metricDataResponses: CloudWatch.GetMetricDataOutput[]) {
   const cpuUtilizationByTimestamp: { [key: string]: number[] } = {}
@@ -25,9 +26,11 @@ function getNumberVcpusByDate(
   const vcpusByDate: { [timestamp: string]: number } = {}
   getCostAndUsageResponses.forEach((response) => {
     response.ResultsByTime.reduce((acc, result) => {
-      acc[result.TimePeriod.Start] = result.Groups.reduce((sum, group) => {
-        return sum + Number.parseInt(group.Metrics.UsageQuantity.Amount) * NODE_TYPES[group.Keys[0].split(':')[1]]
-      }, 0)
+      if (result.Groups.length > 0) {
+        acc[result.TimePeriod.Start] = result.Groups.reduce((sum, group) => {
+          return sum + Number.parseInt(group.Metrics.UsageQuantity.Amount) * NODE_TYPES[group.Keys[0].split(':')[1]]
+        }, 0)
+      }
       return acc
     }, vcpusByDate)
   })
@@ -35,19 +38,22 @@ function getNumberVcpusByDate(
 }
 
 function calculateAverages(cpuUtilization: number[]): number {
-  return (
-    cpuUtilization.reduce((acc, a) => {
-      return acc + a
-    }, 0) / cpuUtilization.length
-  )
+  if (cpuUtilization) {
+    return (
+      cpuUtilization.reduce((acc, a) => {
+        return acc + a
+      }, 0) / cpuUtilization.length
+    )
+  }
+  return AVG_CPU_UTILIZATION_2020
 }
 
 function buildComputeUsage(cpuUtilizationByTimestamp: { [p: string]: number[] }, vcpusByDate: { [p: string]: number }) {
   const dataGroupsByTimestamp: { [key: string]: ComputeUsage } = {}
-  Object.entries(cpuUtilizationByTimestamp).forEach(([timestamp, cpuUtilization]) => {
+  Object.entries(vcpusByDate).forEach(([timestamp]) => {
     dataGroupsByTimestamp[timestamp] = {
       timestamp: new Date(timestamp),
-      cpuUtilizationAverage: calculateAverages(cpuUtilization),
+      cpuUtilizationAverage: calculateAverages(cpuUtilizationByTimestamp[timestamp]),
       numberOfvCpus: vcpusByDate[timestamp],
     }
   })

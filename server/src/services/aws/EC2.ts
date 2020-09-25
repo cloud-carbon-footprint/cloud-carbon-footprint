@@ -4,6 +4,7 @@ import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
@@ -64,6 +65,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
     const vCPUData = metricDataResults.filter((a) => a.Id === 'vCPUs')
     vCPUData[0]?.Timestamps.forEach((timestamp, i) => {
       const key = new Date(timestamp).toISOString()
+
       if (!result[key]) result[key] = { cpuUtilization: [], timestamp: timestamp }
       result[key].vCPUCount = vCPUData[0].Values[i]
     })
@@ -76,7 +78,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
         }, 0) / a.cpuUtilization.length
 
       if (isNaN(a.cpuUtilizationAvg)) {
-        a.cpuUtilizationAvg = 0.0
+        a.cpuUtilizationAvg = AVG_CPU_UTILIZATION_2020
       }
     })
 

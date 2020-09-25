@@ -2,6 +2,7 @@ import EC2 from '@services/aws/EC2'
 import { buildCostExplorerGetCostResponse } from '@builders'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
+import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -113,33 +114,69 @@ describe('EC2', () => {
     ])
   })
 
-  it('does not produce NaN when usage is 0', async () => {
-    mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), {
-      MetricDataResults: [
+  describe('missing CPU utilization', () => {
+    it('uses average CPU utilization for every missing timestamp', async () => {
+      mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), {
+        MetricDataResults: [
+          {
+            Id: 'cpuUtilization',
+            Timestamps: [dayOneHourOne],
+            Values: [1],
+          },
+          {
+            Id: 'vCPUs',
+            Timestamps: [dayOneHourOne, dayOneHourTwo],
+            Values: [1, 1],
+          },
+        ],
+      })
+
+      const ec2Service = new EC2()
+
+      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne), region)
+
+      expect(result).toEqual([
         {
-          Id: 'cpuUtilization',
-          Timestamps: [dayOneHourTwo],
-          Values: [],
+          cpuUtilizationAverage: 1,
+          numberOfvCpus: 1,
+          timestamp: new Date(dayOneHourOne),
         },
         {
-          Id: 'vCPUs',
-          Timestamps: [dayOneHourTwo],
-          Values: [0],
+          cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+          numberOfvCpus: 1,
+          timestamp: new Date(dayOneHourTwo),
         },
-      ],
+      ])
     })
 
-    const ec2Service = new EC2()
+    it('uses average CPU utilization for every timestamp present for vCPUs', async () => {
+      mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), {
+        MetricDataResults: [
+          {
+            Id: 'vCPUs',
+            Timestamps: [dayOneHourOne, dayOneHourTwo],
+            Values: [4, 3],
+          },
+        ],
+      })
 
-    const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne), region)
+      const ec2Service = new EC2()
 
-    expect(result).toEqual([
-      {
-        cpuUtilizationAverage: 0,
-        numberOfvCpus: 0,
-        timestamp: new Date(dayOneHourTwo),
-      },
-    ])
+      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne), region)
+
+      expect(result).toEqual([
+        {
+          cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+          numberOfvCpus: 4,
+          timestamp: new Date(dayOneHourOne),
+        },
+        {
+          cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+          numberOfvCpus: 3,
+          timestamp: new Date(dayOneHourTwo),
+        },
+      ])
+    })
   })
 
   it('should set numberOfvCpus to 0 if no vCPU data is provided for a given timestamp', async () => {
