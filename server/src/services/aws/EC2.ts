@@ -1,10 +1,10 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import ComputeUsage from '@domain/ComputeUsage'
+import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '@domain/ComputeUsage'
 import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
-import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
+import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
@@ -38,57 +38,9 @@ export default class EC2 extends ServiceWithCPUUtilization {
 
     const responses = await new AWSDecorator(region).getMetricDataResponses(params)
 
-    interface RawComputeUsage {
-      cpuUtilization?: number[]
-      vCPUCount?: number
-      timestamp?: Date
-      cpuUtilizationAvg?: number
-    }
-    const result: { [key: string]: RawComputeUsage } = {}
-
-    // Aggregate CPU Utilization
-    const metricDataResults = responses.flatMap((response) => {
-      return response.MetricDataResults
-    })
-
-    const cpuUtilizationData = metricDataResults.filter((a) => a.Id === 'cpuUtilization')
-    cpuUtilizationData.forEach((instanceCPUUtilization) => {
-      instanceCPUUtilization.Timestamps.forEach((timestamp, i) => {
-        const timestampkey = new Date(timestamp).toISOString()
-        if (!result[timestampkey])
-          result[timestampkey] = { cpuUtilization: [instanceCPUUtilization.Values[i]], timestamp: timestamp }
-        else result[timestampkey].cpuUtilization.push(instanceCPUUtilization.Values[i])
-      })
-    })
-
-    // Add vCPU to result object
-    const vCPUData = metricDataResults.filter((a) => a.Id === 'vCPUs')
-    vCPUData[0]?.Timestamps.forEach((timestamp, i) => {
-      const key = new Date(timestamp).toISOString()
-
-      if (!result[key]) result[key] = { cpuUtilization: [], timestamp: timestamp }
-      result[key].vCPUCount = vCPUData[0].Values[i]
-    })
-
-    // Apply estimation formula
-    Object.values(result).forEach((a) => {
-      a.cpuUtilizationAvg =
-        a.cpuUtilization.reduce((acc, a) => {
-          return acc + a
-        }, 0) / a.cpuUtilization.length
-
-      if (isNaN(a.cpuUtilizationAvg)) {
-        a.cpuUtilizationAvg = AVG_CPU_UTILIZATION_2020
-      }
-    })
-
-    return Object.values(result).map((estimate: RawComputeUsage) => {
-      return {
-        cpuUtilizationAverage: estimate.cpuUtilizationAvg,
-        numberOfvCpus: estimate.vCPUCount || 0,
-        timestamp: new Date(estimate.timestamp),
-      }
-    })
+    const metricDataResults: MetricDataResult[] = responses.flatMap((response) => response.MetricDataResults)
+    const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(extractRawComputeUsages)
+    return buildComputeUsages(rawComputeUsages)
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
