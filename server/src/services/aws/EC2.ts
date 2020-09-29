@@ -1,19 +1,19 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '@domain/ComputeUsage'
-import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'ec2'
 
-  constructor() {
+  constructor(private serviceWrapper: ServiceWrapper) {
     super()
   }
 
-  async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
+  async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
     const params = {
       StartTime: start,
       EndTime: end,
@@ -36,7 +36,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const responses = await new AWSDecorator(region).getMetricDataResponses(params)
+    const responses = await this.serviceWrapper.getMetricDataResponses(params)
 
     const metricDataResults: MetricDataResult[] = responses.flatMap((response) => response.MetricDataResults)
     const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(extractRawComputeUsages)
@@ -74,6 +74,6 @@ export default class EC2 extends ServiceWithCPUUtilization {
       ],
       Metrics: ['AmortizedCost'],
     }
-    return getCostFromCostExplorer(params, region)
+    return getCostFromCostExplorer(params, this.serviceWrapper)
   }
 }

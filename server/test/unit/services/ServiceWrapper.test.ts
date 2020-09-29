@@ -1,11 +1,10 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
-import { AWSDecorator } from '@services/aws/AWSDecorator'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
-const region = 'us-east-1'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -36,7 +35,7 @@ describe('aws service helper', () => {
         callback(null, costExplorerMockFunction())
       },
     )
-    const responses = await new AWSDecorator(region).getCostAndUsageResponses(
+    const responses = await new ServiceWrapper(new CloudWatch(), new CostExplorer()).getCostAndUsageResponses(
       buildAwsCostExplorerGetCostAndUsageRequest(),
     )
 
@@ -56,7 +55,9 @@ describe('aws service helper', () => {
         callback(null, cloudWatchMockFunction())
       },
     )
-    const responses = await new AWSDecorator(region).getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
+    const responses = await new ServiceWrapper(new CloudWatch(), new CostExplorer()).getMetricDataResponses(
+      buildAwsCloudWatchGetMetricDataRequest(),
+    )
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })

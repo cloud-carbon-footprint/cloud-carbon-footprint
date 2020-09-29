@@ -3,6 +3,7 @@ import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import AWSMock from 'aws-sdk-mock'
 import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
@@ -17,7 +18,7 @@ describe('CostMapper', function () {
       },
     )
 
-    const costs = await getCostFromCostExplorer(buildRequestParams(), AWS_REGIONS.US_EAST_1)
+    const costs = await getCostFromCostExplorer(buildRequestParams(), new ServiceWrapper(undefined, new CostExplorer()))
 
     expect(costs).toEqual([
       { amount: 2.3081821243, currency: 'USD', timestamp: new Date(startDate) },

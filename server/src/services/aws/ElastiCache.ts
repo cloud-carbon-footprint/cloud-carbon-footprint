@@ -2,14 +2,14 @@ import ComputeUsage from '@domain/ComputeUsage'
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import { getComputeUsage } from '@services/aws/ComputeUsageMapper'
 import { CACHE_NODE_TYPES } from '@services/aws/AWSInstanceTypes'
-import { AWSDecorator } from '@services/aws/AWSDecorator'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'elasticache'
 
-  constructor() {
+  constructor(private readonly serviceWrapper: ServiceWrapper) {
     super()
   }
 
@@ -31,7 +31,7 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const metricDataResponses = await new AWSDecorator(region).getMetricDataResponses(cloudWatchParams)
+    const metricDataResponses = await this.serviceWrapper.getMetricDataResponses(cloudWatchParams)
 
     const costExplorerParams = {
       TimePeriod: {
@@ -53,9 +53,9 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ],
       Metrics: ['UsageQuantity'],
     }
-    const costAndUsageResponses = await new AWSDecorator(region).getCostAndUsageResponses(costExplorerParams)
+    const costAndUsageResponses = await this.serviceWrapper.getCostAndUsageResponses(costExplorerParams)
 
-    return await getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
+    return getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
@@ -80,6 +80,6 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       Metrics: ['AmortizedCost'],
     }
 
-    return getCostFromCostExplorer(costExplorerParams, region)
+    return getCostFromCostExplorer(costExplorerParams, this.serviceWrapper)
   }
 }

@@ -13,6 +13,8 @@ import { mockAwsCloudWatchGetMetricData, mockAwsCostExplorerGetCostAndUsage } fr
 import cli from '@view/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { CloudWatch, CostExplorer } from 'aws-sdk'
 
 jest.mock('@application/AWSServices')
 
@@ -33,13 +35,17 @@ describe('csv test', () => {
   const servicesRegistered = mocked(AWSServices, true)
   const rawRequest = ['executable', 'file', '--startDate', start, '--endDate', end, '--region', 'us-east-1']
 
-  servicesRegistered.mockReturnValue([
-    new EBS(),
-    new S3(),
-    new EC2(),
-    new ElastiCache(),
-    new RDS(new RDSComputeService(), new RDSStorage()),
-  ])
+  function getCloudWatch() {
+    return new CloudWatch({ region: 'us-east-1' })
+  }
+
+  function getCostExplorer() {
+    return new CostExplorer({ region: 'us-east-1' })
+  }
+
+  function getServiceWrapper() {
+    return new ServiceWrapper(getCloudWatch(), getCostExplorer())
+  }
 
   let outputFilePath: string
 
@@ -60,6 +66,14 @@ describe('csv test', () => {
   test('formats table into csv file', async () => {
     mockAwsCloudWatchGetMetricData()
     mockAwsCostExplorerGetCostAndUsage()
+
+    servicesRegistered.mockReturnValue([
+      new EBS(getServiceWrapper()),
+      new S3(getServiceWrapper()),
+      new EC2(getServiceWrapper()),
+      new ElastiCache(getServiceWrapper()),
+      new RDS(new RDSComputeService(getServiceWrapper()), new RDSStorage(getServiceWrapper())),
+    ])
 
     await cli([...rawRequest, '--format', 'csv', '--groupBy', 'dayAndService'])
 

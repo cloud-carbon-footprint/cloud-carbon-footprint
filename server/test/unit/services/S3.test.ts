@@ -3,6 +3,7 @@ import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 
 import S3 from '@services/aws/S3'
 import { buildCostExplorerGetCostResponse } from '@builders'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -52,8 +53,8 @@ describe('S3', () => {
       },
     )
 
-    const s3Service = new S3()
-    const result = await s3Service.getUsage(new Date(start), new Date(end), region)
+    const s3Service = new S3(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const result = await s3Service.getUsage(new Date(start), new Date(end))
     expect(result).toEqual([
       {
         sizeGb: 2.5860325,
@@ -89,7 +90,7 @@ describe('S3', () => {
       },
     )
 
-    const s3Service = new S3()
+    const s3Service = new S3(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const s3Costs = await s3Service.getCosts(new Date(start), new Date(end), region)
 
     expect(s3Costs).toEqual([

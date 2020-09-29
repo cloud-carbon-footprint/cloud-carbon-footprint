@@ -6,11 +6,12 @@ import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import AWS from 'aws-sdk'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class Lambda implements ICloudService {
   serviceName = 'lambda'
 
-  constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000) {}
+  constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000, private readonly serviceWrapper: ServiceWrapper) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const cloudWatchLogs = new AWS.CloudWatchLogs({ region: region }) //TODO: dependency injection
@@ -113,7 +114,7 @@ export default class Lambda implements ICloudService {
       ],
       Metrics: ['AmortizedCost'],
     }
-    return getCostFromCostExplorer(params, region)
+    return getCostFromCostExplorer(params, this.serviceWrapper)
   }
 }
 

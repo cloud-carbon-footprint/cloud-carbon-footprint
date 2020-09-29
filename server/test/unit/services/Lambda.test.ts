@@ -1,8 +1,9 @@
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatchLogs, CostExplorer } from 'aws-sdk'
+import AWS, { CloudWatchLogs, CostExplorer, CloudWatch } from 'aws-sdk'
 import Lambda from '@services/aws/Lambda'
 import { estimateCo2 } from '@domain/FootprintEstimationConstants'
 import { buildCostExplorerGetCostResponse } from '@builders'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 describe('Lambda', () => {
   beforeAll(() => {
@@ -51,7 +52,7 @@ describe('Lambda', () => {
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
-    const lambdaService = new Lambda()
+    const lambdaService = new Lambda(60000, 1000, new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual([
@@ -95,7 +96,7 @@ describe('Lambda', () => {
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
-    const lambdaService = new Lambda()
+    const lambdaService = new Lambda(60000, 1000, new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(dayThree), region)
 
     expect(result).toEqual([
@@ -149,7 +150,7 @@ describe('Lambda', () => {
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
-    const lambdaService = new Lambda()
+    const lambdaService = new Lambda(60000, 1000, new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(startQuerySpy).toHaveBeenCalledWith(
@@ -179,7 +180,7 @@ describe('Lambda', () => {
   it('gets Lambda usage for one function and one day when there are no group names for that region', async () => {
     mockDescribeLogGroups([])
 
-    const lambdaService = new Lambda()
+    const lambdaService = new Lambda(60000, 1000, new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual([
@@ -217,7 +218,7 @@ describe('Lambda', () => {
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
-    const lambdaService = new Lambda(100, 50)
+    const lambdaService = new Lambda(100, 50, new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const expectedError = new Error('CloudWatchLog request failed, status: Running')
 
@@ -243,7 +244,7 @@ describe('Lambda', () => {
       },
     )
 
-    const lambdaService = new Lambda()
+    const lambdaService = new Lambda(60000, 1000, new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const lambdaCosts = await lambdaService.getCosts(new Date(startDate), new Date(endDate), 'us-east-1')
 
     expect(lambdaCosts).toEqual([

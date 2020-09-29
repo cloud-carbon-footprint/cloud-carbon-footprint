@@ -3,6 +3,7 @@ import { buildCostExplorerGetCostResponse } from '@builders'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -86,9 +87,9 @@ describe('EC2', () => {
       Messages: [],
     })
 
-    const ec2Service = new EC2()
+    const ec2Service = new EC2(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
-    const result = await ec2Service.getUsage(new Date('2020-07-11T00:00:00Z'), new Date('2020-07-11T02:00:00Z'), region)
+    const result = await ec2Service.getUsage(new Date('2020-07-11T00:00:00Z'), new Date('2020-07-11T02:00:00Z'))
 
     expect(result).toEqual([
       {
@@ -131,9 +132,9 @@ describe('EC2', () => {
         ],
       })
 
-      const ec2Service = new EC2()
+      const ec2Service = new EC2(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
-      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne), region)
+      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne))
 
       expect(result).toEqual([
         {
@@ -160,9 +161,9 @@ describe('EC2', () => {
         ],
       })
 
-      const ec2Service = new EC2()
+      const ec2Service = new EC2(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
-      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne), region)
+      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne))
 
       expect(result).toEqual([
         {
@@ -200,9 +201,9 @@ describe('EC2', () => {
       ],
     })
 
-    const ec2Service = new EC2()
+    const ec2Service = new EC2(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
-    const result = await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree), region)
+    const result = await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree))
 
     expect(result).toEqual([
       {
@@ -224,9 +225,9 @@ describe('EC2', () => {
       ],
     })
 
-    const ec2Service = new EC2()
+    const ec2Service = new EC2(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
-    const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayOneHourThree), region)
+    const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayOneHourThree))
 
     expect(result).toEqual([])
   })
@@ -246,7 +247,7 @@ describe('EC2', () => {
       },
     )
 
-    const ec2Service = new EC2()
+    const ec2Service = new EC2(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const ec2Costs = await ec2Service.getCosts(new Date(startDate), new Date(endDate), region)
 
     expect(ec2Costs).toEqual([

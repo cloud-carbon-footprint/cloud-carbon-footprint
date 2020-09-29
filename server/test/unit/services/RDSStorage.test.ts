@@ -1,10 +1,11 @@
-import AWS, { CostExplorer } from 'aws-sdk'
+import AWS, { CostExplorer, CloudWatch } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import RDSStorage from '@services/aws/RDSStorage'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 
 import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '@builders'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -35,7 +36,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
 
@@ -88,7 +89,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
   })
@@ -107,7 +108,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const result = await rdsStorage.getUsage(new Date(juneStartDate), new Date(juneEndDate), region)
 
@@ -132,7 +133,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
 
@@ -157,7 +158,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
   })
 
@@ -179,7 +180,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual([])
@@ -197,7 +198,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsService = new RDSStorage()
+    const rdsService = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const ssdStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
@@ -217,7 +218,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsService = new RDSStorage()
+    const rdsService = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
@@ -240,7 +241,7 @@ describe('RDSStorage', () => {
       },
     )
 
-    const rdsStorage = new RDSStorage()
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const result = await rdsStorage.getCosts(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual([
       {

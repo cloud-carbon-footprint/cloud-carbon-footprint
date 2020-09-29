@@ -1,6 +1,7 @@
 import ElastiCache from '@services/aws/ElastiCache'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -83,7 +84,7 @@ describe('ElastiCache', () => {
       },
     )
 
-    const elasticacheService = new ElastiCache()
+    const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(usageByHour).toEqual([
@@ -129,7 +130,7 @@ describe('ElastiCache', () => {
       },
     )
 
-    const elasticacheService = new ElastiCache()
+    const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(usageByHour).toEqual([])
@@ -183,7 +184,7 @@ describe('ElastiCache', () => {
       },
     )
 
-    const elasticacheService = new ElastiCache()
+    const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(usageByHour).toEqual([{ cpuUtilizationAverage: 50, numberOfvCpus: 2, timestamp: new Date(startDate) }])
@@ -245,7 +246,7 @@ describe('ElastiCache', () => {
       },
     )
 
-    const elasticacheService = new ElastiCache()
+    const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(usageByHour).toEqual([{ cpuUtilizationAverage: 50, numberOfvCpus: 8, timestamp: new Date(startDate) }])
@@ -306,7 +307,7 @@ describe('ElastiCache', () => {
       },
     )
 
-    const elasticacheService = new ElastiCache()
+    const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(usageByHour).toEqual([{ cpuUtilizationAverage: 60, numberOfvCpus: 6, timestamp: new Date(startDate) }])
