@@ -7,6 +7,7 @@ import {
   buildCostExplorerGetUsageResponse,
 } from '@builders'
 import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -55,7 +56,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService()
+    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
@@ -100,7 +101,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService()
+    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
@@ -157,7 +158,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService()
+    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
@@ -185,7 +186,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService()
+    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
 
     const rdsCosts = await rdsService.getCosts(new Date(start), new Date(end), 'us-east-1')
 

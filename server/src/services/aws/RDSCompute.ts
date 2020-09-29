@@ -3,7 +3,7 @@ import ComputeUsage from '@domain/ComputeUsage'
 import { CostExplorer } from 'aws-sdk'
 import { getComputeUsage } from '@services/aws/ComputeUsageMapper'
 import { RDS_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
-import { AWSDecorator } from '@services/aws/AWSDecorator'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
@@ -11,12 +11,12 @@ import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 export default class RDSComputeService extends ServiceWithCPUUtilization {
   serviceName = 'rds'
 
-  constructor() {
+  constructor(private readonly serviceWrapper: ServiceWrapper) {
     super()
   }
 
   async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
-    const metricDataResponses = await this.getCpuUtilization(start, end, region)
+    const metricDataResponses = await this.getCpuUtilization(start, end)
     const costAndUsageResponses = await this.getTotalVCpusByDate(
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
@@ -25,7 +25,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     return getComputeUsage(metricDataResponses, costAndUsageResponses, RDS_INSTANCE_TYPES)
   }
 
-  private async getCpuUtilization(start: Date, end: Date, region: string) {
+  private async getCpuUtilization(start: Date, end: Date) {
     const params = {
       StartTime: start,
       EndTime: end,
@@ -43,7 +43,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    return await new AWSDecorator(region).getMetricDataResponses(params)
+    return await this.serviceWrapper.getMetricDataResponses(params)
   }
 
   private async getTotalVCpusByDate(
@@ -82,7 +82,7 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       Metrics: ['UsageQuantity'],
     }
 
-    return await new AWSDecorator(region).getCostAndUsageResponses(params)
+    return await this.serviceWrapper.getCostAndUsageResponses(params)
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
@@ -117,6 +117,6 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       Metrics: ['AmortizedCost'],
     }
 
-    return getCostFromCostExplorer(params, region)
+    return getCostFromCostExplorer(params, this.serviceWrapper)
   }
 }

@@ -4,7 +4,7 @@ import StorageUsage from '@domain/StorageUsage'
 import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWSDecorator } from '@services/aws/AWSDecorator'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export class VolumeUsage implements StorageUsage {
   readonly sizeGb: number
@@ -26,11 +26,9 @@ export enum DiskType {
 export async function getUsageFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
-  region: string,
+  serviceWrapper: ServiceWrapper,
 ): Promise<VolumeUsage[]> {
-  const responses: CostExplorer.GetCostAndUsageResponse[] = await new AWSDecorator(region).getCostAndUsageResponses(
-    params,
-  )
+  const responses: CostExplorer.GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(params)
 
   return responses
     .map((response) => {

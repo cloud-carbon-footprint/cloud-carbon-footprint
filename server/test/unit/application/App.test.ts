@@ -316,6 +316,9 @@ describe('App', () => {
       },
     ]
 
+    expect(AWSServicesRegistered).toHaveBeenCalledWith('us-east-1')
+    expect(AWSServicesRegistered).toHaveBeenCalledWith('us-east-2')
+
     expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1')
     expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
 

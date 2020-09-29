@@ -1,21 +1,10 @@
 import { CloudWatch, CostExplorer } from 'aws-sdk'
-import { AWS_REGIONS } from './AWSRegions'
 import { path } from 'ramda'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
 
-export class AWSDecorator {
-  private cloudWatch: CloudWatch
-  private costExplorer: CostExplorer
-
-  constructor(readonly region: string) {
-    this.cloudWatch = new CloudWatch({
-      region: region,
-    })
-    this.costExplorer = new CostExplorer({
-      region: AWS_REGIONS.US_EAST_1, //must be us-east-1 to work
-    })
-  }
+export class ServiceWrapper {
+  constructor(private readonly cloudWatch: CloudWatch, private readonly costExplorer: CostExplorer) {}
   private async getCostAndUsageResponse(
     params: CostExplorer.GetCostAndUsageRequest,
   ): Promise<CostExplorer.GetCostAndUsageResponse[]> {

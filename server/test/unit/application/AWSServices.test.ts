@@ -1,4 +1,15 @@
 describe('AWSServices', () => {
+  const CloudWatch = jest.fn()
+  const CostExplorer = jest.fn()
+  beforeEach(() => {
+    jest.doMock('aws-sdk', () => {
+      return {
+        CloudWatch: CloudWatch,
+        CostExplorer: CostExplorer,
+      }
+    })
+  })
+
   /* eslint-disable @typescript-eslint/no-var-requires */
   afterEach(() => {
     jest.resetModules()
@@ -38,6 +49,8 @@ describe('AWSServices', () => {
   it('should return instances from registered services in configuration file', () => {
     const EBS = require('@services/aws/EBS').default
     expectAWSService('ebs').toBeInstanceOf(EBS)
+    expect(CloudWatch).toHaveBeenCalledWith({ region: 'some-region' })
+    expect(CostExplorer).toHaveBeenCalledWith({ region: 'us-east-1' })
   })
 
   it('should return s3 instance', () => {
@@ -80,6 +93,6 @@ function expectAWSService(key: string) {
   })
 
   const AWSServices = require('@application/AWSServices').default
-  const services = AWSServices()
+  const services = AWSServices('some-region')
   return expect(services[0])
 }

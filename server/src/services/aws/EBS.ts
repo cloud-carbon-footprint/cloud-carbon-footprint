@@ -8,9 +8,12 @@ import {
 import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class EBS implements ICloudService {
   serviceName = 'ebs'
+
+  constructor(private serviceWrapper: ServiceWrapper) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
@@ -50,7 +53,7 @@ export default class EBS implements ICloudService {
       ],
     }
 
-    return await getUsageFromCostExplorer(params, this.getDiskType, region)
+    return await getUsageFromCostExplorer(params, this.getDiskType, this.serviceWrapper)
   }
 
   private getDiskType = (awsGroupKey: string) => {
@@ -97,6 +100,6 @@ export default class EBS implements ICloudService {
       ],
     }
 
-    return await getCostFromCostExplorer(params, region)
+    return await getCostFromCostExplorer(params, this.serviceWrapper)
   }
 }

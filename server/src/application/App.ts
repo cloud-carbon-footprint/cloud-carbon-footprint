@@ -14,19 +14,20 @@ import Region from '@domain/Region'
 export default class App {
   @cache()
   async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
-    const AWSSupportedServices = AWSServices()
     const GCPSupportedServices = GCPServices()
 
     const startDate = request.startDate
     const endDate = request.endDate
 
     if (request.region) {
-      const region = new Region(request.region, AWSSupportedServices, AWS.NAME)
+      const awsServices = AWSServices(request.region)
+      const region = new Region(request.region, awsServices, AWS.NAME)
       return this.getRegionData(region, startDate, endDate)
     } else {
       const AWSEstimatesByRegion = await Promise.all(
         AWS.CURRENT_REGIONS.map(async (regionId) => {
-          const region = new Region(regionId, AWSSupportedServices, AWS.NAME)
+          const awsServices = AWSServices(regionId)
+          const region = new Region(regionId, awsServices, AWS.NAME)
           return this.getRegionData(region, startDate, endDate)
         }),
       )

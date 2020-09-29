@@ -1,18 +1,18 @@
 import StorageUsage from '@domain/StorageUsage'
 import { HDDStorageService } from '@domain/StorageService'
-import { AWSDecorator } from './AWSDecorator'
 import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class S3 extends HDDStorageService {
   serviceName = 's3'
 
-  constructor() {
+  constructor(private readonly serviceWrapper: ServiceWrapper) {
     super()
   }
 
-  async getUsage(startDate: Date, endDate: Date, region: string): Promise<StorageUsage[]> {
+  async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {
     const params = {
       StartTime: startDate,
       EndTime: endDate,
@@ -26,7 +26,7 @@ export default class S3 extends HDDStorageService {
       ScanBy: 'TimestampAscending',
     }
 
-    const responses = await new AWSDecorator(region).getMetricDataResponses(params)
+    const responses = await this.serviceWrapper.getMetricDataResponses(params)
     const s3ResponseData = responses[0].MetricDataResults[0]
 
     return (
@@ -67,6 +67,6 @@ export default class S3 extends HDDStorageService {
       Metrics: ['AmortizedCost'],
     }
 
-    return getCostFromCostExplorer(params, region)
+    return getCostFromCostExplorer(params, this.serviceWrapper)
   }
 }

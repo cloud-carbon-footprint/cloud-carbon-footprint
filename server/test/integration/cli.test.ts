@@ -8,7 +8,7 @@ import S3 from '@services/aws/S3'
 import EC2 from '@services/aws/EC2'
 import ElastiCache from '@services/aws/ElastiCache'
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
+import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
 import { mocked } from 'ts-jest/utils'
 
 import {
@@ -20,6 +20,7 @@ import {
 import Lambda from '@services/aws/Lambda'
 import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
 import { EstimationRequestValidationError } from '@application/CreateValidRequest'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 jest.mock('@application/AWSServices')
 
@@ -40,37 +41,44 @@ describe('cli', () => {
   const servicesRegistered = mocked(AWSServices, true)
   const rawRequest = ['executable', 'file', '--startDate', start, '--endDate', end, '--region', 'us-east-1']
 
-  describe('ebs, s3, ec3, elasticache, rds', () => {
-    servicesRegistered.mockReturnValue([
-      new EBS(),
-      new S3(),
-      new EC2(),
-      new ElastiCache(),
-      new RDS(new RDSComputeService(), new RDSStorage()),
-    ])
+  function getCloudWatch() {
+    return new CloudWatch({ region: 'us-east-1' })
+  }
 
-    test('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
+  function getCostExplorer() {
+    return new CostExplorer({ region: 'us-east-1' })
+  }
+
+  function getServiceWrapper() {
+    return new ServiceWrapper(getCloudWatch(), getCostExplorer())
+  }
+
+  describe('ebs, s3, ec3, elasticache, rds', () => {
+    beforeEach(() => {
       mockAwsCloudWatchGetMetricData()
       mockAwsCostExplorerGetCostAndUsage()
+      servicesRegistered.mockReturnValue([
+        new EBS(getServiceWrapper()),
+        new S3(getServiceWrapper()),
+        new EC2(getServiceWrapper()),
+        new ElastiCache(getServiceWrapper()),
+        new RDS(new RDSComputeService(getServiceWrapper()), new RDSStorage(getServiceWrapper())),
+      ])
+    })
 
+    test('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
       const result = await cli(rawRequest)
 
       expect(result).toMatchSnapshot()
     })
 
     test('ebs, s3, ec2, elasticache, rds grouped by service', async () => {
-      mockAwsCloudWatchGetMetricData()
-      mockAwsCostExplorerGetCostAndUsage()
-
       const result = await cli([...rawRequest, '--groupBy', 'service'])
 
       expect(result).toMatchSnapshot()
     })
 
     test('ebs, s3, ec2, elasticache, rds, grouped by day', async () => {
-      mockAwsCloudWatchGetMetricData()
-      mockAwsCostExplorerGetCostAndUsage()
-
       const result = await cli([...rawRequest, '--groupBy', 'day'])
 
       expect(result).toMatchSnapshot()
@@ -79,9 +87,9 @@ describe('cli', () => {
 
   describe('lambda', () => {
     beforeEach(() => {
-      servicesRegistered.mockReturnValue([new Lambda()])
       mockAwsCloudWatchGetQueryResultsForLambda()
       mockAwsCostExplorerGetCostAndUsageResponse(lambdaMockGetCostResponse)
+      servicesRegistered.mockReturnValue([new Lambda(60000, 1000, getServiceWrapper())])
     })
 
     it('lambda estimates', async () => {
