@@ -44,7 +44,7 @@ jobs:
           name: build
           command: |
             cd client
-            npm install
+            npm ci
             npm run-script build
       - gcr/gcr-auth
       - gcr/build-image:
@@ -65,7 +65,7 @@ jobs:
           name: build
           command: |
             cd server
-            npm install
+            npm ci
             npm run-script build
       - gcr/gcr-auth
       - gcr/build-image:
@@ -84,8 +84,8 @@ jobs:
       - checkout
       - run: 
           environment:
-            TF_VAR_server_version: 0.0.<<pipeline.git.revision>>
-            TF_VAR_client_version: 0.0.<<pipeline.git.revision>>
+            SERVER_VERSION: 0.0.<<pipeline.git.revision>>
+            CLIENT_VERSION: 0.0.<<pipeline.git.revision>>
           name: deploy
           command: |
             apk add --update python3 py-crcmod bash libc6-compat curl
@@ -101,8 +101,14 @@ jobs:
             gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
             cd terraform
             ./run.sh apply
+            cd ..
+
+            cd appengine
+            ./deploy.sh
+            cd ..
 
 workflows:
   version: 2

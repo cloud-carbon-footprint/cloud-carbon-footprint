@@ -1,6 +1,12 @@
-FROM nginx:1.19-alpine
+FROM node:12-alpine
 
-COPY ./build /data/www
+WORKDIR /app
 
-# requires SERVER_HOST and SERVER_PORT to be provided as env vars when container is run
-COPY ccf.conf.template /etc/nginx/templates/ccf.conf.template
+COPY ./static-server/package.json ./package.json
+COPY ./static-server/package-lock.json ./package-lock.json
+COPY ./static-server/index.js ./index.js
+COPY ./build /app/build
+
+RUN npm ci
+
+CMD ["npm", "start"]

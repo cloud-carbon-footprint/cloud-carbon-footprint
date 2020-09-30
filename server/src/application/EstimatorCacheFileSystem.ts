@@ -4,7 +4,7 @@ import { promises as fs } from 'fs'
 import moment from 'moment'
 import { EstimationRequest } from '@application/CreateValidRequest'
 
-export const cachePath = 'estimates.cache.json'
+export const cachePath = process.env.CCF_CACHE_PATH || 'estimates.cache.json'
 
 export default class EstimatorCacheFileSystem implements EstimatorCache {
   async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
