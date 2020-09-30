@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, CardContent, CardActions, Typography, Button, Link, Box } from '@material-ui/core'
+import { Card, CardContent, CardActions, Typography, Button, Link } from '@material-ui/core'
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
 import { EstimationResult } from '../types'
@@ -169,17 +169,15 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
         </Button>
       </CardActions>
       <Typography className={classes.source} data-testid="epa-source">
-        <Box>
-          Source:{' '}
-          <Link
-            href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
-            target="_blank"
-            rel="noopener"
-            className={classes.sourceLink}
-          >
-            EPA Equivalencies Calculator <OpenInNew></OpenInNew>
-          </Link>
-        </Box>
+        Source:{' '}
+        <Link
+          href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+          target="_blank"
+          rel="noopener"
+          className={classes.sourceLink}
+        >
+          EPA Equivalencies Calculator <OpenInNew></OpenInNew>
+        </Link>
       </Typography>
     </Card>
   )
