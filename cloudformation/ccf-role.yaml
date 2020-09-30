@@ -1,0 +1,45 @@
+Resources:
+  CCFRole:
+    Type: 'AWS::IAM::Role'
+    Description: This role allows Cloud Carbon Footprint application to read CloudWatch and Cost Explorer data from GCP
+    Properties:
+      RoleName: 'ccf'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "arn:aws:iam::<REPLACE WITH CCF ACCOUNT ID>:role/GCPServiceAccount"
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: cloudwatch
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudwatch:GetMetricData
+                  - cloudwatch:GetMetricStatistics
+                Resource: "*"
+        - PolicyName: cost-explorer
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ce:GetCostAndUsage
+                Resource: "*"
+        - PolicyName: lambda-logs
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:DescribeLogGroups
+                  - logs:StartQuery
+                Resource: !Sub "arn:aws:logs:*:${AWS::AccountId}:log-group:*"
+              - Effect: Allow
+                Action:
+                  - logs:GetQueryResults
+                  - logs:StopQuery
+                Resource: "*"
