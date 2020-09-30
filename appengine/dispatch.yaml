@@ -1,0 +1,6 @@
+dispatch:
+  - url: "cloud-carbon-footprint.wl.r.appspot.com/api/*"
+    service: api
+
+  - url: "cloud-carbon-footprint.wl.r.appspot.com/*"
+    service: default
