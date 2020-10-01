@@ -96,21 +96,25 @@ describe('EC2', () => {
         cpuUtilizationAverage: (22.983333333333334 + 11.566666666666666) / 2, //should be the average of CPUUtilization accross vcpus per hour
         numberOfvCpus: 4,
         timestamp: new Date(dayOneHourOne),
+        usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: (31.435897435897434 + 11.576923076923077 + 9.63265306122449 + 24.25) / 4,
         numberOfvCpus: 4.5,
         timestamp: new Date(dayOneHourTwo),
+        usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: (9.716666666666667 + 13.083333333333334) / 2,
         numberOfvCpus: 4,
         timestamp: new Date(dayTwoHourOne),
+        usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: (20.46153846153846 + 32.44444444444444 + 10.26923076923077 + 9.75) / 4,
         numberOfvCpus: 4.333333333333333,
         timestamp: new Date(dayTwoHourTwo),
+        usesAverageCPUConstant: false,
       },
     ])
   })
@@ -141,11 +145,13 @@ describe('EC2', () => {
           cpuUtilizationAverage: 1,
           numberOfvCpus: 1,
           timestamp: new Date(dayOneHourOne),
+          usesAverageCPUConstant: false,
         },
         {
           cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
           numberOfvCpus: 1,
           timestamp: new Date(dayOneHourTwo),
+          usesAverageCPUConstant: true,
         },
       ])
     })
@@ -170,11 +176,13 @@ describe('EC2', () => {
           cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
           numberOfvCpus: 4,
           timestamp: new Date(dayOneHourOne),
+          usesAverageCPUConstant: true,
         },
         {
           cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
           numberOfvCpus: 3,
           timestamp: new Date(dayOneHourTwo),
+          usesAverageCPUConstant: true,
         },
       ])
     })
@@ -210,6 +218,7 @@ describe('EC2', () => {
         cpuUtilizationAverage: 1,
         numberOfvCpus: 1,
         timestamp: new Date(dayTwoHourTwo),
+        usesAverageCPUConstant: false,
       },
     ])
   })

@@ -18,6 +18,7 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
+      estimated: false,
     },
     s3: {
       timestamp,
@@ -26,6 +27,7 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
+      estimated: false,
     },
     ec2: {
       timestamp,
@@ -34,6 +36,7 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
+      estimated: false,
     },
     rds: {
       timestamp,
@@ -42,6 +45,7 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
+      estimated: false,
     },
     lambda: {
       timestamp,
@@ -50,6 +54,7 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
+      estimated: false,
     },
     elasticache: {
       timestamp,
@@ -58,6 +63,7 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
+      estimated: false,
     },
   }
 }

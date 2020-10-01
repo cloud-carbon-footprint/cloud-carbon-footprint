@@ -76,6 +76,7 @@ export default class App {
               wattHours: estimate?.wattHours || 0,
               co2e: estimate?.co2e || 0,
               cost: cost?.amount || 0,
+              usesAverageCPUConstant: estimate?.usesAverageCPUConstant,
             },
           ],
         }

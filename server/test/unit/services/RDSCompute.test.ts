@@ -61,8 +61,18 @@ describe('RDS Compute', function () {
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
     expect(usageByHour).toEqual([
-      { cpuUtilizationAverage: 32.34, numberOfvCpus: 2, timestamp: new Date('2020-01-25T00:00:00.000Z') },
-      { cpuUtilizationAverage: 12.65, numberOfvCpus: 96, timestamp: new Date('2020-01-26T00:00:00.000Z') },
+      {
+        cpuUtilizationAverage: 32.34,
+        numberOfvCpus: 2,
+        timestamp: new Date('2020-01-25T00:00:00.000Z'),
+        usesAverageCPUConstant: false,
+      },
+      {
+        cpuUtilizationAverage: 12.65,
+        numberOfvCpus: 96,
+        timestamp: new Date('2020-01-26T00:00:00.000Z'),
+        usesAverageCPUConstant: false,
+      },
     ])
   })
 
@@ -106,11 +116,17 @@ describe('RDS Compute', function () {
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
     expect(usageByHour).toEqual([
-      { cpuUtilizationAverage: 32.34, numberOfvCpus: 2, timestamp: new Date('2020-01-25T00:00:00.000Z') },
+      {
+        cpuUtilizationAverage: 32.34,
+        numberOfvCpus: 2,
+        timestamp: new Date('2020-01-25T00:00:00.000Z'),
+        usesAverageCPUConstant: false,
+      },
       {
         cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
         numberOfvCpus: 96,
         timestamp: new Date('2020-01-26T00:00:00.000Z'),
+        usesAverageCPUConstant: true,
       },
     ])
   })

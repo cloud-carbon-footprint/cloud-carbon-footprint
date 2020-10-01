@@ -8,6 +8,13 @@ import { ServiceResult } from './types'
 
 jest.mock('./dashboard/client/RemoteServiceHook')
 jest.mock('./themes')
+jest.mock('apexcharts', () => ({
+  exec: jest.fn(() => {
+    return new Promise((resolve, reject) => {
+      resolve('uri')
+    })
+  }),
+}))
 
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 

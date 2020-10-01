@@ -24,6 +24,7 @@ const dummyServiceEstimate: ServiceData[] = [
     co2e: 0,
     cost: 0,
     region: '',
+    usesAverageCPUConstant: false,
   },
 ]
 
@@ -198,6 +199,7 @@ describe('Cache', () => {
           co2e: 0,
           cost: 0,
           region: '',
+          usesAverageCPUConstant: false,
         },
       ])
       originalFunction.mockResolvedValueOnce(computedEstimates)
@@ -228,6 +230,7 @@ describe('Cache', () => {
           co2e: 0,
           cost: 0,
           region: '',
+          usesAverageCPUConstant: false,
         },
       ])
       originalFunction.mockResolvedValueOnce(computedEstimates)
