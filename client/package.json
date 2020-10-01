@@ -41,7 +41,6 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./src/",
     "start-stub-server": "json-server stub-server/co2estimations.json --port 4000 --routes stub-server/routes.json",
-    "start:static": "node static-server/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
