@@ -17,6 +17,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 1,
           cost: 0,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -25,6 +26,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 2,
           cost: 0,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -33,6 +35,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 3,
           cost: 0,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -41,6 +44,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 4,
           cost: 0,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -49,6 +53,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 4,
           cost: 0,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -57,6 +62,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 1,
           cost: 0,
           region: region,
+          usesAverageCPUConstant: false,
         },
       ],
     },
@@ -70,6 +76,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 8,
           cost: 6,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -78,6 +85,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 1,
           cost: 6,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -86,6 +94,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 77,
           cost: 6,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -94,6 +103,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 787,
           cost: 6,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -102,6 +112,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 787,
           cost: 6,
           region: region,
+          usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
@@ -110,6 +121,7 @@ describe('EmissionsByDayTable', () => {
           co2e: 300,
           cost: 6,
           region: region,
+          usesAverageCPUConstant: false,
         },
       ],
     },

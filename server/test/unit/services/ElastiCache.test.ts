@@ -88,8 +88,13 @@ describe('ElastiCache', () => {
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(usageByHour).toEqual([
-      { cpuUtilizationAverage: 1.0456, numberOfvCpus: 4, timestamp: new Date(startDate) },
-      { cpuUtilizationAverage: 2.03242, numberOfvCpus: 4, timestamp: new Date(dayTwo) },
+      {
+        cpuUtilizationAverage: 1.0456,
+        numberOfvCpus: 4,
+        timestamp: new Date(startDate),
+        usesAverageCPUConstant: false,
+      },
+      { cpuUtilizationAverage: 2.03242, numberOfvCpus: 4, timestamp: new Date(dayTwo), usesAverageCPUConstant: false },
     ])
   })
 
@@ -187,7 +192,9 @@ describe('ElastiCache', () => {
     const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
-    expect(usageByHour).toEqual([{ cpuUtilizationAverage: 50, numberOfvCpus: 2, timestamp: new Date(startDate) }])
+    expect(usageByHour).toEqual([
+      { cpuUtilizationAverage: 50, numberOfvCpus: 2, timestamp: new Date(startDate), usesAverageCPUConstant: true },
+    ])
   })
 
   it('should return the usage when two different cache instances types were used', async () => {
@@ -249,7 +256,9 @@ describe('ElastiCache', () => {
     const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
-    expect(usageByHour).toEqual([{ cpuUtilizationAverage: 50, numberOfvCpus: 8, timestamp: new Date(startDate) }])
+    expect(usageByHour).toEqual([
+      { cpuUtilizationAverage: 50, numberOfvCpus: 8, timestamp: new Date(startDate), usesAverageCPUConstant: false },
+    ])
   })
 
   it('should return the usage when two different cache instances types in different hours were used', async () => {
@@ -310,7 +319,9 @@ describe('ElastiCache', () => {
     const elasticacheService = new ElastiCache(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     const usageByHour = await elasticacheService.getUsage(new Date(startDate), new Date(endDate), region)
 
-    expect(usageByHour).toEqual([{ cpuUtilizationAverage: 60, numberOfvCpus: 6, timestamp: new Date(startDate) }])
+    expect(usageByHour).toEqual([
+      { cpuUtilizationAverage: 60, numberOfvCpus: 6, timestamp: new Date(startDate), usesAverageCPUConstant: false },
+    ])
   })
 })
 

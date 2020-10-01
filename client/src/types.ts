@@ -4,6 +4,7 @@ export interface serviceEstimate {
   co2e: number
   cost: number
   region: string
+  usesAverageCPUConstant?: boolean
 }
 
 export interface ServiceResult {
@@ -20,10 +21,7 @@ export interface EstimationResult {
 export interface cloudEstPerDay {
   x: Date
   y: number
-}
-
-export enum CloudEstimationTypes {
-  co2e = 'co2e',
-  wattHours = 'wattHours',
-  cost = 'cost',
+  usesAverageCPUConstant?: boolean
+  wattHours?: number
+  cost?: number
 }

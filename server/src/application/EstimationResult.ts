@@ -12,6 +12,7 @@ export interface ServiceData {
   readonly co2e: number
   readonly cost: number
   readonly region: string
+  readonly usesAverageCPUConstant: boolean
 }
 
 export const reduceByTimestamp = (estimationResults: EstimationResult[]): EstimationResult[] => {

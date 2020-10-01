@@ -22,6 +22,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
         timestamp: usage.timestamp,
         wattHours: estimatedWattage,
         co2e: estimatedCO2Emissions,
+        usesAverageCPUConstant: usage.usesAverageCPUConstant,
       }
     })
   }

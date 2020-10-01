@@ -5,6 +5,7 @@ import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number
   numberOfvCpus: number
+  usesAverageCPUConstant: boolean
 }
 
 export class ComputeUsageBuilder {
@@ -31,14 +32,15 @@ export class ComputeUsageBuilder {
   }
 
   build(): ComputeUsage {
-    const cpuUtilizationAverage =
-      this.cpuUtilizations.length > 0
-        ? this.cpuUtilizations.reduce((sum, x) => sum + x) / this.cpuUtilizations.length
-        : AVG_CPU_UTILIZATION_2020
+    const hasMeasurements = this.cpuUtilizations.length > 0
+    const cpuUtilizationAverage = hasMeasurements
+      ? this.cpuUtilizations.reduce((sum, x) => sum + x) / this.cpuUtilizations.length
+      : AVG_CPU_UTILIZATION_2020
     return {
       timestamp: new Date(this.timestamp),
       cpuUtilizationAverage,
       numberOfvCpus: this.numberOfvCpus,
+      usesAverageCPUConstant: !hasMeasurements,
     }
   }
 }

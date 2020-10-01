@@ -8,6 +8,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
     Object {
       "chart": Object {
         "background": "#fff",
+        "id": "lineChart",
         "toolbar": Object {
           "tools": Object {
             "download": "<svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\"><path d=\\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\\"></path></svg>",
@@ -32,6 +33,9 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         Object {
           "data": Array [
             Object {
+              "cost": 0,
+              "usesAverageCPUConstant": false,
+              "wattHours": 0,
               "x": 2019-08-10T00:00:00.000Z,
               "y": 7,
             },
@@ -70,6 +74,10 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         },
         "text": "Cloud Usage",
       },
+      "tooltip": Object {
+        "custom": [Function],
+        "shared": true,
+      },
       "xaxis": Object {
         "labels": Object {
           "formatter": [Function],
@@ -105,6 +113,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           },
           "decimalsInFloat": 2,
           "opposite": true,
+          "showAlways": false,
           "title": Object {
             "opposite": -8,
             "style": Object {
@@ -124,6 +133,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           },
           "decimalsInFloat": 2,
           "opposite": true,
+          "showAlways": false,
           "title": Object {
             "offsetX": -8,
             "style": Object {
@@ -141,6 +151,9 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       Object {
         "data": Array [
           Object {
+            "cost": 0,
+            "usesAverageCPUConstant": false,
+            "wattHours": 0,
             "x": 2019-08-10T00:00:00.000Z,
             "y": 7,
           },

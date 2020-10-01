@@ -8,6 +8,13 @@ import moment from 'moment'
 
 jest.mock('./client/RemoteServiceHook')
 jest.mock('../themes')
+jest.mock('apexcharts', () => ({
+  exec: jest.fn(() => {
+    return new Promise((resolve, reject) => {
+      resolve('uri')
+    })
+  }),
+}))
 
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
 

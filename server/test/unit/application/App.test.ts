@@ -85,6 +85,7 @@ describe('App', () => {
               co2e: 0.0007737845760000001,
               cost: 5,
               region: region,
+              usesAverageCPUConstant: false,
             },
           ],
         }
@@ -154,6 +155,7 @@ describe('App', () => {
               co2e: 2,
               cost: 3,
               region: region,
+              usesAverageCPUConstant: false,
             },
             {
               cloudProvider: 'aws',
@@ -162,6 +164,7 @@ describe('App', () => {
               co2e: 1,
               cost: 4,
               region: region,
+              usesAverageCPUConstant: false,
             },
           ],
         },
@@ -205,6 +208,7 @@ describe('App', () => {
               co2e: 6,
               cost: 0,
               region: region,
+              usesAverageCPUConstant: false,
             },
           ],
         },
@@ -260,6 +264,7 @@ describe('App', () => {
               co2e: 0.0007737845760000001,
               cost: 0,
               region: region,
+              usesAverageCPUConstant: false,
             },
           ],
         }
@@ -303,6 +308,7 @@ describe('App', () => {
             co2e: 6,
             cost: 0,
             region: testRegions[0],
+            usesAverageCPUConstant: false,
           },
           {
             cloudProvider: 'aws',
@@ -311,6 +317,7 @@ describe('App', () => {
             co2e: 6,
             cost: 0,
             region: testRegions[1],
+            usesAverageCPUConstant: false,
           },
         ],
       },
@@ -387,6 +394,7 @@ describe('App', () => {
             co2e: 6,
             cost: 3,
             region: testRegions[0],
+            usesAverageCPUConstant: false,
           },
           {
             cloudProvider: 'aws',
@@ -395,6 +403,7 @@ describe('App', () => {
             co2e: 8,
             cost: 3,
             region: testRegions[0],
+            usesAverageCPUConstant: false,
           },
           {
             cloudProvider: 'aws',
@@ -403,6 +412,7 @@ describe('App', () => {
             co2e: 6,
             cost: 3,
             region: testRegions[1],
+            usesAverageCPUConstant: false,
           },
           {
             cloudProvider: 'aws',
@@ -411,6 +421,7 @@ describe('App', () => {
             co2e: 8,
             cost: 3,
             region: testRegions[1],
+            usesAverageCPUConstant: false,
           },
         ],
       },
@@ -467,6 +478,7 @@ describe('App', () => {
             co2e: 6,
             cost: 0,
             region: 'us-east-1',
+            usesAverageCPUConstant: false,
           },
           {
             cloudProvider: 'aws',
@@ -475,6 +487,7 @@ describe('App', () => {
             co2e: 6,
             cost: 0,
             region: 'us-east-2',
+            usesAverageCPUConstant: false,
           },
           {
             cloudProvider: 'gcp',
@@ -483,6 +496,7 @@ describe('App', () => {
             co2e: 8,
             cost: 0,
             region: 'us-east1',
+            usesAverageCPUConstant: false,
           },
         ],
       },

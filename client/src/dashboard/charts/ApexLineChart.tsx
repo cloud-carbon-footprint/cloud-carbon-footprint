@@ -1,17 +1,23 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, useEffect } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
 import Chart from 'react-apexcharts'
+import ApexCharts from 'apexcharts'
 import moment from 'moment'
+import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
-import { dailyTotals } from '../transformData'
+import { sumServiceTotals } from '../transformData'
 import { EstimationResult } from '../../types'
 
 export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
   const theme = useTheme()
 
+  useEffect(() => {
+    ApexCharts.exec('lineChart', 'hideSeries', ['AWS Watt Hours'])
+    ApexCharts.exec('lineChart', 'hideSeries', ['AWS Cost'])
+  })
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
   // Why, you might ask? Don't ask me, ask ApexCharts.
   const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
@@ -19,18 +25,19 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const RotateLeftIconHTML = renderToStaticMarkup(<RotateLeft />)
   const ZoomInIconHTML = renderToStaticMarkup(<ZoomIn />)
 
-  const cloudEstimationData = dailyTotals(data)
+  const cloudEstimationData = sumServiceTotals(data)
+  const co2SeriesData = cloudEstimationData.co2Series
+  const wattHoursSeriesData = cloudEstimationData.wattHoursSeries
+  const costSeriesData = cloudEstimationData.costSeries
   const [getMaxCo2] = useState(cloudEstimationData.maxCo2e)
 
-  const co2SeriesData = cloudEstimationData.co2e
-  const wattHoursSeriesData = cloudEstimationData.wattHours
-  const costSeriesData = cloudEstimationData.cost
 
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
 
   const options = {
     chart: {
+      id: 'lineChart',
       background: theme.palette.background.paper,
       toolbar: {
         tools: {
@@ -67,6 +74,14 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     },
     theme: {
       mode: theme.palette.type,
+    },
+    tooltip: {
+      shared: true,
+      custom: function ({ dataPointIndex }: { dataPointIndex: number }) {
+        return renderToStaticMarkup(
+          <CustomTooltip data={co2SeriesData} dataPointIndex={dataPointIndex}></CustomTooltip>,
+        )
+      },
     },
     title: {
       text: 'Cloud Usage',
@@ -120,6 +135,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         axisTicks: {
           show: true,
         },
+        showAlways: false
       },
       {
         title: {
@@ -139,6 +155,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         axisTicks: {
           show: true,
         },
+        showAlways: false
       },
     ],
   }
