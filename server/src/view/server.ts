@@ -1,10 +1,10 @@
-import express from 'express'
-import api from './api'
-import auth from './auth'
-
 if (process.env.NODE_ENV === 'production') {
   require('module-alias/register')
 }
+
+import express from 'express'
+import api from './api'
+import auth from './auth'
 
 const port = process.env.PORT || 4000
 const httpApp = express()
