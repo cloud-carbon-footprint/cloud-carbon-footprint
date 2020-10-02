@@ -13,6 +13,9 @@ const determineTheme = (prefersDarkMode: boolean): Theme => {
   return createMuiTheme({
     palette: {
       type: prefersDarkMode ? 'dark' : 'light',
+      background: {
+        default: prefersDarkMode ? '#303030' : '#F1F1F1',
+      },
       chart: [
         // primary
         { main: '#2C82BE' },

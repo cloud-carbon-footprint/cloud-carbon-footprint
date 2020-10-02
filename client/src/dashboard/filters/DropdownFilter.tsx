@@ -1,11 +1,10 @@
 import React, { FunctionComponent } from 'react'
-import { useFilterStyles } from '../../styles'
 import Autocomplete, { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import TextField from '@material-ui/core/TextField'
-import { Typography } from '@material-ui/core'
+import { Typography, useTheme, withStyles } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 export interface DropdownOption {
@@ -29,10 +28,15 @@ const useStyles = makeStyles((theme) => ({
   inputLabel: {
     textTransform: 'none',
   },
+  textField: {
+    backgroundColor: theme.palette.background.paper,
+    overflow: 'none',
+    borderRadius: theme.shape.borderRadius,
+    height: theme.spacing(5),
+  },
 }))
 
 const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
-  const filterClasses = useFilterStyles()
   const localClasses = useStyles()
 
   return (
@@ -64,10 +68,10 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
         </React.Fragment>
       )}
       renderTags={() => null}
-      className={filterClasses.filterHeight}
       renderInput={(params: any) => {
         return (
           <TextField
+            className={localClasses.textField}
             variant="outlined"
             label="AWS Services"
             {...params}

@@ -6,7 +6,7 @@ import { ApexDonutChart } from './charts/ApexDonutChart'
 import { CarbonComparisonCard } from './CarbonComparisonCard'
 import moment from 'moment'
 import MonthFilter from './filters/MonthFilter'
-import { Box, CircularProgress, Grid } from '@material-ui/core'
+import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
 import ServiceFilter from './filters/ServiceFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
@@ -49,17 +49,21 @@ export default function CloudCarbonContainer() {
         ) : (
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Box padding={3} paddingRight={0} border={1} marginBottom={4} borderColor="grey.400">
-                <ApexLineChart data={filteredData} />
-              </Box>
+              <Card style={{ width: '100%', height: '100%' }}>
+                <Box padding={3} paddingRight={4}>
+                  <ApexLineChart data={filteredData} />
+                </Box>
+              </Card>
             </Grid>
             <Grid item xs={6}>
               <CarbonComparisonCard data={filteredData} />
             </Grid>
             <Grid item xs={6}>
-              <Box padding={3} border={1} borderColor="grey.400">
-                <ApexDonutChart data={filteredData} />
-              </Box>
+              <Card style={{ width: '100%', height: '100%' }}>
+                <Box padding={3}>
+                  <ApexDonutChart data={filteredData} />
+                </Box>
+              </Card>
             </Grid>
           </Grid>
         )}

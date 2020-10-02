@@ -7,7 +7,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
   options={
     Object {
       "chart": Object {
-        "background": "#fafafa",
+        "background": "#fff",
       },
       "colors": Array [
         "#000000",

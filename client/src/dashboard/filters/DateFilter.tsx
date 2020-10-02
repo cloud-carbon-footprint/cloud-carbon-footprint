@@ -13,7 +13,7 @@ const StyledWrapper = withTheme(styled.div`
       border-radius: ${theme.shape.borderRadius}px;
       overflow: hidden;
       height: ${theme.spacing(5)}px;
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     // https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/OutlinedInput/OutlinedInput.js#L10
     .DateRangePickerInput__withBorder {
@@ -24,7 +24,7 @@ const StyledWrapper = withTheme(styled.div`
     }
     .DateInput_input {
       color: ${theme.palette.primary.light};
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
       font-weight: ${theme.typography.button.fontWeight};
       letter-spacing: ${theme.typography.button.letterSpacing};
       font-size: ${theme.typography.button.fontSize};
@@ -36,8 +36,8 @@ const StyledWrapper = withTheme(styled.div`
       border-bottom: 2px solid ${theme.palette.primary.main};
     }
     .DateRangePickerInput_arrow_svg {
-      color: ${theme.palette.action.active};
-      background-color: ${theme.palette.background.default};
+      fill: ${theme.palette.action.active};
+      background-color: ${theme.palette.background.paper};
     }
     .CalendarDay__default {
       background-color: ${theme.palette.background.paper};
@@ -49,7 +49,7 @@ const StyledWrapper = withTheme(styled.div`
     }
     .CalendarDay__blocked_out_of_range, .CalendarDay__blocked_out_of_range:hover {
       color: ${theme.palette.action.disabled};
-      background-color: ${theme.palette.background.default};
+      background-color: ${theme.palette.background.paper};
     }
     .CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
       background: ${theme.palette.primary.main};
