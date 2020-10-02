@@ -1,3 +1,4 @@
+import express from 'express'
 import api from '@view/api'
 import request from 'supertest'
 import { EstimationResult } from '@application/EstimationResult'
@@ -10,6 +11,13 @@ jest.mock('@application/App', () => {
 })
 
 describe('api', () => {
+  let server: express.Express
+
+  beforeEach(() => {
+    server = express()
+    server.use(api)
+  })
+
   describe('/footprint', () => {
     it('returns footprint estimates for a period of time', async () => {
       //setup
@@ -20,7 +28,7 @@ describe('api', () => {
       mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
 
       //run
-      const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}&end=${endDate}`))
+      const response = await request(server).get(encodeURI(`/footprint?start=${startDate}&end=${endDate}`))
 
       //assert
       expect(response.status).toBe(200)
@@ -37,7 +45,7 @@ describe('api', () => {
         const endDate = '2020-07-13'
 
         //run
-        const response = await request(api).get(encodeURI(`/api/footprint?end=${endDate}`))
+        const response = await request(server).get(encodeURI(`/footprint?end=${endDate}`))
 
         //assert
         expect(response.status).toBe(400)
@@ -48,7 +56,7 @@ describe('api', () => {
         const startDate = '2020-07-12'
 
         //run
-        const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}`))
+        const response = await request(server).get(encodeURI(`/footprint?start=${startDate}`))
 
         //assert
         expect(response.status).toBe(400)
@@ -61,7 +69,7 @@ describe('api', () => {
 
         //run
         mockGetCostAndEstimates.mockRejectedValueOnce(new Error('error'))
-        const response = await request(api).get(encodeURI(`/api/footprint?start=${startDate}&end=${endDate}`))
+        const response = await request(server).get(encodeURI(`/footprint?start=${startDate}&end=${endDate}`))
 
         //assert
         expect(response.status).toBe(500)
