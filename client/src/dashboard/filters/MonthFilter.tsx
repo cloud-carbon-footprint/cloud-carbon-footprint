@@ -1,13 +1,20 @@
 import React, { FunctionComponent } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
 import { FilterProps } from './Filters'
-import { useFilterStyles } from '../../styles'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  buttonGroup: {
+    height: theme.spacing(5),
+    backgroundColor: theme.palette.background.paper,
+  },
+}))
 
 const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
-  const classes = useFilterStyles()
+  const classes = useStyles()
   return (
     <>
-      <ButtonGroup className={classes.filterHeight}>
+      <ButtonGroup className={classes.buttonGroup}>
         <Button
           disableElevation
           variant={filters.timeframe === 1 ? 'contained' : undefined}

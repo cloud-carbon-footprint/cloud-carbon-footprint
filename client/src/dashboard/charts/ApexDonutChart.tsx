@@ -13,7 +13,7 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
 
   const options = {
     chart: {
-      background: theme.palette.background.default,
+      background: theme.palette.background.paper,
     },
     colors: chartColors,
     dataLabels: {
@@ -52,8 +52,8 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
     tooltip: {
       fillSeriesColor: false,
       y: {
-        formatter: function (value: string) {
-          return `${value} kg CO2e`
+        formatter: function (value: number) {
+          return `${value.toFixed(3)} kg CO2e`
         },
       },
     },

@@ -31,7 +31,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
 
   const options = {
     chart: {
-      background: theme.palette.background.default,
+      background: theme.palette.background.paper,
       toolbar: {
         tools: {
           download: GetAppIconHTML,

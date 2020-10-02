@@ -7,7 +7,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
   options={
     Object {
       "chart": Object {
-        "background": "#fafafa",
+        "background": "#fff",
         "toolbar": Object {
           "tools": Object {
             "download": "<svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\"><path d=\\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\\"></path></svg>",
