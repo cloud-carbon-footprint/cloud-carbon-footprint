@@ -32,7 +32,6 @@ export default function CloudCarbonContainer() {
   const { data, loading } = useRemoteService([], startDate, endDate)
   const { filteredData, filters, setFilters } = useFilters(data)
 
-
   return (
     <Box className={classes.boxContainer}>
       <Grid container>
@@ -53,6 +52,9 @@ export default function CloudCarbonContainer() {
               <Card style={{ width: '100%', height: '100%' }}>
                 <Box padding={3} paddingRight={4}>
                   <ApexLineChart data={filteredData} />
+                  <Grid container justify="center">
+                    <div>*estimated with average CPU not actual CPU</div>
+                  </Grid>
                 </Box>
               </Card>
             </Grid>
