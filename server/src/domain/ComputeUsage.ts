@@ -1,6 +1,6 @@
 import IUsageData from '@domain/IUsageData'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number
@@ -12,11 +12,13 @@ export class ComputeUsageBuilder {
   private timestamp: string
   private cpuUtilizations: number[]
   private numberOfvCpus: number
+  private cloudProvider: string
 
-  constructor(timestamp: string) {
+  constructor(timestamp: string, cloudProvider: string) {
     this.timestamp = timestamp
     this.cpuUtilizations = []
     this.numberOfvCpus = 0
+    this.cloudProvider = cloudProvider
   }
 
   addCpuUtilization(cpuUtilization: number): ComputeUsageBuilder {
@@ -32,10 +34,11 @@ export class ComputeUsageBuilder {
   }
 
   build(): ComputeUsage {
+
     const hasMeasurements = this.cpuUtilizations.length > 0
     const cpuUtilizationAverage = hasMeasurements
       ? this.cpuUtilizations.reduce((sum, x) => sum + x) / this.cpuUtilizations.length
-      : AVG_CPU_UTILIZATION_2020
+      : CLOUD_CONSTANTS[this.cloudProvider].AVG_CPU_UTILIZATION_2020
     return {
       timestamp: new Date(this.timestamp),
       cpuUtilizationAverage,
@@ -60,8 +63,8 @@ export const extractRawComputeUsages: (mdr: MetricDataResult) => RawComputeUsage
     value: metricData.Values[i],
   }))
 
-const mergeUsageByTimestamp = (acc: GroupedComputeUsages, data: RawComputeUsage) => {
-  const usageToUpdate = acc[data.timestamp] || new ComputeUsageBuilder(data.timestamp)
+const mergeUsageByTimestamp = (acc: GroupedComputeUsages, data: RawComputeUsage, cloudProvider: string) => {
+  const usageToUpdate = acc[data.timestamp] || new ComputeUsageBuilder(data.timestamp, cloudProvider)
   if (data.id === 'cpuUtilization') {
     acc[data.timestamp] = usageToUpdate.addCpuUtilization(data.value)
   } else if (data.id === 'vCPUs') {
@@ -70,8 +73,8 @@ const mergeUsageByTimestamp = (acc: GroupedComputeUsages, data: RawComputeUsage)
   return acc
 }
 
-export function buildComputeUsages(rawComputeUsages: RawComputeUsage[]): ComputeUsage[] {
-  const groupedComputeUsages: GroupedComputeUsages = rawComputeUsages.reduce(mergeUsageByTimestamp, {})
+export function buildComputeUsages(rawComputeUsages: RawComputeUsage[], cloudProvider: string): ComputeUsage[] {
+  const groupedComputeUsages: GroupedComputeUsages = rawComputeUsages.reduce((acc, data) => mergeUsageByTimestamp(acc, data, cloudProvider), {})
   return Object.values(groupedComputeUsages)
     .map((builder: ComputeUsageBuilder) => builder.build())
     .filter((usage: ComputeUsage) => usage.numberOfvCpus > 0)

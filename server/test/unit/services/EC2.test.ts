@@ -2,7 +2,7 @@ import EC2 from '@services/aws/EC2'
 import { buildCostExplorerGetCostResponse } from '@builders'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
-import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
@@ -23,6 +23,7 @@ describe('EC2', () => {
   const region = 'us-east-one'
   const startDate = '2020-07-10'
   const endDate = '2020-07-11'
+  const avgCPUUtilization = CLOUD_CONSTANTS.AWS.avgCPUUtilization
 
   it('gets EC2 usage', async () => {
     mockAwsCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), {
@@ -148,7 +149,7 @@ describe('EC2', () => {
           usesAverageCPUConstant: false,
         },
         {
-          cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+          cpuUtilizationAverage: avgCPUUtilization,
           numberOfvCpus: 1,
           timestamp: new Date(dayOneHourTwo),
           usesAverageCPUConstant: true,
@@ -173,13 +174,13 @@ describe('EC2', () => {
 
       expect(result).toEqual([
         {
-          cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+          cpuUtilizationAverage: avgCPUUtilization,
           numberOfvCpus: 4,
           timestamp: new Date(dayOneHourOne),
           usesAverageCPUConstant: true,
         },
         {
-          cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+          cpuUtilizationAverage: avgCPUUtilization,
           numberOfvCpus: 3,
           timestamp: new Date(dayOneHourTwo),
           usesAverageCPUConstant: true,

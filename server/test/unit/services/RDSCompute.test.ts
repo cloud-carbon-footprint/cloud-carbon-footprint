@@ -6,7 +6,7 @@ import {
   buildCostExplorerGetCostResponse,
   buildCostExplorerGetUsageResponse,
 } from '@builders'
-import { AVG_CPU_UTILIZATION_2020 } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 beforeAll(() => {
@@ -123,7 +123,7 @@ describe('RDS Compute', function () {
         usesAverageCPUConstant: false,
       },
       {
-        cpuUtilizationAverage: AVG_CPU_UTILIZATION_2020,
+        cpuUtilizationAverage: CLOUD_CONSTANTS["AWS"].AVG_CPU_UTILIZATION_2020,
         numberOfvCpus: 96,
         timestamp: new Date('2020-01-26T00:00:00.000Z'),
         usesAverageCPUConstant: true,

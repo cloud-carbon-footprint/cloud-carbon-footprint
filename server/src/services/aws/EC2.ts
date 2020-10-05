@@ -40,7 +40,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
 
     const metricDataResults: MetricDataResult[] = responses.flatMap((response) => response.MetricDataResults)
     const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(extractRawComputeUsages)
-    return buildComputeUsages(rawComputeUsages)
+    return buildComputeUsages(rawComputeUsages, "AWS")
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
