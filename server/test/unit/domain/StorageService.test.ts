@@ -2,7 +2,7 @@ import StorageService from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWS_POWER_USAGE_EFFECTIVENESS } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import Cost from '@domain/Cost'
 
@@ -13,7 +13,7 @@ describe('StorageService', () => {
       static COEFFICIENT = 1.2
 
       constructor() {
-        super(TestService.COEFFICIENT)
+        super(TestService.COEFFICIENT, 'AWS')
       }
 
       getUsage(): Promise<StorageUsage[]> {
@@ -45,11 +45,11 @@ describe('StorageService', () => {
       getUsageMock.mockResolvedValueOnce(usage)
 
       //run
-      const estimates: FootprintEstimate[] = await testService.getEstimates(date, date, AWS_REGIONS.US_EAST_1)
+      const estimates: FootprintEstimate[] = await testService.getEstimates(date, date, AWS_REGIONS.US_EAST_1, 'AWS')
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(TestService.COEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS).estimate(
+        new StorageEstimator(TestService.COEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS).estimate(
           [
             {
               timestamp: date,

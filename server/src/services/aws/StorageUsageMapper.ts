@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { CostExplorer } from 'aws-sdk'
 import StorageUsage from '@domain/StorageUsage'
-import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
@@ -64,8 +64,8 @@ export function getEstimatesFromCostExplorer(
   region: string,
   volumeUsages: VolumeUsage[],
 ): FootprintEstimate[] {
-  const ssdEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-  const hddEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+  const ssdEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
+  const hddEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
   const ssdUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.SSD === diskType)
   const hddUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.HDD === diskType)
   const footprintEstimates = [...ssdEstimator.estimate(ssdUsage, region), ...hddEstimator.estimate(hddUsage, region)]

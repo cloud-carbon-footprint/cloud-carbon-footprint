@@ -2,7 +2,7 @@ import AWS, { CostExplorer, CloudWatch } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import RDSStorage from '@services/aws/RDSStorage'
 import { StorageEstimator } from '@domain/StorageEstimator'
-import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '@builders'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
@@ -199,7 +199,7 @@ describe('RDSStorage', () => {
     )
 
     const rdsService = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const ssdStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const ssdStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
@@ -219,7 +219,7 @@ describe('RDSStorage', () => {
     )
 
     const rdsService = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 

@@ -1,6 +1,6 @@
 import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { estimateCo2, MAX_WATTS } from '@domain/FootprintEstimationConstants'
+import { estimateCo2, CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
@@ -51,7 +51,7 @@ export default class Lambda implements ICloudService {
   private async runQuery(cw: AWS.CloudWatchLogs, start: Date, end: Date, groupNames: string[]): Promise<string> {
     const query = `
             filter @type = "REPORT"
-            | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
+            | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${CLOUD_CONSTANTS.AWS.MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
             | stats sum(wattsPerFunction) as Watts by Date 
             | sort Date asc`
 
