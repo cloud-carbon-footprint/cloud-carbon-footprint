@@ -47,6 +47,6 @@ const services: { [id: string]: (options: ServiceConfigurationOptions) => ICloud
     return new RDS(new RDSComputeService(createServiceWrapper(options)), new RDSStorage(createServiceWrapper(options)))
   },
   lambda: (options) => {
-    return new Lambda(60000, 1000, createServiceWrapper(options))
+    return new Lambda(120000, 1000, createServiceWrapper(options))
   },
 }
