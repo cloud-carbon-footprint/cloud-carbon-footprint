@@ -1,6 +1,6 @@
 {
   "AWS": {
-    "NAME": "aws",
+    "NAME": "AWS",
     "CURRENT_REGIONS": ["us-east-1", "us-east-2", "us-west-1"],
     "CURRENT_SERVICES": [
       {
@@ -30,7 +30,7 @@
     ]
   },
   "GCP": {
-    "NAME": "gcp",
+    "NAME": "GCP",
     "CURRENT_REGIONS": ["us-east1"],
     "CURRENT_SERVICES": [
       {
