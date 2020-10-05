@@ -326,8 +326,8 @@ describe('App', () => {
     expect(AWSServicesRegistered).toHaveBeenCalledWith('us-east-1')
     expect(AWSServicesRegistered).toHaveBeenCalledWith('us-east-2')
 
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'aws')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'aws')
 
     expect(result).toEqual(expectedEstimationResults)
   })
@@ -427,8 +427,8 @@ describe('App', () => {
       },
     ]
 
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'aws')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'aws')
 
     expect(result).toEqual(expectedEstimationResults)
   })
@@ -502,10 +502,10 @@ describe('App', () => {
       },
     ]
 
-    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1')
-    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2')
+    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'aws')
+    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'aws')
 
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east1')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east1', 'gcp')
     expect(result).toEqual(expectedEstimationResults)
   })
 })
