@@ -1,7 +1,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CostExplorer, CloudWatch } from 'aws-sdk'
 import EBS from '@services/aws/EBS'
-import { AWS_POWER_USAGE_EFFECTIVENESS, HDDCOEFFICIENT, SSDCOEFFICIENT } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import { buildCostExplorerGetUsageResponse } from '@builders'
@@ -181,7 +181,7 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
   })
@@ -196,7 +196,7 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
   })
@@ -214,7 +214,7 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
   })
@@ -232,7 +232,7 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const sddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual(sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
   })
@@ -283,8 +283,8 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
-    const hddStorageEstimator = new StorageEstimator(HDDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
-    const sddStorageEstimator = new StorageEstimator(SSDCOEFFICIENT, AWS_POWER_USAGE_EFFECTIVENESS)
+    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
+    const sddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS)
 
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
