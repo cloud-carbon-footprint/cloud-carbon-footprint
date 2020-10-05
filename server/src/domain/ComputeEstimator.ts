@@ -1,21 +1,23 @@
 import IFootprintEstimator from '@domain/IFootprintEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeUsage from '@domain/ComputeUsage'
-import { AWS_POWER_USAGE_EFFECTIVENESS, estimateCo2, MAX_WATTS, MIN_WATTS } from './FootprintEstimationConstants'
+import { CLOUD_CONSTANTS, estimateCo2 } from './FootprintEstimationConstants'
 
 //averageCPUUtilization expected to be in percentage
-const ENERGY_ESTIMATION_FORMULA = (averageCPUUtilization: number, virtualCPUHours: number) => {
+const ENERGY_ESTIMATION_FORMULA = (averageCPUUtilization: number, virtualCPUHours: number, cloudProvider: string) => {
+  var maxWatts = CLOUD_CONSTANTS[cloudProvider].MAX_WATTS 
+  var minWatts = CLOUD_CONSTANTS[cloudProvider].MIN_WATTS 
+  var powerUsageEffectiveness = CLOUD_CONSTANTS[cloudProvider].POWER_USAGE_EFFECTIVENESS 
   return (
-    (MIN_WATTS + (averageCPUUtilization / 100) * (MAX_WATTS - MIN_WATTS)) *
-    virtualCPUHours *
-    AWS_POWER_USAGE_EFFECTIVENESS
+    (minWatts + (averageCPUUtilization / 100) * (maxWatts - minWatts)) *
+    virtualCPUHours * powerUsageEffectiveness
   )
 }
 
 export default class ComputeEstimator implements IFootprintEstimator {
-  estimate(data: ComputeUsage[], region: string): FootprintEstimate[] {
+  estimate(data: ComputeUsage[], region: string, cloudProvider: string): FootprintEstimate[] {
     return data.map((usage) => {
-      const estimatedWattage = ENERGY_ESTIMATION_FORMULA(usage.cpuUtilizationAverage, usage.numberOfvCpus)
+      const estimatedWattage = ENERGY_ESTIMATION_FORMULA(usage.cpuUtilizationAverage, usage.numberOfvCpus, cloudProvider)
       const estimatedCO2Emissions = estimateCo2(estimatedWattage, region)
 
       return {

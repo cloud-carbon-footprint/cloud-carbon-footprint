@@ -8,7 +8,7 @@ export default class Region {
   public async getEstimates(startDate: Date, endDate: Date): Promise<{ [service: string]: FootprintEstimate[] }> {
     const estimates: FootprintEstimate[][] = await Promise.all(
       this.services.map(async (service) => {
-        return await service.getEstimates(startDate, endDate, this.id)
+        return await service.getEstimates(startDate, endDate, this.id, this.cloudProvider)
       }),
     )
 

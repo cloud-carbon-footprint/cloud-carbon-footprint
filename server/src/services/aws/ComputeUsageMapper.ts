@@ -37,5 +37,5 @@ export function getComputeUsage(
     }))
   const rawvCpuHours: RawComputeUsage[] = getNumberVcpusByDate(getCostAndUsageResponses, NODE_TYPES)
 
-  return buildComputeUsages(rawCpuUtilizations.concat(rawvCpuHours))
+  return buildComputeUsages(rawCpuUtilizations.concat(rawvCpuHours), "AWS")
 }
