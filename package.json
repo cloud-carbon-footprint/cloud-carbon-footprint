@@ -17,5 +17,8 @@
     "start": "lerna run start --stream",
     "test": "lerna run test --parallel",
     "deploy": "cd terraform && ./run.sh apply "
+  },
+  "dependencies": {
+    "@google-cloud/monitoring": "^2.1.2"
   }
 }
