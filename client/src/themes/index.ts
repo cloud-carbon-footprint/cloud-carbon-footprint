@@ -3,9 +3,11 @@ import { createMuiTheme, Theme } from '@material-ui/core/styles'
 declare module '@material-ui/core/styles/createPalette' {
   interface Palette {
     chart: Palette['primary'][]
+    extLink: React.CSSProperties['color']
   }
   interface PaletteOptions {
     chart: PaletteOptions['primary'][]
+    extLink: React.CSSProperties['color']
   }
 }
 
@@ -37,6 +39,8 @@ const determineTheme = (prefersDarkMode: boolean): Theme => {
         { main: '#E2EF70' },
         { main: '#70E4EF' },
       ],
+      // leaving this here in case the color theme changes base on dark mode
+      extLink: prefersDarkMode ? '#85dbff' : '#85dbff',
     },
   })
 }
