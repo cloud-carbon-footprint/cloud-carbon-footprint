@@ -1,12 +1,8 @@
 import React, { FunctionComponent, useState } from 'react'
 import clsx from 'clsx'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
-import InfoIcon from '@material-ui/icons/Info'
-import { Typography } from '@material-ui/core'
+import { Close, Info, OpenInNew } from '@material-ui/icons'
+import { Typography, Drawer, Divider, IconButton, Link } from '@material-ui/core'
 
 const drawerWidth = 340
 
@@ -63,6 +59,13 @@ const useStyles = makeStyles(({ palette, transitions, spacing, typography, break
       whiteSpace: 'pre-line',
       fontSize: typography.body2.fontSize,
     },
+    methodology: {
+      padding: spacing(2),
+      display: 'flex',
+    },
+    openIcon: {
+      marginLeft: '8px',
+    },
   }),
 )
 
@@ -102,7 +105,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           [classes.hide]: open,
         })}
       >
-        <InfoIcon data-testid="infoIcon" />
+        <Info data-testid="infoIcon" />
       </IconButton>
       <div
         className={clsx(classes.toolbar, {
@@ -111,7 +114,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
       >
         <div className={classes.closeButtonContainer}>
           <IconButton onClick={handleDrawerClose}>
-            <CloseIcon data-testid="closeIcon" />
+            <Close data-testid="closeIcon" />
           </IconButton>
         </div>
         <Typography className={classes.contentTitle} component="p">
@@ -131,6 +134,14 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           usage are not estimated yet due to their comparatively small footprint and current lack of available energy
           conversion factors.
         </Typography>
+        <Link
+          href="https://github.com/twlabs/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
+          target="_blank"
+          rel="noopener"
+          className={classes.methodology}
+        >
+          Read our full methodology here <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
+        </Link>
       </div>
     </Drawer>
   )

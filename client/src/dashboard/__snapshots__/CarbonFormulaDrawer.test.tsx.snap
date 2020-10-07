@@ -109,6 +109,26 @@ exports[`CarbonFormulaDrawer renders 1`] = `
       >
         Currently we estimate CO2e emissions for cloud compute and storage services. Networking and memory services usage are not estimated yet due to their comparatively small footprint and current lack of available energy conversion factors.
       </p>
+      <a
+        className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-methodology-11 MuiTypography-colorPrimary"
+        href="https://github.com/twlabs/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Read our full methodology here 
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-openIcon-12 MuiSvgIcon-fontSizeSmall"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+          />
+        </svg>
+      </a>
     </div>
   </div>
 </div>
