@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Card, CardContent, CardActions, Typography, Button, Link } from '@material-ui/core'
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
@@ -20,58 +20,62 @@ type Comparison = {
   miles: ComparisonItem
   trees: ComparisonItem
 }
+const useStyles = makeStyles(({ palette, spacing, typography }) => {
+  const theme = useTheme()
 
-const useStyles = makeStyles(({ palette, spacing, typography }) => ({
-  root: {
-    width: '100%',
-    height: '100%',
-  },
-  title: {
-    color: palette.primary.contrastText,
-  },
-  posOne: {
-    color: palette.primary.contrastText,
-  },
-  posTwo: {
-    maxWidth: 250,
-  },
-  topContainer: {
-    backgroundColor: palette.primary.main,
-    textAlign: 'center',
-  },
-  bottomContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '55%',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  metricOne: {
-    color: palette.primary.contrastText,
-    fontWeight: typography.fontWeightBold,
-  },
-  metricTwo: {
-    color: palette.primary.light,
-    fontWeight: typography.fontWeightBold,
-    padding: spacing(2),
-  },
-  icon: {
-    height: 60,
-    width: 60,
-    color: palette.primary.light,
-  },
-  source: {
-    padding: spacing(2),
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  sourceLink: {
-    display: 'inline-flex',
-  },
-}))
+  return {
+    root: {
+      width: '100%',
+      height: '100%',
+    },
+    title: {
+      color: palette.primary.contrastText,
+    },
+    posOne: {
+      color: palette.primary.contrastText,
+    },
+    posTwo: {
+      maxWidth: 250,
+    },
+    topContainer: {
+      backgroundColor: palette.primary.main,
+      textAlign: 'center',
+    },
+    bottomContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '55%',
+    },
+    buttonContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    metricOne: {
+      color: palette.primary.contrastText,
+      fontWeight: typography.fontWeightBold,
+    },
+    metricTwo: {
+      color: palette.primary.light,
+      fontWeight: typography.fontWeightBold,
+      padding: spacing(2),
+    },
+    icon: {
+      height: 60,
+      width: 60,
+      color: palette.primary.light,
+    },
+    source: {
+      padding: spacing(2),
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    sourceLink: {
+      display: 'inline-flex',
+      color: theme.palette.extLink,
+    },
+  }
+})
 
 export const toMiles = (co2kg: number) => co2kg * 2.48138958
 export const toGas = (co2kg: number) => co2kg * 0.1125239

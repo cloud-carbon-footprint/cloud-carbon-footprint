@@ -1,13 +1,14 @@
 import React, { FunctionComponent, useState } from 'react'
 import clsx from 'clsx'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
 import { Close, Info, OpenInNew } from '@material-ui/icons'
 import { Typography, Drawer, Divider, IconButton, Link } from '@material-ui/core'
 
 const drawerWidth = 340
 
-const useStyles = makeStyles(({ palette, transitions, spacing, typography, breakpoints, mixins }) =>
-  createStyles({
+const useStyles = makeStyles(({ palette, transitions, spacing, typography, breakpoints, mixins }) => {
+  const theme = useTheme()
+  return createStyles({
     infoButton: {
       margin: spacing(10, 'auto'),
       color: palette.type === 'dark' ? palette.text.primary : palette.primary.main,
@@ -62,12 +63,13 @@ const useStyles = makeStyles(({ palette, transitions, spacing, typography, break
     methodology: {
       padding: spacing(2),
       display: 'flex',
+      color: theme.palette.extLink,
     },
     openIcon: {
       marginLeft: '8px',
     },
-  }),
-)
+  })
+})
 
 export const CarbonFormulaDrawer: FunctionComponent = () => {
   const classes = useStyles()
