@@ -29,7 +29,7 @@ export default abstract class StorageService implements ICloudService {
 
 export abstract class SSDStorageService extends StorageService {
   protected constructor() {
-    super(CLOUD_CONSTANTS['AWS'].SSDCOEFFICIENT, "AWS")
+    super(CLOUD_CONSTANTS['AWS'].SSDCOEFFICIENT, 'AWS')
   }
 
   abstract getUsage(start: Date, end: Date, region: string): Promise<StorageUsage[]>
@@ -39,7 +39,7 @@ export abstract class SSDStorageService extends StorageService {
 
 export abstract class HDDStorageService extends StorageService {
   protected constructor() {
-    super(CLOUD_CONSTANTS['AWS'].HDDCOEFFICIENT, "AWS")
+    super(CLOUD_CONSTANTS['AWS'].HDDCOEFFICIENT, 'AWS')
   }
 
   abstract getUsage(start: Date, end: Date, region: string): Promise<StorageUsage[]>

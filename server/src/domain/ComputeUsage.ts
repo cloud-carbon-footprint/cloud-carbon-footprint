@@ -34,7 +34,6 @@ export class ComputeUsageBuilder {
   }
 
   build(): ComputeUsage {
-
     const hasMeasurements = this.cpuUtilizations.length > 0
     const cpuUtilizationAverage = hasMeasurements
       ? this.cpuUtilizations.reduce((sum, x) => sum + x) / this.cpuUtilizations.length
@@ -74,7 +73,10 @@ const mergeUsageByTimestamp = (acc: GroupedComputeUsages, data: RawComputeUsage,
 }
 
 export function buildComputeUsages(rawComputeUsages: RawComputeUsage[], cloudProvider: string): ComputeUsage[] {
-  const groupedComputeUsages: GroupedComputeUsages = rawComputeUsages.reduce((acc, data) => mergeUsageByTimestamp(acc, data, cloudProvider), {})
+  const groupedComputeUsages: GroupedComputeUsages = rawComputeUsages.reduce(
+    (acc, data) => mergeUsageByTimestamp(acc, data, cloudProvider),
+    {},
+  )
   return Object.values(groupedComputeUsages)
     .map((builder: ComputeUsageBuilder) => builder.build())
     .filter((usage: ComputeUsage) => usage.numberOfvCpus > 0)
