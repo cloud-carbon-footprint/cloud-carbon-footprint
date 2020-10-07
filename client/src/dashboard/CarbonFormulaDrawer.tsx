@@ -123,7 +123,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           How do we get our carbon estimates?
         </Typography>
         <Divider />
-        <Typography className={classes.contentBold} component="p">
+        <Typography className={classes.content} component="p">
           Our CO2e Estimate Formula:
         </Typography>
         <Typography className={classes.content} component="p">
