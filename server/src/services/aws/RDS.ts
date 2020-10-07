@@ -12,7 +12,7 @@ export default class RDS implements ICloudService {
   constructor(private rdsComputeService: RDSComputeService, private rdsStorageService: RDSStorage) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const rdsComputeEstimates = this.rdsComputeService.getEstimates(start, end, region, "AWS")
+    const rdsComputeEstimates = this.rdsComputeService.getEstimates(start, end, region, 'AWS')
     const rdsStorageEstimates = this.rdsStorageService.getEstimates(start, end, region)
     const resolvedEstimates: FootprintEstimate[][] = await Promise.all([rdsComputeEstimates, rdsStorageEstimates])
     const combinedEstimates: FootprintEstimate[] = resolvedEstimates.flat()

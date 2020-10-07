@@ -1,27 +1,26 @@
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 
-// We are using AWS values for now until we have values for GCP 
-export const CLOUD_CONSTANTS: { [cloudProvider: string]: {[constantName: string] : number} } = {
-  GCP : {
-    SSDCOEFFICIENT : 1.2,
-    HDDCOEFFICIENT : 0.67,
-    MIN_WATTS : 0.61,
-    MAX_WATTS : 3.15,
-    POWER_USAGE_EFFECTIVENESS : 1.2,
-    AVG_CPU_UTILIZATION_2020 : 50
+// We are using AWS values for now until we have values for GCP
+export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string]: number } } = {
+  GCP: {
+    SSDCOEFFICIENT: 1.2,
+    HDDCOEFFICIENT: 0.67,
+    MIN_WATTS: 0.61,
+    MAX_WATTS: 3.15,
+    POWER_USAGE_EFFECTIVENESS: 1.2,
+    AVG_CPU_UTILIZATION_2020: 50,
   },
-  AWS : {
-    SSDCOEFFICIENT : 1.2,
-    HDDCOEFFICIENT : 0.67,
-    MIN_WATTS : 0.61,
-    MAX_WATTS : 3.15,
-    POWER_USAGE_EFFECTIVENESS : 1.2,
-    AVG_CPU_UTILIZATION_2020 : 50
-  }
+  AWS: {
+    SSDCOEFFICIENT: 1.2,
+    HDDCOEFFICIENT: 0.67,
+    MIN_WATTS: 0.61,
+    MAX_WATTS: 3.15,
+    POWER_USAGE_EFFECTIVENESS: 1.2,
+    AVG_CPU_UTILIZATION_2020: 50,
+  },
 }
 
-
-// We are using AWS values for now until we have values for GCP 
+// We are using AWS values for now until we have values for GCP
 export const GCP_REGIONS_WATT_HOURS_CARBON_RATIO: { [region: string]: number } = {
   [AWS_REGIONS.US_EAST_1]: 0.0003369284124,
   [AWS_REGIONS.US_EAST_2]: 0.0006031871336,
