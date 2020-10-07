@@ -92,7 +92,7 @@ exports[`CarbonFormulaDrawer renders 1`] = `
         className="MuiDivider-root"
       />
       <p
-        className="MuiTypography-root makeStyles-contentBold-9 MuiTypography-body1"
+        className="MuiTypography-root makeStyles-content-10 MuiTypography-body1"
       >
         Our CO2e Estimate Formula:
       </p>
