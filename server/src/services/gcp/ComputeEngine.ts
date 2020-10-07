@@ -1,7 +1,7 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import ComputeUsage, { buildComputeUsages } from '@domain/ComputeUsage'
+import ComputeUsage from '@domain/ComputeUsage'
 import Cost from '@domain/Cost'
-import TimeSeriesView, { MetricServiceClient} from '@google-cloud/monitoring'
+import { MetricServiceClient } from '@google-cloud/monitoring'
 import { google } from '@google-cloud/monitoring/build/protos/protos'
 import Aligner = google.monitoring.v3.Aggregation.Aligner
 import Reducer = google.monitoring.v3.Aggregation.Reducer
@@ -28,15 +28,11 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
         'metric.type="compute.googleapis.com/instance/cpu/utilization" AND ' +
         'metadata.system_labels.region="us-central1"',
       aggregation: {
-        //one hour alignment
         alignmentPeriod: { seconds: 3600 },
-        perSeriesAligner: Aligner.ALIGN_MEAN, //average for the instance, in an hour
-        crossSeriesReducer: Reducer.REDUCE_MEAN, //aggregate the mean across instances
+        perSeriesAligner: Aligner.ALIGN_MEAN,
+        crossSeriesReducer: Reducer.REDUCE_MEAN,
       },
       view: Full,
-      //Date in UTC, minus one millisecond because the interval is exclusive, not inclusive of the startTime.
-      // (This documentation https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeInterval
-      // says the interval IS inclusive, but based on our experience so far, it isn't.)
       interval: {
         startTime: {
           seconds: 1000,
@@ -48,37 +44,21 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
     }
     const [cpuUtilizationTimeSeries] = await client.listTimeSeries(request)
     const [vCPUTimeSeries] = await client.listTimeSeries(request)
-    
-    console.log(cpuUtilizationTimeSeries)
-    const rawComputeUsages = [{
-      timestamp : new Date(1000 * +cpuUtilizationTimeSeries[0].points[0].interval.startTime.seconds).toString(),
-      id : "cpuutilization",
-      value : cpuUtilizationTimeSeries[0].points[0].value.doubleValue
-    },
-    {
-      timestamp : new Date(1000 * +vCPUTimeSeries[0].points[0].interval.startTime.seconds).toString(),
-      id : "vCPU",
-      value : vCPUTimeSeries[0].points[0].value.doubleValue
-    }
-  ]
 
-    //combine cpuUtilizationTimeSeries and vCPUTimeSeries into RawComputeUsage[]
-    console.log('cpuUtilization: ' + cpuUtilizationTimeSeries)
-    console.log('vCPU' + vCPUTimeSeries)
-    // example of what rawComputeUsages looks like
-    // const rawComputeUsages = [{
-    //   timestamp: new Date('2020-09-16T23:00:00.000Z'),
-    //   id: "cpuutilization",
-    //   value: 4
-    // }
-    // {
-    //   timestamp: new Date('2020-09-16T23:00:00.000Z'),
-    //   id: "vCPUs",
-    //   value: 4
-    // }]
+    const result: ComputeUsage[] = []
 
-    buildComputeUsages(rawComputeUsages, "GCP")
-    return []
+    //assuming that each returns the same number of points - need to check that this is true
+    cpuUtilizationTimeSeries[0].points.forEach((point, index) => {
+      result.push({
+        cpuUtilizationAverage: point.value.doubleValue,
+        numberOfvCpus: vCPUTimeSeries[0].points[index].value.doubleValue,
+        timestamp: new Date('2020-09-16T23:00:00.000Z'),
+        usesAverageCPUConstant: false, //might not need this, verify whether we'd
+        // ever get vcpus for a timestamp and not get cpuutilization. for aws this was happend for terminated instances
+      })
+    })
+
+    return result
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
