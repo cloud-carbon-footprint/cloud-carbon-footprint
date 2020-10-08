@@ -1,5 +1,7 @@
 import ComputeEngine from '@services/gcp/ComputeEngine'
 import { MetricServiceClient } from '@google-cloud/monitoring'
+import { google } from '@google-cloud/monitoring/build/protos/protos'
+import Reducer = google.monitoring.v3.Aggregation.Reducer
 import Mock = jest.Mock
 
 jest.mock('@google-cloud/monitoring', () => {
@@ -14,30 +16,38 @@ describe('ComputeEngine', () => {
   metricServiceClientMock.mockImplementation(() => {
     return {
       listTimeSeries: mockListTimeSeries,
-      projectPath: jest.fn(),
+      projectPath: jest.fn().mockReturnValue('projects/cloud-carbon-footprint'),
     }
   })
 
+  const startDate = new Date('2020-09-16')
+  const endDate = new Date('2020-09-17')
+  const region = 'us-east1'
+  const cpuMetricType = 'utilization'
+  const vCpuMetricType = 'reserved_cores'
+
+  const dayOneHourOne = new Date('2020-09-16T22:00:00.000Z')
+  const dayOneHourTwo = new Date('2020-09-16T23:00:00.000Z')
+  const dayOneHourOneInMilliSecs = dayOneHourOne.getTime() / 1000
+  const dayOneHourTwoInMilliSecs = dayOneHourTwo.getTime() / 1000
+
+  afterEach(() => {
+    mockListTimeSeries.mockReset()
+    metricServiceClientMock.mockReset()
+  })
+
   it('gets compute engine usage for two data points', async () => {
-    const computeEngineService = new ComputeEngine()
-
-    //these could be any day, since we're mocking the response. is that ok?
-    const startDate = new Date('2020-09-16')
-    const endDate = new Date('2020-09-17')
-    const region = 'us-east1'
-
-    //will be data points one hour apart, already aggregated across instances as defined in request aggregation
     const mockCpuUtilizationTimeSeries = [
       {
         points: [
           {
             interval: {
               startTime: {
-                seconds: 1600297200,
+                seconds: dayOneHourOneInMilliSecs,
                 nanos: 0,
               },
               endTime: {
-                seconds: 1600297200,
+                seconds: dayOneHourOneInMilliSecs,
                 nanos: 0,
               },
             },
@@ -49,11 +59,11 @@ describe('ComputeEngine', () => {
           {
             interval: {
               startTime: {
-                seconds: 1600293600,
+                seconds: dayOneHourTwoInMilliSecs,
                 nanos: 0,
               },
               endTime: {
-                seconds: 1600293600,
+                seconds: dayOneHourTwoInMilliSecs,
                 nanos: 0,
               },
             },
@@ -84,11 +94,11 @@ describe('ComputeEngine', () => {
           {
             interval: {
               startTime: {
-                seconds: '1600297200',
+                seconds: dayOneHourOneInMilliSecs,
                 nanos: 0,
               },
               endTime: {
-                seconds: '1600297200',
+                seconds: dayOneHourOneInMilliSecs,
                 nanos: 0,
               },
             },
@@ -100,11 +110,11 @@ describe('ComputeEngine', () => {
           {
             interval: {
               startTime: {
-                seconds: 1600293600,
+                seconds: dayOneHourTwoInMilliSecs,
                 nanos: 0,
               },
               endTime: {
-                seconds: 1600293600,
+                seconds: dayOneHourTwoInMilliSecs,
                 nanos: 0,
               },
             },
@@ -121,33 +131,53 @@ describe('ComputeEngine', () => {
       },
     ]
 
-    //listTimeSeries resolves with an array of 1. TimeSeries array 2. listTimeSeriesRequest 3. listTimeSeriesResponse
-    //we don't care about the listTimeSeriesRequest/Response right now.
-    // We may need the response when we need to paginate through results
     mockListTimeSeries.mockResolvedValueOnce([mockCpuUtilizationTimeSeries, {}, {}])
 
-    //also mock vcpus response
     mockListTimeSeries.mockResolvedValueOnce([mockVCPUTimeSeries, {}, {}])
 
+    const computeEngineService = new ComputeEngine()
     const result = await computeEngineService.getUsage(startDate, endDate, region)
 
+    //expect mockListTimeSeries to have been called with start, end, and region
+    expect(mockListTimeSeries).toHaveBeenNthCalledWith(
+      1,
+      computeEngineService.buildTimeSeriesRequest(
+        startDate,
+        endDate,
+        'projects/cloud-carbon-footprint',
+        cpuMetricType,
+        Reducer.REDUCE_MEAN,
+        region,
+      ),
+    )
+    expect(mockListTimeSeries).toHaveBeenNthCalledWith(
+      2,
+      computeEngineService.buildTimeSeriesRequest(
+        startDate,
+        endDate,
+        'projects/cloud-carbon-footprint',
+        vCpuMetricType,
+        Reducer.REDUCE_SUM,
+        region,
+      ),
+    )
+    //and with correct metric type in filter
     expect(result).toEqual([
       {
         cpuUtilizationAverage: 0.25,
         numberOfvCpus: 4,
-        timestamp: new Date('2020-09-16T23:00:00.000Z'),
+        timestamp: dayOneHourOne,
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: 0.75,
         numberOfvCpus: 2,
-        timestamp: new Date('2020-09-16T23:00:00.000Z'),
+        timestamp: dayOneHourTwo,
         usesAverageCPUConstant: false,
       },
     ])
   })
 
-  //do we need to assert expectations on the request that we're making to the client?
-  //the test we have won't catch a badly written request, but would testing the request be tied
-  //too tightly to the implementation?
+  //TODO
+  // add test for no results in gcp request
 })
