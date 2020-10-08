@@ -40,7 +40,7 @@ const determineTheme = (prefersDarkMode: boolean): Theme => {
         { main: '#70E4EF' },
       ],
       // leaving this here in case the color theme changes base on dark mode
-      extLink: prefersDarkMode ? '#85dbff' : '#85dbff',
+      extLink: prefersDarkMode ? '#00B7FF' : '#00B7FF',
     },
   })
 }

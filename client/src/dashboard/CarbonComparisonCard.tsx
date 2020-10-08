@@ -71,8 +71,13 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       justifyContent: 'center',
     },
     sourceLink: {
+      padding: spacing(0, 1),
       display: 'inline-flex',
+      alignItems: 'center',
       color: theme.palette.extLink,
+    },
+    openIcon: {
+      marginLeft: '8px',
     },
   }
 })
@@ -180,7 +185,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           rel="noopener"
           className={classes.sourceLink}
         >
-          EPA Equivalencies Calculator <OpenInNew></OpenInNew>
+          EPA Equivalencies Calculator <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
         </Link>
       </Typography>
     </Card>
