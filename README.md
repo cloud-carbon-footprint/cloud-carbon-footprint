@@ -34,11 +34,13 @@ This will install dependencies in both the `client` and `server`. We use [Lerna]
 ## Run
 
 ### Client and Server (with mock data)
-
 ```
+cd client
+npm run start-stub-server
+
+//in another terminal, also from the client directory
 npm start
 ```
-
 ### Client and Server (with live data)
 Make sure you have configured your AWS credentials (see above)
 > :warning: **This will incure cost**: Data will come from AWS and will cost money to our project. Use this sparingly if you wish to test with live data. If not, use the command above
