@@ -16,49 +16,58 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
 
   async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
     const client = new MetricServiceClient()
-
-    const startTime = '2020-09-16T00:59:00.000Z'
-    const endTime = '2020-09-17T00:00:00.000Z'
-
     const projectId = 'cloud-carbon-footprint'
-    const request = {
-      name: client.projectPath(projectId),
-      filter:
-        'resource.type = "gce_instance" AND ' +
-        'metric.type="compute.googleapis.com/instance/cpu/utilization" AND ' +
-        'metadata.system_labels.region="us-central1"',
-      aggregation: {
-        alignmentPeriod: { seconds: 3600 },
-        perSeriesAligner: Aligner.ALIGN_MEAN,
-        crossSeriesReducer: Reducer.REDUCE_MEAN,
-      },
-      view: Full,
-      interval: {
-        startTime: {
-          seconds: 1000,
-        },
-        endTime: {
-          seconds: 2000,
-        },
-      },
-    }
-    const [cpuUtilizationTimeSeries] = await client.listTimeSeries(request)
-    const [vCPUTimeSeries] = await client.listTimeSeries(request)
+    const name = client.projectPath(projectId)
+    const cpuMetricType = 'utilization'
+    const vCpuMetricType = 'reserved_cores'
+
+    const CPURequest = this.buildTimeSeriesRequest(start, end, name, cpuMetricType, Reducer.REDUCE_MEAN, region)
+    const vCPURequest = this.buildTimeSeriesRequest(start, end, name, vCpuMetricType, Reducer.REDUCE_SUM, region)
+
+    const [cpuUtilizationTimeSeries] = await client.listTimeSeries(CPURequest)
+    const [vCPUTimeSeries] = await client.listTimeSeries(vCPURequest)
 
     const result: ComputeUsage[] = []
 
-    //assuming that each returns the same number of points - need to check that this is true
     cpuUtilizationTimeSeries[0].points.forEach((point, index) => {
       result.push({
         cpuUtilizationAverage: point.value.doubleValue,
         numberOfvCpus: vCPUTimeSeries[0].points[index].value.doubleValue,
-        timestamp: new Date('2020-09-16T23:00:00.000Z'),
-        usesAverageCPUConstant: false, //might not need this, verify whether we'd
-        // ever get vcpus for a timestamp and not get cpuutilization. for aws this was happend for terminated instances
+        timestamp: new Date(+point.interval.startTime.seconds * 1000),
+        usesAverageCPUConstant: false,
       })
     })
 
     return result
+  }
+
+  buildTimeSeriesRequest(
+    startDate: Date,
+    endDate: Date,
+    projectName: string,
+    metricType: string,
+    crossSeriesReducer: Reducer,
+    region: string,
+  ) {
+    return {
+      name: projectName,
+      filter: `resource.type = "gce_instance" AND metric.type="compute.googleapis.com/instance/cpu/${metricType}" AND
+       metadata.system_labels.region=${region}`,
+      aggregation: {
+        alignmentPeriod: { seconds: 3600 },
+        perSeriesAligner: Aligner.ALIGN_MEAN,
+        crossSeriesReducer: crossSeriesReducer,
+      },
+      view: Full,
+      interval: {
+        startTime: {
+          seconds: new Date(startDate).getTime() / 1000,
+        },
+        endTime: {
+          seconds: new Date(endDate).getTime() / 1000,
+        },
+      },
+    }
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
