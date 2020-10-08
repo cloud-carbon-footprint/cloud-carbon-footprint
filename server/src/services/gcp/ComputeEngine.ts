@@ -1,34 +1,41 @@
 import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
 import ComputeUsage from '@domain/ComputeUsage'
 import Cost from '@domain/Cost'
-import { MetricServiceClient } from '@google-cloud/monitoring'
 import { google } from '@google-cloud/monitoring/build/protos/protos'
 import Aligner = google.monitoring.v3.Aggregation.Aligner
 import Reducer = google.monitoring.v3.Aggregation.Reducer
 import Full = google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView.FULL
+import { v3 } from '@google-cloud/monitoring'
 
 export default class ComputeEngine extends ServiceWithCPUUtilization {
   serviceName = 'computeEngine'
 
-  constructor() {
+  constructor(private client: v3.MetricServiceClient) {
     super()
   }
 
   async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
-    const client = new MetricServiceClient()
-    const projectId = 'cloud-carbon-footprint'
-    const name = client.projectPath(projectId)
+    const projectId = (await this.client.getProjectId()).toString()
+    const name = this.client.projectPath(projectId)
+
     const cpuMetricType = 'utilization'
     const vCpuMetricType = 'reserved_cores'
 
     const CPURequest = this.buildTimeSeriesRequest(start, end, name, cpuMetricType, Reducer.REDUCE_MEAN, region)
     const vCPURequest = this.buildTimeSeriesRequest(start, end, name, vCpuMetricType, Reducer.REDUCE_SUM, region)
 
-    const [cpuUtilizationTimeSeries] = await client.listTimeSeries(CPURequest)
-    const [vCPUTimeSeries] = await client.listTimeSeries(vCPURequest)
+    const [cpuUtilizationTimeSeries] = await this.client.listTimeSeries(CPURequest)
+    const [vCPUTimeSeries] = await this.client.listTimeSeries(vCPURequest)
 
     const result: ComputeUsage[] = []
 
+    // If vCPU doesn't come back, cannot compute
+    // If cpuUtilization only comes back, then use average (create ticket)
+    if (cpuUtilizationTimeSeries === undefined || vCPUTimeSeries === undefined) {
+      return result
+    }
+
+    // Will there every be more than one time series returned that we need to iterate through?
     cpuUtilizationTimeSeries[0].points.forEach((point, index) => {
       result.push({
         cpuUtilizationAverage: point.value.doubleValue,

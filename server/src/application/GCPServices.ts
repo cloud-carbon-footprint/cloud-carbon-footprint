@@ -1,6 +1,8 @@
 import ICloudService from '@domain/ICloudService'
 import { GCP } from '@application/Config.json'
 import ComputeEngine from '@services/gcp/ComputeEngine'
+import { v3 } from '@google-cloud/monitoring'
+
 
 export default function GCPServices(): ICloudService[] {
   return GCP.CURRENT_SERVICES.map(({ key }) => {
@@ -15,6 +17,6 @@ function getService(key: string): ICloudService {
 
 const services: { [id: string]: () => ICloudService } = {
   computeEngine: () => {
-    return new ComputeEngine()
+    return new ComputeEngine(new v3.MetricServiceClient())
   },
 }

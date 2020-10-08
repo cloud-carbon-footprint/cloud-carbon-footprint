@@ -31,6 +31,10 @@ This will install dependencies in both the `client` and `server`. We use [Lerna]
   ```
 - Specify the services and regions that the tool runs on in [server/src/application/Config.json](./server/src/application/Config.json)
 
+###GCP Credentials
+- request service account credentials from Dan
+- set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
+see https://cloud.google.com/docs/authentication/getting-started for more details.
 ## Run
 
 ### Client and Server (with mock data)
