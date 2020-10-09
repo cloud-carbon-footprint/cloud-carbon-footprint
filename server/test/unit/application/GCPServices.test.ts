@@ -1,3 +1,12 @@
+const mockMetricServiceClient = jest.fn()
+jest.mock('@google-cloud/monitoring', () => {
+  return {
+    v3: {
+      MetricServiceClient: mockMetricServiceClient,
+    },
+  }
+})
+
 describe('GCPServices', () => {
   /* eslint-disable @typescript-eslint/no-var-requires */
   afterEach(() => {
@@ -35,9 +44,10 @@ describe('GCPServices', () => {
     expect(GCPServices).toThrowError('Unsupported service: goose')
   })
 
-  it('should return computeEngine instance', () => {
+  it('should return computeEngine instance and inject MetricServiceClient', () => {
     const ComputeEngine = require('@services/gcp/ComputeEngine').default
     expectGCPService('computeEngine').toBeInstanceOf(ComputeEngine)
+    expect(mockMetricServiceClient).toHaveBeenCalled()
   })
 })
 
