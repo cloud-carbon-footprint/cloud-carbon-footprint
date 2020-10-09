@@ -31,10 +31,9 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
 
     // If vCPU doesn't come back, cannot compute
     // If cpuUtilization only comes back, then use average (create ticket)
-    if (cpuUtilizationTimeSeries === undefined || vCPUTimeSeries === undefined) {
+    if (cpuUtilizationTimeSeries.length == 0 || vCPUTimeSeries.length == 0) {
       return result
     }
-
     // Will there every be more than one time series returned that we need to iterate through?
     cpuUtilizationTimeSeries[0].points.forEach((point, index) => {
       result.push({
@@ -56,10 +55,11 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
     crossSeriesReducer: Reducer,
     region: string,
   ) {
+    const filter = `resource.type = "gce_instance" AND metric.type="compute.googleapis.com/instance/cpu/${metricType}" AND metadata.system_labels.region=${region}`
+
     return {
       name: projectName,
-      filter: `resource.type = "gce_instance" AND metric.type="compute.googleapis.com/instance/cpu/${metricType}" AND
-       metadata.system_labels.region=${region}`,
+      filter: filter,
       aggregation: {
         alignmentPeriod: { seconds: 3600 },
         perSeriesAligner: Aligner.ALIGN_MEAN,
