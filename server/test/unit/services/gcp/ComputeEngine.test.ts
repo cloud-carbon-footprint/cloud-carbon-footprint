@@ -174,8 +174,8 @@ describe('ComputeEngine', () => {
   })
 
   it('returns an empty array when listTimeSeries returns no data', async () => {
-    mockListTimeSeries.mockResolvedValueOnce([undefined, {}, {}])
-    mockListTimeSeries.mockResolvedValueOnce([undefined, {}, {}])
+    mockListTimeSeries.mockResolvedValueOnce([[], {}, {}])
+    mockListTimeSeries.mockResolvedValueOnce([[], {}, {}])
 
     const computeEngineService = new ComputeEngine(new MetricServiceClient())
     const result = await computeEngineService.getUsage(startDate, endDate, region)
