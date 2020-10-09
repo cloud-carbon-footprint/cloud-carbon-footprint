@@ -57,6 +57,7 @@
     "ts-node-dev": "^1.0.0-pre.55"
   },
   "dependencies": {
+    "@google-cloud/monitoring": "^2.1.2",
     "@types/cli-table": "^0.3.0",
     "@types/express": "^4.17.7",
     "@types/prompts": "^2.0.8",

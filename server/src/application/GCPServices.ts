@@ -3,7 +3,6 @@ import { GCP } from '@application/Config.json'
 import ComputeEngine from '@services/gcp/ComputeEngine'
 import { v3 } from '@google-cloud/monitoring'
 
-
 export default function GCPServices(): ICloudService[] {
   return GCP.CURRENT_SERVICES.map(({ key }) => {
     return getService(key)
