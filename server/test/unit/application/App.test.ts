@@ -25,7 +25,7 @@ jest.mock('@application/Config.json', () => {
     },
     GCP: {
       NAME: 'gcp',
-      CURRENT_REGIONS: ['us-east1'],
+      CURRENT_REGIONS: ['us-east1', 'us-west1', 'us-central1'],
     },
   }
 })
@@ -498,6 +498,24 @@ describe('App', () => {
             region: 'us-east1',
             usesAverageCPUConstant: false,
           },
+          {
+            cloudProvider: 'gcp',
+            serviceName: 'serviceTwo',
+            wattHours: 4,
+            co2e: 8,
+            cost: 0,
+            region: 'us-west1',
+            usesAverageCPUConstant: false,
+          },
+          {
+            cloudProvider: 'gcp',
+            serviceName: 'serviceTwo',
+            wattHours: 4,
+            co2e: 8,
+            cost: 0,
+            region: 'us-central1',
+            usesAverageCPUConstant: false,
+          },
         ],
       },
     ]
@@ -506,6 +524,8 @@ describe('App', () => {
     expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'aws')
 
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east1', 'gcp')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-west1', 'gcp')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(3, new Date(start), new Date(end), 'us-central1', 'gcp')
     expect(result).toEqual(expectedEstimationResults)
   })
 })
