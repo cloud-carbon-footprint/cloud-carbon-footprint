@@ -1,13 +1,12 @@
 import React, { FunctionComponent, useState } from 'react'
 import clsx from 'clsx'
-import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { Close, Info, OpenInNew } from '@material-ui/icons'
 import { Typography, Drawer, Divider, IconButton, Link } from '@material-ui/core'
 
 const drawerWidth = 340
 
 const useStyles = makeStyles(({ palette, transitions, spacing, typography, breakpoints, mixins }) => {
-  const theme = useTheme()
   return createStyles({
     infoButton: {
       margin: spacing(10, 'auto'),
@@ -63,7 +62,7 @@ const useStyles = makeStyles(({ palette, transitions, spacing, typography, break
     methodology: {
       padding: spacing(2),
       display: 'flex',
-      color: theme.palette.extLink,
+      color: '#2394c6',
     },
     openIcon: {
       marginLeft: '8px',

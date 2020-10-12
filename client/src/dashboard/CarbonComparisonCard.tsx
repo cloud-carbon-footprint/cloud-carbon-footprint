@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { Card, CardContent, CardActions, Typography, Button, Link } from '@material-ui/core'
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
@@ -21,8 +21,6 @@ type Comparison = {
   trees: ComparisonItem
 }
 const useStyles = makeStyles(({ palette, spacing, typography }) => {
-  const theme = useTheme()
-
   return {
     root: {
       width: '100%',
@@ -74,7 +72,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       padding: spacing(0, 1),
       display: 'inline-flex',
       alignItems: 'center',
-      color: theme.palette.extLink,
+      color: '#2394c6',
     },
     openIcon: {
       marginLeft: '8px',
