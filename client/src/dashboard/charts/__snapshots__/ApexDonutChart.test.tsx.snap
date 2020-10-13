@@ -34,7 +34,7 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
       ],
       "legend": Object {
         "offsetY": -8,
-        "position": "top",
+        "position": "bottom",
       },
       "series": Array [
         5,
@@ -54,7 +54,6 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
         "style": Object {
           "fontSize": "24px",
         },
-        "text": "Carbon Emissions by Service",
       },
       "tooltip": Object {
         "fillSeriesColor": false,

@@ -31,7 +31,7 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
     },
     labels: Object.keys(donutData),
     legend: {
-      position: 'top',
+      position: 'bottom',
       offsetY: -8,
     },
     series: Object.values(donutData),
@@ -39,7 +39,6 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
       colors: [theme.palette.background.default],
     },
     title: {
-      text: 'Carbon Emissions by Service',
       offsetY: -8,
       style: {
         fontSize: '24px',
