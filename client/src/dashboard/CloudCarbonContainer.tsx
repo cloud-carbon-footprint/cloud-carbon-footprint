@@ -10,6 +10,7 @@ import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
 import ServiceFilter from './filters/ServiceFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
+import { DonutChartTabs } from './charts/DonutChartTabs'
 
 const useStyles = makeStyles((theme) => ({
   boxContainer: {
@@ -62,11 +63,7 @@ export default function CloudCarbonContainer() {
               <CarbonComparisonCard data={filteredData} />
             </Grid>
             <Grid item xs={6}>
-              <Card style={{ width: '100%', height: '100%' }}>
-                <Box padding={3}>
-                  <ApexDonutChart data={filteredData} />
-                </Box>
-              </Card>
+              <DonutChartTabs data={filteredData} />
             </Grid>
           </Grid>
         )}

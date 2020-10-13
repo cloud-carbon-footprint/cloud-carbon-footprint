@@ -36,7 +36,7 @@ describe('CloudCarbonContainer', () => {
     const { getByTestId } = render(<CloudCarbonContainer />)
 
     expect(getByTestId('fake-line-chart')).toBeInTheDocument()
-    expect(getByTestId('fake-donut-chart')).toBeInTheDocument()
+    // expect(getByTestId('fake-donut-chart')).toBeInTheDocument()
   })
 
   test('today and year prior to today should be passed in to remote service hook', () => {
