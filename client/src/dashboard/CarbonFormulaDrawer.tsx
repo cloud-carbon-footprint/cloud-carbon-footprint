@@ -62,7 +62,7 @@ const useStyles = makeStyles(({ palette, transitions, spacing, typography, break
     methodology: {
       padding: spacing(2),
       display: 'flex',
-      color: '#2394c6',
+      color: palette.extLink,
     },
     openIcon: {
       marginLeft: '8px',
