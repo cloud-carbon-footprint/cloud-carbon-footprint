@@ -54,16 +54,18 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
   }
 }
 
-const sumCO2ByService = (data: EstimationResult[]): { string: number } => {
+const sumCO2ByServiceOrRegion = (data: EstimationResult[], dataType: string): { string: number} => {
   const serviceEstimates = data.flatMap((estimationResult) => estimationResult.serviceEstimates)
 
   return serviceEstimates.reduce((acc, initialValue, index, arr) => {
     const value = arr[index]
+    
+    const property = dataType === "region" ? value.region : value.serviceName
 
-    if (acc.hasOwnProperty(value.serviceName)) {
-      acc[value.serviceName] += value.co2e // { ec2: 18 }
+    if (acc.hasOwnProperty(property)) {
+      acc[property] += value.co2e // { ec2: 18 }
     } else {
-      acc[value.serviceName] = value.co2e
+      acc[property] = value.co2e
     }
 
     return acc
@@ -75,4 +77,4 @@ const sumCO2 = (data: EstimationResult[]): number => {
   return serviceEstimates.reduce((acc, currentValue) => acc + currentValue.co2e, 0)
 }
 
-export { sumCO2, sumCO2ByService, sumServiceTotals }
+export { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals }
