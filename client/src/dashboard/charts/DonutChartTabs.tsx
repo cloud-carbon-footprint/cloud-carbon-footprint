@@ -26,7 +26,7 @@ export const DonutChartTabs = (props: { data: any }) => {
             <Tab id="Service" label="Emissions By Service" />
           </Tabs>
         </Paper>
-        {value ? <ApexDonutChart data={props.data} /> : ''}
+        {value ? <ApexDonutChart data={props.data} dataType="service"/> : <ApexDonutChart data={props.data} dataType="region"/> }
       </Box>
     </Card>
   )

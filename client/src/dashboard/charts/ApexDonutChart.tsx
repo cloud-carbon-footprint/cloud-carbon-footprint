@@ -3,13 +3,14 @@ import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
 import { getChartColors } from '../../themes'
-import { sumCO2ByService } from '../transformData'
+import { sumCO2ByServiceOrRegion } from '../transformData'
 import { EstimationResult } from '../../types'
 
-export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data }) => {
+export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data, dataType}) => {
   const theme = useTheme()
   const chartColors = getChartColors(theme)
-  const donutData = sumCO2ByService(data)
+
+  const donutData = sumCO2ByServiceOrRegion(data, dataType)
 
   const options = {
     chart: {
@@ -63,4 +64,5 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data })
 
 type ApexDonutChartProps = {
   data: EstimationResult[]
+  dataType: string
 }

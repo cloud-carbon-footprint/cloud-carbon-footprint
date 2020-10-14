@@ -1,4 +1,4 @@
-import { sumCO2, sumCO2ByService, sumServiceTotals } from './transformData'
+import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals } from './transformData'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
 const date2 = new Date('2020-07-11T00:00:00.000Z')
@@ -103,7 +103,7 @@ const dataWithHigherPrecision = [
 describe('transformData', () => {
   it('returns the sum of CO2 per service', () => {
     const expected = { ebs: 18, ec2: 12 }
-    expect(sumCO2ByService(data)).toEqual(expected)
+    expect(sumCO2ByServiceOrRegion(data, "service")).toEqual(expected)
   })
 
   it('returns the sum of CO2 kg and gallons', () => {
