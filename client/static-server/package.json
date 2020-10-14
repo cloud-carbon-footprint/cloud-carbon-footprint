@@ -7,6 +7,10 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "@okta/oidc-middleware": "^4.0.1",
+    "@okta/okta-sdk-nodejs": "^3.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1"
   }
 }
