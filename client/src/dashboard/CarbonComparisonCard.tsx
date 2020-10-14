@@ -72,7 +72,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       padding: spacing(0, 1),
       display: 'inline-flex',
       alignItems: 'center',
-      color: '#2394c6',
+      color: palette.extLink,
     },
     openIcon: {
       marginLeft: '8px',
