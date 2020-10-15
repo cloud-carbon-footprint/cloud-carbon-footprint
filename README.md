@@ -23,18 +23,33 @@ npm run bootstrap
 
 This will install dependencies in both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
 
-### AWS Credentials
+# AWS Authentication 
 
+We currently support three modes of authentication with AWS, that you can see in [server/src/application/AWSCredentialsProvider.ts](server/src/application/AWSCredentialsProvider.ts):
+
+1. GCP - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
+2. AWS - this is used to authenticate via an AWS role that has the necessary permissions to query the CloudWatch and Cost Explorer APIs.   
+3. default - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.   
+
+The authentication mode is set inside [server/src/application/Config.ts](server/src/application/Config.ts).
+
+[server/.env](server/.env) is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. 
+You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](.adr/adr_5_aws_authentication.txt)
+
+### AWS Credentials - only needed for the default authentication mode. 
+ 
 - Configure AWS credentials.
   ```
   aws configure
   ```
-- Specify the services and regions that the tool runs on in [server/src/application/Config.json](./server/src/application/Config.json)
+- Specify the services and regions that the tool runs on in [server/src/application/Config.ts](server/src/application/Config.ts)
 
-###GCP Credentials
+### GCP Credentials
+
 - request service account credentials from Dan
 - set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
 see https://cloud.google.com/docs/authentication/getting-started for more details.
+
 ## Run
 
 ### Client and Server (with mock data)
@@ -45,13 +60,21 @@ npm run start-stub-server
 //in another terminal, also from the client directory
 npm start
 ```
+
 ### Client and Server (with live data)
-Make sure you have configured your AWS credentials (see above)
+Make sure you have configured your GCP and AWS credentials (see above)
 > :warning: **This will incure cost**: Data will come from AWS and will cost money to our project. Use this sparingly if you wish to test with live data. If not, use the command above
 
 ```
-docker-compose up
+npm start
 ```
+
+With Docker:
+
+```
+dokcer-compose up
+```
+
 
 ### Server in Docker
 

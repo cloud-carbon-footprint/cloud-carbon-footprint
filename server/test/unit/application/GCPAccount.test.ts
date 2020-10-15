@@ -7,14 +7,14 @@ jest.mock('@google-cloud/monitoring', () => {
   }
 })
 
-describe('GCPServices', () => {
+describe('GCPAccount', () => {
   /* eslint-disable @typescript-eslint/no-var-requires */
   afterEach(() => {
     jest.resetModules()
   })
 
   it('should return empty if no service in config file', () => {
-    jest.doMock('@application/Config.json', () => {
+    jest.doMock('@application/Config.ts', () => {
       return {
         GCP: {
           CURRENT_SERVICES: [],
@@ -22,13 +22,13 @@ describe('GCPServices', () => {
       }
     })
 
-    const GCPServices = require('@application/GCPServices').default
-    const services = GCPServices()
+    const GCPAccount = require('@application/GCPAccount').default
+    const services = new GCPAccount(['us-east1']).getServices()
     expect(services).toHaveLength(0)
   })
 
   it('should throw error if unknown service', () => {
-    jest.doMock('@application/Config.json', () => {
+    jest.doMock('@application/Config.ts', () => {
       return {
         GCP: {
           CURRENT_SERVICES: [
@@ -40,8 +40,11 @@ describe('GCPServices', () => {
       }
     })
 
-    const GCPServices = require('@application/GCPServices').default
-    expect(GCPServices).toThrowError('Unsupported service: goose')
+    const GCPAccount = require('@application/GCPAccount').default
+    const account = new GCPAccount(['us-east1'])
+    expect(() => {
+      account.getServices()
+    }).toThrowError('Unsupported service: goose')
   })
 
   it('should return computeEngine instance and inject MetricServiceClient', () => {
@@ -52,7 +55,7 @@ describe('GCPServices', () => {
 })
 
 function expectGCPService(key: string) {
-  jest.doMock('@application/Config.json', () => {
+  jest.doMock('@application/Config.ts', () => {
     return {
       GCP: {
         CURRENT_SERVICES: [
@@ -64,7 +67,7 @@ function expectGCPService(key: string) {
     }
   })
 
-  const GCPServices = require('@application/GCPServices').default
-  const services = GCPServices()
+  const GCPAccount = require('@application/GCPAccount').default
+  const services = new GCPAccount(['us-east1']).getServices()
   return expect(services[0])
 }

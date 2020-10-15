@@ -67,6 +67,7 @@ jobs:
             cd server
             npm ci
             npm run-script build
+            ./create_server_env_file.sh
       - gcr/gcr-auth
       - gcr/build-image:
           docker-context: server
@@ -82,7 +83,7 @@ jobs:
       - image: hashicorp/terraform:0.12.28
     steps:
       - checkout
-      - run: 
+      - run:
           environment:
             SERVER_VERSION: 0.0.<<pipeline.git.revision>>
             CLIENT_VERSION: 0.0.<<pipeline.git.revision>>

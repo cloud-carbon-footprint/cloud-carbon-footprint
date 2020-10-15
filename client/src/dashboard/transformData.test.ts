@@ -51,55 +51,54 @@ const data = [
   },
 ]
 
-const dataWithHigherPrecision =
-    [
+const dataWithHigherPrecision = [
+  {
+    timestamp: date1,
+    serviceEstimates: [
       {
         timestamp: date1,
-        serviceEstimates: [
-          {
-            timestamp: date1,
-            serviceName: 'ebs',
-            wattHours: 12.2342,
-            co2e: 15.12341,
-            cost: 5.82572,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-          {
-            timestamp: date1,
-            serviceName: 'ec2',
-            wattHours: 4.745634,
-            co2e: 5.234236,
-            cost: 4.732,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-        ],
+        serviceName: 'ebs',
+        wattHours: 12.2342,
+        co2e: 15.12341,
+        cost: 5.82572,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+      {
+        timestamp: date1,
+        serviceName: 'ec2',
+        wattHours: 4.745634,
+        co2e: 5.234236,
+        cost: 4.732,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+    ],
+  },
+  {
+    timestamp: date2,
+    serviceEstimates: [
+      {
+        timestamp: date2,
+        serviceName: 'ebs',
+        wattHours: 25.73446,
+        co2e: 3.2600234,
+        cost: 6.05931,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
       },
       {
         timestamp: date2,
-        serviceEstimates: [
-          {
-            timestamp: date2,
-            serviceName: 'ebs',
-            wattHours: 25.73446,
-            co2e: 3.2600234,
-            cost: 6.05931,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-          {
-            timestamp: date2,
-            serviceName: 'ec2',
-            wattHours: 2.4523452,
-            co2e: 7.7536,
-            cost: 6.2323,
-            region: 'us-east-1',
-            usesAverageCPUConstant: true,
-          },
-        ],
+        serviceName: 'ec2',
+        wattHours: 2.4523452,
+        co2e: 7.7536,
+        cost: 6.2323,
+        region: 'us-east-1',
+        usesAverageCPUConstant: true,
       },
-    ]
+    ],
+  },
+]
 
 describe('transformData', () => {
   it('returns the sum of CO2 per service', () => {

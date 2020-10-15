@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { values, contains } from 'ramda'
-import { AWS } from '@application/Config.json'
+import appConfig from '@application/Config'
 import { RawRequest } from '@view/RawRequest'
 
 export interface EstimationRequest {
@@ -36,7 +36,7 @@ function validate(
     errors.push('End date is not in a recognized RFC2822 or ISO format')
   }
 
-  if (region && !contains(region, values(AWS.CURRENT_REGIONS))) {
+  if (region && !contains(region, values(appConfig.AWS.CURRENT_REGIONS))) {
     errors.push('Not a valid region for this account')
   }
 

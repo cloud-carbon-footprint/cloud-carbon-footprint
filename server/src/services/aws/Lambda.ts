@@ -5,29 +5,36 @@ import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import AWS from 'aws-sdk'
+import { CloudWatchLogs } from 'aws-sdk'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class Lambda implements ICloudService {
   serviceName = 'lambda'
 
-  constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000, private readonly serviceWrapper: ServiceWrapper) {}
+  constructor(
+    private TIMEOUT = 60000,
+    private POLL_INTERVAL = 1000,
+    private readonly cloudWatchLogs: CloudWatchLogs,
+    private readonly serviceWrapper: ServiceWrapper,
+  ) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
-    const cloudWatchLogs = new AWS.CloudWatchLogs({ region: region }) //TODO: dependency injection
-    const groupNames = await this.getLambdaLogGroupNames(cloudWatchLogs)
+    const groupNames = await this.getLambdaLogGroupNames()
 
     if (isEmpty(groupNames)) {
-      return [{ timestamp: start, wattHours: 0.0, co2e: 0.0 }]
+      return []
     }
 
-    const queryId = await this.runQuery(cloudWatchLogs, start, end, groupNames)
-    const usage = await this.getResults(cloudWatchLogs, queryId)
+    // given start and end date
+    // map over each month between start and end date
+    // execute runQuery o
+
+    const queryId = await this.runQuery(start, end, groupNames)
+    const usage = await this.getResults(queryId)
 
     return usage.results.map((resultByDate) => {
       const timestampField = resultByDate[0]
       const wattsField = resultByDate[1]
-
       const timestamp = new Date(timestampField.value.substr(0, 10))
       const wattHours = Number.parseFloat(wattsField.value)
       const co2e = estimateCo2(wattHours, region)
@@ -39,16 +46,16 @@ export default class Lambda implements ICloudService {
     })
   }
 
-  private async getLambdaLogGroupNames(cw: AWS.CloudWatchLogs): Promise<string[]> {
+  private async getLambdaLogGroupNames(): Promise<string[]> {
     const params = {
       logGroupNamePrefix: '/aws/lambda',
     }
 
-    const logGroupData = await cw.describeLogGroups(params).promise()
+    const logGroupData = await this.cloudWatchLogs.describeLogGroups(params).promise()
     return logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
   }
 
-  private async runQuery(cw: AWS.CloudWatchLogs, start: Date, end: Date, groupNames: string[]): Promise<string> {
+  private async runQuery(start: Date, end: Date, groupNames: string[]): Promise<string> {
     const query = `
             filter @type = "REPORT"
             | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${CLOUD_CONSTANTS.AWS.MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
@@ -61,11 +68,11 @@ export default class Lambda implements ICloudService {
       queryString: query,
       logGroupNames: groupNames,
     }
-    const queryData = await cw.startQuery(params).promise()
+    const queryData = await this.cloudWatchLogs.startQuery(params).promise()
     return queryData.queryId
   }
 
-  private async getResults(cw: AWS.CloudWatchLogs, queryId: string) {
+  private async getResults(queryId: string) {
     const params = {
       queryId: queryId,
     }
@@ -73,7 +80,7 @@ export default class Lambda implements ICloudService {
     const startTime = Date.now()
 
     while (true) {
-      cwResultsData = await cw.getQueryResults(params).promise()
+      cwResultsData = await this.cloudWatchLogs.getQueryResults(params).promise()
       if (cwResultsData.status !== 'Running' && cwResultsData.status !== 'Scheduled') break
       if (Date.now() - startTime > this.TIMEOUT) {
         throw new Error(`CloudWatchLog request failed, status: ${cwResultsData.status}`)

@@ -3,3 +3,4 @@ server/**/*.js.snap
 server/**/*.map
 *.csv
 *.cache.json
+.env
