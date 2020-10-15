@@ -31,7 +31,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const costSeriesData = cloudEstimationData.costSeries
   const [getMaxCo2] = useState(cloudEstimationData.maxCo2e)
 
-
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
 
@@ -135,7 +134,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         axisTicks: {
           show: true,
         },
-        showAlways: false
+        showAlways: false,
       },
       {
         title: {
@@ -155,7 +154,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         axisTicks: {
           show: true,
         },
-        showAlways: false
+        showAlways: false,
       },
     ],
   }

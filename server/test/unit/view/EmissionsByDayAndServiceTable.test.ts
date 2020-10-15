@@ -13,6 +13,7 @@ describe('EmissionsTable', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'ebs',
           wattHours: 1,
           co2e: 1,
@@ -22,6 +23,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 's3',
           wattHours: 2,
           co2e: 2,
@@ -31,6 +33,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'ec2',
           wattHours: 3,
           co2e: 3,
@@ -40,6 +43,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'elasticache',
           wattHours: 4,
           co2e: 4,
@@ -49,6 +53,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'rds',
           wattHours: 4,
           co2e: 4,
@@ -58,6 +63,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'lambda',
           wattHours: 1,
           co2e: 1,
@@ -72,6 +78,7 @@ describe('EmissionsTable', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'ebs',
           wattHours: 7,
           co2e: 8,
@@ -81,6 +88,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 's3',
           wattHours: 55,
           co2e: 1,
@@ -90,6 +98,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'ec2',
           wattHours: 90,
           co2e: 77,
@@ -99,6 +108,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'elasticache',
           wattHours: 747,
           co2e: 787,
@@ -108,6 +118,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'rds',
           wattHours: 747,
           co2e: 787,
@@ -117,6 +128,7 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
+          accountName: 'test account',
           serviceName: 'lambda',
           wattHours: 300,
           co2e: 300,

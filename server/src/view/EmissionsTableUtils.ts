@@ -1,4 +1,4 @@
-import { AWS } from '@application/Config.json'
+import config from '@application/Config'
 import { find, propEq, propOr, prop } from 'ramda'
 
 export interface Total {
@@ -12,7 +12,7 @@ export type Totals = { [key: string]: Total }
 export function initialTotals(): Totals {
   const initialTotals: Totals = {}
 
-  AWS.CURRENT_SERVICES.forEach((service) => {
+  config.AWS.CURRENT_SERVICES.forEach((service) => {
     const key: string = prop('key', service)
     const total: Total = { wattHours: 0, co2e: 0, cost: 0 }
     initialTotals[key] = total
@@ -23,7 +23,7 @@ export function initialTotals(): Totals {
 }
 
 export const displayServiceName = (key: string): string => {
-  const service = find(propEq('key', key), AWS.CURRENT_SERVICES)
+  const service = find(propEq('key', key), config.AWS.CURRENT_SERVICES)
 
   if (key === 'total') return 'Total'
 

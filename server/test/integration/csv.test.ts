@@ -1,5 +1,4 @@
-import { mocked } from 'ts-jest/utils'
-import AWSServices from '@application/AWSServices'
+import AWSAccount from '@application/AWSAccount'
 import EBS from '@services/aws/EBS'
 import S3 from '@services/aws/S3'
 import EC2 from '@services/aws/EC2'
@@ -16,7 +15,7 @@ import AWS from 'aws-sdk'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 import { CloudWatch, CostExplorer } from 'aws-sdk'
 
-jest.mock('@application/AWSServices')
+const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache
 jest.mock('@application/Cache')
@@ -32,7 +31,6 @@ afterEach(() => {
 describe('csv test', () => {
   const start = '2020-07-01'
   const end = '2020-07-07'
-  const servicesRegistered = mocked(AWSServices, true)
   const rawRequest = ['executable', 'file', '--startDate', start, '--endDate', end, '--region', 'us-east-1']
 
   function getCloudWatch() {
@@ -66,8 +64,7 @@ describe('csv test', () => {
   test('formats table into csv file', async () => {
     mockAwsCloudWatchGetMetricData()
     mockAwsCostExplorerGetCostAndUsage()
-
-    servicesRegistered.mockReturnValue([
+    ;(getServices as jest.Mock).mockReturnValue([
       new EBS(getServiceWrapper()),
       new S3(getServiceWrapper()),
       new EC2(getServiceWrapper()),

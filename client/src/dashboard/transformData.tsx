@@ -50,7 +50,7 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
     maxCo2e,
     co2Series,
     wattHoursSeries,
-    costSeries
+    costSeries,
   }
 }
 
