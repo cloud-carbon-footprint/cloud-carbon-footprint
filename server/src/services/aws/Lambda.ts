@@ -25,14 +25,13 @@ export default class Lambda implements ICloudService {
       return []
     }
 
-    // given start and end date
-    // map over each month between start and end date
-    // execute runQuery o
+    const queryIdsArray = await this.getQueryByInterval(start, end, groupNames)
 
-    const queryId = await this.runQuery(start, end, groupNames)
-    const usage = await this.getResults(queryId)
+    const usage = await Promise.all(queryIdsArray.map((id) => this.getResults(id)))
 
-    return usage.results.map((resultByDate) => {
+    const filteredResults = [...usage.reduce((combinedArr, { results }) => [...combinedArr, ...results], [])]
+
+    return filteredResults.map((resultByDate) => {
       const timestampField = resultByDate[0]
       const wattsField = resultByDate[1]
       const timestamp = new Date(timestampField.value.substr(0, 10))
@@ -44,6 +43,27 @@ export default class Lambda implements ICloudService {
         co2e,
       }
     })
+  }
+
+  private async getQueryByInterval(
+    start: Date,
+    end: Date,
+    groupNames: string[],
+    intervalInDays = 60,
+  ): Promise<Array<string>> {
+    const startCopy = new Date(start)
+    const endCopy = new Date(start.setDate(start.getDate() + intervalInDays))
+    const promiseArray = []
+
+    while (endCopy < end) {
+      promiseArray.push(this.runQuery(startCopy, endCopy, groupNames))
+      startCopy.setDate(startCopy.getDate() + intervalInDays)
+      endCopy.setDate(startCopy.getDate() + intervalInDays)
+    }
+
+    promiseArray.push(this.runQuery(startCopy, end, groupNames))
+
+    return Promise.all(promiseArray)
   }
 
   private async getLambdaLogGroupNames(): Promise<string[]> {
