@@ -7,6 +7,9 @@ const useStyles = makeStyles({
   root: {
     flexGrow: 1,
   },
+  containerMargin: {
+    bottom: 100,
+  },
 })
 
 export const DonutChartTabs = (props: { data: any }) => {
@@ -26,7 +29,11 @@ export const DonutChartTabs = (props: { data: any }) => {
             <Tab id="Service" label="Emissions By Service" />
           </Tabs>
         </Paper>
-        {value ? <ApexDonutChart data={props.data} dataType="service"/> : <ApexDonutChart data={props.data} dataType="region"/> }
+        {value ? (
+          <ApexDonutChart data={props.data} dataType="service" data-testid="service" />
+        ) : (
+          <ApexDonutChart data={props.data} dataType="region" data-testid="region" />
+        )}
       </Box>
     </Card>
   )

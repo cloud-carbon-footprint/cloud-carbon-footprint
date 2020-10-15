@@ -2,66 +2,65 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 
 import { DonutChartTabs } from './DonutChartTabs'
-import { Tab, Tabs } from '@material-ui/core'
+import { Tab } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
-import { render, fireEvent, screen} from '@testing-library/react'
+import Enzyme, { mount } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 
 jest.mock('../../themes')
 
 describe('DonutChartTabs', () => {
-
   const date1 = new Date('2020-07-10T00:00:00.000Z')
   const date2 = new Date('2020-07-11T00:00:00.000Z')
 
-  const dataWithHigherPrecision =
-    [
-      {
-        timestamp: date1,
-        serviceEstimates: [
-          {
-            timestamp: date1,
-            serviceName: 'ebs',
-            wattHours: 12.2342,
-            co2e: 15.12341,
-            cost: 5.82572,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-          {
-            timestamp: date1,
-            serviceName: 'ec2',
-            wattHours: 4.745634,
-            co2e: 5.234236,
-            cost: 4.732,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-        ],
-      },
-      {
-        timestamp: date2,
-        serviceEstimates: [
-          {
-            timestamp: date2,
-            serviceName: 'ebs',
-            wattHours: 25.73446,
-            co2e: 3.2600234,
-            cost: 6.05931,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-          {
-            timestamp: date2,
-            serviceName: 'ec2',
-            wattHours: 2.4523452,
-            co2e: 7.7536,
-            cost: 6.2323,
-            region: 'us-east-1',
-            usesAverageCPUConstant: true,
-          },
-        ],
-      },
-    ]
+  const dataWithHigherPrecision = [
+    {
+      timestamp: date1,
+      serviceEstimates: [
+        {
+          timestamp: date1,
+          serviceName: 'ebs',
+          wattHours: 12.2342,
+          co2e: 15.12341,
+          cost: 5.82572,
+          region: 'us-east-1',
+          usesAverageCPUConstant: false,
+        },
+        {
+          timestamp: date1,
+          serviceName: 'ec2',
+          wattHours: 4.745634,
+          co2e: 5.234236,
+          cost: 4.732,
+          region: 'us-east-1',
+          usesAverageCPUConstant: false,
+        },
+      ],
+    },
+    {
+      timestamp: date2,
+      serviceEstimates: [
+        {
+          timestamp: date2,
+          serviceName: 'ebs',
+          wattHours: 25.73446,
+          co2e: 3.2600234,
+          cost: 6.05931,
+          region: 'us-east-1',
+          usesAverageCPUConstant: false,
+        },
+        {
+          timestamp: date2,
+          serviceName: 'ec2',
+          wattHours: 2.4523452,
+          co2e: 7.7536,
+          cost: 6.2323,
+          region: 'us-east-1',
+          usesAverageCPUConstant: true,
+        },
+      ],
+    },
+  ]
 
   it('renders donut chart with two tabs', () => {
     const testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
@@ -92,28 +91,15 @@ describe('DonutChartTabs', () => {
     const testInstance = testRenderer.root
     const isApexDonutChartRendered = testInstance.findByType(ApexDonutChart)
 
-    expect(isApexDonutChartRendered.props.dataType).toBe("region")
-
+    expect(isApexDonutChartRendered.props.dataType).toBe('region')
   })
+  it('renders emission by service donut chart when service tab clicked', () => {
+    Enzyme.configure({ adapter: new Adapter() })
+    const wrapper = mount(<DonutChartTabs data={dataWithHigherPrecision} />)
+    const tabsInstance = wrapper.find(Tab).at(1).simulate('click')
+    wrapper.update()
 
-  // it('renders emission by service donut chart when service tab clicked', () => {
-  //   const testRenderer = render(<DonutChartTabs data={dataWithHigherPrecision} />)
-  //   testRenderer.
-  //   const handleClick = jest.fn()
-  //   fireEvent.click(screen.getByLabelText(/Emissions by Service/))
-  //   expect(handleClick).toHaveBeenCalledTimes(1)
-  //   // const testInstance = testRenderer.root
-  //   // const tabInstance = testInstance.findAllByType(Tab)[1]
-  //   // fireEvent.click(tabInstance)
-
-  //   // const eventMock = jest.fn();
-
-  //   // tabsInstance.props.onChange(eventMock);
-    
-  //   // const isApexDonutChartRendered = testInstance.findByType(ApexDonutChart)
-
-  //   // expect(isApexDonutChartRendered.props.dataType).toBe("service")
-
-  // })
-
+    const isApexDonutChartRendered = wrapper.find(ApexDonutChart)
+    expect(isApexDonutChartRendered.props().dataType).toBe('service')
+  })
 })
