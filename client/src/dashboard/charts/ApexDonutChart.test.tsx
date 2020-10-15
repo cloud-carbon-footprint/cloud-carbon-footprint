@@ -39,7 +39,7 @@ describe('ApexDonutChart', () => {
         ],
       },
     ]
-    const root = create(<ApexDonutChart data={data} />)
+    const root = create(<ApexDonutChart data={data} dataType="service" />)
 
     expect(root.toJSON()).toMatchSnapshot()
   })
