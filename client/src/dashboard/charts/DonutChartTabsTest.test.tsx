@@ -1,5 +1,5 @@
 import React from 'react'
-import { create } from 'react-test-renderer'
+import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-renderer'
 
 import { DonutChartTabs } from './DonutChartTabs'
 import { Tab } from '@material-ui/core'
@@ -12,6 +12,8 @@ jest.mock('../../themes')
 describe('DonutChartTabs', () => {
   const date1 = new Date('2020-07-10T00:00:00.000Z')
   const date2 = new Date('2020-07-11T00:00:00.000Z')
+
+  let testRenderer: ReactTestRenderer, testInstance: ReactTestInstance
 
   const dataWithHigherPrecision = [
     {
@@ -62,9 +64,12 @@ describe('DonutChartTabs', () => {
     },
   ]
 
+  beforeEach(() => {
+    testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
+    testInstance = testRenderer.root
+  })
+
   it('renders donut chart with two tabs', () => {
-    const testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
-    const testInstance = testRenderer.root
     const allTabInstancesList = testInstance.findAllByType(Tab)
 
     expect(allTabInstancesList).toHaveLength(2)
@@ -79,16 +84,12 @@ describe('DonutChartTabs', () => {
   })
 
   it('checks to see if donut chart exists upon loading', () => {
-    const testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
-    const testInstance = testRenderer.root
     const isApexDonutChartRendered = testInstance.findAllByType(ApexDonutChart)
 
     expect(isApexDonutChartRendered).toHaveLength(1)
   })
 
   it('renders emission by region donut chart by default', () => {
-    const testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
-    const testInstance = testRenderer.root
     const isApexDonutChartRendered = testInstance.findByType(ApexDonutChart)
 
     expect(isApexDonutChartRendered.props.dataType).toBe('region')
@@ -96,7 +97,7 @@ describe('DonutChartTabs', () => {
   it('renders emission by service donut chart when service tab clicked', () => {
     Enzyme.configure({ adapter: new Adapter() })
     const wrapper = mount(<DonutChartTabs data={dataWithHigherPrecision} />)
-    const tabsInstance = wrapper.find(Tab).at(1).simulate('click')
+    wrapper.find(Tab).at(1).simulate('click')
     wrapper.update()
 
     const isApexDonutChartRendered = wrapper.find(ApexDonutChart)

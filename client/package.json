@@ -60,6 +60,8 @@
   "devDependencies": {
     "@types/mockdate": "^2.0.0",
     "@types/react-dates": "^17.1.15",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "json-server": "^0.16.1",
     "lint-staged": "^10.2.13",
     "mockdate": "^3.0.2",
