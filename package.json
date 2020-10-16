@@ -7,7 +7,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lerna run precommit --parallel --stream"
+      "pre-commit": "./branch_warning.sh && lerna run precommit --parallel --stream"
     }
   },
   "scripts": {
