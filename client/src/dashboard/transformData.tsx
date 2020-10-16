@@ -1,4 +1,4 @@
-import { EstimationResult, cloudEstPerDay } from '../types'
+import { EstimationResult, cloudEstPerDay, ChartDataTypes, serviceEstimate } from '../types'
 
 const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] | number } => {
   let co2Series: cloudEstPerDay[] = []
@@ -54,13 +54,22 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
   }
 }
 
-const sumCO2ByServiceOrRegion = (data: EstimationResult[], dataType: string): { string: number} => {
+const getPropertyFromDataType = (dataType: string, value: serviceEstimate): string => {
+  const dataTypeMapping: { [key: string]: string } = {
+    [ChartDataTypes.REGION]: value.region,
+    [ChartDataTypes.SERVICE]: value.serviceName,
+  }
+
+  return dataTypeMapping[dataType]
+}
+
+const sumCO2ByServiceOrRegion = (data: EstimationResult[], dataType: string): { string: number } => {
   const serviceEstimates = data.flatMap((estimationResult) => estimationResult.serviceEstimates)
 
   return serviceEstimates.reduce((acc, initialValue, index, arr) => {
     const value = arr[index]
-    
-    const property = dataType === "region" ? value.region : value.serviceName
+
+    const property = getPropertyFromDataType(dataType, value)
 
     if (acc.hasOwnProperty(property)) {
       acc[property] += value.co2e // { ec2: 18 }
