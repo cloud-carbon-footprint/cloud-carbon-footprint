@@ -11,7 +11,7 @@ exports[`DonutChartTabs renders donut chart with two tabs 1`] = `
   }
 >
   <div
-    className="MuiBox-root MuiBox-root-3"
+    className="MuiBox-root MuiBox-root-1"
   >
     <div
       className="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
@@ -61,7 +61,7 @@ exports[`DonutChartTabs renders donut chart with two tabs 1`] = `
                 Emissions By Region
               </span>
               <span
-                className="PrivateTabIndicator-root-4 PrivateTabIndicator-colorPrimary-5 MuiTabs-indicator"
+                className="PrivateTabIndicator-root-2 PrivateTabIndicator-colorPrimary-3 MuiTabs-indicator"
                 style={Object {}}
               />
             </button>

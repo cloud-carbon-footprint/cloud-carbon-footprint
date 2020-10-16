@@ -1,19 +1,8 @@
 import React from 'react'
 import { Paper, Tabs, Tab, Box, Card } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { ApexDonutChart } from './ApexDonutChart'
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-  containerMargin: {
-    bottom: 100,
-  },
-})
-
 export const DonutChartTabs = (props: { data: any }) => {
-  const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
