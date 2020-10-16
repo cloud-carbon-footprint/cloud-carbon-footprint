@@ -25,3 +25,8 @@ export interface cloudEstPerDay {
   wattHours?: number
   cost?: number
 }
+
+export enum ChartDataTypes {
+  REGION = 'region',
+  SERVICE = 'service',
+}

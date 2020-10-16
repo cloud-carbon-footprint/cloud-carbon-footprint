@@ -1,6 +1,7 @@
 import React from 'react'
 import { Paper, Tabs, Tab, Box, Card } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
+import { ChartDataTypes } from '../../types'
 
 export const DonutChartTabs = (props: { data: any }) => {
   const [value, setValue] = React.useState(0)
@@ -19,9 +20,9 @@ export const DonutChartTabs = (props: { data: any }) => {
           </Tabs>
         </Paper>
         {value ? (
-          <ApexDonutChart data={props.data} dataType="service" data-testid="service" />
+          <ApexDonutChart data={props.data} dataType={ChartDataTypes.SERVICE} data-testid={ChartDataTypes.SERVICE} />
         ) : (
-          <ApexDonutChart data={props.data} dataType="region" data-testid="region" />
+          <ApexDonutChart data={props.data} dataType={ChartDataTypes.REGION} data-testid={ChartDataTypes.REGION} />
         )}
       </Box>
     </Card>
