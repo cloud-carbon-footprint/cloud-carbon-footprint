@@ -46,6 +46,7 @@ jobs:
             cd client
             npm ci
             npm run-script build
+            ./create_client_env_file.sh
       - gcr/gcr-auth
       - gcr/build-image:
           docker-context: client
