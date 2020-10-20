@@ -13,7 +13,7 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
 - Docker `brew cask install docker`
 - AWS CLI `brew install awscli`
 - Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/) 
-- docker-compose (should be bundled with ddocker if you installed it on a Mac)
+- docker-compose (should be bundled with Docker if you installed it on a Mac)
 
 ## Setup
 
@@ -72,7 +72,7 @@ npm start
 With Docker:
 
 ```
-dokcer-compose up
+docker-compose up
 ```
 
 
