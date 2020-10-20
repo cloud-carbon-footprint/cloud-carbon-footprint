@@ -13,9 +13,9 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    '@typescript-eslint/no-unused-vars': 'off',
+    'no-unused-vars': 'off',
     'unused-imports/no-unused-imports-ts': 'error',
-    'unused-imports/no-unused-vars-ts': [
+    '@typescript-eslint/no-unused-vars': [
       'error',
       { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
     ],

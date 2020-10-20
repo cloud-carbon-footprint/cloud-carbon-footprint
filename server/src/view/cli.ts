@@ -1,4 +1,4 @@
-import { program } from 'commander'
+import commander from 'commander'
 import App from '@application/App'
 import * as process from 'process'
 import EmissionsByDayAndServiceTable from '@view/EmissionsByDayAndServiceTable'
@@ -11,6 +11,9 @@ import path from 'path'
 import CreateValidRequest from '@application/CreateValidRequest'
 
 export default async function cli(argv: string[] = process.argv) {
+  const program = new commander.Command()
+  program.storeOptionsAsProperties(false)
+
   program
     .option('-s, --startDate <string>', 'Start date in ISO format')
     .option('-e, --endDate <string>', 'End date in ISO format')
@@ -29,11 +32,12 @@ export default async function cli(argv: string[] = process.argv) {
   if (program.interactive) {
     ;[startDate, endDate, region, groupBy, format] = await CliPrompts()
   } else {
-    startDate = program.startDate
-    endDate = program.endDate
-    region = program.region
-    groupBy = program.groupBy
-    format = program.format
+    const programOptions = program.opts()
+    startDate = programOptions.startDate
+    endDate = programOptions.endDate
+    region = programOptions.region
+    groupBy = programOptions.groupBy
+    format = programOptions.format
   }
   const estimationRequest = CreateValidRequest({ startDate, endDate, region })
   const { table, colWidths } = await new App().getCostAndEstimates(estimationRequest).then((estimations) => {
