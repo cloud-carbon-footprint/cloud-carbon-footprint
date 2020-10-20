@@ -64,7 +64,7 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         wattHours: 0.1,
-        co2e: estimateCo2(0.1, region),
+        co2e: estimateCo2(0.1, 'AWS', region),
       },
     ])
   })
@@ -113,12 +113,12 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         wattHours: 0.1,
-        co2e: estimateCo2(0.1, region),
+        co2e: estimateCo2(0.1, 'AWS', region),
       },
       {
         timestamp: new Date(endDate),
         wattHours: 0.4,
-        co2e: estimateCo2(0.4, region),
+        co2e: estimateCo2(0.4, 'AWS', region),
       },
     ])
   })
@@ -182,12 +182,12 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         wattHours: 0.2,
-        co2e: estimateCo2(0.2, region),
+        co2e: estimateCo2(0.2, 'AWS', region),
       },
       {
         timestamp: new Date(startDate),
         wattHours: 0.23,
-        co2e: estimateCo2(0.23, region),
+        co2e: estimateCo2(0.23, 'AWS', region),
       },
     ])
   })

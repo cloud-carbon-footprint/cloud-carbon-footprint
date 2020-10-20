@@ -19,8 +19,8 @@ export default class ComputeEstimator implements IFootprintEstimator {
         usage.numberOfvCpus,
         cloudProvider,
       )
-      const estimatedCO2Emissions = estimateCo2(estimatedWattage, region)
 
+      const estimatedCO2Emissions = estimateCo2(estimatedWattage, cloudProvider, region)
       return {
         timestamp: usage.timestamp,
         wattHours: estimatedWattage,
