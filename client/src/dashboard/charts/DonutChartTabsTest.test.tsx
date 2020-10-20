@@ -4,8 +4,9 @@ import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-rendere
 import { DonutChartTabs } from './DonutChartTabs'
 import { Tab } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
-import Enzyme, { mount } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { render, fireEvent } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
+import { ChartDataTypes } from '../../types'
 
 jest.mock('../../themes')
 
@@ -94,13 +95,17 @@ describe('DonutChartTabs', () => {
 
     expect(isApexDonutChartRendered.props.dataType).toBe('region')
   })
-  it('renders emission by service donut chart when service tab clicked', () => {
-    Enzyme.configure({ adapter: new Adapter() })
-    const wrapper = mount(<DonutChartTabs data={dataWithHigherPrecision} />)
-    wrapper.find(Tab).at(1).simulate('click')
-    wrapper.update()
+  it('renders emission by service donut chart when service tab clicked', async () => {
+    const { getByText, getByTestId } = render(<DonutChartTabs data={dataWithHigherPrecision} />)
+    const apexDonutChartByRegion = getByTestId(ChartDataTypes.REGION)
 
-    const isApexDonutChartRendered = wrapper.find(ApexDonutChart)
-    expect(isApexDonutChartRendered.props().dataType).toBe('service')
+    expect(apexDonutChartByRegion).toBeVisible()
+
+    act(() => {
+      fireEvent.click(getByText('Emissions By Service'))
+    })
+
+    const apexDonutChartByService = getByTestId(ChartDataTypes.SERVICE)
+    expect(apexDonutChartByService).toBeVisible()
   })
 })

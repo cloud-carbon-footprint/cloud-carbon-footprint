@@ -20,9 +20,13 @@ export const DonutChartTabs = (props: { data: any }) => {
           </Tabs>
         </Paper>
         {value ? (
-          <ApexDonutChart data={props.data} dataType={ChartDataTypes.SERVICE} data-testid={ChartDataTypes.SERVICE} />
+          <div data-testid={ChartDataTypes.SERVICE}>
+            <ApexDonutChart data={props.data} dataType={ChartDataTypes.SERVICE} />
+          </div>
         ) : (
-          <ApexDonutChart data={props.data} dataType={ChartDataTypes.REGION} data-testid={ChartDataTypes.REGION} />
+          <div data-testid={ChartDataTypes.REGION}>
+            <ApexDonutChart data={props.data} dataType={ChartDataTypes.REGION} />
+          </div>
         )}
       </Box>
     </Card>
