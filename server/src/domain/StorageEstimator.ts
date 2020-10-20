@@ -1,7 +1,7 @@
 import FootprintEstimate from './FootprintEstimate'
 import IFootprintEstimator from './IFootprintEstimator'
 import StorageUsage from './StorageUsage'
-import { AWS_REGIONS_WATT_HOURS_CARBON_RATIO } from './FootprintEstimationConstants'
+import { CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS } from './FootprintEstimationConstants'
 
 export class StorageEstimator implements IFootprintEstimator {
   coefficient: number
@@ -36,6 +36,6 @@ export class StorageEstimator implements IFootprintEstimator {
   private estimateCo2(estimatedWattHours: number, region: string) {
     // This function multiplies the estimated watt-hours by the average CO2e emissions (Kgs) in the region being estimated,
     // as provided by IEA and other energy reports
-    return estimatedWattHours * AWS_REGIONS_WATT_HOURS_CARBON_RATIO[region]
+    return estimatedWattHours * CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS['AWS'][region]
   }
 }
