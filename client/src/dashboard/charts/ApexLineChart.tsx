@@ -17,7 +17,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   useEffect(() => {
     ApexCharts.exec('lineChart', 'hideSeries', ['AWS Watt Hours'])
     ApexCharts.exec('lineChart', 'hideSeries', ['AWS Cost'])
-  })
+  }, [])
+
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
   // Why, you might ask? Don't ask me, ask ApexCharts.
   const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
