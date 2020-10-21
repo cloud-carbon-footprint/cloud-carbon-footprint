@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(5),
     backgroundColor: theme.palette.background.paper,
   },
+  button: {
+    transition: 'color 1s',
+  },
 }))
 
 const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
@@ -20,6 +23,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) =>
           variant={filters.timeframe === 1 ? 'contained' : undefined}
           color={filters.timeframe === 1 ? 'primary' : 'default'}
           onClick={() => setFilters(filters.withTimeFrame(1))}
+          className={classes.button}
         >
           1M
         </Button>
@@ -28,6 +32,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) =>
           variant={filters.timeframe === 3 ? 'contained' : undefined}
           color={filters.timeframe === 3 ? 'primary' : 'default'}
           onClick={() => setFilters(filters.withTimeFrame(3))}
+          className={classes.button}
         >
           3M
         </Button>
@@ -36,6 +41,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) =>
           variant={filters.timeframe === 6 ? 'contained' : undefined}
           color={filters.timeframe === 6 ? 'primary' : 'default'}
           onClick={() => setFilters(filters.withTimeFrame(6))}
+          className={classes.button}
         >
           6M
         </Button>
@@ -44,6 +50,7 @@ const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) =>
           variant={filters.timeframe === 12 ? 'contained' : undefined}
           color={filters.timeframe === 12 ? 'primary' : 'default'}
           onClick={() => setFilters(filters.withTimeFrame(12))}
+          className={classes.button}
         >
           12M
         </Button>
