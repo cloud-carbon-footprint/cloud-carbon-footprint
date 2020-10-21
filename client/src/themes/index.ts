@@ -11,12 +11,12 @@ declare module '@material-ui/core/styles/createPalette' {
   }
 }
 
-const determineTheme = (prefersDarkMode: boolean): Theme => {
+const determineTheme = (): Theme => {
   return createMuiTheme({
     palette: {
-      type: prefersDarkMode ? 'dark' : 'light',
+      type: 'light',
       background: {
-        default: prefersDarkMode ? '#303030' : '#F1F1F1',
+        default: '#F1F1F1',
       },
       chart: [
         // primary
@@ -40,7 +40,7 @@ const determineTheme = (prefersDarkMode: boolean): Theme => {
         { main: '#70E4EF' },
       ],
       // leaving this here in case the color theme changes base on dark mode
-      extLink: prefersDarkMode ? '#00B7FF' : '#00B7FF',
+      extLink: '#00B7FF',
     },
   })
 }
