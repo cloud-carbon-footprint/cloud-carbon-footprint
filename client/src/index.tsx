@@ -6,8 +6,7 @@ import { ThemeProvider, CssBaseline } from '@material-ui/core'
 import App from './App'
 
 function Root() {
-  const prefersDarkMode = false
-  const theme = useMemo(() => determineTheme(prefersDarkMode), [prefersDarkMode])
+  const theme = useMemo(() => determineTheme(), [])
 
   return (
     <ThemeProvider theme={theme}>
