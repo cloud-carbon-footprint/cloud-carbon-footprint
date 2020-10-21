@@ -6,7 +6,7 @@ import { ThemeProvider, useMediaQuery, CssBaseline } from '@material-ui/core'
 import App from './App'
 
 function Root() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const prefersDarkMode = false
   const theme = useMemo(() => determineTheme(prefersDarkMode), [prefersDarkMode])
 
   return (
