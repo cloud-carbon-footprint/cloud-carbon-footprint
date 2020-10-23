@@ -63,7 +63,7 @@
     "@types/express": "^4.17.8",
     "@types/prompts": "^2.0.9",
     "@types/ramda": "github:types/npm-ramda#dist",
-    "aws-sdk": "^2.777.0",
+    "aws-sdk": "^2.778.0",
     "cli-table": "^0.3.1",
     "commander": "^6.1.0",
     "dotenv": "^8.2.0",
