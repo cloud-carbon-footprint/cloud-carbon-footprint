@@ -57,10 +57,12 @@ export default class AWSAccount extends CloudProviderAccount {
 
   private cw: CloudWatch
   private ce: CostExplorer
+  private cwl: CloudWatchLogs
 
   private createServiceWrapper(options: ServiceConfigurationOptions) {
     return new ServiceWrapper(
       this.cw ? this.cw : new CloudWatch(options),
+      this.cwl ? this.cwl : new CloudWatchLogs(options),
       this.ce ? this.ce : new CostExplorer({ region: 'us-east-1', credentials: options.credentials }),
     )
   }
@@ -85,7 +87,7 @@ export default class AWSAccount extends CloudProviderAccount {
       )
     },
     lambda: (options) => {
-      return new Lambda(120000, 1000, new CloudWatchLogs(options), this.createServiceWrapper(options))
+      return new Lambda(120000, 1000, this.createServiceWrapper(options))
     },
   }
 }
