@@ -13,7 +13,10 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
 - Docker `brew cask install docker`
 - AWS CLI `brew install awscli`
 - Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/) 
+- Talisman `curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
 - docker-compose (should be bundled with Docker if you installed it on a Mac)
+
+Note: During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.  
 
 ## Setup
 
