@@ -9,7 +9,6 @@ import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { CloudWatchLogs } from 'aws-sdk'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class Lambda implements ICloudService {
@@ -18,7 +17,6 @@ export default class Lambda implements ICloudService {
   constructor(
     private TIMEOUT = 60000,
     private POLL_INTERVAL = 1000,
-    private readonly cloudWatchLogs: CloudWatchLogs,
     private readonly serviceWrapper: ServiceWrapper,
   ) {}
 
@@ -75,7 +73,7 @@ export default class Lambda implements ICloudService {
       logGroupNamePrefix: '/aws/lambda',
     }
 
-    const logGroupData = await this.cloudWatchLogs.describeLogGroups(params).promise()
+    const logGroupData = await this.serviceWrapper.describeLogGroups(params)
     return logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
   }
 
@@ -92,7 +90,7 @@ export default class Lambda implements ICloudService {
       queryString: query,
       logGroupNames: groupNames,
     }
-    const queryData = await this.cloudWatchLogs.startQuery(params).promise()
+    const queryData = await this.serviceWrapper.startCloudWatchLogsQuery(params)
     return queryData.queryId
   }
 
@@ -104,7 +102,7 @@ export default class Lambda implements ICloudService {
     const startTime = Date.now()
 
     while (true) {
-      cwResultsData = await this.cloudWatchLogs.getQueryResults(params).promise()
+      cwResultsData = await this.serviceWrapper.getCloudWatchLogQueryResults(params)
       if (cwResultsData.status !== 'Running' && cwResultsData.status !== 'Scheduled') break
       if (Date.now() - startTime > this.TIMEOUT) {
         throw new Error(`CloudWatchLog request failed, status: ${cwResultsData.status}`)

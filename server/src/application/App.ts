@@ -10,7 +10,7 @@ import cache from '@application/Cache'
 import GCPAccount from '@application/GCPAccount'
 
 export default class App {
-  @cache()
+  // @cache()
   async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
     const startDate = request.startDate
     const endDate = request.endDate

@@ -2,13 +2,17 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { CloudWatch, CostExplorer } from 'aws-sdk'
+import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
 import { path } from 'ramda'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
 
 export class ServiceWrapper {
-  constructor(private readonly cloudWatch: CloudWatch, private readonly costExplorer: CostExplorer) {}
+  constructor(
+    private readonly cloudWatch: CloudWatch,
+    private readonly cloudWatchLogs: CloudWatchLogs,
+    private readonly costExplorer: CostExplorer
+  ) { }
   private async getCostAndUsageResponse(
     params: CostExplorer.GetCostAndUsageRequest,
   ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
@@ -19,6 +23,24 @@ export class ServiceWrapper {
     params: CloudWatch.GetMetricDataInput,
   ): Promise<CloudWatch.GetMetricDataOutput[]> {
     return [await this.cloudWatch.getMetricData(params).promise()]
+  }
+
+  public async getCloudWatchLogQueryResults(
+    params: CloudWatchLogs.GetQueryResultsRequest,
+  ): Promise<CloudWatchLogs.GetQueryResultsResponse> {
+    return await this.cloudWatchLogs.getQueryResults(params).promise()
+  }
+
+  public async describeLogGroups(
+    params: CloudWatchLogs.DescribeLogGroupsRequest,
+  ): Promise<CloudWatchLogs.DescribeLogGroupsResponse> {
+    return await this.cloudWatchLogs.describeLogGroups(params).promise()
+  }
+
+  public async startCloudWatchLogsQuery(
+    params: CloudWatchLogs.StartQueryRequest,
+  ): Promise<CloudWatchLogs.StartQueryResponse> {
+    return await this.cloudWatchLogs.startQuery(params).promise()
   }
 
   @enablePagination('NextPageToken')
