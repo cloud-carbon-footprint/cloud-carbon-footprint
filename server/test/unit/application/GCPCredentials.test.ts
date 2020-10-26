@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import GCPCredentials from '@application/GCPCredentials'
 import { ChainableTemporaryCredentials, WebIdentityCredentials } from 'aws-sdk'
 import Mock = jest.Mock

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 const { ExpressOIDC } = require('@okta/oidc-middleware')
 const express = require('express')
 const session = require('express-session')

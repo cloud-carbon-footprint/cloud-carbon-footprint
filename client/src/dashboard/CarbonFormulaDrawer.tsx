@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { FunctionComponent, useState } from 'react'
 import clsx from 'clsx'
 import { createStyles, makeStyles } from '@material-ui/core/styles'

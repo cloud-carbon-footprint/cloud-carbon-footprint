@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import Config from '../Config.json'
 import { DropdownOption } from './filters/DropdownFilter'
 

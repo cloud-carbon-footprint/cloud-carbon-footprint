@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals } from './transformData'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')

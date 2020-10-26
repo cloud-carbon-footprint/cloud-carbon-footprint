@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { createMuiTheme, Theme } from '@material-ui/core/styles'
 
 declare module '@material-ui/core/styles/createPalette' {

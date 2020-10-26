@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import EstimatorCacheFileSystem, { cachePath } from '@application/EstimatorCacheFileSystem'
 import { promises } from 'fs'
 import EstimatorCache from '@application/EstimatorCache'

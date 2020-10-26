@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import ICloudService from './ICloudService'
 import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'

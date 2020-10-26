@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { FunctionComponent, useState } from 'react'
 import moment from 'moment'
 import 'react-dates/initialize'

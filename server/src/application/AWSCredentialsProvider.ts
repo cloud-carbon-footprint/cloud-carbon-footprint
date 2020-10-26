@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { Credentials, config, ChainableTemporaryCredentials } from 'aws-sdk'
 import appConfig from '@application/Config'
 import CredentialsForGCP from '@application/GCPCredentials'

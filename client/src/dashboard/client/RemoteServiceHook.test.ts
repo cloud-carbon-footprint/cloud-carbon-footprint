@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import useRemoteService from './RemoteServiceHook'
 import { renderHook } from '@testing-library/react-hooks'
 import axios from 'axios'

@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#
+# © 2020 ThoughtWorks, Inc. All rights reserved.
+#
+
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
 if [[ "$branch" != "trunk" ]]; then

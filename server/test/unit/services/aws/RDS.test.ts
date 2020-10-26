@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import RDS from '@services/aws/RDS'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import RDSStorage from '@services/aws/RDSStorage'

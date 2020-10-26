@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React from 'react'
 import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'

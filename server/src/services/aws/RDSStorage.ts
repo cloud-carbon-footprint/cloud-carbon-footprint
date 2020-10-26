@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import ICloudService from '@domain/ICloudService'
 import {

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { StorageEstimator } from '@domain/StorageEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import AWSMock from 'aws-sdk-mock'

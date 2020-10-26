@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 // TODO - Update this with the complete list of regions.
 export enum GCP_REGIONS {
   US_EAST1 = 'us-east1',

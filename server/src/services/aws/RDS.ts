@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import ICloudService from '@domain/ICloudService'
 import RDSComputeService from '@services/aws/RDSCompute'
 import RDSStorage from '@services/aws/RDSStorage'

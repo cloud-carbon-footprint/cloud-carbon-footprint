@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { EstimationRequest } from '@application/CreateValidRequest'
 import AWSAccount from '@application/AWSAccount'
 import configLoader from '@application/ConfigLoader'

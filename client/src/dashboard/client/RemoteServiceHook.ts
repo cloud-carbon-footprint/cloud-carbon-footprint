@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { EstimationResult, ServiceResult } from '../../types'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { EstimationResult } from '@application/EstimationResult'
 import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
 import moment = require('moment')

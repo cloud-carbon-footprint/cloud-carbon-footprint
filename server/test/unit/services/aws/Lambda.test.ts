@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatchLogs, CostExplorer, CloudWatch } from 'aws-sdk'
 import Lambda from '@services/aws/Lambda'

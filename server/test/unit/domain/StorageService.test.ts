@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import StorageService from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import FootprintEstimate from '@domain/FootprintEstimate'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import CloudProviderAccount from '@application/CloudProviderAccount'
 import { EstimationResult } from '@application/EstimationResult'
 import Region from '@domain/Region'

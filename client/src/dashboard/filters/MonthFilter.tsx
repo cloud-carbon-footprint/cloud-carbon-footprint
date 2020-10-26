@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { FunctionComponent } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
 import { FilterProps } from './Filters'

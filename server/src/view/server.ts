@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 if (process.env.NODE_ENV === 'production') {
   require('module-alias/register')
 }

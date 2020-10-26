@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 const mockMetricServiceClient = jest.fn()
 jest.mock('@google-cloud/monitoring', () => {
   return {

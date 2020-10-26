@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+#
+# © 2020 ThoughtWorks, Inc. All rights reserved.
+#
+
 # Requires SERVER_VERSION and CLIENT_VERSION to be set to valid tags
 # for their respective image repository
 

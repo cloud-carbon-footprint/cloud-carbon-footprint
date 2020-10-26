@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import App from '@application/App'
 import UsageData from '@domain/IUsageData'
 import FootprintEstimate from '@domain/FootprintEstimate'

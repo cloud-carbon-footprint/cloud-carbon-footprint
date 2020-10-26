@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { FunctionComponent } from 'react'
 import { SERVICE_LABELS, SERVICE_OPTIONS } from '../services'
 import { FilterProps } from './Filters'

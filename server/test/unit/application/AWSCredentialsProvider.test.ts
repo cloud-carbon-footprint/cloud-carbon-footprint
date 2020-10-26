@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import AWSCredentialsProvider from '@application/AWSCredentialsProvider'
 import CredentialsForGCP from '@application/GCPCredentials'
 import mockConfig from '@application/Config'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import express from 'express'
 import api from '@view/api'
 import request from 'supertest'
