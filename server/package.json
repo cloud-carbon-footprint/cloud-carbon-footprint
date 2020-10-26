@@ -69,6 +69,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "googleapis": "^61.0.0",
+    "helmet": "^4.1.1",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",

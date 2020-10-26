@@ -3,6 +3,8 @@
  */
 
 import express from 'express'
+import helmet from 'helmet'
+
 import App from '@application/App'
 import CreateValidRequest, { EstimationRequestValidationError } from '@application/CreateValidRequest'
 import { RawRequest } from '@view/RawRequest'
@@ -34,6 +36,8 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
 }
 
 const router = express.Router()
+
+router.use(helmet())
 
 router.get('/footprint', FootprintApiMiddleware)
 
