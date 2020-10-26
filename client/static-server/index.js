@@ -9,7 +9,7 @@ const helmet = require('helmet')
 
 require('dotenv').config()
 
-const port = process.env.PORT || 8080
+const port = process.env.CCF_PORT || 8080
 const app = express()
 
 const oidc = new ExpressOIDC({

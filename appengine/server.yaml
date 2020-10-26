@@ -12,5 +12,5 @@ resources:
   disk_size_gb: 10
 
 env_variables:
-  PORT: 8080
+  CCF_PORT: 8080
   CCF_CACHE_PATH: /tmp/estimates.cache.json
