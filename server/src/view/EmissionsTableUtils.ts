@@ -27,7 +27,7 @@ export const displayServiceName = (key: string): string => {
 
   if (key === 'total') return 'Total'
 
-  if (!prop('key', service) || !prop('name', service)) {
+  if (!('key' in service) || !('name' in service)) {
     throw new Error('You entered an Invalid AWS Service Name.')
   }
 
