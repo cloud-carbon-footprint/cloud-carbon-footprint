@@ -10,7 +10,7 @@ import express from 'express'
 import api from './api'
 import auth from './auth'
 
-const port = process.env.PORT || 4000
+const port = process.env.CCF_PORT || 4000
 const httpApp = express()
 
 if (process.env.NODE_ENV === 'production') {
