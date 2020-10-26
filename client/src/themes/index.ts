@@ -1,10 +1,12 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles'
 
 declare module '@material-ui/core/styles/createPalette' {
+  /* eslint-disable */
   interface Palette {
     chart: Palette['primary'][]
     extLink: React.CSSProperties['color']
   }
+  /* eslint-disable */
   interface PaletteOptions {
     chart: PaletteOptions['primary'][]
     extLink: React.CSSProperties['color']

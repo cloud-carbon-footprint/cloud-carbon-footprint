@@ -1,7 +1,9 @@
 import React from 'react'
 
-export default (props: any) => (
+const mockChart = (props: any) => (
   <div {...props} data-testid={`fake-${props.type}-chart`}>
     fake chart
   </div>
 )
+
+export default mockChart

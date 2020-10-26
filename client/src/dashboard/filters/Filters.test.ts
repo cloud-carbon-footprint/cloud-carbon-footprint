@@ -41,6 +41,7 @@ expect.extend({
 
 declare global {
   namespace jest {
+    /* eslint-disable */
     interface Matchers<R> {
       toOnlyHaveServices(expected: string[]): CustomMatcherResult
       toBeWithinTimeframe(expected: number): CustomMatcherResult
