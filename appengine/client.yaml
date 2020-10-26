@@ -2,7 +2,6 @@ service: default
 
 runtime: nodejs12
 env: flex
-instance_class: F1
 
 manual_scaling:
   instances: 1
