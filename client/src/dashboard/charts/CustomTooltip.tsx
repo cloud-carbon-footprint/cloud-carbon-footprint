@@ -13,8 +13,8 @@ import React from 'react'
 import moment from 'moment'
 
 export const CustomTooltip = ({ data, dataPointIndex }: { data: any; dataPointIndex: number }) => {
-  let date = moment(data[dataPointIndex].x).format('MMMM DD')
 
+  let date = moment.utc(data[dataPointIndex].x).format('MMMM DD')
   return (
     <div style={{ padding: '10px' }}>
       <div>
