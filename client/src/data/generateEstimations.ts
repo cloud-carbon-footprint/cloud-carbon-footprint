@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { EstimationResult, serviceEstimate } from '../types'
 
 const getRandomInt = (max: number): number => {
