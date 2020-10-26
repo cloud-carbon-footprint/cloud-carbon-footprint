@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { EstimationResult } from '@application/EstimationResult'
 import EstimatorCacheFileSystem from '@application/EstimatorCacheFileSystem'
 import EstimatorCache from '@application/EstimatorCache'

@@ -1,4 +1,8 @@
 /*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
+/*
 We're using a custom tool tip so that we can show data from the wattHours and cost series in the tooltip,
 even when the wattHours and cost series are toggled off. When using the default tooltip provided by apex charts,
 there is no way to access additional data in the series, for example, the wattHours and cost data in the co2e series.

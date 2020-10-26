@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import ICloudService from '@domain/ICloudService'
 import EBS from '@services/aws/EBS'
 import S3 from '@services/aws/S3'

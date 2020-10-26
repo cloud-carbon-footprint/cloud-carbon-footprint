@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { EstimationResult } from '../../types'
 import { Filters } from './Filters'

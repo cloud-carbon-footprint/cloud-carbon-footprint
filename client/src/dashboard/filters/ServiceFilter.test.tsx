@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { Dispatch, SetStateAction } from 'react'
 import ServiceFilter from './ServiceFilter'
 import { Filters } from './Filters'

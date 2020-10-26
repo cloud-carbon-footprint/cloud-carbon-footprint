@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CostExplorer, CloudWatch } from 'aws-sdk'
 import EBS from '@services/aws/EBS'

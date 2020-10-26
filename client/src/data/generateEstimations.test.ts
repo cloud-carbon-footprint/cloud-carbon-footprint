@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import generateEstimations from './generateEstimations'
 import moment from 'moment'
 

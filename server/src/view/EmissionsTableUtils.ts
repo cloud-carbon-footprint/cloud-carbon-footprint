@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import config from '@application/Config'
 import { find, propEq, propOr, prop } from 'ramda'
 

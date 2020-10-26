@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import ComputeEngine from '@services/gcp/ComputeEngine'
 import { MetricServiceClient } from '@google-cloud/monitoring'
 import { google } from '@google-cloud/monitoring/build/protos/protos'

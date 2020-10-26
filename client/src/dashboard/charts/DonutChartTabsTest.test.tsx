@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React from 'react'
 import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-renderer'
 

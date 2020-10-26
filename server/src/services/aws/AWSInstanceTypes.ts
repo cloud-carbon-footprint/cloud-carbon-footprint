@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 export const RDS_INSTANCE_TYPES: { [instanceType: string]: number } = {
   'db.m5.24xlarge': 96,
   'db.m5.16xlarge': 64,

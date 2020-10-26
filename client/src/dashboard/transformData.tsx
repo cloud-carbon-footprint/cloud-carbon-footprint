@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { EstimationResult, cloudEstPerDay, ChartDataTypes, serviceEstimate } from '../types'
 
 const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] | number } => {

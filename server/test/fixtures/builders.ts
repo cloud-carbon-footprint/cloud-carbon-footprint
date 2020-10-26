@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 export function buildCostExplorerGetCostRequest(startDate: string, endDate: string, region: string, values: string[]) {
   return {
     TimePeriod: {

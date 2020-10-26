@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { DateRange, Filters } from './Filters'
 import moment from 'moment'
 import generateEstimations from '../../data/generateEstimations'

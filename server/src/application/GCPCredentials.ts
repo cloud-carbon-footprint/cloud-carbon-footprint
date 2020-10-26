@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { AWSError, ChainableTemporaryCredentials, Credentials, WebIdentityCredentials } from 'aws-sdk'
 import { google } from 'googleapis'
 

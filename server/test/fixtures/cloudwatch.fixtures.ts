@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { CloudWatch } from 'aws-sdk'
 
 const dayOne = '2020-07-01'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import FootprintEstimate from './FootprintEstimate'
 import IFootprintEstimator from './IFootprintEstimator'
 import StorageUsage from './StorageUsage'

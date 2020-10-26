@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import IUsageData from '@domain/IUsageData'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'

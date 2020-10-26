@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import cli from '@view/cli'
 import AWSAccount from '@application/AWSAccount'
 import RDS from '@services/aws/RDS'

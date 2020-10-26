@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 export enum AWS_REGIONS {
   US_EAST_1 = 'us-east-1',
   US_EAST_2 = 'us-east-2',

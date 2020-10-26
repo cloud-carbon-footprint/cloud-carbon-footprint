@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'

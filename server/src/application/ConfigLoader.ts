@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import configFile from '@application/Config'
 
 export default function config(): CCFConfig {

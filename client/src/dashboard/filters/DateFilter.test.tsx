@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { Dispatch, SetStateAction } from 'react'
 import { DateRange, Filters } from './Filters'
 import { render, RenderResult, act, fireEvent } from '@testing-library/react'

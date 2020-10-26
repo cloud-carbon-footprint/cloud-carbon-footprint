@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 module.exports = {
   roots: ['<rootDir>/test'],
   setupFiles: ['<rootDir>/test/setEnvVars.ts'],

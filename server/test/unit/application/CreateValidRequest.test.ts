@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import CreateValidRequest from '@application/CreateValidRequest'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import moment = require('moment')

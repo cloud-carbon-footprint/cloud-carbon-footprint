@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { FunctionComponent } from 'react'
 import Autocomplete, { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'

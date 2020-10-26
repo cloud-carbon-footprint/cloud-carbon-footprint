@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render } from '@testing-library/react'
 import MonthFilter from './MonthFilter'

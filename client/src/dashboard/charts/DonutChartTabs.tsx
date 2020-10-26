@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React from 'react'
 import { Paper, Tabs, Tab, Box, Card } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'

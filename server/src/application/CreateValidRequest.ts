@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import moment from 'moment'
 import { values, contains } from 'ramda'
 import appConfig from '@application/Config'

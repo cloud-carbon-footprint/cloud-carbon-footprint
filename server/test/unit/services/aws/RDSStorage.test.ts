@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import AWS, { CostExplorer, CloudWatch } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import RDSStorage from '@services/aws/RDSStorage'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import fs from 'fs'
 
 export const exportToCSV = (contents: string[][], filePath: string): void => {

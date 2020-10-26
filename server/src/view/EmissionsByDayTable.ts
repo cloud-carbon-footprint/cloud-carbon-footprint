@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { displayCo2e, displayWattHours, Totals } from '@view/EmissionsTableUtils'
 import { EstimationResult } from '@application/EstimationResult'
 

@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
+#
+# © 2020 ThoughtWorks, Inc. All rights reserved.
+#
+
 set -e
 
 auto_approve_flag=""

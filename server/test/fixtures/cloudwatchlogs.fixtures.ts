@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 const dayOne = '2020-07-01 00:00:00.000'
 const dayTwo = '2020-07-02 00:00:00.000'
 

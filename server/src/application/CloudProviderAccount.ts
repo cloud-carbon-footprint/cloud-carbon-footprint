@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import Region from '@domain/Region'
 import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 import FootprintEstimate, { aggregateEstimatesByDay } from '@domain/FootprintEstimate'

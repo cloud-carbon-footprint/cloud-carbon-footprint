@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import { GCP_REGIONS } from '@services/gcp/GCPRegions'
 

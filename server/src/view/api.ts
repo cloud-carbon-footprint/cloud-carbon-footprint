@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import express from 'express'
 import App from '@application/App'
 import CreateValidRequest, { EstimationRequestValidationError } from '@application/CreateValidRequest'

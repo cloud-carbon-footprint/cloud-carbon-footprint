@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React from 'react'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { AppBar, Container, Toolbar, Typography } from '@material-ui/core'

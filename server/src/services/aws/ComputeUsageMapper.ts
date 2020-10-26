@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { CloudWatch, CostExplorer } from 'aws-sdk'
 import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '@domain/ComputeUsage'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import moment from 'moment'
 import { EstimationResult, serviceEstimate } from '../types'
 

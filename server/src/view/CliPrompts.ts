@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { input, InputQuestion, prompt } from 'typed-prompts'
 
 export default async function (): Promise<string[]> {

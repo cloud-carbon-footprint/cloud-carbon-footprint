@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import commander from 'commander'
 import App from '@application/App'
 import * as process from 'process'
