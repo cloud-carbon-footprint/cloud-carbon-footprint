@@ -5,6 +5,8 @@
 const { ExpressOIDC } = require('@okta/oidc-middleware')
 const express = require('express')
 const session = require('express-session')
+const helmet = require('helmet')
+
 require('dotenv').config()
 
 const port = process.env.PORT || 8080
@@ -32,6 +34,8 @@ app.use(oidc.router)
 app.use(oidc.ensureAuthenticated(), (req, res, next) => {
   next()
 })
+
+app.use(helmet())
 
 app.use(express.static('build'))
 
