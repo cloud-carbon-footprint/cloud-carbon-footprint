@@ -27,7 +27,7 @@ export default class Lambda implements ICloudService {
       return []
     }
 
-    const queryIdsArray = await this.getQueryByInterval(start, end, groupNames)
+    const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery.bind(this), start, end, groupNames)
 
     const usage = await Promise.all(queryIdsArray.map((id) => this.getResults(id)))
 
@@ -46,28 +46,7 @@ export default class Lambda implements ICloudService {
       }
     })
   }
-
-  private async getQueryByInterval(
-    start: Date,
-    end: Date,
-    groupNames: string[],
-    intervalInDays = 60,
-  ): Promise<Array<string>> {
-    const startCopy = new Date(start)
-    const endCopy = new Date(new Date(start).setDate(startCopy.getDate() + intervalInDays))
-    const promiseArray = []
-
-    while (endCopy < end) {
-      promiseArray.push(this.runQuery(startCopy, endCopy, groupNames))
-      startCopy.setDate(startCopy.getDate() + intervalInDays)
-      endCopy.setDate(startCopy.getDate() + intervalInDays)
-    }
-
-    promiseArray.push(this.runQuery(startCopy, end, groupNames))
-
-    return Promise.all(promiseArray)
-  }
-
+  
   private async getLambdaLogGroupNames(): Promise<string[]> {
     const params = {
       logGroupNamePrefix: '/aws/lambda',
@@ -90,7 +69,9 @@ export default class Lambda implements ICloudService {
       queryString: query,
       logGroupNames: groupNames,
     }
+
     const queryData = await this.serviceWrapper.startCloudWatchLogsQuery(params)
+
     return queryData.queryId
   }
 

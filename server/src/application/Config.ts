@@ -46,30 +46,30 @@ const appConfig: CCFConfig = {
     NAME: 'AWS',
     CURRENT_REGIONS: ['us-east-1'],
     CURRENT_SERVICES: [
-      // {
-      //   key: 'ebs',
-      //   name: 'EBS',
-      // },
+      {
+        key: 'ebs',
+        name: 'EBS',
+      },
       // {
       //   key: 's3',
       //   name: 'S3',
       // },
+      // {
+      //   key: 'ec2',
+      //   name: 'EC2',
+      // },
       {
-        key: 'ec2',
-        name: 'EC2',
+        key: 'elasticache',
+        name: 'ElastiCache',
       },
-      // {
-      //   key: 'elasticache',
-      //   name: 'ElastiCache',
-      // },
-      // {
-      //   key: 'rds',
-      //   name: 'RDS',
-      // },
-      // {
-      //   key: 'lambda',
-      //   name: 'Lambda',
-      // },
+      {
+        key: 'rds',
+        name: 'RDS',
+      },
+      {
+        key: 'lambda',
+        name: 'Lambda',
+      },
     ],
   },
   GCP: {

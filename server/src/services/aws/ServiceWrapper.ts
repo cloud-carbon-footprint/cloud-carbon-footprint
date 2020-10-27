@@ -13,6 +13,7 @@ export class ServiceWrapper {
     private readonly cloudWatchLogs: CloudWatchLogs,
     private readonly costExplorer: CostExplorer
   ) { }
+
   private async getCostAndUsageResponse(
     params: CostExplorer.GetCostAndUsageRequest,
   ): Promise<CostExplorer.GetCostAndUsageResponse[]> {
@@ -24,6 +25,28 @@ export class ServiceWrapper {
   ): Promise<CloudWatch.GetMetricDataOutput[]> {
     return [await this.cloudWatch.getMetricData(params).promise()]
   }
+
+  public async getQueryByInterval(
+    intervalInDays: number,
+    func: (start: Date, end: Date, params?: any) => void,
+    start: Date,
+    end: Date,
+    ...args: any
+  ): Promise<Array<any>> {
+    const startCopy = new Date(start)
+    const endCopy = new Date(start.setDate(start.getDate() + intervalInDays))
+    const promiseArray = []
+
+    while (endCopy < end) {
+      promiseArray.push(func(startCopy, endCopy, ...args))
+      startCopy.setDate(startCopy.getDate() + intervalInDays)
+      endCopy.setDate(startCopy.getDate() + intervalInDays)
+    }
+    promiseArray.push(func(startCopy, end, ...args))
+
+    return Promise.all(promiseArray)
+  }
+  
 
   public async getCloudWatchLogQueryResults(
     params: CloudWatchLogs.GetQueryResultsRequest,
