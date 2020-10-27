@@ -2,9 +2,9 @@ FROM node:12-alpine
 
 WORKDIR /app
 
-COPY ./static-server/package.json ./package.json
-COPY ./static-server/package-lock.json ./package-lock.json
-COPY ./static-server/index.js ./index.js
+COPY ./package.json ./package.json
+COPY ./package-lock.json ./package-lock.json
+COPY ./index.js ./index.js
 COPY ./.env ./.env
 COPY ./build /app/build
 

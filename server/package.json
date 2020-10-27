@@ -20,7 +20,7 @@
     "start": "npm run start:web",
     "start:prod": "npm run start:webprod",
     "start:web": "ts-node-dev -r tsconfig-paths/register src/view/server.ts",
-    "start:webprod": "NODE_ENV=production node -r ts-node/register view/server.js",
+    "start:webprod": "NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/view/server.js",
     "start:cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/server -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
     "docker:setup": "docker exec -w /cloud-carbon-footprint/server -it ccf_base npm ci",
@@ -35,14 +35,14 @@
     "@hawkeyesec/scanner-cli": "^1.8.0",
     "@types/jest": "^26.0.15",
     "@types/jest-when": "^2.7.2",
-    "@types/node": "^14.14.3",
+    "@types/node": "^14.14.5",
     "@types/source-map-support": "^0.5.3",
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",
     "aws-sdk-mock": "^5.1.0",
-    "eslint": "^7.12.0",
-    "eslint-config-prettier": "^6.14.0",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-unused-imports": "^1.0.0",
     "jest": "^26.6.1",
@@ -54,7 +54,7 @@
     "serve": "^11.3.2",
     "source-map-support": "^0.5.19",
     "supertest": "^5.0.0",
-    "ts-jest": "^26.4.2",
+    "ts-jest": "^26.4.3",
     "ts-node-dev": "^1.0.0"
   },
   "dependencies": {
@@ -76,18 +76,12 @@
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typed-prompts": "^1.5.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   },
   "lint-staged": {
     "*.{js,ts,md}": [
       "npm run lint",
       "prettier --write --ignore-unknown --config ../.prettierrc.json"
     ]
-  },
-  "_moduleAliases": {
-    "@application": "./application",
-    "@domain": "./domain",
-    "@services": "./services",
-    "@view": "./view"
   }
 }

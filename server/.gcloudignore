@@ -1,0 +1,6 @@
+.gcloudignore
+node_modules/
+coverage/
+*.cache.json
+src/
+test/
