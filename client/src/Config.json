@@ -1,5 +1,6 @@
 {
   "CURRENT_REGIONS": ["us-east-1", "us-east-2", "us-west-1"],
+  "CURRENT_PROVIDERS": [{"key": "aws", "name": "AWS"}, {"key": "gcp", "name": "GCP"}],
   "CURRENT_SERVICES": [
     {
       "key": "ebs",
