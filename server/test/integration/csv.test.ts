@@ -17,7 +17,7 @@ import cli from '@view/cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { CloudWatch, CostExplorer } from 'aws-sdk'
+import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
 
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
@@ -41,12 +41,16 @@ describe('csv test', () => {
     return new CloudWatch({ region: 'us-east-1' })
   }
 
+  function getCloudWatchLogs() {
+    return new CloudWatchLogs({ region: 'us-east-1' })
+  }
+
   function getCostExplorer() {
     return new CostExplorer({ region: 'us-east-1' })
   }
 
   function getServiceWrapper() {
-    return new ServiceWrapper(getCloudWatch(), getCostExplorer())
+    return new ServiceWrapper(getCloudWatch(), getCloudWatchLogs(), getCostExplorer())
   }
 
   let outputFilePath: string

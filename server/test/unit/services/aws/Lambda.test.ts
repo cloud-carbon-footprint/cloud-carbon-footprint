@@ -34,6 +34,9 @@ describe('Lambda', () => {
     logGroupName: '/aws/lambda/sample-function-name',
   }
 
+  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+
+
   it('gets Lambda usage for one function and one day', async () => {
     const logGroups = [logGroup]
     const results = {
@@ -60,7 +63,7 @@ describe('Lambda', () => {
       60000,
       1000,
       new CloudWatchLogs(),
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
@@ -109,7 +112,7 @@ describe('Lambda', () => {
       60000,
       1000,
       new CloudWatchLogs(),
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(dayThree), region)
 
@@ -168,7 +171,7 @@ describe('Lambda', () => {
       60000,
       1000,
       new CloudWatchLogs(),
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
@@ -203,7 +206,7 @@ describe('Lambda', () => {
       60000,
       1000,
       new CloudWatchLogs(),
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
 
@@ -240,7 +243,7 @@ describe('Lambda', () => {
       100,
       50,
       new CloudWatchLogs(),
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
 
     const expectedError = new Error('CloudWatchLog request failed, status: Running')
@@ -271,7 +274,7 @@ describe('Lambda', () => {
       60000,
       1000,
       new CloudWatchLogs(),
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     const lambdaCosts = await lambdaService.getCosts(new Date(startDate), new Date(endDate), 'us-east-1')
 

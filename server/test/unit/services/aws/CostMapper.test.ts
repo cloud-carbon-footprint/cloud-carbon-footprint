@@ -5,7 +5,7 @@
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import AWSMock from 'aws-sdk-mock'
-import { CostExplorer } from 'aws-sdk'
+import { CostExplorer, CloudWatchLogs } from 'aws-sdk'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
@@ -22,7 +22,7 @@ describe('CostMapper', function () {
       },
     )
 
-    const costs = await getCostFromCostExplorer(buildRequestParams(), new ServiceWrapper(undefined, new CostExplorer()))
+    const costs = await getCostFromCostExplorer(buildRequestParams(), new ServiceWrapper(undefined, undefined, new CostExplorer()))
 
     expect(costs).toEqual([
       { amount: 2.3081821243, currency: 'USD', timestamp: new Date(startDate) },

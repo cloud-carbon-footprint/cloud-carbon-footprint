@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CostExplorer, CloudWatch } from 'aws-sdk'
+import AWS, { CostExplorer, CloudWatch, CloudWatchLogs } from 'aws-sdk'
 import EBS from '@services/aws/EBS'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { StorageEstimator } from '@domain/StorageEstimator'
@@ -20,6 +20,8 @@ describe('Ebs', () => {
   const startDate = '2020-06-27'
   const endDate = '2020-06-30'
   const region = AWS_REGIONS.US_EAST_1
+
+  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
   afterEach(() => {
     AWSMock.restore()
@@ -70,7 +72,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual([
@@ -98,7 +100,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
 
     const result = await ebsService.getUsage(new Date(startDate), new Date(startDate), region)
     expect(result).toEqual([
@@ -119,7 +121,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual([])
   })
@@ -139,7 +141,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual([
       {
@@ -162,7 +164,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual([
       {
@@ -185,7 +187,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
       CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
@@ -203,7 +205,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
       CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
@@ -224,7 +226,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
       CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
@@ -245,7 +247,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const sddStorageEstimator = new StorageEstimator(
       CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
@@ -264,7 +266,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
     expect(result).toEqual([])
   })
@@ -279,7 +281,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
     expect(Logger.prototype.warn).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: EBS:anything')
   })
@@ -299,7 +301,7 @@ describe('Ebs', () => {
       },
     )
 
-    const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
       CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
