@@ -19,6 +19,12 @@ export default class EC2 extends ServiceWithCPUUtilization {
 
   async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
 
+    const response = await this.serviceWrapper.getQueryByInterval(30, this.runQuery.bind(this), start, end)
+    const flattenedResp = response.reduce((acc, data) => [...data, ...acc], [])
+    return flattenedResp
+  }
+
+  private async runQuery(start: Date, end: Date): Promise<ComputeUsage[]>{
     const params = {
       StartTime: start,
       EndTime: end,
@@ -44,10 +50,6 @@ export default class EC2 extends ServiceWithCPUUtilization {
     const responses = await this.serviceWrapper.getMetricDataResponses(params)
 
     const metricDataResults: MetricDataResult[] = responses.flatMap((response) => response.MetricDataResults)
-
-    metricDataResults.forEach((data) => {
-      console.log('### metric data results: ',data)
-    })
     
     const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(extractRawComputeUsages)
     return buildComputeUsages(rawComputeUsages, 'AWS')
