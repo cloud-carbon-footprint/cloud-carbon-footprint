@@ -4,7 +4,7 @@ orbs:
   gcr: circleci/gcp-gcr@0.8.0
   gcp-cli: circleci/gcp-cli@1.8.4
 jobs:
-  build:
+  lint-test:
     working_directory: ~/cloud-carbon-footprint
     docker:
       - image: circleci/node:current
@@ -17,6 +17,8 @@ jobs:
     # resolve and use as of this comment.
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
       # - restore_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       - run:
@@ -34,12 +36,15 @@ jobs:
       - run:
           name: test
           command: 'npm test'
-  publish-client:
-    description: Build and push client image to Google Container Registry
+  build-client:
+    description: Build Client
+    working_directory: ~/cloud-carbon-footprint
     machine:
       image: ubuntu-1604:202007-01
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
       - run:
           name: build
           command: |
@@ -47,21 +52,20 @@ jobs:
             npm ci
             npm run-script build
             ./create_client_env_file.sh
-      - gcr/gcr-auth
-      - gcr/build-image:
-          docker-context: client
-          path:  client
-          image: client
-          tag: 0.0.<<pipeline.git.revision>>
-      - gcr/push-image:
-          image: client
-          tag: 0.0.<<pipeline.git.revision>>
-  publish-server:
-    description: Build and push server image to Google Container Registry
+      - persist_to_workspace:
+          root: ~/cloud-carbon-footprint
+          paths:
+            - client/build/*
+            - client/.env
+  build-server:
+    description: Build Server
+    working_directory: ~/cloud-carbon-footprint
     machine:
       image: ubuntu-1604:202007-01
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
       - run:
           name: build
           command: |
@@ -69,25 +73,21 @@ jobs:
             npm ci
             npm run-script build
             ./create_server_env_file.sh
-      - gcr/gcr-auth
-      - gcr/build-image:
-          docker-context: server
-          path:  server
-          image: server
-          tag: 0.0.<<pipeline.git.revision>>
-      - gcr/push-image:
-          image: server
-          tag: 0.0.<<pipeline.git.revision>>
+      - persist_to_workspace:
+          root: ~/cloud-carbon-footprint
+          paths:
+            - server/dist/*
+            - server/.env
   deploy:
     description: Deploy app to gcp
+    working_directory: ~/cloud-carbon-footprint
     docker:
       - image: hashicorp/terraform:0.12.28
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
       - run:
-          environment:
-            SERVER_VERSION: 0.0.<<pipeline.git.revision>>
-            CLIENT_VERSION: 0.0.<<pipeline.git.revision>>
           name: deploy
           command: |
             apk add --update python3 py-crcmod bash libc6-compat curl
@@ -116,14 +116,14 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build
-      - publish-client:
+      - lint-test
+      - build-client:
           requires:
-            - build
-      - publish-server:
+            - lint-test
+      - build-server:
           requires:
-            - build
+            - lint-test
       - deploy:
           requires:
-            - publish-client
-            - publish-server
+            - build-client
+            - build-server

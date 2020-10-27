@@ -1,0 +1,6 @@
+.gcloudignore
+node_modules/
+coverage/
+src/
+stub-server/
+public/
