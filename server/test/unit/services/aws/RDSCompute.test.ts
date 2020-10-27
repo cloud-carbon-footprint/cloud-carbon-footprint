@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import RDSComputeService from '@services/aws/RDSCompute'
 import {
   buildCostExplorerGetCostRequest,
@@ -21,6 +21,8 @@ describe('RDS Compute', function () {
   afterEach(() => {
     AWSMock.restore()
   })
+
+  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
   it('should get RDS CPU utilization for two hours of different days', async () => {
     const start_date_string = '2020-01-25T00:00:00.000Z'
@@ -60,7 +62,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsService = new RDSComputeService(getServiceWrapper())
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
@@ -115,7 +117,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsService = new RDSComputeService(getServiceWrapper())
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
@@ -178,7 +180,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsService = new RDSComputeService(getServiceWrapper())
 
     const usageByHour = await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
 
@@ -206,7 +208,7 @@ describe('RDS Compute', function () {
       },
     )
 
-    const rdsService = new RDSComputeService(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsService = new RDSComputeService(getServiceWrapper())
 
     const rdsCosts = await rdsService.getCosts(new Date(start), new Date(end), 'us-east-1')
 

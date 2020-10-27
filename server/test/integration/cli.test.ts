@@ -49,12 +49,16 @@ describe('cli', () => {
     return new CloudWatch({ region: 'us-east-1' })
   }
 
+  function getCloudWatchLogs() {
+    return new CloudWatchLogs({ region: 'us-east-1' })
+  }
+
   function getCostExplorer() {
     return new CostExplorer({ region: 'us-east-1' })
   }
 
   function getServiceWrapper() {
-    return new ServiceWrapper(getCloudWatch(), getCostExplorer())
+    return new ServiceWrapper(getCloudWatch(), getCloudWatchLogs(), getCostExplorer())
   }
 
   describe('ebs, s3, ec3, elasticache, rds', () => {
@@ -105,7 +109,7 @@ describe('cli', () => {
     beforeEach(() => {
       mockAwsCloudWatchGetQueryResultsForLambda()
       mockAwsCostExplorerGetCostAndUsageResponse(lambdaMockGetCostResponse)
-      ;(getServices as jest.Mock).mockReturnValue([new Lambda(60000, 1000, new CloudWatchLogs(), getServiceWrapper())])
+      ;(getServices as jest.Mock).mockReturnValue([new Lambda(60000, 1000, getServiceWrapper())])
       ;(config as jest.Mock).mockReturnValueOnce({
         AWS: {
           accounts: [{ id: '12345678', name: 'test account' }],

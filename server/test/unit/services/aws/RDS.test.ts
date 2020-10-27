@@ -8,12 +8,14 @@ import RDSStorage from '@services/aws/RDSStorage'
 import RDSComputeService from '@services/aws/RDSCompute'
 import Cost from '@domain/Cost'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { CloudWatch, CostExplorer } from 'aws-sdk'
+import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
 
 describe('RDS Service', function () {
   const startDate = '2020-08-16'
   const endDate = '2020-08-17'
   const region = 'us-east-1'
+  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+
 
   it('Combines the results from both the RDSCompute and RDSStorage services ', async () => {
     const rdsComputeEstimate: FootprintEstimate[] = [
@@ -34,13 +36,13 @@ describe('RDS Service', function () {
 
     const rdsComputeMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService(
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     rdsComputeMock.getEstimates = rdsComputeMockGetEstimates
     rdsComputeMockGetEstimates.mockResolvedValueOnce(rdsComputeEstimate)
 
     const rdsStorageMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-    const rdsStorageMock: RDSStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsStorageMock: RDSStorage = new RDSStorage(getServiceWrapper())
     rdsStorageMock.getEstimates = rdsStorageMockGetEstimates
     rdsStorageMockGetEstimates.mockResolvedValueOnce(rdsStorageEstimate)
 
@@ -59,7 +61,7 @@ describe('RDS Service', function () {
   it('combines the cost from RDS compute and RDS storage', async () => {
     const rdsComputeMockGetCost: jest.Mock<Promise<Cost[]>> = jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService(
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     rdsComputeMock.getCosts = rdsComputeMockGetCost
     rdsComputeMockGetCost.mockResolvedValueOnce([
@@ -71,7 +73,7 @@ describe('RDS Service', function () {
     ])
 
     const rdsStorageMockGetCost: jest.Mock<Promise<Cost[]>> = jest.fn()
-    const rdsStorageMock: RDSStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsStorageMock: RDSStorage = new RDSStorage(getServiceWrapper())
     rdsStorageMock.getCosts = rdsStorageMockGetCost
     rdsStorageMockGetCost.mockResolvedValueOnce([
       {
@@ -98,7 +100,7 @@ describe('RDS Service', function () {
   it('combines the cost from RDS compute and RDS storage for 2 days', async () => {
     const rdsComputeMockGetCost: jest.Mock<Promise<Cost[]>> = jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService(
-      new ServiceWrapper(new CloudWatch(), new CostExplorer()),
+      getServiceWrapper(),
     )
     rdsComputeMock.getCosts = rdsComputeMockGetCost
     rdsComputeMockGetCost.mockResolvedValueOnce([
@@ -115,7 +117,7 @@ describe('RDS Service', function () {
     ])
 
     const rdsStorageMockGetCost: jest.Mock<Promise<Cost[]>> = jest.fn()
-    const rdsStorageMock: RDSStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsStorageMock: RDSStorage = new RDSStorage(getServiceWrapper())
     rdsStorageMock.getCosts = rdsStorageMockGetCost
     rdsStorageMockGetCost.mockResolvedValueOnce([
       {

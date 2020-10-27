@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
 
@@ -19,6 +19,8 @@ describe('aws service helper', () => {
     AWSMock.restore()
     jest.restoreAllMocks()
   })
+
+  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
   it('followPages decorator should follow CostExplorer next pages', async () => {
     const costExplorerMockFunction = jest.fn()
@@ -39,7 +41,7 @@ describe('aws service helper', () => {
         callback(null, costExplorerMockFunction())
       },
     )
-    const responses = await new ServiceWrapper(new CloudWatch(), new CostExplorer()).getCostAndUsageResponses(
+    const responses = await getServiceWrapper().getCostAndUsageResponses(
       buildAwsCostExplorerGetCostAndUsageRequest(),
     )
 
@@ -59,7 +61,7 @@ describe('aws service helper', () => {
         callback(null, cloudWatchMockFunction())
       },
     )
-    const responses = await new ServiceWrapper(new CloudWatch(), new CostExplorer()).getMetricDataResponses(
+    const responses = await getServiceWrapper().getMetricDataResponses(
       buildAwsCloudWatchGetMetricDataRequest(),
     )
 

@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer } from 'aws-sdk'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 
 import S3 from '@services/aws/S3'
 import { buildCostExplorerGetCostResponse } from '@builders'
@@ -23,6 +23,8 @@ describe('S3', () => {
   const dayTwo = '2020-08-02T00:00:00.000Z'
   const dayThree = '2020-08-03T00:00:00.000Z'
   const end = '2020-08-04T00:00:00.000Z'
+  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+
 
   it('gets S3 usage', async () => {
     AWSMock.mock(
@@ -57,7 +59,7 @@ describe('S3', () => {
       },
     )
 
-    const s3Service = new S3(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const s3Service = new S3(getServiceWrapper())
     const result = await s3Service.getUsage(new Date(start), new Date(end))
     expect(result).toEqual([
       {
@@ -94,7 +96,7 @@ describe('S3', () => {
       },
     )
 
-    const s3Service = new S3(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const s3Service = new S3(getServiceWrapper())
     const s3Costs = await s3Service.getCosts(new Date(start), new Date(end), region)
 
     expect(s3Costs).toEqual([
