@@ -77,7 +77,6 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
           <TextField
             className={localClasses.textField}
             variant="outlined"
-            label="AWS Services"
             {...params}
             InputProps={{
               ...params.InputProps,

@@ -11,6 +11,7 @@ import moment from 'moment'
 import MonthFilter from './filters/MonthFilter'
 import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
 import ServiceFilter from './filters/ServiceFilter'
+import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import { DonutChartTabs } from './charts/DonutChartTabs'
@@ -41,7 +42,7 @@ export default function CloudCarbonContainer() {
       <Grid container>
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
-            {[ServiceFilter, DateFilter, MonthFilter].map((FilterComponent, i) => (
+            {[CloudProviderFilter, ServiceFilter, DateFilter, MonthFilter].map((FilterComponent, i) => (
               <div key={i} className={classes.filter}>
                 <FilterComponent filters={filters} setFilters={setFilters} />
               </div>
