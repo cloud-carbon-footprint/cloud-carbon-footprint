@@ -4,6 +4,10 @@
 
 import express from 'express'
 
+import Logger from '@services/Logger'
+
+const authLogger = new Logger('auth')
+
 export default async function (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
   try {
     // https://github.com/okta/okta-oidc-js/tree/master/packages/jwt-verifier
@@ -14,9 +18,10 @@ export default async function (req: express.Request, res: express.Response, next
     // })
     // const accessToken = verifier.verifyAccessToken(accessTokenString, 'api://default')
     // res.locals.userInfo = accessToken.claims
-    console.log('Auth successful')
+    authLogger.info('Authentication successful')
     next()
   } catch (e) {
+    authLogger.error(`Authentication failed. Error: ${e.message}`)
     res.status(401).send('Unauthorized')
   }
 }
