@@ -15,6 +15,18 @@ import { getChartColors } from '../../themes'
 import { sumServiceTotals } from '../transformData'
 import { EstimationResult } from '../../types'
 
+const formatDateToTime = (timestamp: string | Date) => (
+  timestamp instanceof Date
+    ? timestamp.getTime()
+    : new Date(timestamp).getTime()
+)
+
+export const sortByDate = (data: EstimationResult[]): EstimationResult[] => (
+  data.sort((a: EstimationResult, b: EstimationResult) => {
+    return formatDateToTime(a.timestamp) - formatDateToTime(b.timestamp)
+  })
+)
+
 export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
   const theme = useTheme()
 
@@ -23,6 +35,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     ApexCharts.exec('lineChart', 'hideSeries', ['Cost'])
   }, [])
 
+  sortByDate(data)
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
   // Why, you might ask? Don't ask me, ask ApexCharts.
   const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
