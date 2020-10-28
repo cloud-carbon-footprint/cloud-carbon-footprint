@@ -86,7 +86,7 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    computeEngineLogger.warning(`getCosts not Implemented. Called with start: ${start}, end: ${end}, region: ${region}`)
+    computeEngineLogger.warn(`getCosts not Implemented. Called with start: ${start}, end: ${end}, region: ${region}`)
     return []
   }
 }

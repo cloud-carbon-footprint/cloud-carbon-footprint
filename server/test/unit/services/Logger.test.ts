@@ -6,7 +6,7 @@ const mockLogger = {
   debug: jest.fn(),
   info: jest.fn(),
   error: jest.fn(),
-  warning: jest.fn(),
+  warn: jest.fn(),
 }
 
 jest.mock('winston', () => {
@@ -54,10 +54,10 @@ describe('Logger', () => {
 
   it('logs warning', () => {
     // when
-    testLogger.warning(testMessage)
+    testLogger.warn(testMessage)
 
     // then
-    expect(mockLogger.warning).toHaveBeenCalledWith(testMessage)
+    expect(mockLogger.warn).toHaveBeenCalledWith(testMessage)
   })
 
   it('logs error', () => {

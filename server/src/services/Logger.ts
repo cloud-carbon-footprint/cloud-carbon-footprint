@@ -49,8 +49,8 @@ export default class Logger implements ILogger {
     this.logger.info(message)
   }
 
-  warning(message: string): void {
-    this.logger.warning(message)
+  warn(message: string): void {
+    this.logger.warn(message)
   }
 
   error(message: string): void {
