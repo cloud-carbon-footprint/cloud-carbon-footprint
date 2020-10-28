@@ -3,11 +3,14 @@
  */
 
 import express from 'express'
-import helmet from 'helmet'
 
 import App from '@application/App'
 import CreateValidRequest, { EstimationRequestValidationError } from '@application/CreateValidRequest'
 import { RawRequest } from '@view/RawRequest'
+
+import Logger from '@services/Logger'
+
+const apiLogger = new Logger('api')
 
 /**
  * Returns the raw estimates
@@ -21,14 +24,16 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
   }
-
+  apiLogger.info(
+    `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
+  )
   const footprintApp = new App()
   try {
     const estimationRequest = CreateValidRequest(rawRequest)
     const estimationResults = await footprintApp.getCostAndEstimates(estimationRequest)
     res.json(estimationResults)
   } catch (e) {
-    console.error(e)
+    apiLogger.error(`Unable to process footprint request. Error: ${e.message}`)
     if (e instanceof EstimationRequestValidationError) {
       res.status(400).send(e.message)
     } else res.status(500).send('Internal Server Error')
@@ -36,8 +41,6 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
 }
 
 const router = express.Router()
-
-router.use(helmet())
 
 router.get('/footprint', FootprintApiMiddleware)
 
