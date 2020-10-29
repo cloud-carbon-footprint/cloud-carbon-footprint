@@ -4,6 +4,7 @@
 
 import { AWSError, ChainableTemporaryCredentials, Credentials, WebIdentityCredentials } from 'aws-sdk'
 import { google } from 'googleapis'
+import { GoogleAuth, Compute, JWT, UserRefreshClient } from 'google-auth-library'
 
 export default class CredentialsForGCP extends Credentials {
   constructor(
@@ -44,20 +45,21 @@ export default class CredentialsForGCP extends Credentials {
 
   // TODO -- add tests from this function and mock the AWS SDK responses.
   async getTokenId() {
-    const iamcredentials = google.iamcredentials('v1')
-    const auth = new google.auth.GoogleAuth({
-      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    const auth = new GoogleAuth({
+      scopes: 'https://www.googleapis.com/auth/cloud-platform',
     })
+    const iamCredentials = google.iamcredentials('v1')
 
-    // TODO - use the correct type rather than "any". This is a quick fix to get typescript to compile.
-    const authClient: any = await auth.getClient()
+    const authClient: Compute | JWT | UserRefreshClient = await auth.getClient()
     google.options({ auth: authClient })
 
     const projectId = await auth.getProjectId()
 
-    const authClientEmail = authClient.email ? authClient.email : `${projectId}@appspot.gserviceaccount.com`
+    const authClientEmail = (<JWT>authClient).email
+      ? (<JWT>authClient).email
+      : `${projectId}@appspot.gserviceaccount.com`
 
-    const res = await iamcredentials.projects.serviceAccounts.generateIdToken({
+    const res = await iamCredentials.projects.serviceAccounts.generateIdToken({
       name: `projects/-/serviceAccounts/${authClientEmail}`,
       requestBody: {
         audience: `${authClientEmail}`,
