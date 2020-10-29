@@ -26,8 +26,9 @@ export default class Lambda implements ICloudService {
     if (isEmpty(groupNames)) {
       return []
     }
+    const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery, start, end, groupNames)
 
-    const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery.bind(this), start, end, groupNames)
+    //const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery.bind(this), start, end, groupNames)
 
     const usage = await Promise.all(queryIdsArray.map((id) => this.getResults(id)))
 
@@ -56,7 +57,7 @@ export default class Lambda implements ICloudService {
     return logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
   }
 
-  private async runQuery(start: Date, end: Date, groupNames: string[]): Promise<string> {
+  private runQuery = async(start: Date, end: Date, groupNames: string[]): Promise<string> => {
     const query = `
             filter @type = "REPORT"
             | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${CLOUD_CONSTANTS.AWS.MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
