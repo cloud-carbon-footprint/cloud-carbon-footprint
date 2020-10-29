@@ -129,6 +129,43 @@ describe('EC2', () => {
     ])
   })
 
+   it('check for PartialData', async () => {
+      mockAwsCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), {
+        MetricDataResults: [
+          {
+            Id: 'cpuUtilization',
+            Label: 'AWS/EC2 i-01914bfb56d65a9ae CPUUtilization',
+            Timestamps: [dayOneHourOne, dayOneHourTwo],
+            Values: [22.983333333333334, 31.435897435897434],
+            StatusCode: 'PartialData',
+            Messages: [],
+          },
+          {
+            Id: 'cpuUtilization',
+            Label: 'AWS/EC2 i-0462587efbbf601c5 CPUUtilization',
+            Timestamps: [dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
+            Values: [11.576923076923077, 9.716666666666667, 20.46153846153846],
+            StatusCode: 'Complete',
+            Messages: [],
+          },
+          {
+            Id: 'vCPUs',
+            Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
+            Timestamps: [dayOneHourOne, dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
+            Values: [4, 4.5, 4, 4.333333333333333],
+            StatusCode: 'Complete',
+            Messages: [],
+          },
+        ],
+        Messages: [],
+      })
+      
+      const ec2Service = new EC2(getServiceWrapper())
+      const result = await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree))
+      
+      expect(result).toThrow()
+    })
+
   describe('missing CPU utilization', () => {
     it('uses average CPU utilization for every missing timestamp', async () => {
       mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), {
