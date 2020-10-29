@@ -6,6 +6,7 @@ import ComputeEngine from '@services/gcp/ComputeEngine'
 import { MetricServiceClient } from '@google-cloud/monitoring'
 import { google } from '@google-cloud/monitoring/build/protos/protos'
 import Reducer = google.monitoring.v3.Aggregation.Reducer
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 const mockListTimeSeries = jest.fn()
 
@@ -173,6 +174,64 @@ describe('ComputeEngine', () => {
         numberOfvCpus: 2,
         timestamp: dayOneHourTwo,
         usesAverageCPUConstant: false,
+      },
+    ])
+  })
+
+  it('uses the average cpu utilization constant when there is no measure CPUUtilization returned', async () => {
+    const mockCpuUtilizationTimeSeriesWithMissingPoint = [
+      {
+        points: [
+          {
+            interval: {
+              startTime: {
+                seconds: dayOneHourOneInMilliSecs,
+                nanos: 0,
+              },
+              endTime: {
+                seconds: dayOneHourOneInMilliSecs,
+                nanos: 0,
+              },
+            },
+            value: {
+              doubleValue: 0.25,
+              value: 'doubleValue',
+            },
+          },
+        ],
+        metric: {
+          labels: {},
+          type: 'compute.googleapis.com/instance/cpu/utilization',
+        },
+        resource: {
+          labels: {
+            project_id: 'cloud-carbon-footprint',
+          },
+          type: 'gce_instance',
+        },
+        metricKind: 'GAUGE',
+        valueType: 'DOUBLE',
+      },
+    ]
+
+    mockListTimeSeries.mockResolvedValueOnce([mockCpuUtilizationTimeSeriesWithMissingPoint, {}, {}])
+    mockListTimeSeries.mockResolvedValueOnce([mockVCPUTimeSeries, {}, {}])
+
+    const computeEngineService = new ComputeEngine(new MetricServiceClient())
+    const result = await computeEngineService.getUsage(startDate, endDate, region)
+
+    expect(result).toEqual([
+      {
+        cpuUtilizationAverage: 0.25,
+        numberOfvCpus: 4,
+        timestamp: dayOneHourOne,
+        usesAverageCPUConstant: false,
+      },
+      {
+        cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100,
+        numberOfvCpus: 2,
+        timestamp: dayOneHourTwo,
+        usesAverageCPUConstant: true,
       },
     ])
   })

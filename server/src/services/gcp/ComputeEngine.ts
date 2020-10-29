@@ -12,6 +12,7 @@ import Aligner = google.monitoring.v3.Aggregation.Aligner
 import Reducer = google.monitoring.v3.Aggregation.Reducer
 import Full = google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView.FULL
 import { v3 } from '@google-cloud/monitoring'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default class ComputeEngine extends ServiceWithCPUUtilization {
   serviceName = 'computeEngine'
@@ -42,17 +43,24 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
     if (cpuUtilizationTimeSeries.length == 0 || vCPUTimeSeries.length == 0) {
       return result
     }
+
     // Will there every be more than one time series returned that we need to iterate through?
-    cpuUtilizationTimeSeries[0].points.forEach((point, index) => {
+    vCPUTimeSeries[0].points.forEach((point, index) => {
+      const measuredCpuUtilization = cpuUtilizationTimeSeries[0].points[index]?.value.doubleValue
+      const cpuUtilizationAverage = this.getCpuUtilization(measuredCpuUtilization)
       result.push({
-        cpuUtilizationAverage: point.value.doubleValue,
-        numberOfvCpus: vCPUTimeSeries[0].points[index].value.doubleValue,
+        cpuUtilizationAverage: cpuUtilizationAverage,
+        numberOfvCpus: point.value.doubleValue,
         timestamp: new Date(+point.interval.startTime.seconds * 1000),
-        usesAverageCPUConstant: false,
+        usesAverageCPUConstant: !measuredCpuUtilization,
       })
     })
 
     return result
+  }
+
+  private getCpuUtilization(measuredCpuUtilization: number) {
+    return measuredCpuUtilization ? measuredCpuUtilization : CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100
   }
 
   buildTimeSeriesRequest(
