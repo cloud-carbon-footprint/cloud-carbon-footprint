@@ -19,8 +19,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const theme = useTheme()
 
   useEffect(() => {
-    ApexCharts.exec('lineChart', 'hideSeries', ['AWS Watt Hours'])
-    ApexCharts.exec('lineChart', 'hideSeries', ['AWS Cost'])
+    ApexCharts.exec('lineChart', 'hideSeries', ['Watt Hours'])
+    ApexCharts.exec('lineChart', 'hideSeries', ['Cost'])
   }, [])
 
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
@@ -61,15 +61,15 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     },
     series: [
       {
-        name: 'AWS CO2e',
+        name: 'CO2e',
         data: co2SeriesData,
       },
       {
-        name: 'AWS Watt Hours',
+        name: 'Watt Hours',
         data: wattHoursSeriesData,
       },
       {
-        name: 'AWS Cost',
+        name: 'Cost',
         data: costSeriesData,
       },
     ],

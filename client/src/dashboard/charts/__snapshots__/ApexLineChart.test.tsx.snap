@@ -40,7 +40,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
               "y": 7,
             },
           ],
-          "name": "AWS CO2e",
+          "name": "CO2e",
         },
         Object {
           "data": Array [
@@ -49,7 +49,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
               "y": 0,
             },
           ],
-          "name": "AWS Watt Hours",
+          "name": "Watt Hours",
         },
         Object {
           "data": Array [
@@ -58,7 +58,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
               "y": 0,
             },
           ],
-          "name": "AWS Cost",
+          "name": "Cost",
         },
       ],
       "stroke": Object {
@@ -158,7 +158,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "y": 7,
           },
         ],
-        "name": "AWS CO2e",
+        "name": "CO2e",
       },
       Object {
         "data": Array [
@@ -167,7 +167,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "y": 0,
           },
         ],
-        "name": "AWS Watt Hours",
+        "name": "Watt Hours",
       },
       Object {
         "data": Array [
@@ -176,7 +176,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "y": 0,
           },
         ],
-        "name": "AWS Cost",
+        "name": "Cost",
       },
     ]
   }
