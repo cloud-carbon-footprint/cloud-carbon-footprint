@@ -50,14 +50,14 @@ const appConfig: CCFConfig = {
         key: 'ebs',
         name: 'EBS',
       },
-      // {
-      //   key: 's3',
-      //   name: 'S3',
-      // },
-      // {
-      //   key: 'ec2',
-      //   name: 'EC2',
-      // },
+      {
+        key: 's3',
+        name: 'S3',
+      },
+      {
+        key: 'ec2',
+        name: 'EC2',
+      },
       {
         key: 'elasticache',
         name: 'ElastiCache',

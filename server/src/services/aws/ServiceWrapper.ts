@@ -6,6 +6,8 @@ import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
 import { path } from 'ramda'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
+import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
+
 
 export class ServiceWrapper {
   constructor(
@@ -23,7 +25,16 @@ export class ServiceWrapper {
   private async getMetricDataResponse(
     params: CloudWatch.GetMetricDataInput,
   ): Promise<CloudWatch.GetMetricDataOutput[]> {
+
     return [await this.cloudWatch.getMetricData(params).promise()]
+  }
+
+  private checkForPartialData = (array: Array<MetricDataResult>) => {
+    const isPartialData = array.some((obj: MetricDataResult) => obj.StatusCode === "PartialData")
+    if (isPartialData) {
+      throw new Error('PartialData returned')
+    }
+    return array
   }
 
   public async getQueryByInterval(
@@ -72,8 +83,11 @@ export class ServiceWrapper {
   }
 
   @enablePagination('NextToken')
-  public async getMetricDataResponses(params: GetMetricDataInput): Promise<GetMetricDataOutput[]> {
-    return await this.getMetricDataResponse(params)
+  public async getMetricDataResponses(params: GetMetricDataInput): Promise<GetMetricDataOutput[] | Error> {
+    const response = await this.getMetricDataResponse(params)
+    // console.log('response', response[0].MetricDataResults.map(resp => console.log(resp)))
+    this.checkForPartialData(response[0].MetricDataResults)
+    return response
   }
 }
 
