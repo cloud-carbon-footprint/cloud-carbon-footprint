@@ -2,6 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+jest.mock('@services/Logger')
+import mockConfig from '@application/Config'
+
 const mockMetricServiceClient = jest.fn()
 jest.mock('@google-cloud/monitoring', () => {
   return {
@@ -14,17 +17,11 @@ jest.mock('@google-cloud/monitoring', () => {
 describe('GCPAccount', () => {
   /* eslint-disable @typescript-eslint/no-var-requires */
   afterEach(() => {
-    jest.resetModules()
+    jest.restoreAllMocks()
   })
 
   it('should return empty if no service in config file', () => {
-    jest.doMock('@application/Config.ts', () => {
-      return {
-        GCP: {
-          CURRENT_SERVICES: [],
-        },
-      }
-    })
+    mockConfig.GCP.CURRENT_SERVICES = []
 
     const GCPAccount = require('@application/GCPAccount').default
     const services = new GCPAccount(['us-east1']).getServices()
@@ -32,17 +29,7 @@ describe('GCPAccount', () => {
   })
 
   it('should throw error if unknown service', () => {
-    jest.doMock('@application/Config.ts', () => {
-      return {
-        GCP: {
-          CURRENT_SERVICES: [
-            {
-              key: 'goose',
-            },
-          ],
-        },
-      }
-    })
+    mockConfig.GCP.CURRENT_SERVICES = [{ key: 'goose', name: '' }]
 
     const GCPAccount = require('@application/GCPAccount').default
     const account = new GCPAccount(['us-east1'])
@@ -59,17 +46,12 @@ describe('GCPAccount', () => {
 })
 
 function expectGCPService(key: string) {
-  jest.doMock('@application/Config.ts', () => {
-    return {
-      GCP: {
-        CURRENT_SERVICES: [
-          {
-            key: key,
-          },
-        ],
-      },
-    }
-  })
+  mockConfig.GCP.CURRENT_SERVICES = [
+    {
+      key: key,
+      name: '',
+    },
+  ]
 
   const GCPAccount = require('@application/GCPAccount').default
   const services = new GCPAccount(['us-east1']).getServices()

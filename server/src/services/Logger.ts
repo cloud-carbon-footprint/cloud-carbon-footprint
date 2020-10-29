@@ -4,8 +4,10 @@
 
 import { createLogger, format, transports, Logger as WinstonLogger } from 'winston'
 const { combine, timestamp, label, printf } = format
+import { LoggingWinston } from '@google-cloud/logging-winston'
 
 import ILogger from '@services/ILogger'
+import configLoader from '@application/ConfigLoader'
 
 const env = process.env.NODE_ENV || 'development'
 
@@ -17,7 +19,25 @@ export default class Logger implements ILogger {
   })
 
   constructor(logLabel: string) {
-    this.logger = createLogger({
+    switch (configLoader().LOGGING_MODE) {
+      case 'GCP':
+        this.logger = this.getGCPLogger()
+        break
+      default:
+        this.logger = this.getDefaultLogger(logLabel)
+    }
+  }
+
+  private getGCPLogger() {
+    return createLogger({
+      level: this.getLogLevel(env),
+      transports: [new transports.Console(), new LoggingWinston()],
+      silent: env === 'test',
+    })
+  }
+
+  private getDefaultLogger(logLabel: string) {
+    return createLogger({
       level: this.getLogLevel(env),
       format: combine(label({ label: logLabel }), timestamp(), this.format),
       transports: [

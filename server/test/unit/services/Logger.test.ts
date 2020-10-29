@@ -27,44 +27,89 @@ jest.mock('winston', () => {
 })
 
 import Logger from '@services/Logger'
+import mockConfig from '@application/Config'
 
 describe('Logger', () => {
   const testMessage = 'test log message'
-  const testLogger = new Logger('test')
 
-  afterEach(() => {
-    jest.resetAllMocks()
+  describe('Default logger', () => {
+    const testLogger = new Logger('test')
+
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
+    it('logs debug', () => {
+      // when
+      testLogger.debug(testMessage)
+
+      // then
+      expect(mockLogger.debug).toHaveBeenCalledWith(testMessage)
+    })
+
+    it('logs info', () => {
+      // when
+      testLogger.info(testMessage)
+
+      // then
+      expect(mockLogger.info).toHaveBeenCalledWith(testMessage)
+    })
+
+    it('logs warning', () => {
+      // when
+      testLogger.warn(testMessage)
+
+      // then
+      expect(mockLogger.warn).toHaveBeenCalledWith(testMessage)
+    })
+
+    it('logs error', () => {
+      // when
+      testLogger.error(testMessage)
+
+      // then
+      expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+    })
   })
 
-  it('logs debug', () => {
-    // when
-    testLogger.debug(testMessage)
+  describe('GCP logger', () => {
+    mockConfig.LOGGING_MODE = 'GCP'
+    const testLogger = new Logger('test')
 
-    // then
-    expect(mockLogger.debug).toHaveBeenCalledWith(testMessage)
-  })
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
 
-  it('logs info', () => {
-    // when
-    testLogger.info(testMessage)
+    it('logs debug', () => {
+      // when
+      testLogger.debug(testMessage)
 
-    // then
-    expect(mockLogger.info).toHaveBeenCalledWith(testMessage)
-  })
+      // then
+      expect(mockLogger.debug).toHaveBeenCalledWith(testMessage)
+    })
 
-  it('logs warning', () => {
-    // when
-    testLogger.warn(testMessage)
+    it('logs info', () => {
+      // when
+      testLogger.info(testMessage)
 
-    // then
-    expect(mockLogger.warn).toHaveBeenCalledWith(testMessage)
-  })
+      // then
+      expect(mockLogger.info).toHaveBeenCalledWith(testMessage)
+    })
 
-  it('logs error', () => {
-    // when
-    testLogger.error(testMessage)
+    it('logs warning', () => {
+      // when
+      testLogger.warn(testMessage)
 
-    // then
-    expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+      // then
+      expect(mockLogger.warn).toHaveBeenCalledWith(testMessage)
+    })
+
+    it('logs error', () => {
+      // when
+      testLogger.error(testMessage)
+
+      // then
+      expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+    })
   })
 })

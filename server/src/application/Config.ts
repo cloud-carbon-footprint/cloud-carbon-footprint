@@ -5,7 +5,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-interface CCFConfig {
+export interface CCFConfig {
   AWS?: {
     NAME: string
     CURRENT_SERVICES: { key: string; name: string }[]
@@ -24,6 +24,7 @@ interface CCFConfig {
     CURRENT_SERVICES: { key: string; name: string }[]
     CURRENT_REGIONS: string[]
   }
+  LOGGING_MODE?: string
 }
 
 const getAWSAccounts = () => {
@@ -81,6 +82,7 @@ const appConfig: CCFConfig = {
       },
     ],
   },
+  LOGGING_MODE: process.env.LOGGING_MODE || '',
 }
 
 export default appConfig

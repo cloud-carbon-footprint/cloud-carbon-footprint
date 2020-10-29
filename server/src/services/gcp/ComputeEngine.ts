@@ -13,13 +13,13 @@ import Reducer = google.monitoring.v3.Aggregation.Reducer
 import Full = google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView.FULL
 import { v3 } from '@google-cloud/monitoring'
 
-const computeEngineLogger = new Logger('Compute Engine')
-
 export default class ComputeEngine extends ServiceWithCPUUtilization {
   serviceName = 'computeEngine'
+  computeEngineLogger: Logger
 
   constructor(private client: v3.MetricServiceClient) {
     super()
+    this.computeEngineLogger = new Logger('Compute Engine')
   }
 
   async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
@@ -84,9 +84,11 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
       },
     }
   }
-
+  /* istanbul ignore next */
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    computeEngineLogger.warn(`getCosts not Implemented. Called with start: ${start}, end: ${end}, region: ${region}`)
+    this.computeEngineLogger.warn(
+      `getCosts not Implemented. Called with start: ${start}, end: ${end}, region: ${region}`,
+    )
     return []
   }
 }

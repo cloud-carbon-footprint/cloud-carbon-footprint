@@ -20,6 +20,7 @@ const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
 jest.mock('@application/Cache')
 jest.mock('@application/ConfigLoader')
+jest.mock('@services/Logger')
 
 const testRegions = ['us-east-1', 'us-east-2']
 

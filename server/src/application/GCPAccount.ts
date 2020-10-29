@@ -5,7 +5,7 @@
 import CloudProviderAccount from '@application/CloudProviderAccount'
 import { EstimationResult } from '@application/EstimationResult'
 import Region from '@domain/Region'
-import config from '@application/Config'
+import configLoader from '@application/ConfigLoader'
 import ICloudService from '@domain/ICloudService'
 import ComputeEngine from '@services/gcp/ComputeEngine'
 import { v3 } from '@google-cloud/monitoring'
@@ -23,12 +23,12 @@ export default class GCPAccount extends CloudProviderAccount {
 
   getDataForRegion(regionId: string, startDate: Date, endDate: Date): Promise<EstimationResult[]> {
     const gcpServices = this.getServices()
-    const region = new Region(regionId, gcpServices, config.GCP.NAME)
+    const region = new Region(regionId, gcpServices, configLoader().GCP.NAME)
     return this.getRegionData(region, startDate, endDate)
   }
 
   getServices(): ICloudService[] {
-    return config.GCP.CURRENT_SERVICES.map(({ key }) => {
+    return configLoader().GCP.CURRENT_SERVICES.map(({ key }) => {
       return this.getService(key)
     })
   }

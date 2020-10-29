@@ -78,6 +78,7 @@ describe('cli', () => {
           NAME: 'GCP',
           CURRENT_REGIONS: ['us-east1'],
         },
+        LOGGING_MODE: 'test',
       })
     })
 
@@ -115,6 +116,7 @@ describe('cli', () => {
           NAME: 'gcp',
           CURRENT_REGIONS: ['us-east1'],
         },
+        LOGGING_MODE: 'test',
       })
     })
 
