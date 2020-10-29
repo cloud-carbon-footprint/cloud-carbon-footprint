@@ -19,7 +19,7 @@ describe('ServiceFilter', () => {
   })
 
   it('has all services selected by default', async () => {
-    expect(page.getByText('Services: 6 of 6')).toBeInTheDocument()
+    expect(page.getByText('Services: 7 of 7')).toBeInTheDocument()
   })
 
   it('displays the options when opened', async () => {
@@ -34,6 +34,7 @@ describe('ServiceFilter', () => {
     assertCheckbox(page, 'ElastiCache', true)
     assertCheckbox(page, 'RDS', true)
     assertCheckbox(page, 'Lambda', true)
+    assertCheckbox(page, 'Compute Engine', true)
   })
 
   it('updates the filters when All Services is unselected', async () => {
@@ -49,7 +50,7 @@ describe('ServiceFilter', () => {
 
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
 
-    expect(page.getByText('Services: 0 of 6')).toBeInTheDocument()
+    expect(page.getByText('Services: 0 of 7')).toBeInTheDocument()
     assertCheckbox(page, 'All Services', false)
     assertCheckbox(page, 'EBS', false)
     assertCheckbox(page, 'S3', false)
@@ -57,6 +58,7 @@ describe('ServiceFilter', () => {
     assertCheckbox(page, 'ElastiCache', false)
     assertCheckbox(page, 'RDS', false)
     assertCheckbox(page, 'Lambda', false)
+    assertCheckbox(page, 'Compute Engine', false)
   })
 
   it('updates the filters when an option is unselected', async () => {
@@ -67,12 +69,12 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-ebs'))
     })
 
-    const newFilters = filters.withServices(['all', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+    const newFilters = filters.withServices(['all', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
 
-    expect(page.getByText('Services: 5 of 6')).toBeInTheDocument()
+    expect(page.getByText('Services: 6 of 7')).toBeInTheDocument()
     assertCheckbox(page, 'All Services', false)
     assertCheckbox(page, 'EBS', false)
     assertCheckbox(page, 'S3', true)
@@ -80,6 +82,7 @@ describe('ServiceFilter', () => {
     assertCheckbox(page, 'ElastiCache', true)
     assertCheckbox(page, 'RDS', true)
     assertCheckbox(page, 'Lambda', true)
+    assertCheckbox(page, 'Compute Engine', true)
   })
 
   const assertCheckbox = (page: RenderResult, option: string, selected: boolean) => {

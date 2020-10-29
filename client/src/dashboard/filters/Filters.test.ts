@@ -131,7 +131,7 @@ describe('Filters', () => {
     it('should default to All Services', () => {
       const filters = new Filters()
 
-      expect(filters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+      expect(filters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
     })
 
     it('should unselect All Services', () => {
@@ -145,9 +145,9 @@ describe('Filters', () => {
     it('should unselect one service when all services is already selected', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([ALL_SERVICES, 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+      const newFilters = filters.withServices([ALL_SERVICES, 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
 
-      expect(newFilters.services).toEqual(['s3', 'ec2', 'elasticache', 'rds', 'lambda'])
+      expect(newFilters.services).toEqual(['s3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
     })
 
     it('should select an unselected service', () => {
@@ -175,15 +175,15 @@ describe('Filters', () => {
 
       const newFilters = filters.withServices([]).withServices(['ebs']).withServices(['ebs', ALL_SERVICES])
 
-      expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+      expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
     })
 
     it('should add ALL_SERVICES when all services are selected', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([]).withServices(['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+      const newFilters = filters.withServices([]).withServices(['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
 
-      expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'])
+      expect(newFilters.services).toEqual([ALL_SERVICES, 'ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
     })
   })
 

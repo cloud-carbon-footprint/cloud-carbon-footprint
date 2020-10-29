@@ -25,6 +25,10 @@
     {
       "key": "lambda",
       "name": "Lambda"
+    },
+    {
+      "key": "computeEngine",
+      "name": "Compute Engine"
     }
   ]
 }

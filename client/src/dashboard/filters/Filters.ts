@@ -33,7 +33,7 @@ const defaultFiltersConfig = {
 
 const providerServices: { [key: string]: string[] } = {
   aws: ['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'],
-  gcp: [],
+  gcp: ['computeEngine'],
 }
 
 export class Filters {
@@ -54,21 +54,16 @@ export class Filters {
   }
 
   withServices(services: string[]): Filters {
+    let { providerKeys, serviceKeys } = handleSelections(services, this.services, ALL_SERVICES, SERVICE_OPTIONS)
     return new Filters({
       ...this,
-      services: handleSelection(services, this.services, ALL_SERVICES, SERVICE_OPTIONS),
+      services: serviceKeys,
+      cloudProviders: providerKeys
     })
   }
 
   withCloudProviders(cloudProviders: string[]): Filters {
-    console.log('Providers: ', cloudProviders)
-    const { providerKeys, serviceKeys } = handleProviderSelection(
-      cloudProviders,
-      this.cloudProviders,
-      ALL_CLOUD_PROVIDERS,
-      CLOUD_PROVIDER_OPTIONS,
-      this.services,
-    )
+    let { providerKeys, serviceKeys } = handleSelections(cloudProviders, this.cloudProviders, ALL_CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS)
     return new Filters({
       ...this,
       cloudProviders: providerKeys,
@@ -125,71 +120,88 @@ export class Filters {
   }
 }
 
-function handleProviderSelection(
-  keys: string[],
-  oldKeys: string[],
-  allValue: string,
-  options: DropdownOption[],
-  currentServices: string[],
-) {
-  let providerKeys: string[]
-  let serviceKeys: string[] = []
-  console.log('keys:', keys)
-  // If the "all" key is selected or a single provider is deselected
-  if (keys.includes(allValue)) {
-    // If the "all" keys was previously toggled on
-    if (oldKeys.includes(allValue)) {
-      // toggle off the deselected provider and its corresponding services
-      providerKeys = keys.filter((provider) => provider !== allValue)
-      selectProviderServices(providerKeys, serviceKeys)
-    } else {
-      // select all providers and all services
-      providerKeys = options.map((o) => o.key)
-      serviceKeys = handleSelection(['all'], currentServices, ALL_SERVICES, SERVICE_OPTIONS)
+function isServiceKeys(keys: string[], allValue: string) {
+  let serviceKeys: string [] = []
+
+  SERVICE_OPTIONS.forEach((obj) => {
+    if(obj.key !== allValue) {
+      serviceKeys.push(obj.key)
     }
-  } else if (oldKeys.includes(allValue)) {
-    // deselect all providers and services
-    providerKeys = []
-    serviceKeys = []
-  } else {
-    // Select / deselect single provider and its corresponding services
-    providerKeys = keys
-    selectProviderServices(providerKeys, serviceKeys)
-  }
-
-  return { providerKeys, serviceKeys }
-}
-
-function selectProviderServices(providerKeys: string[], serviceKeys: string[]) {
-  providerKeys.forEach((key) => {
-    providerServices[key].forEach((service) => serviceKeys.push(service))
   })
+
+  return serviceKeys.some(r=> keys.includes(r))
 }
 
-function handleSelection(keys: string[], oldKeys: string[], allValue: string, options: DropdownOption[]) {
-  let newKeys: string[]
-  if (keys.includes(allValue)) {
-    // deselecting one of the services
-    if (oldKeys.includes(allValue)) {
-      newKeys = keys.filter((service) => service !== allValue)
-    } else {
-      // turning on all services
-      newKeys = options.map((o) => o.key)
+function isProviderKeys(keys: string[], allValue:string) {
+  let providerKeys: string [] = []
+
+  CLOUD_PROVIDER_OPTIONS.forEach((obj) => {
+    if(obj.key !== allValue) {
+      providerKeys.push(obj.key)
+    }
+  })
+
+  return providerKeys.some(r=> keys.includes(r))
+}
+
+function getSerivceKeysFromProviderKeys(keys: string[], allValue: string) {
+  let serviceKeys: string[] = []
+
+  keys.forEach((key) => {
+    if(key !== allValue) {
+      providerServices[key].forEach((service) => serviceKeys.push(service))
+    }
+  })
+
+  if(keys.includes(allValue)) {
+    serviceKeys.push('all')
+  }
+  
+  return serviceKeys
+}
+
+function getProviderKeysFromServiceKeys(keys: string[], allValue: string) {
+  let providerKeys: string[] = []
+  
+  for (let [key, value] of Object.entries(providerServices)) {
+    if(value.some(r=> keys.includes(r))) {
+      providerKeys.push(key)
     }
   }
-  // turning off all services
-  else if (oldKeys.includes(allValue)) {
-    newKeys = []
+
+  if(keys.includes(allValue)) {
+    providerKeys.push(allValue)
   }
-  // selecting / deselecting a single service
-  else {
-    if (keys.length === options.length - 1) {
-      newKeys = options.map((o) => o.key)
-    } else {
-      newKeys = keys
+
+  return providerKeys
+}
+
+function handleSelections(keys: string[], oldKeys: string[], allValue: string, options: DropdownOption[]) {
+  let serviceKeys: string []
+  let providerKeys: string []
+
+  if(keys.includes(allValue) && !oldKeys.includes(allValue)) {
+    serviceKeys = SERVICE_OPTIONS.map((o) => o.key)
+    providerKeys = CLOUD_PROVIDER_OPTIONS.map((o) => o.key)
+  }
+  else if(!keys.includes(allValue) && oldKeys.includes(allValue)) {
+    serviceKeys = []
+    providerKeys = []
+  }
+  else
+  { 
+    if(keys.length === options.length - 1 && oldKeys.includes(allValue)) {
+      keys = keys.filter(k => k !== allValue)
     }
+    else if(keys.length === options.length - 1 && !oldKeys.includes(allValue)) {
+      keys = options.map((o) => o.key)
+    } 
+
+    serviceKeys = (isServiceKeys(keys, allValue)) ? keys : getSerivceKeysFromProviderKeys(keys, allValue)
+    providerKeys = (isProviderKeys(keys, allValue)) ? keys : getProviderKeysFromServiceKeys(keys, allValue)
+
   }
-  return newKeys
+  return { providerKeys, serviceKeys }
 }
 
 function numSelectedLabel(length: number, totalLength: number, type: string = 'Services') {
