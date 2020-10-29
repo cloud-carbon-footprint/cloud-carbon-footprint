@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import StorageService from '@domain/StorageService'
+import { HDDStorageService, SSDStorageService } from '@domain/StorageService'
 import StorageUsage from '@domain/StorageUsage'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import { StorageEstimator } from '@domain/StorageEstimator'
@@ -12,12 +12,10 @@ import Cost from '@domain/Cost'
 
 describe('StorageService', () => {
   describe('getEstimates', () => {
-    class TestService extends StorageService {
+    class TestHDDService extends HDDStorageService {
       serviceName = 'testService'
-      static COEFFICIENT = 1.2
-
       constructor() {
-        super(TestService.COEFFICIENT, 'AWS')
+        super()
       }
 
       getUsage(): Promise<StorageUsage[]> {
@@ -29,15 +27,33 @@ describe('StorageService', () => {
       }
     }
 
-    let testService: TestService
+    class TestSSDService extends SSDStorageService {
+      serviceName = 'testService'
+      constructor() {
+        super()
+      }
+
+      getUsage(): Promise<StorageUsage[]> {
+        return undefined
+      }
+
+      getCosts(): Promise<Cost[]> {
+        return undefined
+      }
+    }
+
+    let testHDDService: TestHDDService
+    let testSDDService: TestSSDService
     let getUsageMock: jest.Mock<Promise<StorageUsage[]>>
     beforeEach(() => {
-      testService = new TestService()
+      testHDDService = new TestHDDService()
+      testSDDService = new TestSSDService()
       getUsageMock = jest.fn()
-      testService.getUsage = getUsageMock
+      testHDDService.getUsage = getUsageMock
+      testSDDService.getUsage = getUsageMock
     })
 
-    it('should return estimates for the storage usage of a day', async () => {
+    it('should return estimates for the HDD storage usage of a day', async () => {
       //setup
       const date = new Date('2020-07-07')
       const usage = [
@@ -46,14 +62,49 @@ describe('StorageService', () => {
           sizeGb: 10,
         },
       ]
-      getUsageMock.mockResolvedValueOnce(usage)
+      getUsageMock.mockResolvedValue(usage)
 
       //run
-      const estimates: FootprintEstimate[] = await testService.getEstimates(date, date, AWS_REGIONS.US_EAST_1, 'AWS')
+      const estimates: FootprintEstimate[] = await testHDDService.getEstimates(date, date, AWS_REGIONS.US_EAST_1, 'AWS')
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(TestService.COEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS).estimate(
+        new StorageEstimator(
+          CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+          CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
+        ).estimate(
+          [
+            {
+              timestamp: date,
+              sizeGb: 10,
+            },
+          ],
+          AWS_REGIONS.US_EAST_1,
+        ),
+      )
+      expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)
+    })
+
+    it('should return estimates for the SSD storage usage of a day', async () => {
+      //setup
+      const date = new Date('2020-07-07')
+      const usage = [
+        {
+          timestamp: date,
+          sizeGb: 10,
+        },
+      ]
+      getUsageMock.mockResolvedValue(usage)
+
+      //run
+      const estimates: FootprintEstimate[] = await testSDDService.getEstimates(date, date, AWS_REGIONS.US_EAST_1, 'AWS')
+
+      //assert
+      expect(estimates).toEqual(
+        new StorageEstimator(
+          CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+          CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
+        ).estimate(
           [
             {
               timestamp: date,
