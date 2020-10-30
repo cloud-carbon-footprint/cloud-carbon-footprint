@@ -4,10 +4,10 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
-
 import S3 from '@services/aws/S3'
 import { buildCostExplorerGetCostResponse } from '@builders'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import mockAWSCloudWatchGetMetricDataCall from './mockAWSCloudWatchGetMetricDataCall'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -23,41 +23,30 @@ describe('S3', () => {
   const dayTwo = '2020-08-02T00:00:00.000Z'
   const dayThree = '2020-08-03T00:00:00.000Z'
   const end = '2020-08-04T00:00:00.000Z'
+  const metricDataQueries = [
+    {
+      Id: 's3Size',
+      Expression:
+        'SUM(SEARCH(\'{AWS/S3,BucketName,StorageType} MetricName="BucketSizeBytes" StorageType="StandardStorage"\', \'Average\', 86400))',
+    },
+  ]
   const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
-
   it('gets S3 usage', async () => {
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual({
-          StartTime: new Date(start),
-          EndTime: new Date(end),
-          MetricDataQueries: [
-            {
-              Id: 's3Size',
-              Expression:
-                'SUM(SEARCH(\'{AWS/S3,BucketName,StorageType} MetricName="BucketSizeBytes" StorageType="StandardStorage"\', \'Average\', 86400))',
-            },
-          ],
-          ScanBy: 'TimestampAscending',
-        })
+    const response: any = {
+      MetricDataResults: [
+        {
+          Id: 's3Size',
+          Label: 's3Size',
+          Timestamps: [start, dayTwo, dayThree, end],
+          Values: [2586032500, 3286032500, 7286032500, 4286032500],
+          StatusCode: 'Complete',
+          Messages: [],
+        },
+      ],
+    }
 
-        callback(null, {
-          MetricDataResults: [
-            {
-              Id: 's3Size',
-              Label: 's3Size',
-              Timestamps: [start, dayTwo, dayThree, end],
-              Values: [2586032500, 3286032500, 7286032500, 4286032500],
-              StatusCode: 'Complete',
-              Messages: [],
-            },
-          ],
-        })
-      },
-    )
+    mockAWSCloudWatchGetMetricDataCall(new Date(start), new Date(end), response, metricDataQueries)
 
     const s3Service = new S3(getServiceWrapper())
     const result = await s3Service.getUsage(new Date(start), new Date(end))
@@ -103,5 +92,34 @@ describe('S3', () => {
       { amount: 2.3, currency: 'USD', timestamp: new Date(start) },
       { amount: 4.6, currency: 'USD', timestamp: new Date(dayTwo) },
     ])
+  })
+
+  it('throw Partial Data Error if partial data returned', async () => {
+    const response: any = {
+      MetricDataResults: [
+        {
+          Id: 's3Size',
+          Label: 's3Size',
+          Timestamps: [start, dayTwo, dayThree, end],
+          Values: [2586032500, 3286032500, 7286032500, 4286032500],
+          StatusCode: 'Complete',
+          Messages: [],
+        },
+        {
+          Id: 's3Size',
+          Label: 's3Size',
+          Timestamps: [start, dayTwo, dayThree, end],
+          Values: [2586032500, 3286032500, 7286032500, 4286032500],
+          StatusCode: 'PartialData',
+          Messages: [],
+        },
+      ],
+    }
+    mockAWSCloudWatchGetMetricDataCall(new Date(start), new Date(end), response, metricDataQueries)
+
+    const s3Service = new S3(getServiceWrapper())
+    const getS3Usage = async () => await s3Service.getUsage(new Date(start), new Date(end))
+
+    await expect(getS3Usage).rejects.toThrow('Partial Data Returned from AWS')
   })
 })

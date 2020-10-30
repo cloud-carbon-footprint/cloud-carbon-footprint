@@ -62,7 +62,6 @@ describe('Lambda', () => {
     const lambdaService = new Lambda(
       60000,
       1000,
-      new CloudWatchLogs(),
       getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
@@ -111,7 +110,6 @@ describe('Lambda', () => {
     const lambdaService = new Lambda(
       60000,
       1000,
-      new CloudWatchLogs(),
       getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(dayThree), region)
@@ -170,7 +168,6 @@ describe('Lambda', () => {
     const lambdaService = new Lambda(
       60000,
       1000,
-      new CloudWatchLogs(),
       getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
@@ -205,7 +202,6 @@ describe('Lambda', () => {
     const lambdaService = new Lambda(
       60000,
       1000,
-      new CloudWatchLogs(),
       getServiceWrapper(),
     )
     const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
@@ -242,7 +238,6 @@ describe('Lambda', () => {
     const lambdaService = new Lambda(
       100,
       50,
-      new CloudWatchLogs(),
       getServiceWrapper(),
     )
 
@@ -273,7 +268,6 @@ describe('Lambda', () => {
     const lambdaService = new Lambda(
       60000,
       1000,
-      new CloudWatchLogs(),
       getServiceWrapper(),
     )
     const lambdaCosts = await lambdaService.getCosts(new Date(startDate), new Date(endDate), 'us-east-1')

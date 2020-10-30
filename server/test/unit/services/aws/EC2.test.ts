@@ -9,6 +9,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import mockAWSCloudWatchGetMetricDataCall from './mockAWSCloudWatchGetMetricDataCall'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -29,12 +30,27 @@ describe('EC2', () => {
   const startDate = '2020-07-10'
   const endDate = '2020-07-11'
   const AVG_CPU_UTILIZATION_2020 = CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020
+  const metricDataQueries = [
+    {
+      Id: 'cpuUtilizationWithEmptyValues',
+      Expression: "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+      ReturnData: false,
+    },
+    {
+      Id: 'cpuUtilization',
+      Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
+    },
+    {
+      Id: 'vCPUs',
+      Expression:
+        'SEARCH(\'{AWS/Usage,Resource,Type,Service,Class } Resource="vCPU" MetricName="ResourceCount"\', \'Average\', 3600)',
+    },
+  ]
 
   const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
-
   it('gets EC2 usage', async () => {
-    mockAwsCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), {
+    const response: any = {
       MetricDataResults: [
         {
           Id: 'cpuUtilization',
@@ -94,7 +110,8 @@ describe('EC2', () => {
         },
       ],
       Messages: [],
-    })
+    }
+    mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
 
 
     const ec2Service = new EC2(getServiceWrapper())
@@ -129,46 +146,47 @@ describe('EC2', () => {
     ])
   })
 
-   it('check for PartialData', async () => {
-      mockAwsCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), {
-        MetricDataResults: [
-          {
-            Id: 'cpuUtilization',
-            Label: 'AWS/EC2 i-01914bfb56d65a9ae CPUUtilization',
-            Timestamps: [dayOneHourOne, dayOneHourTwo],
-            Values: [22.983333333333334, 31.435897435897434],
-            StatusCode: 'PartialData',
-            Messages: [],
-          },
-          {
-            Id: 'cpuUtilization',
-            Label: 'AWS/EC2 i-0462587efbbf601c5 CPUUtilization',
-            Timestamps: [dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
-            Values: [11.576923076923077, 9.716666666666667, 20.46153846153846],
-            StatusCode: 'Complete',
-            Messages: [],
-          },
-          {
-            Id: 'vCPUs',
-            Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-            Timestamps: [dayOneHourOne, dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
-            Values: [4, 4.5, 4, 4.333333333333333],
-            StatusCode: 'Complete',
-            Messages: [],
-          },
-        ],
-        Messages: [],
-      })
-      
-      const ec2Service = new EC2(getServiceWrapper())
-      const result = await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree))
-      
-      expect(result).toThrow()
-    })
+  it('check for PartialData', async () => {
+    const response: any = {
+      MetricDataResults: [
+        {
+          Id: 'cpuUtilization',
+          Label: 'AWS/EC2 i-01914bfb56d65a9ae CPUUtilization',
+          Timestamps: [dayOneHourOne, dayOneHourTwo],
+          Values: [22.983333333333334, 31.435897435897434],
+          StatusCode: 'PartialData',
+          Messages: [],
+        },
+        {
+          Id: 'cpuUtilization',
+          Label: 'AWS/EC2 i-0462587efbbf601c5 CPUUtilization',
+          Timestamps: [dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
+          Values: [11.576923076923077, 9.716666666666667, 20.46153846153846],
+          StatusCode: 'Complete',
+          Messages: [],
+        },
+        {
+          Id: 'vCPUs',
+          Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
+          Timestamps: [dayOneHourOne, dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
+          Values: [4, 4.5, 4, 4.333333333333333],
+          StatusCode: 'Complete',
+          Messages: [],
+        },
+      ],
+      Messages: [],
+    }
+    mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
+
+    const ec2Service = new EC2(getServiceWrapper())
+    const getEC2Usage = async () => await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree))
+
+    await expect(getEC2Usage).rejects.toThrow('Partial Data Returned from AWS')
+  })
 
   describe('missing CPU utilization', () => {
     it('uses average CPU utilization for every missing timestamp', async () => {
-      mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), {
+      const response: any = {
         MetricDataResults: [
           {
             Id: 'cpuUtilization',
@@ -181,7 +199,8 @@ describe('EC2', () => {
             Values: [1, 1],
           },
         ],
-      })
+      }
+      mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), response, metricDataQueries)
 
       const ec2Service = new EC2(getServiceWrapper())
 
@@ -204,7 +223,7 @@ describe('EC2', () => {
     })
 
     it('uses average CPU utilization for every timestamp present for vCPUs', async () => {
-      mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), {
+      const response: any = {
         MetricDataResults: [
           {
             Id: 'vCPUs',
@@ -212,7 +231,8 @@ describe('EC2', () => {
             Values: [4, 3],
           },
         ],
-      })
+      }
+      mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), response, metricDataQueries)
 
 
       const ec2Service = new EC2(getServiceWrapper())
@@ -237,7 +257,7 @@ describe('EC2', () => {
   })
 
   it('should not return an estimate for a given timestamp if no vCPU data is provided for that timestamp', async () => {
-    mockAwsCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), {
+    const response: any = {
       MetricDataResults: [
         {
           Id: 'cpuUtilization',
@@ -255,7 +275,8 @@ describe('EC2', () => {
           Values: [1],
         },
       ],
-    })
+    }
+    mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
 
     const ec2Service = new EC2(getServiceWrapper())
 
@@ -272,7 +293,7 @@ describe('EC2', () => {
   })
 
   it('should return an empty array if no vCPUs', async () => {
-    mockAwsCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayOneHourThree), {
+    const response: any = {
       MetricDataResults: [
         {
           Id: 'cpuUtilization',
@@ -280,7 +301,8 @@ describe('EC2', () => {
           Values: [],
         },
       ],
-    })
+    }
+    mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayOneHourThree), response, metricDataQueries)
 
     const ec2Service = new EC2(getServiceWrapper())
 
@@ -312,36 +334,4 @@ describe('EC2', () => {
       { amount: 50.0, currency: 'USD', timestamp: new Date(endDate) },
     ])
   })
-
-  function mockAwsCloudWatchGetMetricDataCall(startDate: Date, endDate: Date, response: any) {
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: CloudWatch.GetMetricDataInput, callback: (err: Error, res: any) => any) => {
-        expect(params).toEqual({
-          StartTime: startDate,
-          EndTime: endDate,
-          MetricDataQueries: [
-            {
-              Id: 'cpuUtilizationWithEmptyValues',
-              Expression: "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
-              ReturnData: false,
-            },
-            {
-              Id: 'cpuUtilization',
-              Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
-            },
-            {
-              Id: 'vCPUs',
-              Expression:
-                'SEARCH(\'{AWS/Usage,Resource,Type,Service,Class } Resource="vCPU" MetricName="ResourceCount"\', \'Average\', 3600)',
-            },
-          ],
-          ScanBy: 'TimestampAscending',
-        })
-
-        callback(null, response)
-      },
-    )
-  }
 })

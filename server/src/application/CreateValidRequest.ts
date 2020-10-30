@@ -22,6 +22,14 @@ export class EstimationRequestValidationError extends Error {
   }
 }
 
+export class PartialDataError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'PartialDataError'
+    Object.setPrototypeOf(this, PartialDataError.prototype)
+  }
+}
+
 // eslint-disable-next-line
 // @ts-ignore
 moment.suppressDeprecationWarnings = true

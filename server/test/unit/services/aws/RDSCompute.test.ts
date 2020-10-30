@@ -12,6 +12,7 @@ import {
 } from '@builders'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import mockAWSCloudWatchGetMetricDataCall from './mockAWSCloudWatchGetMetricDataCall'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -22,6 +23,17 @@ describe('RDS Compute', function () {
     AWSMock.restore()
   })
 
+  const metricDataQueries = [
+    {
+      Id: 'cpuUtilizationWithEmptyValues',
+      Expression: "SEARCH('{AWS/RDS} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+      ReturnData: false,
+    },
+    {
+      Id: 'cpuUtilization',
+      Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
+    },
+  ]
   const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
   it('should get RDS CPU utilization for two hours of different days', async () => {
@@ -32,13 +44,11 @@ describe('RDS Compute', function () {
       [new Date('2020-01-25T05:00:00.000Z'), new Date('2020-01-26T23:00:00.000Z')],
       [32.34, 12.65],
     )
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(buildCloudwatchCPUUtilizationRequest(start_date_string, end_date_string))
-        callback(null, cloudwatchResponse)
-      },
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start_date_string),
+      new Date(end_date_string),
+      cloudwatchResponse,
+      metricDataQueries,
     )
 
     const costExplorerRequest = buildRdsCostExplorerGetUsageRequest(
@@ -87,13 +97,12 @@ describe('RDS Compute', function () {
     const end_date_string = '2020-01-27T00:00:00.000Z'
 
     const cloudwatchResponse = buildCloudwatchCPUUtilizationResponse([new Date('2020-01-25T05:00:00.000Z')], [32.34])
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(buildCloudwatchCPUUtilizationRequest(start_date_string, end_date_string))
-        callback(null, cloudwatchResponse)
-      },
+
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start_date_string),
+      new Date(end_date_string),
+      cloudwatchResponse,
+      metricDataQueries,
     )
 
     const costExplorerRequest = buildRdsCostExplorerGetUsageRequest(
@@ -141,13 +150,11 @@ describe('RDS Compute', function () {
     const start_date_string = '2020-01-25T00:00:00.000Z'
     const end_date_string = '2020-01-27T00:00:00.000Z'
 
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (params: AWS.CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        expect(params).toEqual(buildCloudwatchCPUUtilizationRequest(start_date_string, end_date_string))
-        callback(null, { MetricDataResults: [] })
-      },
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start_date_string),
+      new Date(end_date_string),
+      { MetricDataResults: [] },
+      metricDataQueries,
     )
 
     const costExplorerRequest = buildRdsCostExplorerGetUsageRequest(
@@ -187,6 +194,59 @@ describe('RDS Compute', function () {
     expect(usageByHour).toEqual([])
   })
 
+  it('should throw PartialData error when AWS returns PartialData', async () => {
+    const start_date_string = '2020-01-25T00:00:00.000Z'
+    const end_date_string = '2020-01-27T00:00:00.000Z'
+
+    const cloudwatchResponse = buildCloudwatchCPUUtilizationResponse(
+      [new Date('2020-01-25T05:00:00.000Z')],
+      [32.34],
+      'PartialData',
+    )
+
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start_date_string),
+      new Date(end_date_string),
+      cloudwatchResponse,
+      metricDataQueries,
+    )
+
+    const costExplorerRequest = buildRdsCostExplorerGetUsageRequest(
+      start_date_string.substr(0, 10),
+      end_date_string.substr(0, 10),
+      'us-east-1',
+    )
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        expect(params).toEqual(costExplorerRequest)
+
+        callback(null, {
+          ResultsByTime: [
+            {
+              TimePeriod: {
+                Start: start_date_string,
+                End: end_date_string,
+              },
+              Total: {
+                UsageQuantity: {
+                  Amount: 0,
+                },
+              },
+              Groups: [],
+            },
+          ],
+        })
+      },
+    )
+    const rdsService = new RDSComputeService(getServiceWrapper())
+    const getUsageByHour = async () =>
+      await rdsService.getUsage(new Date(start_date_string), new Date(end_date_string), 'us-east-1')
+
+    await expect(getUsageByHour).rejects.toThrow('Partial Data Returned from AWS')
+  })
+
   it('should get rds cost', async () => {
     const start = '2020-01-25T00:00:00.000Z'
     const end = '2020-01-27T00:00:00.000Z'
@@ -219,32 +279,14 @@ describe('RDS Compute', function () {
   })
 })
 
-function buildCloudwatchCPUUtilizationRequest(startTimestamp: string, endTimestamp: string) {
-  return {
-    StartTime: new Date(startTimestamp),
-    EndTime: new Date(endTimestamp),
-    MetricDataQueries: [
-      {
-        Id: 'cpuUtilizationWithEmptyValues',
-        Expression: "SEARCH('{AWS/RDS} MetricName=\"CPUUtilization\"', 'Average', 3600)",
-        ReturnData: false,
-      },
-      {
-        Id: 'cpuUtilization',
-        Expression: 'REMOVE_EMPTY(cpuUtilizationWithEmptyValues)',
-      },
-    ],
-    ScanBy: 'TimestampAscending',
-  }
-}
-
-function buildCloudwatchCPUUtilizationResponse(timestamps: Date[], values: number[]) {
+function buildCloudwatchCPUUtilizationResponse(timestamps: Date[], values: number[], statusCode: String = 'Complete') {
   return {
     MetricDataResults: [
       {
         Id: 'cpuUtilization',
         Timestamps: timestamps,
         Values: values,
+        StatusCode: statusCode,
       },
     ],
   }
