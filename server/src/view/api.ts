@@ -5,7 +5,7 @@
 import express from 'express'
 
 import App from '@application/App'
-import CreateValidRequest, { EstimationRequestValidationError } from '@application/CreateValidRequest'
+import CreateValidRequest, { EstimationRequestValidationError, PartialDataError } from '@application/CreateValidRequest'
 import { RawRequest } from '@view/RawRequest'
 
 import Logger from '@services/Logger'
@@ -36,6 +36,8 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
     apiLogger.error(`Unable to process footprint request. Error: ${e.message}`)
     if (e instanceof EstimationRequestValidationError) {
       res.status(400).send(e.message)
+    } else if (e instanceof PartialDataError) {
+      res.status(416).send(e.message)
     } else res.status(500).send('Internal Server Error')
   }
 }
