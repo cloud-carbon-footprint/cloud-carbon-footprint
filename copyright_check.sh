@@ -8,7 +8,7 @@ copyright="© 2020 ThoughtWorks, Inc. All rights reserved."
 errorCode=0
 git diff --cached --name-status | while read x file; do
   if [ "$x" == 'D' ]; then continue; fi
-  holder=$(echo $file | grep ".*\.ts" | wc -l)
+  holder=$(echo $file | grep ".*\.[ts|tsx|js|jsx|md|sh]" | wc -l)
   if [ $holder -eq 0 ]; then continue; fi
   if grep "$copyright" $file; then continue; fi
 
