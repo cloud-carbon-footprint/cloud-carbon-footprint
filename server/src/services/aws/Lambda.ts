@@ -28,8 +28,6 @@ export default class Lambda implements ICloudService {
     }
     const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery, start, end, groupNames)
 
-    //const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery.bind(this), start, end, groupNames)
-
     const usage = await Promise.all(queryIdsArray.map((id) => this.getResults(id)))
 
     const filteredResults = [...usage.reduce((combinedArr, { results }) => [...combinedArr, ...results], [])]
