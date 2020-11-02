@@ -107,9 +107,21 @@ describe('Logger', () => {
     it('logs error', () => {
       // when
       testLogger.error(testMessage)
+      const mockErr = Object.getPrototypeOf(testLogger)
 
       // then
       expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+      expect(mockErr.getLogLevel('test')).toEqual('debug')
+    })
+
+    it('Info Log Info', () => {
+      // when
+      testLogger.error(testMessage)
+      const mockErr = Object.getPrototypeOf(testLogger)
+
+      // then
+      expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+      expect(mockErr.getLogLevel('otherTestEnv')).toEqual('info')
     })
   })
 })

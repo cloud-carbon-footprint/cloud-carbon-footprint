@@ -10,6 +10,7 @@ import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '@builders'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import Logger from '@services/Logger'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -265,5 +266,19 @@ describe('RDSStorage', () => {
         timestamp: new Date(dayTwo),
       },
     ])
+  })
+
+  it('Check if warning is called based on valid Disk Type', async () => {
+    const loggerwarnSpy = jest.spyOn(Logger.prototype, 'warn').mockImplementation()
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+        callback(null, buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['ThrowError'] }]))
+      },
+    )
+    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
+    expect(loggerwarnSpy).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: ThrowError')
   })
 })

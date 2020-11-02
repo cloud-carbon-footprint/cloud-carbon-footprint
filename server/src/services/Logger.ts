@@ -11,20 +11,36 @@ import configLoader from '@application/ConfigLoader'
 
 const env = process.env.NODE_ENV || 'development'
 
+enum LOGGING_LEVELS {
+  ERROR = 'error',
+  INFO = 'info',
+  DEBUG = 'debug',
+}
+
 export default class Logger implements ILogger {
   private logger: WinstonLogger
 
-  private readonly format = printf(({ level, message, label, timestamp }) => {
-    return `${timestamp} [${label}] ${level}: ${message}`
+  private readonly format = printf(({ level, message, label, timestamp, err = {} }) => {
+    if (level === LOGGING_LEVELS.ERROR) {
+      return `${timestamp} [${label}] ${level}: ${message} Stacktrace: ${JSON.stringify(
+        this.logger.exceptions.getTrace(err),
+      )}`
+    } else {
+      return `${timestamp} [${label}] ${level}: ${message}`
+    }
   })
 
   constructor(logLabel: string) {
-    switch (configLoader().LOGGING_MODE) {
-      case 'GCP':
-        this.logger = this.getGCPLogger()
-        break
-      default:
-        this.logger = this.getDefaultLogger(logLabel)
+    try {
+      switch (configLoader().LOGGING_MODE) {
+        case 'GCP':
+          this.logger = this.getGCPLogger()
+          break
+        default:
+          this.logger = this.getDefaultLogger(logLabel)
+      }
+    } catch (error) {
+      this.getDefaultLogger(logLabel).error(error)
     }
   }
 
@@ -46,7 +62,7 @@ export default class Logger implements ILogger {
         }),
         new transports.File({
           filename: 'logs/error.log',
-          level: 'error',
+          level: LOGGING_LEVELS.ERROR,
         }),
         new transports.File({ filename: 'logs/combined.log' }),
       ],
@@ -56,9 +72,9 @@ export default class Logger implements ILogger {
 
   private getLogLevel(env: string): string {
     if (env === 'test' || env === 'development') {
-      return 'debug'
+      return LOGGING_LEVELS.DEBUG
     }
-    return 'info'
+    return LOGGING_LEVELS.INFO
   }
 
   debug(message: string): void {

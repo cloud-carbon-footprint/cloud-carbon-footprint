@@ -10,6 +10,7 @@ import { StorageEstimator } from '@domain/StorageEstimator'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import { buildCostExplorerGetUsageResponse } from '@builders'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import Logger from '@services/Logger'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -254,7 +255,7 @@ describe('Ebs', () => {
   })
 
   it('should filter unexpected cost explorer volume name', async () => {
-    jest.spyOn(global.console, 'warn').mockImplementation()
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation()
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -269,7 +270,7 @@ describe('Ebs', () => {
   })
 
   it('should log warning if unexpected cost explorer volume name', async () => {
-    jest.spyOn(global.console, 'warn').mockImplementation()
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation()
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -280,7 +281,7 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
-    expect(console.warn).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: EBS:anything')
+    expect(Logger.prototype.warn).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: EBS:anything')
   })
 
   it('should get estimates for EBS SDD and HDD storage', async () => {

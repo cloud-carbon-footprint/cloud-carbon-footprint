@@ -13,11 +13,15 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import Logger from '@services/Logger'
 
 export default class EBS implements ICloudService {
   serviceName = 'ebs'
+  ebsLogger: Logger
 
-  constructor(private serviceWrapper: ServiceWrapper) {}
+  constructor(private serviceWrapper: ServiceWrapper) {
+    this.ebsLogger = new Logger('EBS')
+  }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
@@ -68,7 +72,7 @@ export default class EBS implements ICloudService {
       awsGroupKey.endsWith('VolumeUsage')
     )
       return DiskType.HDD
-    console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+    this.ebsLogger.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {

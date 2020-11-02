@@ -14,11 +14,15 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import Logger from '@services/Logger'
 
 export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'
+  rdsStorageLogger: Logger
 
-  constructor(private readonly serviceWrapper: ServiceWrapper) {}
+  constructor(private readonly serviceWrapper: ServiceWrapper) {
+    this.rdsStorageLogger = new Logger('RDS Storage Logger')
+  }
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
@@ -58,7 +62,7 @@ export default class RDSStorage implements ICloudService {
   private getDiskType = (awsGroupKey: string) => {
     if (awsGroupKey.endsWith('GP2-Storage') || awsGroupKey.endsWith('PIOPS-Storage')) return DiskType.SSD
     if (awsGroupKey.endsWith('StorageUsage')) return DiskType.HDD
-    console.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+    this.rdsStorageLogger.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
