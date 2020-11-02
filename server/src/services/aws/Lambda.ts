@@ -56,7 +56,7 @@ export default class Lambda implements ICloudService {
     intervalInDays = 60,
   ): Promise<Array<string>> {
     const startCopy = new Date(start)
-    const endCopy = new Date(start.setDate(start.getDate() + intervalInDays))
+    const endCopy = new Date(new Date(start).setDate(startCopy.getDate() + intervalInDays))
     const promiseArray = []
 
     while (endCopy < end) {
