@@ -122,4 +122,33 @@ describe('S3', () => {
 
     await expect(getS3Usage).rejects.toThrow('Partial Data Returned from AWS')
   })
+
+  it('do not throw Partial Data Error if complete data is returned', async () => {
+    const response: any = {
+      MetricDataResults: [
+        {
+          Id: 's3Size',
+          Label: 's3Size',
+          Timestamps: [start, dayTwo, dayThree, end],
+          Values: [2586032500, 3286032500, 7286032500, 4286032500],
+          StatusCode: 'Complete',
+          Messages: [],
+        },
+        {
+          Id: 's3Size',
+          Label: 's3Size',
+          Timestamps: [start, dayTwo, dayThree, end],
+          Values: [2586032500, 3286032500, 7286032500, 4286032500],
+          StatusCode: 'Complete',
+          Messages: [],
+        },
+      ],
+    }
+    mockAWSCloudWatchGetMetricDataCall(new Date(start), new Date(end), response, metricDataQueries)
+
+    const s3Service = new S3(getServiceWrapper())
+    const getS3Usage = async () => await s3Service.getUsage(new Date(start), new Date(end))
+
+    await expect(getS3Usage).not.toThrow()
+  })
 })
