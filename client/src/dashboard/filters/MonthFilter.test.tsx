@@ -32,7 +32,7 @@ describe('MonthFilter', () => {
 
     fireEvent.click(page.getByText('1M'))
 
-    let newFilters = filters.withTimeFrame(1)
+    const newFilters = filters.withTimeFrame(1)
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
@@ -47,7 +47,7 @@ describe('MonthFilter', () => {
 
     fireEvent.click(page.getByText('3M'))
 
-    let newFilters = filters.withTimeFrame(3)
+    const newFilters = filters.withTimeFrame(3)
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
@@ -62,7 +62,7 @@ describe('MonthFilter', () => {
 
     fireEvent.click(page.getByText('6M'))
 
-    let newFilters = filters.withTimeFrame(6)
+    const newFilters = filters.withTimeFrame(6)
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)
@@ -77,7 +77,7 @@ describe('MonthFilter', () => {
 
     fireEvent.click(page.getByText('12M'))
 
-    let newFilters = filters.withTimeFrame(12)
+    const newFilters = filters.withTimeFrame(12)
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<MonthFilter filters={newFilters} setFilters={mockSetFilters} />)

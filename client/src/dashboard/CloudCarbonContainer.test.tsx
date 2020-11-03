@@ -14,6 +14,7 @@ jest.mock('./client/RemoteServiceHook')
 jest.mock('../themes')
 jest.mock('apexcharts', () => ({
   exec: jest.fn(() => {
+    /* eslint-disable */
     return new Promise((resolve, reject) => {
       resolve('uri')
     })

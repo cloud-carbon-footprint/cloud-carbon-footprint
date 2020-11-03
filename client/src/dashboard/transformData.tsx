@@ -4,10 +4,10 @@
 
 import { EstimationResult, cloudEstPerDay, ChartDataTypes, serviceEstimate } from '../types'
 
-const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] | number } => {
-  let co2Series: cloudEstPerDay[] = []
-  let wattHoursSeries: cloudEstPerDay[] = []
-  let costSeries: cloudEstPerDay[] = []
+const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
+  const co2Series: cloudEstPerDay[] = []
+  const wattHoursSeries: cloudEstPerDay[] = []
+  const costSeries: cloudEstPerDay[] = []
 
   data.forEach((EstimationResult) => {
     let total = 0
@@ -44,18 +44,19 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
     })
   })
 
-  const maxCo2e = Math.max(
-    ...co2Series.map((dataPair) => {
-      return dataPair.y
-    }),
-  )
-
   return {
-    maxCo2e,
     co2Series,
     wattHoursSeries,
     costSeries,
   }
+}
+
+export const sumMaxCo2e = (co2Series: cloudEstPerDay[]): number => {
+  return Math.max(
+    ...co2Series.map((dataPair) => {
+      return dataPair.y
+    }),
+  )
 }
 
 const getPropertyFromDataType = (dataType: string, value: serviceEstimate): string => {
