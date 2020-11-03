@@ -81,7 +81,7 @@ const generateEstimations = (
 
   const estimationResults: EstimationResult[] = []
 
-  for (let i: number = 0; i <= monthsBack; i++) {
+  for (let i = 0; i <= monthsBack; i++) {
     const timestamp: Date = todayAsMoment
       .clone()
       .utc()

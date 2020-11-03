@@ -107,7 +107,7 @@ const dataWithHigherPrecision = [
 describe('transformData', () => {
   it('returns the sum of CO2 per service', () => {
     const expected = { ebs: 18, ec2: 12 }
-    expect(sumCO2ByServiceOrRegion(data, "service")).toEqual(expected)
+    expect(sumCO2ByServiceOrRegion(data, 'service')).toEqual(expected)
   })
 
   it('returns the sum of CO2 kg and gallons', () => {

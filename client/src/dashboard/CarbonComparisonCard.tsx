@@ -84,9 +84,9 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
   }
 })
 
-export const toMiles = (co2kg: number) => co2kg * 2.48138958
-export const toGas = (co2kg: number) => co2kg * 0.1125239
-export const toTrees = (co2kg: number) => co2kg * 0.0165352
+export const toMiles = (co2kg: number): number => co2kg * 2.48138958
+export const toGas = (co2kg: number): number => co2kg * 0.1125239
+export const toTrees = (co2kg: number): number => co2kg * 0.0165352
 
 export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({ data }) => {
   const classes = useStyles()

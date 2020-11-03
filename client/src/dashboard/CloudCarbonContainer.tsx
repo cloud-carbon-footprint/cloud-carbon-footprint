@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React from 'react'
+import React, { ReactElement } from 'react'
 import useRemoteService from './client/RemoteServiceHook'
 import useFilters from './filters/FilterHook'
 import { ApexLineChart } from './charts/ApexLineChart'
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function CloudCarbonContainer() {
+export default function CloudCarbonContainer(): ReactElement {
   const classes = useStyles()
   const startDate: moment.Moment = moment.utc().subtract(11, 'month')
   const endDate: moment.Moment = moment.utc()

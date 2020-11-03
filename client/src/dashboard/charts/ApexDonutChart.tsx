@@ -10,7 +10,7 @@ import { getChartColors } from '../../themes'
 import { sumCO2ByServiceOrRegion } from '../transformData'
 import { EstimationResult } from '../../types'
 
-export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data, dataType}) => {
+export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data, dataType }) => {
   const theme = useTheme()
   const chartColors = getChartColors(theme)
 

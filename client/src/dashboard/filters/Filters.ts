@@ -54,16 +54,21 @@ export class Filters {
   }
 
   withServices(services: string[]): Filters {
-    let { providerKeys, serviceKeys } = handleSelections(services, this.services, ALL_SERVICES, SERVICE_OPTIONS)
+    const { providerKeys, serviceKeys } = handleSelections(services, this.services, ALL_SERVICES, SERVICE_OPTIONS)
     return new Filters({
       ...this,
       services: serviceKeys,
-      cloudProviders: providerKeys
+      cloudProviders: providerKeys,
     })
   }
 
   withCloudProviders(cloudProviders: string[]): Filters {
-    let { providerKeys, serviceKeys } = handleSelections(cloudProviders, this.cloudProviders, ALL_CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS)
+    const { providerKeys, serviceKeys } = handleSelections(
+      cloudProviders,
+      this.cloudProviders,
+      ALL_CLOUD_PROVIDERS,
+      CLOUD_PROVIDER_OPTIONS,
+    )
     return new Filters({
       ...this,
       cloudProviders: providerKeys,
@@ -94,7 +99,7 @@ export class Filters {
     return numSelectedLabel(this.cloudProviders.length, CLOUD_PROVIDER_OPTIONS.length, 'Cloud Providers')
   }
 
-  filter(rawResults: EstimationResult[]) {
+  filter(rawResults: EstimationResult[]): EstimationResult[] {
     const today = moment.utc()
     let start: moment.Moment
     let end: moment.Moment
@@ -121,55 +126,55 @@ export class Filters {
 }
 
 function isServiceKeys(keys: string[], allValue: string) {
-  let serviceKeys: string [] = []
+  const serviceKeys: string[] = []
 
   SERVICE_OPTIONS.forEach((obj) => {
-    if(obj.key !== allValue) {
+    if (obj.key !== allValue) {
       serviceKeys.push(obj.key)
     }
   })
 
-  return serviceKeys.some(r=> keys.includes(r))
+  return serviceKeys.some((r) => keys.includes(r))
 }
 
-function isProviderKeys(keys: string[], allValue:string) {
-  let providerKeys: string [] = []
+function isProviderKeys(keys: string[], allValue: string) {
+  const providerKeys: string[] = []
 
   CLOUD_PROVIDER_OPTIONS.forEach((obj) => {
-    if(obj.key !== allValue) {
+    if (obj.key !== allValue) {
       providerKeys.push(obj.key)
     }
   })
 
-  return providerKeys.some(r=> keys.includes(r))
+  return providerKeys.some((r) => keys.includes(r))
 }
 
 function getSerivceKeysFromProviderKeys(keys: string[], allValue: string) {
-  let serviceKeys: string[] = []
+  const serviceKeys: string[] = []
 
   keys.forEach((key) => {
-    if(key !== allValue) {
+    if (key !== allValue) {
       providerServices[key].forEach((service) => serviceKeys.push(service))
     }
   })
 
-  if(keys.includes(allValue)) {
+  if (keys.includes(allValue)) {
     serviceKeys.push('all')
   }
-  
+
   return serviceKeys
 }
 
 function getProviderKeysFromServiceKeys(keys: string[], allValue: string) {
-  let providerKeys: string[] = []
-  
-  for (let [key, value] of Object.entries(providerServices)) {
-    if(value.some(r=> keys.includes(r))) {
+  const providerKeys: string[] = []
+
+  for (const [key, value] of Object.entries(providerServices)) {
+    if (value.some((r) => keys.includes(r))) {
       providerKeys.push(key)
     }
   }
 
-  if(keys.includes(allValue)) {
+  if (keys.includes(allValue)) {
     providerKeys.push(allValue)
   }
 
@@ -177,34 +182,29 @@ function getProviderKeysFromServiceKeys(keys: string[], allValue: string) {
 }
 
 function handleSelections(keys: string[], oldKeys: string[], allValue: string, options: DropdownOption[]) {
-  let serviceKeys: string []
-  let providerKeys: string []
+  let serviceKeys: string[]
+  let providerKeys: string[]
 
-  if(keys.includes(allValue) && !oldKeys.includes(allValue)) {
+  if (keys.includes(allValue) && !oldKeys.includes(allValue)) {
     serviceKeys = SERVICE_OPTIONS.map((o) => o.key)
     providerKeys = CLOUD_PROVIDER_OPTIONS.map((o) => o.key)
-  }
-  else if(!keys.includes(allValue) && oldKeys.includes(allValue)) {
+  } else if (!keys.includes(allValue) && oldKeys.includes(allValue)) {
     serviceKeys = []
     providerKeys = []
-  }
-  else
-  { 
-    if(keys.length === options.length - 1 && oldKeys.includes(allValue)) {
-      keys = keys.filter(k => k !== allValue)
-    }
-    else if(keys.length === options.length - 1 && !oldKeys.includes(allValue)) {
+  } else {
+    if (keys.length === options.length - 1 && oldKeys.includes(allValue)) {
+      keys = keys.filter((k) => k !== allValue)
+    } else if (keys.length === options.length - 1 && !oldKeys.includes(allValue)) {
       keys = options.map((o) => o.key)
-    } 
+    }
 
-    serviceKeys = (isServiceKeys(keys, allValue)) ? keys : getSerivceKeysFromProviderKeys(keys, allValue)
-    providerKeys = (isProviderKeys(keys, allValue)) ? keys : getProviderKeysFromServiceKeys(keys, allValue)
-
+    serviceKeys = isServiceKeys(keys, allValue) ? keys : getSerivceKeysFromProviderKeys(keys, allValue)
+    providerKeys = isProviderKeys(keys, allValue) ? keys : getProviderKeysFromServiceKeys(keys, allValue)
   }
   return { providerKeys, serviceKeys }
 }
 
-function numSelectedLabel(length: number, totalLength: number, type: string = 'Services') {
+function numSelectedLabel(length: number, totalLength: number, type = 'Services') {
   const lengthWithoutAllOption = totalLength - 1
   if (length === totalLength) {
     return `${type}: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`
@@ -222,7 +222,7 @@ export class DateRange {
     this.endDate = endDate
   }
 
-  isComplete() {
+  isComplete(): boolean {
     return this.startDate !== null && this.endDate !== null
   }
 }

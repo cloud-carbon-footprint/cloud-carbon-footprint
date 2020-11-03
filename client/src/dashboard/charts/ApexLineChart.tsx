@@ -12,7 +12,7 @@ import moment from 'moment'
 import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
-import { sumServiceTotals } from '../transformData'
+import { sumServiceTotals, sumMaxCo2e } from '../transformData'
 import { EstimationResult } from '../../types'
 
 const formatDateToTime = (timestamp: string | Date) => (
@@ -47,7 +47,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const co2SeriesData = cloudEstimationData.co2Series
   const wattHoursSeriesData = cloudEstimationData.wattHoursSeries
   const costSeriesData = cloudEstimationData.costSeries
-  const [getMaxCo2] = useState(cloudEstimationData.maxCo2e)
+  const maxCO2e = sumMaxCo2e(co2SeriesData)
+  const [getMaxCo2] = useState(maxCO2e)
 
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
@@ -117,7 +118,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         },
       },
       labels: {
-        formatter: function (value: any, timestamp: any, index: any) {
+        formatter: function (value: number, timestamp: number) {
           return moment.utc(timestamp).format('DD-MMM-YY')
         },
       },

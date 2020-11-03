@@ -3,7 +3,10 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import Autocomplete, { AutocompleteRenderOptionState } from '@material-ui/lab/Autocomplete'
+import Autocomplete, {
+  AutocompleteRenderInputParams,
+  AutocompleteRenderOptionState,
+} from '@material-ui/lab/Autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
@@ -72,7 +75,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
         </React.Fragment>
       )}
       renderTags={() => null}
-      renderInput={(params: any) => {
+      renderInput={(params: AutocompleteRenderInputParams) => {
         return (
           <TextField
             className={localClasses.textField}

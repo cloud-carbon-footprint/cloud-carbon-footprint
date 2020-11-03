@@ -2,15 +2,15 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React from 'react'
+import React, { ChangeEvent, ReactElement } from 'react'
 import { Paper, Tabs, Tab, Box, Card } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
-import { ChartDataTypes } from '../../types'
+import { ChartDataTypes, EstimationResult } from '../../types'
 
-export const DonutChartTabs = (props: { data: any }) => {
+export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElement => {
   const [value, setValue] = React.useState(0)
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: ChangeEvent<Record<string, unknown>>, newValue: number) => {
     setValue(newValue)
   }
 

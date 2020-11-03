@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { AppBar, Container, Toolbar, Typography } from '@material-ui/core'
 import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-function App() {
+function App(): ReactElement {
   const classes = useStyles()
 
   return (

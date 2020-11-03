@@ -9,12 +9,18 @@ there is no way to access additional data in the series, for example, the wattHo
 The custom tooltip also allows us to add an asterisk for data points that were estimated using an average CPU constant.
  */
 
-import React from 'react'
+import React, { ReactElement } from 'react'
 import moment from 'moment'
+import { cloudEstPerDay } from '../../types'
 
-export const CustomTooltip = ({ data, dataPointIndex }: { data: any; dataPointIndex: number }) => {
-
-  let date = moment.utc(data[dataPointIndex].x).format('MMMM DD')
+export const CustomTooltip = ({
+  data,
+  dataPointIndex,
+}: {
+  data: cloudEstPerDay[]
+  dataPointIndex: number
+}): ReactElement => {
+  const date = moment.utc(data[dataPointIndex].x).format('MMMM DD')
   return (
     <div style={{ padding: '10px' }}>
       <div>
