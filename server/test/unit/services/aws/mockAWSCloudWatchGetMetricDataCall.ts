@@ -1,4 +1,6 @@
-import AWSMock from "aws-sdk-mock"
+/* © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+import AWSMock from 'aws-sdk-mock'
 import { CloudWatch } from 'aws-sdk'
 
 const mockAWSCloudWatchGetMetricDataCall = (start: Date, end: Date, response: any, metricDataQueries: Array<any>) => {
@@ -18,4 +20,4 @@ const mockAWSCloudWatchGetMetricDataCall = (start: Date, end: Date, response: an
   )
 }
 
-export default mockAWSCloudWatchGetMetricDataCall;
+export default mockAWSCloudWatchGetMetricDataCall

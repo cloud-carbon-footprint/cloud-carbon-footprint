@@ -41,9 +41,7 @@ describe('aws service helper', () => {
         callback(null, costExplorerMockFunction())
       },
     )
-    const responses = await getServiceWrapper().getCostAndUsageResponses(
-      buildAwsCostExplorerGetCostAndUsageRequest(),
-    )
+    const responses = await getServiceWrapper().getCostAndUsageResponses(buildAwsCostExplorerGetCostAndUsageRequest())
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
@@ -61,9 +59,7 @@ describe('aws service helper', () => {
         callback(null, cloudWatchMockFunction())
       },
     )
-    const responses = await getServiceWrapper().getMetricDataResponses(
-      buildAwsCloudWatchGetMetricDataRequest(),
-    )
+    const responses = await getServiceWrapper().getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })

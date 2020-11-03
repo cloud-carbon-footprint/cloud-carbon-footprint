@@ -1,4 +1,3 @@
-
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
@@ -27,7 +26,6 @@ describe('RDSStorage', () => {
   const endDate = '2020-07-26'
   const region = 'us-east-1'
   const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
-
 
   it('calculates GB-Month usage', async () => {
     AWSMock.mock(
@@ -280,7 +278,8 @@ describe('RDSStorage', () => {
         callback(null, buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['ThrowError'] }]))
       },
     )
-    const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
+    const rdsStorage = new RDSStorage(getServiceWrapper())
+    //const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
     expect(loggerwarnSpy).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: ThrowError')
   })

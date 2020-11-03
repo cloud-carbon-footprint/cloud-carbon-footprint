@@ -14,11 +14,7 @@ import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 export default class Lambda implements ICloudService {
   serviceName = 'lambda'
 
-  constructor(
-    private TIMEOUT = 60000,
-    private POLL_INTERVAL = 1000,
-    private readonly serviceWrapper: ServiceWrapper,
-  ) {}
+  constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000, private readonly serviceWrapper: ServiceWrapper) {}
 
   async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
     const groupNames = await this.getLambdaLogGroupNames()
@@ -45,7 +41,7 @@ export default class Lambda implements ICloudService {
       }
     })
   }
-  
+
   private async getLambdaLogGroupNames(): Promise<string[]> {
     const params = {
       logGroupNamePrefix: '/aws/lambda',
@@ -55,7 +51,7 @@ export default class Lambda implements ICloudService {
     return logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
   }
 
-  private runQuery = async(start: Date, end: Date, groupNames: string[]): Promise<string> => {
+  private runQuery = async (start: Date, end: Date, groupNames: string[]): Promise<string> => {
     const query = `
             filter @type = "REPORT"
             | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${CLOUD_CONSTANTS.AWS.MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction

@@ -113,7 +113,6 @@ describe('EC2', () => {
     }
     mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
 
-
     const ec2Service = new EC2(getServiceWrapper())
 
     const result = await ec2Service.getUsage(new Date('2020-07-11T00:00:00Z'), new Date('2020-07-11T02:00:00Z'))
@@ -233,7 +232,6 @@ describe('EC2', () => {
         ],
       }
       mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), response, metricDataQueries)
-
 
       const ec2Service = new EC2(getServiceWrapper())
 
