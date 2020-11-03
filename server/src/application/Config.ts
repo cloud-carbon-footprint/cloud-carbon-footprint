@@ -44,7 +44,7 @@ const appConfig: CCFConfig = {
       },
     },
     NAME: 'AWS',
-    CURRENT_REGIONS: ['us-east-1'],
+    CURRENT_REGIONS: ['us-east-1', 'us-east-2', 'us-west-1'],
     CURRENT_SERVICES: [
       {
         key: 'ebs',
