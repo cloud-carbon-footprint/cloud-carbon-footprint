@@ -19,8 +19,7 @@ export default class EC2 extends ServiceWithCPUUtilization {
 
   async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
     const response = await this.serviceWrapper.getQueryByInterval(30, this.runQuery, start, end)
-    const flattenedResp = response.reduce((acc, data) => [...data, ...acc], [])
-    return flattenedResp
+    return response.flat()
   }
 
   private runQuery = async (start: Date, end: Date): Promise<ComputeUsage[]> => {

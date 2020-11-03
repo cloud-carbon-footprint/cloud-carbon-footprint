@@ -42,17 +42,16 @@ export class ServiceWrapper {
     end: Date,
     ...args: any
   ): Promise<Array<any>> {
-    const startCopy = new Date(start)
-    const endCopy = new Date(new Date(start).setDate(start.getDate() + intervalInDays))
+    let startCopy = new Date(start)
+    let endCopy = new Date(new Date(start).setDate(start.getDate() + intervalInDays))
     const promiseArray = []
 
     while (endCopy < end) {
       promiseArray.push(func(startCopy, endCopy, ...args))
-      startCopy.setDate(startCopy.getDate() + intervalInDays)
-      endCopy.setDate(startCopy.getDate() + intervalInDays)
+      startCopy = new Date(new Date(startCopy).setDate(start.getDate() + intervalInDays))
+      endCopy = new Date(new Date(startCopy).setDate(start.getDate() + intervalInDays))
     }
     promiseArray.push(func(startCopy, end, ...args))
-
     return Promise.all(promiseArray)
   }
 
