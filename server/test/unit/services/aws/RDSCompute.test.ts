@@ -279,7 +279,7 @@ describe('RDS Compute', function () {
   })
 })
 
-function buildCloudwatchCPUUtilizationResponse(timestamps: Date[], values: number[], statusCode: String = 'Complete') {
+function buildCloudwatchCPUUtilizationResponse(timestamps: Date[], values: number[], statusCode = 'Complete') {
   return {
     MetricDataResults: [
       {

@@ -314,7 +314,7 @@ describe('ElastiCache', () => {
     ])
   })
 
-  it('should throw PartialData when AWS returns PartialData', async ()=>{
+  it('should throw PartialData when AWS returns PartialData', async () => {
     const response: any = {
       MetricDataResults: [
         {
@@ -322,7 +322,7 @@ describe('ElastiCache', () => {
           Label: 'cpuUtilization',
           Timestamps: [new Date(startDate + 'T22:00:00.000Z'), new Date(startDate + 'T22:06:00.000Z')],
           Values: [50, 70],
-          StatusCode: 'PartialData'
+          StatusCode: 'PartialData',
         },
       ],
     }
@@ -370,7 +370,6 @@ describe('ElastiCache', () => {
     await expect(getUsageByHour).rejects.toThrow('Partial Data Returned from AWS')
   })
 })
-
 
 function costExplorerRequest(startDate: string, endDate: string, region: string) {
   return {

@@ -9,13 +9,12 @@ import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwa
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 import { PartialDataError } from '@application/CreateValidRequest'
 
-
 export class ServiceWrapper {
   constructor(
     private readonly cloudWatch: CloudWatch,
     private readonly cloudWatchLogs: CloudWatchLogs,
-    private readonly costExplorer: CostExplorer
-  ) { }
+    private readonly costExplorer: CostExplorer,
+  ) {}
 
   private async getCostAndUsageResponse(
     params: CostExplorer.GetCostAndUsageRequest,
@@ -26,12 +25,11 @@ export class ServiceWrapper {
   private async getMetricDataResponse(
     params: CloudWatch.GetMetricDataInput,
   ): Promise<CloudWatch.GetMetricDataOutput[]> {
-
     return [await this.cloudWatch.getMetricData(params).promise()]
   }
 
   private checkForPartialData = (array: Array<MetricDataResult>) => {
-    const isPartialData = array.some((obj: MetricDataResult) => obj.StatusCode === "PartialData")
+    const isPartialData = array.some((obj: MetricDataResult) => obj.StatusCode === 'PartialData')
     if (isPartialData) {
       throw new PartialDataError('Partial Data Returned from AWS')
     }
@@ -57,7 +55,6 @@ export class ServiceWrapper {
 
     return Promise.all(promiseArray)
   }
-  
 
   public async getCloudWatchLogQueryResults(
     params: CloudWatchLogs.GetQueryResultsRequest,
