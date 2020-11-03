@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "docsify-cli": "^4.4.1",
     "husky": "^4.2.5",
     "lerna": "^3.22.1"
   },
@@ -16,7 +17,8 @@
     "lint": "lerna run lint --parallel",
     "start": "lerna run start --stream",
     "test": "lerna run test --parallel",
-    "deploy": "cd terraform && ./run.sh apply "
+    "deploy": "cd terraform && ./run.sh apply",
+    "docs": "docsify serve --port 3001"
   },
   "dependencies": {
     "googleapis": "^63.0.0"
