@@ -77,8 +77,11 @@
     "prettier": "^2.1.2"
   },
   "lint-staged": {
-    "*.{js,jsx,md,ts,tsx}": [
+    "*.{js,jsx,ts,tsx}": [
       "npm run lint",
+      "prettier --write --ignore-unknown --config ../.prettierrc.json"
+    ],
+    "*.{md}": [
       "prettier --write --ignore-unknown --config ../.prettierrc.json"
     ]
   }

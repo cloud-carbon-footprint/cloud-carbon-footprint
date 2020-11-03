@@ -26,7 +26,14 @@ npm run bootstrap
 
 This will install dependencies in both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
 
-# AWS Authentication 
+## Serve the documentation
+ From the root directory, run the command from the terminal
+```
+ npm run docs
+```
+This will serve the docs and give an url where you can visit and see the documentation
+
+## AWS Authentication 
 
 We currently support three modes of authentication with AWS, that you can see in [server/src/application/AWSCredentialsProvider.ts](server/src/application/AWSCredentialsProvider.ts):
 
@@ -127,5 +134,5 @@ npm run deploy
 
 Make sure CostExplorer is enabled. Also ensure your AWS credentials, region, and profile are pointing to the right place (see: your [AWS config and credentials files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)).
 
-##License
+## License
 © 2020 ThoughtWorks, Inc. All rights reserved.
