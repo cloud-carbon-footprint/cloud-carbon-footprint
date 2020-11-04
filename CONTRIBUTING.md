@@ -3,6 +3,14 @@
 ## CI Pipeline
 
 We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pipelines/github/twlabs/cloud-carbon-footprint).
+## Linting
+- We are using `prettier` in the project
+- To avoid the hassle of manually linting the file, you can configure your IDE to automatically run the
+linter.
+- If you are using Webstorm, check out [this](https://prettier.io/docs/en/webstorm.html) guide on how to 
+   set it up
+- The prettier rules set up for the project are in `.prettierrc.json` file in the root DIR
+- Following the above rules is a pre-requisite for committing any code.
 
 ## To commit and push
 
@@ -25,12 +33,21 @@ Check the [CI pipeline builds](https://app.circleci.com/pipelines/github/twlabs/
 ## To run all tests
 
 - Run `npm test` from the root directory.
+- If you are missing a test file in the coverage report, you may need to clear the test cache by running 
+  `npm run test:clean` from the client and / or server DIR.
+  
+  This is also one of the pre-commit hook but it is also advisable to run it at least once a week.
+  
 
 ## Package management
 
 - We use NPM for package management.
 - To install a new package, use `npm install --save package-name` inside either the client or server directory.
-- Use `npm run bootstrap` at the root directory to have all packages installed. Alternatively, run `npm ci` in the client and server directory.
+- Use `npm run bootstrap` at the root directory to have all packages installed and updated. 
+- Alternatively, run `npm ci` in the client and server directory.
+
+  ### Updating Packages
+- To update a single module, use the command `npm update <package -name>`
 
 ## Module Aliasing
 
@@ -40,5 +57,15 @@ We've set up module aliasing within the src folder, so modules within the subfol
 
 We record any significant architectural choices we make with lightweight adr files, located in the .adr folder. There is a template included as well. For more information about Lightweight ADR's, see [ThoughtWork's Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records).
 
-## License
-© 2020 ThoughtWorks, Inc. All rights reserved.
+## Architecture Diagrams
+
+![Architecture-Diagram](/Architecture-Diagram.png)
+
+![Data-Diagram](/Dataflow-diagram.png)
+
+### Tech Stack and Development Tools
+
+![tech-stack](/Tech-Stack.png)
+
+License <br />
+  © 2020 ThoughtWorks, Inc. All rights reserved.

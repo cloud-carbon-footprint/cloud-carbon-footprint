@@ -135,4 +135,5 @@ npm run deploy
 Make sure CostExplorer is enabled. Also ensure your AWS credentials, region, and profile are pointing to the right place (see: your [AWS config and credentials files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)).
 
 ## License
+     
 © 2020 ThoughtWorks, Inc. All rights reserved.
