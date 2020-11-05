@@ -8,6 +8,6 @@ fileignoreconfig:
 - filename: server/create_server_env_file.sh
   checksum: 2f66525e362c198bb229fe86a41e77c6cafec979ab9a15fc074c05a2f6144a39
 - filename: server/package-lock.json
-  checksum: f6e9b245296474d0ab2789c45e61693a4ba4e13828fc55c2bc34b5162d35f64e
+  checksum: 7ff3de1365ace3c7e4b9c12f5dee4ca5b20f4f4c4a69813b61e13aaca9817352
 - filename: server/test/unit/application/GCPAccount.test.ts
   checksum: 46cae8de6faed6bf0a78db1a91196f0f086019e41fce734324ba8c157abbcf0b
