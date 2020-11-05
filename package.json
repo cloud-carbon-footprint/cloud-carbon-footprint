@@ -19,9 +19,5 @@
     "test": "lerna run test --parallel",
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001"
-  },
-  "dependencies": {
-    "googleapis": "^63.0.0",
-    "@types/react-router-dom": "^5.1.6"
   }
 }
