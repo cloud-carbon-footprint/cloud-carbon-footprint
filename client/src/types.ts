@@ -14,7 +14,6 @@ export interface serviceEstimate {
 export interface ServiceResult {
   data: EstimationResult[]
   loading: boolean
-  error: boolean
 }
 
 export interface EstimationResult {
