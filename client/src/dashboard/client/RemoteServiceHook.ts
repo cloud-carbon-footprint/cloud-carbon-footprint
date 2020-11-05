@@ -37,8 +37,17 @@ const useRemoteService = (
         })
         setData(res.data)
       } catch (e) {
-        const { status, statusText } = e.response
-        setError({ status, statusText })
+        const DEFAULT_RESPONSE = {
+          status: '520',
+          statusText: 'Unknown Error',
+        }
+
+        if (e.response) {
+          const { status, statusText } = e.response
+          setError({ status, statusText })
+        } else {
+          setError(DEFAULT_RESPONSE)
+        }
       } finally {
         setLoading(false)
       }
