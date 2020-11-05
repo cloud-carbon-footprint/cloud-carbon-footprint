@@ -3,6 +3,9 @@
 ## CI Pipeline
 
 We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pipelines/github/twlabs/cloud-carbon-footprint).
+
+The following leads to [CircleCI Documentation](https://circleci.com/docs/)
+
 ## Linting
 - We are using `prettier` in the project
 - To avoid the hassle of manually linting the file, you can configure your IDE to automatically run the
@@ -57,9 +60,33 @@ We've set up module aliasing within the src folder, so modules within the subfol
 
 We record any significant architectural choices we make with lightweight adr files, located in the .adr folder. There is a template included as well. For more information about Lightweight ADR's, see [ThoughtWork's Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records).
 
-## Architecture Diagrams
+#### Hawkeye
+- Used to check node packaging and vulnerability
+- This will run along every precommit hook
+- to run isolated, cd into server or client and run: `npx hawkeye scan`
 
-![Architecture-Diagram](/Architecture-Diagram.png)
+#### Talisman
+- Used to check for potential secrets or sensitive information 
+- This will run along every precommit hook
+
+## Troubleshoot
+
+### Talisman
+#### Installing
+- If you are receiving the following error, you may have installed Talisman wrong 
+`sh: /talisman_hook_script: No such file or directory error.`
+- To resolve check your env var by `echo $TALISMAN_HOME`, if it is installed correctly it will echo out a 
+path `/Users/username/.talisman/bin`. If not, please refer to the README.md for instructions to install talisman
+- If this variable is set, check to make sure you have the /talisman_hook_script within that directory
+
+#### Overwritting Checks
+- If there is an invalid check from Talisman, the failed commit will contain a checksum that you can add to 
+the .talismanrc, which will allow it to pass for that commit.
+- However this checksum is only valid for that specific commit, if the file changed, and it has a talisman check, it 
+will run a new checksum for the .talismanrc that will have to be updated
+
+
+## Architecture Diagrams
 
 ![Data-Diagram](/Dataflow-diagram.png)
 
@@ -67,5 +94,4 @@ We record any significant architectural choices we make with lightweight adr fil
 
 ![tech-stack](/Tech-Stack.png)
 
-License <br />
-  © 2020 ThoughtWorks, Inc. All rights reserved.
+© 2020 ThoughtWorks, Inc. All rights reserved.
