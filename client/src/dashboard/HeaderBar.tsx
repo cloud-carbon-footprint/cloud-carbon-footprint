@@ -1,7 +1,11 @@
-import { AppBar, Toolbar, Typography} from '@material-ui/core'
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
+import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,18 +15,18 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const HeaderBar = () => {
-    const classes = useStyles()
+const HeaderBar = (): ReactElement => {
+  const classes = useStyles()
 
-    return (
-        <AppBar position="sticky" square={true} className={classes.appBar}>
-        <Toolbar>
-            <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                <Typography component="h1" variant="h5">
-                    Cloud Carbon Footprint
-                </Typography>
-            </Link>
-        </Toolbar>
+  return (
+    <AppBar position="sticky" square={true} className={classes.appBar}>
+      <Toolbar>
+        <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+          <Typography component="h1" variant="h5">
+            Cloud Carbon Footprint
+          </Typography>
+        </Link>
+      </Toolbar>
     </AppBar>
   )
 }
