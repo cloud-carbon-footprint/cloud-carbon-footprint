@@ -29,7 +29,7 @@ describe('CloudCarbonContainer', () => {
   beforeEach(() => {
     data = generateEstimations(moment.utc(), 14)
 
-    const mockReturnValue: ServiceResult = { loading: false, error: false, data: data }
+    const mockReturnValue: ServiceResult = { loading: false, data: data }
     mockUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
@@ -61,7 +61,7 @@ describe('CloudCarbonContainer', () => {
   })
 
   test('show loading icon if data has not been returned', () => {
-    const mockLoading: ServiceResult = { loading: true, error: false, data: data }
+    const mockLoading: ServiceResult = { loading: true, data: data }
     mockUseRemoteService.mockReturnValue(mockLoading)
 
     const { getByRole } = render(<CloudCarbonContainer />)
