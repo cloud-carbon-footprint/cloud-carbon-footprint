@@ -10,12 +10,10 @@ import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
 import { CarbonFormulaDrawer } from './dashboard/CarbonFormulaDrawer'
 import HeaderBar from './dashboard/HeaderBar'
 
-
 function App(): ReactElement {
-
   return (
     <>
-      <HeaderBar/>
+      <HeaderBar />
 
       <Container maxWidth={'xl'}>
         <Switch>

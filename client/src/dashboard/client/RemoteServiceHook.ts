@@ -17,7 +17,7 @@ const useRemoteService = (
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
 
-  const {handleApiError, error, setError} = useErrorHandling()
+  const { handleApiError, error, setError } = useErrorHandling()
 
   const start: string = startDate.format('YYYY-MM-DD').toString()
   const end: string = endDate.format('YYYY-MM-DD').toString()
@@ -43,7 +43,7 @@ const useRemoteService = (
         setLoading(false)
       }
     }
-    
+
     fetchEstimates()
   }, [end, start, region, setError])
 
