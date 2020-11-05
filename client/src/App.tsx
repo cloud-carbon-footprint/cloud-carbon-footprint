@@ -3,34 +3,30 @@
  */
 
 import React, { ReactElement } from 'react'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { AppBar, Container, Toolbar, Typography } from '@material-ui/core'
+import { Container } from '@material-ui/core'
+import { Switch, Route } from 'react-router-dom'
+import ErrorPage from './dashboard/ErrorPage'
 import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
 import { CarbonFormulaDrawer } from './dashboard/CarbonFormulaDrawer'
+import HeaderBar from './dashboard/HeaderBar'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
-  }),
-)
 
 function App(): ReactElement {
-  const classes = useStyles()
 
   return (
     <>
-      <AppBar position="sticky" square={true} className={classes.appBar}>
-        <Toolbar>
-          <Typography component="h1" variant="h5">
-            Cloud Carbon Footprint
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <CarbonFormulaDrawer />
+      <HeaderBar/>
+
       <Container maxWidth={'xl'}>
-        <CloudCarbonContainer />
+        <Switch>
+          <Route path="/error" exact>
+            <ErrorPage />
+          </Route>
+          <Route path="/">
+            <CarbonFormulaDrawer />
+            <CloudCarbonContainer />
+          </Route>
+        </Switch>
       </Container>
     </>
   )

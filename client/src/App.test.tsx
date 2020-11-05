@@ -9,6 +9,7 @@ import generateEstimations from './data/generateEstimations'
 import moment from 'moment'
 import useRemoteService from './dashboard/client/RemoteServiceHook'
 import { ServiceResult } from './types'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('./dashboard/client/RemoteServiceHook')
 jest.mock('./themes')
@@ -25,12 +26,12 @@ const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof us
 
 describe('App', () => {
   beforeEach(() => {
-    const mockReturnValue: ServiceResult = { loading: false, error: false, data: generateEstimations(moment.utc(), 14) }
+    const mockReturnValue: ServiceResult = { loading: false, data: generateEstimations(moment.utc(), 14) }
     mockedUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
   it('renders the page title', () => {
-    const { getByText } = render(<App />)
+    const { getByText } = render(<MemoryRouter><App /></MemoryRouter>)
     const linkElement = getByText(/Cloud Carbon Footprint/i)
     expect(linkElement).toBeInTheDocument()
   })
