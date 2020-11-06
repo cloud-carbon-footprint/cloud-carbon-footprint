@@ -12,7 +12,7 @@ import moment from 'moment'
 import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
-import { sumServiceTotals, sumMaxCo2e } from '../transformData'
+import { sumServiceTotals, getMaxOfDataSeries } from '../transformData'
 import { EstimationResult } from '../../types'
 
 const formatDateToTime = (timestamp: string | Date) =>
@@ -43,8 +43,12 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const co2SeriesData = cloudEstimationData.co2Series
   const wattHoursSeriesData = cloudEstimationData.wattHoursSeries
   const costSeriesData = cloudEstimationData.costSeries
-  const maxCO2e = sumMaxCo2e(co2SeriesData)
+  const maxCO2e = getMaxOfDataSeries(co2SeriesData)
+  const maxWattHours = getMaxOfDataSeries(wattHoursSeriesData)
+  const maxCost = getMaxOfDataSeries(costSeriesData)
   const [getMaxCo2] = useState(maxCO2e)
+  const [getMaxWattHours] = useState(maxWattHours)
+  const [getMaxCost] = useState(maxCost)
 
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
@@ -132,6 +136,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         decimalsInFloat: 3,
       },
       {
+        max: getMaxWattHours,
         title: {
           text: 'Watt hours (Wh)',
           opposite: -8,
@@ -152,6 +157,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         showAlways: false,
       },
       {
+        max: getMaxCost,
         title: {
           text: 'Cost ($)',
           offsetX: -8,

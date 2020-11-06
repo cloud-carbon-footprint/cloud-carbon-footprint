@@ -112,6 +112,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
+          "max": 0,
           "opposite": true,
           "showAlways": false,
           "title": Object {
@@ -132,6 +133,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
+          "max": 0,
           "opposite": true,
           "showAlways": false,
           "title": Object {

@@ -51,9 +51,9 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
   }
 }
 
-export const sumMaxCo2e = (co2Series: cloudEstPerDay[]): number => {
+export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
   return Math.max(
-    ...co2Series.map((dataPair) => {
+    ...series.map((dataPair) => {
       return dataPair.y
     }),
   )
