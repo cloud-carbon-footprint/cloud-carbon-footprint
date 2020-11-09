@@ -6,6 +6,13 @@ We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pi
 
 The following leads to [CircleCI Documentation](https://circleci.com/docs/)
 
+## Webstorm IDE Development Configurations
+-  Open the TypeScript tool window (View | Tool Windows | TypeScript) and switch to the Errors tab.
+The tab lists the discrepancies in the code detected by the TypeScript Language Service. The list is updated dynamically as you change your code for easier and faster debugging.  
+
+- You can also monitor compilation errors by going to the TypeScript tool window (View | Tool Windows | TypeScript),
+and switching to the Compile errors tab which shows up only after first manual compilation, when you click the :hammer: button and select the compilation scope.
+
 ## Linting
 - We are using `prettier` in the project
 - To avoid the hassle of manually linting the file, you can configure your IDE to automatically run the
