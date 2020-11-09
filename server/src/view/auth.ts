@@ -21,7 +21,7 @@ export default async function (req: express.Request, res: express.Response, next
     authLogger.info('Authentication successful')
     next()
   } catch (e) {
-    authLogger.error(`Authentication failed. Error: ${e.message}`)
+    authLogger.error(`Authentication failed. Error: ${e.message}`, e)
     res.status(401).send('Unauthorized')
   }
 }

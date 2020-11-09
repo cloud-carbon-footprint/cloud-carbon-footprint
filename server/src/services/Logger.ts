@@ -83,8 +83,7 @@ export default class Logger implements ILogger {
     this.logger.warn(message)
   }
 
-  error(message: string): void {
-    this.logger.exceptions ? (message += JSON.stringify(this.logger.exceptions.getTrace(new Error(message)))) : ''
-    this.logger.error(message)
+  error(message: string, error: Error): void {
+    this.logger.error(message + error.stack)
   }
 }

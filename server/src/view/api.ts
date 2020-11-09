@@ -33,7 +33,7 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
     const estimationResults = await footprintApp.getCostAndEstimates(estimationRequest)
     res.json(estimationResults)
   } catch (e) {
-    apiLogger.error(`Unable to process footprint request. Error: ${e.message}`)
+    apiLogger.error(`Unable to process footprint request.`, e)
     if (e instanceof EstimationRequestValidationError) {
       res.status(400).send(e.message)
     } else if (e instanceof PartialDataError) {
