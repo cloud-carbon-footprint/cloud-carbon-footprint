@@ -13,6 +13,9 @@ The tab lists the discrepancies in the code detected by the TypeScript Language 
 - You can also monitor compilation errors by going to the TypeScript tool window (View | Tool Windows | TypeScript),
 and switching to the Compile errors tab which shows up only after first manual compilation, when you click the :hammer: button and select the compilation scope.
 
+## VSCode IDE Development Configurations
+- To run test on IDE, install the extension, `Jest Runner`, from marketplace
+
 ## Linting
 - We are using `prettier` in the project
 - To avoid the hassle of manually linting the file, you can configure your IDE to automatically run the
@@ -77,6 +80,13 @@ We record any significant architectural choices we make with lightweight adr fil
 - This will run along every precommit hook
 
 ## Troubleshoot
+
+### Cloud Provider
+
+#### GCP
+If GCP credentials are not linked properly, there may be an error regarding AWS credentials not being set properly. This
+has been caused by either out of date credentials on GCP, or the GCP credentials not being set properly on the local 
+environment
 
 ### Talisman
 #### Installing
