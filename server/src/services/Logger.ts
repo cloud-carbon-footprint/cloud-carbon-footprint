@@ -20,14 +20,8 @@ enum LOGGING_LEVELS {
 export default class Logger implements ILogger {
   private logger: WinstonLogger
 
-  private readonly format = printf(({ level, message, label, timestamp, err = {} }) => {
-    if (level === LOGGING_LEVELS.ERROR) {
-      return `${timestamp} [${label}] ${level}: ${message} Stacktrace: ${JSON.stringify(
-        this.logger.exceptions.getTrace(err),
-      )}`
-    } else {
-      return `${timestamp} [${label}] ${level}: ${message}`
-    }
+  private readonly format = printf(({ level, message, label, timestamp }) => {
+    return `${timestamp} [${label}] ${level}: ${message} `
   })
 
   constructor(logLabel: string) {
@@ -90,6 +84,7 @@ export default class Logger implements ILogger {
   }
 
   error(message: string): void {
+    this.logger.exceptions ? (message += JSON.stringify(this.logger.exceptions.getTrace(new Error(message)))) : ''
     this.logger.error(message)
   }
 }
