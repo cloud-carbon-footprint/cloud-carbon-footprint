@@ -31,6 +31,7 @@ import mockConfig from '@application/Config'
 
 describe('Logger', () => {
   const testMessage = 'test log message'
+  const testErr = new Error('error test message')
 
   describe('Default logger', () => {
     const testLogger = new Logger('test')
@@ -65,10 +66,10 @@ describe('Logger', () => {
 
     it('logs error', () => {
       // when
-      testLogger.error(testMessage)
+      testLogger.error(testMessage, testErr)
 
       // then
-      expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+      expect(mockLogger.error).toHaveBeenCalledWith(`${testMessage}${testErr.stack}`)
     })
   })
 
@@ -106,21 +107,21 @@ describe('Logger', () => {
 
     it('logs error', () => {
       // when
-      testLogger.error(testMessage)
+      testLogger.error(testMessage, testErr)
       const mockErr = Object.getPrototypeOf(testLogger)
 
       // then
-      expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+      expect(mockLogger.error).toHaveBeenCalledWith(`${testMessage}${testErr.stack}`)
       expect(mockErr.getLogLevel('test')).toEqual('debug')
     })
 
     it('Info Log Info', () => {
       // when
-      testLogger.error(testMessage)
+      testLogger.error(testMessage, testErr)
       const mockErr = Object.getPrototypeOf(testLogger)
 
       // then
-      expect(mockLogger.error).toHaveBeenCalledWith(testMessage)
+      expect(mockLogger.error).toHaveBeenCalledWith(`${testMessage}${testErr.stack}`)
       expect(mockErr.getLogLevel('otherTestEnv')).toEqual('info')
     })
   })
