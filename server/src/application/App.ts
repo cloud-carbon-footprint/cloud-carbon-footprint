@@ -38,7 +38,11 @@ export default class App {
           .flat(),
       )
       const GCPEstimatesByRegion = await Promise.all(
-        new GCPAccount(GCP.CURRENT_REGIONS).getDataForRegions(startDate, endDate),
+        GCP.projects
+          .map((project) => {
+            return new GCPAccount(project.id, project.name, GCP.CURRENT_REGIONS).getDataForRegions(startDate, endDate)
+          })
+          .flat(),
       )
       return reduceByTimestamp(AWSEstimatesByRegion.flat().concat(GCPEstimatesByRegion.flat()))
     }

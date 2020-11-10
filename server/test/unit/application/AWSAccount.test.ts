@@ -128,6 +128,6 @@ function expectAWSService(key: string) {
   ]
   const testRegion = 'some-region'
   const AWSAccount = require('@application/AWSAccount').default
-  const services = new AWSAccount('12345678', [testRegion]).getServices(testRegion)
+  const services = new AWSAccount('12345678', 'test account', [testRegion]).getServices(testRegion)
   return expect(services[0])
 }

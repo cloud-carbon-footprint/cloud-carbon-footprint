@@ -23,12 +23,28 @@ export interface CCFConfig {
     NAME: string
     CURRENT_SERVICES: { key: string; name: string }[]
     CURRENT_REGIONS: string[]
+    projects?: {
+      id: string
+      name?: string
+    }[]
+    authentication?: {
+      targetAccountEmail?: string
+      targetAccountPrivateKey?: string
+    }
   }
   LOGGING_MODE?: string
 }
 
 const getAWSAccounts = () => {
   return process.env.AWS_ACCOUNTS ? process.env.AWS_ACCOUNTS : '[]'
+}
+
+const getGCPProjects = () => {
+  return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
+}
+
+const escapePrivateKey = (privateKey: string) => {
+  return privateKey.replace(/\\n/g, '\n')
 }
 
 const appConfig: CCFConfig = {
@@ -73,6 +89,7 @@ const appConfig: CCFConfig = {
     ],
   },
   GCP: {
+    projects: JSON.parse(getGCPProjects()) || [],
     NAME: 'GCP',
     CURRENT_REGIONS: ['us-east1', 'us-central1', 'us-west1'],
     CURRENT_SERVICES: [
@@ -81,6 +98,10 @@ const appConfig: CCFConfig = {
         name: 'ComputeEngine',
       },
     ],
+    authentication: {
+      targetAccountEmail: process.env.GCP_TARGET_ACCOUNT_EMAIL || '',
+      targetAccountPrivateKey: escapePrivateKey(process.env.GCP_TARGET_ACCOUNT_PRIVATE_KEY) || '',
+    },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
 }

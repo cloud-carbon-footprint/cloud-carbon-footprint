@@ -15,6 +15,10 @@ jest.mock('@google-cloud/monitoring', () => {
 })
 
 describe('GCPAccount', () => {
+  const projectId = 'test-project'
+  const targetAccountEmail = 'test@test.com'
+  const targetAccountPrivateKey = 'test'
+
   /* eslint-disable @typescript-eslint/no-var-requires */
   afterEach(() => {
     jest.restoreAllMocks()
@@ -41,7 +45,10 @@ describe('GCPAccount', () => {
   it('should return computeEngine instance and inject MetricServiceClient', () => {
     const ComputeEngine = require('@services/gcp/ComputeEngine').default
     expectGCPService('computeEngine').toBeInstanceOf(ComputeEngine)
-    expect(mockMetricServiceClient).toHaveBeenCalled()
+    expect(mockMetricServiceClient).toHaveBeenCalledWith({
+      projectId: projectId,
+      credentials: { client_email: targetAccountEmail, private_key: targetAccountPrivateKey },
+    })
   })
 })
 
@@ -53,7 +60,12 @@ function expectGCPService(key: string) {
     },
   ]
 
+  mockConfig.GCP.authentication = {
+    targetAccountEmail: 'test@test.com',
+    targetAccountPrivateKey: 'test',
+  }
+
   const GCPAccount = require('@application/GCPAccount').default
-  const services = new GCPAccount(['us-east1']).getServices()
+  const services = new GCPAccount('test-project', 'test project', ['us-east1']).getServices()
   return expect(services[0])
 }
