@@ -79,6 +79,10 @@ We record any significant architectural choices we make with lightweight adr fil
 - Used to check for potential secrets or sensitive information 
 - This will run along every precommit hook
 
+####Cleaning up Local
+ server/logs contain the log files that written to by the logger. This should be deleted occasionally, otherwise it will 
+ become infinitely large.
+
 ## Troubleshoot
 
 ### Cloud Provider
