@@ -4,7 +4,7 @@
 
 This is an application that calculates the emissions of AWS services in realtime of an AWS account, given a start and end UTC dates (within the past year).
 
-There core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `server/`, and the website is split between `server/` and `client/`
+The core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `server/`, and the website is split between `server/` and `client/`
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ There core logic is exposed through 2 applications: a CLI and a website. The CLI
 - Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
 - Docker `brew cask install docker`
 - AWS CLI `brew install awscli`
-- Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/) 
+- Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/) (for Mac download the darwin_amd64 zip)
 - Talisman `curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
 - docker-compose (should be bundled with Docker if you installed it on a Mac)
 
@@ -56,7 +56,7 @@ You can read more about this mode of authentication in [.adr/adr_5_aws_authentic
 
 ### GCP Credentials
 
-- request service account credentials from Dan
+- You'll need your team's (or your own) GCP service account credentials stored on your filesystem
 - set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
 see https://cloud.google.com/docs/authentication/getting-started for more details.
 
@@ -73,7 +73,7 @@ npm start
 
 ### Client and Server (with live data)
 Make sure you have configured your GCP and AWS credentials (see above)
-> :warning: **This will incure cost**: Data will come from AWS and will cost money to our project. Use this sparingly if you wish to test with live data. If not, use the command above
+> :warning: **This will incure cost**: Data will come from AWS and will cost money to your project. Use this sparingly if you wish to test with live data. If not, use the command above
 
 ```
 npm start
