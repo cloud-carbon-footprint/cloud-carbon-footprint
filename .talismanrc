@@ -6,7 +6,7 @@ fileignoreconfig:
 - filename: client/src/dashboard/transformData.tsx
   checksum: 5ff6b93735fe3603effb080e1de35450f41be95361fe8170ba64f88dd5c4fbac
 - filename: server/create_server_env_file.sh
-  checksum: 2f66525e362c198bb229fe86a41e77c6cafec979ab9a15fc074c05a2f6144a39
+  checksum: e456d6a6ddfecaadaefc0811847aad51685d7d5d1fc347fb6a24b87f1fcf32cf
 - filename: server/package-lock.json
   checksum: 7ff3de1365ace3c7e4b9c12f5dee4ca5b20f4f4c4a69813b61e13aaca9817352
 - filename: server/src/application/Config.ts
