@@ -9,5 +9,11 @@ fileignoreconfig:
   checksum: 2f66525e362c198bb229fe86a41e77c6cafec979ab9a15fc074c05a2f6144a39
 - filename: server/package-lock.json
   checksum: 7ff3de1365ace3c7e4b9c12f5dee4ca5b20f4f4c4a69813b61e13aaca9817352
+- filename: server/src/application/Config.ts
+  checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
+- filename: server/src/application/GCPAccount.ts
+  checksum: 0aa3c4064e5899324fa7d7f6053c28ab474a320fbdc3656311ebe0eb27fff1c5
+- filename: server/test/unit/application/App.test.ts
+  checksum: 4c8490529e4a8022b3f5155ec08719aa1451e947cd36b73696a8264a28b64fce
 - filename: server/test/unit/application/GCPAccount.test.ts
-  checksum: 46cae8de6faed6bf0a78db1a91196f0f086019e41fce734324ba8c157abbcf0b
+  checksum: 17163b2209a5d6abf5c8ae70d6d2aa07f7b1830223ea8d0ffbce737eb502dfe3

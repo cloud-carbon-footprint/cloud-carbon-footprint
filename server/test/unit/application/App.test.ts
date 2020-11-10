@@ -34,19 +34,26 @@ describe('App', () => {
     endDate: moment(endDate).add(1, 'weeks').toDate(),
     region: region,
   }
+  const testAwsAccountName = 'test AWS account'
+  const testGcpAccountName = 'test GCP account'
 
   beforeEach(() => {
     ;(config as jest.Mock).mockReturnValue({
       AWS: {
-        accounts: [{ id: '12345678', name: 'test account' }],
+        accounts: [{ id: '12345678', name: 'test AWS account' }],
         NAME: 'AWS',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
       },
       GCP: {
+        projects: [
+          { id: '987654321', name: 'test GCP account' },
+          { id: '987654321', name: 'test GCP account 2' },
+        ],
         NAME: 'GCP',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east1', 'us-west1', 'us-central1'],
+        authentication: { targetAccountEmail: 'test', targetAccountPrivateKey: 'test' },
       },
     })
     app = new App()
@@ -84,7 +91,7 @@ describe('App', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
-              accountName: 'test account',
+              accountName: testAwsAccountName,
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -155,7 +162,7 @@ describe('App', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
-              accountName: 'test account',
+              accountName: testAwsAccountName,
               serviceName: 'serviceOne',
               wattHours: 2,
               co2e: 2,
@@ -165,7 +172,7 @@ describe('App', () => {
             },
             {
               cloudProvider: 'AWS',
-              accountName: 'test account',
+              accountName: testAwsAccountName,
               serviceName: 'serviceTwo',
               wattHours: 1,
               co2e: 1,
@@ -210,7 +217,7 @@ describe('App', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
-              accountName: 'test account',
+              accountName: testAwsAccountName,
               serviceName: 'serviceOne',
               wattHours: 3,
               co2e: 6,
@@ -267,7 +274,7 @@ describe('App', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
-              accountName: 'test account',
+              accountName: testAwsAccountName,
               serviceName: 'ebs',
               wattHours: 1.0944,
               co2e: 0.0007737845760000001,
@@ -312,7 +319,7 @@ describe('App', () => {
         serviceEstimates: [
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -322,7 +329,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -400,7 +407,7 @@ describe('App', () => {
         serviceEstimates: [
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -410,7 +417,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -420,7 +427,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -430,7 +437,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -448,7 +455,7 @@ describe('App', () => {
     expect(result).toEqual(expectedEstimationResults)
   })
 
-  it('returns estimates for multiple regions in multiple cloud providers', async () => {
+  it('returns estimates for multiple regions and accounts in multiple cloud providers', async () => {
     const mockGetAWSEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
     setUpServices(getServices as jest.Mock, [mockGetAWSEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
 
@@ -488,7 +495,7 @@ describe('App', () => {
         serviceEstimates: [
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -498,7 +505,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
-            accountName: 'test account',
+            accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             wattHours: 3,
             co2e: 6,
@@ -508,7 +515,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'GCP',
-            accountName: undefined,
+            accountName: testGcpAccountName,
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -518,7 +525,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'GCP',
-            accountName: undefined,
+            accountName: testGcpAccountName,
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -528,7 +535,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'GCP',
-            accountName: undefined,
+            accountName: testGcpAccountName,
             serviceName: 'serviceTwo',
             wattHours: 4,
             co2e: 8,
@@ -536,16 +543,52 @@ describe('App', () => {
             region: 'us-central1',
             usesAverageCPUConstant: false,
           },
+          {
+            accountName: 'test GCP account 2',
+            cloudProvider: 'GCP',
+            co2e: 8,
+            cost: 0,
+            region: 'us-east1',
+            serviceName: 'serviceTwo',
+            usesAverageCPUConstant: false,
+            wattHours: 4,
+          },
+          {
+            accountName: 'test GCP account 2',
+            cloudProvider: 'GCP',
+            co2e: 8,
+            cost: 0,
+            region: 'us-west1',
+            serviceName: 'serviceTwo',
+            usesAverageCPUConstant: false,
+            wattHours: 4,
+          },
+          {
+            accountName: 'test GCP account 2',
+            cloudProvider: 'GCP',
+            co2e: 8,
+            cost: 0,
+            region: 'us-central1',
+            serviceName: 'serviceTwo',
+            usesAverageCPUConstant: false,
+            wattHours: 4,
+          },
         ],
       },
     ]
 
+    expect(mockGetAWSEstimates).toHaveBeenCalledTimes(2)
     expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'AWS')
     expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'AWS')
 
+    expect(mockGetGCPEstimates).toHaveBeenCalledTimes(6)
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east1', 'GCP')
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-west1', 'GCP')
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(3, new Date(start), new Date(end), 'us-central1', 'GCP')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(4, new Date(start), new Date(end), 'us-east1', 'GCP')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(5, new Date(start), new Date(end), 'us-west1', 'GCP')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(6, new Date(start), new Date(end), 'us-central1', 'GCP')
+
     expect(result).toEqual(expectedEstimationResults)
   })
 })
