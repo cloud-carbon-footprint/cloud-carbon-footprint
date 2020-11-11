@@ -1,10 +1,14 @@
 fileignoreconfig:
+- filename: client/.env.template
+  checksum: f21fc3a24626cfa3da0bccf5b81ac5f7454bb36ea1d6e4df11a5519d20e23187
 - filename: client/package-lock.json
   checksum: 77feed62a98e978593492bf61ce2c1aa67354abf543d9ff37f3cad6da6eb62dc
 - filename: client/src/dashboard/filters/Filters.ts
   checksum: c9840931b210466d99b1d87b33570ec2367ac0842aa9d0776d5b08d78675a483
 - filename: client/src/dashboard/transformData.tsx
   checksum: 5ff6b93735fe3603effb080e1de35450f41be95361fe8170ba64f88dd5c4fbac
+- filename: server/.env.template
+  checksum: 3ed9c6df32c67c481317bb370933fcd56cee89ec36ce66cbf48040d0175bfc97
 - filename: server/create_server_env_file.sh
   checksum: e456d6a6ddfecaadaefc0811847aad51685d7d5d1fc347fb6a24b87f1fcf32cf
 - filename: server/package-lock.json
