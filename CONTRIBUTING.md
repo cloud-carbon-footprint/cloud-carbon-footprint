@@ -109,6 +109,9 @@ the .talismanrc, which will allow it to pass for that commit.
 - However this checksum is only valid for that specific commit, if the file changed, and it has a talisman check, it 
 will run a new checksum for the .talismanrc that will have to be updated
 
+### CircleCI
+- Sometimes the CircleCI build fails due to a `ENOMEM: not enough memory, read` error. This is a transient error and you can just restart the build from the last failed job.   
+
 ## Architecture Diagrams
 
 ![Data-Diagram](/Dataflow-diagram.png)
