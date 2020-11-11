@@ -28,10 +28,16 @@ export default class AWSAccount extends CloudProviderAccount {
     this.credentials = AWSCredentialsProvider.create(accountId)
   }
 
-  getDataForRegions(startDate: Date, endDate: Date): Promise<EstimationResult[]>[] {
-    return this.regions.map((regionId) => {
-      return this.getDataForRegion(regionId, startDate, endDate)
-    })
+  async getDataForRegions(startDate: Date, endDate: Date): Promise<EstimationResult[]> {
+    const results: EstimationResult[][] = []
+    for (const regionId of this.regions) {
+      const regionEstimates: EstimationResult[] = await Promise.all(
+        await this.getDataForRegion(regionId, startDate, endDate),
+      )
+      results.push(regionEstimates)
+    }
+
+    return results.flat()
   }
 
   getDataForRegion(regionId: string, startDate: Date, endDate: Date): Promise<EstimationResult[]> {
