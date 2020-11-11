@@ -44,7 +44,7 @@ We currently support three modes of authentication with AWS, that you can see in
 The authentication mode is set inside [server/src/application/Config.ts](server/src/application/Config.ts).
 
 [server/.env](server/.env) is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. 
-You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](.adr/adr_5_aws_authentication.txt)
+You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](.adr/adr_5_aws_authentication.txt), as well as this article: [https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/](https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/)
 
 ### AWS Credentials - only needed for the default authentication mode. 
  
@@ -61,6 +61,10 @@ You can read more about this mode of authentication in [.adr/adr_5_aws_authentic
 see https://cloud.google.com/docs/authentication/getting-started for more details.
 
 ## Run
+
+The application requires a number of environment variables to be set in the [server/.env](server/.env) file. See [server/.env.template](server/.env.template) for a template .env file. Rename this file as .env and then set the environment variables.
+
+There is also a [client/.env](client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](client/.env.template) for a template. It is not required for local development though. 
 
 ### Client and Server (with mock data)
 ```
@@ -122,16 +126,26 @@ npm run docker:cli -- <options>
    --format [table | csv]
    ```
 
-#### Deploy 
+# Deploy to Google App Engine
 
-To deploy server
+Cloud Carbon Footprint is configured to be deployed to [Google App Engine](https://cloud.google.com/appengine/) (standard environment) using Circle CI. See the [Hello World example](https://cloud.google.com/nodejs/getting-started/hello-world) for instructions on setting up a Google Cloud Platform project and installing the Google Cloud SDK to your local machine.
 
-```
-npm run deploy
-```
+Before deploying, you'll need to build the application and create the server/.env and client/.env file as detailed above. There are two scripts to populate these files as part of the Circle CI pipeline: [server/create_server_env_file.sh](server/create_server_env_file.sh) and [client/create_client_env_file.sh](client/create_client_env_file.sh).
 
-## Troubleshooting
+Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with
 
-Make sure CostExplorer is enabled. Also ensure your AWS credentials, region, and profile are pointing to the right place (see: your [AWS config and credentials files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)).
+`./appengine/deploy.sh`
+
+Or if you want to use CircleCI, you can see the configuration for this in [.circleci/config.yml](.circleci/config.yml).
+
+It will deploy to `https://<something>.appspot.com`.
+
+If you don't want to deploy the client application behind Okta, then the client/.env file is not needed, and the relevant code can be removed from [client/index.js](client/index.js).  
+
+## Deploy to other cloud providers
+
+Cloud Carbon Footprint should be deployable to other cloud providers such as [Heroku](https://www.heroku.com/) or [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). However only Google App Engine has been tested currently, so there may be some work involved in doing this. 
+
+Don't forget to deploy your .env file or otherwise set the environment variables in your deployment.
 
 © 2020 ThoughtWorks, Inc. All rights reserved.
