@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   filter: {
     marginRight: theme.spacing(0.5),
   },
+  loadingMessage: {
+    padding: theme.spacing(2),
+    fontSize: '24px',
+  },
 }))
 
 export default function CloudCarbonContainer(): ReactElement {
@@ -37,7 +41,12 @@ export default function CloudCarbonContainer(): ReactElement {
   const { data, loading } = useRemoteService([], startDate, endDate)
   const { filteredData, filters, setFilters } = useFilters(data)
 
-  return (
+  return loading ? (
+    <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+      <CircularProgress size={100} />
+      <div className={classes.loadingMessage}>Loading cloud data...</div>
+    </Grid>
+  ) : (
     <Box className={classes.boxContainer}>
       <Grid container>
         <Grid item xs={12}>
@@ -49,28 +58,24 @@ export default function CloudCarbonContainer(): ReactElement {
             ))}
           </div>
         </Grid>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Card style={{ width: '100%', height: '100%' }}>
-                <Box padding={3} paddingRight={4}>
-                  <ApexLineChart data={filteredData} />
-                  <Grid container justify="center">
-                    <div>*estimated with average CPU not actual CPU</div>
-                  </Grid>
-                </Box>
-              </Card>
-            </Grid>
-            <Grid item xs={6}>
-              <CarbonComparisonCard data={filteredData} />
-            </Grid>
-            <Grid item xs={6}>
-              <DonutChartTabs data={filteredData} />
-            </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Card style={{ width: '100%', height: '100%' }}>
+              <Box padding={3} paddingRight={4}>
+                <ApexLineChart data={filteredData} />
+                <Grid container justify="center">
+                  <div>*estimated with average CPU not actual CPU</div>
+                </Grid>
+              </Box>
+            </Card>
           </Grid>
-        )}
+          <Grid item xs={6}>
+            <CarbonComparisonCard data={filteredData} />
+          </Grid>
+          <Grid item xs={6}>
+            <DonutChartTabs data={filteredData} />
+          </Grid>
+        </Grid>
       </Grid>
     </Box>
   )
