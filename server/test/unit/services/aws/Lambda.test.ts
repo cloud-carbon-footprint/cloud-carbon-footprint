@@ -30,14 +30,14 @@ describe('Lambda', () => {
   const queryResponse = {
     queryId: '321db1cd-5790-47aa-a3ab-e5036ffdd16f',
   }
-  const logGroup = {
-    logGroupName: '/aws/lambda/sample-function-name',
-  }
+  const logGroup = generateLogGroups(1).map((groupName) => ({
+    logGroupName: groupName,
+  }))
 
   const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
   it('gets Lambda usage for one function and one day', async () => {
-    const logGroups = [logGroup]
+    const logGroups = logGroup
     const results = {
       results: [
         [
@@ -71,7 +71,7 @@ describe('Lambda', () => {
   })
 
   it('gets Lambda usage for one function and two days', async () => {
-    const logGroups = [logGroup]
+    const logGroups = logGroup
     const results = {
       results: [
         [
@@ -120,12 +120,9 @@ describe('Lambda', () => {
   })
 
   it('gets results from 2 Lambda log group names', async () => {
-    const logGroups = [
-      logGroup,
-      {
-        logGroupName: '/aws/lambda/sample-function-name-2',
-      },
-    ]
+    const logGroups = generateLogGroups(2).map((groupName) => ({
+      logGroupName: groupName,
+    }))
     const results = {
       results: [
         [
@@ -164,7 +161,7 @@ describe('Lambda', () => {
         startTime: expect.anything(),
         endTime: expect.anything(),
         queryString: expect.anything(),
-        logGroupNames: ['/aws/lambda/sample-function-name', '/aws/lambda/sample-function-name-2'],
+        logGroupNames: generateLogGroups(2),
       },
       expect.anything(),
     )
@@ -174,6 +171,68 @@ describe('Lambda', () => {
         timestamp: new Date(startDate),
         wattHours: 0.2,
         co2e: estimateCo2(0.2, 'AWS', region),
+      },
+      {
+        timestamp: new Date(startDate),
+        wattHours: 0.23,
+        co2e: estimateCo2(0.23, 'AWS', region),
+      },
+    ])
+  })
+
+  it('gets results from 21 Lambda log group names', async () => {
+    const logGroups = generateLogGroups(21).map((groupName) => ({
+      logGroupName: groupName,
+    }))
+    const results = {
+      results: [
+        [
+          {
+            field: 'Date',
+            value: startDate,
+          },
+          {
+            field: 'Watts',
+            value: '0.23',
+          },
+        ],
+      ],
+      status: 'Complete',
+    }
+
+    mockDescribeLogGroups(logGroups)
+    mockStartQuery(queryResponse)
+    mockGetResults(results)
+
+    const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
+    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
+
+    expect(startQuerySpy).toHaveBeenNthCalledWith(
+      1,
+      {
+        startTime: expect.anything(),
+        endTime: expect.anything(),
+        queryString: expect.anything(),
+        logGroupNames: generateLogGroups(20),
+      },
+      expect.anything(),
+    )
+
+    expect(startQuerySpy).toHaveBeenNthCalledWith(
+      2,
+      {
+        startTime: expect.anything(),
+        endTime: expect.anything(),
+        queryString: expect.anything(),
+        logGroupNames: ['/aws/lambda/sample-function-name-21'],
+      },
+      expect.anything(),
+    )
+    expect(result).toEqual([
+      {
+        timestamp: new Date(startDate),
+        wattHours: 0.23,
+        co2e: estimateCo2(0.23, 'AWS', region),
       },
       {
         timestamp: new Date(startDate),
@@ -193,11 +252,7 @@ describe('Lambda', () => {
   })
 
   it('throws an error if status is not complete after 100 ms', async () => {
-    const logGroups = [
-      {
-        logGroupName: '/aws/lambda/sample-function-name',
-      },
-    ]
+    const logGroups = logGroup
     const results = {
       results: [
         [
@@ -282,3 +337,11 @@ describe('Lambda', () => {
     )
   }
 })
+
+function generateLogGroups(numberOfLogGroups: number): string[] {
+  const arrayOfGeneratedLogGroups = []
+  for (let i = 0; i < numberOfLogGroups; i++) {
+    arrayOfGeneratedLogGroups.push(`/aws/lambda/sample-function-name-${i + 1}`)
+  }
+  return arrayOfGeneratedLogGroups
+}
