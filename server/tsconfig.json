@@ -19,6 +19,7 @@
     },
     "experimentalDecorators": true,
     "target": "ES5",
+    "downlevelIteration": true,
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],

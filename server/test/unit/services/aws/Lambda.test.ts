@@ -336,9 +336,5 @@ describe('Lambda', () => {
 })
 
 function generateLogGroups(numberOfLogGroups: number): string[] {
-  const arrayOfGeneratedLogGroups = []
-  for (let i = 0; i < numberOfLogGroups; i++) {
-    arrayOfGeneratedLogGroups.push(`/aws/lambda/sample-function-name-${i + 1}`)
-  }
-  return arrayOfGeneratedLogGroups
+  return [...Array(numberOfLogGroups).keys()].map((i) => `/aws/lambda/sample-function-name-${i + 1}`)
 }

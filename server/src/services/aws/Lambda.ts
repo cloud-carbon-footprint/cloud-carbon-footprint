@@ -10,8 +10,10 @@ import Cost from '@domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { GetQueryResultsResponse } from 'aws-sdk/clients/cloudwatchlogs'
 
 export default class Lambda implements ICloudService {
+  private readonly LOG_GROUP_SIZE_REQUEST_LIMIT = 20
   serviceName = 'lambda'
 
   constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000, private readonly serviceWrapper: ServiceWrapper) {}
@@ -24,7 +26,7 @@ export default class Lambda implements ICloudService {
     }
     const queryIdsArray = await this.getQueryIdsArray(groupNames, start, end)
 
-    let usage: any[] = []
+    let usage: GetQueryResultsResponse[] = []
     for (const queryId of queryIdsArray) {
       usage = usage.concat(await Promise.all(queryId.map((id) => this.getResults(id.toString()))))
     }
@@ -45,7 +47,7 @@ export default class Lambda implements ICloudService {
     })
   }
 
-  private async getQueryIdsArray(groupNames: string[][], start: Date, end: Date) {
+  private async getQueryIdsArray(groupNames: string[][], start: Date, end: Date): Promise<string[][]> {
     const queryIdsArray: string[][] = []
 
     for (const logGroup of groupNames) {
@@ -64,14 +66,9 @@ export default class Lambda implements ICloudService {
 
     const logGroupData = await this.serviceWrapper.describeLogGroups(params)
     const extractedLogGroupNames = logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
-    const numberOfLogGroupsInIntervalsOfTwenty = Math.floor(extractedLogGroupNames.length / 20)
     const LogGroupsInIntervalsOfTwenty: string[][] = []
-    for (let i = 0; i <= numberOfLogGroupsInIntervalsOfTwenty; i++) {
-      const firstIndex = i + i * 19
-      const lastIndex =
-        firstIndex + 20 < extractedLogGroupNames.length ? firstIndex + 20 : extractedLogGroupNames.length
-      const slicedArr = extractedLogGroupNames.slice(firstIndex, lastIndex)
-      slicedArr.length > 0 ? LogGroupsInIntervalsOfTwenty.push(slicedArr) : null
+    while (extractedLogGroupNames.length) {
+      LogGroupsInIntervalsOfTwenty.push(extractedLogGroupNames.splice(0, this.LOG_GROUP_SIZE_REQUEST_LIMIT))
     }
     return LogGroupsInIntervalsOfTwenty
   }
@@ -95,7 +92,7 @@ export default class Lambda implements ICloudService {
     return queryData.queryId
   }
 
-  private async getResults(queryId: string) {
+  private async getResults(queryId: string): Promise<GetQueryResultsResponse> {
     const params = {
       queryId: queryId,
     }
