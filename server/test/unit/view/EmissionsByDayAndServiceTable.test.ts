@@ -166,6 +166,8 @@ describe('EmissionsTable', () => {
         'RDS Kg CO2e Emissions',
         'Lambda Watt Hours',
         'Lambda Kg CO2e Emissions',
+        'ComputeEngine Watt Hours',
+        'ComputeEngine Kg CO2e Emissions',
         'SUM Watt Hours',
         'SUM Kg CO2e Emissions',
       ],
@@ -183,6 +185,8 @@ describe('EmissionsTable', () => {
         '787.000000',
         '300.00',
         '300.000000',
+        '0.00',
+        '0.000000',
         '1946.00',
         '1960.000000',
       ],
@@ -200,6 +204,8 @@ describe('EmissionsTable', () => {
         '4.000000',
         '1.00',
         '1.000000',
+        '0.00',
+        '0.000000',
         '15.00',
         '15.000000',
       ],
@@ -217,6 +223,8 @@ describe('EmissionsTable', () => {
         '791.000000',
         '301.00',
         '301.000000',
+        '0.00',
+        '0.000000',
         '1961.00',
         '1975.000000',
       ],
@@ -224,6 +232,6 @@ describe('EmissionsTable', () => {
   })
 
   it('does the right columns', () => {
-    expect(result.colWidths).toEqual([15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25])
+    expect(result.colWidths).toEqual([15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25])
   })
 })
