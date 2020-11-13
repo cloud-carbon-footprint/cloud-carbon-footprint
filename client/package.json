@@ -41,7 +41,7 @@
     "precommit": "lint-staged --debug && npx hawkeye scan && npm run test:precommit",
     "start": "CI=true react-scripts start",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
-    "test": "react-scripts --expose-gc test --logHeapUsage --coverage --watchAll=false",
+    "test": "react-scripts --expose-gc test --logHeapUsage --maxWorkers 2 --coverage --watchAll=false",
     "test:precommit": "npm test -- --bail",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/",
