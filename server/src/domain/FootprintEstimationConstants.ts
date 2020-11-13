@@ -12,7 +12,7 @@ export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string
     HDDCOEFFICIENT: 0.67,
     MIN_WATTS: 0.61,
     MAX_WATTS: 3.15,
-    POWER_USAGE_EFFECTIVENESS: 1.2,
+    POWER_USAGE_EFFECTIVENESS: 1.11,
     AVG_CPU_UTILIZATION_2020: 50,
   },
   AWS: {
