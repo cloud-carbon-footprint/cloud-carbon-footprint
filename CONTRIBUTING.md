@@ -36,6 +36,15 @@ Check the [CI pipeline builds](https://app.circleci.com/pipelines/github/twlabs/
   
   This is also one of the pre-commit hook but it is also advisable to run it at least once a week.
 
+## Bundle size analysis
+ From the client folder 
+- Run `npm run build -- --stats ` then 
+- Run ` npx webpack-bundle-analyzer build/bundle-stats.json `
+
+The above commands might be added to the package.json if we are so inclined
+
+This will help in visualizing the bundle size, seeing bundles that might not be required in production, etc,.
+
 ## CI Pipeline
 
 We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pipelines/github/twlabs/cloud-carbon-footprint).
