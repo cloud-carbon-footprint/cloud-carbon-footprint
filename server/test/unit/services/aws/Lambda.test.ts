@@ -12,9 +12,6 @@ import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 describe('Lambda', () => {
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
-    jest.mock('@domain/FootprintEstimationConstants', () => {
-      WATT_HOURS: 2.35
-    })
   })
 
   afterEach(() => {
@@ -64,8 +61,8 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        wattHours: 0.1,
-        co2e: estimateCo2(0.1, 'AWS', region),
+        wattHours: 0.12,
+        co2e: estimateCo2(0.12, 'AWS', region),
       },
     ])
   })
@@ -108,13 +105,13 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        wattHours: 0.1,
-        co2e: estimateCo2(0.1, 'AWS', region),
+        wattHours: 0.12,
+        co2e: estimateCo2(0.12, 'AWS', region),
       },
       {
         timestamp: new Date(endDate),
-        wattHours: 0.4,
-        co2e: estimateCo2(0.4, 'AWS', region),
+        wattHours: 0.48,
+        co2e: estimateCo2(0.48, 'AWS', region),
       },
     ])
   })
@@ -169,13 +166,13 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        wattHours: 0.2,
-        co2e: estimateCo2(0.2, 'AWS', region),
+        wattHours: 0.24,
+        co2e: estimateCo2(0.24, 'AWS', region),
       },
       {
         timestamp: new Date(startDate),
-        wattHours: 0.23,
-        co2e: estimateCo2(0.23, 'AWS', region),
+        wattHours: 0.276,
+        co2e: estimateCo2(0.276, 'AWS', region),
       },
     ])
   })
@@ -231,13 +228,13 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        wattHours: 0.23,
-        co2e: estimateCo2(0.23, 'AWS', region),
+        wattHours: 0.276,
+        co2e: estimateCo2(0.276, 'AWS', region),
       },
       {
         timestamp: new Date(startDate),
-        wattHours: 0.23,
-        co2e: estimateCo2(0.23, 'AWS', region),
+        wattHours: 0.276,
+        co2e: estimateCo2(0.276, 'AWS', region),
       },
     ])
   })
