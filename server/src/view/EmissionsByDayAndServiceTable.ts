@@ -16,7 +16,7 @@ const displayService = (totals: Totals, serviceName: string) => [
 
 export default function EmissionsByDayAndServiceTable(
   estimationResults: EstimationResult[],
-  serviceNames = pluck('key', config.AWS.CURRENT_SERVICES),
+  serviceNames = pluck('key', [...config.AWS.CURRENT_SERVICES, ...config.GCP.CURRENT_SERVICES]),
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
   const colWidths: number[] = [15]
@@ -44,12 +44,12 @@ export default function EmissionsByDayAndServiceTable(
     estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
       grandTotals['total'].wattHours += serviceEstimate.wattHours
-      subTotals[serviceEstimate.serviceName].wattHours = serviceEstimate.wattHours
+      subTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
       subTotals['total'].wattHours += serviceEstimate.wattHours
 
       grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
       grandTotals['total'].co2e += serviceEstimate.co2e
-      subTotals[serviceEstimate.serviceName].co2e = serviceEstimate.co2e
+      subTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
       subTotals['total'].co2e += serviceEstimate.co2e
     })
 

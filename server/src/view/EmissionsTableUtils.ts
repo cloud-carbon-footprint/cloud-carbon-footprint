@@ -13,10 +13,12 @@ export interface Total {
 
 export type Totals = { [key: string]: Total }
 
+const services = [...config.AWS.CURRENT_SERVICES, ...config.GCP.CURRENT_SERVICES]
+
 export function initialTotals(): Totals {
   const initialTotals: Totals = {}
 
-  config.AWS.CURRENT_SERVICES.forEach((service) => {
+  services.forEach((service) => {
     const key: string = prop('key', service)
     const total: Total = { wattHours: 0, co2e: 0, cost: 0 }
     initialTotals[key] = total
@@ -27,7 +29,7 @@ export function initialTotals(): Totals {
 }
 
 export const displayServiceName = (key: string): string => {
-  const service = find(propEq('key', key), config.AWS.CURRENT_SERVICES)
+  const service = find(propEq('key', key), services)
 
   if (key === 'total') return 'Total'
 

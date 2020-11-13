@@ -32,6 +32,10 @@ export function mockAwsCloudWatchGetMetricData() {
     .mockReturnValueOnce(ec2MockGetMetricDataResponse)
     .mockReturnValueOnce(elastiCacheMockGetMetricDataResponse)
     .mockReturnValueOnce(rdsMockComputeGetMetricDataResponse)
+    .mockReturnValueOnce(s3MockGetMetricDataResponse)
+    .mockReturnValueOnce(ec2MockGetMetricDataResponse)
+    .mockReturnValueOnce(elastiCacheMockGetMetricDataResponse)
+    .mockReturnValueOnce(rdsMockComputeGetMetricDataResponse)
 
   AWSMock.mock(
     'CloudWatch',
@@ -69,6 +73,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
       }),
     )
     .mockReturnValueOnce(ebsMockGetCostResponse)
+    .mockReturnValueOnce(ebsMockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
@@ -86,6 +91,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
         },
       }),
     )
+    .mockReturnValueOnce(s3MockGetCostResponse)
     .mockReturnValueOnce(s3MockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
@@ -105,6 +111,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
       }),
     )
     .mockReturnValueOnce(ec2MockGetCostResponse)
+    .mockReturnValueOnce(ec2MockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
@@ -117,6 +124,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
         },
       }),
     )
+    .mockReturnValueOnce(elastiCacheMockGetCostResponse)
     .mockReturnValueOnce(elastiCacheMockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
@@ -136,6 +144,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
       }),
     )
     .mockReturnValueOnce(rdsComputeMockGetCostResponse)
+    .mockReturnValueOnce(rdsComputeMockGetCostResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
@@ -153,6 +162,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
         },
       }),
     )
+    .mockReturnValueOnce(rdsStorageMockGetCostResponse)
     .mockReturnValueOnce(rdsStorageMockGetCostResponse)
 
   // USAGE
@@ -173,6 +183,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
       }),
     )
     .mockReturnValueOnce(rdsComputeMockGetUsageResponse)
+    .mockReturnValueOnce(rdsComputeMockGetUsageResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
@@ -190,6 +201,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
         },
       }),
     )
+    .mockReturnValueOnce(rdsStorageMockGetUsageResponse)
     .mockReturnValueOnce(rdsStorageMockGetUsageResponse)
 
   when(mockGetCostAndUsageFunction)
@@ -215,6 +227,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
       }),
     )
     .mockReturnValueOnce(ebsMockGetUsageResponse)
+    .mockReturnValueOnce(ebsMockGetUsageResponse)
 
   when(mockGetCostAndUsageFunction)
     .calledWith(
@@ -227,6 +240,7 @@ export function mockAwsCostExplorerGetCostAndUsage() {
         },
       }),
     )
+    .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
     .mockReturnValueOnce(elastiCacheMockGetUsageResponse)
 
   AWSMock.mock(
@@ -246,7 +260,7 @@ export function mockAwsCloudWatchGetQueryResultsForLambda() {
 
 function mockLambdaDescribeLogGroups(mockLambdaLogGroups: { logGroupName: string }[]) {
   const mockDescribeLogGroupsFunction = jest.fn()
-  mockDescribeLogGroupsFunction.mockReturnValueOnce({
+  mockDescribeLogGroupsFunction.mockReturnValueOnce({ logGroups: mockLambdaLogGroups }).mockReturnValueOnce({
     logGroups: mockLambdaLogGroups,
   })
 
@@ -261,7 +275,7 @@ function mockLambdaDescribeLogGroups(mockLambdaLogGroups: { logGroupName: string
 
 function mockLambdaStartQuery(mockStartQueryResponse: { queryId: string }) {
   const mockStartQueryFunction = jest.fn()
-  mockStartQueryFunction.mockResolvedValue(mockStartQueryResponse)
+  mockStartQueryFunction.mockResolvedValue(mockStartQueryResponse).mockResolvedValue(mockStartQueryResponse)
   return AWSMock.mock('CloudWatchLogs', 'startQuery', mockStartQueryFunction)
 }
 
@@ -270,7 +284,7 @@ function mockLambdaGetQueryResults(mockGetQueryResults: {
   status: string
 }) {
   const mockGetQueryResultsFunction = jest.fn()
-  mockGetQueryResultsFunction.mockReturnValueOnce(mockGetQueryResults)
+  mockGetQueryResultsFunction.mockReturnValueOnce(mockGetQueryResults).mockReturnValueOnce(mockGetQueryResults)
   AWSMock.mock(
     'CloudWatchLogs',
     'getQueryResults',

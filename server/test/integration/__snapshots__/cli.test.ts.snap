@@ -2,27 +2,28 @@
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds grouped by service 1`] = `
 "| Service      | Watt Hours        | Kg CO2e Emissions      | Cost              
-| EBS          | 3.21              | 0.001083               | $4.62             
-| S3           | 0.05              | 0.000017               | $6.00             
-| EC2          | 18.81             | 0.006337               | $37.00            
-| ElastiCache  | 11.36             | 0.003828               | $6.00             
-| RDS          | 221.56            | 0.074649               | $9.23             
+| EBS          | 6.43              | 0.003022               | $9.23             
+| S3           | 0.10              | 0.000047               | $12.00            
+| EC2          | 37.62             | 0.017682               | $74.00            
+| ElastiCache  | 22.72             | 0.010680               | $12.00            
+| RDS          | 443.12            | 0.208290               | $18.47            
 | Lambda       | 0.00              | 0.000000               | $0.00             
-| Total        | 254.99            | 0.085914               | $62.85            "
+| ComputeEngine| 4.13              | 0.001393               | $0.00             
+| Total        | 514.11            | 0.241113               | $125.70           "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day 1`] = `
 "| Date         | Watt Hours        | Kg CO2e Emissions      
-| 2020-07-01   | 26.18             | 0.008820               
-| 2020-07-02   | 228.81            | 0.077094               
-| Total        | 254.99            | 0.085914               "
+| 2020-07-01   | 56.49             | 0.026002               
+| 2020-07-02   | 457.63            | 0.215112               
+| Total        | 514.11            | 0.241113               "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day and service 1`] = `
-"| Date (UTC)   | EBS Watt Hours    | EBS Kg CO2e Emissions  | S3 Watt Hours     | S3 Kg CO2e Emissions   | EC2 Watt Hours    | EC2 Kg CO2e Emissions  | ElastiCache Watt Hours| ElastiCache Kg CO2e Emissions| RDS Watt Hours    | RDS Kg CO2e Emissions  | Lambda Watt Hours | Lambda Kg CO2e Emissions| SUM Watt Hours    | SUM Kg CO2e Emissions  
-| 2020-07-01   | 1.07              | 0.000361               | 0.05              | 0.000017               | 18.81             | 0.006337               | 2.34              | 0.000787               | 3.91              | 0.001318               | 0.00              | 0.000000               | 26.18             | 0.008820               
-| 2020-07-02   | 2.14              | 0.000722               | 0.00              | 0.000000               | 0.00              | 0.000000               | 9.02              | 0.003040               | 217.65            | 0.073332               | 0.00              | 0.000000               | 228.81            | 0.077094               
-| Total        | 3.21              | 0.001083               | 0.05              | 0.000017               | 18.81             | 0.006337               | 11.36             | 0.003828               | 221.56            | 0.074649               | 0.00              | 0.000000               | 254.99            | 0.085914               "
+"| Date (UTC)   | EBS Watt Hours    | EBS Kg CO2e Emissions  | S3 Watt Hours     | S3 Kg CO2e Emissions   | EC2 Watt Hours    | EC2 Kg CO2e Emissions  | ElastiCache Watt Hours| ElastiCache Kg CO2e Emissions| RDS Watt Hours    | RDS Kg CO2e Emissions  | Lambda Watt Hours | Lambda Kg CO2e Emissions| ComputeEngine Watt Hours| ComputeEngine Kg CO2e Emissions| SUM Watt Hours    | SUM Kg CO2e Emissions  
+| 2020-07-01   | 2.14              | 0.001007               | 0.10              | 0.000047               | 37.62             | 0.017682               | 4.67              | 0.002197               | 7.82              | 0.003676               | 0.00              | 0.000000               | 4.13              | 0.001393               | 56.49             | 0.026002               
+| 2020-07-02   | 4.29              | 0.002014               | 0.00              | 0.000000               | 0.00              | 0.000000               | 18.05             | 0.008484               | 435.29            | 0.204614               | 0.00              | 0.000000               | 0.00              | 0.000000               | 457.63            | 0.215112               
+| Total        | 6.43              | 0.003022               | 0.10              | 0.000047               | 37.62             | 0.017682               | 22.72             | 0.010680               | 443.12            | 0.208290               | 0.00              | 0.000000               | 4.13              | 0.001393               | 514.11            | 0.241113               "
 `;
 
 exports[`cli lambda lambda cost 1`] = `
@@ -32,13 +33,14 @@ exports[`cli lambda lambda cost 1`] = `
 | EC2          | 0.00              | 0.000000               | $0.00             
 | ElastiCache  | 0.00              | 0.000000               | $0.00             
 | RDS          | 0.00              | 0.000000               | $0.00             
-| Lambda       | 0.43              | 0.000145               | $120.00           
-| Total        | 0.43              | 0.000145               | $120.00           "
+| Lambda       | 0.86              | 0.000404               | $240.00           
+| ComputeEngine| 0.00              | 0.000000               | $0.00             
+| Total        | 0.86              | 0.000404               | $240.00           "
 `;
 
 exports[`cli lambda lambda estimates 1`] = `
-"| Date (UTC)   | EBS Watt Hours    | EBS Kg CO2e Emissions  | S3 Watt Hours     | S3 Kg CO2e Emissions   | EC2 Watt Hours    | EC2 Kg CO2e Emissions  | ElastiCache Watt Hours| ElastiCache Kg CO2e Emissions| RDS Watt Hours    | RDS Kg CO2e Emissions  | Lambda Watt Hours | Lambda Kg CO2e Emissions| SUM Watt Hours    | SUM Kg CO2e Emissions  
-| 2020-07-01   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.20              | 0.000067               | 0.20              | 0.000067               
-| 2020-07-02   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.23              | 0.000077               | 0.23              | 0.000077               
-| Total        | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.43              | 0.000145               | 0.43              | 0.000145               "
+"| Date (UTC)   | EBS Watt Hours    | EBS Kg CO2e Emissions  | S3 Watt Hours     | S3 Kg CO2e Emissions   | EC2 Watt Hours    | EC2 Kg CO2e Emissions  | ElastiCache Watt Hours| ElastiCache Kg CO2e Emissions| RDS Watt Hours    | RDS Kg CO2e Emissions  | Lambda Watt Hours | Lambda Kg CO2e Emissions| ComputeEngine Watt Hours| ComputeEngine Kg CO2e Emissions| SUM Watt Hours    | SUM Kg CO2e Emissions  
+| 2020-07-01   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.40              | 0.000188               | 0.00              | 0.000000               | 0.40              | 0.000188               
+| 2020-07-02   | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.46              | 0.000216               | 0.00              | 0.000000               | 0.46              | 0.000216               
+| Total        | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.00              | 0.000000               | 0.86              | 0.000404               | 0.00              | 0.000000               | 0.86              | 0.000404               "
 `;
