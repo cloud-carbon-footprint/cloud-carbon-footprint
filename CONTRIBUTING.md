@@ -93,6 +93,13 @@ The tab lists the discrepancies in the code detected by the TypeScript Language 
 - You can also monitor compilation errors by going to the TypeScript tool window (View | Tool Windows | TypeScript),
 and switching to the Compile errors tab which shows up only after first manual compilation, when you click the :hammer: button and select the compilation scope.
 
+#### Cleaning up Local
+ - server/logs contain the log files that written to by the logger. This should be deleted occasionally, otherwise it will 
+ become infinitely large.
+ 
+ - Delete estimate.cache.json to pull new data when testing to get most up to date data and verify querying is working 
+ as expected 
+
 ## VSCode IDE Development Configurations
 - To run test on IDE, install the extension, `Jest Runner`, from marketplace
  

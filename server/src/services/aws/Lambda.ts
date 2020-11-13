@@ -22,9 +22,12 @@ export default class Lambda implements ICloudService {
     if (isEmpty(groupNames)) {
       return []
     }
-    const queryIdsArray = await this.serviceWrapper.getQueryByInterval(60, this.runQuery, start, end, groupNames)
+    const queryIdsArray = await this.getQueryIdsArray(groupNames, start, end)
 
-    const usage = await Promise.all(queryIdsArray.map((id) => this.getResults(id)))
+    let usage: any[] = []
+    for (const queryId of queryIdsArray) {
+      usage = usage.concat(await Promise.all(queryId.map((id) => this.getResults(id.toString()))))
+    }
 
     const filteredResults = [...usage.reduce((combinedArr, { results }) => [...combinedArr, ...results], [])]
 
@@ -42,13 +45,35 @@ export default class Lambda implements ICloudService {
     })
   }
 
-  private async getLambdaLogGroupNames(): Promise<string[]> {
+  private async getQueryIdsArray(groupNames: string[][], start: Date, end: Date) {
+    const queryIdsArray: string[][] = []
+
+    for (const logGroup of groupNames) {
+      const queryIds: string[] = await Promise.all(
+        await this.serviceWrapper.getQueryByInterval(60, this.runQuery, start, end, logGroup),
+      )
+      queryIdsArray.push(queryIds)
+    }
+    return queryIdsArray
+  }
+
+  private async getLambdaLogGroupNames(): Promise<string[][]> {
     const params = {
       logGroupNamePrefix: '/aws/lambda',
     }
 
     const logGroupData = await this.serviceWrapper.describeLogGroups(params)
-    return logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
+    const extractedLogGroupNames = logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
+    const numberOfLogGroupsInIntervalsOfTwenty = Math.floor(extractedLogGroupNames.length / 20)
+    const LogGroupsInIntervalsOfTwenty: string[][] = []
+    for (let i = 0; i <= numberOfLogGroupsInIntervalsOfTwenty; i++) {
+      const firstIndex = i + i * 19
+      const lastIndex =
+        firstIndex + 20 < extractedLogGroupNames.length ? firstIndex + 20 : extractedLogGroupNames.length
+      const slicedArr = extractedLogGroupNames.slice(firstIndex, lastIndex)
+      slicedArr.length > 0 ? LogGroupsInIntervalsOfTwenty.push(slicedArr) : null
+    }
+    return LogGroupsInIntervalsOfTwenty
   }
 
   private runQuery = async (start: Date, end: Date, groupNames: string[]): Promise<string> => {
