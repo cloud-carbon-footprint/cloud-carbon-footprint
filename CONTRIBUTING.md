@@ -23,7 +23,7 @@ To push to `trunk`:
 1. Run the app from the root directory to ensure it starts: `npm start`.
 1. Push to remote: `git push origin HEAD:trunk`.
 
-Check the [CI pipeline builds](https://app.circleci.com/pipelines/github/twlabs/cloud-carbon-footprint)
+Check the [CI pipeline builds](https://app.circleci.com/pipelines/github/ThoughtWorks-Cleantech/cloud-carbon-footprint)
 
 - If the build <span style="color:green">passes</span>, you're done!
 - If the build <span style="color:red">fails</span>, click the link highlighted below to read the errors, fix the issue, and commit/push the fix by following the instructions above
@@ -47,7 +47,7 @@ This will help in visualizing the bundle size, seeing bundles that might not be 
 
 ## CI Pipeline
 
-We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pipelines/github/twlabs/cloud-carbon-footprint).
+We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pipelines/github/ThoughtWorks-Cleantech/cloud-carbon-footprint).
 
 You can learn more about CircleCI in the [CircleCI Documentation](https://circleci.com/docs/)
   

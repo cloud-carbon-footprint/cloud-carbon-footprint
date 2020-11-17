@@ -140,7 +140,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           conversion factors.
         </Typography>
         <Link
-          href="https://github.com/twlabs/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
+          href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
           target="_blank"
           rel="noopener"
           className={classes.methodology}

@@ -1,6 +1,6 @@
 # cloud-carbon-footprint
 
-[![CircleCI](https://circleci.com/gh/twlabs/cloud-carbon-footprint.svg?style=shield&circle-token=82a0b0fe3e8ea0756b36f185d500ee10d191838e)](https://circleci.com/gh/twlabs/cloud-carbon-footprint/tree/trunk)
+[![CircleCI](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint.svg?style=shield&circle-token=62c2533631fb603b09c81ff218530d66b26a61f4)](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint/tree/trunk)
 
 This is an application that calculates the emissions of AWS services in realtime of an AWS account, given a start and end UTC dates (within the past year).
 
