@@ -1,6 +1,8 @@
 fileignoreconfig:
 - filename: CONTRIBUTING.md
   checksum: 454a26b0f80e1406f9f80ab12bd11183ebbf54a8b387c8667af258eeafb89ba7
+- filename: README.md
+  checksum: 603d112d8b03aeb6d03e1d62c403880201221e1e809ccb162932da8ec95cd530
 - filename: client/.env.template
   checksum: f21fc3a24626cfa3da0bccf5b81ac5f7454bb36ea1d6e4df11a5519d20e23187
 - filename: client/package-lock.json
