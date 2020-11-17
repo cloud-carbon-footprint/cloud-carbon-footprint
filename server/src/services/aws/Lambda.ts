@@ -66,11 +66,11 @@ export default class Lambda implements ICloudService {
 
     const logGroupData = await this.serviceWrapper.describeLogGroups(params)
     const extractedLogGroupNames = logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
-    const LogGroupsInIntervalsOfTwenty: string[][] = []
+    const logGroupsInIntervalsOfTwenty: string[][] = []
     while (extractedLogGroupNames.length) {
-      LogGroupsInIntervalsOfTwenty.push(extractedLogGroupNames.splice(0, this.LOG_GROUP_SIZE_REQUEST_LIMIT))
+      logGroupsInIntervalsOfTwenty.push(extractedLogGroupNames.splice(0, this.LOG_GROUP_SIZE_REQUEST_LIMIT))
     }
-    return LogGroupsInIntervalsOfTwenty
+    return logGroupsInIntervalsOfTwenty
   }
 
   private runQuery = async (start: Date, end: Date, groupNames: string[]): Promise<string> => {
