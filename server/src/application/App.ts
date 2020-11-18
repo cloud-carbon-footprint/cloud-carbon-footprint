@@ -19,24 +19,29 @@ export default class App {
     const GCP = config.GCP
 
     if (request.region) {
-      const estimatesForAccounts = await Promise.all(
-        AWS.accounts.map((account) => {
-          return new AWSAccount(account.id, account.name, AWS.CURRENT_REGIONS).getDataForRegion(
+      const estimatesForAccounts: EstimationResult[][] = []
+      for (const account of AWS.accounts) {
+        const estimates: EstimationResult[] = await Promise.all(
+          await new AWSAccount(account.id, account.name, AWS.CURRENT_REGIONS).getDataForRegion(
             request.region,
             startDate,
             endDate,
-          )
-        }),
-      )
+          ),
+        )
+        estimatesForAccounts.push(estimates)
+      }
       return estimatesForAccounts.flat()
     } else {
-      const AWSEstimatesByRegion = await Promise.all(
-        AWS.accounts
-          .map((account) => {
-            return new AWSAccount(account.id, account.name, AWS.CURRENT_REGIONS).getDataForRegions(startDate, endDate)
-          })
-          .flat(),
-      )
+      // Resolve AWS Estimates synchronously in order to avoid hitting API limits
+      const AWSEstimatesByRegion: EstimationResult[][] = []
+      for (const account of AWS.accounts) {
+        const estimates: EstimationResult[] = await Promise.all(
+          await new AWSAccount(account.id, account.name, AWS.CURRENT_REGIONS).getDataForRegions(startDate, endDate),
+        )
+        AWSEstimatesByRegion.push(estimates)
+      }
+
+      // Resolve GCP Estimates asynchronously
       const GCPEstimatesByRegion = await Promise.all(
         GCP.projects
           .map((project) => {
@@ -44,7 +49,7 @@ export default class App {
           })
           .flat(),
       )
-      return reduceByTimestamp(AWSEstimatesByRegion.flat().concat(GCPEstimatesByRegion.flat()))
+      return reduceByTimestamp(AWSEstimatesByRegion.flat().flat().concat(GCPEstimatesByRegion.flat()))
     }
   }
 }
