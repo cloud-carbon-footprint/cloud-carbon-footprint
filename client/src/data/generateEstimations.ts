@@ -17,6 +17,8 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
   return {
     ebs: {
       timestamp,
+      cloudProvider: 'aws',
+      accountName: 'aws account',
       serviceName: 'ebs',
       wattHours: Math.random(),
       co2e: getRandomInt(6),
@@ -26,6 +28,8 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
     },
     s3: {
       timestamp,
+      cloudProvider: 'aws',
+      accountName: 'aws account',
       serviceName: 's3',
       wattHours: Math.random() / 1000,
       co2e: getRandomInt(6),
@@ -35,6 +39,8 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
     },
     ec2: {
       timestamp,
+      cloudProvider: 'aws',
+      accountName: 'aws account',
       serviceName: 'ec2',
       wattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -44,6 +50,8 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
     },
     rds: {
       timestamp,
+      cloudProvider: 'aws',
+      accountName: 'aws account',
       serviceName: 'rds',
       wattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -53,6 +61,8 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
     },
     lambda: {
       timestamp,
+      cloudProvider: 'aws',
+      accountName: 'aws account',
       serviceName: 'lambda',
       wattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -62,6 +72,8 @@ const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = 
     },
     elasticache: {
       timestamp,
+      cloudProvider: 'aws',
+      accountName: 'aws account',
       serviceName: 'elasticache',
       wattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),

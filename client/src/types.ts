@@ -3,6 +3,8 @@
  */
 
 export interface serviceEstimate {
+  cloudProvider: string
+  accountName: string
   serviceName: string
   wattHours: number
   co2e: number
