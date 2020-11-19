@@ -19,7 +19,7 @@
 
     * [Compute](#compute)
     
-        * [A note on AWS Lambda Compute Estimates:](#a-note-on-aws-lambda-compute-estimates)
+        * [A note on AWS Lambda Compute Estimates](#a-note-on-aws-lambda-compute-estimates)
     
     * [Storage](#storage)
 
@@ -39,7 +39,7 @@ their carbon footprint. This application is a starting point to enable organizat
 their emissions across multiple cloud providers.
 
 This application pulls usage data (compute, storage, networking, etc) from major cloud providers and calculates 
-estimated energy (Watt-hours) and greenhouse gas emissions expressed as  carbon dioxide equivalents (kgs CO2e). We 
+estimated energy (Watt-Hours) and greenhouse gas emissions expressed as  carbon dioxide equivalents (kgs CO2e). We 
 display these visualizations in a dashboard for developers, sustainability leaders and other stakeholders in an 
 organization to view and take action. It currently supports a number of commonly used AWS services. We are in the 
 process of adding support for GCP services, and have Azure also on the roadmap.
@@ -121,7 +121,7 @@ We don’t currently support Cost related data points for GCP.
 
 The application needs read permission to make the following API calls for each cloud provider: 
 
-**AWS:**
+**AWS**
 * cloudwatch:GetMetricData
 * cloudwatch:GetMetricStatistics
 * ce:GetCostAndUsage
@@ -130,29 +130,30 @@ The application needs read permission to make the following API calls for each c
 * logs:GetQueryResults
 * logs:StopQuery
 
-**GCP:**
+**GCP**
 * Cloud Monitoring - listTimeSeries
 
-If an organization does not want to provide read permissions to this application directly, they could explore importing the data from a dump to S3, a CSV file, or other means that works best for their workflow. 
+If an organization does not want to provide read permissions to this application directly, they could explore importing 
+the data from a dump to S3, a CSV file, or other means that works best for their workflow. 
 
 ### Energy Estimate (Watt-Hours) 
 
-In order to estimate energy used by cloud providers we are leveraging the methodology that Etsy created called “Cloud 
-Jewels” to determine energy coefficients (kWh) for cloud service usage. Like Etsy’s approach, our application currently 
-only supports energy estimates for cloud compute and storage, and not memory or networking. This is because we are yet 
-to find actionable public research for these types of usage, and typically they contribute a small fraction of a cloud 
-customer’s overall energy use.
+In order to estimate energy used by cloud providers we are leveraging the methodology that Etsy created called "[Cloud 
+Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)" to determine energy coefficients 
+(kWh) for cloud service usage. Like Etsy’s approach, our application currently only supports energy estimates for cloud 
+compute and storage, and not memory or networking. This is because we are yet to find actionable public research for 
+these types of usage, and typically they contribute a small fraction of a cloud customer’s overall energy use. The 
+application also doesn’t currently include estimations for cloud GPU usage, but this is on the roadmap. 
 
 We look at the servers used by cloud providers on their website and reference their energy usage from both the 
-[SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) Database and the [2016 US Data Center Energy 
+[SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database and the [2016 US Data Center Energy 
 Usage Report](https://eta.lbl.gov/publications/united-states-data-center-energy). Etsy looked into GCP servers and we 
-have additionally looked into AWS servers; see list of processors below. Of course this does not account for any custom 
-processors (such as AWS has) however this is the best information we found publicly available. 
+have additionally looked into AWS servers; see [appendix](#appendix-aws-processor-list). Of course this does not account 
+for any custom processors (such as AWS has) however this is the best information we found publicly available. 
 
 #### Compute
-For Compute estimation, we follow the same formula as 
-[Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/), which can be broken down 
-into 2 steps. (We recommend reading their article for a deeper explanation). 
+For Compute estimation, we follow the same formula as Cloud Jewels, which can be broken down into 2 steps. (We recommend 
+reading their article for a deeper explanation). 
      
 First, we calculate Average Watts which is the average compute energy at a moment in time. When a server is idle, 
 it still takes some power to run it (Minimum Watts). As the server utilization increases the amount of power 
@@ -171,7 +172,7 @@ Here are the input data sources for the variables in the formula, and context on
 
 * Min Watts (constant) - This is dependent on the CPU processor used by the Cloud provider to host the virtual machines. 
 Based on publicly available information about which CPUs cloud providers use, we looked up the 
-[SPECPower Database](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) to determine this constant.
+[SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database to determine this constant.
 * Max Watts (constant) - same as Min Watts, above. 
 * Avg vCPU Utilization (variable) - this pulled from the cloud provider APIs (see above). 
 * vCPU Hours (variable) - this is pulled from the cloud provider APIs (see above).
@@ -187,20 +188,18 @@ the [2016 U.S. Data Center Energy Usage Report](https://eta.lbl.gov/publications
 example, this may occur for AWS EC2 instances that are terminated over 2 weeks ago from when the application first 
 queries an AWS Account. 
 
-*The application doesn’t currently include estimations for cloud GPU usage, but this is on the roadmap.*
+The application doesn’t currently include estimations for cloud GPU usage, but this is on the roadmap.
 
-##### A note on AWS Lambda Compute Estimates: 
+##### A note on AWS Lambda Compute Estimates
 
 In the case of AWS Lambda, CloudWatch does not provide metrics for CPU Utilization and number of vCPU hours, so we need 
 to take an alternative approach. 
 
 Lambdas can consume between 128MB to 3,008MB memory in 64MB increments 
-[source](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html). At 1,792MB a lambda has an equivalent
-of one full vCPU [source](https://docs.aws.amazon.com/lambda/latest/dg/configuration-console.html). Above this another 
-vCPU is assigned and its utilization will depend on the multithreading capability of the lambda function code. Given 
-this, we can estimate the number of vCPUs allocated to a lambda function as a ratio of the allocated memory over 1,792MB. 
-
-At the time of writing this, there is no way to estimate the utilization of the second vCPU, so we overestimate by considering the second vCPU to be used at 100% for the time the lambda runs.
+[\[source\]](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html). At 1,792MB a lambda has an 
+equivalent of one full vCPU [\[source\]](https://docs.aws.amazon.com/lambda/latest/dg/configuration-console.html). Above 
+this another vCPU is assigned and we can estimate the number of vCPUs allocated to a lambda function as a ratio of the 
+allocated memory over 1,792MB. 
 
 Given this, the formula we derive is:
 
@@ -215,24 +214,25 @@ The execution time and memory allocated are both pulled from the CloudWatch Lamb
 
 #### Storage
 
-For storage, we also follow the same methodology as 
-[Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/) by deriving a Wh/Tbh 
-coefficient for both HDD and SSD storage types. However we updated the coefficients to be more accurate for the year 
-2020, based projections from the same 2016 U.S Data Center Usage Report.
+For storage, we also follow the same methodology as Cloud Jewels by deriving a Wh/Tbh coefficient for both HDD and SSD 
+storage types. However we updated the coefficients to be more accurate for the year 2020, based projections from the 
+same 2016 U.S Data Center Usage Report.
 
 Here is the estimated HDD energy usage:
 
 * HDD average capacity in 2020 = **10** Terabytes per disk 
 * Average wattage per disk for 2020 = **6.65** Watts per disk
-* Watts per Terabyte = Watts per disk / Terabytes per disk:
-* 6.65 W / 10 TB = **0.665 Watts-Hours per Terabyte for HDD**
+        
+        Watts per Terabyte = Watts per disk / Terabytes per disk:
+        6.65 W / 10 TB = **0.665 Watt-Hours per Terabyte for HDD**
 
 Here is the estimated SSD energy usage:
 
-SSD average capacity in 2020 = 5 Terabytes per disk 
-Average wattage per disk for 2020 = 6 Watts per disk
-Watts per terabyte = Watts per disk / Terabytes per disk: 
-6 W / 5 TB = **1.2 Watts-Hours per Terabyte for SSD**
+* SSD average capacity in 2020 = **5** Terabytes per disk 
+* Average wattage per disk for 2020 = **6** Watts per disk
+
+        Watts per terabyte = Watts per disk / Terabytes per disk: 
+        6 W / 5 TB = 1.2 Watt-Hours per Terabyte for SSD
 
 When it comes to measuring the Terabytes from cloud providers, we query for the allocated bytes rather than the utilized
 bytes, because this is a more accurate reflection of the energy needed to support that usage. For example, an 
