@@ -271,4 +271,17 @@ describe('Filters', () => {
       expect(filters.dateRange?.endDate).toEqual(null)
     })
   })
+
+  describe('withAccounts', () => {
+    it('should unselect a selected account', () => {
+      const filters = new Filters()
+
+      const newFilters = filters
+        .withAccounts(['test account'])
+        .withAccounts(['test account', 'different account'])
+        .withAccounts(['different account'])
+
+      expect(newFilters.accounts).toEqual(['different account'])
+    })
+  })
 })
