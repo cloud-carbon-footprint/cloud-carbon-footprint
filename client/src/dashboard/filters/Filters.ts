@@ -22,6 +22,7 @@ interface FiltersConfig {
   services: string[]
   cloudProviders: string[]
   dateRange: MaybeDateRange
+  accounts: string[]
 }
 
 const defaultFiltersConfig = {
@@ -29,6 +30,7 @@ const defaultFiltersConfig = {
   services: SERVICE_OPTIONS.map((o) => o.key),
   cloudProviders: CLOUD_PROVIDER_OPTIONS.map((o) => o.key),
   dateRange: null,
+  accounts: [],
 }
 
 const providerServices: { [key: string]: string[] } = {
@@ -41,12 +43,14 @@ export class Filters {
   readonly services: string[]
   readonly cloudProviders: string[]
   readonly dateRange: MaybeDateRange
+  readonly accounts: string[]
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
     this.timeframe = config.timeframe
     this.services = config.services
     this.cloudProviders = config.cloudProviders
     this.dateRange = config.dateRange
+    this.accounts = config.accounts
   }
 
   withTimeFrame(timeframe: number): Filters {
@@ -59,6 +63,13 @@ export class Filters {
       ...this,
       services: serviceKeys,
       cloudProviders: providerKeys,
+    })
+  }
+
+  withAccounts(accounts: string[]): Filters {
+    return new Filters({
+      ...this,
+      accounts: accounts,
     })
   }
 
