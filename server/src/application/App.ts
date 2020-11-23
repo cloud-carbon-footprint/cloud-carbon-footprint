@@ -8,6 +8,7 @@ import configLoader from '@application/ConfigLoader'
 import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 import cache from '@application/Cache'
 import GCPAccount from '@application/GCPAccount'
+import FilterResult, { getAccounts } from '@domain/FilterResult'
 
 export default class App {
   @cache()
@@ -51,5 +52,9 @@ export default class App {
       )
       return reduceByTimestamp(AWSEstimatesByRegion.flat().flat().concat(GCPEstimatesByRegion.flat()))
     }
+  }
+
+  getFilterData(): FilterResult {
+    return { accounts: getAccounts() }
   }
 }
