@@ -8,9 +8,11 @@ import request from 'supertest'
 import { EstimationResult } from '@application/EstimationResult'
 
 const mockGetCostAndEstimates = jest.fn()
+const mockGetFilterData = jest.fn()
+
 jest.mock('@application/App', () => {
   return jest.fn().mockImplementation(() => {
-    return { getCostAndEstimates: mockGetCostAndEstimates }
+    return { getCostAndEstimates: mockGetCostAndEstimates, getFilterData: mockGetFilterData }
   })
 })
 
@@ -78,6 +80,14 @@ describe('api', () => {
         //assert
         expect(response.status).toBe(500)
       })
+    })
+  })
+
+  describe('/filters', () => {
+    it('returns data for filtering purposes', async () => {
+      const response = await request(server).get(encodeURI(`/filters`))
+
+      expect(response.status).toBe(200)
     })
   })
 })
