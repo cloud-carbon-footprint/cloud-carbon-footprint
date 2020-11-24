@@ -35,3 +35,13 @@ export enum ChartDataTypes {
   REGION = 'region',
   SERVICE = 'service',
 }
+
+export interface Account {
+  cloudProvider: string
+  id: string
+  name: string
+}
+
+export interface FilterResultResponse {
+  accounts: Account[]
+}
