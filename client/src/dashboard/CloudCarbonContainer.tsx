@@ -15,7 +15,7 @@ import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import { DonutChartTabs } from './charts/DonutChartTabs'
-
+import { useFilterDataService } from './client/FilterDataServiceHook'
 const useStyles = makeStyles((theme) => ({
   boxContainer: {
     padding: theme.spacing(3, 10),
@@ -39,7 +39,8 @@ export default function CloudCarbonContainer(): ReactElement {
   const endDate: moment.Moment = moment.utc()
 
   const { data, loading } = useRemoteService([], startDate, endDate)
-  const { filteredData, filters, setFilters } = useFilters(data)
+  const filteredAccountsResults = useFilterDataService()
+  const { filteredData, filters, setFilters } = useFilters(data, filteredAccountsResults)
 
   return loading ? (
     <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>

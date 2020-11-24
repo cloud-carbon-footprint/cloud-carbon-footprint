@@ -10,10 +10,11 @@ import generateEstimations from '../../data/generateEstimations'
 describe('useFilters', () => {
   describe('changing timeframe', () => {
     const estimationResults = generateEstimations(moment.utc(), 14)
+    const filteredResult = { accounts: [] }
     let result: HookResult<UseFiltersResults>
 
     beforeEach(() => {
-      result = renderHook(() => useFilters(estimationResults)).result
+      result = renderHook(() => useFilters(estimationResults, filteredResult)).result
     })
 
     test('it should filter up to 12 months prior by default', () => {
