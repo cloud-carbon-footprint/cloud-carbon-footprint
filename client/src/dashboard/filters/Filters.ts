@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult } from '../../types'
+import { EstimationResult, Account, FilterResultResponse } from '../../types'
 import moment from 'moment'
 import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
 import { ALL_CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
@@ -22,7 +22,7 @@ interface FiltersConfig {
   services: string[]
   cloudProviders: string[]
   dateRange: MaybeDateRange
-  accounts: string[]
+  accounts: Account[]
 }
 
 const defaultFiltersConfig = {
@@ -31,6 +31,10 @@ const defaultFiltersConfig = {
   cloudProviders: CLOUD_PROVIDER_OPTIONS.map((o) => o.key),
   dateRange: null,
   accounts: [],
+}
+
+export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): FiltersConfig => {
+  return Object.assign(defaultFiltersConfig, filteredResponse)
 }
 
 const providerServices: { [key: string]: string[] } = {
@@ -43,7 +47,7 @@ export class Filters {
   readonly services: string[]
   readonly cloudProviders: string[]
   readonly dateRange: MaybeDateRange
-  readonly accounts: string[]
+  readonly accounts: Account[]
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
     this.timeframe = config.timeframe
