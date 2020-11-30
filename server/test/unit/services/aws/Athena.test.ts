@@ -134,7 +134,7 @@ xdescribe('Athena Service', () => {
           serviceName: 'AmazonEC2',
           accountName: '921261756131',
           usage: {
-            timestamp: new Date('2020-11-02 16:00:00.000'),
+            timestamp: new Date('2020-11-02'),
             cpuUtilizationAverage: 50,
             numberOfvCpus: 2,
             usesAverageCPUConstant: true,
@@ -144,7 +144,7 @@ xdescribe('Athena Service', () => {
           serviceName: 'AmazonEC2',
           accountName: '921261756131',
           usage: {
-            timestamp: new Date('2020-11-02 16:00:00.000'),
+            timestamp: new Date('2020-11-02'),
             cpuUtilizationAverage: 50,
             numberOfvCpus: 10,
             usesAverageCPUConstant: true,
@@ -156,7 +156,7 @@ xdescribe('Athena Service', () => {
           serviceName: 'AmazonEC2',
           accountName: '921261756131',
           usage: {
-            timestamp: new Date('2020-11-02 16:00:00.000'),
+            timestamp: new Date('2020-11-02'),
             cpuUtilizationAverage: 50,
             numberOfvCpus: 9,
             usesAverageCPUConstant: true,
