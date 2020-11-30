@@ -32,6 +32,7 @@ export default class Athena implements ICloudService {
   }
   async getEstimates(start: Date, end: Date): Promise<FootprintEstimate[]> {
     const usage = await this.getUsage(start, end)
+
     return usage
   }
 
@@ -81,6 +82,34 @@ export default class Athena implements ICloudService {
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
     return []
   }
+}
+
+export function extractComputeUsageByRegion(queryResultData: any): any {
+  const computeUsageData = queryResultData.filter((row: any) => row.Data[6].VarCharValue !== '')
+
+  let result: any = {}
+
+  computeUsageData.map((row: any) => {
+    const rowData = row.Data
+    const region = rowData[5].VarCharValue
+    const rowUsage = {
+      serviceName: rowData[0].VarCharValue,
+      accountName: rowData[2].VarCharValue,
+      usage: {
+        timestamp: new Date(rowData[8].VarCharValue),
+        cpuUtilizationAverage: 50,
+        numberOfvCpus: rowData[3].VarCharValue * rowData[6].VarCharValue,
+        usesAverageCPUConstant: true,
+      },
+    }
+    if (region in result) {
+      result[region].push(rowUsage)
+    } else {
+      result[region] = [rowUsage]
+    }
+  })
+
+  return result
 }
 
 async function wait(ms: number) {
