@@ -96,7 +96,7 @@ export function extractComputeUsageByRegion(queryResultData: any): any {
       serviceName: rowData[0].VarCharValue,
       accountName: rowData[2].VarCharValue,
       usage: {
-        timestamp: new Date(rowData[8].VarCharValue),
+        timestamp: new Date(rowData[8].VarCharValue.substr(0, 10)),
         cpuUtilizationAverage: 50,
         numberOfvCpus: rowData[3].VarCharValue * rowData[6].VarCharValue,
         usesAverageCPUConstant: true,
