@@ -79,6 +79,34 @@ describe('Athena Service', () => {
         { VarCharValue: '2020-11-02 17:00:00.000' },
       ],
     },
+    {
+      Data: [
+        { VarCharValue: 'AmazonEC2' },
+        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
+        { VarCharValue: '921261756131' },
+        { VarCharValue: '2' },
+        { VarCharValue: 't2.micro' },
+        { VarCharValue: 'us-east-2' },
+        { VarCharValue: '1' },
+        { VarCharValue: 'Hrs' },
+        { VarCharValue: '2020-11-03 16:00:00.000' },
+        { VarCharValue: '2020-11-03 17:00:00.000' },
+      ],
+    },
+    {
+      Data: [
+        { VarCharValue: 'AmazonEC2' },
+        { VarCharValue: 'USW1-EBS:SnapshotUsage' },
+        { VarCharValue: '921261756131' },
+        { VarCharValue: '5' },
+        { VarCharValue: '' },
+        { VarCharValue: 'us-west-1' },
+        { VarCharValue: '' },
+        { VarCharValue: 'GB-Mo' },
+        { VarCharValue: '2020-10-31 23:00:00.000' },
+        { VarCharValue: '2020-11-01 00:00:00.000' },
+      ],
+    },
   ]
 
   const queryResultsResponse = {
@@ -109,7 +137,7 @@ describe('Athena Service', () => {
     getQueryResultsSpy.mockClear()
   })
 
-  it('Gets Estimates for EC2', async () => {
+  it('Gets Estimates for EC2 and EBS', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -154,7 +182,7 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'AmazonEC2',
+            serviceName: 'EC2',
             cost: 0,
             region: 'us-east-1',
           },
@@ -164,9 +192,39 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'AmazonEC2',
+            serviceName: 'EC2',
             cost: 0,
             region: 'us-east-2',
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-11-03'),
+        serviceEstimates: [
+          {
+            wattHours: 4.692,
+            co2e: 0.0028301540308512,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'EC2',
+            cost: 0,
+            region: 'us-east-2',
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-10-31'),
+        serviceEstimates: [
+          {
+            wattHours: 2.99088,
+            co2e: 0.000572502226561488,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'EBS',
+            cost: 0,
+            region: 'us-west-1',
           },
         ],
       },
