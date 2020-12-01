@@ -5,7 +5,6 @@
 /* eslint-disable */
 import moment from 'moment'
 import { Athena as AWSAthena } from 'aws-sdk'
-import ICloudService from '@domain/ICloudService'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import Cost from '@domain/Cost'
 import ComputeEstimator from '@domain/ComputeEstimator'
@@ -13,14 +12,7 @@ import { StorageEstimator } from '@domain/StorageEstimator'
 import configLoader from '@application/ConfigLoader'
 import { GetQueryExecutionOutput, GetQueryResultsOutput, StartQueryExecutionOutput } from 'aws-sdk/clients/athena'
 import ComputeUsage from '@domain/ComputeUsage'
-import { EstimationResult, ServiceData } from '@application/EstimationResult'
-import { RegionCosts, RegionEstimates } from '@domain/Region'
-
-interface AthenaFootprintEstimate extends FootprintEstimate {
-  serviceName: string
-  accountName: string
-  region: string
-}
+import StorageUsage from '@domain/StorageUsage'
 
 interface QueryResultsRow {
   Data: QueryResultsColumn[]
@@ -68,39 +60,41 @@ export default class Athena {
     const usageRowsHeader: QueryResultsRow = usageRows.shift()
 
     const serviceNameIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_product_code')
+    const usageTypeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_type')
     const accountIdIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_account_id')
     const vcpuIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_vcpu')
     const usageAmountIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_amount')
     const regionIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_region')
     const pricingUnitIndex = getIndexOfObjectByValue(usageRowsHeader, 'pricing_unit')
-    const usageStartTimeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_end_date')
-    const computeUsageRows = usageRows.filter((row) => row.Data[pricingUnitIndex].VarCharValue === 'Hrs')
-    // const storageUsageRows = usageRows.filter((row) => row.Data[pricingUnitIndex] in ['GB', 'GB-Mo', 'Terabytes'])
+    const usageStartTimeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_start_date')
 
     const results: MutableEstimationResult[] = []
 
-    computeUsageRows.map((row: QueryResultsRow) => {
+    usageRows.map((row: QueryResultsRow) => {
       const rowValues = Object.values(row.Data)
       const region = rowValues[regionIndex].VarCharValue
       const timestamp = new Date(rowValues[usageStartTimeIndex].VarCharValue.substr(0, 10))
       const serviceName = rowValues[serviceNameIndex].VarCharValue
+      const usageType = rowValues[usageTypeIndex].VarCharValue
       const accountName = rowValues[accountIdIndex].VarCharValue
+      const usageAmount = Number(rowValues[usageAmountIndex].VarCharValue)
+      const numberOfvCPUHours = Number(rowValues[vcpuIndex].VarCharValue) * usageAmount
+      const pricingUnit = rowValues[pricingUnitIndex].VarCharValue
 
-      const computeUsage: ComputeUsage = {
-        timestamp: timestamp,
-        cpuUtilizationAverage: 50,
-        numberOfvCpus: Number(rowValues[vcpuIndex].VarCharValue) * Number(rowValues[usageAmountIndex].VarCharValue),
-        usesAverageCPUConstant: true,
-      }
-
-      const computeEstimate: FootprintEstimate = this.computeEstimator.estimate([computeUsage], region, 'AWS')[0]
+      const footprintEstimate = this.getEstimateByPricingUnit(
+        pricingUnit,
+        timestamp,
+        numberOfvCPUHours,
+        usageAmount,
+        region,
+      )
 
       const serviceEstimate: MutableServiceEstimate = {
         cloudProvider: 'AWS',
-        wattHours: computeEstimate.wattHours,
-        co2e: computeEstimate.co2e,
-        usesAverageCPUConstant: computeEstimate.usesAverageCPUConstant,
-        serviceName: serviceName,
+        wattHours: footprintEstimate.wattHours,
+        co2e: footprintEstimate.co2e,
+        usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
+        serviceName: this.getServiceNameFromUsageType(serviceName, usageType),
         accountName: accountName,
         region: region,
         cost: 0,
@@ -116,6 +110,10 @@ export default class Athena {
           estimateToAcc.wattHours += serviceEstimate.wattHours
           estimateToAcc.co2e += serviceEstimate.co2e
           estimateToAcc.cost += serviceEstimate.cost
+          if (serviceEstimate.usesAverageCPUConstant) {
+            estimateToAcc.usesAverageCPUConstant =
+              estimateToAcc.usesAverageCPUConstant || serviceEstimate.usesAverageCPUConstant
+          }
         } else {
           estimatesForDay.serviceEstimates.push(serviceEstimate)
         }
@@ -126,11 +124,39 @@ export default class Athena {
         })
       }
     })
-
     return results
   }
 
-  private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date) {
+  private getEstimateByPricingUnit(
+    pricingUnit: string,
+    timestamp: Date,
+    numberOfvCPUHours: number,
+    usageAmount: number,
+    region: string,
+  ) {
+    switch (pricingUnit) {
+      case 'Hrs':
+        const computeUsage: ComputeUsage = {
+          timestamp: timestamp,
+          cpuUtilizationAverage: 50,
+          numberOfvCpus: numberOfvCPUHours,
+          usesAverageCPUConstant: true,
+        }
+        return this.computeEstimator.estimate([computeUsage], region, 'AWS')[0]
+      case 'GB':
+      case 'GB-Mo':
+      case 'Terabytes':
+        const storageUsage: StorageUsage = {
+          timestamp: timestamp,
+          sizeGb: this.convertToGigabytes(pricingUnit, usageAmount, timestamp),
+        }
+        const estimate: FootprintEstimate = this.hddStorageEstimator.estimate([storageUsage], region)[0]
+        estimate.usesAverageCPUConstant = false
+        return estimate
+    }
+  }
+
+  private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date): boolean {
     return results.some((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
   }
 
@@ -138,15 +164,35 @@ export default class Athena {
     results: MutableEstimationResult[],
     timestamp: Date,
     serviceEstimate: MutableServiceEstimate,
-  ) {
+  ): boolean {
     let estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
     return estimatesForDay.serviceEstimates.some((estimateForDay) => {
       return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
     })
   }
 
-  private hasSameRegionAndService(estimateOne: MutableServiceEstimate, estimateTwo: MutableServiceEstimate) {
+  private hasSameRegionAndService(estimateOne: MutableServiceEstimate, estimateTwo: MutableServiceEstimate): boolean {
     return estimateOne.region === estimateTwo.region && estimateOne.serviceName === estimateTwo.serviceName
+  }
+
+  private convertToGigabytes(pricingUnit: string, usageAmount: number, timestamp: Date): number {
+    switch (pricingUnit) {
+      case 'GB':
+        return usageAmount
+      case 'GB-Mo':
+        return usageAmount * moment(timestamp).daysInMonth()
+      case 'Terabytes':
+        return usageAmount * 1000
+      default:
+        return 0
+    }
+  }
+
+  private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
+    if (serviceName === 'AmazonEC2') {
+      return usageType.includes('BoxUsage') ? 'EC2' : 'EBS'
+    }
+    return serviceName
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
@@ -190,10 +236,6 @@ export default class Athena {
     }
     const results: GetQueryResultsOutput = await this.athena.getQueryResults(queryExecutionData).promise()
     return results.ResultSet.Rows
-  }
-
-  async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
-    return []
   }
 }
 
