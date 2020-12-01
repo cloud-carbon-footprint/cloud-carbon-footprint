@@ -12,8 +12,41 @@ import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import configLoader from '@application/ConfigLoader'
 import { GetQueryExecutionOutput, GetQueryResultsOutput, StartQueryExecutionOutput } from 'aws-sdk/clients/athena'
+import ComputeUsage from '@domain/ComputeUsage'
+import { EstimationResult, ServiceData } from '@application/EstimationResult'
+import { RegionCosts, RegionEstimates } from '@domain/Region'
 
-export default class Athena implements ICloudService {
+interface AthenaFootprintEstimate extends FootprintEstimate {
+  serviceName: string
+  accountName: string
+  region: string
+}
+
+interface QueryResultsRow {
+  Data: QueryResultsColumn[]
+}
+
+interface QueryResultsColumn {
+  VarCharValue: string
+}
+
+interface MutableEstimationResult {
+  timestamp: Date
+  serviceEstimates: MutableServiceEstimate[]
+}
+
+interface MutableServiceEstimate {
+  cloudProvider: string
+  accountName: string
+  serviceName: string
+  wattHours: number
+  co2e: number
+  cost: number
+  region: string
+  usesAverageCPUConstant: boolean
+}
+
+export default class Athena {
   serviceName = 'athena'
   private readonly dataBaseName: string
   private readonly tableName: string
@@ -30,10 +63,90 @@ export default class Athena implements ICloudService {
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
     this.athena = new AWSAthena()
   }
-  async getEstimates(start: Date, end: Date): Promise<FootprintEstimate[]> {
-    const usage = await this.getUsage(start, end)
+  async getEstimates(start: Date, end: Date): Promise<MutableEstimationResult[]> {
+    const usageRows = await this.getUsage(start, end)
+    const usageRowsHeader: QueryResultsRow = usageRows.shift()
 
-    return usage
+    const serviceNameIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_product_code')
+    const accountIdIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_account_id')
+    const vcpuIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_vcpu')
+    const usageAmountIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_amount')
+    const regionIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_region')
+    const pricingUnitIndex = getIndexOfObjectByValue(usageRowsHeader, 'pricing_unit')
+    const usageStartTimeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_end_date')
+    const computeUsageRows = usageRows.filter((row) => row.Data[pricingUnitIndex].VarCharValue === 'Hrs')
+    // const storageUsageRows = usageRows.filter((row) => row.Data[pricingUnitIndex] in ['GB', 'GB-Mo', 'Terabytes'])
+
+    const results: MutableEstimationResult[] = []
+
+    computeUsageRows.map((row: QueryResultsRow) => {
+      const rowValues = Object.values(row.Data)
+      const region = rowValues[regionIndex].VarCharValue
+      const timestamp = new Date(rowValues[usageStartTimeIndex].VarCharValue.substr(0, 10))
+      const serviceName = rowValues[serviceNameIndex].VarCharValue
+      const accountName = rowValues[accountIdIndex].VarCharValue
+
+      const computeUsage: ComputeUsage = {
+        timestamp: timestamp,
+        cpuUtilizationAverage: 50,
+        numberOfvCpus: Number(rowValues[vcpuIndex].VarCharValue) * Number(rowValues[usageAmountIndex].VarCharValue),
+        usesAverageCPUConstant: true,
+      }
+
+      const computeEstimate: FootprintEstimate = this.computeEstimator.estimate([computeUsage], region, 'AWS')[0]
+
+      const serviceEstimate: MutableServiceEstimate = {
+        cloudProvider: 'AWS',
+        wattHours: computeEstimate.wattHours,
+        co2e: computeEstimate.co2e,
+        usesAverageCPUConstant: computeEstimate.usesAverageCPUConstant,
+        serviceName: serviceName,
+        accountName: accountName,
+        region: region,
+        cost: 0,
+      }
+
+      if (this.dayExistsInEstimates(results, timestamp)) {
+        let estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+
+        if (this.estimateExistsForRegionAndService(results, timestamp, serviceEstimate)) {
+          let estimateToAcc = estimatesForDay.serviceEstimates.find((estimateForDay) => {
+            return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
+          })
+          estimateToAcc.wattHours += serviceEstimate.wattHours
+          estimateToAcc.co2e += serviceEstimate.co2e
+          estimateToAcc.cost += serviceEstimate.cost
+        } else {
+          estimatesForDay.serviceEstimates.push(serviceEstimate)
+        }
+      } else {
+        results.push({
+          timestamp: timestamp,
+          serviceEstimates: [serviceEstimate],
+        })
+      }
+    })
+
+    return results
+  }
+
+  private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date) {
+    return results.some((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+  }
+
+  private estimateExistsForRegionAndService(
+    results: MutableEstimationResult[],
+    timestamp: Date,
+    serviceEstimate: MutableServiceEstimate,
+  ) {
+    let estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+    return estimatesForDay.serviceEstimates.some((estimateForDay) => {
+      return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
+    })
+  }
+
+  private hasSameRegionAndService(estimateOne: MutableServiceEstimate, estimateTwo: MutableServiceEstimate) {
+    return estimateOne.region === estimateTwo.region && estimateOne.serviceName === estimateTwo.serviceName
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
@@ -84,32 +197,8 @@ export default class Athena implements ICloudService {
   }
 }
 
-export function extractComputeUsageByRegion(queryResultData: any): any {
-  const computeUsageData = queryResultData.filter((row: any) => row.Data[6].VarCharValue !== '')
-
-  let result: any = {}
-
-  computeUsageData.map((row: any) => {
-    const rowData = row.Data
-    const region = rowData[5].VarCharValue
-    const rowUsage = {
-      serviceName: rowData[0].VarCharValue,
-      accountName: rowData[2].VarCharValue,
-      usage: {
-        timestamp: new Date(rowData[8].VarCharValue.substr(0, 10)),
-        cpuUtilizationAverage: 50,
-        numberOfvCpus: rowData[3].VarCharValue * rowData[6].VarCharValue,
-        usesAverageCPUConstant: true,
-      },
-    }
-    if (region in result) {
-      result[region].push(rowUsage)
-    } else {
-      result[region] = [rowUsage]
-    }
-  })
-
-  return result
+function getIndexOfObjectByValue(data: QueryResultsRow, value: string) {
+  return data.Data.map((item: QueryResultsColumn) => item.VarCharValue).indexOf(value)
 }
 
 async function wait(ms: number) {

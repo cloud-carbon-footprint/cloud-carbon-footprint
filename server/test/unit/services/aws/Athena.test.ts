@@ -4,7 +4,7 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-import Athena, { extractComputeUsageByRegion } from '@services/aws/Athena'
+import Athena from '@services/aws/Athena'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
@@ -14,7 +14,7 @@ import config from '@application/ConfigLoader'
 
 jest.mock('@application/ConfigLoader')
 
-xdescribe('Athena Service', () => {
+describe('Athena Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
 
@@ -44,25 +44,39 @@ xdescribe('Athena Service', () => {
         { VarCharValue: '921261756131' },
         { VarCharValue: '2' },
         { VarCharValue: 't2.micro' },
-        { VarCharValue: 'us-east-2' },
+        { VarCharValue: 'us-east-1' },
         { VarCharValue: '1' },
         { VarCharValue: 'Hrs' },
+        { VarCharValue: '2020-11-02 15:00:00.000' },
         { VarCharValue: '2020-11-02 16:00:00.000' },
-        { VarCharValue: '2020-11-02 17:00:00.000' },
       ],
     },
     {
       Data: [
         { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'USW1-EBS:SnapshotUsage' },
+        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
         { VarCharValue: '921261756131' },
-        { VarCharValue: '5' },
-        { VarCharValue: '' },
-        { VarCharValue: 'us-west-1' },
-        { VarCharValue: '' },
-        { VarCharValue: 'GB-Mo' },
-        { VarCharValue: '2020-10-31 23:00:00.000' },
-        { VarCharValue: '2020-11-01 00:00:00.000' },
+        { VarCharValue: '2' },
+        { VarCharValue: 't2.micro' },
+        { VarCharValue: 'us-east-1' },
+        { VarCharValue: '1' },
+        { VarCharValue: 'Hrs' },
+        { VarCharValue: '2020-11-02 18:00:00.000' },
+        { VarCharValue: '2020-11-02 19:00:00.000' },
+      ],
+    },
+    {
+      Data: [
+        { VarCharValue: 'AmazonEC2' },
+        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
+        { VarCharValue: '921261756131' },
+        { VarCharValue: '2' },
+        { VarCharValue: 't2.micro' },
+        { VarCharValue: 'us-east-2' },
+        { VarCharValue: '1' },
+        { VarCharValue: 'Hrs' },
+        { VarCharValue: '2020-11-02 16:00:00.000' },
+        { VarCharValue: '2020-11-02 17:00:00.000' },
       ],
     },
   ]
@@ -95,84 +109,7 @@ xdescribe('Athena Service', () => {
     getQueryResultsSpy.mockClear()
   })
 
-  it('Extracts Compute Usage by region', () => {
-    // given
-    const testQueryResultsData = queryResultsData.concat([
-      {
-        Data: [
-          { VarCharValue: 'AmazonEC2' },
-          { VarCharValue: 'USE2-BoxUsage:t2.micro' },
-          { VarCharValue: '921261756131' },
-          { VarCharValue: '5' },
-          { VarCharValue: 't2.micro' },
-          { VarCharValue: 'us-east-2' },
-          { VarCharValue: '2' },
-          { VarCharValue: 'Hrs' },
-          { VarCharValue: '2020-11-02 16:00:00.000' },
-          { VarCharValue: '2020-11-02 17:00:00.000' },
-        ],
-      },
-      {
-        Data: [
-          { VarCharValue: 'AmazonEC2' },
-          { VarCharValue: 'USE2-BoxUsage:t2.micro' },
-          { VarCharValue: '921261756131' },
-          { VarCharValue: '3' },
-          { VarCharValue: 't2.micro' },
-          { VarCharValue: 'us-east-1' },
-          { VarCharValue: '3' },
-          { VarCharValue: 'Hrs' },
-          { VarCharValue: '2020-11-02 16:00:00.000' },
-          { VarCharValue: '2020-11-02 17:00:00.000' },
-        ],
-      },
-    ])
-
-    const expectedResult: any = {
-      'us-east-2': [
-        {
-          serviceName: 'AmazonEC2',
-          accountName: '921261756131',
-          usage: {
-            timestamp: new Date('2020-11-02'),
-            cpuUtilizationAverage: 50,
-            numberOfvCpus: 2,
-            usesAverageCPUConstant: true,
-          },
-        },
-        {
-          serviceName: 'AmazonEC2',
-          accountName: '921261756131',
-          usage: {
-            timestamp: new Date('2020-11-02'),
-            cpuUtilizationAverage: 50,
-            numberOfvCpus: 10,
-            usesAverageCPUConstant: true,
-          },
-        },
-      ],
-      'us-east-1': [
-        {
-          serviceName: 'AmazonEC2',
-          accountName: '921261756131',
-          usage: {
-            timestamp: new Date('2020-11-02'),
-            cpuUtilizationAverage: 50,
-            numberOfvCpus: 9,
-            usesAverageCPUConstant: true,
-          },
-        },
-      ],
-    }
-
-    // when
-    const result = extractComputeUsageByRegion(testQueryResultsData)
-
-    // then
-    expect(result).toEqual(expectedResult)
-  })
-
-  it('Gets Estimates for EC2 and EBS', async () => {
+  it('Gets Estimates for EC2', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -212,29 +149,24 @@ xdescribe('Athena Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
+            wattHours: 9.384,
+            co2e: 0.0031617362219616,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'AmazonEC2',
+            cost: 0,
+            region: 'us-east-1',
+          },
+          {
             wattHours: 4.692,
             co2e: 0.0028301540308512,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'EC2',
+            serviceName: 'AmazonEC2',
             cost: 0,
             region: 'us-east-2',
-          },
-        ],
-      },
-      {
-        timestamp: new Date('2020-10-31'),
-        serviceEstimates: [
-          {
-            wattHours: 2.8943999999999996,
-            co2e: 0.00055403441280144,
-            usesAverageCPUConstant: false,
-            cloudProvider: 'AWS',
-            accountName: '921261756131',
-            serviceName: 'EBS',
-            cost: 0,
-            region: 'us-west-1',
           },
         ],
       },
