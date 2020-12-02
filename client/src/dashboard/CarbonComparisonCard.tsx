@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Card, CardContent, CardActions, Typography, Button, Link } from '@material-ui/core'
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
-import { EstimationResult } from '../models/types'
+import { EstimationResult } from '../types'
 
 type Selection = 'miles' | 'gas' | 'trees'
 
