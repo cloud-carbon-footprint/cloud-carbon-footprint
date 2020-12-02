@@ -2,18 +2,17 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult, Account, FilterResultResponse } from '../../types'
+import { Account, EstimationResult, FilterResultResponse } from '../../models/types'
 import moment from 'moment'
 import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
 import { ALL_CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
-import { DropdownOption } from './DropdownFilter'
 import { Dispatch, SetStateAction } from 'react'
+import { FiltersUtil, FilterType } from './FiltersUtil'
 
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
 }
-
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
 
@@ -30,19 +29,14 @@ const defaultFiltersConfig = {
   services: SERVICE_OPTIONS.map((o) => o.key),
   cloudProviders: CLOUD_PROVIDER_OPTIONS.map((o) => o.key),
   dateRange: null,
-  accounts: [],
+  accounts: [{ cloudProvider: '', id: 'all', name: 'All Accounts' }],
 }
 
 export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): FiltersConfig => {
   return Object.assign(defaultFiltersConfig, filteredResponse)
 }
 
-const providerServices: { [key: string]: string[] } = {
-  aws: ['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'],
-  gcp: ['computeEngine'],
-}
-
-export class Filters {
+export class Filters extends FiltersUtil {
   readonly timeframe: number
   readonly services: string[]
   readonly cloudProviders: string[]
@@ -50,6 +44,7 @@ export class Filters {
   readonly accounts: Account[]
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
+    super()
     this.timeframe = config.timeframe
     this.services = config.services
     this.cloudProviders = config.cloudProviders
@@ -62,7 +57,13 @@ export class Filters {
   }
 
   withServices(services: string[]): Filters {
-    const { providerKeys, serviceKeys } = handleSelections(services, this.services, ALL_SERVICES, SERVICE_OPTIONS)
+    const { providerKeys, serviceKeys } = this.handleSelections(
+      services,
+      this.services,
+      ALL_SERVICES,
+      SERVICE_OPTIONS,
+      FilterType.SERVICES,
+    )
     return new Filters({
       ...this,
       services: serviceKeys,
@@ -70,7 +71,7 @@ export class Filters {
     })
   }
 
-  withAccounts(accounts: string[]): Filters {
+  withAccounts(accounts: Account[]): Filters {
     return new Filters({
       ...this,
       accounts: accounts,
@@ -78,11 +79,12 @@ export class Filters {
   }
 
   withCloudProviders(cloudProviders: string[]): Filters {
-    const { providerKeys, serviceKeys } = handleSelections(
+    const { providerKeys, serviceKeys } = this.handleSelections(
       cloudProviders,
       this.cloudProviders,
       ALL_CLOUD_PROVIDERS,
       CLOUD_PROVIDER_OPTIONS,
+      FilterType.CLOUD_PROVIDERS,
     )
     return new Filters({
       ...this,
@@ -107,11 +109,11 @@ export class Filters {
   }
 
   serviceLabel(): string {
-    return numSelectedLabel(this.services.length, SERVICE_OPTIONS.length)
+    return this.numSelectedLabel(this.services.length, SERVICE_OPTIONS.length)
   }
 
   cloudProviderLabel(): string {
-    return numSelectedLabel(this.cloudProviders.length, CLOUD_PROVIDER_OPTIONS.length, 'Cloud Providers')
+    return this.numSelectedLabel(this.cloudProviders.length, CLOUD_PROVIDER_OPTIONS.length, 'Cloud Providers')
   }
 
   filter(rawResults: EstimationResult[]): EstimationResult[] {
@@ -137,94 +139,6 @@ export class Filters {
       })
       return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
     })
-  }
-}
-
-function isServiceKeys(keys: string[], allValue: string) {
-  const serviceKeys: string[] = []
-
-  SERVICE_OPTIONS.forEach((obj) => {
-    if (obj.key !== allValue) {
-      serviceKeys.push(obj.key)
-    }
-  })
-
-  return serviceKeys.some((r) => keys.includes(r))
-}
-
-function isProviderKeys(keys: string[], allValue: string) {
-  const providerKeys: string[] = []
-
-  CLOUD_PROVIDER_OPTIONS.forEach((obj) => {
-    if (obj.key !== allValue) {
-      providerKeys.push(obj.key)
-    }
-  })
-
-  return providerKeys.some((r) => keys.includes(r))
-}
-
-function getSerivceKeysFromProviderKeys(keys: string[], allValue: string) {
-  const serviceKeys: string[] = []
-
-  keys.forEach((key) => {
-    if (key !== allValue) {
-      providerServices[key].forEach((service) => serviceKeys.push(service))
-    }
-  })
-
-  if (keys.includes(allValue)) {
-    serviceKeys.push('all')
-  }
-
-  return serviceKeys
-}
-
-function getProviderKeysFromServiceKeys(keys: string[], allValue: string) {
-  const providerKeys: string[] = []
-
-  for (const [key, value] of Object.entries(providerServices)) {
-    if (value.some((r) => keys.includes(r))) {
-      providerKeys.push(key)
-    }
-  }
-
-  if (keys.includes(allValue)) {
-    providerKeys.push(allValue)
-  }
-
-  return providerKeys
-}
-
-function handleSelections(keys: string[], oldKeys: string[], allValue: string, options: DropdownOption[]) {
-  let serviceKeys: string[]
-  let providerKeys: string[]
-
-  if (keys.includes(allValue) && !oldKeys.includes(allValue)) {
-    serviceKeys = SERVICE_OPTIONS.map((o) => o.key)
-    providerKeys = CLOUD_PROVIDER_OPTIONS.map((o) => o.key)
-  } else if (!keys.includes(allValue) && oldKeys.includes(allValue)) {
-    serviceKeys = []
-    providerKeys = []
-  } else {
-    if (keys.length === options.length - 1 && oldKeys.includes(allValue)) {
-      keys = keys.filter((k) => k !== allValue)
-    } else if (keys.length === options.length - 1 && !oldKeys.includes(allValue)) {
-      keys = options.map((o) => o.key)
-    }
-
-    serviceKeys = isServiceKeys(keys, allValue) ? keys : getSerivceKeysFromProviderKeys(keys, allValue)
-    providerKeys = isProviderKeys(keys, allValue) ? keys : getProviderKeysFromServiceKeys(keys, allValue)
-  }
-  return { providerKeys, serviceKeys }
-}
-
-function numSelectedLabel(length: number, totalLength: number, type = 'Services') {
-  const lengthWithoutAllOption = totalLength - 1
-  if (length === totalLength) {
-    return `${type}: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`
-  } else {
-    return `${type}: ${length} of ${lengthWithoutAllOption}`
   }
 }
 

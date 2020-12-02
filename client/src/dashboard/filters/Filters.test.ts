@@ -273,15 +273,17 @@ describe('Filters', () => {
   })
 
   describe('withAccounts', () => {
+    const mockAccount1 = { cloudProvider: 'testCloudProvider1', id: '123123123', name: 'testAccount1' }
+    const mockAccount2 = { cloudProvider: 'testCloudProvider2', id: '321321321', name: 'testAccount2' }
     it('should unselect a selected account', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withAccounts(['test account'])
-        .withAccounts(['test account', 'different account'])
-        .withAccounts(['different account'])
+        .withAccounts([mockAccount1])
+        .withAccounts([mockAccount1, mockAccount2])
+        .withAccounts([mockAccount2])
 
-      expect(newFilters.accounts).toEqual(['different account'])
+      expect(newFilters.accounts).toEqual([mockAccount2])
     })
   })
 })
