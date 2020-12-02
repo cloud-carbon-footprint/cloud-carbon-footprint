@@ -53,7 +53,7 @@ const escapePrivateKey = (privateKey: string) => {
 
 const appConfig: CCFConfig = {
   AWS: {
-    USE_BILLING_DATA: !!process.env.USE_BILLING_DATA,
+    USE_BILLING_DATA: !!process.env.AWS_USE_BILLING_DATA,
     ATHENA_DB_NAME: process.env.AWS_ATHENA_DB_NAME || '',
     ATHENA_DB_TABLE: process.env.AWS_ATHENA_DB_TABLE || '',
     ATHENA_QUERY_RESULT_LOCATION: process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',
