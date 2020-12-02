@@ -13,7 +13,7 @@ import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
 import { sumServiceTotals, getMaxOfDataSeries } from '../transformData'
-import { EstimationResult } from '../../types'
+import { EstimationResult } from '../../models/types'
 
 const formatDateToTime = (timestamp: string | Date) =>
   timestamp instanceof Date ? timestamp.getTime() : new Date(timestamp).getTime()

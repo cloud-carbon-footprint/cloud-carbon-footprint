@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult, cloudEstPerDay, ChartDataTypes, serviceEstimate } from '../types'
+import { EstimationResult, cloudEstPerDay, ChartDataTypes, serviceEstimate } from '../models/types'
 
 const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
   const co2Series: cloudEstPerDay[] = []

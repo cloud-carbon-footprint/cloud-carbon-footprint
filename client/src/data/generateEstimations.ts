@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { EstimationResult, serviceEstimate } from '../types'
+import { EstimationResult, serviceEstimate } from '../models/types'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))

@@ -11,7 +11,7 @@ The custom tooltip also allows us to add an asterisk for data points that were e
 
 import React, { ReactElement } from 'react'
 import moment from 'moment'
-import { cloudEstPerDay } from '../../types'
+import { cloudEstPerDay } from '../../models/types'
 
 export const CustomTooltip = ({
   data,

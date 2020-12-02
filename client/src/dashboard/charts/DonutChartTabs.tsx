@@ -5,7 +5,7 @@
 import React, { ChangeEvent, ReactElement } from 'react'
 import { Paper, Tabs, Tab, Box, Card } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
-import { ChartDataTypes, EstimationResult } from '../../types'
+import { ChartDataTypes, EstimationResult } from '../../models/types'
 
 export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElement => {
   const [value, setValue] = React.useState(0)
