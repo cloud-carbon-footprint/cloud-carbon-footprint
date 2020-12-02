@@ -16,7 +16,7 @@ fileignoreconfig:
 - filename: server/create_server_env_file.sh
   checksum: e456d6a6ddfecaadaefc0811847aad51685d7d5d1fc347fb6a24b87f1fcf32cf
 - filename: server/package-lock.json
-  checksum: 4fcc310f913960cd692a4c7da5f6e03ddaf19031d281f96991dbc327f837c7eb
+  checksum: a8529c6fd75ca6ae4ef6d09ef4e87bca77fff2500df29bd68261f19b6f9de9f4
 - filename: server/src/application/Config.ts
   checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
 - filename: server/src/application/GCPAccount.ts
