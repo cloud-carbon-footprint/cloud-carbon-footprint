@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { Account, EstimationResult, FilterResultResponse } from '../../models/types'
+import { Account, EstimationResult, FilterResultResponse } from '../../types'
 import moment from 'moment'
 import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
 import { ALL_CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
