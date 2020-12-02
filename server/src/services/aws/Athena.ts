@@ -6,13 +6,14 @@
 import moment from 'moment'
 import { Athena as AWSAthena } from 'aws-sdk'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import Cost from '@domain/Cost'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import configLoader from '@application/ConfigLoader'
 import { GetQueryExecutionOutput, GetQueryResultsOutput, StartQueryExecutionOutput } from 'aws-sdk/clients/athena'
 import ComputeUsage from '@domain/ComputeUsage'
 import StorageUsage from '@domain/StorageUsage'
+import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstants'
+import Logger from '@services/Logger'
 
 interface QueryResultsRow {
   Data: QueryResultsColumn[]
@@ -44,6 +45,7 @@ export default class Athena {
   private readonly tableName: string
   private readonly queryResultsLocation: string
   private readonly athena: AWSAthena
+  private readonly athenaLogger: Logger
 
   constructor(
     private readonly computeEstimator: ComputeEstimator,
@@ -54,6 +56,7 @@ export default class Athena {
     this.tableName = configLoader().AWS.ATHENA_DB_TABLE
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
     this.athena = new AWSAthena()
+    this.athenaLogger = new Logger('Athena')
   }
   async getEstimates(start: Date, end: Date): Promise<MutableEstimationResult[]> {
     const usageRows = await this.getUsage(start, end)
@@ -87,6 +90,7 @@ export default class Athena {
         numberOfvCPUHours,
         usageAmount,
         region,
+        usageType,
       )
 
       const serviceEstimate: MutableServiceEstimate = {
@@ -133,9 +137,11 @@ export default class Athena {
     numberOfvCPUHours: number,
     usageAmount: number,
     region: string,
+    usageType: string,
   ) {
     switch (pricingUnit) {
       case 'Hrs':
+        // Compute
         const computeUsage: ComputeUsage = {
           timestamp: timestamp,
           cpuUtilizationAverage: 50,
@@ -143,17 +149,41 @@ export default class Athena {
           usesAverageCPUConstant: true,
         }
         return this.computeEstimator.estimate([computeUsage], region, 'AWS')[0]
-      case 'GB':
       case 'GB-Mo':
-      case 'Terabytes':
+        // Storage
         const storageUsage: StorageUsage = {
           timestamp: timestamp,
-          sizeGb: this.convertToGigabytes(pricingUnit, usageAmount, timestamp),
+          sizeGb: usageAmount * moment(timestamp).daysInMonth(),
         }
-        const estimate: FootprintEstimate = this.hddStorageEstimator.estimate([storageUsage], region)[0]
+
+        let estimate: FootprintEstimate
+        if (this.usageTypeIsSSD(usageType)) estimate = this.ssdStorageEstimator.estimate([storageUsage], region)[0]
+        else if (this.usageTypeIsHDD(usageType)) estimate = this.hddStorageEstimator.estimate([storageUsage], region)[0]
+        else this.athenaLogger.warn(`Unexpected usage type for storage service: ${usageType}`)
         estimate.usesAverageCPUConstant = false
         return estimate
+      case 'seconds':
+        // Lambda
+        const wattHours =
+          (usageAmount / 3600) * CLOUD_CONSTANTS.AWS.MAX_WATTS * CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS
+        const co2e = estimateCo2(wattHours, 'AWS', region)
+        return { timestamp, wattHours, co2e, usesAverageCPUConstant: true }
+      default:
+        this.athenaLogger.warn(`Unexpected pricing unit: ${pricingUnit}`)
     }
+  }
+
+  private usageTypeIsHDD(usageType: string) {
+    return (
+      usageType.endsWith('VolumeUsage.st1') ||
+      usageType.endsWith('VolumeUsage.sc1') ||
+      usageType.endsWith('VolumeUsage') ||
+      usageType.endsWith('SnapshotUsage')
+    )
+  }
+
+  private usageTypeIsSSD(usageType: string) {
+    return usageType.endsWith('VolumeUsage.gp2') || usageType.endsWith('VolumeUsage.piops')
   }
 
   private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date): boolean {
@@ -175,24 +205,15 @@ export default class Athena {
     return estimateOne.region === estimateTwo.region && estimateOne.serviceName === estimateTwo.serviceName
   }
 
-  private convertToGigabytes(pricingUnit: string, usageAmount: number, timestamp: Date): number {
-    switch (pricingUnit) {
-      case 'GB':
-        return usageAmount
-      case 'GB-Mo':
-        return usageAmount * moment(timestamp).daysInMonth()
-      case 'Terabytes':
-        return usageAmount * 1000
-      default:
-        return 0
-    }
-  }
-
   private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
+    const serviceNameMapping: { [usageType: string]: string } = {
+      AWSLambda: 'Lambda',
+    }
+
     if (serviceName === 'AmazonEC2') {
       return usageType.includes('BoxUsage') ? 'EC2' : 'EBS'
     }
-    return serviceName
+    return serviceNameMapping[serviceName]
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
