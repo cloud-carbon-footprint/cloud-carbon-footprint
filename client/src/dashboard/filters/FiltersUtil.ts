@@ -21,7 +21,7 @@ export abstract class FiltersUtil {
     allValue: string,
     currentFilterType: FilterType,
     desiredFilterType: FilterType,
-  ) {
+  ): string[] {
     const currentKeys: string[] = []
 
     if (currentFilterType == FilterType.SERVICES && desiredFilterType == FilterType.CLOUD_PROVIDERS) {
@@ -52,7 +52,7 @@ export abstract class FiltersUtil {
     allValue: string,
     options: DropdownOption[],
     filterType: FilterType,
-  ) {
+  ): { providerKeys: string[]; serviceKeys: string[] } {
     let serviceKeys: string[]
     let providerKeys: string[]
 
@@ -81,7 +81,7 @@ export abstract class FiltersUtil {
     return { providerKeys, serviceKeys }
   }
 
-  numSelectedLabel(length: number, totalLength: number, type = 'Services') {
+  numSelectedLabel(length: number, totalLength: number, type = 'Services'): string {
     const lengthWithoutAllOption = totalLength - 1
     if (length === totalLength) {
       return `${type}: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`
