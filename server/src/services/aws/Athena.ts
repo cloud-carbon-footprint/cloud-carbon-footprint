@@ -59,25 +59,25 @@ export default class Athena {
     const usageRows = await this.getUsage(start, end)
     const usageRowsHeader: QueryResultsRow = usageRows.shift()
 
+    const dayIndex = getIndexOfObjectByValue(usageRowsHeader, 'day')
+    const accountIdIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_account_id')
+    const regionIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_region')
     const serviceNameIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_product_code')
     const usageTypeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_type')
-    const accountIdIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_account_id')
-    const vcpuIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_vcpu')
-    const usageAmountIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_amount')
-    const regionIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_region')
     const pricingUnitIndex = getIndexOfObjectByValue(usageRowsHeader, 'pricing_unit')
-    const usageStartTimeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_start_date')
+    const vcpuIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_vcpu')
+    const totalUsageAmountIndex = getIndexOfObjectByValue(usageRowsHeader, 'total_line_item_usage_amount')
 
     const results: MutableEstimationResult[] = []
 
     usageRows.map((row: QueryResultsRow) => {
       const rowValues = Object.values(row.Data)
       const region = rowValues[regionIndex].VarCharValue
-      const timestamp = new Date(rowValues[usageStartTimeIndex].VarCharValue.substr(0, 10))
+      const timestamp = new Date(rowValues[dayIndex].VarCharValue)
       const serviceName = rowValues[serviceNameIndex].VarCharValue
       const usageType = rowValues[usageTypeIndex].VarCharValue
       const accountName = rowValues[accountIdIndex].VarCharValue
-      const usageAmount = Number(rowValues[usageAmountIndex].VarCharValue)
+      const usageAmount = Number(rowValues[totalUsageAmountIndex].VarCharValue)
       const numberOfvCPUHours = Number(rowValues[vcpuIndex].VarCharValue) * usageAmount
       const pricingUnit = rowValues[pricingUnitIndex].VarCharValue
 
@@ -197,21 +197,27 @@ export default class Athena {
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
     const params = {
-      QueryString: `SELECT line_item_product_code,
-                    line_item_usage_type,
-                    line_item_usage_account_id,
-                    line_item_usage_amount,
-                    product_instance_type,
-                    product_region,
-                    product_vcpu,
-                    pricing_unit,
-                    line_item_usage_start_date,
-                    line_item_usage_end_date
-                FROM ${this.tableName}
-                WHERE line_item_line_item_type = 'Usage'
-                AND pricing_unit IN ('Hrs', 'GB-Mo', 'GB', 'Terabytes', 'seconds')
-                AND line_item_usage_start_date >= DATE(${moment(start).format('YYYY-MM-DD')})
-                AND line_item_usage_end_date <= DATE(${moment(end).format('YYYY-MM-DD')})`,
+      QueryString: `SELECT DATE(line_item_usage_start_date) AS day,
+                        line_item_usage_account_id,
+                        product_region,
+                        line_item_product_code,
+                        line_item_usage_type,
+                        pricing_unit,
+                        product_vcpu,
+                    SUM(line_item_usage_amount) AS total_line_item_usage_amount
+                    FROM ${this.dataBaseName}
+                    WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
+                    AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds')
+                    AND pricing_unit = 'Hrs'
+                    AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
+                    AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
+                    GROUP BY DATE(line_item_usage_start_date), 
+                            line_item_usage_account_id, 
+                            product_region, 
+                            line_item_product_code, 
+                            line_item_usage_type, 
+                            pricing_unit, 
+                            product_vcpu`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },
