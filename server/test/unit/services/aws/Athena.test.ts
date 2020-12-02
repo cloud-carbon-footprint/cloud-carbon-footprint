@@ -85,7 +85,19 @@ describe('Athena Service', () => {
     },
     {
       Data: [
-        { VarCharValue: '2020-10-31' },
+        { VarCharValue: '2020-10-29' },
+        { VarCharValue: '921261756131' },
+        { VarCharValue: 'us-east-1' },
+        { VarCharValue: 'AmazonEC2' },
+        { VarCharValue: 'EBS:VolumeUsage.gp2' },
+        { VarCharValue: 'GB-Mo' },
+        { VarCharValue: '' },
+        { VarCharValue: '3' },
+      ],
+    },
+    {
+      Data: [
+        { VarCharValue: '2020-10-30' },
         { VarCharValue: '921261756131' },
         { VarCharValue: 'us-west-1' },
         { VarCharValue: 'AmazonEC2' },
@@ -93,6 +105,30 @@ describe('Athena Service', () => {
         { VarCharValue: 'GB-Mo' },
         { VarCharValue: '' },
         { VarCharValue: '5' },
+      ],
+    },
+    {
+      Data: [
+        { VarCharValue: '2020-10-30' },
+        { VarCharValue: '921261756131' },
+        { VarCharValue: 'us-west-1' },
+        { VarCharValue: 'AWSLambda' },
+        { VarCharValue: 'Lambda-GB-Second' },
+        { VarCharValue: 'seconds' },
+        { VarCharValue: '' },
+        { VarCharValue: '10' },
+      ],
+    },
+    {
+      Data: [
+        { VarCharValue: '2020-10-30' },
+        { VarCharValue: '921261756131' },
+        { VarCharValue: 'us-west-1' },
+        { VarCharValue: 'AWSLambda' },
+        { VarCharValue: 'Lambda-GB-Second' },
+        { VarCharValue: 'seconds' },
+        { VarCharValue: '' },
+        { VarCharValue: '10' },
       ],
     },
   ]
@@ -125,7 +161,7 @@ describe('Athena Service', () => {
     getQueryResultsSpy.mockClear()
   })
 
-  it('Gets Estimates for EC2 and EBS', async () => {
+  it('Gets Estimates for EC2, EBS Snapshot, EBS SDD Storage and Lambda across multiple days with accumulation', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -202,7 +238,22 @@ describe('Athena Service', () => {
         ],
       },
       {
-        timestamp: new Date('2020-10-31'),
+        timestamp: new Date('2020-10-29'),
+        serviceEstimates: [
+          {
+            wattHours: 3.2140799999999996,
+            co2e: 0.0010829148717265919,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'EBS',
+            cost: 0,
+            region: 'us-east-1',
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
             wattHours: 2.99088,
@@ -211,6 +262,16 @@ describe('Athena Service', () => {
             cloudProvider: 'AWS',
             accountName: '921261756131',
             serviceName: 'EBS',
+            cost: 0,
+            region: 'us-west-1',
+          },
+          {
+            wattHours: 0.02213333333333333,
+            co2e: 0.00000423667369288,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'Lambda',
             cost: 0,
             region: 'us-west-1',
           },
