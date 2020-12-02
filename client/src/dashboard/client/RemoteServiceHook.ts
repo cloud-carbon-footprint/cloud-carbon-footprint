@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useErrorHandling } from '../ErrorPage'
 
-import { EstimationResult, ServiceResult } from '../../types'
+import { EstimationResult, ServiceResult } from '../../models/types'
 
 const useRemoteService = (
   initial: EstimationResult[],

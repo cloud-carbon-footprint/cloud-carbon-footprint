@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { FilterResultResponse } from '../../types'
+import { FilterResultResponse } from '../../models/types'
 import { useEffect, useState } from 'react'
 import { useErrorHandling } from '../ErrorPage'
 import axios from 'axios'

@@ -3,7 +3,7 @@
  */
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { EstimationResult, FilterResultResponse } from '../../types'
+import { EstimationResult, FilterResultResponse } from '../../models/types'
 import { Filters, filtersConfigGenerator } from './Filters'
 const useFilters = (data: EstimationResult[], filteredResponse: FilterResultResponse): UseFiltersResults => {
   const [filteredData, setFilteredData] = useState(data)

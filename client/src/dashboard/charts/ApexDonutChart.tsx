@@ -8,7 +8,7 @@ import Chart from 'react-apexcharts'
 
 import { getChartColors } from '../../themes'
 import { sumCO2ByServiceOrRegion } from '../transformData'
-import { EstimationResult } from '../../types'
+import { EstimationResult } from '../../models/types'
 
 export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data, dataType }) => {
   const theme = useTheme()

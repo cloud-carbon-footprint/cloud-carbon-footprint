@@ -9,7 +9,7 @@ import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import { CarbonComparisonCard, toGas, toMiles, toTrees } from './CarbonComparisonCard'
-import { EstimationResult } from '../types'
+import { EstimationResult } from '../models/types'
 
 const data = [
   {

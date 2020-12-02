@@ -10,7 +10,7 @@ import { Tab } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { ChartDataTypes } from '../../types'
+import { ChartDataTypes } from '../../models/types'
 
 jest.mock('../../themes')
 

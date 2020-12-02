@@ -7,7 +7,7 @@ import { render } from '@testing-library/react'
 import CloudCarbonContainer from './CloudCarbonContainer'
 import useRemoteService from './client/RemoteServiceHook'
 import generateEstimations from '../data/generateEstimations'
-import { ServiceResult, EstimationResult } from '../types'
+import { ServiceResult, EstimationResult } from '../models/types'
 import moment from 'moment'
 
 jest.mock('./client/RemoteServiceHook')
