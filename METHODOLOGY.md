@@ -27,9 +27,9 @@
 
 * [Appendix](#appendix-aws-processor-list)
 
-    * [AWS processor list](#AWS processor list)
+    * [AWS processor list](#aws-processor-list)
     
-    * [GCP processor list](#GCP processor list)
+    * [GCP processor list](#gcp-processor-list)
 
 
 ## Summary
