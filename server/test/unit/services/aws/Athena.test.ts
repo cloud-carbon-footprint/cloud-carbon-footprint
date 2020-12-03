@@ -11,6 +11,10 @@ import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { GetQueryExecutionOutput, GetQueryResultsOutput } from 'aws-sdk/clients/athena'
 import { EstimationResult } from '@application/EstimationResult'
 import config from '@application/ConfigLoader'
+import {
+  athenaMockGetQueryResultsWithEC2EBSLambda,
+  athenaMockGetQueryResultsWithS3CloudWatchRDS,
+} from '../../../fixtures/athena.fixtures'
 
 jest.mock('@application/ConfigLoader')
 
@@ -20,124 +24,6 @@ describe('Athena Service', () => {
 
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
   const getQueryExecutionResponse = { QueryExecution: { Status: { State: 'SUCCEEDED' } } }
-
-  const queryResultsHeaders = {
-    Data: [
-      { VarCharValue: 'day' },
-      { VarCharValue: 'line_item_usage_account_id' },
-      { VarCharValue: 'product_region' },
-      { VarCharValue: 'line_item_product_code' },
-      { VarCharValue: 'line_item_usage_type' },
-      { VarCharValue: 'pricing_unit' },
-      { VarCharValue: 'product_vcpu' },
-      { VarCharValue: 'total_line_item_usage_amount' },
-    ],
-  }
-
-  const queryResultsData = [
-    {
-      Data: [
-        { VarCharValue: '2020-11-02' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-east-1' },
-        { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
-        { VarCharValue: 'Hrs' },
-        { VarCharValue: '1' },
-        { VarCharValue: '2' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-11-02' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-east-1' },
-        { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
-        { VarCharValue: 'Hrs' },
-        { VarCharValue: '1' },
-        { VarCharValue: '2' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-11-02' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-east-2' },
-        { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
-        { VarCharValue: 'Hrs' },
-        { VarCharValue: '1' },
-        { VarCharValue: '2' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-11-03' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-east-2' },
-        { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'USE2-BoxUsage:t2.micro' },
-        { VarCharValue: 'Hrs' },
-        { VarCharValue: '1' },
-        { VarCharValue: '2' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-10-29' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-east-1' },
-        { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'EBS:VolumeUsage.gp2' },
-        { VarCharValue: 'GB-Mo' },
-        { VarCharValue: '' },
-        { VarCharValue: '3' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-10-30' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-west-1' },
-        { VarCharValue: 'AmazonEC2' },
-        { VarCharValue: 'USW1-EBS:SnapshotUsage' },
-        { VarCharValue: 'GB-Mo' },
-        { VarCharValue: '' },
-        { VarCharValue: '5' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-10-30' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-west-1' },
-        { VarCharValue: 'AWSLambda' },
-        { VarCharValue: 'Lambda-GB-Second' },
-        { VarCharValue: 'seconds' },
-        { VarCharValue: '' },
-        { VarCharValue: '10' },
-      ],
-    },
-    {
-      Data: [
-        { VarCharValue: '2020-10-30' },
-        { VarCharValue: '921261756131' },
-        { VarCharValue: 'us-west-1' },
-        { VarCharValue: 'AWSLambda' },
-        { VarCharValue: 'Lambda-GB-Second' },
-        { VarCharValue: 'seconds' },
-        { VarCharValue: '' },
-        { VarCharValue: '10' },
-      ],
-    },
-  ]
-
-  const queryResultsResponse = {
-    ResultSet: {
-      Rows: [queryResultsHeaders, ...queryResultsData],
-    },
-  }
 
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
@@ -165,7 +51,7 @@ describe('Athena Service', () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(queryResultsResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithEC2EBSLambda)
 
     // when
     const athenaService = new Athena(
@@ -272,6 +158,71 @@ describe('Athena Service', () => {
             cloudProvider: 'AWS',
             accountName: '921261756131',
             serviceName: 'Lambda',
+            cost: 0,
+            region: 'us-west-1',
+          },
+        ],
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Gets Estimates for CloudWatch, RDS and S3 all on the same day with accumulation', async () => {
+    // given
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithS3CloudWatchRDS)
+
+    // when
+    const athenaService = new Athena(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+    )
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            wattHours: 1.196352,
+            co2e: 0.00022900089062459521,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'S3',
+            cost: 0,
+            region: 'us-west-1',
+          },
+          {
+            wattHours: 2.392704,
+            co2e: 0.0014432482673132545,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'CloudWatch',
+            cost: 0,
+            region: 'us-east-2',
+          },
+          {
+            wattHours: 2.99088,
+            co2e: 0.001007712450078912,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'RDS',
+            cost: 0,
+            region: 'us-east-1',
+          },
+          {
+            wattHours: 10.0488,
+            co2e: 0.00192350090082888,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'RDS',
             cost: 0,
             region: 'us-west-1',
           },
