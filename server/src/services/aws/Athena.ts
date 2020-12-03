@@ -269,7 +269,13 @@ export default class Athena {
       const queryExecutionResults: GetQueryExecutionOutput = await this.athena
         .getQueryExecution(queryExecutionData)
         .promise()
-      if (queryExecutionResults.QueryExecution.Status.State === 'SUCCEEDED') break
+      const queryStatus = queryExecutionResults.QueryExecution.Status
+      if (queryStatus.State === ('FAILED' || 'CANCELLED'))
+        throw new Error(
+          `Athena query failed. Reason ${queryStatus.StateChangeReason}. Query ID: ${response.QueryExecutionId}`,
+        )
+      if (queryStatus.State === 'SUCCEEDED') break
+
       await wait(1000)
     }
     const results: GetQueryResultsOutput = await this.athena.getQueryResults(queryExecutionData).promise()
