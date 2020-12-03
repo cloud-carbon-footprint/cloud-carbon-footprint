@@ -277,8 +277,8 @@ Intel Xeon https://aws.amazon.com/intel/
 * Intel® Xeon® E7 8880 processors
 
 AMD EPYC https://aws.amazon.com/ec2/amd/ 
-* 1st Gen
-* 2nd Gen
+* AMD EPYC 1st Gen
+* AMD EPYC 2nd Gen
 
 #### GCP processor list
 Intel Xeon https://cloud.google.com/compute/docs/cpu-platforms
@@ -290,6 +290,6 @@ Intel Xeon https://cloud.google.com/compute/docs/cpu-platforms
 * Intel Xeon E5 (Sandy Bridge)	
 
 AMD EPYC https://cloud.google.com/compute/docs/cpu-platforms
-* AMD EPYC 2nd Gen (Rome)
+* AMD EPYC 2nd Gen 
 
 © 2020 ThoughtWorks, Inc. All rights reserved.
