@@ -1,8 +1,6 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-/* istanbul ignore file */
-/* eslint-disable */
 import moment from 'moment'
 import { Athena as AWSAthena } from 'aws-sdk'
 import FootprintEstimate from '@domain/FootprintEstimate'
@@ -105,10 +103,10 @@ export default class Athena {
       }
 
       if (this.dayExistsInEstimates(results, timestamp)) {
-        let estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+        const estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
 
         if (this.estimateExistsForRegionAndService(results, timestamp, serviceEstimate)) {
-          let estimateToAcc = estimatesForDay.serviceEstimates.find((estimateForDay) => {
+          const estimateToAcc = estimatesForDay.serviceEstimates.find((estimateForDay) => {
             return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
           })
           estimateToAcc.wattHours += serviceEstimate.wattHours
@@ -173,17 +171,24 @@ export default class Athena {
     }
   }
 
+  private usageTypeIsSSD(usageType: string) {
+    return (
+      usageType.endsWith('VolumeUsage.gp2') ||
+      usageType.endsWith('VolumeUsage.piops') ||
+      usageType.endsWith('GP2-Storage') ||
+      usageType.endsWith('PIOPS-Storage')
+    )
+  }
+
   private usageTypeIsHDD(usageType: string) {
     return (
       usageType.endsWith('VolumeUsage.st1') ||
       usageType.endsWith('VolumeUsage.sc1') ||
       usageType.endsWith('VolumeUsage') ||
-      usageType.endsWith('SnapshotUsage')
+      usageType.endsWith('SnapshotUsage') ||
+      usageType.endsWith('TimedStorage-ByteHrs') ||
+      usageType.endsWith('StorageUsage')
     )
-  }
-
-  private usageTypeIsSSD(usageType: string) {
-    return usageType.endsWith('VolumeUsage.gp2') || usageType.endsWith('VolumeUsage.piops')
   }
 
   private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date): boolean {
@@ -195,7 +200,7 @@ export default class Athena {
     timestamp: Date,
     serviceEstimate: MutableServiceEstimate,
   ): boolean {
-    let estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+    const estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
     return estimatesForDay.serviceEstimates.some((estimateForDay) => {
       return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
     })
@@ -208,6 +213,9 @@ export default class Athena {
   private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
     const serviceNameMapping: { [usageType: string]: string } = {
       AWSLambda: 'Lambda',
+      AmazonRDS: 'RDS',
+      AmazonCloudWatch: 'CloudWatch',
+      AmazonS3: 'S3',
     }
 
     if (serviceName === 'AmazonEC2') {
