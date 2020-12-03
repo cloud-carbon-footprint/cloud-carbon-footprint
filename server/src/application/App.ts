@@ -9,6 +9,10 @@ import { EstimationResult, reduceByTimestamp } from '@application/EstimationResu
 import cache from '@application/Cache'
 import GCPAccount from '@application/GCPAccount'
 import FilterResult, { getAccounts } from '@domain/FilterResult'
+import Athena from '@services/aws/Athena'
+import ComputeEstimator from '@domain/ComputeEstimator'
+import { StorageEstimator } from '@domain/StorageEstimator'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default class App {
   @cache()
@@ -33,15 +37,25 @@ export default class App {
       }
       return estimatesForAccounts.flat()
     } else {
-      // Resolve AWS Estimates synchronously in order to avoid hitting API limits
       const AWSEstimatesByRegion: EstimationResult[][] = []
-      for (const account of AWS.accounts) {
-        const estimates: EstimationResult[] = await Promise.all(
-          await new AWSAccount(account.id, account.name, AWS.CURRENT_REGIONS).getDataForRegions(startDate, endDate),
-        )
-        AWSEstimatesByRegion.push(estimates)
-      }
 
+      if (AWS.USE_BILLING_DATA) {
+        const athenaService = new Athena(
+          new ComputeEstimator(),
+          new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+          new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+        )
+        const estimates = await athenaService.getEstimates(startDate, endDate)
+        AWSEstimatesByRegion.push(estimates)
+      } else {
+        // Resolve AWS Estimates synchronously in order to avoid hitting API limits
+        for (const account of AWS.accounts) {
+          const estimates: EstimationResult[] = await Promise.all(
+            await new AWSAccount(account.id, account.name, AWS.CURRENT_REGIONS).getDataForRegions(startDate, endDate),
+          )
+          AWSEstimatesByRegion.push(estimates)
+        }
+      }
       // Resolve GCP Estimates asynchronously
       const GCPEstimatesByRegion = await Promise.all(
         GCP.projects

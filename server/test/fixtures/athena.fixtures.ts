@@ -14,6 +14,7 @@ const queryResultsHeaders = {
     { VarCharValue: 'pricing_unit' },
     { VarCharValue: 'product_vcpu' },
     { VarCharValue: 'total_line_item_usage_amount' },
+    { VarCharValue: 'total_cost' },
   ],
 }
 
@@ -28,6 +29,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'Hrs' },
       { VarCharValue: '1' },
       { VarCharValue: '2' },
+      { VarCharValue: '1' },
     ],
   },
   {
@@ -39,6 +41,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
       { VarCharValue: 'Hrs' },
       { VarCharValue: '1' },
+      { VarCharValue: '2' },
       { VarCharValue: '2' },
     ],
   },
@@ -52,6 +55,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'Hrs' },
       { VarCharValue: '1' },
       { VarCharValue: '2' },
+      { VarCharValue: '3' },
     ],
   },
   {
@@ -64,6 +68,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'Hrs' },
       { VarCharValue: '1' },
       { VarCharValue: '2' },
+      { VarCharValue: '4' },
     ],
   },
   {
@@ -76,6 +81,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
       { VarCharValue: '3' },
+      { VarCharValue: '5' },
     ],
   },
   {
@@ -88,6 +94,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
       { VarCharValue: '5' },
+      { VarCharValue: '6' },
     ],
   },
   {
@@ -100,6 +107,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'seconds' },
       { VarCharValue: '' },
       { VarCharValue: '10' },
+      { VarCharValue: '7' },
     ],
   },
   {
@@ -112,6 +120,7 @@ const queryResultsDataOne = [
       { VarCharValue: 'seconds' },
       { VarCharValue: '' },
       { VarCharValue: '10' },
+      { VarCharValue: '8' },
     ],
   },
 ]
@@ -133,6 +142,7 @@ const queryResultsDataTwo = [
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
       { VarCharValue: '2' },
+      { VarCharValue: '9' },
     ],
   },
   {
@@ -145,6 +155,7 @@ const queryResultsDataTwo = [
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
       { VarCharValue: '4' },
+      { VarCharValue: '10' },
     ],
   },
   {
@@ -157,6 +168,7 @@ const queryResultsDataTwo = [
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
       { VarCharValue: '5' },
+      { VarCharValue: '11' },
     ],
   },
   {
@@ -169,6 +181,7 @@ const queryResultsDataTwo = [
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
       { VarCharValue: '5' },
+      { VarCharValue: '12' },
     ],
   },
   {
@@ -181,6 +194,7 @@ const queryResultsDataTwo = [
       { VarCharValue: 'Hrs' },
       { VarCharValue: '1' },
       { VarCharValue: '2' },
+      { VarCharValue: '13' },
     ],
   },
 ]
