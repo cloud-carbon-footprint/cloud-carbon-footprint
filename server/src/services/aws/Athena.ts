@@ -7,7 +7,13 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import configLoader from '@application/ConfigLoader'
-import { GetQueryExecutionOutput, GetQueryResultsOutput, StartQueryExecutionOutput } from 'aws-sdk/clients/athena'
+import {
+  GetQueryExecutionInput,
+  GetQueryExecutionOutput,
+  GetQueryResultsOutput,
+  StartQueryExecutionInput,
+  StartQueryExecutionOutput,
+} from 'aws-sdk/clients/athena'
 import ComputeUsage from '@domain/ComputeUsage'
 import StorageUsage from '@domain/StorageUsage'
 import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstants'
@@ -260,30 +266,39 @@ export default class Athena {
         OutputLocation: this.queryResultsLocation,
       },
     }
+    const response = await this.startQuery(params)
+
+    const queryExecutionInput: GetQueryExecutionInput = {
+      QueryExecutionId: response.QueryExecutionId,
+    }
+    return await this.getQueryResultSetRows(queryExecutionInput)
+  }
+
+  private async startQuery(queryParams: StartQueryExecutionInput): Promise<StartQueryExecutionOutput> {
     let response: StartQueryExecutionOutput
     try {
-      response = await this.athena.startQueryExecution(params).promise()
+      response = await this.athena.startQueryExecution(queryParams).promise()
     } catch (e) {
       throw new Error(`Athena start query failed. Reason ${e.message}.`)
     }
-    const queryExecutionData = {
-      QueryExecutionId: response.QueryExecutionId,
-    }
+    return response
+  }
 
+  private async getQueryResultSetRows(queryExecutionInput: GetQueryExecutionInput) {
     while (true) {
       const queryExecutionResults: GetQueryExecutionOutput = await this.athena
-        .getQueryExecution(queryExecutionData)
+        .getQueryExecution(queryExecutionInput)
         .promise()
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === ('FAILED' || 'CANCELLED'))
         throw new Error(
-          `Athena query failed. Reason ${queryStatus.StateChangeReason}. Query ID: ${response.QueryExecutionId}`,
+          `Athena query failed. Reason ${queryStatus.StateChangeReason}. Query ID: ${queryExecutionInput.QueryExecutionId}`,
         )
       if (queryStatus.State === 'SUCCEEDED') break
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput = await this.athena.getQueryResults(queryExecutionData).promise()
+    const results: GetQueryResultsOutput = await this.athena.getQueryResults(queryExecutionInput).promise()
     return results.ResultSet.Rows
   }
 }
