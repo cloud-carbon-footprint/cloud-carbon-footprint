@@ -13,7 +13,7 @@ import RDSStorage from '@services/aws/RDSStorage'
 import Lambda from '@services/aws/Lambda'
 import configLoader from '@application/ConfigLoader'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { CloudWatch, CostExplorer, Credentials, CloudWatchLogs } from 'aws-sdk'
+import { CloudWatch, CostExplorer, Credentials, CloudWatchLogs, Athena } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 import AWSCredentialsProvider from '@application/AWSCredentialsProvider'
 import { EstimationResult } from '@application/EstimationResult'
@@ -64,12 +64,14 @@ export default class AWSAccount extends CloudProviderAccount {
   private cw: CloudWatch
   private ce: CostExplorer
   private cwl: CloudWatchLogs
+  private ath: Athena
 
   private createServiceWrapper(options: ServiceConfigurationOptions) {
     return new ServiceWrapper(
       this.cw ? this.cw : new CloudWatch(options),
       this.cwl ? this.cwl : new CloudWatchLogs(options),
       this.ce ? this.ce : new CostExplorer({ region: 'us-east-1', credentials: options.credentials }),
+      this.ath ? this.ath : new Athena({ region: 'us-east-1' }),
     )
   }
 
