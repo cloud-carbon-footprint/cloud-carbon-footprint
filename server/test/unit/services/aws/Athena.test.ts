@@ -246,12 +246,28 @@ describe('Athena Service', () => {
     )
   })
 
+  it('throws an error when the query start fail', async () => {
+    mockStartQueryExecutionFailed('Start failed')
+    const athenaService = new Athena(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+    )
+    await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(
+      `Athena start query failed. Reason Start failed.`,
+    )
+  })
+
   const startQueryExecutionSpy = jest.fn()
   const getQueryExecutionSpy = jest.fn()
   const getQueryResultsSpy = jest.fn()
 
   function mockStartQueryExecution(response: { QueryExecutionId: string }) {
     startQueryExecutionSpy.mockResolvedValue(response)
+    AWSMock.mock('Athena', 'startQueryExecution', startQueryExecutionSpy)
+  }
+  function mockStartQueryExecutionFailed(response: string) {
+    startQueryExecutionSpy.mockRejectedValue(new Error(response))
     AWSMock.mock('Athena', 'startQueryExecution', startQueryExecutionSpy)
   }
 

@@ -260,7 +260,12 @@ export default class Athena {
         OutputLocation: this.queryResultsLocation,
       },
     }
-    const response: StartQueryExecutionOutput = await this.athena.startQueryExecution(params).promise()
+    let response: StartQueryExecutionOutput
+    try {
+      response = await this.athena.startQueryExecution(params).promise()
+    } catch (e) {
+      throw new Error(`Athena start query failed. Reason ${e.message}.`)
+    }
     const queryExecutionData = {
       QueryExecutionId: response.QueryExecutionId,
     }
