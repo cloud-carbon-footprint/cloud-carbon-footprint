@@ -16,19 +16,23 @@ import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import { DonutChartTabs } from './charts/DonutChartTabs'
 import { useFilterDataService } from './client/FilterDataServiceHook'
+
+const PADDING_FILTER = 0.5
+const PADDING_LOADING = 2
+
 const useStyles = makeStyles((theme) => ({
   boxContainer: {
     padding: theme.spacing(3, 10),
   },
   filterContainer: {
     display: 'flex',
-    paddingBottom: theme.spacing(0.5),
+    paddingBottom: theme.spacing(PADDING_FILTER),
   },
   filter: {
-    marginRight: theme.spacing(0.5),
+    marginRight: theme.spacing(PADDING_FILTER),
   },
   loadingMessage: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(PADDING_LOADING),
     fontSize: '24px',
   },
 }))
