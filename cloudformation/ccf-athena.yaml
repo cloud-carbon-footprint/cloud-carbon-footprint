@@ -1,0 +1,49 @@
+Resources:
+  CCFAthenaRole:
+    Type: 'AWS::IAM::Role'
+    Description: This role allows Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena
+    Properties:
+      RoleName: 'ccf-athena'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "arn:aws:iam::<REPLACE-WITH-YOUR-CFF-ACCOUNT-ID>:role/CCFService"
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: athena
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - athena:StartQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                Resource: "*"
+        - PolicyName: glue
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - glue:GetTable
+                  - glue:GetPartitions
+                Resource: "*"
+        - PolicyName: s3
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetBucketLocation
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                  - s3:ListMultipartUploadParts
+                  - s3:AbortMultipartUpload
+                  - s3:PutObject
+                Resource:
+                  - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>
+                  - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>/*
