@@ -24,7 +24,12 @@
     * [Storage](#storage)
 
 * [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
+
 * [Appendix](#appendix-aws-processor-list)
+
+    *[AWS processor list](#AWS processor list)
+    
+    *[GCP processor list](#GCP processor list)
 
 
 ## Summary
@@ -256,7 +261,9 @@ they also don’t take into account time of day. We welcome improvements to this
 API](https://api.electricitymap.org/) provides hourly historical and forecasted electricity emissions data for a fee. 
 
 
-### Appendix: AWS processor list
+### Appendix: 
+
+#### AWS processor list
 Intel Xeon https://aws.amazon.com/intel/
 * Intel® Xeon® Platinum 8176M
 * Intel® Xeon® Scalable Processors
@@ -270,6 +277,19 @@ Intel Xeon https://aws.amazon.com/intel/
 * Intel® Xeon® E7 8880 processors
 
 AMD EPYC https://aws.amazon.com/ec2/amd/ 
+* 1st Gen
+* 2nd Gen
 
+#### GCP processor list
+Intel Xeon https://cloud.google.com/compute/docs/cpu-platforms
+* Intel Xeon Scalable Processor (Skylake)	
+* Intel Xeon E7 (Broadwell E7)	
+* Intel Xeon E5 v4 (Broadwell E5)	
+* Intel Xeon E5 v3 (Haswell)	
+* Intel Xeon E5 v2 (Ivy Bridge)	
+* Intel Xeon E5 (Sandy Bridge)	
+
+AMD EPYC https://cloud.google.com/compute/docs/cpu-platforms
+* AMD EPYC 2nd Gen (Rome)
 
 © 2020 ThoughtWorks, Inc. All rights reserved.
