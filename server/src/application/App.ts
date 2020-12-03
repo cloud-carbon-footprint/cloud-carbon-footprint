@@ -13,6 +13,8 @@ import Athena from '@services/aws/Athena'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { Athena as AWSAthena, CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 
 export default class App {
   @cache()
@@ -44,6 +46,7 @@ export default class App {
           new ComputeEstimator(),
           new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
           new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+          new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer(), new AWSAthena()),
         )
         const estimates = await athenaService.getEstimates(startDate, endDate)
         AWSEstimatesByRegion.push(estimates)

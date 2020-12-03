@@ -2,7 +2,6 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import moment from 'moment'
-import { Athena as AWSAthena } from 'aws-sdk'
 import FootprintEstimate from '@domain/FootprintEstimate'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
@@ -19,6 +18,7 @@ import StorageUsage from '@domain/StorageUsage'
 import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstants'
 import Logger from '@services/Logger'
 import { EstimationResult } from '@application/EstimationResult'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 interface QueryResultsRow {
   Data: QueryResultsColumn[]
@@ -49,18 +49,17 @@ export default class Athena {
   private readonly dataBaseName: string
   private readonly tableName: string
   private readonly queryResultsLocation: string
-  private readonly athena: AWSAthena
   private readonly athenaLogger: Logger
 
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
+    private readonly serviceWrapper: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
     this.tableName = configLoader().AWS.ATHENA_DB_TABLE
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
-    this.athena = new AWSAthena({ region: configLoader().AWS.ATHENA_REGION })
     this.athenaLogger = new Logger('Athena')
   }
   async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
@@ -277,7 +276,7 @@ export default class Athena {
   private async startQuery(queryParams: StartQueryExecutionInput): Promise<StartQueryExecutionOutput> {
     let response: StartQueryExecutionOutput
     try {
-      response = await this.athena.startQueryExecution(queryParams).promise()
+      response = await this.serviceWrapper.startAthenaQueryExecution(queryParams)
     } catch (e) {
       throw new Error(`Athena start query failed. Reason ${e.message}.`)
     }
@@ -286,9 +285,9 @@ export default class Athena {
 
   private async getQueryResultSetRows(queryExecutionInput: GetQueryExecutionInput) {
     while (true) {
-      const queryExecutionResults: GetQueryExecutionOutput = await this.athena
-        .getQueryExecution(queryExecutionInput)
-        .promise()
+      const queryExecutionResults: GetQueryExecutionOutput = await this.serviceWrapper.getAthenaQueryExecution(
+        queryExecutionInput,
+      )
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === ('FAILED' || 'CANCELLED'))
         throw new Error(
@@ -298,7 +297,7 @@ export default class Athena {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput = await this.athena.getQueryResults(queryExecutionInput).promise()
+    const results: GetQueryResultsOutput = await this.serviceWrapper.getAthenaQueryResults(queryExecutionInput)
     return results.ResultSet.Rows
   }
 }

@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+import { CloudWatch, CostExplorer, CloudWatchLogs, Athena } from 'aws-sdk'
 import { path } from 'ramda'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
@@ -14,6 +14,7 @@ export class ServiceWrapper {
     private readonly cloudWatch: CloudWatch,
     private readonly cloudWatchLogs: CloudWatchLogs,
     private readonly costExplorer: CostExplorer,
+    private readonly athena?: Athena,
   ) {}
 
   private async getCostAndUsageResponse(
@@ -71,6 +72,24 @@ export class ServiceWrapper {
     params: CloudWatchLogs.StartQueryRequest,
   ): Promise<CloudWatchLogs.StartQueryResponse> {
     return await this.cloudWatchLogs.startQuery(params).promise()
+  }
+
+  public async startAthenaQueryExecution(
+    queryParams: Athena.StartQueryExecutionInput,
+  ): Promise<Athena.StartQueryExecutionOutput> {
+    return await this.athena.startQueryExecution(queryParams).promise()
+  }
+
+  public async getAthenaQueryExecution(
+    queryExecutionInput: Athena.GetQueryExecutionInput,
+  ): Promise<Athena.GetQueryExecutionOutput> {
+    return await this.athena.getQueryExecution(queryExecutionInput).promise()
+  }
+
+  public async getAthenaQueryResults(
+    queryExecutionInput: Athena.GetQueryExecutionInput,
+  ): Promise<Athena.GetQueryResultsOutput> {
+    return await this.athena.getQueryResults(queryExecutionInput).promise()
   }
 
   @enablePagination('NextPageToken')

@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, Athena as AWSAthena } from 'aws-sdk'
 import Athena from '@services/aws/Athena'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
@@ -15,6 +15,7 @@ import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
   athenaMockGetQueryResultsWithS3CloudWatchRDS,
 } from '../../../fixtures/athena.fixtures'
+import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 jest.mock('@application/ConfigLoader')
 
@@ -25,6 +26,8 @@ describe('Athena Service', () => {
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
   const getQueryExecutionResponse = { QueryExecution: { Status: { State: 'SUCCEEDED' } } }
   const getQueryExecutionFailedResponse = { QueryExecution: { Status: { State: 'FAILED', StateChangeReason: 'TEST' } } }
+  const getServiceWrapper = () =>
+    new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer(), new AWSAthena())
 
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
@@ -60,6 +63,7 @@ describe('Athena Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
 
@@ -181,6 +185,7 @@ describe('Athena Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
 
@@ -240,6 +245,7 @@ describe('Athena Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
     )
     await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(
       `Athena query failed. Reason TEST. Query ID: some-execution-id`,
@@ -252,6 +258,7 @@ describe('Athena Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
     )
     await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(
       `Athena start query failed. Reason Start failed.`,
