@@ -11,6 +11,7 @@ export interface CCFConfig {
     ATHENA_DB_NAME?: string
     ATHENA_DB_TABLE?: string
     ATHENA_QUERY_RESULT_LOCATION?: string
+    ATHENA_REGION?: string
     NAME: string
     CURRENT_SERVICES: { key: string; name: string }[]
     CURRENT_REGIONS: string[]
@@ -57,6 +58,7 @@ const appConfig: CCFConfig = {
     ATHENA_DB_NAME: process.env.AWS_ATHENA_DB_NAME || '',
     ATHENA_DB_TABLE: process.env.AWS_ATHENA_DB_TABLE || '',
     ATHENA_QUERY_RESULT_LOCATION: process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',
+    ATHENA_REGION: 'us-east-1',
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: 'GCP',

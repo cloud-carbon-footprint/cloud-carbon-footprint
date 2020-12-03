@@ -35,6 +35,7 @@ describe('Athena Service', () => {
         ATHENA_DB_NAME: 'test-db',
         ATHENA_DB_TABLE: 'test-table',
         ATHENA_QUERY_RESULT_LOCATION: 'test-location',
+        ATHENA_REGION: 'test-region',
       },
     })
   })
@@ -47,7 +48,7 @@ describe('Athena Service', () => {
     getQueryResultsSpy.mockClear()
   })
 
-  it('Gets Estimates for EC2, EBS Snapshot, EBS SDD Storage and Lambda across multiple days with accumulation', async () => {
+  it('Gets Estimates for ec2, ebs Snapshot, ebs SDD Storage and lambda across multiple days with accumulation', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -92,8 +93,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'EC2',
-            cost: 0,
+            serviceName: 'ec2',
+            cost: 3,
             region: 'us-east-1',
           },
           {
@@ -102,8 +103,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'EC2',
-            cost: 0,
+            serviceName: 'ec2',
+            cost: 3,
             region: 'us-east-2',
           },
         ],
@@ -117,8 +118,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'EC2',
-            cost: 0,
+            serviceName: 'ec2',
+            cost: 4,
             region: 'us-east-2',
           },
         ],
@@ -132,8 +133,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'EBS',
-            cost: 0,
+            serviceName: 'ebs',
+            cost: 5,
             region: 'us-east-1',
           },
         ],
@@ -147,8 +148,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'EBS',
-            cost: 0,
+            serviceName: 'ebs',
+            cost: 6,
             region: 'us-west-1',
           },
           {
@@ -157,8 +158,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'Lambda',
-            cost: 0,
+            serviceName: 'lambda',
+            cost: 15,
             region: 'us-west-1',
           },
         ],
@@ -192,8 +193,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'S3',
-            cost: 0,
+            serviceName: 's3',
+            cost: 9,
             region: 'us-west-1',
           },
           {
@@ -202,8 +203,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'CloudWatch',
-            cost: 0,
+            serviceName: 'cloudwatch',
+            cost: 10,
             region: 'us-east-2',
           },
           {
@@ -212,8 +213,8 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'RDS',
-            cost: 0,
+            serviceName: 'rds',
+            cost: 11,
             region: 'us-east-1',
           },
           {
@@ -222,14 +223,13 @@ describe('Athena Service', () => {
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'RDS',
-            cost: 0,
+            serviceName: 'rds',
+            cost: 25,
             region: 'us-west-1',
           },
         ],
       },
     ]
-
     expect(result).toEqual(expectedResult)
   })
 

@@ -12,6 +12,7 @@ import ComputeUsage from '@domain/ComputeUsage'
 import StorageUsage from '@domain/StorageUsage'
 import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstants'
 import Logger from '@services/Logger'
+import { EstimationResult } from '@application/EstimationResult'
 
 interface QueryResultsRow {
   Data: QueryResultsColumn[]
@@ -53,10 +54,10 @@ export default class Athena {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
     this.tableName = configLoader().AWS.ATHENA_DB_TABLE
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
-    this.athena = new AWSAthena()
+    this.athena = new AWSAthena({ region: configLoader().AWS.ATHENA_REGION })
     this.athenaLogger = new Logger('Athena')
   }
-  async getEstimates(start: Date, end: Date): Promise<MutableEstimationResult[]> {
+  async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
     const usageRows = await this.getUsage(start, end)
     const usageRowsHeader: QueryResultsRow = usageRows.shift()
 
@@ -68,6 +69,7 @@ export default class Athena {
     const pricingUnitIndex = getIndexOfObjectByValue(usageRowsHeader, 'pricing_unit')
     const vcpuIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_vcpu')
     const totalUsageAmountIndex = getIndexOfObjectByValue(usageRowsHeader, 'total_line_item_usage_amount')
+    const totalCostIndex = getIndexOfObjectByValue(usageRowsHeader, 'total_cost')
 
     const results: MutableEstimationResult[] = []
 
@@ -81,6 +83,7 @@ export default class Athena {
       const usageAmount = Number(rowValues[totalUsageAmountIndex].VarCharValue)
       const numberOfvCPUHours = Number(rowValues[vcpuIndex].VarCharValue) * usageAmount
       const pricingUnit = rowValues[pricingUnitIndex].VarCharValue
+      const cost = Number(rowValues[totalCostIndex].VarCharValue)
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         pricingUnit,
@@ -99,7 +102,7 @@ export default class Athena {
         serviceName: this.getServiceNameFromUsageType(serviceName, usageType),
         accountName: accountName,
         region: region,
-        cost: 0,
+        cost: cost,
       }
 
       if (this.dayExistsInEstimates(results, timestamp)) {
@@ -212,14 +215,14 @@ export default class Athena {
 
   private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
     const serviceNameMapping: { [usageType: string]: string } = {
-      AWSLambda: 'Lambda',
-      AmazonRDS: 'RDS',
-      AmazonCloudWatch: 'CloudWatch',
-      AmazonS3: 'S3',
+      AWSLambda: 'lambda',
+      AmazonRDS: 'rds',
+      AmazonCloudWatch: 'cloudwatch',
+      AmazonS3: 's3',
     }
 
     if (serviceName === 'AmazonEC2') {
-      return usageType.includes('BoxUsage') ? 'EC2' : 'EBS'
+      return usageType.includes('BoxUsage') ? 'ec2' : 'ebs'
     }
     return serviceNameMapping[serviceName]
   }
@@ -233,11 +236,11 @@ export default class Athena {
                         line_item_usage_type,
                         pricing_unit,
                         product_vcpu,
-                    SUM(line_item_usage_amount) AS total_line_item_usage_amount
-                    FROM ${this.dataBaseName}
+                    SUM(line_item_usage_amount) AS total_line_item_usage_amount,
+                    SUM(line_item_blended_cost) AS total_cost
+                    FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
                     AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds')
-                    AND pricing_unit = 'Hrs'
                     AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
                     AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
                     GROUP BY DATE(line_item_usage_start_date), 
