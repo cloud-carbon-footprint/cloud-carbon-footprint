@@ -9,13 +9,6 @@ import { EstimationResult, reduceByTimestamp } from '@application/EstimationResu
 import cache from '@application/Cache'
 import GCPAccount from '@application/GCPAccount'
 import FilterResult, { getAccounts } from '@domain/FilterResult'
-import Athena from '@services/aws/Athena'
-import ComputeEstimator from '@domain/ComputeEstimator'
-import { StorageEstimator } from '@domain/StorageEstimator'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { Athena as AWSAthena, CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
-
 export default class App {
   @cache()
   async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
@@ -40,15 +33,10 @@ export default class App {
       return estimatesForAccounts.flat()
     } else {
       const AWSEstimatesByRegion: EstimationResult[][] = []
-
       if (AWS.USE_BILLING_DATA) {
-        const athenaService = new Athena(
-          new ComputeEstimator(),
-          new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
-          new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
-          new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer(), new AWSAthena()),
-        )
-        const estimates = await athenaService.getEstimates(startDate, endDate)
+        const estimates = await new AWSAccount(AWS.BILLING_ACCOUNT_ID, AWS.BILLING_ACCOUNT_NAME, [
+          AWS.ATHENA_REGION,
+        ]).getDataFromCostAndUsageReports(startDate, endDate)
         AWSEstimatesByRegion.push(estimates)
       } else {
         // Resolve AWS Estimates synchronously in order to avoid hitting API limits

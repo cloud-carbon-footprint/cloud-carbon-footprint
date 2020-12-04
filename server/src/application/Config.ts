@@ -8,6 +8,8 @@ dotenv.config()
 export interface CCFConfig {
   AWS?: {
     USE_BILLING_DATA?: boolean
+    BILLING_ACCOUNT_ID?: string
+    BILLING_ACCOUNT_NAME?: string
     ATHENA_DB_NAME?: string
     ATHENA_DB_TABLE?: string
     ATHENA_QUERY_RESULT_LOCATION?: string
@@ -55,6 +57,8 @@ const escapePrivateKey = (privateKey: string) => {
 const appConfig: CCFConfig = {
   AWS: {
     USE_BILLING_DATA: !!process.env.AWS_USE_BILLING_DATA,
+    BILLING_ACCOUNT_ID: process.env.AWS_BILLING_ACCOUNT_ID || '',
+    BILLING_ACCOUNT_NAME: process.env.AWS_BILLING_ACCOUNT_NAME || '',
     ATHENA_DB_NAME: process.env.AWS_ATHENA_DB_NAME || '',
     ATHENA_DB_TABLE: process.env.AWS_ATHENA_DB_TABLE || '',
     ATHENA_QUERY_RESULT_LOCATION: process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',

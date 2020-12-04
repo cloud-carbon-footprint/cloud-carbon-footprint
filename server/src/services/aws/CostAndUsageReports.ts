@@ -19,7 +19,6 @@ import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstan
 import Logger from '@services/Logger'
 import { EstimationResult } from '@application/EstimationResult'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-
 interface QueryResultsRow {
   Data: QueryResultsColumn[]
 }
@@ -44,12 +43,11 @@ interface MutableServiceEstimate {
   usesAverageCPUConstant: boolean
 }
 
-export default class Athena {
-  serviceName = 'athena'
+export default class CostAndUsageReports {
   private readonly dataBaseName: string
   private readonly tableName: string
   private readonly queryResultsLocation: string
-  private readonly athenaLogger: Logger
+  private readonly costAndUsageReportsLogger: Logger
 
   constructor(
     private readonly computeEstimator: ComputeEstimator,
@@ -60,7 +58,7 @@ export default class Athena {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
     this.tableName = configLoader().AWS.ATHENA_DB_TABLE
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
-    this.athenaLogger = new Logger('Athena')
+    this.costAndUsageReportsLogger = new Logger('CostAndUsageReports')
   }
   async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
     const usageRows = await this.getUsage(start, end)
@@ -165,7 +163,7 @@ export default class Athena {
         let estimate: FootprintEstimate
         if (this.usageTypeIsSSD(usageType)) estimate = this.ssdStorageEstimator.estimate([storageUsage], region)[0]
         else if (this.usageTypeIsHDD(usageType)) estimate = this.hddStorageEstimator.estimate([storageUsage], region)[0]
-        else this.athenaLogger.warn(`Unexpected usage type for storage service: ${usageType}`)
+        else this.costAndUsageReportsLogger.warn(`Unexpected usage type for storage service: ${usageType}`)
         estimate.usesAverageCPUConstant = false
         return estimate
       case 'seconds':
@@ -175,7 +173,7 @@ export default class Athena {
         const co2e = estimateCo2(wattHours, 'AWS', region)
         return { timestamp, wattHours, co2e, usesAverageCPUConstant: true }
       default:
-        this.athenaLogger.warn(`Unexpected pricing unit: ${pricingUnit}`)
+        this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${pricingUnit}`)
     }
   }
 

@@ -19,6 +19,10 @@ import AWSCredentialsProvider from '@application/AWSCredentialsProvider'
 import { EstimationResult } from '@application/EstimationResult'
 import Region from '@domain/Region'
 import CloudProviderAccount from '@application/CloudProviderAccount'
+import CostAndUsageReports from '@services/aws/CostAndUsageReports'
+import ComputeEstimator from '@domain/ComputeEstimator'
+import { StorageEstimator } from '@domain/StorageEstimator'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -52,13 +56,29 @@ export default class AWSAccount extends CloudProviderAccount {
     })
   }
 
+  getDataFromCostAndUsageReports(startDate: Date, endDate: Date) {
+    const costAndUsageReportsService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      this.createServiceWrapper(
+        this.getServiceConfigurationOptions(configLoader().AWS.ATHENA_REGION, this.credentials),
+      ),
+    )
+    return costAndUsageReportsService.getEstimates(startDate, endDate)
+  }
+
   private getService(key: string, region: string, credentials: Credentials): ICloudService {
     if (this.services[key] === undefined) throw new Error('Unsupported service: ' + key)
-    const options: ServiceConfigurationOptions = {
+    const options = this.getServiceConfigurationOptions(region, credentials)
+    return this.services[key](options)
+  }
+
+  private getServiceConfigurationOptions(region: string, credentials: Credentials): ServiceConfigurationOptions {
+    return {
       region: region,
       credentials: credentials,
     }
-    return this.services[key](options)
   }
 
   private cw: CloudWatch
@@ -71,7 +91,7 @@ export default class AWSAccount extends CloudProviderAccount {
       this.cw ? this.cw : new CloudWatch(options),
       this.cwl ? this.cwl : new CloudWatchLogs(options),
       this.ce ? this.ce : new CostExplorer({ region: 'us-east-1', credentials: options.credentials }),
-      this.ath ? this.ath : new Athena({ region: 'us-east-1' }),
+      this.ath ? this.ath : new Athena(options),
     )
   }
 

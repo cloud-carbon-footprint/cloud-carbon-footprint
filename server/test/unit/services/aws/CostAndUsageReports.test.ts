@@ -4,7 +4,7 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, Athena as AWSAthena } from 'aws-sdk'
-import Athena from '@services/aws/Athena'
+import CostAndUsageReports from '@services/aws/CostAndUsageReports'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
@@ -19,7 +19,7 @@ import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 jest.mock('@application/ConfigLoader')
 
-describe('Athena Service', () => {
+describe('CostAndUsageReports Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
 
@@ -59,7 +59,7 @@ describe('Athena Service', () => {
     mockGetQueryResults(athenaMockGetQueryResultsWithEC2EBSLambda)
 
     // when
-    const athenaService = new Athena(
+    const athenaService = new CostAndUsageReports(
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
@@ -181,7 +181,7 @@ describe('Athena Service', () => {
     mockGetQueryResults(athenaMockGetQueryResultsWithS3CloudWatchRDS)
 
     // when
-    const athenaService = new Athena(
+    const athenaService = new CostAndUsageReports(
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
@@ -241,7 +241,7 @@ describe('Athena Service', () => {
   it('throws an error when the query status fails', async () => {
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionFailedResponse)
-    const athenaService = new Athena(
+    const athenaService = new CostAndUsageReports(
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
@@ -254,7 +254,7 @@ describe('Athena Service', () => {
 
   it('throws an error when the query start fail', async () => {
     mockStartQueryExecutionFailed('Start failed')
-    const athenaService = new Athena(
+    const athenaService = new CostAndUsageReports(
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
