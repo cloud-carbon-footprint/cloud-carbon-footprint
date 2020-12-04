@@ -12,6 +12,14 @@ describe('ServiceFilter', () => {
   let page: RenderResult
   let filters: Filters
 
+  const allServiceOption = { key: 'all', name: 'All Services' }
+  const S3ServiceOption = { key: 's3', name: 'S3' }
+  const ec2ServiceOption = { key: 'ec2', name: 'EC2' }
+  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache' }
+  const rdsServiceOption = { key: 'rds', name: 'RDS' }
+  const lambdaServiceOption = { key: 'lambda', name: 'Lambda' }
+  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine' }
+
   beforeEach(() => {
     mockSetFilters = jest.fn()
     filters = new Filters()
@@ -69,7 +77,15 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-ebs'))
     })
 
-    const newFilters = filters.withServices(['all', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
+    const newFilters = filters.withServices([
+      allServiceOption,
+      S3ServiceOption,
+      ec2ServiceOption,
+      elastiCacheServiceOption,
+      rdsServiceOption,
+      lambdaServiceOption,
+      computeEngineServiceOption,
+    ])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)

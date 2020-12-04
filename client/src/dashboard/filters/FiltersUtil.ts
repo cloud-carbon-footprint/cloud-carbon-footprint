@@ -17,68 +17,85 @@ export enum FilterType {
 
 export abstract class FiltersUtil {
   getDesiredKeysFromCurrentFilteredKeys(
-    keys: string[],
+    selections: DropdownOption[],
     allValue: string,
     currentFilterType: FilterType,
     desiredFilterType: FilterType,
-  ): string[] {
-    const currentKeys: string[] = []
+  ): DropdownOption[] {
+    const currentSelections: DropdownOption[] = []
+    const keys = selections.map((selection) => selection.key)
 
     if (currentFilterType == FilterType.SERVICES && desiredFilterType == FilterType.CLOUD_PROVIDERS) {
       for (const [key, value] of Object.entries(providerServices)) {
         if (value.some((r) => keys.includes(r))) {
-          currentKeys.push(key)
+          currentSelections.push(<DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === key))
         }
+      }
+      if (keys.includes(allValue)) {
+        currentSelections.push({ key: allValue, name: 'All Providers' })
       }
     }
     if (currentFilterType == FilterType.CLOUD_PROVIDERS && desiredFilterType == FilterType.SERVICES) {
-      keys.forEach((key) => {
-        if (key !== allValue) {
-          providerServices[key].forEach((service) => currentKeys.push(service))
+      selections.forEach((selection) => {
+        if (selection.key !== allValue) {
+          providerServices[selection.key].forEach((service) =>
+            currentSelections.push(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
+          )
         }
       })
+      if (keys.includes(allValue)) {
+        currentSelections.push({ key: allValue, name: 'All Services' })
+      }
     }
 
-    if (keys.includes(allValue)) {
-      currentKeys.push(allValue)
-    }
-
-    return currentKeys
+    return currentSelections
   }
 
   handleSelections(
-    keys: string[],
-    oldKeys: string[],
+    selections: DropdownOption[],
+    oldSelections: DropdownOption[],
     allValue: string,
     options: DropdownOption[],
     filterType: FilterType,
-  ): { providerKeys: string[]; serviceKeys: string[] } {
-    let serviceKeys: string[]
-    let providerKeys: string[]
+  ): { providerKeys: DropdownOption[]; serviceKeys: DropdownOption[] } {
+    let serviceOptions: DropdownOption[]
+    let providerOptions: DropdownOption[]
+    const selectionKeys: string[] = selections.map((selection) => selection.key)
+    const oldSelectionKeys: string[] = oldSelections.map((oldSelection) => oldSelection.key)
 
-    if (keys.includes(allValue) && !oldKeys.includes(allValue)) {
-      serviceKeys = SERVICE_OPTIONS.map((o) => o.key)
-      providerKeys = CLOUD_PROVIDER_OPTIONS.map((o) => o.key)
-    } else if (!keys.includes(allValue) && oldKeys.includes(allValue)) {
-      serviceKeys = []
-      providerKeys = []
+    if (selectionKeys.includes(allValue) && !oldSelectionKeys.includes(allValue)) {
+      serviceOptions = SERVICE_OPTIONS
+      providerOptions = CLOUD_PROVIDER_OPTIONS
+    } else if (!selectionKeys.includes(allValue) && oldSelectionKeys.includes(allValue)) {
+      serviceOptions = []
+      providerOptions = []
     } else {
-      if (keys.length === options.length - 1 && oldKeys.includes(allValue)) {
-        keys = keys.filter((k) => k !== allValue)
-      } else if (keys.length === options.length - 1 && !oldKeys.includes(allValue)) {
-        keys = options.map((o) => o.key)
+      if (selections.length === options.length - 1 && oldSelectionKeys.includes(allValue)) {
+        selections = selections.filter((k) => k.key !== allValue)
+      } else if (selections.length === options.length - 1 && !oldSelectionKeys.includes(allValue)) {
+        selections = options
       }
 
-      serviceKeys =
+      serviceOptions =
         filterType == FilterType.SERVICES
-          ? keys
-          : this.getDesiredKeysFromCurrentFilteredKeys(keys, allValue, FilterType.CLOUD_PROVIDERS, FilterType.SERVICES)
-      providerKeys =
+          ? selections
+          : this.getDesiredKeysFromCurrentFilteredKeys(
+              selections,
+              allValue,
+              FilterType.CLOUD_PROVIDERS,
+              FilterType.SERVICES,
+            )
+      providerOptions =
         filterType == FilterType.CLOUD_PROVIDERS
-          ? keys
-          : this.getDesiredKeysFromCurrentFilteredKeys(keys, allValue, FilterType.SERVICES, FilterType.CLOUD_PROVIDERS)
+          ? selections
+          : this.getDesiredKeysFromCurrentFilteredKeys(
+              selections,
+              allValue,
+              FilterType.SERVICES,
+              FilterType.CLOUD_PROVIDERS,
+            )
     }
-    return { providerKeys, serviceKeys }
+    return { providerKeys: providerOptions, serviceKeys: serviceOptions }
   }
 
   numSelectedLabel(length: number, totalLength: number, type = 'Services'): string {

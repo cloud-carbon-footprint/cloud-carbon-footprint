@@ -1,6 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
+import { Account } from './FilterInputModels'
 
 export interface serviceEstimate {
   cloudProvider: string
@@ -34,12 +35,6 @@ export interface cloudEstPerDay {
 export enum ChartDataTypes {
   REGION = 'region',
   SERVICE = 'service',
-}
-
-export interface Account {
-  cloudProvider: string
-  id: string
-  name: string
 }
 
 export interface FilterResultResponse {

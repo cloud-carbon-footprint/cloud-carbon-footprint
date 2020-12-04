@@ -2,34 +2,37 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { Account, EstimationResult, FilterResultResponse } from '../../models/types'
+import { EstimationResult, FilterResultResponse } from '../../models/types'
 import moment from 'moment'
 import { ALL_SERVICES, SERVICE_OPTIONS } from '../services'
 import { ALL_CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
 import { Dispatch, SetStateAction } from 'react'
 import { FiltersUtil, FilterType } from './FiltersUtil'
+import { Account } from '../../models/FilterInputModels'
+import { DropdownOption } from './DropdownFilter'
 
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
+  options?: FilterResultResponse
 }
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
 
 interface FiltersConfig {
   timeframe: number
-  services: string[]
-  cloudProviders: string[]
+  services: DropdownOption[]
+  cloudProviders: DropdownOption[]
   dateRange: MaybeDateRange
   accounts: Account[]
 }
 
 const defaultFiltersConfig = {
   timeframe: 12,
-  services: SERVICE_OPTIONS.map((o) => o.key),
-  cloudProviders: CLOUD_PROVIDER_OPTIONS.map((o) => o.key),
+  services: SERVICE_OPTIONS,
+  cloudProviders: CLOUD_PROVIDER_OPTIONS,
   dateRange: null,
-  accounts: [{ cloudProvider: '', id: 'all', name: 'All Accounts' }],
+  accounts: [{ cloudProvider: '', key: 'all', name: 'All Accounts' }],
 }
 
 export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): FiltersConfig => {
@@ -38,8 +41,8 @@ export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): 
 
 export class Filters extends FiltersUtil {
   readonly timeframe: number
-  readonly services: string[]
-  readonly cloudProviders: string[]
+  readonly services: DropdownOption[]
+  readonly cloudProviders: DropdownOption[]
   readonly dateRange: MaybeDateRange
   readonly accounts: Account[]
 
@@ -56,7 +59,7 @@ export class Filters extends FiltersUtil {
     return this.timeframe === timeframe ? this : new Filters({ ...this, dateRange: null, timeframe })
   }
 
-  withServices(services: string[]): Filters {
+  withServices(services: DropdownOption[]): Filters {
     const { providerKeys, serviceKeys } = this.handleSelections(
       services,
       this.services,
@@ -71,14 +74,14 @@ export class Filters extends FiltersUtil {
     })
   }
 
-  withAccounts(accounts: Account[]): Filters {
+  withAccounts(accounts: DropdownOption[]): Filters {
     return new Filters({
       ...this,
       accounts: accounts,
     })
   }
 
-  withCloudProviders(cloudProviders: string[]): Filters {
+  withCloudProviders(cloudProviders: DropdownOption[]): Filters {
     const { providerKeys, serviceKeys } = this.handleSelections(
       cloudProviders,
       this.cloudProviders,
@@ -116,6 +119,10 @@ export class Filters extends FiltersUtil {
     return this.numSelectedLabel(this.cloudProviders.length, CLOUD_PROVIDER_OPTIONS.length, 'Cloud Providers')
   }
 
+  accountLabel(): string {
+    return this.numSelectedLabel(this.accounts.length, this.accounts.length, 'Accounts')
+  }
+
   filter(rawResults: EstimationResult[]): EstimationResult[] {
     const today = moment.utc()
     let start: moment.Moment
@@ -132,10 +139,10 @@ export class Filters extends FiltersUtil {
       moment.utc(estimationResult.timestamp).isBetween(start, end, 'day', '[]'),
     )
 
-    const allServicesSelected = this.services.includes(ALL_SERVICES)
+    const allServicesSelected = this.services.includes({ key: ALL_SERVICES, name: 'All Services' })
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
-        return this.services.includes(serviceEstimate.serviceName) || allServicesSelected
+        return this.services.some((service) => service.key === serviceEstimate.serviceName) || allServicesSelected
       })
       return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
     })

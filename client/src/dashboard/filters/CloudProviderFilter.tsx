@@ -1,7 +1,11 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { FunctionComponent } from 'react'
-import { CLOUD_PROVIDER_LABELS, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
+import { CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
 import { FilterProps } from './Filters'
-import DropdownFilter from './DropdownFilter'
+import DropdownFilter, { DropdownOption } from './DropdownFilter'
 
 const CloudProviderFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
   return (
@@ -10,11 +14,8 @@ const CloudProviderFilter: FunctionComponent<FilterProps> = ({ filters, setFilte
       displayValue={filters.cloudProviderLabel()}
       options={CLOUD_PROVIDER_OPTIONS}
       selections={filters.cloudProviders}
-      selectionToOption={(cloudProvider: string) => ({
-        key: cloudProvider,
-        name: CLOUD_PROVIDER_LABELS[cloudProvider],
-      })}
-      updateSelections={(selections: string[]) => setFilters(filters.withCloudProviders(selections))}
+      selectionToOption={(cloudProvider: DropdownOption) => cloudProvider}
+      updateSelections={(selections: DropdownOption[]) => setFilters(filters.withCloudProviders(selections))}
     />
   )
 }
