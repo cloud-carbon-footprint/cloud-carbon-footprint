@@ -6,7 +6,6 @@ import { DateRange, Filters } from './Filters'
 import moment from 'moment'
 import generateEstimations from '../../data/generateEstimations'
 import { EstimationResult } from '../../models/types'
-import { ALL_SERVICES } from '../services'
 
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
@@ -54,23 +53,32 @@ declare global {
 }
 
 describe('Filters', () => {
+  const allServiceOption = { key: 'all', name: 'All Services' }
+  const ebsServiceOption = { key: 'ebs', name: 'EBS' }
+  const S3ServiceOption = { key: 's3', name: 'S3' }
+  const ec2ServiceOption = { key: 'ec2', name: 'EC2' }
+  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache' }
+  const rdsServiceOption = { key: 'rds', name: 'RDS' }
+  const lambdaServiceOption = { key: 'lambda', name: 'Lambda' }
+  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine' }
+
   describe('filter', () => {
     it('should filter just ebs', () => {
       const estimationResults = generateEstimations(moment.utc(), 1)
-      const filters = new Filters().withServices(['ebs'])
+      const filters = new Filters().withServices([ebsServiceOption])
 
       const filteredData = filters.filter(estimationResults)
 
-      expect(filteredData).toOnlyHaveServices(['ebs'])
+      expect(filteredData).toOnlyHaveServices([ebsServiceOption.key])
     })
 
     it('should ignore services not present in the estimationResults', () => {
       const estimationResults = generateEstimations(moment.utc(), 1, ['s3'])
-      const filters = new Filters().withServices(['ebs', 'ec2'])
+      const filters = new Filters().withServices([ebsServiceOption, ec2ServiceOption])
 
       const filteredData = filters.filter(estimationResults)
 
-      expect(filteredData).toOnlyHaveServices(['ebs'])
+      expect(filteredData).toOnlyHaveServices([ebsServiceOption.key])
     })
 
     it('should filter by timeframe', () => {
@@ -84,11 +92,11 @@ describe('Filters', () => {
 
     it('should filter by timeframe and service', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
-      const filters = new Filters().withTimeFrame(3).withServices(['ebs'])
+      const filters = new Filters().withTimeFrame(3).withServices([ebsServiceOption])
 
       const filteredData = filters.filter(estimationResults)
 
-      expect(filteredData).toOnlyHaveServices(['ebs'])
+      expect(filteredData).toOnlyHaveServices([ebsServiceOption.key])
       expect(filteredData).toBeWithinTimeframe(3)
     })
 
@@ -132,14 +140,14 @@ describe('Filters', () => {
       const filters = new Filters()
 
       expect(filters.services).toEqual([
-        ALL_SERVICES,
-        'ebs',
-        's3',
-        'ec2',
-        'elasticache',
-        'rds',
-        'lambda',
-        'computeEngine',
+        allServiceOption,
+        ebsServiceOption,
+        S3ServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        rdsServiceOption,
+        lambdaServiceOption,
+        computeEngineServiceOption,
       ])
     })
 
@@ -155,24 +163,34 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters.withServices([
-        ALL_SERVICES,
-        's3',
-        'ec2',
-        'elasticache',
-        'rds',
-        'lambda',
-        'computeEngine',
+        allServiceOption,
+        S3ServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        rdsServiceOption,
+        lambdaServiceOption,
+        computeEngineServiceOption,
       ])
 
-      expect(newFilters.services).toEqual(['s3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
+      expect(newFilters.services).toEqual([
+        S3ServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        rdsServiceOption,
+        lambdaServiceOption,
+        computeEngineServiceOption,
+      ])
     })
 
     it('should select an unselected service', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([]).withServices(['ebs']).withServices(['ebs', 'rds'])
+      const newFilters = filters
+        .withServices([])
+        .withServices([ebsServiceOption])
+        .withServices([ebsServiceOption, rdsServiceOption])
 
-      expect(newFilters.services).toEqual(['ebs', 'rds'])
+      expect(newFilters.services).toEqual([ebsServiceOption, rdsServiceOption])
     })
 
     it('should unselect an selected service', () => {
@@ -180,27 +198,30 @@ describe('Filters', () => {
 
       const newFilters = filters
         .withServices([])
-        .withServices(['ebs'])
-        .withServices(['ebs', 'rds'])
-        .withServices(['rds'])
+        .withServices([ebsServiceOption])
+        .withServices([ebsServiceOption, rdsServiceOption])
+        .withServices([rdsServiceOption])
 
-      expect(newFilters.services).toEqual(['rds'])
+      expect(newFilters.services).toEqual([rdsServiceOption])
     })
 
     it('should select all services when a service has already been selected', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([]).withServices(['ebs']).withServices(['ebs', ALL_SERVICES])
+      const newFilters = filters
+        .withServices([])
+        .withServices([ebsServiceOption])
+        .withServices([ebsServiceOption, allServiceOption])
 
       expect(newFilters.services).toEqual([
-        ALL_SERVICES,
-        'ebs',
-        's3',
-        'ec2',
-        'elasticache',
-        'rds',
-        'lambda',
-        'computeEngine',
+        allServiceOption,
+        ebsServiceOption,
+        S3ServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        rdsServiceOption,
+        lambdaServiceOption,
+        computeEngineServiceOption,
       ])
     })
 
@@ -209,17 +230,25 @@ describe('Filters', () => {
 
       const newFilters = filters
         .withServices([])
-        .withServices(['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda', 'computeEngine'])
+        .withServices([
+          ebsServiceOption,
+          S3ServiceOption,
+          ec2ServiceOption,
+          elastiCacheServiceOption,
+          rdsServiceOption,
+          lambdaServiceOption,
+          computeEngineServiceOption,
+        ])
 
       expect(newFilters.services).toEqual([
-        ALL_SERVICES,
-        'ebs',
-        's3',
-        'ec2',
-        'elasticache',
-        'rds',
-        'lambda',
-        'computeEngine',
+        allServiceOption,
+        ebsServiceOption,
+        S3ServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        rdsServiceOption,
+        lambdaServiceOption,
+        computeEngineServiceOption,
       ])
     })
   })
@@ -273,8 +302,8 @@ describe('Filters', () => {
   })
 
   describe('withAccounts', () => {
-    const mockAccount1 = { cloudProvider: 'testCloudProvider1', id: '123123123', name: 'testAccount1' }
-    const mockAccount2 = { cloudProvider: 'testCloudProvider2', id: '321321321', name: 'testAccount2' }
+    const mockAccount1 = { cloudProvider: 'testCloudProvider1', key: '123123123', name: 'testAccount1' }
+    const mockAccount2 = { cloudProvider: 'testCloudProvider2', key: '321321321', name: 'testAccount2' }
     it('should unselect a selected account', () => {
       const filters = new Filters()
 

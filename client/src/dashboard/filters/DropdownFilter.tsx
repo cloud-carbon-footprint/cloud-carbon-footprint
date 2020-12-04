@@ -23,9 +23,9 @@ interface DropdownFilterProps {
   id: string
   displayValue: string
   options: DropdownOption[]
-  selections: string[]
-  selectionToOption: (selection: string) => DropdownOption
-  updateSelections: (selections: string[]) => void
+  selections: DropdownOption[]
+  selectionToOption: (selection: DropdownOption) => DropdownOption
+  updateSelections: (selections: DropdownOption[]) => void
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +57,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
       options={props.options}
       value={props.selections.map(props.selectionToOption)}
       onChange={(_, selections) => {
-        props.updateSelections(selections.map((s) => s.key))
+        props.updateSelections(selections)
       }}
       getOptionLabel={(option: DropdownOption) => option.name}
       getOptionSelected={(option: DropdownOption, value: DropdownOption) => option.key === value.key}
