@@ -17,7 +17,7 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
   return (
     <Card style={{ width: '100%', height: '100%' }}>
       <Box padding={3}>
-        <Paper>
+        <Paper style={{ boxShadow: 'none' }}>
           <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
             <Tab id="Region" label="Emissions By Region" />
             <Tab id="Service" label="Emissions By Service" />
