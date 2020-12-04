@@ -297,8 +297,8 @@ export default class Athena {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput = await this.serviceWrapper.getAthenaQueryResults(queryExecutionInput)
-    return results.ResultSet.Rows
+    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
+    return results.flatMap((result) => result.ResultSet.Rows)
   }
 }
 
