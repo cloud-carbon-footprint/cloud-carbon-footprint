@@ -138,6 +138,10 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           Currently we estimate CO2e emissions for cloud compute and storage services. Networking and memory services
           usage are not estimated yet due to their comparatively small footprint and current lack of available energy
           conversion factors.
+          <br />
+          <br />
+          Emissions data points marked with an * have been estimated with average CPU because the actual CPU is not
+          available
         </Typography>
         <Link
           href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"

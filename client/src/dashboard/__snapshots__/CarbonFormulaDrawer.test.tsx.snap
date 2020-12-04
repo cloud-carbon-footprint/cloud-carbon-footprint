@@ -108,6 +108,9 @@ exports[`CarbonFormulaDrawer renders 1`] = `
         className="MuiTypography-root makeStyles-content-10 MuiTypography-body1"
       >
         Currently we estimate CO2e emissions for cloud compute and storage services. Networking and memory services usage are not estimated yet due to their comparatively small footprint and current lack of available energy conversion factors.
+        <br />
+        <br />
+        Emissions data points marked with an * have been estimated with average CPU because the actual CPU is not available
       </p>
       <a
         className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-methodology-11 MuiTypography-colorPrimary"
