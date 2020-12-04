@@ -29,6 +29,12 @@ export class ServiceWrapper {
     return [await this.cloudWatch.getMetricData(params).promise()]
   }
 
+  private async getAthenaQueryResults(
+    queryExecutionInput: Athena.GetQueryExecutionInput,
+  ): Promise<Athena.GetQueryResultsOutput[]> {
+    return [await this.athena.getQueryResults(queryExecutionInput).promise()]
+  }
+
   private checkForPartialData = (array: Array<MetricDataResult>) => {
     const isPartialData = array.some((obj: MetricDataResult) => obj.StatusCode === 'PartialData')
     if (isPartialData) {
@@ -86,10 +92,11 @@ export class ServiceWrapper {
     return await this.athena.getQueryExecution(queryExecutionInput).promise()
   }
 
-  public async getAthenaQueryResults(
+  @enablePagination('NextToken')
+  public async getAthenaQueryResultSets(
     queryExecutionInput: Athena.GetQueryExecutionInput,
-  ): Promise<Athena.GetQueryResultsOutput> {
-    return await this.athena.getQueryResults(queryExecutionInput).promise()
+  ): Promise<Athena.GetQueryResultsOutput[]> {
+    return await this.getAthenaQueryResults(queryExecutionInput)
   }
 
   @enablePagination('NextPageToken')
