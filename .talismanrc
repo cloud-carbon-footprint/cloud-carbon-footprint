@@ -6,7 +6,7 @@ fileignoreconfig:
 - filename: client/.env.template
   checksum: f21fc3a24626cfa3da0bccf5b81ac5f7454bb36ea1d6e4df11a5519d20e23187
 - filename: client/package-lock.json
-  checksum: 88aec0843ac3f02e6371629896a7844bbc937427c5c973077a2f0b315360e552
+  checksum: 6b3724ac99a3e15efa41c071e6d829aa44eee5c2b57667cd04e74ff64c90b38f
 - filename: client/src/dashboard/filters/Filters.ts
   checksum: c9840931b210466d99b1d87b33570ec2367ac0842aa9d0776d5b08d78675a483
 - filename: client/src/dashboard/transformData.tsx
