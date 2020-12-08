@@ -178,6 +178,11 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         showAlways: false,
       },
     ],
+    grid: {
+      padding: {
+        bottom: +15,
+      },
+    },
   }
   return <Chart options={options} series={options.series} type="line" height={options.height} />
 }

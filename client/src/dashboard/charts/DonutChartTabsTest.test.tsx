@@ -74,13 +74,15 @@ describe('DonutChartTabs', () => {
     testInstance = testRenderer.root
   })
 
-  it('renders donut chart with two tabs', () => {
+  it('renders donut chart with three tabs', () => {
     const allTabInstancesList = testInstance.findAllByType(Tab)
 
-    expect(allTabInstancesList).toHaveLength(2)
+    expect(allTabInstancesList).toHaveLength(3)
 
     allTabInstancesList.forEach((tab) => {
-      expect(['Emissions By Region', 'Emissions By Service'].includes(tab.props.label)).toBe(true)
+      expect(['Emissions By Region', 'Emissions By Service', 'Emissions By Account'].includes(tab.props.label)).toBe(
+        true,
+      )
     })
 
     expect(testInstance.findAllByType(Tab))
@@ -111,5 +113,18 @@ describe('DonutChartTabs', () => {
 
     const apexDonutChartByService = getByTestId(ChartDataTypes.SERVICE)
     expect(apexDonutChartByService).toBeVisible()
+  })
+  it('renders emission by account donut chart when account tab clicked', async () => {
+    const { getByText, getByTestId } = render(<DonutChartTabs data={dataWithHigherPrecision} />)
+    const apexDonutChartByRegion = getByTestId(ChartDataTypes.REGION)
+
+    expect(apexDonutChartByRegion).toBeVisible()
+
+    act(() => {
+      fireEvent.click(getByText('Emissions By Account'))
+    })
+
+    const apexDonutChartByAccount = getByTestId(ChartDataTypes.ACCOUNT)
+    expect(apexDonutChartByAccount).toBeVisible()
   })
 })

@@ -25,6 +25,11 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         undefined,
         undefined,
       ],
+      "grid": Object {
+        "padding": Object {
+          "bottom": 15,
+        },
+      },
       "height": "500px",
       "markers": Object {
         "size": 5,
