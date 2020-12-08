@@ -35,6 +35,7 @@ export interface cloudEstPerDay {
 export enum ChartDataTypes {
   REGION = 'region',
   SERVICE = 'service',
+  ACCOUNT = 'account',
 }
 
 export interface FilterResultResponse {

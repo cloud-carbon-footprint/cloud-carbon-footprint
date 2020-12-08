@@ -63,6 +63,7 @@ const getPropertyFromDataType = (dataType: string, value: serviceEstimate): stri
   const dataTypeMapping: { [key: string]: string } = {
     [ChartDataTypes.REGION]: value.region,
     [ChartDataTypes.SERVICE]: value.serviceName,
+    [ChartDataTypes.ACCOUNT]: value.accountName,
   }
 
   return dataTypeMapping[dataType]
