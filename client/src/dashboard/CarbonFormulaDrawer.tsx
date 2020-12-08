@@ -141,7 +141,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           <br />
           <br />
           Emissions data points marked with an * have been estimated with average CPU because the actual CPU is not
-          available
+          available.
         </Typography>
         <Link
           href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
@@ -149,7 +149,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           rel="noopener"
           className={classes.methodology}
         >
-          Read our full methodology here <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
+          Read more in our full methodology here <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
         </Link>
       </div>
     </Drawer>
