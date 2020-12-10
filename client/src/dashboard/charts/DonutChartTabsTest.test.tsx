@@ -80,9 +80,7 @@ describe('DonutChartTabs', () => {
     expect(allTabInstancesList).toHaveLength(3)
 
     allTabInstancesList.forEach((tab) => {
-      expect(['Emissions By Region', 'Emissions By Service', 'Emissions By Account'].includes(tab.props.label)).toBe(
-        true,
-      )
+      expect(['Emissions By Region', 'By Account', 'By Service'].includes(tab.props.label)).toBe(true)
     })
 
     expect(testInstance.findAllByType(Tab))
@@ -108,7 +106,7 @@ describe('DonutChartTabs', () => {
     expect(apexDonutChartByRegion).toBeVisible()
 
     act(() => {
-      fireEvent.click(getByText('Emissions By Service'))
+      fireEvent.click(getByText('By Service'))
     })
 
     const apexDonutChartByService = getByTestId(ChartDataTypes.SERVICE)
@@ -121,7 +119,7 @@ describe('DonutChartTabs', () => {
     expect(apexDonutChartByRegion).toBeVisible()
 
     act(() => {
-      fireEvent.click(getByText('Emissions By Account'))
+      fireEvent.click(getByText('By Account'))
     })
 
     const apexDonutChartByAccount = getByTestId(ChartDataTypes.ACCOUNT)

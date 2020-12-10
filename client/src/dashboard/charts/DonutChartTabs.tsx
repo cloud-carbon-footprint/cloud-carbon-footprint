@@ -17,15 +17,15 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
     switch (value) {
       case 1:
         return (
-          <div data-testid={ChartDataTypes.SERVICE}>
-            <ApexDonutChart data={props.data} dataType={ChartDataTypes.SERVICE} />
+          <div data-testid={ChartDataTypes.ACCOUNT}>
+            <ApexDonutChart data={props.data} dataType={ChartDataTypes.ACCOUNT} />
           </div>
         )
         break
       case 2:
         return (
-          <div data-testid={ChartDataTypes.ACCOUNT}>
-            <ApexDonutChart data={props.data} dataType={ChartDataTypes.ACCOUNT} />
+          <div data-testid={ChartDataTypes.SERVICE}>
+            <ApexDonutChart data={props.data} dataType={ChartDataTypes.SERVICE} />
           </div>
         )
         break
@@ -43,8 +43,8 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
         <Paper style={{ boxShadow: 'none' }}>
           <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
             <Tab id="Region" label="Emissions By Region" />
-            <Tab id="Service" label="Emissions By Service" />
-            <Tab id="Account" label="Emissions By Account" />
+            <Tab id="Account" label="By Account" />
+            <Tab id="Service" label="By Service" />
           </Tabs>
         </Paper>
         {changeDonutCharts(value)}
