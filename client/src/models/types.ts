@@ -1,7 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-import { Account } from './FilterInputModels'
+import { DropdownOption } from '../dashboard/filters/DropdownFilter'
 
 export interface serviceEstimate {
   cloudProvider: string
@@ -39,5 +39,5 @@ export enum ChartDataTypes {
 }
 
 export interface FilterResultResponse {
-  accounts: Account[]
+  accounts: DropdownOption[]
 }

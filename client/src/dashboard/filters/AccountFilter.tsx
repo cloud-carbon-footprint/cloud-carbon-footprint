@@ -4,9 +4,46 @@
 
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from './Filters'
+import DropdownFilter, { DropdownOption } from './DropdownFilter'
 
-const AccountFilter: FunctionComponent<FilterProps> = () => {
-  return <div>Accounts:</div>
+export const ALL_ACCOUNTS_KEY = 'all'
+export const ALL_ACCOUNTS_VALUE = 'All Accounts'
+export const ALL_ACCOUNTS_DROPDOWN_OPTION: DropdownOption = {
+  key: ALL_ACCOUNTS_KEY,
+  name: ALL_ACCOUNTS_VALUE,
+  cloudProvider: '',
+}
+const EMPTY_ACCOUNT = { cloudProvider: '', key: 'string', name: 'string' }
+const EMPTY_RESPONSE = { accounts: [EMPTY_ACCOUNT] }
+
+export let ACCOUNT_OPTIONS: DropdownOption[]
+export let getAccountsFromSelections: (selections: string[]) => DropdownOption[]
+
+const AccountFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, options }) => {
+  const allDropdownAccountOptions: DropdownOption[] = []
+  for (const account of (options ? options : EMPTY_RESPONSE).accounts) {
+    allDropdownAccountOptions.push(account)
+  }
+
+  ACCOUNT_OPTIONS = [ALL_ACCOUNTS_DROPDOWN_OPTION, ...allDropdownAccountOptions]
+
+  getAccountsFromSelections = (selections: string[]) => {
+    return (options ? options : EMPTY_RESPONSE).accounts.filter((account) =>
+      selections.some((selectionName) => account.key === selectionName),
+    )
+  }
+  return (
+    <DropdownFilter
+      id="accounts-filter"
+      displayValue={filters.accountLabel()}
+      options={ACCOUNT_OPTIONS}
+      selections={filters.accounts}
+      selectionToOption={(account) => account}
+      updateSelections={(selections: DropdownOption[]) => {
+        setFilters(filters.withAccounts(selections))
+      }}
+    />
+  )
 }
 
 export default AccountFilter

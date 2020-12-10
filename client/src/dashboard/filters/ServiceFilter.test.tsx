@@ -7,6 +7,14 @@ import ServiceFilter from './ServiceFilter'
 import { Filters } from './Filters'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
+jest.mock('./AccountFilter', () => ({
+  ACCOUNT_OPTIONS: [
+    { key: 'all', name: 'All Accounts', cloudProvider: '' },
+    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
+    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+  ],
+}))
+
 describe('ServiceFilter', () => {
   let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
   let page: RenderResult

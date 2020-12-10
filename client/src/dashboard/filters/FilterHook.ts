@@ -13,6 +13,10 @@ const useFilters = (data: EstimationResult[], filteredResponse: FilterResultResp
     setFilteredData(filters.filter(data))
   }, [data, setFilteredData, filters])
 
+  useEffect(() => {
+    setFilters(new Filters(filtersConfigGenerator(filteredResponse)))
+  }, [filteredResponse])
+
   return { filteredData, filters, setFilters }
 }
 
