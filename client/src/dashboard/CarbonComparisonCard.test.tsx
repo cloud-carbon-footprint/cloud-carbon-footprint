@@ -16,6 +16,8 @@ const data = [
     timestamp: moment('2019-08-10T00:00:00.000Z').toDate(),
     serviceEstimates: [
       {
+        cloudProvider: 'AWS',
+        accountName: 'testaccountname',
         serviceName: 'ebs',
         wattHours: 0,
         co2e: 5,
@@ -23,6 +25,8 @@ const data = [
         region: 'us-west-2',
       },
       {
+        cloudProvider: 'AWS',
+        accountName: 'testaccountname',
         serviceName: 's3',
         wattHours: 0,
         co2e: 0,
@@ -30,6 +34,8 @@ const data = [
         region: 'us-west-2',
       },
       {
+        cloudProvider: 'AWS',
+        accountName: 'testaccountname',
         serviceName: 'ec2',
         wattHours: 0,
         co2e: 2,
@@ -106,6 +112,8 @@ describe('CarbonComparisonCard', () => {
           timestamp: moment('2019-08-10T00:00:00.000Z').toDate(),
           serviceEstimates: [
             {
+              cloudProvider: 'AWS',
+              accountName: 'testaccountname',
               serviceName: 'ebs',
               wattHours: 0,
               co2e: 10000,
