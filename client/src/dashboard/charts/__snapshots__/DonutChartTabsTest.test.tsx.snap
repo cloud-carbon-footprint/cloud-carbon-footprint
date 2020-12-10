@@ -74,33 +74,6 @@ exports[`DonutChartTabs renders donut chart with three tabs 1`] = `
               aria-selected={false}
               className="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary"
               disabled={false}
-              id="Service"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onDragLeave={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              role="tab"
-              tabIndex={-1}
-              type="button"
-            >
-              <span
-                className="MuiTab-wrapper"
-              >
-                Emissions By Service
-              </span>
-            </button>
-            <button
-              aria-selected={false}
-              className="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary"
-              disabled={false}
               id="Account"
               onBlur={[Function]}
               onClick={[Function]}
@@ -121,7 +94,34 @@ exports[`DonutChartTabs renders donut chart with three tabs 1`] = `
               <span
                 className="MuiTab-wrapper"
               >
-                Emissions By Account
+                By Account
+              </span>
+            </button>
+            <button
+              aria-selected={false}
+              className="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary"
+              disabled={false}
+              id="Service"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              role="tab"
+              tabIndex={-1}
+              type="button"
+            >
+              <span
+                className="MuiTab-wrapper"
+              >
+                By Service
               </span>
             </button>
           </div>
