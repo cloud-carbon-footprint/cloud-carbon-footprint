@@ -17,6 +17,7 @@ import { makeStyles } from '@material-ui/core/styles'
 export interface DropdownOption {
   key: string
   name: string
+  cloudProvider?: string
 }
 
 interface DropdownFilterProps {

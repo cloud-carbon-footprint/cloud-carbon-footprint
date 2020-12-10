@@ -5,13 +5,7 @@
 import Config from '../Config.json'
 import { DropdownOption } from './filters/DropdownFilter'
 
-export const ALL_SERVICES = 'all'
-export const SERVICE_OPTIONS: DropdownOption[] = [
-  { key: ALL_SERVICES, name: 'All Services' },
-  ...Config.CURRENT_SERVICES,
-]
-
-export const SERVICE_LABELS: { [key: string]: string } = SERVICE_OPTIONS.reduce(
-  (serviceOptions, service) => ({ ...serviceOptions, [service.key]: service.name }),
-  {},
-)
+export const ALL_SERVICES_KEY = 'all'
+export const ALL_SERVICES_VALUE = 'All Services'
+export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = { key: ALL_SERVICES_KEY, name: ALL_SERVICES_VALUE }
+export const SERVICE_OPTIONS: DropdownOption[] = [ALL_SERVICES_DROPDOWN_OPTION, ...Config.CURRENT_SERVICES]

@@ -16,6 +16,7 @@ import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import { DonutChartTabs } from './charts/DonutChartTabs'
 import { useFilterDataService } from './client/FilterDataServiceHook'
+import AccountFilter from './filters/AccountFilter'
 
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
@@ -56,9 +57,9 @@ export default function CloudCarbonContainer(): ReactElement {
       <Grid container>
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
-            {[CloudProviderFilter, ServiceFilter, DateFilter, MonthFilter].map((FilterComponent, i) => (
+            {[CloudProviderFilter, AccountFilter, ServiceFilter, DateFilter, MonthFilter].map((FilterComponent, i) => (
               <div key={i} className={classes.filter}>
-                <FilterComponent filters={filters} setFilters={setFilters} />
+                <FilterComponent filters={filters} setFilters={setFilters} options={filteredAccountsResults} />
               </div>
             ))}
           </div>

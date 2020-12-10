@@ -7,6 +7,14 @@ import moment from 'moment'
 import generateEstimations from '../../data/generateEstimations'
 import { EstimationResult } from '../../models/types'
 
+jest.mock('./AccountFilter', () => ({
+  ACCOUNT_OPTIONS: [
+    { key: 'all', name: 'All Accounts', cloudProvider: '' },
+    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
+    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+  ],
+}))
+
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
     let error: { pass: boolean; message: () => string } | null = null
@@ -302,8 +310,8 @@ describe('Filters', () => {
   })
 
   describe('withAccounts', () => {
-    const mockAccount1 = { cloudProvider: 'testCloudProvider1', key: '123123123', name: 'testAccount1' }
-    const mockAccount2 = { cloudProvider: 'testCloudProvider2', key: '321321321', name: 'testAccount2' }
+    const mockAccount1 = { cloudProvider: 'aws', key: '123123123', name: 'testAccount1' }
+    const mockAccount2 = { cloudProvider: 'aws', key: '321321321', name: 'testAccount2' }
     it('should unselect a selected account', () => {
       const filters = new Filters()
 
