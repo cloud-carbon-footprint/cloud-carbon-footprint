@@ -147,7 +147,7 @@ export class Filters extends FiltersUtil {
     return resultsFilteredByAccount
   }
 
-  getResultsFilteredByAccount(resultsFilteredByService: EstimationResult[]) {
+  getResultsFilteredByAccount(resultsFilteredByService: EstimationResult[]): EstimationResult[] {
     const allAccountsSelected = this.accounts.includes(allAccountDropdownOption)
     return resultsFilteredByService.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
@@ -157,7 +157,7 @@ export class Filters extends FiltersUtil {
     })
   }
 
-  getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]) {
+  getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]): EstimationResult[] {
     const allServicesSelected = this.services.includes({ key: ALL_SERVICES_KEY, name: ALL_SERVICES_VALUE })
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
@@ -167,7 +167,7 @@ export class Filters extends FiltersUtil {
     })
   }
 
-  getResultsFilteredByTime(rawResults: EstimationResult[]) {
+  getResultsFilteredByTime(rawResults: EstimationResult[]): EstimationResult[] {
     const today = moment.utc()
     let start: moment.Moment
     let end: moment.Moment

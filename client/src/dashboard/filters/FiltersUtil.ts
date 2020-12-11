@@ -63,7 +63,7 @@ export abstract class FiltersUtil {
 
     if (currentFilterType === FilterType.ACCOUNTS) {
       selections.forEach((selection) => {
-        if (desiredFilterType === FilterType.CLOUD_PROVIDERS && selection.cloudProvider! !== '') {
+        if (desiredFilterType === FilterType.CLOUD_PROVIDERS && 'all' !== selection.key) {
           currentSelections.add(
             <DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === selection.cloudProvider),
           )
@@ -99,7 +99,7 @@ export abstract class FiltersUtil {
       if (selection.key === ALL_CLOUD_PROVIDERS_KEY) {
         return SERVICE_OPTIONS
       } else {
-        providerTypes.add(selection.cloudProvider!)
+        providerTypes.add(<string>selection.cloudProvider)
       }
     })
     providerTypes.forEach((providerType) => {
