@@ -66,7 +66,7 @@ const ErrorPage = (): ReactElement => {
           <h1 className={classes.errorStatus}>
             {status} {statusText}
           </h1>
-          <div className={classes.errorMessage}>Something has gone wrong, please try again later</div>
+          <div className={classes.errorMessage}>Something has gone wrong, SOOPY please try again later</div>
         </div>
       </Grid>
     </Grid>

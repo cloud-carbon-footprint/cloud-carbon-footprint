@@ -69,6 +69,8 @@ const appConfig: CCFConfig = {
       options: {
         targetRoleName: 'ccf',
         targetRoleSessionName: 'ccf',
+        // targetRoleName: 'ccf-athena',
+        // targetRoleSessionName: 'ccf-athena',
         proxyAccountId: process.env.AWS_PROXY_ACCOUNT_ID || '',
         proxyRoleName: process.env.AWS_PROXY_ROLE_NAME || '',
       },
