@@ -63,8 +63,8 @@ const ErrorPage = (): ReactElement => {
       <CloudOffIcon className={classes.cloudIcon} />
       <Grid item className={classes.gridPlacement} xs={12}>
         <div>
-          <h1 className={classes.errorStatus}>{statusText}</h1>
-          <div className={classes.errorMessage}>{status}Something has gone wrong, please try again later</div>
+          <h1 className={classes.errorStatus}>{`${status} ${statusText}`}</h1>
+          <div className={classes.errorMessage}>Something has gone wrong, please try again later</div>
         </div>
       </Grid>
     </Grid>
