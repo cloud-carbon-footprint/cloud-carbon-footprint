@@ -5,14 +5,8 @@
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
+import { ALL_ACCOUNTS_DROPDOWN_OPTION } from './DropdownConstants'
 
-export const ALL_ACCOUNTS_KEY = 'all'
-export const ALL_ACCOUNTS_VALUE = 'All Accounts'
-export const ALL_ACCOUNTS_DROPDOWN_OPTION: DropdownOption = {
-  key: ALL_ACCOUNTS_KEY,
-  name: ALL_ACCOUNTS_VALUE,
-  cloudProvider: '',
-}
 const EMPTY_ACCOUNT = { cloudProvider: '', key: 'string', name: 'string' }
 const EMPTY_RESPONSE = { accounts: [EMPTY_ACCOUNT] }
 
