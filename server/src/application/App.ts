@@ -8,7 +8,7 @@ import configLoader from '@application/ConfigLoader'
 import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
 import cache from '@application/Cache'
 import GCPAccount from '@application/GCPAccount'
-import FilterResult, { getAccounts } from '@domain/FilterResult'
+import FilterResult, { getAccounts } from '@application/FilterResult'
 export default class App {
   @cache()
   async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {

@@ -24,7 +24,7 @@ describe('aws service helper', () => {
     new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer(), new Athena())
 
   it('enablePagination decorator should follow CostExplorer next pages', async () => {
-    const costExplorerMockFunction = jest.fn()
+    const costExplorerGetCostAndUsageSpy = jest.fn()
     const firstPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
       [{ start: startDate, value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
       'tokenToNextPage',
@@ -33,58 +33,61 @@ describe('aws service helper', () => {
       [{ start: startDate, value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
       null,
     )
-    costExplorerMockFunction.mockReturnValueOnce(firstPageResponse).mockReturnValueOnce(secondPageResponse)
+    const getCostAndUsageRequest = buildAwsCostExplorerGetCostAndUsageRequest()
+    costExplorerGetCostAndUsageSpy.mockResolvedValueOnce(firstPageResponse).mockResolvedValueOnce(secondPageResponse)
 
-    AWSMock.mock(
-      'CostExplorer',
-      'getCostAndUsage',
-      (request: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, costExplorerMockFunction())
-      },
-    )
-    const responses = await getServiceWrapper().getCostAndUsageResponses(buildAwsCostExplorerGetCostAndUsageRequest())
+    AWSMock.mock('CostExplorer', 'getCostAndUsage', costExplorerGetCostAndUsageSpy)
+    const responses = await getServiceWrapper().getCostAndUsageResponses(getCostAndUsageRequest)
+
+    expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(1, getCostAndUsageRequest, expect.anything())
+    getCostAndUsageRequest.NextPageToken = 'tokenToNextPage'
+    expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(2, getCostAndUsageRequest, expect.anything())
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 
   it('enablePagination decorator should follow CloudWatch next pages', async () => {
-    const cloudWatchMockFunction = jest.fn()
     const firstPageResponse = buildAwsCloudWatchGetMetricDataResponse('tokenToNextPage')
     const secondPageResponse = buildAwsCloudWatchGetMetricDataResponse(null)
-    cloudWatchMockFunction.mockReturnValueOnce(firstPageResponse).mockReturnValueOnce(secondPageResponse)
+    const metricDataRequest = buildAwsCloudWatchGetMetricDataRequest()
 
-    AWSMock.mock(
-      'CloudWatch',
-      'getMetricData',
-      (request: CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
-        callback(null, cloudWatchMockFunction())
-      },
-    )
+    const cloudWatchGetMetricDataSpy = jest.fn()
+    cloudWatchGetMetricDataSpy.mockResolvedValueOnce(firstPageResponse).mockResolvedValueOnce(secondPageResponse)
+
+    AWSMock.mock('CloudWatch', 'getMetricData', cloudWatchGetMetricDataSpy)
     const responses = await getServiceWrapper().getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
 
+    expect(cloudWatchGetMetricDataSpy).toHaveBeenNthCalledWith(1, metricDataRequest, expect.anything())
+    metricDataRequest.NextToken = 'tokenToNextPage'
+    expect(cloudWatchGetMetricDataSpy).toHaveBeenNthCalledWith(2, metricDataRequest, expect.anything())
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 
   it('enablePagination decorator should follow Athena next pages', async () => {
-    const athenaMockFunction = jest.fn()
     const firstPageResponse = buildAthenaGetQueryResultsResponse('tokenToNextPage')
     const secondPageResponse = buildAthenaGetQueryResultsResponse(null)
-    athenaMockFunction.mockReturnValueOnce(firstPageResponse).mockReturnValueOnce(secondPageResponse)
 
-    AWSMock.mock(
-      'Athena',
-      'getQueryResults',
-      (request: Athena.GetQueryResultsInput, callback: (a: Error, response: any) => any) => {
-        callback(null, athenaMockFunction())
-      },
-    )
+    const athenaGetResultsSpy = jest.fn()
+    athenaGetResultsSpy.mockResolvedValueOnce(firstPageResponse).mockResolvedValueOnce(secondPageResponse)
+    AWSMock.mock('Athena', 'getQueryResults', athenaGetResultsSpy)
+
     const responses = await getServiceWrapper().getAthenaQueryResultSets({ QueryExecutionId: 'some-query-id' })
+
+    expect(athenaGetResultsSpy).toHaveBeenNthCalledWith(1, { QueryExecutionId: 'some-query-id' }, expect.anything())
+    expect(athenaGetResultsSpy).toHaveBeenNthCalledWith(
+      2,
+      {
+        QueryExecutionId: 'some-query-id',
+        NextToken: 'tokenToNextPage',
+      },
+      expect.anything(),
+    )
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 })
 
-function buildAwsCostExplorerGetCostAndUsageRequest() {
+function buildAwsCostExplorerGetCostAndUsageRequest(): CostExplorer.Types.GetCostAndUsageRequest {
   return {
     TimePeriod: {
       Start: startDate,

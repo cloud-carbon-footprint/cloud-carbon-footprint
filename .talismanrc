@@ -6,19 +6,29 @@ fileignoreconfig:
 - filename: client/.env.template
   checksum: f21fc3a24626cfa3da0bccf5b81ac5f7454bb36ea1d6e4df11a5519d20e23187
 - filename: client/package-lock.json
-  checksum: 6b3724ac99a3e15efa41c071e6d829aa44eee5c2b57667cd04e74ff64c90b38f
+  checksum: 6254551916fcaace0208b950bd0f06c206ba6d7fafbbee2b51d06dde705f0ee7
+- filename: client/src/Config.ts
+  checksum: 2dcf5a312c9c50087ca0dac7e99e660abec38e68cfd7c4c312d3ef1cc872cd27
 - filename: client/src/dashboard/charts/__snapshots__/DonutChartTabsTest.test.tsx.snap
   checksum: 47b097049490c3d280da370451b1b6bf44f8c30eddcca847b763a9d77735c961
+- filename: client/src/dashboard/filters/Filters.test.ts
+  checksum: 590d77373cd099c5fc834d1549544b31c2e27ff419e2396acabafc5e1253a912
 - filename: client/src/dashboard/filters/Filters.ts
   checksum: c9840931b210466d99b1d87b33570ec2367ac0842aa9d0776d5b08d78675a483
+- filename: client/src/dashboard/filters/FiltersUtil.test.ts
+  checksum: db83d4c405db11f7db7f241338838ef293ddcb530be0e3a310c2569f49d6ed72
+- filename: client/src/dashboard/filters/ServiceFilter.test.tsx
+  checksum: c93ad0032851281c7c7aa5781629a1d7ce1fb639e4ba0d11e913c85269072815
+- filename: client/src/dashboard/transformData.test.ts
+  checksum: c234343b53327a585468306083a6749bed6732bf838c92611e96fb6b0352c0cd
 - filename: client/src/dashboard/transformData.tsx
-  checksum: 5ff6b93735fe3603effb080e1de35450f41be95361fe8170ba64f88dd5c4fbac
+  checksum: 864d5a94298d222072ad04098532a4988952f0e405a3d35e0fdd4a53286ffee1
 - filename: server/.env.template
   checksum: 3ed9c6df32c67c481317bb370933fcd56cee89ec36ce66cbf48040d0175bfc97
 - filename: server/create_server_env_file.sh
   checksum: e456d6a6ddfecaadaefc0811847aad51685d7d5d1fc347fb6a24b87f1fcf32cf
 - filename: server/package-lock.json
-  checksum: a8529c6fd75ca6ae4ef6d09ef4e87bca77fff2500df29bd68261f19b6f9de9f4
+  checksum: ef02a37e4e907317b5f9b6a41893e1c1e7a8d86fb4f3e0470522bc9d1615257b
 - filename: server/src/application/Config.ts
   checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
 - filename: server/src/application/GCPAccount.ts

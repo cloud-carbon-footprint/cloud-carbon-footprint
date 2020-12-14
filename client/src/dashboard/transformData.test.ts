@@ -1,8 +1,8 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-
-import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals } from './transformData'
+import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useAccountNamesFromEstimates } from './transformData'
+import { renderHook } from '@testing-library/react-hooks'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
 const date2 = new Date('2020-07-11T00:00:00.000Z')
@@ -18,6 +18,8 @@ const data = [
         cost: 5,
         region: 'us-east-1',
         usesAverageCPUConstant: false,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
       },
       {
         timestamp: date1,
@@ -27,6 +29,8 @@ const data = [
         cost: 4,
         region: 'us-east-1',
         usesAverageCPUConstant: false,
+        cloudProvider: 'GCP',
+        accountName: 'test-b',
       },
     ],
   },
@@ -41,6 +45,8 @@ const data = [
         cost: 6,
         region: 'us-east-1',
         usesAverageCPUConstant: false,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
       },
       {
         timestamp: date2,
@@ -50,6 +56,8 @@ const data = [
         cost: 6,
         region: 'us-east-1',
         usesAverageCPUConstant: true,
+        cloudProvider: 'AWS',
+        accountName: 'test-c',
       },
     ],
   },
@@ -113,6 +121,19 @@ describe('transformData', () => {
   it('returns the sum of CO2 kg and gallons', () => {
     const expected = 30
     expect(sumCO2(data)).toEqual(expected)
+  })
+
+  it('extract account names from estimates data', async () => {
+    const { result } = renderHook(() => useAccountNamesFromEstimates(data))
+    // then
+    const expectedResult = {
+      accounts: [
+        { cloudProvider: 'aws', key: 'test-a', name: 'test-a' },
+        { cloudProvider: 'gcp', key: 'test-b', name: 'test-b' },
+        { cloudProvider: 'aws', key: 'test-c', name: 'test-c' },
+      ],
+    }
+    expect(result.current).toEqual(expectedResult)
   })
 })
 

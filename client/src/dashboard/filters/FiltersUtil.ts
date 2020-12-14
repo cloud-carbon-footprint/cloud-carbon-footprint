@@ -2,6 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+import { pluck } from 'ramda'
+
+import config from '../../ConfigLoader'
 import { ALL_SERVICES_DROPDOWN_OPTION, ALL_SERVICES_VALUE, SERVICE_OPTIONS } from '../services'
 import {
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
@@ -11,9 +14,10 @@ import {
 } from '../cloudProviders'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS, ALL_ACCOUNTS_DROPDOWN_OPTION } from './AccountFilter'
+
 const providerServices: { [key: string]: string[] } = {
-  aws: ['ebs', 's3', 'ec2', 'elasticache', 'rds', 'lambda'],
-  gcp: ['computeEngine'],
+  aws: pluck('key', config().AWS.CURRENT_SERVICES),
+  gcp: pluck('key', config().GCP.CURRENT_SERVICES),
 }
 
 export enum FilterType {
@@ -54,9 +58,9 @@ export abstract class FiltersUtil {
           )
         }
         if (desiredFilterType == FilterType.ACCOUNTS) {
-          currentSelections.add(
-            <DropdownOption>ACCOUNT_OPTIONS.find((accountOption) => accountOption.cloudProvider === selection.key),
-          )
+          ACCOUNT_OPTIONS.forEach((accountOption) => {
+            accountOption.cloudProvider === selection.key ? currentSelections.add(accountOption) : null
+          })
         }
       })
     }
