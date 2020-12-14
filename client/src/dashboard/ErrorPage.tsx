@@ -56,7 +56,9 @@ const ErrorPage = (): ReactElement => {
   const location = useLocation()
   const { statusText, status } = location.state as ErrorState
   let message
-  status && statusText ? (message = `${status} ${statusText}`) : status
+  if (status && statusText) {
+    message = status + ' Internal Server Error'
+  }
 
   const classes = useStyles()
 
@@ -65,7 +67,13 @@ const ErrorPage = (): ReactElement => {
       <CloudOffIcon className={classes.cloudIcon} />
       <Grid item className={classes.gridPlacement} xs={12}>
         <div>
-          <h1 className={classes.errorStatus}>{message}</h1>
+          {message ? (
+            <h1 className={classes.errorStatus}>{message}</h1>
+          ) : (
+            <h1 className={classes.errorStatus}>
+              {status} {statusText}
+            </h1>
+          )}
           <div className={classes.errorMessage}>Something has gone wrong, please try again later</div>
         </div>
       </Grid>
