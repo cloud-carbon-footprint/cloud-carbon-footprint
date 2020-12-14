@@ -13,7 +13,8 @@ import {
   CLOUD_PROVIDER_OPTIONS,
 } from '../cloudProviders'
 import { DropdownOption } from './DropdownFilter'
-import { ACCOUNT_OPTIONS, ALL_ACCOUNTS_DROPDOWN_OPTION } from './AccountFilter'
+import { ACCOUNT_OPTIONS } from './AccountFilter'
+import { ALL_ACCOUNTS_DROPDOWN_OPTION } from './DropdownConstants'
 
 const providerServices: { [key: string]: string[] } = {
   aws: pluck('key', config().AWS.CURRENT_SERVICES),

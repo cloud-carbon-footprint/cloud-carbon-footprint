@@ -9,7 +9,8 @@ import { ALL_CLOUD_PROVIDERS_KEY, CLOUD_PROVIDER_OPTIONS } from '../cloudProvide
 import { Dispatch, SetStateAction } from 'react'
 import { FiltersUtil, FilterType } from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
-import { ACCOUNT_OPTIONS, ALL_ACCOUNTS_KEY, ALL_ACCOUNTS_VALUE } from './AccountFilter'
+import { ACCOUNT_OPTIONS } from './AccountFilter'
+import { ALL_ACCOUNTS_KEY, ALL_ACCOUNTS_VALUE } from './DropdownConstants'
 
 export type FilterProps = {
   filters: Filters

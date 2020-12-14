@@ -335,16 +335,18 @@ describe('Filters', () => {
 
   describe('withAccounts', () => {
     const mockAccount1 = { cloudProvider: 'aws', key: '123123123', name: 'testAccount1' }
-    const mockAccount2 = { cloudProvider: 'aws', key: '321321321', name: 'testAccount2' }
     it('should unselect a selected account', () => {
       const filters = new Filters()
+      filters.handleSelections = jest.fn(() => {
+        return {
+          providerKeys: [],
+          accountKeys: [mockAccount1],
+          serviceKeys: [],
+        }
+      })
+      const newFilters = filters.withAccounts([mockAccount1])
 
-      const newFilters = filters
-        .withAccounts([mockAccount1])
-        .withAccounts([mockAccount1, mockAccount2])
-        .withAccounts([mockAccount2])
-
-      expect(newFilters.accounts).toEqual([mockAccount2])
+      expect(newFilters).toEqual({ ...newFilters, cloudProviders: [], accounts: [mockAccount1], services: [] })
     })
   })
 })
