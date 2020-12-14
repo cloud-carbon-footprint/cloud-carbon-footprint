@@ -56,7 +56,7 @@ const ErrorPage = (): ReactElement => {
   const location = useLocation()
   const { statusText, status } = location.state as ErrorState
   let message
-  if (status && statusText) {
+  if (status && status.toString() === '500') {
     message = status + ' Internal Server Error'
   }
 
