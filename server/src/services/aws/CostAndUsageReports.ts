@@ -19,6 +19,7 @@ import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstan
 import Logger from '@services/Logger'
 import { EstimationResult } from '@application/EstimationResult'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { SSD_USAGE_TYPES, HDD_USAGE_TYPES } from '@services/aws/AWSStorageUsageTypes'
 interface QueryResultsRow {
   Data: QueryResultsColumn[]
 }
@@ -41,6 +42,33 @@ interface MutableServiceEstimate {
   cost: number
   region: string
   usesAverageCPUConstant: boolean
+}
+
+const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
+  AWSLambda: 'lambda',
+  AmazonRDS: 'rds',
+  AmazonCloudWatch: 'cloudwatch',
+  AmazonS3: 's3',
+  AmazonMSK: 'msk',
+  ElasticMapReduce: 'elasticmapreduce',
+  AmazonGlacier: 'glacier',
+  AmazonSageMaker: 'sageemaker',
+  AmazonLightsail: 'lightsail',
+  AWSDirectoryService: 'directoryservice',
+  AWSIoTAnalytics: 'iotanalytics',
+  AWSDatabaseMigrationSvc: 'databasemigrationsvc',
+  AmazonES: 'es',
+  AmazonQuickSight: 'quicksight',
+  AmazonEFS: 'efs',
+  AmazonRedshift: 'redshift',
+  AmazonDynamoDB: 'dynamodb',
+  datapipeline: 'datapipeline',
+  AWSELB: 'elb',
+  AmazonDocDB: 'docdb',
+  AmazonSimpleDB: 'simpledb',
+  AmazonECR: 'ecr',
+  AmazonVPC: 'vpc',
+  AmazonMQ: 'mq',
 }
 
 export default class CostAndUsageReports {
@@ -177,24 +205,16 @@ export default class CostAndUsageReports {
     }
   }
 
-  private usageTypeIsSSD(usageType: string) {
-    return (
-      usageType.endsWith('VolumeUsage.gp2') ||
-      usageType.endsWith('VolumeUsage.piops') ||
-      usageType.endsWith('GP2-Storage') ||
-      usageType.endsWith('PIOPS-Storage')
-    )
+  private usageTypeIsSSD(usageType: string): boolean {
+    return this.endsWithAny(SSD_USAGE_TYPES, usageType)
   }
 
-  private usageTypeIsHDD(usageType: string) {
-    return (
-      usageType.endsWith('VolumeUsage.st1') ||
-      usageType.endsWith('VolumeUsage.sc1') ||
-      usageType.endsWith('VolumeUsage') ||
-      usageType.endsWith('SnapshotUsage') ||
-      usageType.endsWith('TimedStorage-ByteHrs') ||
-      usageType.endsWith('StorageUsage')
-    )
+  private usageTypeIsHDD(usageType: string): boolean {
+    return this.endsWithAny(HDD_USAGE_TYPES, usageType)
+  }
+
+  private endsWithAny(suffixes: string[], string: string): boolean {
+    return suffixes.some((suffix) => string.endsWith(suffix))
   }
 
   private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date): boolean {
@@ -217,17 +237,10 @@ export default class CostAndUsageReports {
   }
 
   private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
-    const serviceNameMapping: { [usageType: string]: string } = {
-      AWSLambda: 'lambda',
-      AmazonRDS: 'rds',
-      AmazonCloudWatch: 'cloudwatch',
-      AmazonS3: 's3',
-    }
-
     if (serviceName === 'AmazonEC2') {
       return usageType.includes('BoxUsage') ? 'ec2' : 'ebs'
     }
-    return serviceNameMapping[serviceName]
+    return SERVICE_NAME_MAPPING[serviceName] ? SERVICE_NAME_MAPPING[serviceName] : serviceName
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {

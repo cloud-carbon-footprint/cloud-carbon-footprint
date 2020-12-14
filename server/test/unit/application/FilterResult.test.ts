@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { Account, getAccounts } from '@domain/FilterResult'
+import { Account, getAccounts } from '@application/FilterResult'
 
 describe('getFilterResults', () => {
   it('AWS results', () => {

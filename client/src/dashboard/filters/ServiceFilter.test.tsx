@@ -15,6 +15,30 @@ jest.mock('./AccountFilter', () => ({
   ],
 }))
 
+jest.mock('../../ConfigLoader', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      AWS: {
+        CURRENT_SERVICES: [
+          { key: 'ebs', name: 'EBS' },
+          { key: 's3', name: 'S3' },
+          { key: 'ec2', name: 'EC2' },
+          { key: 'elasticache', name: 'ElastiCache' },
+          { key: 'rds', name: 'RDS' },
+          { key: 'lambda', name: 'Lambda' },
+        ],
+      },
+      GCP: {
+        CURRENT_SERVICES: [{ key: 'computeEngine', name: 'Compute Engine' }],
+      },
+      CURRENT_PROVIDERS: [
+        { key: 'aws', name: 'AWS' },
+        { key: 'gcp', name: 'GCP' },
+      ],
+    }
+  })
+})
+
 describe('ServiceFilter', () => {
   let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
   let page: RenderResult

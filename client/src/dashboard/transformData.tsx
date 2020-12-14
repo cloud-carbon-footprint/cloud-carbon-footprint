@@ -2,8 +2,15 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult, cloudEstPerDay, ChartDataTypes, serviceEstimate } from '../models/types'
-
+import {
+  EstimationResult,
+  cloudEstPerDay,
+  ChartDataTypes,
+  serviceEstimate,
+  FilterResultResponse,
+} from '../models/types'
+import { pluck, uniq } from 'ramda'
+import { useEffect, useState } from 'react'
 const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
   const co2Series: cloudEstPerDay[] = []
   const wattHoursSeries: cloudEstPerDay[] = []
@@ -92,4 +99,26 @@ const sumCO2 = (data: EstimationResult[]): number => {
   return serviceEstimates.reduce((acc, currentValue) => acc + currentValue.co2e, 0)
 }
 
-export { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals }
+const useAccountNamesFromEstimates = (data: EstimationResult[]): FilterResultResponse => {
+  // console.log(data)
+  const [filteredData] = useState(data)
+  const [filterResultResponse, setFilterResultResponse] = useState<FilterResultResponse>({ accounts: [] })
+
+  // console.log(filteredData)
+  useEffect(() => {
+    const serviceEstimates = pluck('serviceEstimates', data).flat()
+
+    const accountNames = serviceEstimates.map((estimate) => {
+      return {
+        cloudProvider: estimate.cloudProvider.toLowerCase(),
+        key: estimate.accountName,
+        name: estimate.accountName,
+      }
+    })
+    setFilterResultResponse({ accounts: uniq(accountNames) })
+  }, [data, filteredData])
+
+  return filterResultResponse
+}
+
+export { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useAccountNamesFromEstimates }

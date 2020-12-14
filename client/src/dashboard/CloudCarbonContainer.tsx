@@ -17,7 +17,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { DonutChartTabs } from './charts/DonutChartTabs'
 import { useFilterDataService } from './client/FilterDataServiceHook'
 import AccountFilter from './filters/AccountFilter'
-
+import config from '../ConfigLoader'
+import { useAccountNamesFromEstimates } from './transformData'
+import { FilterResultResponse } from '../models/types'
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
 
@@ -44,7 +46,13 @@ export default function CloudCarbonContainer(): ReactElement {
   const endDate: moment.Moment = moment.utc()
 
   const { data, loading } = useRemoteService([], startDate, endDate)
-  const filteredAccountsResults = useFilterDataService()
+
+  let filteredAccountsResults: FilterResultResponse
+  if (config().AWS.USE_BILLING_DATA) {
+    filteredAccountsResults = useAccountNamesFromEstimates(data)
+  } else {
+    filteredAccountsResults = useFilterDataService()
+  }
   const { filteredData, filters, setFilters } = useFilters(data, filteredAccountsResults)
 
   return loading ? (

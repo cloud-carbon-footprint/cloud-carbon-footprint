@@ -30,7 +30,7 @@ export class ServiceWrapper {
   }
 
   private async getAthenaQueryResults(
-    queryExecutionInput: Athena.GetQueryExecutionInput,
+    queryExecutionInput: Athena.Types.GetQueryResultsInput,
   ): Promise<Athena.GetQueryResultsOutput[]> {
     return [await this.athena.getQueryResults(queryExecutionInput).promise()]
   }
@@ -124,7 +124,7 @@ function enablePagination<RequestType, ResponseType>(nextPageProperty: string) {
         const args = [
           {
             ...props,
-            [nextPageProperty]: path([responses.length, nextPageProperty], responses),
+            [nextPageProperty]: path([responses.length - 1, nextPageProperty], responses),
           },
         ]
         latestResponse = (await originalMethod.apply(this, args))[0]
