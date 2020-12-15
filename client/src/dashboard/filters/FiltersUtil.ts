@@ -5,13 +5,8 @@
 import { pluck } from 'ramda'
 
 import config from '../../ConfigLoader'
-import { ALL_SERVICES_DROPDOWN_OPTION, ALL_SERVICES_VALUE, SERVICE_OPTIONS } from '../services'
-import {
-  ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
-  ALL_CLOUD_PROVIDERS_KEY,
-  ALL_CLOUD_PROVIDERS_VALUE,
-  CLOUD_PROVIDER_OPTIONS,
-} from '../cloudProviders'
+import { ALL_SERVICES_DROPDOWN_OPTION, SERVICE_OPTIONS } from '../services'
+import { ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION, ALL_CLOUD_PROVIDERS_KEY, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS } from './AccountFilter'
 import { ALL_ACCOUNTS_DROPDOWN_OPTION } from './DropdownConstants'
@@ -30,7 +25,6 @@ export enum FilterType {
 export abstract class FiltersUtil {
   getDesiredKeysFromCurrentFilteredKeys(
     selections: DropdownOption[],
-    allValue: string,
     currentFilterType: FilterType,
     desiredFilterType: FilterType,
   ): DropdownOption[] {
@@ -118,7 +112,6 @@ export abstract class FiltersUtil {
   handleSelections(
     selections: DropdownOption[],
     oldSelections: DropdownOption[],
-    allValue: string,
     options: DropdownOption[],
     filterType: FilterType,
   ): { providerKeys: DropdownOption[]; accountKeys: DropdownOption[]; serviceKeys: DropdownOption[] } {
@@ -126,49 +119,40 @@ export abstract class FiltersUtil {
     let providerOptions: DropdownOption[]
     let accountOptions: DropdownOption[]
 
+    const ALL_KEY = 'all'
     const selectionKeys: string[] = selections.map((selection) => selection.key)
     const oldSelectionKeys: string[] = oldSelections.map((oldSelection) => oldSelection.key)
 
-    if (selections.length === options.length - 1 && !oldSelectionKeys.includes(allValue)) {
+    if (selections.length === options.length - 1 && !oldSelectionKeys.includes(ALL_KEY)) {
       selections = options
-      selectionKeys.push(allValue)
+      selectionKeys.push(ALL_KEY)
     }
 
-    if (selectionKeys.includes(allValue) && !oldSelectionKeys.includes(allValue)) {
+    if (selectionKeys.includes(ALL_KEY) && !oldSelectionKeys.includes(ALL_KEY)) {
       serviceOptions = SERVICE_OPTIONS
       providerOptions = CLOUD_PROVIDER_OPTIONS
       accountOptions = ACCOUNT_OPTIONS
-    } else if (!selectionKeys.includes(allValue) && oldSelectionKeys.includes(allValue)) {
+    } else if (!selectionKeys.includes(ALL_KEY) && oldSelectionKeys.includes(ALL_KEY)) {
       serviceOptions = []
       providerOptions = []
       accountOptions = []
     } else {
-      if (selections.length === options.length - 1 && oldSelectionKeys.includes(allValue)) {
-        selections = selections.filter((k) => k.key !== allValue)
+      if (selections.length === options.length - 1 && oldSelectionKeys.includes(ALL_KEY)) {
+        selections = selections.filter((k) => k.key !== ALL_KEY)
       }
 
       serviceOptions =
         filterType == FilterType.SERVICES
           ? selections
-          : this.getDesiredKeysFromCurrentFilteredKeys(selections, ALL_SERVICES_VALUE, filterType, FilterType.SERVICES)
+          : this.getDesiredKeysFromCurrentFilteredKeys(selections, filterType, FilterType.SERVICES)
       providerOptions =
         filterType == FilterType.CLOUD_PROVIDERS
           ? selections
-          : this.getDesiredKeysFromCurrentFilteredKeys(
-              selections,
-              ALL_CLOUD_PROVIDERS_VALUE,
-              filterType,
-              FilterType.CLOUD_PROVIDERS,
-            )
+          : this.getDesiredKeysFromCurrentFilteredKeys(selections, filterType, FilterType.CLOUD_PROVIDERS)
       accountOptions =
         filterType == FilterType.ACCOUNTS
           ? selections
-          : this.getDesiredKeysFromCurrentFilteredKeys(
-              selections,
-              ALL_CLOUD_PROVIDERS_VALUE,
-              filterType,
-              FilterType.ACCOUNTS,
-            )
+          : this.getDesiredKeysFromCurrentFilteredKeys(selections, filterType, FilterType.ACCOUNTS)
     }
     return { providerKeys: providerOptions, serviceKeys: serviceOptions, accountKeys: accountOptions }
   }
