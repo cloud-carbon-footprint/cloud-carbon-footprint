@@ -112,29 +112,29 @@ describe('filterUtil', () => {
 
   describe('getDependentKeysFromCurrentFilteredKeys', () => {
     it('should return provider keys when given service keys', () => {
-      expect(
-        util.getDesiredKeysFromCurrentFilteredKeys(awsServiceOptions, ALL_STRING, SERVICES, CLOUD_PROVIDERS),
-      ).toEqual([awsProviderOption])
+      expect(util.getDesiredKeysFromCurrentFilteredKeys(awsServiceOptions, SERVICES, CLOUD_PROVIDERS)).toEqual([
+        awsProviderOption,
+      ])
     })
     it('should return account keys when given service keys', () => {
-      expect(util.getDesiredKeysFromCurrentFilteredKeys(awsServiceOptions, ALL_STRING, SERVICES, ACCOUNTS)).toEqual([
+      expect(util.getDesiredKeysFromCurrentFilteredKeys(awsServiceOptions, SERVICES, ACCOUNTS)).toEqual([
         awsAccountOption,
       ])
     })
     it('should return service keys when given provider keys', () => {
-      expect(
-        util.getDesiredKeysFromCurrentFilteredKeys([awsProviderOption], ALL_STRING, CLOUD_PROVIDERS, SERVICES),
-      ).toEqual(awsServiceOptions)
+      expect(util.getDesiredKeysFromCurrentFilteredKeys([awsProviderOption], CLOUD_PROVIDERS, SERVICES)).toEqual(
+        awsServiceOptions,
+      )
     })
     it('should return account keys when given provider keys', () => {
-      expect(
-        util.getDesiredKeysFromCurrentFilteredKeys([awsProviderOption], ALL_STRING, CLOUD_PROVIDERS, ACCOUNTS),
-      ).toEqual([awsAccountOption])
+      expect(util.getDesiredKeysFromCurrentFilteredKeys([awsProviderOption], CLOUD_PROVIDERS, ACCOUNTS)).toEqual([
+        awsAccountOption,
+      ])
     })
     it('should return provider keys when given account keys', () => {
-      expect(
-        util.getDesiredKeysFromCurrentFilteredKeys([awsAccountOption], ALL_STRING, ACCOUNTS, CLOUD_PROVIDERS),
-      ).toEqual([awsProviderOption])
+      expect(util.getDesiredKeysFromCurrentFilteredKeys([awsAccountOption], ACCOUNTS, CLOUD_PROVIDERS)).toEqual([
+        awsProviderOption,
+      ])
     })
   })
   describe('handleSelections', () => {
@@ -142,7 +142,6 @@ describe('filterUtil', () => {
       const result = util.handleSelections(
         allProviderOptions,
         [awsProviderOption],
-        ALL_STRING,
         allProviderOptions,
         FilterType.CLOUD_PROVIDERS,
       )
@@ -154,7 +153,6 @@ describe('filterUtil', () => {
       const result = util.handleSelections(
         allAccountOptions,
         [awsAccountOption],
-        ALL_STRING,
         allAccountOptions,
         FilterType.ACCOUNTS,
       )
@@ -164,14 +162,13 @@ describe('filterUtil', () => {
     })
     it('should return all providerKeys, accountKeys and serviceKeys when all services was selected', () => {
       expect(
-        util.handleSelections(allServiceOptions, awsServiceOptions, ALL_STRING, allServiceOptions, FilterType.SERVICES),
+        util.handleSelections(allServiceOptions, awsServiceOptions, allServiceOptions, FilterType.SERVICES),
       ).toEqual({ providerKeys: allProviderOptions, accountKeys: allAccountOptions, serviceKeys: allServiceOptions })
     })
     it('should return empty providerKeys, accountKeys and serviceKeys when all providers was unselected', () => {
       const handleSelectionResult = util.handleSelections(
         [awsProviderOption, gcpProviderOption],
         allProviderOptions,
-        ALL_STRING,
         allProviderOptions,
         FilterType.CLOUD_PROVIDERS,
       )
@@ -183,7 +180,6 @@ describe('filterUtil', () => {
       const handleSelectionResult = util.handleSelections(
         [awsAccountOption, ...gcpAccountOptions],
         allAccountOptions,
-        ALL_STRING,
         allAccountOptions,
         FilterType.ACCOUNTS,
       )
@@ -195,7 +191,6 @@ describe('filterUtil', () => {
       const handleSelectionResult = util.handleSelections(
         [...awsServiceOptions, computeEngineServiceOption],
         allServiceOptions,
-        ALL_STRING,
         allServiceOptions,
         FilterType.SERVICES,
       )
@@ -207,7 +202,6 @@ describe('filterUtil', () => {
       const handleSelectionResult = util.handleSelections(
         [allProviderOption, awsProviderOption],
         allProviderOptions,
-        ALL_STRING,
         allProviderOptions,
         FilterType.CLOUD_PROVIDERS,
       )
@@ -219,7 +213,6 @@ describe('filterUtil', () => {
       const handleSelectionResult = util.handleSelections(
         [allAccountOption, awsAccountOption],
         [allAccountOption, awsAccountOption, gcpAccountOptions[0]],
-        ALL_STRING,
         allAccountOptions,
         FilterType.ACCOUNTS,
       )
@@ -231,7 +224,6 @@ describe('filterUtil', () => {
       const handleSelectionResult = util.handleSelections(
         [allServiceOption, ...awsServiceOptions],
         allServiceOptions,
-        ALL_STRING,
         allServiceOptions,
         FilterType.SERVICES,
       )
@@ -243,7 +235,6 @@ describe('filterUtil', () => {
       const handleSelectionResult = util.handleSelections(
         [awsAccountOption, gcpAccountOptions[0]],
         [awsAccountOption],
-        ALL_STRING,
         allAccountOptions,
         FilterType.ACCOUNTS,
       )

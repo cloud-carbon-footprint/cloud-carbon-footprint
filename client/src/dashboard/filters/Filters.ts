@@ -5,7 +5,7 @@
 import { EstimationResult, FilterResultResponse } from '../../models/types'
 import moment from 'moment'
 import { ALL_SERVICES_KEY, ALL_SERVICES_VALUE, SERVICE_OPTIONS } from '../services'
-import { ALL_CLOUD_PROVIDERS_KEY, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
+import { CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
 import { Dispatch, SetStateAction } from 'react'
 import { FiltersUtil, FilterType } from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
@@ -69,7 +69,6 @@ export class Filters extends FiltersUtil {
     const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
       services,
       this.services,
-      ALL_SERVICES_KEY,
       SERVICE_OPTIONS,
       FilterType.SERVICES,
     )
@@ -85,7 +84,6 @@ export class Filters extends FiltersUtil {
     const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
       accounts,
       this.accounts,
-      ALL_ACCOUNTS_KEY,
       ACCOUNT_OPTIONS,
       FilterType.ACCOUNTS,
     )
@@ -101,7 +99,6 @@ export class Filters extends FiltersUtil {
     const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
       cloudProviders,
       this.cloudProviders,
-      ALL_CLOUD_PROVIDERS_KEY,
       CLOUD_PROVIDER_OPTIONS,
       FilterType.CLOUD_PROVIDERS,
     )
