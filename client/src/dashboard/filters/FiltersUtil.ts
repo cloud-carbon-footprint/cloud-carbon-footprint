@@ -6,10 +6,10 @@ import { pluck } from 'ramda'
 
 import config from '../../ConfigLoader'
 import { ALL_SERVICES_DROPDOWN_OPTION, SERVICE_OPTIONS } from '../services'
-import { ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION, ALL_CLOUD_PROVIDERS_KEY, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
+import { ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS } from './AccountFilter'
-import { ALL_ACCOUNTS_DROPDOWN_OPTION } from './DropdownConstants'
+import { ALL_ACCOUNTS_DROPDOWN_OPTION, ALL_ACCOUNTS_KEY } from './DropdownConstants'
 
 const providerServices: { [key: string]: string[] } = {
   aws: pluck('key', config().AWS.CURRENT_SERVICES),
@@ -24,57 +24,135 @@ export enum FilterType {
 
 export abstract class FiltersUtil {
   getDesiredKeysFromCurrentFilteredKeys(
-    selections: DropdownOption[],
+    currentSelections: DropdownOption[],
+    oldSelections: { services: DropdownOption[]; accounts: DropdownOption[]; cloudProviders: DropdownOption[] },
     currentFilterType: FilterType,
     desiredFilterType: FilterType,
   ): DropdownOption[] {
-    const currentSelections: Set<DropdownOption> = new Set()
-    const keys = selections.map((selection) => selection.key)
+    const desiredSelections: Set<DropdownOption> = new Set()
 
     if (currentFilterType == FilterType.SERVICES) {
-      for (const [key, value] of Object.entries(providerServices)) {
-        if (value.some((service) => keys.includes(service))) {
-          if (desiredFilterType == FilterType.CLOUD_PROVIDERS) {
-            currentSelections.add(<DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === key))
-          }
-          if (desiredFilterType == FilterType.ACCOUNTS) {
+      if (desiredFilterType == FilterType.CLOUD_PROVIDERS) {
+        this.getCloudProvidersFromServices(currentSelections).forEach((cloudProviderOption) =>
+          desiredSelections.add(cloudProviderOption),
+        )
+      }
+      if (desiredFilterType == FilterType.ACCOUNTS) {
+        const currentCloudProviders = Array.from(this.getCloudProvidersFromServices(currentSelections))
+        currentCloudProviders.forEach((currentCloudProvider) => {
+          //if currentCloudprovider has an option that oldCP has, keep the accounts from old that are under that CP
+          if (this.isDropdownOptionInDropdownOptions(oldSelections.cloudProviders, currentCloudProvider)) {
+            oldSelections.accounts.forEach((oldAccountOption) => {
+              oldAccountOption.cloudProvider === currentCloudProvider.key
+                ? desiredSelections.add(oldAccountOption)
+                : null
+            })
+          } else {
+            //if currentCloudprovider doesnt have an option that oldCP has, add all the accounts from that CP
             ACCOUNT_OPTIONS.forEach((accountOption) => {
-              accountOption.cloudProvider === key ? currentSelections.add(accountOption) : null
+              accountOption.cloudProvider === currentCloudProvider.key ? desiredSelections.add(accountOption) : null
             })
           }
-        }
+        })
       }
     }
     if (currentFilterType == FilterType.CLOUD_PROVIDERS) {
-      selections.forEach((selection) => {
-        if (desiredFilterType == FilterType.SERVICES) {
-          providerServices[selection.key].forEach((service) =>
-            currentSelections.add(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
-          )
-        }
-        if (desiredFilterType == FilterType.ACCOUNTS) {
-          ACCOUNT_OPTIONS.forEach((accountOption) => {
-            accountOption.cloudProvider === selection.key ? currentSelections.add(accountOption) : null
-          })
+      currentSelections.forEach((selection) => {
+        if (selection.key !== 'all') {
+          if (desiredFilterType == FilterType.SERVICES) {
+            providerServices[selection.key].forEach((service) =>
+              desiredSelections.add(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
+            )
+          }
+          if (desiredFilterType == FilterType.ACCOUNTS) {
+            ACCOUNT_OPTIONS.forEach((accountOption) => {
+              accountOption.cloudProvider === selection.key ? desiredSelections.add(accountOption) : null
+            })
+          }
         }
       })
     }
 
     if (currentFilterType === FilterType.ACCOUNTS) {
-      selections.forEach((selection) => {
-        if (desiredFilterType === FilterType.CLOUD_PROVIDERS && 'all' !== selection.key) {
-          currentSelections.add(
-            <DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === selection.cloudProvider),
-          )
-        }
-        if (desiredFilterType === FilterType.SERVICES) {
-          this.serviceTypesInAccountSelection(selections).forEach((serviceOption) => {
-            currentSelections.add(serviceOption)
-          })
-        }
-      })
+      if (desiredFilterType === FilterType.CLOUD_PROVIDERS) {
+        this.getCloudProvidersFromAccounts(currentSelections).forEach((cloudProviderOption) =>
+          desiredSelections.add(cloudProviderOption),
+        )
+      }
+      if (desiredFilterType === FilterType.SERVICES) {
+        const currentCloudProviders = Array.from(this.getCloudProvidersFromAccounts(currentSelections))
+        currentCloudProviders.forEach((currentCloudProvider) => {
+          //if currentCloudprovider has an option that oldCP has, keep the services from old that are under that CP
+          if (this.isDropdownOptionInDropdownOptions(oldSelections.cloudProviders, currentCloudProvider)) {
+            oldSelections.services.forEach((oldServiceOption) => {
+              providerServices[currentCloudProvider.key].includes(oldServiceOption.key)
+                ? desiredSelections.add(oldServiceOption)
+                : null
+            })
+          } else {
+            //if currentCloudprovider doesnt have an option that oldCP has, add all the services from that CP
+            providerServices[currentCloudProvider.key].forEach((service) =>
+              desiredSelections.add(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
+            )
+          }
+        })
+      }
     }
-    return this.addAllDropDownOption(currentSelections, desiredFilterType)
+    return this.addAllDropDownOption(desiredSelections, desiredFilterType)
+  }
+
+  isDropdownOptionInDropdownOptions(
+    comparingDropdownOptions: DropdownOption[],
+    dropdownOption: DropdownOption,
+  ): boolean {
+    let isWithinComparingDropdownOption = false
+    comparingDropdownOptions.forEach((comparingDropdownOption) => {
+      if (comparingDropdownOption.key === dropdownOption.key) {
+        isWithinComparingDropdownOption = true
+      }
+    })
+    return isWithinComparingDropdownOption
+  }
+
+  getCloudProvidersFromAccounts(accountSelections: DropdownOption[]): Set<DropdownOption> {
+    const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
+    accountSelections.forEach((selection) => {
+      if (selection.key !== 'all') {
+        cloudProviderSelections.add(
+          <DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === selection.cloudProvider),
+        )
+      }
+    })
+    return cloudProviderSelections
+  }
+
+  getCloudProvidersFromServices(serviceSelections: DropdownOption[]): Set<DropdownOption> {
+    const keys = serviceSelections.map((selection) => selection.key)
+    const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
+    for (const [key, value] of Object.entries(providerServices)) {
+      if (value.some((service) => keys.includes(service))) {
+        cloudProviderSelections.add(<DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === key))
+      }
+    }
+    return cloudProviderSelections
+  }
+
+  serviceTypesInAccountSelection(accountSelections: DropdownOption[]): DropdownOption[] {
+    const providerTypes: Set<string> = new Set()
+    const serviceOptions: DropdownOption[] = []
+    accountSelections.forEach((accountSelection) => {
+      if (accountSelection.key === ALL_ACCOUNTS_KEY) {
+        return SERVICE_OPTIONS
+      } else {
+        providerTypes.add(<string>accountSelection.cloudProvider)
+      }
+    })
+    providerTypes.forEach((providerType) => {
+      providerServices[providerType].forEach((service) =>
+        serviceOptions.push(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
+      )
+    })
+    return serviceOptions
   }
 
   addAllDropDownOption(currentSelections: Set<DropdownOption>, filterType: FilterType): DropdownOption[] {
@@ -91,27 +169,9 @@ export abstract class FiltersUtil {
     return revisedSelections
   }
 
-  serviceTypesInAccountSelection(selections: DropdownOption[]): DropdownOption[] {
-    const providerTypes: Set<string> = new Set()
-    const serviceOptions: DropdownOption[] = []
-    selections.forEach((selection) => {
-      if (selection.key === ALL_CLOUD_PROVIDERS_KEY) {
-        return SERVICE_OPTIONS
-      } else {
-        providerTypes.add(<string>selection.cloudProvider)
-      }
-    })
-    providerTypes.forEach((providerType) => {
-      providerServices[providerType].forEach((service) =>
-        serviceOptions.push(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
-      )
-    })
-    return serviceOptions
-  }
-
   handleSelections(
     selections: DropdownOption[],
-    oldSelections: DropdownOption[],
+    oldSelections: { services: DropdownOption[]; accounts: DropdownOption[]; cloudProviders: DropdownOption[] },
     options: DropdownOption[],
     filterType: FilterType,
   ): { providerKeys: DropdownOption[]; accountKeys: DropdownOption[]; serviceKeys: DropdownOption[] } {
@@ -121,7 +181,9 @@ export abstract class FiltersUtil {
 
     const ALL_KEY = 'all'
     const selectionKeys: string[] = selections.map((selection) => selection.key)
-    const oldSelectionKeys: string[] = oldSelections.map((oldSelection) => oldSelection.key)
+    const oldSelectionKeys: string[] = this.getSelectionKeysOfFilterType(oldSelections, filterType).map(
+      (oldSelection) => oldSelection.key,
+    )
 
     if (selections.length === options.length - 1 && !oldSelectionKeys.includes(ALL_KEY)) {
       selections = options
@@ -129,10 +191,19 @@ export abstract class FiltersUtil {
     }
 
     if (selectionKeys.includes(ALL_KEY) && !oldSelectionKeys.includes(ALL_KEY)) {
-      serviceOptions = SERVICE_OPTIONS
-      providerOptions = CLOUD_PROVIDER_OPTIONS
-      accountOptions = ACCOUNT_OPTIONS
-    } else if (!selectionKeys.includes(ALL_KEY) && oldSelectionKeys.includes(ALL_KEY)) {
+      switch (filterType) {
+        case FilterType.CLOUD_PROVIDERS:
+          selections = CLOUD_PROVIDER_OPTIONS
+          break
+        case FilterType.ACCOUNTS:
+          selections = ACCOUNT_OPTIONS
+          break
+        case FilterType.SERVICES:
+          selections = SERVICE_OPTIONS
+          break
+      }
+    }
+    if (!selectionKeys.includes(ALL_KEY) && oldSelectionKeys.includes(ALL_KEY)) {
       serviceOptions = []
       providerOptions = []
       accountOptions = []
@@ -141,20 +212,42 @@ export abstract class FiltersUtil {
         selections = selections.filter((k) => k.key !== ALL_KEY)
       }
 
-      serviceOptions =
-        filterType == FilterType.SERVICES
-          ? selections
-          : this.getDesiredKeysFromCurrentFilteredKeys(selections, filterType, FilterType.SERVICES)
       providerOptions =
         filterType == FilterType.CLOUD_PROVIDERS
           ? selections
-          : this.getDesiredKeysFromCurrentFilteredKeys(selections, filterType, FilterType.CLOUD_PROVIDERS)
+          : this.getDesiredKeysFromCurrentFilteredKeys(
+              selections,
+              oldSelections,
+              filterType,
+              FilterType.CLOUD_PROVIDERS,
+            )
       accountOptions =
         filterType == FilterType.ACCOUNTS
           ? selections
-          : this.getDesiredKeysFromCurrentFilteredKeys(selections, filterType, FilterType.ACCOUNTS)
+          : this.getDesiredKeysFromCurrentFilteredKeys(selections, oldSelections, filterType, FilterType.ACCOUNTS)
+      serviceOptions =
+        filterType == FilterType.SERVICES
+          ? selections
+          : this.getDesiredKeysFromCurrentFilteredKeys(selections, oldSelections, filterType, FilterType.SERVICES)
     }
     return { providerKeys: providerOptions, serviceKeys: serviceOptions, accountKeys: accountOptions }
+  }
+
+  getSelectionKeysOfFilterType(
+    selections: { services: DropdownOption[]; accounts: DropdownOption[]; cloudProviders: DropdownOption[] },
+    filterType: FilterType,
+  ): DropdownOption[] {
+    const newSelections: DropdownOption[] = []
+    if (filterType === FilterType.CLOUD_PROVIDERS) {
+      newSelections.push(...selections.cloudProviders)
+    }
+    if (filterType === FilterType.ACCOUNTS) {
+      newSelections.push(...selections.accounts)
+    }
+    if (filterType === FilterType.SERVICES) {
+      newSelections.push(...selections.services)
+    }
+    return newSelections
   }
 
   numSelectedLabel(length: number, totalLength: number, type = 'Services'): string {

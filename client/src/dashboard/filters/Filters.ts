@@ -68,7 +68,7 @@ export class Filters extends FiltersUtil {
   withServices(services: DropdownOption[]): Filters {
     const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
       services,
-      this.services,
+      { services: this.services, accounts: this.accounts, cloudProviders: this.cloudProviders },
       SERVICE_OPTIONS,
       FilterType.SERVICES,
     )
@@ -83,7 +83,7 @@ export class Filters extends FiltersUtil {
   withAccounts(accounts: DropdownOption[]): Filters {
     const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
       accounts,
-      this.accounts,
+      { services: this.services, accounts: this.accounts, cloudProviders: this.cloudProviders },
       ACCOUNT_OPTIONS,
       FilterType.ACCOUNTS,
     )
@@ -98,7 +98,7 @@ export class Filters extends FiltersUtil {
   withCloudProviders(cloudProviders: DropdownOption[]): Filters {
     const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
       cloudProviders,
-      this.cloudProviders,
+      { services: this.services, accounts: this.accounts, cloudProviders: this.cloudProviders },
       CLOUD_PROVIDER_OPTIONS,
       FilterType.CLOUD_PROVIDERS,
     )
