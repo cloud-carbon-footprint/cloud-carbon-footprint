@@ -60,6 +60,20 @@ You can read more about this mode of authentication in [.adr/adr_5_aws_authentic
 - set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
 see https://cloud.google.com/docs/authentication/getting-started for more details.
 
+## Options for cloud emission estimation
+
+There are two ways we are using to gather data usage on different accounts. 
+1. **High Fidelity** - By default, we are querying the data from CloudWatch and Cost Explore APIs. We achieve this by looping through the accounts (the list is in the `server/.env` file) and then making the API calls on each acount. The permissions required for this approach are in the `ccf.yaml` file. This approach is more accurate as we use the actual CPU usage in the emission calculation algorithm but is confined to services that offer this metric.
+1. **Low Fidelity** - Another options, is to query for Cost and Usage Reports, which will pull data from all Linked Accounts in your AWS Organization. This option is selected by setting `AWS_USE_BILLING_DATA` and `REACT_APP_AWS_USE_BILLING_DATA` to true in both the server and client `.env` files respectively, and adding the other relevent ATHENA and BILLING environment variables(`AWS_ATHENA_DB_NAME, AWS_ATHENA_DB_TABLE, AWS_ATHENA_QUERY_RESULT_LOCATION, AWS_BILLING_ACCOUNT_ID and AWS_BILLING_ACCOUNT_NAME`. You can see the permissions required by this approach in `ccf-athena.yaml` file.
+Set the correct values for `AWS: "arn:aws:iam::<REPLACE-WITH-YOUR-CFF-ACCOUNT-ID>:role/CCFService, arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>, arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>/*"
+`
+<br />This approach provides us with a more holistic dataset but it is less accurate in the emission calculation as we use a constant average that we get from published reports ( which in this case is 50 ). 
+<br />Also while using this approach, In `Config.ts` file, make sure the following fields are set to point to the correct role being assumed `targetRoleName: 'ccf-athena', targetRoleSessionName: 'ccf-athena',`
+
+For a more comprehensive read on the various calculations and constants that we use for the emissions algorithms, check out the [Methodology page](METHODOLOGY.md)
+                                                                                                                                                                                                                                                                                                                  
+
+**Note** : When calculating total `wattHours` using AWS Lambda service, we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation(`Lambda.ts` file line 40).
 ## Run
 
 The application requires a number of environment variables to be set in the [server/.env](server/.env) file. See [server/.env.template](server/.env.template) for a template .env file. Rename this file as .env and then set the environment variables.

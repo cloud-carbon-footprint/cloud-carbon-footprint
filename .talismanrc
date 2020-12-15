@@ -4,7 +4,7 @@ fileignoreconfig:
 - filename: README.md
   checksum: 603d112d8b03aeb6d03e1d62c403880201221e1e809ccb162932da8ec95cd530
 - filename: client/.env.template
-  checksum: f21fc3a24626cfa3da0bccf5b81ac5f7454bb36ea1d6e4df11a5519d20e23187
+  checksum: c472122cca9e85015a7e0f2f7b41f61fe51d3e05ae4bb5f27cdb9704fad4e979
 - filename: client/package-lock.json
   checksum: 6254551916fcaace0208b950bd0f06c206ba6d7fafbbee2b51d06dde705f0ee7
 - filename: client/src/Config.ts
