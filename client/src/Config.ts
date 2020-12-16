@@ -148,6 +148,10 @@ const awsServicesSupportedWithBillingData = [
     key: 'ecs',
     name: 'ECS',
   },
+  {
+    key: 'kinesis',
+    name: 'Kinesis',
+  },
 ]
 
 const appConfig: ClientConfig = {

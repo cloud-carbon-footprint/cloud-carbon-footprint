@@ -31,6 +31,7 @@ const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
   AmazonMQ: 'mq',
   AWSGlue: 'glue',
   AmazonECS: 'ecs',
+  AmazonKinesisAnalytics: 'kinesis',
 }
 
 export default class CostAndUsageReportsRow {
