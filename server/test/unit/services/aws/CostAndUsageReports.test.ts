@@ -301,7 +301,7 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Gets Estimates for Kinesis', async () => {
+  it('Gets Estimates for Kinesis & ES', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -329,6 +329,16 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'kinesis',
             cost: 912,
             region: 'us-east-2',
+          },
+          {
+            wattHours: 39.640319999999996,
+            co2e: 0.0075877907042776315,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'es',
+            cost: 73,
+            region: 'us-west-1',
           },
         ],
       },

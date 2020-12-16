@@ -29,6 +29,7 @@ import {
 } from '@services/aws/AWSUsageTypes'
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
+import { Athena } from 'aws-sdk'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -80,6 +81,7 @@ export default class CostAndUsageReports {
       case 'GB-Month':
       case 'GB-month':
       case 'GB-Hours':
+      case 'GB-Mp':
         // Storage
         const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
 
@@ -152,7 +154,7 @@ export default class CostAndUsageReports {
     return suffixes.some((suffix) => string.endsWith(suffix))
   }
 
-  private async getUsage(start: Date, end: Date): Promise<any[]> {
+  private async getUsage(start: Date, end: Date): Promise<Athena.GetQueryResultsOutput[]> {
     const params = {
       QueryString: `SELECT DATE(line_item_usage_start_date) AS day,
                         line_item_usage_account_id,
