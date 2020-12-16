@@ -245,6 +245,19 @@ const queryResultsDataThree = [
       { VarCharValue: '7' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-31' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonDynamoDB' },
+      { VarCharValue: 'APS1-TimedBackupStorage-ByteHrs' },
+      { VarCharValue: 'GB-Month' },
+      { VarCharValue: '' },
+      { VarCharValue: '10000000000' },
+      { VarCharValue: '13' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithNetworkingGlueECS: Athena.GetQueryResultsOutput = {

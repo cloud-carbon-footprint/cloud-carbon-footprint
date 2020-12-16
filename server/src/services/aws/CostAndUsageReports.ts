@@ -20,7 +20,13 @@ import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstan
 import Logger from '@services/Logger'
 import { EstimationResult } from '@application/EstimationResult'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { SSD_USAGE_TYPES, HDD_USAGE_TYPES, NETWORKING_USAGE_TYPES } from '@services/aws/AWSUsageTypes'
+import {
+  SSD_USAGE_TYPES,
+  HDD_USAGE_TYPES,
+  NETWORKING_USAGE_TYPES,
+  BYTE_HOURS_USAGE_TYPES,
+  SSD_SERVICES,
+} from '@services/aws/AWSUsageTypes'
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
 
@@ -71,13 +77,10 @@ export default class CostAndUsageReports {
         }
         return this.computeEstimator.estimate([computeUsage], costAndUsageReportRow.region, 'AWS')[0]
       case 'GB-Mo':
+      case 'GB-Month':
       case 'GB-Hours':
         // Storage
-        // Convert GB-Hours to GB-Month
-        const usageAmountGbMonth =
-          costAndUsageReportRow.pricingUnit === 'GB-Mo'
-            ? costAndUsageReportRow.usageAmount
-            : costAndUsageReportRow.usageAmount / 744
+        const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
 
         const storageUsage: StorageUsage = {
           timestamp: costAndUsageReportRow.timestamp,
@@ -85,7 +88,7 @@ export default class CostAndUsageReports {
         }
 
         let estimate: FootprintEstimate
-        if (this.usageTypeIsSSD(costAndUsageReportRow.usageType))
+        if (this.usageTypeIsSSD(costAndUsageReportRow))
           estimate = this.ssdStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region)[0]
         else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
           estimate = this.hddStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region)[0]
@@ -109,12 +112,35 @@ export default class CostAndUsageReports {
     }
   }
 
-  private usageTypeIsSSD(usageType: string): boolean {
-    return this.endsWithAny(SSD_USAGE_TYPES, usageType)
+  private getUsageAmountGbMonth(costAndUsageReportRow: CostAndUsageReportsRow): number {
+    if (this.usageTypeisByteHours(costAndUsageReportRow.usageType)) {
+      // Convert from Byte-Hours to GB-Month
+      return costAndUsageReportRow.usageAmount / 1073741824 / 24 / 31
+    }
+
+    // Convert from GB-Hours to GB-Month if necessary
+    return costAndUsageReportRow.pricingUnit === 'GB-Hours'
+      ? costAndUsageReportRow.usageAmount / 744
+      : costAndUsageReportRow.usageAmount
+  }
+
+  private usageTypeIsSSD(costAndUsageRow: CostAndUsageReportsRow): boolean {
+    // Here we have two potential SSD use cases:
+    // 1. The usage type ends with a set of assumed SSD Storage types
+    // 2. The usage is from a service we don't know the underlying storage type so overestimate and assume SSD,
+    // but not when the usage type is backup, which we assume this is usage using S3 (which is HDD).
+    return (
+      this.endsWithAny(SSD_USAGE_TYPES, costAndUsageRow.usageType) ||
+      (this.endsWithAny(SSD_SERVICES, costAndUsageRow.productCode) && !costAndUsageRow.usageType.includes('Backup'))
+    )
   }
 
   private usageTypeIsHDD(usageType: string): boolean {
     return this.endsWithAny(HDD_USAGE_TYPES, usageType)
+  }
+
+  private usageTypeisByteHours(usageType: string): boolean {
+    return this.endsWithAny(BYTE_HOURS_USAGE_TYPES, usageType)
   }
 
   private usageTypeIsNetWorking(usageType: string): boolean {
