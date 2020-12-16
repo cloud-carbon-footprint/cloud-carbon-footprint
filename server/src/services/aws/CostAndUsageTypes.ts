@@ -69,3 +69,15 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'EarlyDelete-ZIA',
   'GlacierByteHrs',
 ]
+
+export enum PRICING_UNITS {
+  HOURS = 'Hrs',
+  DPU_HOUR = 'DPU-Hour',
+  GB_HOURS = 'GB-Hours',
+  GB_MONTH_1 = 'GB-Mo',
+  GB_MONTH_2 = 'GB-Month',
+  GB_MONTH_3 = 'GB-Mp',
+  GB_MONTH_4 = 'GB-month',
+  SECONDS_1 = 'seconds',
+  SECONDS_2 = 'Second',
+}
