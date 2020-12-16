@@ -13,6 +13,7 @@ import { EstimationResult } from '@application/EstimationResult'
 import config from '@application/ConfigLoader'
 import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
+  athenaMockGetQueryResultsWithNetworkingGlueECS,
   athenaMockGetQueryResultsWithS3CloudWatchRDS,
 } from '../../../fixtures/athena.fixtures'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
@@ -231,6 +232,51 @@ describe('CostAndUsageReports Service', () => {
             accountName: '921261756131',
             serviceName: 'rds',
             cost: 25,
+            region: 'us-west-1',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Gets Estimates for Amazon Glue and Ignores Nat-Gateway', async () => {
+    // given
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithNetworkingGlueECS)
+
+    // when
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
+    )
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            wattHours: 18.768,
+            co2e: 0.0063234724439232,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'glue',
+            cost: 5,
+            region: 'us-east-1',
+          },
+          {
+            wattHours: 0.01728,
+            co2e: 0.000003307668136128,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'ecs',
+            cost: 7,
             region: 'us-west-1',
           },
         ],
