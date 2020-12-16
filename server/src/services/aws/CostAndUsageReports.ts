@@ -26,7 +26,8 @@ import {
   NETWORKING_USAGE_TYPES,
   BYTE_HOURS_USAGE_TYPES,
   SSD_SERVICES,
-} from '@services/aws/AWSUsageTypes'
+  PRICING_UNITS,
+} from '@services/aws/CostAndUsageTypes'
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
 import { Athena } from 'aws-sdk'
@@ -67,8 +68,8 @@ export default class CostAndUsageReports {
 
   private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
     switch (costAndUsageReportRow.pricingUnit) {
-      case 'Hrs':
-      case 'DPU-Hour':
+      case PRICING_UNITS.HOURS:
+      case PRICING_UNITS.DPU_HOUR:
         // Compute
         const computeUsage: ComputeUsage = {
           timestamp: costAndUsageReportRow.timestamp,
@@ -77,11 +78,11 @@ export default class CostAndUsageReports {
           usesAverageCPUConstant: true,
         }
         return this.computeEstimator.estimate([computeUsage], costAndUsageReportRow.region, 'AWS')[0]
-      case 'GB-Mo':
-      case 'GB-Month':
-      case 'GB-month':
-      case 'GB-Hours':
-      case 'GB-Mp':
+      case PRICING_UNITS.GB_MONTH_1:
+      case PRICING_UNITS.GB_MONTH_2:
+      case PRICING_UNITS.GB_MONTH_3:
+      case PRICING_UNITS.GB_MONTH_4:
+      case PRICING_UNITS.GB_HOURS:
         // Storage
         const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
 
@@ -101,8 +102,8 @@ export default class CostAndUsageReports {
           )
         estimate.usesAverageCPUConstant = false
         return estimate
-      case 'seconds':
-      case 'Second':
+      case PRICING_UNITS.SECONDS_1:
+      case PRICING_UNITS.SECONDS_2:
         // Lambda
         const wattHours =
           (costAndUsageReportRow.usageAmount / 3600) *
@@ -154,7 +155,7 @@ export default class CostAndUsageReports {
     return suffixes.some((suffix) => string.endsWith(suffix))
   }
 
-  private async getUsage(start: Date, end: Date): Promise<Athena.GetQueryResultsOutput[]> {
+  private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
     const params = {
       QueryString: `SELECT DATE(line_item_usage_start_date) AS day,
                         line_item_usage_account_id,
@@ -167,7 +168,7 @@ export default class CostAndUsageReports {
                     SUM(line_item_blended_cost) AS total_cost
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
-                    AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds', 'DPU-Hour', 'GB-Hours', 'GB-Month', 'Second', 'GB-Mp', 'GB-month')
+                    AND pricing_unit IN ('${Object.values(PRICING_UNITS).join(`', '`)}')
                     AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
                     AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
                     GROUP BY DATE(line_item_usage_start_date), 
