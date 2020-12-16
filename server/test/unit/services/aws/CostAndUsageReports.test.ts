@@ -195,44 +195,44 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            wattHours: 1.196352,
-            co2e: 0.00022900089062459521,
-            usesAverageCPUConstant: false,
-            cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 's3',
+            cloudProvider: 'AWS',
+            co2e: 2.8665819764211777e-16,
             cost: 9,
             region: 'us-west-1',
+            serviceName: 's3',
+            usesAverageCPUConstant: false,
+            wattHours: 1.4975666999816895e-12,
           },
           {
-            wattHours: 2.392704,
-            co2e: 0.0014432482673132545,
-            usesAverageCPUConstant: false,
-            cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'cloudwatch',
+            cloudProvider: 'AWS',
+            co2e: 1.806625930273533e-15,
             cost: 10,
             region: 'us-east-2',
+            serviceName: 'cloudwatch',
+            usesAverageCPUConstant: false,
+            wattHours: 2.995133399963379e-12,
           },
           {
-            wattHours: 2.99088,
-            co2e: 0.001007712450078912,
-            usesAverageCPUConstant: false,
-            cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'rds',
+            cloudProvider: 'AWS',
+            co2e: 0.001007712450078912,
             cost: 11,
             region: 'us-east-1',
+            serviceName: 'rds',
+            usesAverageCPUConstant: false,
+            wattHours: 2.99088,
           },
           {
-            wattHours: 10.0488,
-            co2e: 0.00192350090082888,
-            usesAverageCPUConstant: true,
-            cloudProvider: 'AWS',
             accountName: '921261756131',
-            serviceName: 'rds',
+            cloudProvider: 'AWS',
+            co2e: 0.00192350090082888,
             cost: 25,
             region: 'us-west-1',
+            serviceName: 'rds',
+            usesAverageCPUConstant: true,
+            wattHours: 10.0488,
           },
         ],
       },
@@ -240,7 +240,7 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Gets Estimates for Amazon Glue and Ignores Nat-Gateway', async () => {
+  it('Gets Estimates for Amazon Glue, ECS and DynamoDB Storage and Ignores Nat-Gateway', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -277,6 +277,21 @@ describe('CostAndUsageReports Service', () => {
             accountName: '921261756131',
             serviceName: 'ecs',
             cost: 7,
+            region: 'us-west-1',
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-10-31'),
+        serviceEstimates: [
+          {
+            wattHours: 0.007487833499908447,
+            co2e: 0.0000014332909882105887,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'dynamodb',
+            cost: 13,
             region: 'us-west-1',
           },
         ],

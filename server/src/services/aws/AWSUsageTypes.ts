@@ -2,6 +2,18 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+// This are the services we are over estimating to be SSD because we don't know what the underlying storage type is (SSD or HDD).
+export const SSD_SERVICES: string[] = [
+  'AmazonDocDB',
+  'AmazonDynamoDB',
+  'AmazonECR',
+  'AmazonEFS',
+  'AmazonES',
+  'AmazonSimpleDB',
+  'AmazonSageMaker',
+  'AWSIoTAnalytics',
+]
+
 export const SSD_USAGE_TYPES: string[] = [
   'VolumeUsage.gp2', // EBS
   'VolumeUsage.piops', // EBS
@@ -17,13 +29,14 @@ export const HDD_USAGE_TYPES: string[] = [
   'VolumeUsage.st1', // EBS HDD Volume
   'VolumeUsage.sc1', // EBS HDD Volume
   'VolumeUsage', // EBS HDD Volume
-  'SnapshotUsage', // EBS snapshot in S3
+  'EBS:SnapshotUsage', // EBS snapshot in S3
   'TimedStorage-ByteHrs', // Many different services
-  'StorageUsage', // RDS HDD Storage
+  'RDS:StorageUsage', // RDS HDD Storage
   'GlacierByteHrs', // Glacier
   'Aurora:BackupUsage', // Aurora back up in S3
   'RDS:ChargedBackupUsage', // RDS Backup in S3
   'TimedStorage-RRS-ByteHrs', // S3 Reduced Redundancy Storage
+  'ElastiCache:BackupUsage', // ElastiCache backup in S3
   'BackupUsage', // DocumentDB backup in S3
   'Redshift:PaidSnapshots', // Redshift Snapshot in S3
   'TimedStorage-SIA-ByteHrs', // S3 STANDARD_IA storage
@@ -37,10 +50,20 @@ export const HDD_USAGE_TYPES: string[] = [
   'ProcessedStorage-ByteHrs', // IoT Analytics Data Store in S3
   'EarlyDelete-ZIA', // S3 ONEZONE_IA storage deleted before the minimum 30-day commitment ended
   'EarlyDelete-ByteHrs', // S3 Glacier storage before the 90-day minimum commitment ended
-  'TimedStorage-ZIA-SmObjects', // S3 ONEZONE_IA storage (small)
+  'TimedStorage-ZIA-SmObjects', // S3 ONEZONE_`IA storage (small)
   'TimedStorage-INT-IA-ByteHrs', // S3 infrequent access tier of INTELLIGENT_TIERING storage
   'EarlyDelete-SIA-SmObjects', //  S3 STANDARD_IA storage deleted before the minimum 30-day commitment ended (small)
   'QS-Enterprise-SPICE', // Quicksight Enterprise SPICE
+  'TimedBackupStorage-ByteHrs', // DynamoDB Backup storage is S3
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = ['NatGateway-Hours', 'LoadBalancerUsage', 'ElasticIP:IdleAddress']
+
+export const BYTE_HOURS_USAGE_TYPES: string[] = [
+  'ByteHrs',
+  'SmObjects',
+  'EarlyDelete-GDA',
+  'EarlyDelete-SIA',
+  'EarlyDelete-ZIA',
+  'GlacierByteHrs',
+]
