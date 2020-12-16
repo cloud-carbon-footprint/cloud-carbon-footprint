@@ -78,6 +78,7 @@ export default class CostAndUsageReports {
         return this.computeEstimator.estimate([computeUsage], costAndUsageReportRow.region, 'AWS')[0]
       case 'GB-Mo':
       case 'GB-Month':
+      case 'GB-month':
       case 'GB-Hours':
         // Storage
         const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
@@ -164,7 +165,7 @@ export default class CostAndUsageReports {
                     SUM(line_item_blended_cost) AS total_cost
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
-                    AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds', 'DPU-Hour', 'GB-Hours')
+                    AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds', 'DPU-Hour', 'GB-Hours', 'GB-Month', 'Second', 'GB-Mp', 'GB-month')
                     AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
                     AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
                     GROUP BY DATE(line_item_usage_start_date), 

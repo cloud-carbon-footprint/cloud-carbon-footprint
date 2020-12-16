@@ -15,6 +15,7 @@ import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
   athenaMockGetQueryResultsWithNetworkingGlueECS,
   athenaMockGetQueryResultsWithS3CloudWatchRDS,
+  athenaMockGetQueryResultsWithKenesis,
 } from '../../../fixtures/athena.fixtures'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
@@ -299,6 +300,42 @@ describe('CostAndUsageReports Service', () => {
     ]
     expect(result).toEqual(expectedResult)
   })
+
+  it('Gets Estimates for Kinesis', async () => {
+    // given
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithKenesis)
+
+    // when
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
+    )
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            wattHours: 8.34768,
+            co2e: 0.005035213171410049,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AWS',
+            accountName: '921261756131',
+            serviceName: 'kinesis',
+            cost: 912,
+            region: 'us-east-2',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
   it('throws an error when the query status fails', async () => {
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionFailedResponse)

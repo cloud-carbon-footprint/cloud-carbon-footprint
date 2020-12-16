@@ -265,3 +265,38 @@ export const athenaMockGetQueryResultsWithNetworkingGlueECS: Athena.GetQueryResu
     Rows: [queryResultsHeaders, ...queryResultsDataThree],
   },
 }
+
+const queryResultsDataFour = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonKinesisAnalytics' },
+      { VarCharValue: 'APS1-RunningApplicationStorage' },
+      { VarCharValue: 'GB-month' },
+      { VarCharValue: '' },
+      { VarCharValue: '5' },
+      { VarCharValue: '456' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonKinesisAnalytics' },
+      { VarCharValue: 'APS2-DurableApplicationBackups' },
+      { VarCharValue: 'GB-month' },
+      { VarCharValue: '' },
+      { VarCharValue: '5' },
+      { VarCharValue: '456' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithKenesis: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataFour],
+  },
+}
