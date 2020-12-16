@@ -140,6 +140,14 @@ const awsServicesSupportedWithBillingData = [
     key: 'mq',
     name: 'Message Queue',
   },
+  {
+    key: 'glue',
+    name: 'Glue',
+  },
+  {
+    key: 'ecs',
+    name: 'ECS',
+  },
 ]
 
 const appConfig: ClientConfig = {

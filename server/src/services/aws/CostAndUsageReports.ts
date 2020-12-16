@@ -12,6 +12,7 @@ import {
   GetQueryResultsOutput,
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
+  Row,
 } from 'aws-sdk/clients/athena'
 import ComputeUsage from '@domain/ComputeUsage'
 import StorageUsage from '@domain/StorageUsage'
@@ -19,57 +20,9 @@ import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstan
 import Logger from '@services/Logger'
 import { EstimationResult } from '@application/EstimationResult'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { SSD_USAGE_TYPES, HDD_USAGE_TYPES } from '@services/aws/AWSStorageUsageTypes'
-interface QueryResultsRow {
-  Data: QueryResultsColumn[]
-}
-
-interface QueryResultsColumn {
-  VarCharValue: string
-}
-
-interface MutableEstimationResult {
-  timestamp: Date
-  serviceEstimates: MutableServiceEstimate[]
-}
-
-interface MutableServiceEstimate {
-  cloudProvider: string
-  accountName: string
-  serviceName: string
-  wattHours: number
-  co2e: number
-  cost: number
-  region: string
-  usesAverageCPUConstant: boolean
-}
-
-const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
-  AWSLambda: 'lambda',
-  AmazonRDS: 'rds',
-  AmazonCloudWatch: 'cloudwatch',
-  AmazonS3: 's3',
-  AmazonMSK: 'msk',
-  ElasticMapReduce: 'elasticmapreduce',
-  AmazonGlacier: 'glacier',
-  AmazonSageMaker: 'sageemaker',
-  AmazonLightsail: 'lightsail',
-  AWSDirectoryService: 'directoryservice',
-  AWSIoTAnalytics: 'iotanalytics',
-  AWSDatabaseMigrationSvc: 'databasemigrationsvc',
-  AmazonES: 'es',
-  AmazonQuickSight: 'quicksight',
-  AmazonEFS: 'efs',
-  AmazonRedshift: 'redshift',
-  AmazonDynamoDB: 'dynamodb',
-  datapipeline: 'datapipeline',
-  AWSELB: 'elb',
-  AmazonDocDB: 'docdb',
-  AmazonSimpleDB: 'simpledb',
-  AmazonECR: 'ecr',
-  AmazonVPC: 'vpc',
-  AmazonMQ: 'mq',
-}
+import { SSD_USAGE_TYPES, HDD_USAGE_TYPES, NETWORKING_USAGE_TYPES } from '@services/aws/AWSUsageTypes'
+import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
+import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -90,118 +43,69 @@ export default class CostAndUsageReports {
   }
   async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
     const usageRows = await this.getUsage(start, end)
-    const usageRowsHeader: QueryResultsRow = usageRows.shift()
-
-    const dayIndex = getIndexOfObjectByValue(usageRowsHeader, 'day')
-    const accountIdIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_account_id')
-    const regionIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_region')
-    const serviceNameIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_product_code')
-    const usageTypeIndex = getIndexOfObjectByValue(usageRowsHeader, 'line_item_usage_type')
-    const pricingUnitIndex = getIndexOfObjectByValue(usageRowsHeader, 'pricing_unit')
-    const vcpuIndex = getIndexOfObjectByValue(usageRowsHeader, 'product_vcpu')
-    const totalUsageAmountIndex = getIndexOfObjectByValue(usageRowsHeader, 'total_line_item_usage_amount')
-    const totalCostIndex = getIndexOfObjectByValue(usageRowsHeader, 'total_cost')
+    const usageRowsHeader: Row = usageRows.shift()
 
     const results: MutableEstimationResult[] = []
 
-    usageRows.map((row: QueryResultsRow) => {
-      const rowValues = Object.values(row.Data)
-      const region = rowValues[regionIndex].VarCharValue
-      const timestamp = new Date(rowValues[dayIndex].VarCharValue)
-      const serviceName = rowValues[serviceNameIndex].VarCharValue
-      const usageType = rowValues[usageTypeIndex].VarCharValue
-      const accountName = rowValues[accountIdIndex].VarCharValue
-      const usageAmount = Number(rowValues[totalUsageAmountIndex].VarCharValue)
-      const numberOfvCPUHours = Number(rowValues[vcpuIndex].VarCharValue) * usageAmount
-      const pricingUnit = rowValues[pricingUnitIndex].VarCharValue
-      const cost = Number(rowValues[totalCostIndex].VarCharValue)
+    usageRows.map((rowData: Row) => {
+      const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowsHeader, rowData.Data)
 
-      const footprintEstimate = this.getEstimateByPricingUnit(
-        pricingUnit,
-        timestamp,
-        numberOfvCPUHours,
-        usageAmount,
-        region,
-        usageType,
-      )
+      if (this.usageTypeIsNetWorking(costAndUsageReportRow.usageType)) return []
 
-      const serviceEstimate: MutableServiceEstimate = {
-        cloudProvider: 'AWS',
-        wattHours: footprintEstimate.wattHours,
-        co2e: footprintEstimate.co2e,
-        usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
-        serviceName: this.getServiceNameFromUsageType(serviceName, usageType),
-        accountName: accountName,
-        region: region,
-        cost: cost,
-      }
-
-      if (this.dayExistsInEstimates(results, timestamp)) {
-        const estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
-
-        if (this.estimateExistsForRegionAndService(results, timestamp, serviceEstimate)) {
-          const estimateToAcc = estimatesForDay.serviceEstimates.find((estimateForDay) => {
-            return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
-          })
-          estimateToAcc.wattHours += serviceEstimate.wattHours
-          estimateToAcc.co2e += serviceEstimate.co2e
-          estimateToAcc.cost += serviceEstimate.cost
-          if (serviceEstimate.usesAverageCPUConstant) {
-            estimateToAcc.usesAverageCPUConstant =
-              estimateToAcc.usesAverageCPUConstant || serviceEstimate.usesAverageCPUConstant
-          }
-        } else {
-          estimatesForDay.serviceEstimates.push(serviceEstimate)
-        }
-      } else {
-        results.push({
-          timestamp: timestamp,
-          serviceEstimates: [serviceEstimate],
-        })
-      }
+      const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
+      buildEstimateFromCostAndUsageRow(results, costAndUsageReportRow, footprintEstimate)
     })
     return results
   }
 
-  private getEstimateByPricingUnit(
-    pricingUnit: string,
-    timestamp: Date,
-    numberOfvCPUHours: number,
-    usageAmount: number,
-    region: string,
-    usageType: string,
-  ) {
-    switch (pricingUnit) {
+  private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
+    switch (costAndUsageReportRow.pricingUnit) {
       case 'Hrs':
+      case 'DPU-Hour':
         // Compute
         const computeUsage: ComputeUsage = {
-          timestamp: timestamp,
+          timestamp: costAndUsageReportRow.timestamp,
           cpuUtilizationAverage: 50,
-          numberOfvCpus: numberOfvCPUHours,
+          numberOfvCpus: costAndUsageReportRow.vCpuHours,
           usesAverageCPUConstant: true,
         }
-        return this.computeEstimator.estimate([computeUsage], region, 'AWS')[0]
+        return this.computeEstimator.estimate([computeUsage], costAndUsageReportRow.region, 'AWS')[0]
       case 'GB-Mo':
+      case 'GB-Hours':
         // Storage
+        // Convert GB-Hours to GB-Month
+        const usageAmountGbMonth =
+          costAndUsageReportRow.pricingUnit === 'GB-Mo'
+            ? costAndUsageReportRow.usageAmount
+            : costAndUsageReportRow.usageAmount / 744
+
         const storageUsage: StorageUsage = {
-          timestamp: timestamp,
-          sizeGb: usageAmount * moment(timestamp).daysInMonth(),
+          timestamp: costAndUsageReportRow.timestamp,
+          sizeGb: usageAmountGbMonth * moment(costAndUsageReportRow.timestamp).daysInMonth(),
         }
 
         let estimate: FootprintEstimate
-        if (this.usageTypeIsSSD(usageType)) estimate = this.ssdStorageEstimator.estimate([storageUsage], region)[0]
-        else if (this.usageTypeIsHDD(usageType)) estimate = this.hddStorageEstimator.estimate([storageUsage], region)[0]
-        else this.costAndUsageReportsLogger.warn(`Unexpected usage type for storage service: ${usageType}`)
+        if (this.usageTypeIsSSD(costAndUsageReportRow.usageType))
+          estimate = this.ssdStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region)[0]
+        else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
+          estimate = this.hddStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region)[0]
+        else
+          this.costAndUsageReportsLogger.warn(
+            `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
+          )
         estimate.usesAverageCPUConstant = false
         return estimate
       case 'seconds':
+      case 'Second':
         // Lambda
         const wattHours =
-          (usageAmount / 3600) * CLOUD_CONSTANTS.AWS.MAX_WATTS * CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS
-        const co2e = estimateCo2(wattHours, 'AWS', region)
-        return { timestamp, wattHours, co2e, usesAverageCPUConstant: true }
+          (costAndUsageReportRow.usageAmount / 3600) *
+          CLOUD_CONSTANTS.AWS.MAX_WATTS *
+          CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS
+        const co2e = estimateCo2(wattHours, 'AWS', costAndUsageReportRow.region)
+        return { timestamp: costAndUsageReportRow.timestamp, wattHours, co2e, usesAverageCPUConstant: true }
       default:
-        this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${pricingUnit}`)
+        this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${costAndUsageReportRow.pricingUnit}`)
     }
   }
 
@@ -213,34 +117,12 @@ export default class CostAndUsageReports {
     return this.endsWithAny(HDD_USAGE_TYPES, usageType)
   }
 
+  private usageTypeIsNetWorking(usageType: string): boolean {
+    return this.endsWithAny(NETWORKING_USAGE_TYPES, usageType)
+  }
+
   private endsWithAny(suffixes: string[], string: string): boolean {
     return suffixes.some((suffix) => string.endsWith(suffix))
-  }
-
-  private dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date): boolean {
-    return results.some((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
-  }
-
-  private estimateExistsForRegionAndService(
-    results: MutableEstimationResult[],
-    timestamp: Date,
-    serviceEstimate: MutableServiceEstimate,
-  ): boolean {
-    const estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
-    return estimatesForDay.serviceEstimates.some((estimateForDay) => {
-      return this.hasSameRegionAndService(estimateForDay, serviceEstimate)
-    })
-  }
-
-  private hasSameRegionAndService(estimateOne: MutableServiceEstimate, estimateTwo: MutableServiceEstimate): boolean {
-    return estimateOne.region === estimateTwo.region && estimateOne.serviceName === estimateTwo.serviceName
-  }
-
-  private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
-    if (serviceName === 'AmazonEC2') {
-      return usageType.includes('BoxUsage') ? 'ec2' : 'ebs'
-    }
-    return SERVICE_NAME_MAPPING[serviceName] ? SERVICE_NAME_MAPPING[serviceName] : serviceName
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
@@ -256,7 +138,7 @@ export default class CostAndUsageReports {
                     SUM(line_item_blended_cost) AS total_cost
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
-                    AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds')
+                    AND pricing_unit IN ('Hrs', 'GB-Mo', 'seconds', 'DPU-Hour', 'GB-Hours')
                     AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
                     AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
                     GROUP BY DATE(line_item_usage_start_date), 
@@ -311,10 +193,6 @@ export default class CostAndUsageReports {
     const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
   }
-}
-
-function getIndexOfObjectByValue(data: QueryResultsRow, value: string) {
-  return data.Data.map((item: QueryResultsColumn) => item.VarCharValue).indexOf(value)
 }
 
 async function wait(ms: number) {

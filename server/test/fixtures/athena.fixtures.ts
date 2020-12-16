@@ -204,3 +204,51 @@ export const athenaMockGetQueryResultsWithS3CloudWatchRDS: Athena.GetQueryResult
     Rows: [queryResultsHeaders, ...queryResultsDataTwo],
   },
 }
+
+const queryResultsDataThree = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE2-NatGateway-Hours' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AWSGlue' },
+      { VarCharValue: 'APS1-Crawler-DPU-Hour' },
+      { VarCharValue: 'DPU-Hour' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonECS' },
+      { VarCharValue: 'APN1-ECS-EC2-GB-Hours' },
+      { VarCharValue: 'GB-Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '12' },
+      { VarCharValue: '7' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithNetworkingGlueECS: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataThree],
+  },
+}
