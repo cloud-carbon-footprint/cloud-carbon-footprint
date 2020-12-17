@@ -58,7 +58,7 @@ export default class CostAndUsageReports {
     usageRows.map((rowData: Row) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowsHeader, rowData.Data)
 
-      if (this.usageTypeIsNetWorking(costAndUsageReportRow.usageType)) return []
+      if (this.usageTypeIsNetworking(costAndUsageReportRow.usageType)) return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
       buildEstimateFromCostAndUsageRow(results, costAndUsageReportRow, footprintEstimate)
@@ -68,7 +68,8 @@ export default class CostAndUsageReports {
 
   private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
     switch (costAndUsageReportRow.pricingUnit) {
-      case PRICING_UNITS.HOURS:
+      case PRICING_UNITS.HOURS_1:
+      case PRICING_UNITS.HOURS_2:
       case PRICING_UNITS.DPU_HOUR:
         // Compute
         const computeUsage: ComputeUsage = {
@@ -147,7 +148,7 @@ export default class CostAndUsageReports {
     return this.endsWithAny(BYTE_HOURS_USAGE_TYPES, usageType)
   }
 
-  private usageTypeIsNetWorking(usageType: string): boolean {
+  private usageTypeIsNetworking(usageType: string): boolean {
     return this.endsWithAny(NETWORKING_USAGE_TYPES, usageType)
   }
 
