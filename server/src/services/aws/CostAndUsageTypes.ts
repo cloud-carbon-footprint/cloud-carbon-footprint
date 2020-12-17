@@ -13,6 +13,7 @@ export const SSD_SERVICES: string[] = [
   'AmazonSageMaker',
   'AWSIoTAnalytics',
   'AmazonKinesisAnalytics',
+  'AmazonMQ',
 ]
 
 export const SSD_USAGE_TYPES: string[] = [
@@ -59,7 +60,13 @@ export const HDD_USAGE_TYPES: string[] = [
   'DurableApplicationBackups', // Kinesis Backup Store in S3
 ]
 
-export const NETWORKING_USAGE_TYPES: string[] = ['NatGateway-Hours', 'LoadBalancerUsage', 'ElasticIP:IdleAddress']
+export const NETWORKING_USAGE_TYPES: string[] = [
+  'NatGateway-Hours',
+  'LoadBalancerUsage',
+  'IdleAddress',
+  'UnusedStaticIP',
+  'AdditionalAddress',
+]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'ByteHrs',

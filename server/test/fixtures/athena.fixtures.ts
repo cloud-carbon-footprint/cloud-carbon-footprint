@@ -306,6 +306,19 @@ const queryResultsDataFour = [
       { VarCharValue: '73' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-31' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APN1-SpotUsage:c5.18xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '3' },
+      { VarCharValue: '10' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithKenesis: Athena.GetQueryResultsOutput = {
