@@ -78,7 +78,8 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
 ]
 
 export enum PRICING_UNITS {
-  HOURS = 'Hrs',
+  HOURS_1 = 'Hrs',
+  HOURS_2 = 'Hours',
   DPU_HOUR = 'DPU-Hour',
   GB_HOURS = 'GB-Hours',
   GB_MONTH_1 = 'GB-Mo',

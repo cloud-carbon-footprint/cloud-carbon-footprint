@@ -3,6 +3,7 @@
  */
 
 import { Athena } from 'aws-sdk'
+import { EC2_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
 
 const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
   AWSLambda: 'lambda',
@@ -33,6 +34,8 @@ const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
   AmazonECS: 'ecs',
   AmazonKinesisAnalytics: 'kinesis',
 }
+
+const GLUE_VCPUS_PER_USAGE = 4
 
 export default class CostAndUsageReportsRow {
   readonly region: string
@@ -66,7 +69,14 @@ export default class CostAndUsageReportsRow {
   }
 
   private getVCpuHours(usageAmount: number, serviceName: string, vCpuFromReport: number) {
-    return serviceName === SERVICE_NAME_MAPPING.AWSGlue ? 4 * usageAmount : vCpuFromReport * usageAmount
+    // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
+    if (serviceName === SERVICE_NAME_MAPPING.AWSGlue) return GLUE_VCPUS_PER_USAGE * usageAmount
+    if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * usageAmount
+    return vCpuFromReport * usageAmount
+  }
+
+  private extractVCpuFromInstanceType() {
+    return EC2_INSTANCE_TYPES[this.usageType.split(':').pop()]
   }
 
   private getIndexOfValueInRowData(data: Athena.Row, value: string): number {
@@ -75,7 +85,8 @@ export default class CostAndUsageReportsRow {
 
   private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
     if (serviceName === 'AmazonEC2') {
-      return usageType.includes('BoxUsage') ? 'ec2' : 'ebs'
+      const computeUsageTypes = ['BoxUsage', 'SpotUsage']
+      return computeUsageTypes.some((computeUsageType) => usageType.includes(computeUsageType)) ? 'ec2' : 'ebs'
     }
     return SERVICE_NAME_MAPPING[serviceName] ? SERVICE_NAME_MAPPING[serviceName] : serviceName
   }
