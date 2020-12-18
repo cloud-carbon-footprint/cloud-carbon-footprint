@@ -367,6 +367,19 @@ const queryResultsDataFive = [
       { VarCharValue: '2' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonMSK' },
+      { VarCharValue: 'APS1-Kafka.m5.large' },
+      { VarCharValue: 'hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '7' },
+      { VarCharValue: '4' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithECS: Athena.GetQueryResultsOutput = {

@@ -106,6 +106,18 @@ export const CACHE_NODE_TYPES: { [nodeType: string]: number } = {
   'cache.r5.24xlarge': 96,
 }
 
+export const MSK_INSTANCE_TYPES: { [instanceType: string]: number } = {
+  'Kafka.t3.small': 2,
+  'Kafka.m5.large': 2,
+  'Kafka.m5.xlarge': 4,
+  'Kafka.m5.2xlarge': 8,
+  'Kafka.m5.4xlarge': 16,
+  'Kafka.m5.8xlarge': 32,
+  'Kafka.m5.12xlarge': 48,
+  'Kafka.m5.16xlarge': 64,
+  'Kafka.m5.24xlarge': 96,
+}
+
 export const EC2_INSTANCE_TYPES: { [instanceType: string]: number } = {
   'mac1.metal': 12,
   't4g.nano': 2,

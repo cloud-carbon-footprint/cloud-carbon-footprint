@@ -3,7 +3,7 @@
  */
 
 import { Athena } from 'aws-sdk'
-import { EC2_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
+import { EC2_INSTANCE_TYPES, MSK_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
 import { PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
 
 const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
@@ -83,6 +83,7 @@ export default class CostAndUsageReportsRow {
   }
 
   private extractVCpuFromInstanceType() {
+    if (this.usageType.includes('Kafka')) return MSK_INSTANCE_TYPES[`Kafka${this.usageType.split('Kafka').pop()}`]
     return EC2_INSTANCE_TYPES[this.usageType.split(':').pop()]
   }
 

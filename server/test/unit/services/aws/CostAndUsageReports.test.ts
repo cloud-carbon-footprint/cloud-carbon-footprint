@@ -401,6 +401,16 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
             wattHours: 11.73,
           },
+          {
+            accountName: '921261756131',
+            cloudProvider: 'AWS',
+            co2e: 0.0062868664504044,
+            cost: 4,
+            region: 'us-west-1',
+            serviceName: 'msk',
+            usesAverageCPUConstant: true,
+            wattHours: 32.844,
+          },
         ],
       },
     ]
