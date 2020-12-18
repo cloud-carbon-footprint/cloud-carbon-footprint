@@ -26,6 +26,8 @@ export const SSD_USAGE_TYPES: string[] = [
   'ES:Magnetic-Storage', // ElasticSearch Magnetic Storage
   'TimedPITRStorage-ByteHrs', // DynamoDB Point-In-Time-Recovery
   'ECS-EC2-GB-Hours', // ECS EC2 Storage
+  'Lambda-GB-Second', // Lambda GB-Seconds Storage
+  'Lambda-Edge-GB-Second', // Lambda Edge GB-Seconds Storage
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -67,6 +69,9 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'IdleAddress',
   'UnusedStaticIP',
   'AdditionalAddress',
+  'ResolverNetworkInterface',
+  'VpcEndpoint-Hours',
+  'VPN-Usage-Hours',
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
@@ -78,13 +83,37 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'GlacierByteHrs',
 ]
 
-export const UNKNOWN_USAGE_TYPES: string[] = ['AmazonEKS-Hours:perCluster']
+export const EC2_USAGE_TYPES: string[] = [
+  'BoxUsage',
+  'SpotUsage',
+  'EBSOptimized',
+  'UnusedBox',
+  'HostUsage',
+  'vCPU-Hours',
+  'CPUCredits',
+]
+
+export const UNKNOWN_USAGE_TYPES: string[] = [
+  'AmazonEKS-Hours:perCluster',
+  'SoftwareUsage',
+  'BundleUsage',
+  'Small-Directory-Usage',
+  'Std-MicrosoftAD-DC-Usage',
+  'InactivePipelines',
+  'Lambda-Provisioned',
+  'ets-hd-success',
+  'ets-sd-success',
+  'BuildDuration',
+  'Build-Min',
+]
 
 export enum PRICING_UNITS {
   HOURS_1 = 'Hrs',
   HOURS_2 = 'Hours',
   HOURS_3 = 'hours',
+  VCPU_HOURS = 'vCPU-Hours',
   DPU_HOUR = 'DPU-Hour',
+  LAMBDA_GB_SECONDS = 'Lambda-GB-Second',
   GB_HOURS = 'GB-Hours',
   GB_MONTH_1 = 'GB-Mo',
   GB_MONTH_2 = 'GB-Month',

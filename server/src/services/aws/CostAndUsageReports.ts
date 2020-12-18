@@ -29,7 +29,7 @@ import {
   PRICING_UNITS,
   UNKNOWN_USAGE_TYPES,
 } from '@services/aws/CostAndUsageTypes'
-import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
+import CostAndUsageReportsRow, { SERVICE_NAME_MAPPING } from '@services/aws/CostAndUsageReportsRow'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
 import { Athena } from 'aws-sdk'
 
@@ -61,7 +61,7 @@ export default class CostAndUsageReports {
 
       if (
         this.usageTypeIsNetworking(costAndUsageReportRow.usageType) ||
-        this.usageTypeIsUnknown(costAndUsageReportRow.usageType)
+        this.usageTypeIsUnknown(costAndUsageReportRow.usageType, costAndUsageReportRow.serviceName)
       )
         return []
 
@@ -71,15 +71,12 @@ export default class CostAndUsageReports {
     return results
   }
 
-  private usageTypeIsUnknown(usageType: string): boolean {
-    return this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType)
-  }
-
   private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
     switch (costAndUsageReportRow.pricingUnit) {
       case PRICING_UNITS.HOURS_1:
       case PRICING_UNITS.HOURS_2:
       case PRICING_UNITS.HOURS_3:
+      case PRICING_UNITS.VCPU_HOURS:
       case PRICING_UNITS.DPU_HOUR:
         // Compute
         const computeUsage: ComputeUsage = {
@@ -94,6 +91,7 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.GB_MONTH_3:
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
+      case PRICING_UNITS.LAMBDA_GB_SECONDS:
         // Storage
         const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
 
@@ -132,11 +130,16 @@ export default class CostAndUsageReports {
       // Convert from Byte-Hours to GB-Month
       return costAndUsageReportRow.usageAmount / 1073741824 / 24 / 31
     }
+    const hoursInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
+    // Convert from GB-Hours to GB-Month
+    if (costAndUsageReportRow.pricingUnit === PRICING_UNITS.GB_HOURS)
+      return costAndUsageReportRow.usageAmount / (hoursInMonth * 24)
 
-    // Convert from GB-Hours to GB-Month if necessary
-    return costAndUsageReportRow.pricingUnit === 'GB-Hours'
-      ? costAndUsageReportRow.usageAmount / 744
-      : costAndUsageReportRow.usageAmount
+    // Convert from GB-Seconds to GB-Month
+    if (costAndUsageReportRow.pricingUnit === PRICING_UNITS.LAMBDA_GB_SECONDS)
+      return costAndUsageReportRow.usageAmount / (hoursInMonth * 24) / 86400
+
+    return costAndUsageReportRow.usageAmount
   }
 
   private usageTypeIsSSD(costAndUsageRow: CostAndUsageReportsRow): boolean {
@@ -160,6 +163,14 @@ export default class CostAndUsageReports {
 
   private usageTypeIsNetworking(usageType: string): boolean {
     return this.endsWithAny(NETWORKING_USAGE_TYPES, usageType)
+  }
+
+  private usageTypeIsUnknown(usageType: string, serviceName: string): boolean {
+    return (
+      this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
+      UNKNOWN_USAGE_TYPES.some((unknownUsageType) => usageType.includes(unknownUsageType)) ||
+      serviceName === SERVICE_NAME_MAPPING.AmazonSimpleDB
+    )
   }
 
   private endsWithAny(suffixes: string[], string: string): boolean {

@@ -4,9 +4,9 @@
 
 import { Athena } from 'aws-sdk'
 import { EC2_INSTANCE_TYPES, MSK_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
-import { PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
+import { EC2_USAGE_TYPES, PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
 
-const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
+export const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
   AWSLambda: 'lambda',
   AmazonRDS: 'rds',
   AmazonCloudWatch: 'cloudwatch',
@@ -34,6 +34,7 @@ const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
   AWSGlue: 'glue',
   AmazonECS: 'ecs',
   AmazonKinesisAnalytics: 'kinesis',
+  AmazonCloudFront: 'cloudfront',
 }
 
 const GLUE_VCPUS_PER_USAGE = 4
@@ -77,7 +78,7 @@ export default class CostAndUsageReportsRow {
   private getVCpuHours(usageAmount: number, serviceName: string, vCpuFromReport: number) {
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
     if (serviceName === SERVICE_NAME_MAPPING.AWSGlue) return GLUE_VCPUS_PER_USAGE * usageAmount
-    if (this.usageType.includes('Fargate-vCPU-Hours')) return usageAmount
+    if (this.includesAny(['Fargate-vCPU-Hours', 'vCPU-Hours', 'CPUCredits'], this.usageType)) return usageAmount
     if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * usageAmount
     return vCpuFromReport * usageAmount
   }
@@ -93,9 +94,12 @@ export default class CostAndUsageReportsRow {
 
   private getServiceNameFromUsageType(serviceName: string, usageType: string): string {
     if (serviceName === 'AmazonEC2') {
-      const computeUsageTypes = ['BoxUsage', 'SpotUsage']
-      return computeUsageTypes.some((computeUsageType) => usageType.includes(computeUsageType)) ? 'ec2' : 'ebs'
+      return this.includesAny(EC2_USAGE_TYPES, usageType) ? 'ec2' : 'ebs'
     }
     return SERVICE_NAME_MAPPING[serviceName] ? SERVICE_NAME_MAPPING[serviceName] : serviceName
+  }
+
+  private includesAny(substrings: string[], usageType: string) {
+    return substrings.some((substring) => usageType.includes(substring))
   }
 }
