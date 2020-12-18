@@ -9,3 +9,4 @@ echo OKTA_ORG_URL=$OKTA_ORG_URL >> .env
 echo APP_SECRET=$APP_SECRET >> .env
 echo OKTA_CLIENT_ID=$OKTA_CLIENT_ID >> .env
 echo OKTA_CLIENT_SECRET=$OKTA_CLIENT_SECRET >> .env
+echo AWS_USE_BILLING_DATA="true" >> .env
