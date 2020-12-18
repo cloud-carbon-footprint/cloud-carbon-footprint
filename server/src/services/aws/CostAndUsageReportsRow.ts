@@ -4,6 +4,7 @@
 
 import { Athena } from 'aws-sdk'
 import { EC2_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
+import { PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
 
 const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
   AWSLambda: 'lambda',
@@ -58,7 +59,7 @@ export default class CostAndUsageReportsRow {
     this.usageAmount = Number(
       rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'total_line_item_usage_amount')].VarCharValue,
     )
-    this.pricingUnit = rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'pricing_unit')].VarCharValue
+    this.pricingUnit = this.getPricingUnit(rowData, usageRowsHeader)
     this.serviceName = this.getServiceNameFromUsageType(this.productCode, this.usageType)
     this.vCpuHours = this.getVCpuHours(
       this.usageAmount,
@@ -68,9 +69,15 @@ export default class CostAndUsageReportsRow {
     this.cost = Number(rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'total_cost')].VarCharValue)
   }
 
+  private getPricingUnit(rowData: Athena.datumList, usageRowsHeader: Athena.Row) {
+    if (this.usageType.includes('Fargate-GB-Hours')) return PRICING_UNITS.GB_HOURS
+    return rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'pricing_unit')].VarCharValue
+  }
+
   private getVCpuHours(usageAmount: number, serviceName: string, vCpuFromReport: number) {
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
     if (serviceName === SERVICE_NAME_MAPPING.AWSGlue) return GLUE_VCPUS_PER_USAGE * usageAmount
+    if (this.usageType.includes('Fargate-vCPU-Hours')) return usageAmount
     if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * usageAmount
     return vCpuFromReport * usageAmount
   }

@@ -14,6 +14,7 @@ export const SSD_SERVICES: string[] = [
   'AWSIoTAnalytics',
   'AmazonKinesisAnalytics',
   'AmazonMQ',
+  'AmazonECS',
 ]
 
 export const SSD_USAGE_TYPES: string[] = [
@@ -77,9 +78,12 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'GlacierByteHrs',
 ]
 
+export const UNKNOWN_USAGE_TYPES: string[] = ['AmazonEKS-Hours:perCluster']
+
 export enum PRICING_UNITS {
   HOURS_1 = 'Hrs',
   HOURS_2 = 'Hours',
+  HOURS_3 = 'hours',
   DPU_HOUR = 'DPU-Hour',
   GB_HOURS = 'GB-Hours',
   GB_MONTH_1 = 'GB-Mo',
