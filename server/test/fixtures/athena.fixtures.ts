@@ -321,8 +321,56 @@ const queryResultsDataFour = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithKenesis: Athena.GetQueryResultsOutput = {
+export const athenaMockGetQueryResultsWithKenesisESAndEc2Spot: Athena.GetQueryResultsOutput = {
   ResultSet: {
     Rows: [queryResultsHeaders, ...queryResultsDataFour],
+  },
+}
+
+const queryResultsDataFive = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonECS' },
+      { VarCharValue: 'APN1-Fargate-GB-Hours' },
+      { VarCharValue: 'hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '11' },
+      { VarCharValue: '2' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonECS' },
+      { VarCharValue: 'APN1-Fargate-vCPU-Hours:perCPU' },
+      { VarCharValue: 'hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '5' },
+      { VarCharValue: '2' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '921261756131' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEKS' },
+      { VarCharValue: 'APE1-AmazonEKS-Hours:perCluster' },
+      { VarCharValue: 'hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '5' },
+      { VarCharValue: '2' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithECS: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataFive],
   },
 }

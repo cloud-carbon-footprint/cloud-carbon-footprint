@@ -27,6 +27,7 @@ import {
   BYTE_HOURS_USAGE_TYPES,
   SSD_SERVICES,
   PRICING_UNITS,
+  UNKNOWN_USAGE_TYPES,
 } from '@services/aws/CostAndUsageTypes'
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
@@ -58,7 +59,11 @@ export default class CostAndUsageReports {
     usageRows.map((rowData: Row) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowsHeader, rowData.Data)
 
-      if (this.usageTypeIsNetworking(costAndUsageReportRow.usageType)) return []
+      if (
+        this.usageTypeIsNetworking(costAndUsageReportRow.usageType) ||
+        this.usageTypeIsUnknown(costAndUsageReportRow.usageType)
+      )
+        return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
       buildEstimateFromCostAndUsageRow(results, costAndUsageReportRow, footprintEstimate)
@@ -66,10 +71,15 @@ export default class CostAndUsageReports {
     return results
   }
 
+  private usageTypeIsUnknown(usageType: string): boolean {
+    return this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType)
+  }
+
   private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
     switch (costAndUsageReportRow.pricingUnit) {
       case PRICING_UNITS.HOURS_1:
       case PRICING_UNITS.HOURS_2:
+      case PRICING_UNITS.HOURS_3:
       case PRICING_UNITS.DPU_HOUR:
         // Compute
         const computeUsage: ComputeUsage = {
