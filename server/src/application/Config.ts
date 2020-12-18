@@ -67,10 +67,8 @@ const appConfig: CCFConfig = {
     authentication: {
       mode: 'GCP',
       options: {
-        targetRoleName: 'ccf',
-        targetRoleSessionName: 'ccf',
-        // targetRoleName: 'ccf-athena',
-        // targetRoleSessionName: 'ccf-athena',
+        targetRoleName: process.env.AWS_TARGET_ACCOUNT_ROLE_NAME,
+        targetRoleSessionName: process.env.AWS_TARGET_ACCOUNT_ROLE_NAME,
         proxyAccountId: process.env.AWS_PROXY_ACCOUNT_ID || '',
         proxyRoleName: process.env.AWS_PROXY_ROLE_NAME || '',
       },
