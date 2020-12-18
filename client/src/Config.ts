@@ -152,6 +152,10 @@ const awsServicesSupportedWithBillingData = [
     key: 'kinesis',
     name: 'Kinesis',
   },
+  {
+    key: 'cloudfront',
+    name: 'CloudFront',
+  },
 ]
 
 const appConfig: ClientConfig = {

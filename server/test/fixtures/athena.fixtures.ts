@@ -22,7 +22,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-02' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -35,7 +35,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-02' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -48,7 +48,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-02' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -61,7 +61,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-03' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -74,7 +74,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-29' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'EBS:VolumeUsage.gp2' },
@@ -87,7 +87,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW1-EBS:SnapshotUsage' },
@@ -100,7 +100,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AWSLambda' },
       { VarCharValue: 'Lambda-GB-Second' },
@@ -113,7 +113,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AWSLambda' },
       { VarCharValue: 'Lambda-GB-Second' },
@@ -135,7 +135,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'TimedStorage-ByteHrs' },
@@ -148,7 +148,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonCloudWatch' },
       { VarCharValue: 'USE1-TimedStorage-ByteHrs' },
@@ -161,7 +161,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'RDS:StorageUsage' },
@@ -174,7 +174,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'RDS:GP2-Storage' },
@@ -187,7 +187,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'InstanceUsage:db.t2.micro' },
@@ -209,7 +209,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-NatGateway-Hours' },
@@ -222,7 +222,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AWSGlue' },
       { VarCharValue: 'APS1-Crawler-DPU-Hour' },
@@ -235,7 +235,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonECS' },
       { VarCharValue: 'APN1-ECS-EC2-GB-Hours' },
@@ -248,7 +248,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-31' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonDynamoDB' },
       { VarCharValue: 'APS1-TimedBackupStorage-ByteHrs' },
@@ -270,7 +270,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonKinesisAnalytics' },
       { VarCharValue: 'APS1-RunningApplicationStorage' },
@@ -283,7 +283,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonKinesisAnalytics' },
       { VarCharValue: 'APS2-DurableApplicationBackups' },
@@ -296,7 +296,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonES' },
       { VarCharValue: 'USE2-ES:GP2-Storage' },
@@ -309,7 +309,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-31' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APN1-SpotUsage:c5.18xlarge' },
@@ -331,7 +331,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonECS' },
       { VarCharValue: 'APN1-Fargate-GB-Hours' },
@@ -344,7 +344,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonECS' },
       { VarCharValue: 'APN1-Fargate-vCPU-Hours:perCPU' },
@@ -357,7 +357,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEKS' },
       { VarCharValue: 'APE1-AmazonEKS-Hours:perCluster' },
@@ -370,7 +370,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '921261756131' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonMSK' },
       { VarCharValue: 'APS1-Kafka.m5.large' },
@@ -380,10 +380,136 @@ const queryResultsDataFive = [
       { VarCharValue: '4' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonRoute53' },
+      { VarCharValue: 'APS1-ResolverNetworkInterface' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '7' },
+      { VarCharValue: '4' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: '8icvdraalzbfrdevgamoddblf' },
+      { VarCharValue: 'APS3-SoftwareUsage:t2.small' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '7' },
+      { VarCharValue: '4' },
+    ],
+  },
 ]
 
-export const athenaMockGetQueryResultsWithECS: Athena.GetQueryResultsOutput = {
+export const athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices: Athena.GetQueryResultsOutput = {
   ResultSet: {
     Rows: [queryResultsHeaders, ...queryResultsDataFive],
+  },
+}
+
+const queryResultsDataSix = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonDocDB' },
+      { VarCharValue: 'APS1-InstanceUsage:db.r5.large' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '2' },
+      { VarCharValue: '30' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APE1-EBSOptimized:c5.2xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '4' },
+      { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APN1-SpotUsage:c5.12xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '12' },
+      { VarCharValue: '25' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonSimpleDB' },
+      { VarCharValue: 'APN1-BoxUsage' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '20' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'ElasticMapReduce' },
+      { VarCharValue: 'APN1-BoxUsage:m5.xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '6' },
+      { VarCharValue: '20' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonCloudFront' },
+      { VarCharValue: 'APN1-Lambda-Edge-GB-Second' },
+      { VarCharValue: 'Lambda-GB-Second' },
+      { VarCharValue: '' },
+      { VarCharValue: '1000000' },
+      { VarCharValue: '20' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APE1-CPUCredits:t3' },
+      { VarCharValue: 'vCPU-Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '7' },
+      { VarCharValue: '20' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataSix],
   },
 }

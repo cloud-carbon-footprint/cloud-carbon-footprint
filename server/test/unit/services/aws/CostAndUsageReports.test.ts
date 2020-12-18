@@ -16,7 +16,8 @@ import {
   athenaMockGetQueryResultsWithNetworkingGlueECS,
   athenaMockGetQueryResultsWithS3CloudWatchRDS,
   athenaMockGetQueryResultsWithKenesisESAndEc2Spot,
-  athenaMockGetQueryResultsWithECS,
+  athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices,
+  athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage,
 } from '../../../fixtures/athena.fixtures'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
@@ -100,7 +101,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0031617362219616,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ec2',
             cost: 3,
             region: 'us-east-1',
@@ -110,7 +111,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0028301540308512,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ec2',
             cost: 3,
             region: 'us-east-2',
@@ -125,7 +126,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0028301540308512,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ec2',
             cost: 4,
             region: 'us-east-2',
@@ -140,7 +141,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0010829148717265919,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ebs',
             cost: 5,
             region: 'us-east-1',
@@ -155,7 +156,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.000572502226561488,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ebs',
             cost: 6,
             region: 'us-west-1',
@@ -165,7 +166,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.00000423667369288,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'lambda',
             cost: 15,
             region: 'us-west-1',
@@ -197,7 +198,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 2.8665819764211777e-16,
             cost: 9,
@@ -207,7 +208,7 @@ describe('CostAndUsageReports Service', () => {
             wattHours: 1.4975666999816895e-12,
           },
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 1.806625930273533e-15,
             cost: 10,
@@ -217,7 +218,7 @@ describe('CostAndUsageReports Service', () => {
             wattHours: 2.995133399963379e-12,
           },
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 0.001007712450078912,
             cost: 11,
@@ -227,7 +228,7 @@ describe('CostAndUsageReports Service', () => {
             wattHours: 2.99088,
           },
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 0.00192350090082888,
             cost: 25,
@@ -266,7 +267,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0063234724439232,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'glue',
             cost: 5,
             region: 'us-east-1',
@@ -276,7 +277,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.000003307668136128,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ecs',
             cost: 7,
             region: 'us-west-1',
@@ -291,7 +292,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0000014332909882105887,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'dynamodb',
             cost: 13,
             region: 'us-west-1',
@@ -326,7 +327,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.005035213171410049,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'kinesis',
             cost: 912,
             region: 'us-east-2',
@@ -336,7 +337,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0075877907042776315,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'es',
             cost: 73,
             region: 'us-west-1',
@@ -351,7 +352,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.1707337559859264,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '921261756131',
+            accountName: '123456789',
             serviceName: 'ec2',
             cost: 10,
             region: 'us-east-1',
@@ -362,11 +363,11 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Gets Estimates for ECS Compute + Storage', async () => {
+  it('Gets Estimates for ECS Compute + Storage, EKS Compute, Kafka and Unknown Services', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsWithECS)
+    mockGetQueryResults(athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices)
 
     // when
     const athenaService = new CostAndUsageReports(
@@ -382,7 +383,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 0.000009554484196224,
             cost: 2,
@@ -392,7 +393,7 @@ describe('CostAndUsageReports Service', () => {
             wattHours: 0.01584,
           },
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 0.002245309446573,
             cost: 2,
@@ -402,7 +403,7 @@ describe('CostAndUsageReports Service', () => {
             wattHours: 11.73,
           },
           {
-            accountName: '921261756131',
+            accountName: '123456789',
             cloudProvider: 'AWS',
             co2e: 0.0062868664504044,
             cost: 4,
@@ -410,6 +411,81 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'msk',
             usesAverageCPUConstant: true,
             wattHours: 32.844,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Gets Estimates for DocumentDB Compute, ElasticMapReduce, Cloudfront Lambda Storage and EC2 Credits', async () => {
+    // given
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage)
+
+    // when
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
+    )
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.026943713358876003,
+            cost: 10,
+            region: 'us-west-1',
+            serviceName: 'docdb',
+            usesAverageCPUConstant: true,
+            wattHours: 140.76000000000002,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.2730296287032768,
+            cost: 30,
+            region: 'us-west-1',
+            serviceName: 'ec2',
+            usesAverageCPUConstant: true,
+            wattHours: 1426.368,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0107774853435504,
+            cost: 20,
+            region: 'us-west-1',
+            serviceName: 'elasticmapreduce',
+            usesAverageCPUConstant: true,
+            wattHours: 56.304,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000003190266335,
+            cost: 20,
+            region: 'us-west-1',
+            serviceName: 'cloudfront',
+            usesAverageCPUConstant: false,
+            wattHours: 0.016666666666666666,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0055330383884328,
+            cost: 20,
+            region: 'us-east-1',
+            serviceName: 'ec2',
+            usesAverageCPUConstant: true,
+            wattHours: 16.422,
           },
         ],
       },
