@@ -28,6 +28,8 @@ export const SSD_USAGE_TYPES: string[] = [
   'ECS-EC2-GB-Hours', // ECS EC2 Storage
   'Lambda-GB-Second', // Lambda GB-Seconds Storage
   'Lambda-Edge-GB-Second', // Lambda Edge GB-Seconds Storage
+  'RDS:Multi-AZ-StorageUsage', // RDS Multi Availability Zone Storage
+  'Fargate-GB-Hours', //Fargate Storage
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -37,6 +39,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'EBS:SnapshotUsage', // EBS snapshot in S3
   'TimedStorage-ByteHrs', // Many different services
   'RDS:StorageUsage', // RDS HDD Storage
+  'Aurora:StorageUsage', // RDS Aurora Storage
   'GlacierByteHrs', // Glacier
   'Aurora:BackupUsage', // Aurora back up in S3
   'RDS:ChargedBackupUsage', // RDS Backup in S3
@@ -105,6 +108,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'ets-sd-success',
   'BuildDuration',
   'Build-Min',
+  'AW-HW-User-Usage',
 ]
 
 export enum PRICING_UNITS {

@@ -20,7 +20,7 @@ const apiLogger = new Logger('api')
  * end - Required, UTC start date in format YYYY-MM-DD
  */
 const FootprintApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
-  // Set the request time out to 5 minutes to allow the request enough time to complete.
+  // Set the request time out to 10 minutes to allow the request enough time to complete.
   req.connection.setTimeout(1000 * 60 * 10)
   const rawRequest: RawRequest = {
     startDate: req.query.start?.toString(),
