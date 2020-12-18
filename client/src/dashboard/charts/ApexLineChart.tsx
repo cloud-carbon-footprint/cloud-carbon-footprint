@@ -70,9 +70,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     },
     colors: [blue, yellow, green],
     height: '500px',
-    markers: {
-      size: 5,
-    },
     series: [
       {
         name: 'CO2e',
@@ -88,7 +85,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       },
     ],
     stroke: {
-      width: 2,
+      width: 1,
     },
     theme: {
       mode: theme.palette.type,
