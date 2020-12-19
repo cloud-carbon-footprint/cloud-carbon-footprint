@@ -31,9 +31,6 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         },
       },
       "height": "500px",
-      "markers": Object {
-        "size": 5,
-      },
       "series": Array [
         Object {
           "data": Array [
@@ -67,7 +64,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         },
       ],
       "stroke": Object {
-        "width": 2,
+        "width": 1,
       },
       "theme": Object {
         "mode": "light",
