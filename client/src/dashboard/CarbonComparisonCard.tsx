@@ -63,8 +63,8 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       padding: spacing(2),
     },
     icon: {
-      height: 60,
-      width: 60,
+      height: 120,
+      width: 120,
       color: palette.primary.light,
     },
     source: {
