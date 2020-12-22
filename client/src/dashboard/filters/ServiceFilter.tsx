@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { SERVICE_OPTIONS } from '../services'
+import { SERVICE_OPTIONS } from './DropdownConstants'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
 

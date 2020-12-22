@@ -3,8 +3,7 @@
  */
 import { FiltersUtil, FilterType } from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
-import { ALL_SERVICES_VALUE } from '../services'
-import { ALL_CLOUD_PROVIDERS_VALUE } from '../cloudProviders'
+import { ALL_CLOUD_PROVIDERS_VALUE, ALL_SERVICES_VALUE } from './DropdownConstants'
 class FiltersUtilTest extends FiltersUtil {}
 
 jest.mock('./AccountFilter', () => ({

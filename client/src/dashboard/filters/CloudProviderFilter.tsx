@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
+import { CLOUD_PROVIDER_OPTIONS } from './DropdownConstants'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
 

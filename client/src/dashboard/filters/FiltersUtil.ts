@@ -5,11 +5,16 @@
 import { pluck } from 'ramda'
 
 import config from '../../ConfigLoader'
-import { ALL_SERVICES_DROPDOWN_OPTION, SERVICE_OPTIONS } from '../services'
-import { ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION, CLOUD_PROVIDER_OPTIONS } from '../cloudProviders'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS } from './AccountFilter'
-import { ALL_ACCOUNTS_DROPDOWN_OPTION, ALL_ACCOUNTS_KEY } from './DropdownConstants'
+import {
+  ALL_ACCOUNTS_DROPDOWN_OPTION,
+  ALL_ACCOUNTS_KEY,
+  ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
+  ALL_SERVICES_DROPDOWN_OPTION,
+  CLOUD_PROVIDER_OPTIONS,
+  SERVICE_OPTIONS,
+} from './DropdownConstants'
 
 const providerServices: { [key: string]: string[] } = {
   aws: pluck('key', config().AWS.CURRENT_SERVICES),
