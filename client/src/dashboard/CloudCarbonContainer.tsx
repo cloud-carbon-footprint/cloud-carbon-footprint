@@ -29,10 +29,17 @@ const useStyles = makeStyles((theme) => ({
   },
   filterContainer: {
     display: 'flex',
+    flexWrap: 'wrap',
     paddingBottom: theme.spacing(PADDING_FILTER),
   },
   filter: {
+    resize: 'none',
     marginRight: theme.spacing(PADDING_FILTER),
+  },
+  filterContainerSection: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
   },
   loadingMessage: {
     padding: theme.spacing(PADDING_LOADING),
@@ -65,11 +72,20 @@ export default function CloudCarbonContainer(): ReactElement {
       <Grid container>
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
-            {[CloudProviderFilter, AccountFilter, ServiceFilter, DateFilter, MonthFilter].map((FilterComponent, i) => (
-              <div key={i} className={classes.filter}>
-                <FilterComponent filters={filters} setFilters={setFilters} options={filteredAccountsResults} />
-              </div>
-            ))}
+            <div className={classes.filterContainerSection}>
+              {[CloudProviderFilter, AccountFilter, ServiceFilter].map((FilterComponent, i) => (
+                <div key={i} className={classes.filter}>
+                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredAccountsResults} />
+                </div>
+              ))}
+            </div>
+            <div className={classes.filterContainerSection}>
+              {[DateFilter, MonthFilter].map((FilterComponent, i) => (
+                <div key={i} className={classes.filter}>
+                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredAccountsResults} />
+                </div>
+              ))}
+            </div>
           </div>
         </Grid>
         <Grid container spacing={3}>
