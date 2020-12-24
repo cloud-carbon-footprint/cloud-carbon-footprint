@@ -6,7 +6,7 @@ fileignoreconfig:
 - filename: client/.env.template
   checksum: c472122cca9e85015a7e0f2f7b41f61fe51d3e05ae4bb5f27cdb9704fad4e979
 - filename: client/create_client_env_file.sh
-  checksum: 9acf00a8e3ac5c3a4c209462760806cb225ab2f1e7b2d08e9ba5d977c2afa92f
+  checksum: 62b5bd085bb1a89464d2653bb5b7a32e5d0a4af3b8597df555e54f10535db6bb
 - filename: client/package-lock.json
   checksum: 6254551916fcaace0208b950bd0f06c206ba6d7fafbbee2b51d06dde705f0ee7
 - filename: client/src/Config.ts
