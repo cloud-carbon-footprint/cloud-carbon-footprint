@@ -96,11 +96,15 @@ export default function CloudCarbonContainer(): ReactElement {
               </Box>
             </Card>
           </Grid>
-          <Grid item xs={6}>
-            <CarbonComparisonCard data={filteredData} />
-          </Grid>
-          <Grid item xs={6}>
-            <DonutChartTabs data={filteredData} />
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <CarbonComparisonCard data={filteredData} />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <DonutChartTabs data={filteredData} />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
