@@ -2,16 +2,24 @@
 
 exports[`DonutChartTabs renders donut chart with three tabs 1`] = `
 <div
-  className="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
-  style={
-    Object {
-      "height": "100%",
-      "width": "100%",
-    }
-  }
+  className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
 >
   <div
-    className="MuiBox-root MuiBox-root-1"
+    className="MuiCardContent-root makeStyles-topContainer-2"
+  >
+    <h4
+      className="MuiTypography-root makeStyles-title-3 MuiTypography-h4"
+    >
+      Emissions
+    </h4>
+    <h4
+      className="MuiTypography-root makeStyles-title-3 MuiTypography-h4"
+    >
+      by
+    </h4>
+  </div>
+  <div
+    className="MuiBox-root MuiBox-root-4"
   >
     <div
       className="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
@@ -63,10 +71,10 @@ exports[`DonutChartTabs renders donut chart with three tabs 1`] = `
               <span
                 className="MuiTab-wrapper"
               >
-                Emissions By Region
+                Region
               </span>
               <span
-                className="PrivateTabIndicator-root-2 PrivateTabIndicator-colorPrimary-3 MuiTabs-indicator"
+                className="PrivateTabIndicator-root-5 PrivateTabIndicator-colorPrimary-6 MuiTabs-indicator"
                 style={Object {}}
               />
             </button>
@@ -94,7 +102,7 @@ exports[`DonutChartTabs renders donut chart with three tabs 1`] = `
               <span
                 className="MuiTab-wrapper"
               >
-                By Account
+                Account
               </span>
             </button>
             <button
@@ -121,7 +129,7 @@ exports[`DonutChartTabs renders donut chart with three tabs 1`] = `
               <span
                 className="MuiTab-wrapper"
               >
-                By Service
+                Service
               </span>
             </button>
           </div>

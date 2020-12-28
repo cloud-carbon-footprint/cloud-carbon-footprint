@@ -25,7 +25,8 @@ describe('DonutChartTabs', () => {
       timestamp: date1,
       serviceEstimates: [
         {
-          timestamp: date1,
+          cloudProvider: 'aws',
+          accountName: 'testacct',
           serviceName: 'ebs',
           wattHours: 12.2342,
           co2e: 15.12341,
@@ -34,7 +35,8 @@ describe('DonutChartTabs', () => {
           usesAverageCPUConstant: false,
         },
         {
-          timestamp: date1,
+          cloudProvider: 'aws',
+          accountName: 'testacct',
           serviceName: 'ec2',
           wattHours: 4.745634,
           co2e: 5.234236,
@@ -48,7 +50,8 @@ describe('DonutChartTabs', () => {
       timestamp: date2,
       serviceEstimates: [
         {
-          timestamp: date2,
+          cloudProvider: 'aws',
+          accountName: 'testacct',
           serviceName: 'ebs',
           wattHours: 25.73446,
           co2e: 3.2600234,
@@ -57,7 +60,8 @@ describe('DonutChartTabs', () => {
           usesAverageCPUConstant: false,
         },
         {
-          timestamp: date2,
+          cloudProvider: 'aws',
+          accountName: 'testacct',
           serviceName: 'ec2',
           wattHours: 2.4523452,
           co2e: 7.7536,
@@ -80,7 +84,7 @@ describe('DonutChartTabs', () => {
     expect(allTabInstancesList).toHaveLength(3)
 
     allTabInstancesList.forEach((tab) => {
-      expect(['Emissions By Region', 'By Account', 'By Service'].includes(tab.props.label)).toBe(true)
+      expect(['Region', 'Account', 'Service'].includes(tab.props.label)).toBe(true)
     })
 
     expect(testInstance.findAllByType(Tab))
@@ -106,7 +110,7 @@ describe('DonutChartTabs', () => {
     expect(apexDonutChartByRegion).toBeVisible()
 
     act(() => {
-      fireEvent.click(getByText('By Service'))
+      fireEvent.click(getByText('Service'))
     })
 
     const apexDonutChartByService = getByTestId(ChartDataTypes.SERVICE)
@@ -119,7 +123,7 @@ describe('DonutChartTabs', () => {
     expect(apexDonutChartByRegion).toBeVisible()
 
     act(() => {
-      fireEvent.click(getByText('By Account'))
+      fireEvent.click(getByText('Account'))
     })
 
     const apexDonutChartByAccount = getByTestId(ChartDataTypes.ACCOUNT)
