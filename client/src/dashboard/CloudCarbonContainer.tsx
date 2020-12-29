@@ -41,6 +41,12 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
+  gridItemCards: {
+    width: '50%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
   loadingMessage: {
     padding: theme.spacing(PADDING_LOADING),
     fontSize: '24px',
@@ -97,11 +103,11 @@ export default function CloudCarbonContainer(): ReactElement {
             </Card>
           </Grid>
           <Grid item xs={12}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Grid container spacing={3} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap-reverse' }}>
+              <Grid item className={classes.gridItemCards}>
                 <CarbonComparisonCard data={filteredData} />
               </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Grid item className={classes.gridItemCards}>
                 <DonutChartTabs data={filteredData} />
               </Grid>
             </Grid>
