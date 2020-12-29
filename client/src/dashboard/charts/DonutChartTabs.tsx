@@ -2,12 +2,12 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React, { ChangeEvent, ReactElement } from 'react'
-import { Paper, Tabs, Tab, Box, Card, Typography, CardContent } from '@material-ui/core'
+import React, { ReactElement } from 'react'
+import { Box, Card, Typography, CardContent, Select, MenuItem } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
 import { ChartDataTypes, EstimationResult } from '../../models/types'
 import { makeStyles } from '@material-ui/core/styles'
-
+import Paper from '@material-ui/core/Paper'
 const useStyles = makeStyles(({ palette, typography }) => {
   return {
     root: {
@@ -29,8 +29,8 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
-  const handleChange = (event: ChangeEvent<Record<string, unknown>>, newValue: number) => {
-    setValue(newValue)
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setValue(event.target.value as number)
   }
   const changeDonutCharts = (value: number): ReactElement => {
     switch (value) {
@@ -68,11 +68,11 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
       </CardContent>
       <Box padding={3}>
         <Paper style={{ boxShadow: 'none' }}>
-          <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
-            <Tab id="Region" label="Region" />
-            <Tab id="Account" label="Account" />
-            <Tab id="Service" label="Service" />
-          </Tabs>
+          <Select id="donut-chart-dropdown" value={value} onChange={handleChange} disableUnderline>
+            <MenuItem value={0}>Region</MenuItem>
+            <MenuItem value={1}>Account</MenuItem>
+            <MenuItem value={2}>Service</MenuItem>
+          </Select>
         </Paper>
         {changeDonutCharts(value)}
       </Box>

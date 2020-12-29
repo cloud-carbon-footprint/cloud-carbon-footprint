@@ -6,18 +6,15 @@ import React from 'react'
 import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-renderer'
 
 import { DonutChartTabs } from './DonutChartTabs'
-import { Tab } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
-import { render, fireEvent } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
-import { ChartDataTypes } from '../../models/types'
-
+import { Select } from '@material-ui/core'
+import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 jest.mock('../../themes')
 
 describe('DonutChartTabs', () => {
   const date1 = new Date('2020-07-10T00:00:00.000Z')
   const date2 = new Date('2020-07-11T00:00:00.000Z')
-
+  let page: RenderResult
   let testRenderer: ReactTestRenderer, testInstance: ReactTestInstance
 
   const dataWithHigherPrecision = [
@@ -76,18 +73,18 @@ describe('DonutChartTabs', () => {
   beforeEach(() => {
     testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
     testInstance = testRenderer.root
+    page = render(<DonutChartTabs data={dataWithHigherPrecision} />)
   })
 
-  it('renders donut chart with three tabs', () => {
-    const allTabInstancesList = testInstance.findAllByType(Tab)
+  afterEach(() => {
+    page.unmount()
+  })
 
-    expect(allTabInstancesList).toHaveLength(3)
+  it('renders donut chart with dropdown', () => {
+    //emulate click to test
+    const allMenuItemInstancesList = testInstance.findAllByType(Select)
 
-    allTabInstancesList.forEach((tab) => {
-      expect(['Region', 'Account', 'Service'].includes(tab.props.label)).toBe(true)
-    })
-
-    expect(testInstance.findAllByType(Tab))
+    expect(allMenuItemInstancesList).toHaveLength(1)
 
     expect(testRenderer.toJSON()).toMatchSnapshot()
   })
@@ -103,30 +100,18 @@ describe('DonutChartTabs', () => {
 
     expect(isApexDonutChartRendered.props.dataType).toBe('region')
   })
-  it('renders emission by service donut chart when service tab clicked', async () => {
-    const { getByText, getByTestId } = render(<DonutChartTabs data={dataWithHigherPrecision} />)
-    const apexDonutChartByRegion = getByTestId(ChartDataTypes.REGION)
 
-    expect(apexDonutChartByRegion).toBeVisible()
-
+  it('selects the correct option', () => {
+    let regionIsAnMuiListItemButton = false
     act(() => {
-      fireEvent.click(getByText('Service'))
+      fireEvent.mouseDown(page.getByRole('button'))
+    })
+    page.getAllByText('Region').forEach((regionComponent) => {
+      regionComponent.className.includes('MuiListItem-button') ? (regionIsAnMuiListItemButton = true) : null
     })
 
-    const apexDonutChartByService = getByTestId(ChartDataTypes.SERVICE)
-    expect(apexDonutChartByService).toBeVisible()
-  })
-  it('renders emission by account donut chart when account tab clicked', async () => {
-    const { getByText, getByTestId } = render(<DonutChartTabs data={dataWithHigherPrecision} />)
-    const apexDonutChartByRegion = getByTestId(ChartDataTypes.REGION)
-
-    expect(apexDonutChartByRegion).toBeVisible()
-
-    act(() => {
-      fireEvent.click(getByText('Account'))
-    })
-
-    const apexDonutChartByAccount = getByTestId(ChartDataTypes.ACCOUNT)
-    expect(apexDonutChartByAccount).toBeVisible()
+    expect(regionIsAnMuiListItemButton).toBeTruthy()
+    expect(page.getByText('Account')).toHaveClass('MuiListItem-button')
+    expect(page.getByText('Service')).toHaveClass('MuiListItem-button')
   })
 })
