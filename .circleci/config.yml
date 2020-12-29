@@ -120,6 +120,9 @@ workflows:
           requires:
             - lint-test
       - deploy:
+          filters:
+            branches:
+              only: trunk
           requires:
             - build-client
             - build-server
