@@ -5,7 +5,7 @@
 import { EstimationResult, FilterResultResponse } from '../../models/types'
 import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
-import { FiltersUtil, FilterType } from './FiltersUtil'
+import * as FiltersUtil from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS } from './AccountFilter'
 import {
@@ -50,7 +50,7 @@ export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): 
   return Object.assign(defaultFiltersConfig, { accounts: Array.from(accountSet) })
 }
 
-export class Filters extends FiltersUtil {
+export class Filters {
   readonly timeframe: number
   readonly services: DropdownOption[]
   readonly cloudProviders: DropdownOption[]
@@ -58,7 +58,6 @@ export class Filters extends FiltersUtil {
   readonly accounts: DropdownOption[]
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
-    super()
     this.timeframe = config.timeframe
     this.services = config.services
     this.cloudProviders = config.cloudProviders
@@ -71,11 +70,11 @@ export class Filters extends FiltersUtil {
   }
 
   withServices(services: DropdownOption[]): Filters {
-    const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
+    const { providerKeys, accountKeys, serviceKeys } = FiltersUtil.handleSelections(
       services,
       { services: this.services, accounts: this.accounts, cloudProviders: this.cloudProviders },
       SERVICE_OPTIONS,
-      FilterType.SERVICES,
+      FiltersUtil.FilterType.SERVICES,
     )
     return new Filters({
       ...this,
@@ -86,11 +85,11 @@ export class Filters extends FiltersUtil {
   }
 
   withAccounts(accounts: DropdownOption[]): Filters {
-    const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
+    const { providerKeys, accountKeys, serviceKeys } = FiltersUtil.handleSelections(
       accounts,
       { services: this.services, accounts: this.accounts, cloudProviders: this.cloudProviders },
       ACCOUNT_OPTIONS,
-      FilterType.ACCOUNTS,
+      FiltersUtil.FilterType.ACCOUNTS,
     )
     return new Filters({
       ...this,
@@ -101,11 +100,11 @@ export class Filters extends FiltersUtil {
   }
 
   withCloudProviders(cloudProviders: DropdownOption[]): Filters {
-    const { providerKeys, accountKeys, serviceKeys } = this.handleSelections(
+    const { providerKeys, accountKeys, serviceKeys } = FiltersUtil.handleSelections(
       cloudProviders,
       { services: this.services, accounts: this.accounts, cloudProviders: this.cloudProviders },
       CLOUD_PROVIDER_OPTIONS,
-      FilterType.CLOUD_PROVIDERS,
+      FiltersUtil.FilterType.CLOUD_PROVIDERS,
     )
 
     return new Filters({
@@ -132,25 +131,24 @@ export class Filters extends FiltersUtil {
   }
 
   serviceLabel(): string {
-    return this.numSelectedLabel(this.services.length, SERVICE_OPTIONS.length)
+    return FiltersUtil.numSelectedLabel(this.services.length, SERVICE_OPTIONS.length)
   }
 
   cloudProviderLabel(): string {
-    return this.numSelectedLabel(this.cloudProviders.length, CLOUD_PROVIDER_OPTIONS.length, 'Cloud Providers')
+    return FiltersUtil.numSelectedLabel(this.cloudProviders.length, CLOUD_PROVIDER_OPTIONS.length, 'Cloud Providers')
   }
 
   accountLabel(): string {
-    return this.numSelectedLabel(this.accounts.length, ACCOUNT_OPTIONS.length, 'Accounts')
+    return FiltersUtil.numSelectedLabel(this.accounts.length, ACCOUNT_OPTIONS.length, 'Accounts')
   }
 
   filter(rawResults: EstimationResult[]): EstimationResult[] {
     const resultsFilteredByTime = this.getResultsFilteredByTime(rawResults)
     const resultsFilteredByService = this.getResultsFilteredByService(resultsFilteredByTime)
-    const resultsFilteredByAccount = this.getResultsFilteredByAccount(resultsFilteredByService)
-    return resultsFilteredByAccount
+    return this.getResultsFilteredByAccount(resultsFilteredByService)
   }
 
-  getResultsFilteredByAccount(resultsFilteredByService: EstimationResult[]): EstimationResult[] {
+  private getResultsFilteredByAccount(resultsFilteredByService: EstimationResult[]): EstimationResult[] {
     const allAccountsSelected = this.accounts.includes(allAccountDropdownOption)
     return resultsFilteredByService.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
@@ -160,7 +158,7 @@ export class Filters extends FiltersUtil {
     })
   }
 
-  getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]): EstimationResult[] {
+  private getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]): EstimationResult[] {
     const allServicesSelected = this.services.includes({ key: ALL_SERVICES_KEY, name: ALL_SERVICES_VALUE })
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
@@ -170,7 +168,7 @@ export class Filters extends FiltersUtil {
     })
   }
 
-  getResultsFilteredByTime(rawResults: EstimationResult[]): EstimationResult[] {
+  private getResultsFilteredByTime(rawResults: EstimationResult[]): EstimationResult[] {
     const today = moment.utc()
     let start: moment.Moment
     let end: moment.Moment
@@ -182,10 +180,9 @@ export class Filters extends FiltersUtil {
       start = end.clone().subtract(this.timeframe, 'M')
     }
 
-    const resultsFilteredByTime = rawResults.filter((estimationResult: EstimationResult) =>
+    return rawResults.filter((estimationResult: EstimationResult) =>
       moment.utc(estimationResult.timestamp).isBetween(start, end, 'day', '[]'),
     )
-    return resultsFilteredByTime
   }
 }
 
