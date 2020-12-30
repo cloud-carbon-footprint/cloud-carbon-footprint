@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { pluck } from 'ramda'
 import config from '../../../ConfigLoader'
 import { DropdownOption } from '../DropdownFilter'
