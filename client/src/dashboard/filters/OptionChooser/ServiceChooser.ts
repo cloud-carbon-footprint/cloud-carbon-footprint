@@ -1,7 +1,12 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { DropdownOption } from '../DropdownFilter'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
+
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions, providerServices } from './common'
 

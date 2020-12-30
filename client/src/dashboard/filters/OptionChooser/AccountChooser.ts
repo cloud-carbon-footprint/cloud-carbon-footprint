@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import { DropdownOption } from '../DropdownFilter'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
