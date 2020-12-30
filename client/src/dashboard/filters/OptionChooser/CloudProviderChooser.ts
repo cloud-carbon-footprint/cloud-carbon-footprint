@@ -1,13 +1,13 @@
 import { DropdownOption } from '../DropdownFilter'
-import { FilterType, Selections } from '../FiltersUtil'
-import { CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
+import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
+import { ALL_KEY, CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
 import { OptionChooser } from './OptionChooser'
 import { providerServices } from './common'
 
 export class CloudProviderChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: Selections) {
-    super(FilterType.CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS, selections, oldSelections)
+  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
+    super(DropdownFilter.CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS, selections, oldSelections)
   }
 
   protected chooseProviders(): Set<DropdownOption> {
@@ -17,7 +17,7 @@ export class CloudProviderChooser extends OptionChooser {
   protected chooseAccounts(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
     this.selections.forEach((selection) => {
-      if (selection.key !== 'all') {
+      if (selection.key !== ALL_KEY) {
         ACCOUNT_OPTIONS.forEach((accountOption) => {
           accountOption.cloudProvider === selection.key ? desiredSelections.add(accountOption) : null
         })
@@ -29,7 +29,7 @@ export class CloudProviderChooser extends OptionChooser {
   protected chooseServices(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
     this.selections.forEach((selection) => {
-      if (selection.key !== 'all') {
+      if (selection.key !== ALL_KEY) {
         providerServices[selection.key].forEach((service) =>
           desiredSelections.add(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
         )

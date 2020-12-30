@@ -1,13 +1,13 @@
 import { DropdownOption } from '../DropdownFilter'
-import { FilterType, Selections } from '../FiltersUtil'
+import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions, providerServices } from './common'
 
 export class ServiceChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: Selections) {
-    super(FilterType.SERVICES, SERVICE_OPTIONS, selections, oldSelections)
+  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
+    super(DropdownFilter.SERVICES, SERVICE_OPTIONS, selections, oldSelections)
   }
 
   protected chooseProviders(): Set<DropdownOption> {

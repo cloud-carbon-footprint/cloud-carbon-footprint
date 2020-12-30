@@ -5,21 +5,21 @@
 import { DropdownOption } from './DropdownFilter'
 import createOptionChooser from './OptionChooser'
 
-export enum FilterType {
+export enum DropdownFilter {
   SERVICES = 'services',
   CLOUD_PROVIDERS = 'cloudProviders',
   ACCOUNTS = 'accounts',
 }
 
-export type Selections = {
-  [key in FilterType]: DropdownOption[]
+export type DropdownSelections = {
+  [key in DropdownFilter]: DropdownOption[]
 }
 
-export function handleSelections(
+export function handleDropdownSelections(
+  filterType: DropdownFilter,
   selections: DropdownOption[],
-  oldSelections: Selections,
-  filterType: FilterType,
-): { providerKeys: DropdownOption[]; accountKeys: DropdownOption[]; serviceKeys: DropdownOption[] } {
+  oldSelections: DropdownSelections,
+): DropdownSelections {
   return createOptionChooser(filterType, selections, oldSelections).choose()
 }
 
