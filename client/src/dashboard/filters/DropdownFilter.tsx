@@ -13,6 +13,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import TextField from '@material-ui/core/TextField'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { toUpper } from 'ramda'
 
 export interface DropdownOption {
   key: string
@@ -56,6 +57,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
       disablePortal
       size={'small'}
       options={props.options}
+      groupBy={(option) => (option.cloudProvider ? toUpper(option.cloudProvider!.trim()) : '')}
       value={props.selections.map(props.selectionToOption)}
       onChange={(_, selections) => {
         props.updateSelections(selections)

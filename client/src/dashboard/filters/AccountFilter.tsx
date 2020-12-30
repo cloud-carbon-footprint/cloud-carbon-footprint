@@ -14,10 +14,14 @@ export let ACCOUNT_OPTIONS: DropdownOption[]
 export let getAccountsFromSelections: (selections: string[]) => DropdownOption[]
 
 const AccountFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, options }) => {
-  const allDropdownAccountOptions: DropdownOption[] = []
+  let allDropdownAccountOptions: DropdownOption[] = []
   for (const account of (options ? options : EMPTY_RESPONSE).accounts) {
     allDropdownAccountOptions.push(account)
   }
+  allDropdownAccountOptions = allDropdownAccountOptions.sort(
+    (firstDropdownAccountOption, secondDropdownAccountOption) =>
+      firstDropdownAccountOption.cloudProvider!.localeCompare(secondDropdownAccountOption.cloudProvider!),
+  )
 
   ACCOUNT_OPTIONS = [ALL_ACCOUNTS_DROPDOWN_OPTION, ...allDropdownAccountOptions]
 
