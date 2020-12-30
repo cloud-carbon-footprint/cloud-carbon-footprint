@@ -1,21 +1,21 @@
 import { OptionChooser } from './OptionChooser'
-import { FilterType, Selections } from '../FiltersUtil'
+import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { DropdownOption } from '../DropdownFilter'
 import { CloudProviderChooser } from './CloudProviderChooser'
 import { AccountChooser } from './AccountChooser'
 import { ServiceChooser } from './ServiceChooser'
 
 export default function createOptionChooser(
-  filterType: FilterType,
+  filterType: DropdownFilter,
   selections: DropdownOption[],
-  oldSelections: Selections,
+  oldSelections: DropdownSelections,
 ): OptionChooser {
   switch (filterType) {
-    case FilterType.CLOUD_PROVIDERS:
+    case DropdownFilter.CLOUD_PROVIDERS:
       return new CloudProviderChooser(selections, oldSelections)
-    case FilterType.ACCOUNTS:
+    case DropdownFilter.ACCOUNTS:
       return new AccountChooser(selections, oldSelections)
-    case FilterType.SERVICES:
+    case DropdownFilter.SERVICES:
       return new ServiceChooser(selections, oldSelections)
   }
 }

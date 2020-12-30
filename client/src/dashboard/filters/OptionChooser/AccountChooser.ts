@@ -1,13 +1,13 @@
 import { DropdownOption } from '../DropdownFilter'
-import { FilterType, Selections } from '../FiltersUtil'
+import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
-import { CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
+import { ALL_KEY, CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions, providerServices } from './common'
 
 export class AccountChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: Selections) {
-    super(FilterType.ACCOUNTS, ACCOUNT_OPTIONS, selections, oldSelections)
+  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
+    super(DropdownFilter.ACCOUNTS, ACCOUNT_OPTIONS, selections, oldSelections)
   }
 
   protected chooseProviders(): Set<DropdownOption> {
@@ -47,7 +47,7 @@ export class AccountChooser extends OptionChooser {
 function getCloudProvidersFromAccounts(accountSelections: DropdownOption[]): Set<DropdownOption> {
   const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
   accountSelections.forEach((selection) => {
-    if (selection.key !== 'all') {
+    if (selection.key !== ALL_KEY) {
       cloudProviderSelections.add(
         <DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === selection.cloudProvider),
       )

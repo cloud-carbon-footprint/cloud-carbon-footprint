@@ -10,6 +10,7 @@ import { ALL_ACCOUNTS_DROPDOWN_OPTION, alphabetizeDropdownOptions } from './Drop
 const EMPTY_ACCOUNT = { cloudProvider: '', key: 'string', name: 'string' }
 const EMPTY_RESPONSE = { accounts: [EMPTY_ACCOUNT] }
 
+// TODO remove mutable global variable
 export let ACCOUNT_OPTIONS: DropdownOption[]
 export let getAccountsFromSelections: (selections: string[]) => DropdownOption[]
 

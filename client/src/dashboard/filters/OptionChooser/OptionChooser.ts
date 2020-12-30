@@ -1,8 +1,9 @@
-import { FilterType, Selections } from '../FiltersUtil'
+import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { DropdownOption } from '../DropdownFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
+  ALL_KEY,
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
   SERVICE_OPTIONS,
@@ -10,16 +11,16 @@ import {
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
 
 export abstract class OptionChooser {
-  protected readonly filterType: FilterType
+  protected readonly filterType: DropdownFilter
   protected readonly allOptions: DropdownOption[]
   protected selections: DropdownOption[]
-  protected readonly oldSelections: Selections
+  protected readonly oldSelections: DropdownSelections
 
   protected constructor(
-    filterType: FilterType,
+    filterType: DropdownFilter,
     allOptions: DropdownOption[],
     selections: DropdownOption[],
-    oldSelections: Selections,
+    oldSelections: DropdownSelections,
   ) {
     this.allOptions = allOptions
     this.filterType = filterType
@@ -33,8 +34,7 @@ export abstract class OptionChooser {
 
   protected abstract chooseServices(): Set<DropdownOption>
 
-  choose(): { providerKeys: DropdownOption[]; accountKeys: DropdownOption[]; serviceKeys: DropdownOption[] } {
-    const ALL_KEY = 'all'
+  choose(): DropdownSelections {
     const selectionKeys: string[] = this.selections.map((selection) => selection.key)
     const oldSelectionKeys: string[] = this.oldSelections[this.filterType].map((oldSelection) => oldSelection.key)
 
@@ -45,30 +45,34 @@ export abstract class OptionChooser {
     }
 
     if (!selectionKeys.includes(ALL_KEY) && allOptionsWereSelected) {
-      return { providerKeys: [], serviceKeys: [], accountKeys: [] }
+      return {
+        [DropdownFilter.CLOUD_PROVIDERS]: [],
+        [DropdownFilter.SERVICES]: [],
+        [DropdownFilter.ACCOUNTS]: [],
+      }
     } else {
       if (this.selections.length === this.allOptions.length - 1 && allOptionsWereSelected) {
         this.selections = this.selections.filter((k) => k.key !== ALL_KEY)
       }
 
       return {
-        providerKeys: addAllDropDownOption(this.chooseProviders(), FilterType.CLOUD_PROVIDERS),
-        serviceKeys: addAllDropDownOption(this.chooseServices(), FilterType.SERVICES),
-        accountKeys: addAllDropDownOption(this.chooseAccounts(), FilterType.ACCOUNTS),
+        [DropdownFilter.CLOUD_PROVIDERS]: addAllDropDownOption(this.chooseProviders(), DropdownFilter.CLOUD_PROVIDERS),
+        [DropdownFilter.SERVICES]: addAllDropDownOption(this.chooseServices(), DropdownFilter.SERVICES),
+        [DropdownFilter.ACCOUNTS]: addAllDropDownOption(this.chooseAccounts(), DropdownFilter.ACCOUNTS),
       }
     }
   }
 }
 
-function addAllDropDownOption(currentSelections: Set<DropdownOption>, filterType: FilterType): DropdownOption[] {
+function addAllDropDownOption(currentSelections: Set<DropdownOption>, filterType: DropdownFilter): DropdownOption[] {
   const revisedSelections: DropdownOption[] = Array.from(currentSelections)
-  if (filterType === FilterType.CLOUD_PROVIDERS && currentSelections.size === CLOUD_PROVIDER_OPTIONS.length - 1) {
+  if (filterType === DropdownFilter.CLOUD_PROVIDERS && currentSelections.size === CLOUD_PROVIDER_OPTIONS.length - 1) {
     revisedSelections.unshift(ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION)
   }
-  if (filterType === FilterType.ACCOUNTS && currentSelections.size === ACCOUNT_OPTIONS.length - 1) {
+  if (filterType === DropdownFilter.ACCOUNTS && currentSelections.size === ACCOUNT_OPTIONS.length - 1) {
     revisedSelections.unshift(ALL_ACCOUNTS_DROPDOWN_OPTION)
   }
-  if (filterType === FilterType.SERVICES && currentSelections.size === SERVICE_OPTIONS.length - 1) {
+  if (filterType === DropdownFilter.SERVICES && currentSelections.size === SERVICE_OPTIONS.length - 1) {
     revisedSelections.unshift(ALL_SERVICES_DROPDOWN_OPTION)
   }
   return revisedSelections

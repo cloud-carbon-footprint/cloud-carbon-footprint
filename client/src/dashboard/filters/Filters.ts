@@ -6,12 +6,12 @@ import { EstimationResult, FilterResultResponse } from '../../models/types'
 import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
 import * as FiltersUtil from './FiltersUtil'
+import { DropdownFilter } from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS } from './AccountFilter'
 import {
-  ALL_ACCOUNTS_KEY,
   ALL_ACCOUNTS_VALUE,
-  ALL_SERVICES_KEY,
+  ALL_KEY,
   ALL_SERVICES_VALUE,
   CLOUD_PROVIDER_OPTIONS,
   SERVICE_OPTIONS,
@@ -27,20 +27,20 @@ type MaybeMoment = moment.Moment | null
 
 interface FiltersConfig {
   timeframe: number
-  services: DropdownOption[]
-  cloudProviders: DropdownOption[]
   dateRange: MaybeDateRange
-  accounts: DropdownOption[]
+  [DropdownFilter.SERVICES]: DropdownOption[]
+  [DropdownFilter.CLOUD_PROVIDERS]: DropdownOption[]
+  [DropdownFilter.ACCOUNTS]: DropdownOption[]
 }
 
-const allAccountDropdownOption: DropdownOption = { key: ALL_ACCOUNTS_KEY, name: ALL_ACCOUNTS_VALUE, cloudProvider: '' }
+const allAccountDropdownOption: DropdownOption = { key: ALL_KEY, name: ALL_ACCOUNTS_VALUE, cloudProvider: '' }
 
 const defaultFiltersConfig = {
   timeframe: 12,
-  services: SERVICE_OPTIONS,
-  cloudProviders: CLOUD_PROVIDER_OPTIONS,
   dateRange: null,
-  accounts: [allAccountDropdownOption],
+  [DropdownFilter.SERVICES]: SERVICE_OPTIONS,
+  [DropdownFilter.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
+  [DropdownFilter.ACCOUNTS]: [allAccountDropdownOption],
 }
 
 export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): FiltersConfig => {
@@ -52,9 +52,9 @@ export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): 
 
 export class Filters {
   readonly timeframe: number
+  readonly dateRange: MaybeDateRange
   readonly services: DropdownOption[]
   readonly cloudProviders: DropdownOption[]
-  readonly dateRange: MaybeDateRange
   readonly accounts: DropdownOption[]
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
@@ -70,57 +70,35 @@ export class Filters {
   }
 
   withServices(services: DropdownOption[]): Filters {
-    const { providerKeys, accountKeys, serviceKeys } = FiltersUtil.handleSelections(
-      services,
-      {
+    return new Filters({
+      ...this,
+      ...FiltersUtil.handleDropdownSelections(FiltersUtil.DropdownFilter.SERVICES, services, {
         services: this.services,
         accounts: this.accounts,
         cloudProviders: this.cloudProviders,
-      },
-      FiltersUtil.FilterType.SERVICES,
-    )
-    return new Filters({
-      ...this,
-      services: serviceKeys,
-      accounts: accountKeys,
-      cloudProviders: providerKeys,
+      }),
     })
   }
 
   withAccounts(accounts: DropdownOption[]): Filters {
-    const { providerKeys, accountKeys, serviceKeys } = FiltersUtil.handleSelections(
-      accounts,
-      {
+    return new Filters({
+      ...this,
+      ...FiltersUtil.handleDropdownSelections(FiltersUtil.DropdownFilter.ACCOUNTS, accounts, {
         services: this.services,
         accounts: this.accounts,
         cloudProviders: this.cloudProviders,
-      },
-      FiltersUtil.FilterType.ACCOUNTS,
-    )
-    return new Filters({
-      ...this,
-      cloudProviders: providerKeys,
-      accounts: accountKeys,
-      services: serviceKeys,
+      }),
     })
   }
 
   withCloudProviders(cloudProviders: DropdownOption[]): Filters {
-    const { providerKeys, accountKeys, serviceKeys } = FiltersUtil.handleSelections(
-      cloudProviders,
-      {
+    return new Filters({
+      ...this,
+      ...FiltersUtil.handleDropdownSelections(FiltersUtil.DropdownFilter.CLOUD_PROVIDERS, cloudProviders, {
         services: this.services,
         accounts: this.accounts,
         cloudProviders: this.cloudProviders,
-      },
-      FiltersUtil.FilterType.CLOUD_PROVIDERS,
-    )
-
-    return new Filters({
-      ...this,
-      cloudProviders: providerKeys,
-      accounts: accountKeys,
-      services: serviceKeys,
+      }),
     })
   }
 
@@ -168,7 +146,7 @@ export class Filters {
   }
 
   private getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]): EstimationResult[] {
-    const allServicesSelected = this.services.includes({ key: ALL_SERVICES_KEY, name: ALL_SERVICES_VALUE })
+    const allServicesSelected = this.services.includes({ key: ALL_KEY, name: ALL_SERVICES_VALUE })
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
         return this.services.some((service) => service.key === serviceEstimate.serviceName) || allServicesSelected
