@@ -5,66 +5,84 @@ exports[`DonutChartTabs renders donut chart with dropdown 1`] = `
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
 >
   <div
-    className="MuiCardContent-root makeStyles-topContainer-2"
-  >
-    <h4
-      className="MuiTypography-root makeStyles-title-3 MuiTypography-h4"
-    >
-      Emissions
-    </h4>
-    <h4
-      className="MuiTypography-root makeStyles-title-3 MuiTypography-h4"
-    >
-      by
-    </h4>
-  </div>
-  <div
     className="MuiBox-root MuiBox-root-4"
   >
     <div
-      className="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
-      style={
-        Object {
-          "boxShadow": "none",
-        }
-      }
+      className="MuiPaper-root makeStyles-topContainer-2 MuiPaper-elevation1 MuiPaper-rounded"
     >
+      <text
+        className="makeStyles-title-3"
+      >
+        Emissions by:
+      </text>
       <div
-        className="MuiInputBase-root MuiInput-root"
-        onClick={[Function]}
+        className="MuiFormControl-root"
       >
         <div
-          aria-haspopup="listbox"
-          aria-labelledby="donut-chart-dropdown"
-          className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
-          id="donut-chart-dropdown"
-          onBlur={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          onMouseDown={[Function]}
-          role="button"
-          tabIndex={0}
+          className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+          disableUnderline={true}
+          onClick={[Function]}
         >
-          Region
-        </div>
-        <input
-          aria-hidden={true}
-          className="MuiSelect-nativeInput"
-          onAnimationStart={[Function]}
-          onChange={[Function]}
-          tabIndex={-1}
-          value={0}
-        />
-        <svg
-          aria-hidden={true}
-          className="MuiSvgIcon-root MuiSelect-icon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M7 10l5 5 5-5z"
+          <div
+            aria-haspopup="listbox"
+            aria-labelledby="donut-chart-dropdown"
+            className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
+            id="donut-chart-dropdown"
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            role="button"
+            tabIndex={0}
+          >
+            Region
+          </div>
+          <input
+            aria-hidden={true}
+            className="MuiSelect-nativeInput"
+            onAnimationStart={[Function]}
+            onChange={[Function]}
+            required={false}
+            tabIndex={-1}
+            value={0}
           />
-        </svg>
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+          <fieldset
+            aria-hidden={true}
+            className="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+            style={
+              Object {
+                "paddingLeft": 8,
+              }
+            }
+          >
+            <legend
+              className="PrivateNotchedOutline-legend-6"
+              style={
+                Object {
+                  "width": 0.01,
+                }
+              }
+            >
+              <span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "&#8203;",
+                  }
+                }
+              />
+            </legend>
+          </fieldset>
+        </div>
       </div>
     </div>
     <div

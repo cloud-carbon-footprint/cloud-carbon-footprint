@@ -3,24 +3,31 @@
  */
 
 import React, { ReactElement } from 'react'
-import { Box, Card, Typography, CardContent, Select, MenuItem } from '@material-ui/core'
+import { Box, Card, Select, MenuItem } from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
 import { ChartDataTypes, EstimationResult } from '../../models/types'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
-const useStyles = makeStyles(({ palette, typography }) => {
+import FormControl from '@material-ui/core/FormControl'
+const useStyles = makeStyles(() => {
   return {
     root: {
       width: '100%',
       height: '100%',
     },
     topContainer: {
-      backgroundColor: palette.primary.main,
-      textAlign: 'center',
+      boxShadow: 'none',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     title: {
-      color: palette.primary.contrastText,
-      fontWeight: typography.fontWeightBold,
+      fontSize: '24px',
+      fontFamily: 'Helvetica, Arial, sans-serif',
+      opacity: '1',
+      fontWeight: 'bold',
+      color: 'rgba(0, 0, 0, 0.87)',
+      padding: '.2em',
     },
   }
 })
@@ -58,21 +65,16 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
   }
   return (
     <Card className={classes.root}>
-      <CardContent className={classes.topContainer}>
-        <Typography className={classes.title} variant="h4">
-          Emissions
-        </Typography>
-        <Typography className={classes.title} variant="h4">
-          by
-        </Typography>
-      </CardContent>
       <Box padding={3}>
-        <Paper style={{ boxShadow: 'none' }}>
-          <Select id="donut-chart-dropdown" value={value} onChange={handleChange} disableUnderline>
-            <MenuItem value={0}>Region</MenuItem>
-            <MenuItem value={1}>Account</MenuItem>
-            <MenuItem value={2}>Service</MenuItem>
-          </Select>
+        <Paper className={classes.topContainer}>
+          <text className={classes.title}>Emissions by:</text>
+          <FormControl variant={'outlined'}>
+            <Select id="donut-chart-dropdown" value={value} onChange={handleChange} disableUnderline>
+              <MenuItem value={0}>Region</MenuItem>
+              <MenuItem value={1}>Account</MenuItem>
+              <MenuItem value={2}>Service</MenuItem>
+            </Select>
+          </FormControl>
         </Paper>
         {changeDonutCharts(value)}
       </Box>
