@@ -58,6 +58,7 @@
     "ts-node-dev": "^1.0.0"
   },
   "dependencies": {
+    "@google-cloud/bigquery": "^5.5.0",
     "@google-cloud/logging-winston": "^4.0.0",
     "@google-cloud/monitoring": "^2.1.2",
     "@types/cli-table": "^0.3.0",
