@@ -18,9 +18,18 @@ export const ALL_SERVICES_VALUE = 'All Services'
 export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = { key: ALL_SERVICES_KEY, name: ALL_SERVICES_VALUE }
 export const SERVICE_OPTIONS: DropdownOption[] = [
   ALL_SERVICES_DROPDOWN_OPTION,
-  ...config().AWS.CURRENT_SERVICES,
-  ...config().GCP.CURRENT_SERVICES,
+  ...addCloudProvider(config().AWS.CURRENT_SERVICES, 'aws'),
+  ...addCloudProvider(config().GCP.CURRENT_SERVICES, 'gcp'),
 ]
+
+function addCloudProvider(dropdownOptions: DropdownOption[], cloudProvider: string): DropdownOption[] {
+  const returnedDropdownOptions: DropdownOption[] = []
+  dropdownOptions.forEach((dropdownOption) => {
+    Object.assign(dropdownOption, { cloudProvider: cloudProvider })
+    returnedDropdownOptions.push(dropdownOption)
+  })
+  return returnedDropdownOptions
+}
 
 export const ALL_CLOUD_PROVIDERS_KEY = 'all'
 export const ALL_CLOUD_PROVIDERS_VALUE = 'All Providers'

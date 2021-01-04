@@ -45,12 +45,12 @@ describe('ServiceFilter', () => {
   let filters: Filters
 
   const allServiceOption = { key: 'all', name: 'All Services' }
-  const S3ServiceOption = { key: 's3', name: 'S3' }
-  const ec2ServiceOption = { key: 'ec2', name: 'EC2' }
-  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache' }
-  const rdsServiceOption = { key: 'rds', name: 'RDS' }
-  const lambdaServiceOption = { key: 'lambda', name: 'Lambda' }
-  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine' }
+  const S3ServiceOption = { key: 's3', name: 'S3', cloudProvider: 'aws' }
+  const ec2ServiceOption = { key: 'ec2', name: 'EC2', cloudProvider: 'aws' }
+  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' }
+  const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
+  const lambdaServiceOption = { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' }
+  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
 
   beforeEach(() => {
     mockSetFilters = jest.fn()

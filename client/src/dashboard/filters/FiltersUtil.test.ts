@@ -45,28 +45,34 @@ describe('filterUtil', () => {
   const ebsServiceOption = {
     key: 'ebs',
     name: 'EBS',
+    cloudProvider: 'aws',
   }
   const s3ServiceOption = {
     key: 's3',
     name: 'S3',
+    cloudProvider: 'aws',
   }
   const ec2ServiceOption = {
     key: 'ec2',
     name: 'EC2',
+    cloudProvider: 'aws',
   }
   const elastiCacheServiceOption = {
     key: 'elasticache',
     name: 'ElastiCache',
+    cloudProvider: 'aws',
   }
   const rdsServiceOption = {
     key: 'rds',
     name: 'RDS',
+    cloudProvider: 'aws',
   }
   const lambdaServiceOption = {
     key: 'lambda',
     name: 'Lambda',
+    cloudProvider: 'aws',
   }
-  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine' }
+  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
 
   const awsServiceOptions: DropdownOption[] = [
     ebsServiceOption,

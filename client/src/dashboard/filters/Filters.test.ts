@@ -86,13 +86,13 @@ jest.mock('../../ConfigLoader', () => {
 
 describe('Filters', () => {
   const allServiceOption = { key: 'all', name: 'All Services' }
-  const ebsServiceOption = { key: 'ebs', name: 'EBS' }
-  const S3ServiceOption = { key: 's3', name: 'S3' }
-  const ec2ServiceOption = { key: 'ec2', name: 'EC2' }
-  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache' }
-  const rdsServiceOption = { key: 'rds', name: 'RDS' }
-  const lambdaServiceOption = { key: 'lambda', name: 'Lambda' }
-  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine' }
+  const ebsServiceOption = { key: 'ebs', name: 'EBS', cloudProvider: 'aws' }
+  const S3ServiceOption = { key: 's3', name: 'S3', cloudProvider: 'aws' }
+  const ec2ServiceOption = { key: 'ec2', name: 'EC2', cloudProvider: 'aws' }
+  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' }
+  const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
+  const lambdaServiceOption = { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' }
+  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
 
   describe('filter', () => {
     it('should filter just ebs', () => {
@@ -341,7 +341,7 @@ describe('Filters', () => {
         services: [],
         cloudProviders: [],
         dateRange: null,
-        accounts: [mockAccount1]
+        accounts: [mockAccount1],
       })
       expect(filters.accounts).toEqual([mockAccount1])
 
