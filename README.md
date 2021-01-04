@@ -10,11 +10,9 @@ The core logic is exposed through 2 applications: a CLI and a website. The CLI r
 
 - [Homebrew](https://brew.sh)
 - Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
-- Docker `brew cask install docker`
 - AWS CLI `brew install awscli`
 - Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/) (for Mac download the darwin_amd64 zip)
 - Talisman `curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
-- docker-compose (should be bundled with Docker if you installed it on a Mac)
 
 Note: During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.  
 
@@ -97,7 +95,10 @@ Make sure you have configured your GCP and AWS credentials (see above)
 npm start
 ```
 
-With Docker:
+If you would like to run with Docker, you'll need install docker and docker-compose:
+
+- Docker `brew install --cask docker`
+- docker-compose (should be bundled with Docker if you installed it on a Mac)
 
 ```
 docker-compose up
