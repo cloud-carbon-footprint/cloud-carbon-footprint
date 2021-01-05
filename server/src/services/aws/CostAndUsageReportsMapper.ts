@@ -26,12 +26,12 @@ export default function buildEstimateFromCostAndUsageRow(
   footprintEstimate: FootprintEstimate,
 ) {
   const serviceEstimate: MutableServiceEstimate = {
-    cloudProvider: 'AWS',
+    cloudProvider: costAndUsageReportRow.cloudProvider,
     wattHours: footprintEstimate.wattHours,
     co2e: footprintEstimate.co2e,
     usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
     serviceName: costAndUsageReportRow.serviceName,
-    accountName: costAndUsageReportRow.accountId,
+    accountName: costAndUsageReportRow.accountName,
     region: costAndUsageReportRow.region,
     cost: costAndUsageReportRow.cost,
   }

@@ -27,20 +27,31 @@ describe('GCP BillingExportTable Service', () => {
   const endDate = new Date('2020-11-03')
   const bigQueryDate: BigQueryDate = { value: '2020-11-02' }
 
-  it('Returns estimation results for App Engine SSD Storage', async () => {
+  it('Returns estimation results for App Engine SSD Storage and RAM', async () => {
     // given
     const mockedQueryResults = [
       [
         {
-          date: bigQueryDate,
-          project_name: 'test-account',
+          timestamp: bigQueryDate,
+          accountName: 'test-account',
           region: 'us-east1',
-          service_description: 'App Engine',
-          sku_description: 'Cloud Datastore Storage',
-          usage_unit: 'byte-seconds',
+          serviceName: 'App Engine',
+          usageType: 'Cloud Datastore Storage',
+          usageUnit: 'byte-seconds',
           vcpus: null as string | null,
-          total_line_item_usage_amount: 2.83e16,
-          total_cost: 5,
+          usageAmount: 2.83e16,
+          cost: 5,
+        },
+        {
+          timestamp: bigQueryDate,
+          accountName: 'test-account',
+          region: 'us-east1',
+          serviceName: 'App Engine',
+          usageType: 'Flex Instance RAM',
+          usageUnit: 'byte-seconds',
+          vcpus: null as string | null,
+          usageAmount: 3.91e18,
+          cost: 10,
         },
       ],
     ]

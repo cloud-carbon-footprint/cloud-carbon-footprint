@@ -40,11 +40,12 @@ export const SERVICE_NAME_MAPPING: { [usageType: string]: string } = {
 const GLUE_VCPUS_PER_USAGE = 4
 
 export default class CostAndUsageReportsRow {
+  readonly cloudProvider: string
   readonly region: string
   readonly timestamp: Date
   readonly productCode: string
   readonly serviceName: string
-  readonly accountId: string
+  readonly accountName: string
   readonly usageAmount: number
   readonly usageType: string
   readonly vCpuHours: number
@@ -52,11 +53,13 @@ export default class CostAndUsageReportsRow {
   readonly cost: number
 
   constructor(usageRowsHeader: Athena.Row, rowData: Athena.datumList) {
+    this.cloudProvider = 'AWS'
     this.region = rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'product_region')].VarCharValue
     this.timestamp = new Date(rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'day')].VarCharValue)
     this.productCode = rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'line_item_product_code')].VarCharValue
     this.usageType = rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'line_item_usage_type')].VarCharValue
-    this.accountId = rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'line_item_usage_account_id')].VarCharValue
+    this.accountName =
+      rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'line_item_usage_account_id')].VarCharValue
     this.usageAmount = Number(
       rowData[this.getIndexOfValueInRowData(usageRowsHeader, 'total_line_item_usage_amount')].VarCharValue,
     )
