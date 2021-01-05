@@ -100,11 +100,9 @@ const sumCO2 = (data: EstimationResult[]): number => {
 }
 
 const useAccountNamesFromEstimates = (data: EstimationResult[]): FilterResultResponse => {
-  // console.log(data)
   const [filteredData] = useState(data)
   const [filterResultResponse, setFilterResultResponse] = useState<FilterResultResponse>({ accounts: [] })
 
-  // console.log(filteredData)
   useEffect(() => {
     const serviceEstimates = pluck('serviceEstimates', data).flat()
 

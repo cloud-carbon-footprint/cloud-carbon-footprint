@@ -193,7 +193,9 @@ describe('Ebs', () => {
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
     )
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
-    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region, 'AWS'),
+    )
   })
 
   it('should get estimates for magnetic EBS HDD storage', async () => {
@@ -211,7 +213,9 @@ describe('Ebs', () => {
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
     )
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
-    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region, 'AWS'),
+    )
   })
 
   it('should get estimates for magnetic sc1 HDD storage', async () => {
@@ -232,7 +236,9 @@ describe('Ebs', () => {
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
     )
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
-    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region, 'AWS'),
+    )
   })
 
   it('should get estimates for EBS SSD storage', async () => {
@@ -253,7 +259,9 @@ describe('Ebs', () => {
       CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
     )
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
-    expect(result).toEqual(sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region))
+    expect(result).toEqual(
+      sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region, 'AWS'),
+    )
   })
 
   it('should filter unexpected cost explorer volume name', async () => {
@@ -313,8 +321,8 @@ describe('Ebs', () => {
 
     const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
-    const ssdEstimates = sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region)
-    const hddEstimates = hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region)
+    const ssdEstimates = sddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region, 'AWS')
+    const hddEstimates = hddStorageEstimator.estimate([{ sizeGb: 30.0, timestamp: new Date(startDate) }], region, 'AWS')
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),

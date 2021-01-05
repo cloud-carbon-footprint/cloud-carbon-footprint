@@ -5,7 +5,6 @@
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import { GCP_REGIONS } from '@services/gcp/GCPRegions'
 
-// We are using AWS values for now until we have values for GCP
 export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string]: number } } = {
   GCP: {
     SSDCOEFFICIENT: 1.2,

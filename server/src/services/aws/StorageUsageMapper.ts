@@ -78,7 +78,10 @@ export function getEstimatesFromCostExplorer(
   )
   const ssdUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.SSD === diskType)
   const hddUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.HDD === diskType)
-  const footprintEstimates = [...ssdEstimator.estimate(ssdUsage, region), ...hddEstimator.estimate(hddUsage, region)]
+  const footprintEstimates = [
+    ...ssdEstimator.estimate(ssdUsage, region, 'AWS'),
+    ...hddEstimator.estimate(hddUsage, region, 'AWS'),
+  ]
 
   return Object.values(
     footprintEstimates.reduce((acc: { [key: string]: MutableFootprintEstimate }, estimate) => {

@@ -22,7 +22,7 @@ jest.mock('@google-cloud/bigquery', () => {
   }
 })
 
-xdescribe('GCP BillingExportTable Service', () => {
+describe('GCP BillingExportTable Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
   const bigQueryDate: BigQueryDate = { value: '2020-11-02' }
@@ -35,7 +35,7 @@ xdescribe('GCP BillingExportTable Service', () => {
           date: bigQueryDate,
           project_name: 'test-account',
           region: 'us-east1',
-          service: 'App Engine',
+          service_description: 'App Engine',
           sku_description: 'Cloud Datastore Storage',
           usage_unit: 'byte-seconds',
           vcpus: null as string | null,
@@ -55,7 +55,7 @@ xdescribe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(startDate, endDate)
 
     // then
     const expectedResult: EstimationResult[] = [
@@ -63,8 +63,8 @@ xdescribe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            wattHours: 5.88,
-            co2e: 0.00183297734361364,
+            wattHours: 5.444798928995928,
+            co2e: 0.00156728383627818,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',

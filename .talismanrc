@@ -43,3 +43,5 @@ fileignoreconfig:
   checksum: 02bb093a8464f70ccfed2105e19f51d519c4cda3a8ba35d35c49111e30c8bc52
 - filename: server/test/unit/services/aws/Lambda.test.ts
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
+- filename: server/test/unit/services/gcp/BillingExportTable.test.ts
+  checksum: 8acf6cdd2fac5b930ae453f4381ce702893d193b6417cc97de79b1f707dc84dd

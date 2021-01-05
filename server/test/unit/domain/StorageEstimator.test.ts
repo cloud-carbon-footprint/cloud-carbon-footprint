@@ -25,6 +25,7 @@ describe('StorageEstimator', () => {
         },
       ],
       AWS_REGIONS.US_EAST_1,
+      'AWS',
     )
 
     it('creates one estimate', () => {
@@ -58,6 +59,7 @@ describe('StorageEstimator', () => {
         },
       ],
       AWS_REGIONS.US_EAST_1,
+      'AWS',
     )
 
     it('creates one estimate', () => {
@@ -96,6 +98,7 @@ describe('StorageEstimator', () => {
           },
         ],
         AWS_REGIONS.US_EAST_1,
+        'AWS',
       )
 
       expect(results).toEqual([
@@ -130,6 +133,7 @@ describe('StorageEstimator', () => {
           },
         ],
         AWS_REGIONS.US_EAST_1,
+        'AWS',
       )
 
       expect(results).toEqual([

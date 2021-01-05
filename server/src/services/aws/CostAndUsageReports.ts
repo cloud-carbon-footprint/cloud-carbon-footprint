@@ -102,9 +102,9 @@ export default class CostAndUsageReports {
 
         let estimate: FootprintEstimate
         if (this.usageTypeIsSSD(costAndUsageReportRow))
-          estimate = this.ssdStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region)[0]
+          estimate = this.ssdStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region, 'AWS')[0]
         else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
-          estimate = this.hddStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region)[0]
+          estimate = this.hddStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region, 'AWS')[0]
         else
           this.costAndUsageReportsLogger.warn(
             `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,

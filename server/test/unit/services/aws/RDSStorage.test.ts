@@ -212,7 +212,9 @@ describe('RDSStorage', () => {
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
-    expect(result).toEqual(ssdStorageEstimator.estimate([{ sizeGb: 31.0, timestamp: new Date(startDate) }], region))
+    expect(result).toEqual(
+      ssdStorageEstimator.estimate([{ sizeGb: 31.0, timestamp: new Date(startDate) }], region, 'AWS'),
+    )
   })
 
   it('should get estimates for RDS standard HDD storage', async () => {
@@ -235,7 +237,9 @@ describe('RDSStorage', () => {
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
-    expect(result).toEqual(hddStorageEstimator.estimate([{ sizeGb: 31.0, timestamp: new Date(startDate) }], region))
+    expect(result).toEqual(
+      hddStorageEstimator.estimate([{ sizeGb: 31.0, timestamp: new Date(startDate) }], region, 'AWS'),
+    )
   })
 
   it('should get costs for RDS', async () => {

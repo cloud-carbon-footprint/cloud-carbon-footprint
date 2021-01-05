@@ -16,14 +16,14 @@ export class StorageEstimator implements IFootprintEstimator {
     this.power_usage_effectiveness = power_usage_effectiveness
   }
 
-  estimate(data: StorageUsage[], region: string): FootprintEstimate[] {
+  estimate(data: StorageUsage[], region: string, cloudProvider: string): FootprintEstimate[] {
     return data.map((d: StorageUsage) => {
       const estimatedWattHours = this.estimateWattHours(d.sizeGb)
 
       return {
         timestamp: d.timestamp,
         wattHours: estimatedWattHours,
-        co2e: this.estimateCo2(estimatedWattHours, region),
+        co2e: this.estimateCo2(estimatedWattHours, region, cloudProvider),
       }
     })
   }
@@ -37,9 +37,9 @@ export class StorageEstimator implements IFootprintEstimator {
     return (usageGb / 1000) * this.coefficient * 24 * this.power_usage_effectiveness
   }
 
-  private estimateCo2(estimatedWattHours: number, region: string) {
+  private estimateCo2(estimatedWattHours: number, region: string, cloudProvider: string) {
     // This function multiplies the estimated watt-hours by the average CO2e emissions (Kgs) in the region being estimated,
     // as provided by IEA and other energy reports
-    return estimatedWattHours * CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS['AWS'][region]
+    return estimatedWattHours * CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS[cloudProvider][region]
   }
 }

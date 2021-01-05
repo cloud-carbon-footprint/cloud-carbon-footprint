@@ -80,6 +80,7 @@ describe('StorageService', () => {
             },
           ],
           AWS_REGIONS.US_EAST_1,
+          'AWS',
         ),
       )
       expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)
@@ -112,6 +113,7 @@ describe('StorageService', () => {
             },
           ],
           AWS_REGIONS.US_EAST_1,
+          'AWS',
         ),
       )
       expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)

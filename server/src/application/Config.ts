@@ -38,6 +38,7 @@ export interface CCFConfig {
       targetAccountEmail?: string
       targetAccountPrivateKey?: string
     }
+    BIG_QUERY_TABLE?: string
   }
   LOGGING_MODE?: string
 }
@@ -133,6 +134,7 @@ const appConfig: CCFConfig = {
       targetAccountEmail: process.env.GCP_TARGET_ACCOUNT_EMAIL || '',
       targetAccountPrivateKey: escapePrivateKey(process.env.GCP_TARGET_ACCOUNT_PRIVATE_KEY) || '',
     },
+    BIG_QUERY_TABLE: process.env.GCP_BIG_QUERY_TABLE || '',
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
 }
