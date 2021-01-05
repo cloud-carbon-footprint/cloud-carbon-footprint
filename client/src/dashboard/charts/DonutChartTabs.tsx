@@ -67,9 +67,9 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
     <Card className={classes.root}>
       <Box padding={3}>
         <Paper className={classes.topContainer}>
-          <text className={classes.title}>Emissions by:</text>
+          <p className={classes.title}>Emissions by:</p>
           <FormControl variant={'outlined'}>
-            <Select id="donut-chart-dropdown" value={value} onChange={handleChange} disableUnderline>
+            <Select id="donut-chart-dropdown" value={value} onChange={handleChange}>
               <MenuItem value={0}>Region</MenuItem>
               <MenuItem value={1}>Account</MenuItem>
               <MenuItem value={2}>Service</MenuItem>

@@ -28,7 +28,20 @@ function addCloudProvider(dropdownOptions: DropdownOption[], cloudProvider: stri
     Object.assign(dropdownOption, { cloudProvider: cloudProvider })
     returnedDropdownOptions.push(dropdownOption)
   })
-  return returnedDropdownOptions
+  return alphabetizeDropdownOptions(returnedDropdownOptions)
+}
+
+export function alphabetizeDropdownOptions(dropdownOptions: DropdownOption[]): DropdownOption[] {
+  dropdownOptions.sort((a, b) => {
+    if (a.key < b.key) {
+      return -1
+    }
+    if (a.key > b.key) {
+      return 1
+    }
+    return 0
+  })
+  return dropdownOptions
 }
 
 export const ALL_CLOUD_PROVIDERS_KEY = 'all'
@@ -39,5 +52,5 @@ export const ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION: DropdownOption = {
 }
 export const CLOUD_PROVIDER_OPTIONS: DropdownOption[] = [
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
-  ...config().CURRENT_PROVIDERS,
+  ...alphabetizeDropdownOptions(config().CURRENT_PROVIDERS),
 ]

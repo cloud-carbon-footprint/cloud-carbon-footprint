@@ -21,11 +21,11 @@ jest.mock('../../ConfigLoader', () => {
       AWS: {
         CURRENT_SERVICES: [
           { key: 'ebs', name: 'EBS' },
-          { key: 's3', name: 'S3' },
           { key: 'ec2', name: 'EC2' },
           { key: 'elasticache', name: 'ElastiCache' },
-          { key: 'rds', name: 'RDS' },
           { key: 'lambda', name: 'Lambda' },
+          { key: 'rds', name: 'RDS' },
+          { key: 's3', name: 'S3' },
         ],
       },
       GCP: {
@@ -76,11 +76,11 @@ describe('filterUtil', () => {
 
   const awsServiceOptions: DropdownOption[] = [
     ebsServiceOption,
-    s3ServiceOption,
     ec2ServiceOption,
     elastiCacheServiceOption,
-    rdsServiceOption,
     lambdaServiceOption,
+    rdsServiceOption,
+    s3ServiceOption,
   ]
   const allServiceOption = { key: ALL_STRING, name: ALL_SERVICES_VALUE }
   const allServiceOptions: DropdownOption[] = [allServiceOption, ...awsServiceOptions, computeEngineServiceOption]

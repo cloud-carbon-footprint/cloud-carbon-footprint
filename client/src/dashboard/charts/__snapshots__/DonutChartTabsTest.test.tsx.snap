@@ -10,17 +10,16 @@ exports[`DonutChartTabs renders donut chart with dropdown 1`] = `
     <div
       className="MuiPaper-root makeStyles-topContainer-2 MuiPaper-elevation1 MuiPaper-rounded"
     >
-      <text
+      <p
         className="makeStyles-title-3"
       >
         Emissions by:
-      </text>
+      </p>
       <div
         className="MuiFormControl-root"
       >
         <div
           className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
-          disableUnderline={true}
           onClick={[Function]}
         >
           <div

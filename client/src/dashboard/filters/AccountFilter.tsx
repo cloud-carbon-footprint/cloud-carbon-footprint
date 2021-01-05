@@ -5,7 +5,7 @@
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
-import { ALL_ACCOUNTS_DROPDOWN_OPTION } from './DropdownConstants'
+import { ALL_ACCOUNTS_DROPDOWN_OPTION, alphabetizeDropdownOptions } from './DropdownConstants'
 
 const EMPTY_ACCOUNT = { cloudProvider: '', key: 'string', name: 'string' }
 const EMPTY_RESPONSE = { accounts: [EMPTY_ACCOUNT] }
@@ -18,9 +18,10 @@ const AccountFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, op
   for (const account of (options ? options : EMPTY_RESPONSE).accounts) {
     allDropdownAccountOptions.push(account)
   }
-  allDropdownAccountOptions = allDropdownAccountOptions.sort(
-    (firstDropdownAccountOption, secondDropdownAccountOption) =>
-      firstDropdownAccountOption.cloudProvider!.localeCompare(secondDropdownAccountOption.cloudProvider!),
+  allDropdownAccountOptions = alphabetizeDropdownOptions(
+    allDropdownAccountOptions,
+  ).sort((firstDropdownAccountOption, secondDropdownAccountOption) =>
+    firstDropdownAccountOption.cloudProvider!.localeCompare(secondDropdownAccountOption.cloudProvider!),
   )
 
   ACCOUNT_OPTIONS = [ALL_ACCOUNTS_DROPDOWN_OPTION, ...allDropdownAccountOptions]

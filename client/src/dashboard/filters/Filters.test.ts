@@ -174,11 +174,11 @@ describe('Filters', () => {
       expect(filters.services).toEqual([
         allServiceOption,
         ebsServiceOption,
-        S3ServiceOption,
         ec2ServiceOption,
         elastiCacheServiceOption,
-        rdsServiceOption,
         lambdaServiceOption,
+        rdsServiceOption,
+        S3ServiceOption,
         computeEngineServiceOption,
       ])
     })
@@ -248,11 +248,11 @@ describe('Filters', () => {
       expect(newFilters.services).toEqual([
         allServiceOption,
         ebsServiceOption,
-        S3ServiceOption,
         ec2ServiceOption,
         elastiCacheServiceOption,
-        rdsServiceOption,
         lambdaServiceOption,
+        rdsServiceOption,
+        S3ServiceOption,
         computeEngineServiceOption,
       ])
     })
@@ -275,11 +275,11 @@ describe('Filters', () => {
       expect(newFilters.services).toEqual([
         allServiceOption,
         ebsServiceOption,
-        S3ServiceOption,
         ec2ServiceOption,
         elastiCacheServiceOption,
-        rdsServiceOption,
         lambdaServiceOption,
+        rdsServiceOption,
+        S3ServiceOption,
         computeEngineServiceOption,
       ])
     })

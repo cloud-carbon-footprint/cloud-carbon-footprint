@@ -111,11 +111,11 @@ describe('ServiceFilter', () => {
 
     const newFilters = filters.withServices([
       allServiceOption,
-      S3ServiceOption,
       ec2ServiceOption,
       elastiCacheServiceOption,
-      rdsServiceOption,
       lambdaServiceOption,
+      rdsServiceOption,
+      S3ServiceOption,
       computeEngineServiceOption,
     ])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
