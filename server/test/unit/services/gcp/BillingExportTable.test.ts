@@ -11,7 +11,7 @@ import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import BillingExportTable from '@services/gcp/BillingExportTable'
 import {
   mockQueryResultsAppEngineSSDStorageRAM,
-  mockQueryResultsCloudSQLSSDComputeEngine,
+  mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -64,9 +64,9 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns estimation results for Cloud SQL SSD Storage and Compute Engine', async () => {
+  it('Returns estimation results for Cloud SQL SSD Storage, Compute Engine and Cloud Dataflow HDD', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsCloudSQLSSDComputeEngine)
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -101,6 +101,21 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'Compute Engine',
             cost: 7,
             region: 'us-east1',
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            wattHours: 150.06866306066513,
+            co2e: 0.021387594176702666,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud Dataflow',
+            cost: 12,
+            region: 'us-west1',
           },
         ],
       },

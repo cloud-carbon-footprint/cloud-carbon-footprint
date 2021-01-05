@@ -35,6 +35,8 @@ fileignoreconfig:
   checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
 - filename: server/src/application/GCPAccount.ts
   checksum: 0aa3c4064e5899324fa7d7f6053c28ab474a320fbdc3656311ebe0eb27fff1c5
+- filename: server/test/fixtures/bigQuery.fixtures.ts
+  checksum: 46a1f2a065b128fdca5d80112df6d306aa60ec9e1d81e0122160f2219fdf9853
 - filename: server/test/unit/application/App.test.ts
   checksum: 4c8490529e4a8022b3f5155ec08719aa1451e947cd36b73696a8264a28b64fce
 - filename: server/test/unit/application/GCPAccount.test.ts
@@ -44,4 +46,4 @@ fileignoreconfig:
 - filename: server/test/unit/services/aws/Lambda.test.ts
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
-  checksum: 8acf6cdd2fac5b930ae453f4381ce702893d193b6417cc97de79b1f707dc84dd
+  checksum: 2f7bea96ad2c4c987009a766702fbfbf9ec11b86ceb47fdf9eebf777090a5fbd

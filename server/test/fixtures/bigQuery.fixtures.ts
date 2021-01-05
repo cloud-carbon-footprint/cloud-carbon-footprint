@@ -4,12 +4,13 @@
 
 import { BigQueryDate } from '@google-cloud/bigquery'
 
-const bigQueryDate: BigQueryDate = { value: '2020-11-02' }
+const bigQueryDateOne: BigQueryDate = { value: '2020-11-02' }
+const bigQueryDateTwo: BigQueryDate = { value: '2020-10-28' }
 
 export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
   [
     {
-      timestamp: bigQueryDate,
+      timestamp: bigQueryDateOne,
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'App Engine',
@@ -20,7 +21,7 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
       cost: 5,
     },
     {
-      timestamp: bigQueryDate,
+      timestamp: bigQueryDateOne,
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'App Engine',
@@ -31,7 +32,7 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
       cost: 10,
     },
     {
-      timestamp: bigQueryDate,
+      timestamp: bigQueryDateOne,
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'App Engine',
@@ -44,10 +45,10 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
   ],
 ]
 
-export const mockQueryResultsCloudSQLSSDComputeEngine: any[][] = [
+export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
   [
     {
-      timestamp: bigQueryDate,
+      timestamp: bigQueryDateOne,
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'Cloud SQL',
@@ -58,7 +59,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngine: any[][] = [
       cost: 7,
     },
     {
-      timestamp: bigQueryDate,
+      timestamp: bigQueryDateOne,
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'Compute Engine',
@@ -67,6 +68,28 @@ export const mockQueryResultsCloudSQLSSDComputeEngine: any[][] = [
       vcpus: '16',
       usageAmount: 80000,
       cost: 7,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud Dataflow',
+      usageType: 'Local Disk Time PD Standard Belgium',
+      usageUnit: 'byte-seconds',
+      vcpus: null,
+      usageAmount: 7.8e17,
+      cost: 12,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud Functions',
+      usageType: 'Memory Time',
+      usageUnit: 'byte-seconds',
+      vcpus: null,
+      usageAmount: 120,
+      cost: 10,
     },
   ],
 ]
