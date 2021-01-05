@@ -44,7 +44,12 @@ export default class BillingExportTable {
         sizeGb: usageAmountGb,
       }
 
-      const footprintEstimate = this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
+      let footprintEstimate
+      if (usageRow.usageType.includes('SSD')) {
+        footprintEstimate = this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
+      } else {
+        footprintEstimate = this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
+      }
       footprintEstimate.usesAverageCPUConstant = false
       buildEstimateFromCostAndUsageRow(results, usageRow, footprintEstimate)
     })
