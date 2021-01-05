@@ -9,11 +9,12 @@ import { BigQuery } from '@google-cloud/bigquery'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import StorageUsage from '@domain/StorageUsage'
 import { StorageEstimator } from '@domain/StorageEstimator'
+import ComputeUsage from '@domain/ComputeUsage'
+import FootprintEstimate from '@domain/FootprintEstimate'
 import { EstimationResult } from '@application/EstimationResult'
 import configLoader from '@application/ConfigLoader'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
-import { NETWORKING_USAGE_TYPES } from '@services/gcp/BillingExportUsageTypes'
-import ComputeUsage from '@domain/ComputeUsage'
+import { MEMORY_USAGE_TYPES } from '@services/gcp/BillingExportUsageTypes'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -33,43 +34,43 @@ export default class BillingExportTable {
     const results: MutableEstimationResult[] = []
 
     usageRows.map((usageRow) => {
-      if (this.isNetworkingUsage(usageRow.usageType)) return []
-
-      const usageAmountGb = this.convertByteSecondsToGigabyte(usageRow.usageAmount)
+      if (this.isMemoryUsage(usageRow.usageType)) return []
       const timestamp = new Date(usageRow.timestamp.value)
       usageRow.cloudProvider = 'GCP'
       usageRow.timestamp = timestamp
 
-      const storageUsage: StorageUsage = {
-        timestamp,
-        sizeGb: usageAmountGb,
-      }
-
-      const computeUsage: ComputeUsage = {
-        cpuUtilizationAverage: 50,
-        numberOfvCpus: (usageRow.vcpus * usageRow.usageAmount) / 3600,
-        usesAverageCPUConstant: true,
-        timestamp,
-      }
-
-      let footprintEstimate
-      if (usageRow.usageUnit === 'seconds') {
-        footprintEstimate = this.computeEstimator.estimate([computeUsage], usageRow.region, 'GCP')[0]
-      } else {
-        if (usageRow.usageType.includes('SSD')) {
-          footprintEstimate = this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
-        } else {
-          footprintEstimate = this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
-        }
-        footprintEstimate.usesAverageCPUConstant = false
-      }
+      // if usageUnit is seconds then estimate compute otherwise estimate storage
+      const footprintEstimate = usageRow.usageUnit === 'seconds' ?  this.getComputeFootprintEstimate(usageRow, timestamp) : this.getStorageFootprintEstimate(usageRow, timestamp)
       buildEstimateFromCostAndUsageRow(results, usageRow, footprintEstimate)
     })
     return results
   }
 
-  private isNetworkingUsage(usageType: string): boolean {
-    return this.containsAny(NETWORKING_USAGE_TYPES, usageType)
+  private getComputeFootprintEstimate(usageRow: any, timestamp: Date ): FootprintEstimate {
+    const computeUsage: ComputeUsage = {
+      cpuUtilizationAverage: 50,
+      numberOfvCpus: this.getVCpuHours(usageRow),
+      usesAverageCPUConstant: true,
+      timestamp,
+    }
+    return this.computeEstimator.estimate([computeUsage], usageRow.region, 'GCP')[0]
+  }
+
+  private getStorageFootprintEstimate(usageRow: any, timestamp: Date ): FootprintEstimate {
+    // storage estimation requires usage amount in gigabytes
+    const usageAmountGb = this.convertByteSecondsToGigabyte(usageRow.usageAmount)
+    const storageUsage: StorageUsage = {
+      timestamp,
+      sizeGb: usageAmountGb,
+    }
+    if (usageRow.usageType.includes('SSD')) {
+      return {usesAverageCPUConstant: false, ...this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]}
+    }
+    return {usesAverageCPUConstant: false, ...this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]}
+  }
+
+  private isMemoryUsage(usageType: string): boolean {
+    return this.containsAny(MEMORY_USAGE_TYPES, usageType)
   }
 
   private containsAny(substrings: string[], stringToSearch: string): boolean {
@@ -114,6 +115,10 @@ export default class BillingExportTable {
   }
 
   private convertByteSecondsToGigabyte(usageAmount: number): number {
-    return usageAmount / 60 / 60 / 1073741824 / 24
+    return usageAmount / 3600 / 1073741824 / 24
+  }
+
+  private getVCpuHours(usageRow: any): number {
+    return (usageRow.vcpus * usageRow.usageAmount) / 3600
   }
 }

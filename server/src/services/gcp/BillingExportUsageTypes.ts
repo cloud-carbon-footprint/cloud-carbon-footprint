@@ -2,4 +2,4 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-export const NETWORKING_USAGE_TYPES: string[] = ['RAM']
+export const MEMORY_USAGE_TYPES: string[] = ['RAM']
