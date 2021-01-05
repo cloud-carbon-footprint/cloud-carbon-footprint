@@ -11,7 +11,7 @@ import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import BillingExportTable from '@services/gcp/BillingExportTable'
 import {
   mockQueryResultsAppEngineSSDStorageRAM,
-  mockQueryResultsCloudSQLSSD,
+  mockQueryResultsCloudSQLSSDComputeEngine,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -64,9 +64,9 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns estimation results for Cloud SQL SSD Storage', async () => {
+  it('Returns estimation results for Cloud SQL SSD Storage and Compute Engine', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsCloudSQLSSD)
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsCloudSQLSSDComputeEngine)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -89,6 +89,16 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             accountName: 'test-account',
             serviceName: 'Cloud SQL',
+            cost: 7,
+            region: 'us-east1',
+          },
+          {
+            wattHours: 651.2,
+            co2e: 0.18744773636160003,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Compute Engine',
             cost: 7,
             region: 'us-east1',
           },

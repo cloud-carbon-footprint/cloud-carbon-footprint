@@ -44,7 +44,7 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
   ],
 ]
 
-export const mockQueryResultsCloudSQLSSD: any[][] = [
+export const mockQueryResultsCloudSQLSSDComputeEngine: any[][] = [
   [
     {
       timestamp: bigQueryDate,
@@ -55,6 +55,17 @@ export const mockQueryResultsCloudSQLSSD: any[][] = [
       usageUnit: 'byte-seconds',
       vcpus: null as string | null,
       usageAmount: 4.26e18,
+      cost: 7,
+    },
+    {
+      timestamp: bigQueryDate,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'Compute Engine',
+      usageType: 'Compute optimized Core running in Americas',
+      usageUnit: 'seconds',
+      vcpus: '16',
+      usageAmount: 80000,
       cost: 7,
     },
   ],

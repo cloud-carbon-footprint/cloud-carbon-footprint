@@ -13,6 +13,7 @@ import { EstimationResult } from '@application/EstimationResult'
 import configLoader from '@application/ConfigLoader'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
 import { NETWORKING_USAGE_TYPES } from '@services/gcp/BillingExportUsageTypes'
+import ComputeUsage from '@domain/ComputeUsage'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -40,17 +41,28 @@ export default class BillingExportTable {
       usageRow.timestamp = timestamp
 
       const storageUsage: StorageUsage = {
-        timestamp: timestamp,
+        timestamp,
         sizeGb: usageAmountGb,
       }
 
-      let footprintEstimate
-      if (usageRow.usageType.includes('SSD')) {
-        footprintEstimate = this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
-      } else {
-        footprintEstimate = this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
+      const computeUsage: ComputeUsage = {
+        cpuUtilizationAverage: 50,
+        numberOfvCpus: (usageRow.vcpus * usageRow.usageAmount) / 3600,
+        usesAverageCPUConstant: true,
+        timestamp,
       }
-      footprintEstimate.usesAverageCPUConstant = false
+
+      let footprintEstimate
+      if (usageRow.usageUnit === 'seconds') {
+        footprintEstimate = this.computeEstimator.estimate([computeUsage], usageRow.region, 'GCP')[0]
+      } else {
+        if (usageRow.usageType.includes('SSD')) {
+          footprintEstimate = this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
+        } else {
+          footprintEstimate = this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]
+        }
+        footprintEstimate.usesAverageCPUConstant = false
+      }
       buildEstimateFromCostAndUsageRow(results, usageRow, footprintEstimate)
     })
     return results
@@ -71,7 +83,7 @@ export default class BillingExportTable {
                     location.region as region,
                     service.description as serviceName,
                     sku.description as usageType,
-                    usage.unit as usageType,
+                    usage.unit as usageUnit,
                     system_labels.value AS vcpus,
                     SUM(usage.amount) AS usageAmount,
                     SUM(cost) AS cost
