@@ -19,14 +19,12 @@ exports[`DonutChartTabs renders donut chart with dropdown 1`] = `
         className="MuiFormControl-root"
       >
         <div
-          className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+          className="MuiInputBase-root MuiInputBase-formControl"
           onClick={[Function]}
         >
           <div
             aria-haspopup="listbox"
-            aria-labelledby="donut-chart-dropdown"
-            className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
-            id="donut-chart-dropdown"
+            className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-5"
             onBlur={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -55,32 +53,6 @@ exports[`DonutChartTabs renders donut chart with dropdown 1`] = `
               d="M7 10l5 5 5-5z"
             />
           </svg>
-          <fieldset
-            aria-hidden={true}
-            className="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
-            style={
-              Object {
-                "paddingLeft": 8,
-              }
-            }
-          >
-            <legend
-              className="PrivateNotchedOutline-legend-6"
-              style={
-                Object {
-                  "width": 0.01,
-                }
-              }
-            >
-              <span
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "&#8203;",
-                  }
-                }
-              />
-            </legend>
-          </fieldset>
         </div>
       </div>
     </div>

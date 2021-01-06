@@ -11,7 +11,7 @@ fileignoreconfig:
   checksum: 6fd38a5a81f6e9a65bd8f111c9d3184c60bc518a1e77e97268a9b5c6095f007c
 - filename: client/src/Config.ts
   checksum: 3b5fbbdefe2cc84c0c270baa1b00f9a373ed29581bb229dfc85668f4325c6bd0
-- filename: client/src/dashboard/charts/__snapshots__/DonutChartTabsTest.test.tsx.snap
+- filename: client/src/dashboard/charts/__snapshots__/DonutChartTest.test.tsx.snap
   checksum: 47b097049490c3d280da370451b1b6bf44f8c30eddcca847b763a9d77735c961
 - filename: client/src/dashboard/filters/Filters.test.ts
   checksum: 590d77373cd099c5fc834d1549544b31c2e27ff419e2396acabafc5e1253a912

@@ -3,12 +3,35 @@
  */
 
 import React, { ReactElement } from 'react'
-import { Box, Card, Select, MenuItem } from '@material-ui/core'
+import {
+  Box,
+  MenuItem,
+  makeStyles,
+  FormControl,
+  Card,
+  Select,
+  createStyles,
+  Paper,
+  withStyles,
+  InputBase,
+} from '@material-ui/core'
 import { ApexDonutChart } from './ApexDonutChart'
 import { ChartDataTypes, EstimationResult } from '../../models/types'
-import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import FormControl from '@material-ui/core/FormControl'
+
+const BootstrapInput = withStyles(() =>
+  createStyles({
+    input: {
+      border: '1px solid #ced4da',
+      fontSize: 16,
+      padding: '10px 26px 10px 12px',
+      width: '65px',
+      '&:hover': {
+        borderColor: 'black',
+      },
+    },
+  }),
+)(InputBase)
+
 const useStyles = makeStyles(() => {
   return {
     root: {
@@ -19,7 +42,7 @@ const useStyles = makeStyles(() => {
       boxShadow: 'none',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'baseline',
     },
     title: {
       fontSize: '24px',
@@ -32,7 +55,7 @@ const useStyles = makeStyles(() => {
   }
 })
 
-export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElement => {
+export const DonutChart = (props: { data: EstimationResult[] }): ReactElement => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
@@ -69,7 +92,7 @@ export const DonutChartTabs = (props: { data: EstimationResult[] }): ReactElemen
         <Paper className={classes.topContainer}>
           <p className={classes.title}>Emissions by:</p>
           <FormControl variant={'outlined'}>
-            <Select id="donut-chart-dropdown" value={value} onChange={handleChange}>
+            <Select value={value} onChange={handleChange} input={<BootstrapInput />}>
               <MenuItem value={0}>Region</MenuItem>
               <MenuItem value={1}>Account</MenuItem>
               <MenuItem value={2}>Service</MenuItem>
