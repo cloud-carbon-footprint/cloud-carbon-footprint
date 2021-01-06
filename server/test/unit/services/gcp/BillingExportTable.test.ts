@@ -13,6 +13,7 @@ import {
   mockQueryResultsAppEngineSSDStorageRAM,
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRamAndUnknownUsages,
+  mockQueryResultsNetworking,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -127,6 +128,24 @@ describe('GCP BillingExportTable Service', () => {
   it('Returns estimation results Compute Engine Ram and Unkown Usage Types', async () => {
     //given
     mockJob.getQueryResults.mockResolvedValue(mockQueryResultsComputeEngineRamAndUnknownUsages)
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(startDate, endDate)
+
+    // then
+    const expectedResult: EstimationResult[] = []
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns null estimates for networking', async () => {
+    //given
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsNetworking)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),

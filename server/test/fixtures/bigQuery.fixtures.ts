@@ -153,3 +153,30 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
     },
   ],
 ]
+
+export const mockQueryResultsNetworking: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud SQL',
+      usageType: 'Cloud SQL for PostgreSQL: Zonal - IP address reservation in Americas',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 14551,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud SQL',
+      usageType: 'IP address idling in seconds for DB in Americas',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 18198540,
+      cost: 10,
+    },
+  ],
+]

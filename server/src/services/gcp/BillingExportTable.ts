@@ -14,7 +14,12 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import { EstimationResult } from '@application/EstimationResult'
 import configLoader from '@application/ConfigLoader'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
-import { MEMORY_USAGE_TYPES, UNKNOWN_USAGE_TYPES, UNKNOWN_SERVICE_TYPES } from '@services/gcp/BillingExportTypes'
+import {
+  MEMORY_USAGE_TYPES,
+  UNKNOWN_USAGE_TYPES,
+  UNKNOWN_SERVICE_TYPES,
+  NETWORKING_USAGE_TYPES,
+} from '@services/gcp/BillingExportTypes'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -34,7 +39,12 @@ export default class BillingExportTable {
     const results: MutableEstimationResult[] = []
 
     usageRows.map((usageRow) => {
-      if (this.isMemoryUsage(usageRow.usageType) || this.isUnknownUsage(usageRow)) return []
+      if (
+        this.isMemoryUsage(usageRow.usageType) ||
+        this.isNetworkingUsage(usageRow.usageType) ||
+        this.isUnknownUsage(usageRow)
+      )
+        return []
       const timestamp = new Date(usageRow.timestamp.value)
       usageRow.cloudProvider = 'GCP'
       usageRow.timestamp = timestamp
@@ -87,6 +97,9 @@ export default class BillingExportTable {
 
   private isMemoryUsage(usageType: string): boolean {
     return this.containsAny(MEMORY_USAGE_TYPES, usageType)
+  }
+  private isNetworkingUsage(usageType: string): boolean {
+    return this.containsAny(NETWORKING_USAGE_TYPES, usageType)
   }
 
   private containsAny(substrings: string[], stringToSearch: string): boolean {
