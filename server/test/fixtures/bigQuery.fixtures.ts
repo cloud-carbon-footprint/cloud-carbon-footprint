@@ -93,3 +93,19 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
     },
   ],
 ]
+
+export const mockQueryResultsComputeEngineRam: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Compute engine',
+      usageType: 'Commitment v1: Ram in EMEA for 1 Year',
+      usageUnit: 'byte-seconds',
+      vcpus: null,
+      usageAmount: 120,
+      cost: 10,
+    },
+  ],
+]
