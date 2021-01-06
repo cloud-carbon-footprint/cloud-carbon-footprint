@@ -47,14 +47,12 @@ export default class BillingExportTable {
       )
         return []
 
-      if (usageRow.serviceName === 'Cloud SQL') {
-        usageRow.vcpus = this.getVCPUForCloudSQL(usageRow)
+      // Handle Cloud SQL edge case where we can infer the vCPUs from the usage type.
+      if (usageRow.serviceName === 'Cloud SQL' && usageRow.usageUnit === 'seconds') {
+        usageRow.vcpus = this.getVCpuForCloudSQL(usageRow)
         if (!usageRow.vcpus) return []
       }
 
-      // if (usageRow.serviceName === 'Cloud SQL' && +extractedVCPUValue) {
-      //   usageRow.vcpus = extractedVCPUValue
-      // }
       const timestamp = new Date(usageRow.timestamp.value)
       usageRow.cloudProvider = 'GCP'
       usageRow.timestamp = timestamp
@@ -163,6 +161,15 @@ export default class BillingExportTable {
     return (usageRow.vcpus * usageRow.usageAmount) / 3600
   }
 
+  private getVCpuForCloudSQL(usageRow: any): string | null {
+    const extractedVCPUValue = this.extractVCpuFromUsageType(usageRow.usageType)
+    if (+extractedVCPUValue) {
+      return extractedVCPUValue
+    } else {
+      return null
+    }
+  }
+
   private extractVCpuFromUsageType(usageType: string): string {
     const substrings = usageType.split(' ')
 
@@ -172,15 +179,6 @@ export default class BillingExportTable {
 
     if (!isNaN(+substrings[index])) {
       return substrings[index]
-    }
-  }
-
-  private getVCPUForCloudSQL(usageRow: any) {
-    const extractedVCPUValue = this.extractVCpuFromUsageType(usageRow.usageType)
-    if (+extractedVCPUValue) {
-      return extractedVCPUValue
-    } else {
-      return null
     }
   }
 }

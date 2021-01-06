@@ -143,7 +143,7 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  xit('Returns null estimates for networking and CLoud SQL Compute un', async () => {
+  it('Returns null estimates for networking and CLoud SQL Compute usage', async () => {
     //given
     mockJob.getQueryResults.mockResolvedValue(mockQueryResultsNetworkingAndCloudSQLCompute)
     //when
