@@ -13,7 +13,7 @@ import {
   mockQueryResultsAppEngineSSDStorageRAM,
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRamAndUnknownUsages,
-  mockQueryResultsNetworking,
+  mockQueryResultsNetworkingAndCloudSQLCompute,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -143,9 +143,9 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns null estimates for networking', async () => {
+  xit('Returns null estimates for networking and CLoud SQL Compute', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsNetworking)
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsNetworkingAndCloudSQLCompute)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -157,7 +157,23 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(startDate, endDate)
 
     // then
-    const expectedResult: EstimationResult[] = []
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            wattHours: 101.75,
+            co2e: 0.0292887088065,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud SQL',
+            cost: 10,
+            region: 'us-east1',
+          },
+        ],
+      },
+    ]
     expect(result).toEqual(expectedResult)
   })
 })

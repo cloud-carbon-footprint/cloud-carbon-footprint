@@ -154,7 +154,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
   ],
 ]
 
-export const mockQueryResultsNetworking: any[][] = [
+export const mockQueryResultsNetworkingAndCloudSQLCompute: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
@@ -176,6 +176,17 @@ export const mockQueryResultsNetworking: any[][] = [
       usageUnit: 'seconds',
       vcpus: null,
       usageAmount: 18198540,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'Cloud SQL',
+      usageType: 'Cloud SQL for MySQL: Zonal - 4 vCPU + 15GB RAM in Los Angeles',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 50000,
       cost: 10,
     },
   ],
