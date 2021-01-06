@@ -12,7 +12,7 @@ import BillingExportTable from '@services/gcp/BillingExportTable'
 import {
   mockQueryResultsAppEngineSSDStorageRAM,
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
-  mockQueryResultsComputeEngineRam,
+  mockQueryResultsComputeEngineRamLicensing,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -124,9 +124,9 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns estimation results Compute Engine Ram', async () => {
+  it('Returns estimation results Compute Engine Ram and Licensing Fee', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsComputeEngineRam)
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsComputeEngineRamLicensing)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),

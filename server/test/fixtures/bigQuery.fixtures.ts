@@ -94,7 +94,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
   ],
 ]
 
-export const mockQueryResultsComputeEngineRam: any[][] = [
+export const mockQueryResultsComputeEngineRamLicensing: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
@@ -105,6 +105,17 @@ export const mockQueryResultsComputeEngineRam: any[][] = [
       usageUnit: 'byte-seconds',
       vcpus: null,
       usageAmount: 120,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Bitnami Elasticsearch Certified by Bitnami',
+      usageType: 'Licensing Fee for Bitnami Elasticsearch',
+      usageUnit: 'seconds',
+      vcpus: '1',
+      usageAmount: 25438523,
       cost: 10,
     },
   ],

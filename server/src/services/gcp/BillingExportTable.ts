@@ -14,7 +14,7 @@ import FootprintEstimate from '@domain/FootprintEstimate'
 import { EstimationResult } from '@application/EstimationResult'
 import configLoader from '@application/ConfigLoader'
 import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
-import { MEMORY_USAGE_TYPES } from '@services/gcp/BillingExportUsageTypes'
+import { MEMORY_USAGE_TYPES, UNKNOWN_USAGE_TYPES } from '@services/gcp/BillingExportUsageTypes'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -34,19 +34,22 @@ export default class BillingExportTable {
     const results: MutableEstimationResult[] = []
 
     usageRows.map((usageRow) => {
-      if (this.isMemoryUsage(usageRow.usageType)) return []
+      if (this.isMemoryUsage(usageRow.usageType) || this.isUnknownUsage(usageRow.usageType)) return []
       const timestamp = new Date(usageRow.timestamp.value)
       usageRow.cloudProvider = 'GCP'
       usageRow.timestamp = timestamp
 
       // if usageUnit is seconds then estimate compute otherwise estimate storage
-      const footprintEstimate = usageRow.usageUnit === 'seconds' ?  this.getComputeFootprintEstimate(usageRow, timestamp) : this.getStorageFootprintEstimate(usageRow, timestamp)
+      const footprintEstimate =
+        usageRow.usageUnit === 'seconds'
+          ? this.getComputeFootprintEstimate(usageRow, timestamp)
+          : this.getStorageFootprintEstimate(usageRow, timestamp)
       buildEstimateFromCostAndUsageRow(results, usageRow, footprintEstimate)
     })
     return results
   }
 
-  private getComputeFootprintEstimate(usageRow: any, timestamp: Date ): FootprintEstimate {
+  private getComputeFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: 50,
       numberOfvCpus: this.getVCpuHours(usageRow),
@@ -56,7 +59,7 @@ export default class BillingExportTable {
     return this.computeEstimator.estimate([computeUsage], usageRow.region, 'GCP')[0]
   }
 
-  private getStorageFootprintEstimate(usageRow: any, timestamp: Date ): FootprintEstimate {
+  private getStorageFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
     // storage estimation requires usage amount in gigabytes
     const usageAmountGb = this.convertByteSecondsToGigabyte(usageRow.usageAmount)
     const storageUsage: StorageUsage = {
@@ -64,9 +67,19 @@ export default class BillingExportTable {
       sizeGb: usageAmountGb,
     }
     if (usageRow.usageType.includes('SSD')) {
-      return {usesAverageCPUConstant: false, ...this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]}
+      return {
+        usesAverageCPUConstant: false,
+        ...this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0],
+      }
     }
-    return {usesAverageCPUConstant: false, ...this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0]}
+    return {
+      usesAverageCPUConstant: false,
+      ...this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0],
+    }
+  }
+
+  private isUnknownUsage(usageType: string): boolean {
+    return this.containsAny(UNKNOWN_USAGE_TYPES, usageType)
   }
 
   private isMemoryUsage(usageType: string): boolean {
