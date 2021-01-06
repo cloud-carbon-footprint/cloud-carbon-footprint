@@ -46,6 +46,7 @@
     "test": "react-scripts --expose-gc test --logHeapUsage --maxWorkers 2 --coverage --watchAll=false",
     "test:clean": "react-scripts test --clearCache",
     "test:precommit": "npm test -- --bail",
+    "test:snapshot": "npm test -- -u",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./src/",
