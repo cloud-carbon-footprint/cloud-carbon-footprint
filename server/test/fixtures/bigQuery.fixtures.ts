@@ -94,7 +94,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
   ],
 ]
 
-export const mockQueryResultsComputeEngineRamLicensing: any[][] = [
+export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
@@ -116,6 +116,39 @@ export const mockQueryResultsComputeEngineRamLicensing: any[][] = [
       usageUnit: 'seconds',
       vcpus: '1',
       usageAmount: 25438523,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud DNS',
+      usageType: 'ManagedZone',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 1010797200,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud Key Management Service (KMS)',
+      usageType: 'Active software symmetric key versions',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 41330372438,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Cloud Machine Learning Engine',
+      usageType: 'Online Prediction Node-Hours (US) for mls1-c1-m2.',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 14551,
       cost: 10,
     },
   ],
