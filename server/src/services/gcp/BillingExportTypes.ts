@@ -30,3 +30,5 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
   'Support',
   'Secret Manager',
 ]
+
+export const VCPU_STRING_FORMATS: string[] = ['VCPU', 'vCPU']

@@ -19,6 +19,7 @@ import {
   UNKNOWN_USAGE_TYPES,
   UNKNOWN_SERVICE_TYPES,
   NETWORKING_USAGE_TYPES,
+  VCPU_STRING_FORMATS,
 } from '@services/gcp/BillingExportTypes'
 
 export default class BillingExportTable {
@@ -45,6 +46,15 @@ export default class BillingExportTable {
         this.isUnknownUsage(usageRow)
       )
         return []
+
+      if (usageRow.serviceName === 'Cloud SQL') {
+        usageRow.vcpus = this.getVCPUForCloudSQL(usageRow)
+        if (!usageRow.vcpus) return []
+      }
+
+      // if (usageRow.serviceName === 'Cloud SQL' && +extractedVCPUValue) {
+      //   usageRow.vcpus = extractedVCPUValue
+      // }
       const timestamp = new Date(usageRow.timestamp.value)
       usageRow.cloudProvider = 'GCP'
       usageRow.timestamp = timestamp
@@ -96,8 +106,10 @@ export default class BillingExportTable {
   }
 
   private isMemoryUsage(usageType: string): boolean {
-    return this.containsAny(MEMORY_USAGE_TYPES, usageType)
+    // We only want to ignore memory usage that is not also compute usage (determined by containing VCPU usage)
+    return this.containsAny(MEMORY_USAGE_TYPES, usageType) && !this.containsAny(VCPU_STRING_FORMATS, usageType)
   }
+
   private isNetworkingUsage(usageType: string): boolean {
     return this.containsAny(NETWORKING_USAGE_TYPES, usageType)
   }
@@ -149,5 +161,26 @@ export default class BillingExportTable {
 
   private getVCpuHours(usageRow: any): number {
     return (usageRow.vcpus * usageRow.usageAmount) / 3600
+  }
+
+  private extractVCpuFromUsageType(usageType: string): string {
+    const substrings = usageType.split(' ')
+
+    let index = substrings.indexOf('vCPU')
+    if (index === -1) index = substrings.indexOf('VCPU')
+    index--
+
+    if (!isNaN(+substrings[index])) {
+      return substrings[index]
+    }
+  }
+
+  private getVCPUForCloudSQL(usageRow: any) {
+    const extractedVCPUValue = this.extractVCpuFromUsageType(usageRow.usageType)
+    if (+extractedVCPUValue) {
+      return extractedVCPUValue
+    } else {
+      return null
+    }
   }
 }

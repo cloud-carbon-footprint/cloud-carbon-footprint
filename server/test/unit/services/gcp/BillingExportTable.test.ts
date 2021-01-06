@@ -143,7 +143,7 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  xit('Returns null estimates for networking and CLoud SQL Compute', async () => {
+  xit('Returns null estimates for networking and CLoud SQL Compute un', async () => {
     //given
     mockJob.getQueryResults.mockResolvedValue(mockQueryResultsNetworkingAndCloudSQLCompute)
     //when
@@ -162,13 +162,13 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 101.75,
-            co2e: 0.0292887088065,
-            usesAverageCPUConstant: false,
+            wattHours: 13490.015000000001,
+            co2e: 3.8830970135657705,
+            usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
             serviceName: 'Cloud SQL',
-            cost: 10,
+            cost: 23,
             region: 'us-east1',
           },
         ],
