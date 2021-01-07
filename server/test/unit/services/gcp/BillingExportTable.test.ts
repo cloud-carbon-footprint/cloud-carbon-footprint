@@ -18,8 +18,8 @@ import {
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
-
 const mockCreateQueryJob = jest.fn().mockResolvedValue([mockJob, 'test-job-id'])
+
 jest.mock('@google-cloud/bigquery', () => {
   return {
     BigQuery: jest.fn().mockImplementation(() => {
@@ -33,6 +33,7 @@ jest.mock('@google-cloud/bigquery', () => {
 describe('GCP BillingExportTable Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
+
   it('Returns estimation results for App Engine SSD Storage & GCS Storage accumulated, ignoring RAM', async () => {
     // given
     mockJob.getQueryResults.mockResolvedValue(mockQueryResultsAppEngineSSDStorageRAM)
@@ -220,13 +221,36 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
+  it('throws an error when get query results fails', async () => {
+    const mockErrorDetails = {
+      message: 'Not found: Job',
+      domain: 'global',
+      reason: 'notFound',
+    }
+    const apiError: any = new Error('Test message')
+    apiError.errors = [mockErrorDetails]
+
+    mockJob.getQueryResults.mockRejectedValue(apiError)
+
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new BigQuery(),
+    )
+
+    await expect(() => billingExportTableService.getEstimates(startDate, endDate)).rejects.toThrow(
+      `BigQuery get Query Results failed. Reason: ${mockErrorDetails.reason}, Domain: ${mockErrorDetails.domain}, Message: ${mockErrorDetails.message}`,
+    )
+  })
+
   it('throws an error when create query job fails', async () => {
     const mockErrorDetails = {
       reason: 'Invalid Query',
       location: 'query',
       message: 'Test message',
     }
-    const apiError: any = new Error('Test message Thing 2')
+    const apiError: any = new Error('Test message')
     apiError.errors = [mockErrorDetails]
 
     mockCreateQueryJob.mockRejectedValue(apiError)

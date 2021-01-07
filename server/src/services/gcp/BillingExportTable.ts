@@ -118,7 +118,7 @@ export default class BillingExportTable {
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
     const query = `SELECT
-                          DATE(usage_start_time) AS timestamp,
+                    DATE(usage_start_time) AS timestamp,
                     project.name as accountName,
                     location.region as region,
                     service.description as serviceName,
@@ -132,14 +132,14 @@ export default class BillingExportTable {
                   LEFT JOIN
                   UNNEST(system_labels) AS system_labels
                   ON
-                  system_labels.key LIKE "%cores%"
+                    system_labels.key LIKE "%cores%"
                   WHERE
-                  cost_type != 'rounding_error'
-                  AND usage.unit IN ('byte-seconds', 'seconds')
-                  AND usage_start_time >= TIMESTAMP('${moment(start).format('YYYY-MM-DD')}')
-                  AND usage_end_time <= TIMESTAMP('${moment(end).format('YYYY-MM-DD')}')
+                    cost_type != 'rounding_error'
+                    AND usage.unit IN ('byte-seconds', 'seconds')
+                    AND usage_start_time >= TIMESTAMP('${moment(start).format('YYYY-MM-DD')}')
+                    AND usage_end_time <= TIMESTAMP('${moment(end).format('YYYY-MM-DD')}')
                   GROUP BY
-                  timestamp,
+                    timestamp,
                     project.name,
                     location.region,
                     service.description,
@@ -147,6 +147,22 @@ export default class BillingExportTable {
                     usage.unit,
                     vcpus`
 
+    let job: Job = await this.createQueryJob(query)
+    return await this.getQueryResults(job)
+  }
+
+  private async getQueryResults(job: Job) {
+    let rows: any
+    try {
+      ;[rows] = await job.getQueryResults()
+    } catch (e) {
+      const { reason, domain, message } = e.errors[0]
+      throw new Error(`BigQuery get Query Results failed. Reason: ${reason}, Domain: ${domain}, Message: ${message}`)
+    }
+    return rows
+  }
+
+  private async createQueryJob(query: string) {
     let job: Job
     try {
       ;[job] = await this.bigQuery.createQueryJob({ query: query })
@@ -154,9 +170,7 @@ export default class BillingExportTable {
       const { reason, location, message } = e.errors[0]
       throw new Error(`BigQuery create Query Job failed. Reason: ${reason}, Location: ${location}, Message: ${message}`)
     }
-
-    const [rows] = await job.getQueryResults()
-    return rows
+    return job
   }
 
   private convertByteSecondsToGigabyte(usageAmount: number): number {
