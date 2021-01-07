@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   filter: {
     resize: 'none',
     marginRight: theme.spacing(PADDING_FILTER),
+    minWidth: '220px',
   },
   filterContainerSection: {
     display: 'flex',
