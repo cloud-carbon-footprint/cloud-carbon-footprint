@@ -2,36 +2,36 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { render, RenderResult } from '@testing-library/react'
+import { fireEvent, act, render, RenderResult } from '@testing-library/react'
 import React, { Dispatch, SetStateAction } from 'react'
 import AccountFilter from './AccountFilter'
 import { Filters } from './Filters'
+jest.mock('./Filters')
+
 describe('AccountFilter', () => {
   let page: RenderResult
-  const account = [{ cloudProvider: 'AWS', key: '1212121222121', name: 'test account' }]
-  jest.mock('./Filters', () => {
-    return jest.fn().mockImplementation(() => {
-      return {
-        accountLabel: 'Accounts: 1 of 1',
-        accounts: [
-          {
-            cloudProvider: 'AWS',
-            key: '1212121222121',
-            name: 'test account',
-          },
-        ],
-        withAccounts: jest.fn(),
-      }
-    })
-  })
-
+  let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
+  let mockFilters: Filters
+  const account = [{ cloudProvider: 'aws', key: '1212121222121', name: 'test account' }]
   beforeEach(() => {
-    const mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>> = jest.fn()
-    const mockFilters = new Filters()
+    mockFilters = new Filters()
+    mockSetFilters = jest.fn()
     page = render(<AccountFilter filters={mockFilters} setFilters={mockSetFilters} options={{ accounts: account }} />)
   })
 
-  it('displays the account filter dropdown', () => {
+  it('displays the account filter dropdown', async () => {
+    act(() => {
+      fireEvent.click(page.getByLabelText('Open'))
+    })
     expect(page.getByText('Accounts: 1 of 1')).toBeInTheDocument()
+    expect(page.getByText('AWS: 1 of 1')).toBeInTheDocument()
+
+    mockFilters.withAccounts([
+      {
+        cloudProvider: '',
+        key: 'all',
+        name: 'All Accounts',
+      },
+    ])
   })
 })

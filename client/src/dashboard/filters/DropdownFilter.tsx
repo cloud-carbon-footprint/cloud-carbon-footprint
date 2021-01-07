@@ -45,6 +45,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+function getLabelOfGroupByCloudProviders(
+  cloudProvider: string,
+  selections: DropdownOption[],
+  options: DropdownOption[],
+): string {
+  let totalSelections = 0
+  let totalOptions = 0
+  selections.forEach((selection) => {
+    selection.cloudProvider === cloudProvider && totalSelections++
+  })
+  options.forEach((option) => {
+    option.cloudProvider === cloudProvider && totalOptions++
+  })
+  return `${toUpper(cloudProvider)}: ${totalSelections} of ${totalOptions}`
+}
+
 const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
   const localClasses = useStyles()
 
@@ -57,7 +73,11 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
       disablePortal
       size={'small'}
       options={props.options}
-      groupBy={(option) => (option.cloudProvider ? toUpper(option.cloudProvider!.trim()) : '')}
+      groupBy={(option) =>
+        option.cloudProvider
+          ? getLabelOfGroupByCloudProviders(option.cloudProvider!, props.selections, props.options)
+          : ''
+      }
       value={props.selections.map(props.selectionToOption)}
       onChange={(_, selections) => {
         props.updateSelections(selections)
