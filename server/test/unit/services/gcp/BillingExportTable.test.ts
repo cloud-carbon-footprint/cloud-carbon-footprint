@@ -19,11 +19,12 @@ import {
 
 const mockJob = { getQueryResults: jest.fn() }
 
+const mockCreateQueryJob = jest.fn().mockResolvedValue([mockJob, 'test-job-id'])
 jest.mock('@google-cloud/bigquery', () => {
   return {
     BigQuery: jest.fn().mockImplementation(() => {
       return {
-        createQueryJob: jest.fn().mockResolvedValue([mockJob, 'test-job-id']),
+        createQueryJob: mockCreateQueryJob,
       }
     }),
   }
@@ -217,5 +218,28 @@ describe('GCP BillingExportTable Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
+  })
+
+  it('throws an error when create query job fails', async () => {
+    const mockErrorDetails = {
+      reason: 'Invalid Query',
+      location: 'query',
+      message: 'Test message',
+    }
+    const apiError: any = new Error('Test message Thing 2')
+    apiError.errors = [mockErrorDetails]
+
+    mockCreateQueryJob.mockRejectedValue(apiError)
+
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new BigQuery(),
+    )
+
+    await expect(() => billingExportTableService.getEstimates(startDate, endDate)).rejects.toThrow(
+      `BigQuery create Query Job failed. Reason: ${mockErrorDetails.reason}, Location: ${mockErrorDetails.location}, Message: ${mockErrorDetails.message}`,
+    )
   })
 })

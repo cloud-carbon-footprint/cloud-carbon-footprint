@@ -4,7 +4,7 @@
 /* eslint-disable */
 /* istanbul ignore file */
 import moment from 'moment'
-import { BigQuery } from '@google-cloud/bigquery'
+import { BigQuery, Job } from '@google-cloud/bigquery'
 
 import ComputeEstimator from '@domain/ComputeEstimator'
 import StorageUsage from '@domain/StorageUsage'
@@ -147,7 +147,13 @@ export default class BillingExportTable {
                     usage.unit,
                     vcpus`
 
-    const [job] = await this.bigQuery.createQueryJob({ query: query })
+    let job: Job
+    try {
+      ;[job] = await this.bigQuery.createQueryJob({ query: query })
+    } catch (e) {
+      const { reason, location, message } = e.errors[0]
+      throw new Error(`BigQuery create Query Job failed. Reason: ${reason}, Location: ${location}, Message: ${message}`)
+    }
 
     const [rows] = await job.getQueryResults()
     return rows
