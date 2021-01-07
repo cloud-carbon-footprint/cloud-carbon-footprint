@@ -70,7 +70,7 @@
     "commander": "^6.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "googleapis": "^66.0.0",
+    "googleapis": "^67.0.0",
     "helmet": "^4.1.1",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
