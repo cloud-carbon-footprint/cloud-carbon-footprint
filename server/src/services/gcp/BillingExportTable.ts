@@ -163,22 +163,15 @@ export default class BillingExportTable {
 
   private getVCpuForCloudSQL(usageRow: any): string | null {
     const extractedVCPUValue = this.extractVCpuFromUsageType(usageRow.usageType)
-    if (+extractedVCPUValue) {
-      return extractedVCPUValue
-    } else {
-      return null
-    }
+    if (extractedVCPUValue) return extractedVCPUValue
+    return null
   }
 
   private extractVCpuFromUsageType(usageType: string): string {
-    const substrings = usageType.split(' ')
-
-    let index = substrings.indexOf('vCPU')
-    if (index === -1) index = substrings.indexOf('VCPU')
-    index--
-
-    if (!isNaN(+substrings[index])) {
-      return substrings[index]
+    if (/vCPU|VCPU/.test(usageType)) {
+      const vcpu = usageType[usageType.indexOf('CPU') - 3]
+      return !isNaN(parseInt(vcpu)) && vcpu
     }
+    return null
   }
 }
