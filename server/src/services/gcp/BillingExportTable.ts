@@ -168,7 +168,7 @@ export default class BillingExportTable {
   }
 
   private extractVCpuFromUsageType(usageType: string): string {
-    const vcpu = usageType.match(/\d+(?: [vV])/g)
-    return vcpu && vcpu[0].split(/(?<=^\S+)\s/)[0]
+    const vcpu = usageType.match(/\d+(?: [vV]CPU)/g)
+    return vcpu && vcpu[0].split(' ')[0]
   }
 }
