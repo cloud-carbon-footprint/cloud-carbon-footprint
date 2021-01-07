@@ -169,6 +169,7 @@ export default class BillingExportTable {
 
   private extractVCpuFromUsageType(usageType: string): string {
     if (/vCPU|VCPU/.test(usageType)) {
+      //This works only for single digits for vcpu count
       const vcpu = usageType[usageType.indexOf('CPU') - 3]
       return !isNaN(parseInt(vcpu)) && vcpu
     }

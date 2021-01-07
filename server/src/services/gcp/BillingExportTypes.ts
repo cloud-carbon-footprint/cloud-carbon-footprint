@@ -29,6 +29,12 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
   'SendGrid',
   'Support',
   'Secret Manager',
+  'Cloud Bigtable',
+  'Cloud Build',
+  'Kubernetes Engine',
+  'Cloud Run',
+  'Cloud Composer',
+  'Cloud Functions',
 ]
 
 export const VCPU_STRING_FORMATS: string[] = ['VCPU', 'vCPU']

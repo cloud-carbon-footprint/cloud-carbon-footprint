@@ -224,3 +224,29 @@ export const mockQueryResultsNetworkingAndCloudSQLCompute: any[][] = [
     },
   ],
 ]
+export const mockQueryAppEngineCompute: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'App Engine',
+      usageType: 'Backend Instances',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 14551,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'Cloud Dataflow',
+      usageType: 'vCPU Time Batch Iowa',
+      usageUnit: 'seconds',
+      vcpus: null,
+      usageAmount: 1141961,
+      cost: 190,
+    },
+  ],
+]
