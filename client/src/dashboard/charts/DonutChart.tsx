@@ -28,6 +28,10 @@ const BootstrapInput = withStyles(() =>
       '&:hover': {
         borderColor: 'black',
       },
+      '&:focus': {
+        backgroundColor: 'white',
+        borderRadius: 4,
+      },
     },
   }),
 )(InputBase)
