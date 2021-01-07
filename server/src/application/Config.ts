@@ -38,7 +38,10 @@ export interface CCFConfig {
       targetAccountEmail?: string
       targetAccountPrivateKey?: string
     }
+    USE_BILLING_DATA?: boolean
     BIG_QUERY_TABLE?: string
+    BILLING_ACCOUNT_ID?: string
+    BILLING_ACCOUNT_NAME?: string
   }
   LOGGING_MODE?: string
 }
@@ -134,7 +137,10 @@ const appConfig: CCFConfig = {
       targetAccountEmail: process.env.GCP_TARGET_ACCOUNT_EMAIL || '',
       targetAccountPrivateKey: escapePrivateKey(process.env.GCP_TARGET_ACCOUNT_PRIVATE_KEY) || '',
     },
+    USE_BILLING_DATA: !!process.env.GCP_USE_BILLING_DATA,
     BIG_QUERY_TABLE: process.env.GCP_BIG_QUERY_TABLE || '',
+    BILLING_ACCOUNT_ID: process.env.GCP_BILLING_ACCOUNT_ID || '',
+    BILLING_ACCOUNT_NAME: process.env.GCP_BILLING_ACCOUNT_NAME || '',
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
 }

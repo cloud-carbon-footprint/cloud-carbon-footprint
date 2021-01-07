@@ -62,7 +62,7 @@ export default function CloudCarbonContainer(): ReactElement {
   const { data, loading } = useRemoteService([], startDate, endDate)
 
   let filteredAccountsResults: FilterResultResponse
-  if (config().AWS.USE_BILLING_DATA) {
+  if (config().AWS.USE_BILLING_DATA || config().GCP.USE_BILLING_DATA) {
     filteredAccountsResults = useAccountNamesFromEstimates(data)
   } else {
     filteredAccountsResults = useFilterDataService()

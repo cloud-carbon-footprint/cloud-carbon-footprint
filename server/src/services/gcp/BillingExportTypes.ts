@@ -16,7 +16,7 @@ export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory', 'Redis Capa
 export const UNKNOWN_USAGE_TYPES: string[] = [
   'Licensing Fee',
   'Commitment',
-  'Comit',
+  'Commit',
   'GPU', // Currently unsupported for carbon estimation
 ]
 
