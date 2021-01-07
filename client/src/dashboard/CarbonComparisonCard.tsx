@@ -60,11 +60,10 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
     metricTwo: {
       color: palette.primary.light,
       fontWeight: typography.fontWeightBold,
-      padding: spacing(2),
     },
     icon: {
-      height: 120,
-      width: 120,
+      height: 240,
+      width: 200,
       color: palette.primary.light,
     },
     source: {
@@ -110,7 +109,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
       icon: <DriveEta className={classes.icon} data-testid="milesIcon" />,
       total: milesSum,
       textOne: 'greenhouse gas emissions from',
-      textTwo: 'miles driven by an average passenger vehicle',
+      textTwo: 'miles driven on average',
     },
     trees: {
       icon: <Eco className={classes.icon} data-testid="treesIcon" />,
