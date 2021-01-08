@@ -124,7 +124,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       {
         max: getMaxCo2,
         title: {
-          text: 'CO2e (kg)',
+          text: 'CO2e (metric tons)',
           offsetX: -8,
           style: {
             fontSize: '15px',

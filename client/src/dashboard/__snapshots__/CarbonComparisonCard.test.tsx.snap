@@ -17,7 +17,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       data-testid="co2"
     >
       7
-       kg CO2e
+       mt CO2e
     </p>
     <p
       className="MuiTypography-root makeStyles-posOne-3 MuiTypography-body1"

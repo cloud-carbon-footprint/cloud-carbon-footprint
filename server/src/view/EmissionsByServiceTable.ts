@@ -15,7 +15,7 @@ import { EstimationResult } from '@application/EstimationResult'
 export default function EmissionsByServiceTable(
   estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
-  const headers = ['Service', 'Watt Hours', 'Kg CO2e Emissions', 'Cost']
+  const headers = ['Service', 'Watt Hours', 'mt CO2e Emissions', 'Cost']
   const colWidths: number[] = [15, 20, 25, 20]
   const table: string[][] = [headers]
 

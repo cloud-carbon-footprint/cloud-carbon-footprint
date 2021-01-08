@@ -118,7 +118,7 @@ describe('transformData', () => {
     expect(sumCO2ByServiceOrRegion(data, 'service')).toEqual(expected)
   })
 
-  it('returns the sum of CO2 kg and gallons', () => {
+  it('returns the sum of CO2 mt and gallons', () => {
     const expected = 30
     expect(sumCO2(data)).toEqual(expected)
   })

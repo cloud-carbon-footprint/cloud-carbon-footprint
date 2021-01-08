@@ -8,7 +8,7 @@ import { EstimationResult } from '@application/EstimationResult'
 export default function EmissionsByDayTable(
   estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
-  const headers = ['Date', 'Watt Hours', 'Kg CO2e Emissions']
+  const headers = ['Date', 'Watt Hours', 'mt CO2e Emissions']
   const colWidths: number[] = [15, 20, 25]
   const table: string[][] = [headers]
 

@@ -27,9 +27,9 @@ export const CustomTooltip = ({
         <b>{date}</b>
       </div>
       {data[dataPointIndex].usesAverageCPUConstant ? (
-        <div>{data[dataPointIndex].y} kg CO2e*</div>
+        <div>{data[dataPointIndex].y} mt CO2e*</div>
       ) : (
-        <div> {data[dataPointIndex].y} kg CO2e</div>
+        <div> {data[dataPointIndex].y} mt CO2e</div>
       )}
       <div>{data[dataPointIndex].wattHours} watt hrs</div>
       <div>${data[dataPointIndex].cost} cost</div>

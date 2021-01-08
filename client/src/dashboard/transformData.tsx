@@ -108,9 +108,9 @@ const useAccountNamesFromEstimates = (data: EstimationResult[]): FilterResultRes
 
     const accountNames = serviceEstimates.map((estimate) => {
       return {
-        cloudProvider: estimate.cloudProvider.toLowerCase(),
-        key: estimate.accountName ? estimate.accountName : 'Account name unknown',
-        name: estimate.accountName ? estimate.accountName : 'Account name unknown',
+        cloudProvider: estimate.cloudProvider?.toLowerCase(),
+        key: estimate.accountName,
+        name: estimate.accountName,
       }
     })
     setFilterResultResponse({ accounts: uniq(accountNames) })

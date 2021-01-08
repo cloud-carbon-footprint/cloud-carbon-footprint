@@ -134,7 +134,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           Your cumulative emissions are
         </Typography>
         <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
-          {formatNumber(kgSum)} kg CO2e
+          {formatNumber(kgSum)} mt CO2e
         </Typography>
         <Typography className={classes.posOne}>that is equivalent to</Typography>
       </CardContent>

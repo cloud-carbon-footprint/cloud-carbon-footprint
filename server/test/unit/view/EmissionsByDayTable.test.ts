@@ -151,7 +151,7 @@ describe('EmissionsByDayTable', () => {
 
   it('prints out the given estimation results grouped by service', () => {
     expect(result.table).toEqual([
-      ['Date', 'Watt Hours', 'Kg CO2e Emissions'],
+      ['Date', 'Watt Hours', 'mt CO2e Emissions'],
       ['2020-07-10', '15.00', '15.000000'],
       ['2020-07-09', '1946.00', '1960.000000'],
       ['Total', '1961.00', '1975.000000'],
