@@ -3,6 +3,7 @@
  */
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import FootprintEstimate from '@domain/FootprintEstimate'
+import BillingExportRow from '@services/gcp/BillingExportRow'
 
 export interface MutableEstimationResult {
   timestamp: Date
@@ -22,7 +23,7 @@ export interface MutableServiceEstimate {
 
 export default function buildEstimateFromCostAndUsageRow(
   results: MutableEstimationResult[],
-  costAndUsageReportRow: CostAndUsageReportsRow,
+  costAndUsageReportRow: CostAndUsageReportsRow | BillingExportRow,
   footprintEstimate: FootprintEstimate,
 ) {
   const serviceEstimate: MutableServiceEstimate = {

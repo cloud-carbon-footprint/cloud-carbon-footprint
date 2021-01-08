@@ -1,8 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-/* eslint-disable */
-/* istanbul ignore file */
+
 import moment from 'moment'
 import { BigQuery, Job } from '@google-cloud/bigquery'
 
@@ -21,6 +20,7 @@ import {
   NETWORKING_USAGE_TYPES,
   VCPU_STRING_FORMATS,
 } from '@services/gcp/BillingExportTypes'
+import BillingExportRow from '@services/gcp/BillingExportRow'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -40,29 +40,23 @@ export default class BillingExportTable {
     const results: MutableEstimationResult[] = []
 
     usageRows.map((usageRow) => {
+      const billingExportRow = new BillingExportRow(usageRow)
+      billingExportRow.setTimestamp(usageRow.timestamp)
+      billingExportRow.setVCpuHours(usageRow.vcpus)
+
       if (
-        this.isMemoryUsage(usageRow.usageType) ||
-        this.isNetworkingUsage(usageRow.usageType) ||
-        this.isUnknownUsage(usageRow)
+        this.isMemoryUsage(billingExportRow.usageType) ||
+        this.isNetworkingUsage(billingExportRow.usageType) ||
+        this.isUnknownUsage(billingExportRow)
       )
         return []
-
-      // Handle Cloud SQL edge case where we can infer the vCPUs from the usage type.
-      if (usageRow.serviceName === 'Cloud SQL' && usageRow.usageUnit === 'seconds') {
-        usageRow.vcpus = this.getVCpuForCloudSQL(usageRow)
-        if (!usageRow.vcpus) return []
-      }
-
-      const timestamp = new Date(usageRow.timestamp.value)
-      usageRow.cloudProvider = 'GCP'
-      usageRow.timestamp = timestamp
 
       // if usageUnit is seconds then estimate compute otherwise estimate storage
       const footprintEstimate =
         usageRow.usageUnit === 'seconds'
-          ? this.getComputeFootprintEstimate(usageRow, timestamp)
-          : this.getStorageFootprintEstimate(usageRow, timestamp)
-      buildEstimateFromCostAndUsageRow(results, usageRow, footprintEstimate)
+          ? this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          : this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+      buildEstimateFromCostAndUsageRow(results, billingExportRow, footprintEstimate)
     })
     return results
   }
@@ -70,7 +64,7 @@ export default class BillingExportTable {
   private getComputeFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: 50,
-      numberOfvCpus: this.getVCpuHours(usageRow),
+      numberOfvCpus: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
     }
@@ -99,7 +93,8 @@ export default class BillingExportTable {
   private isUnknownUsage(usageRow: any): boolean {
     return (
       this.containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
-      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName)
+      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
+      (usageRow.isCloudSQLCompute() && usageRow.vCpuHours === 0)
     )
   }
 
@@ -147,7 +142,7 @@ export default class BillingExportTable {
                     usage.unit,
                     vcpus`
 
-    let job: Job = await this.createQueryJob(query)
+    const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
   }
 
@@ -175,20 +170,5 @@ export default class BillingExportTable {
 
   private convertByteSecondsToGigabyte(usageAmount: number): number {
     return usageAmount / 3600 / 1073741824 / 24
-  }
-
-  private getVCpuHours(usageRow: any): number {
-    return (usageRow.vcpus * usageRow.usageAmount) / 3600
-  }
-
-  private getVCpuForCloudSQL(usageRow: any): string | null {
-    const extractedVCPUValue = this.extractVCpuFromUsageType(usageRow.usageType)
-    if (extractedVCPUValue) return extractedVCPUValue
-    return null
-  }
-
-  private extractVCpuFromUsageType(usageType: string): string {
-    const vcpu = usageType.match(/\d+(?: [vV]CPU)/g)
-    return vcpu && vcpu[0].split(' ')[0]
   }
 }
