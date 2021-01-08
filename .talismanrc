@@ -46,6 +46,6 @@ fileignoreconfig:
 - filename: server/test/unit/services/aws/Lambda.test.ts
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
-  checksum: 2f7bea96ad2c4c987009a766702fbfbf9ec11b86ceb47fdf9eebf777090a5fbd
+  checksum: 3dc3212fb8bc9964cc22af2b05b86adde83084e1249e337aa19b7040cef09b0b
 - filename: client/package-lock.json
   checksum: ffe4757f5992553dfe4332586e93acd2739800ca7a3f14a93d439d0a412f7d76

@@ -3,6 +3,7 @@
  */
 
 import { BigQueryDate } from '@google-cloud/bigquery'
+import { GCP_REGIONS } from '@services/gcp/GCPRegions'
 
 export default class BillingExportRow {
   public readonly cloudProvider: string
@@ -20,6 +21,7 @@ export default class BillingExportRow {
   constructor(init: Partial<BillingExportRow>) {
     Object.assign(this, init)
     this.cloudProvider = 'GCP'
+    if (!this.region) this.region = GCP_REGIONS.UNKNOWN
   }
 
   setTimestamp(date: BigQueryDate): void {

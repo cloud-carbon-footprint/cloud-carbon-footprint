@@ -224,7 +224,7 @@ export const mockQueryResultsNetworkingAndCloudSQLCompute: any[][] = [
     },
   ],
 ]
-export const mockQueryAppEngineCompute: any[][] = [
+export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
@@ -247,6 +247,17 @@ export const mockQueryAppEngineCompute: any[][] = [
       vcpus: null,
       usageAmount: 1141961,
       cost: 190,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: null,
+      serviceName: 'App Engine',
+      usageType: 'Cloud Datastore Storage',
+      usageUnit: 'byte-seconds',
+      vcpus: null as string | null,
+      usageAmount: 2.83e16,
+      cost: 5,
     },
   ],
 ]

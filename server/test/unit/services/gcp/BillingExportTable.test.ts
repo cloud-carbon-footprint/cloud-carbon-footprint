@@ -14,7 +14,7 @@ import {
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRamAndUnknownUsages,
   mockQueryResultsNetworkingAndCloudSQLCompute,
-  mockQueryAppEngineCompute,
+  mockQueryAppEngineComputeUnknownRegion,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -179,8 +179,8 @@ describe('GCP BillingExportTable Service', () => {
     ]
     expect(result).toEqual(expectedResult)
   })
-  it('estimation is zero when virtual cpu in unknown', async () => {
-    mockJob.getQueryResults.mockResolvedValue(mockQueryAppEngineCompute)
+  it('estimation is zero when virtual cpu in unknown. Region is unknown.', async () => {
+    mockJob.getQueryResults.mockResolvedValue(mockQueryAppEngineComputeUnknownRegion)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -214,6 +214,16 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'Cloud Dataflow',
             usesAverageCPUConstant: true,
             wattHours: 0,
+          },
+          {
+            accountName: 'test-account',
+            cloudProvider: 'GCP',
+            co2e: 0.002186739436950524,
+            cost: 5,
+            region: 'unknown',
+            serviceName: 'App Engine',
+            usesAverageCPUConstant: false,
+            wattHours: 5.444798928995928,
           },
         ],
       },
