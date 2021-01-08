@@ -6,7 +6,7 @@ fileignoreconfig:
 - filename: client/.env.template
   checksum: c472122cca9e85015a7e0f2f7b41f61fe51d3e05ae4bb5f27cdb9704fad4e979
 - filename: client/create_client_env_file.sh
-  checksum: 62b5bd085bb1a89464d2653bb5b7a32e5d0a4af3b8597df555e54f10535db6bb
+  checksum: 3da8227658cfc1e4274fa9294fba32073b06aaacd4dc409889116eb39a56078e
 - filename: client/package-lock.json
   checksum: ffe4757f5992553dfe4332586e93acd2739800ca7a3f14a93d439d0a412f7d76
 - filename: client/src/Config.ts
@@ -28,7 +28,7 @@ fileignoreconfig:
 - filename: server/.env.template
   checksum: 3ed9c6df32c67c481317bb370933fcd56cee89ec36ce66cbf48040d0175bfc97
 - filename: server/create_server_env_file.sh
-  checksum: b624a4ec27b16ad1d0a9729a83bfbb600cfe57a6a6f31104a8039058812a580a
+  checksum: 10a0acaeb47f02baa39ef0c5b712eb7ed56c5920f2f0267e7dbb4e7d1c97e3de
 - filename: server/package-lock.json
   checksum: 1c01e1f8f18c3bd4749653407dcc744be123562a17b60e33230c400e8fe8efd5
 - filename: server/src/application/Config.ts
