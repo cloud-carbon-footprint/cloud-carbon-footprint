@@ -168,7 +168,10 @@ const gcpServicesSupportedWithoutBillingData = [
 ]
 
 const gcpServicesSupportedWithBillingData = [
-  ...gcpServicesSupportedWithoutBillingData,
+  {
+    key: 'Compute Engine',
+    name: 'Compute Engine',
+  },
   {
     key: 'App Engine',
     name: 'App Engine',
