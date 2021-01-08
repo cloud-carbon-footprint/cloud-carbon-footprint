@@ -21,9 +21,11 @@ import {
   VCPU_STRING_FORMATS,
 } from '@services/gcp/BillingExportTypes'
 import BillingExportRow from '@services/gcp/BillingExportRow'
+import Logger from '@services/Logger'
 
 export default class BillingExportTable {
   private readonly tableName: string
+  private readonly billingExportTableLogger: Logger
 
   constructor(
     private readonly computeEstimator: ComputeEstimator,
@@ -32,6 +34,7 @@ export default class BillingExportTable {
     private readonly bigQuery: BigQuery,
   ) {
     this.tableName = configLoader().GCP.BIG_QUERY_TABLE
+    this.billingExportTableLogger = new Logger('BillingExportTable')
   }
 
   async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
@@ -51,11 +54,17 @@ export default class BillingExportTable {
       )
         return []
 
-      // if usageUnit is seconds then estimate compute otherwise estimate storage
-      const footprintEstimate =
-        usageRow.usageUnit === 'seconds'
-          ? this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
-          : this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+      let footprintEstimate: FootprintEstimate
+      switch (usageRow.usageUnit) {
+        case 'seconds':
+          footprintEstimate = this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          break
+        case 'byte-seconds':
+          footprintEstimate = this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          break
+        default:
+          this.billingExportTableLogger.warn(`Unsupported Usage unit: ${usageRow.usageUnit}`)
+      }
       buildEstimateFromCostAndUsageRow(results, billingExportRow, footprintEstimate)
     })
     return results
