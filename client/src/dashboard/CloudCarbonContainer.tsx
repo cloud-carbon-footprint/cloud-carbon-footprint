@@ -14,7 +14,7 @@ import ServiceFilter from './filters/ServiceFilter'
 import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
-import { DonutChartTabs } from './charts/DonutChartTabs'
+import { DonutChart } from './charts/DonutChart'
 import { useFilterDataService } from './client/FilterDataServiceHook'
 import AccountFilter from './filters/AccountFilter'
 import config from '../ConfigLoader'
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   filter: {
     resize: 'none',
     marginRight: theme.spacing(PADDING_FILTER),
+    minWidth: '220px',
   },
   filterContainerSection: {
     display: 'flex',
@@ -61,7 +62,7 @@ export default function CloudCarbonContainer(): ReactElement {
   const { data, loading } = useRemoteService([], startDate, endDate)
 
   let filteredAccountsResults: FilterResultResponse
-  if (config().AWS.USE_BILLING_DATA) {
+  if (config().AWS.USE_BILLING_DATA || config().GCP.USE_BILLING_DATA) {
     filteredAccountsResults = useAccountNamesFromEstimates(data)
   } else {
     filteredAccountsResults = useFilterDataService()
@@ -108,7 +109,7 @@ export default function CloudCarbonContainer(): ReactElement {
                 <CarbonComparisonCard data={filteredData} />
               </Grid>
               <Grid item className={classes.gridItemCards}>
-                <DonutChartTabs data={filteredData} />
+                <DonutChart data={filteredData} />
               </Grid>
             </Grid>
           </Grid>

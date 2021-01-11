@@ -47,14 +47,24 @@ export default class App {
           AWSEstimatesByRegion.push(estimates)
         }
       }
-      // Resolve GCP Estimates asynchronously
-      const GCPEstimatesByRegion = await Promise.all(
-        GCP.projects
-          .map((project) => {
-            return new GCPAccount(project.id, project.name, GCP.CURRENT_REGIONS).getDataForRegions(startDate, endDate)
-          })
-          .flat(),
-      )
+      let GCPEstimatesByRegion: EstimationResult[][] = []
+      if (GCP.USE_BILLING_DATA) {
+        const estimates = await new GCPAccount(
+          GCP.BILLING_ACCOUNT_ID,
+          GCP.BILLING_ACCOUNT_NAME,
+          [],
+        ).getDataFromBillingExportTable(startDate, endDate)
+        GCPEstimatesByRegion.push(estimates)
+      } else {
+        // Resolve GCP Estimates asynchronously
+        GCPEstimatesByRegion = await Promise.all(
+          GCP.projects
+            .map((project) => {
+              return new GCPAccount(project.id, project.name, GCP.CURRENT_REGIONS).getDataForRegions(startDate, endDate)
+            })
+            .flat(),
+        )
+      }
       return reduceByTimestamp(AWSEstimatesByRegion.flat().flat().concat(GCPEstimatesByRegion.flat()))
     }
   }

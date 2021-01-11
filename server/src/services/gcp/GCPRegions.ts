@@ -27,4 +27,5 @@ export enum GCP_REGIONS {
   US_WEST2 = 'us-west2',
   US_WEST3 = 'us-west3',
   US_WEST4 = 'us-west4',
+  UNKNOWN = 'unknown',
 }

@@ -108,7 +108,7 @@ const useAccountNamesFromEstimates = (data: EstimationResult[]): FilterResultRes
 
     const accountNames = serviceEstimates.map((estimate) => {
       return {
-        cloudProvider: estimate.cloudProvider.toLowerCase(),
+        cloudProvider: estimate.cloudProvider?.toLowerCase(),
         key: estimate.accountName,
         name: estimate.accountName,
       }

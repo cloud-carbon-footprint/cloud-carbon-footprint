@@ -11,6 +11,11 @@ import ComputeEngine from '@services/gcp/ComputeEngine'
 import { v3 } from '@google-cloud/monitoring'
 import { ClientOptions } from 'google-gax'
 import { CredentialBody } from 'google-auth-library'
+import BillingExportTable from '@services/gcp/BillingExportTable'
+import ComputeEstimator from '@domain/ComputeEstimator'
+import { StorageEstimator } from '@domain/StorageEstimator'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+import { BigQuery } from '@google-cloud/bigquery'
 
 export default class GCPAccount extends CloudProviderAccount {
   private readonly credentials: CredentialBody
@@ -33,6 +38,16 @@ export default class GCPAccount extends CloudProviderAccount {
     const gcpServices = this.getServices()
     const region = new Region(regionId, gcpServices, configLoader().GCP.NAME)
     return this.getRegionData(region, startDate, endDate)
+  }
+
+  getDataFromBillingExportTable(startDate: Date, endDate: Date) {
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new BigQuery(),
+    )
+    return billingExportTableService.getEstimates(startDate, endDate)
   }
 
   getServices(): ICloudService[] {

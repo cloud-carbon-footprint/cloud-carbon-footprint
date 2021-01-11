@@ -20,7 +20,7 @@ describe('ComputeEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 0.000249583090769424,
+        co2e: 0.00000249583090769424,
         timestamp: new Date('2020-01-01T00:00:00.000Z'),
         wattHours: 0.74076,
         usesAverageCPUConstant: false,

@@ -44,7 +44,7 @@ their carbon footprint. This application is a starting point to enable organizat
 their emissions across multiple cloud providers.
 
 This application pulls usage data (compute, storage, networking, etc) from major cloud providers and calculates 
-estimated energy (Watt-Hours) and greenhouse gas emissions expressed as  carbon dioxide equivalents (kgs CO2e). We 
+estimated energy (Watt-Hours) and greenhouse gas emissions expressed as  carbon dioxide equivalents (metric tons CO2e). We 
 display these visualizations in a dashboard for developers, sustainability leaders and other stakeholders in an 
 organization to view and take action. It currently supports a number of commonly used AWS services. We are in the 
 process of adding support for GCP services, and have Azure also on the roadmap.

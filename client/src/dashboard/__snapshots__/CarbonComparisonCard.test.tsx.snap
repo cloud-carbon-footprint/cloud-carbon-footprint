@@ -17,7 +17,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       data-testid="co2"
     >
       7
-       kg CO2e
+       mt CO2e
     </p>
     <p
       className="MuiTypography-root makeStyles-posOne-3 MuiTypography-body1"
@@ -60,7 +60,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       <p
         className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
       >
-        miles driven by an average passenger vehicle
+        miles driven on average
       </p>
     </div>
   </div>

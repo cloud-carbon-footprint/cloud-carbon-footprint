@@ -133,6 +133,32 @@ describe('ServiceFilter', () => {
     assertCheckbox(page, 'Compute Engine', true)
   })
 
+  it('groupBy display of aws is shown with selection out of total', () => {
+    act(() => {
+      fireEvent.click(page.getByLabelText('Open'))
+    })
+    const allAwsGroupByElement = page.getByText('AWS: 6 of 6')
+    const allGcpGroupByElement = page.getByText('GCP: 1 of 1')
+    expect(allAwsGroupByElement).toBeInTheDocument()
+    expect(allGcpGroupByElement).toBeInTheDocument()
+
+    const someAwsFilters = filters.withServices([
+      allServiceOption,
+      ec2ServiceOption,
+      elastiCacheServiceOption,
+      lambdaServiceOption,
+      rdsServiceOption,
+      S3ServiceOption,
+    ])
+
+    page.rerender(<ServiceFilter filters={someAwsFilters} setFilters={mockSetFilters} />)
+
+    const someAwsGroupByElement = page.getByText('AWS: 5 of 6')
+    const noGcpGroupByElement = page.getByText('GCP: 0 of 1')
+    expect(someAwsGroupByElement).toBeInTheDocument()
+    expect(noGcpGroupByElement).toBeInTheDocument()
+  })
+
   const assertCheckbox = (page: RenderResult, option: string, selected: boolean) => {
     const li = page.getByText(option)
 

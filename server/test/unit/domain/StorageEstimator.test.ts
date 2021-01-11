@@ -41,7 +41,7 @@ describe('StorageEstimator', () => {
     })
 
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
-      expect(results[0].co2e).toEqual(0.000011644245932544)
+      expect(results[0].co2e).toEqual(0.00000011644245932544)
     })
   })
 
@@ -75,7 +75,7 @@ describe('StorageEstimator', () => {
     })
 
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
-      expect(results[0].co2e).toEqual(0.000006501370645670401)
+      expect(results[0].co2e).toEqual(0.000000065013706456704)
     })
   })
 
@@ -103,12 +103,12 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 0.000011644245932544,
+          co2e: 0.00000011644245932544,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
           wattHours: 0.03456,
         },
         {
-          co2e: 0.000023288491865088,
+          co2e: 0.00000023288491865088,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
           wattHours: 0.06912,
         },
@@ -138,12 +138,12 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 0.000006501370645670401,
+          co2e: 0.000000065013706456704,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
           wattHours: 0.019296,
         },
         {
-          co2e: 0.000013002741291340801,
+          co2e: 0.000000130027412913408,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
           wattHours: 0.038592,
         },

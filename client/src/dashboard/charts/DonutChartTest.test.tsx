@@ -5,7 +5,7 @@
 import React from 'react'
 import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-renderer'
 
-import { DonutChartTabs } from './DonutChartTabs'
+import { DonutChart } from './DonutChart'
 import { ApexDonutChart } from './ApexDonutChart'
 import { Select } from '@material-ui/core'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
@@ -71,9 +71,9 @@ describe('DonutChartTabs', () => {
   ]
 
   beforeEach(() => {
-    testRenderer = create(<DonutChartTabs data={dataWithHigherPrecision} />)
+    testRenderer = create(<DonutChart data={dataWithHigherPrecision} />)
     testInstance = testRenderer.root
-    page = render(<DonutChartTabs data={dataWithHigherPrecision} />)
+    page = render(<DonutChart data={dataWithHigherPrecision} />)
   })
 
   afterEach(() => {

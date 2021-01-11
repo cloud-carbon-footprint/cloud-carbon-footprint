@@ -152,7 +152,7 @@ describe('EmissionsByServiceTable', () => {
 
   it('prints out the given estimation results grouped by service', () => {
     expect(result.table).toEqual([
-      ['Service', 'Watt Hours', 'Kg CO2e Emissions', 'Cost'],
+      ['Service', 'Watt Hours', 'mt CO2e Emissions', 'Cost'],
       ['EBS', '8.00', '9.000000', '$14.00'],
       ['S3', '57.00', '3.000000', '$14.00'],
       ['EC2', '93.00', '80.000000', '$14.00'],

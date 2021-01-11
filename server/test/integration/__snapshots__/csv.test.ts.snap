@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`csv test formats table into csv file 1`] = `
-"Date (UTC),EBS Watt Hours,EBS Kg CO2e Emissions,S3 Watt Hours,S3 Kg CO2e Emissions,EC2 Watt Hours,EC2 Kg CO2e Emissions,ElastiCache Watt Hours,ElastiCache Kg CO2e Emissions,RDS Watt Hours,RDS Kg CO2e Emissions,Lambda Watt Hours,Lambda Kg CO2e Emissions,ComputeEngine Watt Hours,ComputeEngine Kg CO2e Emissions,SUM Watt Hours,SUM Kg CO2e Emissions
-2020-07-01,1.07,0.000361,0.05,0.000017,19.55,0.006585,2.28,0.000767,3.97,0.001336,0.00,0.000000,0.00,0.000000,26.91,0.009066
-2020-07-02,2.14,0.000722,0.00,0.000000,0.00,0.000000,9.38,0.003162,226.29,0.076243,0.00,0.000000,0.00,0.000000,237.81,0.080126
-Total,3.21,0.001083,0.05,0.000017,19.55,0.006585,11.66,0.003928,230.25,0.077579,0.00,0.000000,0.00,0.000000,264.72,0.089192
+"Date (UTC),EBS Watt Hours,EBS mt CO2e Emissions,S3 Watt Hours,S3 mt CO2e Emissions,EC2 Watt Hours,EC2 mt CO2e Emissions,ElastiCache Watt Hours,ElastiCache mt CO2e Emissions,RDS Watt Hours,RDS mt CO2e Emissions,Lambda Watt Hours,Lambda mt CO2e Emissions,ComputeEngine Watt Hours,ComputeEngine mt CO2e Emissions,SUM Watt Hours,SUM mt CO2e Emissions
+2020-07-01,1.07,0.000004,0.05,0.000000,19.55,0.000066,2.28,0.000008,3.97,0.000013,0.00,0.000000,0.00,0.000000,26.91,0.000091
+2020-07-02,2.14,0.000007,0.00,0.000000,0.00,0.000000,9.38,0.000032,226.29,0.000762,0.00,0.000000,0.00,0.000000,237.81,0.000801
+Total,3.21,0.000011,0.05,0.000000,19.55,0.000066,11.66,0.000039,230.25,0.000776,0.00,0.000000,0.00,0.000000,264.72,0.000892
 "
 `;

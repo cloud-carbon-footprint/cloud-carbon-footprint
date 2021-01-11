@@ -22,10 +22,12 @@ export interface ClientConfig {
       key: string
       name: string
     }[]
+    USE_BILLING_DATA?: boolean
   }
 }
 
 const useAWSBillingData = !!process.env.REACT_APP_AWS_USE_BILLING_DATA
+const useGCPBillingData = !!process.env.REACT_APP_GCP_USE_BILLING_DATA
 
 const awsServicesSupportedWithoutBillingData = [
   {
@@ -158,6 +160,60 @@ const awsServicesSupportedWithBillingData = [
   },
 ]
 
+const gcpServicesSupportedWithoutBillingData = [
+  {
+    key: 'computeEngine',
+    name: 'Compute Engine',
+  },
+]
+
+const gcpServicesSupportedWithBillingData = [
+  {
+    key: 'Compute Engine',
+    name: 'Compute Engine',
+  },
+  {
+    key: 'App Engine',
+    name: 'App Engine',
+  },
+  {
+    key: 'Cloud Composer',
+    name: 'Cloud Composer',
+  },
+  {
+    key: 'Cloud Dataflow',
+    name: 'Cloud Dataflow',
+  },
+  {
+    key: 'Cloud Filestore',
+    name: 'Cloud Filestore',
+  },
+  {
+    key: 'Cloud Pub/Sub',
+    name: 'Cloud Pub/Sub',
+  },
+  {
+    key: 'Cloud SQL',
+    name: 'Cloud SQL',
+  },
+  {
+    key: 'Cloud Storage',
+    name: 'Cloud Storage',
+  },
+  {
+    key: 'Data Catalog',
+    name: 'Data Catalog',
+  },
+  {
+    key: 'Source Repository',
+    name: 'Source Repository',
+  },
+  {
+    key: 'Confluent Apache Kafka on Confluent Cloud',
+    name: 'Confluent Apache Kafka on Confluent Cloud',
+  },
+]
+
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
     { key: 'aws', name: 'AWS' },
@@ -168,12 +224,8 @@ const appConfig: ClientConfig = {
     CURRENT_SERVICES: useAWSBillingData ? awsServicesSupportedWithBillingData : awsServicesSupportedWithoutBillingData,
   },
   GCP: {
-    CURRENT_SERVICES: [
-      {
-        key: 'computeEngine',
-        name: 'Compute Engine',
-      },
-    ],
+    USE_BILLING_DATA: useGCPBillingData,
+    CURRENT_SERVICES: useGCPBillingData ? gcpServicesSupportedWithBillingData : gcpServicesSupportedWithoutBillingData,
   },
 }
 

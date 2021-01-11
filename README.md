@@ -91,6 +91,8 @@ npm start
 Make sure you have configured your GCP and AWS credentials (see above)
 > :warning: **This will incure cost**: Data will come from AWS and will cost money to your project. Use this sparingly if you wish to test with live data. If not, use the command above
 
+>*DISCLAIMER*: If your editior of choice is VS Code, ***we recommend to use either your native or custom terminal of choice (i.e. iterm)*** instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals. 
+
 ```
 npm start
 ```
