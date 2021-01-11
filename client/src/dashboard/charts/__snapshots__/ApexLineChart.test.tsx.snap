@@ -102,7 +102,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "style": Object {
               "fontSize": "15px",
             },
-            "text": "CO2e (mt)",
+            "text": "CO2e (metric tons)",
           },
         },
         Object {
