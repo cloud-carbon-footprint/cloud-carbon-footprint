@@ -29,17 +29,17 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
       "height": "500px",
       "labels": Array [
         "ebs",
-        "s3",
         "ec2",
+        "s3",
       ],
       "legend": Object {
         "offsetY": -8,
         "position": "bottom",
       },
       "series": Array [
-        5,
-        0,
-        2,
+        3015.014,
+        2521.406,
+        1718.017,
       ],
       "stroke": Object {
         "colors": Array [
@@ -65,9 +65,9 @@ exports[`ApexDonutChart renders with correct configuration 1`] = `
   }
   series={
     Array [
-      5,
-      0,
-      2,
+      3015.014,
+      2521.406,
+      1718.017,
     ]
   }
   type="donut"

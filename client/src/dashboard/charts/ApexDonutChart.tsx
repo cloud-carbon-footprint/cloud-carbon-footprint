@@ -16,6 +16,16 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data, d
 
   const donutData = sumCO2ByServiceOrRegion(data, dataType)
 
+  const donutDataEntries: { serviceOrRegion: string; c02Value: number }[] = Object.entries(donutData)
+    .map((item) => ({
+      serviceOrRegion: item[0],
+      c02Value: item[1],
+    }))
+    .sort((higherC02, lowerCO2) => lowerCO2.c02Value - higherC02.c02Value)
+
+  const sortedServicesOrRegions = donutDataEntries.map((entry) => entry.serviceOrRegion)
+  const sortedCO2Emissions = donutDataEntries.map((entry) => entry.c02Value)
+
   const options = {
     chart: {
       background: theme.palette.background.paper,
@@ -34,12 +44,12 @@ export const ApexDonutChart: FunctionComponent<ApexDonutChartProps> = ({ data, d
         opacity: 0.5,
       },
     },
-    labels: Object.keys(donutData),
+    labels: sortedServicesOrRegions,
     legend: {
       position: 'bottom',
       offsetY: -8,
     },
-    series: Object.values(donutData),
+    series: sortedCO2Emissions,
     stroke: {
       colors: [theme.palette.background.default],
     },
