@@ -6,11 +6,12 @@ import { renderHook, act, HookResult } from '@testing-library/react-hooks'
 import useFilters, { UseFiltersResults } from './FilterHook'
 import moment from 'moment'
 import generateEstimations from '../../data/generateEstimations'
+import { FilterResultResponse } from '../../models/types'
 
 describe('useFilters', () => {
   describe('changing timeframe', () => {
     const estimationResults = generateEstimations(moment.utc(), 14)
-    const filteredResult = { accounts: [] }
+    const filteredResult: FilterResultResponse = { accounts: [], services: [] }
     let result: HookResult<UseFiltersResults>
 
     beforeEach(() => {

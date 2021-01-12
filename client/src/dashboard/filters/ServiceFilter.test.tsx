@@ -3,9 +3,11 @@
  */
 
 import React, { Dispatch, SetStateAction } from 'react'
-import ServiceFilter from './ServiceFilter'
-import { Filters } from './Filters'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
+
+import ServiceFilter from './ServiceFilter'
+import { Filters, filtersConfigGenerator } from './Filters'
+import { FilterResultResponse } from '../../models/types'
 
 jest.mock('./AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
@@ -18,19 +20,6 @@ jest.mock('./AccountFilter', () => ({
 jest.mock('../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
-      AWS: {
-        CURRENT_SERVICES: [
-          { key: 'ebs', name: 'EBS' },
-          { key: 's3', name: 'S3' },
-          { key: 'ec2', name: 'EC2' },
-          { key: 'elasticache', name: 'ElastiCache' },
-          { key: 'rds', name: 'RDS' },
-          { key: 'lambda', name: 'Lambda' },
-        ],
-      },
-      GCP: {
-        CURRENT_SERVICES: [{ key: 'computeEngine', name: 'Compute Engine' }],
-      },
       CURRENT_PROVIDERS: [
         { key: 'aws', name: 'AWS' },
         { key: 'gcp', name: 'GCP' },
@@ -46,16 +35,27 @@ describe('ServiceFilter', () => {
 
   const allServiceOption = { key: 'all', name: 'All Services' }
   const S3ServiceOption = { key: 's3', name: 'S3', cloudProvider: 'aws' }
+  const ebsServiceOption = { key: 'ebs', name: 'EBS', cloudProvider: 'aws' }
   const ec2ServiceOption = { key: 'ec2', name: 'EC2', cloudProvider: 'aws' }
   const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' }
   const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
   const lambdaServiceOption = { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' }
   const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
+  const services = [
+    ebsServiceOption,
+    S3ServiceOption,
+    ec2ServiceOption,
+    elastiCacheServiceOption,
+    rdsServiceOption,
+    lambdaServiceOption,
+    computeEngineServiceOption,
+  ]
+  const options: FilterResultResponse = { accounts: [], services }
 
   beforeEach(() => {
     mockSetFilters = jest.fn()
-    filters = new Filters()
-    page = render(<ServiceFilter filters={filters} setFilters={mockSetFilters} />)
+    filters = new Filters(filtersConfigGenerator(options))
+    page = render(<ServiceFilter filters={filters} setFilters={mockSetFilters} options={options} />)
   })
 
   it('has all services selected by default', async () => {
@@ -88,7 +88,7 @@ describe('ServiceFilter', () => {
     const newFilters = filters.withServices([])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
-    page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
+    page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} options={options} />)
 
     expect(page.getByText('Services: 0 of 7')).toBeInTheDocument()
     assertCheckbox(page, 'All Services', false)
@@ -111,16 +111,16 @@ describe('ServiceFilter', () => {
 
     const newFilters = filters.withServices([
       allServiceOption,
+      S3ServiceOption,
       ec2ServiceOption,
       elastiCacheServiceOption,
-      lambdaServiceOption,
       rdsServiceOption,
-      S3ServiceOption,
+      lambdaServiceOption,
       computeEngineServiceOption,
     ])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
-    page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} />)
+    page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} options={options} />)
 
     expect(page.getByText('Services: 6 of 7')).toBeInTheDocument()
     assertCheckbox(page, 'All Services', false)
@@ -151,7 +151,7 @@ describe('ServiceFilter', () => {
       S3ServiceOption,
     ])
 
-    page.rerender(<ServiceFilter filters={someAwsFilters} setFilters={mockSetFilters} />)
+    page.rerender(<ServiceFilter filters={someAwsFilters} setFilters={mockSetFilters} options={options} />)
 
     const someAwsGroupByElement = page.getByText('AWS: 5 of 6')
     const noGcpGroupByElement = page.getByText('GCP: 0 of 1')

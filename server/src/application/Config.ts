@@ -55,7 +55,7 @@ const getGCPProjects = () => {
 }
 
 const escapePrivateKey = (privateKey: string) => {
-  return privateKey.replace(/\\n/g, '\n')
+  return privateKey?.replace(/\\n/g, '\n')
 }
 
 const appConfig: CCFConfig = {

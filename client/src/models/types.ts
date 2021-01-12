@@ -40,4 +40,5 @@ export enum ChartDataTypes {
 
 export interface FilterResultResponse {
   accounts: DropdownOption[]
+  services: DropdownOption[]
 }

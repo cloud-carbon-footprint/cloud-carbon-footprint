@@ -9,13 +9,8 @@ import * as FiltersUtil from './FiltersUtil'
 import { DropdownFilter } from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
 import { ACCOUNT_OPTIONS } from './AccountFilter'
-import {
-  ALL_ACCOUNTS_VALUE,
-  ALL_KEY,
-  ALL_SERVICES_VALUE,
-  CLOUD_PROVIDER_OPTIONS,
-  SERVICE_OPTIONS,
-} from './DropdownConstants'
+import { SERVICE_OPTIONS } from './ServiceFilter'
+import { ALL_ACCOUNTS_DROPDOWN_OPTION, ALL_SERVICES_DROPDOWN_OPTION, CLOUD_PROVIDER_OPTIONS } from './DropdownConstants'
 
 export type FilterProps = {
   filters: Filters
@@ -33,21 +28,23 @@ interface FiltersConfig {
   [DropdownFilter.ACCOUNTS]: DropdownOption[]
 }
 
-const allAccountDropdownOption: DropdownOption = { key: ALL_KEY, name: ALL_ACCOUNTS_VALUE, cloudProvider: '' }
-
 const defaultFiltersConfig = {
   timeframe: 12,
   dateRange: null,
-  [DropdownFilter.SERVICES]: SERVICE_OPTIONS,
+  [DropdownFilter.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
   [DropdownFilter.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
-  [DropdownFilter.ACCOUNTS]: [allAccountDropdownOption],
+  [DropdownFilter.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
 }
 
 export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): FiltersConfig => {
   const accountSet: Set<DropdownOption> = new Set<DropdownOption>()
-  accountSet.add(allAccountDropdownOption)
+  accountSet.add(ALL_ACCOUNTS_DROPDOWN_OPTION)
   filteredResponse.accounts.forEach((account) => accountSet.add(account))
-  return Object.assign(defaultFiltersConfig, { accounts: Array.from(accountSet) })
+
+  const serviceSet: Set<DropdownOption> = new Set<DropdownOption>()
+  serviceSet.add(ALL_SERVICES_DROPDOWN_OPTION)
+  filteredResponse.services.forEach((service) => serviceSet.add(service))
+  return Object.assign(defaultFiltersConfig, { accounts: Array.from(accountSet), services: Array.from(serviceSet) })
 }
 
 export class Filters {
@@ -136,7 +133,7 @@ export class Filters {
   }
 
   private getResultsFilteredByAccount(resultsFilteredByService: EstimationResult[]): EstimationResult[] {
-    const allAccountsSelected = this.accounts.includes(allAccountDropdownOption)
+    const allAccountsSelected = this.accounts.includes(ALL_ACCOUNTS_DROPDOWN_OPTION)
     return resultsFilteredByService.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
         return this.accounts.some((account) => account.name === serviceEstimate.accountName) || allAccountsSelected
@@ -146,7 +143,7 @@ export class Filters {
   }
 
   private getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]): EstimationResult[] {
-    const allServicesSelected = this.services.includes({ key: ALL_KEY, name: ALL_SERVICES_VALUE })
+    const allServicesSelected = this.services.includes(ALL_SERVICES_DROPDOWN_OPTION)
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
         return this.services.some((service) => service.key === serviceEstimate.serviceName) || allServicesSelected

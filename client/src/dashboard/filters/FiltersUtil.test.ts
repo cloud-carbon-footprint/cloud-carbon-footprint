@@ -15,22 +15,22 @@ jest.mock('./AccountFilter', () => ({
   ],
 }))
 
+jest.mock('./ServiceFilter', () => ({
+  SERVICE_OPTIONS: [
+    { key: 'all', name: 'All Services' },
+    { key: 'ebs', name: 'EBS', cloudProvider: 'aws' },
+    { key: 'ec2', name: 'EC2', cloudProvider: 'aws' },
+    { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' },
+    { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' },
+    { key: 'rds', name: 'RDS', cloudProvider: 'aws' },
+    { key: 's3', name: 'S3', cloudProvider: 'aws' },
+    { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' },
+  ],
+}))
+
 jest.mock('../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
-      AWS: {
-        CURRENT_SERVICES: [
-          { key: 'ebs', name: 'EBS' },
-          { key: 'ec2', name: 'EC2' },
-          { key: 'elasticache', name: 'ElastiCache' },
-          { key: 'lambda', name: 'Lambda' },
-          { key: 'rds', name: 'RDS' },
-          { key: 's3', name: 'S3' },
-        ],
-      },
-      GCP: {
-        CURRENT_SERVICES: [{ key: 'computeEngine', name: 'Compute Engine' }],
-      },
       CURRENT_PROVIDERS: [
         { key: 'aws', name: 'AWS' },
         { key: 'gcp', name: 'GCP' },

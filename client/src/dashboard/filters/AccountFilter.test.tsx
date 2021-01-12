@@ -16,7 +16,9 @@ describe('AccountFilter', () => {
   beforeEach(() => {
     mockFilters = new Filters()
     mockSetFilters = jest.fn()
-    page = render(<AccountFilter filters={mockFilters} setFilters={mockSetFilters} options={{ accounts: account }} />)
+    page = render(
+      <AccountFilter filters={mockFilters} setFilters={mockSetFilters} options={{ accounts: account, services: [] }} />,
+    )
   })
 
   it('displays the account filter dropdown', async () => {
@@ -25,13 +27,5 @@ describe('AccountFilter', () => {
     })
     expect(page.getByText('Accounts: 1 of 1')).toBeInTheDocument()
     expect(page.getByText('AWS: 1 of 1')).toBeInTheDocument()
-
-    mockFilters.withAccounts([
-      {
-        cloudProvider: '',
-        key: 'all',
-        name: 'All Accounts',
-      },
-    ])
   })
 })

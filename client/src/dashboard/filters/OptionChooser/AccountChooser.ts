@@ -5,9 +5,11 @@
 import { DropdownOption } from '../DropdownFilter'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
-import { ALL_KEY, CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
+import { SERVICE_OPTIONS } from '../ServiceFilter'
+import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
-import { isDropdownOptionInDropdownOptions, providerServices } from './common'
+import { isDropdownOptionInDropdownOptions } from './common'
+import { pluck } from 'ramda'
 
 export class AccountChooser extends OptionChooser {
   constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
@@ -30,16 +32,18 @@ export class AccountChooser extends OptionChooser {
     const desiredSelections: Set<DropdownOption> = new Set()
     const currentCloudProviders = Array.from(getCloudProvidersFromAccounts(this.selections))
     currentCloudProviders.forEach((currentCloudProvider) => {
+      const cloudProviderKeys = pluck(
+        'key',
+        SERVICE_OPTIONS.filter((service) => service.cloudProvider === currentCloudProvider.key),
+      )
       //if currentCloudprovider has an option that oldCP has, keep the services from old that are under that CP
       if (isDropdownOptionInDropdownOptions(this.oldSelections.cloudProviders, currentCloudProvider)) {
         this.oldSelections.services.forEach((oldServiceOption) => {
-          providerServices[currentCloudProvider.key].includes(oldServiceOption.key)
-            ? desiredSelections.add(oldServiceOption)
-            : null
+          cloudProviderKeys.includes(oldServiceOption.key) ? desiredSelections.add(oldServiceOption) : null
         })
       } else {
         //if currentCloudprovider doesnt have an option that oldCP has, add all the services from that CP
-        providerServices[currentCloudProvider.key].forEach((service) =>
+        cloudProviderKeys.forEach((service) =>
           desiredSelections.add(<DropdownOption>SERVICE_OPTIONS.find((option) => option.key === service)),
         )
       }

@@ -3,11 +3,28 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { SERVICE_OPTIONS } from './DropdownConstants'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
+import { ALL_SERVICES_DROPDOWN_OPTION, alphabetizeDropdownOptions } from './DropdownConstants'
 
-const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
+const EMPTY_RESPONSE = { services: [{ key: '', name: '' }] }
+
+export let SERVICE_OPTIONS: DropdownOption[]
+
+const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, options }) => {
+  let allDropdownServiceOptions: DropdownOption[] = []
+  for (const service of (options ? options : EMPTY_RESPONSE).services) {
+    allDropdownServiceOptions.push(service)
+  }
+
+  allDropdownServiceOptions = alphabetizeDropdownOptions(
+    allDropdownServiceOptions,
+  ).sort((firstDropdownServiceOption, secondDropdownServiceOption) =>
+    firstDropdownServiceOption.cloudProvider!.localeCompare(secondDropdownServiceOption.cloudProvider!),
+  )
+
+  SERVICE_OPTIONS = [ALL_SERVICES_DROPDOWN_OPTION, ...allDropdownServiceOptions]
+
   return (
     <DropdownFilter
       id="services-filter"

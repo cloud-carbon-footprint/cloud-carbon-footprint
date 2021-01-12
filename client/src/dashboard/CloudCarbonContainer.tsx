@@ -18,7 +18,7 @@ import { DonutChart } from './charts/DonutChart'
 import { useFilterDataService } from './client/FilterDataServiceHook'
 import AccountFilter from './filters/AccountFilter'
 import config from '../ConfigLoader'
-import { useAccountNamesFromEstimates } from './transformData'
+import { useFilterDataFromEstimates } from './transformData'
 import { FilterResultResponse } from '../models/types'
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
@@ -56,14 +56,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CloudCarbonContainer(): ReactElement {
   const classes = useStyles()
-  const startDate: moment.Moment = moment.utc().subtract(11, 'month')
+  const startDate: moment.Moment = moment.utc().subtract(11, 'months')
   const endDate: moment.Moment = moment.utc()
 
   const { data, loading } = useRemoteService([], startDate, endDate)
 
   let filteredAccountsResults: FilterResultResponse
   if (config().AWS.USE_BILLING_DATA || config().GCP.USE_BILLING_DATA) {
-    filteredAccountsResults = useAccountNamesFromEstimates(data)
+    filteredAccountsResults = useFilterDataFromEstimates(data)
   } else {
     filteredAccountsResults = useFilterDataService()
   }

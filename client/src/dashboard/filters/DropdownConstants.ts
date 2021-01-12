@@ -15,20 +15,6 @@ export const ALL_ACCOUNTS_DROPDOWN_OPTION: DropdownOption = {
 
 export const ALL_SERVICES_VALUE = 'All Services'
 export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = { key: ALL_KEY, name: ALL_SERVICES_VALUE }
-export const SERVICE_OPTIONS: DropdownOption[] = [
-  ALL_SERVICES_DROPDOWN_OPTION,
-  ...addCloudProvider(config().AWS.CURRENT_SERVICES, 'aws'),
-  ...addCloudProvider(config().GCP.CURRENT_SERVICES, 'gcp'),
-]
-
-function addCloudProvider(dropdownOptions: DropdownOption[], cloudProvider: string): DropdownOption[] {
-  const returnedDropdownOptions: DropdownOption[] = []
-  dropdownOptions.forEach((dropdownOption) => {
-    Object.assign(dropdownOption, { cloudProvider: cloudProvider })
-    returnedDropdownOptions.push(dropdownOption)
-  })
-  return alphabetizeDropdownOptions(returnedDropdownOptions)
-}
 
 export function alphabetizeDropdownOptions(dropdownOptions: DropdownOption[]): DropdownOption[] {
   dropdownOptions.sort((a, b) => {

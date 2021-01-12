@@ -10,9 +10,9 @@ import {
   ALL_KEY,
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
-  SERVICE_OPTIONS,
 } from '../DropdownConstants'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
+import { SERVICE_OPTIONS } from '../ServiceFilter'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilter

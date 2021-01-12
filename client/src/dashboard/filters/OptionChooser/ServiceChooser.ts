@@ -4,11 +4,12 @@
 
 import { DropdownOption } from '../DropdownFilter'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { CLOUD_PROVIDER_OPTIONS, SERVICE_OPTIONS } from '../DropdownConstants'
+import { CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { ACCOUNT_OPTIONS } from '../AccountFilter'
+import { SERVICE_OPTIONS } from '../ServiceFilter'
 
 import { OptionChooser } from './OptionChooser'
-import { isDropdownOptionInDropdownOptions, providerServices } from './common'
+import { isDropdownOptionInDropdownOptions } from './common'
 
 export class ServiceChooser extends OptionChooser {
   constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
@@ -50,9 +51,12 @@ export class ServiceChooser extends OptionChooser {
 export function getCloudProvidersFromServices(serviceSelections: DropdownOption[]): Set<DropdownOption> {
   const keys = serviceSelections.map((selection) => selection.key)
   const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
-  for (const [key, value] of Object.entries(providerServices)) {
-    if (value.some((service) => keys.includes(service))) {
-      cloudProviderSelections.add(<DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === key))
+
+  for (const service of SERVICE_OPTIONS.filter((service) => service.key !== 'all')) {
+    if (keys.includes(service.key)) {
+      cloudProviderSelections.add(
+        <DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === service.cloudProvider),
+      )
     }
   }
   return cloudProviderSelections

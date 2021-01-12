@@ -14,13 +14,17 @@ fileignoreconfig:
 - filename: client/src/dashboard/charts/__snapshots__/DonutChartTest.test.tsx.snap
   checksum: 47b097049490c3d280da370451b1b6bf44f8c30eddcca847b763a9d77735c961
 - filename: client/src/dashboard/filters/Filters.test.ts
-  checksum: 590d77373cd099c5fc834d1549544b31c2e27ff419e2396acabafc5e1253a912
+  checksum: 6e4b6d75b476091187a224f8caf6fb4ff258583f873c80e712028e1e613ba5cd
 - filename: client/src/dashboard/filters/Filters.ts
   checksum: c9840931b210466d99b1d87b33570ec2367ac0842aa9d0776d5b08d78675a483
 - filename: client/src/dashboard/filters/FiltersUtil.test.ts
-  checksum: db83d4c405db11f7db7f241338838ef293ddcb530be0e3a310c2569f49d6ed72
+  checksum: b1042e8b19506d4cd767b76aa14b713c101b0f3dd1e1e84e427cc7240bf72280
+- filename: client/src/dashboard/filters/OptionChooser/ServiceChooser.ts
+  checksum: 63f6ad4e895d87551d8937b5b4578d1acd700f08406c302b9f44a6d831641bf5
 - filename: client/src/dashboard/filters/ServiceFilter.test.tsx
-  checksum: c93ad0032851281c7c7aa5781629a1d7ce1fb639e4ba0d11e913c85269072815
+  checksum: 6c1a2e83613d5867bf4e99528df88bf41eba6107735fe926aac2310f09138346
+- filename: client/src/dashboard/filters/ServiceFilter.tsx
+  checksum: 320ae859f2f57c691aadb2e691450cf95fc777f4e21ddead855407ba2d1cb6cd
 - filename: client/src/dashboard/transformData.test.ts
   checksum: c5cafaa64e0d809ba7e5670faebfe68a4e6dd48804983526a3985b1ab28d3d11
 - filename: client/src/dashboard/transformData.tsx
@@ -47,5 +51,3 @@ fileignoreconfig:
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
   checksum: 99af9758eb06d148dd3ec06bd7459354a338533ba5e3e996f0f66d6c29b1e14e
-- filename: client/package-lock.json
-  checksum: ffe4757f5992553dfe4332586e93acd2739800ca7a3f14a93d439d0a412f7d76

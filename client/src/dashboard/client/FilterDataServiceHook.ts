@@ -8,7 +8,7 @@ import { useErrorHandling } from '../ErrorPage'
 import axios from 'axios'
 
 export const useFilterDataService = (): FilterResultResponse => {
-  const [filterResultResponse, setFilterResultResponse] = useState({ accounts: [] })
+  const [filterResultResponse, setFilterResultResponse] = useState({ accounts: [], services: [] })
 
   const { handleApiError, error, setError } = useErrorHandling()
 

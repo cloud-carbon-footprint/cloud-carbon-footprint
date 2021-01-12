@@ -2,14 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { pluck } from 'ramda'
-import config from '../../../ConfigLoader'
 import { DropdownOption } from '../DropdownFilter'
-
-export const providerServices: { [key: string]: string[] } = {
-  aws: pluck('key', config().AWS.CURRENT_SERVICES),
-  gcp: pluck('key', config().GCP.CURRENT_SERVICES),
-}
 
 export function isDropdownOptionInDropdownOptions(
   comparingDropdownOptions: DropdownOption[],

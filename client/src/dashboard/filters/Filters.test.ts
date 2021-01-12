@@ -2,16 +2,29 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { DateRange, Filters } from './Filters'
+import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 import moment from 'moment'
 import generateEstimations from '../../data/generateEstimations'
-import { EstimationResult } from '../../models/types'
+import { EstimationResult, FilterResultResponse } from '../../models/types'
 
 jest.mock('./AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
     { key: 'all', name: 'All Accounts', cloudProvider: '' },
     { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
     { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+  ],
+}))
+
+jest.mock('./ServiceFilter', () => ({
+  SERVICE_OPTIONS: [
+    { key: 'all', name: 'All Services' },
+    { key: 'ebs', name: 'EBS', cloudProvider: 'aws' },
+    { key: 'ec2', name: 'EC2', cloudProvider: 'aws' },
+    { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' },
+    { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' },
+    { key: 'rds', name: 'RDS', cloudProvider: 'aws' },
+    { key: 's3', name: 'S3', cloudProvider: 'aws' },
+    { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' },
   ],
 }))
 
@@ -63,19 +76,6 @@ declare global {
 jest.mock('../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
-      AWS: {
-        CURRENT_SERVICES: [
-          { key: 'ebs', name: 'EBS' },
-          { key: 's3', name: 'S3' },
-          { key: 'ec2', name: 'EC2' },
-          { key: 'elasticache', name: 'ElastiCache' },
-          { key: 'rds', name: 'RDS' },
-          { key: 'lambda', name: 'Lambda' },
-        ],
-      },
-      GCP: {
-        CURRENT_SERVICES: [{ key: 'computeEngine', name: 'Compute Engine' }],
-      },
       CURRENT_PROVIDERS: [
         { key: 'aws', name: 'AWS' },
         { key: 'gcp', name: 'GCP' },
@@ -93,6 +93,16 @@ describe('Filters', () => {
   const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
   const lambdaServiceOption = { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' }
   const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
+  const services = [
+    ebsServiceOption,
+    S3ServiceOption,
+    ec2ServiceOption,
+    elastiCacheServiceOption,
+    rdsServiceOption,
+    lambdaServiceOption,
+    computeEngineServiceOption,
+  ]
+  const options: FilterResultResponse = { accounts: [], services }
 
   describe('filter', () => {
     it('should filter just ebs', () => {
@@ -169,18 +179,9 @@ describe('Filters', () => {
 
   describe('withServices', () => {
     it('should default to All Services', () => {
-      const filters = new Filters()
+      const filters = new Filters(filtersConfigGenerator(options))
 
-      expect(filters.services).toEqual([
-        allServiceOption,
-        ebsServiceOption,
-        ec2ServiceOption,
-        elastiCacheServiceOption,
-        lambdaServiceOption,
-        rdsServiceOption,
-        S3ServiceOption,
-        computeEngineServiceOption,
-      ])
+      expect(filters.services).toEqual([allServiceOption, ...services])
     })
 
     it('should unselect All Services', () => {
