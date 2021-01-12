@@ -61,13 +61,13 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const { data, loading } = useRemoteService([], startDate, endDate)
 
-  let filteredAccountsResults: FilterResultResponse
+  let filteredDataResults: FilterResultResponse
   if (config().AWS.USE_BILLING_DATA || config().GCP.USE_BILLING_DATA) {
-    filteredAccountsResults = useFilterDataFromEstimates(data)
+    filteredDataResults = useFilterDataFromEstimates(data)
   } else {
-    filteredAccountsResults = useFilterDataService()
+    filteredDataResults = useFilterDataService()
   }
-  const { filteredData, filters, setFilters } = useFilters(data, filteredAccountsResults)
+  const { filteredData, filters, setFilters } = useFilters(data, filteredDataResults)
 
   return loading ? (
     <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
@@ -82,14 +82,14 @@ export default function CloudCarbonContainer(): ReactElement {
             <div className={classes.filterContainerSection}>
               {[CloudProviderFilter, AccountFilter, ServiceFilter].map((FilterComponent, i) => (
                 <div key={i} className={classes.filter}>
-                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredAccountsResults} />
+                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
                 </div>
               ))}
             </div>
             <div className={classes.filterContainerSection}>
               {[DateFilter, MonthFilter].map((FilterComponent, i) => (
                 <div key={i} className={classes.filter}>
-                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredAccountsResults} />
+                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
                 </div>
               ))}
             </div>
