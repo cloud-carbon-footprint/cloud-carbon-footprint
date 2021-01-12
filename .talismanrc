@@ -4,7 +4,7 @@ fileignoreconfig:
 - filename: README.md
   checksum: 603d112d8b03aeb6d03e1d62c403880201221e1e809ccb162932da8ec95cd530
 - filename: client/.env.template
-  checksum: c472122cca9e85015a7e0f2f7b41f61fe51d3e05ae4bb5f27cdb9704fad4e979
+  checksum: f9db13d513158226515a6ce96d14baca8c89edc89433fa1d036e0781cc11801b
 - filename: client/create_client_env_file.sh
   checksum: 3da8227658cfc1e4274fa9294fba32073b06aaacd4dc409889116eb39a56078e
 - filename: client/package-lock.json
@@ -30,7 +30,7 @@ fileignoreconfig:
 - filename: client/src/dashboard/transformData.tsx
   checksum: 4bb611b66e5c93ec4e98869d981a55dfe0a26446667e60e2737ae7494766652d
 - filename: server/.env.template
-  checksum: 3ed9c6df32c67c481317bb370933fcd56cee89ec36ce66cbf48040d0175bfc97
+  checksum: 384ebbdcca077e4c4a6d69760bb45acfe41fba25e463f42c5655d21ab9e5bfbf
 - filename: server/create_server_env_file.sh
   checksum: 10a0acaeb47f02baa39ef0c5b712eb7ed56c5920f2f0267e7dbb4e7d1c97e3de
 - filename: server/package-lock.json

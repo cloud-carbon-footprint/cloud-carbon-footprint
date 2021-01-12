@@ -77,10 +77,12 @@ For a more comprehensive read on the various calculations and constants that we 
 ### Server
 The application requires a number of environment variables to be set in the [server/.env](server/.env) file. See [server/.env.template](server/.env.template) for a template .env file. Rename this file as .env and then set the environment variables.
 
+By default, the server has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your [server/.env](server/.env) file.
+
 ### Client
 There is also a [client/.env](client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](client/.env.template) for a template. It is not required for local development though. 
 
-By default, the client uses both "AWS" and "GCP". If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
+By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
 
 
 
