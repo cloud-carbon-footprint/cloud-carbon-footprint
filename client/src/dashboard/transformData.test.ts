@@ -1,7 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useAccountNamesFromEstimates } from './transformData'
+import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useFilterDataFromEstimates } from './transformData'
 import { renderHook } from '@testing-library/react-hooks'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
@@ -124,13 +124,18 @@ describe('transformData', () => {
   })
 
   it('extract account names from estimates data', async () => {
-    const { result } = renderHook(() => useAccountNamesFromEstimates(data))
+    const { result } = renderHook(() => useFilterDataFromEstimates(data))
     // then
     const expectedResult = {
       accounts: [
         { cloudProvider: 'aws', key: 'test-a', name: 'test-a' },
         { cloudProvider: 'gcp', key: 'test-b', name: 'test-b' },
         { cloudProvider: 'aws', key: 'test-c', name: 'test-c' },
+      ],
+      services: [
+        { cloudProvider: 'aws', key: 'ebs', name: 'ebs' },
+        { cloudProvider: 'gcp', key: 'ec2', name: 'ec2' },
+        { cloudProvider: 'aws', key: 'ec2', name: 'ec2' },
       ],
     }
     expect(result.current).toEqual(expectedResult)

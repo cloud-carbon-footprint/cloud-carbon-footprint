@@ -11,6 +11,7 @@ import {
 } from '../models/types'
 import { pluck, uniq } from 'ramda'
 import { useEffect, useState } from 'react'
+import { DropdownOption } from './filters/DropdownFilter'
 const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
   const co2Series: cloudEstPerDay[] = []
   const wattHoursSeries: cloudEstPerDay[] = []
@@ -99,24 +100,34 @@ const sumCO2 = (data: EstimationResult[]): number => {
   return serviceEstimates.reduce((acc, currentValue) => acc + currentValue.co2e, 0)
 }
 
-const useAccountNamesFromEstimates = (data: EstimationResult[]): FilterResultResponse => {
+const useFilterDataFromEstimates = (data: EstimationResult[]): FilterResultResponse => {
   const [filteredData] = useState(data)
-  const [filterResultResponse, setFilterResultResponse] = useState<FilterResultResponse>({ accounts: [] })
+  const [filterResultResponse, setFilterResultResponse] = useState<FilterResultResponse>({ accounts: [], services: [] })
 
   useEffect(() => {
     const serviceEstimates = pluck('serviceEstimates', data).flat()
 
-    const accountNames = serviceEstimates.map((estimate) => {
-      return {
-        cloudProvider: estimate.cloudProvider?.toLowerCase(),
-        key: estimate.accountName,
-        name: estimate.accountName,
-      }
+    const accountNames: DropdownOption[] = []
+    const serviceNames: DropdownOption[] = []
+
+    serviceEstimates.map((estimate) => {
+      const { cloudProvider, accountName, serviceName } = estimate
+      accountNames.push({
+        cloudProvider: cloudProvider?.toLowerCase(),
+        key: accountName ? accountName : 'Unknown Account',
+        name: accountName ? accountName : 'Unknown Account',
+      })
+
+      serviceNames.push({
+        cloudProvider: cloudProvider?.toLowerCase(),
+        key: serviceName ? serviceName : 'Unknown Service',
+        name: serviceName ? serviceName : 'Unknown Service',
+      })
     })
-    setFilterResultResponse({ accounts: uniq(accountNames) })
+    setFilterResultResponse({ accounts: uniq(accountNames), services: uniq(serviceNames) })
   }, [data, filteredData])
 
   return filterResultResponse
 }
 
-export { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useAccountNamesFromEstimates }
+export { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useFilterDataFromEstimates }
