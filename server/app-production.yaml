@@ -1,0 +1,6 @@
+service: default
+
+runtime: nodejs12
+instance_class: F1
+
+entrypoint: npm run start:webprod
