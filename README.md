@@ -74,9 +74,15 @@ For a more comprehensive read on the various calculations and constants that we 
 **Note** : When calculating total `wattHours` using AWS Lambda service, we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation(`Lambda.ts` file line 40).
 ## Run
 
+### Server
 The application requires a number of environment variables to be set in the [server/.env](server/.env) file. See [server/.env.template](server/.env.template) for a template .env file. Rename this file as .env and then set the environment variables.
 
+### Client
 There is also a [client/.env](client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](client/.env.template) for a template. It is not required for local development though. 
+
+By default, the client uses both "AWS" and "GCP". If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
+
+
 
 ### Client and Server (with mock data)
 ```
