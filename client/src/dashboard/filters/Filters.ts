@@ -36,15 +36,13 @@ const defaultFiltersConfig = {
   [DropdownFilter.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
 }
 
-export const filtersConfigGenerator = (filteredResponse: FilterResultResponse): FiltersConfig => {
-  const accountSet: Set<DropdownOption> = new Set<DropdownOption>()
-  accountSet.add(ALL_ACCOUNTS_DROPDOWN_OPTION)
-  filteredResponse.accounts.forEach((account) => accountSet.add(account))
+export const filtersConfigGenerator = ({ accounts, services }: FilterResultResponse): FiltersConfig => {
+  const configValues = {
+    accounts: [ALL_ACCOUNTS_DROPDOWN_OPTION, ...accounts],
+    services: [ALL_SERVICES_DROPDOWN_OPTION, ...services],
+  }
 
-  const serviceSet: Set<DropdownOption> = new Set<DropdownOption>()
-  serviceSet.add(ALL_SERVICES_DROPDOWN_OPTION)
-  filteredResponse.services.forEach((service) => serviceSet.add(service))
-  return Object.assign(defaultFiltersConfig, { accounts: Array.from(accountSet), services: Array.from(serviceSet) })
+  return Object.assign(defaultFiltersConfig, configValues)
 }
 
 export class Filters {

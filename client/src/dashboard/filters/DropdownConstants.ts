@@ -38,3 +38,14 @@ export const CLOUD_PROVIDER_OPTIONS: DropdownOption[] = [
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
   ...alphabetizeDropdownOptions(config().CURRENT_PROVIDERS),
 ]
+
+export const buildAndOrderDropdownOptions = (dropdownOptions: DropdownOption[] = [], emptyResponse: any) => {
+  const allOptions: DropdownOption[] = []
+
+  for (const option of dropdownOptions ? dropdownOptions : emptyResponse) {
+    allOptions.push(option)
+  }
+  return alphabetizeDropdownOptions(allOptions).sort((firstDropdownOption, secondDropdownOption) =>
+    firstDropdownOption.cloudProvider!.localeCompare(secondDropdownOption.cloudProvider!),
+  )
+}

@@ -5,23 +5,15 @@
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
-import { ALL_SERVICES_DROPDOWN_OPTION, alphabetizeDropdownOptions } from './DropdownConstants'
+import { ALL_SERVICES_DROPDOWN_OPTION, buildAndOrderDropdownOptions } from './DropdownConstants'
 
-const EMPTY_RESPONSE = { services: [{ key: '', name: '' }] }
+const EMPTY_RESPONSE = [{ key: '', name: '' }]
 
+// TODO remove mutable global variable
 export let SERVICE_OPTIONS: DropdownOption[]
 
 const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, options }) => {
-  let allDropdownServiceOptions: DropdownOption[] = []
-  for (const service of (options ? options : EMPTY_RESPONSE).services) {
-    allDropdownServiceOptions.push(service)
-  }
-
-  allDropdownServiceOptions = alphabetizeDropdownOptions(
-    allDropdownServiceOptions,
-  ).sort((firstDropdownServiceOption, secondDropdownServiceOption) =>
-    firstDropdownServiceOption.cloudProvider!.localeCompare(secondDropdownServiceOption.cloudProvider!),
-  )
+  const allDropdownServiceOptions = buildAndOrderDropdownOptions(options?.services, EMPTY_RESPONSE)
 
   SERVICE_OPTIONS = [ALL_SERVICES_DROPDOWN_OPTION, ...allDropdownServiceOptions]
 
