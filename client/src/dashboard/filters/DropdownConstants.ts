@@ -39,7 +39,10 @@ export const CLOUD_PROVIDER_OPTIONS: DropdownOption[] = [
   ...alphabetizeDropdownOptions(config().CURRENT_PROVIDERS),
 ]
 
-export const buildAndOrderDropdownOptions = (dropdownOptions: DropdownOption[] = [], emptyResponse: any) => {
+export const buildAndOrderDropdownOptions = (
+  dropdownOptions: DropdownOption[] = [],
+  emptyResponse: { cloudProvider?: string; key: string; name: string }[],
+): DropdownOption[] => {
   const allOptions: DropdownOption[] = []
 
   for (const option of dropdownOptions ? dropdownOptions : emptyResponse) {

@@ -15,6 +15,8 @@ fileignoreconfig:
   checksum: 47b097049490c3d280da370451b1b6bf44f8c30eddcca847b763a9d77735c961
 - filename: client/src/dashboard/filters/AccountFilter.tsx
   checksum: 17b97f905fb2dbc819ad38e5057da7195e0abb4f1a1d27b170e9a7d2489159df
+- filename: client/src/dashboard/filters/DropdownConstants.ts
+  checksum: 5b02e478948bff752b03cacdc392c72930a5a3c5d079ec5e50feef0f0161a5b4
 - filename: client/src/dashboard/filters/Filters.test.ts
   checksum: 6e4b6d75b476091187a224f8caf6fb4ff258583f873c80e712028e1e613ba5cd
 - filename: client/src/dashboard/filters/Filters.ts
