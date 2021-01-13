@@ -10,7 +10,7 @@ fileignoreconfig:
 - filename: client/create_client_env_file.sh
   checksum: 0b64adef6103c7b0715083090ff2f79b2185ccb0d0d1b8d04c4ba8bbd8551327
 - filename: client/package-lock.json
-  checksum: 790f227d3302c3e40f01d5a8f6fe73af74f90a76f76abc6f60f20034733d2330
+  checksum: 90f014c732dae006212e103b20cdbf02a3b4db3f1dad4725b7686c37e07d351f
 - filename: client/src/Config.ts
   checksum: 56711c967d7a2305b0519ec382a1d2b45b7ab636a93edc98ec9f9ee105677cb1
 - filename: client/src/dashboard/charts/__snapshots__/DonutChartTest.test.tsx.snap
