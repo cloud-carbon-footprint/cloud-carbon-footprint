@@ -81,7 +81,7 @@ export default class CostAndUsageReports {
         // Compute
         const computeUsage: ComputeUsage = {
           timestamp: costAndUsageReportRow.timestamp,
-          cpuUtilizationAverage: 50,
+          cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
           numberOfvCpus: costAndUsageReportRow.vCpuHours,
           usesAverageCPUConstant: true,
         }
