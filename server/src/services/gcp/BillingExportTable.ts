@@ -22,6 +22,7 @@ import {
 } from '@services/gcp/BillingExportTypes'
 import BillingExportRow from '@services/gcp/BillingExportRow'
 import Logger from '@services/Logger'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -72,7 +73,7 @@ export default class BillingExportTable {
 
   private getComputeFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
     const computeUsage: ComputeUsage = {
-      cpuUtilizationAverage: 50,
+      cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
