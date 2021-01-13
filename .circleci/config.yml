@@ -23,7 +23,7 @@ jobs:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       - run:
           name: setup
-          command: "[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache."
+          command: '[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache.'
       # - save_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       #     paths:
@@ -78,8 +78,37 @@ jobs:
           paths:
             - server/dist/*
             - server/.env
-  deploy:
+  stage:
     description: Deploy app to gcp staging
+    working_directory: ~/cloud-carbon-footprint
+    docker:
+      - image: hashicorp/terraform:0.12.28
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
+      - run:
+          name: stage
+          command: |
+            apk add --update python3 py-crcmod bash libc6-compat curl
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+            # Store service account
+
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+            # Initialize gcloud CLI
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
+            cd appengine
+            ./deploy-staging.sh
+            cd ..
+  deploy:
+    description: Deploy app to gcp prod
     working_directory: ~/cloud-carbon-footprint
     docker:
       - image: hashicorp/terraform:0.12.28
@@ -105,7 +134,7 @@ jobs:
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 
             cd appengine
-            ./deploy-staging.sh
+            ./deploy-production.sh
             cd ..
 
 workflows:
@@ -119,10 +148,18 @@ workflows:
       - build-server:
           requires:
             - lint-test
-      - deploy:
+      - stage:
           filters:
             branches:
               only: trunk
           requires:
             - build-client
             - build-server
+      - deploy:
+          filters:
+            branches:
+              only: production-pipeline
+          requires:
+            - build-client
+            - build-server
+            - stage

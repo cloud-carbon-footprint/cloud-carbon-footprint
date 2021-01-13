@@ -1,6 +1,9 @@
-service: default
+service: api
 
 runtime: nodejs12
-instance_class: F1
+instance_class: F4_1G
 
 entrypoint: npm run start:webprod
+
+env_variables:
+  CCF_CACHE_PATH: /tmp/estimates.cache.json
