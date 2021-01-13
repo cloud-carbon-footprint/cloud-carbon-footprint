@@ -1,5 +1,47 @@
 # Contributing to cloud-carbon-footprint
 
+## Getting Started 🚀
+
+### Issues 
+Issues are created [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/issues).
+
+Issues will be closed if they have been inactive and the latest affected version no longer receives support.
+
+_If an issue has been closed and you still feel it's relevant, feel free to ping a maintainer or add a comment!_
+
+#### How to Contribute in Issues
+There are fundamentally three ways an individual can contribute:
+
+1) **Open an issue:** If you believe that you have found a new bug, you should report it by creating a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker.
+1) **Help triage an open issue:** You can do this either by providing assistive details (a reproducible test case that demonstrates a bug) or by providing suggestions to address the issue.
+1) **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `ThoughtWorks-Cleantech/cloud-carbon-footprint` in a concrete and reviewable manner.
+
+
+#### Asking for General Help
+- _TBD_: Find point of contact or setup discussion board for general help? (instead of creating an issue)  
+
+#### Submitting a Bug Report
+To submit a bug report:
+
+When opening a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker, users will be presented with a [template](https://trello.com/c/o7SKngz5/914-create-bug-report-template-md-file/) that should be filled in.
+
+If you believe that you have found a bug in the cloud-carbon-footprint, please fill out the given template to the best of your ability.
+
+#### Triaging a Bug Report
+It's common for open issues to involve discussion. Some contributors may have differing opinions, including whether the behavior is a bug or feature. This discussion is part of the process and should be kept focused, helpful, and professional.
+
+Terse responses that provide neither additional context nor supporting detail are not helpful or professional. To many, such responses are annoying and unfriendly.
+
+Contributors are encouraged to solve issues collaboratively and help one another make progress. If you encounter an issue that you feel is invalid, or which contains incorrect information, explain why you feel that way with additional supporting context, and be willing to be convinced that you may be wrong. By doing so, we can often reach the correct outcome faster.
+
+#### Resolving a Bug Report
+Most issues are resolved by opening a pull request. The process for opening and reviewing a pull request is similar to that of opening and triaging issues, but carries with it a necessary review and approval workflow that ensures that the proposed changes meet the minimal quality and functional guidelines of the cloud-carbon-footprint project.
+
+
+### Pull Requests
+
+..._TBD_ 
+
 ## Linting
 - We are using `eslint` and `prettier` in the project
 - To avoid the hassle of manually linting the file, you can configure your IDE to automatically run the
