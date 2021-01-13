@@ -180,7 +180,7 @@ workflows:
             - build-client-staging
             - build-server
       - deploy:
-          type: approve
+          type: approval
           filters:
             branches:
               only: production-pipeline
