@@ -36,7 +36,7 @@ jobs:
       - run:
           name: test
           command: 'npm test'
-  build-client:
+  build-client-staging:
     description: Build Client
     working_directory: ~/cloud-carbon-footprint
     machine:
@@ -51,7 +51,28 @@ jobs:
             cd client
             npm ci
             npm run-script build
-            ./create_client_env_file.sh
+            ./create_client_stage_env_file.sh
+      - persist_to_workspace:
+          root: ~/cloud-carbon-footprint
+          paths:
+            - client/build/*
+            - client/.env
+  build-client-prod:
+    description: Build Client
+    working_directory: ~/cloud-carbon-footprint
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
+      - run:
+          name: build
+          command: |
+            cd client
+            npm ci
+            npm run-script build
+            ./create_client_prod_env_file.sh
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
           paths:
@@ -105,7 +126,7 @@ jobs:
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 
             cd appengine
-            ./deploy-staging.sh
+            ./stage/deploy.sh
             cd ..
   deploy:
     description: Deploy app to gcp prod
@@ -134,7 +155,7 @@ jobs:
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 
             cd appengine
-            ./deploy-production.sh
+            ./prod/deploy.sh
             cd ..
 
 workflows:
@@ -142,7 +163,10 @@ workflows:
   build-and-deploy:
     jobs:
       - lint-test
-      - build-client:
+      - build-client-staging:
+          requires:
+            - lint-test
+      - build-client-prod:
           requires:
             - lint-test
       - build-server:
@@ -153,13 +177,15 @@ workflows:
             branches:
               only: trunk
           requires:
-            - build-client
+            - build-client-staging
             - build-server
       - deploy:
+          type: approve
           filters:
             branches:
               only: production-pipeline
           requires:
-            - build-client
+            - lint-test
+            - build-client-prod
             - build-server
             - stage
