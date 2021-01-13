@@ -4,7 +4,7 @@
 # © 2020 ThoughtWorks, Inc. All rights reserved.
 #
 
-echo HOST_URL=$HOST_URL >> .env
+echo HOST_URL=$PROD_HOST_URL >> .env
 echo OKTA_ORG_URL=$OKTA_ORG_URL >> .env
 echo APP_SECRET=$APP_SECRET >> .env
 echo OKTA_CLIENT_ID=$OKTA_CLIENT_ID >> .env
