@@ -36,7 +36,7 @@ jobs:
       - run:
           name: test
           command: 'npm test'
-  build-client-staging:
+  build-client:
     description: Build Client
     working_directory: ~/cloud-carbon-footprint
     machine:
@@ -51,28 +51,6 @@ jobs:
             cd client
             npm ci
             npm run-script build
-            ./create_client_stage_env_file.sh
-      - persist_to_workspace:
-          root: ~/cloud-carbon-footprint
-          paths:
-            - client/build/*
-            - client/.env
-  build-client-prod:
-    description: Build Client
-    working_directory: ~/cloud-carbon-footprint
-    machine:
-      image: ubuntu-1604:202007-01
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/cloud-carbon-footprint
-      - run:
-          name: build
-          command: |
-            cd client
-            npm ci
-            npm run-script build
-            ./create_client_prod_env_file.sh
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
           paths:
@@ -114,8 +92,13 @@ jobs:
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-            # Store service account
 
+            # Create client env file
+            cd client
+            ./create_client_stage_env_file.sh
+            cd ..
+
+            # Store service account
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
             # Initialize gcloud CLI
@@ -143,8 +126,13 @@ jobs:
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-            # Store service account
 
+            # Create client env file
+            cd client
+            ./create_client_prod_env_file.sh
+            cd ..
+
+            # Store service account
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
             # Initialize gcloud CLI
@@ -163,10 +151,7 @@ workflows:
   build-and-deploy:
     jobs:
       - lint-test
-      - build-client-staging:
-          requires:
-            - lint-test
-      - build-client-prod:
+      - build-client:
           requires:
             - lint-test
       - build-server:
@@ -177,15 +162,13 @@ workflows:
             branches:
               only: trunk
           requires:
-            - build-client-staging
+            - build-client
             - build-server
       - deploy:
           type: approval
           filters:
             branches:
-              only: production-pipeline
+              only: trunk
           requires:
             - lint-test
-            - build-client-prod
-            - build-server
             - stage
