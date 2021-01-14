@@ -160,7 +160,7 @@ workflows:
       - stage:
           filters:
             branches:
-              only: trunk
+              only: production-pipeline
           requires:
             - build-client
             - build-server
@@ -168,7 +168,7 @@ workflows:
           type: approval
           filters:
             branches:
-              only: trunk
+              only: production-pipeline
           requires:
             - lint-test
             - stage
