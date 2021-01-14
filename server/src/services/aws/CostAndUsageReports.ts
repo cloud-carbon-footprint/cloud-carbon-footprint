@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import moment from 'moment'
-import FootprintEstimate from '@domain/FootprintEstimate'
+import FootprintEstimate, { MutableEstimationResult } from '@domain/FootprintEstimate'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import configLoader from '@application/ConfigLoader'
@@ -29,9 +29,9 @@ import {
   PRICING_UNITS,
   UNKNOWN_USAGE_TYPES,
 } from '@services/aws/CostAndUsageTypes'
-import CostAndUsageReportsRow, { SERVICE_NAME_MAPPING } from '@services/aws/CostAndUsageReportsRow'
-import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
+import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import { Athena } from 'aws-sdk'
+import { appendOrAccumulateEstimatesByDay } from '@domain/FootprintEstimate'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -66,13 +66,13 @@ export default class CostAndUsageReports {
         return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
-      buildEstimateFromCostAndUsageRow(results, costAndUsageReportRow, footprintEstimate)
+      appendOrAccumulateEstimatesByDay(results, costAndUsageReportRow, footprintEstimate)
     })
     return results
   }
 
   private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
-    switch (costAndUsageReportRow.pricingUnit) {
+    switch (costAndUsageReportRow.usageUnit) {
       case PRICING_UNITS.HOURS_1:
       case PRICING_UNITS.HOURS_2:
       case PRICING_UNITS.HOURS_3:
@@ -121,7 +121,7 @@ export default class CostAndUsageReports {
         const co2e = estimateCo2(wattHours, 'AWS', costAndUsageReportRow.region)
         return { timestamp: costAndUsageReportRow.timestamp, wattHours, co2e, usesAverageCPUConstant: true }
       default:
-        this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${costAndUsageReportRow.pricingUnit}`)
+        this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`)
     }
   }
 
@@ -132,11 +132,11 @@ export default class CostAndUsageReports {
     }
     const hoursInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
     // Convert from GB-Hours to GB-Month
-    if (costAndUsageReportRow.pricingUnit === PRICING_UNITS.GB_HOURS)
+    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS)
       return costAndUsageReportRow.usageAmount / (hoursInMonth * 24)
 
     // Convert from GB-Seconds to GB-Month
-    if (costAndUsageReportRow.pricingUnit === PRICING_UNITS.LAMBDA_GB_SECONDS)
+    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.LAMBDA_GB_SECONDS)
       return costAndUsageReportRow.usageAmount / (hoursInMonth * 24) / 86400
 
     return costAndUsageReportRow.usageAmount
@@ -149,7 +149,7 @@ export default class CostAndUsageReports {
     // but not when the usage type is backup, which we assume this is usage using S3 (which is HDD).
     return (
       this.endsWithAny(SSD_USAGE_TYPES, costAndUsageRow.usageType) ||
-      (this.endsWithAny(SSD_SERVICES, costAndUsageRow.productCode) && !costAndUsageRow.usageType.includes('Backup'))
+      (this.endsWithAny(SSD_SERVICES, costAndUsageRow.serviceName) && !costAndUsageRow.usageType.includes('Backup'))
     )
   }
 
@@ -169,7 +169,7 @@ export default class CostAndUsageReports {
     return (
       this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
       UNKNOWN_USAGE_TYPES.some((unknownUsageType) => usageType.includes(unknownUsageType)) ||
-      serviceName === SERVICE_NAME_MAPPING.AmazonSimpleDB
+      serviceName === 'AmazonSimpleDB'
     )
   }
 
@@ -179,27 +179,22 @@ export default class CostAndUsageReports {
 
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
     const params = {
-      QueryString: `SELECT DATE(line_item_usage_start_date) AS day,
-                        line_item_usage_account_id,
-                        product_region,
-                        line_item_product_code,
-                        line_item_usage_type,
-                        pricing_unit,
-                        product_vcpu,
-                    SUM(line_item_usage_amount) AS total_line_item_usage_amount,
-                    SUM(line_item_blended_cost) AS total_cost
+      QueryString: `SELECT DATE(line_item_usage_start_date) AS timestamp,
+                        line_item_usage_account_id as accountName,
+                        product_region as region,
+                        line_item_product_code as serviceName,
+                        line_item_usage_type as usageType,
+                        pricing_unit as usageUnit,
+                        product_vcpu as vCpus,
+                    SUM(line_item_usage_amount) as usageAmount,
+                    SUM(line_item_blended_cost) as cost
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
                     AND pricing_unit IN ('${Object.values(PRICING_UNITS).join(`', '`)}')
                     AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
                     AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
-                    GROUP BY DATE(line_item_usage_start_date), 
-                            line_item_usage_account_id, 
-                            product_region, 
-                            line_item_product_code, 
-                            line_item_usage_type, 
-                            pricing_unit, 
-                            product_vcpu`,
+                    GROUP BY 
+                        1,2,3,4,5,6,7`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },

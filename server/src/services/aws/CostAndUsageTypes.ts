@@ -87,16 +87,6 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'GlacierByteHrs',
 ]
 
-export const EC2_USAGE_TYPES: string[] = [
-  'BoxUsage',
-  'SpotUsage',
-  'EBSOptimized',
-  'UnusedBox',
-  'HostUsage',
-  'vCPU-Hours',
-  'CPUCredits',
-]
-
 export const UNKNOWN_USAGE_TYPES: string[] = [
   'AmazonEKS-Hours:perCluster',
   'SoftwareUsage',

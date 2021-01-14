@@ -9,10 +9,9 @@ import ComputeEstimator from '@domain/ComputeEstimator'
 import StorageUsage from '@domain/StorageUsage'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import ComputeUsage from '@domain/ComputeUsage'
-import FootprintEstimate from '@domain/FootprintEstimate'
+import FootprintEstimate, { MutableEstimationResult } from '@domain/FootprintEstimate'
 import { EstimationResult } from '@application/EstimationResult'
 import configLoader from '@application/ConfigLoader'
-import buildEstimateFromCostAndUsageRow, { MutableEstimationResult } from '@services/aws/CostAndUsageReportsMapper'
 import {
   MEMORY_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
@@ -23,6 +22,7 @@ import {
 import BillingExportRow from '@services/gcp/BillingExportRow'
 import Logger from '@services/Logger'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+import { appendOrAccumulateEstimatesByDay } from '@domain/FootprintEstimate'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -46,7 +46,7 @@ export default class BillingExportTable {
     usageRows.map((usageRow) => {
       const billingExportRow = new BillingExportRow(usageRow)
       billingExportRow.setTimestamp(usageRow.timestamp)
-      billingExportRow.setVCpuHours(usageRow.vcpus)
+      billingExportRow.setVCpuHours(usageRow.vCpus)
 
       if (
         this.isMemoryUsage(billingExportRow.usageType) ||
@@ -66,7 +66,7 @@ export default class BillingExportTable {
         default:
           this.billingExportTableLogger.warn(`Unsupported Usage unit: ${usageRow.usageUnit}`)
       }
-      buildEstimateFromCostAndUsageRow(results, billingExportRow, footprintEstimate)
+      appendOrAccumulateEstimatesByDay(results, billingExportRow, footprintEstimate)
     })
     return results
   }
@@ -123,13 +123,13 @@ export default class BillingExportTable {
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
     const query = `SELECT
-                    DATE(usage_start_time) AS timestamp,
+                    DATE(usage_start_time) as timestamp,
                     project.name as accountName,
                     location.region as region,
                     service.description as serviceName,
                     sku.description as usageType,
                     usage.unit as usageUnit,
-                    system_labels.value AS vcpus,
+                    system_labels.value AS vCpus,
                     SUM(usage.amount) AS usageAmount,
                     SUM(cost) AS cost
                   FROM
@@ -145,12 +145,12 @@ export default class BillingExportTable {
                     AND usage_end_time <= TIMESTAMP('${moment(end).format('YYYY-MM-DD')}')
                   GROUP BY
                     timestamp,
-                    project.name,
-                    location.region,
-                    service.description,
-                    sku.description,
-                    usage.unit,
-                    vcpus`
+                    accountName,
+                    region,
+                    serviceName,
+                    usageType,
+                    usageUnit,
+                    vCpus`
 
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
