@@ -2,19 +2,24 @@
 
 [![CircleCI](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint.svg?style=shield&circle-token=62c2533631fb603b09c81ff218530d66b26a61f4)](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint/tree/trunk)
 
-This is an application that calculates the emissions of AWS services in realtime of an AWS account, given a start and end UTC dates (within the past year).
+This is an application that estimates the energy (kWh) and carbon emissions (mt CO2e) of cloud provider usage, given a start and end UTC dates (within the past year).
 
 The core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `server/`, and the website is split between `server/` and `client/`
 
 ## Prerequisites
 
-- [Homebrew](https://brew.sh)
 - Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
-- AWS CLI `brew install awscli`
-- Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/) (for Mac download the darwin_amd64 zip)
 - Talisman `curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
 
-Note: During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.  
+Note: 
+- During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.
+- During install, Talisman will also ask you for the directory of your git repositories. If you don't want to install Talisman in all your git repos, then cancel out at this step.  
+
+## Optional Prerequisites
+
+- [Homebrew](https://brew.sh) (to download the AWS CLI)
+- AWS CLI `brew install awscli` (if you are authenticating with AWS - see below)
+- Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/). (if you want to deploy using Terraform)
 
 ## Setup
 
@@ -35,16 +40,16 @@ This will serve the docs and give an url where you can visit and see the documen
 
 We currently support three modes of authentication with AWS, that you can see in [server/src/application/AWSCredentialsProvider.ts](server/src/application/AWSCredentialsProvider.ts):
 
-1. GCP - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
-2. AWS - this is used to authenticate via an AWS role that has the necessary permissions to query the CloudWatch and Cost Explorer APIs.   
-3. default - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.   
+1. "GCP" - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
+2. "AWS" - this is used to authenticate via an AWS role that has the necessary permissions to query the CloudWatch and Cost Explorer APIs.   
+3. "default" - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.   
 
 The authentication mode is set inside [server/src/application/Config.ts](server/src/application/Config.ts).
 
 [server/.env](server/.env) is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. 
 You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](.adr/adr_5_aws_authentication.txt), as well as this article: [https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/](https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/)
 
-### AWS Credentials - only needed for the default authentication mode. 
+### AWS Credentials - only needed for the "default" authentication mode. 
  
 - Configure AWS credentials.
   ```
