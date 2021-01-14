@@ -13,4 +13,4 @@ gcloud --quiet app deploy \
   --version=production \
   ../../client/app-production.yaml
 gcloud --quiet app deploy \
-  ./dispatch.yaml
+  dispatch.yaml

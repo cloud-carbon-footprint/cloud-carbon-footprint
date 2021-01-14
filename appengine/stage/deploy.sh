@@ -13,4 +13,4 @@ gcloud --quiet app deploy \
   --version=staging \
   ../../client/app-staging.yaml
 gcloud --quiet app deploy \
-  ./dispatch.yaml
+  dispatch.yaml
