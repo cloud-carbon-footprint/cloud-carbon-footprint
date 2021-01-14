@@ -4,22 +4,11 @@
 
 import { BigQueryDate } from '@google-cloud/bigquery'
 import { GCP_REGIONS } from '@services/gcp/GCPRegions'
+import BillingDataRow from '@domain/BillingDataRow'
 
-export default class BillingExportRow {
-  public readonly cloudProvider: string
-  public readonly region: string
-  public readonly productCode: string
-  public readonly serviceName: string
-  public readonly accountName: string
-  public readonly usageAmount: number
-  public readonly usageType: string
-  public readonly usageUnit: string
-  public readonly cost: number
-  public timestamp: Date
-  public vCpuHours: number
-
+export default class BillingExportRow extends BillingDataRow {
   constructor(init: Partial<BillingExportRow>) {
-    Object.assign(this, init)
+    super(init)
     this.cloudProvider = 'GCP'
     if (!this.region) this.region = GCP_REGIONS.UNKNOWN
   }

@@ -6,15 +6,15 @@ import { Athena } from 'aws-sdk'
 
 const queryResultsHeaders = {
   Data: [
-    { VarCharValue: 'day' },
-    { VarCharValue: 'line_item_usage_account_id' },
-    { VarCharValue: 'product_region' },
-    { VarCharValue: 'line_item_product_code' },
-    { VarCharValue: 'line_item_usage_type' },
-    { VarCharValue: 'pricing_unit' },
-    { VarCharValue: 'product_vcpu' },
-    { VarCharValue: 'total_line_item_usage_amount' },
-    { VarCharValue: 'total_cost' },
+    { VarCharValue: 'timestamp' },
+    { VarCharValue: 'accountName' },
+    { VarCharValue: 'region' },
+    { VarCharValue: 'serviceName' },
+    { VarCharValue: 'usageType' },
+    { VarCharValue: 'usageUnit' },
+    { VarCharValue: 'vCpus' },
+    { VarCharValue: 'usageAmount' },
+    { VarCharValue: 'cost' },
   ],
 }
 

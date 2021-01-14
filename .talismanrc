@@ -45,6 +45,8 @@ fileignoreconfig:
   checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
 - filename: server/src/application/GCPAccount.ts
   checksum: 0aa3c4064e5899324fa7d7f6053c28ab474a320fbdc3656311ebe0eb27fff1c5
+- filename: server/src/services/aws/CostAndUsageReportsRow.ts
+  checksum: 515195029e3b791850fcd98995206e93ee8f3432360d26f12e8e1c85bd9f764f
 - filename: server/test/fixtures/bigQuery.fixtures.ts
   checksum: 46a1f2a065b128fdca5d80112df6d306aa60ec9e1d81e0122160f2219fdf9853
 - filename: server/test/unit/application/App.test.ts
