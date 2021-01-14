@@ -77,30 +77,6 @@ jobs:
           paths:
             - server/dist/*
             - server/.env
-  gcloud-init:
-    description: Initialize Google Cloud SDK
-    working_directory: ~/cloud-carbon-footprint
-    docker:
-      - image: hashicorp/terraform:0.12.28
-    steps:
-      - attach_workspace:
-          at: ~/cloud-carbon-footprint
-      - run:
-          name: gcloud-init
-          command: |
-            apk add --update python3 py-crcmod bash libc6-compat curl
-            export PATH=$PATH:/root/google-cloud-sdk/bin
-            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-
-            # Store service account
-            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-
-            # Initialize gcloud CLI
-            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-
-            gcloud --quiet config set project $GOOGLE_PROJECT_ID
-
-            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
   staging-deploy:
     description: Deploy app to gcp staging
     working_directory: ~/cloud-carbon-footprint
@@ -113,10 +89,25 @@ jobs:
       - run:
           name: staging-deploy
           command: |
+            apk add --update python3 py-crcmod bash libc6-compat curl
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
             # Create client env file
             cd client
             ./create_client_stage_env_file.sh
             cd ..
+
+            # Store service account
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+            # Initialize gcloud CLI
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
             cd appengine
             ./deploy-staging.sh
             cd ..
@@ -132,10 +123,25 @@ jobs:
       - run:
           name: prod-deploy
           command: |
+            apk add --update python3 py-crcmod bash libc6-compat curl
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
             # Create client env file
             cd client
             ./create_client_prod_env_file.sh
             cd ..
+
+            # Store service account
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+            # Initialize gcloud CLI
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
             cd appengine
             ./deploy-production.sh
             cd ..
@@ -151,16 +157,13 @@ workflows:
       - build-server:
           requires:
             - lint-test
-      - gcloud-init:
-          requires:
-            - build-client
-            - build-server
       - staging-deploy:
           filters:
             branches:
               only: production-pipeline
           requires:
-            - gcloud-init
+            - build-client
+            - build-server
       - hold:
           type: approval
           requires:
