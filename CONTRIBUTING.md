@@ -23,7 +23,7 @@ There are fundamentally three ways an individual can contribute:
 #### Submitting a Bug Report
 To submit a bug report:
 
-When opening a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker, users will be presented with a [template](https://trello.com/c/o7SKngz5/914-create-bug-report-template-md-file/) that should be filled in.
+When opening a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker, users will be presented with a [template](/link-to-template) that should be filled in.
 
 If you believe that you have found a bug in the cloud-carbon-footprint, please fill out the given template to the best of your ability.
 
@@ -40,8 +40,89 @@ Most issues are resolved by opening a pull request. The process for opening and 
 
 ### Pull Requests
 
-..._TBD_ 
+Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository.
 
+Setting up your local environment
+
+#### Fork & Clone
+Fork the project on GitHub and clone your fork locally.
+
+```
+$ git clone git@github.com:[your-username-here]/cloud-carbon-footprint.git
+$ cd electron
+$ git remote add upstream https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint
+$ git fetch upstream 
+```
+
+#### Build
+See the [main repository README](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint) for build directions. 
+
+#### Branch
+The ThoughtWorks Cloud Carbon Footprint team uses [Trunk-Based Development](https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines). 
+You're welcome to keep your local development environment organized as you like, however when submitting pull requests to the base repository, be sure to submit them against the `trunk` branch. In order to avoid merge conflicts in your pull request, you'll need to successfully rebase ahead of your pull request: 
+
+```
+$ git fetch upstream
+$ git rebase upstream/trunk
+$ git push origin/trunk
+``` 
+
+#### Code
+Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the server/ folder, the documentation or jest tests in the spec/ folder.
+
+TODO: Add short recommendation for maintaining code style.
+
+#### Commit
+It is recommended to keep your changes grouped logically within individual commits. Many contributors find it easier to review changes that are split across multiple commits. There is no limit to the number of commits in a pull request. Please be sure to include your issue number in brackets and use easy to understand commit messages that summarize the work that you've done. A good commit message should describe what changed and why. See example below as reference.
+
+```
+$ git commit -m "[issue-number] Adds support for estimating Azure Anomoly Detector carbon emissions"
+```
+*Please Note* We have configured the repository to run tests and linting with a pre-commit hook, enabled by Talisman. It is recommended you ensure this pre-commit hook is properly set up in your local environment, and to only commit from the command line to ensure that it runs. 
+
+#### Rebase
+Once you have committed your changes, it is a good idea to use git rebase (not git merge) to synchronize your work with the main repository.
+
+```
+$ git fetch upstream
+$ git rebase upstream/trunk
+```
+
+This ensures that your working branch has the latest changes from `ThoughtWorks-Cleantech/cloud-carbon-footprint` trunk.
+
+#### Test
+While our tests run every time you commit thanks to the pre-commit hook described above, if you would like to run the tests idependant of a commit, use the following:
+```
+$ npm run test
+```
+#### Push
+Once your commits are ready to go -- with passing tests and linting -- begin the process of opening a pull request by pushing your working branch to your fork on GitHub.
+```
+$ git push origin my-branch
+```
+
+#### Opening the Pull Request
+From within GitHub, opening a new pull request will present you with a [template](/link-to-template ) that should be filled out: 
+
+#### Discuss and Update
+You will probably get feedback or requests for changes to your pull request. This is a big part of the submission process so don't be discouraged! Some contributors may sign off on the pull request right away. Others may have detailed comments or feedback. This is a necessary part of the process in order to evaluate whether the changes are correct and necessary.
+
+To make changes to an existing pull request, make the changes to your local branch, add a new commit with those changes, and push those to your fork. GitHub will automatically update the pull request.
+
+```
+$ git add my/changed/files
+$ git commit
+$ git push origin my-branch
+```
+
+There are a number of more advanced mechanisms for managing commits using git rebase that can be used, but are beyond the scope of this guide.
+
+Feel free to post a comment in the pull request to ping reviewers if you are awaiting an answer on something.
+
+##### Approval and Request Changes Workflow
+TBD: Add context on approval and request change workflow
+
+---
 ## Linting
 - We are using `eslint` and `prettier` in the project
 - To avoid the hassle of manually linting the file, you can configure your IDE to automatically run the
@@ -51,24 +132,6 @@ linter.
 - The prettier rules set up for the project are in `.prettierrc.json` file in the root DIR. 
 - THe client and the server have their own ESLint rules in the respective `.eslintrc.js` files. 
 - Following the above rules is a pre-requisite for committing any code.
-
-## To commit and push
-
-To push to `trunk`:
-
-1. Make your changes on the `trunk` branch.
-1. Stage your changes: `git add [your changed files]`.
-1. Commit your changes with this message format: `git commit -m "[ticket number] - Your commit message | Your name, Pair's name`.
-1. The pre-commit hook should run the linter, formatter, and tests for your _changed_ files. The hook will commit the changes when the pre-commit check passes.
-1. Rebase `trunk`: `git pull -r`
-1. Lint and test the entire codebase from the root directory: `npm run lint && npm test`.
-1. Run the app from the root directory to ensure it starts: `npm start`.
-1. Push to remote: `git push origin HEAD:trunk`.
-
-Check the [CI pipeline builds](https://app.circleci.com/pipelines/github/ThoughtWorks-Cleantech/cloud-carbon-footprint)
-
-- If the build <span style="color:green">passes</span>, you're done!
-- If the build <span style="color:red">fails</span>, click the link highlighted below to read the errors, fix the issue, and commit/push the fix by following the instructions above
 
 ## To run all tests
 
