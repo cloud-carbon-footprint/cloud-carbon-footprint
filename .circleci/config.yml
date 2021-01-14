@@ -111,7 +111,7 @@ jobs:
             cd appengine/stage
             ./deploy.sh
             cd ..
-  deploy:
+  prod-deploy:
     description: Deploy app to gcp prod
     working_directory: ~/cloud-carbon-footprint
     docker:
@@ -121,7 +121,7 @@ jobs:
       - attach_workspace:
           at: ~/cloud-carbon-footprint
       - run:
-          name: deploy
+          name: prod-deploy
           command: |
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -164,8 +164,7 @@ workflows:
           requires:
             - build-client
             - build-server
-      - deploy:
-          type: approval
+      - prod-deploy:
           filters:
             branches:
               only: production-pipeline
