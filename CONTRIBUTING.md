@@ -49,7 +49,7 @@ Fork the project on GitHub and clone your fork locally.
 
 ```
 $ git clone git@github.com:[your-username-here]/cloud-carbon-footprint.git
-$ cd electron
+$ cd cloud-carbon-footprint
 $ git remote add upstream https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint
 $ git fetch upstream 
 ```
