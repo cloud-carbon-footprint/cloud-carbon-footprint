@@ -160,7 +160,7 @@ workflows:
             branches:
               only: production-pipeline
           requires:
-            - glcoud-init
+            - gcloud-init
       - hold:
           type: approval
           requires:
