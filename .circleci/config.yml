@@ -77,7 +77,7 @@ jobs:
           paths:
             - server/dist/*
             - server/.env
-  stage:
+  staging-deploy:
     description: Deploy app to gcp staging
     working_directory: ~/cloud-carbon-footprint
     docker:
@@ -87,7 +87,7 @@ jobs:
       - attach_workspace:
           at: ~/cloud-carbon-footprint
       - run:
-          name: stage
+          name: staging-deploy
           command: |
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -157,17 +157,20 @@ workflows:
       - build-server:
           requires:
             - lint-test
-      - stage:
+      - staging-deploy:
           filters:
             branches:
               only: production-pipeline
           requires:
             - build-client
             - build-server
+      - hold:
+          type: approval
+          requires:
+            - staging-deploy
       - prod-deploy:
           filters:
             branches:
               only: production-pipeline
           requires:
-            - lint-test
-            - stage
+            - hold
