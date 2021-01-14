@@ -165,7 +165,6 @@ workflows:
             - build-client
             - build-server
       - prod-deploy:
-          type: approval
           filters:
             branches:
               only: production-pipeline
