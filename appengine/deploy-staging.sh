@@ -7,10 +7,10 @@
 set -x
 
 gcloud --quiet app deploy \
-  --version=production \
-  ../../server/app-production.yaml
+  --version=staging \
+  ../server/app-staging.yaml
 gcloud --quiet app deploy \
-  --version=production \
-  ../../client/app-production.yaml
+  --version=staging \
+  ../client/app-staging.yaml
 gcloud --quiet app deploy \
   dispatch.yaml

@@ -108,8 +108,8 @@ jobs:
 
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 
-            cd appengine/stage
-            ./deploy.sh
+            cd appengine
+            ./deploy-staging.sh
             cd ..
   prod-deploy:
     description: Deploy app to gcp prod
@@ -142,8 +142,8 @@ jobs:
 
             gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 
-            cd appengine/prod
-            ./deploy.sh
+            cd appengine
+            ./deploy-production.sh
             cd ..
 
 workflows:
