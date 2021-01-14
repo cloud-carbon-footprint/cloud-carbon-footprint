@@ -160,8 +160,7 @@ workflows:
             branches:
               only: production-pipeline
           requires:
-            - build-client
-            - build-server
+            - glcoud-init
       - hold:
           type: approval
           requires:
