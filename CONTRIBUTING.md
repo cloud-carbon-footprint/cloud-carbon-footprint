@@ -196,6 +196,15 @@ We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pi
 
 You can learn more about CircleCI in the [CircleCI Documentation](https://circleci.com/docs/)
 
+---
+
+## Approval for Production
+When pushing up, CircleCI will automatically go through the steps of deploying to staging as long as all tests and linting past.
+
+To deploy to production, go to CircleCI and view the build to deploy. It is a manual approval, therefore if it is ready to be
+pushed into production, click on the `Hold` step and a pop-up should appear that asks to approve. Click approve and CircleCI
+will deploy to production.
+
 --- 
 
 ## Package management 📦
