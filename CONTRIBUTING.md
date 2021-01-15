@@ -153,12 +153,12 @@ $ npm run test
 ```
 ### Push
 Once your commits are ready to go -- with passing tests and linting -- begin the process of opening a pull request by pushing your working branch to your fork on GitHub.
-```
+``` 
 $ git push origin my-branch
 ```
 
 ### Opening the Pull Request
-From within GitHub, opening a new pull request will present you with a [template](/link-to-template ) that should be filled out: 
+From within GitHub, opening a new pull request will present you with a [template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/.github/PULL_REQUEST_TEMPLATE.md) that should be filled out: 
 
 ### Discuss and Update
 You will probably get feedback or requests for changes to your pull request. This is a big part of the submission process so don't be discouraged! Some contributors may sign off on the pull request right away. Others may have detailed comments or feedback. This is a necessary part of the process in order to evaluate whether the changes are correct and necessary.
