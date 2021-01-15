@@ -21,7 +21,7 @@ There are fundamentally three ways an individual can contribute:
 ### Submitting a Bug Report
 To submit a bug report:
 
-When opening a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker, users will be presented with a [template](/link-to-template) that should be filled in.
+When opening a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker, users will be presented with a [bug report template](/.git/ISSUE_TEMPLATE/Bug_report.md) that should be filled in.
 
 If you believe that you have found a bug in the cloud-carbon-footprint, please fill out the given template to the best of your ability.
 
