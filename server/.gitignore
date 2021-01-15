@@ -4,3 +4,4 @@ server/**/*.map
 *.csv
 *.cache.json
 .env
+.env.production

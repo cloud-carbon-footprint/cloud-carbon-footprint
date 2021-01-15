@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .circleci/config.yml
+  checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
 - filename: CONTRIBUTING.md
   checksum: 454a26b0f80e1406f9f80ab12bd11183ebbf54a8b387c8667af258eeafb89ba7
 - filename: README.md
@@ -6,7 +8,7 @@ fileignoreconfig:
 - filename: client/.env.template
   checksum: 78b8264c13cab30e12466820794d83bf447bb2504ab254ffb3a45b32837cd1dd
 - filename: client/create_client_env_file.sh
-  checksum: 3da8227658cfc1e4274fa9294fba32073b06aaacd4dc409889116eb39a56078e
+  checksum: 0b64adef6103c7b0715083090ff2f79b2185ccb0d0d1b8d04c4ba8bbd8551327
 - filename: client/package-lock.json
   checksum: 90f014c732dae006212e103b20cdbf02a3b4db3f1dad4725b7686c37e07d351f
 - filename: client/src/Config.ts

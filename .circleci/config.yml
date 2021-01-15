@@ -23,7 +23,7 @@ jobs:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       - run:
           name: setup
-          command: "[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache."
+          command: '[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache.'
       # - save_cache:
       #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
       #     paths:
@@ -51,7 +51,6 @@ jobs:
             cd client
             npm ci
             npm run-script build
-            ./create_client_env_file.sh
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
           paths:
@@ -78,7 +77,7 @@ jobs:
           paths:
             - server/dist/*
             - server/.env
-  deploy:
+  staging-deploy:
     description: Deploy app to gcp staging
     working_directory: ~/cloud-carbon-footprint
     docker:
@@ -88,13 +87,18 @@ jobs:
       - attach_workspace:
           at: ~/cloud-carbon-footprint
       - run:
-          name: deploy
+          name: staging-deploy
           command: |
             apk add --update python3 py-crcmod bash libc6-compat curl
             export PATH=$PATH:/root/google-cloud-sdk/bin
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-            # Store service account
 
+            # Create client env file
+            cd client
+            ./create_client_stage_env_file.sh
+            cd ..
+
+            # Store service account
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
             # Initialize gcloud CLI
@@ -106,6 +110,40 @@ jobs:
 
             cd appengine
             ./deploy-staging.sh
+            cd ..
+  prod-deploy:
+    description: Deploy app to gcp prod
+    working_directory: ~/cloud-carbon-footprint
+    docker:
+      - image: hashicorp/terraform:0.12.28
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/cloud-carbon-footprint
+      - run:
+          name: prod-deploy
+          command: |
+            apk add --update python3 py-crcmod bash libc6-compat curl
+            export PATH=$PATH:/root/google-cloud-sdk/bin
+            curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+            # Create client env file
+            cd client
+            ./create_client_prod_env_file.sh
+            cd ..
+
+            # Store service account
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+            # Initialize gcloud CLI
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
+            cd appengine
+            ./deploy-production.sh
             cd ..
 
 workflows:
@@ -119,10 +157,20 @@ workflows:
       - build-server:
           requires:
             - lint-test
-      - deploy:
+      - staging-deploy:
           filters:
             branches:
               only: trunk
           requires:
             - build-client
             - build-server
+      - hold:
+          type: approval
+          requires:
+            - staging-deploy
+      - prod-deploy:
+          filters:
+            branches:
+              only: trunk
+          requires:
+            - hold
