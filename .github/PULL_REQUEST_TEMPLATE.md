@@ -5,7 +5,8 @@ the requirements below.
 
 Contributors guide: https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/CONTRIBUTING.md
 -->
-Write a brief but concise description of the changes you have made while also making sure to **link the relevant issue number to this PR**
+Write a brief but concise description of the changes you have made while also making sure to **link the relevant issue number to this PR** *( e.g. fixes #ISSUE-NUMBER - optional short description)*
+
 
 ## Checklist
 <!-- Remove items that do not apply. For completed items, change [ ] to [x]. -->
