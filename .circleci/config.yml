@@ -160,7 +160,7 @@ workflows:
       - staging-deploy:
           filters:
             branches:
-              only: production-pipeline
+              only: trunk
           requires:
             - build-client
             - build-server
@@ -171,6 +171,6 @@ workflows:
       - prod-deploy:
           filters:
             branches:
-              only: production-pipeline
+              only: trunk
           requires:
             - hold
