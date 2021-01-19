@@ -14,7 +14,6 @@ There are fundamentally three ways an individual can contribute:
 1) **Help triage an open issue:** You can do this either by providing assistive details (a reproducible test case that demonstrates a bug) or by providing suggestions to address the issue.
 1) **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `ThoughtWorks-Cleantech/cloud-carbon-footprint` in a concrete and reviewable manner.
 
-
 ### Asking for General Help
 - _TBD_: Find point of contact or setup discussion board for general help? (instead of creating an issue)  
 
@@ -41,7 +40,7 @@ Most issues are resolved by opening a pull request. The process for opening and 
 
 Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository.
 
-Setting up your local environment
+## Setting up your local environment
 
 ### Fork & Clone
 Fork the project on GitHub and clone your fork locally.
@@ -54,7 +53,7 @@ $ git fetch upstream
 ```
 
 ### Build
-See the [main repository README](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint) for build directions. 
+See the [main repository README](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/README.md) for build directions. 
 
 ### Branch
 The ThoughtWorks Cloud Carbon Footprint team uses [Trunk-Based Development](https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines). 
@@ -67,7 +66,7 @@ $ git push origin/trunk
 ``` 
 
 ### Code
-Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the server/ folder, the documentation or jest tests in the spec/ folder.
+Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the server/ folder or the documentation.
 
 #### Linting
 - We are using `eslint` and `prettier` in the project
@@ -76,7 +75,7 @@ Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footp
 - If you are using Webstorm, check out [this](https://prettier.io/docs/en/webstorm.html) guide on how to
   set it up
 - The prettier rules set up for the project are in `.prettierrc.json` file in the root DIR.
-- THe client and the server have their own ESLint rules in the respective `.eslintrc.js` files.
+- The client and the server have their own ESLint rules in the respective `.eslintrc.js` files.
 - Following the above rules is a pre-requisite for committing any code.
 
 #### Testing
@@ -85,48 +84,7 @@ Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footp
 - If you are missing a test file in the coverage report, you may need to clear the test cache by running
   `npm run test:clean` from the client and / or server DIR.
 
-  This is also one of the pre-commit hook but it is also advisable to run it at least once a week.
-
-
-#### CFRs
-
-*<ins>User Interaction & Design</ins>*
-- UX Information Architecture should take into account extensibility for more cloud providers and services
-- Features should pass most common accessibility requirements.  
-  - [Here is one checklist](https://www.a11yproject.com/checklist/#toc_Success-criteria)
-  - [Another check-list (Government)](https://accessibility.18f.gov/checklist/)
-- Features should be functionally and visually consistent across the most recent versions of most common web browsers: Chrome, Firefox, Safari and Internet Explorer.
-- Responsive for web browsers and mobile. But not an adaptive design that is optimized for mobile.
-  - [Material UI Flexbox](https://material-ui.com/system/flexbox/)
-  - [Breakpoints](https://material-ui.com/customization/breakpoints/)
-
-*<ins>Technical Design</ins>*
-- Extensible architecture - Features should be built in a way which allows new cloud services and providers to be supported. (Cloud providers are abstracted)
-  - Eg. new cloud credentials providers.
-- Carbon footprint and cost of deployed software and tools should be considered -- try to limit our energy usage and cost
-  - Eg. using serverless
-- Data availability - make sure have persistent data store for raw & computed
-  - Eg. S3 for ~2 years and Glacier for ~5-7 years
-- Logging, tracing & monitoring (for developers)
-- Backwards compatibility - will be important once we have our first users/customers of the code.
-
-*<ins>Performance</ins>*
-- Scalability - Software should be able to handle X millions of cloud provider metrics across multiple cloud providers without serious performance degradation.
-- Fast/speed - Application load time should be < X seconds
-
-*<ins>Security</ins>*
-- Software should not expose any potential **exploit** based on the [OWASP Top Ten risks](https://owasp.org/www-project-top-ten/)
-- Cloud **credentials** should not be stored on the file system. The only exception are session based token/credentials
-- Roles created should follow the “least privilege” concept (give as little permissions as possible)
-- Should upgrade **dependencies** that have fixed known vulnerabilities
-- Users cloud data usage cannot be exposed / seen by others.
-
-*<ins>Documentation</ins>*
-- In general, code should be as self-documenting as possible, but when it’s difficult to easily understand the intent of the software, relevant **documentation** should accompany the code. Examples of this include but aren’t limited to: comments, docstrings, README updates, ADRs or external documentation (e.g. Google Docs).  
-- Methodology should be documented as well to encourage open source contributions. Examples include why we use cloudwatch vs. cost explorer to get usage of different services, using 50% estimate for missing CPU utilization data points
-  - Have a single source of truth between Open source developers and App viewers (including non-developers)
-  - Eg. FAQ/Methodology page will display the documentation file thats in the codebase
-  
+  This is also one of the pre-commit hook but it is also advisable to run tests regularly.
 
 ### Commit
 It is recommended to keep your changes grouped logically within individual commits. Many contributors find it easier to review changes that are split across multiple commits. There is no limit to the number of commits in a pull request. Please be sure to include your issue number in brackets and use easy to understand commit messages that summarize the work that you've done. A good commit message should describe what changed and why. See example below as reference.
@@ -134,7 +92,7 @@ It is recommended to keep your changes grouped logically within individual commi
 ```
 $ git commit -m "[issue-number] Adds support for estimating Azure Anomoly Detector carbon emissions"
 ```
-*Please Note* We have configured the repository to run tests and linting with a pre-commit hook, enabled by Talisman. It is recommended you ensure this pre-commit hook is properly set up in your local environment, and to only commit from the command line to ensure that it runs. 
+*Please Note* We have configured the repository to run secrets scanning (Talisman), dependency version check (Hawkeye), tests and linting with a pre-commit hook. It is recommended you ensure this pre-commit hook is properly set up in your local environment, and to only commit from the command line to ensure that it runs. 
 
 ### Rebase
 Once you have committed your changes, it is a good idea to use git rebase (not git merge) to synchronize your work with the main repository.
@@ -299,14 +257,9 @@ will run a new checksum for the .talismanrc that will have to be updated
 
 ---
 
-## Architecture Diagrams 🏛
-![Data-Diagram](/Dataflow-diagram.png)
-
 ### Tech Stack and Development Tools
 ![tech-stack](/Tech-Stack.png)
 
 ---
-
-
 
 © 2020 ThoughtWorks, Inc. All rights reserved.
