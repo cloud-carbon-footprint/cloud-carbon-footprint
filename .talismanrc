@@ -13,8 +13,8 @@ fileignoreconfig:
   checksum: 90f014c732dae006212e103b20cdbf02a3b4db3f1dad4725b7686c37e07d351f
 - filename: client/src/Config.ts
   checksum: 56711c967d7a2305b0519ec382a1d2b45b7ab636a93edc98ec9f9ee105677cb1
-- filename: client/src/dashboard/charts/__snapshots__/DonutChartTest.test.tsx.snap
-  checksum: 47b097049490c3d280da370451b1b6bf44f8c30eddcca847b763a9d77735c961
+- filename: client/src/dashboard/charts/__snapshots__/EmissionsBreakdownContainer.test.tsx.snap
+  checksum: 41587ea8127fa49677863d6ce08fd4880df80d3c5ca3e25cee2cfa6ea68f5424
 - filename: client/src/dashboard/filters/AccountFilter.tsx
   checksum: 17b97f905fb2dbc819ad38e5057da7195e0abb4f1a1d27b170e9a7d2489159df
 - filename: client/src/dashboard/filters/DropdownConstants.ts

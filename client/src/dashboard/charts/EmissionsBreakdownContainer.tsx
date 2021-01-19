@@ -5,18 +5,18 @@
 import React, { ReactElement } from 'react'
 import {
   Box,
-  MenuItem,
-  makeStyles,
-  FormControl,
   Card,
-  Select,
   createStyles,
-  Paper,
-  withStyles,
+  FormControl,
   InputBase,
+  makeStyles,
+  MenuItem,
+  Paper,
+  Select,
+  withStyles,
 } from '@material-ui/core'
-import { ApexDonutChart } from './ApexDonutChart'
 import { ChartDataTypes, EstimationResult } from '../../models/types'
+import { ApexBarChart } from './ApexBarChart'
 
 const BootstrapInput = withStyles(() =>
   createStyles({
@@ -45,11 +45,14 @@ const useStyles = makeStyles(() => {
     topContainer: {
       boxShadow: 'none',
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      marginBottom: '24px',
     },
     title: {
-      fontSize: '24px',
+      margin: '0',
+      fontSize: '2rem',
       fontFamily: 'Helvetica, Arial, sans-serif',
       opacity: '1',
       fontWeight: 'bold',
@@ -59,33 +62,33 @@ const useStyles = makeStyles(() => {
   }
 })
 
-export const DonutChart = (props: { data: EstimationResult[] }): ReactElement => {
+export const EmissionsBreakdownContainer = (props: { data: EstimationResult[] }): ReactElement => {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setValue(event.target.value as number)
   }
-  const changeDonutCharts = (value: number): ReactElement => {
+  const selectApexCharts = (value: number): ReactElement => {
     switch (value) {
       case 1:
         return (
           <div data-testid={ChartDataTypes.ACCOUNT}>
-            <ApexDonutChart data={props.data} dataType={ChartDataTypes.ACCOUNT} />
+            <ApexBarChart data={props.data} dataType={ChartDataTypes.ACCOUNT} />
           </div>
         )
         break
       case 2:
         return (
           <div data-testid={ChartDataTypes.SERVICE}>
-            <ApexDonutChart data={props.data} dataType={ChartDataTypes.SERVICE} />
+            <ApexBarChart data={props.data} dataType={ChartDataTypes.SERVICE} />
           </div>
         )
         break
       default:
         return (
           <div data-testid={ChartDataTypes.REGION}>
-            <ApexDonutChart data={props.data} dataType={ChartDataTypes.REGION} />
+            <ApexBarChart data={props.data} dataType={ChartDataTypes.REGION} />
           </div>
         )
     }
@@ -94,7 +97,7 @@ export const DonutChart = (props: { data: EstimationResult[] }): ReactElement =>
     <Card className={classes.root}>
       <Box padding={3}>
         <Paper className={classes.topContainer}>
-          <p className={classes.title}>Emissions by:</p>
+          <p className={classes.title}>Emissions breakdown</p>
           <FormControl variant={'outlined'}>
             <Select value={value} onChange={handleChange} input={<BootstrapInput />}>
               <MenuItem value={0}>Region</MenuItem>
@@ -103,7 +106,7 @@ export const DonutChart = (props: { data: EstimationResult[] }): ReactElement =>
             </Select>
           </FormControl>
         </Paper>
-        {changeDonutCharts(value)}
+        {selectApexCharts(value)}
       </Box>
     </Card>
   )

@@ -14,7 +14,7 @@ import ServiceFilter from './filters/ServiceFilter'
 import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
-import { DonutChart } from './charts/DonutChart'
+import { EmissionsBreakdownContainer } from './charts/EmissionsBreakdownContainer'
 import { useFilterDataService } from './client/FilterDataServiceHook'
 import AccountFilter from './filters/AccountFilter'
 import config from '../ConfigLoader'
@@ -109,7 +109,7 @@ export default function CloudCarbonContainer(): ReactElement {
                 <CarbonComparisonCard data={filteredData} />
               </Grid>
               <Grid item className={classes.gridItemCards}>
-                <DonutChart data={filteredData} />
+                <EmissionsBreakdownContainer data={filteredData} />
               </Grid>
             </Grid>
           </Grid>

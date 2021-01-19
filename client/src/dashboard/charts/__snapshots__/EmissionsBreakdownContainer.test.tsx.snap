@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
+<div
+  className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
+>
+  <div
+    className="MuiBox-root MuiBox-root-4"
+  >
+    <div
+      className="MuiPaper-root makeStyles-topContainer-2 MuiPaper-elevation1 MuiPaper-rounded"
+    >
+      <p
+        className="makeStyles-title-3"
+      >
+        Emissions breakdown
+      </p>
+      <div
+        className="MuiFormControl-root"
+      >
+        <div
+          className="MuiInputBase-root MuiInputBase-formControl"
+          onClick={[Function]}
+        >
+          <div
+            aria-haspopup="listbox"
+            className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-5"
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            role="button"
+            tabIndex={0}
+          >
+            Region
+          </div>
+          <input
+            aria-hidden={true}
+            className="MuiSelect-nativeInput"
+            onAnimationStart={[Function]}
+            onChange={[Function]}
+            required={false}
+            tabIndex={-1}
+            value={0}
+          />
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div
+      data-testid="region"
+    >
+      <div
+        className="makeStyles-root-6"
+      >
+        <div
+          data-testid="fake-bar-chart"
+          height={40}
+          options={
+            Object {
+              "chart": Object {
+                "type": "bar",
+              },
+              "colors": Array [
+                "#3f51b5",
+              ],
+              "dataLabels": Object {
+                "enabled": false,
+              },
+              "grid": Object {
+                "show": false,
+                "xaxis": Object {
+                  "lines": Object {
+                    "show": false,
+                  },
+                },
+                "yaxis": Object {
+                  "lines": Object {
+                    "show": false,
+                  },
+                },
+              },
+              "height": 40,
+              "plotOptions": Object {
+                "bar": Object {
+                  "horizontal": true,
+                },
+              },
+              "series": Array [
+                Object {
+                  "data": Array [
+                    Object {
+                      "x": "us-east-1",
+                      "y": 31.3712694,
+                    },
+                  ],
+                },
+              ],
+              "tooltip": Object {
+                "fillSeriesColor": false,
+                "x": Object {
+                  "show": false,
+                },
+                "y": Object {
+                  "formatter": [Function],
+                },
+              },
+              "xaxis": Object {
+                "axisBorder": Object {
+                  "show": false,
+                },
+                "labels": Object {
+                  "show": false,
+                },
+                "type": "category",
+              },
+              "yaxis": Object {
+                "labels": Object {
+                  "style": Object {
+                    "fontSize": "13px",
+                  },
+                },
+              },
+            }
+          }
+          series={
+            Array [
+              Object {
+                "data": Array [
+                  Object {
+                    "x": "us-east-1",
+                    "y": 31.3712694,
+                  },
+                ],
+              },
+            ]
+          }
+          type="bar"
+        >
+          fake chart
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

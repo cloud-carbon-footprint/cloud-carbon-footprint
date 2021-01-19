@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApexBarChart renders with correct configuration 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <div
+    data-testid="fake-bar-chart"
+    height={120}
+    options={
+      Object {
+        "chart": Object {
+          "type": "bar",
+        },
+        "colors": Array [
+          "#3f51b5",
+        ],
+        "dataLabels": Object {
+          "enabled": false,
+        },
+        "grid": Object {
+          "show": false,
+          "xaxis": Object {
+            "lines": Object {
+              "show": false,
+            },
+          },
+          "yaxis": Object {
+            "lines": Object {
+              "show": false,
+            },
+          },
+        },
+        "height": 120,
+        "plotOptions": Object {
+          "bar": Object {
+            "horizontal": true,
+          },
+        },
+        "series": Array [
+          Object {
+            "data": Array [
+              Object {
+                "x": "ebs",
+                "y": 3015.014,
+              },
+              Object {
+                "x": "ec2",
+                "y": 2521.406,
+              },
+              Object {
+                "x": "s3",
+                "y": 1718.017,
+              },
+            ],
+          },
+        ],
+        "tooltip": Object {
+          "fillSeriesColor": false,
+          "x": Object {
+            "show": false,
+          },
+          "y": Object {
+            "formatter": [Function],
+          },
+        },
+        "xaxis": Object {
+          "axisBorder": Object {
+            "show": false,
+          },
+          "labels": Object {
+            "show": false,
+          },
+          "type": "category",
+        },
+        "yaxis": Object {
+          "labels": Object {
+            "style": Object {
+              "fontSize": "13px",
+            },
+          },
+        },
+      }
+    }
+    series={
+      Array [
+        Object {
+          "data": Array [
+            Object {
+              "x": "ebs",
+              "y": 3015.014,
+            },
+            Object {
+              "x": "ec2",
+              "y": 2521.406,
+            },
+            Object {
+              "x": "s3",
+              "y": 1718.017,
+            },
+          ],
+        },
+      ]
+    }
+    type="bar"
+  >
+    fake chart
+  </div>
+</div>
+`;

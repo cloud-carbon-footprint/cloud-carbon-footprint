@@ -5,13 +5,13 @@
 import React from 'react'
 import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-renderer'
 
-import { DonutChart } from './DonutChart'
-import { ApexDonutChart } from './ApexDonutChart'
+import { EmissionsBreakdownContainer } from './EmissionsBreakdownContainer'
 import { Select } from '@material-ui/core'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
+import { ApexBarChart } from './ApexBarChart'
 jest.mock('../../themes')
 
-describe('DonutChartTabs', () => {
+describe('EmissionsBreakdownContainer', () => {
   const date1 = new Date('2020-07-10T00:00:00.000Z')
   const date2 = new Date('2020-07-11T00:00:00.000Z')
   let page: RenderResult
@@ -71,9 +71,9 @@ describe('DonutChartTabs', () => {
   ]
 
   beforeEach(() => {
-    testRenderer = create(<DonutChart data={dataWithHigherPrecision} />)
+    testRenderer = create(<EmissionsBreakdownContainer data={dataWithHigherPrecision} />)
     testInstance = testRenderer.root
-    page = render(<DonutChart data={dataWithHigherPrecision} />)
+    page = render(<EmissionsBreakdownContainer data={dataWithHigherPrecision} />)
   })
 
   afterEach(() => {
@@ -89,14 +89,14 @@ describe('DonutChartTabs', () => {
     expect(testRenderer.toJSON()).toMatchSnapshot()
   })
 
-  it('checks to see if donut chart exists upon loading', () => {
-    const isApexDonutChartRendered = testInstance.findAllByType(ApexDonutChart)
+  it('checks to see if bar chart exists upon loading', () => {
+    const isApexDonutChartRendered = testInstance.findAllByType(ApexBarChart)
 
     expect(isApexDonutChartRendered).toHaveLength(1)
   })
 
   it('renders emission by region donut chart by default', () => {
-    const isApexDonutChartRendered = testInstance.findByType(ApexDonutChart)
+    const isApexDonutChartRendered = testInstance.findByType(ApexBarChart)
 
     expect(isApexDonutChartRendered.props.dataType).toBe('region')
   })
