@@ -55,7 +55,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             wattHours: 5.517917175088915,
-            co2e: 0.000015883309027967007,
+            co2e: 0.0000015883309027967007,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -89,7 +89,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             wattHours: 1467.9506421089175,
-            co2e: 0.004225491783689708,
+            co2e: 0.00042254917836897083,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -99,7 +99,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             wattHours: 651.2,
-            co2e: 0.0018744773636160002,
+            co2e: 0.00018744773636160001,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -114,7 +114,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             wattHours: 150.06866306066513,
-            co2e: 0.00021387594176702668,
+            co2e: 0.000021387594176702666,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -166,7 +166,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             wattHours: 13490.015000000001,
-            co2e: 0.0388309701356577,
+            co2e: 0.0038830970135657708,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -218,7 +218,7 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.00002186739436950524,
+            co2e: 0.000002186739436950524,
             cost: 5,
             region: 'unknown',
             serviceName: 'App Engine',

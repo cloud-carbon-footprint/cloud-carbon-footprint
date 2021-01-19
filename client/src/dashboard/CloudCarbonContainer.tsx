@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CloudCarbonContainer(): ReactElement {
   const classes = useStyles()
-  const startDate: moment.Moment = moment.utc().subtract(11, 'months')
+  const startDate: moment.Moment = moment.utc().subtract(11, 'month')
   const endDate: moment.Moment = moment.utc()
 
   const { data, loading } = useRemoteService([], startDate, endDate)

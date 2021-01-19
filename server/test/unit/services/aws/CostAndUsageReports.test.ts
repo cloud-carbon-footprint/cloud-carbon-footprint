@@ -98,7 +98,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 9.384,
-            co2e: 0.000031617362219616,
+            co2e: 0.0000031617362219616,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -108,7 +108,7 @@ describe('CostAndUsageReports Service', () => {
           },
           {
             wattHours: 4.692,
-            co2e: 0.000028301540308512,
+            co2e: 0.0000028301540308512003,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -123,7 +123,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 4.692,
-            co2e: 0.000028301540308512,
+            co2e: 0.0000028301540308512003,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -138,7 +138,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 3.2140799999999996,
-            co2e: 0.000010829148717265918,
+            co2e: 0.0000010829148717265918,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -153,7 +153,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 2.99088,
-            co2e: 0.000005725022265614881,
+            co2e: 5.72502226561488e-7,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -163,7 +163,7 @@ describe('CostAndUsageReports Service', () => {
           },
           {
             wattHours: 0.02213333333333333,
-            co2e: 4.2366736928799996e-8,
+            co2e: 4.2366736928799996e-9,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -200,7 +200,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 2.8665819764211776e-18,
+            co2e: 2.8665819764211775e-19,
             cost: 9,
             region: 'us-west-1',
             serviceName: 'AmazonS3',
@@ -210,7 +210,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 1.806625930273533e-17,
+            co2e: 1.806625930273533e-18,
             cost: 10,
             region: 'us-east-2',
             serviceName: 'AmazonCloudWatch',
@@ -220,7 +220,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00001007712450078912,
+            co2e: 0.000001007712450078912,
             cost: 11,
             region: 'us-east-1',
             serviceName: 'AmazonRDS',
@@ -230,7 +230,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0000192350090082888,
+            co2e: 0.00000192350090082888,
             cost: 25,
             region: 'us-west-1',
             serviceName: 'AmazonRDS',
@@ -264,7 +264,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 18.768,
-            co2e: 0.000063234724439232,
+            co2e: 0.0000063234724439232,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -274,7 +274,7 @@ describe('CostAndUsageReports Service', () => {
           },
           {
             wattHours: 0.01728,
-            co2e: 3.307668136128e-8,
+            co2e: 3.3076681361280002e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -289,7 +289,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 0.007487833499908447,
-            co2e: 1.4332909882105887e-8,
+            co2e: 1.4332909882105887e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -324,7 +324,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 8.34768,
-            co2e: 0.00005035213171410049,
+            co2e: 0.000005035213171410049,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -334,7 +334,7 @@ describe('CostAndUsageReports Service', () => {
           },
           {
             wattHours: 39.640319999999996,
-            co2e: 0.00007587790704277632,
+            co2e: 0.000007587790704277631,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -349,7 +349,7 @@ describe('CostAndUsageReports Service', () => {
         serviceEstimates: [
           {
             wattHours: 506.736,
-            co2e: 0.001707337559859264,
+            co2e: 0.00017073375598592637,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -385,7 +385,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 9.554484196224e-8,
+            co2e: 9.554484196224001e-9,
             cost: 2,
             region: 'us-east-2',
             serviceName: 'AmazonECS',
@@ -395,7 +395,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00002245309446573,
+            co2e: 0.000002245309446573,
             cost: 2,
             region: 'us-west-1',
             serviceName: 'AmazonECS',
@@ -405,7 +405,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000062868664504044,
+            co2e: 0.000006286866450404401,
             cost: 4,
             region: 'us-west-1',
             serviceName: 'AmazonMSK',
@@ -440,7 +440,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00026943713358876004,
+            co2e: 0.000026943713358876004,
             cost: 10,
             region: 'us-west-1',
             serviceName: 'AmazonDocDB',
@@ -450,7 +450,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0027302962870327675,
+            co2e: 0.00027302962870327675,
             cost: 30,
             region: 'us-west-1',
             serviceName: 'AmazonEC2',
@@ -460,7 +460,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000107774853435504,
+            co2e: 0.0000107774853435504,
             cost: 20,
             region: 'us-west-1',
             serviceName: 'ElasticMapReduce',
@@ -470,7 +470,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 3.190266335e-8,
+            co2e: 3.190266335e-9,
             cost: 20,
             region: 'us-west-1',
             serviceName: 'AmazonCloudFront',
@@ -480,7 +480,7 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000055330383884328006,
+            co2e: 0.0000055330383884328,
             cost: 20,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
