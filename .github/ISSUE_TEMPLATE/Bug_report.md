@@ -1,7 +1,6 @@
 ---
 name: Bug report
 about: Create a report to help us improve Cloud Carbon Footprint
-
 ---
 
 ### Preflight Checklist
@@ -43,3 +42,5 @@ $ npm start
 
 ### Additional Information
 <!-- Add any other context about the problem here. -->
+
+© 2020 ThoughtWorks, Inc. All rights reserved.
