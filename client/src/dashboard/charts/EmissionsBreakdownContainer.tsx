@@ -52,10 +52,10 @@ const useStyles = makeStyles(() => {
     },
     title: {
       margin: '0',
-      fontSize: '2rem',
+      fontSize: '24px',
       fontFamily: 'Helvetica, Arial, sans-serif',
       opacity: '1',
-      fontWeight: 'bold',
+      fontWeight: 900,
       color: 'rgba(0, 0, 0, 0.87)',
       padding: '.2em',
     },

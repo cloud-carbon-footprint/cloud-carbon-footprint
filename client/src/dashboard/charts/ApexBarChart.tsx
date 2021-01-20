@@ -55,6 +55,17 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     colors: chartColors,
     chart: {
       type: 'bar',
+      toolbar: {
+        tools: {
+          download: `
+            <div class="apexcharts-menu-icon" title="Menu">
+                <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path>
+                </svg>
+            </div>   
+           `,
+        },
+      },
     },
     grid: {
       show: false,
