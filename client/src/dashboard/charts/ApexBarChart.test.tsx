@@ -52,6 +52,14 @@ describe('ApexBarChart', () => {
   it('renders with correct configuration', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
   })
+
+  it('should set the tooltip value formatter correctly', () => {
+    const yFormatter = fixture.root.findByType(Chart).props?.options?.tooltip?.y?.formatter
+
+    expect(yFormatter).toBeDefined()
+    expect(yFormatter(1000.23)).toEqual('1000.230 mt')
+  })
+
   it('should pass sorted chart options to Chart component', function () {
     const chartOptionSeries = fixture.root.findByType(Chart).props?.options?.series[0]
 
