@@ -6,7 +6,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
 >
   <div
     data-testid="fake-bar-chart"
-    height={120}
+    height={210}
     options={
       Object {
         "chart": Object {
@@ -31,7 +31,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
             },
           },
         },
-        "height": 120,
+        "height": 210,
         "plotOptions": Object {
           "bar": Object {
             "horizontal": true,
@@ -53,6 +53,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
                 "y": 1718.017,
               },
             ],
+            "name": "Total CO2e",
           },
         ],
         "tooltip": Object {
@@ -99,6 +100,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
               "y": 1718.017,
             },
           ],
+          "name": "Total CO2e",
         },
       ]
     }

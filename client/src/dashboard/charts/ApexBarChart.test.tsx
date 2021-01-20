@@ -7,6 +7,7 @@ import { EstimationResult } from '../../models/types'
 import moment from 'moment'
 import React from 'react'
 import { ApexBarChart } from './ApexBarChart'
+import Chart from 'react-apexcharts'
 
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
@@ -50,5 +51,15 @@ describe('ApexBarChart', () => {
   })
   it('renders with correct configuration', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
+  })
+  it('should pass sorted chart options to Chart component', function () {
+    const chartOptionSeries = fixture.root.findByType(Chart).props?.options?.series[0]
+
+    expect(chartOptionSeries.name).toEqual('Total CO2e')
+    expect(chartOptionSeries.data).toEqual([
+      { x: 'ebs', y: 3015.014 },
+      { x: 'ec2', y: 2521.406 },
+      { x: 's3', y: 1718.017 },
+    ])
   })
 })

@@ -64,7 +64,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
       >
         <div
           data-testid="fake-bar-chart"
-          height={40}
+          height={90}
           options={
             Object {
               "chart": Object {
@@ -89,7 +89,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
                   },
                 },
               },
-              "height": 40,
+              "height": 90,
               "plotOptions": Object {
                 "bar": Object {
                   "horizontal": true,
@@ -103,6 +103,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
                       "y": 31.3712694,
                     },
                   ],
+                  "name": "Total CO2e",
                 },
               ],
               "tooltip": Object {
@@ -141,6 +142,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
                     "y": 31.3712694,
                   },
                 ],
+                "name": "Total CO2e",
               },
             ]
           }

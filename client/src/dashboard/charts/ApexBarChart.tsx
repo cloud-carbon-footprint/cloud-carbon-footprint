@@ -33,9 +33,22 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
 
+  // Added to dynamically resize height based on visible accounts/regions/services
+  // noted that when data entries were minimal, the bars where extremely thin
+  const determineHeight: () => number = () => {
+    if (dataEntries.length === 1) {
+      return dataEntries.length * 90
+    } else if (dataEntries.length < 5) {
+      return dataEntries.length * 70
+    }
+
+    return dataEntries.length * 55
+  }
+
   const options = {
     series: [
       {
+        name: 'Total CO2e',
         data: dataEntries,
       },
     ],
@@ -87,11 +100,11 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       },
       y: {
         formatter: function (value: number) {
-          return `Total CO2e: ${value.toFixed(3)} mt`
+          return `${value.toFixed(3)} mt`
         },
       },
     },
-    height: dataEntries.length * 40,
+    height: determineHeight(),
   }
 
   return (
