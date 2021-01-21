@@ -85,7 +85,19 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
                 "#3f51b5",
               ],
               "dataLabels": Object {
-                "enabled": false,
+                "background": Object {
+                  "borderColor": "#303f9f",
+                  "borderRadius": 1,
+                  "borderWidth": 1,
+                  "enabled": true,
+                  "foreColor": "#3f51b5",
+                  "opacity": 0.9,
+                  "padding": 6,
+                },
+                "enabled": true,
+                "formatter": [Function],
+                "offsetX": 10,
+                "textAnchor": "start",
               },
               "grid": Object {
                 "show": false,
