@@ -6,7 +6,7 @@ import React, { FunctionComponent } from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
-import { sumCO2ByServiceOrRegion } from '../transformData'
+import { sumCO2, sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
 
 const useStyles = makeStyles(() => {
@@ -86,7 +86,21 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      textAnchor: 'start',
+      formatter: function (value: number) {
+        return `${((value / sumCO2(data)) * 100).toFixed(2)} %`
+      },
+      offsetX: 10,
+      background: {
+        enabled: true,
+        foreColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.dark,
+        padding: 6,
+        borderRadius: 1,
+        borderWidth: 1,
+        opacity: 0.9,
+      },
     },
     xaxis: {
       type: 'category',
