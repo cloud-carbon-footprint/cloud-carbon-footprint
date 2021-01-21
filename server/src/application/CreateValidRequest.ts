@@ -65,11 +65,6 @@ function validate(
     errors.push('End date is in the future')
   }
 
-  // subtract mutates the original object so the order matters :(
-  if (startDate.isBefore(now.subtract(12, 'months'))) {
-    errors.push('Start date cannot be more than 12 months ago')
-  }
-
   if (errors.length > 0) {
     throw new EstimationRequestValidationError(errors.join(', '))
   }
