@@ -55,7 +55,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
         data-testid="comparison"
       >
-        17
+        17,370
       </p>
       <p
         className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"

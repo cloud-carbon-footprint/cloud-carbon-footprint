@@ -83,18 +83,18 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
   }
 })
 
-export const toMiles = (co2kg: number): number => co2kg * 2.48138958
-export const toGas = (co2kg: number): number => co2kg * 0.1125239
-export const toTrees = (co2kg: number): number => co2kg * 0.0165352
+export const toMiles = (co2mt: number): number => co2mt * 2481.3918390475
+export const toGas = (co2mt: number): number => co2mt * 112.5247230304
+export const toTrees = (co2mt: number): number => co2mt * 16.5337915448
 
 export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({ data }) => {
   const classes = useStyles()
   const [selection, setSelection] = useState('miles')
-  const kgSum: number = sumCO2(data)
+  const mtSum: number = sumCO2(data)
 
-  const milesSum = toMiles(kgSum)
-  const gasSum = toGas(kgSum)
-  const treesSum = toTrees(kgSum)
+  const milesSum = toMiles(mtSum)
+  const gasSum = toGas(mtSum)
+  const treesSum = toTrees(mtSum)
 
   const formatNumber = (number: number) => number.toLocaleString(undefined, { maximumFractionDigits: 0 })
 
@@ -134,7 +134,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           Your cumulative emissions are
         </Typography>
         <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
-          {formatNumber(kgSum)} metric tons CO2e
+          {formatNumber(mtSum)} metric tons CO2e
         </Typography>
         <Typography className={classes.posOne}>that is equivalent to</Typography>
       </CardContent>
