@@ -17,7 +17,7 @@ import {
   UNKNOWN_USAGE_TYPES,
   UNKNOWN_SERVICE_TYPES,
   NETWORKING_USAGE_TYPES,
-  VCPU_STRING_FORMATS,
+  COMPUTE_STRING_FORMATS,
 } from '@services/gcp/BillingExportTypes'
 import BillingExportRow from '@services/gcp/BillingExportRow'
 import Logger from '@services/Logger'
@@ -46,7 +46,6 @@ export default class BillingExportTable {
     usageRows.map((usageRow) => {
       const billingExportRow = new BillingExportRow(usageRow)
       billingExportRow.setTimestamp(usageRow.timestamp)
-      billingExportRow.setVCpuHours(usageRow.vCpus)
 
       if (
         this.isMemoryUsage(billingExportRow.usageType) ||
@@ -58,7 +57,12 @@ export default class BillingExportTable {
       let footprintEstimate: FootprintEstimate
       switch (usageRow.usageUnit) {
         case 'seconds':
-          footprintEstimate = this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          if (this.isComputeUsage(billingExportRow.usageType))
+            footprintEstimate = this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          else
+            this.billingExportTableLogger.warn(
+              `Non compute usage type for 'seconds' usageUnit: ${billingExportRow.usageType}`,
+            )
           break
         case 'byte-seconds':
           footprintEstimate = this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
@@ -103,18 +107,21 @@ export default class BillingExportTable {
   private isUnknownUsage(usageRow: any): boolean {
     return (
       this.containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
-      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
-      (usageRow.isCloudSQLCompute() && usageRow.vCpuHours === 0)
+      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName)
     )
   }
 
   private isMemoryUsage(usageType: string): boolean {
     // We only want to ignore memory usage that is not also compute usage (determined by containing VCPU usage)
-    return this.containsAny(MEMORY_USAGE_TYPES, usageType) && !this.containsAny(VCPU_STRING_FORMATS, usageType)
+    return this.containsAny(MEMORY_USAGE_TYPES, usageType) && !this.containsAny(COMPUTE_STRING_FORMATS, usageType)
   }
 
   private isNetworkingUsage(usageType: string): boolean {
     return this.containsAny(NETWORKING_USAGE_TYPES, usageType)
+  }
+
+  private isComputeUsage(usageType: string): boolean {
+    return this.containsAny(COMPUTE_STRING_FORMATS, usageType)
   }
 
   private containsAny(substrings: string[], stringToSearch: string): boolean {
