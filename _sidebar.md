@@ -6,4 +6,6 @@
 
 * [Methodology](METHODOLOGY.md)
 
+* [Sonaqube](SONARQUBE.md)
+
  <!-- © 2020 ThoughtWorks, Inc. All rights reserved. -->

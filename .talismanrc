@@ -5,6 +5,8 @@ fileignoreconfig:
   checksum: 454a26b0f80e1406f9f80ab12bd11183ebbf54a8b387c8667af258eeafb89ba7
 - filename: README.md
   checksum: 603d112d8b03aeb6d03e1d62c403880201221e1e809ccb162932da8ec95cd530
+- filename: SONARQUBE.md
+  checksum: 62dead161222879b89b7a818106768b8e2b32721104e90c4ea678a0921ae8782
 - filename: client/.env.template
   checksum: 78b8264c13cab30e12466820794d83bf447bb2504ab254ffb3a45b32837cd1dd
 - filename: client/create_client_env_file.sh
@@ -59,3 +61,5 @@ fileignoreconfig:
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
   checksum: f8563335395d461140dfe390b8d0275c562fc7c0c478db3275079d81c2e24f0b
+- filename: sonar-project.properties
+  checksum: a545dc304725f1c3cd3a37a0d5069ba9566bec699b6991c3ac2f464737720b2c
