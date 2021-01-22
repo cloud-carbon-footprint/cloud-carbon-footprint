@@ -18,35 +18,35 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     )
     super(billingDataRow)
 
-    this.vCpuHours = this.getVCpuHours(this.usageAmount, this.serviceName, Number(this.vCpus))
+    this.vCpuHours = this.getVCpuHours(Number(this.vCpus))
     this.usageUnit = this.getUsageUnit()
     this.timestamp = new Date(this.timestamp)
     this.cost = Number(this.cost)
     this.cloudProvider = 'AWS'
   }
 
-  private getUsageUnit() {
+  private getUsageUnit(): string {
     if (this.usageType.includes('Fargate-GB-Hours')) return PRICING_UNITS.GB_HOURS
     if (this.serviceName === 'AmazonRedshift' && this.usageUnit === PRICING_UNITS.SECONDS_1)
       return PRICING_UNITS.HOURS_1
     return this.usageUnit
   }
 
-  private getVCpuHours(usageAmount: number, serviceName: string, vCpuFromReport: number) {
+  private getVCpuHours(vCpuFromReport: number): number {
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
-    if (serviceName === 'AWSGlue') return GLUE_VCPUS_PER_USAGE * usageAmount
-    if (this.includesAny(['Fargate-vCPU-Hours', 'vCPU-Hours', 'CPUCredits'], this.usageType)) return usageAmount
-    if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * usageAmount
-    return vCpuFromReport * usageAmount
+    if (this.serviceName === 'AWSGlue') return GLUE_VCPUS_PER_USAGE * this.usageAmount
+    if (this.includesAny(['Fargate-vCPU-Hours', 'vCPU-Hours', 'CPUCredits'], this.usageType)) return this.usageAmount
+    if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * this.usageAmount
+    return vCpuFromReport * this.usageAmount
   }
 
-  private extractVCpuFromInstanceType() {
+  private extractVCpuFromInstanceType(): number {
     if (this.usageType.includes('Kafka')) return MSK_INSTANCE_TYPES[`Kafka${this.usageType.split('Kafka').pop()}`]
     if (this.serviceName === 'AmazonRedshift') return REDSHIFT_INSTANCE_TYPES[this.usageType.split(':').pop()] / 3600
     return EC2_INSTANCE_TYPES[this.usageType.split(':').pop()]
   }
 
-  private includesAny(substrings: string[], usageType: string) {
+  private includesAny(substrings: string[], usageType: string): boolean {
     return substrings.some((substring) => usageType.includes(substring))
   }
 }
