@@ -2,26 +2,16 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React, { FunctionComponent } from 'react'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import React, { FunctionComponent, useState } from 'react'
+import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
 import { sumCO2, sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
 
-const useStyles = makeStyles(() => {
-  return {
-    root: {
-      minHeight: '500px',
-      maxHeight: '500px',
-      overflowY: 'auto',
-    },
-  }
-})
-
 export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType }) => {
+  const [page, setPage] = useState(0)
   const theme = useTheme()
-  const classes = useStyles()
   const chartColors = [theme.palette.primary.main]
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
 
@@ -33,23 +23,18 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
 
-  // Added to dynamically resize height based on visible accounts/regions/services
-  // noted that when data entries were minimal, the bars where extremely thin
-  const determineHeight: () => number = () => {
-    if (dataEntries.length === 1) {
-      return dataEntries.length * 90
-    } else if (dataEntries.length < 5) {
-      return dataEntries.length * 70
-    }
-
-    return dataEntries.length * 55
+  const paginatedData = []
+  const newEntries = [...dataEntries]
+  while (newEntries.length > 0) {
+    const paginatedSubData = newEntries.splice(0, 10)
+    paginatedData.push(paginatedSubData)
   }
 
   const options = {
     series: [
       {
         name: 'Total CO2e',
-        data: dataEntries,
+        data: paginatedData[page],
       },
     ],
     colors: chartColors,
@@ -129,12 +114,21 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
         },
       },
     },
-    height: determineHeight(),
+    height: '500px',
   }
 
+  const visibleRows = `${page * 10 + 1} - ${page * 10 + paginatedData[page]?.length}`
+
   return (
-    <div className={classes.root}>
+    <div>
       <Chart options={options} series={options.series} type="bar" height={options.height} />
+      <div>
+        <span>
+          {visibleRows} of {dataEntries.length}
+        </span>
+        {page > 0 && <button onClick={() => setPage(page - 1)}>Prev</button>}
+        {page < paginatedData.length - 1 && <button onClick={() => setPage(page + 1)}>Next</button>}
+      </div>
     </div>
   )
 }
