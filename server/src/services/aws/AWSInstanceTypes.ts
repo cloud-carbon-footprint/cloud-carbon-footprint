@@ -118,6 +118,18 @@ export const MSK_INSTANCE_TYPES: { [instanceType: string]: number } = {
   'Kafka.m5.24xlarge': 96,
 }
 
+export const REDSHIFT_INSTANCE_TYPES: { [instanceType: string]: number } = {
+  'dc2.large': 2,
+  'dc2.8xlarge': 32,
+  'ra3.xlplus': 4,
+  'ra3.4xlarge': 12,
+  'ra3.16xlarge': 48,
+  'dc1.large': 2,
+  'dc1.8xlarge': 32,
+  'ds2.xlarge': 4,
+  'ds2.8xlarge': 36,
+}
+
 export const EC2_INSTANCE_TYPES: { [instanceType: string]: number } = {
   'mac1.metal': 12,
   't4g.nano': 2,

@@ -32,6 +32,11 @@ export const SSD_USAGE_TYPES: string[] = [
   'Lambda-Edge-GB-Second', // Lambda Edge GB-Seconds Storage
   'RDS:Multi-AZ-StorageUsage', // RDS Multi Availability Zone Storage
   'Fargate-GB-Hours', //Fargate Storage
+  'dc2.large', // Redshift SSD
+  'dc2.8xlarge', // Redshift SSD
+  'ra3.xlplus', // Redshift SSD
+  'ra3.4xlarge', // Redshift SSD
+  'ra3.16xlarge', // Redshift SSD
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -66,6 +71,10 @@ export const HDD_USAGE_TYPES: string[] = [
   'QS-Enterprise-SPICE', // Quicksight Enterprise SPICE
   'TimedBackupStorage-ByteHrs', // DynamoDB Backup storage is S3
   'DurableApplicationBackups', // Kinesis Backup Store in S3
+  'dc1.large', // Redshift HDD
+  'dc1.8xlarge', // Redshift HDD
+  'ds2.xlarge', // Redshift HDD
+  'ds2.8xlarge', // Redshift HDD
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [

@@ -18,6 +18,7 @@ import {
   athenaMockGetQueryResultsWithKenesisESAndEc2Spot,
   athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices,
   athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage,
+  athenaMockGetQueryResultsWithRedshiftStorageCompute,
 } from '../../../fixtures/athena.fixtures'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
@@ -486,6 +487,51 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
             wattHours: 16.422,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Gets Estimates for Redshift Storage and Compute', async () => {
+    // given
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithRedshiftStorageCompute)
+
+    // when
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      getServiceWrapper(),
+    )
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0000018048581195443202,
+            cost: 10,
+            region: 'us-east-1',
+            serviceName: 'AmazonRedshift',
+            usesAverageCPUConstant: false,
+            wattHours: 5.356800000000001,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 1.496872964382e-8,
+            cost: 10,
+            region: 'us-west-1',
+            serviceName: 'AmazonRedshift',
+            usesAverageCPUConstant: true,
+            wattHours: 0.07819999999999999,
           },
         ],
       },

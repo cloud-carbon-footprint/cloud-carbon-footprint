@@ -513,3 +513,38 @@ export const athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage: Ath
     Rows: [queryResultsHeaders, ...queryResultsDataSix],
   },
 }
+
+const queryResultsDataSeven = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonRedshift' },
+      { VarCharValue: 'RMS:ra3.4xlarge' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '5' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonRedshift' },
+      { VarCharValue: 'CS:ra3.4xlarge' },
+      { VarCharValue: 'seconds' },
+      { VarCharValue: '' },
+      { VarCharValue: '10' },
+      { VarCharValue: '10' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithRedshiftStorageCompute: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataSeven],
+  },
+}

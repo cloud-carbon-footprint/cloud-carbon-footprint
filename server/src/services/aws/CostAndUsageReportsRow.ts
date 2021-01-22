@@ -3,7 +3,7 @@
  */
 
 import { Athena } from 'aws-sdk'
-import { EC2_INSTANCE_TYPES, MSK_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
+import { EC2_INSTANCE_TYPES, MSK_INSTANCE_TYPES, REDSHIFT_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
 import { PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
 import BillingDataRow from '@domain/BillingDataRow'
 
@@ -27,6 +27,8 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
 
   private getUsageUnit() {
     if (this.usageType.includes('Fargate-GB-Hours')) return PRICING_UNITS.GB_HOURS
+    if (this.serviceName === 'AmazonRedshift' && this.usageUnit === PRICING_UNITS.SECONDS_1)
+      return PRICING_UNITS.HOURS_1
     return this.usageUnit
   }
 
@@ -40,6 +42,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
 
   private extractVCpuFromInstanceType() {
     if (this.usageType.includes('Kafka')) return MSK_INSTANCE_TYPES[`Kafka${this.usageType.split('Kafka').pop()}`]
+    if (this.serviceName === 'AmazonRedshift') return REDSHIFT_INSTANCE_TYPES[this.usageType.split(':').pop()] / 3600
     return EC2_INSTANCE_TYPES[this.usageType.split(':').pop()]
   }
 
