@@ -43,7 +43,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'VolumeUsage.st1', // EBS HDD Volume
   'VolumeUsage.sc1', // EBS HDD Volume
   'VolumeUsage', // EBS HDD Volume
-  'EBS:SnapshotUsage', // EBS snapshot in S3
+  'SnapshotUsage', // Snapshots in S3
   'TimedStorage-ByteHrs', // Many different services
   'RDS:StorageUsage', // RDS HDD Storage
   'Aurora:StorageUsage', // RDS Aurora Storage
