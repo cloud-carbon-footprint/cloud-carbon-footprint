@@ -8,12 +8,26 @@ import Chart from 'react-apexcharts'
 
 import { sumCO2, sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
+import { IconButton, makeStyles } from '@material-ui/core'
+import { ChevronLeft, ChevronRight } from '@material-ui/icons'
+
+const useStyles = makeStyles(() => {
+  return {
+    paginationContainer: {
+      display: 'flex',
+      width: '100%',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+  }
+})
 
 export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType }) => {
   const [page, setPage] = useState(0)
   const theme = useTheme()
   const chartColors = [theme.palette.primary.main]
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
+  const { paginationContainer } = useStyles()
 
   const dataEntries: { x: string; y: number }[] = Object.entries(barChartData)
     .filter((item) => item[1] > 0)
@@ -60,6 +74,9 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
           show: false,
         },
       },
+      padding: {
+        left: 32,
+      },
     },
     plotOptions: {
       bar: {
@@ -70,7 +87,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       enabled: true,
       textAnchor: 'start',
       formatter: function (value: number) {
-        return `${((value / sumCO2(data)) * 100).toFixed(2)} %`
+        const formattedPercentage = (value / sumCO2(data)) * 100
+        return formattedPercentage < 0.01 ? '> 0.01 %' : `${formattedPercentage.toFixed(2)} %`
       },
       offsetX: 10,
       background: {
@@ -119,12 +137,28 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
   return (
     <div>
       <Chart options={options} series={options.series} type="bar" height={options.height} />
-      <div>
-        <span>
+      <div className={paginationContainer}>
+        <span style={{ color: '#ababab', fontWeight: 700, marginRight: '8px' }}>
           {visibleRows} of {dataEntries.length}
         </span>
-        {page > 0 && <button onClick={() => setPage(page - 1)}>Prev</button>}
-        {page < paginatedData.length - 1 && <button onClick={() => setPage(page + 1)}>Next</button>}
+        <IconButton
+          color="primary"
+          aria-label="chevron-left"
+          component="span"
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >
+          <ChevronLeft />
+        </IconButton>
+        <IconButton
+          color="primary"
+          aria-label="chevron-right"
+          component="span"
+          disabled={page === paginatedData?.length - 1}
+          onClick={() => setPage(page + 1)}
+        >
+          <ChevronRight />
+        </IconButton>
       </div>
     </div>
   )

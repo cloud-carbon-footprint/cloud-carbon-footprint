@@ -102,16 +102,12 @@ describe('EmissionsBreakdownContainer', () => {
   })
 
   it('selects the correct option', () => {
-    let regionIsAnMuiListItemButton = false
     act(() => {
-      fireEvent.mouseDown(page.getByRole('button'))
-    })
-    page.getAllByText('Region').forEach((regionComponent) => {
-      regionComponent.className.includes('MuiListItem-button') ? (regionIsAnMuiListItemButton = true) : null
+      fireEvent.mouseDown(page.getByRole('button', { name: 'Region' }))
     })
 
-    expect(regionIsAnMuiListItemButton).toBeTruthy()
-    expect(page.getByText('Account')).toHaveClass('MuiListItem-button')
-    expect(page.getByText('Service')).toHaveClass('MuiListItem-button')
+    expect(page.getByRole('option', { name: 'Region' })).toHaveClass('MuiListItem-button')
+    expect(page.getByRole('option', { name: 'Account' })).toHaveClass('MuiListItem-button')
+    expect(page.getByRole('option', { name: 'Service' })).toHaveClass('MuiListItem-button')
   })
 })

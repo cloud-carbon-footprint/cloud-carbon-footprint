@@ -34,6 +34,9 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
           "textAnchor": "start",
         },
         "grid": Object {
+          "padding": Object {
+            "left": 32,
+          },
           "show": false,
           "xaxis": Object {
             "lines": Object {
@@ -124,11 +127,89 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
   >
     fake chart
   </div>
-  <div>
-    <span>
+  <div
+    className="makeStyles-paginationContainer-1"
+  >
+    <span
+      style={
+        Object {
+          "color": "#ababab",
+          "fontWeight": 700,
+          "marginRight": "8px",
+        }
+      }
+    >
       1 - 3
        of 
       3
+    </span>
+    <span
+      aria-disabled={true}
+      aria-label="chevron-left"
+      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      role="button"
+      tabIndex={-1}
+    >
+      <span
+        className="MuiIconButton-label"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+          />
+        </svg>
+      </span>
+    </span>
+    <span
+      aria-disabled={true}
+      aria-label="chevron-right"
+      className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      role="button"
+      tabIndex={-1}
+    >
+      <span
+        className="MuiIconButton-label"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+          />
+        </svg>
+      </span>
     </span>
   </div>
 </div>
