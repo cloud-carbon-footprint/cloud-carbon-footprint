@@ -72,7 +72,7 @@ export default function CloudCarbonContainer(): ReactElement {
   return loading ? (
     <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
       <CircularProgress size={100} />
-      <div className={classes.loadingMessage}>Loading cloud data...</div>
+      <div className={classes.loadingMessage}>Loading cloud data. This may take a while...</div>
     </Grid>
   ) : (
     <Box className={classes.boxContainer}>
