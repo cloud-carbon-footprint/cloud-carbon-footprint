@@ -59,24 +59,16 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
     <div
       data-testid="region"
     >
-      <div
-        className="makeStyles-root-6"
-      >
+      <div>
         <div
           data-testid="fake-bar-chart"
-          height={90}
+          height="500px"
           options={
             Object {
               "chart": Object {
                 "toolbar": Object {
                   "tools": Object {
-                    "download": "
-            <div class=\\"apexcharts-menu-icon\\" title=\\"Menu\\">
-                <svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\">
-                <path d=\\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\\"></path>
-                </svg>
-            </div>   
-           ",
+                    "download": null,
                   },
                 },
                 "type": "bar",
@@ -112,7 +104,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
                   },
                 },
               },
-              "height": 90,
+              "height": "500px",
               "plotOptions": Object {
                 "bar": Object {
                   "horizontal": true,
@@ -145,6 +137,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
                 "labels": Object {
                   "show": false,
                 },
+                "max": 31.3712694,
                 "type": "category",
               },
               "yaxis": Object {
@@ -172,6 +165,13 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
           type="bar"
         >
           fake chart
+        </div>
+        <div>
+          <span>
+            1 - 1
+             of 
+            1
+          </span>
         </div>
       </div>
     </div>

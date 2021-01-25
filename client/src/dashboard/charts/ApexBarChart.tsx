@@ -30,6 +30,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     paginatedData.push(paginatedSubData)
   }
 
+  const largestCO2E = dataEntries?.[0]?.y
+
   const options = {
     series: [
       {
@@ -89,6 +91,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       axisBorder: {
         show: false,
       },
+      max: largestCO2E,
     },
     yaxis: {
       labels: {
@@ -112,20 +115,10 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
   }
 
   const visibleRows = `${page * 10 + 1} - ${page * 10 + paginatedData[page]?.length}`
-  const largestCO2E = dataEntries?.[0]?.y
-  const smallestCO2E = dataEntries?.[dataEntries.length - 1]?.y
-  const currentLargestOrPreviousShortestCO2E =
-    page == 0 ? paginatedData[0]?.[0]?.y : paginatedData[page - 1]?.[paginatedData[page - 1]?.length - 1]?.y
 
-  const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
-    ((value - x1) * (y2 - x2)) / (y1 - x1) + x2
-
-  const percent = map(currentLargestOrPreviousShortestCO2E, smallestCO2E, largestCO2E, 17, 100)
-  console.log(currentLargestOrPreviousShortestCO2E)
-  console.log(percent)
   return (
     <div>
-      <Chart options={options} series={options.series} type="bar" height={options.height} width={`${percent}%`} />
+      <Chart options={options} series={options.series} type="bar" height={options.height} />
       <div>
         <span>
           {visibleRows} of {dataEntries.length}
