@@ -75,7 +75,6 @@ export const HDD_USAGE_TYPES: string[] = [
   'dc1.8xlarge', // Redshift HDD
   'ds2.xlarge', // Redshift HDD
   'ds2.8xlarge', // Redshift HDD
-  'APS1-SnapshotUsage', // Snapshot in S3
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
