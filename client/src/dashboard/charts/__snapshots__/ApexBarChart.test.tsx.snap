@@ -57,20 +57,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
         },
         "series": Array [
           Object {
-            "data": Array [
-              Object {
-                "x": "ebs",
-                "y": 3015.014,
-              },
-              Object {
-                "x": "ec2",
-                "y": 2521.406,
-              },
-              Object {
-                "x": "s3",
-                "y": 1718.017,
-              },
-            ],
+            "data": Array [],
             "name": "Total CO2e",
           },
         ],
@@ -105,20 +92,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
     series={
       Array [
         Object {
-          "data": Array [
-            Object {
-              "x": "ebs",
-              "y": 3015.014,
-            },
-            Object {
-              "x": "ec2",
-              "y": 2521.406,
-            },
-            Object {
-              "x": "s3",
-              "y": 1718.017,
-            },
-          ],
+          "data": Array [],
           "name": "Total CO2e",
         },
       ]
@@ -143,10 +117,10 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
        of 
       3
     </span>
-    <span
-      aria-disabled={true}
+    <button
       aria-label="chevron-left"
       className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
       onDragLeave={[Function]}
@@ -159,8 +133,8 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
       onTouchStart={[Function]}
-      role="button"
       tabIndex={-1}
+      type="button"
     >
       <span
         className="MuiIconButton-label"
@@ -176,11 +150,11 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
           />
         </svg>
       </span>
-    </span>
-    <span
-      aria-disabled={true}
+    </button>
+    <button
       aria-label="chevron-right"
       className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+      disabled={true}
       onBlur={[Function]}
       onClick={[Function]}
       onDragLeave={[Function]}
@@ -193,8 +167,8 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
       onTouchStart={[Function]}
-      role="button"
       tabIndex={-1}
+      type="button"
     >
       <span
         className="MuiIconButton-label"
@@ -210,7 +184,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
           />
         </svg>
       </span>
-    </span>
+    </button>
   </div>
 </div>
 `;

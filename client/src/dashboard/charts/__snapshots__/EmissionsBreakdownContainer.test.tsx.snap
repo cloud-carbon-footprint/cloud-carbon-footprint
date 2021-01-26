@@ -41,7 +41,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
             onChange={[Function]}
             required={false}
             tabIndex={-1}
-            value={0}
+            value="region"
           />
           <svg
             aria-hidden={true}
@@ -56,204 +56,190 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
         </div>
       </div>
     </div>
-    <div
-      data-testid="region"
-    >
-      <div>
-        <div
-          data-testid="fake-bar-chart"
-          height="500px"
-          options={
-            Object {
-              "chart": Object {
-                "toolbar": Object {
-                  "tools": Object {
-                    "download": null,
-                  },
+    <div>
+      <div
+        data-testid="fake-bar-chart"
+        height="500px"
+        options={
+          Object {
+            "chart": Object {
+              "toolbar": Object {
+                "tools": Object {
+                  "download": null,
                 },
-                "type": "bar",
               },
-              "colors": Array [
-                "#3f51b5",
-              ],
-              "dataLabels": Object {
-                "background": Object {
-                  "borderColor": "#303f9f",
-                  "borderRadius": 1,
-                  "borderWidth": 1,
-                  "enabled": true,
-                  "foreColor": "#3f51b5",
-                  "opacity": 0.9,
-                  "padding": 6,
-                },
+              "type": "bar",
+            },
+            "colors": Array [
+              "#3f51b5",
+            ],
+            "dataLabels": Object {
+              "background": Object {
+                "borderColor": "#303f9f",
+                "borderRadius": 1,
+                "borderWidth": 1,
                 "enabled": true,
-                "formatter": [Function],
-                "offsetX": 10,
-                "textAnchor": "start",
+                "foreColor": "#3f51b5",
+                "opacity": 0.9,
+                "padding": 6,
               },
-              "grid": Object {
-                "padding": Object {
-                  "left": 32,
-                },
-                "show": false,
-                "xaxis": Object {
-                  "lines": Object {
-                    "show": false,
-                  },
-                },
-                "yaxis": Object {
-                  "lines": Object {
-                    "show": false,
-                  },
-                },
+              "enabled": true,
+              "formatter": [Function],
+              "offsetX": 10,
+              "textAnchor": "start",
+            },
+            "grid": Object {
+              "padding": Object {
+                "left": 32,
               },
-              "height": "500px",
-              "plotOptions": Object {
-                "bar": Object {
-                  "horizontal": true,
-                },
-              },
-              "series": Array [
-                Object {
-                  "data": Array [
-                    Object {
-                      "x": "us-east-1",
-                      "y": 31.3712694,
-                    },
-                  ],
-                  "name": "Total CO2e",
-                },
-              ],
-              "tooltip": Object {
-                "fillSeriesColor": false,
-                "x": Object {
-                  "show": false,
-                },
-                "y": Object {
-                  "formatter": [Function],
-                },
-              },
+              "show": false,
               "xaxis": Object {
-                "axisBorder": Object {
+                "lines": Object {
                   "show": false,
                 },
-                "labels": Object {
-                  "show": false,
-                },
-                "max": 31.3712694,
-                "type": "category",
               },
               "yaxis": Object {
-                "labels": Object {
-                  "style": Object {
-                    "fontSize": "13px",
-                  },
+                "lines": Object {
+                  "show": false,
                 },
               },
-            }
-          }
-          series={
-            Array [
+            },
+            "height": "500px",
+            "plotOptions": Object {
+              "bar": Object {
+                "horizontal": true,
+              },
+            },
+            "series": Array [
               Object {
-                "data": Array [
-                  Object {
-                    "x": "us-east-1",
-                    "y": 31.3712694,
-                  },
-                ],
+                "data": Array [],
                 "name": "Total CO2e",
               },
-            ]
+            ],
+            "tooltip": Object {
+              "fillSeriesColor": false,
+              "x": Object {
+                "show": false,
+              },
+              "y": Object {
+                "formatter": [Function],
+              },
+            },
+            "xaxis": Object {
+              "axisBorder": Object {
+                "show": false,
+              },
+              "labels": Object {
+                "show": false,
+              },
+              "max": 31.3712694,
+              "type": "category",
+            },
+            "yaxis": Object {
+              "labels": Object {
+                "style": Object {
+                  "fontSize": "13px",
+                },
+              },
+            },
           }
-          type="bar"
-        >
-          fake chart
-        </div>
-        <div
-          className="makeStyles-paginationContainer-6"
-        >
-          <span
-            style={
-              Object {
-                "color": "#ababab",
-                "fontWeight": 700,
-                "marginRight": "8px",
-              }
+        }
+        series={
+          Array [
+            Object {
+              "data": Array [],
+              "name": "Total CO2e",
+            },
+          ]
+        }
+        type="bar"
+      >
+        fake chart
+      </div>
+      <div
+        className="makeStyles-paginationContainer-6"
+      >
+        <span
+          style={
+            Object {
+              "color": "#ababab",
+              "fontWeight": 700,
+              "marginRight": "8px",
             }
-          >
-            1 - 1
-             of 
-            1
-          </span>
+          }
+        >
+          1 - 1
+           of 
+          1
+        </span>
+        <button
+          aria-label="chevron-left"
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+          disabled={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={-1}
+          type="button"
+        >
           <span
-            aria-disabled={true}
-            aria-label="chevron-left"
-            className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onDragLeave={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseLeave={[Function]}
-            onMouseUp={[Function]}
-            onTouchEnd={[Function]}
-            onTouchMove={[Function]}
-            onTouchStart={[Function]}
-            role="button"
-            tabIndex={-1}
+            className="MuiIconButton-label"
           >
-            <span
-              className="MuiIconButton-label"
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
             >
-              <svg
-                aria-hidden={true}
-                className="MuiSvgIcon-root"
-                focusable="false"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-                />
-              </svg>
-            </span>
+              <path
+                d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+              />
+            </svg>
           </span>
+        </button>
+        <button
+          aria-label="chevron-right"
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+          disabled={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={-1}
+          type="button"
+        >
           <span
-            aria-disabled={true}
-            aria-label="chevron-right"
-            className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onDragLeave={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseLeave={[Function]}
-            onMouseUp={[Function]}
-            onTouchEnd={[Function]}
-            onTouchMove={[Function]}
-            onTouchStart={[Function]}
-            role="button"
-            tabIndex={-1}
+            className="MuiIconButton-label"
           >
-            <span
-              className="MuiIconButton-label"
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
             >
-              <svg
-                aria-hidden={true}
-                className="MuiSvgIcon-root"
-                focusable="false"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
-                />
-              </svg>
-            </span>
+              <path
+                d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+              />
+            </svg>
           </span>
-        </div>
+        </button>
       </div>
     </div>
   </div>

@@ -64,35 +64,12 @@ const useStyles = makeStyles(() => {
 
 export const EmissionsBreakdownContainer = (props: { data: EstimationResult[] }): ReactElement => {
   const classes = useStyles()
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = React.useState(ChartDataTypes.REGION)
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setValue(event.target.value as number)
+    setValue(event.target.value as ChartDataTypes)
   }
-  const selectApexCharts = (value: number): ReactElement => {
-    switch (value) {
-      case 1:
-        return (
-          <div data-testid={ChartDataTypes.ACCOUNT}>
-            <ApexBarChart data={props.data} dataType={ChartDataTypes.ACCOUNT} />
-          </div>
-        )
-        break
-      case 2:
-        return (
-          <div data-testid={ChartDataTypes.SERVICE}>
-            <ApexBarChart data={props.data} dataType={ChartDataTypes.SERVICE} />
-          </div>
-        )
-        break
-      default:
-        return (
-          <div data-testid={ChartDataTypes.REGION}>
-            <ApexBarChart data={props.data} dataType={ChartDataTypes.REGION} />
-          </div>
-        )
-    }
-  }
+
   return (
     <Card className={classes.root}>
       <Box padding={3}>
@@ -100,13 +77,13 @@ export const EmissionsBreakdownContainer = (props: { data: EstimationResult[] })
           <p className={classes.title}>Emissions breakdown</p>
           <FormControl variant={'outlined'}>
             <Select value={value} onChange={handleChange} input={<BootstrapInput />}>
-              <MenuItem value={0}>Region</MenuItem>
-              <MenuItem value={1}>Account</MenuItem>
-              <MenuItem value={2}>Service</MenuItem>
+              <MenuItem value={ChartDataTypes.REGION}>Region</MenuItem>
+              <MenuItem value={ChartDataTypes.ACCOUNT}>Account</MenuItem>
+              <MenuItem value={ChartDataTypes.SERVICE}>Service</MenuItem>
             </Select>
           </FormControl>
         </Paper>
-        {selectApexCharts(value)}
+        <ApexBarChart data={props.data} dataType={value} />
       </Box>
     </Card>
   )
