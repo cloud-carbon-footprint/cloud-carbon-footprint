@@ -28,6 +28,7 @@ import {
   SSD_SERVICES,
   PRICING_UNITS,
   UNKNOWN_USAGE_TYPES,
+  LINE_ITEM_TYPES,
 } from '@services/aws/CostAndUsageTypes'
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import { Athena } from 'aws-sdk'
@@ -189,7 +190,7 @@ export default class CostAndUsageReports {
                     SUM(line_item_usage_amount) as usageAmount,
                     SUM(line_item_blended_cost) as cost
                     FROM ${this.tableName}
-                    WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage')
+                    WHERE line_item_line_item_type IN ('${LINE_ITEM_TYPES.join(`', '`)}')
                     AND pricing_unit IN ('${Object.values(PRICING_UNITS).join(`', '`)}')
                     AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
                     AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')

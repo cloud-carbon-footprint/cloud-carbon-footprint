@@ -18,7 +18,7 @@ import {
   athenaMockGetQueryResultsWithKenesisESAndEc2Spot,
   athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices,
   athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage,
-  athenaMockGetQueryResultsWithRedshiftStorageCompute,
+  athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan,
 } from '../../../fixtures/athena.fixtures'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
@@ -494,11 +494,11 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Gets Estimates for Redshift Storage and Compute', async () => {
+  it('Gets Estimates for Redshift Storage and Compute, and Savings Plan Compute', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsWithRedshiftStorageCompute)
+    mockGetQueryResults(athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan)
 
     // when
     const athenaService = new CostAndUsageReports(
@@ -532,6 +532,16 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonRedshift',
             usesAverageCPUConstant: true,
             wattHours: 0.07819999999999999,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0003161395700774784,
+            cost: 15,
+            region: 'us-west-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+            wattHours: 1651.584,
           },
         ],
       },

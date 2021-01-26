@@ -541,9 +541,22 @@ const queryResultsDataSeven = [
       { VarCharValue: '10' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '8' },
+      { VarCharValue: '88' },
+      { VarCharValue: '15' },
+    ],
+  },
 ]
 
-export const athenaMockGetQueryResultsWithRedshiftStorageCompute: Athena.GetQueryResultsOutput = {
+export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: Athena.GetQueryResultsOutput = {
   ResultSet: {
     Rows: [queryResultsHeaders, ...queryResultsDataSeven],
   },

@@ -112,6 +112,8 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'AW-HW-User-Usage',
 ]
 
+export const LINE_ITEM_TYPES: string[] = ['Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage']
+
 export enum PRICING_UNITS {
   HOURS_1 = 'Hrs',
   HOURS_2 = 'Hours',
