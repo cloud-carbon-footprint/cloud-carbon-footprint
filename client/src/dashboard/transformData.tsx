@@ -77,11 +77,23 @@ const getPropertyFromDataType = (dataType: string, value: serviceEstimate): stri
   return dataTypeMapping[dataType]
 }
 
+const checkUnknownTypes = (dataType: string, value: serviceEstimate) => {
+  if (dataType === 'account' && value.accountName === null)
+    value.accountName = `Unknown Account - ${value.cloudProvider}`
+
+  if (dataType === 'service' && value.serviceName === null)
+    value.serviceName = `Unknown Service - ${value.cloudProvider}`
+
+  if (dataType === 'region' && value.region === 'unknown') value.region = `Unknown Region - ${value.cloudProvider}`
+}
+
 const sumCO2ByServiceOrRegion = (data: EstimationResult[], dataType: string): { string: number } => {
   const serviceEstimates = data.flatMap((estimationResult) => estimationResult.serviceEstimates)
 
   return serviceEstimates.reduce((acc, initialValue, index, arr) => {
     const value = arr[index]
+
+    checkUnknownTypes(dataType, value)
 
     const property = getPropertyFromDataType(dataType, value)
 
@@ -114,14 +126,14 @@ const useFilterDataFromEstimates = (data: EstimationResult[]): FilterResultRespo
       const { cloudProvider, accountName, serviceName } = estimate
       accountNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: accountName ? accountName : 'Unknown Account',
-        name: accountName ? accountName : 'Unknown Account',
+        key: accountName ? accountName : `Unknown Account - ${cloudProvider}`,
+        name: accountName ? accountName : `Unknown Account - ${cloudProvider}`,
       })
 
       serviceNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: serviceName ? serviceName : 'Unknown Service',
-        name: serviceName ? serviceName : 'Unknown Service',
+        key: serviceName ? serviceName : `Unknown Service - ${cloudProvider}`,
+        name: serviceName ? serviceName : `Unknown Service - ${cloudProvider}`,
       })
     })
     setFilterResultResponse({ accounts: uniq(accountNames), services: uniq(serviceNames) })

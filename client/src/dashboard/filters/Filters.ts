@@ -134,7 +134,13 @@ export class Filters {
     const allAccountsSelected = this.accounts.includes(ALL_ACCOUNTS_DROPDOWN_OPTION)
     return resultsFilteredByService.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
-        return this.accounts.some((account) => account.name === serviceEstimate.accountName) || allAccountsSelected
+        return (
+          this.accounts.some(
+            (account) =>
+              (account.name.includes('Unknown Account') && serviceEstimate.accountName === null) ||
+              account.name === serviceEstimate.accountName,
+          ) || allAccountsSelected
+        )
       })
       return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
     })
@@ -144,7 +150,13 @@ export class Filters {
     const allServicesSelected = this.services.includes(ALL_SERVICES_DROPDOWN_OPTION)
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
-        return this.services.some((service) => service.key === serviceEstimate.serviceName) || allServicesSelected
+        return (
+          this.services.some(
+            (service) =>
+              (service.key.includes('Unknown Account') && serviceEstimate.serviceName === null) ||
+              service.key === serviceEstimate.serviceName,
+          ) || allServicesSelected
+        )
       })
       return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
     })

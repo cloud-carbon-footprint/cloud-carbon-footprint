@@ -112,6 +112,63 @@ const dataWithHigherPrecision = [
   },
 ]
 
+const dataWithUnknowns = [
+  {
+    timestamp: date1,
+    serviceEstimates: [
+      {
+        timestamp: date1,
+        serviceName: null,
+        wattHours: 5,
+        co2e: 6,
+        cost: 7,
+        region: 'unknown',
+        usesAverageCPUConstant: true,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
+      },
+      {
+        timestamp: date1,
+        serviceName: 'ebs',
+        wattHours: 7,
+        co2e: 6,
+        cost: 5,
+        region: 'us-east-1',
+        usesAverageCPUConstant: true,
+        cloudProvider: 'GCP',
+        accountName: null,
+      },
+    ],
+  },
+  {
+    timestamp: date2,
+    serviceEstimates: [
+      {
+        timestamp: date2,
+        serviceName: null,
+        wattHours: 5,
+        co2e: 6,
+        cost: 7,
+        region: 'unknown',
+        usesAverageCPUConstant: true,
+        cloudProvider: 'GCP',
+        accountName: 'test-b',
+      },
+      {
+        timestamp: date2,
+        serviceName: 'ec2',
+        wattHours: 7,
+        co2e: 6,
+        cost: 5,
+        region: 'us-east-1',
+        usesAverageCPUConstant: true,
+        cloudProvider: 'AWS',
+        accountName: null,
+      },
+    ],
+  },
+]
+
 describe('transformData', () => {
   it('returns the sum of CO2 per service', () => {
     const expected = { ebs: 18, ec2: 12 }
@@ -139,6 +196,21 @@ describe('transformData', () => {
       ],
     }
     expect(result.current).toEqual(expectedResult)
+  })
+
+  it('handles data with null account names', () => {
+    const expected = { 'test-a': 6, 'test-b': 6, 'Unknown Account - GCP': 6, 'Unknown Account - AWS': 6 }
+    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'account')).toEqual(expected)
+  })
+
+  it('handles data with null service names', () => {
+    const expected = { ebs: 6, ec2: 6, 'Unknown Service - GCP': 6, 'Unknown Service - AWS': 6 }
+    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'service')).toEqual(expected)
+  })
+
+  it('handles data with unknown regions', () => {
+    const expected = { 'us-east-1': 12, 'Unknown Region - GCP': 6, 'Unknown Region - AWS': 6 }
+    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'region')).toEqual(expected)
   })
 })
 
