@@ -48,6 +48,10 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
   pageSize,
   handlePage,
 }) => {
+  if (data.length === 0) {
+    return <div></div>
+  }
+
   const { paginationContainer } = useStyles()
   const [page, setPage] = useState(0)
   const { paginatedData, totalPages } = usePaginateData<typeof data[0]>(data, pageSize)

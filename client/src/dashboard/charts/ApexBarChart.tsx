@@ -26,6 +26,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
 
   const largestCO2E = dataEntries?.[0]?.y
+  const pageSize = 10
 
   const options = {
     series: [
@@ -62,6 +63,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     plotOptions: {
       bar: {
         horizontal: true,
+        barHeight: `${7 * pageData.length}%`,
       },
     },
     dataLabels: {
@@ -118,7 +120,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
   return (
     <div>
       <Chart options={options} series={options.series} type="bar" height={options.height} />
-      <Pagination data={dataEntries} pageSize={10} handlePage={handlePage} />
+      <Pagination data={dataEntries} pageSize={pageSize} handlePage={handlePage} />
     </div>
   )
 }

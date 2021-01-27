@@ -52,6 +52,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
         "height": "500px",
         "plotOptions": Object {
           "bar": Object {
+            "barHeight": "0%",
             "horizontal": true,
           },
         },
