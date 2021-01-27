@@ -27,7 +27,6 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
 
   const largestCO2E = dataEntries?.[0]?.y
   const pageSize = 10
-  console.log('pageData', pageData)
   const options = {
     series: [
       {

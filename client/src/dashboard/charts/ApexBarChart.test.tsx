@@ -63,16 +63,12 @@ describe('ApexBarChart', () => {
 
   it('should filter, sort and order data and pass to Pagination component', function () {
     const paginationComponent = fixture.root.findByType(Pagination)
-    // const chartComponent = fixture.root.findByType(Chart)
-    // const chartOptionSeries = chartComponent.props?.options?.series[0]
-
     const sortedData = [
       { x: 'ebs', y: 3015.014 },
       { x: 'ec2', y: 2521.406 },
       { x: 's3', y: 1718.017 },
     ]
 
-    // expect(chartOptionSeries.data).toEqual([])
     expect(paginationComponent.props.data).toEqual(sortedData)
   })
 })
