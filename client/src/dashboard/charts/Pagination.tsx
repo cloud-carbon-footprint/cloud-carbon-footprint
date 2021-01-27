@@ -62,9 +62,7 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
     setPage(newPage)
     handlePage(paginatedData[newPage])
   }
-  // if (data.length === 0) {
-  //   return <div aria-label="no-pagination-data" />
-  // }
+
   return data.length === 0 ? (
     <div aria-label="no-pagination-data" />
   ) : (
