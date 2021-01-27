@@ -18,10 +18,10 @@ export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = { key: ALL_KEY, name
 
 export function alphabetizeDropdownOptions(dropdownOptions: DropdownOption[]): DropdownOption[] {
   dropdownOptions.sort((a, b) => {
-    if (a.name < b.name) {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) {
       return -1
     }
-    if (a.name > b.name) {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
       return 1
     }
     return 0

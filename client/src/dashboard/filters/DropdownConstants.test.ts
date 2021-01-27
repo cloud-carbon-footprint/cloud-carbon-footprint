@@ -33,10 +33,16 @@ describe('DropdownConstants', () => {
         name: 'dNameFirstDropdown',
         cloudProvider: 'aws',
       }
+      const dropdownOptionUpperD: DropdownOption = {
+        key: 'DKeyFirstDropdown',
+        name: 'DNameFirstDropdown',
+        cloudProvider: 'aws',
+      }
       const mixedDropdownOptions: DropdownOption[] = [
         dropdownOptionC,
         dropdownOptionA,
         dropdownOption0,
+        dropdownOptionUpperD,
         dropdownOptionD,
         dropdownOptionB,
       ]
@@ -45,6 +51,7 @@ describe('DropdownConstants', () => {
         dropdownOptionA,
         dropdownOptionB,
         dropdownOptionC,
+        dropdownOptionUpperD,
         dropdownOptionD,
       ]
 
