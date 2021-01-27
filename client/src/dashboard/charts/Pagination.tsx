@@ -65,7 +65,6 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
   const onPageChange = (newPage: number) => {
     setPage(newPage)
     handlePage(paginatedData[newPage])
-    console.log('hit', newPage)
   }
 
   return (
