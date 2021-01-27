@@ -46,6 +46,14 @@ describe('Pagination', () => {
     handlePage.mockClear()
   })
 
+  it('should render empty div when pagination data is an empty array', () => {
+    const { getByLabelText } = render(<Pagination data={[]} handlePage={handlePage} pageSize={3} />)
+    const noPaginationDataDiv = getByLabelText('no-pagination-data')
+
+    expect(handlePage).not.toHaveBeenCalled()
+    expect(noPaginationDataDiv).toBeDefined()
+  })
+
   it('renders Pagination with correct configuration', () => {
     const wrapper = create(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
     expect(wrapper.toJSON()).toMatchSnapshot()

@@ -49,7 +49,7 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
   handlePage,
 }) => {
   if (data.length === 0) {
-    return <div></div>
+    return <div aria-label="no-pagination-data" />
   }
 
   const { paginationContainer } = useStyles()
