@@ -2,11 +2,15 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React, { FunctionComponent, useState, useEffect } from 'react'
+import React, { useState, useEffect, PropsWithChildren, ReactElement } from 'react'
 import { ChevronLeft, ChevronRight } from '@material-ui/icons'
 import { IconButton, makeStyles } from '@material-ui/core'
 
-export const usePaginateData = (data: any[], pageSize: number) => {
+interface UsePaginateData<T> {
+  paginatedData: T[][]
+  totalPages: number
+}
+export const usePaginateData: <T>(data: T[], pageSize: number) => UsePaginateData<T> = (data, pageSize) => {
   const paginatedData = []
   const newEntries = [...data]
   while (newEntries.length > 0) {
@@ -30,19 +34,23 @@ const useStyles = makeStyles(() => {
   }
 })
 
-interface PaginateData {
-  data: any[]
+interface PaginateData<T> {
+  data: T[]
   pageSize: number
 }
 
-export interface PaginationProps extends PaginateData {
-  handlePage: (page: any[]) => void
+export interface PaginationProps<T> extends PaginateData<T> {
+  handlePage: (page: T[]) => void
 }
 
-const Pagination: FunctionComponent<PaginationProps> = ({ data, pageSize, handlePage }) => {
+const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElement = ({
+  data,
+  pageSize,
+  handlePage,
+}) => {
   const { paginationContainer } = useStyles()
   const [page, setPage] = useState(0)
-  const { paginatedData, totalPages } = usePaginateData(data, pageSize)
+  const { paginatedData, totalPages } = usePaginateData<typeof data[0]>(data, pageSize)
   const visibleRows = `${page * pageSize + 1} - ${page * pageSize + paginatedData[page]?.length}`
 
   useEffect(() => {

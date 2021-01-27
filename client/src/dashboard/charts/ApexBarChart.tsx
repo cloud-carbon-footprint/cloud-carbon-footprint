@@ -11,7 +11,7 @@ import { ApexChartProps } from './common/ChartTypes'
 import Pagination from './Pagination'
 
 export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType }) => {
-  const [pageData, setPageData] = useState([]) as any[]
+  const [pageData, setPageData] = useState<{ x: string; y: number }[]>([])
 
   const theme = useTheme()
   const chartColors = [theme.palette.primary.main]
@@ -113,7 +113,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     height: '500px',
   }
 
-  const handlePage = (pageData: any[]) => setPageData(pageData)
+  const handlePage = (pageData: { x: string; y: number }[]) => setPageData(pageData)
 
   return (
     <div>
