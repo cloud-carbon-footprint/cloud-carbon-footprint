@@ -42,3 +42,9 @@ export interface FilterResultResponse {
   accounts: DropdownOption[]
   services: DropdownOption[]
 }
+
+export enum UnknownTypes {
+  UNKNOWN_REGION = 'Unknown Region',
+  UNKNOWN_SERVICE = 'Unknown Service',
+  UNKNOWN_ACCOUNT = 'Unknown Account',
+}

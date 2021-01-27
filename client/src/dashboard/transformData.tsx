@@ -8,6 +8,7 @@ import {
   ChartDataTypes,
   serviceEstimate,
   FilterResultResponse,
+  UnknownTypes,
 } from '../models/types'
 import { pluck, uniq } from 'ramda'
 import { useEffect, useState } from 'react'
@@ -78,13 +79,14 @@ const getPropertyFromDataType = (dataType: string, value: serviceEstimate): stri
 }
 
 const checkUnknownTypes = (dataType: string, value: serviceEstimate) => {
-  if (dataType === 'account' && value.accountName === null)
-    value.accountName = `Unknown Account - ${value.cloudProvider}`
+  if (dataType === ChartDataTypes.ACCOUNT && value.accountName === null)
+    value.accountName = `${UnknownTypes.UNKNOWN_ACCOUNT} - ${value.cloudProvider}`
 
-  if (dataType === 'service' && value.serviceName === null)
-    value.serviceName = `Unknown Service - ${value.cloudProvider}`
+  if (dataType === ChartDataTypes.SERVICE && value.serviceName === null)
+    value.serviceName = `${UnknownTypes.UNKNOWN_SERVICE} - ${value.cloudProvider}`
 
-  if (dataType === 'region' && value.region === 'unknown') value.region = `Unknown Region - ${value.cloudProvider}`
+  if (dataType === ChartDataTypes.REGION && value.region === 'unknown')
+    value.region = `${UnknownTypes.UNKNOWN_REGION} - ${value.cloudProvider}`
 }
 
 const sumCO2ByServiceOrRegion = (data: EstimationResult[], dataType: string): { string: number } => {
@@ -126,14 +128,14 @@ const useFilterDataFromEstimates = (data: EstimationResult[]): FilterResultRespo
       const { cloudProvider, accountName, serviceName } = estimate
       accountNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: accountName ? accountName : `Unknown Account - ${cloudProvider}`,
-        name: accountName ? accountName : `Unknown Account - ${cloudProvider}`,
+        key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT} - ${cloudProvider}`,
+        name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT} - ${cloudProvider}`,
       })
 
       serviceNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: serviceName ? serviceName : `Unknown Service - ${cloudProvider}`,
-        name: serviceName ? serviceName : `Unknown Service - ${cloudProvider}`,
+        key: serviceName ? serviceName : `${UnknownTypes.UNKNOWN_SERVICE} - ${cloudProvider}`,
+        name: serviceName ? serviceName : `${UnknownTypes.UNKNOWN_SERVICE} - ${cloudProvider}`,
       })
     })
     setFilterResultResponse({ accounts: uniq(accountNames), services: uniq(serviceNames) })

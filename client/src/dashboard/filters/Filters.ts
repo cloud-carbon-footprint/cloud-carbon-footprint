@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult, FilterResultResponse } from '../../models/types'
+import { EstimationResult, FilterResultResponse, UnknownTypes } from '../../models/types'
 import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
 import * as FiltersUtil from './FiltersUtil'
@@ -137,7 +137,7 @@ export class Filters {
         return (
           this.accounts.some(
             (account) =>
-              (account.name.includes('Unknown Account') && serviceEstimate.accountName === null) ||
+              (account.name.includes(UnknownTypes.UNKNOWN_ACCOUNT) && serviceEstimate.accountName === null) ||
               account.name === serviceEstimate.accountName,
           ) || allAccountsSelected
         )
@@ -153,7 +153,7 @@ export class Filters {
         return (
           this.services.some(
             (service) =>
-              (service.key.includes('Unknown Account') && serviceEstimate.serviceName === null) ||
+              (service.key.includes(UnknownTypes.UNKNOWN_SERVICE) && serviceEstimate.serviceName === null) ||
               service.key === serviceEstimate.serviceName,
           ) || allServicesSelected
         )
