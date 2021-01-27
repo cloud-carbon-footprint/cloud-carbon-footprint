@@ -9,7 +9,7 @@ import { act } from 'react-dom/test-utils'
 import React from 'react'
 import Pagination from './Pagination'
 
-describe('ApexBarChart', () => {
+describe('Pagination', () => {
   const handlePage = jest.fn()
 
   const data = [
@@ -19,6 +19,24 @@ describe('ApexBarChart', () => {
     { x: 'lambda', y: 3015.014 },
     { x: 'rds', y: 2521.406 },
     { x: 'msk', y: 1718.017 },
+    { x: 'mq', y: 3015.014 },
+    { x: 'redshift', y: 2521.406 },
+    { x: 'glue', y: 1718.017 },
+  ]
+
+  const page1 = [
+    { x: 'ebs', y: 3015.014 },
+    { x: 'ec2', y: 2521.406 },
+    { x: 's3', y: 1718.017 },
+  ]
+
+  const page2 = [
+    { x: 'lambda', y: 3015.014 },
+    { x: 'rds', y: 2521.406 },
+    { x: 'msk', y: 1718.017 },
+  ]
+
+  const page3 = [
     { x: 'mq', y: 3015.014 },
     { x: 'redshift', y: 2521.406 },
     { x: 'glue', y: 1718.017 },
@@ -35,11 +53,6 @@ describe('ApexBarChart', () => {
 
   it('first page of data should be returned on mount', () => {
     create(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
-    const page1 = [
-      { x: 'ebs', y: 3015.014 },
-      { x: 'ec2', y: 2521.406 },
-      { x: 's3', y: 1718.017 },
-    ]
     expect(handlePage).toHaveBeenLastCalledWith(page1)
   })
 
@@ -55,5 +68,41 @@ describe('ApexBarChart', () => {
     expect(handlePage).toHaveBeenCalledTimes(1)
   })
 
-  // it('should pass sorted chart options to Chart component', () => {})
+  it('should be able to go to next page', () => {
+    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const nextButton = getByLabelText('chevron-right')
+
+    expect(handlePage).toHaveBeenLastCalledWith(page1)
+
+    act(() => {
+      fireEvent.click(nextButton)
+    })
+
+    expect(handlePage).toHaveBeenCalledTimes(2)
+    expect(handlePage).toHaveBeenLastCalledWith(page2)
+  })
+
+  it('once on the last page, next button should be disabled', () => {
+    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const nextButton = getByLabelText('chevron-right')
+
+    expect(handlePage).toHaveBeenLastCalledWith(page1)
+    act(() => {
+      fireEvent.click(nextButton)
+    })
+    expect(handlePage).toHaveBeenCalledTimes(2)
+    expect(handlePage).toHaveBeenLastCalledWith(page2)
+
+    act(() => {
+      fireEvent.click(nextButton)
+    })
+    expect(handlePage).toHaveBeenCalledTimes(3)
+    expect(handlePage).toHaveBeenLastCalledWith(page3)
+
+    act(() => {
+      fireEvent.click(nextButton)
+    })
+    expect(nextButton).toBeDisabled()
+    expect(handlePage).toHaveBeenCalledTimes(3)
+  })
 })
