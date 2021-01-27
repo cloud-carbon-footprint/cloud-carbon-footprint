@@ -2,7 +2,7 @@
 
 exports[`Pagination renders Pagination with correct configuration 1`] = `
 <div
-  className="makeStyles-paginationContainer-1"
+  className="makeStyles-paginationContainer-2"
 >
   <span
     style={

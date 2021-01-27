@@ -48,17 +48,13 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
   pageSize,
   handlePage,
 }) => {
-  if (data.length === 0) {
-    return <div aria-label="no-pagination-data" />
-  }
-
   const { paginationContainer } = useStyles()
   const [page, setPage] = useState(0)
   const { paginatedData, totalPages } = usePaginateData<typeof data[0]>(data, pageSize)
   const visibleRows = `${page * pageSize + 1} - ${page * pageSize + paginatedData[page]?.length}`
 
   useEffect(() => {
-    handlePage(paginatedData[0])
+    handlePage(paginatedData[0] || [])
     setPage(0)
   }, [JSON.stringify(data)])
 
@@ -66,8 +62,12 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
     setPage(newPage)
     handlePage(paginatedData[newPage])
   }
-
-  return (
+  // if (data.length === 0) {
+  //   return <div aria-label="no-pagination-data" />
+  // }
+  return data.length === 0 ? (
+    <div aria-label="no-pagination-data" />
+  ) : (
     <div className={paginationContainer}>
       <span style={{ color: '#ababab', fontWeight: 700, marginRight: '8px' }}>
         {visibleRows} of {data.length}

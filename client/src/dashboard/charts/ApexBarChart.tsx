@@ -27,7 +27,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
 
   const largestCO2E = dataEntries?.[0]?.y
   const pageSize = 10
-
+  console.log('pageData', pageData)
   const options = {
     series: [
       {
@@ -64,6 +64,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       bar: {
         horizontal: true,
         barHeight: `${7 * pageData.length}%`,
+        distributed: false,
       },
     },
     dataLabels: {
@@ -115,11 +116,25 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     height: '500px',
   }
 
-  const handlePage = (pageData: { x: string; y: number }[]) => setPageData(pageData)
+  const handlePage = (pageData: { x: string; y: number }[]) => {
+    setPageData(pageData)
+  }
 
   return (
-    <div>
-      <Chart options={options} series={options.series} type="bar" height={options.height} />
+    <div
+      style={{
+        minHeight: '500px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center',
+      }}
+    >
+      {pageData && pageData.length ? (
+        <Chart options={options} series={options.series} type="bar" height={options.height} />
+      ) : (
+        <div style={{ textAlign: 'center' }}>Select a cloud provider.</div>
+      )}
       <Pagination data={dataEntries} pageSize={pageSize} handlePage={handlePage} />
     </div>
   )

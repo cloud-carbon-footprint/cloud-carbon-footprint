@@ -50,7 +50,7 @@ describe('Pagination', () => {
     const { getByLabelText } = render(<Pagination data={[]} handlePage={handlePage} pageSize={3} />)
     const noPaginationDataDiv = getByLabelText('no-pagination-data')
 
-    expect(handlePage).not.toHaveBeenCalled()
+    expect(handlePage).toHaveBeenCalledWith([])
     expect(noPaginationDataDiv).toBeDefined()
   })
 
