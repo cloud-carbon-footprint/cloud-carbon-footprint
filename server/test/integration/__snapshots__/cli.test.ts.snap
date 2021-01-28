@@ -4,26 +4,26 @@ exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds group
 "| Service      | Watt Hours        | mt CO2e Emissions      | Cost              
 | EBS          | 6.43              | 0.000003               | $9.23             
 | S3           | 0.10              | 0.000000               | $12.00            
-| EC2          | 39.09             | 0.000018               | $74.00            
-| ElastiCache  | 23.32             | 0.000011               | $12.00            
-| RDS          | 460.51            | 0.000216               | $18.47            
+| EC2          | 40.87             | 0.000019               | $74.00            
+| ElastiCache  | 24.20             | 0.000011               | $12.00            
+| RDS          | 481.44            | 0.000226               | $18.47            
 | Lambda       | 0.00              | 0.000000               | $0.00             
-| ComputeEngine| 4.19              | 0.000001               | $0.00             
-| Total        | 533.63            | 0.000250               | $125.70           "
+| ComputeEngine| 3.94              | 0.000001               | $0.00             
+| Total        | 556.99            | 0.000261               | $125.70           "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day 1`] = `
 "| Date         | Watt Hours        | mt CO2e Emissions      
-| 2020-07-01   | 58.00             | 0.000027               
-| 2020-07-02   | 475.63            | 0.000224               
-| Total        | 533.63            | 0.000250               "
+| 2020-07-01   | 59.76             | 0.000027               
+| 2020-07-02   | 497.23            | 0.000234               
+| Total        | 556.99            | 0.000261               "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day and service 1`] = `
 "| Date (UTC)   | EBS Watt Hours    | EBS mt CO2e Emissions  | S3 Watt Hours     | S3 mt CO2e Emissions   | EC2 Watt Hours    | EC2 mt CO2e Emissions  | ElastiCache Watt Hours| ElastiCache mt CO2e Emissions| RDS Watt Hours    | RDS mt CO2e Emissions  | Lambda Watt Hours | Lambda mt CO2e Emissions| ComputeEngine Watt Hours| ComputeEngine mt CO2e Emissions| SUM Watt Hours    | SUM mt CO2e Emissions  
-| 2020-07-01   | 2.14              | 0.000001               | 0.10              | 0.000000               | 39.09             | 0.000018               | 4.55              | 0.000002               | 7.93              | 0.000004               | 0.00              | 0.000000               | 4.19              | 0.000001               | 58.00             | 0.000027               
-| 2020-07-02   | 4.29              | 0.000002               | 0.00              | 0.000000               | 0.00              | 0.000000               | 18.77             | 0.000009               | 452.57            | 0.000213               | 0.00              | 0.000000               | 0.00              | 0.000000               | 475.63            | 0.000224               
-| Total        | 6.43              | 0.000003               | 0.10              | 0.000000               | 39.09             | 0.000018               | 23.32             | 0.000011               | 460.51            | 0.000216               | 0.00              | 0.000000               | 4.19              | 0.000001               | 533.63            | 0.000250               "
+| 2020-07-01   | 2.14              | 0.000001               | 0.10              | 0.000000               | 40.87             | 0.000019               | 4.57              | 0.000002               | 8.13              | 0.000004               | 0.00              | 0.000000               | 3.94              | 0.000001               | 59.76             | 0.000027               
+| 2020-07-02   | 4.29              | 0.000002               | 0.00              | 0.000000               | 0.00              | 0.000000               | 19.63             | 0.000009               | 473.31            | 0.000222               | 0.00              | 0.000000               | 0.00              | 0.000000               | 497.23            | 0.000234               
+| Total        | 6.43              | 0.000003               | 0.10              | 0.000000               | 40.87             | 0.000019               | 24.20             | 0.000011               | 481.44            | 0.000226               | 0.00              | 0.000000               | 3.94              | 0.000001               | 556.99            | 0.000261               "
 `;
 
 exports[`cli lambda lambda cost 1`] = `

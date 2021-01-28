@@ -98,8 +98,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
           {
-            wattHours: 40.7,
-            co2e: 0.000011715483522600001,
+            wattHours: 50.81333333333334,
+            co2e: 0.000014626603670640003,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -165,8 +165,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 61985.68231625001,
-            co2e: 0.017842561174770153,
+            wattHours: 77388.18519483334,
+            co2e: 0.02227616728486456,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -198,22 +198,22 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.000002130900009216908,
+            co2e: 0.0000026603963751435336,
             cost: 10,
             region: 'us-east1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: true,
-            wattHours: 7.402821250000001,
+            wattHours: 9.242310166666668,
           },
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.00016723281598689775,
+            co2e: 0.00020878763692909661,
             cost: 190,
             region: 'us-east1',
             serviceName: 'Cloud Dataflow',
             usesAverageCPUConstant: true,
-            wattHours: 580.97265875,
+            wattHours: 725.3355618333335,
           },
           {
             accountName: 'test-account',
