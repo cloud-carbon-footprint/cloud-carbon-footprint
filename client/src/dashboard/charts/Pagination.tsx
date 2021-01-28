@@ -39,11 +39,16 @@ interface PaginateData<T> {
   pageSize: number
 }
 
-export interface PaginationProps<T> extends PaginateData<T> {
-  handlePage: (page: T[]) => void
+export interface Page<T> {
+  data: T[]
+  page: number
 }
 
-const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElement = ({
+export interface PaginationProps<T> extends PaginateData<T> {
+  handlePage: (page: Page<T>) => void
+}
+
+export const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElement = ({
   data,
   pageSize,
   handlePage,
@@ -54,13 +59,13 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
   const visibleRows = `${page * pageSize + 1} - ${page * pageSize + paginatedData[page]?.length}`
 
   useEffect(() => {
-    handlePage(paginatedData[0] || [])
+    handlePage({ data: paginatedData[0] || [], page: 0 })
     setPage(0)
   }, [JSON.stringify(data)])
 
   const onPageChange = (newPage: number) => {
     setPage(newPage)
-    handlePage(paginatedData[newPage])
+    handlePage({ data: paginatedData[newPage], page: newPage })
   }
 
   return data.length === 0 ? (
@@ -91,5 +96,3 @@ const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => ReactElem
     </div>
   )
 }
-
-export default Pagination

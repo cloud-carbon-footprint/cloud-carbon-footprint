@@ -6,13 +6,21 @@ import React, { FunctionComponent, useState } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
-import { sumCO2, sumCO2ByServiceOrRegion } from '../transformData'
+import { sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
-import Pagination from './Pagination'
+import { Page, Pagination } from './Pagination'
+
+const mapToRange = (value: number, in_min: number, in_max: number, out_min: number, out_max: number) => {
+  return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+}
+
+export interface Entry {
+  x: string
+  y: number
+}
 
 export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType }) => {
-  const [pageData, setPageData] = useState<{ x: string; y: number }[]>([])
-
+  const [pageData, setPageData] = useState<Page<Entry>>({ data: [], page: 0 })
   const theme = useTheme()
   const chartColors = [theme.palette.primary.main]
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
@@ -24,14 +32,25 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       y: item[1],
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
-
+  const smallestCO2E = dataEntries?.[dataEntries?.length - 1]?.y
   const largestCO2E = dataEntries?.[0]?.y
+  const totalCO2EByDataType = dataEntries.reduce((acc, currentValue) => {
+    return acc + currentValue.y
+  }, 0)
+
   const pageSize = 10
+  const minThreshold = 1
+  const maxThreshold = 100
+  const mappedDataEntries: Entry[] = dataEntries.map((entry) => ({
+    x: entry.x,
+    y: mapToRange(entry.y, smallestCO2E, largestCO2E, minThreshold, maxThreshold),
+  }))
+
   const options = {
     series: [
       {
         name: 'Total CO2e',
-        data: pageData,
+        data: pageData.data,
       },
     ],
     colors: chartColors,
@@ -62,18 +81,20 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: `${7 * pageData.length}%`,
+        barHeight: `${7 * pageData.data.length}%`,
         distributed: false,
       },
     },
     dataLabels: {
       enabled: true,
       textAnchor: 'start',
-      formatter: function (value: number) {
-        const formattedPercentage = (value / sumCO2(data)) * 100
+      formatter: function (_: number, opts: { dataPointIndex: number }) {
+        const currentCO2E = dataEntries[pageData.page * pageSize + opts.dataPointIndex].y
+
+        const formattedPercentage = (currentCO2E / totalCO2EByDataType) * 100
         return formattedPercentage < 0.01 ? '< 0.01 %' : `${formattedPercentage.toFixed(2)} %`
       },
-      offsetX: 10,
+      offsetX: 16,
       background: {
         enabled: true,
         foreColor: theme.palette.primary.main,
@@ -92,7 +113,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       axisBorder: {
         show: false,
       },
-      max: largestCO2E,
+      max: maxThreshold,
     },
     yaxis: {
       labels: {
@@ -107,16 +128,16 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
         show: false,
       },
       y: {
-        formatter: function (value: number) {
-          return `${value.toFixed(3)} mt`
+        formatter: function (value: number, opts: { dataPointIndex: number }) {
+          return `${dataEntries[pageData.page * pageSize + opts.dataPointIndex].y.toFixed(3)} mt`
         },
       },
     },
     height: '500px',
   }
 
-  const handlePage = (pageData: { x: string; y: number }[]) => {
-    setPageData(pageData)
+  const handlePage = (page: Page<Entry>) => {
+    setPageData(page)
   }
 
   return (
@@ -129,12 +150,12 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
         alignContent: 'center',
       }}
     >
-      {pageData && pageData.length ? (
+      {pageData && pageData.data && pageData.data.length ? (
         <Chart options={options} series={options.series} type="bar" height={options.height} />
       ) : (
         <div style={{ textAlign: 'center' }}>Select a cloud provider.</div>
       )}
-      <Pagination data={dataEntries} pageSize={pageSize} handlePage={handlePage} />
+      <Pagination data={mappedDataEntries} pageSize={pageSize} handlePage={handlePage} />
     </div>
   )
 }

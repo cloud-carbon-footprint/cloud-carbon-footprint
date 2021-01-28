@@ -7,7 +7,7 @@ import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import React from 'react'
-import Pagination from './Pagination'
+import { Pagination } from './Pagination'
 
 describe('Pagination', () => {
   const handlePage = jest.fn()
@@ -50,7 +50,7 @@ describe('Pagination', () => {
     const { getByLabelText } = render(<Pagination data={[]} handlePage={handlePage} pageSize={3} />)
     const noPaginationDataDiv = getByLabelText('no-pagination-data')
 
-    expect(handlePage).toHaveBeenCalledWith([])
+    expect(handlePage).toHaveBeenCalledWith({ data: [], page: 0 })
     expect(noPaginationDataDiv).toBeDefined()
   })
 
@@ -60,8 +60,8 @@ describe('Pagination', () => {
   })
 
   it('first page of data should be returned on mount', () => {
-    create(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
-    expect(handlePage).toHaveBeenLastCalledWith(page1)
+    render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page1, page: 0 })
   })
 
   it('previous button should be disabled on first page', () => {
@@ -76,41 +76,34 @@ describe('Pagination', () => {
     expect(handlePage).toHaveBeenCalledTimes(1)
   })
 
-  it('should be able to go to next page', () => {
+  it('should be able to traverse available pages', () => {
     const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
     const nextButton = getByLabelText('chevron-right')
+    const prevButton = getByLabelText('chevron-left')
 
-    expect(handlePage).toHaveBeenLastCalledWith(page1)
-
-    act(() => {
-      fireEvent.click(nextButton)
-    })
-
-    expect(handlePage).toHaveBeenCalledTimes(2)
-    expect(handlePage).toHaveBeenLastCalledWith(page2)
-  })
-
-  it('once on the last page, next button should be disabled', () => {
-    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
-    const nextButton = getByLabelText('chevron-right')
-
-    expect(handlePage).toHaveBeenLastCalledWith(page1)
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page1, page: 0 })
     act(() => {
       fireEvent.click(nextButton)
     })
     expect(handlePage).toHaveBeenCalledTimes(2)
-    expect(handlePage).toHaveBeenLastCalledWith(page2)
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page2, page: 1 })
 
     act(() => {
       fireEvent.click(nextButton)
     })
     expect(handlePage).toHaveBeenCalledTimes(3)
-    expect(handlePage).toHaveBeenLastCalledWith(page3)
-
-    act(() => {
-      fireEvent.click(nextButton)
-    })
     expect(nextButton).toBeDisabled()
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page3, page: 2 })
+
+    act(() => {
+      fireEvent.click(nextButton)
+    })
     expect(handlePage).toHaveBeenCalledTimes(3)
+    expect(nextButton).toBeDisabled()
+
+    act(() => {
+      fireEvent.click(prevButton)
+    })
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page2, page: 1 })
   })
 })
