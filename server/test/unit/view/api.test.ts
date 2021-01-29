@@ -2,19 +2,32 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import express from 'express'
-import api from '@view/api'
-import request from 'supertest'
-import { EstimationResult } from '@application/EstimationResult'
-
-const mockGetCostAndEstimates = jest.fn()
-const mockGetFilterData = jest.fn()
+jest.mock('@domain/FootprintEstimationConstants', () => ({
+  CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS: {
+    AWS: {
+      awsRegion1: 1,
+      awsRegion2: 2,
+    },
+    GCP: {
+      gcpRegion1: 3,
+      gcpRegion2: 4,
+    },
+  },
+}))
 
 jest.mock('@application/App', () => {
   return jest.fn().mockImplementation(() => {
     return { getCostAndEstimates: mockGetCostAndEstimates, getFilterData: mockGetFilterData }
   })
 })
+
+import express from 'express'
+import api, { EmissionsRatios } from '@view/api'
+import request from 'supertest'
+import { EstimationResult } from '@application/EstimationResult'
+
+const mockGetCostAndEstimates = jest.fn()
+const mockGetFilterData = jest.fn()
 
 describe('api', () => {
   let server: express.Express
@@ -88,6 +101,34 @@ describe('api', () => {
       const response = await request(server).get(encodeURI(`/filters`))
 
       expect(response.status).toBe(200)
+    })
+  })
+
+  describe('/regions/emissions-factors', () => {
+    it('returns data for regional emissions factors', async () => {
+      const response = await request(server).get(encodeURI(`/regions/emissions-factors`))
+
+      const expectedResponse: EmissionsRatios[] = [
+        {
+          region: 'awsRegion1',
+          mtPerWHour: 1,
+        },
+        {
+          region: 'awsRegion2',
+          mtPerWHour: 2,
+        },
+        {
+          region: 'gcpRegion1',
+          mtPerWHour: 3,
+        },
+        {
+          region: 'gcpRegion2',
+          mtPerWHour: 4,
+        },
+      ]
+
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(expectedResponse)
     })
   })
 })
