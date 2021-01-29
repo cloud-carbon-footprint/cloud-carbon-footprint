@@ -6,6 +6,7 @@
   "scripts": {
     "precommit": "lint-staged --debug && npx hawkeye scan && npm run test:precommit",
     "test": "jest --coverage --maxWorkers 2",
+    "sonar:scan": "sonar-scanner",
     "test:watch": "jest --coverage --watchAll",
     "test:clean": "jest --clearCache",
     "test:precommit": "npm run test:clean && npm test -- --bail",
