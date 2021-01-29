@@ -15,10 +15,12 @@ fileignoreconfig:
   checksum: 90f014c732dae006212e103b20cdbf02a3b4db3f1dad4725b7686c37e07d351f
 - filename: client/src/Config.ts
   checksum: 56711c967d7a2305b0519ec382a1d2b45b7ab636a93edc98ec9f9ee105677cb1
+- filename: client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
+  checksum: 5573a23682a9ae7012e9358b0500594cf0dbfec91191b4adbd6abe0ae023adac
 - filename: client/src/dashboard/charts/__snapshots__/EmissionsBreakdownContainer.test.tsx.snap
-  checksum: 27af11df005c0f4cbc71d3180a003004ea67e9cf9aeaee98dca4bb285d81b33e
+  checksum: 09106afec4d70f827d312b31cea06229025ac0b071241a76cf3a466c6bb3cb4e
 - filename: client/src/dashboard/charts/__snapshots__/Pagination.test.tsx.snap
-  checksum: 9ce4eaca89742863bf7e02e372b961600d49204e356361c883106e35d0aa1433
+  checksum: fc24dcb0d4e76052d425e5411b7bccbebf46db33bd34a5be48fe4e905596d398
 - filename: client/src/dashboard/filters/AccountFilter.tsx
   checksum: 17b97f905fb2dbc819ad38e5057da7195e0abb4f1a1d27b170e9a7d2489159df
 - filename: client/src/dashboard/filters/DropdownConstants.test.ts

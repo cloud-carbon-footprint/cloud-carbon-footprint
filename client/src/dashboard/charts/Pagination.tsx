@@ -3,7 +3,7 @@
  */
 
 import React, { useState, useEffect, PropsWithChildren, ReactElement } from 'react'
-import { ChevronLeft, ChevronRight } from '@material-ui/icons'
+import { ChevronLeft, ChevronRight, FirstPage, LastPage } from '@material-ui/icons'
 import { IconButton, makeStyles } from '@material-ui/core'
 
 interface UsePaginateData<T> {
@@ -68,6 +68,7 @@ export const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => Re
     handlePage({ data: paginatedData[newPage], page: newPage })
   }
 
+  const lastPage = paginatedData.length - 1
   return data.length === 0 ? (
     <div aria-label="no-pagination-data" />
   ) : (
@@ -75,6 +76,15 @@ export const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => Re
       <span style={{ color: '#ababab', fontWeight: 700, marginRight: '8px' }}>
         {visibleRows} of {data.length}
       </span>
+      <IconButton
+        color="primary"
+        aria-label="first page"
+        component="button"
+        disabled={page === 0}
+        onClick={() => onPageChange(0)}
+      >
+        <FirstPage />
+      </IconButton>
       <IconButton
         color="primary"
         aria-label="chevron-left"
@@ -92,6 +102,15 @@ export const Pagination: <T>(props: PropsWithChildren<PaginationProps<T>>) => Re
         onClick={() => onPageChange(page + 1)}
       >
         <ChevronRight />
+      </IconButton>
+      <IconButton
+        color="primary"
+        aria-label="last page"
+        component="button"
+        disabled={page === lastPage}
+        onClick={() => onPageChange(lastPage)}
+      >
+        <LastPage />
       </IconButton>
     </div>
   )

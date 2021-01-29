@@ -106,4 +106,41 @@ describe('Pagination', () => {
     })
     expect(handlePage).toHaveBeenLastCalledWith({ data: page2, page: 1 })
   })
+
+  it('should go to last page on click of last page button', () => {
+    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const lastPageButton = getByLabelText('last page')
+
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page1, page: 0 })
+    act(() => {
+      fireEvent.click(lastPageButton)
+    })
+    expect(handlePage).toHaveBeenCalledTimes(2)
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page3, page: 2 })
+
+    act(() => {
+      fireEvent.click(lastPageButton)
+    })
+    expect(handlePage).toHaveBeenCalledTimes(2)
+    expect(lastPageButton).toBeDisabled()
+  })
+
+  it('should go to first page on click of first page button', () => {
+    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const lastPageButton = getByLabelText('last page')
+    const firstPageButton = getByLabelText('first page')
+
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page1, page: 0 })
+    act(() => {
+      fireEvent.click(lastPageButton)
+    })
+    expect(handlePage).toHaveBeenCalledTimes(2)
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page3, page: 2 })
+
+    act(() => {
+      fireEvent.click(firstPageButton)
+    })
+    expect(handlePage).toHaveBeenCalledTimes(3)
+    expect(handlePage).toHaveBeenLastCalledWith({ data: page1, page: 0 })
+  })
 })
