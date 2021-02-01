@@ -65,12 +65,15 @@ const FilterApiMiddleware = async function (req: express.Request, res: express.R
 const EmissionsApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
   apiLogger.info(`Regions emissions factors API request started`)
   try {
-    const emissionsResults: EmissionsRatios[] = Object.values(CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS).reduce((result, cloudProvider) => {
-      return Object.keys(cloudProvider).reduce((result, key) => {
-        result.push({ region: key, mtPerWHour: cloudProvider[key] })
-        return result
-      }, result)
-    }, [])
+    const emissionsResults: EmissionsRatios[] = Object.values(CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS).reduce(
+      (result, cloudProvider) => {
+        return Object.keys(cloudProvider).reduce((result, key) => {
+          result.push({ region: key, mtPerWHour: cloudProvider[key] })
+          return result
+        }, result)
+      },
+      [],
+    )
     res.json(emissionsResults)
   } catch (e) {
     apiLogger.error(`Unable to process regions emissions factors request.`, e)

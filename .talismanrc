@@ -13,6 +13,8 @@ fileignoreconfig:
   checksum: 0b64adef6103c7b0715083090ff2f79b2185ccb0d0d1b8d04c4ba8bbd8551327
 - filename: client/package-lock.json
   checksum: 90f014c732dae006212e103b20cdbf02a3b4db3f1dad4725b7686c37e07d351f
+- filename: client/sonar-project.properties
+  checksum: 493eae55f1a9c1670634aa7a726e1947d3b89606ea1f7c872a1c4aa9ddf01fc9
 - filename: client/src/Config.ts
   checksum: 56711c967d7a2305b0519ec382a1d2b45b7ab636a93edc98ec9f9ee105677cb1
 - filename: client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
@@ -49,6 +51,8 @@ fileignoreconfig:
   checksum: 10a0acaeb47f02baa39ef0c5b712eb7ed56c5920f2f0267e7dbb4e7d1c97e3de
 - filename: server/package-lock.json
   checksum: 5e02dcc3c61092ec2d6209397e41eb0553a8c654b3b4c364929672803fa1a8c2
+- filename: server/sonar-project.properties
+  checksum: 9d6b07334053f2aabd04f6c1b022f29b70f1c1bd9e34078afaa5a8f5e6d40ac2
 - filename: server/src/application/Config.ts
   checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
 - filename: server/src/application/GCPAccount.ts
@@ -56,7 +60,7 @@ fileignoreconfig:
 - filename: server/src/services/aws/CostAndUsageReportsRow.ts
   checksum: 515195029e3b791850fcd98995206e93ee8f3432360d26f12e8e1c85bd9f764f
 - filename: server/src/view/api.ts
-  checksum: 772730a567cfcce95f3bba14e18dab5f66814834c1d44c7dd627b6ce46ca5f43
+  checksum: 1f339a57a956e0745bc22a3ba6b25b4aeb711d4858101f34d077059db1924908
 - filename: server/test/fixtures/bigQuery.fixtures.ts
   checksum: 46a1f2a065b128fdca5d80112df6d306aa60ec9e1d81e0122160f2219fdf9853
 - filename: server/test/unit/application/App.test.ts
@@ -69,7 +73,3 @@ fileignoreconfig:
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
   checksum: 8211308ac655068470e10d2ca67792e6adc852c247f263fc21ad8559d4a754ed
-- filename: client/sonar-project.properties
-  checksum: 493eae55f1a9c1670634aa7a726e1947d3b89606ea1f7c872a1c4aa9ddf01fc9
-- filename: server/sonar-project.properties
-  checksum: 9d6b07334053f2aabd04f6c1b022f29b70f1c1bd9e34078afaa5a8f5e6d40ac2
