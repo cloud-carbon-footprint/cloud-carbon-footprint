@@ -56,7 +56,7 @@ fileignoreconfig:
 - filename: server/src/services/aws/CostAndUsageReportsRow.ts
   checksum: 515195029e3b791850fcd98995206e93ee8f3432360d26f12e8e1c85bd9f764f
 - filename: server/src/view/api.ts
-  checksum: acf58177f97506c931ac05ef40aeb6f2b55d0cac25b5c519c2eeb9cd1a3e158f
+  checksum: 772730a567cfcce95f3bba14e18dab5f66814834c1d44c7dd627b6ce46ca5f43
 - filename: server/test/fixtures/bigQuery.fixtures.ts
   checksum: 46a1f2a065b128fdca5d80112df6d306aa60ec9e1d81e0122160f2219fdf9853
 - filename: server/test/unit/application/App.test.ts
