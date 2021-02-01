@@ -13,7 +13,7 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
       <p
         className="makeStyles-title-3"
       >
-        Emissions breakdown
+        Emissions Breakdown
       </p>
       <div
         className="MuiFormControl-root"

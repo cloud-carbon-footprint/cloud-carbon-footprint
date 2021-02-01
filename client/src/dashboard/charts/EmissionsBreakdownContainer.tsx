@@ -74,7 +74,7 @@ export const EmissionsBreakdownContainer = (props: { data: EstimationResult[] })
     <Card className={classes.root}>
       <Box padding={3}>
         <Paper className={classes.topContainer}>
-          <p className={classes.title}>Emissions breakdown</p>
+          <p className={classes.title}>Emissions Breakdown</p>
           <FormControl variant={'outlined'}>
             <Select value={value} onChange={handleChange} input={<BootstrapInput />}>
               <MenuItem value={ChartDataTypes.REGION}>Region</MenuItem>
