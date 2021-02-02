@@ -79,6 +79,7 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.HOURS_3:
       case PRICING_UNITS.VCPU_HOURS:
       case PRICING_UNITS.DPU_HOUR:
+      case PRICING_UNITS.ACU_HOUR:
         // Compute
         const computeUsage: ComputeUsage = {
           timestamp: costAndUsageReportRow.timestamp,

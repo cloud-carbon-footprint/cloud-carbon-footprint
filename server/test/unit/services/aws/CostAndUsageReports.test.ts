@@ -543,6 +543,16 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
             wattHours: 1727.6159999999998,
           },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000006901295856,
+            cost: 15,
+            region: 'us-west-1',
+            serviceName: 'AmazonRDS',
+            usesAverageCPUConstant: true,
+            wattHours: 19.631999999999998,
+          },
         ],
       },
     ]

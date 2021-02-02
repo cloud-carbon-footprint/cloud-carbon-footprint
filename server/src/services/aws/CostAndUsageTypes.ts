@@ -120,6 +120,7 @@ export enum PRICING_UNITS {
   HOURS_3 = 'hours',
   VCPU_HOURS = 'vCPU-Hours',
   DPU_HOUR = 'DPU-Hour',
+  ACU_HOUR = 'ACU-Hr',
   LAMBDA_GB_SECONDS = 'Lambda-GB-Second',
   GB_HOURS = 'GB-Hours',
   GB_MONTH_1 = 'GB-Mo',

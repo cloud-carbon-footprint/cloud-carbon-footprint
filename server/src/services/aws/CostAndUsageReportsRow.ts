@@ -35,6 +35,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
   private getVCpuHours(vCpuFromReport: number): number {
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
     if (this.serviceName === 'AWSGlue') return GLUE_VCPUS_PER_USAGE * this.usageAmount
+    if (this.usageType.includes('Aurora:ServerlessUsage')) return this.usageAmount / 4
     if (this.includesAny(['Fargate-vCPU-Hours', 'vCPU-Hours', 'CPUCredits'], this.usageType)) return this.usageAmount
     if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * this.usageAmount
     return vCpuFromReport * this.usageAmount

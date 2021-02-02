@@ -554,6 +554,19 @@ const queryResultsDataSeven = [
       { VarCharValue: '15' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonRDS' },
+      { VarCharValue: 'USE2-Aurora:ServerlessUsage' },
+      { VarCharValue: 'ACU-Hr' },
+      { VarCharValue: '' },
+      { VarCharValue: '32' },
+      { VarCharValue: '15' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: Athena.GetQueryResultsOutput = {
