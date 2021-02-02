@@ -78,14 +78,11 @@ export const HDD_USAGE_TYPES: string[] = [
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
-  'NatGateway-Hours',
   'LoadBalancerUsage',
   'IdleAddress',
   'UnusedStaticIP',
   'AdditionalAddress',
   'ResolverNetworkInterface',
-  'VpcEndpoint-Hours',
-  'VPN-Usage-Hours',
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
@@ -111,6 +108,9 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Build-Min',
   'AW-HW-User-Usage',
   'TransitGateway-Hours',
+  'VpcEndpoint-Hours',
+  'VPN-Usage-Hours',
+  'NatGateway-Hours',
 ]
 
 export const LINE_ITEM_TYPES: string[] = ['Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage']
