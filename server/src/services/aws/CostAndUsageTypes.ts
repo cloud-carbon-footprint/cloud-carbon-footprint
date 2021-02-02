@@ -110,6 +110,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'BuildDuration',
   'Build-Min',
   'AW-HW-User-Usage',
+  'TransitGateway-Hours',
 ]
 
 export const LINE_ITEM_TYPES: string[] = ['Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage']
