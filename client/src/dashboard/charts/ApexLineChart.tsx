@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React, { FunctionComponent, useState, useEffect } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
@@ -18,10 +18,11 @@ import { EstimationResult } from '../../models/types'
 const formatDateToTime = (timestamp: string | Date) =>
   timestamp instanceof Date ? timestamp.getTime() : new Date(timestamp).getTime()
 
-export const sortByDate = (data: EstimationResult[]): EstimationResult[] =>
-  data.sort((a: EstimationResult, b: EstimationResult) => {
+export const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
+  return data.sort((a: EstimationResult, b: EstimationResult) => {
     return formatDateToTime(a.timestamp) - formatDateToTime(b.timestamp)
   })
+}
 
 export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
   const theme = useTheme()
@@ -31,7 +32,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     ApexCharts.exec('lineChart', 'hideSeries', ['Cost'])
   }, [])
 
-  sortByDate(data)
+  const sortedData = sortByDate(data)
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
   // Why, you might ask? Don't ask me, ask ApexCharts.
   const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
@@ -39,16 +40,13 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const RotateLeftIconHTML = renderToStaticMarkup(<RotateLeft />)
   const ZoomInIconHTML = renderToStaticMarkup(<ZoomIn />)
 
-  const cloudEstimationData = sumServiceTotals(data)
+  const cloudEstimationData = sumServiceTotals(sortedData)
   const co2SeriesData = cloudEstimationData.co2Series
   const wattHoursSeriesData = cloudEstimationData.wattHoursSeries
   const costSeriesData = cloudEstimationData.costSeries
   const maxCO2e = getMaxOfDataSeries(co2SeriesData)
   const maxWattHours = getMaxOfDataSeries(wattHoursSeriesData)
   const maxCost = getMaxOfDataSeries(costSeriesData)
-  const [getMaxCo2] = useState(maxCO2e)
-  const [getMaxWattHours] = useState(maxWattHours)
-  const [getMaxCost] = useState(maxCost)
 
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
@@ -93,9 +91,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     tooltip: {
       shared: true,
       custom: function ({ dataPointIndex }: { dataPointIndex: number }) {
-        return renderToStaticMarkup(
-          <CustomTooltip data={co2SeriesData} dataPointIndex={dataPointIndex}></CustomTooltip>,
-        )
+        return renderToStaticMarkup(<CustomTooltip data={co2SeriesData} dataPointIndex={dataPointIndex} />)
       },
     },
     title: {
@@ -122,7 +118,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     },
     yaxis: [
       {
-        max: getMaxCo2,
+        max: 1.1 * maxCO2e,
         title: {
           text: 'CO2e (metric tons)',
           offsetX: -8,
@@ -133,7 +129,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         decimalsInFloat: 3,
       },
       {
-        max: getMaxWattHours,
+        max: 1.1 * maxWattHours,
         title: {
           text: 'Watt hours (Wh)',
           opposite: -8,
@@ -154,7 +150,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         showAlways: false,
       },
       {
-        max: getMaxCost,
+        max: 1.1 * maxCost,
         title: {
           text: 'Cost ($)',
           offsetX: -8,

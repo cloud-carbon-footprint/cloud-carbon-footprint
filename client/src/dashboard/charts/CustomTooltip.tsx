@@ -20,19 +20,21 @@ export const CustomTooltip = ({
   data: cloudEstPerDay[]
   dataPointIndex: number
 }): ReactElement => {
-  const date = moment.utc(data[dataPointIndex].x).format('MMMM DD')
-  return (
-    <div style={{ padding: '10px' }}>
-      <div>
-        <b>{date}</b>
+  if (data && data[dataPointIndex] && data[dataPointIndex].x) {
+    return (
+      <div style={{ padding: '10px' }}>
+        <div>
+          <b>{moment.utc(data[dataPointIndex].x).format('MMMM DD')}</b>
+        </div>
+        {data[dataPointIndex].usesAverageCPUConstant ? (
+          <div>{data[dataPointIndex].y} mt CO2e*</div>
+        ) : (
+          <div> {data[dataPointIndex].y} mt CO2e</div>
+        )}
+        <div>{data[dataPointIndex].wattHours} watt hrs</div>
+        <div>${data[dataPointIndex].cost} cost</div>
       </div>
-      {data[dataPointIndex].usesAverageCPUConstant ? (
-        <div>{data[dataPointIndex].y} mt CO2e*</div>
-      ) : (
-        <div> {data[dataPointIndex].y} mt CO2e</div>
-      )}
-      <div>{data[dataPointIndex].wattHours} watt hrs</div>
-      <div>${data[dataPointIndex].cost} cost</div>
-    </div>
-  )
+    )
+  }
+  return <div />
 }
