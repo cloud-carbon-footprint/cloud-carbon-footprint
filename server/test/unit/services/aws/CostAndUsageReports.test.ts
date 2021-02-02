@@ -419,7 +419,7 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Gets Estimates for DocumentDB Compute, ElasticMapReduce, Cloudfront Lambda Storage and EC2 Credits', async () => {
+  it('Gets Estimates for DocumentDB Compute, ElasticMapReduce, EC2 Credits', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -467,16 +467,6 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'ElasticMapReduce',
             usesAverageCPUConstant: true,
             wattHours: 58.895999999999994,
-          },
-          {
-            accountName: '123456789',
-            cloudProvider: 'AWS',
-            co2e: 5.858883333333334e-9,
-            cost: 20,
-            region: 'us-west-1',
-            serviceName: 'AmazonCloudFront',
-            usesAverageCPUConstant: false,
-            wattHours: 0.016666666666666666,
           },
           {
             accountName: '123456789',

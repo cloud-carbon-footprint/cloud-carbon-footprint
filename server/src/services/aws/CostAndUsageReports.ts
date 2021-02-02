@@ -93,7 +93,6 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.GB_MONTH_3:
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
-      case PRICING_UNITS.LAMBDA_GB_SECONDS:
         // Storage
         const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
 
@@ -136,11 +135,6 @@ export default class CostAndUsageReports {
     // Convert from GB-Hours to GB-Month
     if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS)
       return costAndUsageReportRow.usageAmount / (hoursInMonth * 24)
-
-    // Convert from GB-Seconds to GB-Month
-    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.LAMBDA_GB_SECONDS)
-      return costAndUsageReportRow.usageAmount / (hoursInMonth * 24) / 86400
-
     return costAndUsageReportRow.usageAmount
   }
 

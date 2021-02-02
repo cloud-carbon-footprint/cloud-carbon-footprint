@@ -484,19 +484,6 @@ const queryResultsDataSix = [
     Data: [
       { VarCharValue: '2020-10-30' },
       { VarCharValue: '123456789' },
-      { VarCharValue: 'us-west-1' },
-      { VarCharValue: 'AmazonCloudFront' },
-      { VarCharValue: 'APN1-Lambda-Edge-GB-Second' },
-      { VarCharValue: 'Lambda-GB-Second' },
-      { VarCharValue: '' },
-      { VarCharValue: '1000000' },
-      { VarCharValue: '20' },
-    ],
-  },
-  {
-    Data: [
-      { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-CPUCredits:t3' },
