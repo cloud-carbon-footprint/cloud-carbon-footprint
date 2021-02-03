@@ -124,7 +124,7 @@ const useFilterDataFromEstimates = (data: EstimationResult[]): FilterResultRespo
     const accountNames: DropdownOption[] = []
     const serviceNames: DropdownOption[] = []
 
-    serviceEstimates.map((estimate) => {
+    serviceEstimates.forEach((estimate) => {
       const { cloudProvider, accountName, serviceName } = estimate
       accountNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
