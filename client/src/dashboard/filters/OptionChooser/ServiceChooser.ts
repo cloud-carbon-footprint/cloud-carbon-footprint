@@ -31,12 +31,12 @@ export class ServiceChooser extends OptionChooser {
       //if currentCloudprovider has an option that oldCP has, keep the accounts from old that are under that CP
       if (isDropdownOptionInDropdownOptions(this.oldSelections.cloudProviders, currentCloudProvider)) {
         this.oldSelections.accounts.forEach((oldAccountOption) => {
-          oldAccountOption.cloudProvider === currentCloudProvider.key ? desiredSelections.add(oldAccountOption) : null
+          oldAccountOption.cloudProvider === currentCloudProvider.key && desiredSelections.add(oldAccountOption)
         })
       } else {
         //if currentCloudprovider doesnt have an option that oldCP has, add all the accounts from that CP
         ACCOUNT_OPTIONS.forEach((accountOption) => {
-          accountOption.cloudProvider === currentCloudProvider.key ? desiredSelections.add(accountOption) : null
+          accountOption.cloudProvider === currentCloudProvider.key && desiredSelections.add(accountOption)
         })
       }
     })
