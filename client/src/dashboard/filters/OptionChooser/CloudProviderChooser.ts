@@ -23,7 +23,7 @@ export class CloudProviderChooser extends OptionChooser {
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
         ACCOUNT_OPTIONS.forEach((accountOption) => {
-          accountOption.cloudProvider === selection.key ? desiredSelections.add(accountOption) : null
+          accountOption.cloudProvider === selection.key && desiredSelections.add(accountOption)
         })
       }
     })
@@ -35,7 +35,7 @@ export class CloudProviderChooser extends OptionChooser {
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
         SERVICE_OPTIONS.forEach((serviceOption) => {
-          serviceOption.cloudProvider === selection.key ? desiredSelections.add(serviceOption) : null
+          serviceOption.cloudProvider === selection.key && desiredSelections.add(serviceOption)
         })
       }
     })
