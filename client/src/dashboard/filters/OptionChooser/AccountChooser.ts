@@ -39,7 +39,8 @@ export class AccountChooser extends OptionChooser {
       //if currentCloudprovider has an option that oldCP has, keep the services from old that are under that CP
       if (isDropdownOptionInDropdownOptions(this.oldSelections.cloudProviders, currentCloudProvider)) {
         this.oldSelections.services.forEach((oldServiceOption) => {
-          cloudProviderKeys.includes(oldServiceOption.key) ? desiredSelections.add(oldServiceOption) : null
+          const hasKey = cloudProviderKeys.includes(oldServiceOption.key)
+          hasKey && desiredSelections.add(oldServiceOption)
         })
       } else {
         //if currentCloudprovider doesnt have an option that oldCP has, add all the services from that CP

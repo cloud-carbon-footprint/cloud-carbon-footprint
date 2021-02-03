@@ -35,6 +35,8 @@ fileignoreconfig:
   checksum: 64497e6a21260a8a1d9f3e8aa61dc69e10b6f26bb0e816d7205a84a485d12277
 - filename: client/src/dashboard/filters/FiltersUtil.test.ts
   checksum: b1042e8b19506d4cd767b76aa14b713c101b0f3dd1e1e84e427cc7240bf72280
+- filename: client/src/dashboard/filters/OptionChooser/AccountChooser.ts
+  checksum: 0cc13a39e2c7ab1ce241ad91cb409d9e1232c508cdd0bd30d47d0d49dc8a3bcc
 - filename: client/src/dashboard/filters/OptionChooser/ServiceChooser.ts
   checksum: 63f6ad4e895d87551d8937b5b4578d1acd700f08406c302b9f44a6d831641bf5
 - filename: client/src/dashboard/filters/ServiceFilter.test.tsx
