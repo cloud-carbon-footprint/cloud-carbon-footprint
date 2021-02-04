@@ -56,7 +56,7 @@ describe('CloudCarbonContainer', () => {
     const endDate = parameters[2]
 
     expect(initial).toEqual([])
-    expect(startDate.isSame(moment.utc().subtract(11, 'month'), 'day')).toBeTruthy()
+    expect(startDate.isSame(moment.utc().subtract(12, 'month'), 'day')).toBeTruthy()
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
 
