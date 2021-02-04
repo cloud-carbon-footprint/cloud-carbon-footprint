@@ -2,12 +2,17 @@
 
 exports[`ApexLineChart renders with correct configuration 1`] = `
 <div
+  aria-label="apex-line-chart"
   data-testid="fake-line-chart"
   height="500px"
   options={
     Object {
       "chart": Object {
         "background": "#fff",
+        "events": Object {
+          "beforeResetZoom": [Function],
+          "zoomed": [Function],
+        },
         "id": "lineChart",
         "toolbar": Object {
           "tools": Object {
@@ -33,33 +38,15 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "height": "500px",
       "series": Array [
         Object {
-          "data": Array [
-            Object {
-              "cost": 0,
-              "usesAverageCPUConstant": false,
-              "wattHours": 0,
-              "x": 2019-08-10T00:00:00.000Z,
-              "y": 7,
-            },
-          ],
+          "data": Array [],
           "name": "CO2e",
         },
         Object {
-          "data": Array [
-            Object {
-              "x": 2019-08-10T00:00:00.000Z,
-              "y": 0,
-            },
-          ],
+          "data": Array [],
           "name": "Watt Hours",
         },
         Object {
-          "data": Array [
-            Object {
-              "x": 2019-08-10T00:00:00.000Z,
-              "y": 0,
-            },
-          ],
+          "data": Array [],
           "name": "Cost",
         },
       ],
@@ -96,7 +83,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "yaxis": Array [
         Object {
           "decimalsInFloat": 3,
-          "max": 7.700000000000001,
+          "max": -Infinity,
           "title": Object {
             "offsetX": -8,
             "style": Object {
@@ -114,7 +101,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
-          "max": 0,
+          "max": -Infinity,
           "opposite": true,
           "showAlways": false,
           "title": Object {
@@ -135,7 +122,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
-          "max": 0,
+          "max": -Infinity,
           "opposite": true,
           "showAlways": false,
           "title": Object {
@@ -153,33 +140,15 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
   series={
     Array [
       Object {
-        "data": Array [
-          Object {
-            "cost": 0,
-            "usesAverageCPUConstant": false,
-            "wattHours": 0,
-            "x": 2019-08-10T00:00:00.000Z,
-            "y": 7,
-          },
-        ],
+        "data": Array [],
         "name": "CO2e",
       },
       Object {
-        "data": Array [
-          Object {
-            "x": 2019-08-10T00:00:00.000Z,
-            "y": 0,
-          },
-        ],
+        "data": Array [],
         "name": "Watt Hours",
       },
       Object {
-        "data": Array [
-          Object {
-            "x": 2019-08-10T00:00:00.000Z,
-            "y": 0,
-          },
-        ],
+        "data": Array [],
         "name": "Cost",
       },
     ]

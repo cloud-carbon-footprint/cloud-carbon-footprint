@@ -18,14 +18,14 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
   const wattHoursSeries: cloudEstPerDay[] = []
   const costSeries: cloudEstPerDay[] = []
 
-  data.forEach((EstimationResult) => {
+  data.forEach((estimatationResult) => {
     let total = 0
     let totalCost = 0
     let totalWattHours = 0
 
     let usesAverageCPUConstant = false
 
-    EstimationResult.serviceEstimates.forEach((serviceEstimate) => {
+    estimatationResult.serviceEstimates.forEach((serviceEstimate) => {
       if (serviceEstimate.usesAverageCPUConstant === true) {
         usesAverageCPUConstant = true
       }
@@ -35,7 +35,7 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
     })
 
     co2Series.push({
-      x: EstimationResult.timestamp,
+      x: estimatationResult.timestamp,
       y: Number(total.toFixed(2)),
       usesAverageCPUConstant: usesAverageCPUConstant,
       cost: Number(totalCost.toFixed(2)),
@@ -43,12 +43,12 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
     })
 
     wattHoursSeries.push({
-      x: EstimationResult.timestamp,
+      x: estimatationResult.timestamp,
       y: Number(totalWattHours.toFixed(2)),
     })
 
     costSeries.push({
-      x: EstimationResult.timestamp,
+      x: estimatationResult.timestamp,
       y: Number(totalCost.toFixed(2)),
     })
   })
