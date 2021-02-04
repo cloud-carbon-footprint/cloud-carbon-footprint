@@ -163,8 +163,8 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
           {
-            wattHours: 0.023333333333333334,
-            co2e: 8.202436666666668e-9,
+            wattHours: 0.013633333333333334,
+            co2e: 4.792566566666667e-9,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',

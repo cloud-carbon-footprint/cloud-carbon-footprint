@@ -16,7 +16,7 @@ import {
 } from 'aws-sdk/clients/athena'
 import ComputeUsage from '@domain/ComputeUsage'
 import StorageUsage from '@domain/StorageUsage'
-import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import Logger from '@services/Logger'
 import { EstimationResult } from '@application/EstimationResult'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
@@ -115,12 +115,13 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.SECONDS_1:
       case PRICING_UNITS.SECONDS_2:
         // Lambda
-        const wattHours =
-          (costAndUsageReportRow.usageAmount / 3600) *
-          CLOUD_CONSTANTS.AWS.MAX_WATTS *
-          CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS
-        const co2e = estimateCo2(wattHours, 'AWS', costAndUsageReportRow.region)
-        return { timestamp: costAndUsageReportRow.timestamp, wattHours, co2e, usesAverageCPUConstant: true }
+        const lambdaComputeUsage: ComputeUsage = {
+          timestamp: costAndUsageReportRow.timestamp,
+          cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+          numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
+          usesAverageCPUConstant: true,
+        }
+        return this.computeEstimator.estimate([lambdaComputeUsage], costAndUsageReportRow.region, 'AWS')[0]
       default:
         this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`)
     }
