@@ -260,7 +260,7 @@ const queryResultsDataThree = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithNetworkingGlueECS: Athena.GetQueryResultsOutput = {
+export const athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB: Athena.GetQueryResultsOutput = {
   ResultSet: {
     Rows: [queryResultsHeaders, ...queryResultsDataThree],
   },

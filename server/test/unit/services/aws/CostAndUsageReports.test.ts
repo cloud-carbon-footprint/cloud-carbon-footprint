@@ -13,7 +13,7 @@ import { EstimationResult } from '@application/EstimationResult'
 import config from '@application/ConfigLoader'
 import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
-  athenaMockGetQueryResultsWithNetworkingGlueECS,
+  athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB,
   athenaMockGetQueryResultsWithS3CloudWatchRDS,
   athenaMockGetQueryResultsWithKenesisESAndEc2Spot,
   athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices,
@@ -248,7 +248,7 @@ describe('CostAndUsageReports Service', () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsWithNetworkingGlueECS)
+    mockGetQueryResults(athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB)
 
     // when
     const athenaService = new CostAndUsageReports(
@@ -272,16 +272,6 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AWSGlue',
             cost: 5,
             region: 'us-east-1',
-          },
-          {
-            wattHours: 0.01728,
-            co2e: 6.0744902400000004e-9,
-            usesAverageCPUConstant: false,
-            cloudProvider: 'AWS',
-            accountName: '123456789',
-            serviceName: 'AmazonECS',
-            cost: 7,
-            region: 'us-west-1',
           },
         ],
       },

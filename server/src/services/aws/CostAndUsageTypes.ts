@@ -111,6 +111,8 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'VpcEndpoint-Hours',
   'VPN-Usage-Hours',
   'NatGateway-Hours',
+  'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
+  'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
 ]
 
 export const LINE_ITEM_TYPES: string[] = ['Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage']
