@@ -74,9 +74,14 @@ export default class Lambda implements ICloudService {
   }
 
   private runQuery = async (start: Date, end: Date, groupNames: string[]): Promise<string> => {
+    const averageWatts =
+      CLOUD_CONSTANTS.AWS.MIN_WATTS +
+      (CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020 / 100) *
+        (CLOUD_CONSTANTS.AWS.MAX_WATTS - CLOUD_CONSTANTS.AWS.MIN_WATTS)
+
     const query = `
             filter @type = "REPORT"
-            | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${CLOUD_CONSTANTS.AWS.MAX_WATTS} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
+            | fields datefloor(@timestamp, 1d) as Date, @duration/1000 as DurationInS, @memorySize/1000000 as MemorySetInMB, ${averageWatts} * DurationInS/3600 * MemorySetInMB/1792 as wattsPerFunction
             | stats sum(wattsPerFunction) as Watts by Date 
             | sort Date asc`
 
