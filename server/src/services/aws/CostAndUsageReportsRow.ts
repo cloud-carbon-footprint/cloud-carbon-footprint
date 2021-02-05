@@ -3,9 +3,15 @@
  */
 
 import { Athena } from 'aws-sdk'
-import { EC2_INSTANCE_TYPES, MSK_INSTANCE_TYPES, REDSHIFT_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
+import {
+  BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+  EC2_INSTANCE_TYPES,
+  MSK_INSTANCE_TYPES,
+  REDSHIFT_INSTANCE_TYPES,
+} from '@services/aws/AWSInstanceTypes'
 import { PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
 import BillingDataRow from '@domain/BillingDataRow'
+import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 const GLUE_VCPUS_PER_USAGE = 4
 
@@ -37,6 +43,13 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     if (this.serviceName === 'AWSGlue') return GLUE_VCPUS_PER_USAGE * this.usageAmount
     if (this.usageType.includes('Aurora:ServerlessUsage')) return this.usageAmount / 4
     if (this.includesAny(['Fargate-vCPU-Hours', 'CPUCredits'], this.usageType)) return this.usageAmount
+    if (this.includesAny(Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION), this.usageType))
+      return (
+        this.extractVCpuFromInstanceType() *
+        (BURSTABLE_INSTANCE_BASELINE_UTILIZATION[this.usageType.split(':').pop()] /
+          CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020) *
+        this.usageAmount
+      )
     if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * this.usageAmount
     return vCpuFromReport * this.usageAmount
   }

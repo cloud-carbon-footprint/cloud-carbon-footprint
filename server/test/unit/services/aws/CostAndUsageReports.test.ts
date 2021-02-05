@@ -57,7 +57,7 @@ describe('CostAndUsageReports Service', () => {
     getQueryResultsSpy.mockClear()
   })
 
-  it('Gets Estimates for ec2, ebs Snapshot, ebs SDD Storage and lambda across multiple days with accumulation', async () => {
+  it.only('Gets Estimates for ec2, ebs Snapshot, ebs SDD Storage and lambda across multiple days with accumulation', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -98,8 +98,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            wattHours: 9.815999999999999,
-            co2e: 0.000004461371999999999,
+            wattHours: 1.9632,
+            co2e: 0.0000008922744,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -108,8 +108,8 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
           },
           {
-            wattHours: 4.9079999999999995,
-            co2e: 0.0000023318153399999996,
+            wattHours: 0.9816,
+            co2e: 4.66363068e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -123,8 +123,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
-            wattHours: 4.9079999999999995,
-            co2e: 0.0000023318153399999996,
+            wattHours: 0.9816,
+            co2e: 4.66363068e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
