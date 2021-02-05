@@ -184,31 +184,6 @@ describe('ApexLineChart', () => {
     })
   })
 
-  it('should not set date range state when zooming through apex line chart and callback returns range that does not contain date types', () => {
-    const setDateRangeSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
-      .mockReturnValueOnce([[], jest.fn()])
-      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-
-    let testRenderer: ReactTestRenderer
-    act(() => {
-      testRenderer = create(<ApexLineChart data={[]} />)
-    })
-
-    act(() => {
-      const afterZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.zoomed
-
-      expect(afterZoomCallback).toBeDefined()
-      afterZoomCallback(undefined, {
-        xaxis: { min: null, max: null },
-      })
-    })
-
-    expect(setDateRangeSpy).not.toHaveBeenCalled()
-  })
-
   it('should set the current default range state when resetting zoom through apex charts', () => {
     const setDateRangeSpy = jest.fn()
     jest

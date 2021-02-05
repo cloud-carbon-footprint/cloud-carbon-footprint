@@ -92,9 +92,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     chart: {
       events: {
         zoomed: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
-          const newMin = xaxis.min
-          const newMax = xaxis.max
-          if (newMin instanceof Date && newMax instanceof Date) setDateRange({ min: newMin, max: newMax })
+          setDateRange({ min: xaxis.min, max: xaxis.max })
         },
         beforeResetZoom: () => {
           setDateRange(defaultRange)
