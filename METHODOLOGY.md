@@ -6,20 +6,20 @@
 [Longer Version](#longer-version)
 
 * [A note on our approach](#a-note-on-our-approach)
-
-* [Cloud Usage & Cost](#cloud-usage-&-cost)
-
-    * [AWS](#aws)
+  
+* [Options for cloud usage and cost data source](#options-for-cloud-usage-and-cost-data-source)
     
-    * [GCP](#gcp)
-
-    * [Authentication & Authorization](#authentication-&-authorization)
+    * [1. Using Billing Data for Cloud Usage (Holistic)](1.-using-billing-bata-for-cloud-usage-(holistic))
+    
+    * [2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)](2.-using-cloud-usage-apis-for-cloud-usage-(higher-accuracy))
 
 * [Energy Estimate (Watt-Hours)](#energy-estimate-watt-hours)
 
     * [Compute](#compute)
     
         * [A note on AWS Lambda Compute Estimates](#a-note-on-aws-lambda-compute-estimates)
+          
+        * [A note on AWS Aurora Serverless Compute Estimates](#a-note-on-aws-aurora-serverless-compute-estimates)
     
     * [Storage](#storage)
 
@@ -27,7 +27,7 @@
 
 * [Appendix I: Processor lists](#appendix-i:-aws-&-gcp-processor-list)
 
-* [Appendix II: Grid emissions factors](##appendix-ii:-grid-emissions-factors)
+* [Appendix II: Grid emissions factors](#appendix-ii:-grid-emissions-factors)
 
 
 ## Summary
@@ -74,24 +74,6 @@ Our application is designed to be a starting point which can be extended and cus
 needs. Every organization will have a different cloud setup and tech stack, so we are using domain driven design to 
 separate the estimation logic from both the data input source (e.g. cloud APIs, on-premise or co-located data centers) 
 and the output source (e.g front-end dashboard, CSV, etc) so new inputs and outputs can easily be added. 
-
-The cloud providers and services currently supported are: 
-
-**AWS** 
-* EC2 (compute)
-* Lambda (compute)
-* EBS (storage)
-* RDS (compute & storage)
-* S3 (storage)
-* Elasticache (compute)
-
-**GCP**
-* Compute Engine (compute)
-
-We started with AWS because it is the largest cloud provider by market share. We chose these services because they are 
-some of the most commonly used services, and a number of other services are abstractions of these. For example, Elastic 
-Container Service (ECS) and Elastic Kubernetes Services (EKS) are implemented with EC2 instances and EBS volumes, so 
-this usage will also be shown (however currently not labelled separately). 
 
 ### Options for cloud usage and cost data source
 We support two approaches to gathering usage and cost data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
@@ -217,7 +199,7 @@ where:
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs. 
 
-##### A note on AWS Aurora Serverless Compute Estimates:
+##### A note on AWS Aurora Serverless Compute Estimates
 
 In the case of AWS Aurora Serverless using the Cost and Usage Reports, the pricing unit is `ACU-Hrs`. 1 ACU has 
 approximately 2 GB of memory with corresponding CPU and networking, similar to what is used in Aurora user-provisioned 
