@@ -83,6 +83,7 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'UnusedStaticIP',
   'AdditionalAddress',
   'ResolverNetworkInterface',
+  'DataScanned',
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
