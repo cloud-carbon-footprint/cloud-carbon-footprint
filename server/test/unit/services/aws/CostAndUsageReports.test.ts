@@ -57,7 +57,7 @@ describe('CostAndUsageReports Service', () => {
     getQueryResultsSpy.mockClear()
   })
 
-  it.only('Gets Estimates for ec2, ebs Snapshot, ebs SDD Storage and lambda across multiple days with accumulation', async () => {
+  it('Gets Estimates for ec2, ebs Snapshot, ebs SDD Storage and lambda across multiple days with accumulation', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -231,12 +231,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0000036084159384000003,
+            co2e: 0.0000022281567672000002,
             cost: 25,
             region: 'us-west-1',
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: true,
-            wattHours: 10.264800000000001,
+            wattHours: 6.338400000000001,
           },
         ],
       },
@@ -516,12 +516,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0006073140353279999,
+            co2e: 0.00048585122826240006,
             cost: 15,
             region: 'us-west-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            wattHours: 1727.6159999999998,
+            wattHours: 1382.0928000000001,
           },
           {
             accountName: '123456789',

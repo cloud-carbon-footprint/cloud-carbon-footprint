@@ -39,25 +39,33 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
   }
 
   private getVCpuHours(vCpuFromReport: number): number {
+    const instanceType = this.usageType
+      .split(':')
+      .pop()
+      .replace(/^((db|cache|dms)\.)/, '')
+
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
     if (this.serviceName === 'AWSGlue') return GLUE_VCPUS_PER_USAGE * this.usageAmount
     if (this.usageType.includes('Aurora:ServerlessUsage')) return this.usageAmount / 4
     if (this.includesAny(['Fargate-vCPU-Hours', 'CPUCredits'], this.usageType)) return this.usageAmount
-    if (this.includesAny(Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION), this.usageType))
-      return (
-        this.extractVCpuFromInstanceType() *
-        (BURSTABLE_INSTANCE_BASELINE_UTILIZATION[this.usageType.split(':').pop()] /
-          CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020) *
-        this.usageAmount
-      )
-    if (!vCpuFromReport) return this.extractVCpuFromInstanceType() * this.usageAmount
+    if (this.includesAny(Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION), this.usageType)) {
+      return this.getBurstableInstanceVCPu(instanceType) * this.usageAmount
+    }
+    if (!vCpuFromReport) return this.extractVCpuFromInstanceType(instanceType) * this.usageAmount
     return vCpuFromReport * this.usageAmount
   }
 
-  private extractVCpuFromInstanceType(): number {
+  private getBurstableInstanceVCPu(instanceType: string) {
+    return (
+      this.extractVCpuFromInstanceType(instanceType) *
+      (BURSTABLE_INSTANCE_BASELINE_UTILIZATION[instanceType] / CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020)
+    )
+  }
+
+  private extractVCpuFromInstanceType(instanceType: string): number {
     if (this.usageType.includes('Kafka')) return MSK_INSTANCE_TYPES[`Kafka${this.usageType.split('Kafka').pop()}`]
     if (this.serviceName === 'AmazonRedshift') return REDSHIFT_INSTANCE_TYPES[this.usageType.split(':').pop()] / 3600
-    return EC2_INSTANCE_TYPES[this.usageType.split(':').pop()]
+    return EC2_INSTANCE_TYPES[instanceType]
   }
 
   private includesAny(substrings: string[], usageType: string): boolean {
