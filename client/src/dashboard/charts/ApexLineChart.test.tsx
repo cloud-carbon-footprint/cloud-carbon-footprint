@@ -132,24 +132,6 @@ describe('ApexLineChart', () => {
     expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('should set date range default (within the prev week) when data not provided', () => {
-    const setDateRangeSpy = jest.fn()
-    const setChartDataSpy = jest.fn()
-    const setDefaultDateRangeSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
-      .mockReturnValueOnce([[], setChartDataSpy])
-      .mockReturnValueOnce([{ min: null, max: null }, setDefaultDateRangeSpy])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
-
-    act(() => {
-      create(<ApexLineChart data={[]} />)
-    })
-
-    expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
-  })
-
   it('should set date range state when zooming through apex line chart', () => {
     const setDateRangeSpy = jest.fn()
     jest
@@ -185,15 +167,16 @@ describe('ApexLineChart', () => {
       .spyOn(React, 'useState')
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
-      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
+      .mockReturnValueOnce([
+        { min: new Date('2019-07-10T00:00:00.000Z'), max: new Date('2019-11-10T00:00:00.000Z') },
+        jest.fn(),
+      ])
       .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
       testRenderer = create(<ApexLineChart data={[]} />)
     })
-
-    expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
 
     act(() => {
       const beforeResetZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
@@ -203,8 +186,11 @@ describe('ApexLineChart', () => {
       beforeResetZoomCallback()
     })
 
-    expect(setDateRangeSpy).toHaveBeenCalledTimes(2)
-    expect(setDateRangeSpy).toHaveBeenLastCalledWith(setDateRangeSpy.mock.calls[0][0])
+    expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
+    expect(setDateRangeSpy).toHaveBeenLastCalledWith({
+      min: new Date('2019-07-10T00:00:00.000Z'),
+      max: new Date('2019-11-10T00:00:00.000Z'),
+    })
   })
 
   it('should update data based on new ranges', () => {
