@@ -223,7 +223,7 @@ Here is the estimated HDD energy usage:
 * Average wattage per disk for 2020 = **6.65** Watts per disk
         
         Watts per Terabyte = Watts per disk / Terabytes per disk:
-        6.65 W / 10 TB = **0.665 Watt-Hours per Terabyte for HDD**
+        6.65 W / 10 TB = **0.665 Watt-Hours per Terabyte-Hour for HDD**
 
 Here is the estimated SSD energy usage:
 
@@ -231,7 +231,7 @@ Here is the estimated SSD energy usage:
 * Average wattage per disk for 2020 = **6** Watts per disk
 
         Watts per terabyte = Watts per disk / Terabytes per disk: 
-        6 W / 5 TB = 1.2 Watt-Hours per Terabyte for SSD
+        6 W / 5 TB = 1.2 Watt-Hours per Terabyte-Hour for SSD
 
 When it comes to measuring the Terabytes from cloud providers, we query for the allocated bytes rather than the utilized
 bytes, because this is a more accurate reflection of the energy needed to support that usage. For example, an 
