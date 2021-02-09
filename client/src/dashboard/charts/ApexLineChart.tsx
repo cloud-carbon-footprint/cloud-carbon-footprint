@@ -14,11 +14,17 @@ import { sumServiceTotals, getMaxOfDataSeries } from '../transformData'
 import { EstimationResult } from '../../models/types'
 import Chart from 'react-apexcharts'
 import ApexCharts from 'apexcharts'
+import * as _ from 'lodash'
 
 export interface DateRange {
   min: Date | null
   max: Date | null
 }
+
+type LegendToggle = {
+  [key: string]: boolean
+}
+
 const formatDateToTime = (timestamp: string | Date) =>
   timestamp instanceof Date ? timestamp.getTime() : new Date(timestamp).getTime()
 
@@ -27,9 +33,13 @@ export const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
     return formatDateToTime(a.timestamp) - formatDateToTime(b.timestamp)
   })
 }
-export const filterBy = (data: EstimationResult[], range: DateRange): EstimationResult[] => {
-  const min = formatDateToTime(range.min as Date)
-  const max = formatDateToTime(range.max as Date)
+
+export const filterBy = (data: EstimationResult[], range: DateRange, defaultRange: DateRange): EstimationResult[] => {
+  if (!range.min || !range.max) return data
+  if (_.isEqual(range, defaultRange)) return data
+
+  const min = formatDateToTime(range.min)
+  const max = formatDateToTime(range.max)
   return data.filter((a: EstimationResult) => {
     const result = formatDateToTime(a.timestamp)
     return result >= min && result <= max
@@ -38,27 +48,34 @@ export const filterBy = (data: EstimationResult[], range: DateRange): Estimation
 
 export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
   const theme = useTheme()
-  const sortedData = sortByDate(data)
-  const defaultRange = {
-    min: sortedData[0]?.timestamp
-      ? new Date(sortedData[0]?.timestamp)
-      : moment.utc(Date.now()).subtract(7, 'd').toDate(),
-    max: sortedData[sortedData.length - 1]?.timestamp
-      ? new Date(sortedData[sortedData.length - 1]?.timestamp)
-      : moment.utc(Date.now()).toDate(),
-  }
-  const [dateRange, setDateRange] = React.useState<DateRange>(defaultRange)
+  const [dateRange, setDateRange] = React.useState<DateRange>({ min: null, max: null })
+  const [chartData, setChartData] = React.useState<EstimationResult[]>([])
+  const [defaultRange, setDefaultRange] = React.useState<DateRange>({ min: null, max: null })
+  const [toggledSeries, setToggledSeries] = React.useState<LegendToggle[]>([
+    { CO2e: true },
+    { 'Watt Hours': false },
+    { Cost: false },
+  ])
 
   useEffect(() => {
-    ApexCharts.exec('lineChart', 'hideSeries', ['Watt Hours'])
-    ApexCharts.exec('lineChart', 'hideSeries', ['Cost'])
-  }, [])
+    const newSortedData = sortByDate(data)
+    const newDefaultRange = {
+      min: newSortedData[0]?.timestamp ? new Date(newSortedData[0]?.timestamp) : null,
+      max: newSortedData[newSortedData.length - 1]?.timestamp
+        ? new Date(newSortedData[newSortedData.length - 1]?.timestamp)
+        : null,
+    }
 
-  useEffect(() => {
-    setDateRange(defaultRange)
+    if (newDefaultRange.min instanceof Date && newDefaultRange.max instanceof Date) {
+      if (!_.isEqual(chartData, newSortedData)) setChartData(newSortedData)
+      if (!_.isEqual(defaultRange, newDefaultRange)) {
+        setDateRange(newDefaultRange)
+        setDefaultRange(newDefaultRange)
+      }
+    }
   }, [data])
 
-  const filteredByZoomRange = filterBy(sortedData, dateRange)
+  const filteredByZoomRange = filterBy(chartData, dateRange, defaultRange)
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
   // Why, you might ask? Don't ask me, ask ApexCharts.
   const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
@@ -74,6 +91,30 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const maxWattHours = getMaxOfDataSeries(wattHoursSeriesData)
   const maxCost = getMaxOfDataSeries(costSeriesData)
 
+  useEffect(() => {
+    ApexCharts.exec('lineChart', 'updateSeries', [
+      {
+        name: 'CO2e',
+        data: co2SeriesData,
+      },
+      {
+        name: 'Watt Hours',
+        data: wattHoursSeriesData,
+      },
+      {
+        name: 'Cost',
+        data: costSeriesData,
+      },
+    ])
+
+    toggledSeries.forEach((legendToggle: LegendToggle) => {
+      const [seriesKey, toggleValue] = Object.entries(legendToggle)[0]
+      toggleValue
+        ? ApexCharts.exec('lineChart', 'showSeries', [seriesKey])
+        : ApexCharts.exec('lineChart', 'hideSeries', [seriesKey])
+    })
+  }, [co2SeriesData, wattHoursSeriesData, costSeriesData, toggledSeries])
+
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
 
@@ -81,16 +122,18 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     chart: {
       events: {
         zoomed: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
-          setDateRange(xaxis)
-          return {
-            xaxis,
-          }
+          setDateRange({ min: xaxis.min, max: xaxis.max })
         },
         beforeResetZoom: () => {
           setDateRange(defaultRange)
-          return {
-            xaxis: defaultRange,
+        },
+        legendClick: (chart: unknown, seriesIndex: number) => {
+          const [seriesKey, toggledValue] = Object.entries(toggledSeries[seriesIndex])[0]
+          const newToggledSeries = [...toggledSeries]
+          newToggledSeries[seriesIndex] = {
+            [seriesKey]: !toggledValue,
           }
+          setToggledSeries(newToggledSeries)
         },
       },
       id: 'lineChart',
@@ -167,7 +210,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           },
         },
         decimalsInFloat: 3,
-        forceNiceScale: true,
       },
       {
         max: 1.1 * maxWattHours,
@@ -189,7 +231,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           show: true,
         },
         showAlways: false,
-        forceNiceScale: true,
       },
       {
         max: 1.1 * maxCost,
@@ -211,7 +252,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           show: true,
         },
         showAlways: false,
-        forceNiceScale: true,
       },
     ],
     grid: {

@@ -65,16 +65,12 @@ describe('ApexLineChart', () => {
     expect(root.toJSON()).toMatchSnapshot()
   })
 
-  it('should manually disable watt hours and cost series only on mount', () => {
-    const fixture = render(<ApexLineChart data={[]} />)
-    expect(ApexCharts.exec).toHaveBeenCalledTimes(2)
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Cost'])
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Watt Hours'])
-
-    fixture.rerender(
+  it('should manually disable watt hours and cost series on initial data load', () => {
+    render(
       <ApexLineChart data={[new EstimationResultBuilder().withTime(new Date('2019-08-10T00:00:00.000Z')).build()]} />,
     )
-    expect(ApexCharts.exec).toHaveBeenCalledTimes(2)
+    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Cost'])
+    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Watt Hours'])
   })
 
   it('should update chart with new data and default max values on props data change', () => {
@@ -127,6 +123,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], setChartDataSpy])
       .mockReturnValueOnce([{ min: null, max: null }, setDefaultDateRangeSpy])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
 
     act(() => {
       create(<ApexLineChart data={[new EstimationResultBuilder().build()]} />)
@@ -144,6 +141,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], setChartDataSpy])
       .mockReturnValueOnce([{ min: null, max: null }, setDefaultDateRangeSpy])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
 
     act(() => {
       create(<ApexLineChart data={[]} />)
@@ -159,6 +157,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -187,6 +186,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -222,6 +222,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([newDateRange, jest.fn()])
       .mockReturnValueOnce([initialData, jest.fn()])
       .mockReturnValueOnce([defaultDateRange, jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -279,5 +280,29 @@ describe('ApexLineChart', () => {
         },
       ])
     })
+  })
+
+  it('should update toggle series state when a series is clicked in the legend', () => {
+    const setLegendToggleSpy = jest.fn()
+    jest
+      .spyOn(React, 'useState')
+      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
+      .mockReturnValueOnce([[], jest.fn()])
+      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], setLegendToggleSpy])
+
+    let testRenderer: ReactTestRenderer
+    act(() => {
+      testRenderer = create(<ApexLineChart data={[]} />)
+    })
+
+    act(() => {
+      const afterLegendClickCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.legendClick
+
+      expect(afterLegendClickCallback).toBeDefined()
+      afterLegendClickCallback(undefined, 1)
+    })
+
+    expect(setLegendToggleSpy).toHaveBeenCalledWith([{ CO2e: true }, { 'Watt Hours': true }, { Cost: false }])
   })
 })
