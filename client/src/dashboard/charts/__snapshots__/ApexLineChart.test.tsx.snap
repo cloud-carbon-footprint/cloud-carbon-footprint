@@ -38,15 +38,33 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "height": "500px",
       "series": Array [
         Object {
-          "data": Array [],
+          "data": Array [
+            Object {
+              "cost": 18,
+              "usesAverageCPUConstant": false,
+              "wattHours": 12,
+              "x": 2019-08-10T00:00:00.000Z,
+              "y": 30,
+            },
+          ],
           "name": "CO2e",
         },
         Object {
-          "data": Array [],
+          "data": Array [
+            Object {
+              "x": 2019-08-10T00:00:00.000Z,
+              "y": 12,
+            },
+          ],
           "name": "Watt Hours",
         },
         Object {
-          "data": Array [],
+          "data": Array [
+            Object {
+              "x": 2019-08-10T00:00:00.000Z,
+              "y": 18,
+            },
+          ],
           "name": "Cost",
         },
       ],
@@ -83,7 +101,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "yaxis": Array [
         Object {
           "decimalsInFloat": 3,
-          "max": -Infinity,
+          "forceNiceScale": true,
+          "max": 33,
           "title": Object {
             "offsetX": -8,
             "style": Object {
@@ -101,7 +120,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
-          "max": -Infinity,
+          "forceNiceScale": true,
+          "max": 13.200000000000001,
           "opposite": true,
           "showAlways": false,
           "title": Object {
@@ -122,7 +142,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
-          "max": -Infinity,
+          "forceNiceScale": true,
+          "max": 19.8,
           "opposite": true,
           "showAlways": false,
           "title": Object {
@@ -140,15 +161,33 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
   series={
     Array [
       Object {
-        "data": Array [],
+        "data": Array [
+          Object {
+            "cost": 18,
+            "usesAverageCPUConstant": false,
+            "wattHours": 12,
+            "x": 2019-08-10T00:00:00.000Z,
+            "y": 30,
+          },
+        ],
         "name": "CO2e",
       },
       Object {
-        "data": Array [],
+        "data": Array [
+          Object {
+            "x": 2019-08-10T00:00:00.000Z,
+            "y": 12,
+          },
+        ],
         "name": "Watt Hours",
       },
       Object {
-        "data": Array [],
+        "data": Array [
+          Object {
+            "x": 2019-08-10T00:00:00.000Z,
+            "y": 18,
+          },
+        ],
         "name": "Cost",
       },
     ]

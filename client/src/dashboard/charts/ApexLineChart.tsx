@@ -14,7 +14,6 @@ import { sumServiceTotals, getMaxOfDataSeries } from '../transformData'
 import { EstimationResult } from '../../models/types'
 import Chart from 'react-apexcharts'
 import ApexCharts from 'apexcharts'
-import * as _ from 'lodash'
 
 export interface DateRange {
   min: Date | null
@@ -28,12 +27,9 @@ export const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
     return formatDateToTime(a.timestamp) - formatDateToTime(b.timestamp)
   })
 }
-export const filterBy = (data: EstimationResult[], range: DateRange, defaultRange: DateRange): EstimationResult[] => {
-  if (!range.min || !range.max) return data
-  if (_.isEqual(range, defaultRange)) return data
-
-  const min = formatDateToTime(range.min)
-  const max = formatDateToTime(range.max)
+export const filterBy = (data: EstimationResult[], range: DateRange): EstimationResult[] => {
+  const min = formatDateToTime(range.min as Date)
+  const max = formatDateToTime(range.max as Date)
   return data.filter((a: EstimationResult) => {
     const result = formatDateToTime(a.timestamp)
     return result >= min && result <= max
@@ -42,9 +38,16 @@ export const filterBy = (data: EstimationResult[], range: DateRange, defaultRang
 
 export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
   const theme = useTheme()
-  const [dateRange, setDateRange] = React.useState<DateRange>({ min: null, max: null })
-  const [chartData, setChartData] = React.useState<EstimationResult[]>([])
-  const [defaultRange, setDefaultRange] = React.useState<DateRange>({ min: null, max: null })
+  const sortedData = sortByDate(data)
+  const defaultRange = {
+    min: sortedData[0]?.timestamp
+      ? new Date(sortedData[0]?.timestamp)
+      : moment.utc(Date.now()).subtract(7, 'd').toDate(),
+    max: sortedData[sortedData.length - 1]?.timestamp
+      ? new Date(sortedData[sortedData.length - 1]?.timestamp)
+      : moment.utc(Date.now()).toDate(),
+  }
+  const [dateRange, setDateRange] = React.useState<DateRange>(defaultRange)
 
   useEffect(() => {
     ApexCharts.exec('lineChart', 'hideSeries', ['Watt Hours'])
@@ -52,24 +55,10 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   }, [])
 
   useEffect(() => {
-    const newSortedData = sortByDate(data)
-    const newDefaultRange = {
-      min: newSortedData[0]?.timestamp ? new Date(newSortedData[0]?.timestamp) : null,
-      max: newSortedData[newSortedData.length - 1]?.timestamp
-        ? new Date(newSortedData[newSortedData.length - 1]?.timestamp)
-        : null,
-    }
-
-    if (newDefaultRange.min instanceof Date && newDefaultRange.max instanceof Date) {
-      if (!_.isEqual(chartData, newSortedData)) setChartData(newSortedData)
-      if (!_.isEqual(defaultRange, newDefaultRange)) {
-        setDateRange(newDefaultRange)
-        setDefaultRange(newDefaultRange)
-      }
-    }
+    setDateRange(defaultRange)
   }, [data])
 
-  const filteredByZoomRange = filterBy(chartData, dateRange, defaultRange)
+  const filteredByZoomRange = filterBy(sortedData, dateRange)
   // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
   // Why, you might ask? Don't ask me, ask ApexCharts.
   const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
@@ -92,10 +81,16 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     chart: {
       events: {
         zoomed: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
-          setDateRange({ min: xaxis.min, max: xaxis.max })
+          setDateRange(xaxis)
+          return {
+            xaxis,
+          }
         },
         beforeResetZoom: () => {
           setDateRange(defaultRange)
+          return {
+            xaxis: defaultRange,
+          }
         },
       },
       id: 'lineChart',
@@ -172,6 +167,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           },
         },
         decimalsInFloat: 3,
+        forceNiceScale: true,
       },
       {
         max: 1.1 * maxWattHours,
@@ -193,6 +189,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           show: true,
         },
         showAlways: false,
+        forceNiceScale: true,
       },
       {
         max: 1.1 * maxCost,
@@ -214,6 +211,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           show: true,
         },
         showAlways: false,
+        forceNiceScale: true,
       },
     ],
     grid: {

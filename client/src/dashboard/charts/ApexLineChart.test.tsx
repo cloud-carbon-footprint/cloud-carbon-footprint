@@ -118,7 +118,7 @@ describe('ApexLineChart', () => {
     ])
   })
 
-  it('should setChartData and date range states when data actually provided', () => {
+  it('should set date range when data actually provided', () => {
     const setDateRangeSpy = jest.fn()
     const setChartDataSpy = jest.fn()
     const setDefaultDateRangeSpy = jest.fn()
@@ -133,11 +133,9 @@ describe('ApexLineChart', () => {
     })
 
     expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
-    expect(setChartDataSpy).toHaveBeenCalledTimes(1)
-    expect(setDefaultDateRangeSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('should not setChartData and date range states when data not provided', () => {
+  it('should set date range default (within the prev week) when data not provided', () => {
     const setDateRangeSpy = jest.fn()
     const setChartDataSpy = jest.fn()
     const setDefaultDateRangeSpy = jest.fn()
@@ -151,9 +149,7 @@ describe('ApexLineChart', () => {
       create(<ApexLineChart data={[]} />)
     })
 
-    expect(setDefaultDateRangeSpy).not.toHaveBeenCalled()
-    expect(setDateRangeSpy).not.toHaveBeenCalled()
-    expect(setChartDataSpy).not.toHaveBeenCalled()
+    expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
   })
 
   it('should set date range state when zooming through apex line chart', () => {
@@ -197,6 +193,8 @@ describe('ApexLineChart', () => {
       testRenderer = create(<ApexLineChart data={[]} />)
     })
 
+    expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
+
     act(() => {
       const beforeResetZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
         ?.beforeResetZoom
@@ -205,10 +203,8 @@ describe('ApexLineChart', () => {
       beforeResetZoomCallback()
     })
 
-    expect(setDateRangeSpy).toHaveBeenCalledWith({
-      min: null,
-      max: null,
-    })
+    expect(setDateRangeSpy).toHaveBeenCalledTimes(2)
+    expect(setDateRangeSpy).toHaveBeenLastCalledWith(setDateRangeSpy.mock.calls[0][0])
   })
 
   it('should update data based on new ranges', () => {
