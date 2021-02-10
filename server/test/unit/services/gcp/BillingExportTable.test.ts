@@ -165,13 +165,13 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 77388.18519483334,
-            co2e: 0.03517293017105176,
+            wattHours: 76681.27518283334,
+            co2e: 0.03485163957059776,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
             serviceName: 'Cloud SQL',
-            cost: 49,
+            cost: 36,
             region: 'us-east1',
           },
         ],
@@ -179,7 +179,7 @@ describe('GCP BillingExportTable Service', () => {
     ]
     expect(result).toEqual(expectedResult)
   })
-  it('estimation for App Engine Compute and Cloud DataFlow Compute', async () => {
+  it('estimation for unknown App Engine Compute and Cloud DataFlow Compute', async () => {
     mockJob.getQueryResults.mockResolvedValue(mockQueryAppEngineComputeUnknownRegion)
     //when
     const billingExportTableService = new BillingExportTable(
@@ -195,16 +195,6 @@ describe('GCP BillingExportTable Service', () => {
       {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
-          {
-            accountName: 'test-account',
-            cloudProvider: 'GCP',
-            co2e: 0.00000420062997075,
-            cost: 10,
-            region: 'us-east1',
-            serviceName: 'App Engine',
-            usesAverageCPUConstant: true,
-            wattHours: 9.242310166666668,
-          },
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',

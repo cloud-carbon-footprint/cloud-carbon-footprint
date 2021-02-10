@@ -16,8 +16,8 @@ import {
   MEMORY_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
   UNKNOWN_SERVICE_TYPES,
-  NETWORKING_USAGE_TYPES,
   COMPUTE_STRING_FORMATS,
+  UNSUPPORTED_USAGE_TYPES,
 } from '@services/gcp/BillingExportTypes'
 import BillingExportRow from '@services/gcp/BillingExportRow'
 import Logger from '@services/Logger'
@@ -48,9 +48,9 @@ export default class BillingExportTable {
       billingExportRow.setTimestamp(usageRow.timestamp)
 
       if (
+        this.isUnknownUsage(billingExportRow) ||
         this.isMemoryUsage(billingExportRow.usageType) ||
-        this.isNetworkingUsage(billingExportRow.usageType) ||
-        this.isUnknownUsage(billingExportRow)
+        this.isUnsupportedUsage(billingExportRow.usageType)
       )
         return []
 
@@ -59,16 +59,19 @@ export default class BillingExportTable {
         case 'seconds':
           if (this.isComputeUsage(billingExportRow.usageType))
             footprintEstimate = this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
-          else
+          else {
             this.billingExportTableLogger.warn(
               `Non compute usage type for 'seconds' usageUnit: ${billingExportRow.usageType}`,
             )
+            return []
+          }
           break
         case 'byte-seconds':
           footprintEstimate = this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
           break
         default:
           this.billingExportTableLogger.warn(`Unsupported Usage unit: ${usageRow.usageUnit}`)
+          return []
       }
       appendOrAccumulateEstimatesByDay(results, billingExportRow, footprintEstimate)
     })
@@ -107,7 +110,8 @@ export default class BillingExportTable {
   private isUnknownUsage(usageRow: any): boolean {
     return (
       this.containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
-      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName)
+      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
+      !usageRow.usageType
     )
   }
 
@@ -116,8 +120,8 @@ export default class BillingExportTable {
     return this.containsAny(MEMORY_USAGE_TYPES, usageType) && !this.containsAny(COMPUTE_STRING_FORMATS, usageType)
   }
 
-  private isNetworkingUsage(usageType: string): boolean {
-    return this.containsAny(NETWORKING_USAGE_TYPES, usageType)
+  private isUnsupportedUsage(usageType: string): boolean {
+    return this.containsAny(UNSUPPORTED_USAGE_TYPES, usageType)
   }
 
   private isComputeUsage(usageType: string): boolean {

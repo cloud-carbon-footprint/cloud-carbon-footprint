@@ -1,22 +1,51 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-export const NETWORKING_USAGE_TYPES: string[] = [
-  'IP address reservation',
-  'IP address idling',
-  'External IP Charge',
-  'Load Balancing',
-  'NAT Gateway',
-  'Static Ip Charge',
-  'Vpn Tunnel',
-]
 
-export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory', 'Redis Capacity']
+export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory']
 
 export const UNKNOWN_USAGE_TYPES: string[] = [
-  'Licensing Fee',
+  'Dedicated Memcache',
+  'BigQuery BI Engine',
+  'AutoML Tables Deployment',
+  'Local Disk Time Dataprep',
+  'Shuffle Time',
+  'Snapshots message backlog',
+  'Subscriptions message backlog',
+  'Subscriptions retained acknowledged messages',
+  'Cloud SQL: Backups',
+  'Publisher Throughput Capacity',
+  'Subscriber Throughput Capacity',
+  'Server node',
+  'Backend Instances',
+  'Frontend Instances',
+  'Server Node',
+  'Analysis Slots Attribution',
+  'Build time',
+  'Dataprep Unit',
+  'IP address',
+  'usage - hour',
+  'D2',
+  'D4',
+  'Policy Charge',
+  'Endpoint Charge',
+  'NAT Gateway',
+  'Action Time',
+  'Billing Adjustment',
+]
+
+export const UNSUPPORTED_USAGE_TYPES: string[] = [
+  'Fee',
+  'fee',
+  'Billing',
   'Commitment',
+  'Reattribution',
   'Commit',
+  'Cache Fill',
+  'External IP Charge',
+  'Load Balancing',
+  'Static Ip',
+  'Vpn Tunnel',
   'GPU', // Currently unsupported for carbon estimation
 ]
 
@@ -33,17 +62,19 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
   'Kubernetes Engine',
   'Cloud Run',
   'Cloud Data Fusion',
+  'Cloud Dialogflow API',
+  'Cloud Natural Language',
+  'BigQuery Data Transfer Service',
+  'BigQuery Reservation API',
+  'Cloud AutoML',
+  'Cloud Test Lab',
+  'Cloud TPU',
+  'Cloud Video Intelligence API',
+  'Cloud Vision API',
+  'Container Builder',
+  'Firebase Test Lab',
+  'Security Command Center',
+  'Stackdriver',
 ]
 
-export const COMPUTE_STRING_FORMATS: string[] = [
-  'Core',
-  'CORE',
-  'instance',
-  'VCPU',
-  'vCPU',
-  'CPU',
-  'Server node',
-  'Backend Instances',
-  'Frontend Instances',
-  'Server Node',
-]
+export const COMPUTE_STRING_FORMATS: string[] = ['Core', 'CORE', 'VCPU', 'vCPU', 'CPU']
