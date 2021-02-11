@@ -69,9 +69,6 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "shared": true,
       },
       "xaxis": Object {
-        "labels": Object {
-          "formatter": [Function],
-        },
         "title": Object {
           "offsetY": 8,
           "style": Object {

@@ -6,7 +6,6 @@ import React, { FunctionComponent, useEffect } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
-import moment from 'moment'
 import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
@@ -191,11 +190,6 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         offsetY: 8,
         style: {
           fontSize: '15px',
-        },
-      },
-      labels: {
-        formatter: function (value: number, timestamp: number) {
-          return moment.utc(timestamp).format('DD-MMM-YY')
         },
       },
     },
