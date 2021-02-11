@@ -11,8 +11,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "background": "#fff",
         "events": Object {
           "beforeResetZoom": [Function],
+          "beforeZoom": [Function],
           "legendClick": [Function],
-          "zoomed": [Function],
         },
         "id": "lineChart",
         "toolbar": Object {

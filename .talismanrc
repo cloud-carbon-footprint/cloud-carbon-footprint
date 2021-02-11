@@ -18,7 +18,7 @@ fileignoreconfig:
 - filename: client/src/Config.ts
   checksum: 56711c967d7a2305b0519ec382a1d2b45b7ab636a93edc98ec9f9ee105677cb1
 - filename: client/src/dashboard/charts/ApexLineChart.tsx
-  checksum: df0d337cb941afc57f8b006132d9db9371f85b526e752a629cbcfcfa82ebf2fa
+  checksum: bcfa27048d6a1ed21187c675df0eb40aee3db8d3ff5f1b2abb2782b96d1e2705
 - filename: client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
   checksum: 5573a23682a9ae7012e9358b0500594cf0dbfec91191b4adbd6abe0ae023adac
 - filename: client/src/dashboard/charts/__snapshots__/EmissionsBreakdownContainer.test.tsx.snap

@@ -132,7 +132,7 @@ describe('ApexLineChart', () => {
     expect(setDateRangeSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('should set date range state when zooming through apex line chart', () => {
+  it('should not set date range state when zooming with apex line chart and less than two filtered items are within the range', () => {
     const setDateRangeSpy = jest.fn()
     jest
       .spyOn(React, 'useState')
@@ -147,10 +147,43 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const afterZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.zoomed
+      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.beforeZoom
 
-      expect(afterZoomCallback).toBeDefined()
-      afterZoomCallback(undefined, {
+      expect(beforeZoomCallback).toBeDefined()
+      beforeZoomCallback(undefined, {
+        xaxis: { min: new Date('2019-01-10T00:00:00.000Z'), max: new Date('2019-08-10T00:00:00.000Z') },
+      })
+    })
+
+    expect(setDateRangeSpy).not.toHaveBeenCalled()
+  })
+
+  it('should set date range state when zooming with apex line chart and at least two filtered items are within the range', () => {
+    const setDateRangeSpy = jest.fn()
+    jest
+      .spyOn(React, 'useState')
+      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
+      .mockReturnValueOnce([[], jest.fn()])
+      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
+
+    let testRenderer: ReactTestRenderer
+    act(() => {
+      testRenderer = create(
+        <ApexLineChart
+          data={[
+            new EstimationResultBuilder().withTime(new Date('2019-05-10T00:00:00.000Z')).build(),
+            new EstimationResultBuilder().withTime(new Date('2019-06-10T00:00:00.000Z')).build(),
+          ]}
+        />,
+      )
+    })
+
+    act(() => {
+      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.beforeZoom
+
+      expect(beforeZoomCallback).toBeDefined()
+      beforeZoomCallback(undefined, {
         xaxis: { min: new Date('2019-01-10T00:00:00.000Z'), max: new Date('2019-08-10T00:00:00.000Z') },
       })
     })

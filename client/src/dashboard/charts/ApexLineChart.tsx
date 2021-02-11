@@ -120,19 +120,31 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const options = {
     chart: {
       events: {
-        zoomed: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
-          setDateRange({ min: xaxis.min, max: xaxis.max })
+        beforeZoom: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
+          const newFilteredData = filterBy(data, xaxis, defaultRange)
+
+          if (newFilteredData.length >= 2) {
+            setDateRange(xaxis)
+            return {
+              xaxis,
+            }
+          }
+          return {
+            dateRange,
+          }
         },
         beforeResetZoom: () => {
           setDateRange(defaultRange)
         },
         legendClick: (chart: unknown, seriesIndex: number) => {
           const [seriesKey, toggledValue] = Object.entries(toggledSeries[seriesIndex])[0]
+          const toggleCheck = toggledSeries.filter((series) => !!Object.values(series)[0])
           const newToggledSeries = [...toggledSeries]
           newToggledSeries[seriesIndex] = {
             [seriesKey]: !toggledValue,
           }
           setToggledSeries(newToggledSeries)
+          if (toggleCheck.length === 1 && Object.keys(toggleCheck[0])[0] === seriesKey) setToggledSeries(toggledSeries)
         },
       },
       id: 'lineChart',
