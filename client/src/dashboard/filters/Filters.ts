@@ -132,18 +132,20 @@ export class Filters {
 
   private getResultsFilteredByAccount(resultsFilteredByService: EstimationResult[]): EstimationResult[] {
     const allAccountsSelected = this.accounts.includes(ALL_ACCOUNTS_DROPDOWN_OPTION)
-    return resultsFilteredByService.map((estimationResult) => {
-      const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
-        return (
-          this.accounts.some(
-            (account) =>
-              (account.name.includes(UnknownTypes.UNKNOWN_ACCOUNT) && serviceEstimate.accountName === null) ||
-              account.name === serviceEstimate.accountName,
-          ) || allAccountsSelected
-        )
+    return resultsFilteredByService
+      .map((estimationResult) => {
+        const filteredServiceEstimates = estimationResult.serviceEstimates.filter((serviceEstimate) => {
+          return (
+            this.accounts.some(
+              (account) =>
+                (account.name.includes(UnknownTypes.UNKNOWN_ACCOUNT) && serviceEstimate.accountName === null) ||
+                account.name === serviceEstimate.accountName,
+            ) || allAccountsSelected
+          )
+        })
+        return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
       })
-      return { timestamp: estimationResult.timestamp, serviceEstimates: filteredServiceEstimates }
-    })
+      .filter((estimationResult) => !!estimationResult?.serviceEstimates?.length)
   }
 
   private getResultsFilteredByService(resultsFilteredByTime: EstimationResult[]): EstimationResult[] {

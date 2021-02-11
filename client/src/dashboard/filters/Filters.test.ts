@@ -175,6 +175,17 @@ describe('Filters', () => {
       const filteredData = filters.filter(estimationResults)
       expect(filteredData).toEqual(estimationResults.slice(0, 4))
     })
+
+    it('should return an empty array for data when all service estimates are empty', () => {
+      const estimationResults = generateEstimations(moment.utc(), 1)
+      const filters = new Filters()
+      estimationResults.forEach((estimate) => {
+        estimate.serviceEstimates = []
+      })
+      const filteredData = filters.filter(estimationResults)
+
+      expect(filteredData).toEqual([])
+    })
   })
 
   describe('withServices', () => {
