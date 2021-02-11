@@ -65,6 +65,7 @@ export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
     ...series.map((dataPair) => {
       return dataPair.y
     }),
+    1,
   )
 }
 

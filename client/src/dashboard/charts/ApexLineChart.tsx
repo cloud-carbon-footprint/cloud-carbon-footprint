@@ -66,8 +66,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         : null,
     }
 
+    if (!_.isEqual(chartData, newSortedData)) setChartData(newSortedData)
     if (newDefaultRange.min instanceof Date && newDefaultRange.max instanceof Date) {
-      if (!_.isEqual(chartData, newSortedData)) setChartData(newSortedData)
       if (!_.isEqual(defaultRange, newDefaultRange)) {
         setDateRange(newDefaultRange)
         setDefaultRange(newDefaultRange)
