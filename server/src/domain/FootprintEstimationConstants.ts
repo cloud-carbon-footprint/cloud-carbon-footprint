@@ -8,7 +8,7 @@ import { GCP_REGIONS } from '@services/gcp/GCPRegions'
 export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string]: number } } = {
   GCP: {
     SSDCOEFFICIENT: 1.2,
-    HDDCOEFFICIENT: 0.67,
+    HDDCOEFFICIENT: 0.65,
     MIN_WATTS: 0.58,
     MAX_WATTS: 3.54,
     POWER_USAGE_EFFECTIVENESS: 1.11,
@@ -16,7 +16,7 @@ export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string
   },
   AWS: {
     SSDCOEFFICIENT: 1.2,
-    HDDCOEFFICIENT: 0.67,
+    HDDCOEFFICIENT: 0.65,
     MIN_WATTS: 0.59,
     MAX_WATTS: 3.5,
     POWER_USAGE_EFFECTIVENESS: 1.2,

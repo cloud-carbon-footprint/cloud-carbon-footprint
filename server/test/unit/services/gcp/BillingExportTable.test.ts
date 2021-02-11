@@ -54,8 +54,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            wattHours: 5.517917175088915,
-            co2e: 0.0000025078933560779116,
+            wattHours: 5.3532032295638725,
+            co2e: 0.0000024330308678367797,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -113,8 +113,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 150.06866306066513,
-            co2e: 0.0000527540873317048,
+            wattHours: 145.58900147676468,
+            co2e: 0.000051179338456131515,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -208,12 +208,12 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.0000022614956469106108,
+            co2e: 0.0000021939883141670106,
             cost: 5,
             region: 'unknown',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
-            wattHours: 5.444798928995928,
+            wattHours: 5.282267617682616,
           },
         ],
       },

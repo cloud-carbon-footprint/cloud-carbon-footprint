@@ -153,8 +153,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            wattHours: 2.99088,
-            co2e: 0.00000105139301904,
+            wattHours: 2.9016,
+            co2e: 0.0000010200081528,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -201,32 +201,32 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 5.264441147446633e-19,
+            co2e: 5.107293650507927e-19,
             cost: 9,
             region: 'us-west-1',
             serviceName: 'AmazonS3',
             usesAverageCPUConstant: false,
-            wattHours: 1.4975666999816895e-12,
+            wattHours: 1.4528632164001465e-12,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 1.4230028539896011e-18,
+            co2e: 1.3805251568555832e-18,
             cost: 10,
             region: 'us-east-2',
             serviceName: 'AmazonCloudWatch',
             usesAverageCPUConstant: false,
-            wattHours: 2.995133399963379e-12,
+            wattHours: 2.905726432800293e-12,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0000013593549600000002,
+            co2e: 0.0000013187772,
             cost: 11,
             region: 'us-east-1',
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: false,
-            wattHours: 2.99088,
+            wattHours: 2.9016,
           },
           {
             accountName: '123456789',
@@ -279,8 +279,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            wattHours: 0.007487833499908447,
-            co2e: 2.6322205737233162e-9,
+            wattHours: 0.007264316082000733,
+            co2e: 2.553646825253964e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -314,8 +314,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            wattHours: 8.34768,
-            co2e: 0.0000039660245064,
+            wattHours: 8.258400000000002,
+            co2e: 0.000003923607132,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
