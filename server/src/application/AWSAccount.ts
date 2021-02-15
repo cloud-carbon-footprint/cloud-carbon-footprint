@@ -59,8 +59,8 @@ export default class AWSAccount extends CloudProviderAccount {
   getDataFromCostAndUsageReports(startDate: Date, endDate: Date) {
     const costAndUsageReportsService = new CostAndUsageReports(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT, CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       this.createServiceWrapper(
         this.getServiceConfigurationOptions(configLoader().AWS.ATHENA_REGION, this.credentials),
       ),

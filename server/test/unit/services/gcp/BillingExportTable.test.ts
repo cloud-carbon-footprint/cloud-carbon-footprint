@@ -41,8 +41,8 @@ describe('GCP BillingExportTable Service', () => {
     // when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 
@@ -54,8 +54,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            wattHours: 5.3532032295638725,
-            co2e: 0.0000024330308678367797,
+            wattHours: 5.3146215846661145,
+            co2e: 0.000002415495510230749,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -75,8 +75,8 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 
@@ -88,8 +88,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            wattHours: 1467.9506421089175,
-            co2e: 0.000667183566838503,
+            wattHours: 1457.3708176612856,
+            co2e: 0.0006623750366270543,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -98,8 +98,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
           {
-            wattHours: 50.81333333333334,
-            co2e: 0.00002309466,
+            wattHours: 50.44711111111111,
+            co2e: 0.000022928212,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -113,8 +113,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 145.58900147676468,
-            co2e: 0.000051179338456131515,
+            wattHours: 142.96577622493106,
+            co2e: 0.00005025718821367869,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -134,8 +134,8 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 
@@ -152,8 +152,8 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 
@@ -165,8 +165,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 76681.27518283334,
-            co2e: 0.03485163957059776,
+            wattHours: 76128.61734367779,
+            co2e: 0.034600456582701555,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -184,8 +184,8 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 
@@ -198,22 +198,22 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.0003296650128532501,
+            co2e: 0.00032728904879665,
             cost: 190,
             region: 'us-east1',
             serviceName: 'Cloud Dataflow',
             usesAverageCPUConstant: true,
-            wattHours: 725.3355618333335,
+            wattHours: 720.1079181444445,
           },
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.0000021939883141670106,
+            co2e: 0.0000021742226536790195,
             cost: 5,
             region: 'unknown',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
-            wattHours: 5.282267617682616,
+            wattHours: 5.234679621126917,
           },
         ],
       },
@@ -234,8 +234,8 @@ describe('GCP BillingExportTable Service', () => {
 
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 
@@ -257,8 +257,8 @@ describe('GCP BillingExportTable Service', () => {
 
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery(),
     )
 

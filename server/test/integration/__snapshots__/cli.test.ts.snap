@@ -8,22 +8,22 @@ exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds group
 | ElastiCache  | 24.20             | 0.000011               | $12.00            
 | RDS          | 481.44            | 0.000224               | $18.47            
 | Lambda       | 0.00              | 0.000000               | $0.00             
-| ComputeEngine| 3.94              | 0.000002               | $0.00             
-| Total        | 556.98            | 0.000259               | $125.70           "
+| ComputeEngine| 3.92              | 0.000002               | $0.00             
+| Total        | 556.96            | 0.000259               | $125.70           "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day 1`] = `
 "| Date         | Watt Hours        | mt CO2e Emissions      
-| 2020-07-01   | 59.76             | 0.000028               
+| 2020-07-01   | 59.73             | 0.000028               
 | 2020-07-02   | 497.23            | 0.000231               
-| Total        | 556.98            | 0.000259               "
+| Total        | 556.96            | 0.000259               "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day and service 1`] = `
 "| Date (UTC)   | EBS Watt Hours    | EBS mt CO2e Emissions  | S3 Watt Hours     | S3 mt CO2e Emissions   | EC2 Watt Hours    | EC2 mt CO2e Emissions  | ElastiCache Watt Hours| ElastiCache mt CO2e Emissions| RDS Watt Hours    | RDS mt CO2e Emissions  | Lambda Watt Hours | Lambda mt CO2e Emissions| ComputeEngine Watt Hours| ComputeEngine mt CO2e Emissions| SUM Watt Hours    | SUM mt CO2e Emissions  
-| 2020-07-01   | 2.14              | 0.000001               | 0.10              | 0.000000               | 40.87             | 0.000019               | 4.57              | 0.000002               | 8.13              | 0.000004               | 0.00              | 0.000000               | 3.94              | 0.000002               | 59.76             | 0.000028               
+| 2020-07-01   | 2.14              | 0.000001               | 0.10              | 0.000000               | 40.87             | 0.000019               | 4.57              | 0.000002               | 8.13              | 0.000004               | 0.00              | 0.000000               | 3.92              | 0.000002               | 59.73             | 0.000028               
 | 2020-07-02   | 4.29              | 0.000002               | 0.00              | 0.000000               | 0.00              | 0.000000               | 19.63             | 0.000009               | 473.31            | 0.000220               | 0.00              | 0.000000               | 0.00              | 0.000000               | 497.23            | 0.000231               
-| Total        | 6.43              | 0.000003               | 0.10              | 0.000000               | 40.87             | 0.000019               | 24.20             | 0.000011               | 481.44            | 0.000224               | 0.00              | 0.000000               | 3.94              | 0.000002               | 556.98            | 0.000259               "
+| Total        | 6.43              | 0.000003               | 0.10              | 0.000000               | 40.87             | 0.000019               | 24.20             | 0.000011               | 481.44            | 0.000224               | 0.00              | 0.000000               | 3.92              | 0.000002               | 556.96            | 0.000259               "
 `;
 
 exports[`cli lambda lambda cost 1`] = `

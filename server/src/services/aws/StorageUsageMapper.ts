@@ -68,14 +68,8 @@ export function getEstimatesFromCostExplorer(
   region: string,
   volumeUsages: VolumeUsage[],
 ): FootprintEstimate[] {
-  const ssdEstimator = new StorageEstimator(
-    CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
-    CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-  )
-  const hddEstimator = new StorageEstimator(
-    CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
-    CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-  )
+  const ssdEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
+  const hddEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
   const ssdUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.SSD === diskType)
   const hddUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.HDD === diskType)
   const footprintEstimates = [

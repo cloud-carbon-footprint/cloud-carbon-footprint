@@ -5,13 +5,43 @@
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 import { GCP_REGIONS } from '@services/gcp/GCPRegions'
 
-export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string]: number } } = {
+type CloudConstantsByProvider = {
+  SSDCOEFFICIENT: number
+  HDDCOEFFICIENT: number
+  MIN_WATTS: number
+  MAX_WATTS: number
+  PUE_FLEET: number
+  PUE_TTM?: { [key: string]: number }
+  getPUE: (region?: string) => number
+  AVG_CPU_UTILIZATION_2020: number
+}
+
+type CloudConstants = {
+  [cloudProvider: string]: CloudConstantsByProvider
+}
+
+export const CLOUD_CONSTANTS: CloudConstants = {
   GCP: {
     SSDCOEFFICIENT: 1.2,
     HDDCOEFFICIENT: 0.65,
     MIN_WATTS: 0.58,
     MAX_WATTS: 3.54,
-    POWER_USAGE_EFFECTIVENESS: 1.11,
+    PUE_FLEET: 1.11,
+    PUE_TTM: {
+      [GCP_REGIONS.US_EAST1]: 1.102,
+      [GCP_REGIONS.US_CENTRAL1]: 1.11,
+      [GCP_REGIONS.US_WEST1]: 1.09,
+      [GCP_REGIONS.EUROPE_WEST1]: 1.1,
+      [GCP_REGIONS.EUROPE_WEST4]: 1.09,
+      [GCP_REGIONS.EUROPE_NORTH1]: 1.09,
+      [GCP_REGIONS.ASIA_EAST1]: 1.13,
+      [GCP_REGIONS.ASIA_SOUTHEAST1]: 1.14,
+      [GCP_REGIONS.SOUTHAMERICA_EAST1]: 1.09,
+      [GCP_REGIONS.UNKNOWN]: 1.1,
+    },
+    getPUE: (region: string) => {
+      return CLOUD_CONSTANTS.GCP.PUE_TTM[region]
+    },
     AVG_CPU_UTILIZATION_2020: 50,
   },
   AWS: {
@@ -19,7 +49,10 @@ export const CLOUD_CONSTANTS: { [cloudProvider: string]: { [constantName: string
     HDDCOEFFICIENT: 0.65,
     MIN_WATTS: 0.59,
     MAX_WATTS: 3.5,
-    POWER_USAGE_EFFECTIVENESS: 1.2,
+    PUE_FLEET: 1.2,
+    getPUE: () => {
+      return CLOUD_CONSTANTS.AWS.PUE_FLEET
+    },
     AVG_CPU_UTILIZATION_2020: 50,
   },
 }

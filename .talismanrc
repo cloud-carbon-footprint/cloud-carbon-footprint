@@ -63,6 +63,8 @@ fileignoreconfig:
   checksum: f871acadea5dcfd8967d974a2defcdc790df82d18ae4473a89c230fe9961f2d5
 - filename: server/src/application/GCPAccount.ts
   checksum: 0aa3c4064e5899324fa7d7f6053c28ab474a320fbdc3656311ebe0eb27fff1c5
+- filename: server/src/domain/FootprintEstimationConstants.ts
+  checksum: a14e4a0f8d25b2200bfcfa05149251990d8932287930617ec48ca8e400f18c4e
 - filename: server/src/services/aws/CostAndUsageReportsRow.ts
   checksum: 4ab1623286ee10e3dbcbbc7be6c02d8ab24e26b943073d42f1e48969fca94be0
 - filename: server/src/view/api.ts
@@ -78,4 +80,4 @@ fileignoreconfig:
 - filename: server/test/unit/services/aws/Lambda.test.ts
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
-  checksum: b7f433ecd0681bf46e2a8dabe50041110fffc47bce882fa65341f5635d9e4f0c
+  checksum: 8c55444528333620809bc7c0deaba8cd2d874dc963e6e687f89dfe2dca02901d

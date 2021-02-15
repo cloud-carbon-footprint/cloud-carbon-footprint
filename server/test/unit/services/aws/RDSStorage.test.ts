@@ -205,10 +205,7 @@ describe('RDSStorage', () => {
     )
 
     const rdsService = new RDSStorage(getServiceWrapper())
-    const ssdStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
-      CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-    )
+    const ssdStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
@@ -230,10 +227,7 @@ describe('RDSStorage', () => {
     )
 
     const rdsService = new RDSStorage(getServiceWrapper())
-    const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
-      CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-    )
+    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
 
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 

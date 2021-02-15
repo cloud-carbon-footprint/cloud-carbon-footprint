@@ -69,10 +69,7 @@ describe('StorageService', () => {
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(
-          CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
-          CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-        ).estimate(
+        new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT).estimate(
           [
             {
               timestamp: date,
@@ -102,10 +99,7 @@ describe('StorageService', () => {
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(
-          CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
-          CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-        ).estimate(
+        new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT).estimate(
           [
             {
               timestamp: date,

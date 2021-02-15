@@ -4,7 +4,6 @@
 
 import { StorageEstimator } from '@domain/StorageEstimator'
 import FootprintEstimate from '@domain/FootprintEstimate'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { AWS_REGIONS } from '@services/aws/AWSRegions'
 
 describe('StorageEstimator', () => {
@@ -12,10 +11,7 @@ describe('StorageEstimator', () => {
   const HDD_COEFFICIENT = 0.67
 
   describe('estimating a single SSD result', () => {
-    const estimator: StorageEstimator = new StorageEstimator(
-      SSD_COEFFICIENT,
-      CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-    )
+    const estimator: StorageEstimator = new StorageEstimator(SSD_COEFFICIENT)
 
     const results: FootprintEstimate[] = estimator.estimate(
       [
@@ -46,10 +42,7 @@ describe('StorageEstimator', () => {
   })
 
   describe('estimating a single HDD result', () => {
-    const estimator: StorageEstimator = new StorageEstimator(
-      HDD_COEFFICIENT,
-      CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-    )
+    const estimator: StorageEstimator = new StorageEstimator(HDD_COEFFICIENT)
 
     const results: FootprintEstimate[] = estimator.estimate(
       [
@@ -81,10 +74,7 @@ describe('StorageEstimator', () => {
 
   describe('estimating multiple results', () => {
     it('provides one result for each SSD input', () => {
-      const estimator: StorageEstimator = new StorageEstimator(
-        SSD_COEFFICIENT,
-        CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-      )
+      const estimator: StorageEstimator = new StorageEstimator(SSD_COEFFICIENT)
 
       const results = estimator.estimate(
         [
@@ -116,10 +106,7 @@ describe('StorageEstimator', () => {
     })
 
     it('provides one result for each HDD input', () => {
-      const estimator: StorageEstimator = new StorageEstimator(
-        HDD_COEFFICIENT,
-        CLOUD_CONSTANTS.AWS.POWER_USAGE_EFFECTIVENESS,
-      )
+      const estimator: StorageEstimator = new StorageEstimator(HDD_COEFFICIENT)
 
       const results = estimator.estimate(
         [

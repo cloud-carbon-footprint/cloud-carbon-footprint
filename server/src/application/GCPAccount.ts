@@ -43,8 +43,8 @@ export default class GCPAccount extends CloudProviderAccount {
   getDataFromBillingExportTable(startDate: Date, endDate: Date) {
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT, CLOUD_CONSTANTS.GCP.POWER_USAGE_EFFECTIVENESS),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new BigQuery({ credentials: this.credentials, projectId: this.projectId }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)
