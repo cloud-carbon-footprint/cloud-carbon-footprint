@@ -25,7 +25,10 @@ const NoDataPage = (props: { isTop: boolean }): ReactElement => {
         color: '#b0bec5',
       },
       smallText: {
-        fontSize: '15px',
+        fontSize: '17px',
+      },
+      addSpacing: {
+        marginTop: '50px',
       },
     }
   })
@@ -37,7 +40,7 @@ const NoDataPage = (props: { isTop: boolean }): ReactElement => {
         <Grid container>
           <Grid item xs={12}>
             {props.isTop ? <img src={shruggingCloud} /> : <img src={emptyStateIcon} />}
-            <div>There's no data to display!</div>
+            <div className={classes.addSpacing}>There's no data to display!</div>
             <div>Expand your search parameters to get started.</div>
             {props.isTop && (
               <div className={classes.smallText}>(Try adding accounts, services or expanding the date range)</div>

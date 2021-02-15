@@ -20,6 +20,7 @@ import AccountFilter from './filters/AccountFilter'
 import config from '../ConfigLoader'
 import { useFilterDataFromEstimates } from './transformData'
 import { FilterResultResponse } from '../models/types'
+import NoDataPage from './NoDataPage'
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
 
@@ -52,6 +53,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(PADDING_LOADING),
     fontSize: '24px',
   },
+  noData: {
+    height: '500px',
+    fontWeight: 900,
+    fontSize: '24px',
+  },
 }))
 
 export default function CloudCarbonContainer(): ReactElement {
@@ -68,7 +74,6 @@ export default function CloudCarbonContainer(): ReactElement {
     filteredDataResults = useFilterDataService()
   }
   const { filteredData, filters, setFilters } = useFilters(data, filteredDataResults)
-
   return loading ? (
     <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
       <CircularProgress size={100} />
@@ -99,7 +104,14 @@ export default function CloudCarbonContainer(): ReactElement {
           <Grid item xs={12}>
             <Card style={{ width: '100%', height: '100%' }}>
               <Box padding={3} paddingRight={4}>
-                <ApexLineChart data={filteredData} />
+                {filteredData.length ? (
+                  <ApexLineChart data={filteredData} />
+                ) : (
+                  <div className={classes.noData}>
+                    <p>Cloud Usage</p>
+                    <NoDataPage isTop={true} />
+                  </div>
+                )}
               </Box>
             </Card>
           </Grid>

@@ -4,168 +4,170 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
 <div
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
 >
-  <div
-    className="MuiCardContent-root makeStyles-topContainer-5"
-  >
-    <p
-      className="MuiTypography-root makeStyles-title-2 MuiTypography-body1 MuiTypography-gutterBottom"
-    >
-      Your cumulative emissions are
-    </p>
-    <p
-      className="MuiTypography-root makeStyles-metricOne-8 MuiTypography-h4"
-      data-testid="co2"
-    >
-      7
-       metric tons CO2e
-    </p>
-    <p
-      className="MuiTypography-root makeStyles-posOne-3 MuiTypography-body1"
-    >
-      that is equivalent to
-    </p>
-  </div>
-  <div
-    className="MuiCardContent-root makeStyles-bottomContainer-6"
-  >
+  <div>
     <div
-      className="MuiCardContent-root"
+      className="MuiCardContent-root makeStyles-topContainer-5"
     >
-      <svg
-        aria-hidden={true}
-        className="MuiSvgIcon-root makeStyles-icon-10"
-        data-testid="milesIcon"
-        focusable="false"
-        viewBox="0 0 24 24"
+      <p
+        className="MuiTypography-root makeStyles-title-2 MuiTypography-body1 MuiTypography-gutterBottom"
       >
-        <path
-          d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"
-        />
-      </svg>
+        Your cumulative emissions are
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-metricOne-8 MuiTypography-h4"
+        data-testid="co2"
+      >
+        7
+         metric tons CO2e
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-posOne-3 MuiTypography-body1"
+      >
+        that is equivalent to
+      </p>
     </div>
     <div
-      className="MuiCardContent-root"
+      className="MuiCardContent-root makeStyles-bottomContainer-6"
     >
-      <p
-        className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
+      <div
+        className="MuiCardContent-root"
       >
-        greenhouse gas emissions from
-      </p>
-      <p
-        className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
-        data-testid="comparison"
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-icon-10"
+          data-testid="milesIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"
+          />
+        </svg>
+      </div>
+      <div
+        className="MuiCardContent-root"
       >
-        17,370
-      </p>
-      <p
-        className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
-      >
-        miles driven on average
-      </p>
+        <p
+          className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
+        >
+          greenhouse gas emissions from
+        </p>
+        <p
+          className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
+          data-testid="comparison"
+        >
+          17,370
+        </p>
+        <p
+          className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
+        >
+          miles driven on average
+        </p>
+      </div>
     </div>
+    <div
+      className="MuiCardActions-root makeStyles-buttonContainer-7 MuiCardActions-spacing"
+    >
+      <button
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiButton-label"
+        >
+          Miles
+        </span>
+      </button>
+      <button
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiButton-label"
+        >
+          Gas
+        </span>
+      </button>
+      <button
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiButton-label"
+        >
+          Trees
+        </span>
+      </button>
+    </div>
+    <p
+      className="MuiTypography-root makeStyles-source-11 MuiTypography-body1"
+      data-testid="epa-source"
+    >
+      Source:
+       
+      <a
+        className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-sourceLink-12 MuiTypography-colorPrimary"
+        href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        EPA Equivalencies Calculator 
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-openIcon-13 MuiSvgIcon-fontSizeSmall"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+          />
+        </svg>
+      </a>
+    </p>
   </div>
-  <div
-    className="MuiCardActions-root makeStyles-buttonContainer-7 MuiCardActions-spacing"
-  >
-    <button
-      className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
-      disabled={false}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onDragLeave={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      onKeyUp={[Function]}
-      onMouseDown={[Function]}
-      onMouseLeave={[Function]}
-      onMouseUp={[Function]}
-      onTouchEnd={[Function]}
-      onTouchMove={[Function]}
-      onTouchStart={[Function]}
-      tabIndex={0}
-      type="button"
-    >
-      <span
-        className="MuiButton-label"
-      >
-        Miles
-      </span>
-    </button>
-    <button
-      className="MuiButtonBase-root MuiButton-root MuiButton-contained"
-      disabled={false}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onDragLeave={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      onKeyUp={[Function]}
-      onMouseDown={[Function]}
-      onMouseLeave={[Function]}
-      onMouseUp={[Function]}
-      onTouchEnd={[Function]}
-      onTouchMove={[Function]}
-      onTouchStart={[Function]}
-      tabIndex={0}
-      type="button"
-    >
-      <span
-        className="MuiButton-label"
-      >
-        Gas
-      </span>
-    </button>
-    <button
-      className="MuiButtonBase-root MuiButton-root MuiButton-contained"
-      disabled={false}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onDragLeave={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      onKeyUp={[Function]}
-      onMouseDown={[Function]}
-      onMouseLeave={[Function]}
-      onMouseUp={[Function]}
-      onTouchEnd={[Function]}
-      onTouchMove={[Function]}
-      onTouchStart={[Function]}
-      tabIndex={0}
-      type="button"
-    >
-      <span
-        className="MuiButton-label"
-      >
-        Trees
-      </span>
-    </button>
-  </div>
-  <p
-    className="MuiTypography-root makeStyles-source-11 MuiTypography-body1"
-    data-testid="epa-source"
-  >
-    Source:
-     
-    <a
-      className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-sourceLink-12 MuiTypography-colorPrimary"
-      href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
-      onBlur={[Function]}
-      onFocus={[Function]}
-      rel="noopener"
-      target="_blank"
-    >
-      EPA Equivalencies Calculator 
-      <svg
-        aria-hidden={true}
-        className="MuiSvgIcon-root makeStyles-openIcon-13 MuiSvgIcon-fontSizeSmall"
-        focusable="false"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
-        />
-      </svg>
-    </a>
-  </p>
 </div>
 `;

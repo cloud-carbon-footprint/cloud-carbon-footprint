@@ -8,6 +8,7 @@ import { Card, CardContent, CardActions, Typography, Button, Link } from '@mater
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
 import { EstimationResult } from '../models/types'
+import NoDataPage from './NoDataPage'
 
 type Selection = 'miles' | 'gas' | 'trees'
 
@@ -80,6 +81,9 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
     openIcon: {
       marginLeft: '8px',
     },
+    noData: {
+      marginTop: '75px',
+    },
   }
 })
 
@@ -129,66 +133,81 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
 
   return (
     <Card className={classes.root}>
-      <CardContent className={classes.topContainer}>
-        <Typography className={classes.title} gutterBottom>
-          Your cumulative emissions are
-        </Typography>
-        <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
-          {formatNumber(mtSum)} metric tons CO2e
-        </Typography>
-        <Typography className={classes.posOne}>that is equivalent to</Typography>
-      </CardContent>
-      <CardContent className={classes.bottomContainer}>
-        <CardContent>{comparisons[selection].icon}</CardContent>
-        <CardContent>
-          <Typography className={classes.posTwo} variant="h5" component="p">
-            {comparisons[selection].textOne}
+      {mtSum ? (
+        <div>
+          <CardContent className={classes.topContainer}>
+            <Typography className={classes.title} gutterBottom>
+              Your cumulative emissions are
+            </Typography>
+            <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
+              {formatNumber(mtSum)} metric tons CO2e
+            </Typography>
+            <Typography className={classes.posOne}>that is equivalent to</Typography>
+          </CardContent>
+          <CardContent className={classes.bottomContainer}>
+            <CardContent>{comparisons[selection].icon}</CardContent>
+            <CardContent>
+              <Typography className={classes.posTwo} variant="h5" component="p">
+                {comparisons[selection].textOne}
+              </Typography>
+              <Typography className={classes.metricTwo} variant="h3" component="p" data-testid="comparison">
+                {formatNumber(comparisons[selection].total)}
+              </Typography>
+              <Typography className={classes.posTwo} variant="h5" component="p">
+                {comparisons[selection].textTwo}
+              </Typography>
+            </CardContent>
+          </CardContent>
+          <CardActions className={classes.buttonContainer}>
+            <Button
+              variant="contained"
+              color={updateButtonColor('miles')}
+              size="medium"
+              onClick={() => updateSelection('miles')}
+            >
+              Miles
+            </Button>
+            <Button
+              variant="contained"
+              color={updateButtonColor('gas')}
+              size="medium"
+              onClick={() => updateSelection('gas')}
+            >
+              Gas
+            </Button>
+            <Button
+              variant="contained"
+              color={updateButtonColor('trees')}
+              size="medium"
+              onClick={() => updateSelection('trees')}
+            >
+              Trees
+            </Button>
+          </CardActions>
+          <Typography className={classes.source} data-testid="epa-source">
+            Source:{' '}
+            <Link
+              href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+              target="_blank"
+              rel="noopener"
+              className={classes.sourceLink}
+            >
+              EPA Equivalencies Calculator <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
+            </Link>
           </Typography>
-          <Typography className={classes.metricTwo} variant="h3" component="p" data-testid="comparison">
-            {formatNumber(comparisons[selection].total)}
-          </Typography>
-          <Typography className={classes.posTwo} variant="h5" component="p">
-            {comparisons[selection].textTwo}
-          </Typography>
-        </CardContent>
-      </CardContent>
-      <CardActions className={classes.buttonContainer}>
-        <Button
-          variant="contained"
-          color={updateButtonColor('miles')}
-          size="medium"
-          onClick={() => updateSelection('miles')}
-        >
-          Miles
-        </Button>
-        <Button
-          variant="contained"
-          color={updateButtonColor('gas')}
-          size="medium"
-          onClick={() => updateSelection('gas')}
-        >
-          Gas
-        </Button>
-        <Button
-          variant="contained"
-          color={updateButtonColor('trees')}
-          size="medium"
-          onClick={() => updateSelection('trees')}
-        >
-          Trees
-        </Button>
-      </CardActions>
-      <Typography className={classes.source} data-testid="epa-source">
-        Source:{' '}
-        <Link
-          href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
-          target="_blank"
-          rel="noopener"
-          className={classes.sourceLink}
-        >
-          EPA Equivalencies Calculator <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
-        </Link>
-      </Typography>
+        </div>
+      ) : (
+        <div>
+          <CardContent className={classes.topContainer}>
+            <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
+              Emissions comparison
+            </Typography>
+          </CardContent>
+          <div className={classes.noData}>
+            <NoDataPage isTop={false} />
+          </div>
+        </div>
+      )}
     </Card>
   )
 }

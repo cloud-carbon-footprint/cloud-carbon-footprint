@@ -9,6 +9,7 @@ import Chart from 'react-apexcharts'
 import { sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
 import { Page, Pagination } from './Pagination'
+import NoDataPage from '../NoDataPage'
 
 const mapToRange = (value: number, in_min: number, in_max: number, out_min: number, out_max: number) => {
   return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
@@ -159,7 +160,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       {pageData && pageData.data && pageData.data.length ? (
         <Chart options={options} series={options.series} type="bar" height={options.height} />
       ) : (
-        <div style={{ textAlign: 'center' }}>Select a cloud provider.</div>
+        <NoDataPage isTop={false} />
       )}
       <Pagination data={mappedDataEntries} pageSize={pageSize} handlePage={handlePage} />
     </div>

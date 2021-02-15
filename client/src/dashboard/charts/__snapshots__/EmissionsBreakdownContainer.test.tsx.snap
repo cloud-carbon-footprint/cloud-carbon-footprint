@@ -68,16 +68,35 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
       }
     >
       <div
-        style={
-          Object {
-            "textAlign": "center",
-          }
-        }
+        className="MuiPaper-root MuiCard-root makeStyles-root-6 MuiPaper-elevation1 MuiPaper-rounded"
       >
-        Select a cloud provider.
+        <div
+          className="MuiBox-root MuiBox-root-9"
+          data-testid="no-data-page"
+        >
+          <div
+            className="MuiGrid-root MuiGrid-container"
+          >
+            <div
+              className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+            >
+              <img
+                src="V1Empty-state-generic-icon.svg"
+              />
+              <div
+                className="makeStyles-addSpacing-8"
+              >
+                There's no data to display!
+              </div>
+              <div>
+                Expand your search parameters to get started.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        className="makeStyles-paginationContainer-6"
+        className="makeStyles-paginationContainer-10"
       >
         <span
           style={
