@@ -9,9 +9,9 @@
   
 * [Options for cloud usage and cost data source](#options-for-cloud-usage-and-cost-data-source)
     
-    * [1. Using Billing Data for Cloud Usage (Holistic)](#1.-using-billing-bata-for-cloud-usage-(holistic))
+    * [1. Using Billing Data for Cloud Usage (Holistic)](#1-using-billing-data-for-cloud-usage-holistic)
     
-    * [2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)](#2.-using-cloud-usage-apis-for-cloud-usage-(higher-accuracy))
+    * [2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)](#2-using-cloud-usage-apis-for-cloud-usage-higher-accuracy)
 
 * [Energy Estimate (Watt-Hours)](#energy-estimate-watt-hours)
 
