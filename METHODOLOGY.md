@@ -25,9 +25,9 @@
 
 * [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
 
-* [Appendix I: Processor lists](#appendix-i:-aws-&-gcp-processor-list)
+* [Appendix I: Processor lists](#appendix-i-aws--gcp-processor-list)
 
-* [Appendix II: Grid emissions factors](#appendix-ii:-grid-emissions-factors)
+* [Appendix II: Grid emissions factors](#appendix-ii-grid-emissions-factors)
 
 
 ## Summary
