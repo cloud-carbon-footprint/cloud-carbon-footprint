@@ -60,7 +60,7 @@ organization to view and take action. It currently supports AWS and Google Cloud
 Our approach builds upon 
 [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/) 
 (cloud energy conversion factors). Like Etsy, we currently estimate CO2e emissions for cloud compute and storage 
-services. Networking and memory services usage are not estimated yet due to their comparatively small footprint and 
+services. Networking and memory services usage are not estimated yet due to their arguably comparatively small footprint and 
 current lack of available energy conversion factors. We similarly use point estimates without confidence intervals due 
 to the experimental nature of the project, which are not meant as a replacement for data from cloud providers and we 
 cannot guarantee their accuracy.  We encourage and welcome any improvements and extensions to both the methodology and 
@@ -70,7 +70,7 @@ software.
 
 ### A note on our approach
 
-Our application is designed to be a starting point which can be extended and customized for individual organization’s 
+Our application is designed to be a starting point which can be extended and customized for individual organizations' 
 needs. Every organization will have a different cloud setup and tech stack, so we are using domain driven design to 
 separate the estimation logic from both the data input source (e.g. cloud APIs, on-premise or co-located data centers) 
 and the output source (e.g front-end dashboard, CSV, etc) so new inputs and outputs can easily be added. 
@@ -79,13 +79,13 @@ and the output source (e.g front-end dashboard, CSV, etc) so new inputs and outp
 We support two approaches to gathering usage and cost data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
 
 #### 1. Using Billing Data for Cloud Usage (Holistic)
-By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Billing Export Table using BigQuery. This pulls usage and cost data from all lLinked aAccounts in your AWS or GCP Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
+By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Billing Export Table using BigQuery. This pulls usage and cost data from all linked accounts in your AWS or GCP Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
 
 Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute and Storage usage types are fed into the estimation formula. You can see our classifications of these usage types in server/src/services/aws/CostAndUsageTypes.ts for AWS and server/src/services/gcp/BillingExportTypes.ts for GCP. 
 
 The process by which we classified the usage types is:
-Consider the pricing (AWS) or usage (GCP) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage. Most other units are ignored. 
-We then further validate whether a line item is Compute or Storage by looking at the more detailed usage type. E.g. if it contains content like “RAM” or “Networking”, it would be ignored.
+1. Consider the pricing (AWS) or usage (GCP) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage. Most other units are ignored. 
+1. We then further validate whether a line item is Compute or Storage by looking at the more detailed usage type. E.g. if it contains content like “RAM” or “Networking”, it would be ignored.
 
 You can see more details about this logic in server/src/services/aws/CostAndUsageReports.ts AWS and server/src/services/gcp/BillingExportTable.ts for GCP. We welcome additions, improvements or suggested changes to these classifications or the process.
 
@@ -99,17 +99,17 @@ When calculating total wattHours for AWS Lambda service using Billing Data (Holi
 This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API to pull usage and cost data. We achieve this by looping through the accounts and then making the API calls on each account for the regions and services set in the application configuration. We retrieve an hourly granularity for usage and daily granularity for cost. This approach is arguably more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application.
 
 The cloud providers and services currently supported with this approach are: 
-AWS 
-EC2 (compute)
-Lambda (compute)
-EBS (storage)
-RDS (compute & storage)
-S3 (storage)
-Elasticache (compute)
-GCP 
-Compute Engine (compute)
 
-We started with AWS because it is the largest cloud provider by market share. We chose these services because they are some of the most commonly used services, and a number of other services are abstractions of these. For example, Elastic Container Service (ECS) and Elastic Kubernetes Services (EKS) are implemented with EC2 instances and EBS volumes, so this usage will also be shown (however currently not labelled separately). 
+AWS 
+* EC2 (compute)
+* Lambda (compute)
+* EBS (storage)
+* RDS (compute & storage)
+* S3 (storage)
+* Elasticache (compute)  
+
+GCP 
+* Compute Engine (compute)
 
 
 ### Energy Estimate (Watt-Hours) 
@@ -146,13 +146,13 @@ centers are.
 
 Here are the input data sources for the variables in the formula, and context on where we have sourced them:
 
-* Min Watts (constant) - This is dependent on the CPU processor used by the Cloud provider to host the virtual machines. 
+* **Min Watts** (constant) - This is dependent on the CPU processor used by the Cloud provider to host the virtual machines. 
 Based on publicly available information about which CPUs cloud providers use, we looked up the 
 [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database to determine this constant.
-* Max Watts (constant) - same as Min Watts, above. 
-* Avg vCPU Utilization (variable) - this pulled from the cloud provider APIs (see above). 
-* vCPU Hours (variable) - this is pulled from the cloud provider APIs (see above).
-* PUE (constant) - PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning
+* **Max Watts** (constant) - Same as Min Watts, above. 
+* **Avg vCPU** Utilization (variable or constant) - This is either pulled from the cloud usage APIs or is a constant when using billing data. 
+* **vCPU Hours** (variable) - This is pulled from the cloud usage APIs or billing data .
+* **PUE** (constant) - PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning
  all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on 
  publicly available information provided by the cloud providers. In the case of GCP, they 
  [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a conservative guess 
@@ -166,12 +166,12 @@ queries an AWS Account.
 
 Here are the compute constants used for each cloud provider: 
 
-AWS:
+**AWS:**
 * Min Watts: 0.59
 * Max Matts: 3.5
 * PUE: 1.2
 
-GCP:
+**GCP:**
 * Min Watts: 0.58
 * Max Watts: 3.54
 * PUE: 1.11
@@ -247,12 +247,12 @@ In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy 
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more 
-adequately reflect. Outside the US, we carboonfootprint.com’s [country specific grid emissions factors 
-report](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf).
+adequately reflect. Outside the US, we use carbonfootprint.com’s [country specific grid emissions factors 
+report](https://www.carbonfootprint.com/).
 In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions 
 factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from this 
-[energytrend.com article](https://www.energytrend.com/news/20180712-12383.html) as neither are it is not included in 
-the carbonfootprint.com report. You can see the full list of emissions factors in Appendix II below. 
+[energytrend.com article](https://www.energytrend.com/news/20180712-12383.html) as neither are included in 
+the carbonfootprint.com's report. You can see the full list of emissions factors in Appendix II below. 
 
 We understand this is a rough estimated conversion as these are only averages over a given year that is pre-2020, and 
 they also don’t take into account time of day. We welcome improvements to this, for example [electrictyMap 
