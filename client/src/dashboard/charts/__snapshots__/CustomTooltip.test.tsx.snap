@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom Tooltip renders data in tooltip 1`] = `
+<div
+  style={
+    Object {
+      "padding": "10px",
+    }
+  }
+>
+  <div>
+    <b>
+      December 02
+    </b>
+  </div>
+  <div>
+    20
+     mt CO2e*
+  </div>
+  <div>
+    200
+     watt hrs
+  </div>
+  <div>
+    $
+    10
+     cost
+  </div>
+</div>
+`;

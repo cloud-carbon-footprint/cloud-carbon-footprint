@@ -19,34 +19,52 @@ const startDate = moment.utc('2020-08-26')
 const endDate = moment.utc('2020-08-27')
 const region = 'us-east-2'
 
-test('should send request to /api endpoint', async () => {
-  axiosMocked.get.mockResolvedValue({ data: ['data'] })
+describe('RemoteServiceHook', () => {
+  test('should send request to /api endpoint', async () => {
+    axiosMocked.get.mockResolvedValue({ data: ['data'] })
 
-  const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
+    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
 
-  await waitForNextUpdate()
+    await waitForNextUpdate()
 
-  expect(result.current).toEqual({
-    data: ['data'],
-    loading: false,
+    expect(result.current).toEqual({
+      data: ['data'],
+      loading: false,
+    })
+    expect(axiosMocked.get).toBeCalledWith('/api/footprint', {
+      params: { end: '2020-08-27', start: '2020-08-26', region: region },
+    })
   })
-  expect(axiosMocked.get).toBeCalledWith('/api/footprint', {
-    params: { end: '2020-08-27', start: '2020-08-26', region: region },
+
+  test('should notify of custom error response', async () => {
+    const response = { status: 500, statusText: 'Internal Service Error' }
+    axiosMocked.get.mockRejectedValue({ response })
+
+    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
+
+    await waitForNextUpdate()
+
+    expect(mockPush).toBeCalledWith('/error', response)
+
+    expect(result.current).toEqual({
+      data: [],
+      loading: false,
+    })
   })
-})
 
-test('should notify of erronous response', async () => {
-  const response = { status: 500, statusText: 'Internal Service Error' }
-  axiosMocked.get.mockRejectedValue({ response })
+  test('should notify of default error response', async () => {
+    const defaultResponse = { status: '520', statusText: 'Unknown Error' }
+    axiosMocked.get.mockRejectedValue('some error')
 
-  const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
+    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
 
-  await waitForNextUpdate()
+    await waitForNextUpdate()
 
-  expect(mockPush).toBeCalledWith('/error', response)
+    expect(mockPush).toBeCalledWith('/error', defaultResponse)
 
-  expect(result.current).toEqual({
-    data: [],
-    loading: false,
+    expect(result.current).toEqual({
+      data: [],
+      loading: false,
+    })
   })
 })

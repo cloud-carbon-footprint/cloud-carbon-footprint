@@ -66,7 +66,7 @@ const ErrorPage = (): ReactElement => {
     <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
       <CloudOffIcon className={classes.cloudIcon} />
       <Grid item className={classes.gridPlacement} xs={12}>
-        <div>
+        <div data-testid="error-page">
           {message ? (
             <h1 className={classes.errorStatus}>{message}</h1>
           ) : (
