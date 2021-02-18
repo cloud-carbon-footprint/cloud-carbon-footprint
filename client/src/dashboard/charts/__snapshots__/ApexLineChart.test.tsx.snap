@@ -34,6 +34,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "grid": Object {
         "padding": Object {
           "bottom": 15,
+          "right": 20,
         },
       },
       "height": "500px",
@@ -70,7 +71,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       },
       "xaxis": Object {
         "title": Object {
-          "offsetY": 8,
+          "offsetY": 18,
           "style": Object {
             "fontSize": "15px",
           },
@@ -96,6 +97,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "axisTicks": Object {
+            "offsetX": -30,
             "show": true,
           },
           "decimalsInFloat": 2,
@@ -114,9 +116,11 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         Object {
           "axisBorder": Object {
             "color": undefined,
+            "offsetX": -5,
             "show": true,
           },
           "axisTicks": Object {
+            "offsetX": -30,
             "show": true,
           },
           "decimalsInFloat": 2,
@@ -124,7 +128,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           "opposite": true,
           "showAlways": false,
           "title": Object {
-            "offsetX": -8,
+            "offsetX": 6,
             "style": Object {
               "color": undefined,
               "fontSize": "15px",

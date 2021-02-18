@@ -199,7 +199,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
       type: 'datetime',
       title: {
         text: '',
-        offsetY: 8,
+        offsetY: 18,
         style: {
           fontSize: '15px',
         },
@@ -235,6 +235,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         },
         axisTicks: {
           show: true,
+          offsetX: -30,
         },
         showAlways: false,
       },
@@ -242,7 +243,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         max: 1.1 * maxCost,
         title: {
           text: 'Cost ($)',
-          offsetX: -8,
+          offsetX: 6,
           style: {
             fontSize: '15px',
             color: green,
@@ -253,9 +254,11 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         axisBorder: {
           show: true,
           color: green,
+          offsetX: -5,
         },
         axisTicks: {
           show: true,
+          offsetX: -30,
         },
         showAlways: false,
       },
@@ -263,6 +266,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     grid: {
       padding: {
         bottom: +15,
+        right: +20,
       },
     },
   }
