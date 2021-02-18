@@ -16,7 +16,7 @@ import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 import Logger from '@services/Logger'
 
 export default class EBS implements ICloudService {
-  serviceName = 'ebs'
+  serviceName = 'EBS'
   ebsLogger: Logger
 
   constructor(private serviceWrapper: ServiceWrapper) {

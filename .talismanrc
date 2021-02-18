@@ -67,6 +67,8 @@ fileignoreconfig:
   checksum: 34a0218176523ea99b34dfe3eb680cf2e18024ac34fdaa4ee6fa9d68b600e5fc
 - filename: server/src/services/aws/CostAndUsageReportsRow.ts
   checksum: 4ab1623286ee10e3dbcbbc7be6c02d8ab24e26b943073d42f1e48969fca94be0
+- filename: server/src/view/EmissionsByDayAndServiceTable.ts
+  checksum: c39520da119aa85be40ddcdd8a86edfb3dcc3a0c4281f743e9b610a07fda05bd
 - filename: server/src/view/api.ts
   checksum: 1f339a57a956e0745bc22a3ba6b25b4aeb711d4858101f34d077059db1924908
 - filename: server/test/fixtures/bigQuery.fixtures.ts
@@ -81,3 +83,5 @@ fileignoreconfig:
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
   checksum: 8c55444528333620809bc7c0deaba8cd2d874dc963e6e687f89dfe2dca02901d
+- filename: server/test/unit/view/EmissionsTableUtils.test.ts
+  checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545

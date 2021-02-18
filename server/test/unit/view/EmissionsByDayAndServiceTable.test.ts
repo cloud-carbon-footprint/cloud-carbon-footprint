@@ -18,7 +18,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'ebs',
+          serviceName: 'EBS',
           wattHours: 1,
           co2e: 1,
           cost: 7,
@@ -28,7 +28,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 's3',
+          serviceName: 'S3',
           wattHours: 2,
           co2e: 2,
           cost: 7,
@@ -38,7 +38,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'ec2',
+          serviceName: 'EC2',
           wattHours: 3,
           co2e: 3,
           cost: 7,
@@ -48,7 +48,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'elasticache',
+          serviceName: 'ElastiCache',
           wattHours: 4,
           co2e: 4,
           cost: 7,
@@ -58,7 +58,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'rds',
+          serviceName: 'RDS',
           wattHours: 4,
           co2e: 4,
           cost: 7,
@@ -68,7 +68,17 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'lambda',
+          serviceName: 'Lambda',
+          wattHours: 1,
+          co2e: 1,
+          cost: 7,
+          region: region,
+          usesAverageCPUConstant: false,
+        },
+        {
+          cloudProvider: 'gcp',
+          accountName: 'test account',
+          serviceName: 'ComputeEngine',
           wattHours: 1,
           co2e: 1,
           cost: 7,
@@ -83,7 +93,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'ebs',
+          serviceName: 'EBS',
           wattHours: 7,
           co2e: 8,
           cost: 7,
@@ -93,7 +103,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 's3',
+          serviceName: 'S3',
           wattHours: 55,
           co2e: 1,
           cost: 7,
@@ -103,7 +113,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'ec2',
+          serviceName: 'EC2',
           wattHours: 90,
           co2e: 77,
           cost: 7,
@@ -113,7 +123,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'elasticache',
+          serviceName: 'ElastiCache',
           wattHours: 747,
           co2e: 787,
           cost: 7,
@@ -123,7 +133,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'rds',
+          serviceName: 'RDS',
           wattHours: 747,
           co2e: 787,
           cost: 7,
@@ -133,7 +143,7 @@ describe('EmissionsTable', () => {
         {
           cloudProvider: 'aws',
           accountName: 'test account',
-          serviceName: 'lambda',
+          serviceName: 'Lambda',
           wattHours: 300,
           co2e: 300,
           cost: 7,
@@ -204,10 +214,10 @@ describe('EmissionsTable', () => {
         '4.000000',
         '1.00',
         '1.000000',
-        '0.00',
-        '0.000000',
-        '15.00',
-        '15.000000',
+        '1.00',
+        '1.000000',
+        '16.00',
+        '16.000000',
       ],
       [
         'Total',
@@ -223,10 +233,10 @@ describe('EmissionsTable', () => {
         '791.000000',
         '301.00',
         '301.000000',
-        '0.00',
-        '0.000000',
-        '1961.00',
-        '1975.000000',
+        '1.00',
+        '1.000000',
+        '1962.00',
+        '1976.000000',
       ],
     ])
   })

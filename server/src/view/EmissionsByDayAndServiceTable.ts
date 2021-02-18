@@ -3,8 +3,7 @@
  */
 
 import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from '@view/EmissionsTableUtils'
-import config from '@application/Config'
-import { pluck } from 'ramda'
+import { pluck, uniq } from 'ramda'
 import moment from 'moment'
 import { EstimationResult } from '@application/EstimationResult'
 
@@ -16,10 +15,17 @@ const displayService = (totals: Totals, serviceName: string) => [
 
 export default function EmissionsByDayAndServiceTable(
   estimationResults: EstimationResult[],
-  serviceNames = pluck('key', [...config.AWS.CURRENT_SERVICES, ...config.GCP.CURRENT_SERVICES]),
 ): { table: string[][]; colWidths: number[] } {
   const headers = ['Date (UTC)']
   const colWidths: number[] = [15]
+
+  const serviceNames = uniq(
+    estimationResults
+      .map((estimation) => {
+        return pluck('serviceName', estimation.serviceEstimates)
+      })
+      .flat(),
+  )
 
   serviceNames.forEach((serviceName) => {
     headers.push(
@@ -34,12 +40,12 @@ export default function EmissionsByDayAndServiceTable(
 
   const table: string[][] = [headers]
 
-  const grandTotals: Totals = initialTotals()
+  const grandTotals: Totals = initialTotals(serviceNames)
 
   estimationResults.sort((a, b) => (a.timestamp < b.timestamp ? -1 : 1))
 
   estimationResults.forEach((estimationResult) => {
-    const subTotals: Totals = initialTotals()
+    const subTotals: Totals = initialTotals(serviceNames)
 
     estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
@@ -52,10 +58,10 @@ export default function EmissionsByDayAndServiceTable(
       subTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
       subTotals['total'].co2e += serviceEstimate.co2e
     })
-
+    const subTotalsServiceNames = Object.keys(subTotals).filter((total) => total !== 'total')
     table.push([
       displayDate(estimationResult.timestamp),
-      ...serviceNames.map((serviceName) => displayService(subTotals, serviceName)).flat(),
+      ...subTotalsServiceNames.map((serviceName) => displayService(subTotals, serviceName)).flat(),
       ...displayService(subTotals, 'total'),
     ])
   })

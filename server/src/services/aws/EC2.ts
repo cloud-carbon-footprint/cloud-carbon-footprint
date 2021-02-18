@@ -11,7 +11,7 @@ import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class EC2 extends ServiceWithCPUUtilization {
-  serviceName = 'ec2'
+  serviceName = 'EC2'
 
   constructor(private serviceWrapper: ServiceWrapper) {
     super()

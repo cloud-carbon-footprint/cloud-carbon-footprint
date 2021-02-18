@@ -10,7 +10,7 @@ import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export default class S3 extends HDDStorageService {
-  serviceName = 's3'
+  serviceName = 'S3'
 
   constructor(private readonly serviceWrapper: ServiceWrapper) {
     super()

@@ -11,7 +11,7 @@ import moment from 'moment'
 import { reduceBy, concat } from 'ramda'
 
 export default class RDS implements ICloudService {
-  serviceName = 'rds'
+  serviceName = 'RDS'
 
   constructor(private rdsComputeService: RDSComputeService, private rdsStorageService: RDSStorage) {}
 

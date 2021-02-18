@@ -11,7 +11,7 @@ import Cost from '@domain/Cost'
 import { getCostFromCostExplorer } from '@services/aws/CostMapper'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
-  serviceName = 'elasticache'
+  serviceName = 'ElastiCache'
 
   constructor(private readonly serviceWrapper: ServiceWrapper) {
     super()

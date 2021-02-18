@@ -14,7 +14,7 @@ import { GetQueryResultsResponse } from 'aws-sdk/clients/cloudwatchlogs'
 
 export default class Lambda implements ICloudService {
   private readonly LOG_GROUP_SIZE_REQUEST_LIMIT = 20
-  serviceName = 'lambda'
+  serviceName = 'Lambda'
 
   constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000, private readonly serviceWrapper: ServiceWrapper) {}
 

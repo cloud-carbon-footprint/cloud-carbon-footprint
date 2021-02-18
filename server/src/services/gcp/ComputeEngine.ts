@@ -15,7 +15,7 @@ import { v3 } from '@google-cloud/monitoring'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default class ComputeEngine extends ServiceWithCPUUtilization {
-  serviceName = 'computeEngine'
+  serviceName = 'ComputeEngine'
   computeEngineLogger: Logger
 
   constructor(private client: v3.MetricServiceClient) {
