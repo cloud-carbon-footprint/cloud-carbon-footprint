@@ -61,7 +61,7 @@
   "dependencies": {
     "@google-cloud/bigquery": "^5.5.0",
     "@google-cloud/logging-winston": "^4.0.0",
-    "@google-cloud/monitoring": "^2.1.2",
+    "@google-cloud/monitoring": "^2.2.0",
     "@types/cli-table": "^0.3.0",
     "@types/express": "^4.17.8",
     "@types/prompts": "^2.0.9",
