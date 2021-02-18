@@ -42,10 +42,10 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
   const pageSize = 10
   const minThreshold = 1
   const maxThreshold = 100
-  const mappedDataEntries: Entry[] = dataEntries.map((entry) => ({
-    x: entry.x,
-    y: mapToRange(entry.y, smallestCO2E, largestCO2E, minThreshold, maxThreshold),
-  }))
+  const mappedDataEntries: Entry[] = dataEntries.map((entry) => {
+    const yEntry = mapToRange(entry.y, smallestCO2E, largestCO2E, minThreshold, maxThreshold)
+    return { x: entry.x, y: isNaN(yEntry) ? maxThreshold : yEntry }
+  })
 
   const options = {
     series: [
