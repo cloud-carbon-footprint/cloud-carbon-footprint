@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
+    zIndex: theme.zIndex.drawer,
   },
   gridItemCards: {
     width: '50%',
