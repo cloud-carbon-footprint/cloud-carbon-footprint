@@ -12,7 +12,7 @@ fileignoreconfig:
 - filename: client/create_client_env_file.sh
   checksum: 0b64adef6103c7b0715083090ff2f79b2185ccb0d0d1b8d04c4ba8bbd8551327
 - filename: client/package-lock.json
-  checksum: 1f71ed3827acc0df240d0f56ae1a27dbca6901133448c38ed0dcb6c62326e2b9
+  checksum: 33ad38113d226573338581bfdf51f921999098cc3d6f7d8a0db65990227adfa1
 - filename: client/package.json
   checksum: 8ee8aefc687ac28a2c188c5ae6b80b7d9fe64ec3a8854397a914c2f1ce6bd30e
 - filename: client/sonar-project.properties
