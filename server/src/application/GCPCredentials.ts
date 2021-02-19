@@ -4,7 +4,7 @@
 
 import { AWSError, ChainableTemporaryCredentials, Credentials, WebIdentityCredentials } from 'aws-sdk'
 import { google } from 'googleapis'
-import { GoogleAuth, Compute, JWT, UserRefreshClient } from 'google-auth-library'
+import { GoogleAuth, JWT } from 'google-auth-library'
 
 export default class CredentialsForGCP extends Credentials {
   constructor(
@@ -43,14 +43,15 @@ export default class CredentialsForGCP extends Credentials {
     }
   }
 
-  // TODO -- add tests from this function and mock the AWS SDK responses.
+  // TODO -- add tests for this function and mock the AWS SDK responses.
   async getTokenId() {
     const auth = new GoogleAuth({
       scopes: 'https://www.googleapis.com/auth/cloud-platform',
     })
     const iamCredentials = google.iamcredentials('v1')
 
-    const authClient: Compute | JWT | UserRefreshClient = await auth.getClient()
+    // TODO -- replace any with proper types
+    const authClient: any = await auth.getClient()
     google.options({ auth: authClient })
 
     const projectId = await auth.getProjectId()

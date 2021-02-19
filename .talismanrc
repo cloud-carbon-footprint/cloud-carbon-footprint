@@ -12,7 +12,9 @@ fileignoreconfig:
 - filename: client/create_client_env_file.sh
   checksum: 0b64adef6103c7b0715083090ff2f79b2185ccb0d0d1b8d04c4ba8bbd8551327
 - filename: client/package-lock.json
-  checksum: e0e5f8f4838abf5a69535fe2ce719593a576731954fc376fc21d7643c8b2755a
+  checksum: 1f71ed3827acc0df240d0f56ae1a27dbca6901133448c38ed0dcb6c62326e2b9
+- filename: client/package.json
+  checksum: 8ee8aefc687ac28a2c188c5ae6b80b7d9fe64ec3a8854397a914c2f1ce6bd30e
 - filename: client/sonar-project.properties
   checksum: 493eae55f1a9c1670634aa7a726e1947d3b89606ea1f7c872a1c4aa9ddf01fc9
 - filename: client/src/Config.ts
@@ -56,7 +58,9 @@ fileignoreconfig:
 - filename: server/create_server_env_file.sh
   checksum: 10a0acaeb47f02baa39ef0c5b712eb7ed56c5920f2f0267e7dbb4e7d1c97e3de
 - filename: server/package-lock.json
-  checksum: 5e02dcc3c61092ec2d6209397e41eb0553a8c654b3b4c364929672803fa1a8c2
+  checksum: 5bce19fa9882cc0ad96455b8174d57ae12bbaa552817e7ddaf6907f8c7945229
+- filename: server/package.json
+  checksum: 0c832c7edc18fd30a29c1fb591efd3e86c80439160ff3a954aaba576ea570a32
 - filename: server/sonar-project.properties
   checksum: 9d6b07334053f2aabd04f6c1b022f29b70f1c1bd9e34078afaa5a8f5e6d40ac2
 - filename: server/src/application/Config.ts
