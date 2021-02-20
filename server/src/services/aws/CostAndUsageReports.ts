@@ -67,7 +67,7 @@ export default class CostAndUsageReports {
         return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
-      appendOrAccumulateEstimatesByDay(results, costAndUsageReportRow, footprintEstimate)
+      if (footprintEstimate) appendOrAccumulateEstimatesByDay(results, costAndUsageReportRow, footprintEstimate)
     })
     return results
   }
@@ -110,7 +110,7 @@ export default class CostAndUsageReports {
           this.costAndUsageReportsLogger.warn(
             `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
           )
-        estimate.usesAverageCPUConstant = false
+        if (estimate) estimate.usesAverageCPUConstant = false
         return estimate
       case PRICING_UNITS.SECONDS_1:
       case PRICING_UNITS.SECONDS_2:

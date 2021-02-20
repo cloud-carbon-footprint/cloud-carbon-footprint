@@ -44,7 +44,7 @@ describe('CloudCarbonContainer', () => {
     // expect(getByTestId('fake-donut-chart')).toBeInTheDocument()
   })
 
-  test('today and 11 months prior to today should be passed in to remote service hook', () => {
+  test('today and january first of the last year should be passed in to remote service hook', () => {
     render(<CloudCarbonContainer />)
 
     const parameters = mockUseRemoteService.mock.calls[0]
@@ -56,7 +56,10 @@ describe('CloudCarbonContainer', () => {
     const endDate = parameters[2]
 
     expect(initial).toEqual([])
-    expect(startDate.isSame(moment.utc().subtract(12, 'month'), 'day')).toBeTruthy()
+    expect(startDate.year()).toEqual(endDate.year() - 1)
+    expect(startDate.month()).toEqual(0)
+    expect(startDate.date()).toEqual(1)
+
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
 
