@@ -119,8 +119,8 @@ const StyledWrapper = withTheme(styled.div`
 `)
 
 const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
-  const aYearAgo = moment.utc().subtract(12, 'M')
   const today = moment.utc()
+  const startOfLastYear = moment.utc(Date.UTC(today.year() - 1, 0, 1, 0, 0, 0, 0))
   const startDate = filters.dateRange?.startDate || null
   const endDate = filters.dateRange?.endDate || null
   const [focusedInput, setFocusedInput] = useState<'startDate' | 'endDate' | null>(null)
@@ -130,7 +130,7 @@ const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => 
       <DateRangePicker
         withPortal={false}
         withFullScreenPortal={false}
-        minDate={aYearAgo}
+        minDate={startOfLastYear}
         maxDate={today}
         initialVisibleMonth={() => {
           if (startDate && focusedInput === 'startDate') {
@@ -140,7 +140,7 @@ const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => 
           }
           return today.clone().subtract(1, 'M')
         }}
-        isOutsideRange={isOutsideRange(aYearAgo, today)}
+        isOutsideRange={isOutsideRange(startOfLastYear, today)}
         startDate={startDate}
         startDateId="startDate"
         endDate={endDate}
