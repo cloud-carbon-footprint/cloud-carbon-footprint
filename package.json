@@ -3,7 +3,7 @@
   "private": true,
   "devDependencies": {
     "docsify-cli": "^4.4.1",
-    "husky": "^4.2.5",
+    "husky": "^5.1.0",
     "lerna": "^3.22.1",
     "sonar-scanner": "^3.1.0"
   },
