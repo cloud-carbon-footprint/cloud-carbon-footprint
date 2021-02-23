@@ -43,7 +43,7 @@ export default class CloudProviderAccount {
               accountName: this.name,
               serviceName: service.serviceName,
               region: region.id,
-              wattHours: estimate?.wattHours || 0,
+              kilowattHours: estimate?.kilowattHours || 0,
               co2e: estimate?.co2e || 0,
               cost: cost?.amount || 0,
               usesAverageCPUConstant: estimate?.usesAverageCPUConstant,

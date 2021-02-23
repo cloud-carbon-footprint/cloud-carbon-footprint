@@ -31,7 +31,7 @@ export const CustomTooltip = ({
         ) : (
           <div> {data[dataPointIndex].y} metric tons CO2e</div>
         )}
-        <div>{data[dataPointIndex].wattHours} watt hrs</div>
+        <div>{data[dataPointIndex].kilowattHours} kilowatt hrs</div>
         <div>${data[dataPointIndex].cost} cost</div>
       </div>
     )

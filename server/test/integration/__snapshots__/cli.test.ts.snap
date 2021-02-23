@@ -1,39 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds grouped by service 1`] = `
-"| Service      | Watt Hours        | metric tons CO2e Emissions| Cost              
-| EBS          | 6.43              | 0.000003               | $9.23             
-| S3           | 0.09              | 0.000000               | $12.00            
-| EC2          | 40.87             | 0.000019               | $74.00            
-| ElastiCache  | 24.20             | 0.000011               | $12.00            
-| RDS          | 481.44            | 0.000224               | $18.47            
-| ComputeEngine| 3.92              | 0.000002               | $0.00             
-| Total        | 556.95            | 0.000259               | $125.70           "
+"| Service      | kilowatt hours    | metric tons CO2e Emissions| Cost              
+| EBS          | 6.43              | 0.002988               | $9.23             
+| S3           | 0.09              | 0.000041               | $12.00            
+| EC2          | 40.87             | 0.018999               | $74.00            
+| ElastiCache  | 24.20             | 0.011249               | $12.00            
+| RDS          | 481.44            | 0.223773               | $18.47            
+| ComputeEngine| 3.92              | 0.001780               | $0.00             
+| Total        | 556.95            | 0.258830               | $125.70           "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day 1`] = `
-"| Date         | Watt Hours        | metric tons CO2e Emissions
-| 2020-07-01   | 59.72             | 0.000028               
-| 2020-07-02   | 497.23            | 0.000231               
-| Total        | 556.95            | 0.000259               "
+"| Date         | kilowatt hours    | metric tons CO2e Emissions
+| 2020-07-01   | 59.72             | 0.027717               
+| 2020-07-02   | 497.23            | 0.231113               
+| Total        | 556.95            | 0.258830               "
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day and service 1`] = `
-"| Date (UTC)   | EBS Watt Hours    | EBS metric tons CO2e Emissions| S3 Watt Hours     | S3 metric tons CO2e Emissions| EC2 Watt Hours    | EC2 metric tons CO2e Emissions| ElastiCache Watt Hours| ElastiCache metric tons CO2e Emissions| RDS Watt Hours    | RDS metric tons CO2e Emissions| ComputeEngine Watt Hours| ComputeEngine metric tons CO2e Emissions| SUM Watt Hours    | SUM metric tons CO2e Emissions
-| 2020-07-01   | 2.14              | 0.000001               | 0.09              | 0.000000               | 40.87             | 0.000019               | 4.57              | 0.000002               | 8.13              | 0.000004               | 3.92              | 0.000002               | 59.72             | 0.000028               
-| 2020-07-02   | 4.29              | 0.000002               | 0.00              | 0.000000               | 0.00              | 0.000000               | 19.63             | 0.000009               | 473.31            | 0.000220               | 0.00              | 0.000000               | 497.23            | 0.000231               
-| Total        | 6.43              | 0.000003               | 0.09              | 0.000000               | 40.87             | 0.000019               | 24.20             | 0.000011               | 481.44            | 0.000224               | 3.92              | 0.000002               | 556.95            | 0.000259               "
+"| Date (UTC)   | EBS kilowatt hours| EBS metric tons CO2e Emissions| S3 kilowatt hours | S3 metric tons CO2e Emissions| EC2 kilowatt hours| EC2 metric tons CO2e Emissions| ElastiCache kilowatt hours| ElastiCache metric tons CO2e Emissions| RDS kilowatt hours| RDS metric tons CO2e Emissions| ComputeEngine kilowatt hours| ComputeEngine metric tons CO2e Emissions| SUM kilowatt hours| SUM metric tons CO2e Emissions
+| 2020-07-01   | 2.14              | 0.000996               | 0.09              | 0.000041               | 40.87             | 0.018999               | 4.57              | 0.002124               | 8.13              | 0.003777               | 3.92              | 0.001780               | 59.72             | 0.027717               
+| 2020-07-02   | 4.29              | 0.001992               | 0.00              | 0.000000               | 0.00              | 0.000000               | 19.63             | 0.009125               | 473.31            | 0.219996               | 0.00              | 0.000000               | 497.23            | 0.231113               
+| Total        | 6.43              | 0.002988               | 0.09              | 0.000041               | 40.87             | 0.018999               | 24.20             | 0.011249               | 481.44            | 0.223773               | 3.92              | 0.001780               | 556.95            | 0.258830               "
 `;
 
 exports[`cli lambda lambda cost 1`] = `
-"| Service      | Watt Hours        | metric tons CO2e Emissions| Cost              
-| Lambda       | 1.03              | 0.000000               | $240.00           
-| Total        | 1.03              | 0.000000               | $240.00           "
+"| Service      | kilowatt hours    | metric tons CO2e Emissions| Cost              
+| Lambda       | 1.03              | 0.000480               | $240.00           
+| Total        | 1.03              | 0.000480               | $240.00           "
 `;
 
 exports[`cli lambda lambda estimates 1`] = `
-"| Date (UTC)   | Lambda Watt Hours | Lambda metric tons CO2e Emissions| SUM Watt Hours    | SUM metric tons CO2e Emissions
-| 2020-07-01   | 0.48              | 0.000000               | 0.48              | 0.000000               
-| 2020-07-02   | 0.55              | 0.000000               | 0.55              | 0.000000               
-| Total        | 1.03              | 0.000000               | 1.03              | 0.000000               "
+"| Date (UTC)   | Lambda kilowatt hours| Lambda metric tons CO2e Emissions| SUM kilowatt hours| SUM metric tons CO2e Emissions
+| 2020-07-01   | 0.48              | 0.000223               | 0.48              | 0.000223               
+| 2020-07-02   | 0.55              | 0.000257               | 0.55              | 0.000257               
+| Total        | 1.03              | 0.000480               | 1.03              | 0.000480               "
 `;

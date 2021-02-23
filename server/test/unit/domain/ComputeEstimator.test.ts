@@ -20,9 +20,9 @@ describe('ComputeEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 3.3765713999999997e-7,
+        co2e: 3.376571399999999e-7,
         timestamp: new Date('2020-01-01T00:00:00.000Z'),
-        wattHours: 0.7429199999999999,
+        kilowattHours: 0.0007429199999999999,
         usesAverageCPUConstant: false,
       },
     ])
@@ -42,9 +42,9 @@ describe('ComputeEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 6.8942976e-7,
+        co2e: 6.894297599999999e-7,
         timestamp: new Date('2020-01-01T00:00:00.000Z'),
-        wattHours: 0.7429199999999999,
+        kilowattHours: 0.0007429199999999999,
         usesAverageCPUConstant: false,
       },
     ])

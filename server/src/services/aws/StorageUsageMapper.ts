@@ -19,7 +19,7 @@ export class VolumeUsage implements StorageUsage {
 export interface MutableFootprintEstimate {
   timestamp: Date
   co2e: number
-  wattHours: number
+  kilowattHours: number
 }
 
 export enum DiskType {
@@ -84,7 +84,7 @@ export function getEstimatesFromCostExplorer(
         return acc
       }
       acc[estimate.timestamp.toISOString()].co2e += estimate.co2e
-      acc[estimate.timestamp.toISOString()].wattHours += estimate.wattHours
+      acc[estimate.timestamp.toISOString()].kilowattHours += estimate.kilowattHours
       return acc
     }, {}),
   )

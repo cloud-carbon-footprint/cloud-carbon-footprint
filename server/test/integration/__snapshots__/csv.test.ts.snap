@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`csv test formats table into csv file 1`] = `
-"Date (UTC),EBS Watt Hours,EBS metric tons CO2e Emissions,S3 Watt Hours,S3 metric tons CO2e Emissions,EC2 Watt Hours,EC2 metric tons CO2e Emissions,ElastiCache Watt Hours,ElastiCache metric tons CO2e Emissions,RDS Watt Hours,RDS metric tons CO2e Emissions,SUM Watt Hours,SUM metric tons CO2e Emissions
-2020-07-01,1.07,0.000000,0.04,0.000000,20.44,0.000009,2.29,0.000001,4.06,0.000002,27.90,0.000013
-2020-07-02,2.14,0.000001,0.00,0.000000,0.00,0.000000,9.82,0.000004,236.66,0.000108,248.61,0.000113
-Total,3.21,0.000001,0.04,0.000000,20.44,0.000009,12.10,0.000006,240.72,0.000109,276.52,0.000126
+"Date (UTC),EBS kilowatt hours,EBS metric tons CO2e Emissions,S3 kilowatt hours,S3 metric tons CO2e Emissions,EC2 kilowatt hours,EC2 metric tons CO2e Emissions,ElastiCache kilowatt hours,ElastiCache metric tons CO2e Emissions,RDS kilowatt hours,RDS metric tons CO2e Emissions,SUM kilowatt hours,SUM metric tons CO2e Emissions
+2020-07-01,1.07,0.000487,0.04,0.000020,20.44,0.009289,2.29,0.001039,4.06,0.001847,27.90,0.012681
+2020-07-02,2.14,0.000974,0.00,0.000000,0.00,0.000000,9.82,0.004461,236.66,0.107560,248.61,0.112995
+Total,3.21,0.001461,0.04,0.000020,20.44,0.009289,12.10,0.005500,240.72,0.109406,276.52,0.125676
 "
 `;

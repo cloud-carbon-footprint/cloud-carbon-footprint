@@ -8,7 +8,7 @@ import { EstimationResult } from '@application/EstimationResult'
 export default function EmissionsByDayTable(
   estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
-  const headers = ['Date', 'Watt Hours', 'metric tons CO2e Emissions']
+  const headers = ['Date', 'kilowatt hours', 'metric tons CO2e Emissions']
   const colWidths: number[] = [15, 20, 25]
   const table: string[][] = [headers]
 
@@ -22,10 +22,10 @@ export default function EmissionsByDayTable(
     estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       const dateKey = estimationResult.timestamp.toISOString().substr(0, 10)
       if (!grandTotals.hasOwnProperty(dateKey)) {
-        grandTotals[dateKey] = { wattHours: 0, co2e: 0, cost: 0 }
+        grandTotals[dateKey] = { kilowattHours: 0, co2e: 0, cost: 0 }
       }
-      grandTotals[dateKey].wattHours += serviceEstimate.wattHours
-      wattHoursTotal += serviceEstimate.wattHours
+      grandTotals[dateKey].kilowattHours += serviceEstimate.kilowattHours
+      wattHoursTotal += serviceEstimate.kilowattHours
       grandTotals[dateKey].co2e += serviceEstimate.co2e
       co2eTotal += serviceEstimate.co2e
       grandTotals[dateKey].cost += serviceEstimate.cost
@@ -33,10 +33,10 @@ export default function EmissionsByDayTable(
     })
   })
 
-  grandTotals['Total'] = { wattHours: wattHoursTotal, co2e: co2eTotal, cost: costTotal }
+  grandTotals['Total'] = { kilowattHours: wattHoursTotal, co2e: co2eTotal, cost: costTotal }
 
   Object.entries(grandTotals).forEach(([rowName, rowData]) => {
-    table.push([rowName, displayWattHours(rowData.wattHours), displayCo2e(rowData.co2e)])
+    table.push([rowName, displayWattHours(rowData.kilowattHours), displayCo2e(rowData.co2e)])
   })
 
   return { table, colWidths }

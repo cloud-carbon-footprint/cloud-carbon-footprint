@@ -41,7 +41,7 @@ export default class Lambda implements ICloudService {
       const co2e = estimateCo2(wattHours, 'AWS', region)
       return {
         timestamp,
-        wattHours,
+        kilowattHours: wattHours,
         co2e,
       }
     })

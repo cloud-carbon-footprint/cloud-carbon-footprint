@@ -3,7 +3,7 @@
  */
 
 jest.mock('@domain/FootprintEstimationConstants', () => ({
-  CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS: {
+  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     AWS: {
       awsRegion1: 1,
       awsRegion2: 2,
@@ -111,19 +111,19 @@ describe('api', () => {
       const expectedResponse: EmissionsRatios[] = [
         {
           region: 'awsRegion1',
-          mtPerWHour: 1,
+          mtPerKwHour: 1,
         },
         {
           region: 'awsRegion2',
-          mtPerWHour: 2,
+          mtPerKwHour: 2,
         },
         {
           region: 'gcpRegion1',
-          mtPerWHour: 3,
+          mtPerKwHour: 3,
         },
         {
           region: 'gcpRegion2',
-          mtPerWHour: 4,
+          mtPerKwHour: 4,
         },
       ]
 

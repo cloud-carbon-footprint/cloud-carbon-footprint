@@ -67,7 +67,7 @@ describe('App', () => {
       const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment(startDate).add(i, 'days').toDate(),
-          wattHours: 1.0944,
+          kilowattHours: 1.0944,
           co2e: 0.0007737845760000001,
         }
       })
@@ -92,7 +92,7 @@ describe('App', () => {
               cloudProvider: 'AWS',
               accountName: testAwsAccountName,
               serviceName: 'ebs',
-              wattHours: 1.0944,
+              kilowattHours: 1.0944,
               co2e: 0.0007737845760000001,
               cost: 5,
               region: region,
@@ -120,7 +120,7 @@ describe('App', () => {
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
           timestamp: new Date(startDate),
-          wattHours: 2,
+          kilowattHours: 2,
           co2e: 2,
         },
       ]
@@ -129,7 +129,7 @@ describe('App', () => {
       const expectedStorageEstimate2: FootprintEstimate[] = [
         {
           timestamp: new Date(startDate),
-          wattHours: 1,
+          kilowattHours: 1,
           co2e: 1,
         },
       ]
@@ -163,7 +163,7 @@ describe('App', () => {
               cloudProvider: 'AWS',
               accountName: testAwsAccountName,
               serviceName: 'serviceOne',
-              wattHours: 2,
+              kilowattHours: 2,
               co2e: 2,
               cost: 3,
               region: region,
@@ -173,7 +173,7 @@ describe('App', () => {
               cloudProvider: 'AWS',
               accountName: testAwsAccountName,
               serviceName: 'serviceTwo',
-              wattHours: 1,
+              kilowattHours: 1,
               co2e: 1,
               cost: 4,
               region: region,
@@ -192,17 +192,17 @@ describe('App', () => {
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
           timestamp: new Date(startDate + 'T01:00:00Z'),
-          wattHours: 1,
+          kilowattHours: 1,
           co2e: 2,
         },
         {
           timestamp: new Date(startDate + 'T12:59:59Z'),
-          wattHours: 1,
+          kilowattHours: 1,
           co2e: 2,
         },
         {
           timestamp: new Date(startDate + 'T23:59:59Z'),
-          wattHours: 1,
+          kilowattHours: 1,
           co2e: 2,
         },
       ]
@@ -218,7 +218,7 @@ describe('App', () => {
               cloudProvider: 'AWS',
               accountName: testAwsAccountName,
               serviceName: 'serviceOne',
-              wattHours: 3,
+              kilowattHours: 3,
               co2e: 6,
               cost: 0,
               region: region,
@@ -256,7 +256,7 @@ describe('App', () => {
       const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
         return {
           timestamp: moment(startDate).subtract(i, 'days').toDate(),
-          wattHours: 1.0944,
+          kilowattHours: 1.0944,
           co2e: 0.0007737845760000001,
         }
       })
@@ -275,7 +275,7 @@ describe('App', () => {
               cloudProvider: 'AWS',
               accountName: testAwsAccountName,
               serviceName: 'ebs',
-              wattHours: 1.0944,
+              kilowattHours: 1.0944,
               co2e: 0.0007737845760000001,
               cost: 0,
               region: region,
@@ -297,7 +297,7 @@ describe('App', () => {
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
         timestamp: new Date(startDate),
-        wattHours: 3,
+        kilowattHours: 3,
         co2e: 6,
       },
     ]
@@ -320,7 +320,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
-            wattHours: 3,
+            kilowattHours: 3,
             co2e: 6,
             cost: 0,
             region: testRegions[0],
@@ -330,7 +330,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
-            wattHours: 3,
+            kilowattHours: 3,
             co2e: 6,
             cost: 0,
             region: testRegions[1],
@@ -366,7 +366,7 @@ describe('App', () => {
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
         timestamp: new Date(startDate),
-        wattHours: 3,
+        kilowattHours: 3,
         co2e: 6,
       },
     ]
@@ -375,7 +375,7 @@ describe('App', () => {
     const expectedStorageEstimate2: FootprintEstimate[] = [
       {
         timestamp: new Date(startDate),
-        wattHours: 4,
+        kilowattHours: 4,
         co2e: 8,
       },
     ]
@@ -408,7 +408,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
-            wattHours: 3,
+            kilowattHours: 3,
             co2e: 6,
             cost: 3,
             region: testRegions[0],
@@ -418,7 +418,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceTwo',
-            wattHours: 4,
+            kilowattHours: 4,
             co2e: 8,
             cost: 3,
             region: testRegions[0],
@@ -428,7 +428,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
-            wattHours: 3,
+            kilowattHours: 3,
             co2e: 6,
             cost: 3,
             region: testRegions[1],
@@ -438,7 +438,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceTwo',
-            wattHours: 4,
+            kilowattHours: 4,
             co2e: 8,
             cost: 3,
             region: testRegions[1],
@@ -464,7 +464,7 @@ describe('App', () => {
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
         timestamp: new Date(startDate),
-        wattHours: 3,
+        kilowattHours: 3,
         co2e: 6,
       },
     ]
@@ -473,7 +473,7 @@ describe('App', () => {
     const expectedStorageEstimate2: FootprintEstimate[] = [
       {
         timestamp: new Date(startDate),
-        wattHours: 4,
+        kilowattHours: 4,
         co2e: 8,
       },
     ]
@@ -496,7 +496,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
-            wattHours: 3,
+            kilowattHours: 3,
             co2e: 6,
             cost: 0,
             region: 'us-east-1',
@@ -506,7 +506,7 @@ describe('App', () => {
             cloudProvider: 'AWS',
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
-            wattHours: 3,
+            kilowattHours: 3,
             co2e: 6,
             cost: 0,
             region: 'us-east-2',
@@ -516,7 +516,7 @@ describe('App', () => {
             cloudProvider: 'GCP',
             accountName: testGcpAccountName,
             serviceName: 'serviceTwo',
-            wattHours: 4,
+            kilowattHours: 4,
             co2e: 8,
             cost: 0,
             region: 'us-east1',
@@ -526,7 +526,7 @@ describe('App', () => {
             cloudProvider: 'GCP',
             accountName: testGcpAccountName,
             serviceName: 'serviceTwo',
-            wattHours: 4,
+            kilowattHours: 4,
             co2e: 8,
             cost: 0,
             region: 'us-west1',
@@ -536,7 +536,7 @@ describe('App', () => {
             cloudProvider: 'GCP',
             accountName: testGcpAccountName,
             serviceName: 'serviceTwo',
-            wattHours: 4,
+            kilowattHours: 4,
             co2e: 8,
             cost: 0,
             region: 'us-central1',
@@ -550,7 +550,7 @@ describe('App', () => {
             region: 'us-east1',
             serviceName: 'serviceTwo',
             usesAverageCPUConstant: false,
-            wattHours: 4,
+            kilowattHours: 4,
           },
           {
             accountName: 'test GCP account 2',
@@ -560,7 +560,7 @@ describe('App', () => {
             region: 'us-west1',
             serviceName: 'serviceTwo',
             usesAverageCPUConstant: false,
-            wattHours: 4,
+            kilowattHours: 4,
           },
           {
             accountName: 'test GCP account 2',
@@ -570,7 +570,7 @@ describe('App', () => {
             region: 'us-central1',
             serviceName: 'serviceTwo',
             usesAverageCPUConstant: false,
-            wattHours: 4,
+            kilowattHours: 4,
           },
         ],
       },

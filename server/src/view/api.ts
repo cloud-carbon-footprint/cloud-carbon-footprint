@@ -7,13 +7,13 @@ import express from 'express'
 import App from '@application/App'
 import CreateValidRequest, { EstimationRequestValidationError, PartialDataError } from '@application/CreateValidRequest'
 import { RawRequest } from '@view/RawRequest'
-import { CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS } from '@domain/FootprintEstimationConstants'
+import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@domain/FootprintEstimationConstants'
 
 import Logger from '@services/Logger'
 
 export type EmissionsRatios = {
   region: string
-  mtPerWHour: number
+  mtPerKwHour: number
 }
 
 const apiLogger = new Logger('api')
@@ -65,15 +65,14 @@ const FilterApiMiddleware = async function (req: express.Request, res: express.R
 const EmissionsApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
   apiLogger.info(`Regions emissions factors API request started`)
   try {
-    const emissionsResults: EmissionsRatios[] = Object.values(CLOUD_PROVIDER_WATT_HOURS_CARBON_RATIOS).reduce(
-      (result, cloudProvider) => {
-        return Object.keys(cloudProvider).reduce((result, key) => {
-          result.push({ region: key, mtPerWHour: cloudProvider[key] })
-          return result
-        }, result)
-      },
-      [],
-    )
+    const emissionsResults: EmissionsRatios[] = Object.values(
+      CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+    ).reduce((result, cloudProvider) => {
+      return Object.keys(cloudProvider).reduce((result, key) => {
+        result.push({ region: key, mtPerKwHour: cloudProvider[key] })
+        return result
+      }, result)
+    }, [])
     res.json(emissionsResults)
   } catch (e) {
     apiLogger.error(`Unable to process regions emissions factors request.`, e)

@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { DropdownOption } from './filters/DropdownFilter'
 const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPerDay[] } => {
   const co2Series: cloudEstPerDay[] = []
-  const wattHoursSeries: cloudEstPerDay[] = []
+  const kilowattHoursSeries: cloudEstPerDay[] = []
   const costSeries: cloudEstPerDay[] = []
 
   data.forEach((estimatationResult) => {
@@ -31,7 +31,7 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
       }
       total += serviceEstimate.co2e
       totalCost += serviceEstimate.cost
-      totalWattHours += serviceEstimate.wattHours
+      totalWattHours += serviceEstimate.kilowattHours
     })
 
     co2Series.push({
@@ -39,10 +39,10 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
       y: Number(total.toFixed(2)),
       usesAverageCPUConstant: usesAverageCPUConstant,
       cost: Number(totalCost.toFixed(2)),
-      wattHours: Number(totalWattHours.toFixed(2)),
+      kilowattHours: Number(totalWattHours.toFixed(2)),
     })
 
-    wattHoursSeries.push({
+    kilowattHoursSeries.push({
       x: estimatationResult.timestamp,
       y: Number(totalWattHours.toFixed(2)),
     })
@@ -55,7 +55,7 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
 
   return {
     co2Series,
-    wattHoursSeries,
+    kilowattHoursSeries,
     costSeries,
   }
 }

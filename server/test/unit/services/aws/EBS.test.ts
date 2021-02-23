@@ -316,7 +316,7 @@ describe('Ebs', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        wattHours: ssdEstimates[0].wattHours + hddEstimates[0].wattHours,
+        kilowattHours: ssdEstimates[0].kilowattHours + hddEstimates[0].kilowattHours,
         co2e: ssdEstimates[0].co2e + hddEstimates[0].co2e,
       },
     ])

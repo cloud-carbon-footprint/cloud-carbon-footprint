@@ -52,7 +52,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   const [defaultRange, setDefaultRange] = React.useState<DateRange>({ min: null, max: null })
   const [toggledSeries, setToggledSeries] = React.useState<LegendToggle[]>([
     { CO2e: true },
-    { 'Watt Hours': false },
+    { 'Kilowatt Hours': false },
     { Cost: false },
   ])
 
@@ -84,10 +84,10 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
 
   const cloudEstimationData = sumServiceTotals(filteredByZoomRange)
   const co2SeriesData = cloudEstimationData.co2Series
-  const wattHoursSeriesData = cloudEstimationData.wattHoursSeries
+  const kilowattHoursSeriesData = cloudEstimationData.kilowattHoursSeries
   const costSeriesData = cloudEstimationData.costSeries
   const maxCO2e = getMaxOfDataSeries(co2SeriesData)
-  const maxWattHours = getMaxOfDataSeries(wattHoursSeriesData)
+  const maxKilowattHours = getMaxOfDataSeries(kilowattHoursSeriesData)
   const maxCost = getMaxOfDataSeries(costSeriesData)
 
   useEffect(() => {
@@ -97,8 +97,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         data: co2SeriesData,
       },
       {
-        name: 'Watt Hours',
-        data: wattHoursSeriesData,
+        name: 'Kilowatt Hours',
+        data: kilowattHoursSeriesData,
       },
       {
         name: 'Cost',
@@ -112,7 +112,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         ? ApexCharts.exec('lineChart', 'showSeries', [seriesKey])
         : ApexCharts.exec('lineChart', 'hideSeries', [seriesKey])
     })
-  }, [co2SeriesData, wattHoursSeriesData, costSeriesData, toggledSeries])
+  }, [co2SeriesData, kilowattHoursSeriesData, costSeriesData, toggledSeries])
 
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
@@ -168,8 +168,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         data: co2SeriesData,
       },
       {
-        name: 'Watt Hours',
-        data: wattHoursSeriesData,
+        name: 'Kilowatt Hours',
+        data: kilowattHoursSeriesData,
       },
       {
         name: 'Cost',
@@ -218,9 +218,9 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
         decimalsInFloat: 3,
       },
       {
-        max: 1.1 * maxWattHours,
+        max: 1.1 * maxKilowattHours,
         title: {
-          text: 'Watt hours (Wh)',
+          text: 'kilowatt hours (kWh)',
           opposite: -8,
           style: {
             fontSize: '15px',

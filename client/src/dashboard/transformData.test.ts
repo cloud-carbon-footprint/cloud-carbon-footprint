@@ -13,7 +13,7 @@ const data = [
       {
         timestamp: date1,
         serviceName: 'ebs',
-        wattHours: 12,
+        kilowattHours: 12,
         co2e: 15,
         cost: 5,
         region: 'us-east-1',
@@ -24,7 +24,7 @@ const data = [
       {
         timestamp: date1,
         serviceName: 'ec2',
-        wattHours: 4,
+        kilowattHours: 4,
         co2e: 5,
         cost: 4,
         region: 'us-east-1',
@@ -40,7 +40,7 @@ const data = [
       {
         timestamp: date2,
         serviceName: 'ebs',
-        wattHours: 25,
+        kilowattHours: 25,
         co2e: 3,
         cost: 6,
         region: 'us-east-1',
@@ -51,7 +51,7 @@ const data = [
       {
         timestamp: date2,
         serviceName: 'ec2',
-        wattHours: 2,
+        kilowattHours: 2,
         co2e: 7,
         cost: 6,
         region: 'us-east-1',
@@ -70,7 +70,7 @@ const dataWithHigherPrecision = [
       {
         timestamp: date1,
         serviceName: 'ebs',
-        wattHours: 12.2342,
+        kilowattHours: 12.2342,
         co2e: 15.12341,
         cost: 5.82572,
         region: 'us-east-1',
@@ -79,7 +79,7 @@ const dataWithHigherPrecision = [
       {
         timestamp: date1,
         serviceName: 'ec2',
-        wattHours: 4.745634,
+        kilowattHours: 4.745634,
         co2e: 5.234236,
         cost: 4.732,
         region: 'us-east-1',
@@ -93,7 +93,7 @@ const dataWithHigherPrecision = [
       {
         timestamp: date2,
         serviceName: 'ebs',
-        wattHours: 25.73446,
+        kilowattHours: 25.73446,
         co2e: 3.2600234,
         cost: 6.05931,
         region: 'us-east-1',
@@ -102,7 +102,7 @@ const dataWithHigherPrecision = [
       {
         timestamp: date2,
         serviceName: 'ec2',
-        wattHours: 2.4523452,
+        kilowattHours: 2.4523452,
         co2e: 7.7536,
         cost: 6.2323,
         region: 'us-east-1',
@@ -119,7 +119,7 @@ const dataWithUnknowns = [
       {
         timestamp: date1,
         serviceName: null,
-        wattHours: 5,
+        kilowattHours: 5,
         co2e: 6,
         cost: 7,
         region: 'unknown',
@@ -130,7 +130,7 @@ const dataWithUnknowns = [
       {
         timestamp: date1,
         serviceName: 'ebs',
-        wattHours: 7,
+        kilowattHours: 7,
         co2e: 6,
         cost: 5,
         region: 'us-east-1',
@@ -146,7 +146,7 @@ const dataWithUnknowns = [
       {
         timestamp: date2,
         serviceName: null,
-        wattHours: 5,
+        kilowattHours: 5,
         co2e: 6,
         cost: 7,
         region: 'unknown',
@@ -157,7 +157,7 @@ const dataWithUnknowns = [
       {
         timestamp: date2,
         serviceName: 'ec2',
-        wattHours: 7,
+        kilowattHours: 7,
         co2e: 6,
         cost: 5,
         region: 'us-east-1',
@@ -217,10 +217,10 @@ describe('transformData', () => {
 describe('sumServiceTotals', () => {
   const expectedTotals = {
     co2e: [
-      { x: date1, y: 20, usesAverageCPUConstant: false, wattHours: 16, cost: 9 },
-      { x: date2, y: 10, usesAverageCPUConstant: true, wattHours: 27, cost: 12 },
+      { x: date1, y: 20, usesAverageCPUConstant: false, kilowattHours: 16, cost: 9 },
+      { x: date2, y: 10, usesAverageCPUConstant: true, kilowattHours: 27, cost: 12 },
     ],
-    wattHours: [
+    kilowattHours: [
       { x: date1, y: 16 },
       { x: date2, y: 27 },
     ],
@@ -235,9 +235,9 @@ describe('sumServiceTotals', () => {
     expect(sumServiceTotals(data).co2Series).toEqual(expectedCo2e)
   })
 
-  it('returns the sum of watt hours for all services', () => {
-    const expectedWattHours = expectedTotals.wattHours
-    expect(sumServiceTotals(data).wattHoursSeries).toEqual(expectedWattHours)
+  it('returns the sum of kilowatt hours for all services', () => {
+    const expectedWattHours = expectedTotals.kilowattHours
+    expect(sumServiceTotals(data).kilowattHoursSeries).toEqual(expectedWattHours)
   })
 
   it('returns the sum of cost for all services', () => {
@@ -248,10 +248,10 @@ describe('sumServiceTotals', () => {
   describe('rounding to the hundredths', () => {
     const expectedTotals = {
       co2e: [
-        { x: date1, y: 20.36, usesAverageCPUConstant: false, wattHours: 16.98, cost: 10.56 },
-        { x: date2, y: 11.01, usesAverageCPUConstant: true, wattHours: 28.19, cost: 12.29 },
+        { x: date1, y: 20.36, usesAverageCPUConstant: false, kilowattHours: 16.98, cost: 10.56 },
+        { x: date2, y: 11.01, usesAverageCPUConstant: true, kilowattHours: 28.19, cost: 12.29 },
       ],
-      wattHours: [
+      kilowattHours: [
         { x: date1, y: 16.98 },
         { x: date2, y: 28.19 },
       ],
@@ -265,7 +265,7 @@ describe('sumServiceTotals', () => {
     })
 
     it('returns the sum of co2e rounded to the hundredths place', () => {
-      expect(sumServiceTotals(dataWithHigherPrecision).wattHoursSeries).toEqual(expectedTotals.wattHours)
+      expect(sumServiceTotals(dataWithHigherPrecision).kilowattHoursSeries).toEqual(expectedTotals.kilowattHours)
     })
 
     it('returns the sum of co2e rounded to the hundredths place', () => {

@@ -99,7 +99,7 @@ exports[`CarbonFormulaDrawer renders 1`] = `
       <p
         className="MuiTypography-root makeStyles-content-10 MuiTypography-body1"
       >
-        (Cloud provider service usage) x (Cloud provider Power Usage Effectiveness [PUE]) x (Cloud energy conversion factors [Wh]) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
+        (Cloud provider service usage) x (Cloud provider Power Usage Effectiveness [PUE]) x (Cloud energy conversion factors [kWh]) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
       </p>
       <hr
         className="MuiDivider-root"

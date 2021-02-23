@@ -8,7 +8,7 @@ import BillingExportRow from '@services/gcp/BillingExportRow'
 
 export default interface FootprintEstimate {
   timestamp: Date
-  wattHours: number
+  kilowattHours: number
   co2e: number
   usesAverageCPUConstant?: boolean
 }
@@ -18,7 +18,7 @@ export const aggregateEstimatesByDay = (estimates: FootprintEstimate[]): { [date
 
   const accumulatingFn = (acc: FootprintEstimate, value: FootprintEstimate) => {
     acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
-    acc.wattHours += value.wattHours
+    acc.kilowattHours += value.kilowattHours
     acc.co2e += value.co2e
     if (value.usesAverageCPUConstant) {
       acc.usesAverageCPUConstant = acc.usesAverageCPUConstant || value.usesAverageCPUConstant
@@ -28,7 +28,7 @@ export const aggregateEstimatesByDay = (estimates: FootprintEstimate[]): { [date
 
   return reduceBy(
     accumulatingFn,
-    { wattHours: 0, co2e: 0, timestamp: undefined, usesAverageCPUConstant: false },
+    { kilowattHours: 0, co2e: 0, timestamp: undefined, usesAverageCPUConstant: false },
     getDayOfEstimate,
     estimates,
   )
@@ -43,7 +43,7 @@ export interface MutableServiceEstimate {
   cloudProvider: string
   accountName: string
   serviceName: string
-  wattHours: number
+  kilowattHours: number
   co2e: number
   cost: number
   region: string
@@ -57,7 +57,7 @@ export const appendOrAccumulateEstimatesByDay = (
 ) => {
   const serviceEstimate: MutableServiceEstimate = {
     cloudProvider: costAndUsageReportRow.cloudProvider,
-    wattHours: footprintEstimate.wattHours,
+    kilowattHours: footprintEstimate.kilowattHours,
     co2e: footprintEstimate.co2e,
     usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
     serviceName: costAndUsageReportRow.serviceName,
@@ -75,7 +75,7 @@ export const appendOrAccumulateEstimatesByDay = (
       const estimateToAcc = estimatesForDay.serviceEstimates.find((estimateForDay) => {
         return hasSameRegionAndService(estimateForDay, serviceEstimate)
       })
-      estimateToAcc.wattHours += serviceEstimate.wattHours
+      estimateToAcc.kilowattHours += serviceEstimate.kilowattHours
       estimateToAcc.co2e += serviceEstimate.co2e
       estimateToAcc.cost += serviceEstimate.cost
       if (serviceEstimate.usesAverageCPUConstant) {

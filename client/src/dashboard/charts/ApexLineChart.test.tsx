@@ -20,7 +20,7 @@ describe('ApexLineChart', () => {
         cloudProvider: 'AWS',
         accountName: 'account-1',
         serviceName: 'ebs',
-        wattHours: 2,
+        kilowattHours: 2,
         co2e: 5,
         cost: 3,
         region: 'us-west-2',
@@ -29,7 +29,7 @@ describe('ApexLineChart', () => {
         cloudProvider: 'AWS',
         accountName: 'account-1',
         serviceName: 's3',
-        wattHours: 4,
+        kilowattHours: 4,
         co2e: 10,
         cost: 6,
         region: 'us-west-2',
@@ -38,7 +38,7 @@ describe('ApexLineChart', () => {
         cloudProvider: 'AWS',
         accountName: 'account-1',
         serviceName: 'ec2',
-        wattHours: 6,
+        kilowattHours: 6,
         co2e: 15,
         cost: 9,
         region: 'us-west-2',
@@ -65,12 +65,12 @@ describe('ApexLineChart', () => {
     expect(root.toJSON()).toMatchSnapshot()
   })
 
-  it('should manually disable watt hours and cost series on initial data load', () => {
+  it('should manually disable kilowatt hours and cost series on initial data load', () => {
     render(
       <ApexLineChart data={[new EstimationResultBuilder().withTime(new Date('2019-08-10T00:00:00.000Z')).build()]} />,
     )
     expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Cost'])
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Watt Hours'])
+    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Kilowatt Hours'])
   })
 
   it('should update chart with new data and default max values on props data change', () => {
@@ -89,12 +89,12 @@ describe('ApexLineChart', () => {
             y: 30,
             usesAverageCPUConstant: false,
             cost: 18,
-            wattHours: 12,
+            kilowattHours: 12,
           },
         ],
       },
       {
-        name: 'Watt Hours',
+        name: 'Kilowatt Hours',
         data: [
           {
             x: new Date('2019-08-10T00:00:00.000Z'),
@@ -123,7 +123,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], setChartDataSpy])
       .mockReturnValueOnce([{ min: null, max: null }, setDefaultDateRangeSpy])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
 
     act(() => {
       create(<ApexLineChart data={[new EstimationResultBuilder().build()]} />)
@@ -139,7 +139,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -165,7 +165,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -204,7 +204,7 @@ describe('ApexLineChart', () => {
         { min: new Date('2019-07-10T00:00:00.000Z'), max: new Date('2019-11-10T00:00:00.000Z') },
         jest.fn(),
       ])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -241,7 +241,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([newDateRange, jest.fn()])
       .mockReturnValueOnce([initialData, jest.fn()])
       .mockReturnValueOnce([defaultDateRange, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -260,19 +260,19 @@ describe('ApexLineChart', () => {
               y: 30,
               usesAverageCPUConstant: false,
               cost: 18,
-              wattHours: 12,
+              kilowattHours: 12,
             },
             {
               x: new Date('2019-10-10T00:00:00.000Z'),
               y: 30,
               usesAverageCPUConstant: false,
               cost: 18,
-              wattHours: 12,
+              kilowattHours: 12,
             },
           ],
         },
         {
-          name: 'Watt Hours',
+          name: 'Kilowatt Hours',
           data: [
             {
               x: new Date('2019-08-10T00:00:00.000Z'),
@@ -308,7 +308,7 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Watt Hours': false }, { Cost: false }], setLegendToggleSpy])
+      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], setLegendToggleSpy])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -322,6 +322,6 @@ describe('ApexLineChart', () => {
       afterLegendClickCallback(undefined, 1)
     })
 
-    expect(setLegendToggleSpy).toHaveBeenCalledWith([{ CO2e: true }, { 'Watt Hours': true }, { Cost: false }])
+    expect(setLegendToggleSpy).toHaveBeenCalledWith([{ CO2e: true }, { 'Kilowatt Hours': true }, { Cost: false }])
   })
 })

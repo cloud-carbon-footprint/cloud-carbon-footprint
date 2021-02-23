@@ -21,7 +21,7 @@ describe('RDS Service', function () {
       {
         co2e: 1,
         timestamp: new Date(startDate),
-        wattHours: 4,
+        kilowattHours: 4,
       },
     ]
 
@@ -29,7 +29,7 @@ describe('RDS Service', function () {
       {
         co2e: 2,
         timestamp: new Date(startDate),
-        wattHours: 1,
+        kilowattHours: 1,
       },
     ]
 
@@ -50,7 +50,7 @@ describe('RDS Service', function () {
       {
         co2e: 3,
         timestamp: new Date(startDate),
-        wattHours: 5,
+        kilowattHours: 5,
       },
     ])
   })

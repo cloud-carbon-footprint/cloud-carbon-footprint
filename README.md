@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint.svg?style=shield&circle-token=62c2533631fb603b09c81ff218530d66b26a61f4)](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint/tree/trunk)
 
-This is an application that estimates the energy (kWh) and carbon emissions (metric tons CO2e) of cloud provider usage, given a start and end UTC dates (within the past year).
+This is an application that estimates the energy (kWh) and carbon emissions (metric tons CO2e) of cloud provider usage, given a start and end UTC dates.
 
 The core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `server/`, and the website is split between `server/` and `client/`
 

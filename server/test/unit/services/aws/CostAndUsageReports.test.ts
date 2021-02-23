@@ -98,7 +98,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            wattHours: 1.9632,
+            kilowattHours: 0.0019632,
             co2e: 0.0000008922744,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
@@ -108,7 +108,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
           },
           {
-            wattHours: 0.9816,
+            kilowattHours: 0.0009816,
             co2e: 4.66363068e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
@@ -123,7 +123,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
-            wattHours: 0.9816,
+            kilowattHours: 0.0009816,
             co2e: 4.66363068e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
@@ -138,7 +138,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-29'),
         serviceEstimates: [
           {
-            wattHours: 3.2140800000000005,
+            kilowattHours: 0.0032140800000000007,
             co2e: 0.0000014607993600000003,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
@@ -153,7 +153,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            wattHours: 2.9016,
+            kilowattHours: 0.0029016000000000003,
             co2e: 0.0000010200081528,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
@@ -163,7 +163,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
           {
-            wattHours: 0.013633333333333334,
+            kilowattHours: 0.000013633333333333334,
             co2e: 4.792566566666667e-9,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
@@ -206,17 +206,17 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
             serviceName: 'AmazonS3',
             usesAverageCPUConstant: false,
-            wattHours: 1.418811734765768e-12,
+            kilowattHours: 1.418811734765768e-15,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 1.3481690984917804e-18,
+            co2e: 1.3481690984917806e-18,
             cost: 10,
             region: 'us-east-2',
             serviceName: 'AmazonCloudWatch',
             usesAverageCPUConstant: false,
-            wattHours: 2.837623469531536e-12,
+            kilowattHours: 2.837623469531536e-15,
           },
           {
             accountName: '123456789',
@@ -226,7 +226,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: false,
-            wattHours: 2.9016,
+            kilowattHours: 0.0029016000000000003,
           },
           {
             accountName: '123456789',
@@ -236,7 +236,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: true,
-            wattHours: 6.338400000000001,
+            kilowattHours: 0.006338400000000001,
           },
         ],
       },
@@ -264,7 +264,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            wattHours: 19.631999999999998,
+            kilowattHours: 0.019631999999999997,
             co2e: 0.000008922743999999999,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
@@ -279,7 +279,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            wattHours: 0.00709405867382884,
+            kilowattHours: 0.00000709405867382884,
             co2e: 2.493795727787074e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
@@ -314,8 +314,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            wattHours: 8.258400000000002,
-            co2e: 0.000003923607132,
+            kilowattHours: 0.0082584,
+            co2e: 0.000003923607132000001,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -324,7 +324,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-2',
           },
           {
-            wattHours: 39.640319999999996,
+            kilowattHours: 0.03964031999999999,
             co2e: 0.000013934880610559998,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
@@ -339,7 +339,7 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            wattHours: 530.064,
+            kilowattHours: 0.530064,
             co2e: 0.00024091408799999998,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
@@ -376,12 +376,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 7.525663199999998e-9,
+            co2e: 7.5256632e-9,
             cost: 2,
             region: 'us-east-2',
             serviceName: 'AmazonECS',
             usesAverageCPUConstant: false,
-            wattHours: 0.015839999999999996,
+            kilowattHours: 0.000015839999999999997,
           },
           {
             accountName: '123456789',
@@ -391,17 +391,17 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
             serviceName: 'AmazonECS',
             usesAverageCPUConstant: true,
-            wattHours: 12.27,
+            kilowattHours: 0.01227,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000012077267747999998,
+            co2e: 0.000012077267748,
             cost: 4,
             region: 'us-west-1',
             serviceName: 'AmazonMSK',
             usesAverageCPUConstant: true,
-            wattHours: 34.355999999999995,
+            kilowattHours: 0.034356,
           },
         ],
       },
@@ -431,12 +431,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00005175971891999999,
+            co2e: 0.00005175971892,
             cost: 10,
             region: 'us-west-1',
             serviceName: 'AmazonDocDB',
             usesAverageCPUConstant: true,
-            wattHours: 147.23999999999998,
+            kilowattHours: 0.14723999999999998,
           },
           {
             accountName: '123456789',
@@ -446,17 +446,17 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            wattHours: 1492.0320000000002,
+            kilowattHours: 1.492032,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000020703887567999997,
+            co2e: 0.000020703887568,
             cost: 20,
             region: 'us-west-1',
             serviceName: 'ElasticMapReduce',
             usesAverageCPUConstant: true,
-            wattHours: 58.895999999999994,
+            kilowattHours: 0.058896,
           },
           {
             accountName: '123456789',
@@ -466,7 +466,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            wattHours: 17.177999999999997,
+            kilowattHours: 0.017178,
           },
         ],
       },
@@ -501,7 +501,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
             serviceName: 'AmazonRedshift',
             usesAverageCPUConstant: false,
-            wattHours: 5.356800000000001,
+            kilowattHours: 0.005356800000000001,
           },
           {
             accountName: '123456789',
@@ -511,7 +511,7 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
             serviceName: 'AmazonRedshift',
             usesAverageCPUConstant: true,
-            wattHours: 0.0818,
+            kilowattHours: 0.0000818,
           },
           {
             accountName: '123456789',
@@ -521,17 +521,17 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            wattHours: 1382.0928000000001,
+            kilowattHours: 1.3820928000000001,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000006901295856,
+            co2e: 0.000006901295855999999,
             cost: 15,
             region: 'us-west-1',
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: true,
-            wattHours: 19.631999999999998,
+            kilowattHours: 0.019631999999999997,
           },
         ],
       },

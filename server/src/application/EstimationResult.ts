@@ -13,7 +13,7 @@ export interface ServiceData {
   readonly cloudProvider: string
   readonly accountName: string
   readonly serviceName: string
-  readonly wattHours: number
+  readonly kilowattHours: number
   readonly co2e: number
   readonly cost: number
   readonly region: string

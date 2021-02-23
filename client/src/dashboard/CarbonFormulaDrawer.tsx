@@ -131,7 +131,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
         </Typography>
         <Typography className={classes.content} component="p">
           (Cloud provider service usage) x (Cloud provider Power Usage Effectiveness [PUE]) x (Cloud energy conversion
-          factors [Wh]) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
+          factors [kWh]) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
         </Typography>
         <Divider />
         <Typography className={classes.content} component="p">

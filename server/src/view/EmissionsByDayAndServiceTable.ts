@@ -9,7 +9,7 @@ import { EstimationResult } from '@application/EstimationResult'
 
 const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
 const displayService = (totals: Totals, serviceName: string) => [
-  displayWattHours(totals[serviceName].wattHours),
+  displayWattHours(totals[serviceName].kilowattHours),
   displayCo2e(totals[serviceName].co2e),
 ]
 
@@ -29,13 +29,13 @@ export default function EmissionsByDayAndServiceTable(
 
   serviceNames.forEach((serviceName) => {
     headers.push(
-      `${displayServiceName(serviceName)} Watt Hours`,
+      `${displayServiceName(serviceName)} kilowatt hours`,
       `${displayServiceName(serviceName)} metric tons CO2e Emissions`,
     )
     colWidths.push(20, 25)
   })
 
-  headers.push(`SUM Watt Hours`, `SUM metric tons CO2e Emissions`)
+  headers.push(`SUM kilowatt hours`, `SUM metric tons CO2e Emissions`)
   colWidths.push(20, 25)
 
   const table: string[][] = [headers]
@@ -48,10 +48,10 @@ export default function EmissionsByDayAndServiceTable(
     const subTotals: Totals = initialTotals(serviceNames)
 
     estimationResult.serviceEstimates.forEach((serviceEstimate) => {
-      grandTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
-      grandTotals['total'].wattHours += serviceEstimate.wattHours
-      subTotals[serviceEstimate.serviceName].wattHours += serviceEstimate.wattHours
-      subTotals['total'].wattHours += serviceEstimate.wattHours
+      grandTotals[serviceEstimate.serviceName].kilowattHours += serviceEstimate.kilowattHours
+      grandTotals['total'].kilowattHours += serviceEstimate.kilowattHours
+      subTotals[serviceEstimate.serviceName].kilowattHours += serviceEstimate.kilowattHours
+      subTotals['total'].kilowattHours += serviceEstimate.kilowattHours
 
       grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
       grandTotals['total'].co2e += serviceEstimate.co2e

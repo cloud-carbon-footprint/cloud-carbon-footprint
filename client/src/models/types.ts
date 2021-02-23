@@ -7,7 +7,7 @@ export interface serviceEstimate {
   cloudProvider: string
   accountName: string
   serviceName: string
-  wattHours: number
+  kilowattHours: number
   co2e: number
   cost: number
   region: string
@@ -28,7 +28,7 @@ export interface cloudEstPerDay {
   x: Date
   y: number
   usesAverageCPUConstant?: boolean
-  wattHours?: number
+  kilowattHours?: number
   cost?: number
 }
 

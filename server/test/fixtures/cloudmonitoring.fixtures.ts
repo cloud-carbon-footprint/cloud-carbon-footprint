@@ -73,7 +73,7 @@ export const mockVCPUTimeSeries = [
           },
         },
         value: {
-          doubleValue: 4,
+          doubleValue: 4000,
           value: 'doubleValue',
         },
       },
@@ -89,7 +89,7 @@ export const mockVCPUTimeSeries = [
           },
         },
         value: {
-          doubleValue: 2,
+          doubleValue: 2000,
           value: 'doubleValue',
         },
       },

@@ -53,7 +53,7 @@ export const elastiCacheMockGetUsageResponse: CostExplorer.GetCostAndUsageRespon
           Keys: ['USE2-NodeUsage:cache.t3.medium'],
           Metrics: {
             UsageQuantity: {
-              Amount: '1',
+              Amount: '1000',
             },
           },
         },
@@ -61,7 +61,7 @@ export const elastiCacheMockGetUsageResponse: CostExplorer.GetCostAndUsageRespon
           Keys: ['USE2-NodeUsage:cache.t2.micro'],
           Metrics: {
             UsageQuantity: {
-              Amount: '1',
+              Amount: '1000',
             },
           },
         },
@@ -77,7 +77,7 @@ export const elastiCacheMockGetUsageResponse: CostExplorer.GetCostAndUsageRespon
           Keys: ['USE2-NodeUsage:cache.t3.medium'],
           Metrics: {
             UsageQuantity: {
-              Amount: '2',
+              Amount: '2000',
             },
           },
         },
@@ -195,7 +195,7 @@ export const ebsMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
       Groups: [
         {
           Keys: ['EBS:VolumeUsage.piops'],
-          Metrics: { UsageQuantity: { Amount: '1.0', Unit: 'GB-Month' } },
+          Metrics: { UsageQuantity: { Amount: '1000', Unit: 'GB-Month' } },
         },
       ],
     },
@@ -207,7 +207,7 @@ export const ebsMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
       Groups: [
         {
           Keys: ['EBS:VolumeUsage.piops'],
-          Metrics: { UsageQuantity: { Amount: '2.0', Unit: 'GB-Month' } },
+          Metrics: { UsageQuantity: { Amount: '2000', Unit: 'GB-Month' } },
         },
       ],
     },
@@ -255,7 +255,7 @@ export const rdsComputeMockGetUsageResponse: CostExplorer.GetCostAndUsageRespons
           Keys: ['USW1-InstanceUsage:db.t3.medium'],
           Metrics: {
             UsageQuantity: {
-              Amount: '1',
+              Amount: '1000',
             },
           },
         },
@@ -271,7 +271,7 @@ export const rdsComputeMockGetUsageResponse: CostExplorer.GetCostAndUsageRespons
           Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
           Metrics: {
             UsageQuantity: {
-              Amount: '1',
+              Amount: '1000',
             },
           },
         },
@@ -321,7 +321,7 @@ export const rdsStorageMockGetUsageResponse: CostExplorer.GetCostAndUsageRespons
           Keys: ['USW1-RDS:GP2-Storage'],
           Metrics: {
             UsageQuantity: {
-              Amount: '1',
+              Amount: '1000',
             },
           },
         },
@@ -337,7 +337,7 @@ export const rdsStorageMockGetUsageResponse: CostExplorer.GetCostAndUsageRespons
           Keys: ['USW1-RDS:GP2-Storage'],
           Metrics: {
             UsageQuantity: {
-              Amount: '1',
+              Amount: '1000',
             },
           },
         },

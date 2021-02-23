@@ -24,7 +24,7 @@ export default class RDS implements ICloudService {
     interface CalculatedFootprintEstimate {
       timestamp: Date
       co2e: number
-      wattHours: number
+      kilowattHours: number
     }
 
     const result: { [key: number]: CalculatedFootprintEstimate } = {}
@@ -33,12 +33,12 @@ export default class RDS implements ICloudService {
       const timestamp: number = estimate.timestamp.getTime()
       if (result[timestamp]) {
         result[timestamp].co2e += estimate.co2e
-        result[timestamp].wattHours += estimate.wattHours
+        result[timestamp].kilowattHours += estimate.kilowattHours
       } else {
         result[timestamp] = {
           timestamp: estimate.timestamp,
           co2e: estimate.co2e,
-          wattHours: estimate.wattHours,
+          kilowattHours: estimate.kilowattHours,
         }
       }
     })

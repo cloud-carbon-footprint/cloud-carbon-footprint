@@ -45,7 +45,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         },
         Object {
           "data": Array [],
-          "name": "Watt Hours",
+          "name": "Kilowatt Hours",
         },
         Object {
           "data": Array [],
@@ -110,7 +110,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
               "color": undefined,
               "fontSize": "15px",
             },
-            "text": "Watt hours (Wh)",
+            "text": "kilowatt hours (kWh)",
           },
         },
         Object {
@@ -147,7 +147,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       },
       Object {
         "data": Array [],
-        "name": "Watt Hours",
+        "name": "Kilowatt Hours",
       },
       Object {
         "data": Array [],

@@ -19,7 +19,7 @@ exports[`Custom Tooltip renders data in tooltip 1`] = `
   </div>
   <div>
     200
-     watt hrs
+     kilowatt hrs
   </div>
   <div>
     $

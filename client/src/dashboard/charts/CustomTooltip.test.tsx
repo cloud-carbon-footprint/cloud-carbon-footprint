@@ -13,14 +13,14 @@ describe('Custom Tooltip', () => {
       x: new Date('2020-12-01'),
       y: 10,
       usesAverageCPUConstant: true,
-      wattHours: 100,
+      kilowattHours: 100,
       cost: 5,
     },
     {
       x: new Date('2020-12-02'),
       y: 20,
       usesAverageCPUConstant: true,
-      wattHours: 200,
+      kilowattHours: 200,
       cost: 10,
     },
   ]
