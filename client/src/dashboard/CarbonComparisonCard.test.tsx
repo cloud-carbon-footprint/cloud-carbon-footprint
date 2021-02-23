@@ -131,7 +131,7 @@ describe('CarbonComparisonCard', () => {
       data[0].serviceEstimates[0].co2e = co2e
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('co2')
-      expect(co2).toHaveTextContent(co2e.toLocaleString(undefined, { maximumFractionDigits: 0 }))
+      expect(co2).toHaveTextContent(co2e.toLocaleString(undefined, { maximumFractionDigits: 1 }))
     })
 
     it('should format miles', async () => {

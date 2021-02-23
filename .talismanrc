@@ -11,6 +11,8 @@ fileignoreconfig:
   checksum: 78b8264c13cab30e12466820794d83bf447bb2504ab254ffb3a45b32837cd1dd
 - filename: client/create_client_env_file.sh
   checksum: 0b64adef6103c7b0715083090ff2f79b2185ccb0d0d1b8d04c4ba8bbd8551327
+- filename: client/npm-shrinkwrap.json
+  checksum: b23b5eb602cb56c83654be0110befdb34f55f6ab3a9ff287a7ffe561ba17f25d
 - filename: client/package-lock.json
   checksum: 33ad38113d226573338581bfdf51f921999098cc3d6f7d8a0db65990227adfa1
 - filename: client/package.json

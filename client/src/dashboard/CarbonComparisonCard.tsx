@@ -100,7 +100,8 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   const gasSum = toGas(mtSum)
   const treesSum = toTrees(mtSum)
 
-  const formatNumber = (number: number) => number.toLocaleString(undefined, { maximumFractionDigits: 0 })
+  const formatNumber = (number: number, decimalPlaces = 0) =>
+    number.toLocaleString(undefined, { maximumFractionDigits: decimalPlaces })
 
   const comparisons: Comparison = {
     gas: {
@@ -140,7 +141,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               Your cumulative emissions are
             </Typography>
             <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
-              {formatNumber(mtSum)} metric tons CO2e
+              {formatNumber(mtSum, 1)} metric tons CO2e
             </Typography>
             <Typography className={classes.posOne}>that is equivalent to</Typography>
           </CardContent>
