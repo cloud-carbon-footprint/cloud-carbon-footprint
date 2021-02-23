@@ -58,7 +58,7 @@ fileignoreconfig:
 - filename: server/create_server_env_file.sh
   checksum: 10a0acaeb47f02baa39ef0c5b712eb7ed56c5920f2f0267e7dbb4e7d1c97e3de
 - filename: server/package-lock.json
-  checksum: 5bce19fa9882cc0ad96455b8174d57ae12bbaa552817e7ddaf6907f8c7945229
+  checksum: 15e8c784d22a13cfa5ca0db8574b45d4a68d6995288eccb1686a9ee60c14efcf
 - filename: server/package.json
   checksum: 0c832c7edc18fd30a29c1fb591efd3e86c80439160ff3a954aaba576ea570a32
 - filename: server/sonar-project.properties
