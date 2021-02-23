@@ -60,7 +60,7 @@ You can read more about this mode of authentication in [.adr/adr_5_aws_authentic
 ### GCP Credentials
 
 - You'll need your team's (or your own) GCP service account credentials stored on your filesystem
-- set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
+- Set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
 see https://cloud.google.com/docs/authentication/getting-started for more details.
 
 ## Options for cloud emission estimation

@@ -96,10 +96,6 @@ describe('cli', () => {
           projects: [{ id: 'test-project', name: 'test project' }],
           NAME: 'GCP',
           CURRENT_REGIONS: ['us-east1'],
-          authentication: {
-            targetAccountEmail: 'test@test.com',
-            targetAccountPrivateKey: 'test',
-          },
         },
         LOGGING_MODE: 'test',
       })

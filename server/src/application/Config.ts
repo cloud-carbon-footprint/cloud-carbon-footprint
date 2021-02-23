@@ -34,10 +34,6 @@ export interface CCFConfig {
       id: string
       name?: string
     }[]
-    authentication?: {
-      targetAccountEmail?: string
-      targetAccountPrivateKey?: string
-    }
     USE_BILLING_DATA?: boolean
     BIG_QUERY_TABLE?: string
     BILLING_ACCOUNT_ID?: string
@@ -52,10 +48,6 @@ const getAWSAccounts = () => {
 
 const getGCPProjects = () => {
   return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
-}
-
-const escapePrivateKey = (privateKey: string) => {
-  return privateKey?.replace(/\\n/g, '\n')
 }
 
 const appConfig: CCFConfig = {
@@ -133,10 +125,6 @@ const appConfig: CCFConfig = {
         name: 'ComputeEngine',
       },
     ],
-    authentication: {
-      targetAccountEmail: process.env.GCP_TARGET_ACCOUNT_EMAIL || '',
-      targetAccountPrivateKey: escapePrivateKey(process.env.GCP_TARGET_ACCOUNT_PRIVATE_KEY) || '',
-    },
     USE_BILLING_DATA: !!process.env.GCP_USE_BILLING_DATA,
     BIG_QUERY_TABLE: process.env.GCP_BIG_QUERY_TABLE || '',
     BILLING_ACCOUNT_ID: process.env.GCP_BILLING_ACCOUNT_ID || '',

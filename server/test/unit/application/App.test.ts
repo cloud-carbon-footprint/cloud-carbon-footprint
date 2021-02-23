@@ -53,7 +53,6 @@ describe('App', () => {
         NAME: 'GCP',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east1', 'us-west1', 'us-central1'],
-        authentication: { targetAccountEmail: 'test', targetAccountPrivateKey: 'test' },
       },
     })
     app = new App()

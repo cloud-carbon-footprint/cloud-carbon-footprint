@@ -10,7 +10,6 @@ import ICloudService from '@domain/ICloudService'
 import ComputeEngine from '@services/gcp/ComputeEngine'
 import { v3 } from '@google-cloud/monitoring'
 import { ClientOptions } from 'google-gax'
-import { CredentialBody } from 'google-auth-library'
 import BillingExportTable from '@services/gcp/BillingExportTable'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
@@ -18,14 +17,8 @@ import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { BigQuery } from '@google-cloud/bigquery'
 
 export default class GCPAccount extends CloudProviderAccount {
-  private readonly credentials: CredentialBody
-
   constructor(public projectId: string, public name: string, private regions: string[]) {
     super()
-    this.credentials = {
-      client_email: configLoader().GCP.authentication.targetAccountEmail,
-      private_key: configLoader().GCP.authentication.targetAccountPrivateKey,
-    }
   }
 
   getDataForRegions(startDate: Date, endDate: Date): Promise<EstimationResult[]>[] {
@@ -45,7 +38,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new BigQuery({ credentials: this.credentials, projectId: this.projectId }),
+      new BigQuery({ projectId: this.projectId }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)
   }
@@ -59,7 +52,6 @@ export default class GCPAccount extends CloudProviderAccount {
   private getService(key: string): ICloudService {
     if (this.services[key] === undefined) throw new Error('Unsupported service: ' + key)
     const options: ClientOptions = {
-      credentials: this.credentials,
       projectId: this.projectId,
     }
     return this.services[key](options)
