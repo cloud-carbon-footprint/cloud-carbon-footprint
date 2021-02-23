@@ -113,8 +113,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            wattHours: 142.96577622493106,
-            co2e: 0.00005025718821367869,
+            wattHours: 143.62158253788945,
+            co2e: 0.000050487725774291895,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
