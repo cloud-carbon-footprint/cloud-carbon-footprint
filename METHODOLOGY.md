@@ -293,7 +293,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 ### Appendix II: Grid emissions factors:
  
 #### AWS
- |Region|Country|NERC Region|CO2e (mt/Wh)|Source|
+ |Region|Country|NERC Region|CO2e (metric ton/Wh)|Source|
  |------|-------|-----------|------------|------|
  |us-east-1|United States|SERC|0.0000004545|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-east-2|United States|RFC|0.000000475105|[EPA](https://www.epa.gov/egrid/download-data)|
@@ -322,7 +322,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
  |sa-east-1|Brazil| |0.000000074|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
 
 #### GCP
- |Region|Country|NERC Region|CO2e (mt/Wh)|Source|
+ |Region|Country|NERC Region|CO2e (metric ton/Wh)|Source|
  |------|-------|-----------|------------|------|
  |us-central1|USA|MRO|0.000000540461|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-east1|USA|SERC|0.0000004545|[EPA](https://www.epa.gov/egrid/download-data)|

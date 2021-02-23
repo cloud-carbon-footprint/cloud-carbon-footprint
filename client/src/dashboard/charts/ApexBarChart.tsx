@@ -136,7 +136,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       },
       y: {
         formatter: function (value: number, opts: { dataPointIndex: number }) {
-          return `${dataEntries[pageData.page * pageSize + opts.dataPointIndex].y.toFixed(3)} mt`
+          return `${dataEntries[pageData.page * pageSize + opts.dataPointIndex].y.toFixed(3)} metric tons`
         },
       },
     },

@@ -30,12 +30,12 @@ export default function EmissionsByDayAndServiceTable(
   serviceNames.forEach((serviceName) => {
     headers.push(
       `${displayServiceName(serviceName)} Watt Hours`,
-      `${displayServiceName(serviceName)} mt CO2e Emissions`,
+      `${displayServiceName(serviceName)} metric tons CO2e Emissions`,
     )
     colWidths.push(20, 25)
   })
 
-  headers.push(`SUM Watt Hours`, `SUM mt CO2e Emissions`)
+  headers.push(`SUM Watt Hours`, `SUM metric tons CO2e Emissions`)
   colWidths.push(20, 25)
 
   const table: string[][] = [headers]

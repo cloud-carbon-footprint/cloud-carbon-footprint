@@ -15,7 +15,7 @@ exports[`Custom Tooltip renders data in tooltip 1`] = `
   </div>
   <div>
     20
-     mt CO2e*
+     metric tons CO2e*
   </div>
   <div>
     200

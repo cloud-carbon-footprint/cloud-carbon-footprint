@@ -16,7 +16,7 @@ import { pluck, uniq } from 'ramda'
 export default function EmissionsByServiceTable(
   estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
-  const headers = ['Service', 'Watt Hours', 'mt CO2e Emissions', 'Cost']
+  const headers = ['Service', 'Watt Hours', 'metric tons CO2e Emissions', 'Cost']
   const colWidths: number[] = [15, 20, 25, 20]
   const table: string[][] = [headers]
   const serviceNames = uniq(

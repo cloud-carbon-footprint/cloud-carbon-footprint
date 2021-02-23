@@ -79,7 +79,7 @@ describe('ApexBarChart', () => {
 
     const yFormatter = fixture.root.findByType(Chart).props?.options?.tooltip?.y?.formatter
     expect(yFormatter).toBeDefined()
-    expect(yFormatter(null, { dataPointIndex: 1 })).toEqual('2000.014 mt')
+    expect(yFormatter(null, { dataPointIndex: 1 })).toEqual('2000.014 metric tons')
   })
 
   it('should format data label values with proper data instead of scaled down data', () => {
