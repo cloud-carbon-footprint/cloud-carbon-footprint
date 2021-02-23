@@ -87,13 +87,18 @@ export default function CloudCarbonContainer(): ReactElement {
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
             <div className={classes.filterContainerSection}>
-              {[CloudProviderFilter, AccountFilter, ServiceFilter, DateFilter, MonthFilter].map(
-                (FilterComponent, i) => (
-                  <div key={i} className={classes.filter}>
-                    <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
-                  </div>
-                ),
-              )}
+              {[CloudProviderFilter, AccountFilter, ServiceFilter].map((FilterComponent, i) => (
+                <div key={i} className={classes.filter}>
+                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
+                </div>
+              ))}
+            </div>
+            <div className={classes.filterContainerSection}>
+              {[DateFilter, MonthFilter].map((FilterComponent, i) => (
+                <div key={i} className={classes.filter}>
+                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
+                </div>
+              ))}
             </div>
           </div>
         </Grid>
