@@ -59,7 +59,7 @@ describe('StorageService', () => {
       const usage = [
         {
           timestamp: date,
-          sizeGb: 10,
+          terabyteHours: 10,
         },
       ]
       getUsageMock.mockResolvedValue(usage)
@@ -73,7 +73,7 @@ describe('StorageService', () => {
           [
             {
               timestamp: date,
-              sizeGb: 10,
+              terabyteHours: 10,
             },
           ],
           AWS_REGIONS.US_EAST_1,
@@ -89,7 +89,7 @@ describe('StorageService', () => {
       const usage = [
         {
           timestamp: date,
-          sizeGb: 10,
+          terabyteHours: 10,
         },
       ]
       getUsageMock.mockResolvedValue(usage)
@@ -103,7 +103,7 @@ describe('StorageService', () => {
           [
             {
               timestamp: date,
-              sizeGb: 10,
+              terabyteHours: 10,
             },
           ],
           AWS_REGIONS.US_EAST_1,

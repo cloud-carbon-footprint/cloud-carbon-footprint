@@ -88,6 +88,6 @@ fileignoreconfig:
 - filename: server/test/unit/services/aws/Lambda.test.ts
   checksum: 4064f034466e064c7116b0b70f0d4404fbaca6318fa39607b5e8e7191fda7c8d
 - filename: server/test/unit/services/gcp/BillingExportTable.test.ts
-  checksum: 8c55444528333620809bc7c0deaba8cd2d874dc963e6e687f89dfe2dca02901d
+  checksum: 4b176b1f1e0d3430d7849a67394f827ee11785b848c317f65203c45552885649
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545

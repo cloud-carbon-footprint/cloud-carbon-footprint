@@ -138,8 +138,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-29'),
         serviceEstimates: [
           {
-            wattHours: 3.2140799999999996,
-            co2e: 0.0000014607993599999999,
+            wattHours: 3.2140800000000005,
+            co2e: 0.0000014607993600000003,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -201,22 +201,22 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 5.107293650507927e-19,
+            co2e: 4.987591455574148e-19,
             cost: 9,
             region: 'us-west-1',
             serviceName: 'AmazonS3',
             usesAverageCPUConstant: false,
-            wattHours: 1.4528632164001465e-12,
+            wattHours: 1.418811734765768e-12,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 1.3805251568555832e-18,
+            co2e: 1.3481690984917804e-18,
             cost: 10,
             region: 'us-east-2',
             serviceName: 'AmazonCloudWatch',
             usesAverageCPUConstant: false,
-            wattHours: 2.905726432800293e-12,
+            wattHours: 2.837623469531536e-12,
           },
           {
             accountName: '123456789',
@@ -279,8 +279,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            wattHours: 0.007264316082000733,
-            co2e: 2.553646825253964e-9,
+            wattHours: 0.00709405867382884,
+            co2e: 2.493795727787074e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -376,12 +376,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 7.5256632e-9,
+            co2e: 7.525663199999998e-9,
             cost: 2,
             region: 'us-east-2',
             serviceName: 'AmazonECS',
             usesAverageCPUConstant: false,
-            wattHours: 0.01584,
+            wattHours: 0.015839999999999996,
           },
           {
             accountName: '123456789',

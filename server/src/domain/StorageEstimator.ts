@@ -16,7 +16,7 @@ export class StorageEstimator implements IFootprintEstimator {
 
   estimate(data: StorageUsage[], region: string, cloudProvider: string): FootprintEstimate[] {
     return data.map((d: StorageUsage) => {
-      const estimatedWattHours = this.estimateWattHours(d.sizeGb, cloudProvider, region)
+      const estimatedWattHours = this.estimateWattHours(d.terabyteHours, cloudProvider, region)
 
       return {
         timestamp: d.timestamp,
@@ -26,13 +26,10 @@ export class StorageEstimator implements IFootprintEstimator {
     })
   }
 
-  private estimateWattHours(usageGb: number, cloudProvider: string, region: string) {
-    // This function does the following:
-    // 1. Convert the used gigabytes to terabytes
-    // 2. Multiplies this by the SSD or HDD co-efficient
-    // 3. Multiplies this to get the watt-hours in a single day.
-    // 4. Multiples this by PUE to account for extra power used by data center (lights, infrastructure, etc.)
-    return (usageGb / 1000) * this.coefficient * 24 * CLOUD_CONSTANTS[cloudProvider].getPUE(region)
+  private estimateWattHours(terabyteHours: number, cloudProvider: string, region: string) {
+    // This function multiplies the usage in terabyte hours this by the SSD or HDD co-efficient,
+    // then by PUE to account for extra power used by data center (lights, infrastructure, etc.)
+    return terabyteHours * this.coefficient * CLOUD_CONSTANTS[cloudProvider].getPUE(region)
   }
 
   private estimateCo2(estimatedWattHours: number, region: string, cloudProvider: string) {

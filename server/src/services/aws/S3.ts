@@ -37,9 +37,9 @@ export default class S3 extends HDDStorageService {
       s3ResponseData.Timestamps.map((timestampString, i) => {
         return {
           timestamp: new Date(timestampString),
-          sizeGb: s3ResponseData.Values[i] / 1e9, // Convert bytes to Gigabytes
+          terabyteHours: (s3ResponseData.Values[i] / 1099511627776) * 24, // Convert bytes to terabyte hours
         }
-      }).filter((r: StorageUsage) => r.sizeGb && r.timestamp) || []
+      }).filter((r: StorageUsage) => r.terabyteHours && r.timestamp) || []
     )
   }
 

@@ -27,7 +27,7 @@ describe('RDSStorage', () => {
   const region = 'us-east-1'
   const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
 
-  it('calculates GB-Month usage', async () => {
+  it('calculates terabyteHours usage', async () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -49,12 +49,12 @@ describe('RDSStorage', () => {
     expect(result).toEqual([
       {
         diskType: 'SSD',
-        sizeGb: 31,
+        terabyteHours: 0.744,
         timestamp: new Date(startDate),
       },
       {
         diskType: 'SSD',
-        sizeGb: 62,
+        terabyteHours: 1.488,
         timestamp: new Date(dayTwo),
       },
     ])
@@ -100,7 +100,7 @@ describe('RDSStorage', () => {
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
   })
 
-  it('calculates GB-Month for shorter months', async () => {
+  it('calculates terabyteHours for shorter months', async () => {
     const juneStartDate = '2020-06-24'
     const juneEndDate = '2020-06-26'
     AWSMock.mock(
@@ -121,13 +121,13 @@ describe('RDSStorage', () => {
     expect(result).toEqual([
       {
         diskType: 'SSD',
-        sizeGb: 30,
+        terabyteHours: 0.72,
         timestamp: new Date(juneStartDate),
       },
     ])
   })
 
-  it('filters 0 gb of usage', async () => {
+  it('filters 0 terabyteHours of usage', async () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
@@ -210,7 +210,7 @@ describe('RDSStorage', () => {
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual(
-      ssdStorageEstimator.estimate([{ sizeGb: 31.0, timestamp: new Date(startDate) }], region, 'AWS'),
+      ssdStorageEstimator.estimate([{ terabyteHours: 0.744, timestamp: new Date(startDate) }], region, 'AWS'),
     )
   })
 
@@ -232,7 +232,7 @@ describe('RDSStorage', () => {
     const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
 
     expect(result).toEqual(
-      hddStorageEstimator.estimate([{ sizeGb: 31.0, timestamp: new Date(startDate) }], region, 'AWS'),
+      hddStorageEstimator.estimate([{ terabyteHours: 0.744, timestamp: new Date(startDate) }], region, 'AWS'),
     )
   })
 

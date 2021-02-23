@@ -94,11 +94,11 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
         // Storage
-        const usageAmountGbMonth = this.getUsageAmountGbMonth(costAndUsageReportRow)
+        const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(costAndUsageReportRow)
 
         const storageUsage: StorageUsage = {
           timestamp: costAndUsageReportRow.timestamp,
-          sizeGb: usageAmountGbMonth * moment(costAndUsageReportRow.timestamp).daysInMonth(),
+          terabyteHours: usageAmountTerabyteHours,
         }
 
         let estimate: FootprintEstimate
@@ -127,16 +127,17 @@ export default class CostAndUsageReports {
     }
   }
 
-  private getUsageAmountGbMonth(costAndUsageReportRow: CostAndUsageReportsRow): number {
+  private getUsageAmountInTerabyteHours(costAndUsageReportRow: CostAndUsageReportsRow): number {
     if (this.usageTypeisByteHours(costAndUsageReportRow.usageType)) {
-      // Convert from Byte-Hours to GB-Month
-      return costAndUsageReportRow.usageAmount / 1073741824 / 24 / 31
+      // Convert from Byte-Hours to Terabyte Hours
+      return costAndUsageReportRow.usageAmount / 1099511627776
     }
+    // Convert from GB-Hours to Terabyte Hours
+    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS) return costAndUsageReportRow.usageAmount / 1000
+
+    // Convert Gb-Month to Terabyte Hours
     const hoursInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
-    // Convert from GB-Hours to GB-Month
-    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS)
-      return costAndUsageReportRow.usageAmount / (hoursInMonth * 24)
-    return costAndUsageReportRow.usageAmount
+    return (costAndUsageReportRow.usageAmount / 1000) * (24 * hoursInMonth)
   }
 
   private usageTypeIsSSD(costAndUsageRow: CostAndUsageReportsRow): boolean {

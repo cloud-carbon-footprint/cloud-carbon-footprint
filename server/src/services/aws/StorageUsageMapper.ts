@@ -11,7 +11,7 @@ import { StorageEstimator } from '@domain/StorageEstimator'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
 export class VolumeUsage implements StorageUsage {
-  readonly sizeGb: number
+  readonly terabyteHours: number
   readonly timestamp: Date
   readonly diskType: DiskType
 }
@@ -40,10 +40,10 @@ export async function getUsageFromCostExplorer(
         const timestampString = result.TimePeriod.Start
         return result.Groups.map((group) => {
           const gbMonth = Number.parseFloat(group.Metrics.UsageQuantity.Amount)
-          const sizeGb = estimateGigabyteUsage(gbMonth, timestampString)
+          const terabyteHours = estimateTerabyteHours(gbMonth, timestampString)
           const diskType = diskTypeCallBack(group.Keys[0]) // Should be improved
           return {
-            sizeGb,
+            terabyteHours: terabyteHours,
             timestamp: new Date(timestampString),
             diskType: diskType,
           }
@@ -52,14 +52,14 @@ export async function getUsageFromCostExplorer(
     })
     .flat()
     .flat()
-    .filter((storageUsage: StorageUsage) => storageUsage.sizeGb)
+    .filter((storageUsage: StorageUsage) => storageUsage.terabyteHours)
 }
 
-function estimateGigabyteUsage(sizeGbMonth: number, timestamp: string) {
-  // This function converts an AWS EBS Gigabyte-Month pricing metric into a Gigabyte value for a single day.
-  // We do this by getting the number of days in the month, then multiplying the Gigabyte-month value by this.
+function estimateTerabyteHours(sizeGbMonth: number, timestamp: string) {
+  // This function converts an AWS EBS Gigabyte-Month pricing metric into a TerabyteHours value that is needed for Storage Estimation.
+  // We do this by converting Gigabytes into Terabytes, then multiplying this by the number of hours in a month.
   // Source: https://aws.amazon.com/premiumsupport/knowledge-center/ebs-volume-charges/
-  return sizeGbMonth * moment(timestamp).daysInMonth()
+  return (sizeGbMonth / 1000) * moment(timestamp).daysInMonth() * 24
 }
 
 export function getEstimatesFromCostExplorer(

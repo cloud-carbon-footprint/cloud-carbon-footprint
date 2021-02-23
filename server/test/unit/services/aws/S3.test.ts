@@ -52,19 +52,19 @@ describe('S3', () => {
     const result = await s3Service.getUsage(new Date(start), new Date(end))
     expect(result).toEqual([
       {
-        sizeGb: 2.5860325,
+        terabyteHours: 0.0564475885767024,
         timestamp: new Date(start),
       },
       {
-        sizeGb: 3.2860325,
+        terabyteHours: 0.0717270995664876,
         timestamp: new Date(dayTwo),
       },
       {
-        sizeGb: 7.2860325,
+        terabyteHours: 0.1590385909366887,
         timestamp: new Date(dayThree),
       },
       {
-        sizeGb: 4.2860325,
+        terabyteHours: 0.09355497240903787,
         timestamp: new Date(end),
       },
     ])

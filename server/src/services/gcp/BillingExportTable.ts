@@ -89,11 +89,11 @@ export default class BillingExportTable {
   }
 
   private getStorageFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
-    // storage estimation requires usage amount in gigabytes
-    const usageAmountGb = this.convertByteSecondsToGigabyte(usageRow.usageAmount)
+    // storage estimation requires usage amount in terabyte hours
+    const usageAmountTerabyteHours = this.convertByteSecondsToTerabyteHours(usageRow.usageAmount)
     const storageUsage: StorageUsage = {
       timestamp,
-      sizeGb: usageAmountGb,
+      terabyteHours: usageAmountTerabyteHours,
     }
     if (usageRow.usageType.includes('SSD')) {
       return {
@@ -189,7 +189,8 @@ export default class BillingExportTable {
     return job
   }
 
-  private convertByteSecondsToGigabyte(usageAmount: number): number {
-    return usageAmount / 3600 / 1073741824 / 24
+  private convertByteSecondsToTerabyteHours(usageAmount: number): number {
+    // This function converts byte-seconds into terabyte hours by first converting bytes to terabytes, then seconds to hours.
+    return usageAmount / 1099511627776 / 3600
   }
 }

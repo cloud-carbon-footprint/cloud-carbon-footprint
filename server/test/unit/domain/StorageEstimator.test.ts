@@ -8,7 +8,7 @@ import { AWS_REGIONS } from '@services/aws/AWSRegions'
 
 describe('StorageEstimator', () => {
   const SSD_COEFFICIENT = 1.2
-  const HDD_COEFFICIENT = 0.67
+  const HDD_COEFFICIENT = 0.65
 
   describe('estimating a single SSD result', () => {
     const estimator: StorageEstimator = new StorageEstimator(SSD_COEFFICIENT)
@@ -16,7 +16,7 @@ describe('StorageEstimator', () => {
     const results: FootprintEstimate[] = estimator.estimate(
       [
         {
-          sizeGb: 1.0,
+          terabyteHours: 1.0,
           timestamp: new Date('1998-01-01'),
         },
       ],
@@ -32,12 +32,12 @@ describe('StorageEstimator', () => {
       expect(results[0].timestamp).toEqual(new Date('1998-01-01T00:00:00Z'))
     })
 
-    it('calculates the wattage of an SSD using its GB per month usage for the start date of the time period', () => {
-      expect(results[0].wattHours).toEqual(0.03456)
+    it('calculates the wattage of an SSD using its terabyteHours usage for the start date of the time period', () => {
+      expect(results[0].wattHours).toEqual(1.44)
     })
 
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
-      expect(results[0].co2e).toEqual(1.570752e-8)
+      expect(results[0].co2e).toEqual(6.5448e-7)
     })
   })
 
@@ -47,7 +47,7 @@ describe('StorageEstimator', () => {
     const results: FootprintEstimate[] = estimator.estimate(
       [
         {
-          sizeGb: 1.0,
+          terabyteHours: 1.0,
           timestamp: new Date('1998-01-01'),
         },
       ],
@@ -63,12 +63,12 @@ describe('StorageEstimator', () => {
       expect(results[0].timestamp).toEqual(new Date('1998-01-01T00:00:00Z'))
     })
 
-    it('calculates the wattage of an SSD using its GB per month usage for the start date of the time period', () => {
-      expect(results[0].wattHours).toEqual(0.019296)
+    it('calculates the wattage of an SSD using its Terabyte Hours of usage for the start date of the time period', () => {
+      expect(results[0].wattHours).toEqual(0.78)
     })
 
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
-      expect(results[0].co2e).toEqual(8.770032e-9)
+      expect(results[0].co2e).toEqual(3.5451e-7)
     })
   })
 
@@ -79,11 +79,11 @@ describe('StorageEstimator', () => {
       const results = estimator.estimate(
         [
           {
-            sizeGb: 1.0,
+            terabyteHours: 1.0,
             timestamp: new Date('2008-01-01'),
           },
           {
-            sizeGb: 2.0,
+            terabyteHours: 2.0,
             timestamp: new Date('1998-01-01'),
           },
         ],
@@ -93,14 +93,14 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 1.570752e-8,
+          co2e: 6.5448e-7,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
-          wattHours: 0.03456,
+          wattHours: 1.44,
         },
         {
-          co2e: 3.141504e-8,
+          co2e: 0.00000130896,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
-          wattHours: 0.06912,
+          wattHours: 2.88,
         },
       ])
     })
@@ -111,11 +111,11 @@ describe('StorageEstimator', () => {
       const results = estimator.estimate(
         [
           {
-            sizeGb: 1.0,
+            terabyteHours: 1.0,
             timestamp: new Date('2008-01-01'),
           },
           {
-            sizeGb: 2.0,
+            terabyteHours: 2.0,
             timestamp: new Date('1998-01-01'),
           },
         ],
@@ -125,14 +125,14 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 8.770032e-9,
+          co2e: 3.5451e-7,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
-          wattHours: 0.019296,
+          wattHours: 0.78,
         },
         {
-          co2e: 1.7540064e-8,
+          co2e: 7.0902e-7,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
-          wattHours: 0.038592,
+          wattHours: 1.56,
         },
       ])
     })
