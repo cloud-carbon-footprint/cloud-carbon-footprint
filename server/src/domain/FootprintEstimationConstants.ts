@@ -11,6 +11,7 @@ type CloudConstantsByProvider = {
   MIN_WATTS: number
   MAX_WATTS: number
   PUE_AVG: number
+  NETWORKING_COEFFICIENT: number
   PUE_TRAILING_TWELVE_MONTH?: { [key: string]: number }
   getPUE: (region?: string) => number
   AVG_CPU_UTILIZATION_2020: number
@@ -26,6 +27,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
     HDDCOEFFICIENT: 0.65,
     MIN_WATTS: 0.58,
     MAX_WATTS: 3.54,
+    NETWORKING_COEFFICIENT: 0.0001, // kWh / Gb
     PUE_AVG: 1.1,
     PUE_TRAILING_TWELVE_MONTH: {
       [GCP_REGIONS.US_EAST1]: 1.102,
@@ -46,10 +48,11 @@ export const CLOUD_CONSTANTS: CloudConstants = {
     AVG_CPU_UTILIZATION_2020: 50,
   },
   AWS: {
-    SSDCOEFFICIENT: 1.2,
-    HDDCOEFFICIENT: 0.65,
+    SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
+    HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
     MIN_WATTS: 0.59,
     MAX_WATTS: 3.5,
+    NETWORKING_COEFFICIENT: 0.0001, // kWh / Gb
     PUE_AVG: 1.2,
     getPUE: () => {
       return CLOUD_CONSTANTS.AWS.PUE_AVG

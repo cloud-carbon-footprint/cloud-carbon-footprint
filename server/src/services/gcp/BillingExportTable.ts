@@ -9,6 +9,8 @@ import ComputeEstimator from '@domain/ComputeEstimator'
 import StorageUsage from '@domain/StorageUsage'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import ComputeUsage from '@domain/ComputeUsage'
+import NetworkingEstimator from '@domain/NetworkingEstimator'
+import NetworkingUsage from '@domain/NetworkingUsage'
 import FootprintEstimate, { MutableEstimationResult } from '@domain/FootprintEstimate'
 import { EstimationResult } from '@application/EstimationResult'
 import configLoader from '@application/ConfigLoader'
@@ -18,6 +20,7 @@ import {
   UNKNOWN_SERVICE_TYPES,
   COMPUTE_STRING_FORMATS,
   UNSUPPORTED_USAGE_TYPES,
+  NETWORKING_STRING_FORMATS,
 } from '@services/gcp/BillingExportTypes'
 import BillingExportRow from '@services/gcp/BillingExportRow'
 import Logger from '@services/Logger'
@@ -32,6 +35,7 @@ export default class BillingExportTable {
     private readonly computeEstimator: ComputeEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
+    private readonly networkingEstimator: NetworkingEstimator,
     private readonly bigQuery: BigQuery,
   ) {
     this.tableName = configLoader().GCP.BIG_QUERY_TABLE
@@ -69,6 +73,16 @@ export default class BillingExportTable {
         case 'byte-seconds':
           footprintEstimate = this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
           break
+        case 'bytes':
+          if (this.isNetworkingUsage(billingExportRow.usageType))
+            footprintEstimate = this.getNetworkingFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          else {
+            this.billingExportTableLogger.warn(
+              `Non Networking usage type for 'bytes' usageUnit: ${billingExportRow.usageType}`,
+            )
+            return []
+          }
+          break
         default:
           this.billingExportTableLogger.warn(`Unsupported Usage unit: ${usageRow.usageUnit}`)
           return []
@@ -78,7 +92,7 @@ export default class BillingExportTable {
     return results
   }
 
-  private getComputeFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
+  private getComputeFootprintEstimate(usageRow: BillingExportRow, timestamp: Date): FootprintEstimate {
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: usageRow.vCpuHours,
@@ -88,7 +102,7 @@ export default class BillingExportTable {
     return this.computeEstimator.estimate([computeUsage], usageRow.region, 'GCP')[0]
   }
 
-  private getStorageFootprintEstimate(usageRow: any, timestamp: Date): FootprintEstimate {
+  private getStorageFootprintEstimate(usageRow: BillingExportRow, timestamp: Date): FootprintEstimate {
     // storage estimation requires usage amount in terabyte hours
     const usageAmountTerabyteHours = this.convertByteSecondsToTerabyteHours(usageRow.usageAmount)
     const storageUsage: StorageUsage = {
@@ -104,6 +118,18 @@ export default class BillingExportTable {
     return {
       usesAverageCPUConstant: false,
       ...this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0],
+    }
+  }
+
+  private getNetworkingFootprintEstimate(usageRow: BillingExportRow, timestamp: Date): FootprintEstimate {
+    const networkingUSage: NetworkingUsage = {
+      timestamp,
+      gigabytes: this.convertBytesToGigabytes(usageRow.usageAmount),
+    }
+
+    return {
+      usesAverageCPUConstant: false,
+      ...this.networkingEstimator.estimate([networkingUSage], usageRow.region, 'GCP')[0],
     }
   }
 
@@ -126,6 +152,10 @@ export default class BillingExportTable {
 
   private isComputeUsage(usageType: string): boolean {
     return this.containsAny(COMPUTE_STRING_FORMATS, usageType)
+  }
+
+  private isNetworkingUsage(usageType: string): boolean {
+    return this.containsAny(NETWORKING_STRING_FORMATS, usageType)
   }
 
   private containsAny(substrings: string[], stringToSearch: string): boolean {
@@ -151,7 +181,7 @@ export default class BillingExportTable {
                     system_labels.key LIKE "%cores%"
                   WHERE
                     cost_type != 'rounding_error'
-                    AND usage.unit IN ('byte-seconds', 'seconds')
+                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
                     AND usage_start_time >= TIMESTAMP('${moment(start).format('YYYY-MM-DD')}')
                     AND usage_end_time <= TIMESTAMP('${moment(end).format('YYYY-MM-DD')}')
                   GROUP BY
@@ -192,5 +222,9 @@ export default class BillingExportTable {
   private convertByteSecondsToTerabyteHours(usageAmount: number): number {
     // This function converts byte-seconds into terabyte hours by first converting bytes to terabytes, then seconds to hours.
     return usageAmount / 1099511627776 / 3600
+  }
+
+  private convertBytesToGigabytes(usageAmount: number): number {
+    return usageAmount / 1073741824
   }
 }

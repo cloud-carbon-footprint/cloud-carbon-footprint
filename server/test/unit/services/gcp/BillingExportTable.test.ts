@@ -7,14 +7,16 @@ import { BigQuery } from '@google-cloud/bigquery'
 import { EstimationResult } from '@application/EstimationResult'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
+import NetworkingEstimator from '@domain/NetworkingEstimator'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import BillingExportTable from '@services/gcp/BillingExportTable'
 import {
   mockQueryResultsAppEngineSSDStorageRAM,
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRamAndUnknownUsages,
-  mockQueryResultsNetworkingAndCloudSQLCompute,
+  mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryAppEngineComputeUnknownRegion,
+  mockQueryNetworking,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -43,6 +45,7 @@ describe('GCP BillingExportTable Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 
@@ -77,6 +80,7 @@ describe('GCP BillingExportTable Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 
@@ -136,6 +140,7 @@ describe('GCP BillingExportTable Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 
@@ -148,12 +153,13 @@ describe('GCP BillingExportTable Service', () => {
 
   it('Returns null estimates for networking and CLoud SQL Compute usage accumulated', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsNetworkingAndCloudSQLCompute)
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsUnknownAndCloudSQLCompute)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 
@@ -186,6 +192,7 @@ describe('GCP BillingExportTable Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 
@@ -221,6 +228,39 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
+  it('estimation for Networking', async () => {
+    mockJob.getQueryResults.mockResolvedValue(mockQueryNetworking)
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            accountName: 'test-account',
+            cloudProvider: 'GCP',
+            co2e: 5.915393099771092e-9,
+            cost: 10,
+            region: 'us-west1',
+            serviceName: 'App Engine',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00001682741904677823,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
   it('throws an error when get query results fails', async () => {
     const mockErrorDetails = {
       message: 'Not found: Job',
@@ -236,6 +276,7 @@ describe('GCP BillingExportTable Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 
@@ -259,6 +300,7 @@ describe('GCP BillingExportTable Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       new BigQuery(),
     )
 

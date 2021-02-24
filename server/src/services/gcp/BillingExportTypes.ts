@@ -78,3 +78,5 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
 ]
 
 export const COMPUTE_STRING_FORMATS: string[] = ['Core', 'CORE', 'VCPU', 'vCPU', 'CPU']
+
+export const NETWORKING_STRING_FORMATS: string[] = ['Egress', 'egress', 'data delivery', 'network traffic', 'Download']

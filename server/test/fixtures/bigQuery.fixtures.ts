@@ -154,7 +154,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
   ],
 ]
 
-export const mockQueryResultsNetworkingAndCloudSQLCompute: any[][] = [
+export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
@@ -258,6 +258,22 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
       vCpus: null as string | null,
       usageAmount: 2.83e16,
       cost: 5,
+    },
+  ],
+]
+
+export const mockQueryNetworking: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateOne,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'App Engine',
+      usageType: 'Cloud Firestore Google Egress from APAC to the Americas',
+      usageUnit: 'bytes',
+      vCpus: null as string | null,
+      usageAmount: 165007339,
+      cost: 10,
     },
   ],
 ]
