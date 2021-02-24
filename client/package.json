@@ -15,7 +15,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^4.4.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
