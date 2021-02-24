@@ -16,7 +16,7 @@ import {
   mockQueryResultsComputeEngineRamAndUnknownUsages,
   mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryAppEngineComputeUnknownRegion,
-  mockQueryNetworking,
+  mockQueryNetworkingIgnoreIngress,
 } from '../../../fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -229,7 +229,7 @@ describe('GCP BillingExportTable Service', () => {
   })
 
   it('estimation for Networking', async () => {
-    mockJob.getQueryResults.mockResolvedValue(mockQueryNetworking)
+    mockJob.getQueryResults.mockResolvedValue(mockQueryNetworkingIgnoreIngress)
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -254,6 +254,16 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
             kilowattHours: 0.00001682741904677823,
+          },
+          {
+            accountName: 'test-account',
+            cloudProvider: 'GCP',
+            co2e: 1.2116079152746742e-7,
+            cost: 10,
+            region: 'us-east1',
+            serviceName: 'Cloud Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00026658039940036834,
           },
         ],
       },

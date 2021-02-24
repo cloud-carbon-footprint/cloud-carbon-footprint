@@ -262,7 +262,7 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
   ],
 ]
 
-export const mockQueryNetworking: any[][] = [
+export const mockQueryNetworkingIgnoreIngress: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
@@ -273,6 +273,28 @@ export const mockQueryNetworking: any[][] = [
       usageUnit: 'bytes',
       vCpus: null as string | null,
       usageAmount: 165007339,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateOne,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Compute Engine',
+      usageType: 'Network Ingress via Carrier Peering Network - EMEA Based',
+      usageUnit: 'bytes',
+      vCpus: null as string | null,
+      usageAmount: 165007339,
+      cost: 10,
+    },
+    {
+      timestamp: bigQueryDateOne,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'Cloud Storage',
+      usageType: 'Download Australia',
+      usageUnit: 'bytes',
+      vCpus: null as string | null,
+      usageAmount: 2597445774,
       cost: 10,
     },
   ],
