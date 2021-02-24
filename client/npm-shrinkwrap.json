@@ -7,7 +7,7 @@
     "": {
       "version": "0.1.0",
       "dependencies": {
-        "@babel/runtime": "^7.12.18",
+        "@babel/runtime": "^7.13.7",
         "@material-ui/core": "^4.11.3",
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.57",
@@ -1152,9 +1152,9 @@
       }
     },
     "node_modules/@babel/runtime": {
-      "version": "7.12.18",
-      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.12.18.tgz",
-      "integrity": "sha512-BogPQ7ciE6SYAUPtlm9tWbgI9+2AgqSam6QivMgXgAT+fKbgppaj4ZX15MHeLC1PVF5sNk70huBu20XxWOs8Cg==",
+      "version": "7.13.7",
+      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.7.tgz",
+      "integrity": "sha512-h+ilqoX998mRVM5FtB5ijRuHUDVt5l3yfoOi2uh18Z/O3hvyaHQ39NpxVkCIG5yFs+mLq/ewFp8Bss6zmWv6ZA==",
       "dependencies": {
         "regenerator-runtime": "^0.13.4"
       }
@@ -24490,9 +24490,9 @@
       }
     },
     "@babel/runtime": {
-      "version": "7.12.18",
-      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.12.18.tgz",
-      "integrity": "sha512-BogPQ7ciE6SYAUPtlm9tWbgI9+2AgqSam6QivMgXgAT+fKbgppaj4ZX15MHeLC1PVF5sNk70huBu20XxWOs8Cg==",
+      "version": "7.13.7",
+      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.7.tgz",
+      "integrity": "sha512-h+ilqoX998mRVM5FtB5ijRuHUDVt5l3yfoOi2uh18Z/O3hvyaHQ39NpxVkCIG5yFs+mLq/ewFp8Bss6zmWv6ZA==",
       "requires": {
         "regenerator-runtime": "^0.13.4"
       }
