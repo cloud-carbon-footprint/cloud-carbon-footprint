@@ -38,7 +38,7 @@
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/react": "^11.2.5",
         "@testing-library/react-hooks": "^5.0.3",
-        "@testing-library/user-event": "^12.7.1",
+        "@testing-library/user-event": "^12.7.3",
         "@types/jest": "^26.0.20",
         "@types/mockdate": "^2.0.0",
         "@types/node": "^14.14.31",
@@ -2734,9 +2734,9 @@
       }
     },
     "node_modules/@testing-library/user-event": {
-      "version": "12.7.1",
-      "resolved": "https://registry.npmjs.org/@testing-library/user-event/-/user-event-12.7.1.tgz",
-      "integrity": "sha512-COfCkYgcxc+P9+pEAIGlmBuIDjO91Chf9GOBHI8AhIiMyaoOrKVPQny1uf0HIAYNoHKL5slhkqOPP2ZyNaVQGw==",
+      "version": "12.7.3",
+      "resolved": "https://registry.npmjs.org/@testing-library/user-event/-/user-event-12.7.3.tgz",
+      "integrity": "sha512-IdSHkWfbeSSJRFlldvHDWfVX0U18TbXIvLSGII+JbqkJrsflFr4OWlQIua0TvcVVJNna3BNrNvRSvpQ0yvSXlA==",
       "dev": true,
       "dependencies": {
         "@babel/runtime": "^7.12.5"
@@ -2744,6 +2744,9 @@
       "engines": {
         "node": ">=10",
         "npm": ">=6"
+      },
+      "peerDependencies": {
+        "@testing-library/dom": ">=7.21.4"
       }
     },
     "node_modules/@types/anymatch": {
@@ -25797,9 +25800,9 @@
       }
     },
     "@testing-library/user-event": {
-      "version": "12.7.1",
-      "resolved": "https://registry.npmjs.org/@testing-library/user-event/-/user-event-12.7.1.tgz",
-      "integrity": "sha512-COfCkYgcxc+P9+pEAIGlmBuIDjO91Chf9GOBHI8AhIiMyaoOrKVPQny1uf0HIAYNoHKL5slhkqOPP2ZyNaVQGw==",
+      "version": "12.7.3",
+      "resolved": "https://registry.npmjs.org/@testing-library/user-event/-/user-event-12.7.3.tgz",
+      "integrity": "sha512-IdSHkWfbeSSJRFlldvHDWfVX0U18TbXIvLSGII+JbqkJrsflFr4OWlQIua0TvcVVJNna3BNrNvRSvpQ0yvSXlA==",
       "dev": true,
       "requires": {
         "@babel/runtime": "^7.12.5"
