@@ -63,6 +63,8 @@ You can read more about this mode of authentication in [.adr/adr_5_aws_authentic
 - Set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
 see https://cloud.google.com/docs/authentication/getting-started for more details.
 
+Note: make sure you use the full path for this environment varaible, eg `/Users/<user>/path/to/credential`
+
 ## Options for cloud emission estimation
 
 We support two approaches to gathering usage data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
