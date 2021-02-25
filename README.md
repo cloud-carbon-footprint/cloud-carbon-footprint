@@ -24,10 +24,10 @@ Note:
 ## Setup
 
 ```
-yarn bootstrap
+yarn install
 ```
 
-This will install dependencies in both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
+This will install dependencies for both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
 
 ## Serve the documentation
  From the root directory, run the command from the terminal
