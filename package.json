@@ -12,7 +12,10 @@
       "pre-commit": "./copyright_check.sh && ./branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && lerna run precommit --parallel --stream"
     }
   },
-  "workspaces": ["client", "server"],
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "clean": "lerna clean --yes",
     "lint": "lerna run lint --parallel",
