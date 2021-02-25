@@ -168,7 +168,7 @@ workflows:
       - staging-deploy:
           filters:
             branches:
-              only: trunk
+              only: [trunk, yarn]
           requires:
             - build-client
             - build-server
