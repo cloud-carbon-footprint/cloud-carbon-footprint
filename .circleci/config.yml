@@ -12,30 +12,34 @@ jobs:
       MAJOR_REVISION: 0
       MINOR_REVISION: 0
       GIT_HASH: <<pipeline.git.revision>>
-    # Currently, the cache is commented out since it's slower than installing dependencies every time. Once the
-    # dependency list grows and build time increases, we can start using the cache again. Caching takes about ~30s to
-    # resolve and use as of this comment.
     steps:
       - checkout
       - attach_workspace:
           at: ~/cloud-carbon-footprint
-      # - restore_cache:
-      #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
-          name: setup
-          command: '[ ! -d node_modules ] && npm run bootstrap || echo NPM packages unchanged. Using cache.'
-      # - save_cache:
-      #     key: dependency-cache-{{ checksum "package-lock.json" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/package-lock.json" }}
-      #     paths:
-      #       - ./node_modules
-      #       - ./client/node_modules
-      #       - ./server/node_modules
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - run:
           name: lint
-          command: 'npm run lint'
+          command: 'yarn lint'
       - run:
           name: test
-          command: 'npm test'
+          command: 'yarn test'
+      - persist_to_workspace:
+          root: ~/cloud-carbon-footprint
+          paths:
+            - node_modules/*
+            - client/node_modules/*
+            - server/node_modules/*
   build-client:
     description: Build Client
     working_directory: ~/cloud-carbon-footprint
@@ -46,11 +50,13 @@ jobs:
       - attach_workspace:
           at: ~/cloud-carbon-footprint
       - run:
+          name: Install Yarn
+          command: npm i -g yarn
+      - run:
           name: build
           command: |
             cd client
-            npm ci
-            npm run-script build
+            yarn build
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
           paths:
@@ -66,11 +72,13 @@ jobs:
       - attach_workspace:
           at: ~/cloud-carbon-footprint
       - run:
+          name: Install Yarn
+          command: npm i -g yarn
+      - run:
           name: build
           command: |
             cd server
-            npm ci
-            npm run-script build
+            yarn build
             ./create_server_env_file.sh
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
@@ -160,7 +168,7 @@ workflows:
       - staging-deploy:
           filters:
             branches:
-              only: trunk
+              only: [trunk, yarn]
           requires:
             - build-client
             - build-server

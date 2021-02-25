@@ -24,15 +24,15 @@ Note:
 ## Setup
 
 ```
-npm run bootstrap
+yarn install
 ```
 
-This will install dependencies in both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
+This will install dependencies for both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
 
 ## Serve the documentation
  From the root directory, run the command from the terminal
 ```
- npm run docs
+ yarn docs
 ```
 This will serve the docs and give an url where you can visit and see the documentation
 
@@ -97,10 +97,10 @@ By default, the client uses both AWS and GCP. If you are only using one of these
 ### Client and Server (with mock data)
 ```
 cd client
-npm run start-stub-server
+yarn start-stub-server
 
 //in another terminal, also from the client directory
-npm start
+yarn start
 ```
 
 ### Client and Server (with live data)
@@ -110,7 +110,7 @@ Make sure you have configured your GCP and AWS credentials (see above)
 >*DISCLAIMER*: If your editior of choice is VS Code, ***we recommend to use either your native or custom terminal of choice (i.e. iterm)*** instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals. 
 
 ```
-npm start
+yarn start
 ```
 
 If you would like to run with Docker, you'll need install docker and docker-compose:
@@ -127,8 +127,8 @@ docker-compose up
 
 ```
 cd server
-npm run docker:start //creates a docker container named ccf_base
-npm run docker:setup //install dependencies
+yarn docker:start //creates a docker container named ccf_base
+yarn docker:setup //install dependencies
 ```
 
 ### Run CLI
@@ -137,14 +137,14 @@ npm run docker:setup //install dependencies
 
 ```
 cd server
-npm run start:cli -- <options>
+yarn start:cli -- <options>
 ```
 
 #### Docker
 
 ```
 cd server
-npm run docker:cli -- <options>
+yarn docker:cli -- <options>
 ```
 
 #### CLI Options
