@@ -21,6 +21,7 @@ export enum GCP_REGIONS {
   NORTHAMERICA_NORTHEAST1 = 'northamerica-northeast1',
   SOUTHAMERICA_EAST1 = 'southamerica-east1',
   US_CENTRAL1 = 'us-central1',
+  US_CENTRAL2 = 'us-central2',
   US_EAST1 = 'us-east1',
   US_EAST4 = 'us-east4',
   US_WEST1 = 'us-west1',
