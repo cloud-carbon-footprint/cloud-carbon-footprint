@@ -31,7 +31,7 @@
   },
   "proxy": "http://localhost:4000",
   "scripts": {
-    "precommit": "lint-staged --debug && npx hawkeye scan && npm run test:precommit",
+    "precommit": "lint-staged --debug && npx hawkeye scan && yarn test:precommit",
     "start": "CI=true react-scripts start",
     "sonar:scan": "sonar-scanner",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
@@ -88,9 +88,12 @@
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.1"
   },
+  "resolutions": {
+    "immer": "^8.0.1"
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "npm run lint",
+      "yarn lint",
       "prettier --write --ignore-unknown --config ../.prettierrc.json"
     ],
     "*.{md}": [

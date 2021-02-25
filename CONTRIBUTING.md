@@ -80,9 +80,9 @@ Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footp
 
 #### Testing
 
-- Run `npm test` from the root directory.
+- Run `yarn test` from the root directory.
 - If you are missing a test file in the coverage report, you may need to clear the test cache by running
-  `npm run test:clean` from the client and / or server DIR.
+  `yarn test:clean` from the client and / or server DIR.
 
   This is also one of the pre-commit hook but it is also advisable to run tests regularly.
 
@@ -107,7 +107,7 @@ This ensures that your working branch has the latest changes from `ThoughtWorks-
 ### Test
 While our tests run every time you commit thanks to the pre-commit hook described above, if you would like to run the tests idependant of a commit, use the following:
 ```
-$ npm run test
+$ yarn test
 ```
 ### Push
 Once your commits are ready to go -- with passing tests and linting -- begin the process of opening a pull request by pushing your working branch to your fork on GitHub.
@@ -140,7 +140,7 @@ TBD: Add context on approval and request change workflow
 
 ## Bundle size analysis 🔍
  From the client folder 
-- Run `npm run build -- --stats ` then 
+- Run `yarn build -- --stats ` then 
 - Run ` npx webpack-bundle-analyzer build/bundle-stats.json `
 
 The above commands might be added to the package.json if we are so inclined
@@ -166,14 +166,13 @@ will deploy to production.
 --- 
 
 ## Package management 📦
-- We use NPM for package management.
-- To install a new package, use `npm install --save package-name` (production) or `npm install --save-dev package-name` (development) inside either the client or server directory.
-- Use `npm run bootstrap` at the root directory to have all packages freshly installed. 
-- Alternatively, run `npm ci` in the client and server directory.
+- We use yarn for package management.
+- To install a new package, use `yarn add package-name` (production) or `yarn add --dev package-name` (development) inside either the client or server directory.
+- Use `yarn install` at the root directory to have all packages freshly installed. 
 
 ### Updating Packages
-- To update a package to the patch or minor version, use the command `npm update <package-name>`
-- To update a package to the latest major version, use `npm install <package-name>@latest`
+- To update a package to the patch or minor version, use the command `yarn update <package-name>`
+- To update a package to the latest major version, use `yarn upgrade --latest <package-name>`
 
 ---
 

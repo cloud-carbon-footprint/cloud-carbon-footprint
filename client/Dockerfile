@@ -8,6 +8,6 @@ COPY ./index.js ./index.js
 COPY ./.env ./.env
 COPY ./build /app/build
 
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

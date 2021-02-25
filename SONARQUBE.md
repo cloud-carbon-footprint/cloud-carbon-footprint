@@ -24,8 +24,8 @@ docker run -d --name SonarQube -p 9000:9000 -p 9092:9092 sonarqube
 // disable force user authentication in server
 
 cd (. | client | server) //depending which projects you wanna scan
-npm run test 
-npm run sonar:scan
+yarn test 
+yarn sonar:scan
 
 // visit localhost:9000
 // see coverage for cloud-carbon-footprint (server)
@@ -45,9 +45,9 @@ At first you will be prompted to login. You can find the default credentials are
 1. Run the test scripts for the projects that you want to analyze. We leverage Jest to generate our test coverage results which is then picked up by the sonar scanner. In order to ensure your coverage is published to the server, you must have run the test script prior to scanning
 1. Now we can start scanning! If you want to scan both the client and the server there's a nifty script at the root package.json.
     ```
-    npm run sonar:scan
+    yarn sonar:scan
     ```
-    >***if you want to scan a single project.***, you will have to run the same script but in the client and server directory respectively. (i.e.`cd server; npm run sonar:scan`)
+    >***if you want to scan a single project.***, you will have to run the same script but in the client and server directory respectively. (i.e.`cd server; yarn sonar:scan`)
 1. If all goes well, You should be able to see the log trace while scanner is analyzing each file.  **Ensure that you see “EXECUTION SUCCESS” at the end of scanning** for each project (i.e. client, server)
 1. Verify the vulnerabilities on the Admin UI http://localhost:9000    
 
