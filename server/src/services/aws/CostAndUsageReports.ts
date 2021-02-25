@@ -124,7 +124,7 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
         let networkingEstimate: FootprintEstimate
-        if (this.usageTypeIsNetworking(costAndUsageReportRow.usageType)) {
+        if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
           const networkingUsage: NetworkingUsage = {
             timestamp: costAndUsageReportRow.timestamp,
             gigabytes: costAndUsageReportRow.usageAmount,
@@ -178,8 +178,11 @@ export default class CostAndUsageReports {
     return this.endsWithAny(BYTE_HOURS_USAGE_TYPES, usageType)
   }
 
-  private usageTypeIsNetworking(usageType: string): boolean {
-    return this.endsWithAny(NETWORKING_USAGE_TYPES, usageType)
+  private usageTypeIsNetworking(costAndUsageRow: CostAndUsageReportsRow): boolean {
+    return (
+      this.endsWithAny(NETWORKING_USAGE_TYPES, costAndUsageRow.usageType) &&
+      costAndUsageRow.serviceName !== 'AmazonCloudFront'
+    )
   }
 
   private usageTypeIsUnknown(usageType: string, serviceName: string): boolean {

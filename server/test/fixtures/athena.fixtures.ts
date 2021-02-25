@@ -576,6 +576,32 @@ const queryResultsDataEight = [
       { VarCharValue: '22' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonCloudWatch' },
+      { VarCharValue: 'APN2-DataScanned-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonCloudFront' },
+      { VarCharValue: 'US-DataTransfer-Out-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '2000' },
+      { VarCharValue: '10' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsNetworking: Athena.GetQueryResultsOutput = {
