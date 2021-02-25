@@ -25,7 +25,7 @@
     "start:webprod": "NODE_ENV=production node -r ./tsconfig-paths-bootstrap.js dist/view/server.js",
     "start:cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/server -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
-    "docker:setup": "docker exec -w /cloud-carbon-footprint/server -it ccf_base yarn install --frozen-lockfile",
+    "docker:setup": "docker exec -w /cloud-carbon-footprint/server -it ccf_base yarn install --immutable",
     "docker:test": "docker exec -w /cloud-carbon-footprint/server -it ccf_base yarn test",
     "docker:cli": "docker exec -w /cloud-carbon-footprint/server -e AWS_PROFILE -it ccf_base yarn start:cli -- ",
     "docker:stop": "docker stop ccf_base"

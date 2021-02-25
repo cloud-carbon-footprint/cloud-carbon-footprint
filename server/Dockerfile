@@ -5,6 +5,6 @@ RUN apk add --no-cache --virtual .build-deps g++ python3-dev libffi-dev openssl-
     apk --no-cache --update add build-base
 
 COPY ./dist .
-RUN yarn install --frozen-lockfile
+RUN yarn install --immutable
 
 CMD [ "yarn", "start:prod"]
