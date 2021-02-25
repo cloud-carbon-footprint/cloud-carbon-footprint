@@ -561,3 +561,25 @@ export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: Ath
     Rows: [queryResultsHeaders, ...queryResultsDataSeven],
   },
 }
+
+const queryResultsDataEight = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-USE1-AWS-Out-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '1574' },
+      { VarCharValue: '22' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsNetworking: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataEight],
+  },
+}

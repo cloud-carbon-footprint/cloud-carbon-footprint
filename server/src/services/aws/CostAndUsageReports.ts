@@ -33,6 +33,8 @@ import {
 import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
 import { Athena } from 'aws-sdk'
 import { appendOrAccumulateEstimatesByDay } from '@domain/FootprintEstimate'
+import NetworkingUsage from '@domain/NetworkingUsage'
+import NetworkingEstimator from '@domain/NetworkingEstimator'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -44,6 +46,7 @@ export default class CostAndUsageReports {
     private readonly computeEstimator: ComputeEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
+    private readonly networkingEstimator: NetworkingEstimator,
     private readonly serviceWrapper: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
@@ -60,11 +63,7 @@ export default class CostAndUsageReports {
     usageRows.map((rowData: Row) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowsHeader, rowData.Data)
 
-      if (
-        this.usageTypeIsNetworking(costAndUsageReportRow.usageType) ||
-        this.usageTypeIsUnknown(costAndUsageReportRow.usageType, costAndUsageReportRow.serviceName)
-      )
-        return []
+      if (this.usageTypeIsUnknown(costAndUsageReportRow.usageType, costAndUsageReportRow.serviceName)) return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
       if (footprintEstimate) appendOrAccumulateEstimatesByDay(results, costAndUsageReportRow, footprintEstimate)
@@ -72,7 +71,7 @@ export default class CostAndUsageReports {
     return results
   }
 
-  private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow) {
+  private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow): FootprintEstimate {
     switch (costAndUsageReportRow.usageUnit) {
       case PRICING_UNITS.HOURS_1:
       case PRICING_UNITS.HOURS_2:
@@ -122,6 +121,26 @@ export default class CostAndUsageReports {
           usesAverageCPUConstant: true,
         }
         return this.computeEstimator.estimate([lambdaComputeUsage], costAndUsageReportRow.region, 'AWS')[0]
+      case PRICING_UNITS.GB_1:
+      case PRICING_UNITS.GB_2:
+        let networkingEstimate: FootprintEstimate
+        if (this.usageTypeIsNetworking(costAndUsageReportRow.usageType)) {
+          const networkingUsage: NetworkingUsage = {
+            timestamp: costAndUsageReportRow.timestamp,
+            gigabytes: costAndUsageReportRow.usageAmount,
+          }
+          networkingEstimate = this.networkingEstimator.estimate(
+            [networkingUsage],
+            costAndUsageReportRow.region,
+            'AWS',
+          )[0]
+        } else {
+          this.costAndUsageReportsLogger.warn(
+            `Non Networking usage type for 'gigabytes' pricing unit: ${costAndUsageReportRow.usageType}`,
+          )
+        }
+        if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+        return networkingEstimate
       default:
         this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`)
     }

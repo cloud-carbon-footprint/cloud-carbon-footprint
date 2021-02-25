@@ -78,12 +78,19 @@ export const HDD_USAGE_TYPES: string[] = [
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
-  'LoadBalancerUsage',
-  'IdleAddress',
-  'UnusedStaticIP',
-  'AdditionalAddress',
-  'ResolverNetworkInterface',
-  'DataScanned',
+  'AWS-Out-Bytes',
+  'DataTransfer-Out-Bytes',
+  'DataTransfer-Regional-Bytes',
+  'TotalDataXfer-Out-Bytes',
+  'Egress-Bytes',
+  'UploadBytes',
+  'UPLOAD',
+  'ExportDataSize-Bytes',
+  'DOWNLOAD',
+  'Data-Bytes-Out',
+  'VpcEndpoint-Bytes',
+  'NatGateway-Bytes',
+  'TransitGateway-Bytes',
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
@@ -114,6 +121,12 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'NatGateway-Hours',
   'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
+  'LoadBalancerUsage',
+  'IdleAddress',
+  'UnusedStaticIP',
+  'AdditionalAddress',
+  'ResolverNetworkInterface',
+  'DataScanned',
 ]
 
 export const LINE_ITEM_TYPES: string[] = ['Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage']
@@ -130,6 +143,8 @@ export enum PRICING_UNITS {
   GB_MONTH_2 = 'GB-Month',
   GB_MONTH_3 = 'GB-Mp',
   GB_MONTH_4 = 'GB-month',
+  GB_1 = 'GB',
+  GB_2 = 'GigaBytes',
   SECONDS_1 = 'seconds',
   SECONDS_2 = 'Second',
 }

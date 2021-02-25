@@ -6,6 +6,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, Athena as AWSAthena } from 'aws-sdk'
 import CostAndUsageReports from '@services/aws/CostAndUsageReports'
 import ComputeEstimator from '@domain/ComputeEstimator'
+import NetworkingEstimator from '@domain/NetworkingEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 import { GetQueryExecutionOutput, GetQueryResultsOutput } from 'aws-sdk/clients/athena'
@@ -19,6 +20,7 @@ import {
   athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices,
   athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage,
   athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan,
+  athenaMockGetQueryResultsNetworking,
 } from '../../../fixtures/athena.fixtures'
 import { ServiceWrapper } from '@services/aws/ServiceWrapper'
 
@@ -68,6 +70,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -190,6 +193,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -255,6 +259,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -305,6 +310,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -365,6 +371,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -420,6 +427,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -485,6 +493,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -539,6 +548,42 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
+  it('Gets Estimates for Networking', async () => {
+    // given
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsNetworking)
+
+    // when
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      getServiceWrapper(),
+    )
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-01-01'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0008584596,
+            cost: 22,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: false,
+            kilowattHours: 1.8888,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
   it('throws an error when the query status fails', async () => {
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionFailedResponse)
@@ -546,6 +591,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(
@@ -559,6 +605,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       getServiceWrapper(),
     )
     await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(

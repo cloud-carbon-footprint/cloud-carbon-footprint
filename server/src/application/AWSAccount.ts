@@ -22,6 +22,7 @@ import CloudProviderAccount from '@application/CloudProviderAccount'
 import CostAndUsageReports from '@services/aws/CostAndUsageReports'
 import ComputeEstimator from '@domain/ComputeEstimator'
 import { StorageEstimator } from '@domain/StorageEstimator'
+import NetworkingEstimator from '@domain/NetworkingEstimator'
 import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
 
 export default class AWSAccount extends CloudProviderAccount {
@@ -61,6 +62,7 @@ export default class AWSAccount extends CloudProviderAccount {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
       this.createServiceWrapper(
         this.getServiceConfigurationOptions(configLoader().AWS.ATHENA_REGION, this.credentials),
       ),
