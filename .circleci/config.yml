@@ -34,6 +34,12 @@ jobs:
       - run:
           name: test
           command: 'yarn test'
+      - persist_to_workspace:
+          root: ~/cloud-carbon-footprint
+          paths:
+            - node_modules/*
+            - client/node_modules/*
+            - server/node_modules/*
   build-client:
     description: Build Client
     working_directory: ~/cloud-carbon-footprint
@@ -43,6 +49,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/cloud-carbon-footprint
+      - run:
+          name: Install Yarn
+          command: npm i -g yarn
       - run:
           name: build
           command: |
@@ -62,6 +71,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/cloud-carbon-footprint
+      - run:
+          name: Install Yarn
+          command: npm i -g yarn
       - run:
           name: build
           command: |

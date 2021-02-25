@@ -12,7 +12,7 @@
     "test:clean": "jest --clearCache",
     "test:precommit": "yarn test:clean && yarn test -- --bail",
     "build": "rimraf dist && yarn build:tsc && yarn build:copy",
-    "build:copy": "cp package.json dist && cp package-lock.json dist",
+    "build:copy": "cp package.json dist",
     "build:tsc": "tsc --build tsconfig.json",
     "build:watch": "onchange 'src/**/*.ts' -- yarn build",
     "view:coverage": "serve coverage/lcov-report",
