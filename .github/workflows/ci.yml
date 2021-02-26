@@ -42,8 +42,8 @@ jobs:
 #        with:
 #          path: '**/node_modules'
 #          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-##      - name: Install packages
-##        run: yarn install --immutable
+#      - name: Install packages
+#        run: yarn install --immutable
       - name: build-client
         env:
           HOST_URL: ${{ secrets.HOST_URL }}
@@ -53,13 +53,7 @@ jobs:
           OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
-          echo HOST_URL=$HOST_URL >> .env
-          echo OKTA_ORG_URL=$OKTA_ORG_URL >> .env
-          echo APP_SECRET=$APP_SECRET >> .env
-          echo OKTA_CLIENT_ID=$OKTA_CLIENT_ID >> .env
-          echo OKTA_CLIENT_SECRET=$OKTA_CLIENT_SECRET >> .env
-          echo REACT_APP_AWS_USE_BILLING_DATA="true" >> .env
-          echo REACT_APP_GCP_USE_BILLING_DATA="true" >> .env
+          ./create_client_stage_env_file.sh
           cd ..
       - name: build-server
         env:
@@ -80,25 +74,7 @@ jobs:
           GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
         run: |
           cd server
-          echo AWS_PROXY_ACCOUNT_ID=$AWS_PROXY_ACCOUNT_ID >> .env
-          echo AWS_PROXY_ROLE_NAME=$AWS_PROXY_ROLE_NAME >> .env
-          echo AWS_ACCOUNTS=$AWS_ACCOUNTS >> .env
-          echo AWS_TARGET_ACCOUNT_ROLE_NAME=$AWS_TARGET_ACCOUNT_ROLE_NAME >> .env
-          echo AWS_ATHENA_DB_NAME=$AWS_ATHENA_DB_NAME >> .env
-          echo AWS_ATHENA_DB_TABLE=$AWS_ATHENA_DB_TABLE >> .env
-          echo AWS_ATHENA_QUERY_RESULT_LOCATION=$AWS_ATHENA_QUERY_RESULT_LOCATION >> .env
-          echo AWS_BILLING_ACCOUNT_ID=$AWS_BILLING_ACCOUNT_ID >> .env
-          echo AWS_BILLING_ACCOUNT_NAME=$AWS_BILLING_ACCOUNT_NAME >> .env
-          echo AWS_USE_BILLING_DATA="true" >> .env
-          echo GCP_USE_BILLING_DATA="true" >> .env
-          echo GCP_PROJECTS=$GCP_PROJECTS >> .env
-          echo GCP_TARGET_ACCOUNT_EMAIL=$GCP_TARGET_ACCOUNT_EMAIL >> .env
-          echo GCP_TARGET_ACCOUNT_PRIVATE_KEY=$GCP_TARGET_ACCOUNT_PRIVATE_KEY >> .env
-          echo GCP_BIG_QUERY_TABLE=$GCP_BIG_QUERY_TABLE >> .env
-          echo GCP_BILLING_ACCOUNT_ID=$GCP_BILLING_ACCOUNT_ID >> .env
-          echo GCP_BILLING_ACCOUNT_NAME=$GCP_BILLING_ACCOUNT_NAME >> .env
-          echo LOGGING_MODE="GCP" >> .env
-          echo GENERATE_SOURCEMAP="false" >> .env
+          ./create_server_env_file.sh
           cd ..
       - name: staging-deploy
         env:
