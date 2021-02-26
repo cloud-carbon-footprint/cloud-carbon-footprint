@@ -1,10 +1,8 @@
 name: Lint & Test
-
 on:
-  workflow_dispatch:
   push:
     branches: [trunk, gh-actions]
-
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
