@@ -31,6 +31,7 @@
   },
   "proxy": "http://localhost:4000",
   "scripts": {
+    "create-stage-env-file": "./create_client_stage_env_file.sh",
     "precommit": "lint-staged --debug && yarn test:precommit",
     "start": "CI=true react-scripts start",
     "sonar:scan": "sonar-scanner",

@@ -53,6 +53,7 @@ jobs:
           OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
+          yarn create-stage-env-file
           $(pwd)/create_client_stage_env_file.sh
           cd ..
       - name: build-server
@@ -74,7 +75,7 @@ jobs:
           GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
         run: |
           cd server
-          $(pwd)/create_client_stage_env_file.sh
+          yarn create-stage-env-file
           cd ..
       - name: staging-deploy
         env:
