@@ -5,12 +5,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "precommit": "lint-staged --debug && npx hawkeye scan && yarn test:precommit",
+    "precommit": "lint-staged --debug && yarn test:precommit",
     "test": "jest --coverage --maxWorkers 2",
     "sonar:scan": "sonar-scanner",
     "test:watch": "jest --coverage --watchAll",
     "test:clean": "jest --clearCache",
-    "test:precommit": "yarn test:clean && yarn test -- --bail",
+    "test:precommit": "yarn test:clean && yarn test --bail",
     "build": "rimraf dist && yarn build:tsc && yarn build:copy",
     "build:copy": "cp package.json dist",
     "build:tsc": "tsc --build tsconfig.json",
@@ -34,7 +34,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@hawkeyesec/scanner-cli": "^1.8.1",
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",
     "@types/node": "^14.14.30",

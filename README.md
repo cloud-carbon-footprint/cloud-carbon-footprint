@@ -137,14 +137,14 @@ yarn docker:setup //install dependencies
 
 ```
 cd server
-yarn start:cli -- <options>
+yarn start:cli <options>
 ```
 
 #### Docker
 
 ```
 cd server
-yarn docker:cli -- <options>
+yarn docker:cli <options>
 ```
 
 #### CLI Options

@@ -141,7 +141,7 @@ TBD: Add context on approval and request change workflow
 ## Bundle size analysis 🔍
  From the client folder 
 - Run `yarn build -- --stats ` then 
-- Run ` npx webpack-bundle-analyzer build/bundle-stats.json `
+- Run ` yarn webpack-bundle-analyzer build/bundle-stats.json `
 
 The above commands might be added to the package.json if we are so inclined
 
@@ -190,7 +190,7 @@ We record any significant architectural choices we make with lightweight adr fil
 ## Hawkeye 👁
 - Used to check node packaging and vulnerability
 - This will run along every pre-commit hook
-- to run isolated, cd into server or client and run: `npx hawkeye scan`
+- to run isolated, cd into server or client and run: `yarn hawkeye scan`
 - You can learn more about Hawkeye [here](https://github.com/hawkeyesec/scanner-cli)
 
 ---
