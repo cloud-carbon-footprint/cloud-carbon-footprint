@@ -53,7 +53,6 @@ jobs:
           OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
-#          yarn build
           ls -la
           bash <(./create_client_stage_env_file.sh)
           cd ..
@@ -76,7 +75,6 @@ jobs:
           GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
         run: |
           cd server
-#          yarn build
           ls -la
           bash <(./create_server_env_file.sh)
           cd ..
