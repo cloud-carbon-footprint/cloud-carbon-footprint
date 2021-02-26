@@ -37,13 +37,13 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-#      - name: Load node_modules
-#        uses: actions/cache@v2
-#        with:
-#          path: '**/node_modules'
-#          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-#      - name: Install packages
-#        run: yarn install --immutable
+      - name: Load node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install packages
+        run: yarn install --immutable
       - name: build-client
         env:
           HOST_URL: ${{ secrets.HOST_URL }}
@@ -53,6 +53,7 @@ jobs:
           OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
+          yarn build
           ./create_client_stage_env_file.sh
           cd ..
       - name: build-server
@@ -74,6 +75,7 @@ jobs:
           GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
         run: |
           cd server
+          yarn build
           ./create_server_env_file.sh
           cd ..
       - name: staging-deploy
