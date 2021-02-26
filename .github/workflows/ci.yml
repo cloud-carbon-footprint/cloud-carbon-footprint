@@ -53,7 +53,13 @@ jobs:
           OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
-          "${GITHUB_WORKSPACE}/client/create_client_stage_env_file.sh"
+          echo HOST_URL=$HOST_URL >> .env
+          echo OKTA_ORG_URL=$OKTA_ORG_URL >> .env
+          echo APP_SECRET=$APP_SECRET >> .env
+          echo OKTA_CLIENT_ID=$OKTA_CLIENT_ID >> .env
+          echo OKTA_CLIENT_SECRET=$OKTA_CLIENT_SECRET >> .env
+          echo REACT_APP_AWS_USE_BILLING_DATA="true" >> .env
+          echo REACT_APP_GCP_USE_BILLING_DATA="true" >> .env
           cd ..
       - name: build-server
         env:
@@ -74,7 +80,25 @@ jobs:
           GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
         run: |
           cd server
-          "${GITHUB_WORKSPACE}/server/create_server_env_file.sh"
+          echo AWS_PROXY_ACCOUNT_ID=$AWS_PROXY_ACCOUNT_ID >> .env
+          echo AWS_PROXY_ROLE_NAME=$AWS_PROXY_ROLE_NAME >> .env
+          echo AWS_ACCOUNTS=$AWS_ACCOUNTS >> .env
+          echo AWS_TARGET_ACCOUNT_ROLE_NAME=$AWS_TARGET_ACCOUNT_ROLE_NAME >> .env
+          echo AWS_ATHENA_DB_NAME=$AWS_ATHENA_DB_NAME >> .env
+          echo AWS_ATHENA_DB_TABLE=$AWS_ATHENA_DB_TABLE >> .env
+          echo AWS_ATHENA_QUERY_RESULT_LOCATION=$AWS_ATHENA_QUERY_RESULT_LOCATION >> .env
+          echo AWS_BILLING_ACCOUNT_ID=$AWS_BILLING_ACCOUNT_ID >> .env
+          echo AWS_BILLING_ACCOUNT_NAME=$AWS_BILLING_ACCOUNT_NAME >> .env
+          echo AWS_USE_BILLING_DATA="true" >> .env
+          echo GCP_USE_BILLING_DATA="true" >> .env
+          echo GCP_PROJECTS=$GCP_PROJECTS >> .env
+          echo GCP_TARGET_ACCOUNT_EMAIL=$GCP_TARGET_ACCOUNT_EMAIL >> .env
+          echo GCP_TARGET_ACCOUNT_PRIVATE_KEY=$GCP_TARGET_ACCOUNT_PRIVATE_KEY >> .env
+          echo GCP_BIG_QUERY_TABLE=$GCP_BIG_QUERY_TABLE >> .env
+          echo GCP_BILLING_ACCOUNT_ID=$GCP_BILLING_ACCOUNT_ID >> .env
+          echo GCP_BILLING_ACCOUNT_NAME=$GCP_BILLING_ACCOUNT_NAME >> .env
+          echo LOGGING_MODE="GCP" >> .env
+          echo GENERATE_SOURCEMAP="false" >> .env
           cd ..
       - name: staging-deploy
         env:
