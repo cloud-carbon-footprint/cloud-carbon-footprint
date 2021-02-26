@@ -13,6 +13,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install packages
+        run: yarn install --immutable
       - name: build-client
         env:
           HOST_URL: ${{ secrets.HOST_URL }}
