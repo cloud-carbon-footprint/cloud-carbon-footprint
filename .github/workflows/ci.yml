@@ -53,6 +53,7 @@ jobs:
           OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
+          pwd
           ls -la
           ./create_client_stage_env_file.sh
           cd ..
@@ -75,6 +76,7 @@ jobs:
           GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
         run: |
           cd server
+          pwd
           ls -la
           ./create_server_env_file.sh
           cd ..
