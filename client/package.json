@@ -27,18 +27,18 @@
     "react-test-renderer": "^17.0.1",
     "react-with-direction": "^1.3.1",
     "styled-components": "^5.2.1",
-    "typescript": "4.1.5"
+    "typescript": "4.2.2"
   },
   "proxy": "http://localhost:4000",
   "scripts": {
-    "precommit": "lint-staged --debug && npx hawkeye scan && yarn test:precommit",
+    "precommit": "lint-staged --debug && yarn test:precommit",
     "start": "CI=true react-scripts start",
     "sonar:scan": "sonar-scanner",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
     "test": "react-scripts --expose-gc test --logHeapUsage --maxWorkers 2 --coverage --watchAll=false",
     "test:clean": "react-scripts test --clearCache",
-    "test:precommit": "npm test -- --bail",
-    "test:snapshot": "npm test -- -u",
+    "test:precommit": "yarn test --bail",
+    "test:snapshot": "yarn test -u",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./src/",
@@ -61,7 +61,6 @@
     ]
   },
   "devDependencies": {
-    "@hawkeyesec/scanner-cli": "^1.8.1",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/react-hooks": "^5.0.3",
