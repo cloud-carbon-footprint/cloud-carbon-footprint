@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:0.12.28
     environment:
       name: staging
     steps:
