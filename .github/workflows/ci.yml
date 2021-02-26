@@ -1,13 +1,35 @@
-name: Deploy Staging
+name: Lint & Test
 on:
   push:
     branches: [trunk, gh-actions]
   workflow_dispatch:
 jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['12', '14']
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup node ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install packages
+        run: yarn install --immutable
+      - name: lint
+        run: yarn lint
+      - name: test
+        run: yarn test
   build:
+    needs: lint-test
     runs-on: ubuntu-latest
     container:
-      image: hashicorp/terraform:0.12.28
+      image: node:14.16.0-alpine3.10
     environment:
       name: staging
     steps:
@@ -15,12 +37,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - uses: actions/cache@v2
+      - name: Load node_modules
+        uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Install packages
-        run: yarn install --immutable
       - name: build-client
         env:
           HOST_URL: ${{ secrets.HOST_URL }}
