@@ -1,8 +1,8 @@
-name: Lint & Test
+name: CI
 on:
+  workflow_dispatch:
   push:
     branches: [trunk, gh-actions]
-  workflow_dispatch:
 jobs:
   lint-test:
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
         run: yarn lint
       - name: test
         run: yarn test
-  build:
+  build-deploy:
     needs: lint-test
     runs-on: ubuntu-latest
     container:
@@ -42,6 +42,8 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install packages
+        run: yarn install --immutable
       - name: build-client
         env:
           HOST_URL: ${{ secrets.HOST_URL }}
