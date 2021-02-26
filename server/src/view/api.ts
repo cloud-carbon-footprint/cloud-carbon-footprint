@@ -50,18 +50,6 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
   }
 }
 
-const FilterApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
-  apiLogger.info(`Filter API request started`)
-  const filtersApp = new App()
-  try {
-    const filtersResults = filtersApp.getFilterData()
-    res.json(filtersResults)
-  } catch (e) {
-    apiLogger.error(`Unable to process filter request.`, e)
-    res.status(500).send('Internal Server Error')
-  }
-}
-
 const EmissionsApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
   apiLogger.info(`Regions emissions factors API request started`)
   try {
@@ -83,7 +71,6 @@ const EmissionsApiMiddleware = async function (req: express.Request, res: expres
 const router = express.Router()
 
 router.get('/footprint', FootprintApiMiddleware)
-router.get('/filters', FilterApiMiddleware)
 router.get('/regions/emissions-factors', EmissionsApiMiddleware)
 
 export default router
