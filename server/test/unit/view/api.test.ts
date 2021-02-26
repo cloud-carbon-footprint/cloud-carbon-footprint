@@ -96,14 +96,6 @@ describe('api', () => {
     })
   })
 
-  describe('/filters', () => {
-    it('returns data for filtering purposes', async () => {
-      const response = await request(server).get(encodeURI(`/filters`))
-
-      expect(response.status).toBe(200)
-    })
-  })
-
   describe('/regions/emissions-factors', () => {
     it('returns data for regional emissions factors', async () => {
       const response = await request(server).get(encodeURI(`/regions/emissions-factors`))

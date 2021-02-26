@@ -15,9 +15,7 @@ import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import { EmissionsBreakdownContainer } from './charts/EmissionsBreakdownContainer'
-import { useFilterDataService } from './client/FilterDataServiceHook'
 import AccountFilter from './filters/AccountFilter'
-import config from '../ConfigLoader'
 import { useFilterDataFromEstimates } from './transformData'
 import { FilterResultResponse } from '../models/types'
 import NoDataPage from './NoDataPage'
@@ -69,12 +67,7 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const { data, loading } = useRemoteService([], startDate, endDate)
 
-  let filteredDataResults: FilterResultResponse
-  if (config().AWS.USE_BILLING_DATA || config().GCP.USE_BILLING_DATA) {
-    filteredDataResults = useFilterDataFromEstimates(data)
-  } else {
-    filteredDataResults = useFilterDataService()
-  }
+  const filteredDataResults: FilterResultResponse = useFilterDataFromEstimates(data)
   const { filteredData, filters, setFilters } = useFilters(data, filteredDataResults)
   return loading ? (
     <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
