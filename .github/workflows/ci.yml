@@ -26,7 +26,7 @@ jobs:
       - name: test
         run: yarn test
   build-deploy:
-    needs: lint-test
+#    needs: lint-test
     runs-on: ubuntu-latest
     container:
       image: node:14.16.0-alpine3.10
@@ -54,7 +54,8 @@ jobs:
         run: |
           cd client
           yarn build
-          ./create_client_stage_env_file.sh
+          ls -la
+          ./client/create_client_stage_env_file.sh
           cd ..
       - name: build-server
         env:
@@ -76,7 +77,8 @@ jobs:
         run: |
           cd server
           yarn build
-          ./create_server_env_file.sh
+          ls -la
+          ./server/create_server_env_file.sh
           cd ..
       - name: staging-deploy
         env:
