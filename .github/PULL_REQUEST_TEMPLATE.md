@@ -12,8 +12,8 @@ Write a brief but concise description of the changes you have made while also ma
 <!-- Remove items that do not apply. For completed items, change [ ] to [x]. -->
  - [ ] PR description included and stakeholders cc'd
  - [ ] tests are changed or added
- - [ ] npm test passes
- - [ ] npm lint has been run
+ - [ ] yarn test passes
+ - [ ] yarn lint has been run
  - [ ] git pre-commit hook is successfully executed. 
    **Please refrain from using `--no-verify`**)   
  - [ ] relevant documentation is changed or added

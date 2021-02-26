@@ -32,8 +32,8 @@ Your best chance of getting this bug looked at quickly is to provide steps to re
 If you provide a URL, please list the commands required to clone/setup/run your repo e.g.
 ```sh
 $ git clone $YOUR_URL -b $BRANCH
-$ npm install
-$ npm start
+$ yarn install
+$ yarn start
 ```
 -->
 
