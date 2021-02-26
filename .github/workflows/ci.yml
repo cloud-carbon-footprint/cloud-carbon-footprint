@@ -54,7 +54,7 @@ jobs:
         run: |
           cd client
           ls -la
-          bash <(./create_client_stage_env_file.sh)
+          ./create_client_stage_env_file.sh
           cd ..
       - name: build-server
         env:
@@ -76,7 +76,7 @@ jobs:
         run: |
           cd server
           ls -la
-          bash <(./create_server_env_file.sh)
+          ./create_server_env_file.sh
           cd ..
       - name: staging-deploy
         env:
