@@ -1,10 +1,10 @@
 name: Deploy Staging
 on:
   workflow_run:
-    workflows: ['Lint & Test']
-      branches: [trunk, gh-actions]
-      types:
-        - completed
+    workflows: ["Lint & Test"]
+    branches: [trunk, gh-actions]
+    types:
+      - completed
 jobs:
   build:
     runs-on: ubuntu-latest
