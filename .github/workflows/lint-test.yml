@@ -2,8 +2,8 @@ name: Lint & Test
 
 on:
   workflow_dispatch:
-    push:
-      branches: [trunk, gh-actions]
+  push:
+    branches: [trunk, gh-actions]
 
 jobs:
   build:
