@@ -78,12 +78,19 @@ jobs:
           cd client
           yarn build
           cd ..
+      - uses: actions/upload-artifact@v2
+        with:
+          name: client-build
+          path: client/build/
       - name: build-server
-
         run: |
           cd server
           yarn build
           cd ..
+      - uses: actions/upload-artifact@v2
+        with:
+          name: server-dist
+          path: server/dist/
   deploy-staging:
     needs: build
     runs-on: ubuntu-latest
@@ -113,6 +120,9 @@ jobs:
       GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
     steps:
+      - uses: actions/checkout@v2
+      - name: Download all artifacts 
+        uses: actions/download-artifact@v2
       - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -173,6 +183,9 @@ jobs:
       GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
     steps:
+      - uses: actions/checkout@v2
+      - name: Download all artifacts 
+        uses: actions/download-artifact@v2
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
