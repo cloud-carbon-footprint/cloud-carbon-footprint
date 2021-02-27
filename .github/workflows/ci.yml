@@ -80,7 +80,7 @@ jobs:
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: client-build
+          name: client/build
           path: client/build/
       - name: build-server
         run: |
@@ -89,7 +89,7 @@ jobs:
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: server-dist
+          name: server/dist
           path: server/dist/
   deploy-staging:
     needs: build
