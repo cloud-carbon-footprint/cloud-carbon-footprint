@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['12', '14']
+        node-version: ['12', '14']
     steps:
       - uses: actions/checkout@v2
-      - name: setup node ${{ matrix.node }}
+      - name: setup node ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.node-version }}
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
@@ -22,7 +22,7 @@ jobs:
         with:
           path: '**/node_modules'
           # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
-          key: ${{ runner.os }}-v${{ matrix.node }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+          key: ${{ runner.os }}-v${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
       - name: find location of global yarn cache
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -42,13 +42,9 @@ jobs:
         run: yarn lint
       - name: test
         run: yarn test
-  build-deploy:
-#    needs: lint-test
+  build:
+    # needs: lint-test
     runs-on: ubuntu-latest
-    container:
-      image: node:14.16.0-alpine3.10
-    environment:
-      name: staging
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -61,7 +57,7 @@ jobs:
         with:
           path: '**/node_modules'
           # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
-          key: ${{ runner.os }}-v${{ matrix.node }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+          key: ${{ runner.os }}-v${{ matrix.node-version }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
       - name: find location of global yarn cache
         id: yarn-cache
         if: steps.cache-modules.outputs.cache-hit != 'true'
@@ -78,40 +74,46 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: yarn install --immutable
       - name: build-client
-        env:
-          HOST_URL: ${{ secrets.HOST_URL }}
-          OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-          APP_SECRET: ${{ secrets.APP_SECRET }}
-          OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-          OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
         run: |
           cd client
           yarn build
-          ./create_client_stage_env_file.sh
           cd ..
       - name: build-server
-        env:
-          AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
-          AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
-          AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
-          AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
-          AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
-          AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
-          AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
-          AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
-          AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
-          GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
-          GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
-          GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
-          GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
-          GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
-          GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+
         run: |
           cd server
           yarn build
-          ./create_server_env_file.sh
           cd ..
-      - name: staging-deploy
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.16.0-alpine3.10
+    environment:
+      name: staging
+    env:
+      HOST_URL: ${{ secrets.HOST_URL }}
+      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
+      GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+    steps:
+      - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
@@ -120,6 +122,14 @@ jobs:
           apk add --update python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cd client
+          ./create_client_env_file.sh
+          cd ..
+
+          cd server
+          ./create_server_env_file.sh
+          cd ..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -133,4 +143,64 @@ jobs:
 
           cd appengine
           ./deploy-staging.sh
+          cd ..
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.16.0-alpine3.10
+    environment:
+      name: production
+    env:
+      HOST_URL: ${{ secrets.HOST_URL }}
+      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
+      GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+    steps:
+      - name: deploy-production
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
+        run: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cd client
+          ./create_client_env_file.sh
+          cd ..
+
+          cd server
+          ./create_server_env_file.sh
+          cd ..
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
+          cd appengine
+          ./deploy-production.sh
           cd ..
