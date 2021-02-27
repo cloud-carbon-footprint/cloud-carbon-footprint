@@ -80,7 +80,7 @@ jobs:
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: client/build
+          name: client-build
           path: client/build/
       - name: build-server
         run: |
@@ -89,7 +89,7 @@ jobs:
           cd ..
       - uses: actions/upload-artifact@v2
         with:
-          name: server/dist
+          name: server-dist
           path: server/dist/
   deploy-staging:
     needs: build
@@ -121,8 +121,14 @@ jobs:
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
     steps:
       - uses: actions/checkout@v2
-      - name: Download all artifacts 
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-build
+          path: client/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: server-dist
+          path: server/dist
       - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -184,8 +190,14 @@ jobs:
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
     steps:
       - uses: actions/checkout@v2
-      - name: Download all artifacts 
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-build
+          path: client/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: server-dist
+          path: server/dist
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
