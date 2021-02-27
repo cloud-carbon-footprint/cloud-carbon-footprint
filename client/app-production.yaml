@@ -3,4 +3,4 @@ service: default
 runtime: nodejs12
 instance_class: F1
 
-entrypoint: yarn start:webprod
+entrypoint: npm run start:webprod

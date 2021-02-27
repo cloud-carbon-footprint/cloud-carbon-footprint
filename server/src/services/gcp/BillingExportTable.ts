@@ -64,9 +64,6 @@ export default class BillingExportTable {
           if (this.isComputeUsage(billingExportRow.usageType))
             footprintEstimate = this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
           else {
-            this.billingExportTableLogger.warn(
-              `Non compute usage type for 'seconds' usageUnit: ${billingExportRow.usageType}`,
-            )
             return []
           }
           break
@@ -77,9 +74,6 @@ export default class BillingExportTable {
           if (this.isNetworkingUsage(billingExportRow.usageType))
             footprintEstimate = this.getNetworkingFootprintEstimate(billingExportRow, billingExportRow.timestamp)
           else {
-            this.billingExportTableLogger.warn(
-              `Non Networking usage type for 'bytes' usageUnit: ${billingExportRow.usageType}`,
-            )
             return []
           }
           break
