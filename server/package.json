@@ -5,7 +5,6 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "create-stage-env-file": "./create_server_env_file.sh",
     "precommit": "lint-staged --debug && yarn test:precommit",
     "test": "jest --coverage --maxWorkers 2",
     "sonar:scan": "sonar-scanner",
