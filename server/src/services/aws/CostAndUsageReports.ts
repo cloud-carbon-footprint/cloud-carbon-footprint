@@ -123,6 +123,7 @@ export default class CostAndUsageReports {
         return this.computeEstimator.estimate([lambdaComputeUsage], costAndUsageReportRow.region, 'AWS')[0]
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
+        // Networking
         let networkingEstimate: FootprintEstimate
         if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
           const networkingUsage: NetworkingUsage = {
@@ -134,10 +135,6 @@ export default class CostAndUsageReports {
             costAndUsageReportRow.region,
             'AWS',
           )[0]
-        } else {
-          this.costAndUsageReportsLogger.warn(
-            `Non Networking usage type for 'gigabytes' pricing unit: ${costAndUsageReportRow.usageType}`,
-          )
         }
         if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
         return networkingEstimate
