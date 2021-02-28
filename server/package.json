@@ -1,5 +1,5 @@
 {
-  "name": "cloud-carbon-footprint",
+  "name": "@cloud-carbon-footprint/server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

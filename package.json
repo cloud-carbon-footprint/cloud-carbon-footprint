@@ -21,10 +21,10 @@
   ],
   "scripts": {
     "clean": "lerna clean --yes",
-    "lint": "lerna run lint --parallel",
+    "lint": "lerna run lint",
     "start": "lerna run start --stream",
     "sonar:scan": "lerna run sonar:scan --stream",
-    "test": "lerna run test --parallel",
+    "test": "lerna run test",
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001"
   }
