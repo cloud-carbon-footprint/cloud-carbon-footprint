@@ -8,14 +8,14 @@ updates:
     labels:
       - dependencies
   - package-ecosystem: npm
-    directory: '/server/'
+    directory: '/packages/server/'
     schedule:
       interval: daily
     open-pull-requests-limit: 5
     labels:
       - dependencies
   - package-ecosystem: npm
-    directory: '/client/'
+    directory: '/packages/client/'
     schedule:
       interval: daily
     open-pull-requests-limit: 5

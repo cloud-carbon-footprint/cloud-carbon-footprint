@@ -1817,9 +1817,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloud-carbon-footprint/client@workspace:client":
+"@cloud-carbon-footprint/client@workspace:packages/client":
   version: 0.0.0-use.local
-  resolution: "@cloud-carbon-footprint/client@workspace:client"
+  resolution: "@cloud-carbon-footprint/client@workspace:packages/client"
   dependencies:
     "@babel/runtime": ^7.12.18
     "@material-ui/core": ^4.11.3
@@ -1874,9 +1874,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/server@workspace:server":
+"@cloud-carbon-footprint/server@workspace:packages/server":
   version: 0.0.0-use.local
-  resolution: "@cloud-carbon-footprint/server@workspace:server"
+  resolution: "@cloud-carbon-footprint/server@workspace:packages/server"
   dependencies:
     "@google-cloud/bigquery": ^5.5.0
     "@google-cloud/logging-winston": ^4.0.4

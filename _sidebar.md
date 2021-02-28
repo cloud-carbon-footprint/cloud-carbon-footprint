@@ -1,8 +1,8 @@
-* [Getting Started](README.md)    
+* [Getting Started](README.md)
 
 * [Contributing](CONTRIBUTING.md)
 
-* [Client docs](client/README.md)
+* [Client docs](packages/client/README.md)
 
 * [Methodology](METHODOLOGY.md)
 

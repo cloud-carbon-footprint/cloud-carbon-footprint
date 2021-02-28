@@ -15,10 +15,11 @@
       "pre-commit": "./copyright_check.sh && ./branch_warning.sh && yarn hawkeye scan && lerna run precommit --stream"
     }
   },
-  "workspaces": [
-    "client",
-    "server"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "scripts": {
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
