@@ -66,7 +66,7 @@ $ git push origin/trunk
 ``` 
 
 ### Code
-Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the server/ folder or the documentation.
+Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the packages/api/ folder or the documentation.
 
 #### Linting
 - We are using `eslint` and `prettier` in the project
@@ -204,8 +204,8 @@ We record any significant architectural choices we make with lightweight adr fil
 
 ## Logging
 - We are using [Winston](https://github.com/winstonjs/winston) for logging locally and Google's [logging-winston](https://github.com/googleapis/nodejs-logging-winston) for Logging in Google App Engine.
-- The LOGGING_MODE can set inside the server/.env file, but by default it should be unset for local development.  
-- server/logs contain the log files that written to by the logger. This should be deleted occasionally, otherwise it will become unnecessarily large.
+- The LOGGING_MODE can set inside the api/.env file, but by default it should be unset for local development.  
+- packages/api/logs contain the log files that written to by the logger. This should be deleted occasionally, otherwise it will become unnecessarily large.
 
 ---
 
@@ -217,7 +217,7 @@ The tab lists the discrepancies in the code detected by the TypeScript Language 
 and switching to the Compile errors tab which shows up only after first manual compilation, when you click the :hammer: button and select the compilation scope.
 
 #### Cleaning up Local
- - server/logs contain the log files that written to by the logger. This should be deleted occasionally, otherwise it will 
+ - packages/api/logs contain the log files that written to by the logger. This should be deleted occasionally, otherwise it will 
  become infinitely large.
  
  - Delete estimate.cache.json to pull new data when testing to get most up to date data and verify querying is working 
