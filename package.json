@@ -4,6 +4,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.14.1",
     "@hawkeyesec/scanner-cli": "^1.8.1",
+    "concurrently": "^6.0.0",
     "docsify-cli": "^4.4.1",
     "husky": "^4.2.5",
     "lerna": "^3.22.1",
@@ -23,7 +24,9 @@
   "scripts": {
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
-    "start": "lerna run start --stream",
+    "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
+    "start-app": "yarn workspace @cloud-carbon-footprint/client start",
+    "start-api": "yarn workspace @cloud-carbon-footprint/api start",
     "sonar:scan": "lerna run sonar:scan --stream",
     "test": "lerna run test",
     "deploy": "cd terraform && ./run.sh apply",

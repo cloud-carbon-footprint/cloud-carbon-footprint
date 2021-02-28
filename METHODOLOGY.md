@@ -81,13 +81,13 @@ We support two approaches to gathering usage and cost data for different cloud p
 #### 1. Using Billing Data for Cloud Usage (Holistic)
 By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Billing Export Table using BigQuery. This pulls usage and cost data from all linked accounts in your AWS or GCP Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
 
-Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute and Storage usage types are fed into the estimation formula. You can see our classifications of these usage types in server/src/services/aws/CostAndUsageTypes.ts for AWS and server/src/services/gcp/BillingExportTypes.ts for GCP. 
+Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute and Storage usage types are fed into the estimation formula. You can see our classifications of these usage types in packages/api/src/services/aws/CostAndUsageTypes.ts for AWS and packages/api/src/services/gcp/BillingExportTypes.ts for GCP. 
 
 The process by which we classified the usage types is:
 1. Consider the pricing (AWS) or usage (GCP) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage. Most other units are ignored. 
 1. We then further validate whether a line item is Compute or Storage by looking at the more detailed usage type. E.g. if it contains content like “RAM” or “Networking”, it would be ignored.
 
-You can see more details about this logic in server/src/services/aws/CostAndUsageReports.ts AWS and server/src/services/gcp/BillingExportTable.ts for GCP. We welcome additions, improvements or suggested changes to these classifications or the process.
+You can see more details about this logic in packages/api/src/services/aws/CostAndUsageReports.ts AWS and packages/api/src/services/gcp/BillingExportTable.ts for GCP. We welcome additions, improvements or suggested changes to these classifications or the process.
 
 The way we determine total vCPU Hours for the compute estimation is different for each cloud provider. For AWS we multiply the usage amount by the product vCPUs, because our understanding is that the usage amount doesn’t include the vCPU count for a given usage row. For GCP, our understanding is that the vCPU count is included in the usage amount for a given row, so we simply use the usage amount by itself.
 

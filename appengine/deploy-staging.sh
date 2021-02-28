@@ -8,7 +8,7 @@ set -x
 
 gcloud --quiet app deploy \
   --version=staging \
-  ../packages/server/app-staging.yaml
+  ../packages/api/app-staging.yaml
 gcloud --quiet app deploy \
   --version=staging \
   ../packages/client/app-staging.yaml

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "lib": ["es2015", "es2019.array"],
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@application/*": ["./dist-core/application/*"],
+      "@domain/*": ["./dist-core/domain/*"],
+      "@services/*": ["./dist-core/services/*"],
+      "@view/*": ["./dist-core/view/*"]
+    },
+    "experimentalDecorators": true,
+    "target": "ES5",
+    "downlevelIteration": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "scripts"]
+}
