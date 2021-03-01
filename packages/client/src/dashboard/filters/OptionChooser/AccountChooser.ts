@@ -36,6 +36,7 @@ export class AccountChooser extends OptionChooser {
       getCloudProvidersFromAccounts(this.selections),
     )
     currentCloudProviders.forEach((currentCloudProvider) => {
+      if (!currentCloudProvider) return
       const cloudProviderKeys = pluck(
         'key',
         SERVICE_OPTIONS.filter(
