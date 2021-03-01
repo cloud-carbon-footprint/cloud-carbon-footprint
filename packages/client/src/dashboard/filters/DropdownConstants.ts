@@ -47,11 +47,11 @@ export const buildAndOrderDropdownOptions = (
   emptyResponse: { cloudProvider?: string; key: string; name: string }[],
 ): DropdownOption[] => {
   const allOptions: DropdownOption[] = []
-
   for (const option of dropdownOptions ? dropdownOptions : emptyResponse) {
     allOptions.push(option)
   }
-  return alphabetizeDropdownOptions(allOptions).sort((firstDropdownOption, secondDropdownOption) =>
-    firstDropdownOption.cloudProvider!.localeCompare(secondDropdownOption.cloudProvider!),
+  return alphabetizeDropdownOptions(allOptions).sort(
+    (firstDropdownOption, secondDropdownOption) =>
+      firstDropdownOption.cloudProvider?.localeCompare(secondDropdownOption.cloudProvider || '') || 0,
   )
 }

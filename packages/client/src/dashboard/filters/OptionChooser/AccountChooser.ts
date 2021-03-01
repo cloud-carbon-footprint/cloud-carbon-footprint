@@ -32,6 +32,7 @@ export class AccountChooser extends OptionChooser {
     const desiredSelections: Set<DropdownOption> = new Set()
     const currentCloudProviders = Array.from(getCloudProvidersFromAccounts(this.selections))
     currentCloudProviders.forEach((currentCloudProvider) => {
+      if (!currentCloudProvider) return
       const cloudProviderKeys = pluck(
         'key',
         SERVICE_OPTIONS.filter((service) => service.cloudProvider === currentCloudProvider.key),
