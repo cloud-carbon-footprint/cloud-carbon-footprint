@@ -93,10 +93,10 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "yarn lint",
-      "prettier --write --ignore-unknown --config ../.prettierrc.json"
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
     ],
     "*.{md}": [
-      "prettier --write --ignore-unknown --config ../.prettierrc.json"
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
     ]
   },
   "jest": {
