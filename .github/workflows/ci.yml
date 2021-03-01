@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [trunk, gh-actions]
+    branches: [trunk]
 jobs:
   lint-test:
     runs-on: ubuntu-latest
