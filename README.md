@@ -4,7 +4,7 @@
 
 This is an application that estimates the energy (kWh) and carbon emissions (metric tons CO2e) of cloud provider usage, given a start and end UTC dates.
 
-The core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `server/`, and the website is split between `server/` and `client/`
+The core logic is exposed through 2 applications: a CLI and a website. The CLI resides in `packages/server/`, and the website is split between `packages/server/` and `packages/client/`
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ Note:
 yarn install
 ```
 
-This will install dependencies for both the `client` and `server`. We use [Lerna](https://lerna.js.org) to manage both projects.
+This will install dependencies for all packages. We use [Lerna](https://lerna.js.org) to manage both projects.
 
 ## Serve the documentation
  From the root directory, run the command from the terminal
@@ -85,18 +85,18 @@ If you want up-to-date estimates you will have to delete `server/estimates.cache
 ## Run
 
 ### Server
-The application requires a number of environment variables to be set in the [server/.env](server/.env) file. See [server/.env.template](server/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables.
+The application requires a number of environment variables to be set in the [server/.env](packages/server/.env) file. See [server/.env.template](packages/server/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
-By default, the server has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your [server/.env](server/.env) file.
+By default, the server has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your [server/.env](packages/server/.env) file.
 
 ### Client
-There is also a [client/.env](client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.  
+There is also a [client/.env](packages/client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.  
 
-By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
+By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
 
 ### Client and Server (with mock data)
 ```
-cd client
+cd packages/client
 yarn start-stub-server
 
 //in another terminal, also from the client directory
@@ -126,7 +126,7 @@ docker-compose up
 ### Server in Docker
 
 ```
-cd server
+cd packages/server
 yarn docker:start //creates a docker container named ccf_base
 yarn docker:setup //install dependencies
 ```
@@ -136,14 +136,14 @@ yarn docker:setup //install dependencies
 #### Local
 
 ```
-cd server
+cd packages/server
 yarn start:cli <options>
 ```
 
 #### Docker
 
 ```
-cd server
+cd packages/server
 yarn docker:cli <options>
 ```
 
@@ -163,7 +163,7 @@ yarn docker:cli <options>
 
 Cloud Carbon Footprint is configured to be deployed to [Google App Engine](https://cloud.google.com/appengine/) (standard environment) using Circle CI. See the [Hello World example](https://cloud.google.com/nodejs/getting-started/hello-world) for instructions on setting up a Google Cloud Platform project and installing the Google Cloud SDK to your local machine.
 
-Before deploying, you'll need to build the application and create the server/.env and client/.env file as detailed above. There are two scripts to populate these files as part of the Circle CI pipeline: [server/create_server_env_file.sh](server/create_server_env_file.sh) and [client/create_client_env_file.sh](client/create_client_env_file.sh).
+Before deploying, you'll need to build the application and create the packages/server/.env and packages/client/.env file as detailed above. There are two scripts to populate these files as part of the Circle CI pipeline: [server/create_server_env_file.sh](packages/server/create_server_env_file.sh) and [client/create_client_env_file.sh](packgaes/client/create_client_env_file.sh).
 
 Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with
 
@@ -173,7 +173,7 @@ Or if you want to use CircleCI, you can see the configuration for this in [.circ
 
 It will deploy to `https://<something>.appspot.com`.
 
-If you don't want to deploy the client application behind Okta, then the client/.env file is not needed, and the relevant code can be removed from [client/index.js](client/index.js).  
+If you don't want to deploy the client application behind Okta, then the packages/client/.env file is not needed, and the relevant code can be removed from [client/index.js](packages/client/index.js).  
 
 ## Deploy to other cloud providers
 

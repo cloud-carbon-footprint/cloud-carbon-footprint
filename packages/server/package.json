@@ -1,11 +1,11 @@
 {
-  "name": "cloud-carbon-footprint",
+  "name": "@cloud-carbon-footprint/server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "private": true,
   "scripts": {
-    "precommit": "lint-staged --debug && yarn test:precommit",
+    "precommit": "lint-staged && yarn test:precommit",
     "test": "jest --coverage --maxWorkers 2",
     "sonar:scan": "sonar-scanner",
     "test:watch": "jest --coverage --watchAll",

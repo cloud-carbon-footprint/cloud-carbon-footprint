@@ -38,8 +38,8 @@ jobs:
           root: ~/cloud-carbon-footprint
           paths:
             - node_modules/*
-            - client/node_modules/*
-            - server/node_modules/*
+            - packages/client/node_modules/*
+            - packages/server/node_modules/*
   build-client:
     description: Build Client
     working_directory: ~/cloud-carbon-footprint
@@ -55,13 +55,13 @@ jobs:
       - run:
           name: build
           command: |
-            cd client
+            cd packages/client
             yarn build
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
           paths:
-            - client/build/*
-            - client/.env
+            - packages/client/build/*
+            - packages/client/.env
   build-server:
     description: Build Server
     working_directory: ~/cloud-carbon-footprint
@@ -77,14 +77,14 @@ jobs:
       - run:
           name: build
           command: |
-            cd server
+            cd packages/server
             yarn build
             ./create_server_env_file.sh
       - persist_to_workspace:
           root: ~/cloud-carbon-footprint
           paths:
-            - server/dist/*
-            - server/.env
+            - packages/server/dist/*
+            - packages/server/.env
   staging-deploy:
     description: Deploy app to gcp staging
     working_directory: ~/cloud-carbon-footprint
@@ -102,9 +102,9 @@ jobs:
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
             # Create client env file
-            cd client
+            cd packages/client
             ./create_client_stage_env_file.sh
-            cd ..
+            cd ../..
 
             # Store service account
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -136,9 +136,9 @@ jobs:
             curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
             # Create client env file
-            cd client
+            cd packages/client
             ./create_client_prod_env_file.sh
-            cd ..
+            cd ../..
 
             # Store service account
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json

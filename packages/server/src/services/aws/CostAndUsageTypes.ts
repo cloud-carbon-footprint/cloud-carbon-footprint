@@ -68,6 +68,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'TimedStorage-ZIA-SmObjects', // S3 ONEZONE_`IA storage (small)
   'TimedStorage-INT-IA-ByteHrs', // S3 infrequent access tier of INTELLIGENT_TIERING storage
   'EarlyDelete-SIA-SmObjects', //  S3 STANDARD_IA storage deleted before the minimum 30-day commitment ended (small)
+  'EarlyDelete-ZIA-SmObjects', //  S3 ONEZONE_IA storage deleted before the minimum 30-day commitment ended (small)
   'QS-Enterprise-SPICE', // Quicksight Enterprise SPICE
   'TimedBackupStorage-ByteHrs', // DynamoDB Backup storage is S3
   'DurableApplicationBackups', // Kinesis Backup Store in S3

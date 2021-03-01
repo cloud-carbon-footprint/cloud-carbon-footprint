@@ -23,7 +23,7 @@ docker run -d --name SonarQube -p 9000:9000 -p 9092:9092 sonarqube
 // login with admin:admin (or whatever default creds are set)
 // disable force user authentication in server
 
-cd (. | client | server) //depending which projects you wanna scan
+cd (. | packages/client | packages/server) //depending which projects you wanna scan
 yarn test 
 yarn sonar:scan
 
@@ -47,8 +47,8 @@ At first you will be prompted to login. You can find the default credentials are
     ```
     yarn sonar:scan
     ```
-    >***if you want to scan a single project.***, you will have to run the same script but in the client and server directory respectively. (i.e.`cd server; yarn sonar:scan`)
+    >***if you want to scan a single project.***, you will have to run the same script but in the client and server directory respectively. (i.e.`cd packages/server; yarn sonar:scan`)
 1. If all goes well, You should be able to see the log trace while scanner is analyzing each file.  **Ensure that you see “EXECUTION SUCCESS” at the end of scanning** for each project (i.e. client, server)
-1. Verify the vulnerabilities on the Admin UI http://localhost:9000    
+1. Verify the vulnerabilities on the Admin UI http://localhost:9000
 
 © 2020 ThoughtWorks, Inc. All rights reserved.

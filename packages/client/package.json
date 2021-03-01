@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "@cloud-carbon-footprint/client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -31,11 +31,11 @@
   },
   "proxy": "http://localhost:4000",
   "scripts": {
-    "precommit": "lint-staged --debug && yarn test:precommit",
+    "precommit": "lint-staged && yarn test:precommit",
     "start": "CI=true react-scripts start",
     "sonar:scan": "sonar-scanner",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
-    "test": "react-scripts --expose-gc test --logHeapUsage --maxWorkers 2 --coverage --watchAll=false",
+    "test": "react-scripts --expose-gc test --maxWorkers 2 --coverage --watchAll=false",
     "test:clean": "react-scripts test --clearCache",
     "test:precommit": "yarn test --bail",
     "test:snapshot": "yarn test -u",
