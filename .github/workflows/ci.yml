@@ -75,22 +75,22 @@ jobs:
         run: yarn install --immutable
       - name: build-client
         run: |
-          cd client
+          cd packages/client
           yarn build
-          cd ..
+          cd ../..
       - uses: actions/upload-artifact@v2
         with:
           name: client-build
-          path: client/build/
+          path: packages/client/build/
       - name: build-server
         run: |
-          cd server
+          cd packages/server
           yarn build
-          cd ..
+          cd ../..
       - uses: actions/upload-artifact@v2
         with:
           name: server-dist
-          path: server/dist/
+          path: packages/server/dist/
   deploy-staging:
     needs: build
     runs-on: ubuntu-latest
@@ -124,11 +124,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: client-build
-          path: client/build
+          path: packages/client/build
       - uses: actions/download-artifact@v2
         with:
           name: server-dist
-          path: server/dist
+          path: packages/server/dist
       - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -139,13 +139,13 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cd client
+          cd packages/client
           ./create_client_env_file.sh
-          cd ..
+          cd ../..
 
-          cd server
+          cd packages/server
           ./create_server_env_file.sh
-          cd ..
+          cd ../..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -193,11 +193,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: client-build
-          path: client/build
+          path: packages/client/build
       - uses: actions/download-artifact@v2
         with:
           name: server-dist
-          path: server/dist
+          path: packages/server/dist
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -208,13 +208,13 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cd client
+          cd packages/client
           ./create_client_env_file.sh
-          cd ..
+          cd ../..
 
-          cd server
+          cd packages/server
           ./create_server_env_file.sh
-          cd ..
+          cd ../..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
