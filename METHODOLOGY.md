@@ -247,11 +247,11 @@ In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy 
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more 
-adequately reflect. Outside the US, we use carbonfootprint.com’s [country specific grid emissions factors 
-report](https://www.carbonfootprint.com/).
+adequately reflect. Outside the US, we either use carbonfootprint.com’s [country specific grid emissions factors 
+report](https://www.carbonfootprint.com/), or for most regions in Europe the [EEA's country level emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6).
 In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions 
-factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from this 
-[energytrend.com article](https://www.energytrend.com/news/20180712-12383.html) as neither are included in 
+factors](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2), and for Taiwan we got it from this 
+[energypedia.info](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_note-19) as neither are included in 
 the carbonfootprint.com's report. You can see the full list of emissions factors in Appendix II below. 
 
 We understand this is a rough estimated conversion as these are only averages over a given year that is pre-2020, and 
@@ -306,18 +306,18 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
  |ap-south-1|India| |0.000708|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |ap-northeast-3|Japan| |0.000506|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |ap-northeast-2|South Korea| |0.0005|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |ap-southeast-1|Singapore| |0.0004188|[EMA Singapore](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1)
+ |ap-southeast-1|Singapore| |0.0004085|[EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)
  |ap-southeast-2|Australia| |0.00079|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |ap-northeast-1|Japan| |0.000506|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |ca-central-1|Canada| |0.00013|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |cn-north-1|China| |0.000555|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |cn-northwest-1|China| |0.000555|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |eu-central-1|Germany| |0.00037862|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |eu-west-1|Ireland| |0.00034804|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |eu-west-2|England| |0.00023314|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |eu-south-1|Italy| |0.00033854|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |eu-west-3|France| |0.00003895|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |eu-north-1|Sweden| |0.00001189|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
+ |eu-central-1|Germany| |0.000338|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |eu-west-1|Ireland| |0.000316|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |eu-west-2|England| |0.000228|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |eu-south-1|Italy| |0.000233|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |eu-west-3|France| |0.000052|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |eu-north-1|Sweden| |0.000008|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |me-south-1|Bahrain| |0.000732|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |sa-east-1|Brazil| |0.000074|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
 
@@ -331,20 +331,20 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
  |us-west2|USA|WECC|0.000351533|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-west3|USA|WECC|0.000351533|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-west4|USA|WECC|0.000351533|[EPA](https://www.epa.gov/egrid/download-data)|
- |asia-east1|Taiwan| |0.000544|[energytrend.com](https://www.energytrend.com/news/20180712-12383.html)|
+ |asia-east1|Taiwan| |0.000544|[energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20)|
  |asia-east2|Hong Kong| |0.00081|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |asia-northeast1|Japan| |0.000506|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |asia-northeast2|Japan| |0.000506|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |asia-northeast3|South Korea| |0.0005|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |asia-south1|India| |0.000708|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |asia-southeast1|Singapore| |0.0004188|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
+ |asia-southeast1|Singapore| |0.0004085|[EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)|
  |asia-southeast2|Indonesia| |0.000761|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |australia-southeast1|Australia| |0.00079|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |europe-north1|Finland| |0.00013622|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |europe-west1|Belgium| |0.00015313|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |europe-west2|England| |0.00023314|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |europe-west3|Germany| |0.00037862|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
- |europe-west4|Netherlands| |0.00045207|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
+ |europe-north1|Finland| |0.000086|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |europe-west1|Belgium| |0.000167|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |europe-west2|England| |0.000228|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |europe-west3|Germany| |0.000338|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |europe-west4|Netherlands| |0.000338|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west6|Switzerland| |0.00001182|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |northamerica-northeast1|Canada| |0.00013|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |southamerica-east1|Brazil| |0.000074|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
