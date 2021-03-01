@@ -215,7 +215,7 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.0000021232643102334177,
+            co2e: 0.000002100469896289623,
             cost: 5,
             region: 'unknown',
             serviceName: 'App Engine',
