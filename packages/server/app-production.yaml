@@ -1,7 +1,7 @@
 service: api
 
 runtime: nodejs12
-instance_class: F4_1G
+instance_class: B4_1G
 
 entrypoint: npm run start:webprod
 
