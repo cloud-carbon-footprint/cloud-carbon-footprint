@@ -10,13 +10,17 @@ export interface ClientConfig {
     key: string
     name: string
   }[]
+  PREVIOUS_YEAR_OF_USAGE: boolean
 }
+
+const previousYearOfUsage = !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE
 
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
     { key: 'aws', name: 'AWS' },
     { key: 'gcp', name: 'GCP' },
   ],
+  PREVIOUS_YEAR_OF_USAGE: previousYearOfUsage,
 }
 
 export default appConfig
