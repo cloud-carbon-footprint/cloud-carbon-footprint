@@ -344,7 +344,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
  |europe-west1|Belgium| |0.000167|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west2|England| |0.000228|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west3|Germany| |0.000338|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
- |europe-west4|Netherlands| |0.000338|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |europe-west4|Netherlands| |0.000390|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west6|Switzerland| |0.00001182|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |northamerica-northeast1|Canada| |0.00013|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |southamerica-east1|Brazil| |0.000074|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
