@@ -32,6 +32,8 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'NAT Gateway',
   'Action Time',
   'Billing Adjustment',
+  'Filestore Capacity Premium',
+  'Filestore Capacity Standard',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [

@@ -164,15 +164,10 @@ export default class BillingExportTable {
                     service.description as serviceName,
                     sku.description as usageType,
                     usage.unit as usageUnit,
-                    system_labels.value AS vCpus,
                     SUM(usage.amount) AS usageAmount,
                     SUM(cost) AS cost
                   FROM
                     \`${this.tableName}\`
-                  LEFT JOIN
-                  UNNEST(system_labels) AS system_labels
-                  ON
-                    system_labels.key LIKE "%cores%"
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
@@ -184,8 +179,7 @@ export default class BillingExportTable {
                     region,
                     serviceName,
                     usageType,
-                    usageUnit,
-                    vCpus`
+                    usageUnit`
 
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
