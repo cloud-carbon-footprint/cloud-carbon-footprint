@@ -57,7 +57,7 @@ describe('CloudCarbonContainer', () => {
     expect(initial).toEqual([])
     expect(startDate.year()).toEqual(endDate.year() - 1)
     expect(startDate.month()).toEqual(endDate.month() + 6)
-    expect(startDate.date()).toEqual(1)
+    expect(startDate.date()).toEqual(2)
 
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
