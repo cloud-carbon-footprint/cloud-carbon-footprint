@@ -22,9 +22,8 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
     "start": "yarn start:web",
     "start:prod": "yarn start:webprod",
-    "start:web": "ts-node-dev -r tsconfig-paths/register src/view/server.ts",
+    "start:web": "ts-node-dev src/view/server.ts",
     "start:webprod": "NODE_ENV=production node dist/server.js",
-    "start:cli": "ts-node -r tsconfig-paths/register src/index.ts",
     "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/packages/api -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
     "docker:setup": "docker exec -w /cloud-carbon-footprint/packages/api -it ccf_base yarn install --immutable",
     "docker:test": "docker exec -w /cloud-carbon-footprint/packages/api -it ccf_base yarn test",
@@ -61,7 +60,7 @@
     "typescript": "4.1.5"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/core": "./dist-api",
+    "@cloud-carbon-footprint/core": "^1.0.0",
     "@types/express": "^4.17.11",
     "@types/prompts": "^2.0.9",
     "@types/ramda": "^0.27.38",

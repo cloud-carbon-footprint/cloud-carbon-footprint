@@ -27,6 +27,7 @@
     "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
     "start-app": "yarn workspace @cloud-carbon-footprint/client start",
     "start-api": "yarn workspace @cloud-carbon-footprint/api start",
+    "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
     "sonar:scan": "lerna run sonar:scan --stream",
     "test": "lerna run test",
     "deploy": "cd terraform && ./run.sh apply",

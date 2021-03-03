@@ -136,15 +136,7 @@ yarn docker:setup //install dependencies
 #### Local
 
 ```
-cd packages/api
-yarn start:cli <options>
-```
-
-#### Docker
-
-```
-cd packages/api
-yarn docker:cli <options>
+yarn start-cli <options>
 ```
 
 #### CLI Options
