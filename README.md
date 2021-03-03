@@ -60,7 +60,7 @@ You can read more about this mode of authentication in [.adr/adr_5_aws_authentic
 ### GCP Credentials
 
 - You'll need your team's (or your own) GCP service account credentials stored on your filesystem
-- Set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
+- Set the `GOOGLE_APPLICATION_CREDENTIALS` env variable to the location of your credentials file.
 see https://cloud.google.com/docs/authentication/getting-started for more details.
 
 Note: make sure you use the full path for this environment variable, eg `/Users/<user>/path/to/credential`
@@ -92,7 +92,7 @@ By default, the server has configuration for both AWS and GCP. If you are only u
 ### Client
 There is also a [client/.env](packages/client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.  
 
-By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
+By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROVIDERS` array.
 
 ### Client and Server (with mock data)
 ```
@@ -179,6 +179,6 @@ If you don't want to deploy the client application behind Okta, then the package
 
 Cloud Carbon Footprint should be deployable to other cloud providers such as [Heroku](https://www.heroku.com/) or [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). However only Google App Engine has been tested currently, so there may be some work involved in doing this. 
 
-Don't forget to deploy your .env file or otherwise set the environment variables in your deployment.
+Don't forget to deploy your `.env` file or otherwise set the environment variables in your deployment.
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc. All rights reserved.
