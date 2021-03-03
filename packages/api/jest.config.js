@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  roots: ['<rootDir>/test'],
+  roots: ['<rootDir>/src'],
   setupFiles: ['<rootDir>/test/setEnvVars.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',

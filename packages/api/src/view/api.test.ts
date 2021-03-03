@@ -20,7 +20,7 @@ jest.mock('@cloud-carbon-footprint/core', () => ({
 }))
 
 import express from 'express'
-import api, { EmissionsRatios } from '../../../src/view/api'
+import api, { EmissionsRatios } from './api'
 import request from 'supertest'
 import { EstimationResult } from '@cloud-carbon-footprint/core'
 
