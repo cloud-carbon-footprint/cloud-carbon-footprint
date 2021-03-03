@@ -64,7 +64,7 @@
   "lint-staged": {
     "*.{js,ts,md}": [
       "yarn lint",
-      "prettier --write --ignore-unknown --config ../.prettierrc.json"
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
     ]
   }
 }
