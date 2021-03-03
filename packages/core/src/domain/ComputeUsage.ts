@@ -2,9 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import IUsageData from '@domain/IUsageData'
+import IUsageData from './IUsageData'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from './FootprintEstimationConstants'
 
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number

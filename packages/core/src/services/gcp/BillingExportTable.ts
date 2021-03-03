@@ -5,15 +5,15 @@
 import moment from 'moment'
 import { BigQuery, Job } from '@google-cloud/bigquery'
 
-import ComputeEstimator from '@domain/ComputeEstimator'
-import StorageUsage from '@domain/StorageUsage'
-import { StorageEstimator } from '@domain/StorageEstimator'
-import ComputeUsage from '@domain/ComputeUsage'
-import NetworkingEstimator from '@domain/NetworkingEstimator'
-import NetworkingUsage from '@domain/NetworkingUsage'
-import FootprintEstimate, { MutableEstimationResult } from '@domain/FootprintEstimate'
-import { EstimationResult } from '@application/EstimationResult'
-import configLoader from '@application/ConfigLoader'
+import ComputeEstimator from '../../domain/ComputeEstimator'
+import StorageUsage from '../../domain/StorageUsage'
+import { StorageEstimator } from '../../domain/StorageEstimator'
+import ComputeUsage from '../../domain/ComputeUsage'
+import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import NetworkingUsage from '../../domain/NetworkingUsage'
+import FootprintEstimate, { MutableEstimationResult } from '../../domain/FootprintEstimate'
+import { EstimationResult } from '../../application/EstimationResult'
+import configLoader from '../../application/ConfigLoader'
 import {
   MEMORY_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
@@ -21,11 +21,11 @@ import {
   COMPUTE_STRING_FORMATS,
   UNSUPPORTED_USAGE_TYPES,
   NETWORKING_STRING_FORMATS,
-} from '@services/gcp/BillingExportTypes'
-import BillingExportRow from '@services/gcp/BillingExportRow'
-import Logger from '@services/Logger'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
-import { appendOrAccumulateEstimatesByDay } from '@domain/FootprintEstimate'
+} from './BillingExportTypes'
+import BillingExportRow from './BillingExportRow'
+import Logger from '../Logger'
+import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
 
 export default class BillingExportTable {
   private readonly tableName: string

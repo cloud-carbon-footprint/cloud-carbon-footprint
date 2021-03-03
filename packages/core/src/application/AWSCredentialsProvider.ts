@@ -3,8 +3,8 @@
  */
 
 import { Credentials, config, ChainableTemporaryCredentials } from 'aws-sdk'
-import appConfig from '@application/Config'
-import CredentialsForGCP from '@application/GCPCredentials'
+import appConfig from './Config'
+import CredentialsForGCP from './GCPCredentials'
 
 export default class AWSCredentialsProvider {
   static create(accountId: string): Credentials {

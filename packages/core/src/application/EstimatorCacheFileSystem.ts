@@ -2,11 +2,11 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import EstimatorCache from '@application/EstimatorCache'
-import { EstimationResult } from '@application/EstimationResult'
+import EstimatorCache from './EstimatorCache'
+import { EstimationResult } from './EstimationResult'
 import { promises as fs } from 'fs'
 import moment from 'moment'
-import { EstimationRequest } from '@application/CreateValidRequest'
+import { EstimationRequest } from './CreateValidRequest'
 
 export const cachePath = process.env.CCF_CACHE_PATH || 'estimates.cache.json'
 

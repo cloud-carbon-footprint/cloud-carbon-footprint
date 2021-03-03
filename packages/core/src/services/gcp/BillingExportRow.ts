@@ -2,8 +2,8 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { GCP_REGIONS } from '@services/gcp/GCPRegions'
-import BillingDataRow from '@domain/BillingDataRow'
+import { GCP_REGIONS } from './GCPRegions'
+import BillingDataRow from '../../domain/BillingDataRow'
 import { BigQueryDate } from '@google-cloud/bigquery'
 
 export default class BillingExportRow extends BillingDataRow {

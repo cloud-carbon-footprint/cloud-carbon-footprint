@@ -2,13 +2,13 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationRequest } from '@application/CreateValidRequest'
+import { EstimationRequest } from './CreateValidRequest'
 import AWSAccount from './AWSAccount'
-import configLoader from '@application/ConfigLoader'
-import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
-import cache from '@application/Cache'
-import GCPAccount from '@application/GCPAccount'
-import FilterResult, { getAccounts } from '@application/FilterResult'
+import configLoader from './ConfigLoader'
+import { EstimationResult, reduceByTimestamp } from './EstimationResult'
+import cache from './Cache'
+import GCPAccount from './GCPAccount'
+import FilterResult, { getAccounts } from './FilterResult'
 export default class App {
   @cache()
   async getCostAndEstimates(request: EstimationRequest): Promise<EstimationResult[]> {

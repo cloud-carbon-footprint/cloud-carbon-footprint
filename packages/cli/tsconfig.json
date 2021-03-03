@@ -14,7 +14,7 @@
       "@domain/*": ["../core/src/domain/*"],
       "@services/*": ["../core/src/services/*"],
       "@view/*": ["./src/view/*"],
-      "@fixtures": ["../api/test/fixtures/fixtures.ts"],
+      "@fixtures": ["./test/fixtures/fixtures.ts"],
     },
     "experimentalDecorators": true,
     "target": "ES5",

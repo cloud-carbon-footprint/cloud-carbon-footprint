@@ -2,17 +2,17 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import ComputeUsage from '@domain/ComputeUsage'
-import Cost from '@domain/Cost'
-import Logger from '@services/Logger'
+import ServiceWithCPUUtilization from '../../domain/ServiceWithCPUUtilization'
+import ComputeUsage from '../../domain/ComputeUsage'
+import Cost from '../../domain/Cost'
+import Logger from '../Logger'
 
 import { google } from '@google-cloud/monitoring/build/protos/protos'
 import Aligner = google.monitoring.v3.Aggregation.Aligner
 import Reducer = google.monitoring.v3.Aggregation.Reducer
 import Full = google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView.FULL
 import { v3 } from '@google-cloud/monitoring'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 
 export default class ComputeEngine extends ServiceWithCPUUtilization {
   serviceName = 'ComputeEngine'

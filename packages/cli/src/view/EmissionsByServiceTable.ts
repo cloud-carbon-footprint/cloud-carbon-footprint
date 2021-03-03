@@ -9,8 +9,8 @@ import {
   displayWattHours,
   initialTotals,
   Totals,
-} from '@view/EmissionsTableUtils'
-import { EstimationResult } from '@application/EstimationResult'
+} from './EmissionsTableUtils'
+import { EstimationResult } from '@cloud-carbon-footprint/core'
 import { pluck, uniq } from 'ramda'
 
 export default function EmissionsByServiceTable(

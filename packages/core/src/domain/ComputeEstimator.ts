@@ -2,9 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import IFootprintEstimator from '@domain/IFootprintEstimator'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import ComputeUsage from '@domain/ComputeUsage'
+import IFootprintEstimator from './IFootprintEstimator'
+import FootprintEstimate from './FootprintEstimate'
+import ComputeUsage from './ComputeUsage'
 import { CLOUD_CONSTANTS, estimateCo2 } from './FootprintEstimationConstants'
 
 //averageCPUUtilization expected to be in percentage

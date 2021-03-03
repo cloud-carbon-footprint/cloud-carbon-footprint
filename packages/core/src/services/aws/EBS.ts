@@ -2,18 +2,13 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ICloudService from '@domain/ICloudService'
-import {
-  DiskType,
-  getEstimatesFromCostExplorer,
-  getUsageFromCostExplorer,
-  VolumeUsage,
-} from '@services/aws/StorageUsageMapper'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/aws/CostMapper'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import Logger from '@services/Logger'
+import ICloudService from '../../domain/ICloudService'
+import { DiskType, getEstimatesFromCostExplorer, getUsageFromCostExplorer, VolumeUsage } from './StorageUsageMapper'
+import FootprintEstimate from '../../domain/FootprintEstimate'
+import Cost from '../../domain/Cost'
+import { getCostFromCostExplorer } from './CostMapper'
+import { ServiceWrapper } from './ServiceWrapper'
+import Logger from '../Logger'
 
 export default class EBS implements ICloudService {
   serviceName = 'EBS'

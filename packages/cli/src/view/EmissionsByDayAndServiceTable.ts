@@ -2,10 +2,10 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from '@view/EmissionsTableUtils'
+import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from './EmissionsTableUtils'
 import { pluck, uniq } from 'ramda'
 import moment from 'moment'
-import { EstimationResult } from '@application/EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/core'
 
 const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
 const displayService = (totals: Totals, serviceName: string) => [

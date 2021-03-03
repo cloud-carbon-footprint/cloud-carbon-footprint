@@ -2,11 +2,11 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ICloudService from '@domain/ICloudService'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import ComputeEstimator from '@domain/ComputeEstimator'
-import ComputeUsage from '@domain/ComputeUsage'
-import Cost from '@domain/Cost'
+import ICloudService from './ICloudService'
+import FootprintEstimate from './FootprintEstimate'
+import ComputeEstimator from './ComputeEstimator'
+import ComputeUsage from './ComputeUsage'
+import Cost from './Cost'
 
 export default abstract class ServiceWithCPUUtilization implements ICloudService {
   private readonly estimator: ComputeEstimator

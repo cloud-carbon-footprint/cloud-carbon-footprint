@@ -3,8 +3,8 @@
  */
 
 import { reduceBy } from 'ramda'
-import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
-import BillingExportRow from '@services/gcp/BillingExportRow'
+import CostAndUsageReportsRow from '../services/aws/CostAndUsageReportsRow'
+import BillingExportRow from '../services/gcp/BillingExportRow'
 
 export default interface FootprintEstimate {
   timestamp: Date

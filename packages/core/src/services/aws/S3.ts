@@ -2,12 +2,12 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import StorageUsage from '@domain/StorageUsage'
-import { HDDStorageService } from '@domain/StorageService'
-import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import StorageUsage from '../../domain/StorageUsage'
+import { HDDStorageService } from '../../domain/StorageService'
+import Cost from '../../domain/Cost'
+import { getCostFromCostExplorer } from './CostMapper'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { ServiceWrapper } from './ServiceWrapper'
 
 export default class S3 extends HDDStorageService {
   serviceName = 'S3'

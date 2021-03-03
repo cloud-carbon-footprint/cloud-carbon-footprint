@@ -2,14 +2,14 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import ComputeUsage from '@domain/ComputeUsage'
+import ServiceWithCPUUtilization from '../../domain/ServiceWithCPUUtilization'
+import ComputeUsage from '../../domain/ComputeUsage'
 import { CostExplorer } from 'aws-sdk'
-import { getComputeUsage } from '@services/aws/ComputeUsageMapper'
-import { RDS_INSTANCE_TYPES } from '@services/aws/AWSInstanceTypes'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import { getComputeUsage } from './ComputeUsageMapper'
+import { RDS_INSTANCE_TYPES } from './AWSInstanceTypes'
+import { ServiceWrapper } from './ServiceWrapper'
+import Cost from '../../domain/Cost'
+import { getCostFromCostExplorer } from './CostMapper'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 
 export default class RDSComputeService extends ServiceWithCPUUtilization {

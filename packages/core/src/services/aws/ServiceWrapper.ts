@@ -7,7 +7,7 @@ import { path } from 'ramda'
 import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
 import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { PartialDataError } from '@application/CreateValidRequest'
+import { PartialDataError } from '../../application/CreateValidRequest'
 
 export class ServiceWrapper {
   constructor(

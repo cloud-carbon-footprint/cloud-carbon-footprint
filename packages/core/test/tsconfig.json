@@ -1,5 +1,14 @@
 // This file exists for intellij import support in test directory
 {
   "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@application/*": ["../src/application/*"],
+      "@domain/*": ["../src/domain/*"],
+      "@services/*": ["../src/services/*"],
+      "@fixtures": ["./test/fixtures/fixtures.ts"],
+      "@builders": ["./test/fixtures/builders.ts"]
+    },
+  }
   "include": ["**/*.ts"]
 }

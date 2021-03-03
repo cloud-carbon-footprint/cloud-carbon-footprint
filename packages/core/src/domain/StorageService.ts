@@ -8,7 +8,7 @@ import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import IFootprintEstimator from './IFootprintEstimator'
 import { CLOUD_CONSTANTS } from './FootprintEstimationConstants'
-import Cost from '@domain/Cost'
+import Cost from './Cost'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator

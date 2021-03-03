@@ -6,8 +6,8 @@ import { createLogger, format, transports, Logger as WinstonLogger } from 'winst
 const { combine, timestamp, label, printf } = format
 import { LoggingWinston } from '@google-cloud/logging-winston'
 
-import ILogger from '@services/ILogger'
-import configLoader from '@application/ConfigLoader'
+import ILogger from './ILogger'
+import configLoader from '../application/ConfigLoader'
 
 const env = process.env.NODE_ENV || 'development'
 

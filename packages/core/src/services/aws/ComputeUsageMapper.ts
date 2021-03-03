@@ -3,7 +3,7 @@
  */
 
 import { CloudWatch, CostExplorer } from 'aws-sdk'
-import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '@domain/ComputeUsage'
+import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '../../domain/ComputeUsage'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 
 function getNumberVcpusByDate(

@@ -2,9 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ICloudService from '@domain/ICloudService'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import Cost from '@domain/Cost'
+import ICloudService from './ICloudService'
+import FootprintEstimate from './FootprintEstimate'
+import Cost from './Cost'
 
 export default class Region {
   constructor(public id: string, public services: ICloudService[], public cloudProvider: string) {}

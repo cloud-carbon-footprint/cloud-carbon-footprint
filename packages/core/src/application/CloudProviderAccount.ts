@@ -2,10 +2,10 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import Region from '@domain/Region'
-import { EstimationResult, reduceByTimestamp } from '@application/EstimationResult'
-import FootprintEstimate, { aggregateEstimatesByDay } from '@domain/FootprintEstimate'
-import Cost, { aggregateCostsByDay } from '@domain/Cost'
+import Region from '../domain/Region'
+import { EstimationResult, reduceByTimestamp } from './EstimationResult'
+import FootprintEstimate, { aggregateEstimatesByDay } from '../domain/FootprintEstimate'
+import Cost, { aggregateCostsByDay } from '../domain/Cost'
 import { union } from 'ramda'
 import moment from 'moment'
 

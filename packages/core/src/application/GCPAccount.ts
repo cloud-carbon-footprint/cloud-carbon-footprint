@@ -2,19 +2,19 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import CloudProviderAccount from '@application/CloudProviderAccount'
-import { EstimationResult } from '@application/EstimationResult'
-import Region from '@domain/Region'
-import configLoader from '@application/ConfigLoader'
-import ICloudService from '@domain/ICloudService'
-import ComputeEngine from '@services/gcp/ComputeEngine'
+import CloudProviderAccount from './CloudProviderAccount'
+import { EstimationResult } from './EstimationResult'
+import Region from '../domain/Region'
+import configLoader from './ConfigLoader'
+import ICloudService from '../domain/ICloudService'
+import ComputeEngine from '../services/gcp/ComputeEngine'
 import { v3 } from '@google-cloud/monitoring'
 import { ClientOptions } from 'google-gax'
-import BillingExportTable from '@services/gcp/BillingExportTable'
-import ComputeEstimator from '@domain/ComputeEstimator'
-import NetworkingEstimator from '@domain/NetworkingEstimator'
-import { StorageEstimator } from '@domain/StorageEstimator'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+import BillingExportTable from '../services/gcp/BillingExportTable'
+import ComputeEstimator from '../domain/ComputeEstimator'
+import NetworkingEstimator from '../domain/NetworkingEstimator'
+import { StorageEstimator } from '../domain/StorageEstimator'
+import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
 import { BigQuery } from '@google-cloud/bigquery'
 
 export default class GCPAccount extends CloudProviderAccount {

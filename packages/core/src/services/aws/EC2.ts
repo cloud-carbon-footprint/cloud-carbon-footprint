@@ -2,13 +2,13 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '@domain/ComputeUsage'
-import Cost from '@domain/Cost'
+import ServiceWithCPUUtilization from '../../domain/ServiceWithCPUUtilization'
+import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '../../domain/ComputeUsage'
+import Cost from '../../domain/Cost'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import { getCostFromCostExplorer } from './CostMapper'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { ServiceWrapper } from './ServiceWrapper'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'EC2'

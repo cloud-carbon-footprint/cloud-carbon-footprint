@@ -3,7 +3,7 @@
  */
 
 import FootprintEstimate from './FootprintEstimate'
-import Cost from '@domain/Cost'
+import Cost from './Cost'
 
 export default interface ICloudService {
   serviceName: string

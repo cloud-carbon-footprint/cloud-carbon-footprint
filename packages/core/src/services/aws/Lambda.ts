@@ -2,14 +2,14 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ICloudService from '@domain/ICloudService'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import { estimateCo2, CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
-import { getCostFromCostExplorer } from '@services/aws/CostMapper'
-import Cost from '@domain/Cost'
+import ICloudService from '../../domain/ICloudService'
+import FootprintEstimate from '../../domain/FootprintEstimate'
+import { estimateCo2, CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+import { getCostFromCostExplorer } from './CostMapper'
+import Cost from '../../domain/Cost'
 import { isEmpty } from 'ramda'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import { ServiceWrapper } from './ServiceWrapper'
 import { GetQueryResultsResponse } from 'aws-sdk/clients/cloudwatchlogs'
 
 export default class Lambda implements ICloudService {

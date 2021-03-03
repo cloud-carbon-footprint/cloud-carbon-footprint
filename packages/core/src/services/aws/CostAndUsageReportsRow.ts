@@ -8,10 +8,10 @@ import {
   EC2_INSTANCE_TYPES,
   MSK_INSTANCE_TYPES,
   REDSHIFT_INSTANCE_TYPES,
-} from '@services/aws/AWSInstanceTypes'
-import { PRICING_UNITS } from '@services/aws/CostAndUsageTypes'
-import BillingDataRow from '@domain/BillingDataRow'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
+} from './AWSInstanceTypes'
+import { PRICING_UNITS } from './CostAndUsageTypes'
+import BillingDataRow from '../../domain/BillingDataRow'
+import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 
 const GLUE_VCPUS_PER_USAGE = 4
 

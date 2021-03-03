@@ -2,13 +2,13 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ComputeUsage from '@domain/ComputeUsage'
-import ServiceWithCPUUtilization from '@domain/ServiceWithCPUUtilization'
-import { getComputeUsage } from '@services/aws/ComputeUsageMapper'
-import { CACHE_NODE_TYPES } from '@services/aws/AWSInstanceTypes'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import Cost from '@domain/Cost'
-import { getCostFromCostExplorer } from '@services/aws/CostMapper'
+import ComputeUsage from '../../domain/ComputeUsage'
+import ServiceWithCPUUtilization from '../../domain/ServiceWithCPUUtilization'
+import { getComputeUsage } from './ComputeUsageMapper'
+import { CACHE_NODE_TYPES } from './AWSInstanceTypes'
+import { ServiceWrapper } from './ServiceWrapper'
+import Cost from '../../domain/Cost'
+import { getCostFromCostExplorer } from './CostMapper'
 
 export default class ElastiCache extends ServiceWithCPUUtilization {
   serviceName = 'ElastiCache'

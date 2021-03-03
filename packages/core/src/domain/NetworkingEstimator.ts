@@ -2,10 +2,10 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import IFootprintEstimator from '@domain/IFootprintEstimator'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import { CLOUD_CONSTANTS, estimateCo2 } from '@domain/FootprintEstimationConstants'
-import NetworkingUsage from '@domain/NetworkingUsage'
+import IFootprintEstimator from './IFootprintEstimator'
+import FootprintEstimate from './FootprintEstimate'
+import { CLOUD_CONSTANTS, estimateCo2 } from './FootprintEstimationConstants'
+import NetworkingUsage from './NetworkingUsage'
 
 export default class NetworkingEstimator implements IFootprintEstimator {
   estimate(data: NetworkingUsage[], region: string, cloudProvider: string): FootprintEstimate[] {

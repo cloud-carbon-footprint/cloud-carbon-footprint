@@ -2,12 +2,12 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult } from '@application/EstimationResult'
-import EstimatorCacheFileSystem from '@application/EstimatorCacheFileSystem'
-import EstimatorCache from '@application/EstimatorCache'
+import { EstimationResult } from './EstimationResult'
+import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
+import EstimatorCache from './EstimatorCache'
 import moment, { Moment } from 'moment'
 import R from 'ramda'
-import { EstimationRequest } from '@application/CreateValidRequest'
+import { EstimationRequest } from './CreateValidRequest'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 

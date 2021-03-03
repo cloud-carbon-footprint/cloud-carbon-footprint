@@ -17,11 +17,5 @@ module.exports = {
     },
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  moduleNameMapper: {
-    '^@application/(.*)$': '<rootDir>/../core/src/application/$1',
-    '^@domain/(.*)$': '<rootDir>/../core/src/domain/$1',
-    '^@services/(.*)$': '<rootDir>/../core/src/services/$1',
-    '^@view/(.*)$': '<rootDir>/src/view/$1',
-  },
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
 }

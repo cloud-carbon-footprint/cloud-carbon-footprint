@@ -10,7 +10,7 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@application/*": ["../core/src/application/*"],
+      "@application/*": ["./src/application/*"],
       "@domain/*": ["./src/domain/*"],
       "@services/*": ["./src/services/*"],
       "@view/*": ["./src/view/*"],

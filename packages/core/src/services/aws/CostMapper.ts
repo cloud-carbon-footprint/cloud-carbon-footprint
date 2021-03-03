@@ -4,8 +4,8 @@
 
 import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import Cost from '@domain/Cost'
+import { ServiceWrapper } from './ServiceWrapper'
+import Cost from '../../domain/Cost'
 
 export async function getCostFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,

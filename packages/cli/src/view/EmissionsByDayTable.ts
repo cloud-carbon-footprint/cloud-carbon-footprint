@@ -2,8 +2,8 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { displayCo2e, displayWattHours, Totals } from '@view/EmissionsTableUtils'
-import { EstimationResult } from '@application/EstimationResult'
+import { displayCo2e, displayWattHours, Totals } from './EmissionsTableUtils'
+import { EstimationResult } from '@cloud-carbon-footprint/core'
 
 export default function EmissionsByDayTable(
   estimationResults: EstimationResult[],

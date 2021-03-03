@@ -2,10 +2,10 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import moment from 'moment'
-import FootprintEstimate, { MutableEstimationResult } from '@domain/FootprintEstimate'
-import ComputeEstimator from '@domain/ComputeEstimator'
-import { StorageEstimator } from '@domain/StorageEstimator'
-import configLoader from '@application/ConfigLoader'
+import FootprintEstimate, { MutableEstimationResult } from '../../domain/FootprintEstimate'
+import ComputeEstimator from '../../domain/ComputeEstimator'
+import { StorageEstimator } from '../../domain/StorageEstimator'
+import configLoader from '../../application/ConfigLoader'
 import {
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
@@ -14,12 +14,12 @@ import {
   StartQueryExecutionOutput,
   Row,
 } from 'aws-sdk/clients/athena'
-import ComputeUsage from '@domain/ComputeUsage'
-import StorageUsage from '@domain/StorageUsage'
-import { CLOUD_CONSTANTS } from '@domain/FootprintEstimationConstants'
-import Logger from '@services/Logger'
-import { EstimationResult } from '@application/EstimationResult'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
+import ComputeUsage from '../../domain/ComputeUsage'
+import StorageUsage from '../../domain/StorageUsage'
+import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+import Logger from '../Logger'
+import { EstimationResult } from '../../application/EstimationResult'
+import { ServiceWrapper } from './ServiceWrapper'
 import {
   SSD_USAGE_TYPES,
   HDD_USAGE_TYPES,
@@ -29,12 +29,12 @@ import {
   PRICING_UNITS,
   UNKNOWN_USAGE_TYPES,
   LINE_ITEM_TYPES,
-} from '@services/aws/CostAndUsageTypes'
-import CostAndUsageReportsRow from '@services/aws/CostAndUsageReportsRow'
+} from './CostAndUsageTypes'
+import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 import { Athena } from 'aws-sdk'
-import { appendOrAccumulateEstimatesByDay } from '@domain/FootprintEstimate'
-import NetworkingUsage from '@domain/NetworkingUsage'
-import NetworkingEstimator from '@domain/NetworkingEstimator'
+import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
+import NetworkingUsage from '../../domain/NetworkingUsage'
+import NetworkingEstimator from '../../domain/NetworkingEstimator'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string

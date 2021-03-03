@@ -2,11 +2,11 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ICloudService from '@domain/ICloudService'
-import RDSComputeService from '@services/aws/RDSCompute'
-import RDSStorage from '@services/aws/RDSStorage'
-import FootprintEstimate from '@domain/FootprintEstimate'
-import Cost from '@domain/Cost'
+import ICloudService from '../../domain/ICloudService'
+import RDSComputeService from './RDSCompute'
+import RDSStorage from './RDSStorage'
+import FootprintEstimate from '../../domain/FootprintEstimate'
+import Cost from '../../domain/Cost'
 import moment from 'moment'
 import { reduceBy, concat } from 'ramda'
 
