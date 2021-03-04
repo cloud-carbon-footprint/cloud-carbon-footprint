@@ -15,7 +15,7 @@ There are fundamentally three ways an individual can contribute:
 1) **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `ThoughtWorks-Cleantech/cloud-carbon-footprint` in a concrete and reviewable manner.
 
 ### Asking for General Help
-- _TBD_: Find point of contact or setup discussion board for general help? (instead of creating an issue)  
+- Please join our [Google Group](https://groups.google.com/g/cloud-carbon-footprint) and post a message with your question.  
 
 ### Submitting a Bug Report
 To submit a bug report:

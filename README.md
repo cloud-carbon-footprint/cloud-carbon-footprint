@@ -157,9 +157,7 @@ Cloud Carbon Footprint is configured to be deployed to [Google App Engine](https
 
 Before deploying, you'll need to build the application and create the packages/api/.env and packages/client/.env file as detailed above. There are two scripts to populate these files as part of the Circle CI pipeline: [packages/cli/create_server_env_file.sh](packages/api/create_server_env_file.sh) and [client/create_client_env_file.sh](packgaes/client/create_client_env_file.sh).
 
-Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with
-
-`./appengine/deploy.sh`
+Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with `./appengine/deploy-staging.sh` or `./appengine/deploy-production.sh`, depending on your environment.  
 
 Or if you want to use CircleCI, you can see the configuration for this in [.circleci/config.yml](.circleci/config.yml).
 
@@ -172,5 +170,9 @@ If you don't want to deploy the client application behind Okta, then the package
 Cloud Carbon Footprint should be deployable to other cloud providers such as [Heroku](https://www.heroku.com/) or [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). However only Google App Engine has been tested currently, so there may be some work involved in doing this. 
 
 Don't forget to deploy your .env file or otherwise set the environment variables in your deployment.
+
+## Support
+
+Visit our [Google Group](https://groups.google.com/g/cloud-carbon-footprint) for any support questions. Don't be shy!
 
 © 2020 ThoughtWorks, Inc. All rights reserved.
