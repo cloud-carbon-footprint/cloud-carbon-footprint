@@ -40,7 +40,7 @@ async function getCommitMessageUsingTagName(tagName) {
 
   // Get the commit SHA using the tag SHA
   const tagData = await octokit.git.getTag({
-    owner: GH_REPO,
+    owner: GH_OWNER,
     repo: GH_REPO,
     tag_sha: tagSha,
   })
@@ -49,7 +49,6 @@ async function getCommitMessageUsingTagName(tagName) {
     console.error(tagData)
     throw new Error('Something went wrong when getting the commit SHA using tag SHA')
   }
-  console.log('tagData: ', tagData)
   const commitSha = tagData.data.object.sha
   console.log(`The commit for the tag is https://github.com/ThoughtWorks-Cleantech/backstage/commit/${commitSha}`)
 
