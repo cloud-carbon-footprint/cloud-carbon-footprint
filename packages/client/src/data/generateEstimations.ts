@@ -13,73 +13,77 @@ const getRandomNumberInRange = (minValue: number, maxValue: number): number => {
   return Math.max(Math.random() * maxValue, minValue + Math.random())
 }
 
-const fakeServiceMap: (timestamp: Date) => { [key: string]: serviceEstimate } = (timestamp: Date) => {
+const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
   return {
     ebs: {
-      timestamp,
-      cloudProvider: 'aws',
-      accountName: 'aws account',
+      cloudProvider: 'AWS',
+      accountName: `aws account ${getRandomInt(5)}`,
       serviceName: 'ebs',
       kilowattHours: Math.random(),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
-      estimated: false,
+      usesAverageCPUConstant: false,
     },
     s3: {
-      timestamp,
-      cloudProvider: 'aws',
-      accountName: 'aws account',
+      cloudProvider: 'AWS',
+      accountName: `aws account ${getRandomInt(5)}`,
       serviceName: 's3',
       kilowattHours: Math.random() / 1000,
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
-      estimated: false,
+      usesAverageCPUConstant: false,
     },
     ec2: {
-      timestamp,
-      cloudProvider: 'aws',
-      accountName: 'aws account',
+      cloudProvider: 'AWS',
+      accountName: `aws account ${getRandomInt(5)}`,
       serviceName: 'ec2',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
-      estimated: false,
+      usesAverageCPUConstant: false,
     },
     rds: {
-      timestamp,
-      cloudProvider: 'aws',
-      accountName: 'aws account',
+      cloudProvider: 'AWS',
+      accountName: `aws account ${getRandomInt(5)}`,
       serviceName: 'rds',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
-      estimated: false,
+      usesAverageCPUConstant: false,
     },
     lambda: {
-      timestamp,
-      cloudProvider: 'aws',
-      accountName: 'aws account',
+      cloudProvider: 'AWS',
+      accountName: `aws account ${getRandomInt(5)}`,
       serviceName: 'lambda',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
-      estimated: false,
+      usesAverageCPUConstant: false,
     },
     elasticache: {
-      timestamp,
-      cloudProvider: 'aws',
-      accountName: 'aws account',
+      cloudProvider: 'AWS',
+      accountName: `gcp account ${getRandomInt(5)}`,
       serviceName: 'elasticache',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
       region: 'us-east-1',
-      estimated: false,
+      usesAverageCPUConstant: false,
+    },
+    computeEngine: {
+      cloudProvider: 'GCP',
+      accountName: `gcp account ${getRandomInt(5)}`,
+      serviceName: 'computeEngine',
+      kilowattHours: getRandomNumberInRange(50, 75),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'us-east1',
+      usesAverageCPUConstant: false,
     },
   }
 }
@@ -106,7 +110,7 @@ const generateEstimations = (
     const estimationsForMonth: EstimationResult = {
       timestamp,
       serviceEstimates: servicesToTest.map((serviceToTest: string) => {
-        return fakeServiceMap(timestamp)[serviceToTest]
+        return fakeServiceMap()[serviceToTest]
       }),
     }
 
