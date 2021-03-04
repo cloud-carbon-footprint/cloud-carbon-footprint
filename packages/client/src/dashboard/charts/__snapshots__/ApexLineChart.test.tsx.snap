@@ -82,6 +82,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "yaxis": Array [
         Object {
           "decimalsInFloat": 3,
+          "forceNiceScale": true,
           "max": 1.1,
           "title": Object {
             "offsetX": -8,
@@ -101,6 +102,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
+          "forceNiceScale": true,
           "max": 1.1,
           "opposite": true,
           "showAlways": false,
@@ -124,6 +126,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "decimalsInFloat": 2,
+          "forceNiceScale": true,
           "max": 1.1,
           "opposite": true,
           "showAlways": false,

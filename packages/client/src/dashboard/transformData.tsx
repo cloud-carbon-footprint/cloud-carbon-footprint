@@ -36,7 +36,7 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
 
     co2Series.push({
       x: estimatationResult.timestamp,
-      y: Number(total.toFixed(2)),
+      y: Number(total.toFixed(4)),
       usesAverageCPUConstant: usesAverageCPUConstant,
       cost: Number(totalCost.toFixed(2)),
       kilowattHours: Number(totalWattHours.toFixed(2)),
@@ -61,11 +61,11 @@ const sumServiceTotals = (data: EstimationResult[]): { [key: string]: cloudEstPe
 }
 
 export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
+  if (series.length === 0) return 1
   return Math.max(
     ...series.map((dataPair) => {
       return dataPair.y
     }),
-    1,
   )
 }
 

@@ -216,6 +216,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           },
         },
         decimalsInFloat: 3,
+        forceNiceScale: true,
       },
       {
         max: 1.1 * maxKilowattHours,
@@ -238,6 +239,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           offsetX: -30,
         },
         showAlways: false,
+        forceNiceScale: true,
       },
       {
         max: 1.1 * maxCost,
@@ -261,6 +263,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           offsetX: -30,
         },
         showAlways: false,
+        forceNiceScale: true,
       },
     ],
     grid: {

@@ -248,8 +248,8 @@ describe('sumServiceTotals', () => {
   describe('rounding to the hundredths', () => {
     const expectedTotals = {
       co2e: [
-        { x: date1, y: 20.36, usesAverageCPUConstant: false, kilowattHours: 16.98, cost: 10.56 },
-        { x: date2, y: 11.01, usesAverageCPUConstant: true, kilowattHours: 28.19, cost: 12.29 },
+        { x: date1, y: 20.3576, usesAverageCPUConstant: false, kilowattHours: 16.98, cost: 10.56 },
+        { x: date2, y: 11.0136, usesAverageCPUConstant: true, kilowattHours: 28.19, cost: 12.29 },
       ],
       kilowattHours: [
         { x: date1, y: 16.98 },
@@ -260,7 +260,7 @@ describe('sumServiceTotals', () => {
         { x: date2, y: 12.29 },
       ],
     }
-    it('returns the sum of co2e rounded to the hundredths place', () => {
+    it('returns the sum of co2e rounded to 3 decimal places', () => {
       expect(sumServiceTotals(dataWithHigherPrecision).co2Series).toEqual(expectedTotals.co2e)
     })
 
