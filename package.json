@@ -29,7 +29,7 @@
     "start-api": "yarn workspace @cloud-carbon-footprint/api start",
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
     "sonar:scan": "lerna run sonar:scan --stream",
-    "test": "lerna run test",
+    "test": "lerna run test -- --coverage",
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install"
