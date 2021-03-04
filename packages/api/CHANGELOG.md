@@ -1,6 +1,6 @@
 # cloud-carbon-footprint
 
-## 1.0.1
+## 0.0.1
 
 ### Patch Changes
 
@@ -8,7 +8,7 @@
   testing changeset implementation
   bump api to updated patch version
 
-## 1.0.0
+## 0.0.0
 
 ### Major Changes
 
