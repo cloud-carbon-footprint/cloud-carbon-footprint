@@ -148,7 +148,7 @@ jobs:
 
       # Publishes current version of packages that are not already present in the registry
       - name: publish
-        run: yarn lerna -- publish from-package --yes
+        run: yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
