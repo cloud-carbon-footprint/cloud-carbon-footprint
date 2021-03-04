@@ -1,0 +1,22 @@
+name: Changeset
+
+on:
+  push:
+    branches:
+      - trunk
+
+jobs:
+  create-release-pr:
+    name: Create Changeset PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Dependencies
+        run: yarn --immutable
+      - name: Create Release Pull Request
+        uses: changesets/action@master
+        with:
+          # Calls out to `changeset version`, but also runs prettier
+          version: yarn release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_TOKEN }}
