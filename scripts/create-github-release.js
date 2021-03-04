@@ -105,7 +105,7 @@ async function createRelease(releaseDescription) {
   const boolCreateDraft = !BOOL_CREATE_RELEASE
 
   const releaseResponse = await octokit.repos.createRelease({
-    owner: GH_REPO,
+    owner: GH_OWNER,
     repo: GH_REPO,
     tag_name: TAG_NAME,
     name: TAG_NAME,
