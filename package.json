@@ -31,6 +31,7 @@
     "sonar:scan": "lerna run sonar:scan --stream",
     "test": "lerna run test",
     "deploy": "cd terraform && ./run.sh apply",
-    "docs": "docsify serve --port 3001"
+    "docs": "docsify serve --port 3001",
+    "release": "changeset version && yarn diff --yes && yarn prettier --write '{packages,plugins}/*/{package.json,CHANGELOG.md}' && yarn install"
   }
 }

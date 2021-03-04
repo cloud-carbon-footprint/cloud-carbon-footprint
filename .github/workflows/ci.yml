@@ -102,7 +102,6 @@ jobs:
           path: packages/api/dist/
   release:
     needs: build
-    if: needs.build.outputs.needs_release == 'true'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -157,13 +156,13 @@ jobs:
         id: create_tag
         run: node scripts/create-release-tag.js
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Convert the newly created tag into a release with changelog information
       - name: Create release on GitHub
         run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   deploy-staging:
     needs: build
     runs-on: ubuntu-latest
