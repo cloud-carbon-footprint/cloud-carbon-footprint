@@ -90,8 +90,9 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'DOWNLOAD',
   'Data-Bytes-Out',
   'VpcEndpoint-Bytes',
-  'NatGateway-Bytes',
   'TransitGateway-Bytes',
+  'Retrieval',
+  'BilledBytes',
 ]
 
 export const BYTE_HOURS_USAGE_TYPES: string[] = [
