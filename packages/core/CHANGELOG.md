@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.2
+
+### Patch Changes
+
+- a331338: test core patch
+
 ## 0.0.1
 
 ### Patch Changes

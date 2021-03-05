@@ -1,5 +1,13 @@
 # cloud-carbon-footprint
 
+## 0.0.2
+
+### Patch Changes
+
+- 0136cd7: test cli patch
+- Updated dependencies [a331338]
+  - @cloud-carbon-footprint/core@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes
