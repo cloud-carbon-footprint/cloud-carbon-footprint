@@ -32,7 +32,8 @@
   "proxy": "http://localhost:4000",
   "scripts": {
     "precommit": "lint-staged && yarn test:precommit",
-    "start": "CI=true react-scripts start",
+    "start": "react-scripts start",
+    "start-with-mock-data": "concurrently \"yarn start\" \"yarn start-stub-server\"",
     "sonar:scan": "sonar-scanner",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
     "test": "react-scripts --expose-gc test --maxWorkers 2 --coverage --watchAll=false",

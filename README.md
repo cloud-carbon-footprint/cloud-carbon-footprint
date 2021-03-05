@@ -1,6 +1,6 @@
 # cloud-carbon-footprint
 
-[![CircleCI](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint.svg?style=shield&circle-token=62c2533631fb603b09c81ff218530d66b26a61f4)](https://circleci.com/gh/ThoughtWorks-Cleantech/cloud-carbon-footprint/tree/trunk)
+[![CI](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/actions/workflows/ci.yml/badge.svg?event=check_run)](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/actions/workflows/ci.yml)
 
 This is an application that estimates the energy (kWh) and carbon emissions (metric tons CO2e) of cloud provider usage, given a start and end UTC dates.
 
@@ -29,89 +29,35 @@ yarn install
 
 This will install dependencies for all packages. We use [Lerna](https://lerna.js.org) to manage both projects.
 
-## Serve the documentation
- From the root directory, run the command from the terminal
+## Running the web-app
+### Quick start (using mocked data)
+
 ```
- yarn docs
+yarn start-with-mock-data
 ```
-This will serve the docs and give an url where you can visit and see the documentation
 
-## AWS Authentication 
+This will run the webapp in development mode, using a mocked server. Open http://localhost:3000 to view it in a browser.
 
-We currently support three modes of authentication with AWS, that you can see in [packages/api/src/application/AWSCredentialsProvider.ts](packages/api/src/application/AWSCredentialsProvider.ts):
+### Running the web-app with real data
+Make sure you have configured your GCP and AWS credentials (see [AWS Authentication](#aws-authentication))
 
-1. "GCP" - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
-2. "AWS" - this is used to authenticate via an AWS role that has the necessary permissions to query the CloudWatch and Cost Explorer APIs.   
-3. "default" - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.   
+The application requires a number of environment variables to be set in the `packages/api/.env` file. See [packages/api/.env.template](packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
-The authentication mode is set inside [packages/api/src/application/Config.ts](packages/api/src/application/Config.ts).
+By default, the server has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
 
-[api/.env](api/.env) is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. 
-You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](.adr/adr_5_aws_authentication.txt), as well as this article: [https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/](https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/)
-
-### AWS Credentials - only needed for the "default" authentication mode. 
- 
-- Configure AWS credentials.
-  ```
-  aws configure
-  ```
-- Specify the services and regions that the tool runs on in [packages/api/src/application/Config.ts](packages/api/src/application/Config.ts)
-
-### GCP Credentials
-
-- You'll need your team's (or your own) GCP service account credentials stored on your filesystem
-- Set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
-see https://cloud.google.com/docs/authentication/getting-started for more details.
-
-Note: make sure you use the full path for this environment variable, eg `/Users/<user>/path/to/credential`
-
-## Options for cloud emission estimation
-
-We support two approaches to gathering usage data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
-
-1. **Using Billing Data (Holistic)** - By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Billing Export Table using BigQuery. This pulls usage data from all Linked Accounts in your AWS or GCP Organization. This option is selected by setting `AWS_USE_BILLING_DATA` (AWS) and/or `GCP_USE_BILLING_DATA` (GCP) to true in the server `.env` file. You need to also set additional environment variables as specified in [api/.env.template](api/.env.template) You can see the permissions required by this approach in `ccf-athena.yaml` file. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but it is less accurate as we use a constant (rather than measure) CPU Utilization, set in [packages/api/src/domain/FootprintEstimationConstants.ts](packages/api/src/domain/FootprintEstimationConstants.ts).
-- When calculating total `wattHours` for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
-- For this approach to work with AWS, you will need to have Cost and Usage Reports set up to run daily or hourly, and Athena configured to query these reports in S3. You can read more about this here: [https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
-- For this approach to work with GCP, you will need to have a Billing Export Table set up to run hourly or daily, and have BigQuery configured to query these reports. You can read more about this here:[https://cloud.google.com/billing/docs/how-to/export-data-bigquery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery)
-
-2. **Using Cloud Usage APIs (Higher Accuracy)** - This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API. We achieve this by looping through the accounts (the list is in the [api/.env]([api/.env]) file) and then making the API calls on each account for the regions and services set in [packages/api/src/application/Config.ts](packages/cli/src/application/Config.ts). The permissions required for this approach are in the [ccf.yaml](ccf.yaml) file. This approach is more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application.
-- For a more comprehensive read on the various calculations and constants that we use for the emissions algorithms, check out the [Methodology page](METHODOLOGY.md)
-
-
-### Ensure real-time estimates
-If you want up-to-date estimates you will have to delete `packages/cli/estimates.cache.json`. If you don't have this file present, dont worry :) You'll just have to start the server and load the app for the first time. This cache is automatically generated by the app to aid in local development: ***it takes a while (~10min) to fetch up-to-date estimates and consequently generate the cache file***
-
-
-## Run
-
-### Api
-The application requires a number of environment variables to be set in the [api/.env](packages/api/.env) file. See [api/.env.template](packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables.
-
-By default, the server has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your [api/.env](packages/api/.env) file.
-
-### Client
-There is also a [client/.env](packages/client/.env) file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.  
+There is also a `packages/client/.env` file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
 By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
 
-### Client and Server (with mock data)
 ```
-cd packages/client
-yarn start-stub-server
-
-//in another terminal, also from the client directory
 yarn start
 ```
 
-### Client and Server (with live data)
-Make sure you have configured your GCP and AWS credentials (see above)
 > :warning: **This will incure cost**: Data will come from AWS and will cost money to your project. Use this sparingly if you wish to test with live data. If not, use the command above
 
 >*DISCLAIMER*: If your editior of choice is VS Code, ***we recommend to use either your native or custom terminal of choice (i.e. iterm)*** instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals. 
 
-```
-yarn start
-```
+#### Docker
 
 If you would like to run with Docker, you'll need install docker and docker-compose:
 
@@ -120,18 +66,12 @@ If you would like to run with Docker, you'll need install docker and docker-comp
 
 ```
 docker-compose up
-```
-
-
-### Server in Docker
-
-```
 cd packages/api
 yarn docker:start //creates a docker container named ccf_base
 yarn docker:setup //install dependencies
 ```
 
-### Run CLI
+## Running the CLI
 
 #### Local
 
@@ -151,11 +91,64 @@ yarn start-cli <options>
    --format [table | csv]
    ```
 
-# Deploy to Google App Engine
+## Serve the documentation
+ From the root directory, run the command from the terminal
+```
+ yarn docs
+```
+This will serve the docs and give an url where you can visit and see the documentation
+
+## AWS Authentication 
+
+We currently support three modes of authentication with AWS, that you can see in [packages/core/src/application/AWSCredentialsProvider.ts](packages/core/src/application/AWSCredentialsProvider.ts):
+
+1. "GCP" - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
+2. "AWS" - this is used to authenticate via an AWS role that has the necessary permissions to query the CloudWatch and Cost Explorer APIs.   
+3. "default" - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.   
+
+The authentication mode is set inside [packages/core/src/application/Config.ts](packages/core/src/application/Config.ts).
+
+[api/.env](packages/api/.env) is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. 
+You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](.adr/adr_5_aws_authentication.txt), as well as this article: [https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/](https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/)
+
+### AWS Credentials - only needed for the "default" authentication mode. 
+ 
+- Configure AWS credentials.
+  ```
+  aws configure
+  ```
+- Specify the services and regions that the tool runs on in [packages/core/src/application/Config.ts](packages/core/src/application/Config.ts)
+
+### GCP Credentials
+
+- You'll need your team's (or your own) GCP service account credentials stored on your filesystem
+- Set the GOOGLE_APPLICATION_CREDENTIALS env variable to the location of your credentials file.
+see https://cloud.google.com/docs/authentication/getting-started for more details.
+
+Note: make sure you use the full path for this environment variable, eg `/Users/<user>/path/to/credential`
+
+## Options for cloud emission estimation
+
+We support two approaches to gathering usage data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
+
+1. **Using Billing Data (Holistic)** - By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Billing Export Table using BigQuery. This pulls usage data from all Linked Accounts in your AWS or GCP Organization. This option is selected by setting `AWS_USE_BILLING_DATA` (AWS) and/or `GCP_USE_BILLING_DATA` (GCP) to true in the server `.env` file. You need to also set additional environment variables as specified in [api/.env.template](api/.env.template) You can see the permissions required by this approach in `ccf-athena.yaml` file. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but it is less accurate as we use a constant (rather than measure) CPU Utilization, set in [packages/core/src/domain/FootprintEstimationConstants.ts](packages/core/src/domain/FootprintEstimationConstants.ts).
+- When calculating total `wattHours` for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
+- For this approach to work with AWS, you will need to have Cost and Usage Reports set up to run daily or hourly, and Athena configured to query these reports in S3. You can read more about this here: [https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
+- For this approach to work with GCP, you will need to have a Billing Export Table set up to run hourly or daily, and have BigQuery configured to query these reports. You can read more about this here:[https://cloud.google.com/billing/docs/how-to/export-data-bigquery](https://cloud.google.com/billing/docs/how-to/export-data-bigquery)
+
+2. **Using Cloud Usage APIs (Higher Accuracy)** - This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API. We achieve this by looping through the accounts (the list is in the [api/.env]([api/.env]) file) and then making the API calls on each account for the regions and services set in [packages/core/src/application/Config.ts](packages/core/src/application/Config.ts). The permissions required for this approach are in the [ccf.yaml](ccf.yaml) file. This approach is more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application.
+- For a more comprehensive read on the various calculations and constants that we use for the emissions algorithms, check out the [Methodology page](METHODOLOGY.md)
+
+
+### Ensure real-time estimates
+If you want up-to-date estimates you will have to delete `packages/cli/estimates.cache.json` and/or `packages/api/estimates.cache.json`. If you don't have this file present, dont worry :) You'll just have to start the server and load the app for the first time. This cache is automatically generated by the app to aid in local development: ***it takes a while (~10min) to fetch up-to-date estimates and consequently generate the cache file***
+
+
+## Deploy to Google App Engine
 
 Cloud Carbon Footprint is configured to be deployed to [Google App Engine](https://cloud.google.com/appengine/) (standard environment) using Circle CI. See the [Hello World example](https://cloud.google.com/nodejs/getting-started/hello-world) for instructions on setting up a Google Cloud Platform project and installing the Google Cloud SDK to your local machine.
 
-Before deploying, you'll need to build the application and create the packages/api/.env and packages/client/.env file as detailed above. There are two scripts to populate these files as part of the Circle CI pipeline: [packages/cli/create_server_env_file.sh](packages/api/create_server_env_file.sh) and [client/create_client_env_file.sh](packgaes/client/create_client_env_file.sh).
+Before deploying, you'll need to build the application and create the packages/api/.env and packages/client/.env file as detailed above. There are two scripts to populate these files as part of the Circle CI pipeline: [packages/cli/create_server_env_file.sh](packages/api/create_server_env_file.sh) and [client/create_client_env_file.sh](packages/client/create_client_env_file.sh).
 
 Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with `./appengine/deploy-staging.sh` or `./appengine/deploy-production.sh`, depending on your environment.  
 
