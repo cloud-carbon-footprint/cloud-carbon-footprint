@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install Dependencies
-        run: yarn --frozen-lockfile
+        run: yarn install
       - name: Create Release Pull Request
         uses: changesets/action@master
         with:
