@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.4
+
+### Patch Changes
+
+- d0dd899: test api patch
+
 ## 0.0.3
 
 ### Patch Changes
