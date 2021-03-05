@@ -6,8 +6,8 @@
     "@hawkeyesec/scanner-cli": "^1.8.1",
     "concurrently": "^6.0.0",
     "docsify-cli": "^4.4.1",
-    "husky": "^4.2.5",
-    "lerna": "^3.22.1",
+    "husky": "5",
+    "lerna": "^4.0.0",
     "marked": ">=2.0.0",
     "sonar-scanner": "^3.1.0"
   },
@@ -32,6 +32,7 @@
     "test": "lerna run test -- --coverage",
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001",
-    "release": "changeset version && yarn install"
+    "release": "changeset version && yarn install",
+    "postinstall": "husky install"
   }
 }
