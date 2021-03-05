@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { initialTotals } from '@view/EmissionsTableUtils'
+import { initialTotals } from '../EmissionsTableUtils'
 
 describe('emissions table utils', () => {
   it('generate initial totals from list of service objects', () => {

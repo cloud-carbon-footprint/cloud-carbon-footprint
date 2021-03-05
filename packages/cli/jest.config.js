@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  roots: ['<rootDir>/test'],
+  roots: ['<rootDir>/test', '<rootDir>/src'],
   setupFiles: ['<rootDir>/test/setEnvVars.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
@@ -12,18 +12,11 @@ module.exports = {
     global: {
       branches: 83,
       functions: 100,
-      lines: 98.5,
-      statements: 98,
+      lines: 96,
+      statements: 96,
     },
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  moduleNameMapper: {
-    '^@application/(.*)$': '<rootDir>/../core/src/application/$1',
-    '^@domain/(.*)$': '<rootDir>/../core/src/domain/$1',
-    '^@services/(.*)$': '<rootDir>/../core/src/services/$1',
-    '^@view/(.*)$': '<rootDir>/src/view/$1',
-    '^@fixtures$': '<rootDir>/test/fixtures/cloudwatch.fixtures.ts',
-  },
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coveragePathIgnorePatterns: ['<rootDir>/src/view/CliPrompts.ts'],
 }

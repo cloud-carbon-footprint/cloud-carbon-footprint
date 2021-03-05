@@ -9,13 +9,6 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "outDir": "./dist",
-    "paths": {
-      "@application/*": ["../core/src/application/*"],
-      "@domain/*": ["../core/src/domain/*"],
-      "@services/*": ["../core/src/services/*"],
-      "@view/*": ["./src/view/*"],
-      "@fixtures": ["./test/fixtures/fixtures.ts"],
-    },
     "experimentalDecorators": true,
     "target": "ES5",
     "downlevelIteration": true,

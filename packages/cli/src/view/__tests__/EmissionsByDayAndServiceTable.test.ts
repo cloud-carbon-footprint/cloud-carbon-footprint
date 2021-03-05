@@ -3,7 +3,7 @@
  */
 
 import { EstimationResult } from '@cloud-carbon-footprint/core'
-import EmissionsByDayAndServiceTable from '@view/EmissionsByDayAndServiceTable'
+import EmissionsByDayAndServiceTable from '../EmissionsByDayAndServiceTable'
 import moment = require('moment')
 
 describe('EmissionsTable', () => {

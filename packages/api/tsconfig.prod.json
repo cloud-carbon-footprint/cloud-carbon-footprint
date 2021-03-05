@@ -9,12 +9,6 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "outDir": "./dist",
-    "paths": {
-      "@application/*": ["./dist-core/application/*"],
-      "@domain/*": ["./dist-core/domain/*"],
-      "@services/*": ["./dist-core/services/*"],
-      "@view/*": ["./dist-core/view/*"]
-    },
     "experimentalDecorators": true,
     "target": "ES5",
     "downlevelIteration": true,

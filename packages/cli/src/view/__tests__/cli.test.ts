@@ -2,15 +2,22 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import cli from '../../src/view/cli'
-import AWSAccount from '@application/AWSAccount'
-import RDS from '@services/aws/RDS'
-import RDSStorage from '@services/aws/RDSStorage'
-import RDSComputeService from '@services/aws/RDSCompute'
-import EBS from '@services/aws/EBS'
-import S3 from '@services/aws/S3'
-import EC2 from '@services/aws/EC2'
-import ElastiCache from '@services/aws/ElastiCache'
+import cli from '../cli'
+import {
+  AWSAccount,
+  RDS,
+  RDSStorage,
+  RDSComputeService,
+  EBS,
+  S3,
+  EC2,
+  ElastiCache,
+  Lambda,
+  EstimationRequestValidationError,
+  ServiceWrapper,
+  GCPAccount,
+  ComputeEngine,
+} from '@cloud-carbon-footprint/core'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import { MetricServiceClient } from '@google-cloud/monitoring'
@@ -20,21 +27,16 @@ import {
   mockAwsCloudWatchGetQueryResultsForLambda,
   mockAwsCostExplorerGetCostAndUsage,
   mockAwsCostExplorerGetCostAndUsageResponse,
-} from '../fixtures/awsMockFunctions'
-import Lambda from '@services/aws/Lambda'
-import { lambdaMockGetCostResponse } from '../fixtures/costexplorer.fixtures'
-import { EstimationRequestValidationError } from '@application/CreateValidRequest'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import config from '@application/ConfigLoader'
-import GCPAccount from '@application/GCPAccount'
-import ComputeEngine from '@services/gcp/ComputeEngine'
-import { mockCpuUtilizationTimeSeries, mockVCPUTimeSeries } from '../fixtures/cloudmonitoring.fixtures'
+} from '../../../test/fixtures/awsMockFunctions'
+import { lambdaMockGetCostResponse } from '../../../test/fixtures/costexplorer.fixtures'
+import config from '../../../../core/src/application/ConfigLoader'
+import { mockCpuUtilizationTimeSeries, mockVCPUTimeSeries } from '../../../test/fixtures/cloudmonitoring.fixtures'
 
 const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 const mockListTimeSeries = jest.fn()
 
-jest.mock('@application/ConfigLoader')
+jest.mock('../../../../core/src/application/ConfigLoader')
 
 jest.mock('@google-cloud/monitoring', () => {
   return {
@@ -49,7 +51,7 @@ jest.mock('@google-cloud/monitoring', () => {
 })
 
 //disable cache
-jest.mock('../../../core/src/application/Cache')
+jest.mock('../../../../core/src/application/Cache')
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

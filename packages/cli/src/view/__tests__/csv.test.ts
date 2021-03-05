@@ -2,27 +2,31 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import AWSAccount from '@application/AWSAccount'
-import EBS from '@services/aws/EBS'
-import S3 from '@services/aws/S3'
-import EC2 from '@services/aws/EC2'
-import ElastiCache from '@services/aws/ElastiCache'
-import RDS from '@services/aws/RDS'
-import RDSComputeService from '@services/aws/RDSCompute'
-import RDSStorage from '@services/aws/RDSStorage'
+import {
+  AWSAccount,
+  EBS,
+  S3,
+  EC2,
+  ElastiCache,
+  RDS,
+  RDSComputeService,
+  RDSStorage,
+  ServiceWrapper,
+} from '@cloud-carbon-footprint/core'
 import path from 'path'
 import fs from 'fs'
-import { mockAwsCloudWatchGetMetricData, mockAwsCostExplorerGetCostAndUsage } from '../fixtures/awsMockFunctions'
-import cli from '@view/cli'
+import {
+  mockAwsCloudWatchGetMetricData,
+  mockAwsCostExplorerGetCostAndUsage,
+} from '../../../test/fixtures/awsMockFunctions'
+import cli from '../cli'
 import AWSMock from 'aws-sdk-mock'
-import AWS from 'aws-sdk'
-import { ServiceWrapper } from '@services/aws/ServiceWrapper'
-import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
 
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache
-jest.mock('@application/Cache')
+jest.mock('../../../../core/src/application/Cache')
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

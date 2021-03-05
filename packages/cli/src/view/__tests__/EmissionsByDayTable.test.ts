@@ -2,141 +2,140 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { EstimationResult } from '@application/EstimationResult'
-import EmissionsByServiceTable from '@view/EmissionsByServiceTable'
+import { EstimationResult } from '@cloud-carbon-footprint/core'
+import EmissionsByDayTable from '../EmissionsByDayTable'
 import moment = require('moment')
 
-describe('EmissionsByServiceTable', () => {
+describe('EmissionsByDayTable', () => {
   const region = 'us-east-1'
-  const timestamp1 = moment('2020-07-10').toDate()
-  const timestamp2 = moment('2020-07-09').toDate()
+  const timestamp = moment('2020-07-10').toDate()
 
   const input: EstimationResult[] = [
     {
-      timestamp: timestamp1,
+      timestamp: timestamp,
       serviceEstimates: [
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'EBS',
+          accountName: 'test account',
+          serviceName: 'ebs',
           kilowattHours: 1,
           co2e: 1,
-          cost: 5,
+          cost: 0,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'S3',
+          accountName: 'test account',
+          serviceName: 's3',
           kilowattHours: 2,
           co2e: 2,
-          cost: 5,
+          cost: 0,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'EC2',
+          accountName: 'test account',
+          serviceName: 'ec2',
           kilowattHours: 3,
           co2e: 3,
-          cost: 5,
+          cost: 0,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'ElastiCache',
+          accountName: 'test account',
+          serviceName: 'elasticache',
           kilowattHours: 4,
           co2e: 4,
-          cost: 5,
+          cost: 0,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'RDS',
+          accountName: 'test account',
+          serviceName: 'rds',
           kilowattHours: 4,
           co2e: 4,
-          cost: 5,
+          cost: 0,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'Lambda',
-          kilowattHours: 100,
-          co2e: 100,
-          cost: 5,
+          accountName: 'test account',
+          serviceName: 'lambda',
+          kilowattHours: 1,
+          co2e: 1,
+          cost: 0,
           region: region,
           usesAverageCPUConstant: false,
         },
       ],
     },
     {
-      timestamp: timestamp2,
+      timestamp: moment('2020-07-09').toDate(),
       serviceEstimates: [
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'EBS',
+          accountName: 'test account',
+          serviceName: 'ebs',
           kilowattHours: 7,
           co2e: 8,
-          cost: 9,
+          cost: 6,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'S3',
+          accountName: 'test account',
+          serviceName: 's3',
           kilowattHours: 55,
           co2e: 1,
-          cost: 9,
+          cost: 6,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'EC2',
+          accountName: 'test account',
+          serviceName: 'ec2',
           kilowattHours: 90,
           co2e: 77,
-          cost: 9,
+          cost: 6,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'ElastiCache',
+          accountName: 'test account',
+          serviceName: 'elasticache',
           kilowattHours: 747,
           co2e: 787,
-          cost: 9,
+          cost: 6,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'RDS',
+          accountName: 'test account',
+          serviceName: 'rds',
           kilowattHours: 747,
           co2e: 787,
-          cost: 9,
+          cost: 6,
           region: region,
           usesAverageCPUConstant: false,
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test',
-          serviceName: 'Lambda',
-          kilowattHours: 200,
+          accountName: 'test account',
+          serviceName: 'lambda',
+          kilowattHours: 300,
           co2e: 300,
-          cost: 10,
+          cost: 6,
           region: region,
           usesAverageCPUConstant: false,
         },
@@ -147,23 +146,19 @@ describe('EmissionsByServiceTable', () => {
   let result: { table: string[][]; colWidths: number[] }
 
   beforeEach(() => {
-    result = EmissionsByServiceTable(input)
+    result = EmissionsByDayTable(input)
   })
 
   it('prints out the given estimation results grouped by service', () => {
     expect(result.table).toEqual([
-      ['Service', 'kilowatt hours', 'metric tons CO2e Emissions', 'Cost'],
-      ['EBS', '8.00', '9.000000', '$14.00'],
-      ['S3', '57.00', '3.000000', '$14.00'],
-      ['EC2', '93.00', '80.000000', '$14.00'],
-      ['ElastiCache', '751.00', '791.000000', '$14.00'],
-      ['RDS', '751.00', '791.000000', '$14.00'],
-      ['Lambda', '300.00', '400.000000', '$15.00'],
-      ['Total', '1960.00', '2074.000000', '$85.00'],
+      ['Date', 'kilowatt hours', 'metric tons CO2e Emissions'],
+      ['2020-07-10', '15.00', '15.000000'],
+      ['2020-07-09', '1946.00', '1960.000000'],
+      ['Total', '1961.00', '1975.000000'],
     ])
   })
 
   it('does the right columns', () => {
-    expect(result.colWidths).toEqual([15, 20, 25, 20])
+    expect(result.colWidths).toEqual([15, 20, 25])
   })
 })
