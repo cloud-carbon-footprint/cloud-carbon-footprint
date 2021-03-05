@@ -1,5 +1,13 @@
 # cloud-carbon-footprint
 
+## 0.0.3
+
+### Patch Changes
+
+- 7fa84ad: test api patch
+- Updated dependencies [a331338]
+  - @cloud-carbon-footprint/core@0.0.2
+
 ## 0.0.2
 
 ### Patch Changes
