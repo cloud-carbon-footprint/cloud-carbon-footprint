@@ -3,7 +3,10 @@
  */
 
 import { DropdownOption } from './DropdownFilter'
-import { alphabetizeDropdownOptions } from './DropdownConstants'
+import {
+  alphabetizeDropdownOptions,
+  buildAndOrderDropdownOptions,
+} from './DropdownConstants'
 
 describe('DropdownConstants', () => {
   describe('sort dropdownOptions', () => {
@@ -94,6 +97,54 @@ describe('DropdownConstants', () => {
       const sortedOptions = alphabetizeDropdownOptions([optionA, optionB])
 
       expect(sortedOptions).toEqual([optionB, optionA])
+    })
+  })
+  describe('buildAndOrderDropdownOptions', () => {
+    const optionA: DropdownOption = {
+      key: 'key-three',
+      name: 'beta',
+      cloudProvider: 'gcp',
+    }
+    const optionB: DropdownOption = {
+      key: 'key',
+      name: 'Zebra',
+      cloudProvider: 'aws',
+    }
+    const optionC: DropdownOption = {
+      key: 'key-two',
+      name: 'alpha',
+      cloudProvider: 'aws',
+    }
+    it('should sort alphabetically and group by cloud providers', () => {
+      expect(
+        buildAndOrderDropdownOptions([optionA, optionB, optionC]),
+      ).toEqual([optionC, optionB, optionA])
+    })
+
+    it('will sort using fallback options if no main options available', () => {
+      expect(
+        buildAndOrderDropdownOptions(undefined, [optionA, optionB, optionC]),
+      ).toEqual([optionC, optionB, optionA])
+    })
+
+    it('handles options with missing cloudProviders', () => {
+      const option1WithoutCloudProvider = { key: 'test1', name: 'gamma' }
+      const option2WithoutCloudProvider = { key: 'test2', name: 'epsilon' }
+      expect(
+        buildAndOrderDropdownOptions(undefined, [
+          optionA,
+          optionB,
+          optionC,
+          option1WithoutCloudProvider,
+          option2WithoutCloudProvider,
+        ]),
+      ).toEqual([
+        option2WithoutCloudProvider,
+        option1WithoutCloudProvider,
+        optionC,
+        optionB,
+        optionA,
+      ])
     })
   })
 })

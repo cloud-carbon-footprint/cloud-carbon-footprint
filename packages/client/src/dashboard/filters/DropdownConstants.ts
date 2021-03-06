@@ -25,16 +25,16 @@ export function alphabetizeDropdownOptions(
   dropdownOptions.sort((a, b) => {
     const normalizedA = a.name.trim().toLowerCase()
     const normalizedB = b.name.trim().toLowerCase()
-
-    if (normalizedA < normalizedB) {
-      return -1
-    }
-    if (normalizedA > normalizedB) {
-      return 1
-    }
-    return 0
+    return normalizedA.localeCompare(normalizedB)
   })
   return dropdownOptions
+}
+
+function sortByCloudProvider(
+  { cloudProvider: cloudProvider1 = '' }: DropdownOption,
+  { cloudProvider: cloudProvider2 = '' }: DropdownOption,
+) {
+  return cloudProvider1.localeCompare(cloudProvider2)
 }
 
 export const ALL_CLOUD_PROVIDERS_VALUE = 'All Providers'
@@ -48,19 +48,10 @@ export const CLOUD_PROVIDER_OPTIONS: DropdownOption[] = [
 ]
 
 export const buildAndOrderDropdownOptions = (
-  dropdownOptions: DropdownOption[] = [],
-  emptyResponse: { cloudProvider?: string; key: string; name: string }[],
+  dropdownOptions: DropdownOption[] | undefined,
+  emptyResponse: DropdownOption[],
 ): DropdownOption[] => {
-  const allOptions: DropdownOption[] = []
+  const options = dropdownOptions ?? emptyResponse
 
-  for (const option of dropdownOptions ? dropdownOptions : emptyResponse) {
-    allOptions.push(option)
-  }
-  return alphabetizeDropdownOptions(
-    allOptions,
-  ).sort((firstDropdownOption, secondDropdownOption) =>
-    firstDropdownOption.cloudProvider!.localeCompare(
-      secondDropdownOption.cloudProvider!,
-    ),
-  )
+  return alphabetizeDropdownOptions(options).sort(sortByCloudProvider)
 }

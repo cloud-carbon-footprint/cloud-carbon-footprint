@@ -76,7 +76,7 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
       groupBy={(option) =>
         option.cloudProvider
           ? getLabelOfGroupByCloudProviders(
-              option.cloudProvider!,
+              option.cloudProvider,
               props.selections,
               props.options,
             )
