@@ -65,7 +65,12 @@ describe('StorageService', () => {
       getUsageMock.mockResolvedValue(usage)
 
       //run
-      const estimates: FootprintEstimate[] = await testHDDService.getEstimates(date, date, AWS_REGIONS.US_EAST_1, 'AWS')
+      const estimates: FootprintEstimate[] = await testHDDService.getEstimates(
+        date,
+        date,
+        AWS_REGIONS.US_EAST_1,
+        'AWS',
+      )
 
       //assert
       expect(estimates).toEqual(
@@ -95,7 +100,12 @@ describe('StorageService', () => {
       getUsageMock.mockResolvedValue(usage)
 
       //run
-      const estimates: FootprintEstimate[] = await testSDDService.getEstimates(date, date, AWS_REGIONS.US_EAST_1, 'AWS')
+      const estimates: FootprintEstimate[] = await testSDDService.getEstimates(
+        date,
+        date,
+        AWS_REGIONS.US_EAST_1,
+        'AWS',
+      )
 
       //assert
       expect(estimates).toEqual(

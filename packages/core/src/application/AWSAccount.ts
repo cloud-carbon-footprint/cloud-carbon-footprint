@@ -13,7 +13,13 @@ import RDSStorage from '../services/aws/RDSStorage'
 import Lambda from '../services/aws/Lambda'
 import configLoader from './ConfigLoader'
 import { ServiceWrapper } from '../services/aws/ServiceWrapper'
-import { CloudWatch, CostExplorer, Credentials, CloudWatchLogs, Athena } from 'aws-sdk'
+import {
+  CloudWatch,
+  CostExplorer,
+  Credentials,
+  CloudWatchLogs,
+  Athena,
+} from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 import AWSCredentialsProvider from './AWSCredentialsProvider'
 import { EstimationResult } from './EstimationResult'
@@ -28,12 +34,19 @@ import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
 
-  constructor(public accountId: string, public name: string, private regions: string[]) {
+  constructor(
+    public accountId: string,
+    public name: string,
+    private regions: string[],
+  ) {
     super()
     this.credentials = AWSCredentialsProvider.create(accountId)
   }
 
-  async getDataForRegions(startDate: Date, endDate: Date): Promise<EstimationResult[]> {
+  async getDataForRegions(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<EstimationResult[]> {
     const results: EstimationResult[][] = []
     for (const regionId of this.regions) {
       const regionEstimates: EstimationResult[] = await Promise.all(
@@ -45,7 +58,11 @@ export default class AWSAccount extends CloudProviderAccount {
     return results.flat()
   }
 
-  getDataForRegion(regionId: string, startDate: Date, endDate: Date): Promise<EstimationResult[]> {
+  getDataForRegion(
+    regionId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<EstimationResult[]> {
     const awsServices = this.getServices(regionId)
     const region = new Region(regionId, awsServices, configLoader().AWS.NAME)
     return this.getRegionData(region, startDate, endDate)
@@ -64,19 +81,30 @@ export default class AWSAccount extends CloudProviderAccount {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
       this.createServiceWrapper(
-        this.getServiceConfigurationOptions(configLoader().AWS.ATHENA_REGION, this.credentials),
+        this.getServiceConfigurationOptions(
+          configLoader().AWS.ATHENA_REGION,
+          this.credentials,
+        ),
       ),
     )
     return costAndUsageReportsService.getEstimates(startDate, endDate)
   }
 
-  private getService(key: string, region: string, credentials: Credentials): ICloudService {
-    if (this.services[key] === undefined) throw new Error('Unsupported service: ' + key)
+  private getService(
+    key: string,
+    region: string,
+    credentials: Credentials,
+  ): ICloudService {
+    if (this.services[key] === undefined)
+      throw new Error('Unsupported service: ' + key)
     const options = this.getServiceConfigurationOptions(region, credentials)
     return this.services[key](options)
   }
 
-  private getServiceConfigurationOptions(region: string, credentials: Credentials): ServiceConfigurationOptions {
+  private getServiceConfigurationOptions(
+    region: string,
+    credentials: Credentials,
+  ): ServiceConfigurationOptions {
     return {
       region: region,
       credentials: credentials,
@@ -92,12 +120,19 @@ export default class AWSAccount extends CloudProviderAccount {
     return new ServiceWrapper(
       this.cw ? this.cw : new CloudWatch(options),
       this.cwl ? this.cwl : new CloudWatchLogs(options),
-      this.ce ? this.ce : new CostExplorer({ region: 'us-east-1', credentials: options.credentials }),
+      this.ce
+        ? this.ce
+        : new CostExplorer({
+            region: 'us-east-1',
+            credentials: options.credentials,
+          }),
       this.ath ? this.ath : new Athena(options),
     )
   }
 
-  private services: { [id: string]: (options: ServiceConfigurationOptions) => ICloudService } = {
+  private services: {
+    [id: string]: (options: ServiceConfigurationOptions) => ICloudService
+  } = {
     ebs: (options) => {
       return new EBS(this.createServiceWrapper(options))
     },

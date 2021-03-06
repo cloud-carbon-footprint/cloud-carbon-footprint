@@ -91,7 +91,14 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
 const generateEstimations = (
   today: moment.Moment | Date,
   monthsBack: number,
-  servicesToTest: string[] = ['ebs', 's3', 'ec2', 'rds', 'lambda', 'elasticache'],
+  servicesToTest: string[] = [
+    'ebs',
+    's3',
+    'ec2',
+    'rds',
+    'lambda',
+    'elasticache',
+  ],
 ): EstimationResult[] => {
   const todayAsMoment: moment.Moment = moment(today)
 

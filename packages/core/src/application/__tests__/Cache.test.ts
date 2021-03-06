@@ -15,7 +15,10 @@ jest.mock('../EstimatorCacheFileSystem', () => {
   return jest.fn().mockImplementation(() => {
     mockSetEstimates = jest.fn()
     mockGetEstimates = jest.fn()
-    const mockEstimatorCache: EstimatorCache = { getEstimates: mockGetEstimates, setEstimates: mockSetEstimates }
+    const mockEstimatorCache: EstimatorCache = {
+      getEstimates: mockGetEstimates,
+      setEstimates: mockSetEstimates,
+    }
     return mockEstimatorCache
   })
 })
@@ -33,7 +36,11 @@ const dummyServiceEstimate: ServiceData[] = [
   },
 ]
 
-function buildFootprintEstimates(startDate: string, consecutiveDays: number, serviceEstimates: ServiceData[] = []) {
+function buildFootprintEstimates(
+  startDate: string,
+  consecutiveDays: number,
+  serviceEstimates: ServiceData[] = [],
+) {
   return [...Array(consecutiveDays)].map((v, i) => {
     return {
       timestamp: moment.utc(startDate).add(i, 'days').toDate(),
@@ -43,7 +50,11 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number, ser
 }
 
 describe('Cache', () => {
-  let cacheDecorator: (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void
+  let cacheDecorator: (
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor,
+  ) => void
   let originalFunction: jest.Mock
   let propertyDescriptor: PropertyDescriptor
 
@@ -72,7 +83,9 @@ describe('Cache', () => {
       const target = {}
       //run
       cacheDecorator(target, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(rawRequest)
+      const estimationResult: EstimationResult[] = await propertyDescriptor.value(
+        rawRequest,
+      )
 
       //assert
       expect(estimationResult).toEqual(expectedEstimationResults)
@@ -85,17 +98,33 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-08').toDate(),
       }
 
-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates('2020-01-03', 2, dummyServiceEstimate)
+      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2020-01-03',
+        2,
+        dummyServiceEstimate,
+      )
 
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
-      const computedEstimates1 = buildFootprintEstimates('2019-12-31', 3, dummyServiceEstimate)
-      const computedEstimates2 = buildFootprintEstimates('2020-01-05', 3, dummyServiceEstimate)
-      originalFunction.mockResolvedValueOnce(computedEstimates1).mockResolvedValueOnce(computedEstimates2)
+      const computedEstimates1 = buildFootprintEstimates(
+        '2019-12-31',
+        3,
+        dummyServiceEstimate,
+      )
+      const computedEstimates2 = buildFootprintEstimates(
+        '2020-01-05',
+        3,
+        dummyServiceEstimate,
+      )
+      originalFunction
+        .mockResolvedValueOnce(computedEstimates1)
+        .mockResolvedValueOnce(computedEstimates2)
 
       //run
       cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(rawRequest)
+      const estimationResult: EstimationResult[] = await propertyDescriptor.value(
+        rawRequest,
+      )
 
       //assert
       const expectedEstimationResults: EstimationResult[] = [
@@ -115,7 +144,10 @@ describe('Cache', () => {
         region: 'us-east-1',
       }
 
-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates('2019-12-31', 1)
+      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2019-12-31',
+        1,
+      )
 
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
@@ -142,15 +174,19 @@ describe('Cache', () => {
       }
 
       //unordered dates
-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates('2020-08-01', 1, dummyServiceEstimate).concat(
-        buildFootprintEstimates('2020-07-31', 1, dummyServiceEstimate),
-      )
+      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2020-08-01',
+        1,
+        dummyServiceEstimate,
+      ).concat(buildFootprintEstimates('2020-07-31', 1, dummyServiceEstimate))
 
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
       //run
       cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(rawRequest)
+      const estimationResult: EstimationResult[] = await propertyDescriptor.value(
+        rawRequest,
+      )
 
       //assert
       const expectedEstimationResults: EstimationResult[] = buildFootprintEstimates(
@@ -196,18 +232,22 @@ describe('Cache', () => {
       const cachedEstimates: EstimationResult[] = []
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
-      const computedEstimates: EstimationResult[] = buildFootprintEstimates('2020-07-10', 5, [
-        {
-          cloudProvider: '',
-          accountName: '',
-          serviceName: '',
-          kilowattHours: 0,
-          co2e: 0,
-          cost: 0,
-          region: '',
-          usesAverageCPUConstant: false,
-        },
-      ])
+      const computedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2020-07-10',
+        5,
+        [
+          {
+            cloudProvider: '',
+            accountName: '',
+            serviceName: '',
+            kilowattHours: 0,
+            co2e: 0,
+            cost: 0,
+            region: '',
+            usesAverageCPUConstant: false,
+          },
+        ],
+      )
       originalFunction.mockResolvedValueOnce(computedEstimates)
 
       //run
@@ -215,7 +255,9 @@ describe('Cache', () => {
       await propertyDescriptor.value(rawRequest)
 
       //assert
-      expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates.concat(buildFootprintEstimates('2020-07-15', 5)))
+      expect(mockSetEstimates).toHaveBeenCalledWith(
+        computedEstimates.concat(buildFootprintEstimates('2020-07-15', 5)),
+      )
     })
 
     it('removes empty estimates', async () => {
@@ -225,21 +267,28 @@ describe('Cache', () => {
         endDate: moment.utc('2020-07-20').toDate(),
       }
 
-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates('2020-07-15', 5)
+      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2020-07-15',
+        5,
+      )
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
-      const computedEstimates: EstimationResult[] = buildFootprintEstimates('2020-07-10', 5, [
-        {
-          cloudProvider: '',
-          accountName: '',
-          serviceName: '',
-          kilowattHours: 0,
-          co2e: 0,
-          cost: 0,
-          region: '',
-          usesAverageCPUConstant: false,
-        },
-      ])
+      const computedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2020-07-10',
+        5,
+        [
+          {
+            cloudProvider: '',
+            accountName: '',
+            serviceName: '',
+            kilowattHours: 0,
+            co2e: 0,
+            cost: 0,
+            region: '',
+            usesAverageCPUConstant: false,
+          },
+        ],
+      )
       originalFunction.mockResolvedValueOnce(computedEstimates)
 
       //run

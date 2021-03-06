@@ -69,7 +69,9 @@ describe('Logger', () => {
       testLogger.error(testMessage, testErr)
 
       // then
-      expect(mockLogger.error).toHaveBeenCalledWith(`${testMessage}${testErr.stack}`)
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        `${testMessage}${testErr.stack}`,
+      )
     })
   })
 
@@ -111,7 +113,9 @@ describe('Logger', () => {
       const mockErr = Object.getPrototypeOf(testLogger)
 
       // then
-      expect(mockLogger.error).toHaveBeenCalledWith(`${testMessage}${testErr.stack}`)
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        `${testMessage}${testErr.stack}`,
+      )
       expect(mockErr.getLogLevel('test')).toEqual('debug')
     })
 
@@ -121,7 +125,9 @@ describe('Logger', () => {
       const mockErr = Object.getPrototypeOf(testLogger)
 
       // then
-      expect(mockLogger.error).toHaveBeenCalledWith(`${testMessage}${testErr.stack}`)
+      expect(mockLogger.error).toHaveBeenCalledWith(
+        `${testMessage}${testErr.stack}`,
+      )
       expect(mockErr.getLogLevel('otherTestEnv')).toEqual('info')
     })
   })

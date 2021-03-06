@@ -4,7 +4,10 @@
 
 import ICloudService from '../../domain/ICloudService'
 import FootprintEstimate from '../../domain/FootprintEstimate'
-import { estimateCo2, CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+import {
+  estimateCo2,
+  CLOUD_CONSTANTS,
+} from '../../domain/FootprintEstimationConstants'
 import { getCostFromCostExplorer } from './CostMapper'
 import Cost from '../../domain/Cost'
 import { isEmpty } from 'ramda'
@@ -16,9 +19,17 @@ export default class Lambda implements ICloudService {
   private readonly LOG_GROUP_SIZE_REQUEST_LIMIT = 20
   serviceName = 'Lambda'
 
-  constructor(private TIMEOUT = 60000, private POLL_INTERVAL = 1000, private readonly serviceWrapper: ServiceWrapper) {}
+  constructor(
+    private TIMEOUT = 60000,
+    private POLL_INTERVAL = 1000,
+    private readonly serviceWrapper: ServiceWrapper,
+  ) {}
 
-  async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
+  async getEstimates(
+    start: Date,
+    end: Date,
+    region: string,
+  ): Promise<FootprintEstimate[]> {
     const groupNames = await this.getLambdaLogGroupNames()
 
     if (isEmpty(groupNames)) {
@@ -28,16 +39,24 @@ export default class Lambda implements ICloudService {
 
     let usage: GetQueryResultsResponse[] = []
     for (const queryId of queryIdsArray) {
-      usage = usage.concat(await Promise.all(queryId.map((id) => this.getResults(id.toString()))))
+      usage = usage.concat(
+        await Promise.all(queryId.map((id) => this.getResults(id.toString()))),
+      )
     }
 
-    const filteredResults = [...usage.reduce((combinedArr, { results }) => [...combinedArr, ...results], [])]
+    const filteredResults = [
+      ...usage.reduce(
+        (combinedArr, { results }) => [...combinedArr, ...results],
+        [],
+      ),
+    ]
 
     return filteredResults.map((resultByDate) => {
       const timestampField = resultByDate[0]
       const wattsField = resultByDate[1]
       const timestamp = new Date(timestampField.value.substr(0, 10))
-      const wattHours = Number.parseFloat(wattsField.value) * CLOUD_CONSTANTS.AWS.getPUE()
+      const wattHours =
+        Number.parseFloat(wattsField.value) * CLOUD_CONSTANTS.AWS.getPUE()
       const co2e = estimateCo2(wattHours, 'AWS', region)
       return {
         timestamp,
@@ -47,12 +66,22 @@ export default class Lambda implements ICloudService {
     })
   }
 
-  private async getQueryIdsArray(groupNames: string[][], start: Date, end: Date): Promise<string[][]> {
+  private async getQueryIdsArray(
+    groupNames: string[][],
+    start: Date,
+    end: Date,
+  ): Promise<string[][]> {
     const queryIdsArray: string[][] = []
 
     for (const logGroup of groupNames) {
       const queryIds: string[] = await Promise.all(
-        await this.serviceWrapper.getQueryByInterval(60, this.runQuery, start, end, logGroup),
+        await this.serviceWrapper.getQueryByInterval(
+          60,
+          this.runQuery,
+          start,
+          end,
+          logGroup,
+        ),
       )
       queryIdsArray.push(queryIds)
     }
@@ -65,15 +94,23 @@ export default class Lambda implements ICloudService {
     }
 
     const logGroupData = await this.serviceWrapper.describeLogGroups(params)
-    const extractedLogGroupNames = logGroupData.logGroups.map(({ logGroupName }) => logGroupName)
+    const extractedLogGroupNames = logGroupData.logGroups.map(
+      ({ logGroupName }) => logGroupName,
+    )
     const logGroupsInIntervalsOfTwenty: string[][] = []
     while (extractedLogGroupNames.length) {
-      logGroupsInIntervalsOfTwenty.push(extractedLogGroupNames.splice(0, this.LOG_GROUP_SIZE_REQUEST_LIMIT))
+      logGroupsInIntervalsOfTwenty.push(
+        extractedLogGroupNames.splice(0, this.LOG_GROUP_SIZE_REQUEST_LIMIT),
+      )
     }
     return logGroupsInIntervalsOfTwenty
   }
 
-  private runQuery = async (start: Date, end: Date, groupNames: string[]): Promise<string> => {
+  private runQuery = async (
+    start: Date,
+    end: Date,
+    groupNames: string[],
+  ): Promise<string> => {
     const averageWatts =
       CLOUD_CONSTANTS.AWS.MIN_WATTS +
       (CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020 / 100) *
@@ -105,10 +142,18 @@ export default class Lambda implements ICloudService {
     const startTime = Date.now()
 
     while (true) {
-      cwResultsData = await this.serviceWrapper.getCloudWatchLogQueryResults(params)
-      if (cwResultsData.status !== 'Running' && cwResultsData.status !== 'Scheduled') break
+      cwResultsData = await this.serviceWrapper.getCloudWatchLogQueryResults(
+        params,
+      )
+      if (
+        cwResultsData.status !== 'Running' &&
+        cwResultsData.status !== 'Scheduled'
+      )
+        break
       if (Date.now() - startTime > this.TIMEOUT) {
-        throw new Error(`CloudWatchLog request failed, status: ${cwResultsData.status}`)
+        throw new Error(
+          `CloudWatchLog request failed, status: ${cwResultsData.status}`,
+        )
       }
       await wait(this.POLL_INTERVAL)
     }

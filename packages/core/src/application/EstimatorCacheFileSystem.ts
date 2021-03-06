@@ -17,13 +17,19 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
     const endDate = moment.utc(request.endDate)
 
     return estimates.filter(({ timestamp }) => {
-      return moment.utc(timestamp).isBetween(startDate, endDate, undefined, '[)')
+      return moment
+        .utc(timestamp)
+        .isBetween(startDate, endDate, undefined, '[)')
     })
   }
 
   async setEstimates(estimates: EstimationResult[]) {
     const cachedEstimates = await this.loadEstimates()
-    return fs.writeFile(cachePath, JSON.stringify(cachedEstimates.concat(estimates)), 'utf8')
+    return fs.writeFile(
+      cachePath,
+      JSON.stringify(cachedEstimates.concat(estimates)),
+      'utf8',
+    )
   }
 
   private async loadEstimates(): Promise<EstimationResult[]> {
@@ -31,7 +37,9 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
     try {
       data = await fs.readFile(cachePath, 'utf8')
     } catch (error) {
-      console.warn('WARN: Unable to read cache file. Got following error: \n' + error)
+      console.warn(
+        'WARN: Unable to read cache file. Got following error: \n' + error,
+      )
       await fs.writeFile(cachePath, '[]', 'utf8')
     }
     const dateTimeReviver = (key: string, value: any) => {

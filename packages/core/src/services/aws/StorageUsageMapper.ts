@@ -32,7 +32,9 @@ export async function getUsageFromCostExplorer(
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
   serviceWrapper: ServiceWrapper,
 ): Promise<VolumeUsage[]> {
-  const responses: CostExplorer.GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(params)
+  const responses: CostExplorer.GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(
+    params,
+  )
 
   return responses
     .map((response) => {
@@ -70,22 +72,30 @@ export function getEstimatesFromCostExplorer(
 ): FootprintEstimate[] {
   const ssdEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
   const hddEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
-  const ssdUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.SSD === diskType)
-  const hddUsage = volumeUsages.filter(({ diskType: diskType }) => DiskType.HDD === diskType)
+  const ssdUsage = volumeUsages.filter(
+    ({ diskType: diskType }) => DiskType.SSD === diskType,
+  )
+  const hddUsage = volumeUsages.filter(
+    ({ diskType: diskType }) => DiskType.HDD === diskType,
+  )
   const footprintEstimates = [
     ...ssdEstimator.estimate(ssdUsage, region, 'AWS'),
     ...hddEstimator.estimate(hddUsage, region, 'AWS'),
   ]
 
   return Object.values(
-    footprintEstimates.reduce((acc: { [key: string]: MutableFootprintEstimate }, estimate) => {
-      if (!acc[estimate.timestamp.toISOString()]) {
-        acc[estimate.timestamp.toISOString()] = estimate
+    footprintEstimates.reduce(
+      (acc: { [key: string]: MutableFootprintEstimate }, estimate) => {
+        if (!acc[estimate.timestamp.toISOString()]) {
+          acc[estimate.timestamp.toISOString()] = estimate
+          return acc
+        }
+        acc[estimate.timestamp.toISOString()].co2e += estimate.co2e
+        acc[estimate.timestamp.toISOString()].kilowattHours +=
+          estimate.kilowattHours
         return acc
-      }
-      acc[estimate.timestamp.toISOString()].co2e += estimate.co2e
-      acc[estimate.timestamp.toISOString()].kilowattHours += estimate.kilowattHours
-      return acc
-    }, {}),
+      },
+      {},
+    ),
   )
 }

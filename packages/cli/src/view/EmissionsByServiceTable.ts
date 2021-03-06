@@ -16,7 +16,12 @@ import { pluck, uniq } from 'ramda'
 export default function EmissionsByServiceTable(
   estimationResults: EstimationResult[],
 ): { table: string[][]; colWidths: number[] } {
-  const headers = ['Service', 'kilowatt hours', 'metric tons CO2e Emissions', 'Cost']
+  const headers = [
+    'Service',
+    'kilowatt hours',
+    'metric tons CO2e Emissions',
+    'Cost',
+  ]
   const colWidths: number[] = [15, 20, 25, 20]
   const table: string[][] = [headers]
   const serviceNames = uniq(
@@ -31,7 +36,8 @@ export default function EmissionsByServiceTable(
   estimationResults.forEach((estimationResult) => {
     estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       if (grandTotals[serviceEstimate.serviceName]) {
-        grandTotals[serviceEstimate.serviceName].kilowattHours += serviceEstimate.kilowattHours
+        grandTotals[serviceEstimate.serviceName].kilowattHours +=
+          serviceEstimate.kilowattHours
         grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
         grandTotals[serviceEstimate.serviceName].cost += serviceEstimate.cost
       } else {

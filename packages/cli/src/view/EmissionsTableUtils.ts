@@ -26,6 +26,7 @@ export const displayServiceName = (key: string): string => {
   return key
 }
 
-export const displayWattHours = (kilowattHours: number) => kilowattHours.toFixed(2).toString()
+export const displayWattHours = (kilowattHours: number) =>
+  kilowattHours.toFixed(2).toString()
 export const displayCo2e = (co2e: number) => co2e.toFixed(6).toString()
 export const displayCost = (cost: number) => `$${cost.toFixed(2).toString()}`

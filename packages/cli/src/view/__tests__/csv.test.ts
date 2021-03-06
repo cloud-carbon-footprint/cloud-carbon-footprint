@@ -39,7 +39,16 @@ afterEach(() => {
 describe('csv test', () => {
   const start = '2020-07-01'
   const end = '2020-07-07'
-  const rawRequest = ['executable', 'file', '--startDate', start, '--endDate', end, '--region', 'us-east-1']
+  const rawRequest = [
+    'executable',
+    'file',
+    '--startDate',
+    start,
+    '--endDate',
+    end,
+    '--region',
+    'us-east-1',
+  ]
 
   function getCloudWatch() {
     return new CloudWatch({ region: 'us-east-1' })
@@ -54,7 +63,11 @@ describe('csv test', () => {
   }
 
   function getServiceWrapper() {
-    return new ServiceWrapper(getCloudWatch(), getCloudWatchLogs(), getCostExplorer())
+    return new ServiceWrapper(
+      getCloudWatch(),
+      getCloudWatchLogs(),
+      getCostExplorer(),
+    )
   }
 
   let outputFilePath: string
@@ -81,7 +94,10 @@ describe('csv test', () => {
       new S3(getServiceWrapper()),
       new EC2(getServiceWrapper()),
       new ElastiCache(getServiceWrapper()),
-      new RDS(new RDSComputeService(getServiceWrapper()), new RDSStorage(getServiceWrapper())),
+      new RDS(
+        new RDSComputeService(getServiceWrapper()),
+        new RDSStorage(getServiceWrapper()),
+      ),
     ])
 
     await cli([...rawRequest, '--format', 'csv', '--groupBy', 'dayAndService'])

@@ -60,18 +60,29 @@ describe('App', () => {
 
   describe('getCostAndEstimates', () => {
     it('returns ebs estimates for a week', async () => {
-      const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      const mockGetCostAndEstimatesPerService: jest.Mock<
+        Promise<FootprintEstimate[]>
+      > = jest.fn()
       const mockGetCostPerService: jest.Mock<Promise<Cost[]>> = jest.fn()
-      setUpServices(getServices as jest.Mock, [mockGetCostAndEstimatesPerService], ['ebs'], [mockGetCostPerService])
+      setUpServices(
+        getServices as jest.Mock,
+        [mockGetCostAndEstimatesPerService],
+        ['ebs'],
+        [mockGetCostPerService],
+      )
 
-      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
-        return {
-          timestamp: moment(startDate).add(i, 'days').toDate(),
-          kilowattHours: 1.0944,
-          co2e: 0.0007737845760000001,
-        }
-      })
-      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(expectedUsageEstimate)
+      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map(
+        (v, i) => {
+          return {
+            timestamp: moment(startDate).add(i, 'days').toDate(),
+            kilowattHours: 1.0944,
+            co2e: 0.0007737845760000001,
+          }
+        },
+      )
+      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(
+        expectedUsageEstimate,
+      )
 
       const costs: Cost[] = [...Array(7)].map((v, i) => {
         return {
@@ -82,32 +93,40 @@ describe('App', () => {
       })
       mockGetCostPerService.mockResolvedValueOnce(costs)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
+        request,
+      )
 
-      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
-        return {
-          timestamp: moment.utc(startDate).add(i, 'days').toDate(),
-          serviceEstimates: [
-            {
-              cloudProvider: 'AWS',
-              accountName: testAwsAccountName,
-              serviceName: 'ebs',
-              kilowattHours: 1.0944,
-              co2e: 0.0007737845760000001,
-              cost: 5,
-              region: region,
-              usesAverageCPUConstant: false,
-            },
-          ],
-        }
-      })
+      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
+        (v, i) => {
+          return {
+            timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+            serviceEstimates: [
+              {
+                cloudProvider: 'AWS',
+                accountName: testAwsAccountName,
+                serviceName: 'ebs',
+                kilowattHours: 1.0944,
+                co2e: 0.0007737845760000001,
+                cost: 5,
+                region: region,
+                usesAverageCPUConstant: false,
+              },
+            ],
+          }
+        },
+      )
 
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
 
     it('returns estimates for 2 services', async () => {
-      const mockGetEstimates1: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-      const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      const mockGetEstimates1: jest.Mock<
+        Promise<FootprintEstimate[]>
+      > = jest.fn()
+      const mockGetEstimates2: jest.Mock<
+        Promise<FootprintEstimate[]>
+      > = jest.fn()
       const mockGetCostPerService1: jest.Mock<Promise<Cost[]>> = jest.fn()
       const mockGetCostPerService2: jest.Mock<Promise<Cost[]>> = jest.fn()
       setUpServices(
@@ -153,7 +172,9 @@ describe('App', () => {
       ]
       mockGetCostPerService2.mockResolvedValueOnce(expectedCosts2)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
+        request,
+      )
 
       const expectedEstimationResults = [
         {
@@ -187,8 +208,15 @@ describe('App', () => {
     })
 
     it('aggregates per day', async () => {
-      const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-      setUpServices(getServices as jest.Mock, [mockGetEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
+      const mockGetEstimates: jest.Mock<
+        Promise<FootprintEstimate[]>
+      > = jest.fn()
+      setUpServices(
+        getServices as jest.Mock,
+        [mockGetEstimates],
+        ['serviceOne'],
+        [jest.fn().mockResolvedValue([])],
+      )
       const expectedStorageEstimate: FootprintEstimate[] = [
         {
           timestamp: new Date(startDate + 'T01:00:00Z'),
@@ -208,7 +236,9 @@ describe('App', () => {
       ]
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
+        request,
+      )
 
       const expectedEstimationResults = [
         {
@@ -231,7 +261,9 @@ describe('App', () => {
     })
 
     it('uses cache decorator', async () => {
-      const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      const mockGetCostAndEstimatesPerService: jest.Mock<
+        Promise<FootprintEstimate[]>
+      > = jest.fn()
       setUpServices(
         getServices as jest.Mock,
         [mockGetCostAndEstimatesPerService],
@@ -245,7 +277,9 @@ describe('App', () => {
     })
 
     it('returns ebs estimates ordered by timestamp ascending', async () => {
-      const mockGetCostAndEstimatesPerService: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+      const mockGetCostAndEstimatesPerService: jest.Mock<
+        Promise<FootprintEstimate[]>
+      > = jest.fn()
       setUpServices(
         getServices as jest.Mock,
         [mockGetCostAndEstimatesPerService],
@@ -253,37 +287,45 @@ describe('App', () => {
         [jest.fn().mockResolvedValue([])],
       )
 
-      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map((v, i) => {
-        return {
-          timestamp: moment(startDate).subtract(i, 'days').toDate(),
-          kilowattHours: 1.0944,
-          co2e: 0.0007737845760000001,
-        }
-      })
-      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(expectedUsageEstimate)
+      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map(
+        (v, i) => {
+          return {
+            timestamp: moment(startDate).subtract(i, 'days').toDate(),
+            kilowattHours: 1.0944,
+            co2e: 0.0007737845760000001,
+          }
+        },
+      )
+      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(
+        expectedUsageEstimate,
+      )
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(request)
+      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
+        request,
+      )
 
-      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map((v, i) => {
-        return {
-          timestamp: moment
-            .utc(startDate)
-            .subtract(6 - i, 'days')
-            .toDate(),
-          serviceEstimates: [
-            {
-              cloudProvider: 'AWS',
-              accountName: testAwsAccountName,
-              serviceName: 'ebs',
-              kilowattHours: 1.0944,
-              co2e: 0.0007737845760000001,
-              cost: 0,
-              region: region,
-              usesAverageCPUConstant: false,
-            },
-          ],
-        }
-      })
+      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
+        (v, i) => {
+          return {
+            timestamp: moment
+              .utc(startDate)
+              .subtract(6 - i, 'days')
+              .toDate(),
+            serviceEstimates: [
+              {
+                cloudProvider: 'AWS',
+                accountName: testAwsAccountName,
+                serviceName: 'ebs',
+                kilowattHours: 1.0944,
+                co2e: 0.0007737845760000001,
+                cost: 0,
+                region: region,
+                usesAverageCPUConstant: false,
+              },
+            ],
+          }
+        },
+      )
 
       expect(estimationResult).toEqual(expectedEstimationResults)
     })
@@ -291,8 +333,18 @@ describe('App', () => {
 
   it('returns estimates for multiple regions', async () => {
     const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-    setUpServices(getServices as jest.Mock, [mockGetEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
-    setUpServices(getGCPServices as jest.Mock, [jest.fn().mockResolvedValue([])], [], [jest.fn().mockResolvedValue([])])
+    setUpServices(
+      getServices as jest.Mock,
+      [mockGetEstimates],
+      ['serviceOne'],
+      [jest.fn().mockResolvedValue([])],
+    )
+    setUpServices(
+      getGCPServices as jest.Mock,
+      [jest.fn().mockResolvedValue([])],
+      [],
+      [jest.fn().mockResolvedValue([])],
+    )
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
@@ -343,8 +395,20 @@ describe('App', () => {
     // expect(AWSAccount).toHaveBeenCalledWith('12345678', 'us-east-1')
     // expect(AWSAccount).toHaveBeenCalledWith('12345678', 'us-east-2')
 
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'AWS')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'AWS')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+      1,
+      new Date(start),
+      new Date(end),
+      'us-east-1',
+      'AWS',
+    )
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+      2,
+      new Date(start),
+      new Date(end),
+      'us-east-2',
+      'AWS',
+    )
 
     expect(result).toEqual(expectedEstimationResults)
   })
@@ -361,7 +425,12 @@ describe('App', () => {
       ['serviceOne', 'serviceTwo'],
       [mockGetCostPerService1, mockGetCostPerService2],
     )
-    setUpServices(getGCPServices as jest.Mock, [jest.fn().mockResolvedValue([])], [], [jest.fn().mockResolvedValue([])])
+    setUpServices(
+      getGCPServices as jest.Mock,
+      [jest.fn().mockResolvedValue([])],
+      [],
+      [jest.fn().mockResolvedValue([])],
+    )
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
@@ -448,18 +517,44 @@ describe('App', () => {
       },
     ]
 
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'AWS')
-    expect(mockGetEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'AWS')
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+      1,
+      new Date(start),
+      new Date(end),
+      'us-east-1',
+      'AWS',
+    )
+    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+      2,
+      new Date(start),
+      new Date(end),
+      'us-east-2',
+      'AWS',
+    )
 
     expect(result).toEqual(expectedEstimationResults)
   })
 
   it('returns estimates for multiple regions and accounts in multiple cloud providers', async () => {
-    const mockGetAWSEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-    setUpServices(getServices as jest.Mock, [mockGetAWSEstimates], ['serviceOne'], [jest.fn().mockResolvedValue([])])
+    const mockGetAWSEstimates: jest.Mock<
+      Promise<FootprintEstimate[]>
+    > = jest.fn()
+    setUpServices(
+      getServices as jest.Mock,
+      [mockGetAWSEstimates],
+      ['serviceOne'],
+      [jest.fn().mockResolvedValue([])],
+    )
 
-    const mockGetGCPEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
-    setUpServices(getGCPServices as jest.Mock, [mockGetGCPEstimates], ['serviceTwo'], [jest.fn().mockResolvedValue([])])
+    const mockGetGCPEstimates: jest.Mock<
+      Promise<FootprintEstimate[]>
+    > = jest.fn()
+    setUpServices(
+      getGCPServices as jest.Mock,
+      [mockGetGCPEstimates],
+      ['serviceTwo'],
+      [jest.fn().mockResolvedValue([])],
+    )
 
     const expectedStorageEstimate: FootprintEstimate[] = [
       {
@@ -577,16 +672,64 @@ describe('App', () => {
     ]
 
     expect(mockGetAWSEstimates).toHaveBeenCalledTimes(2)
-    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east-1', 'AWS')
-    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-east-2', 'AWS')
+    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(
+      1,
+      new Date(start),
+      new Date(end),
+      'us-east-1',
+      'AWS',
+    )
+    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(
+      2,
+      new Date(start),
+      new Date(end),
+      'us-east-2',
+      'AWS',
+    )
 
     expect(mockGetGCPEstimates).toHaveBeenCalledTimes(6)
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(1, new Date(start), new Date(end), 'us-east1', 'GCP')
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(2, new Date(start), new Date(end), 'us-west1', 'GCP')
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(3, new Date(start), new Date(end), 'us-central1', 'GCP')
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(4, new Date(start), new Date(end), 'us-east1', 'GCP')
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(5, new Date(start), new Date(end), 'us-west1', 'GCP')
-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(6, new Date(start), new Date(end), 'us-central1', 'GCP')
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+      1,
+      new Date(start),
+      new Date(end),
+      'us-east1',
+      'GCP',
+    )
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+      2,
+      new Date(start),
+      new Date(end),
+      'us-west1',
+      'GCP',
+    )
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+      3,
+      new Date(start),
+      new Date(end),
+      'us-central1',
+      'GCP',
+    )
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+      4,
+      new Date(start),
+      new Date(end),
+      'us-east1',
+      'GCP',
+    )
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+      5,
+      new Date(start),
+      new Date(end),
+      'us-west1',
+      'GCP',
+    )
+    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+      6,
+      new Date(start),
+      new Date(end),
+      'us-central1',
+      'GCP',
+    )
 
     expect(result).toEqual(expectedEstimationResults)
   })
@@ -599,13 +742,15 @@ function setUpServices(
   mockGetCosts: jest.Mock<Promise<Cost[]>>[],
 ) {
   let mockGetUsage: jest.Mock<Promise<UsageData[]>>
-  const mockCloudServices: ICloudService[] = mockGetEstimates.map((mockGetEstimate, i) => {
-    return {
-      getEstimates: mockGetEstimate,
-      serviceName: serviceNames[i],
-      getUsage: mockGetUsage,
-      getCosts: mockGetCosts[i],
-    }
-  })
+  const mockCloudServices: ICloudService[] = mockGetEstimates.map(
+    (mockGetEstimate, i) => {
+      return {
+        getEstimates: mockGetEstimate,
+        serviceName: serviceNames[i],
+        getUsage: mockGetUsage,
+        getCosts: mockGetCosts[i],
+      }
+    },
+  )
   servicesRegistered.mockReturnValue(mockCloudServices)
 }

@@ -22,7 +22,11 @@ function mockChainableTemporaryCredentials(
 ) {
   const chainableTemporaryCredentials = (ChainableTemporaryCredentials as unknown) as Mock
   chainableTemporaryCredentials.mockImplementationOnce(() => {
-    return new Credentials(targetAccessKeyId, targetSecretAccessKey, targetSessionToken)
+    return new Credentials(
+      targetAccessKeyId,
+      targetSecretAccessKey,
+      targetSessionToken,
+    )
   })
   return chainableTemporaryCredentials
 }
@@ -33,7 +37,11 @@ function mockWebIdentityCredentials(
   targetSessionToken: string,
 ) {
   const webIdentityCredentials = (WebIdentityCredentials as unknown) as Mock
-  const credentials = new Credentials(targetAccessKeyId, targetSecretAccessKey, targetSessionToken)
+  const credentials = new Credentials(
+    targetAccessKeyId,
+    targetSecretAccessKey,
+    targetSessionToken,
+  )
   webIdentityCredentials.mockImplementationOnce(() => {
     return credentials
   })
@@ -50,11 +58,18 @@ describe('GCPCredentials instance', () => {
     const proxyAccountId = '11111'
     const proxyRoleName = 'proxyRoleName'
     const token = '0000'
-    credentials = new GCPCredentials(accountId, targetRoleSessionName, proxyAccountId, proxyRoleName)
+    credentials = new GCPCredentials(
+      accountId,
+      targetRoleSessionName,
+      proxyAccountId,
+      proxyRoleName,
+    )
 
-    mockedGetTokenId = jest.spyOn(credentials, 'getTokenId').mockImplementation(async () => {
-      return token
-    })
+    mockedGetTokenId = jest
+      .spyOn(credentials, 'getTokenId')
+      .mockImplementation(async () => {
+        return token
+      })
   })
 
   afterEach(() => {
@@ -67,7 +82,11 @@ describe('GCPCredentials instance', () => {
     const targetSecretAccessKey = 'verylongstringwithrandomchars'
     const targetSessionToken = 'hi'
 
-    mockChainableTemporaryCredentials(targetAccessKeyId, targetSecretAccessKey, targetSessionToken)
+    mockChainableTemporaryCredentials(
+      targetAccessKeyId,
+      targetSecretAccessKey,
+      targetSessionToken,
+    )
 
     //when
     await credentials.getPromise()
@@ -81,8 +100,16 @@ describe('GCPCredentials instance', () => {
 
   it('should create ChainableTemporaryCredentials with expected options', async () => {
     //given
-    const chainableTemporaryCredentials = mockChainableTemporaryCredentials('', '', '')
-    const { webIdentityReturnedCredentials } = mockWebIdentityCredentials('a', 'b', 'c')
+    const chainableTemporaryCredentials = mockChainableTemporaryCredentials(
+      '',
+      '',
+      '',
+    )
+    const { webIdentityReturnedCredentials } = mockWebIdentityCredentials(
+      'a',
+      'b',
+      'c',
+    )
 
     const accountId = '1233452012'
     const targetRoleSessionName = 'mySessionName'
@@ -98,7 +125,9 @@ describe('GCPCredentials instance', () => {
     await credentials.getPromise()
 
     //then
-    expect(chainableTemporaryCredentials).toHaveBeenCalledWith(chainableTemporaryCredentialsOptions)
+    expect(chainableTemporaryCredentials).toHaveBeenCalledWith(
+      chainableTemporaryCredentialsOptions,
+    )
   })
 
   it('should create WebIdentityCredentials with expected options', async () => {

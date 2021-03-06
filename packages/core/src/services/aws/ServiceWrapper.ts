@@ -4,8 +4,14 @@
 
 import { CloudWatch, CostExplorer, CloudWatchLogs, Athena } from 'aws-sdk'
 import { path } from 'ramda'
-import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
-import { GetMetricDataInput, GetMetricDataOutput } from 'aws-sdk/clients/cloudwatch'
+import {
+  GetCostAndUsageRequest,
+  GetCostAndUsageResponse,
+} from 'aws-sdk/clients/costexplorer'
+import {
+  GetMetricDataInput,
+  GetMetricDataOutput,
+} from 'aws-sdk/clients/cloudwatch'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 import { PartialDataError } from '../../application/CreateValidRequest'
 
@@ -36,7 +42,9 @@ export class ServiceWrapper {
   }
 
   private checkForPartialData = (array: Array<MetricDataResult>) => {
-    const isPartialData = array.some((obj: MetricDataResult) => obj.StatusCode === 'PartialData')
+    const isPartialData = array.some(
+      (obj: MetricDataResult) => obj.StatusCode === 'PartialData',
+    )
     if (isPartialData) {
       throw new PartialDataError('Partial Data Returned from AWS')
     }
@@ -50,13 +58,19 @@ export class ServiceWrapper {
     ...args: any
   ): Promise<Array<any>> {
     let startCopy = new Date(start)
-    let endCopy = new Date(new Date(start).setDate(start.getDate() + intervalInDays))
+    let endCopy = new Date(
+      new Date(start).setDate(start.getDate() + intervalInDays),
+    )
     const promiseArray = []
 
     while (endCopy < end) {
       promiseArray.push(func(startCopy, endCopy, ...args))
-      startCopy = new Date(new Date(startCopy).setDate(start.getDate() + intervalInDays))
-      endCopy = new Date(new Date(startCopy).setDate(start.getDate() + intervalInDays))
+      startCopy = new Date(
+        new Date(startCopy).setDate(start.getDate() + intervalInDays),
+      )
+      endCopy = new Date(
+        new Date(startCopy).setDate(start.getDate() + intervalInDays),
+      )
     }
     promiseArray.push(func(startCopy, end, ...args))
     return Promise.all(promiseArray)
@@ -100,13 +114,17 @@ export class ServiceWrapper {
   }
 
   @enablePagination('NextPageToken')
-  public async getCostAndUsageResponses(params: GetCostAndUsageRequest): Promise<GetCostAndUsageResponse[]> {
+  public async getCostAndUsageResponses(
+    params: GetCostAndUsageRequest,
+  ): Promise<GetCostAndUsageResponse[]> {
     const response = await this.getCostAndUsageResponse(params)
     return response
   }
 
   @enablePagination('NextToken')
-  public async getMetricDataResponses(params: GetMetricDataInput): Promise<GetMetricDataOutput[]> {
+  public async getMetricDataResponses(
+    params: GetMetricDataInput,
+  ): Promise<GetMetricDataOutput[]> {
     const response = await this.getMetricDataResponse(params)
     this.checkForPartialData(response[0].MetricDataResults)
     return response
@@ -114,7 +132,11 @@ export class ServiceWrapper {
 }
 
 function enablePagination<RequestType, ResponseType>(nextPageProperty: string) {
-  return (target: unknown, propertyKey: string, descriptor?: PropertyDescriptor) => {
+  return (
+    target: unknown,
+    propertyKey: string,
+    descriptor?: PropertyDescriptor,
+  ) => {
     const originalMethod = descriptor.value
     descriptor.value = async function (props: RequestType) {
       const responses: ResponseType[] = []
@@ -124,7 +146,10 @@ function enablePagination<RequestType, ResponseType>(nextPageProperty: string) {
         const args = [
           {
             ...props,
-            [nextPageProperty]: path([responses.length - 1, nextPageProperty], responses),
+            [nextPageProperty]: path(
+              [responses.length - 1, nextPageProperty],
+              responses,
+            ),
           },
         ]
         latestResponse = (await originalMethod.apply(this, args))[0]

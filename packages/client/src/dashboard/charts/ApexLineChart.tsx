@@ -25,7 +25,9 @@ type LegendToggle = {
 }
 
 const formatDateToTime = (timestamp: string | Date) =>
-  timestamp instanceof Date ? timestamp.getTime() : new Date(timestamp).getTime()
+  timestamp instanceof Date
+    ? timestamp.getTime()
+    : new Date(timestamp).getTime()
 
 export const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
   return data.sort((a: EstimationResult, b: EstimationResult) => {
@@ -33,7 +35,11 @@ export const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
   })
 }
 
-export const filterBy = (data: EstimationResult[], range: DateRange, defaultRange: DateRange): EstimationResult[] => {
+export const filterBy = (
+  data: EstimationResult[],
+  range: DateRange,
+  defaultRange: DateRange,
+): EstimationResult[] => {
   if (!range.min || !range.max) return data
   if (_.isEqual(range, defaultRange)) return data
 
@@ -45,11 +51,19 @@ export const filterBy = (data: EstimationResult[], range: DateRange, defaultRang
   })
 }
 
-export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) => {
+export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
+  data,
+}) => {
   const theme = useTheme()
-  const [dateRange, setDateRange] = React.useState<DateRange>({ min: null, max: null })
+  const [dateRange, setDateRange] = React.useState<DateRange>({
+    min: null,
+    max: null,
+  })
   const [chartData, setChartData] = React.useState<EstimationResult[]>([])
-  const [defaultRange, setDefaultRange] = React.useState<DateRange>({ min: null, max: null })
+  const [defaultRange, setDefaultRange] = React.useState<DateRange>({
+    min: null,
+    max: null,
+  })
   const [toggledSeries, setToggledSeries] = React.useState<LegendToggle[]>([
     { CO2e: true },
     { 'Kilowatt Hours': false },
@@ -59,14 +73,19 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
   useEffect(() => {
     const newSortedData = sortByDate(data)
     const newDefaultRange = {
-      min: newSortedData[0]?.timestamp ? new Date(newSortedData[0]?.timestamp) : null,
+      min: newSortedData[0]?.timestamp
+        ? new Date(newSortedData[0]?.timestamp)
+        : null,
       max: newSortedData[newSortedData.length - 1]?.timestamp
         ? new Date(newSortedData[newSortedData.length - 1]?.timestamp)
         : null,
     }
 
     if (!_.isEqual(chartData, newSortedData)) setChartData(newSortedData)
-    if (newDefaultRange.min instanceof Date && newDefaultRange.max instanceof Date) {
+    if (
+      newDefaultRange.min instanceof Date &&
+      newDefaultRange.max instanceof Date
+    ) {
       if (!_.isEqual(defaultRange, newDefaultRange)) {
         setDateRange(newDefaultRange)
         setDefaultRange(newDefaultRange)
@@ -137,14 +156,22 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
           setDateRange(defaultRange)
         },
         legendClick: (chart: unknown, seriesIndex: number) => {
-          const [seriesKey, toggledValue] = Object.entries(toggledSeries[seriesIndex])[0]
-          const toggleCheck = toggledSeries.filter((series) => !!Object.values(series)[0])
+          const [seriesKey, toggledValue] = Object.entries(
+            toggledSeries[seriesIndex],
+          )[0]
+          const toggleCheck = toggledSeries.filter(
+            (series) => !!Object.values(series)[0],
+          )
           const newToggledSeries = [...toggledSeries]
           newToggledSeries[seriesIndex] = {
             [seriesKey]: !toggledValue,
           }
           setToggledSeries(newToggledSeries)
-          if (toggleCheck.length === 1 && Object.keys(toggleCheck[0])[0] === seriesKey) setToggledSeries(toggledSeries)
+          if (
+            toggleCheck.length === 1 &&
+            Object.keys(toggleCheck[0])[0] === seriesKey
+          )
+            setToggledSeries(toggledSeries)
         },
       },
       id: 'lineChart',
@@ -185,7 +212,12 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     tooltip: {
       shared: true,
       custom: function ({ dataPointIndex }: { dataPointIndex: number }) {
-        return renderToStaticMarkup(<CustomTooltip data={co2SeriesData} dataPointIndex={dataPointIndex} />)
+        return renderToStaticMarkup(
+          <CustomTooltip
+            data={co2SeriesData}
+            dataPointIndex={dataPointIndex}
+          />,
+        )
       },
     },
     title: {
@@ -274,7 +306,13 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({ data }) =
     },
   }
   return (
-    <Chart aria-label="apex-line-chart" options={options} series={options.series} type="line" height={options.height} />
+    <Chart
+      aria-label="apex-line-chart"
+      options={options}
+      series={options.series}
+      type="line"
+      height={options.height}
+    />
   )
 }
 

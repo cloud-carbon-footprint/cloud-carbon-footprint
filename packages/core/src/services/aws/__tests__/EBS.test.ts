@@ -21,7 +21,12 @@ describe('Ebs', () => {
   const endDate = '2020-06-30'
   const region = AWS_REGIONS.US_EAST_1
 
-  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+  const getServiceWrapper = () =>
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+    )
 
   afterEach(() => {
     AWSMock.restore()
@@ -32,7 +37,10 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         expect(params).toEqual({
           Filter: {
             And: [
@@ -67,13 +75,23 @@ describe('Ebs', () => {
 
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] }]),
+          buildCostExplorerGetUsageResponse([
+            {
+              start: startDate,
+              amount: 1.2120679,
+              keys: ['EBS:VolumeUsage.gp2'],
+            },
+          ]),
         )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await ebsService.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual([
       {
@@ -89,12 +107,19 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: AWS.CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
             { start: startDate, amount: 0, keys: ['EBS:VolumeUsage.gp2'] },
-            { start: startDate, amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
+            {
+              start: startDate,
+              amount: 1.2120679,
+              keys: ['EBS:VolumeUsage.gp2'],
+            },
           ]),
         )
       },
@@ -102,7 +127,11 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(getServiceWrapper())
 
-    const result = await ebsService.getUsage(new Date(startDate), new Date(startDate), region)
+    const result = await ebsService.getUsage(
+      new Date(startDate),
+      new Date(startDate),
+      region,
+    )
     expect(result).toEqual([
       {
         terabyteHours: 0.8726888880000001,
@@ -116,13 +145,20 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: AWS.CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(null, buildCostExplorerGetUsageResponse([]))
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await ebsService.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual([])
   })
 
@@ -130,19 +166,34 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
-            { start: startDate, amount: undefined, keys: ['EBS:VolumeUsage.gp2'] },
-            { start: startDate, amount: 1.2120679, keys: ['EBS:VolumeUsage.gp2'] },
+            {
+              start: startDate,
+              amount: undefined,
+              keys: ['EBS:VolumeUsage.gp2'],
+            },
+            {
+              start: startDate,
+              amount: 1.2120679,
+              keys: ['EBS:VolumeUsage.gp2'],
+            },
           ]),
         )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await ebsService.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual([
       {
         terabyteHours: 0.8726888880000001,
@@ -156,16 +207,25 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:VolumeUsage.st1'] },
+          ]),
         )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const result = await ebsService.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await ebsService.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual([
       {
         terabyteHours: 0.72,
@@ -179,19 +239,34 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:VolumeUsage.st1'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:VolumeUsage.st1'] },
+          ]),
         )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
-    const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const hddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+    )
+    const result = await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual(
-      hddStorageEstimator.estimate([{ terabyteHours: 0.72, timestamp: new Date(startDate) }], region, 'AWS'),
+      hddStorageEstimator.estimate(
+        [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
     )
   })
 
@@ -199,16 +274,34 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:VolumeUsage'] }]))
+      (
+        params: AWS.CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:VolumeUsage'] },
+          ]),
+        )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
-    const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const hddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+    )
+    const result = await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual(
-      hddStorageEstimator.estimate([{ terabyteHours: 0.72, timestamp: new Date(startDate) }], region, 'AWS'),
+      hddStorageEstimator.estimate(
+        [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
     )
   })
 
@@ -216,19 +309,34 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:VolumeUsage.sc1'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:VolumeUsage.sc1'] },
+          ]),
         )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
-    const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const hddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+    )
+    const result = await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual(
-      hddStorageEstimator.estimate([{ terabyteHours: 0.72, timestamp: new Date(startDate) }], region, 'AWS'),
+      hddStorageEstimator.estimate(
+        [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
     )
   })
 
@@ -236,19 +344,34 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:VolumeUsage.piops'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:VolumeUsage.piops'] },
+          ]),
         )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const sddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
-    const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const sddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+    )
+    const result = await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual(
-      sddStorageEstimator.estimate([{ terabyteHours: 0.72, timestamp: new Date(startDate) }], region, 'AWS'),
+      sddStorageEstimator.estimate(
+        [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
     )
   })
 
@@ -257,13 +380,25 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: AWS.CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:anything'] }]))
+      (
+        params: AWS.CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:anything'] },
+          ]),
+        )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual([])
   })
 
@@ -272,21 +407,38 @@ describe('Ebs', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['EBS:anything'] }]))
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['EBS:anything'] },
+          ]),
+        )
       },
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
-    expect(Logger.prototype.warn).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: EBS:anything')
+    await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
+    expect(Logger.prototype.warn).toHaveBeenCalledWith(
+      'Unexpected Cost explorer Dimension Name: EBS:anything',
+    )
   })
 
   it('should get estimates for EBS SDD and HDD storage', async () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
@@ -298,10 +450,18 @@ describe('Ebs', () => {
     )
 
     const ebsService = new EBS(getServiceWrapper())
-    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
-    const sddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
+    const hddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+    )
+    const sddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+    )
 
-    const result = await ebsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await ebsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     const ssdEstimates = sddStorageEstimator.estimate(
       [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
@@ -316,7 +476,8 @@ describe('Ebs', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: ssdEstimates[0].kilowattHours + hddEstimates[0].kilowattHours,
+        kilowattHours:
+          ssdEstimates[0].kilowattHours + hddEstimates[0].kilowattHours,
         co2e: ssdEstimates[0].co2e + hddEstimates[0].co2e,
       },
     ])

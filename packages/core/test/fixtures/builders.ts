@@ -2,7 +2,12 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-export function buildCostExplorerGetCostRequest(startDate: string, endDate: string, region: string, values: string[]) {
+export function buildCostExplorerGetCostRequest(
+  startDate: string,
+  endDate: string,
+  region: string,
+  values: string[],
+) {
   return {
     TimePeriod: {
       Start: startDate,
@@ -30,7 +35,9 @@ export function buildCostExplorerGetCostRequest(startDate: string, endDate: stri
   }
 }
 
-export function buildCostExplorerGetCostResponse(data: { start: string; amount: number; keys: string[] }[]) {
+export function buildCostExplorerGetCostResponse(
+  data: { start: string; amount: number; keys: string[] }[],
+) {
   return {
     GroupDefinitions: [
       {
@@ -59,7 +66,9 @@ export function buildCostExplorerGetCostResponse(data: { start: string; amount: 
   }
 }
 
-export function buildCostExplorerGetUsageResponse(data: { start: string; amount: number; keys: string[] }[]) {
+export function buildCostExplorerGetUsageResponse(
+  data: { start: string; amount: number; keys: string[] }[],
+) {
   return {
     GroupDefinitions: [
       {

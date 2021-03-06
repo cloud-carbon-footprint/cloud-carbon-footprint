@@ -39,11 +39,19 @@ const NoDataPage = (props: { isTop: boolean }): ReactElement => {
       <Box data-testid="no-data-page">
         <Grid container>
           <Grid item xs={12}>
-            {props.isTop ? <img src={shruggingCloud} /> : <img src={emptyStateIcon} />}
-            <div className={classes.addSpacing}>There's no data to display!</div>
+            {props.isTop ? (
+              <img src={shruggingCloud} />
+            ) : (
+              <img src={emptyStateIcon} />
+            )}
+            <div className={classes.addSpacing}>
+              There's no data to display!
+            </div>
             <div>Expand your search parameters to get started.</div>
             {props.isTop && (
-              <div className={classes.smallText}>(Try adding accounts, services or expanding the date range)</div>
+              <div className={classes.smallText}>
+                (Try adding accounts, services or expanding the date range)
+              </div>
             )}
           </Grid>
         </Grid>

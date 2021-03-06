@@ -129,6 +129,13 @@ export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
   },
 }
 
-export function estimateCo2(estimatedWattHours: number, cloudProvider: string, region: string): number {
-  return estimatedWattHours * CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[cloudProvider][region]
+export function estimateCo2(
+  estimatedWattHours: number,
+  cloudProvider: string,
+  region: string,
+): number {
+  return (
+    estimatedWattHours *
+    CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[cloudProvider][region]
+  )
 }

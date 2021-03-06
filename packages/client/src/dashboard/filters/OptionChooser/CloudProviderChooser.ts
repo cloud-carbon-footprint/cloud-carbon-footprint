@@ -11,7 +11,12 @@ import { OptionChooser } from './OptionChooser'
 
 export class CloudProviderChooser extends OptionChooser {
   constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
-    super(DropdownFilter.CLOUD_PROVIDERS, CLOUD_PROVIDER_OPTIONS, selections, oldSelections)
+    super(
+      DropdownFilter.CLOUD_PROVIDERS,
+      CLOUD_PROVIDER_OPTIONS,
+      selections,
+      oldSelections,
+    )
   }
 
   protected chooseProviders(): Set<DropdownOption> {
@@ -23,7 +28,8 @@ export class CloudProviderChooser extends OptionChooser {
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
         ACCOUNT_OPTIONS.forEach((accountOption) => {
-          accountOption.cloudProvider === selection.key && desiredSelections.add(accountOption)
+          accountOption.cloudProvider === selection.key &&
+            desiredSelections.add(accountOption)
         })
       }
     })
@@ -35,7 +41,8 @@ export class CloudProviderChooser extends OptionChooser {
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
         SERVICE_OPTIONS.forEach((serviceOption) => {
-          serviceOption.cloudProvider === selection.key && desiredSelections.add(serviceOption)
+          serviceOption.cloudProvider === selection.key &&
+            desiredSelections.add(serviceOption)
         })
       }
     })

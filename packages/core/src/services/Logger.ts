@@ -2,7 +2,12 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { createLogger, format, transports, Logger as WinstonLogger } from 'winston'
+import {
+  createLogger,
+  format,
+  transports,
+  Logger as WinstonLogger,
+} from 'winston'
 const { combine, timestamp, label, printf } = format
 import { LoggingWinston } from '@google-cloud/logging-winston'
 

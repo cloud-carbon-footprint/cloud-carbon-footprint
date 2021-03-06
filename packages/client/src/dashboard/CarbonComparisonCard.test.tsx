@@ -8,7 +8,12 @@ import moment from 'moment'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { CarbonComparisonCard, toGas, toMiles, toTrees } from './CarbonComparisonCard'
+import {
+  CarbonComparisonCard,
+  toGas,
+  toMiles,
+  toTrees,
+} from './CarbonComparisonCard'
 import { EstimationResult } from '../models/types'
 
 const data = [
@@ -54,7 +59,9 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('selects carbon comparison correctly', async () => {
-    const { getByText, getByTestId } = render(<CarbonComparisonCard data={data} />)
+    const { getByText, getByTestId } = render(
+      <CarbonComparisonCard data={data} />,
+    )
 
     const gasButton = getByText('Gas')
     const milesIcon = getByTestId('milesIcon')
@@ -97,7 +104,10 @@ describe('CarbonComparisonCard', () => {
   it('should open EPA page in other tab when clicking EPA link', async () => {
     const { getByText } = render(<CarbonComparisonCard data={data} />)
     const epaLink = getByText('EPA Equivalencies Calculator').closest('a')
-    expect(epaLink).toHaveAttribute('href', 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator')
+    expect(epaLink).toHaveAttribute(
+      'href',
+      'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
+    )
     expect(epaLink).toHaveAttribute('target', '_blank')
     //for security reasons https://web.dev/external-anchors-use-rel-noopener/
     expect(epaLink).toHaveAttribute('rel', 'noopener')
@@ -131,33 +141,45 @@ describe('CarbonComparisonCard', () => {
       data[0].serviceEstimates[0].co2e = co2e
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('co2')
-      expect(co2).toHaveTextContent(co2e.toLocaleString(undefined, { maximumFractionDigits: 1 }))
+      expect(co2).toHaveTextContent(
+        co2e.toLocaleString(undefined, { maximumFractionDigits: 1 }),
+      )
     })
 
     it('should format miles', async () => {
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('comparison')
-      const expected = toMiles(co2kg).toLocaleString(undefined, { maximumFractionDigits: 0 })
+      const expected = toMiles(co2kg).toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      })
       expect(co2).toHaveTextContent(expected)
     })
 
     it('should format gas', async () => {
-      const { getByText, getByTestId } = render(<CarbonComparisonCard data={data} />)
+      const { getByText, getByTestId } = render(
+        <CarbonComparisonCard data={data} />,
+      )
       act(() => {
         fireEvent.click(getByText('Gas'))
       })
       const co2 = getByTestId('comparison')
-      const expected = toGas(co2kg).toLocaleString(undefined, { maximumFractionDigits: 0 })
+      const expected = toGas(co2kg).toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      })
       expect(co2).toHaveTextContent(expected)
     })
 
     it('should format trees', async () => {
-      const { getByText, getByTestId } = render(<CarbonComparisonCard data={data} />)
+      const { getByText, getByTestId } = render(
+        <CarbonComparisonCard data={data} />,
+      )
       act(() => {
         fireEvent.click(getByText('Trees'))
       })
       const co2 = getByTestId('comparison')
-      const expected = toTrees(co2kg).toLocaleString(undefined, { maximumFractionDigits: 0 })
+      const expected = toTrees(co2kg).toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      })
       expect(co2).toHaveTextContent(expected)
     })
   })

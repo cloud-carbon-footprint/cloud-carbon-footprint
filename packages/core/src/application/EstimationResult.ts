@@ -20,19 +20,25 @@ export interface ServiceData {
   readonly usesAverageCPUConstant: boolean
 }
 
-export const reduceByTimestamp = (estimationResults: EstimationResult[]): EstimationResult[] => {
+export const reduceByTimestamp = (
+  estimationResults: EstimationResult[],
+): EstimationResult[] => {
   // We need this mutable type in order to set the first timestamp based on the estimationResults values.
   interface MutableEstimationResult {
     timestamp: Date
     serviceEstimates: ServiceData[]
   }
 
-  const accumulatingFn = (acc: MutableEstimationResult, value: MutableEstimationResult) => {
+  const accumulatingFn = (
+    acc: MutableEstimationResult,
+    value: MutableEstimationResult,
+  ) => {
     acc.timestamp = acc.timestamp || new Date(value.timestamp)
     acc.serviceEstimates = acc.serviceEstimates.concat(value.serviceEstimates)
     return acc
   }
-  const getTimeOfEstimate = (estimationResult: { timestamp: Date }) => estimationResult.timestamp.toISOString()
+  const getTimeOfEstimate = (estimationResult: { timestamp: Date }) =>
+    estimationResult.timestamp.toISOString()
 
   const result = reduceBy(
     accumulatingFn,

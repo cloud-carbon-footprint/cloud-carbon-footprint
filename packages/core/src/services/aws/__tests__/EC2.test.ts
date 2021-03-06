@@ -33,7 +33,8 @@ describe('EC2', () => {
   const metricDataQueries = [
     {
       Id: 'cpuUtilizationWithEmptyValues',
-      Expression: "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+      Expression:
+        "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
       ReturnData: false,
     },
     {
@@ -47,7 +48,12 @@ describe('EC2', () => {
     },
   ]
 
-  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+  const getServiceWrapper = () =>
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+    )
 
   it('gets EC2 usage', async () => {
     const response: any = {
@@ -103,7 +109,12 @@ describe('EC2', () => {
         {
           Id: 'vCPUs',
           Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-          Timestamps: [dayOneHourOne, dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
+          Timestamps: [
+            dayOneHourOne,
+            dayOneHourTwo,
+            dayTwoHourOne,
+            dayTwoHourTwo,
+          ],
           Values: [4, 4.5, 4, 4.333333333333333],
           StatusCode: 'Complete',
           Messages: [],
@@ -111,11 +122,19 @@ describe('EC2', () => {
       ],
       Messages: [],
     }
-    mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(dayTwoHourOne),
+      new Date(dayTwoHourThree),
+      response,
+      metricDataQueries,
+    )
 
     const ec2Service = new EC2(getServiceWrapper())
 
-    const result = await ec2Service.getUsage(new Date('2020-07-11T00:00:00Z'), new Date('2020-07-11T02:00:00Z'))
+    const result = await ec2Service.getUsage(
+      new Date('2020-07-11T00:00:00Z'),
+      new Date('2020-07-11T02:00:00Z'),
+    )
 
     expect(result).toEqual([
       {
@@ -125,7 +144,9 @@ describe('EC2', () => {
         usesAverageCPUConstant: false,
       },
       {
-        cpuUtilizationAverage: (31.435897435897434 + 11.576923076923077 + 9.63265306122449 + 24.25) / 4,
+        cpuUtilizationAverage:
+          (31.435897435897434 + 11.576923076923077 + 9.63265306122449 + 24.25) /
+          4,
         numberOfvCpus: 4.5,
         timestamp: new Date(dayOneHourTwo),
         usesAverageCPUConstant: false,
@@ -137,7 +158,9 @@ describe('EC2', () => {
         usesAverageCPUConstant: false,
       },
       {
-        cpuUtilizationAverage: (20.46153846153846 + 32.44444444444444 + 10.26923076923077 + 9.75) / 4,
+        cpuUtilizationAverage:
+          (20.46153846153846 + 32.44444444444444 + 10.26923076923077 + 9.75) /
+          4,
         numberOfvCpus: 4.333333333333333,
         timestamp: new Date(dayTwoHourTwo),
         usesAverageCPUConstant: false,
@@ -167,7 +190,12 @@ describe('EC2', () => {
         {
           Id: 'vCPUs',
           Label: 'AWS/Usage Standard/OnDemand vCPU EC2 Resource ResourceCount',
-          Timestamps: [dayOneHourOne, dayOneHourTwo, dayTwoHourOne, dayTwoHourTwo],
+          Timestamps: [
+            dayOneHourOne,
+            dayOneHourTwo,
+            dayTwoHourOne,
+            dayTwoHourTwo,
+          ],
           Values: [4, 4.5, 4, 4.333333333333333],
           StatusCode: 'Complete',
           Messages: [],
@@ -175,10 +203,19 @@ describe('EC2', () => {
       ],
       Messages: [],
     }
-    mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(dayTwoHourOne),
+      new Date(dayTwoHourThree),
+      response,
+      metricDataQueries,
+    )
 
     const ec2Service = new EC2(getServiceWrapper())
-    const getEC2Usage = async () => await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree))
+    const getEC2Usage = async () =>
+      await ec2Service.getUsage(
+        new Date(dayTwoHourOne),
+        new Date(dayTwoHourThree),
+      )
 
     await expect(getEC2Usage).rejects.toThrow('Partial Data Returned from AWS')
   })
@@ -199,11 +236,19 @@ describe('EC2', () => {
           },
         ],
       }
-      mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), response, metricDataQueries)
+      mockAWSCloudWatchGetMetricDataCall(
+        new Date(dayOneHourOne),
+        new Date(dayTwoHourOne),
+        response,
+        metricDataQueries,
+      )
 
       const ec2Service = new EC2(getServiceWrapper())
 
-      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne))
+      const result = await ec2Service.getUsage(
+        new Date(dayOneHourOne),
+        new Date(dayTwoHourOne),
+      )
 
       expect(result).toEqual([
         {
@@ -231,11 +276,19 @@ describe('EC2', () => {
           },
         ],
       }
-      mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayTwoHourOne), response, metricDataQueries)
+      mockAWSCloudWatchGetMetricDataCall(
+        new Date(dayOneHourOne),
+        new Date(dayTwoHourOne),
+        response,
+        metricDataQueries,
+      )
 
       const ec2Service = new EC2(getServiceWrapper())
 
-      const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayTwoHourOne))
+      const result = await ec2Service.getUsage(
+        new Date(dayOneHourOne),
+        new Date(dayTwoHourOne),
+      )
 
       expect(result).toEqual([
         {
@@ -274,11 +327,19 @@ describe('EC2', () => {
         },
       ],
     }
-    mockAWSCloudWatchGetMetricDataCall(new Date(dayTwoHourOne), new Date(dayTwoHourThree), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(dayTwoHourOne),
+      new Date(dayTwoHourThree),
+      response,
+      metricDataQueries,
+    )
 
     const ec2Service = new EC2(getServiceWrapper())
 
-    const result = await ec2Service.getUsage(new Date(dayTwoHourOne), new Date(dayTwoHourThree))
+    const result = await ec2Service.getUsage(
+      new Date(dayTwoHourOne),
+      new Date(dayTwoHourThree),
+    )
 
     expect(result).toEqual([
       {
@@ -300,11 +361,19 @@ describe('EC2', () => {
         },
       ],
     }
-    mockAWSCloudWatchGetMetricDataCall(new Date(dayOneHourOne), new Date(dayOneHourThree), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(dayOneHourOne),
+      new Date(dayOneHourThree),
+      response,
+      metricDataQueries,
+    )
 
     const ec2Service = new EC2(getServiceWrapper())
 
-    const result = await ec2Service.getUsage(new Date(dayOneHourOne), new Date(dayOneHourThree))
+    const result = await ec2Service.getUsage(
+      new Date(dayOneHourOne),
+      new Date(dayOneHourThree),
+    )
 
     expect(result).toEqual([])
   })
@@ -313,7 +382,10 @@ describe('EC2', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
@@ -325,7 +397,11 @@ describe('EC2', () => {
     )
 
     const ec2Service = new EC2(getServiceWrapper())
-    const ec2Costs = await ec2Service.getCosts(new Date(startDate), new Date(endDate), region)
+    const ec2Costs = await ec2Service.getCosts(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(ec2Costs).toEqual([
       { amount: 100.0, currency: 'USD', timestamp: new Date(startDate) },

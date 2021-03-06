@@ -20,7 +20,8 @@ export default class AWSCredentialsProvider {
         return new ChainableTemporaryCredentials({
           params: {
             RoleArn: `arn:aws:iam::${accountId}:role/${appConfig.AWS.authentication.options.targetRoleSessionName}`,
-            RoleSessionName: appConfig.AWS.authentication.options.targetRoleSessionName,
+            RoleSessionName:
+              appConfig.AWS.authentication.options.targetRoleSessionName,
           },
         })
       default:

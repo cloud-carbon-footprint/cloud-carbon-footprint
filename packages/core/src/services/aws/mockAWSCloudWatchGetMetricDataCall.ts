@@ -3,11 +3,19 @@
 import AWSMock from 'aws-sdk-mock'
 import { CloudWatch } from 'aws-sdk'
 
-const mockAWSCloudWatchGetMetricDataCall = (start: Date, end: Date, response: any, metricDataQueries: Array<any>) => {
+const mockAWSCloudWatchGetMetricDataCall = (
+  start: Date,
+  end: Date,
+  response: any,
+  metricDataQueries: Array<any>,
+) => {
   AWSMock.mock(
     'CloudWatch',
     'getMetricData',
-    (params: CloudWatch.GetMetricDataInput, callback: (a: Error, response: any) => any) => {
+    (
+      params: CloudWatch.GetMetricDataInput,
+      callback: (a: Error, response: any) => any,
+    ) => {
       expect(params).toEqual({
         StartTime: start,
         EndTime: end,

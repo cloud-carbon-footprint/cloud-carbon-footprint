@@ -31,7 +31,12 @@ describe('Lambda', () => {
     logGroupName: groupName,
   }))
 
-  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+  const getServiceWrapper = () =>
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+    )
 
   it('gets Lambda usage for one function and one day', async () => {
     const logGroups = logGroup
@@ -56,7 +61,11 @@ describe('Lambda', () => {
     mockGetResults(results)
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
-    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await lambdaService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual([
       {
@@ -100,7 +109,11 @@ describe('Lambda', () => {
     mockGetResults(results)
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
-    const result = await lambdaService.getEstimates(new Date(startDate), new Date(dayThree), region)
+    const result = await lambdaService.getEstimates(
+      new Date(startDate),
+      new Date(dayThree),
+      region,
+    )
 
     expect(result).toEqual([
       {
@@ -151,7 +164,11 @@ describe('Lambda', () => {
     mockGetResults(results)
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
-    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await lambdaService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(startQuerySpy).toHaveBeenCalledWith(
       {
@@ -202,7 +219,11 @@ describe('Lambda', () => {
     mockGetResults(results)
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
-    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await lambdaService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(startQuerySpy).toHaveBeenNthCalledWith(
       1,
@@ -243,7 +264,11 @@ describe('Lambda', () => {
     mockDescribeLogGroups([])
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
-    const result = await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await lambdaService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual([])
   })
@@ -272,10 +297,16 @@ describe('Lambda', () => {
 
     const lambdaService = new Lambda(100, 50, getServiceWrapper())
 
-    const expectedError = new Error('CloudWatchLog request failed, status: Running')
+    const expectedError = new Error(
+      'CloudWatchLog request failed, status: Running',
+    )
 
     try {
-      await lambdaService.getEstimates(new Date(startDate), new Date(endDate), region)
+      await lambdaService.getEstimates(
+        new Date(startDate),
+        new Date(endDate),
+        region,
+      )
     } catch (error) {
       expect(error).toEqual(expectedError)
     }
@@ -285,7 +316,10 @@ describe('Lambda', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
@@ -297,7 +331,11 @@ describe('Lambda', () => {
     )
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
-    const lambdaCosts = await lambdaService.getCosts(new Date(startDate), new Date(endDate), 'us-east-1')
+    const lambdaCosts = await lambdaService.getCosts(
+      new Date(startDate),
+      new Date(endDate),
+      'us-east-1',
+    )
 
     expect(lambdaCosts).toEqual([
       { amount: 100.0, currency: 'USD', timestamp: new Date(startDate) },
@@ -309,7 +347,10 @@ describe('Lambda', () => {
     AWSMock.mock(
       'CloudWatchLogs',
       'describeLogGroups',
-      (params: CloudWatchLogs.DescribeLogGroupsRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CloudWatchLogs.DescribeLogGroupsRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(null, {
           logGroups: logGroups,
         })
@@ -324,11 +365,17 @@ describe('Lambda', () => {
     return AWSMock.mock('CloudWatchLogs', 'startQuery', startQuerySpy)
   }
 
-  function mockGetResults(results: { results: { field: string; value: string }[][]; status: string }) {
+  function mockGetResults(results: {
+    results: { field: string; value: string }[][]
+    status: string
+  }) {
     AWSMock.mock(
       'CloudWatchLogs',
       'getQueryResults',
-      (params: CloudWatchLogs.GetQueryResultsRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CloudWatchLogs.GetQueryResultsRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(null, results)
       },
     )
@@ -336,5 +383,7 @@ describe('Lambda', () => {
 })
 
 function generateLogGroups(numberOfLogGroups: number): string[] {
-  return [...Array(numberOfLogGroups).keys()].map((i) => `/aws/lambda/sample-function-name-${i + 1}`)
+  return [...Array(numberOfLogGroups).keys()].map(
+    (i) => `/aws/lambda/sample-function-name-${i + 1}`,
+  )
 }

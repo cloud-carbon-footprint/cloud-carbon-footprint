@@ -3,7 +3,11 @@
  */
 
 import ServiceWithCPUUtilization from '../../domain/ServiceWithCPUUtilization'
-import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '../../domain/ComputeUsage'
+import ComputeUsage, {
+  buildComputeUsages,
+  extractRawComputeUsages,
+  RawComputeUsage,
+} from '../../domain/ComputeUsage'
 import Cost from '../../domain/Cost'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import { getCostFromCostExplorer } from './CostMapper'
@@ -18,18 +22,27 @@ export default class EC2 extends ServiceWithCPUUtilization {
   }
 
   async getUsage(start: Date, end: Date): Promise<ComputeUsage[]> {
-    const response = await this.serviceWrapper.getQueryByInterval(30, this.runQuery, start, end)
+    const response = await this.serviceWrapper.getQueryByInterval(
+      30,
+      this.runQuery,
+      start,
+      end,
+    )
     return response.flat()
   }
 
-  private runQuery = async (start: Date, end: Date): Promise<ComputeUsage[]> => {
+  private runQuery = async (
+    start: Date,
+    end: Date,
+  ): Promise<ComputeUsage[]> => {
     const params = {
       StartTime: start,
       EndTime: end,
       MetricDataQueries: [
         {
           Id: 'cpuUtilizationWithEmptyValues',
-          Expression: "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+          Expression:
+            "SEARCH('{AWS/EC2,InstanceId} MetricName=\"CPUUtilization\"', 'Average', 3600)",
           ReturnData: false,
         },
         {
@@ -47,9 +60,13 @@ export default class EC2 extends ServiceWithCPUUtilization {
 
     const responses = await this.serviceWrapper.getMetricDataResponses(params)
 
-    const metricDataResults: MetricDataResult[] = responses.flatMap((response) => response.MetricDataResults)
+    const metricDataResults: MetricDataResult[] = responses.flatMap(
+      (response) => response.MetricDataResults,
+    )
 
-    const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(extractRawComputeUsages)
+    const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(
+      extractRawComputeUsages,
+    )
     return buildComputeUsages(rawComputeUsages, 'AWS')
   }
 

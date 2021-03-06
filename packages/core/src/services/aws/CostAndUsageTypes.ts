@@ -131,7 +131,11 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'DataScanned',
 ]
 
-export const LINE_ITEM_TYPES: string[] = ['Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage']
+export const LINE_ITEM_TYPES: string[] = [
+  'Usage',
+  'DiscountedUsage',
+  'SavingsPlanCoveredUsage',
+]
 
 export enum PRICING_UNITS {
   HOURS_1 = 'Hrs',

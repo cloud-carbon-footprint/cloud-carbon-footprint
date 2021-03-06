@@ -12,12 +12,18 @@ describe('AccountFilter', () => {
   let page: RenderResult
   let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
   let mockFilters: Filters
-  const account = [{ cloudProvider: 'aws', key: '1212121222121', name: 'test account' }]
+  const account = [
+    { cloudProvider: 'aws', key: '1212121222121', name: 'test account' },
+  ]
   beforeEach(() => {
     mockFilters = new Filters()
     mockSetFilters = jest.fn()
     page = render(
-      <AccountFilter filters={mockFilters} setFilters={mockSetFilters} options={{ accounts: account, services: [] }} />,
+      <AccountFilter
+        filters={mockFilters}
+        setFilters={mockSetFilters}
+        options={{ accounts: account, services: [] }}
+      />,
     )
   })
 

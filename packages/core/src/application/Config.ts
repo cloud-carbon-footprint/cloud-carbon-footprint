@@ -57,7 +57,8 @@ const appConfig: CCFConfig = {
     BILLING_ACCOUNT_NAME: process.env.AWS_BILLING_ACCOUNT_NAME || '',
     ATHENA_DB_NAME: process.env.AWS_ATHENA_DB_NAME || '',
     ATHENA_DB_TABLE: process.env.AWS_ATHENA_DB_TABLE || '',
-    ATHENA_QUERY_RESULT_LOCATION: process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',
+    ATHENA_QUERY_RESULT_LOCATION:
+      process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',
     ATHENA_REGION: 'us-east-1',
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {

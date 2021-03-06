@@ -62,7 +62,9 @@ const useStyles = makeStyles(() => {
   }
 })
 
-export const EmissionsBreakdownContainer = (props: { data: EstimationResult[] }): ReactElement => {
+export const EmissionsBreakdownContainer = (props: {
+  data: EstimationResult[]
+}): ReactElement => {
   const classes = useStyles()
   const [value, setValue] = React.useState(ChartDataTypes.REGION)
 
@@ -76,7 +78,11 @@ export const EmissionsBreakdownContainer = (props: { data: EstimationResult[] })
         <Paper className={classes.topContainer}>
           <p className={classes.title}>Emissions Breakdown</p>
           <FormControl variant={'outlined'}>
-            <Select value={value} onChange={handleChange} input={<BootstrapInput />}>
+            <Select
+              value={value}
+              onChange={handleChange}
+              input={<BootstrapInput />}
+            >
               <MenuItem value={ChartDataTypes.REGION}>Region</MenuItem>
               <MenuItem value={ChartDataTypes.ACCOUNT}>Account</MenuItem>
               <MenuItem value={ChartDataTypes.SERVICE}>Service</MenuItem>

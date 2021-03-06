@@ -2,12 +2,19 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { displayCo2e, displayServiceName, displayWattHours, initialTotals, Totals } from './EmissionsTableUtils'
+import {
+  displayCo2e,
+  displayServiceName,
+  displayWattHours,
+  initialTotals,
+  Totals,
+} from './EmissionsTableUtils'
 import { pluck, uniq } from 'ramda'
 import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/core'
 
-const displayDate = (timestamp: Date) => moment(timestamp).utc().format('YYYY-MM-DD')
+const displayDate = (timestamp: Date) =>
+  moment(timestamp).utc().format('YYYY-MM-DD')
 const displayService = (totals: Totals, serviceName: string) => [
   displayWattHours(totals[serviceName].kilowattHours),
   displayCo2e(totals[serviceName].co2e),
@@ -48,9 +55,11 @@ export default function EmissionsByDayAndServiceTable(
     const subTotals: Totals = initialTotals(serviceNames)
 
     estimationResult.serviceEstimates.forEach((serviceEstimate) => {
-      grandTotals[serviceEstimate.serviceName].kilowattHours += serviceEstimate.kilowattHours
+      grandTotals[serviceEstimate.serviceName].kilowattHours +=
+        serviceEstimate.kilowattHours
       grandTotals['total'].kilowattHours += serviceEstimate.kilowattHours
-      subTotals[serviceEstimate.serviceName].kilowattHours += serviceEstimate.kilowattHours
+      subTotals[serviceEstimate.serviceName].kilowattHours +=
+        serviceEstimate.kilowattHours
       subTotals['total'].kilowattHours += serviceEstimate.kilowattHours
 
       grandTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
@@ -58,17 +67,23 @@ export default function EmissionsByDayAndServiceTable(
       subTotals[serviceEstimate.serviceName].co2e += serviceEstimate.co2e
       subTotals['total'].co2e += serviceEstimate.co2e
     })
-    const subTotalsServiceNames = Object.keys(subTotals).filter((total) => total !== 'total')
+    const subTotalsServiceNames = Object.keys(subTotals).filter(
+      (total) => total !== 'total',
+    )
     table.push([
       displayDate(estimationResult.timestamp),
-      ...subTotalsServiceNames.map((serviceName) => displayService(subTotals, serviceName)).flat(),
+      ...subTotalsServiceNames
+        .map((serviceName) => displayService(subTotals, serviceName))
+        .flat(),
       ...displayService(subTotals, 'total'),
     ])
   })
 
   table.push([
     'Total',
-    ...serviceNames.map((serviceName) => displayService(grandTotals, serviceName)).flat(),
+    ...serviceNames
+      .map((serviceName) => displayService(grandTotals, serviceName))
+      .flat(),
     ...displayService(grandTotals, 'total'),
   ])
 

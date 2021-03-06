@@ -33,10 +33,18 @@ export default function EmissionsByDayTable(
     })
   })
 
-  grandTotals['Total'] = { kilowattHours: wattHoursTotal, co2e: co2eTotal, cost: costTotal }
+  grandTotals['Total'] = {
+    kilowattHours: wattHoursTotal,
+    co2e: co2eTotal,
+    cost: costTotal,
+  }
 
   Object.entries(grandTotals).forEach(([rowName, rowData]) => {
-    table.push([rowName, displayWattHours(rowData.kilowattHours), displayCo2e(rowData.co2e)])
+    table.push([
+      rowName,
+      displayWattHours(rowData.kilowattHours),
+      displayCo2e(rowData.co2e),
+    ])
   })
 
   return { table, colWidths }

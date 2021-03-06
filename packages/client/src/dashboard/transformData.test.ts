@@ -1,7 +1,12 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-import { sumCO2, sumCO2ByServiceOrRegion, sumServiceTotals, useFilterDataFromEstimates } from './transformData'
+import {
+  sumCO2,
+  sumCO2ByServiceOrRegion,
+  sumServiceTotals,
+  useFilterDataFromEstimates,
+} from './transformData'
 import { renderHook } from '@testing-library/react-hooks'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
@@ -199,26 +204,58 @@ describe('transformData', () => {
   })
 
   it('handles data with null account names', () => {
-    const expected = { 'test-a': 6, 'test-b': 6, 'Unknown Account - GCP': 6, 'Unknown Account - AWS': 6 }
-    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'account')).toEqual(expected)
+    const expected = {
+      'test-a': 6,
+      'test-b': 6,
+      'Unknown Account - GCP': 6,
+      'Unknown Account - AWS': 6,
+    }
+    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'account')).toEqual(
+      expected,
+    )
   })
 
   it('handles data with null service names', () => {
-    const expected = { ebs: 6, ec2: 6, 'Unknown Service - GCP': 6, 'Unknown Service - AWS': 6 }
-    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'service')).toEqual(expected)
+    const expected = {
+      ebs: 6,
+      ec2: 6,
+      'Unknown Service - GCP': 6,
+      'Unknown Service - AWS': 6,
+    }
+    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'service')).toEqual(
+      expected,
+    )
   })
 
   it('handles data with unknown regions', () => {
-    const expected = { 'us-east-1': 12, 'Unknown Region - GCP': 6, 'Unknown Region - AWS': 6 }
-    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'region')).toEqual(expected)
+    const expected = {
+      'us-east-1': 12,
+      'Unknown Region - GCP': 6,
+      'Unknown Region - AWS': 6,
+    }
+    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'region')).toEqual(
+      expected,
+    )
   })
 })
 
 describe('sumServiceTotals', () => {
   const expectedTotals = {
     co2e: [
-      { x: date1, y: 20, usesAverageCPUConstant: false, kilowattHours: 16, cost: 9 },
-      { x: date2, y: 10, usesAverageCPUConstant: true, kilowattHours: 27, cost: 12 },
+      {
+        x: date1,
+        y: 20,
+        usesAverageCPUConstant: false,
+        kilowattHours: 16,
+        cost: 9,
+      },
+      {
+        x: date2,
+        y: 10,
+        usesAverageCPUConstant: true,
+        kilowattHours: 27,
+        cost: 12,
+      },
     ],
     kilowattHours: [
       { x: date1, y: 16 },
@@ -237,7 +274,9 @@ describe('sumServiceTotals', () => {
 
   it('returns the sum of kilowatt hours for all services', () => {
     const expectedWattHours = expectedTotals.kilowattHours
-    expect(sumServiceTotals(data).kilowattHoursSeries).toEqual(expectedWattHours)
+    expect(sumServiceTotals(data).kilowattHoursSeries).toEqual(
+      expectedWattHours,
+    )
   })
 
   it('returns the sum of cost for all services', () => {
@@ -248,8 +287,20 @@ describe('sumServiceTotals', () => {
   describe('rounding to the hundredths', () => {
     const expectedTotals = {
       co2e: [
-        { x: date1, y: 20.3576, usesAverageCPUConstant: false, kilowattHours: 16.98, cost: 10.56 },
-        { x: date2, y: 11.0136, usesAverageCPUConstant: true, kilowattHours: 28.19, cost: 12.29 },
+        {
+          x: date1,
+          y: 20.3576,
+          usesAverageCPUConstant: false,
+          kilowattHours: 16.98,
+          cost: 10.56,
+        },
+        {
+          x: date2,
+          y: 11.0136,
+          usesAverageCPUConstant: true,
+          kilowattHours: 28.19,
+          cost: 12.29,
+        },
       ],
       kilowattHours: [
         { x: date1, y: 16.98 },
@@ -261,15 +312,21 @@ describe('sumServiceTotals', () => {
       ],
     }
     it('returns the sum of co2e rounded to 3 decimal places', () => {
-      expect(sumServiceTotals(dataWithHigherPrecision).co2Series).toEqual(expectedTotals.co2e)
+      expect(sumServiceTotals(dataWithHigherPrecision).co2Series).toEqual(
+        expectedTotals.co2e,
+      )
     })
 
     it('returns the sum of co2e rounded to the hundredths place', () => {
-      expect(sumServiceTotals(dataWithHigherPrecision).kilowattHoursSeries).toEqual(expectedTotals.kilowattHours)
+      expect(
+        sumServiceTotals(dataWithHigherPrecision).kilowattHoursSeries,
+      ).toEqual(expectedTotals.kilowattHours)
     })
 
     it('returns the sum of co2e rounded to the hundredths place', () => {
-      expect(sumServiceTotals(dataWithHigherPrecision).costSeries).toEqual(expectedTotals.cost)
+      expect(sumServiceTotals(dataWithHigherPrecision).costSeries).toEqual(
+        expectedTotals.cost,
+      )
     })
   })
 })

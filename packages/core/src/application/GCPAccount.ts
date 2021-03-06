@@ -18,17 +18,28 @@ import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
 import { BigQuery } from '@google-cloud/bigquery'
 
 export default class GCPAccount extends CloudProviderAccount {
-  constructor(public projectId: string, public name: string, private regions: string[]) {
+  constructor(
+    public projectId: string,
+    public name: string,
+    private regions: string[],
+  ) {
     super()
   }
 
-  getDataForRegions(startDate: Date, endDate: Date): Promise<EstimationResult[]>[] {
+  getDataForRegions(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<EstimationResult[]>[] {
     return this.regions.map((regionId) => {
       return this.getDataForRegion(regionId, startDate, endDate)
     })
   }
 
-  getDataForRegion(regionId: string, startDate: Date, endDate: Date): Promise<EstimationResult[]> {
+  getDataForRegion(
+    regionId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<EstimationResult[]> {
     const gcpServices = this.getServices()
     const region = new Region(regionId, gcpServices, configLoader().GCP.NAME)
     return this.getRegionData(region, startDate, endDate)
@@ -52,14 +63,17 @@ export default class GCPAccount extends CloudProviderAccount {
   }
 
   private getService(key: string): ICloudService {
-    if (this.services[key] === undefined) throw new Error('Unsupported service: ' + key)
+    if (this.services[key] === undefined)
+      throw new Error('Unsupported service: ' + key)
     const options: ClientOptions = {
       projectId: this.projectId,
     }
     return this.services[key](options)
   }
 
-  private services: { [id: string]: (options: ClientOptions) => ICloudService } = {
+  private services: {
+    [id: string]: (options: ClientOptions) => ICloudService
+  } = {
     computeEngine: (options) => {
       return new ComputeEngine(new v3.MetricServiceClient(options))
     },

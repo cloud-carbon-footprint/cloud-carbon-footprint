@@ -62,8 +62,14 @@ describe('AWSAccount', () => {
   it('should return instances from registered services in configuration file', () => {
     const EBS = require('../../services/aws/EBS').default
     expectAWSService('ebs').toBeInstanceOf(EBS)
-    expect(CloudWatch).toHaveBeenCalledWith({ region: 'some-region', credentials: expectedCredentials })
-    expect(CostExplorer).toHaveBeenCalledWith({ region: 'us-east-1', credentials: expectedCredentials })
+    expect(CloudWatch).toHaveBeenCalledWith({
+      region: 'some-region',
+      credentials: expectedCredentials,
+    })
+    expect(CostExplorer).toHaveBeenCalledWith({
+      region: 'us-east-1',
+      credentials: expectedCredentials,
+    })
   })
 
   it('should return s3 instance', () => {
@@ -115,7 +121,8 @@ describe('AWSAccount', () => {
       expectAWSService('lambda')
 
       //then
-      const options: ServiceConfigurationOptions = CloudWatchLogs.mock.calls[0][0]
+      const options: ServiceConfigurationOptions =
+        CloudWatchLogs.mock.calls[0][0]
       expect(options.credentials).toEqual(expectedCredentials)
     })
   })
@@ -130,6 +137,8 @@ function expectAWSService(key: string) {
   ]
   const testRegion = 'some-region'
   const AWSAccount = require('../AWSAccount').default
-  const services = new AWSAccount('12345678', 'test account', [testRegion]).getServices(testRegion)
+  const services = new AWSAccount('12345678', 'test account', [
+    testRegion,
+  ]).getServices(testRegion)
   return expect(services[0])
 }

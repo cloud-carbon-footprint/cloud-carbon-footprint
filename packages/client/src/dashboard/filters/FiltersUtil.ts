@@ -23,7 +23,11 @@ export function handleDropdownSelections(
   return createOptionChooser(filterType, selections, oldSelections).choose()
 }
 
-export function numSelectedLabel(length: number, totalLength: number, type = 'Services'): string {
+export function numSelectedLabel(
+  length: number,
+  totalLength: number,
+  type = 'Services',
+): string {
   const lengthWithoutAllOption = totalLength - 1
   if (length === totalLength) {
     return `${type}: ${lengthWithoutAllOption} of ${lengthWithoutAllOption}`

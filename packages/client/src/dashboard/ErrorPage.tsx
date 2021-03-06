@@ -63,7 +63,14 @@ const ErrorPage = (): ReactElement => {
   const classes = useStyles()
 
   return (
-    <Grid container spacing={0} direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: '100vh' }}
+    >
       <CloudOffIcon className={classes.cloudIcon} />
       <Grid item className={classes.gridPlacement} xs={12}>
         <div data-testid="error-page">
@@ -74,7 +81,9 @@ const ErrorPage = (): ReactElement => {
               {status} {statusText}
             </h1>
           )}
-          <div className={classes.errorMessage}>Something has gone wrong, please try again later</div>
+          <div className={classes.errorMessage}>
+            Something has gone wrong, please try again later
+          </div>
         </div>
       </Grid>
     </Grid>

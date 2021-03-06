@@ -11,7 +11,9 @@ export async function getCostFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,
   serviceWrapper: ServiceWrapper,
 ): Promise<Cost[]> {
-  const responses: GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(params)
+  const responses: GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(
+    params,
+  )
 
   return responses
     .map((response) => {

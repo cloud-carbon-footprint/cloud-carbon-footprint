@@ -15,12 +15,15 @@ describe('useFilters', () => {
     let result: HookResult<UseFiltersResults>
 
     beforeEach(() => {
-      result = renderHook(() => useFilters(estimationResults, filteredResult)).result
+      result = renderHook(() => useFilters(estimationResults, filteredResult))
+        .result
     })
 
     test('it should filter up to 12 months prior by default', () => {
       expect(result.current.filters.timeframe).toBe(12)
-      expect(result.current.filteredData).toEqual(estimationResults.slice(0, 13))
+      expect(result.current.filteredData).toEqual(
+        estimationResults.slice(0, 13),
+      )
     })
 
     test('it should filter up to 1 month prior', () => {
@@ -55,7 +58,9 @@ describe('useFilters', () => {
         result.current.setFilters(result.current.filters.withTimeFrame(12))
       })
       expect(result.current.filters.timeframe).toBe(12)
-      expect(result.current.filteredData).toEqual(estimationResults.slice(0, 13))
+      expect(result.current.filteredData).toEqual(
+        estimationResults.slice(0, 13),
+      )
     })
   })
 })

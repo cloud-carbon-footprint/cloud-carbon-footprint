@@ -75,12 +75,25 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const { data, loading } = useRemoteService([], startDate, endDate)
 
-  const filteredDataResults: FilterResultResponse = useFilterDataFromEstimates(data)
-  const { filteredData, filters, setFilters } = useFilters(data, filteredDataResults)
+  const filteredDataResults: FilterResultResponse = useFilterDataFromEstimates(
+    data,
+  )
+  const { filteredData, filters, setFilters } = useFilters(
+    data,
+    filteredDataResults,
+  )
   return loading ? (
-    <Grid container direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: '100vh' }}
+    >
       <CircularProgress size={100} />
-      <div className={classes.loadingMessage}>Loading cloud data. This may take a while...</div>
+      <div className={classes.loadingMessage}>
+        Loading cloud data. This may take a while...
+      </div>
     </Grid>
   ) : (
     <Box className={classes.boxContainer}>
@@ -88,16 +101,26 @@ export default function CloudCarbonContainer(): ReactElement {
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
             <div className={classes.filterContainerSection}>
-              {[CloudProviderFilter, AccountFilter, ServiceFilter].map((FilterComponent, i) => (
-                <div key={i} className={classes.filter}>
-                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
-                </div>
-              ))}
+              {[CloudProviderFilter, AccountFilter, ServiceFilter].map(
+                (FilterComponent, i) => (
+                  <div key={i} className={classes.filter}>
+                    <FilterComponent
+                      filters={filters}
+                      setFilters={setFilters}
+                      options={filteredDataResults}
+                    />
+                  </div>
+                ),
+              )}
             </div>
             <div className={classes.filterContainerSection}>
               {[DateFilter, MonthFilter].map((FilterComponent, i) => (
                 <div key={i} className={classes.filter}>
-                  <FilterComponent filters={filters} setFilters={setFilters} options={filteredDataResults} />
+                  <FilterComponent
+                    filters={filters}
+                    setFilters={setFilters}
+                    options={filteredDataResults}
+                  />
                 </div>
               ))}
             </div>
@@ -119,7 +142,15 @@ export default function CloudCarbonContainer(): ReactElement {
             </Card>
           </Grid>
           <Grid item xs={12}>
-            <Grid container spacing={3} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap-reverse' }}>
+            <Grid
+              container
+              spacing={3}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap-reverse',
+              }}
+            >
               <Grid item className={classes.gridItemCards}>
                 <CarbonComparisonCard data={filteredData} />
               </Grid>

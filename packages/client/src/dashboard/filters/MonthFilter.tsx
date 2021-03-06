@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MonthFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
+const MonthFilter: FunctionComponent<FilterProps> = ({
+  filters,
+  setFilters,
+}) => {
   const classes = useStyles()
   return (
     <>

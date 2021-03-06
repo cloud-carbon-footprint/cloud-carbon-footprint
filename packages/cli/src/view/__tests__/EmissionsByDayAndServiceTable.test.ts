@@ -242,6 +242,24 @@ describe('EmissionsTable', () => {
   })
 
   it('does the right columns', () => {
-    expect(result.colWidths).toEqual([15, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25, 20, 25])
+    expect(result.colWidths).toEqual([
+      15,
+      20,
+      25,
+      20,
+      25,
+      20,
+      25,
+      20,
+      25,
+      20,
+      25,
+      20,
+      25,
+      20,
+      25,
+      20,
+      25,
+    ])
   })
 })

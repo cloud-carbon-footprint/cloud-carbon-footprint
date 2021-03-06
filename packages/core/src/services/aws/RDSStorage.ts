@@ -4,7 +4,12 @@
 
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
 import ICloudService from '../../domain/ICloudService'
-import { DiskType, getEstimatesFromCostExplorer, getUsageFromCostExplorer, VolumeUsage } from './StorageUsageMapper'
+import {
+  DiskType,
+  getEstimatesFromCostExplorer,
+  getUsageFromCostExplorer,
+  VolumeUsage,
+} from './StorageUsageMapper'
 import FootprintEstimate from '../../domain/FootprintEstimate'
 import Cost from '../../domain/Cost'
 import { getCostFromCostExplorer } from './CostMapper'
@@ -19,12 +24,20 @@ export default class RDSStorage implements ICloudService {
     this.rdsStorageLogger = new Logger('RDS Storage Logger')
   }
 
-  async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
+  async getEstimates(
+    start: Date,
+    end: Date,
+    region: string,
+  ): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
     return getEstimatesFromCostExplorer(start, end, region, usage)
   }
 
-  async getUsage(startDate: Date, endDate: Date, region: string): Promise<VolumeUsage[]> {
+  async getUsage(
+    startDate: Date,
+    endDate: Date,
+    region: string,
+  ): Promise<VolumeUsage[]> {
     const params: GetCostAndUsageRequest = {
       TimePeriod: {
         Start: startDate.toISOString().substr(0, 10),
@@ -51,13 +64,23 @@ export default class RDSStorage implements ICloudService {
       ],
     }
 
-    return await getUsageFromCostExplorer(params, this.getDiskType, this.serviceWrapper)
+    return await getUsageFromCostExplorer(
+      params,
+      this.getDiskType,
+      this.serviceWrapper,
+    )
   }
 
   private getDiskType = (awsGroupKey: string) => {
-    if (awsGroupKey.endsWith('GP2-Storage') || awsGroupKey.endsWith('PIOPS-Storage')) return DiskType.SSD
+    if (
+      awsGroupKey.endsWith('GP2-Storage') ||
+      awsGroupKey.endsWith('PIOPS-Storage')
+    )
+      return DiskType.SSD
     if (awsGroupKey.endsWith('StorageUsage')) return DiskType.HDD
-    this.rdsStorageLogger.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+    this.rdsStorageLogger.warn(
+      'Unexpected Cost explorer Dimension Name: ' + awsGroupKey,
+    )
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {

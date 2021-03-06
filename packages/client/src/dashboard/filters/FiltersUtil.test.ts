@@ -3,7 +3,10 @@
  */
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownOption } from './DropdownFilter'
-import { ALL_CLOUD_PROVIDERS_VALUE, ALL_SERVICES_VALUE } from './DropdownConstants'
+import {
+  ALL_CLOUD_PROVIDERS_VALUE,
+  ALL_SERVICES_VALUE,
+} from './DropdownConstants'
 
 jest.mock('./AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
@@ -71,7 +74,11 @@ describe('filterUtil', () => {
     name: 'Lambda',
     cloudProvider: 'aws',
   }
-  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
+  const computeEngineServiceOption = {
+    key: 'computeEngine',
+    name: 'Compute Engine',
+    cloudProvider: 'gcp',
+  }
 
   const awsServiceOptions: DropdownOption[] = [
     ebsServiceOption,
@@ -82,11 +89,19 @@ describe('filterUtil', () => {
     s3ServiceOption,
   ]
   const allServiceOption = { key: ALL_STRING, name: ALL_SERVICES_VALUE }
-  const allServiceOptions: DropdownOption[] = [allServiceOption, ...awsServiceOptions, computeEngineServiceOption]
+  const allServiceOptions: DropdownOption[] = [
+    allServiceOption,
+    ...awsServiceOptions,
+    computeEngineServiceOption,
+  ]
   const awsProviderOption = { key: 'aws', name: 'AWS' }
   const gcpProviderOption = { key: 'gcp', name: 'GCP' }
   const allProviderOption = { key: ALL_STRING, name: ALL_CLOUD_PROVIDERS_VALUE }
-  const allProviderOptions = [allProviderOption, awsProviderOption, gcpProviderOption]
+  const allProviderOptions = [
+    allProviderOption,
+    awsProviderOption,
+    gcpProviderOption,
+  ]
   const awsAccountOptions = [
     { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
     { key: '321321322', name: 'testaccount1', cloudProvider: 'aws' },
@@ -95,8 +110,16 @@ describe('filterUtil', () => {
     { key: '123123123', name: 'testaccount2', cloudProvider: 'gcp' },
     { key: '123412341', name: 'testaccount3', cloudProvider: 'gcp' },
   ]
-  const allAccountOption = { key: ALL_STRING, name: 'All Accounts', cloudProvider: '' }
-  const allAccountOptions = [allAccountOption, ...awsAccountOptions, ...gcpAccountOptions]
+  const allAccountOption = {
+    key: ALL_STRING,
+    name: 'All Accounts',
+    cloudProvider: '',
+  }
+  const allAccountOptions = [
+    allAccountOption,
+    ...awsAccountOptions,
+    ...gcpAccountOptions,
+  ]
 
   describe('handleSelections', () => {
     it('should return all cloudProviders, accounts and services when all providers was selected', () => {
@@ -114,23 +137,35 @@ describe('filterUtil', () => {
       expect(result.services).toEqual(allServiceOptions)
     })
     it('should return all cloudProviders, accounts and services when all accounts was selected', () => {
-      const result = FiltersUtil.handleDropdownSelections(FiltersUtil.DropdownFilter.ACCOUNTS, allAccountOptions, {
-        services: allServiceOptions,
-        accounts: [...awsAccountOptions, gcpAccountOptions[0]],
-        cloudProviders: allProviderOptions,
-      })
+      const result = FiltersUtil.handleDropdownSelections(
+        FiltersUtil.DropdownFilter.ACCOUNTS,
+        allAccountOptions,
+        {
+          services: allServiceOptions,
+          accounts: [...awsAccountOptions, gcpAccountOptions[0]],
+          cloudProviders: allProviderOptions,
+        },
+      )
       expect(result.cloudProviders).toEqual(allProviderOptions)
       expect(result.accounts).toEqual(allAccountOptions)
       expect(result.services).toEqual(allServiceOptions)
     })
     it('should return all cloudProviders, accounts and services when all services was selected', () => {
       expect(
-        FiltersUtil.handleDropdownSelections(FiltersUtil.DropdownFilter.SERVICES, allServiceOptions, {
-          services: awsServiceOptions,
-          accounts: awsAccountOptions,
-          cloudProviders: [awsProviderOption],
-        }),
-      ).toEqual({ cloudProviders: allProviderOptions, accounts: allAccountOptions, services: allServiceOptions })
+        FiltersUtil.handleDropdownSelections(
+          FiltersUtil.DropdownFilter.SERVICES,
+          allServiceOptions,
+          {
+            services: awsServiceOptions,
+            accounts: awsAccountOptions,
+            cloudProviders: [awsProviderOption],
+          },
+        ),
+      ).toEqual({
+        cloudProviders: allProviderOptions,
+        accounts: allAccountOptions,
+        services: allServiceOptions,
+      })
     })
     it('should return empty cloudProviders, accounts and services when all providers was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
@@ -227,7 +262,10 @@ describe('filterUtil', () => {
         },
       )
       expect(handleSelectionResult.cloudProviders).toEqual(allProviderOptions)
-      expect(handleSelectionResult.accounts).toEqual([...awsAccountOptions, gcpAccountOptions[0]])
+      expect(handleSelectionResult.accounts).toEqual([
+        ...awsAccountOptions,
+        gcpAccountOptions[0],
+      ])
       expect(handleSelectionResult.services).toEqual(allServiceOptions)
     })
     it('should return non changed services when all AWS accounts were selected and an AWS account is unselected ', () => {
@@ -241,22 +279,38 @@ describe('filterUtil', () => {
         },
       )
       expect(handleSelectionResult.cloudProviders).toEqual(allProviderOptions)
-      expect(handleSelectionResult.accounts).toEqual([awsAccountOptions[0], ...gcpAccountOptions])
-      expect(handleSelectionResult.services).toEqual([ebsServiceOption, computeEngineServiceOption])
+      expect(handleSelectionResult.accounts).toEqual([
+        awsAccountOptions[0],
+        ...gcpAccountOptions,
+      ])
+      expect(handleSelectionResult.services).toEqual([
+        ebsServiceOption,
+        computeEngineServiceOption,
+      ])
     })
     it('should return non changed accounts when all AWS services were selected and an AWS service is unselected ', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.SERVICES,
         [awsServiceOptions[0], computeEngineServiceOption],
         {
-          services: [awsServiceOptions[0], awsServiceOptions[1], computeEngineServiceOption],
+          services: [
+            awsServiceOptions[0],
+            awsServiceOptions[1],
+            computeEngineServiceOption,
+          ],
           accounts: [awsAccountOptions[0], ...gcpAccountOptions],
           cloudProviders: allProviderOptions,
         },
       )
       expect(handleSelectionResult.cloudProviders).toEqual(allProviderOptions)
-      expect(handleSelectionResult.accounts).toEqual([awsAccountOptions[0], ...gcpAccountOptions])
-      expect(handleSelectionResult.services).toEqual([awsServiceOptions[0], computeEngineServiceOption])
+      expect(handleSelectionResult.accounts).toEqual([
+        awsAccountOptions[0],
+        ...gcpAccountOptions,
+      ])
+      expect(handleSelectionResult.services).toEqual([
+        awsServiceOptions[0],
+        computeEngineServiceOption,
+      ])
     })
   })
 })

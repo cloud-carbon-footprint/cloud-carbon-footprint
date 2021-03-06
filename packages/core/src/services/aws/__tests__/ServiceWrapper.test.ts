@@ -21,59 +21,116 @@ describe('aws service helper', () => {
   })
 
   const getServiceWrapper = () =>
-    new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer(), new Athena())
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+      new Athena(),
+    )
 
   it('enablePagination decorator should follow CostExplorer next pages', async () => {
     const costExplorerGetCostAndUsageSpy = jest.fn()
     const firstPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
-      [{ start: startDate, value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
+      [
+        {
+          start: startDate,
+          value: '1.2120679',
+          types: ['EBS:VolumeUsage.gp2'],
+        },
+      ],
       'tokenToNextPage',
     )
     const secondPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
-      [{ start: startDate, value: '1.2120679', types: ['EBS:VolumeUsage.gp2'] }],
+      [
+        {
+          start: startDate,
+          value: '1.2120679',
+          types: ['EBS:VolumeUsage.gp2'],
+        },
+      ],
       null,
     )
     const getCostAndUsageRequest = buildAwsCostExplorerGetCostAndUsageRequest()
-    costExplorerGetCostAndUsageSpy.mockResolvedValueOnce(firstPageResponse).mockResolvedValueOnce(secondPageResponse)
+    costExplorerGetCostAndUsageSpy
+      .mockResolvedValueOnce(firstPageResponse)
+      .mockResolvedValueOnce(secondPageResponse)
 
-    AWSMock.mock('CostExplorer', 'getCostAndUsage', costExplorerGetCostAndUsageSpy)
-    const responses = await getServiceWrapper().getCostAndUsageResponses(getCostAndUsageRequest)
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      costExplorerGetCostAndUsageSpy,
+    )
+    const responses = await getServiceWrapper().getCostAndUsageResponses(
+      getCostAndUsageRequest,
+    )
 
-    expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(1, getCostAndUsageRequest, expect.anything())
+    expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(
+      1,
+      getCostAndUsageRequest,
+      expect.anything(),
+    )
     getCostAndUsageRequest.NextPageToken = 'tokenToNextPage'
-    expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(2, getCostAndUsageRequest, expect.anything())
+    expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(
+      2,
+      getCostAndUsageRequest,
+      expect.anything(),
+    )
 
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 
   it('enablePagination decorator should follow CloudWatch next pages', async () => {
-    const firstPageResponse = buildAwsCloudWatchGetMetricDataResponse('tokenToNextPage')
+    const firstPageResponse = buildAwsCloudWatchGetMetricDataResponse(
+      'tokenToNextPage',
+    )
     const secondPageResponse = buildAwsCloudWatchGetMetricDataResponse(null)
     const metricDataRequest = buildAwsCloudWatchGetMetricDataRequest()
 
     const cloudWatchGetMetricDataSpy = jest.fn()
-    cloudWatchGetMetricDataSpy.mockResolvedValueOnce(firstPageResponse).mockResolvedValueOnce(secondPageResponse)
+    cloudWatchGetMetricDataSpy
+      .mockResolvedValueOnce(firstPageResponse)
+      .mockResolvedValueOnce(secondPageResponse)
 
     AWSMock.mock('CloudWatch', 'getMetricData', cloudWatchGetMetricDataSpy)
-    const responses = await getServiceWrapper().getMetricDataResponses(buildAwsCloudWatchGetMetricDataRequest())
+    const responses = await getServiceWrapper().getMetricDataResponses(
+      buildAwsCloudWatchGetMetricDataRequest(),
+    )
 
-    expect(cloudWatchGetMetricDataSpy).toHaveBeenNthCalledWith(1, metricDataRequest, expect.anything())
+    expect(cloudWatchGetMetricDataSpy).toHaveBeenNthCalledWith(
+      1,
+      metricDataRequest,
+      expect.anything(),
+    )
     metricDataRequest.NextToken = 'tokenToNextPage'
-    expect(cloudWatchGetMetricDataSpy).toHaveBeenNthCalledWith(2, metricDataRequest, expect.anything())
+    expect(cloudWatchGetMetricDataSpy).toHaveBeenNthCalledWith(
+      2,
+      metricDataRequest,
+      expect.anything(),
+    )
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 
   it('enablePagination decorator should follow Athena next pages', async () => {
-    const firstPageResponse = buildAthenaGetQueryResultsResponse('tokenToNextPage')
+    const firstPageResponse = buildAthenaGetQueryResultsResponse(
+      'tokenToNextPage',
+    )
     const secondPageResponse = buildAthenaGetQueryResultsResponse(null)
 
     const athenaGetResultsSpy = jest.fn()
-    athenaGetResultsSpy.mockResolvedValueOnce(firstPageResponse).mockResolvedValueOnce(secondPageResponse)
+    athenaGetResultsSpy
+      .mockResolvedValueOnce(firstPageResponse)
+      .mockResolvedValueOnce(secondPageResponse)
     AWSMock.mock('Athena', 'getQueryResults', athenaGetResultsSpy)
 
-    const responses = await getServiceWrapper().getAthenaQueryResultSets({ QueryExecutionId: 'some-query-id' })
+    const responses = await getServiceWrapper().getAthenaQueryResultSets({
+      QueryExecutionId: 'some-query-id',
+    })
 
-    expect(athenaGetResultsSpy).toHaveBeenNthCalledWith(1, { QueryExecutionId: 'some-query-id' }, expect.anything())
+    expect(athenaGetResultsSpy).toHaveBeenNthCalledWith(
+      1,
+      { QueryExecutionId: 'some-query-id' },
+      expect.anything(),
+    )
     expect(athenaGetResultsSpy).toHaveBeenNthCalledWith(
       2,
       {
@@ -140,7 +197,9 @@ function buildAwsCostExplorerGetCostAndUsageResponse(
   }
 }
 
-function buildAwsCloudWatchGetMetricDataResponse(nextPageToken: string): CloudWatch.GetMetricDataOutput {
+function buildAwsCloudWatchGetMetricDataResponse(
+  nextPageToken: string,
+): CloudWatch.GetMetricDataOutput {
   return {
     NextToken: nextPageToken,
     MetricDataResults: [
@@ -163,7 +222,8 @@ function buildAwsCloudWatchGetMetricDataRequest(): GetMetricDataInput {
     MetricDataQueries: [
       {
         Id: 'cpuUtilizationWithEmptyValues',
-        Expression: "SEARCH('{AWS/ElastiCache} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+        Expression:
+          "SEARCH('{AWS/ElastiCache} MetricName=\"CPUUtilization\"', 'Average', 3600)",
         ReturnData: false,
       },
       {
@@ -175,7 +235,9 @@ function buildAwsCloudWatchGetMetricDataRequest(): GetMetricDataInput {
   }
 }
 
-function buildAthenaGetQueryResultsResponse(nextPageToken: string): Athena.GetQueryResultsOutput {
+function buildAthenaGetQueryResultsResponse(
+  nextPageToken: string,
+): Athena.GetQueryResultsOutput {
   return {
     NextToken: nextPageToken,
     ResultSet: { Rows: [] },

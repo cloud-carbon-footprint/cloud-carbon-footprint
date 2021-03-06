@@ -15,7 +15,11 @@ describe('NetworkingEstimator', () => {
       },
     ]
 
-    const result = new NetworkingEstimator().estimate(input, AWS_REGIONS.US_EAST_1, 'AWS')
+    const result = new NetworkingEstimator().estimate(
+      input,
+      AWS_REGIONS.US_EAST_1,
+      'AWS',
+    )
 
     expect(result).toEqual([
       {
@@ -34,7 +38,11 @@ describe('NetworkingEstimator', () => {
       },
     ]
 
-    const result = new NetworkingEstimator().estimate(input, GCP_REGIONS.SOUTHAMERICA_EAST1, 'GCP')
+    const result = new NetworkingEstimator().estimate(
+      input,
+      GCP_REGIONS.SOUTHAMERICA_EAST1,
+      'GCP',
+    )
 
     expect(result).toEqual([
       {

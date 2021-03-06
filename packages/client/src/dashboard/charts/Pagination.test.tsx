@@ -47,7 +47,9 @@ describe('Pagination', () => {
   })
 
   it('should render empty div when pagination data is an empty array', () => {
-    const { getByLabelText } = render(<Pagination data={[]} handlePage={handlePage} pageSize={3} />)
+    const { getByLabelText } = render(
+      <Pagination data={[]} handlePage={handlePage} pageSize={3} />,
+    )
     const noPaginationDataDiv = getByLabelText('no-pagination-data')
 
     expect(handlePage).toHaveBeenCalledWith({ data: [], page: 0 })
@@ -55,7 +57,9 @@ describe('Pagination', () => {
   })
 
   it('renders Pagination with correct configuration', () => {
-    const wrapper = create(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const wrapper = create(
+      <Pagination data={data} handlePage={handlePage} pageSize={3} />,
+    )
     expect(wrapper.toJSON()).toMatchSnapshot()
   })
 
@@ -65,7 +69,9 @@ describe('Pagination', () => {
   })
 
   it('previous button should be disabled on first page', () => {
-    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const { getByLabelText } = render(
+      <Pagination data={data} handlePage={handlePage} pageSize={3} />,
+    )
     const prevButton = getByLabelText('chevron-left')
 
     act(() => {
@@ -77,7 +83,9 @@ describe('Pagination', () => {
   })
 
   it('should be able to traverse available pages', () => {
-    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const { getByLabelText } = render(
+      <Pagination data={data} handlePage={handlePage} pageSize={3} />,
+    )
     const nextButton = getByLabelText('chevron-right')
     const prevButton = getByLabelText('chevron-left')
 
@@ -108,7 +116,9 @@ describe('Pagination', () => {
   })
 
   it('should go to last page on click of last page button', () => {
-    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const { getByLabelText } = render(
+      <Pagination data={data} handlePage={handlePage} pageSize={3} />,
+    )
     const lastPageButton = getByLabelText('last page')
 
     expect(handlePage).toHaveBeenLastCalledWith({ data: page1, page: 0 })
@@ -126,7 +136,9 @@ describe('Pagination', () => {
   })
 
   it('should go to first page on click of first page button', () => {
-    const { getByLabelText } = render(<Pagination data={data} handlePage={handlePage} pageSize={3} />)
+    const { getByLabelText } = render(
+      <Pagination data={data} handlePage={handlePage} pageSize={3} />,
+    )
     const lastPageButton = getByLabelText('last page')
     const firstPageButton = getByLabelText('first page')
 

@@ -6,7 +6,10 @@ import { getCostFromCostExplorer } from '../CostMapper'
 import { AWS_REGIONS } from '../AWSRegions'
 import AWSMock from 'aws-sdk-mock'
 import { CostExplorer } from 'aws-sdk'
-import { GetCostAndUsageRequest, GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
+import {
+  GetCostAndUsageRequest,
+  GetCostAndUsageResponse,
+} from 'aws-sdk/clients/costexplorer'
 import { ServiceWrapper } from '../ServiceWrapper'
 
 const startDate = '2020-08-06'
@@ -17,7 +20,10 @@ describe('CostMapper', function () {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(null, buildResponseBody())
       },
     )

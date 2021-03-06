@@ -11,7 +11,13 @@ import { ApexChartProps } from './common/ChartTypes'
 import { Page, Pagination } from './Pagination'
 import NoDataPage from '../NoDataPage'
 
-const mapToRange = (value: number, in_min: number, in_max: number, out_min: number, out_max: number) => {
+const mapToRange = (
+  value: number,
+  in_min: number,
+  in_max: number,
+  out_min: number,
+  out_max: number,
+) => {
   return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
 }
 
@@ -20,7 +26,10 @@ export interface Entry {
   y: number
 }
 
-export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType }) => {
+export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
+  data,
+  dataType,
+}) => {
   const [pageData, setPageData] = useState<Page<Entry>>({ data: [], page: 0 })
   const theme = useTheme()
   const chartColors = [theme.palette.primary.main]
@@ -43,7 +52,13 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
   const minThreshold = 1
   const maxThreshold = 100
   const mappedDataEntries: Entry[] = dataEntries.map((entry) => {
-    const yEntry = mapToRange(entry.y, smallestCO2E, largestCO2E, minThreshold, maxThreshold)
+    const yEntry = mapToRange(
+      entry.y,
+      smallestCO2E,
+      largestCO2E,
+      minThreshold,
+      maxThreshold,
+    )
     return { x: entry.x, y: isNaN(yEntry) ? maxThreshold : yEntry }
   })
 
@@ -96,10 +111,13 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       enabled: true,
       textAnchor: 'start',
       formatter: function (_: number, opts: { dataPointIndex: number }) {
-        const currentCO2E = dataEntries[pageData.page * pageSize + opts.dataPointIndex].y
+        const currentCO2E =
+          dataEntries[pageData.page * pageSize + opts.dataPointIndex].y
 
         const formattedPercentage = (currentCO2E / totalCO2EByDataType) * 100
-        return formattedPercentage < 0.01 ? '< 0.01 %' : `${formattedPercentage.toFixed(2)} %`
+        return formattedPercentage < 0.01
+          ? '< 0.01 %'
+          : `${formattedPercentage.toFixed(2)} %`
       },
       offsetX: 16,
       background: {
@@ -136,7 +154,9 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       },
       y: {
         formatter: function (value: number, opts: { dataPointIndex: number }) {
-          return `${dataEntries[pageData.page * pageSize + opts.dataPointIndex].y.toFixed(3)} metric tons`
+          return `${dataEntries[
+            pageData.page * pageSize + opts.dataPointIndex
+          ].y.toFixed(3)} metric tons`
         },
       },
     },
@@ -158,11 +178,20 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({ data, dataType
       }}
     >
       {pageData && pageData.data && pageData.data.length ? (
-        <Chart options={options} series={options.series} type="bar" height={options.height} />
+        <Chart
+          options={options}
+          series={options.series}
+          type="bar"
+          height={options.height}
+        />
       ) : (
         <NoDataPage isTop={false} />
       )}
-      <Pagination data={mappedDataEntries} pageSize={pageSize} handlePage={handlePage} />
+      <Pagination
+        data={mappedDataEntries}
+        pageSize={pageSize}
+        handlePage={handlePage}
+      />
     </div>
   )
 }

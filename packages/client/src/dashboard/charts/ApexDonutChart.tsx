@@ -10,20 +10,28 @@ import { getChartColors } from '../../themes'
 import { sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
 
-export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({ data, dataType }) => {
+export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
+  data,
+  dataType,
+}) => {
   const theme = useTheme()
   const chartColors = getChartColors(theme)
 
   const donutData = sumCO2ByServiceOrRegion(data, dataType)
 
-  const donutDataEntries: { serviceOrRegion: string; c02Value: number }[] = Object.entries(donutData)
+  const donutDataEntries: {
+    serviceOrRegion: string
+    c02Value: number
+  }[] = Object.entries(donutData)
     .map((item) => ({
       serviceOrRegion: item[0],
       c02Value: item[1],
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.c02Value - higherC02.c02Value)
 
-  const sortedServicesOrRegions = donutDataEntries.map((entry) => entry.serviceOrRegion)
+  const sortedServicesOrRegions = donutDataEntries.map(
+    (entry) => entry.serviceOrRegion,
+  )
   const sortedCO2Emissions = donutDataEntries.map((entry) => entry.c02Value)
 
   const options = {
@@ -73,5 +81,12 @@ export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({ data, dataTy
     },
   }
 
-  return <Chart options={options} series={options.series} type="donut" height={options.height} />
+  return (
+    <Chart
+      options={options}
+      series={options.series}
+      type="donut"
+      height={options.height}
+    />
+  )
 }

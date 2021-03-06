@@ -19,14 +19,22 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
     super()
   }
 
-  async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
+  async getUsage(
+    start: Date,
+    end: Date,
+    region: string,
+  ): Promise<ComputeUsage[]> {
     const metricDataResponses = await this.getCpuUtilization(start, end)
     const costAndUsageResponses = await this.getTotalVCpusByDate(
       start.toISOString().substr(0, 10),
       end.toISOString().substr(0, 10),
       region,
     )
-    return getComputeUsage(metricDataResponses, costAndUsageResponses, RDS_INSTANCE_TYPES)
+    return getComputeUsage(
+      metricDataResponses,
+      costAndUsageResponses,
+      RDS_INSTANCE_TYPES,
+    )
   }
 
   private async getCpuUtilization(start: Date, end: Date) {
@@ -36,7 +44,8 @@ export default class RDSComputeService extends ServiceWithCPUUtilization {
       MetricDataQueries: [
         {
           Id: 'cpuUtilizationWithEmptyValues',
-          Expression: "SEARCH('{AWS/RDS} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+          Expression:
+            "SEARCH('{AWS/RDS} MetricName=\"CPUUtilization\"', 'Average', 3600)",
           ReturnData: false,
         },
         {

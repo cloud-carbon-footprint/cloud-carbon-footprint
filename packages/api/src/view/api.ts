@@ -28,7 +28,10 @@ const apiLogger = new Logger('api')
  * start - Required, UTC start date in format YYYY-MM-DD
  * end - Required, UTC start date in format YYYY-MM-DD
  */
-const FootprintApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
+const FootprintApiMiddleware = async function (
+  req: express.Request,
+  res: express.Response,
+): Promise<void> {
   // Set the request time out to 10 minutes to allow the request enough time to complete.
   req.connection.setTimeout(1000 * 60 * 10)
   const rawRequest: RawRequest = {
@@ -41,7 +44,9 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
   const footprintApp = new App()
   try {
     const estimationRequest = CreateValidRequest(rawRequest)
-    const estimationResults = await footprintApp.getCostAndEstimates(estimationRequest)
+    const estimationResults = await footprintApp.getCostAndEstimates(
+      estimationRequest,
+    )
     res.json(estimationResults)
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
@@ -53,7 +58,10 @@ const FootprintApiMiddleware = async function (req: express.Request, res: expres
   }
 }
 
-const EmissionsApiMiddleware = async function (req: express.Request, res: express.Response): Promise<void> {
+const EmissionsApiMiddleware = async function (
+  req: express.Request,
+  res: express.Response,
+): Promise<void> {
   apiLogger.info(`Regions emissions factors API request started`)
   try {
     const emissionsResults: EmissionsRatios[] = Object.values(

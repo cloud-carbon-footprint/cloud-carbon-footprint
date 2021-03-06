@@ -21,7 +21,11 @@ const StyledWrapper = withTheme(styled.div`
     }
     // https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/OutlinedInput/OutlinedInput.js#L10
     .DateRangePickerInput__withBorder {
-      border: 1px solid ${theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'};
+      border: 1px solid ${
+        theme.palette.type === 'light'
+          ? 'rgba(0, 0, 0, 0.23)'
+          : 'rgba(255, 255, 255, 0.23)'
+      };
     }
     .DateInput {
       width: ${theme.spacing(13)}px;
@@ -118,12 +122,19 @@ const StyledWrapper = withTheme(styled.div`
   `}
 `)
 
-const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => {
+const DateFilter: FunctionComponent<FilterProps> = ({
+  filters,
+  setFilters,
+}) => {
   const today = moment.utc()
-  const startOfLastYear = moment.utc(Date.UTC(today.year() - 1, 0, 1, 0, 0, 0, 0))
+  const startOfLastYear = moment.utc(
+    Date.UTC(today.year() - 1, 0, 1, 0, 0, 0, 0),
+  )
   const startDate = filters.dateRange?.startDate || null
   const endDate = filters.dateRange?.endDate || null
-  const [focusedInput, setFocusedInput] = useState<'startDate' | 'endDate' | null>(null)
+  const [focusedInput, setFocusedInput] = useState<
+    'startDate' | 'endDate' | null
+  >(null)
 
   return (
     <StyledWrapper>
@@ -157,7 +168,9 @@ const DateFilter: FunctionComponent<FilterProps> = ({ filters, setFilters }) => 
   )
 }
 
-const isOutsideRange = (start: moment.Moment, end: moment.Moment) => (current: moment.Moment) => {
+const isOutsideRange = (start: moment.Moment, end: moment.Moment) => (
+  current: moment.Moment,
+) => {
   return !current.isBetween(start, end, 'day', '[]')
 }
 

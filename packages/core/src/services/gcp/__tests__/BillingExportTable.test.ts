@@ -38,7 +38,9 @@ describe('GCP BillingExportTable Service', () => {
 
   it('Returns estimation results for App Engine SSD Storage & GCS Storage accumulated, ignoring RAM', async () => {
     // given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsAppEngineSSDStorageRAM)
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsAppEngineSSDStorageRAM,
+    )
 
     // when
     const billingExportTableService = new BillingExportTable(
@@ -49,7 +51,10 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = await billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
 
     // then
     const expectedResult: EstimationResult[] = [
@@ -74,7 +79,9 @@ describe('GCP BillingExportTable Service', () => {
 
   it('Returns estimation results for Cloud SQL SSD Storage, Compute Engine and Cloud Dataflow HDD', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD)
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
+    )
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -84,7 +91,10 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = await billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
 
     // then
     const expectedResult: EstimationResult[] = [
@@ -134,7 +144,9 @@ describe('GCP BillingExportTable Service', () => {
 
   it('Returns estimation results Compute Engine Ram and Unknown Usage Types', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsComputeEngineRamAndUnknownUsages)
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsComputeEngineRamAndUnknownUsages,
+    )
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -144,7 +156,10 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = await billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
 
     // then
     const expectedResult: EstimationResult[] = []
@@ -153,7 +168,9 @@ describe('GCP BillingExportTable Service', () => {
 
   it('Returns null estimates for networking and CLoud SQL Compute usage accumulated', async () => {
     //given
-    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsUnknownAndCloudSQLCompute)
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryResultsUnknownAndCloudSQLCompute,
+    )
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -163,7 +180,10 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = await billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
 
     // then
     const expectedResult: EstimationResult[] = [
@@ -186,7 +206,9 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
   it('estimation for unknown App Engine Compute and Cloud DataFlow Compute', async () => {
-    mockJob.getQueryResults.mockResolvedValue(mockQueryAppEngineComputeUnknownRegion)
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryAppEngineComputeUnknownRegion,
+    )
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
@@ -196,7 +218,10 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = await billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -239,7 +264,10 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    const result = await billingExportTableService.getEstimates(startDate, endDate)
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -290,7 +318,9 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    await expect(() => billingExportTableService.getEstimates(startDate, endDate)).rejects.toThrow(
+    await expect(() =>
+      billingExportTableService.getEstimates(startDate, endDate),
+    ).rejects.toThrow(
       `BigQuery get Query Results failed. Reason: ${mockErrorDetails.reason}, Domain: ${mockErrorDetails.domain}, Message: ${mockErrorDetails.message}`,
     )
   })
@@ -314,7 +344,9 @@ describe('GCP BillingExportTable Service', () => {
       new BigQuery(),
     )
 
-    await expect(() => billingExportTableService.getEstimates(startDate, endDate)).rejects.toThrow(
+    await expect(() =>
+      billingExportTableService.getEstimates(startDate, endDate),
+    ).rejects.toThrow(
       `BigQuery create Query Job failed. Reason: ${mockErrorDetails.reason}, Location: ${mockErrorDetails.location}, Message: ${mockErrorDetails.message}`,
     )
   })

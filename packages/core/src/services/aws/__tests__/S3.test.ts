@@ -30,7 +30,12 @@ describe('S3', () => {
         'SUM(SEARCH(\'{AWS/S3,BucketName,StorageType} MetricName="BucketSizeBytes" StorageType="StandardStorage"\', \'Average\', 86400))',
     },
   ]
-  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+  const getServiceWrapper = () =>
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+    )
 
   it('gets S3 usage', async () => {
     const response: any = {
@@ -46,7 +51,12 @@ describe('S3', () => {
       ],
     }
 
-    mockAWSCloudWatchGetMetricDataCall(new Date(start), new Date(end), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start),
+      new Date(end),
+      response,
+      metricDataQueries,
+    )
 
     const s3Service = new S3(getServiceWrapper())
     const result = await s3Service.getUsage(new Date(start), new Date(end))
@@ -74,7 +84,10 @@ describe('S3', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
@@ -86,7 +99,11 @@ describe('S3', () => {
     )
 
     const s3Service = new S3(getServiceWrapper())
-    const s3Costs = await s3Service.getCosts(new Date(start), new Date(end), region)
+    const s3Costs = await s3Service.getCosts(
+      new Date(start),
+      new Date(end),
+      region,
+    )
 
     expect(s3Costs).toEqual([
       { amount: 2.3, currency: 'USD', timestamp: new Date(start) },
@@ -115,10 +132,16 @@ describe('S3', () => {
         },
       ],
     }
-    mockAWSCloudWatchGetMetricDataCall(new Date(start), new Date(end), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start),
+      new Date(end),
+      response,
+      metricDataQueries,
+    )
 
     const s3Service = new S3(getServiceWrapper())
-    const getS3Usage = async () => await s3Service.getUsage(new Date(start), new Date(end))
+    const getS3Usage = async () =>
+      await s3Service.getUsage(new Date(start), new Date(end))
 
     await expect(getS3Usage).rejects.toThrow('Partial Data Returned from AWS')
   })
@@ -144,10 +167,16 @@ describe('S3', () => {
         },
       ],
     }
-    mockAWSCloudWatchGetMetricDataCall(new Date(start), new Date(end), response, metricDataQueries)
+    mockAWSCloudWatchGetMetricDataCall(
+      new Date(start),
+      new Date(end),
+      response,
+      metricDataQueries,
+    )
 
     const s3Service = new S3(getServiceWrapper())
-    const getS3Usage = async () => await s3Service.getUsage(new Date(start), new Date(end))
+    const getS3Usage = async () =>
+      await s3Service.getUsage(new Date(start), new Date(end))
 
     await expect(getS3Usage).not.toThrow()
   })

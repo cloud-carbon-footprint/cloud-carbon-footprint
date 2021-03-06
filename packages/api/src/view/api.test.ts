@@ -15,7 +15,10 @@ jest.mock('@cloud-carbon-footprint/core', () => ({
     },
   },
   App: jest.fn().mockImplementation(() => {
-    return { getCostAndEstimates: mockGetCostAndEstimates, getFilterData: mockGetFilterData }
+    return {
+      getCostAndEstimates: mockGetCostAndEstimates,
+      getFilterData: mockGetFilterData,
+    }
   }),
 }))
 
@@ -45,7 +48,9 @@ describe('api', () => {
       mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
 
       //run
-      const response = await request(server).get(encodeURI(`/footprint?start=${startDate}&end=${endDate}`))
+      const response = await request(server).get(
+        encodeURI(`/footprint?start=${startDate}&end=${endDate}`),
+      )
 
       //assert
       expect(response.status).toBe(200)
@@ -62,7 +67,9 @@ describe('api', () => {
         const endDate = '2020-07-13'
 
         //run
-        const response = await request(server).get(encodeURI(`/footprint?end=${endDate}`))
+        const response = await request(server).get(
+          encodeURI(`/footprint?end=${endDate}`),
+        )
 
         //assert
         expect(response.status).toBe(400)
@@ -73,7 +80,9 @@ describe('api', () => {
         const startDate = '2020-07-12'
 
         //run
-        const response = await request(server).get(encodeURI(`/footprint?start=${startDate}`))
+        const response = await request(server).get(
+          encodeURI(`/footprint?start=${startDate}`),
+        )
 
         //assert
         expect(response.status).toBe(400)
@@ -86,7 +95,9 @@ describe('api', () => {
 
         //run
         mockGetCostAndEstimates.mockRejectedValueOnce(new Error('error'))
-        const response = await request(server).get(encodeURI(`/footprint?start=${startDate}&end=${endDate}`))
+        const response = await request(server).get(
+          encodeURI(`/footprint?start=${startDate}&end=${endDate}`),
+        )
 
         //assert
         expect(response.status).toBe(500)
@@ -96,7 +107,9 @@ describe('api', () => {
 
   describe('/regions/emissions-factors', () => {
     it('returns data for regional emissions factors', async () => {
-      const response = await request(server).get(encodeURI(`/regions/emissions-factors`))
+      const response = await request(server).get(
+        encodeURI(`/regions/emissions-factors`),
+      )
 
       const expectedResponse: EmissionsRatios[] = [
         {

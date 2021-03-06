@@ -2,7 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import EstimatorCacheFileSystem, { cachePath } from '../EstimatorCacheFileSystem'
+import EstimatorCacheFileSystem, {
+  cachePath,
+} from '../EstimatorCacheFileSystem'
 import { promises } from 'fs'
 import EstimatorCache from '../EstimatorCache'
 import moment from 'moment'
@@ -43,7 +45,10 @@ describe('EstimatorCacheFileSystem', () => {
       const startDate = '2020-10-01'
       const endDate = '2020-10-02'
 
-      const cachedData: EstimationResult[] = buildFootprintEstimates(startDate, 1)
+      const cachedData: EstimationResult[] = buildFootprintEstimates(
+        startDate,
+        1,
+      )
       mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
 
       //run
@@ -93,7 +98,9 @@ describe('EstimatorCacheFileSystem', () => {
       console.warn = jest.fn()
 
       //run
-      const estimates = await estimatorCache.getEstimates({} as EstimationRequest)
+      const estimates = await estimatorCache.getEstimates(
+        {} as EstimationRequest,
+      )
 
       //assert
       expect(estimates).toEqual([])

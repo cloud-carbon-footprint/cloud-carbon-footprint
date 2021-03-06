@@ -39,7 +39,11 @@ function mockChainableTemporaryCredentials(
 ) {
   const chainableTemporaryCredentials = (ChainableTemporaryCredentials as unknown) as Mock
   chainableTemporaryCredentials.mockImplementationOnce(() => {
-    return new Credentials(targetAccessKeyId, targetSecretAccessKey, targetSessionToken)
+    return new Credentials(
+      targetAccessKeyId,
+      targetSecretAccessKey,
+      targetSessionToken,
+    )
   })
   return chainableTemporaryCredentials
 }
@@ -51,7 +55,12 @@ describe('AWSCredentialsProvider', () => {
     const targetRoleSessionName = 'testRoleSessionName'
     const proxyAccountId = '987654321'
     const proxyRoleName = 'testProxyRoleName'
-    const expectedCredentials = new CredentialsForGCP(accountId, targetRoleSessionName, proxyAccountId, proxyRoleName)
+    const expectedCredentials = new CredentialsForGCP(
+      accountId,
+      targetRoleSessionName,
+      proxyAccountId,
+      proxyRoleName,
+    )
 
     // when
     const credentials = AWSCredentialsProvider.create(accountId)
@@ -63,7 +72,11 @@ describe('AWSCredentialsProvider', () => {
   it('create returns ChainableTemporaryCredentials', () => {
     // given
     mockConfig.AWS.authentication.mode = 'AWS'
-    const mockedChainableTemporaryCredentials = mockChainableTemporaryCredentials('', '', '')
+    const mockedChainableTemporaryCredentials = mockChainableTemporaryCredentials(
+      '',
+      '',
+      '',
+    )
     const accountId = '123'
     const params = {
       params: {

@@ -78,7 +78,10 @@ function rawRequestToEstimationRequest(request: RawRequest): EstimationRequest {
   }
 }
 
-function validateDatesPresent(startDate: string, endDate: string): void | EstimationRequestValidationError {
+function validateDatesPresent(
+  startDate: string,
+  endDate: string,
+): void | EstimationRequestValidationError {
   const errors = []
   if (!startDate) {
     errors.push('Start date must be provided')
@@ -94,7 +97,9 @@ function validateDatesPresent(startDate: string, endDate: string): void | Estima
 }
 
 // throws EstimationRequestValidationError if either validation fails
-export default function CreateValidRequest(request: RawRequest): EstimationRequest {
+export default function CreateValidRequest(
+  request: RawRequest,
+): EstimationRequest {
   validateDatesPresent(request.startDate, request.endDate)
 
   const startDate = moment.utc(request.startDate)

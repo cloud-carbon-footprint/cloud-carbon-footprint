@@ -11,7 +11,9 @@ import { StorageEstimator } from '../../domain/StorageEstimator'
 import ComputeUsage from '../../domain/ComputeUsage'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
 import NetworkingUsage from '../../domain/NetworkingUsage'
-import FootprintEstimate, { MutableEstimationResult } from '../../domain/FootprintEstimate'
+import FootprintEstimate, {
+  MutableEstimationResult,
+} from '../../domain/FootprintEstimate'
 import { EstimationResult } from '../../application/EstimationResult'
 import configLoader from '../../application/ConfigLoader'
 import {
@@ -62,43 +64,70 @@ export default class BillingExportTable {
       switch (usageRow.usageUnit) {
         case 'seconds':
           if (this.isComputeUsage(billingExportRow.usageType))
-            footprintEstimate = this.getComputeFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+            footprintEstimate = this.getComputeFootprintEstimate(
+              billingExportRow,
+              billingExportRow.timestamp,
+            )
           else {
             return []
           }
           break
         case 'byte-seconds':
-          footprintEstimate = this.getStorageFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+          footprintEstimate = this.getStorageFootprintEstimate(
+            billingExportRow,
+            billingExportRow.timestamp,
+          )
           break
         case 'bytes':
           if (this.isNetworkingUsage(billingExportRow.usageType))
-            footprintEstimate = this.getNetworkingFootprintEstimate(billingExportRow, billingExportRow.timestamp)
+            footprintEstimate = this.getNetworkingFootprintEstimate(
+              billingExportRow,
+              billingExportRow.timestamp,
+            )
           else {
             return []
           }
           break
         default:
-          this.billingExportTableLogger.warn(`Unsupported Usage unit: ${usageRow.usageUnit}`)
+          this.billingExportTableLogger.warn(
+            `Unsupported Usage unit: ${usageRow.usageUnit}`,
+          )
           return []
       }
-      appendOrAccumulateEstimatesByDay(results, billingExportRow, footprintEstimate)
+      appendOrAccumulateEstimatesByDay(
+        results,
+        billingExportRow,
+        footprintEstimate,
+      )
     })
     return results
   }
 
-  private getComputeFootprintEstimate(usageRow: BillingExportRow, timestamp: Date): FootprintEstimate {
+  private getComputeFootprintEstimate(
+    usageRow: BillingExportRow,
+    timestamp: Date,
+  ): FootprintEstimate {
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
     }
-    return this.computeEstimator.estimate([computeUsage], usageRow.region, 'GCP')[0]
+    return this.computeEstimator.estimate(
+      [computeUsage],
+      usageRow.region,
+      'GCP',
+    )[0]
   }
 
-  private getStorageFootprintEstimate(usageRow: BillingExportRow, timestamp: Date): FootprintEstimate {
+  private getStorageFootprintEstimate(
+    usageRow: BillingExportRow,
+    timestamp: Date,
+  ): FootprintEstimate {
     // storage estimation requires usage amount in terabyte hours
-    const usageAmountTerabyteHours = this.convertByteSecondsToTerabyteHours(usageRow.usageAmount)
+    const usageAmountTerabyteHours = this.convertByteSecondsToTerabyteHours(
+      usageRow.usageAmount,
+    )
     const storageUsage: StorageUsage = {
       timestamp,
       terabyteHours: usageAmountTerabyteHours,
@@ -106,16 +135,27 @@ export default class BillingExportTable {
     if (usageRow.usageType.includes('SSD')) {
       return {
         usesAverageCPUConstant: false,
-        ...this.ssdStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0],
+        ...this.ssdStorageEstimator.estimate(
+          [storageUsage],
+          usageRow.region,
+          'GCP',
+        )[0],
       }
     }
     return {
       usesAverageCPUConstant: false,
-      ...this.hddStorageEstimator.estimate([storageUsage], usageRow.region, 'GCP')[0],
+      ...this.hddStorageEstimator.estimate(
+        [storageUsage],
+        usageRow.region,
+        'GCP',
+      )[0],
     }
   }
 
-  private getNetworkingFootprintEstimate(usageRow: BillingExportRow, timestamp: Date): FootprintEstimate {
+  private getNetworkingFootprintEstimate(
+    usageRow: BillingExportRow,
+    timestamp: Date,
+  ): FootprintEstimate {
     const networkingUSage: NetworkingUsage = {
       timestamp,
       gigabytes: this.convertBytesToGigabytes(usageRow.usageAmount),
@@ -123,7 +163,11 @@ export default class BillingExportTable {
 
     return {
       usesAverageCPUConstant: false,
-      ...this.networkingEstimator.estimate([networkingUSage], usageRow.region, 'GCP')[0],
+      ...this.networkingEstimator.estimate(
+        [networkingUSage],
+        usageRow.region,
+        'GCP',
+      )[0],
     }
   }
 
@@ -137,7 +181,10 @@ export default class BillingExportTable {
 
   private isMemoryUsage(usageType: string): boolean {
     // We only want to ignore memory usage that is not also compute usage (determined by containing VCPU usage)
-    return this.containsAny(MEMORY_USAGE_TYPES, usageType) && !this.containsAny(COMPUTE_STRING_FORMATS, usageType)
+    return (
+      this.containsAny(MEMORY_USAGE_TYPES, usageType) &&
+      !this.containsAny(COMPUTE_STRING_FORMATS, usageType)
+    )
   }
 
   private isUnsupportedUsage(usageType: string): boolean {
@@ -153,7 +200,9 @@ export default class BillingExportTable {
   }
 
   private containsAny(substrings: string[], stringToSearch: string): boolean {
-    return substrings.some((substring) => new RegExp(`\\b${substring}\\b`).test(stringToSearch))
+    return substrings.some((substring) =>
+      new RegExp(`\\b${substring}\\b`).test(stringToSearch),
+    )
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
@@ -171,8 +220,12 @@ export default class BillingExportTable {
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
-                    AND usage_start_time >= TIMESTAMP('${moment(start).format('YYYY-MM-DD')}')
-                    AND usage_end_time <= TIMESTAMP('${moment(end).format('YYYY-MM-DD')}')
+                    AND usage_start_time >= TIMESTAMP('${moment(start).format(
+                      'YYYY-MM-DD',
+                    )}')
+                    AND usage_end_time <= TIMESTAMP('${moment(end).format(
+                      'YYYY-MM-DD',
+                    )}')
                   GROUP BY
                     timestamp,
                     accountName,
@@ -191,7 +244,9 @@ export default class BillingExportTable {
       ;[rows] = await job.getQueryResults()
     } catch (e) {
       const { reason, domain, message } = e.errors[0]
-      throw new Error(`BigQuery get Query Results failed. Reason: ${reason}, Domain: ${domain}, Message: ${message}`)
+      throw new Error(
+        `BigQuery get Query Results failed. Reason: ${reason}, Domain: ${domain}, Message: ${message}`,
+      )
     }
     return rows
   }
@@ -202,7 +257,9 @@ export default class BillingExportTable {
       ;[job] = await this.bigQuery.createQueryJob({ query: query })
     } catch (e) {
       const { reason, location, message } = e.errors[0]
-      throw new Error(`BigQuery create Query Job failed. Reason: ${reason}, Location: ${location}, Message: ${message}`)
+      throw new Error(
+        `BigQuery create Query Job failed. Reason: ${reason}, Location: ${location}, Message: ${message}`,
+      )
     }
     return job
   }

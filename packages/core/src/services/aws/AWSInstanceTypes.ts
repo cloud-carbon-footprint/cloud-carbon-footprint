@@ -445,7 +445,9 @@ export const EC2_INSTANCE_TYPES: { [instanceType: string]: number } = {
   't1.micro': 1,
 }
 
-export const BURSTABLE_INSTANCE_BASELINE_UTILIZATION: { [instanceType: string]: number } = {
+export const BURSTABLE_INSTANCE_BASELINE_UTILIZATION: {
+  [instanceType: string]: number
+} = {
   't2.nano': 5,
   't2.micro': 10,
   't2.small': 20,

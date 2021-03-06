@@ -161,7 +161,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       accountName: 'test-account',
       region: 'us-west1',
       serviceName: 'Cloud SQL',
-      usageType: 'Cloud SQL for PostgreSQL: Zonal - IP address reservation in Americas',
+      usageType:
+        'Cloud SQL for PostgreSQL: Zonal - IP address reservation in Americas',
       usageUnit: 'seconds',
       vCpus: null,
       usageAmount: 14551,
@@ -183,7 +184,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'Cloud SQL',
-      usageType: 'Cloud SQL for MySQL: Zonal - 4 vCPU + 15GB RAM in Los Angeles',
+      usageType:
+        'Cloud SQL for MySQL: Zonal - 4 vCPU + 15GB RAM in Los Angeles',
       usageUnit: 'seconds',
       vCpus: null,
       usageAmount: 50000,
@@ -205,7 +207,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'Cloud SQL',
-      usageType: 'DB generic Small instance with 1 VCPU running in Americas (with 30% promotional discount)',
+      usageType:
+        'DB generic Small instance with 1 VCPU running in Americas (with 30% promotional discount)',
       usageUnit: 'seconds',
       vCpus: null,
       usageAmount: 26316000,

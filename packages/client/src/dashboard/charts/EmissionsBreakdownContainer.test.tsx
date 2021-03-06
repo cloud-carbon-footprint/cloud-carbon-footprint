@@ -3,7 +3,11 @@
  */
 
 import React from 'react'
-import { create, ReactTestInstance, ReactTestRenderer } from 'react-test-renderer'
+import {
+  create,
+  ReactTestInstance,
+  ReactTestRenderer,
+} from 'react-test-renderer'
 
 import { EmissionsBreakdownContainer } from './EmissionsBreakdownContainer'
 import { Select } from '@material-ui/core'
@@ -71,9 +75,13 @@ describe('EmissionsBreakdownContainer', () => {
   ]
 
   beforeEach(() => {
-    testRenderer = create(<EmissionsBreakdownContainer data={dataWithHigherPrecision} />)
+    testRenderer = create(
+      <EmissionsBreakdownContainer data={dataWithHigherPrecision} />,
+    )
     testInstance = testRenderer.root
-    page = render(<EmissionsBreakdownContainer data={dataWithHigherPrecision} />)
+    page = render(
+      <EmissionsBreakdownContainer data={dataWithHigherPrecision} />,
+    )
   })
 
   afterEach(() => {
@@ -106,8 +114,14 @@ describe('EmissionsBreakdownContainer', () => {
       fireEvent.mouseDown(page.getByRole('button', { name: 'Region' }))
     })
 
-    expect(page.getByRole('option', { name: 'Region' })).toHaveClass('MuiListItem-button')
-    expect(page.getByRole('option', { name: 'Account' })).toHaveClass('MuiListItem-button')
-    expect(page.getByRole('option', { name: 'Service' })).toHaveClass('MuiListItem-button')
+    expect(page.getByRole('option', { name: 'Region' })).toHaveClass(
+      'MuiListItem-button',
+    )
+    expect(page.getByRole('option', { name: 'Account' })).toHaveClass(
+      'MuiListItem-button',
+    )
+    expect(page.getByRole('option', { name: 'Service' })).toHaveClass(
+      'MuiListItem-button',
+    )
   })
 })

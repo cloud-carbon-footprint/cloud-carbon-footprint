@@ -23,7 +23,9 @@ describe('RemoteServiceHook', () => {
   test('should send request to /api endpoint', async () => {
     axiosMocked.get.mockResolvedValue({ data: ['data'] })
 
-    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useRemoteService([], startDate, endDate, region),
+    )
 
     await waitForNextUpdate()
 
@@ -40,7 +42,9 @@ describe('RemoteServiceHook', () => {
     const response = { status: 500, statusText: 'Internal Service Error' }
     axiosMocked.get.mockRejectedValue({ response })
 
-    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useRemoteService([], startDate, endDate, region),
+    )
 
     await waitForNextUpdate()
 
@@ -56,7 +60,9 @@ describe('RemoteServiceHook', () => {
     const defaultResponse = { status: '520', statusText: 'Unknown Error' }
     axiosMocked.get.mockRejectedValue('some error')
 
-    const { result, waitForNextUpdate } = renderHook(() => useRemoteService([], startDate, endDate, region))
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useRemoteService([], startDate, endDate, region),
+    )
 
     await waitForNextUpdate()
 

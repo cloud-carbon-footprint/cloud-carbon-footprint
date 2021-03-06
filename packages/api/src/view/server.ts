@@ -25,4 +25,8 @@ httpApp.use(helmet())
 
 httpApp.use('/api', api)
 
-httpApp.listen(port, () => serverLogger.info(`Cloud Carbon Footprint Server listening at http://localhost:${port}`))
+httpApp.listen(port, () =>
+  serverLogger.info(
+    `Cloud Carbon Footprint Server listening at http://localhost:${port}`,
+  ),
+)

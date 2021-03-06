@@ -23,17 +23,37 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
     this.computeEngineLogger = new Logger('Compute Engine')
   }
 
-  async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
+  async getUsage(
+    start: Date,
+    end: Date,
+    region: string,
+  ): Promise<ComputeUsage[]> {
     const projectId = (await this.client.getProjectId()).toString()
     const name = this.client.projectPath(projectId)
 
     const cpuMetricType = 'utilization'
     const vCpuMetricType = 'reserved_cores'
 
-    const CPURequest = this.buildTimeSeriesRequest(start, end, name, cpuMetricType, Reducer.REDUCE_MEAN, region)
-    const vCPURequest = this.buildTimeSeriesRequest(start, end, name, vCpuMetricType, Reducer.REDUCE_SUM, region)
+    const CPURequest = this.buildTimeSeriesRequest(
+      start,
+      end,
+      name,
+      cpuMetricType,
+      Reducer.REDUCE_MEAN,
+      region,
+    )
+    const vCPURequest = this.buildTimeSeriesRequest(
+      start,
+      end,
+      name,
+      vCpuMetricType,
+      Reducer.REDUCE_SUM,
+      region,
+    )
 
-    const [cpuUtilizationTimeSeries] = await this.client.listTimeSeries(CPURequest)
+    const [cpuUtilizationTimeSeries] = await this.client.listTimeSeries(
+      CPURequest,
+    )
     const [vCPUTimeSeries] = await this.client.listTimeSeries(vCPURequest)
 
     const result: ComputeUsage[] = []
@@ -46,8 +66,11 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
 
     // Will there every be more than one time series returned that we need to iterate through?
     vCPUTimeSeries[0].points.forEach((point, index) => {
-      const measuredCpuUtilization = cpuUtilizationTimeSeries[0].points[index]?.value.doubleValue
-      const cpuUtilizationAverage = this.getCpuUtilization(measuredCpuUtilization)
+      const measuredCpuUtilization =
+        cpuUtilizationTimeSeries[0].points[index]?.value.doubleValue
+      const cpuUtilizationAverage = this.getCpuUtilization(
+        measuredCpuUtilization,
+      )
       result.push({
         cpuUtilizationAverage: cpuUtilizationAverage,
         numberOfvCpus: point.value.doubleValue,
@@ -60,7 +83,9 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
   }
 
   private getCpuUtilization(measuredCpuUtilization: number) {
-    return measuredCpuUtilization ? measuredCpuUtilization : CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100
+    return measuredCpuUtilization
+      ? measuredCpuUtilization
+      : CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100
   }
 
   buildTimeSeriesRequest(

@@ -17,14 +17,19 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
     super()
   }
 
-  async getUsage(start: Date, end: Date, region: string): Promise<ComputeUsage[]> {
+  async getUsage(
+    start: Date,
+    end: Date,
+    region: string,
+  ): Promise<ComputeUsage[]> {
     const cloudWatchParams = {
       StartTime: start,
       EndTime: end,
       MetricDataQueries: [
         {
           Id: 'cpuUtilizationWithEmptyValues',
-          Expression: "SEARCH('{AWS/ElastiCache} MetricName=\"CPUUtilization\"', 'Average', 3600)",
+          Expression:
+            "SEARCH('{AWS/ElastiCache} MetricName=\"CPUUtilization\"', 'Average', 3600)",
           ReturnData: false,
         },
         {
@@ -35,7 +40,9 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const metricDataResponses = await this.serviceWrapper.getMetricDataResponses(cloudWatchParams)
+    const metricDataResponses = await this.serviceWrapper.getMetricDataResponses(
+      cloudWatchParams,
+    )
 
     const costExplorerParams = {
       TimePeriod: {
@@ -44,7 +51,12 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       },
       Filter: {
         And: [
-          { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: ['ElastiCache: Running Hours'],
+            },
+          },
           { Dimensions: { Key: 'REGION', Values: [region] } },
         ],
       },
@@ -57,9 +69,15 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ],
       Metrics: ['UsageQuantity'],
     }
-    const costAndUsageResponses = await this.serviceWrapper.getCostAndUsageResponses(costExplorerParams)
+    const costAndUsageResponses = await this.serviceWrapper.getCostAndUsageResponses(
+      costExplorerParams,
+    )
 
-    return getComputeUsage(metricDataResponses, costAndUsageResponses, CACHE_NODE_TYPES)
+    return getComputeUsage(
+      metricDataResponses,
+      costAndUsageResponses,
+      CACHE_NODE_TYPES,
+    )
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
@@ -70,7 +88,12 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       },
       Filter: {
         And: [
-          { Dimensions: { Key: 'USAGE_TYPE_GROUP', Values: ['ElastiCache: Running Hours'] } },
+          {
+            Dimensions: {
+              Key: 'USAGE_TYPE_GROUP',
+              Values: ['ElastiCache: Running Hours'],
+            },
+          },
           { Dimensions: { Key: 'REGION', Values: [region] } },
         ],
       },

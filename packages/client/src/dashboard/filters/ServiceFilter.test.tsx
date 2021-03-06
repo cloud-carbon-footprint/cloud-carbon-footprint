@@ -37,10 +37,22 @@ describe('ServiceFilter', () => {
   const S3ServiceOption = { key: 's3', name: 'S3', cloudProvider: 'aws' }
   const ebsServiceOption = { key: 'ebs', name: 'EBS', cloudProvider: 'aws' }
   const ec2ServiceOption = { key: 'ec2', name: 'EC2', cloudProvider: 'aws' }
-  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' }
+  const elastiCacheServiceOption = {
+    key: 'elasticache',
+    name: 'ElastiCache',
+    cloudProvider: 'aws',
+  }
   const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
-  const lambdaServiceOption = { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' }
-  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
+  const lambdaServiceOption = {
+    key: 'lambda',
+    name: 'Lambda',
+    cloudProvider: 'aws',
+  }
+  const computeEngineServiceOption = {
+    key: 'computeEngine',
+    name: 'Compute Engine',
+    cloudProvider: 'gcp',
+  }
   const services = [
     ebsServiceOption,
     S3ServiceOption,
@@ -55,7 +67,13 @@ describe('ServiceFilter', () => {
   beforeEach(() => {
     mockSetFilters = jest.fn()
     filters = new Filters(filtersConfigGenerator(options))
-    page = render(<ServiceFilter filters={filters} setFilters={mockSetFilters} options={options} />)
+    page = render(
+      <ServiceFilter
+        filters={filters}
+        setFilters={mockSetFilters}
+        options={options}
+      />,
+    )
   })
 
   it('has all services selected by default', async () => {
@@ -88,7 +106,13 @@ describe('ServiceFilter', () => {
     const newFilters = filters.withServices([])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
-    page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} options={options} />)
+    page.rerender(
+      <ServiceFilter
+        filters={newFilters}
+        setFilters={mockSetFilters}
+        options={options}
+      />,
+    )
 
     expect(page.getByText('Services: 0 of 7')).toBeInTheDocument()
     assertCheckbox(page, 'All Services', false)
@@ -120,7 +144,13 @@ describe('ServiceFilter', () => {
     ])
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
-    page.rerender(<ServiceFilter filters={newFilters} setFilters={mockSetFilters} options={options} />)
+    page.rerender(
+      <ServiceFilter
+        filters={newFilters}
+        setFilters={mockSetFilters}
+        options={options}
+      />,
+    )
 
     expect(page.getByText('Services: 6 of 7')).toBeInTheDocument()
     assertCheckbox(page, 'All Services', false)
@@ -151,7 +181,13 @@ describe('ServiceFilter', () => {
       S3ServiceOption,
     ])
 
-    page.rerender(<ServiceFilter filters={someAwsFilters} setFilters={mockSetFilters} options={options} />)
+    page.rerender(
+      <ServiceFilter
+        filters={someAwsFilters}
+        setFilters={mockSetFilters}
+        options={options}
+      />,
+    )
 
     const someAwsGroupByElement = page.getByText('AWS: 5 of 6')
     const noGcpGroupByElement = page.getByText('GCP: 0 of 1')
@@ -159,7 +195,11 @@ describe('ServiceFilter', () => {
     expect(noGcpGroupByElement).toBeInTheDocument()
   })
 
-  const assertCheckbox = (page: RenderResult, option: string, selected: boolean) => {
+  const assertCheckbox = (
+    page: RenderResult,
+    option: string,
+    selected: boolean,
+  ) => {
     const li = page.getByText(option)
 
     if (selected) {

@@ -70,7 +70,11 @@ describe('DropdownConstants', () => {
         cloudProvider: 'aws',
       }
 
-      const sortedOptions = alphabetizeDropdownOptions([optionA, optionB, optionC])
+      const sortedOptions = alphabetizeDropdownOptions([
+        optionA,
+        optionB,
+        optionC,
+      ])
 
       expect(sortedOptions).toEqual([optionB, optionC, optionA])
     })

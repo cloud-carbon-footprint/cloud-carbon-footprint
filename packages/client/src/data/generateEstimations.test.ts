@@ -12,7 +12,9 @@ describe('generateEstimations', () => {
 
     expect(result.length).toEqual(2)
     expect(result[0].timestamp).toStrictEqual(today.toDate())
-    expect(result[1].timestamp).toStrictEqual(today.clone().subtract(1, 'M').toDate())
+    expect(result[1].timestamp).toStrictEqual(
+      today.clone().subtract(1, 'M').toDate(),
+    )
   })
 
   test('should generate 1 month of data', () => {
@@ -21,9 +23,15 @@ describe('generateEstimations', () => {
 
     expect(result.length).toEqual(31)
     expect(result[0].timestamp).toStrictEqual(today.toDate())
-    expect(result[1].timestamp).toStrictEqual(today.clone().subtract(1, 'M').toDate())
-    expect(result[2].timestamp).toStrictEqual(today.clone().subtract(2, 'M').toDate())
-    expect(result[3].timestamp).toStrictEqual(today.clone().subtract(3, 'M').toDate())
+    expect(result[1].timestamp).toStrictEqual(
+      today.clone().subtract(1, 'M').toDate(),
+    )
+    expect(result[2].timestamp).toStrictEqual(
+      today.clone().subtract(2, 'M').toDate(),
+    )
+    expect(result[3].timestamp).toStrictEqual(
+      today.clone().subtract(3, 'M').toDate(),
+    )
   })
 
   test('should work with JS Date', () => {
@@ -32,8 +40,14 @@ describe('generateEstimations', () => {
 
     expect(result.length).toEqual(4)
     expect(result[0].timestamp).toStrictEqual(today.toDate())
-    expect(result[1].timestamp).toStrictEqual(today.clone().subtract(1, 'M').toDate())
-    expect(result[2].timestamp).toStrictEqual(today.clone().subtract(2, 'M').toDate())
-    expect(result[3].timestamp).toStrictEqual(today.clone().subtract(3, 'M').toDate())
+    expect(result[1].timestamp).toStrictEqual(
+      today.clone().subtract(1, 'M').toDate(),
+    )
+    expect(result[2].timestamp).toStrictEqual(
+      today.clone().subtract(2, 'M').toDate(),
+    )
+    expect(result[3].timestamp).toStrictEqual(
+      today.clone().subtract(3, 'M').toDate(),
+    )
   })
 })

@@ -8,7 +8,10 @@ import RDSStorage from '../RDSStorage'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 
-import { buildCostExplorerGetCostResponse, buildCostExplorerGetUsageResponse } from '../../../../test/fixtures/builders'
+import {
+  buildCostExplorerGetCostResponse,
+  buildCostExplorerGetUsageResponse,
+} from '../../../../test/fixtures/builders'
 import { ServiceWrapper } from '../ServiceWrapper'
 import Logger from '../../Logger'
 
@@ -25,13 +28,21 @@ describe('RDSStorage', () => {
   const dayTwo = '2020-07-25'
   const endDate = '2020-07-26'
   const region = 'us-east-1'
-  const getServiceWrapper = () => new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer())
+  const getServiceWrapper = () =>
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+    )
 
   it('calculates terabyteHours usage', async () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetUsageResponse([
@@ -44,7 +55,11 @@ describe('RDSStorage', () => {
 
     const rdsStorage = new RDSStorage(getServiceWrapper())
 
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await rdsStorage.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual([
       {
@@ -64,7 +79,10 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         expect(params).toEqual({
           TimePeriod: {
             Start: startDate,
@@ -106,17 +124,30 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: juneStartDate, amount: 1.0, keys: ['USW1-RDS:GP2-Storage'] }]),
+          buildCostExplorerGetUsageResponse([
+            {
+              start: juneStartDate,
+              amount: 1.0,
+              keys: ['USW1-RDS:GP2-Storage'],
+            },
+          ]),
         )
       },
     )
 
     const rdsStorage = new RDSStorage(getServiceWrapper())
 
-    const result = await rdsStorage.getUsage(new Date(juneStartDate), new Date(juneEndDate), region)
+    const result = await rdsStorage.getUsage(
+      new Date(juneStartDate),
+      new Date(juneEndDate),
+      region,
+    )
 
     expect(result).toEqual([
       {
@@ -131,17 +162,26 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 0, keys: ['USW1-RDS:GP2-Storage'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 0, keys: ['USW1-RDS:GP2-Storage'] },
+          ]),
         )
       },
     )
 
     const rdsStorage = new RDSStorage(getServiceWrapper())
 
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await rdsStorage.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual([])
   })
@@ -150,7 +190,10 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         expect(params.Filter.And).toContainEqual({
           Dimensions: {
             Key: 'REGION',
@@ -159,7 +202,9 @@ describe('RDSStorage', () => {
         })
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 0, keys: ['USW1-RDS:GP2-Storage'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 0, keys: ['USW1-RDS:GP2-Storage'] },
+          ]),
         )
       },
     )
@@ -172,7 +217,10 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(null, {
           ResultsByTime: [
             {
@@ -187,7 +235,11 @@ describe('RDSStorage', () => {
     )
 
     const rdsStorage = new RDSStorage(getServiceWrapper())
-    const result = await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
+    const result = await rdsStorage.getUsage(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual([])
   })
@@ -196,21 +248,36 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['USW1-RDS:PIOPS-Storage'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['USW1-RDS:PIOPS-Storage'] },
+          ]),
         )
       },
     )
 
     const rdsService = new RDSStorage(getServiceWrapper())
-    const ssdStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
+    const ssdStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+    )
 
-    const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await rdsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual(
-      ssdStorageEstimator.estimate([{ terabyteHours: 0.744, timestamp: new Date(startDate) }], region, 'AWS'),
+      ssdStorageEstimator.estimate(
+        [{ terabyteHours: 0.744, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
     )
   })
 
@@ -218,21 +285,36 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
-          buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['USW1-RDS:StorageUsage'] }]),
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['USW1-RDS:StorageUsage'] },
+          ]),
         )
       },
     )
 
     const rdsService = new RDSStorage(getServiceWrapper())
-    const hddStorageEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
+    const hddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+    )
 
-    const result = await rdsService.getEstimates(new Date(startDate), new Date(endDate), region)
+    const result = await rdsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
 
     expect(result).toEqual(
-      hddStorageEstimator.estimate([{ terabyteHours: 0.744, timestamp: new Date(startDate) }], region, 'AWS'),
+      hddStorageEstimator.estimate(
+        [{ terabyteHours: 0.744, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
     )
   })
 
@@ -240,7 +322,10 @@ describe('RDSStorage', () => {
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
         callback(
           null,
           buildCostExplorerGetCostResponse([
@@ -252,7 +337,11 @@ describe('RDSStorage', () => {
     )
 
     const rdsStorage = new RDSStorage(getServiceWrapper())
-    const result = await rdsStorage.getCosts(new Date(startDate), new Date(endDate), region)
+    const result = await rdsStorage.getCosts(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
     expect(result).toEqual([
       {
         amount: 0.2,
@@ -268,17 +357,29 @@ describe('RDSStorage', () => {
   })
 
   it('Check if warning is called based on valid Disk Type', async () => {
-    const loggerwarnSpy = jest.spyOn(Logger.prototype, 'warn').mockImplementation()
+    const loggerwarnSpy = jest
+      .spyOn(Logger.prototype, 'warn')
+      .mockImplementation()
     AWSMock.mock(
       'CostExplorer',
       'getCostAndUsage',
-      (params: CostExplorer.GetCostAndUsageRequest, callback: (a: Error, response: any) => any) => {
-        callback(null, buildCostExplorerGetUsageResponse([{ start: startDate, amount: 1, keys: ['ThrowError'] }]))
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageResponse([
+            { start: startDate, amount: 1, keys: ['ThrowError'] },
+          ]),
+        )
       },
     )
     const rdsStorage = new RDSStorage(getServiceWrapper())
     //const rdsStorage = new RDSStorage(new ServiceWrapper(new CloudWatch(), new CostExplorer()))
     await rdsStorage.getUsage(new Date(startDate), new Date(endDate), region)
-    expect(loggerwarnSpy).toHaveBeenCalledWith('Unexpected Cost explorer Dimension Name: ThrowError')
+    expect(loggerwarnSpy).toHaveBeenCalledWith(
+      'Unexpected Cost explorer Dimension Name: ThrowError',
+    )
   })
 })

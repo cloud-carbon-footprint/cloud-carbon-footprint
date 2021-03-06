@@ -30,7 +30,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('Start date is not before end date')
+    expect(() => CreateValidRequest(input)).toThrow(
+      'Start date is not before end date',
+    )
   })
 
   it('ensures the start date is not the end date', () => {
@@ -40,7 +42,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('Start date is not before end date')
+    expect(() => CreateValidRequest(input)).toThrow(
+      'Start date is not before end date',
+    )
   })
 
   it('ensures the start date is in the past', () => {
@@ -50,7 +54,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('Start date is in the future')
+    expect(() => CreateValidRequest(input)).toThrow(
+      'Start date is in the future',
+    )
   })
 
   it('ensures the end date is in the past', () => {
@@ -70,7 +76,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('Start date is not in a recognized RFC2822 or ISO format')
+    expect(() => CreateValidRequest(input)).toThrow(
+      'Start date is not in a recognized RFC2822 or ISO format',
+    )
   })
 
   it('ensures the raw end date is a parseable date', () => {
@@ -80,7 +88,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('End date is not in a recognized RFC2822 or ISO format')
+    expect(() => CreateValidRequest(input)).toThrow(
+      'End date is not in a recognized RFC2822 or ISO format',
+    )
   })
 
   describe('given: a date is null', () => {
@@ -91,7 +101,9 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow('Start date must be provided')
+      expect(() => CreateValidRequest(input)).toThrow(
+        'Start date must be provided',
+      )
     })
 
     it('throws error for missing end date', () => {
@@ -101,7 +113,9 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow('End date must be provided')
+      expect(() => CreateValidRequest(input)).toThrow(
+        'End date must be provided',
+      )
     })
   })
 
@@ -113,7 +127,9 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow('Start date must be provided')
+      expect(() => CreateValidRequest(input)).toThrow(
+        'Start date must be provided',
+      )
     })
 
     it('throws error for missing end date', () => {
@@ -123,7 +139,9 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow('End date must be provided')
+      expect(() => CreateValidRequest(input)).toThrow(
+        'End date must be provided',
+      )
     })
   })
 
@@ -135,7 +153,9 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow('Start date must be provided')
+      expect(() => CreateValidRequest(input)).toThrow(
+        'Start date must be provided',
+      )
     })
 
     it('throws error for empty end date', () => {
@@ -145,7 +165,9 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow('End date must be provided')
+      expect(() => CreateValidRequest(input)).toThrow(
+        'End date must be provided',
+      )
     })
   })
 
@@ -156,7 +178,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('Start date is not before end date, Start date is in the future')
+    expect(() => CreateValidRequest(input)).toThrow(
+      'Start date is not before end date, Start date is in the future',
+    )
   })
 
   it('ensures the region is valid', () => {

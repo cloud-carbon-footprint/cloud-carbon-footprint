@@ -60,23 +60,41 @@ describe('ApexLineChart', () => {
 
   it('renders with correct configuration', () => {
     const root = create(
-      <ApexLineChart data={[new EstimationResultBuilder().withTime(new Date('2019-08-10T00:00:00.000Z')).build()]} />,
+      <ApexLineChart
+        data={[
+          new EstimationResultBuilder()
+            .withTime(new Date('2019-08-10T00:00:00.000Z'))
+            .build(),
+        ]}
+      />,
     )
     expect(root.toJSON()).toMatchSnapshot()
   })
 
   it('should manually disable kilowatt hours and cost series on initial data load', () => {
     render(
-      <ApexLineChart data={[new EstimationResultBuilder().withTime(new Date('2019-08-10T00:00:00.000Z')).build()]} />,
+      <ApexLineChart
+        data={[
+          new EstimationResultBuilder()
+            .withTime(new Date('2019-08-10T00:00:00.000Z'))
+            .build(),
+        ]}
+      />,
     )
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Cost'])
-    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', ['Kilowatt Hours'])
+    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', [
+      'Cost',
+    ])
+    expect(ApexCharts.exec).toHaveBeenCalledWith('lineChart', 'hideSeries', [
+      'Kilowatt Hours',
+    ])
   })
 
   it('should update chart with new data and default max values on props data change', () => {
     const testRenderer = create(<ApexLineChart data={[]} />)
     act(() => {
-      testRenderer.update(<ApexLineChart data={[new EstimationResultBuilder().build()]} />)
+      testRenderer.update(
+        <ApexLineChart data={[new EstimationResultBuilder().build()]} />,
+      )
     })
     const filteredSeries = testRenderer.root.findByType(Chart)?.props?.series
     expect(filteredSeries).toBeDefined()
@@ -123,7 +141,10 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], setChartDataSpy])
       .mockReturnValueOnce([{ min: null, max: null }, setDefaultDateRangeSpy])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([
+        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
+        jest.fn(),
+      ])
 
     act(() => {
       create(<ApexLineChart data={[new EstimationResultBuilder().build()]} />)
@@ -139,7 +160,10 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([
+        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
+        jest.fn(),
+      ])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -147,11 +171,15 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.beforeZoom
+      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props
+        ?.options?.chart?.events?.beforeZoom
 
       expect(beforeZoomCallback).toBeDefined()
       beforeZoomCallback(undefined, {
-        xaxis: { min: new Date('2019-01-10T00:00:00.000Z'), max: new Date('2019-08-10T00:00:00.000Z') },
+        xaxis: {
+          min: new Date('2019-01-10T00:00:00.000Z'),
+          max: new Date('2019-08-10T00:00:00.000Z'),
+        },
       })
     })
 
@@ -165,26 +193,37 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([
+        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
+        jest.fn(),
+      ])
 
     let testRenderer: ReactTestRenderer
     act(() => {
       testRenderer = create(
         <ApexLineChart
           data={[
-            new EstimationResultBuilder().withTime(new Date('2019-05-10T00:00:00.000Z')).build(),
-            new EstimationResultBuilder().withTime(new Date('2019-06-10T00:00:00.000Z')).build(),
+            new EstimationResultBuilder()
+              .withTime(new Date('2019-05-10T00:00:00.000Z'))
+              .build(),
+            new EstimationResultBuilder()
+              .withTime(new Date('2019-06-10T00:00:00.000Z'))
+              .build(),
           ]}
         />,
       )
     })
 
     act(() => {
-      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.beforeZoom
+      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props
+        ?.options?.chart?.events?.beforeZoom
 
       expect(beforeZoomCallback).toBeDefined()
       beforeZoomCallback(undefined, {
-        xaxis: { min: new Date('2019-01-10T00:00:00.000Z'), max: new Date('2019-08-10T00:00:00.000Z') },
+        xaxis: {
+          min: new Date('2019-01-10T00:00:00.000Z'),
+          max: new Date('2019-08-10T00:00:00.000Z'),
+        },
       })
     })
 
@@ -201,10 +240,16 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([
-        { min: new Date('2019-07-10T00:00:00.000Z'), max: new Date('2019-11-10T00:00:00.000Z') },
+        {
+          min: new Date('2019-07-10T00:00:00.000Z'),
+          max: new Date('2019-11-10T00:00:00.000Z'),
+        },
         jest.fn(),
       ])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([
+        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
+        jest.fn(),
+      ])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -212,8 +257,8 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const beforeResetZoomCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
-        ?.beforeResetZoom
+      const beforeResetZoomCallback = testRenderer.root?.findByType(Chart)
+        ?.props?.options?.chart?.events?.beforeResetZoom
 
       expect(beforeResetZoomCallback).toBeDefined()
       beforeResetZoomCallback()
@@ -227,13 +272,27 @@ describe('ApexLineChart', () => {
   })
 
   it('should update data based on new ranges', () => {
-    const newDateRange = { min: new Date('2019-07-10T00:00:00.000Z'), max: new Date('2019-11-10T00:00:00.000Z') }
-    const defaultDateRange = { min: new Date('2019-06-10T00:00:00.000Z'), max: new Date('2019-12-10T00:00:00.000Z') }
+    const newDateRange = {
+      min: new Date('2019-07-10T00:00:00.000Z'),
+      max: new Date('2019-11-10T00:00:00.000Z'),
+    }
+    const defaultDateRange = {
+      min: new Date('2019-06-10T00:00:00.000Z'),
+      max: new Date('2019-12-10T00:00:00.000Z'),
+    }
     const initialData = [
-      new EstimationResultBuilder().withTime(new Date('2019-06-10T00:00:00.000Z')).build(),
-      new EstimationResultBuilder().withTime(new Date('2019-08-10T00:00:00.000Z')).build(),
-      new EstimationResultBuilder().withTime(new Date('2019-10-10T00:00:00.000Z')).build(),
-      new EstimationResultBuilder().withTime(new Date('2019-12-10T00:00:00.000Z')).build(),
+      new EstimationResultBuilder()
+        .withTime(new Date('2019-06-10T00:00:00.000Z'))
+        .build(),
+      new EstimationResultBuilder()
+        .withTime(new Date('2019-08-10T00:00:00.000Z'))
+        .build(),
+      new EstimationResultBuilder()
+        .withTime(new Date('2019-10-10T00:00:00.000Z'))
+        .build(),
+      new EstimationResultBuilder()
+        .withTime(new Date('2019-12-10T00:00:00.000Z'))
+        .build(),
     ]
 
     jest
@@ -241,7 +300,10 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([newDateRange, jest.fn()])
       .mockReturnValueOnce([initialData, jest.fn()])
       .mockReturnValueOnce([defaultDateRange, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], jest.fn()])
+      .mockReturnValueOnce([
+        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
+        jest.fn(),
+      ])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -308,7 +370,10 @@ describe('ApexLineChart', () => {
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
       .mockReturnValueOnce([[], jest.fn()])
       .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }], setLegendToggleSpy])
+      .mockReturnValueOnce([
+        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
+        setLegendToggleSpy,
+      ])
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -316,12 +381,17 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const afterLegendClickCallback = testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events?.legendClick
+      const afterLegendClickCallback = testRenderer.root?.findByType(Chart)
+        ?.props?.options?.chart?.events?.legendClick
 
       expect(afterLegendClickCallback).toBeDefined()
       afterLegendClickCallback(undefined, 1)
     })
 
-    expect(setLegendToggleSpy).toHaveBeenCalledWith([{ CO2e: true }, { 'Kilowatt Hours': true }, { Cost: false }])
+    expect(setLegendToggleSpy).toHaveBeenCalledWith([
+      { CO2e: true },
+      { 'Kilowatt Hours': true },
+      { Cost: false },
+    ])
   })
 })

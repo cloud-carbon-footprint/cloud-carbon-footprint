@@ -120,7 +120,8 @@ exports[`CarbonFormulaDrawer renders 1`] = `
         rel="noopener"
         target="_blank"
       >
-        Read more in our full methodology here 
+        Read more in our full methodology here
+         
         <svg
           aria-hidden={true}
           className="MuiSvgIcon-root makeStyles-openIcon-12 MuiSvgIcon-fontSizeSmall"

@@ -11,7 +11,10 @@ import { EstimationRequest } from './CreateValidRequest'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 
-function getMissingDates(cachedEstimates: EstimationResult[], request: EstimationRequest): Moment[] {
+function getMissingDates(
+  cachedEstimates: EstimationResult[],
+  request: EstimationRequest,
+): Moment[] {
   const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
   })
@@ -70,13 +73,19 @@ function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
   })
 }
 
-function concat(cachedEstimates: EstimationResult[], estimates: EstimationResult[]) {
+function concat(
+  cachedEstimates: EstimationResult[],
+  estimates: EstimationResult[],
+) {
   return [...cachedEstimates, ...estimates].sort((a, b) => {
     return a.timestamp.getTime() - b.timestamp.getTime()
   })
 }
 
-function fillDates(missingDates: Moment[], estimates: EstimationResult[]): EstimationResult[] {
+function fillDates(
+  missingDates: Moment[],
+  estimates: EstimationResult[],
+): EstimationResult[] {
   const dates: Moment[] = estimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
   })
@@ -88,7 +97,9 @@ function fillDates(missingDates: Moment[], estimates: EstimationResult[]): Estim
       serviceEstimates: [],
     }
   })
-  return [...emptyEstimates, ...estimates].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+  return [...emptyEstimates, ...estimates].sort(
+    (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+  )
 }
 
 /*
@@ -97,27 +108,41 @@ function fillDates(missingDates: Moment[], estimates: EstimationResult[]): Estim
  then combines and returns data from the cache and decorated function.
  */
 export default function cache(): any {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor,
+  ) {
     const decoratedFunction = descriptor.value
 
-    descriptor.value = async (request: EstimationRequest): Promise<EstimationResult[]> => {
-      const cachedEstimates: EstimationResult[] = await cacheService.getEstimates(request)
+    descriptor.value = async (
+      request: EstimationRequest,
+    ): Promise<EstimationResult[]> => {
+      const cachedEstimates: EstimationResult[] = await cacheService.getEstimates(
+        request,
+      )
 
       // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)
-      const missingEstimates = getMissingDataRequests(missingDates).map((request) => {
-        return decoratedFunction.apply(target, [request])
-      })
-      const estimates: EstimationResult[] = (await Promise.all(missingEstimates)).flat()
+      const missingEstimates = getMissingDataRequests(missingDates).map(
+        (request) => {
+          return decoratedFunction.apply(target, [request])
+        },
+      )
+      const estimates: EstimationResult[] = (
+        await Promise.all(missingEstimates)
+      ).flat()
 
       // write missing estimates to cache
       const estimatesToPersist = fillDates(missingDates, estimates)
       cacheService.setEstimates(estimatesToPersist)
 
       // so we don't return results with no estimates
-      const filteredCachedEstimates = cachedEstimates.filter(({ serviceEstimates }) => {
-        return serviceEstimates.length !== 0
-      })
+      const filteredCachedEstimates = cachedEstimates.filter(
+        ({ serviceEstimates }) => {
+          return serviceEstimates.length !== 0
+        },
+      )
 
       return concat(filteredCachedEstimates, estimates)
     }

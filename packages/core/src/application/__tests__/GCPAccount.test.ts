@@ -58,6 +58,8 @@ function expectGCPService(key: string) {
   ]
 
   const GCPAccount = require('../GCPAccount').default
-  const services = new GCPAccount('test-project', 'test project', ['us-east1']).getServices()
+  const services = new GCPAccount('test-project', 'test project', [
+    'us-east1',
+  ]).getServices()
   return expect(services[0])
 }

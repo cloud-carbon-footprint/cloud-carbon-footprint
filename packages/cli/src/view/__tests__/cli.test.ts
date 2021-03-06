@@ -30,7 +30,10 @@ import {
 } from '../../../test/fixtures/awsMockFunctions'
 import { lambdaMockGetCostResponse } from '../../../test/fixtures/costexplorer.fixtures'
 import config from '../../../../core/src/application/ConfigLoader'
-import { mockCpuUtilizationTimeSeries, mockVCPUTimeSeries } from '../../../test/fixtures/cloudmonitoring.fixtures'
+import {
+  mockCpuUtilizationTimeSeries,
+  mockVCPUTimeSeries,
+} from '../../../test/fixtures/cloudmonitoring.fixtures'
 
 const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
@@ -43,7 +46,9 @@ jest.mock('@google-cloud/monitoring', () => {
     MetricServiceClient: jest.fn().mockImplementation(() => {
       return {
         listTimeSeries: mockListTimeSeries,
-        projectPath: jest.fn().mockReturnValue('projects/cloud-carbon-footprint'),
+        projectPath: jest
+          .fn()
+          .mockReturnValue('projects/cloud-carbon-footprint'),
         getProjectId: jest.fn().mockResolvedValue('cloud-carbon-footprint'),
       }
     }),
@@ -64,7 +69,14 @@ afterEach(() => {
 describe('cli', () => {
   const start = '2020-07-01'
   const end = '2020-07-07'
-  const rawRequest = ['executable', 'file', '--startDate', start, '--endDate', end]
+  const rawRequest = [
+    'executable',
+    'file',
+    '--startDate',
+    start,
+    '--endDate',
+    end,
+  ]
 
   function getCloudWatch() {
     return new CloudWatch({ region: 'us-east-1' })
@@ -79,7 +91,11 @@ describe('cli', () => {
   }
 
   function getServiceWrapper() {
-    return new ServiceWrapper(getCloudWatch(), getCloudWatchLogs(), getCostExplorer())
+    return new ServiceWrapper(
+      getCloudWatch(),
+      getCloudWatchLogs(),
+      getCostExplorer(),
+    )
   }
 
   function getCloudMonitoring() {
@@ -114,9 +130,14 @@ describe('cli', () => {
         new S3(getServiceWrapper()),
         new EC2(getServiceWrapper()),
         new ElastiCache(getServiceWrapper()),
-        new RDS(new RDSComputeService(getServiceWrapper()), new RDSStorage(getServiceWrapper())),
+        new RDS(
+          new RDSComputeService(getServiceWrapper()),
+          new RDSStorage(getServiceWrapper()),
+        ),
       ])
-      ;(getGCPServices as jest.Mock).mockReturnValue([new ComputeEngine(getCloudMonitoring())])
+      ;(getGCPServices as jest.Mock).mockReturnValue([
+        new ComputeEngine(getCloudMonitoring()),
+      ])
     })
 
     test('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
@@ -142,7 +163,9 @@ describe('cli', () => {
     beforeEach(() => {
       mockAwsCloudWatchGetQueryResultsForLambda()
       mockAwsCostExplorerGetCostAndUsageResponse(lambdaMockGetCostResponse)
-      ;(getAWSServices as jest.Mock).mockReturnValue([new Lambda(60000, 1000, getServiceWrapper())])
+      ;(getAWSServices as jest.Mock).mockReturnValue([
+        new Lambda(60000, 1000, getServiceWrapper()),
+      ])
       ;(config as jest.Mock).mockReturnValueOnce({
         AWS: {
           accounts: [{ id: '12345678', name: 'test account' }],
@@ -175,7 +198,14 @@ describe('cli', () => {
         // setup
         const start = '2020-06-16'
         const end = '2020-06-16'
-        const command = ['executable', 'file', '--startDate', start, '--endDate', end]
+        const command = [
+          'executable',
+          'file',
+          '--startDate',
+          start,
+          '--endDate',
+          end,
+        ]
 
         //assert
         await expect(() => {

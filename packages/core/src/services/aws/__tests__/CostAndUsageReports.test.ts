@@ -3,13 +3,21 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, Athena as AWSAthena } from 'aws-sdk'
+import AWS, {
+  CloudWatch,
+  CloudWatchLogs,
+  CostExplorer,
+  Athena as AWSAthena,
+} from 'aws-sdk'
 import CostAndUsageReports from '../CostAndUsageReports'
 import ComputeEstimator from '../../../domain/ComputeEstimator'
 import NetworkingEstimator from '../../../domain/NetworkingEstimator'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
-import { GetQueryExecutionOutput, GetQueryResultsOutput } from 'aws-sdk/clients/athena'
+import {
+  GetQueryExecutionOutput,
+  GetQueryResultsOutput,
+} from 'aws-sdk/clients/athena'
 import { EstimationResult } from '../../../application/EstimationResult'
 import config from '../../../application/ConfigLoader'
 import {
@@ -31,10 +39,19 @@ describe('CostAndUsageReports Service', () => {
   const endDate = new Date('2020-11-03')
 
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
-  const getQueryExecutionResponse = { QueryExecution: { Status: { State: 'SUCCEEDED' } } }
-  const getQueryExecutionFailedResponse = { QueryExecution: { Status: { State: 'FAILED', StateChangeReason: 'TEST' } } }
+  const getQueryExecutionResponse = {
+    QueryExecution: { Status: { State: 'SUCCEEDED' } },
+  }
+  const getQueryExecutionFailedResponse = {
+    QueryExecution: { Status: { State: 'FAILED', StateChangeReason: 'TEST' } },
+  }
   const getServiceWrapper = () =>
-    new ServiceWrapper(new CloudWatch(), new CloudWatchLogs(), new CostExplorer(), new AWSAthena())
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+      new AWSAthena(),
+    )
 
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
@@ -91,8 +108,14 @@ describe('CostAndUsageReports Service', () => {
       expect.anything(),
     )
 
-    expect(getQueryExecutionSpy).toHaveBeenCalledWith(startQueryExecutionResponse, expect.anything())
-    expect(getQueryResultsSpy).toHaveBeenCalledWith(startQueryExecutionResponse, expect.anything())
+    expect(getQueryExecutionSpy).toHaveBeenCalledWith(
+      startQueryExecutionResponse,
+      expect.anything(),
+    )
+    expect(getQueryResultsSpy).toHaveBeenCalledWith(
+      startQueryExecutionResponse,
+      expect.anything(),
+    )
 
     // then
 
@@ -364,7 +387,9 @@ describe('CostAndUsageReports Service', () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices)
+    mockGetQueryResults(
+      athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices,
+    )
 
     // when
     const athenaService = new CostAndUsageReports(
@@ -420,7 +445,9 @@ describe('CostAndUsageReports Service', () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage)
+    mockGetQueryResults(
+      athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage,
+    )
 
     // when
     const athenaService = new CostAndUsageReports(
@@ -486,7 +513,9 @@ describe('CostAndUsageReports Service', () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan)
+    mockGetQueryResults(
+      athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan,
+    )
 
     // when
     const athenaService = new CostAndUsageReports(
@@ -594,7 +623,9 @@ describe('CostAndUsageReports Service', () => {
       new NetworkingEstimator(),
       getServiceWrapper(),
     )
-    await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(
+    await expect(() =>
+      athenaService.getEstimates(startDate, endDate),
+    ).rejects.toThrow(
       `Athena query failed. Reason TEST. Query ID: some-execution-id`,
     )
   })
@@ -608,9 +639,9 @@ describe('CostAndUsageReports Service', () => {
       new NetworkingEstimator(),
       getServiceWrapper(),
     )
-    await expect(() => athenaService.getEstimates(startDate, endDate)).rejects.toThrow(
-      `Athena start query failed. Reason Start failed.`,
-    )
+    await expect(() =>
+      athenaService.getEstimates(startDate, endDate),
+    ).rejects.toThrow(`Athena start query failed. Reason Start failed.`)
   })
 
   const startQueryExecutionSpy = jest.fn()

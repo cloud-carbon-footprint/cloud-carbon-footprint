@@ -49,7 +49,9 @@ describe('emissions table utils', () => {
       },
     }
 
-    const serviceNames = Object.keys(expectedInitials).filter((total) => total !== 'total')
+    const serviceNames = Object.keys(expectedInitials).filter(
+      (total) => total !== 'total',
+    )
     expect(initialTotals(serviceNames)).toEqual(expectedInitials)
   })
 })

@@ -2,7 +2,9 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import moment from 'moment'
-import FootprintEstimate, { MutableEstimationResult } from '../../domain/FootprintEstimate'
+import FootprintEstimate, {
+  MutableEstimationResult,
+} from '../../domain/FootprintEstimate'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import configLoader from '../../application/ConfigLoader'
@@ -61,17 +63,35 @@ export default class CostAndUsageReports {
     const results: MutableEstimationResult[] = []
 
     usageRows.map((rowData: Row) => {
-      const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowsHeader, rowData.Data)
+      const costAndUsageReportRow = new CostAndUsageReportsRow(
+        usageRowsHeader,
+        rowData.Data,
+      )
 
-      if (this.usageTypeIsUnknown(costAndUsageReportRow.usageType, costAndUsageReportRow.serviceName)) return []
+      if (
+        this.usageTypeIsUnknown(
+          costAndUsageReportRow.usageType,
+          costAndUsageReportRow.serviceName,
+        )
+      )
+        return []
 
-      const footprintEstimate = this.getEstimateByPricingUnit(costAndUsageReportRow)
-      if (footprintEstimate) appendOrAccumulateEstimatesByDay(results, costAndUsageReportRow, footprintEstimate)
+      const footprintEstimate = this.getEstimateByPricingUnit(
+        costAndUsageReportRow,
+      )
+      if (footprintEstimate)
+        appendOrAccumulateEstimatesByDay(
+          results,
+          costAndUsageReportRow,
+          footprintEstimate,
+        )
     })
     return results
   }
 
-  private getEstimateByPricingUnit(costAndUsageReportRow: CostAndUsageReportsRow): FootprintEstimate {
+  private getEstimateByPricingUnit(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ): FootprintEstimate {
     switch (costAndUsageReportRow.usageUnit) {
       case PRICING_UNITS.HOURS_1:
       case PRICING_UNITS.HOURS_2:
@@ -86,14 +106,20 @@ export default class CostAndUsageReports {
           numberOfvCpus: costAndUsageReportRow.vCpuHours,
           usesAverageCPUConstant: true,
         }
-        return this.computeEstimator.estimate([computeUsage], costAndUsageReportRow.region, 'AWS')[0]
+        return this.computeEstimator.estimate(
+          [computeUsage],
+          costAndUsageReportRow.region,
+          'AWS',
+        )[0]
       case PRICING_UNITS.GB_MONTH_1:
       case PRICING_UNITS.GB_MONTH_2:
       case PRICING_UNITS.GB_MONTH_3:
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
         // Storage
-        const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(costAndUsageReportRow)
+        const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
+          costAndUsageReportRow,
+        )
 
         const storageUsage: StorageUsage = {
           timestamp: costAndUsageReportRow.timestamp,
@@ -102,9 +128,17 @@ export default class CostAndUsageReports {
 
         let estimate: FootprintEstimate
         if (this.usageTypeIsSSD(costAndUsageReportRow))
-          estimate = this.ssdStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region, 'AWS')[0]
+          estimate = this.ssdStorageEstimator.estimate(
+            [storageUsage],
+            costAndUsageReportRow.region,
+            'AWS',
+          )[0]
         else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
-          estimate = this.hddStorageEstimator.estimate([storageUsage], costAndUsageReportRow.region, 'AWS')[0]
+          estimate = this.hddStorageEstimator.estimate(
+            [storageUsage],
+            costAndUsageReportRow.region,
+            'AWS',
+          )[0]
         else
           this.costAndUsageReportsLogger.warn(
             `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
@@ -120,7 +154,11 @@ export default class CostAndUsageReports {
           numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
           usesAverageCPUConstant: true,
         }
-        return this.computeEstimator.estimate([lambdaComputeUsage], costAndUsageReportRow.region, 'AWS')[0]
+        return this.computeEstimator.estimate(
+          [lambdaComputeUsage],
+          costAndUsageReportRow.region,
+          'AWS',
+        )[0]
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
         // Networking
@@ -136,20 +174,26 @@ export default class CostAndUsageReports {
             'AWS',
           )[0]
         }
-        if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+        if (networkingEstimate)
+          networkingEstimate.usesAverageCPUConstant = false
         return networkingEstimate
       default:
-        this.costAndUsageReportsLogger.warn(`Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`)
+        this.costAndUsageReportsLogger.warn(
+          `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
+        )
     }
   }
 
-  private getUsageAmountInTerabyteHours(costAndUsageReportRow: CostAndUsageReportsRow): number {
+  private getUsageAmountInTerabyteHours(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ): number {
     if (this.usageTypeisByteHours(costAndUsageReportRow.usageType)) {
       // Convert from Byte-Hours to Terabyte Hours
       return costAndUsageReportRow.usageAmount / 1099511627776
     }
     // Convert from GB-Hours to Terabyte Hours
-    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS) return costAndUsageReportRow.usageAmount / 1000
+    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS)
+      return costAndUsageReportRow.usageAmount / 1000
 
     // Convert Gb-Month to Terabyte Hours
     const hoursInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
@@ -163,7 +207,8 @@ export default class CostAndUsageReports {
     // but not when the usage type is backup, which we assume this is usage using S3 (which is HDD).
     return (
       this.endsWithAny(SSD_USAGE_TYPES, costAndUsageRow.usageType) ||
-      (this.endsWithAny(SSD_SERVICES, costAndUsageRow.serviceName) && !costAndUsageRow.usageType.includes('Backup'))
+      (this.endsWithAny(SSD_SERVICES, costAndUsageRow.serviceName) &&
+        !costAndUsageRow.usageType.includes('Backup'))
     )
   }
 
@@ -175,7 +220,9 @@ export default class CostAndUsageReports {
     return this.endsWithAny(BYTE_HOURS_USAGE_TYPES, usageType)
   }
 
-  private usageTypeIsNetworking(costAndUsageRow: CostAndUsageReportsRow): boolean {
+  private usageTypeIsNetworking(
+    costAndUsageRow: CostAndUsageReportsRow,
+  ): boolean {
     return (
       this.endsWithAny(NETWORKING_USAGE_TYPES, costAndUsageRow.usageType) &&
       costAndUsageRow.serviceName !== 'AmazonCloudFront'
@@ -185,7 +232,9 @@ export default class CostAndUsageReports {
   private usageTypeIsUnknown(usageType: string, serviceName: string): boolean {
     return (
       this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
-      UNKNOWN_USAGE_TYPES.some((unknownUsageType) => usageType.includes(unknownUsageType)) ||
+      UNKNOWN_USAGE_TYPES.some((unknownUsageType) =>
+        usageType.includes(unknownUsageType),
+      ) ||
       serviceName === 'AmazonSimpleDB'
     )
   }
@@ -206,10 +255,18 @@ export default class CostAndUsageReports {
                     SUM(line_item_usage_amount) as usageAmount,
                     SUM(line_item_blended_cost) as cost
                     FROM ${this.tableName}
-                    WHERE line_item_line_item_type IN ('${LINE_ITEM_TYPES.join(`', '`)}')
-                    AND pricing_unit IN ('${Object.values(PRICING_UNITS).join(`', '`)}')
-                    AND line_item_usage_start_date >= DATE('${moment(start).format('YYYY-MM-DD')}')
-                    AND line_item_usage_end_date <= DATE('${moment(end).format('YYYY-MM-DD')}')
+                    WHERE line_item_line_item_type IN ('${LINE_ITEM_TYPES.join(
+                      `', '`,
+                    )}')
+                    AND pricing_unit IN ('${Object.values(PRICING_UNITS).join(
+                      `', '`,
+                    )}')
+                    AND line_item_usage_start_date >= DATE('${moment(
+                      start,
+                    ).format('YYYY-MM-DD')}')
+                    AND line_item_usage_end_date <= DATE('${moment(end).format(
+                      'YYYY-MM-DD',
+                    )}')
                     GROUP BY 
                         1,2,3,4,5,6,7`,
       QueryExecutionContext: {
@@ -230,17 +287,23 @@ export default class CostAndUsageReports {
     return await this.getQueryResultSetRows(queryExecutionInput)
   }
 
-  private async startQuery(queryParams: StartQueryExecutionInput): Promise<StartQueryExecutionOutput> {
+  private async startQuery(
+    queryParams: StartQueryExecutionInput,
+  ): Promise<StartQueryExecutionOutput> {
     let response: StartQueryExecutionOutput
     try {
-      response = await this.serviceWrapper.startAthenaQueryExecution(queryParams)
+      response = await this.serviceWrapper.startAthenaQueryExecution(
+        queryParams,
+      )
     } catch (e) {
       throw new Error(`Athena start query failed. Reason ${e.message}.`)
     }
     return response
   }
 
-  private async getQueryResultSetRows(queryExecutionInput: GetQueryExecutionInput) {
+  private async getQueryResultSetRows(
+    queryExecutionInput: GetQueryExecutionInput,
+  ) {
     while (true) {
       const queryExecutionResults: GetQueryExecutionOutput = await this.serviceWrapper.getAthenaQueryExecution(
         queryExecutionInput,
@@ -254,7 +317,9 @@ export default class CostAndUsageReports {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
+    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(
+      queryExecutionInput,
+    )
     return results.flatMap((result) => result.ResultSet.Rows)
   }
 }

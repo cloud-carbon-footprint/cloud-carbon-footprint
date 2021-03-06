@@ -3,7 +3,12 @@
  */
 
 import ICloudService from '../../domain/ICloudService'
-import { DiskType, getEstimatesFromCostExplorer, getUsageFromCostExplorer, VolumeUsage } from './StorageUsageMapper'
+import {
+  DiskType,
+  getEstimatesFromCostExplorer,
+  getUsageFromCostExplorer,
+  VolumeUsage,
+} from './StorageUsageMapper'
 import FootprintEstimate from '../../domain/FootprintEstimate'
 import Cost from '../../domain/Cost'
 import { getCostFromCostExplorer } from './CostMapper'
@@ -18,12 +23,20 @@ export default class EBS implements ICloudService {
     this.ebsLogger = new Logger('EBS')
   }
 
-  async getEstimates(start: Date, end: Date, region: string): Promise<FootprintEstimate[]> {
+  async getEstimates(
+    start: Date,
+    end: Date,
+    region: string,
+  ): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
     return getEstimatesFromCostExplorer(start, end, region, usage)
   }
 
-  async getUsage(startDate: Date, endDate: Date, region: string): Promise<VolumeUsage[]> {
+  async getUsage(
+    startDate: Date,
+    endDate: Date,
+    region: string,
+  ): Promise<VolumeUsage[]> {
     const params = {
       TimePeriod: {
         Start: startDate.toISOString().substr(0, 10),
@@ -56,18 +69,28 @@ export default class EBS implements ICloudService {
       ],
     }
 
-    return await getUsageFromCostExplorer(params, this.getDiskType, this.serviceWrapper)
+    return await getUsageFromCostExplorer(
+      params,
+      this.getDiskType,
+      this.serviceWrapper,
+    )
   }
 
   private getDiskType = (awsGroupKey: string) => {
-    if (awsGroupKey.endsWith('VolumeUsage.gp2') || awsGroupKey.endsWith('VolumeUsage.piops')) return DiskType.SSD
+    if (
+      awsGroupKey.endsWith('VolumeUsage.gp2') ||
+      awsGroupKey.endsWith('VolumeUsage.piops')
+    )
+      return DiskType.SSD
     if (
       awsGroupKey.endsWith('VolumeUsage.st1') ||
       awsGroupKey.endsWith('VolumeUsage.sc1') ||
       awsGroupKey.endsWith('VolumeUsage')
     )
       return DiskType.HDD
-    this.ebsLogger.warn('Unexpected Cost explorer Dimension Name: ' + awsGroupKey)
+    this.ebsLogger.warn(
+      'Unexpected Cost explorer Dimension Name: ' + awsGroupKey,
+    )
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {

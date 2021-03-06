@@ -3,7 +3,11 @@
  */
 
 import { CloudWatch, CostExplorer } from 'aws-sdk'
-import ComputeUsage, { buildComputeUsages, extractRawComputeUsages, RawComputeUsage } from '../../domain/ComputeUsage'
+import ComputeUsage, {
+  buildComputeUsages,
+  extractRawComputeUsages,
+  RawComputeUsage,
+} from '../../domain/ComputeUsage'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 
 function getNumberVcpusByDate(
@@ -18,7 +22,11 @@ function getNumberVcpusByDate(
           timestamp: result.TimePeriod.Start,
           id: 'vCPUs',
           value: result.Groups.reduce((sum, group) => {
-            return sum + Number.parseInt(group.Metrics.UsageQuantity.Amount) * NODE_TYPES[group.Keys[0].split(':')[1]]
+            return (
+              sum +
+              Number.parseInt(group.Metrics.UsageQuantity.Amount) *
+                NODE_TYPES[group.Keys[0].split(':')[1]]
+            )
           }, 0),
         })
       }
@@ -32,14 +40,19 @@ export function getComputeUsage(
   getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
   NODE_TYPES: { [p: string]: number },
 ): ComputeUsage[] {
-  const metricDataResults: MetricDataResult[] = metricDataResponses.flatMap((response) => response.MetricDataResults)
+  const metricDataResults: MetricDataResult[] = metricDataResponses.flatMap(
+    (response) => response.MetricDataResults,
+  )
   const rawCpuUtilizations: RawComputeUsage[] = metricDataResults
     .flatMap(extractRawComputeUsages)
     .map((rawComputeUsage) => ({
       ...rawComputeUsage,
       timestamp: rawComputeUsage.timestamp.substr(0, 10),
     }))
-  const rawvCpuHours: RawComputeUsage[] = getNumberVcpusByDate(getCostAndUsageResponses, NODE_TYPES)
+  const rawvCpuHours: RawComputeUsage[] = getNumberVcpusByDate(
+    getCostAndUsageResponses,
+    NODE_TYPES,
+  )
 
   return buildComputeUsages(rawCpuUtilizations.concat(rawvCpuHours), 'AWS')
 }

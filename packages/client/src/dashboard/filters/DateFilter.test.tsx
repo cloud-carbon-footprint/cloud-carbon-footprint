@@ -74,11 +74,17 @@ describe('DatePicker', () => {
     })
 
     const updatedFilters: Filters = mockSetFilters.mock.calls[0][0]
-    expect(updatedFilters.dateRange?.startDate?.isSame(moment('2020-08-01T12:00:00Z'))).toEqual(true)
+    expect(
+      updatedFilters.dateRange?.startDate?.isSame(
+        moment('2020-08-01T12:00:00Z'),
+      ),
+    ).toEqual(true)
     expect(updatedFilters.dateRange?.endDate).toBeNull()
 
     act(() => {
-      page.rerender(<DateFilter filters={updatedFilters} setFilters={mockSetFilters} />)
+      page.rerender(
+        <DateFilter filters={updatedFilters} setFilters={mockSetFilters} />,
+      )
     })
 
     page.getByDisplayValue('08/01/2020')
@@ -99,10 +105,14 @@ describe('DatePicker', () => {
 
     const updatedFilters: Filters = mockSetFilters.mock.calls[0][0]
     expect(updatedFilters.dateRange?.startDate).toBeNull()
-    expect(updatedFilters.dateRange?.endDate?.isSame(moment('2020-09-01T12:00:00Z'))).toEqual(true)
+    expect(
+      updatedFilters.dateRange?.endDate?.isSame(moment('2020-09-01T12:00:00Z')),
+    ).toEqual(true)
 
     act(() => {
-      page.rerender(<DateFilter filters={updatedFilters} setFilters={mockSetFilters} />)
+      page.rerender(
+        <DateFilter filters={updatedFilters} setFilters={mockSetFilters} />,
+      )
     })
 
     page.getByDisplayValue('09/01/2020')
@@ -111,9 +121,14 @@ describe('DatePicker', () => {
   it('shows the selected start date when opening the dropdown via start date', () => {
     act(() => {
       const newFilters = filters.withDateRange(
-        new DateRange(moment('2020-03-01T12:00:00Z'), moment('2020-09-01T12:00:00Z')),
+        new DateRange(
+          moment('2020-03-01T12:00:00Z'),
+          moment('2020-09-01T12:00:00Z'),
+        ),
       )
-      page.rerender(<DateFilter filters={newFilters} setFilters={mockSetFilters} />)
+      page.rerender(
+        <DateFilter filters={newFilters} setFilters={mockSetFilters} />,
+      )
     })
 
     page.getByDisplayValue('03/01/2020')
@@ -134,9 +149,14 @@ describe('DatePicker', () => {
   it('shows the selected end date when opening the dropdown via end date', () => {
     act(() => {
       const newFilters = filters.withDateRange(
-        new DateRange(moment('2020-03-01T12:00:00Z'), moment('2020-07-01T12:00:00Z')),
+        new DateRange(
+          moment('2020-03-01T12:00:00Z'),
+          moment('2020-07-01T12:00:00Z'),
+        ),
       )
-      page.rerender(<DateFilter filters={newFilters} setFilters={mockSetFilters} />)
+      page.rerender(
+        <DateFilter filters={newFilters} setFilters={mockSetFilters} />,
+      )
     })
 
     page.getByDisplayValue('03/01/2020')

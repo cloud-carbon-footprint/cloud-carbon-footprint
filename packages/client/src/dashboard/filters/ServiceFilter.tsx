@@ -5,15 +5,25 @@
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from './Filters'
 import DropdownFilter, { DropdownOption } from './DropdownFilter'
-import { ALL_SERVICES_DROPDOWN_OPTION, buildAndOrderDropdownOptions } from './DropdownConstants'
+import {
+  ALL_SERVICES_DROPDOWN_OPTION,
+  buildAndOrderDropdownOptions,
+} from './DropdownConstants'
 
 const EMPTY_RESPONSE = [{ key: '', name: '' }]
 
 // TODO remove mutable global variable
 export let SERVICE_OPTIONS: DropdownOption[]
 
-const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, options }) => {
-  const allDropdownServiceOptions = buildAndOrderDropdownOptions(options?.services, EMPTY_RESPONSE)
+const ServiceFilter: FunctionComponent<FilterProps> = ({
+  filters,
+  setFilters,
+  options,
+}) => {
+  const allDropdownServiceOptions = buildAndOrderDropdownOptions(
+    options?.services,
+    EMPTY_RESPONSE,
+  )
 
   SERVICE_OPTIONS = [ALL_SERVICES_DROPDOWN_OPTION, ...allDropdownServiceOptions]
 
@@ -24,7 +34,9 @@ const ServiceFilter: FunctionComponent<FilterProps> = ({ filters, setFilters, op
       options={SERVICE_OPTIONS}
       selections={filters.services}
       selectionToOption={(service: DropdownOption) => service}
-      updateSelections={(selections: DropdownOption[]) => setFilters(filters.withServices(selections))}
+      updateSelections={(selections: DropdownOption[]) =>
+        setFilters(filters.withServices(selections))
+      }
     />
   )
 }

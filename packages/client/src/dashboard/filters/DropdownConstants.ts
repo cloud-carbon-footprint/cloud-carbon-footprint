@@ -14,9 +14,14 @@ export const ALL_ACCOUNTS_DROPDOWN_OPTION: DropdownOption = {
 }
 
 export const ALL_SERVICES_VALUE = 'All Services'
-export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = { key: ALL_KEY, name: ALL_SERVICES_VALUE }
+export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = {
+  key: ALL_KEY,
+  name: ALL_SERVICES_VALUE,
+}
 
-export function alphabetizeDropdownOptions(dropdownOptions: DropdownOption[]): DropdownOption[] {
+export function alphabetizeDropdownOptions(
+  dropdownOptions: DropdownOption[],
+): DropdownOption[] {
   dropdownOptions.sort((a, b) => {
     const normalizedA = a.name.trim().toLowerCase()
     const normalizedB = b.name.trim().toLowerCase()
@@ -51,7 +56,11 @@ export const buildAndOrderDropdownOptions = (
   for (const option of dropdownOptions ? dropdownOptions : emptyResponse) {
     allOptions.push(option)
   }
-  return alphabetizeDropdownOptions(allOptions).sort((firstDropdownOption, secondDropdownOption) =>
-    firstDropdownOption.cloudProvider!.localeCompare(secondDropdownOption.cloudProvider!),
+  return alphabetizeDropdownOptions(
+    allOptions,
+  ).sort((firstDropdownOption, secondDropdownOption) =>
+    firstDropdownOption.cloudProvider!.localeCompare(
+      secondDropdownOption.cloudProvider!,
+    ),
   )
 }

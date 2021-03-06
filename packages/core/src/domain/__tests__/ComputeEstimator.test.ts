@@ -16,7 +16,11 @@ describe('ComputeEstimator', () => {
       },
     ]
 
-    const result = new ComputeEstimator().estimate(input, AWS_REGIONS.US_EAST_1, 'AWS')
+    const result = new ComputeEstimator().estimate(
+      input,
+      AWS_REGIONS.US_EAST_1,
+      'AWS',
+    )
 
     expect(result).toEqual([
       {
@@ -38,7 +42,11 @@ describe('ComputeEstimator', () => {
       },
     ]
 
-    const result = new ComputeEstimator().estimate(input, AWS_REGIONS.AF_SOUTH_1, 'AWS')
+    const result = new ComputeEstimator().estimate(
+      input,
+      AWS_REGIONS.AF_SOUTH_1,
+      'AWS',
+    )
 
     expect(result).toEqual([
       {

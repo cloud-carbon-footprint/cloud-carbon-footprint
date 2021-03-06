@@ -75,7 +75,11 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
       options={props.options}
       groupBy={(option) =>
         option.cloudProvider
-          ? getLabelOfGroupByCloudProviders(option.cloudProvider!, props.selections, props.options)
+          ? getLabelOfGroupByCloudProviders(
+              option.cloudProvider!,
+              props.selections,
+              props.options,
+            )
           : ''
       }
       value={props.selections.map(props.selectionToOption)}
@@ -83,8 +87,13 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
         props.updateSelections(selections)
       }}
       getOptionLabel={(option: DropdownOption) => option.name}
-      getOptionSelected={(option: DropdownOption, value: DropdownOption) => option.key === value.key}
-      renderOption={(option: DropdownOption, state: AutocompleteRenderOptionState) => (
+      getOptionSelected={(option: DropdownOption, value: DropdownOption) =>
+        option.key === value.key
+      }
+      renderOption={(
+        option: DropdownOption,
+        state: AutocompleteRenderOptionState,
+      ) => (
         <React.Fragment>
           <Checkbox
             color="primary"
@@ -107,7 +116,11 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
             InputProps={{
               ...params.InputProps,
               startAdornment: (
-                <Typography variant={'button'} align={'center'} className={localClasses.inputLabel}>
+                <Typography
+                  variant={'button'}
+                  align={'center'}
+                  className={localClasses.inputLabel}
+                >
                   {props.displayValue}
                 </Typography>
               ),

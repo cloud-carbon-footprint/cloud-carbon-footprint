@@ -36,7 +36,8 @@ expect.extend({
         if (!error && !expected.includes(serviceEstimate.serviceName)) {
           error = {
             pass: false,
-            message: () => `EstimationResult[${index}] contains unexpected service '${serviceEstimate.serviceName}'`,
+            message: () =>
+              `EstimationResult[${index}] contains unexpected service '${serviceEstimate.serviceName}'`,
           }
         }
       })
@@ -48,7 +49,9 @@ expect.extend({
     let error: { pass: boolean; message: () => string } | null = null
     actual.forEach((estimationResult, index) => {
       const today: moment.Moment = moment.utc()
-      const endOfTimeframe: moment.Moment = today.clone().subtract(expected, 'M')
+      const endOfTimeframe: moment.Moment = today
+        .clone()
+        .subtract(expected, 'M')
       const current = moment.utc(estimationResult.timestamp)
 
       if (!error && !current.isBetween(endOfTimeframe, today, 'day', '[]')) {
@@ -89,10 +92,22 @@ describe('Filters', () => {
   const ebsServiceOption = { key: 'ebs', name: 'EBS', cloudProvider: 'aws' }
   const S3ServiceOption = { key: 's3', name: 'S3', cloudProvider: 'aws' }
   const ec2ServiceOption = { key: 'ec2', name: 'EC2', cloudProvider: 'aws' }
-  const elastiCacheServiceOption = { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' }
+  const elastiCacheServiceOption = {
+    key: 'elasticache',
+    name: 'ElastiCache',
+    cloudProvider: 'aws',
+  }
   const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
-  const lambdaServiceOption = { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' }
-  const computeEngineServiceOption = { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' }
+  const lambdaServiceOption = {
+    key: 'lambda',
+    name: 'Lambda',
+    cloudProvider: 'aws',
+  }
+  const computeEngineServiceOption = {
+    key: 'computeEngine',
+    name: 'Compute Engine',
+    cloudProvider: 'gcp',
+  }
   const services = [
     ebsServiceOption,
     S3ServiceOption,
@@ -116,7 +131,10 @@ describe('Filters', () => {
 
     it('should ignore services not present in the estimationResults', () => {
       const estimationResults = generateEstimations(moment.utc(), 1, ['s3'])
-      const filters = new Filters().withServices([ebsServiceOption, ec2ServiceOption])
+      const filters = new Filters().withServices([
+        ebsServiceOption,
+        ec2ServiceOption,
+      ])
 
       const filteredData = filters.filter(estimationResults)
 
@@ -134,7 +152,9 @@ describe('Filters', () => {
 
     it('should filter by timeframe and service', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
-      const filters = new Filters().withTimeFrame(3).withServices([ebsServiceOption])
+      const filters = new Filters()
+        .withTimeFrame(3)
+        .withServices([ebsServiceOption])
 
       const filteredData = filters.filter(estimationResults)
 
@@ -156,7 +176,9 @@ describe('Filters', () => {
 
       const startDate = moment.utc().subtract(4, 'M')
       const endDate = moment.utc().subtract(2, 'M')
-      const filters = new Filters().withDateRange(new DateRange(startDate, endDate))
+      const filters = new Filters().withDateRange(
+        new DateRange(startDate, endDate),
+      )
 
       const filteredData = filters.filter(estimationResults)
       expect(filteredData).toEqual(estimationResults.slice(2, 5))
@@ -307,7 +329,9 @@ describe('Filters', () => {
 
     it('keeps timeframe filter when the dateRange filter is incomplete', () => {
       const startDate = moment.utc()
-      const filters = new Filters().withDateRange(new DateRange(startDate, null))
+      const filters = new Filters().withDateRange(
+        new DateRange(startDate, null),
+      )
 
       expect(filters.timeframe).toEqual(12)
       expect(filters.dateRange?.isComplete()).toEqual(false)
@@ -317,7 +341,9 @@ describe('Filters', () => {
 
     it('unselects the timeframe filter when the dateRange filter is complete', () => {
       const startDate = moment.utc()
-      const filters = new Filters().withDateRange(new DateRange(startDate, startDate))
+      const filters = new Filters().withDateRange(
+        new DateRange(startDate, startDate),
+      )
 
       expect(filters.timeframe).toEqual(-1)
       expect(filters.dateRange?.isComplete()).toEqual(true)
@@ -327,7 +353,9 @@ describe('Filters', () => {
 
     it('unselects the dateRange filter when the timeframe filter is set', () => {
       const startDate = moment.utc()
-      const filters = new Filters().withDateRange(new DateRange(startDate, null)).withTimeFrame(3)
+      const filters = new Filters()
+        .withDateRange(new DateRange(startDate, null))
+        .withTimeFrame(3)
 
       expect(filters.timeframe).toEqual(3)
       expect(filters.dateRange).toBeNull()
@@ -346,7 +374,11 @@ describe('Filters', () => {
   })
 
   describe('withAccounts', () => {
-    const mockAccount1 = { cloudProvider: 'aws', key: '123123123', name: 'testAccount1' }
+    const mockAccount1 = {
+      cloudProvider: 'aws',
+      key: '123123123',
+      name: 'testAccount1',
+    }
     it('should unselect a selected account', () => {
       const filters = new Filters({
         timeframe: 12,

@@ -28,7 +28,12 @@ describe('Custom Tooltip', () => {
   const dataPointIndex = 1
 
   it('renders data in tooltip', () => {
-    const tooltip = create(<CustomTooltip data={cloudEstimatesPerDay} dataPointIndex={dataPointIndex} />)
+    const tooltip = create(
+      <CustomTooltip
+        data={cloudEstimatesPerDay}
+        dataPointIndex={dataPointIndex}
+      />,
+    )
     expect(tooltip.toJSON()).toMatchSnapshot()
   })
 })

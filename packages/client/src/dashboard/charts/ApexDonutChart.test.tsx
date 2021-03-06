@@ -56,8 +56,10 @@ describe('ApexDonutChart', () => {
   })
 
   it('should pass sorted chart options to Chart component', function () {
-    const chartOptionLabels = fixture.root.findByType(Chart).props?.options?.labels
-    const chartOptionSeries = fixture.root.findByType(Chart).props?.options?.series
+    const chartOptionLabels = fixture.root.findByType(Chart).props?.options
+      ?.labels
+    const chartOptionSeries = fixture.root.findByType(Chart).props?.options
+      ?.series
 
     expect(chartOptionLabels).toEqual(['ebs', 'ec2', 's3'])
     expect(chartOptionSeries).toEqual([3015.014, 2521.406, 1718.017])

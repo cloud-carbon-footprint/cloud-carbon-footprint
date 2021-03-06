@@ -13,22 +13,31 @@ export default interface FootprintEstimate {
   usesAverageCPUConstant?: boolean
 }
 
-export const aggregateEstimatesByDay = (estimates: FootprintEstimate[]): { [date: string]: FootprintEstimate } => {
-  const getDayOfEstimate = (estimate: { timestamp: Date }) => estimate.timestamp.toISOString().substr(0, 10)
+export const aggregateEstimatesByDay = (
+  estimates: FootprintEstimate[],
+): { [date: string]: FootprintEstimate } => {
+  const getDayOfEstimate = (estimate: { timestamp: Date }) =>
+    estimate.timestamp.toISOString().substr(0, 10)
 
   const accumulatingFn = (acc: FootprintEstimate, value: FootprintEstimate) => {
     acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
     acc.kilowattHours += value.kilowattHours
     acc.co2e += value.co2e
     if (value.usesAverageCPUConstant) {
-      acc.usesAverageCPUConstant = acc.usesAverageCPUConstant || value.usesAverageCPUConstant
+      acc.usesAverageCPUConstant =
+        acc.usesAverageCPUConstant || value.usesAverageCPUConstant
     }
     return acc
   }
 
   return reduceBy(
     accumulatingFn,
-    { kilowattHours: 0, co2e: 0, timestamp: undefined, usesAverageCPUConstant: false },
+    {
+      kilowattHours: 0,
+      co2e: 0,
+      timestamp: undefined,
+      usesAverageCPUConstant: false,
+    },
     getDayOfEstimate,
     estimates,
   )
@@ -68,19 +77,30 @@ export const appendOrAccumulateEstimatesByDay = (
 
   if (dayExistsInEstimates(results, costAndUsageReportRow.timestamp)) {
     const estimatesForDay = results.find(
-      (estimate) => estimate.timestamp.getTime() === costAndUsageReportRow.timestamp.getTime(),
+      (estimate) =>
+        estimate.timestamp.getTime() ===
+        costAndUsageReportRow.timestamp.getTime(),
     )
 
-    if (estimateExistsForRegionAndService(results, costAndUsageReportRow.timestamp, serviceEstimate)) {
-      const estimateToAcc = estimatesForDay.serviceEstimates.find((estimateForDay) => {
-        return hasSameRegionAndService(estimateForDay, serviceEstimate)
-      })
+    if (
+      estimateExistsForRegionAndService(
+        results,
+        costAndUsageReportRow.timestamp,
+        serviceEstimate,
+      )
+    ) {
+      const estimateToAcc = estimatesForDay.serviceEstimates.find(
+        (estimateForDay) => {
+          return hasSameRegionAndService(estimateForDay, serviceEstimate)
+        },
+      )
       estimateToAcc.kilowattHours += serviceEstimate.kilowattHours
       estimateToAcc.co2e += serviceEstimate.co2e
       estimateToAcc.cost += serviceEstimate.cost
       if (serviceEstimate.usesAverageCPUConstant) {
         estimateToAcc.usesAverageCPUConstant =
-          estimateToAcc.usesAverageCPUConstant || serviceEstimate.usesAverageCPUConstant
+          estimateToAcc.usesAverageCPUConstant ||
+          serviceEstimate.usesAverageCPUConstant
       }
     } else {
       estimatesForDay.serviceEstimates.push(serviceEstimate)
@@ -93,8 +113,13 @@ export const appendOrAccumulateEstimatesByDay = (
   }
 }
 
-function dayExistsInEstimates(results: MutableEstimationResult[], timestamp: Date): boolean {
-  return results.some((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+function dayExistsInEstimates(
+  results: MutableEstimationResult[],
+  timestamp: Date,
+): boolean {
+  return results.some(
+    (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
+  )
 }
 
 function estimateExistsForRegionAndService(
@@ -102,12 +127,20 @@ function estimateExistsForRegionAndService(
   timestamp: Date,
   serviceEstimate: MutableServiceEstimate,
 ): boolean {
-  const estimatesForDay = results.find((estimate) => estimate.timestamp.getTime() === timestamp.getTime())
+  const estimatesForDay = results.find(
+    (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
+  )
   return estimatesForDay.serviceEstimates.some((estimateForDay) => {
     return hasSameRegionAndService(estimateForDay, serviceEstimate)
   })
 }
 
-function hasSameRegionAndService(estimateOne: MutableServiceEstimate, estimateTwo: MutableServiceEstimate): boolean {
-  return estimateOne.region === estimateTwo.region && estimateOne.serviceName === estimateTwo.serviceName
+function hasSameRegionAndService(
+  estimateOne: MutableServiceEstimate,
+  estimateTwo: MutableServiceEstimate,
+): boolean {
+  return (
+    estimateOne.region === estimateTwo.region &&
+    estimateOne.serviceName === estimateTwo.serviceName
+  )
 }

@@ -15,7 +15,9 @@ jest.mock('@google-cloud/monitoring', () => {
     MetricServiceClient: jest.fn().mockImplementation(() => {
       return {
         listTimeSeries: mockListTimeSeries,
-        projectPath: jest.fn().mockReturnValue('projects/cloud-carbon-footprint'),
+        projectPath: jest
+          .fn()
+          .mockReturnValue('projects/cloud-carbon-footprint'),
         getProjectId: jest.fn().mockResolvedValue('cloud-carbon-footprint'),
       }
     }),
@@ -132,11 +134,19 @@ describe('ComputeEngine', () => {
   })
 
   it('gets compute engine usage for two data points', async () => {
-    mockListTimeSeries.mockResolvedValueOnce([mockCpuUtilizationTimeSeries, {}, {}])
+    mockListTimeSeries.mockResolvedValueOnce([
+      mockCpuUtilizationTimeSeries,
+      {},
+      {},
+    ])
     mockListTimeSeries.mockResolvedValueOnce([mockVCPUTimeSeries, {}, {}])
 
     const computeEngineService = new ComputeEngine(new MetricServiceClient())
-    const result = await computeEngineService.getUsage(startDate, endDate, region)
+    const result = await computeEngineService.getUsage(
+      startDate,
+      endDate,
+      region,
+    )
 
     expect(mockListTimeSeries).toHaveBeenNthCalledWith(
       1,
@@ -214,11 +224,19 @@ describe('ComputeEngine', () => {
       },
     ]
 
-    mockListTimeSeries.mockResolvedValueOnce([mockCpuUtilizationTimeSeriesWithMissingPoint, {}, {}])
+    mockListTimeSeries.mockResolvedValueOnce([
+      mockCpuUtilizationTimeSeriesWithMissingPoint,
+      {},
+      {},
+    ])
     mockListTimeSeries.mockResolvedValueOnce([mockVCPUTimeSeries, {}, {}])
 
     const computeEngineService = new ComputeEngine(new MetricServiceClient())
-    const result = await computeEngineService.getUsage(startDate, endDate, region)
+    const result = await computeEngineService.getUsage(
+      startDate,
+      endDate,
+      region,
+    )
 
     expect(result).toEqual([
       {
@@ -228,7 +246,8 @@ describe('ComputeEngine', () => {
         usesAverageCPUConstant: false,
       },
       {
-        cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100,
+        cpuUtilizationAverage:
+          CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100,
         numberOfvCpus: 2,
         timestamp: dayOneHourTwo,
         usesAverageCPUConstant: true,
@@ -241,7 +260,11 @@ describe('ComputeEngine', () => {
     mockListTimeSeries.mockResolvedValueOnce([[], {}, {}])
 
     const computeEngineService = new ComputeEngine(new MetricServiceClient())
-    const result = await computeEngineService.getUsage(startDate, endDate, region)
+    const result = await computeEngineService.getUsage(
+      startDate,
+      endDate,
+      region,
+    )
 
     expect(result).toEqual([])
   })

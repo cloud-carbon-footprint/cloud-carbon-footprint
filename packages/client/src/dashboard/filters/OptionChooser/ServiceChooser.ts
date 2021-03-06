@@ -18,7 +18,9 @@ export class ServiceChooser extends OptionChooser {
 
   protected chooseProviders(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
-    getCloudProvidersFromServices(this.selections).forEach((cloudProviderOption) =>
+    getCloudProvidersFromServices(
+      this.selections,
+    ).forEach((cloudProviderOption) =>
       desiredSelections.add(cloudProviderOption),
     )
     return desiredSelections
@@ -26,17 +28,26 @@ export class ServiceChooser extends OptionChooser {
 
   protected chooseAccounts(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
-    const currentCloudProviders = Array.from(getCloudProvidersFromServices(this.selections))
+    const currentCloudProviders = Array.from(
+      getCloudProvidersFromServices(this.selections),
+    )
     currentCloudProviders.forEach((currentCloudProvider) => {
       //if currentCloudprovider has an option that oldCP has, keep the accounts from old that are under that CP
-      if (isDropdownOptionInDropdownOptions(this.oldSelections.cloudProviders, currentCloudProvider)) {
+      if (
+        isDropdownOptionInDropdownOptions(
+          this.oldSelections.cloudProviders,
+          currentCloudProvider,
+        )
+      ) {
         this.oldSelections.accounts.forEach((oldAccountOption) => {
-          oldAccountOption.cloudProvider === currentCloudProvider.key && desiredSelections.add(oldAccountOption)
+          oldAccountOption.cloudProvider === currentCloudProvider.key &&
+            desiredSelections.add(oldAccountOption)
         })
       } else {
         //if currentCloudprovider doesnt have an option that oldCP has, add all the accounts from that CP
         ACCOUNT_OPTIONS.forEach((accountOption) => {
-          accountOption.cloudProvider === currentCloudProvider.key && desiredSelections.add(accountOption)
+          accountOption.cloudProvider === currentCloudProvider.key &&
+            desiredSelections.add(accountOption)
         })
       }
     })
@@ -48,14 +59,22 @@ export class ServiceChooser extends OptionChooser {
   }
 }
 
-export function getCloudProvidersFromServices(serviceSelections: DropdownOption[]): Set<DropdownOption> {
+export function getCloudProvidersFromServices(
+  serviceSelections: DropdownOption[],
+): Set<DropdownOption> {
   const keys = serviceSelections.map((selection) => selection.key)
   const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
 
-  for (const service of SERVICE_OPTIONS.filter((service) => service.key !== 'all')) {
+  for (const service of SERVICE_OPTIONS.filter(
+    (service) => service.key !== 'all',
+  )) {
     if (keys.includes(service.key)) {
       cloudProviderSelections.add(
-        <DropdownOption>CLOUD_PROVIDER_OPTIONS.find((option) => option.key === service.cloudProvider),
+        <DropdownOption>(
+          CLOUD_PROVIDER_OPTIONS.find(
+            (option) => option.key === service.cloudProvider,
+          )
+        ),
       )
     }
   }

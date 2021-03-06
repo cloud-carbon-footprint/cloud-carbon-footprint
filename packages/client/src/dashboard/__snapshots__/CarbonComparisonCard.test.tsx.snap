@@ -155,7 +155,8 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         rel="noopener"
         target="_blank"
       >
-        EPA Equivalencies Calculator 
+        EPA Equivalencies Calculator
+         
         <svg
           aria-hidden={true}
           className="MuiSvgIcon-root makeStyles-openIcon-13 MuiSvgIcon-fontSizeSmall"

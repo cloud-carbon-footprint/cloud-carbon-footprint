@@ -4,7 +4,14 @@
 
 import React, { FunctionComponent, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, CardContent, CardActions, Typography, Button, Link } from '@material-ui/core'
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  Link,
+} from '@material-ui/core'
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
 import { EstimationResult } from '../models/types'
@@ -91,7 +98,9 @@ export const toMiles = (co2mt: number): number => co2mt * 2481.3918390475
 export const toGas = (co2mt: number): number => co2mt * 112.5247230304
 export const toTrees = (co2mt: number): number => co2mt * 16.5337915448
 
-export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({ data }) => {
+export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
+  data,
+}) => {
   const classes = useStyles()
   const [selection, setSelection] = useState('miles')
   const mtSum: number = sumCO2(data)
@@ -140,10 +149,17 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             <Typography className={classes.title} gutterBottom>
               Your cumulative emissions are
             </Typography>
-            <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
+            <Typography
+              className={classes.metricOne}
+              variant="h4"
+              component="p"
+              data-testid="co2"
+            >
               {formatNumber(mtSum, 1)} metric tons CO2e
             </Typography>
-            <Typography className={classes.posOne}>that is equivalent to</Typography>
+            <Typography className={classes.posOne}>
+              that is equivalent to
+            </Typography>
           </CardContent>
           <CardContent className={classes.bottomContainer}>
             <CardContent>{comparisons[selection].icon}</CardContent>
@@ -151,7 +167,12 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               <Typography className={classes.posTwo} variant="h5" component="p">
                 {comparisons[selection].textOne}
               </Typography>
-              <Typography className={classes.metricTwo} variant="h3" component="p" data-testid="comparison">
+              <Typography
+                className={classes.metricTwo}
+                variant="h3"
+                component="p"
+                data-testid="comparison"
+              >
                 {formatNumber(comparisons[selection].total)}
               </Typography>
               <Typography className={classes.posTwo} variant="h5" component="p">
@@ -193,14 +214,23 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               rel="noopener"
               className={classes.sourceLink}
             >
-              EPA Equivalencies Calculator <OpenInNew fontSize={'small'} className={classes.openIcon}></OpenInNew>
+              EPA Equivalencies Calculator{' '}
+              <OpenInNew
+                fontSize={'small'}
+                className={classes.openIcon}
+              ></OpenInNew>
             </Link>
           </Typography>
         </div>
       ) : (
         <div>
           <CardContent className={classes.topContainer}>
-            <Typography className={classes.metricOne} variant="h4" component="p" data-testid="co2">
+            <Typography
+              className={classes.metricOne}
+              variant="h4"
+              component="p"
+              data-testid="co2"
+            >
               Emissions comparison
             </Typography>
           </CardContent>
