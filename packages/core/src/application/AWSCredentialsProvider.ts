@@ -4,13 +4,13 @@
 
 import { Credentials, config, ChainableTemporaryCredentials } from 'aws-sdk'
 import appConfig from './Config'
-import CredentialsForGCP from './GCPCredentials'
+import GCPCredentials from './GCPCredentials'
 
 export default class AWSCredentialsProvider {
   static create(accountId: string): Credentials {
     switch (appConfig.AWS.authentication.mode) {
       case 'GCP':
-        return new CredentialsForGCP(
+        return new GCPCredentials(
           accountId,
           appConfig.AWS.authentication.options.targetRoleSessionName,
           appConfig.AWS.authentication.options.proxyAccountId,

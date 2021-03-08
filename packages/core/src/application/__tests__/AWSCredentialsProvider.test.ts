@@ -3,7 +3,7 @@
  */
 
 import AWSCredentialsProvider from '../AWSCredentialsProvider'
-import CredentialsForGCP from '../GCPCredentials'
+import GCPCredentials from '../GCPCredentials'
 import mockConfig from '../Config'
 import { ChainableTemporaryCredentials, Credentials } from 'aws-sdk'
 import Mock = jest.Mock
@@ -55,7 +55,7 @@ describe('AWSCredentialsProvider', () => {
     const targetRoleSessionName = 'testRoleSessionName'
     const proxyAccountId = '987654321'
     const proxyRoleName = 'testProxyRoleName'
-    const expectedCredentials = new CredentialsForGCP(
+    const expectedCredentials = new GCPCredentials(
       accountId,
       targetRoleSessionName,
       proxyAccountId,

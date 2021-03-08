@@ -11,7 +11,7 @@ import {
 import { google } from 'googleapis'
 import { GoogleAuth, JWT } from 'google-auth-library'
 
-export default class CredentialsForGCP extends Credentials {
+export default class GCPCredentials extends Credentials {
   constructor(
     private accountId: string,
     private targetRoleSessionName: string,
