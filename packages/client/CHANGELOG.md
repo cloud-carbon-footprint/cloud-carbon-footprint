@@ -1,26 +1,7 @@
 # @cloud-carbon-footprint/client
 
-## 0.0.4
+## 0.0.0
 
-### Patch Changes
+### Major Changes
 
-- 03e4cf7: test client package patch
-
-## 0.0.3
-
-### Patch Changes
-
-- b504eea: test client package patch
-
-## 0.0.2
-
-### Patch Changes
-
-- 26764ea: test client patch
-- 3d6c816: test client patch
-
-## 0.0.1
-
-### Patch Changes
-
-- aa1bdb4: test changeset bump
+- b6464f4: initialize changesets
