@@ -14,8 +14,7 @@ if (!BOOL_CREATE_RELEASE) {
 
 const GH_OWNER = 'ThoughtWorks-Cleantech'
 const GH_REPO = 'cloud-carbon-footprint'
-const EXPECTED_COMMIT_MESSAGE = /^Merge pull request #(?<prNumber>[0-9]+) from/
-const CHANGESET_RELEASE_BRANCH = 'cloud-carbon-footprin/changeset-release/trunk'
+const EXPECTED_COMMIT_MESSAGE = 'Version Packages'
 
 // Initialize a GitHub client
 const octokit = new Octokit({
@@ -33,7 +32,9 @@ async function getCommitMessageUsingTagName(tagName) {
   if (refData.status !== 200) {
     console.error('refData:')
     console.error(refData)
-    throw new Error('Something went wrong when getting the tag SHA using tag name')
+    throw new Error(
+      'Something went wrong when getting the tag SHA using tag name',
+    )
   }
   const tagSha = refData.data.object.sha
   console.log(`SHA for the tag ${TAG_NAME} is ${tagSha}`)
@@ -47,10 +48,14 @@ async function getCommitMessageUsingTagName(tagName) {
   if (tagData.status !== 200) {
     console.error('tagData:')
     console.error(tagData)
-    throw new Error('Something went wrong when getting the commit SHA using tag SHA')
+    throw new Error(
+      'Something went wrong when getting the commit SHA using tag SHA',
+    )
   }
   const commitSha = tagData.data.object.sha
-  console.log(`The commit for the tag is https://github.com/ThoughtWorks-Cleantech/backstage/commit/${commitSha}`)
+  console.log(
+    `The commit for the tag is https://github.com/ThoughtWorks-Cleantech/backstage/commit/${commitSha}`,
+  )
 
   // Get the commit message using the commit SHA
   const commitData = await octokit.git.getCommit({
@@ -61,7 +66,9 @@ async function getCommitMessageUsingTagName(tagName) {
   if (commitData.status !== 200) {
     console.error('commitData:')
     console.error(commitData)
-    throw new Error('Something went wrong when getting the commit message using commit SHA')
+    throw new Error(
+      'Something went wrong when getting the commit message using commit SHA',
+    )
   }
 
   // Example Commit Message
@@ -74,7 +81,9 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
   // It should exactly match the pattern of changeset commit message, or else will abort.
   const expectedMessage = RegExp(EXPECTED_COMMIT_MESSAGE)
   if (!expectedMessage.test(commitMessage)) {
-    throw new Error(`Expected regex did not match commit message: ${commitMessage}`)
+    throw new Error(
+      `Expected regex did not match commit message: ${commitMessage}`,
+    )
   }
 
   // Get the PR description from the commit message
@@ -90,7 +99,7 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
   })
 
   // Use the PR description to prepare for the release description
-  const isChangesetRelease = commitMessage.includes(CHANGESET_RELEASE_BRANCH)
+  const isChangesetRelease = commitMessage.includes(expectedMessage)
   if (isChangesetRelease) {
     return data.body.split('\n').slice(3).join('\n')
   }
@@ -129,7 +138,9 @@ async function createRelease(releaseDescription) {
 
 async function main() {
   const commitMessage = await getCommitMessageUsingTagName(TAG_NAME)
-  const releaseDescription = await getReleaseDescriptionFromCommitMessage(commitMessage)
+  const releaseDescription = await getReleaseDescriptionFromCommitMessage(
+    commitMessage,
+  )
 
   await createRelease(releaseDescription)
 }
