@@ -204,6 +204,7 @@ jobs:
           name: api-dist
           path: packages/api/dist
       - name: deploy-staging
+        if: github.event.pull_request.base.ref == 'trunk'
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
@@ -276,6 +277,7 @@ jobs:
           name: api-dist
           path: packages/api/dist
       - name: deploy-production
+        if: github.event.pull_request.base.ref == 'trunk'
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
