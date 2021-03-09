@@ -1,0 +1,18 @@
+.logosContainer{
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.innovationPartnerItem{
+    display:flex;
+    max-width: 300px;
+    margin: 20px;
+}
+
+@media screen and (max-width: 966px) {
+    .innovationPartnerItem{
+        max-width:150px;
+    }
+}

@@ -1,0 +1,50 @@
+.overviewContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 3rem 10%;
+}
+
+@media screen and (max-width: 966px) {
+  .overviewContainer {
+    flex-direction: column;
+    padding: 2rem;
+    text-align: center;
+  }
+}
+
+.overviewItem {
+  padding: 3rem;
+}
+
+.overviewItemText {
+  width: 60%;
+}
+
+@media screen and (max-width: 1280px) {
+  .overviewItem {
+    padding: 1rem;
+  }
+
+  .overviewItemText {
+    width: 100%;
+  }
+}
+
+.overviewItemImage {
+  width: 100%;
+}
+
+.overviewImage {
+  height: 100%;
+  width: 100%;
+}
+
+.overviewTitle {
+  font-size: 28pt;
+  line-height: 1.4;
+}
+
+.overviewText {
+  font-size: 15pt;
+}
