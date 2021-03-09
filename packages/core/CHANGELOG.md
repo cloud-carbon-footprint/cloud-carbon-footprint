@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.1
+
+### Patch Changes
+
+- 3377cc7: Initialize changesets
+
 ## 0.0.0
 
 ### Major Changes
