@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/client
 
+## 0.0.3
+
+### Patch Changes
+
+- b504eea: test client package patch
+
 ## 0.0.2
 
 ### Patch Changes
