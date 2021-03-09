@@ -62,9 +62,12 @@
     "typed-prompts": "^1.5.0"
   },
   "lint-staged": {
-    "*.{js,ts,md}": [
+    "*.{js,ts}": [
       "yarn lint",
       "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ],
+    "*.{md}": [
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json",
     ]
   }
 }
