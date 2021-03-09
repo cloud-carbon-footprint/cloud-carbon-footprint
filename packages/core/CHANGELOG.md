@@ -1,7 +1,7 @@
 # @cloud-carbon-footprint/core
 
-## 1.0.0
+## 0.1.0
 
-### Major Changes
+### Minor Changes
 
-- b6464f4: initialize changesets
+- 3b3bec3: Update packages to have base version
