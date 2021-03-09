@@ -1,0 +1,12 @@
+.footerLicenseContainer{
+    background-color: #1A1918;
+    text-align: center;
+    color: white;
+    padding: 1rem;
+    font-size: 11pt;
+}
+
+.footerLicenseLink,.footerLicenseLink:hover {
+    text-decoration: none;
+    color: white;
+}
