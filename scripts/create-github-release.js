@@ -14,7 +14,10 @@ if (!BOOL_CREATE_RELEASE) {
 
 const GH_OWNER = 'ThoughtWorks-Cleantech'
 const GH_REPO = 'cloud-carbon-footprint'
-const EXPECTED_COMMIT_MESSAGE = 'Version Packages'
+// const EXPECTED_COMMIT_MESSAGE = 'Version Packages'
+const EXPECTED_COMMIT_MESSAGE = /^Merge pull request #(?<prNumber>[0-9]+) from/
+const CHANGESET_RELEASE_BRANCH =
+  'cloud-carbon-footprint/changeset-release/trunk'
 
 // Initialize a GitHub client
 const octokit = new Octokit({
@@ -89,7 +92,7 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
 
   console.log('###commitMessage', commitMessage)
   console.log('###expectedMessage', expectedMessage)
-  onsole.log('###commitMessageMatch', commitMessage.match(expectedMessage))
+  console.log('###commitMessageMatch', commitMessage.match(expectedMessage))
   // Get the PR description from the commit message
   const prNumber = commitMessage.match(expectedMessage).groups.prNumber
   console.log(
@@ -102,13 +105,15 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
     pull_number: prNumber,
   })
 
-  console.log('###data', tagName)
+  console.log('###tagName', tagName)
   // Use the PR description to prepare for the release description
-  const isChangesetRelease = commitMessage.includes(expectedMessage)
+  const isChangesetRelease = commitMessage.includes(CHANGESET_RELEASE_BRANCH)
   if (isChangesetRelease) {
+    console.log('###hit')
     return data.body.split('\n').slice(3).join('\n')
   }
 
+  console.log('###data', data)
   return data.body
 }
 
