@@ -67,7 +67,7 @@
       "prettier --write --ignore-unknown --config ../../.prettierrc.json"
     ],
     "*.{md}": [
-      "prettier --write --ignore-unknown --config ../../.prettierrc.json",
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
     ]
   }
 }
