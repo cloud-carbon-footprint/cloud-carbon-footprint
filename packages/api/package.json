@@ -3,7 +3,6 @@
   "version": "0.0.4",
   "description": "",
   "main": "index.js",
-  "private": true,
   "scripts": {
     "precommit": "lint-staged && yarn test --coverage --bail",
     "test": "jest",
