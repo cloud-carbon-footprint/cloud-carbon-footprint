@@ -105,7 +105,6 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
     pull_number: prNumber,
   })
 
-  console.log('###tagName', tagName)
   // Use the PR description to prepare for the release description
   const isChangesetRelease = commitMessage.includes(CHANGESET_RELEASE_BRANCH)
   if (isChangesetRelease) {
