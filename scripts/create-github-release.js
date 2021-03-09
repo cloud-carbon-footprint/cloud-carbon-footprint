@@ -88,8 +88,8 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
   }
 
   console.log('###commitMessage', commitMessage)
-  console.log('###commitMessage', expectedMessage)
-  onsole.log('###commitMessage', commitMessage.match(expectedMessage))
+  console.log('###expectedMessage', expectedMessage)
+  onsole.log('###commitMessageMatch', commitMessage.match(expectedMessage))
   // Get the PR description from the commit message
   const prNumber = commitMessage.match(expectedMessage).groups.prNumber
   console.log(
