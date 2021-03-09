@@ -11,6 +11,11 @@
     "marked": ">=2.0.0",
     "sonar-scanner": "^3.1.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./copyright_check.sh && ./branch_warning.sh && yarn hawkeye scan && lerna run precommit --stream"
+    }
+  },
   "workspaces": {
     "packages": [
       "packages/*"
