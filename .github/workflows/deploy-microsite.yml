@@ -2,7 +2,8 @@ name: deploy-microsite
 
 on:
   push:
-    branches: [add-microsite]
+    branches:
+      - add-microsite
   paths:
     - '.github/workflows/deploy-microsite.yml'
     - 'microsite/**'
