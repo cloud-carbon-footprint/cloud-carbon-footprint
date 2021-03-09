@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.5
+
+### Patch Changes
+
+- 222d7a6: Updates core package to correct npm published version
+
 ## 0.0.1
 
 ### Patch Changes
