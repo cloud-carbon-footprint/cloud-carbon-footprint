@@ -23,6 +23,7 @@ const octokit = new Octokit({
 
 // Get the message of the commit responsible for a tag
 async function getCommitMessageUsingTagName(tagName) {
+  console.log('###tagName', tagName)
   // Get the tag SHA using the provided tag name
   const refData = await octokit.git.getRef({
     owner: GH_OWNER,
@@ -86,6 +87,9 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
     )
   }
 
+  console.log('###commitMessage', commitMessage)
+  console.log('###commitMessage', expectedMessage)
+  onsole.log('###commitMessage', commitMessage.match(expectedMessage))
   // Get the PR description from the commit message
   const prNumber = commitMessage.match(expectedMessage).groups.prNumber
   console.log(
@@ -98,6 +102,7 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
     pull_number: prNumber,
   })
 
+  console.log('###data', tagName)
   // Use the PR description to prepare for the release description
   const isChangesetRelease = commitMessage.includes(expectedMessage)
   if (isChangesetRelease) {
