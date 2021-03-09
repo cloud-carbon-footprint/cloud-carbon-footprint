@@ -4,7 +4,7 @@ on:
   push:
     branches: [trunk]
   pull_request:
-    branches: [changeset-release/trunk]
+    branches: [trunk]
     types: [closed]
 
 jobs:
@@ -144,20 +144,20 @@ jobs:
       #   run: yarn lerna -- run --ignore example-app build
       # Publishes current version of packages that are not already present in the registry
       - name: publish
-        if: github.event.pull_request.base.ref == 'changeset-release/trunk'
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         run: yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
       - name: Create a release tag
-        if: github.event.pull_request.base.ref == 'changeset-release/trunk'
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         id: create_tag
         run: node scripts/create-release-tag.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Convert the newly created tag into a release with changelog information
       - name: Create release on GitHub
-        if: github.event.pull_request.base.ref == 'changeset-release/trunk'
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
