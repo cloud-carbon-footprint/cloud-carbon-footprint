@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.3
+
+### Patch Changes
+
+- 428e19c: fix published package versions
+
 ## 0.0.2
 
 ### Patch Changes
