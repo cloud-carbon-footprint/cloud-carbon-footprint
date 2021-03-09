@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # © 2020 ThoughtWorks, Inc. All rights reserved.
