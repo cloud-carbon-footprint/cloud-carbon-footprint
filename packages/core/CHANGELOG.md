@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.5
+
+### Patch Changes
+
+- 7cef814: test core package patch
+
 ## 0.0.4
 
 ### Patch Changes

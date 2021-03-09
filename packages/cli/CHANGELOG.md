@@ -1,5 +1,12 @@
 # cloud-carbon-footprint
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [7cef814]
+  - @cloud-carbon-footprint/core@0.0.5
+
 ## 0.0.5
 
 ### Patch Changes
