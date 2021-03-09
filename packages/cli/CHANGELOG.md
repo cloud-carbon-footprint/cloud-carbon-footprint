@@ -1,5 +1,13 @@
 # cloud-carbon-footprint
 
+## 0.0.3
+
+### Patch Changes
+
+- db718f8: test cli package patch
+- Updated dependencies [fa12d14]
+  - @cloud-carbon-footprint/core@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

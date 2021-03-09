@@ -1,5 +1,11 @@
 # cloud-carbon-footprint
 
+## 0.0.3
+
+### Patch Changes
+
+- fa12d14: test core package patch
+
 ## 0.0.2
 
 ### Patch Changes
