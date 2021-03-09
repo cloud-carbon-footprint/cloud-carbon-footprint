@@ -1,0 +1,56 @@
+.differentiatorContainer{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 3rem 5%;
+}
+
+.differentiatorListItem {
+    width: 100%;
+    margin-right: 3rem;
+}
+
+.differentiatorImageItem {
+    width: 80%;
+}
+
+@media screen and (max-width: 1280px) {
+    .differentiatorImageItem {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 966px) {
+    .differentiatorContainer {
+        flex-direction: column-reverse;
+        padding: 2rem;
+    }
+
+    .differentiatorListItem {
+        margin-right: 0;
+    }
+    
+    .differentiatorImageItem {
+        padding: 2rem;
+    }
+}
+
+.differentiatorListTitle {
+    color: #067A3E;
+    font-size: 22pt;
+    font-weight: bold;
+}
+
+.differentiatorCheckContainer {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.differentiatorCheckIcon {
+    margin: 0 1rem;
+}
+
+.differentiatorCheckText {
+    font-size: 15pt;
+}

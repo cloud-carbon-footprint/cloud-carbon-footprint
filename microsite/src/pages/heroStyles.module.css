@@ -1,0 +1,63 @@
+.heroBanner {
+  padding: 10rem 13rem 8rem;
+  overflow: hidden;
+  background-image: url('/img/hero_background.jpg');
+  background-size: cover;
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 4rem 2rem 2rem;
+    text-align: center;
+  }
+}
+
+.heroTitle {
+  font-size: 45pt;
+}
+
+.heroSubtitle {
+  font-size: 32pt;
+  line-height: 1.4;
+}
+
+.heroAdditionalText {
+  font-size: 22pt;
+  line-height: 1.4;
+}
+
+@media screen and (max-width: 1280px) {
+  .heroTitle {
+    font-size: 40pt;
+  }
+  
+  .heroSubtitle {
+    font-size: 28pt;
+  }
+  
+  .heroAdditionalText {
+    font-size: 20pt;
+  }
+}
+
+@media screen and (max-width: 966px) {
+  .heroTitle {
+    font-size: 36pt;
+  }
+  
+  .heroSubtitle {
+    font-size: 24pt;
+  }
+  
+  .heroAdditionalText {
+    font-size: 15pt;
+  }
+}
+
+.heroSubtitleMargin {
+  margin-bottom: 4rem;
+}
+
+.heroNoMarginBottom {
+  margin-bottom: 0;
+}

@@ -1,0 +1,45 @@
+name: Deploy Microsite
+
+on:
+  push:
+    branches:
+      - trunk
+    paths:
+      - '.github/workflows/deploy-microsite.yml'
+      - 'microsite/**'
+
+jobs:
+  deploy-microsite:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    env:
+      CI: true
+      NODE_OPTIONS: --max-old-space-size=4096
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: use node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org/
+
+      - name: Microsite yarn install
+        run: yarn install --immutable
+        working-directory: microsite
+
+      - name: Build microsite
+        run: yarn docusaurus build
+        working-directory: microsite
+
+      - name: Deploy microsite
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: microsite/build
