@@ -25,9 +25,13 @@
 
 * [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
 
-* [Appendix I: Processor lists](#appendix-i-aws--gcp-processor-list)
+* [Appendix I: Energy coefficients](#appendix-i-energy-coefficients)
 
-* [Appendix II: Grid emissions factors](#appendix-ii-grid-emissions-factors)
+* [Appendix II: Processor lists](#appendix-ii-aws--gcp-processor-list)
+
+* [Appendix III: Recent Networking studies](#appendix-iii-recent-networking-studies)
+
+* [Appendix IV: Grid emissions factors](#appendix-iv-grid-emissions-factors)
 
 
 ## Summary
@@ -60,11 +64,14 @@ organization to view and take action. It currently supports AWS and Google Cloud
 Our approach builds upon 
 [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/) 
 (cloud energy conversion factors). Like Etsy, we currently estimate CO2e emissions for cloud compute and storage 
-services. Networking and memory services usage are not estimated yet due to their arguably comparatively small footprint and 
+services, with the addition of networking. Memory usage is not estimated yet due to its arguably comparatively small footprint and 
 current lack of available energy conversion factors. We similarly use point estimates without confidence intervals due 
 to the experimental nature of the project, which are not meant as a replacement for data from cloud providers and we 
-cannot guarantee their accuracy.  We encourage and welcome any improvements and extensions to both the methodology and 
-software.
+cannot guarantee their accuracy.
+
+We encourage and welcome any improvements and extensions to both the methodology and 
+software.We aim to keep this approach up to date, including using the most recent 
+publicly available data.
 
 ## Longer Version
 
@@ -84,19 +91,19 @@ By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Bill
 Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute and Storage usage types are fed into the estimation formula. You can see our classifications of these usage types in packages/api/src/services/aws/CostAndUsageTypes.ts for AWS and packages/api/src/services/gcp/BillingExportTypes.ts for GCP. 
 
 The process by which we classified the usage types is:
-1. Consider the pricing (AWS) or usage (GCP) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage. Most other units are ignored. 
-1. We then further validate whether a line item is Compute or Storage by looking at the more detailed usage type. E.g. if it contains content like “RAM” or “Networking”, it would be ignored.
+1. Consider the pricing (AWS) or usage (GCP) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage, and if it is bytes of Gigabytes it is likely to be networking. Most other units are ignored. 
+2. We then further validate whether a line item is Compute, Storage, or Networking by looking at the more detailed usage type. E.g. if it contains content like “RAM”, it would be ignored.
 
 You can see more details about this logic in packages/api/src/services/aws/CostAndUsageReports.ts AWS and packages/api/src/services/gcp/BillingExportTable.ts for GCP. We welcome additions, improvements or suggested changes to these classifications or the process.
 
 The way we determine total vCPU Hours for the compute estimation is different for each cloud provider. For AWS we multiply the usage amount by the product vCPUs, because our understanding is that the usage amount doesn’t include the vCPU count for a given usage row. For GCP, our understanding is that the vCPU count is included in the usage amount for a given row, so we simply use the usage amount by itself.
 
-For AWS Savings Plans, we only include the line item type `SavingsPlanCoveredUsage` because our understanding is that the other Savings Plans line item types refers to fees or discounts in the form of refunds. 
+For AWS Savings Plans, we only include the line item type `SavingsPlanCoveredUsage` because our understanding is that the other Savings Plans line item types refer to fees or discounts in the form of refunds. 
 
 When calculating total kilowatt hours for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
 
 #### 2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)
-This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API to pull usage and cost data. We achieve this by looping through the accounts and then making the API calls on each account for the regions and services set in the application configuration. We retrieve an hourly granularity for usage and daily granularity for cost. This approach is arguably more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application.
+This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API to pull usage and cost data. We achieve this by looping through the accounts and then making the API calls on each account for the regions and services set in the application configuration. We retrieve an hourly granularity for usage and daily granularity for cost. This approach is arguably more accurate as we use the actual CPU utilization percentage in the emission estimation for compute usage, but is confined to the services that have been implemented so far in the application. We currently only support compute and storage for this approach.
 
 The cloud providers and services currently supported with this approach are: 
 
@@ -116,15 +123,15 @@ GCP
 
 In order to estimate energy used by cloud providers we are leveraging the methodology that Etsy created called "[Cloud 
 Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)" to determine energy coefficients 
-(kWh) for cloud service usage. Like Etsy’s approach, our application currently only supports energy estimates for cloud 
-compute and storage, and not memory or networking. This is because we are yet to find actionable public research for 
-these types of usage, and typically they contribute a small fraction of a cloud customer’s overall energy use. The 
-application also doesn’t currently include estimations for cloud GPU usage, but this is on the roadmap. 
+(kWh) for cloud service usage. Like Etsy’s approach, our application currently supports energy estimates for cloud 
+compute and storage. We've also added networking, but not memory. We are yet to find actionable public research for 
+memory, and arguably this  contributes a small fraction of a cloud customer’s overall energy use. The 
+application also doesn’t currently include estimations for cloud GPU usage, but this is on the roadmap. You can see a summary of all our energy coefficients in Appendix I below. 
 
 We look at the servers used by cloud providers on their website and reference their energy usage from both the 
 [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database and the [2016 US Data Center Energy 
 Usage Report](https://eta.lbl.gov/publications/united-states-data-center-energy). Etsy looked into GCP servers and we 
-have additionally looked into AWS servers; see list of processors below in Appendix I. Of course this does not account 
+have additionally looked into AWS servers; see list of processors below in Appendix II. Of course this does not account 
 for any custom processors (such as AWS has) however this is the best information we found publicly available. 
 
 #### Compute
@@ -238,6 +245,23 @@ bytes, because this is a more accurate reflection of the energy needed to suppor
 organization may have a 20 Gigabyte AWS EBS Volume allocated, but is only utilizing 2 Gigabytes for this block storage 
 device. In this case we would use 20 GBs in the energy estimation formula for EBS storage. 
 
+### Networking
+### Scope
+Currently, our application takes into account only the data exchanged between different geographical data centers.
+
+For networking, it is safe to assume that the electricity used to power the internal network is close to 0, or at least negligible compared to the electricity required to power servers. We also have chosen to ignore traffic that leaves a data center to provide end-users with services, because this traffic is usually handled by CDN providers (Content delivery network) which are not necessarily the same provider as for cloud computing. This traffic is also dependent on the behavior of end-users. That said, we would welcome contributions to be able to include this in our approach. 
+
+### Studies to date
+There have not been many studies that deal specifically with estimating the electricity impact of exchanging data across data-centers. Most studies focus on estimating the impact of end-user traffic from the data center to the mobile phone; integrating the scope of the core network (what we are interested in), the local access to internet (optical fiber, copper, or 3G/4G/5G) and eventually the connection to the phone (WiFi or 4G). 
+
+On top of that, these studies use different methodologies and end up with results with orders of magnitude in differences. See appendix III below for a summary of the most recent studies. Note that it is very hard to find recent studies that provide an estimation for optical fiber networks, the scope we are interested in.  
+
+### Chosen coefficient
+It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: 0.001 kWh/Gb. Again, we welcome feedback or contributions to improve this coefficient.
+
+We want to thank @martin-laurent for providing this research and recommended coefficient.    
+
+
 ### Carbon Estimates (CO2e)
 Once we have the estimated kilowatt hours for usage of a given cloud provider, we then convert that into estimated CO2e 
 using publicly available data on emission factors for a given electricity grid based on the mix of local energy sources.
@@ -247,19 +271,36 @@ In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy 
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more 
-adequately reflect. Outside the US, we either use carbonfootprint.com’s [country specific grid emissions factors 
-report](https://www.carbonfootprint.com/), or for most regions in Europe the [EEA's country level emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6).
-In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions 
-factors](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2), and for Taiwan we got it from this 
-[energypedia.info](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_note-19) as neither are included in 
-the carbonfootprint.com's report. You can see the full list of emissions factors in Appendix II below. 
+adequately reflect. Outside the US, we generally use carbonfootprint.com’s [country specific grid emissions factors report](https://www.carbonfootprint.com/).
+For most of Europe, however, we use [EEA emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6). 
+In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report. You can see the full list of emissions factors in Appendix IV below. 
 
 We understand this is a rough estimated conversion as these are only averages over a given year that is pre-2020, and 
 they also don’t take into account time of day. We welcome improvements to this, for example [electrictyMap 
 API](https://api.electricitymap.org/) provides hourly historical and forecasted electricity emissions data for a fee. 
 
 
-### Appendix I: AWS & GCP processor list:
+### Appendix I: Energy Coefficients:
+#### AWS
+* Minimum Watts (0% Cpu Utilization): 0.59
+* Maximum Watts (0% Cpu Utilization): 3.5
+* Average CPU Utilization for hyperscale data centers: 50%
+* HDD Storage Watt Hours / Terabyte: 0.65
+* SSD Storage Watt Hours / Terabyte: 1.2
+* Networking Kilowatt Hours / Gigabyte: 0.001
+* Average PUE: 1.2
+		
+#### GCP
+* Minimum Watts (0% Cpu Utilization): 0.58
+* Maximum Watts (0% Cpu Utilization): 3.54
+* Average CPU Utilization for hyperscale data centers: 50%
+* HDD Storage Watt Hours / Terabyte: 0.65
+* SSD Storage Watt Hours / Terabyte: 1.2
+* Networking Kilowatt Hours / Gigabyte: 0.001
+* Average PUE: 1.1
+
+
+### Appendix II: AWS & GCP processor list:
 #### AWS processor list
 * Intel Xeon:  https://aws.amazon.com/intel/
 * Intel Xeon® E5-2676 Processors
@@ -290,12 +331,25 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 * AMD EPYC: https://cloud.google.com/compute/docs/cpu-platforms
 * AMD EPYC 2nd Gen (Rome)
  
-### Appendix II: Grid emissions factors:
+
+### Appendix III: Recent Networking studies
+ |Study|Scope|Year (data applied)|Energy intensity kWh/GB|
+ |-----|-----|-------------------|-----------------------|
+ |[Methodology To Model the Energy and Greenhouse Gas Emissions of Electronic Software Distributions](https://pubs.acs.org/doi/abs/10.1021/es202125j)|end-to-end|2010|0.13|
+|[Understanding the environmental costs of fixed line networking](https://dl.acm.org/doi/abs/10.1145/2602044.2602057) Krug|end-to-end|2012|0.14|
+|[Understanding the environmental costs of fixed line networking](https://dl.acm.org/doi/abs/10.1145/2602044.2602057) Krug|Internet core|2012|0.04|
+|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates (Aslan et al)](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630)|end-to-end|2015|0.06|
+|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates (Aslan et al)](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630)|Internet core|2015|0.004|
+|[New perspectives on internet electricity use in 2030](https://www.researchgate.net/publication/342643762_New_perspectives_on_internet_electricity_use_in_2030), A. Andrae|Fixed access network|2020|0.07 - 0.055|
+|[Talk](https://www.youtube.com/watch?t=2520&v=Xo0PB5i_b4Y&feature=youtu.be)  by J. Malmodin|Fixed broadband network|?|0.1 - 0.001 (depending on the bitrate)|
+
+
+### Appendix IV: Grid emissions factors:
  
 #### AWS
  |Region|Country|NERC Region|CO2e (metric ton/kWh)|Source|
  |------|-------|-----------|------------|------|
- |us-east-1|United States|SERC|0.0004545|[EPA](https://www.epa.gov/egrid/download-data)|
+ |us-east-1|United States|SERC|0.00045455|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-east-2|United States|RFC|0.000475105|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-west-1|United States|WECC|0.000351533|[EPA](https://www.epa.gov/egrid/download-data)|
  |us-west-2|United States|WECC|0.000351533|[EPA](https://www.epa.gov/egrid/download-data)|
@@ -342,7 +396,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
  |australia-southeast1|Australia| |0.00079|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
  |europe-north1|Finland| |0.000086|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west1|Belgium| |0.000167|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
- |europe-west2|England| |0.000228|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
+ |europe-west2|England| |0.0002284|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west3|Germany| |0.000338|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west4|Netherlands| |0.000390|[EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)|
  |europe-west6|Switzerland| |0.00001182|[carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)|
