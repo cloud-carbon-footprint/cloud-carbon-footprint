@@ -5,6 +5,7 @@
 import { reduceBy } from 'ramda'
 import CostAndUsageReportsRow from '../services/aws/CostAndUsageReportsRow'
 import BillingExportRow from '../services/gcp/BillingExportRow'
+import ConsumptionDetailRow from '../services/azure/ConsumptionDetailRow'
 
 export default interface FootprintEstimate {
   timestamp: Date
@@ -61,7 +62,10 @@ export interface MutableServiceEstimate {
 
 export const appendOrAccumulateEstimatesByDay = (
   results: MutableEstimationResult[],
-  costAndUsageReportRow: CostAndUsageReportsRow | BillingExportRow,
+  costAndUsageReportRow:
+    | CostAndUsageReportsRow
+    | BillingExportRow
+    | ConsumptionDetailRow,
   footprintEstimate: FootprintEstimate,
 ) => {
   const serviceEstimate: MutableServiceEstimate = {

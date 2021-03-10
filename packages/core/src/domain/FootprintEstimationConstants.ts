@@ -4,6 +4,7 @@
 
 import { AWS_REGIONS } from '../services/aws/AWSRegions'
 import { GCP_REGIONS } from '../services/gcp/GCPRegions'
+import { AZURE_REGIONS } from '../services/azure/AzureRegions'
 
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
@@ -57,6 +58,18 @@ export const CLOUD_CONSTANTS: CloudConstants = {
     PUE_AVG: 1.2,
     getPUE: () => {
       return CLOUD_CONSTANTS.AWS.PUE_AVG
+    },
+    AVG_CPU_UTILIZATION_2020: 50,
+  },
+  AZURE: {
+    SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
+    HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
+    MIN_WATTS: 0.74,
+    MAX_WATTS: 4.13,
+    NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
+    PUE_AVG: 1.125,
+    getPUE: () => {
+      return CLOUD_CONSTANTS.AZURE.PUE_AVG
     },
     AVG_CPU_UTILIZATION_2020: 50,
   },
@@ -126,6 +139,9 @@ export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     [GCP_REGIONS.NORTHAMERICA_NORTHEAST1]: 0.00013,
     [GCP_REGIONS.SOUTHAMERICA_EAST1]: 0.000074,
     [GCP_REGIONS.UNKNOWN]: 0.0004108907, // Average of the above regions
+  },
+  AZURE: {
+    [AZURE_REGIONS.UK_SOUTH]: 0.000228,
   },
 }
 
