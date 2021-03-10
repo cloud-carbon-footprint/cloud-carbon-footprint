@@ -269,3 +269,8 @@ sketch
 
 #terraform
 terraform/.terraform/
+
+#microsite
+microsite/build
+microsite/.yarn
+microsite/.docusaurus
