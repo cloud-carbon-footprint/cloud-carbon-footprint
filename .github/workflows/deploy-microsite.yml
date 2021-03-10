@@ -75,11 +75,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org/ # Needed for auth
+          registry-url: https://registry.npmjs.org/
 
-      # We avoid caching in this workflow, as we're running an install of both the top-level
-      # dependencies and the microsite. We leave it to the main master workflow to produce the
-      # cache, as that results in a smaller bundle.
       - name: microsite yarn install
         run: yarn install --immutable
         working-directory: microsite
