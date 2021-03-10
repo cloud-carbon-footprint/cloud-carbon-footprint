@@ -81,7 +81,7 @@ jobs:
       # dependencies and the microsite. We leave it to the main master workflow to produce the
       # cache, as that results in a smaller bundle.
       - name: microsite yarn install
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: microsite
 
       - name: build microsite
