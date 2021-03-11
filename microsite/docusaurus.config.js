@@ -3,7 +3,7 @@ module.exports = {
   tagline: 'Cloud Carbon Footprint',
   url: 'https://ThoughtWorks-Cleantech.github.io',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.
@@ -20,14 +20,14 @@ module.exports = {
           to: 'try-now',
           label: 'Try Now',
           position: 'right',
-          className: 'navbar__link'
-        }
+          className: 'navbar__link',
+        },
       ],
     },
     footer: {},
     colorMode: {
-      disableSwitch: true
-    }
+      disableSwitch: true,
+    },
   },
   presets: [
     [
@@ -51,4 +51,4 @@ module.exports = {
       },
     ],
   ],
-};
+}
