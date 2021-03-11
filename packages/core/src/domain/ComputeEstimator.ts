@@ -13,9 +13,10 @@ const ENERGY_ESTIMATION_FORMULA = (
   virtualCPUHours: number,
   cloudProvider: string,
   region: string,
+  computeProcessors: string[] = [],
 ) => {
-  const maxWatts = CLOUD_CONSTANTS[cloudProvider].MAX_WATTS
-  const minWatts = CLOUD_CONSTANTS[cloudProvider].MIN_WATTS
+  const minWatts = CLOUD_CONSTANTS[cloudProvider].getMinWatts(computeProcessors)
+  const maxWatts = CLOUD_CONSTANTS[cloudProvider].getMaxWatts(computeProcessors)
   const powerUsageEffectiveness = CLOUD_CONSTANTS[cloudProvider].getPUE(region)
   return (
     ((minWatts + (averageCPUUtilization / 100) * (maxWatts - minWatts)) *
@@ -30,6 +31,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
     data: ComputeUsage[],
     region: string,
     cloudProvider: string,
+    computeProcessors?: string[],
   ): FootprintEstimate[] {
     return data.map((usage) => {
       const estimatedKilowattHours = ENERGY_ESTIMATION_FORMULA(
@@ -37,6 +39,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
         usage.numberOfvCpus,
         cloudProvider,
         region,
+        computeProcessors,
       )
 
       const estimatedCO2Emissions = estimateCo2(

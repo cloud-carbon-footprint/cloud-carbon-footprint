@@ -28,4 +28,16 @@ export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponse[] =
     subscriptionName: 'test-subscription',
     location: 'UK South',
   },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 0.250004,
+    pretaxCost: 10,
+    meterDetails: {
+      meterName: 'D4as v4 Spot',
+      unit: '1 Hour',
+      serviceName: 'Virtual Machines',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'EU West',
+  },
 ]

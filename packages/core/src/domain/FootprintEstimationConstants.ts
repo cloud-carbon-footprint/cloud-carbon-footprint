@@ -5,12 +5,17 @@
 import { AWS_REGIONS } from '../services/aws/AWSRegions'
 import { GCP_REGIONS } from '../services/gcp/GCPRegions'
 import { AZURE_REGIONS } from '../services/azure/AzureRegions'
+import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
-  MIN_WATTS: number
-  MAX_WATTS: number
+  MIN_WATTS_AVG: number
+  MIN_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
+  getMinWatts: (computeProcessors?: string[]) => number
+  MAX_WATTS_AVG: number
+  MAX_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
+  getMaxWatts: (computeProcessors?: string[]) => number
   PUE_AVG: number
   NETWORKING_COEFFICIENT: number
   PUE_TRAILING_TWELVE_MONTH?: { [key: string]: number }
@@ -26,8 +31,32 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   GCP: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS: 0.58,
-    MAX_WATTS: 3.54,
+    MIN_WATTS_AVG: 0.58,
+    MIN_WATTS_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 1,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 1.14,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
+    },
+    getMinWatts: () => {
+      return CLOUD_CONSTANTS.GCP.MIN_WATTS_AVG
+    },
+    MAX_WATTS_AVG: 3.54,
+    MAX_WATTS_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.68,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 4.74,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 5.42,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
+    },
+    getMaxWatts: () => {
+      return CLOUD_CONSTANTS.GCP.MAX_WATTS_AVG
+    },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     PUE_AVG: 1.1,
     PUE_TRAILING_TWELVE_MONTH: {
@@ -42,7 +71,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [GCP_REGIONS.ASIA_SOUTHEAST1]: 1.14,
       [GCP_REGIONS.SOUTHAMERICA_EAST1]: 1.09,
     },
-    getPUE: (region: string) => {
+    getPUE: (region: string): number => {
       return CLOUD_CONSTANTS.GCP.PUE_TRAILING_TWELVE_MONTH[region]
         ? CLOUD_CONSTANTS.GCP.PUE_TRAILING_TWELVE_MONTH[region]
         : CLOUD_CONSTANTS.GCP.PUE_AVG
@@ -52,11 +81,35 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AWS: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS: 0.59,
-    MAX_WATTS: 3.5,
+    MIN_WATTS_AVG: 0.59,
+    MIN_WATTS_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 1,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 1.14,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
+    },
+    getMinWatts: () => {
+      return CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG
+    },
+    MAX_WATTS_AVG: 3.5,
+    MAX_WATTS_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.68,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 4.74,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 5.42,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
+    },
+    getMaxWatts: () => {
+      return CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
+    },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     PUE_AVG: 1.2,
-    getPUE: () => {
+    getPUE: (): number => {
       return CLOUD_CONSTANTS.AWS.PUE_AVG
     },
     AVG_CPU_UTILIZATION_2020: 50,
@@ -64,11 +117,51 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AZURE: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS: 0.74,
-    MAX_WATTS: 4.13,
+    MIN_WATTS_AVG: 0.59,
+    MIN_WATTS_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 1,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 1.14,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
+    },
+    getMinWatts: (computeProcessors: string[]): number => {
+      const minWattsForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.AZURE.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      return averageWattsForProcessors
+        ? averageWattsForProcessors
+        : CLOUD_CONSTANTS.AZURE.MIN_WATTS_AVG
+    },
+    MAX_WATTS_AVG: 3.5,
+    MAX_WATTS_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.68,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 4.74,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 5.42,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
+    },
+    getMaxWatts: (computeProcessors: string[]): number => {
+      const maxWattsForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.AZURE.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      return averageWattsForProcessors
+        ? averageWattsForProcessors
+        : CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
+    },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     PUE_AVG: 1.125,
-    getPUE: () => {
+    getPUE: (): number => {
       return CLOUD_CONSTANTS.AZURE.PUE_AVG
     },
     AVG_CPU_UTILIZATION_2020: 50,
@@ -142,7 +235,12 @@ export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
   },
   AZURE: {
     [AZURE_REGIONS.UK_SOUTH]: 0.000228,
+    [AZURE_REGIONS.EU_WEST]: 0.00039,
   },
+}
+
+function getAverage(nums: number[]): number {
+  return nums.reduce((a, b) => a + b) / nums.length
 }
 
 export function estimateCo2(

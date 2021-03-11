@@ -4,4 +4,5 @@
 
 export enum AZURE_REGIONS {
   UK_SOUTH = 'UK South',
+  EU_WEST = 'EU West',
 }

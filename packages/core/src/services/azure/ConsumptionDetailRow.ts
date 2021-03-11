@@ -20,10 +20,18 @@ export default class ConsumptionDetailRow extends BillingDataRow {
       region: usageDetail.location,
     }
     super(consumptionDetails)
-    this.vCpuHours = this.usageAmount * this.getVCpuHours(this.usageType)
+    this.usageType = this.parseUsageType()
+    this.vCpuHours = this.usageAmount * this.getVCpuHours()
   }
 
-  private getVCpuHours(usageType: string): number {
-    return VIRTUAL_MACHINE_TYPE_VCPU_MAPPING[usageType.split('/')[0]]
+  private getVCpuHours(): number {
+    return VIRTUAL_MACHINE_TYPE_VCPU_MAPPING[this.usageType]
+  }
+
+  private parseUsageType(): string {
+    if (this.usageType.includes('Spot'))
+      return this.usageType.replace(' Spot', '')
+    if (this.usageType.includes('/')) return this.usageType.split('/')[0]
+    return this.usageType
   }
 }

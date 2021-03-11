@@ -15,6 +15,7 @@ import FootprintEstimate, {
 } from '../../domain/FootprintEstimate'
 import { UsageDetail } from '@azure/arm-consumption/esm/models'
 import ConsumptionDetailRow from './ConsumptionDetailRow'
+import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './VirtualMachineTypes'
 
 export default class ConsumptionManagementService {
   constructor(
@@ -47,17 +48,24 @@ export default class ConsumptionManagementService {
 
       let footprintEstimate: FootprintEstimate
       switch (consumptionDetailRow.usageUnit) {
+        case '1 Hour':
         case '10 Hours':
           const computeUsage: ComputeUsage = {
-            cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020,
+            cpuUtilizationAverage:
+              CLOUD_CONSTANTS.AZURE.AVG_CPU_UTILIZATION_2020,
             numberOfvCpus: consumptionDetailRow.vCpuHours,
             usesAverageCPUConstant: true,
             timestamp: consumptionDetailRow.timestamp,
           }
+          const computeProcessors = this.getComputeProcessorsFromUsageType(
+            consumptionDetailRow.usageType,
+          )
+
           footprintEstimate = this.computeEstimator.estimate(
             [computeUsage],
             consumptionDetailRow.region,
             'AZURE',
+            computeProcessors,
           )[0]
       }
       appendOrAccumulateEstimatesByDay(
@@ -67,5 +75,9 @@ export default class ConsumptionManagementService {
       )
     })
     return results
+  }
+
+  private getComputeProcessorsFromUsageType(usageType: string): string[] {
+    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType]
   }
 }

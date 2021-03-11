@@ -73,6 +73,16 @@ describe('Azure Consumption Management Service', () => {
             cost: 5,
             region: 'UK South',
           },
+          {
+            kilowattHours: 0.00121501944,
+            co2e: 0.0000004738575816,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'EU West',
+          },
         ],
       },
     ]
