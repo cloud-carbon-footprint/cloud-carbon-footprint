@@ -9,7 +9,6 @@ function Home() {
   const context = useDocusaurusContext()
   const { siteConfig = {} } = context
   return (
-    // <BrowserRouter>
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
@@ -21,7 +20,6 @@ function Home() {
         </Switch>
       </main>
     </Layout>
-    /* </BrowserRouter> */
   )
 }
 
