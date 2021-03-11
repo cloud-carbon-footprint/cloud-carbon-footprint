@@ -15,6 +15,14 @@ module.exports = {
         alt: 'My Site Logo',
         src: 'img/logo.png',
       },
+      items: [
+        {
+          to: 'try-now',
+          label: 'Try Now',
+          position: 'right',
+          className: 'navbar__link'
+        }
+      ],
     },
     footer: {},
     colorMode: {

@@ -14334,6 +14334,7 @@ fsevents@~2.3.1:
     clsx: ^1.1.1
     react: ^16.8.4
     react-dom: ^16.8.4
+    react-router-dom: ^5.2.0
   languageName: unknown
   linkType: soft
 
