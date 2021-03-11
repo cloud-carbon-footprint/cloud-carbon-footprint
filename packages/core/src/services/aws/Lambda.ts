@@ -112,9 +112,9 @@ export default class Lambda implements ICloudService {
     groupNames: string[],
   ): Promise<string> => {
     const averageWatts =
-      CLOUD_CONSTANTS.AWS.MIN_WATTS +
+      CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG +
       (CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020 / 100) *
-        (CLOUD_CONSTANTS.AWS.MAX_WATTS - CLOUD_CONSTANTS.AWS.MIN_WATTS)
+        (CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG - CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG)
 
     const query = `
             filter @type = "REPORT"
