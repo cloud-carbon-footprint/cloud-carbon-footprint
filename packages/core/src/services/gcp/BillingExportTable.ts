@@ -239,6 +239,7 @@ export default class BillingExportTable {
   }
 
   private async getQueryResults(job: Job) {
+    console.log('###job', job)
     let rows: any
     try {
       ;[rows] = await job.getQueryResults()
