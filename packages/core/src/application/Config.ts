@@ -39,6 +39,14 @@ export interface CCFConfig {
     BILLING_ACCOUNT_ID?: string
     BILLING_ACCOUNT_NAME?: string
   }
+  AZURE?: {
+    authentication?: {
+      mode: string
+      clientId?: string
+      clientSecret?: string
+      tenantId?: string
+    }
+  }
   LOGGING_MODE?: string
 }
 
@@ -130,6 +138,14 @@ const appConfig: CCFConfig = {
     BIG_QUERY_TABLE: process.env.GCP_BIG_QUERY_TABLE || '',
     BILLING_ACCOUNT_ID: process.env.GCP_BILLING_ACCOUNT_ID || '',
     BILLING_ACCOUNT_NAME: process.env.GCP_BILLING_ACCOUNT_NAME || '',
+  },
+  AZURE: {
+    authentication: {
+      mode: 'GCP',
+      clientId: process.env.AZURE_CLIENT_ID || '',
+      clientSecret: process.env.AZURE_CLIENT_SECRET || '',
+      tenantId: process.env.AZURE_TENANT_ID || '',
+    },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
 }
