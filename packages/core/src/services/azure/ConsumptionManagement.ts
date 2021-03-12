@@ -2,10 +2,11 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+import { UsageDetail } from '@azure/arm-consumption/esm/models'
+import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
-import ServiceWrapper from '../azure/ServiceWrapper'
 import { EstimationResult } from '../../application'
 import ComputeUsage from '../../domain/ComputeUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
@@ -13,7 +14,6 @@ import FootprintEstimate, {
   appendOrAccumulateEstimatesByDay,
   MutableEstimationResult,
 } from '../../domain/FootprintEstimate'
-import { UsageDetail } from '@azure/arm-consumption/esm/models'
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './VirtualMachineTypes'
 
@@ -23,10 +23,10 @@ export default class ConsumptionManagementService {
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
-    private readonly serviceWrapper: ServiceWrapper,
+    private readonly consumptionManagementClient: ConsumptionManagementClient,
   ) {}
 
-  async getEstimates(
+  public async getEstimates(
     startDate: Date,
     endDate: Date,
   ): Promise<EstimationResult[]> {
@@ -35,7 +35,7 @@ export default class ConsumptionManagementService {
       filter: `properties/usageStart ge '${startDate}' AND properties/usageEnd le '${endDate}'`,
     }
 
-    const usageRows = await this.serviceWrapper.getConsumptionManagementResults(
+    const usageRows = await this.consumptionManagementClient.usageDetails.list(
       options,
     )
 

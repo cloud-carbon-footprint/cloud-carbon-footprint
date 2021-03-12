@@ -2,9 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import ServiceWrapper from '../../azure/ServiceWrapper'
 import { ServiceClientCredentials } from '@azure/ms-rest-js'
-import { SubscriptionClient } from '@azure/arm-subscriptions'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import ComputeEstimator from '../../../domain/ComputeEstimator'
@@ -33,14 +31,6 @@ describe('Azure Consumption Management Service', () => {
   const subscriptionId = 'test-subscription'
   const mockCredentials: ServiceClientCredentials = { signRequest: jest.fn() }
 
-  const getServiceWrapper = () =>
-    new ServiceWrapper(
-      new SubscriptionClient(mockCredentials),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
-      new ConsumptionManagementClient(mockCredentials, subscriptionId),
-    )
-
   it('returns estimates for Virtual Machines Compute', async () => {
     mockUsageDetails.list.mockResolvedValue(
       mockConsumptionManagementResponseOne,
@@ -51,7 +41,9 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new NetworkingEstimator(),
-      getServiceWrapper(),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
     const result = await consumptionManagementService.getEstimates(

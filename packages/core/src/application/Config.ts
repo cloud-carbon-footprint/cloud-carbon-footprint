@@ -141,7 +141,7 @@ const appConfig: CCFConfig = {
   },
   AZURE: {
     authentication: {
-      mode: 'GCP',
+      mode: process.env.AZURE_AUTH_MODE || 'default',
       clientId: process.env.AZURE_CLIENT_ID || '',
       clientSecret: process.env.AZURE_CLIENT_SECRET || '',
       tenantId: process.env.AZURE_TENANT_ID || '',
