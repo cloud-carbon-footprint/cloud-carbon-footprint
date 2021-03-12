@@ -15,7 +15,7 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
-  --ifm-navbar-background-color: #72A77A;
+  --ifm-navbar-background-color: #72a77a;
 }
 
 .docusaurus-highlight-code-line {
@@ -28,7 +28,7 @@
 .navbar__title {
   color: #ffffff;
   font-size: 1.5rem;
-  font-family: "Helvetica";
+  font-family: 'Helvetica';
   font-weight: 400;
 }
 
@@ -37,8 +37,21 @@
   margin-bottom: 5px;
 }
 
-.home__subsection-title{
-  color: #067A3E;
+.navbar__link--active {
+  text-decoration: underline;
+}
+
+.navbar__link--active:hover {
+  text-decoration: underline;
+  color: white;
+}
+
+.navbar__toggle > svg {
+  color: white;
+}
+
+.home__subsection-title {
+  color: #067a3e;
   text-align: center;
   font-size: 24pt;
   letter-spacing: 2pt;
@@ -46,10 +59,10 @@
 }
 
 .home__subsection-box-format {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   padding: 4rem 2rem 3rem;
 }
 
-.navbar__link{
+.navbar__link {
   color: white;
 }
