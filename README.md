@@ -39,16 +39,21 @@ yarn start-with-mock-data
 This will run the webapp in development mode, using a mocked server. Open http://localhost:3000 to view it in a browser.
 
 ### Running the web-app with real data
-Make sure you have configured your GCP and AWS credentials (see [AWS Authentication](#aws-authentication))
-
-The application requires a number of environment variables to be set in the `packages/api/.env` file. See [packages/api/.env.template](packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables.
-
-By default, the server has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
-
-There is also a `packages/client/.env` file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
-
-By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
-
+A few steps are required to run the app with real data. Essentially, your aws account needs to be configured to generate cost and usage reports and save those reports to a database, and the application needs to authenticate with aws and run queries on that database.
+1. **Ensure your aws account has the correct permissions**
+   - You will need an [IAM user](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) that can create access-keys and modify your billing settings.
+1. **Enable the Cost and Usage Billing AWS feature.**
+    - This feature needs to be enabled so your account can start generating cost and usage reports. To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab. Reference Cost and Usage Reports documentation [here](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html).
+1. **Setup Athena DB to save the Cost and Usage Reports.**
+    - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
+1. **Configure aws credentials locally, using awscli.**
+    - After [installing awscli](#optional-prerequisites), run `aws configure` and provide your access key and secret access key. Also make sure you select the same region as the one you created your cost and usage reports in.
+    - Specify the services and regions that the tool runs on in [packages/core/src/application/Config.ts](packages/core/src/application/Config.ts), for these instructions, change GCP to AWS.
+1. **Configure environmental variables for the api and client.**
+    - After configuring your credentials with awscli, we need to set a number of environmental variables in the app, so it can authenticate with aws. We use .env files to manage this. Reference [packages/api/.env.template](packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables. By default, the api has configuration for both AWS and GCP. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
+    - There is also a `packages/client/.env` file that is required to be set if the application is being deployed behind Okta. See [client/.env.template](packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
+    - By default, the client uses both AWS and GCP. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROIVDERS` array.
+1. Finally, start up the application
 ```
 yarn start
 ```
