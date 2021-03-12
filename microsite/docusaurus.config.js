@@ -3,7 +3,7 @@ module.exports = {
   tagline: 'Cloud Carbon Footprint',
   url: 'https://ThoughtWorks-Cleantech.github.io',
   baseUrl: '/',
-  onBrokenLinks: 'ignore',
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.

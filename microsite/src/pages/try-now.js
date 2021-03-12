@@ -1,16 +1,8 @@
 import React from 'react'
 import Layout from '@theme/Layout'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
-import {
-  Hero,
-  Overview,
-  ValueProp,
-  Differentiator,
-  InnovationPartners,
-  FooterImage,
-} from '../components'
 
-function Home() {
+function TryNow() {
   const context = useDocusaurusContext()
   const { siteConfig = {} } = context
   return (
@@ -19,15 +11,10 @@ function Home() {
       description="Description will go into a meta tag in <head />"
     >
       <main>
-        <Hero />
-        <Overview />
-        <ValueProp />
-        <Differentiator />
-        <InnovationPartners />
-        <FooterImage />
+        <div>TRY NOW</div>
       </main>
     </Layout>
   )
 }
 
-export default Home
+export default TryNow

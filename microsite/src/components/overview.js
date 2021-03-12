@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import Button from '@material-ui/core/Button'
 import styles from './overviewStyles.module.css'
 import useStyles from './materialStyles'
-import { Link } from 'react-router-dom'
+import Link from '@docusaurus/Link'
 
 function Overview() {
   const classes = useStyles()
