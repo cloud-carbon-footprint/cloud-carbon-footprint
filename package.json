@@ -6,10 +6,15 @@
     "@hawkeyesec/scanner-cli": "^1.8.1",
     "concurrently": "^6.0.0",
     "docsify-cli": "^4.4.1",
-    "husky": "5",
+    "husky": "^5.1.3",
     "lerna": "^4.0.0",
     "marked": ">=2.0.0",
     "sonar-scanner": "^3.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./copyright_check.sh && ./branch_warning.sh && yarn hawkeye scan && yarn lerna run precommit --stream"
+    }
   },
   "workspaces": {
     "packages": [
