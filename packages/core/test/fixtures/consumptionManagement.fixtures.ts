@@ -40,4 +40,16 @@ export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponse[] =
     subscriptionName: 'test-subscription',
     location: 'EU West',
   },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 7,
+    pretaxCost: 10,
+    meterDetails: {
+      meterName: 'F1',
+      unit: '1 Hour',
+      serviceName: 'Azure App Service',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'US Central',
+  },
 ]

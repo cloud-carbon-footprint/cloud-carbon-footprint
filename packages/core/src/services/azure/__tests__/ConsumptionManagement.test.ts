@@ -31,7 +31,7 @@ describe('Azure Consumption Management Service', () => {
   const subscriptionId = 'test-subscription'
   const mockCredentials: ServiceClientCredentials = { signRequest: jest.fn() }
 
-  it('returns estimates for Virtual Machines Compute', async () => {
+  it('returns estimates for Compute', async () => {
     mockUsageDetails.list.mockResolvedValue(
       mockConsumptionManagementResponseOne,
     )
@@ -74,6 +74,16 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 10,
             region: 'EU West',
+          },
+          {
+            kilowattHours: 0.019175624999999998,
+            co2e: 0.000010363677463124999,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Azure App Service',
+            cost: 10,
+            region: 'US Central',
           },
         ],
       },
