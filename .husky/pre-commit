@@ -1,4 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# . "$(dirname "$0")/_/husky.sh"
 
 ./copyright_check.sh && ./branch_warning.sh && yarn hawkeye scan && yarn lerna run precommit --stream
