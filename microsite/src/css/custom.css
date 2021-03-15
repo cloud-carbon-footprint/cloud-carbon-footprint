@@ -38,12 +38,12 @@
 }
 
 .navbar__link--active {
+  color: white;
   text-decoration: underline;
 }
 
 .navbar__link--active:hover {
   text-decoration: underline;
-  color: white;
 }
 
 .navbar__toggle > svg {
