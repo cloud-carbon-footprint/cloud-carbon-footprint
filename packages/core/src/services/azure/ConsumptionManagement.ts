@@ -50,6 +50,7 @@ export default class ConsumptionManagementService {
       switch (consumptionDetailRow.usageUnit) {
         case '1 Hour':
         case '10 Hours':
+        case '1000 Hours':
           const computeUsage: ComputeUsage = {
             cpuUtilizationAverage:
               CLOUD_CONSTANTS.AZURE.AVG_CPU_UTILIZATION_2020,

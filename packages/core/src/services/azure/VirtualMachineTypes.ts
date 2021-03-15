@@ -7,6 +7,7 @@ import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 export const VIRTUAL_MACHINE_TYPE_VCPU_MAPPING: {
   [instanceType: string]: number
 } = {
+  'vCPU Duration': 1,
   'A1 v2': 1,
   'A2 v2': 2,
   'A2m v2': 2,

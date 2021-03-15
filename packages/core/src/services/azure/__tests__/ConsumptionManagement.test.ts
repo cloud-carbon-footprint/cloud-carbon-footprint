@@ -87,6 +87,21 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
       },
+      {
+        timestamp: new Date('2020-11-03'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.02300625,
+            co2e: 0.00000977482648125,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Container Instances',
+            cost: 12,
+            region: 'US South Central',
+          },
+        ],
+      },
     ]
 
     expect(result).toEqual(expectedResult)

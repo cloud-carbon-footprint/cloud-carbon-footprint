@@ -21,10 +21,10 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     }
     super(consumptionDetails)
     this.usageType = this.parseUsageType()
-    this.vCpuHours = this.usageAmount * this.getVCpuHours()
+    this.vCpuHours = this.usageAmount * this.getVCpus()
   }
 
-  private getVCpuHours(): number {
+  private getVCpus(): number {
     return VIRTUAL_MACHINE_TYPE_VCPU_MAPPING[this.usageType]
   }
 
