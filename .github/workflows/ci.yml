@@ -3,9 +3,15 @@ on:
   workflow_dispatch:
   push:
     branches: [trunk]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
   pull_request:
     branches: [trunk]
     types: [closed]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
 
 jobs:
   lint-test:

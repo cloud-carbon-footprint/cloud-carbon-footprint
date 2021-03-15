@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - trunk
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
 
 jobs:
   create-release-pr:
