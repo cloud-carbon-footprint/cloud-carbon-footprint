@@ -9,16 +9,24 @@ export const UNSUPPORTED_SERVICES = [
   'VPN Gateway',
 ]
 
-export enum COMPUTE_USAGE_TYPES {
+export enum COMPUTE_USAGE_UNITS {
   HOUR_1 = '1 Hour',
   HOURS_10 = '10 Hours',
   HOURS_100 = '100 Hours',
   HOURS_1000 = '1000 Hours',
 }
 
-export enum STORAGE_USAGE_TYPES {
+export enum STORAGE_USAGE_UNITS {
   MONTH_1 = '1 /Month',
+  MONTH_100 = '100 /Month',
+  GB_MONTH_10 = '10 GB/Month',
 }
+
+export const STORAGE_USAGE_TYPES: string[] = [
+  'Data Stored',
+  'Metadata',
+  'Registry Unit',
+]
 
 export const SSD_MANAGED_DISKS_STORAGE_GB: {
   [diskType: string]: number

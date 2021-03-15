@@ -115,4 +115,40 @@ export const mockConsumptionManagementResponseTwo: AzureUsageDetailsResponse[] =
     subscriptionName: 'test-subscription',
     location: 'UK South',
   },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 0.031248,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'P4 Disks',
+      unit: '1 /Month',
+      serviceName: 'Storage',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 0.031248,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'E1 Disks',
+      unit: '100 /Month',
+      serviceName: 'Storage',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'EU West',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 2,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Data Stored',
+      unit: '10 GB/Month',
+      serviceName: 'Azure Database for MySQL',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'EU West',
+  },
 ]

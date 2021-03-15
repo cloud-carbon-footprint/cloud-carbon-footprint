@@ -17,13 +17,15 @@ import FootprintEstimate, {
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './VirtualMachineTypes'
 import {
-  COMPUTE_USAGE_TYPES,
+  COMPUTE_USAGE_UNITS,
   HDD_MANAGED_DISKS_STORAGE_GB,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
+  STORAGE_USAGE_UNITS,
   UNSUPPORTED_SERVICES,
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
+import moment from 'moment'
 
 export default class ConsumptionManagementService {
   constructor(
@@ -75,10 +77,10 @@ export default class ConsumptionManagementService {
     consumptionDetailRow: ConsumptionDetailRow,
   ): FootprintEstimate {
     switch (consumptionDetailRow.usageUnit) {
-      case COMPUTE_USAGE_TYPES.HOUR_1:
-      case COMPUTE_USAGE_TYPES.HOURS_10:
-      case COMPUTE_USAGE_TYPES.HOURS_100:
-      case COMPUTE_USAGE_TYPES.HOURS_1000:
+      case COMPUTE_USAGE_UNITS.HOUR_1:
+      case COMPUTE_USAGE_UNITS.HOURS_10:
+      case COMPUTE_USAGE_UNITS.HOURS_100:
+      case COMPUTE_USAGE_UNITS.HOURS_1000:
         const computeUsage: ComputeUsage = {
           cpuUtilizationAverage: CLOUD_CONSTANTS.AZURE.AVG_CPU_UTILIZATION_2020,
           numberOfvCpus: consumptionDetailRow.vCpuHours,
@@ -95,7 +97,9 @@ export default class ConsumptionManagementService {
           'AZURE',
           computeProcessors,
         )[0]
-      case STORAGE_USAGE_TYPES.MONTH_1:
+      case STORAGE_USAGE_UNITS.MONTH_1:
+      case STORAGE_USAGE_UNITS.MONTH_100:
+      case STORAGE_USAGE_UNITS.GB_MONTH_10:
         const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
           consumptionDetailRow,
         )
@@ -104,13 +108,13 @@ export default class ConsumptionManagementService {
           terabyteHours: usageAmountTerabyteHours,
         }
         let estimate: FootprintEstimate
-        if (this.usageTypeIsSSDStorage(consumptionDetailRow)) {
+        if (this.isSSDStorage(consumptionDetailRow)) {
           estimate = this.ssdStorageEstimator.estimate(
             [storageUsage],
             consumptionDetailRow.region,
             'AZURE',
           )[0]
-        } else if (this.usageTypeIsHDDStorage(consumptionDetailRow)) {
+        } else if (this.isHDDStorage(consumptionDetailRow)) {
           estimate = this.hddStorageEstimator.estimate(
             [storageUsage],
             consumptionDetailRow.region,
@@ -135,7 +139,10 @@ export default class ConsumptionManagementService {
   private getUsageAmountInTerabyteHours(
     consumptionDetailRow: ConsumptionDetailRow,
   ): number {
-    if (this.usageTypeIsSSDStorage(consumptionDetailRow)) {
+    if (
+      this.isSSDStorage(consumptionDetailRow) &&
+      this.isManagedDiskStorage(consumptionDetailRow)
+    ) {
       return this.convertGigaBytesToTerabyteHours(
         SSD_MANAGED_DISKS_STORAGE_GB[
           consumptionDetailRow.usageType.replace(' Disks', '')
@@ -143,28 +150,46 @@ export default class ConsumptionManagementService {
       )
     }
 
-    if (this.usageTypeIsHDDStorage(consumptionDetailRow)) {
+    if (
+      this.isHDDStorage(consumptionDetailRow) &&
+      this.isManagedDiskStorage(consumptionDetailRow)
+    ) {
       return this.convertGigaBytesToTerabyteHours(
         HDD_MANAGED_DISKS_STORAGE_GB[
           consumptionDetailRow.usageType.replace(' Disks', '')
         ],
       )
     }
+
+    // Convert Gb-Month to Terabyte Hours
+    const daysInMonth = moment(consumptionDetailRow.timestamp).daysInMonth()
+    return (consumptionDetailRow.usageAmount / 1000) * (24 * daysInMonth)
   }
 
-  private usageTypeIsSSDStorage(
-    consumptionDetailRow: ConsumptionDetailRow,
-  ): boolean {
+  private isSSDStorage(consumptionDetailRow: ConsumptionDetailRow): boolean {
+    return (
+      this.containsAny(
+        Object.keys(SSD_MANAGED_DISKS_STORAGE_GB),
+        consumptionDetailRow.usageType,
+      ) || this.containsAny(STORAGE_USAGE_TYPES, consumptionDetailRow.usageType)
+    )
+  }
+
+  private isHDDStorage(consumptionDetailRow: ConsumptionDetailRow): boolean {
     return this.containsAny(
-      Object.keys(SSD_MANAGED_DISKS_STORAGE_GB),
+      Object.keys(HDD_MANAGED_DISKS_STORAGE_GB),
       consumptionDetailRow.usageType,
     )
   }
-  private usageTypeIsHDDStorage(
+
+  private isManagedDiskStorage(
     consumptionDetailRow: ConsumptionDetailRow,
   ): boolean {
     return this.containsAny(
-      Object.keys(HDD_MANAGED_DISKS_STORAGE_GB),
+      [
+        ...Object.keys(SSD_MANAGED_DISKS_STORAGE_GB),
+        ...Object.keys(HDD_MANAGED_DISKS_STORAGE_GB),
+      ],
       consumptionDetailRow.usageType,
     )
   }

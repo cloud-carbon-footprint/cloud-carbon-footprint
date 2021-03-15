@@ -196,8 +196,8 @@ export default class CostAndUsageReports {
       return costAndUsageReportRow.usageAmount / 1000
 
     // Convert Gb-Month to Terabyte Hours
-    const hoursInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
-    return (costAndUsageReportRow.usageAmount / 1000) * (24 * hoursInMonth)
+    const daysInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
+    return (costAndUsageReportRow.usageAmount / 1000) * (24 * daysInMonth)
   }
 
   private usageTypeIsSSD(costAndUsageRow: CostAndUsageReportsRow): boolean {
