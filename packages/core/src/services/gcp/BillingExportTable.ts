@@ -220,12 +220,12 @@ export default class BillingExportTable {
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
-                    AND usage_start_time >= TIMESTAMP('${moment(start).format(
-                      'YYYY-MM-DD',
-                    )}')
-                    AND usage_end_time <= TIMESTAMP('${moment(end).format(
-                      'YYYY-MM-DD',
-                    )}')
+                    AND usage_start_time >= TIMESTAMP('${moment
+                      .utc(start)
+                      .format('YYYY-MM-DD')}')
+                    AND usage_end_time <= TIMESTAMP('${moment
+                      .utc(end)
+                      .format('YYYY-MM-DD')}')
                   GROUP BY
                     timestamp,
                     accountName,

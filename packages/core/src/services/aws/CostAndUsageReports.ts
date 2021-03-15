@@ -261,12 +261,12 @@ export default class CostAndUsageReports {
                     AND pricing_unit IN ('${Object.values(PRICING_UNITS).join(
                       `', '`,
                     )}')
-                    AND line_item_usage_start_date >= DATE('${moment(
-                      start,
-                    ).format('YYYY-MM-DD')}')
-                    AND line_item_usage_end_date <= DATE('${moment(end).format(
-                      'YYYY-MM-DD',
-                    )}')
+                    AND line_item_usage_start_date >= DATE('${moment
+                      .utc(start)
+                      .format('YYYY-MM-DD')}')
+                    AND line_item_usage_end_date <= DATE('${moment
+                      .utc(end)
+                      .format('YYYY-MM-DD')}')
                     GROUP BY 
                         1,2,3,4,5,6,7`,
       QueryExecutionContext: {
