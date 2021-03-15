@@ -10,7 +10,10 @@ import { StorageEstimator } from '../../../domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import NetworkingEstimator from '../../../domain/NetworkingEstimator'
 import ConsumptionManagementService from '../ConsumptionManagement'
-import { mockConsumptionManagementResponseOne } from '../../../../test/fixtures/consumptionManagement.fixtures'
+import {
+  mockConsumptionManagementResponseOne,
+  mockConsumptionManagementResponseTwo,
+} from '../../../../test/fixtures/consumptionManagement.fixtures'
 import { EstimationResult } from '../../../application'
 
 const mockUsageDetails = { list: jest.fn() }
@@ -31,7 +34,7 @@ describe('Azure Consumption Management Service', () => {
   const subscriptionId = 'test-subscription'
   const mockCredentials: ServiceClientCredentials = { signRequest: jest.fn() }
 
-  it('returns estimates for Compute', async () => {
+  it('Returns estimates for Compute', async () => {
     mockUsageDetails.list.mockResolvedValue(
       mockConsumptionManagementResponseOne,
     )
@@ -109,6 +112,46 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Database for MySQL',
             cost: 12,
             region: 'Unknown',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimates for Storage', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseTwo,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.0022464,
+            co2e: 0.0000005121792,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Storage',
+            cost: 5,
+            region: 'UK South',
           },
         ],
       },

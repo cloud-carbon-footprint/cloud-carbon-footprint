@@ -101,3 +101,18 @@ export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponse[] =
     location: 'Unknown',
   },
 ]
+
+export const mockConsumptionManagementResponseTwo: AzureUsageDetailsResponse[] = [
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 0.031248,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'S10 Disks',
+      unit: '1 /Month',
+      serviceName: 'Storage',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+]
