@@ -37,12 +37,9 @@
   margin-bottom: 5px;
 }
 
-.navbar__link--active {
-  color: white;
-  text-decoration: underline;
-}
-
+.navbar__link--active,
 .navbar__link--active:hover {
+  color: white;
   text-decoration: underline;
 }
 
