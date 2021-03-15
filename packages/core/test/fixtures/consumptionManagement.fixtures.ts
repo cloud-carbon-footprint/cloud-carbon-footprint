@@ -176,3 +176,42 @@ export const mockConsumptionManagementResponseTwo: AzureUsageDetailsResponse[] =
     location: 'EU West',
   },
 ]
+
+export const mockConsumptionManagementResponseThree: AzureUsageDetailsResponse[] = [
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 10,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Geo-Replication Data transfer',
+      unit: '1 GB',
+      serviceName: 'Storage',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 10,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Geo-Replication Data transfer',
+      unit: '1 TB',
+      serviceName: 'Bandwidth',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 5,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Data Transfer Out - ASIA To Any',
+      unit: '1 TB',
+      serviceName: 'Bandwidth',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+]

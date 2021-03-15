@@ -7,6 +7,7 @@ export const UNSUPPORTED_SERVICES = [
   'Azure Bastion',
   'Load Balancer',
   'VPN Gateway',
+  'Azure Front Door Service',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES = [
@@ -32,10 +33,26 @@ export enum STORAGE_USAGE_UNITS {
   DAY_30 = '30 /Day',
 }
 
+export enum NETWORKING_USAGE_UNITS {
+  GB_1 = '1 GB',
+  TB_1 = '1 TB',
+  GB_10 = '10 GB',
+  GB_100 = '100 GB',
+  GB_200 = '200 GB',
+}
+
 export const STORAGE_USAGE_TYPES: string[] = [
   'Data Stored',
   'Metadata',
   'Registry Unit',
+]
+
+export const NETWORKING_USAGE_TYPES: string[] = [
+  'Geo-Replication Data transfer',
+  'Data Transfer Out',
+  'Egress',
+  'Geo-Replication v2 Data transfer',
+  'Data Processed - Egress',
 ]
 
 export const SSD_MANAGED_DISKS_STORAGE_GB: {

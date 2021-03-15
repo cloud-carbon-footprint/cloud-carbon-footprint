@@ -12,6 +12,7 @@ import NetworkingEstimator from '../../../domain/NetworkingEstimator'
 import ConsumptionManagementService from '../ConsumptionManagement'
 import {
   mockConsumptionManagementResponseOne,
+  mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
 } from '../../../../test/fixtures/consumptionManagement.fixtures'
 import { EstimationResult } from '../../../application'
@@ -164,8 +165,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'EU West',
           },
           {
-            kilowattHours: 0.001944,
-            co2e: 0.00000075816,
+            kilowattHours: 0.0000648,
+            co2e: 2.5272e-8,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -186,7 +187,55 @@ describe('Azure Consumption Management Service', () => {
         ],
       },
     ]
+    expect(result).toEqual(expectedResult)
+  })
+  it('Returns estimates for Networking', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseThree,
+    )
 
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.01125,
+            co2e: 0.000002565,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Storage',
+            cost: 5,
+            region: 'UK South',
+          },
+          {
+            kilowattHours: 11.25,
+            co2e: 0.002565,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Bandwidth',
+            cost: 5,
+            region: 'UK South',
+          },
+        ],
+      },
+    ]
     expect(result).toEqual(expectedResult)
   })
 })

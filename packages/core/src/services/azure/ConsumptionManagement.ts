@@ -20,6 +20,8 @@ import {
   COMPUTE_USAGE_UNITS,
   CONTAINER_REGISTRY_STORAGE_GB,
   HDD_MANAGED_DISKS_STORAGE_GB,
+  NETWORKING_USAGE_TYPES,
+  NETWORKING_USAGE_UNITS,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
   STORAGE_USAGE_UNITS,
@@ -27,7 +29,7 @@ import {
   UNSUPPORTED_USAGE_TYPES,
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
-import moment from 'moment'
+import NetworkingUsage from '../../domain/NetworkingUsage'
 
 export default class ConsumptionManagementService {
   constructor(
@@ -126,6 +128,26 @@ export default class ConsumptionManagementService {
         }
         if (estimate) estimate.usesAverageCPUConstant = false
         return estimate
+      case NETWORKING_USAGE_UNITS.GB_1:
+      case NETWORKING_USAGE_UNITS.GB_10:
+      case NETWORKING_USAGE_UNITS.GB_100:
+      case NETWORKING_USAGE_UNITS.GB_200:
+      case NETWORKING_USAGE_UNITS.TB_1:
+        if (this.isNetworkingUsage(consumptionDetailRow)) {
+          const networkingUsage: NetworkingUsage = {
+            timestamp: consumptionDetailRow.timestamp,
+            gigabytes: this.getGigabytesForNetworking(consumptionDetailRow),
+          }
+
+          const networkingEstimate = this.networkingEstimator.estimate(
+            [networkingUsage],
+            consumptionDetailRow.region,
+            'AZURE',
+          )[0]
+          if (networkingEstimate)
+            networkingEstimate.usesAverageCPUConstant = false
+          return networkingEstimate
+        }
     }
   }
 
@@ -180,9 +202,9 @@ export default class ConsumptionManagementService {
       )
     }
 
-    // Convert Gb-Month to Terabyte Hours
-    const daysInMonth = moment(consumptionDetailRow.timestamp).daysInMonth()
-    return (consumptionDetailRow.usageAmount / 1000) * (24 * daysInMonth)
+    return this.convertGigaBytesToTerabyteHours(
+      consumptionDetailRow.usageAmount,
+    )
   }
 
   private isSSDStorage(consumptionDetailRow: ConsumptionDetailRow): boolean {
@@ -222,6 +244,29 @@ export default class ConsumptionManagementService {
       ),
       consumptionDetailRow.usageType,
     )
+  }
+
+  private isNetworkingUsage(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): boolean {
+    return (
+      this.containsAny(
+        NETWORKING_USAGE_TYPES,
+        consumptionDetailRow.usageType,
+      ) && !consumptionDetailRow.usageType.includes('To Any')
+    )
+  }
+
+  private getGigabytesForNetworking(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): number {
+    if (consumptionDetailRow.usageUnit.includes('TB'))
+      return this.convertTerabytesToGigabytes(consumptionDetailRow.usageAmount)
+    return consumptionDetailRow.usageAmount
+  }
+
+  private convertTerabytesToGigabytes(terabytes: number): number {
+    return terabytes * 1000
   }
 
   private convertGigaBytesToTerabyteHours(gigaBytes: number): number {
