@@ -17,7 +17,7 @@ import {
 } from '../../../../test/fixtures/consumptionManagement.fixtures'
 import { EstimationResult } from '../../../application'
 
-const mockUsageDetails = { list: jest.fn() }
+const mockUsageDetails = { list: jest.fn(), listNext: jest.fn() }
 
 jest.mock('@azure/arm-consumption', () => {
   return {
@@ -237,6 +237,59 @@ describe('Azure Consumption Management Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
+  })
+
+  it('Pages through results', async () => {
+    const testNextLink = 'test-next-link'
+    mockUsageDetails.list.mockResolvedValue({ nextLink: testNextLink })
+    mockUsageDetails.listNext.mockResolvedValue(
+      mockConsumptionManagementResponseThree,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.01125,
+            co2e: 0.000002565,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Storage',
+            cost: 5,
+            region: 'UK South',
+          },
+          {
+            kilowattHours: 11.25,
+            co2e: 0.002565,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Bandwidth',
+            cost: 5,
+            region: 'UK South',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+    expect(mockUsageDetails.listNext).toHaveBeenCalledWith(testNextLink)
   })
 
   it('Throws an error when usageDetails.list fails', async () => {

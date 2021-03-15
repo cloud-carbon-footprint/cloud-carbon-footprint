@@ -2,7 +2,10 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { UsageDetail } from '@azure/arm-consumption/esm/models'
+import {
+  UsageDetail,
+  UsageDetailsListResult,
+} from '@azure/arm-consumption/esm/models'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
@@ -45,10 +48,10 @@ export default class ConsumptionManagementService {
     endDate: Date,
   ): Promise<EstimationResult[]> {
     const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
-
+    const allUsageRows = await this.pageThroughUsageRows(usageRows)
     const results: MutableEstimationResult[] = []
 
-    usageRows.map((consumptionRow: UsageDetail) => {
+    allUsageRows.map((consumptionRow: UsageDetail) => {
       const consumptionDetailRow: ConsumptionDetailRow = new ConsumptionDetailRow(
         consumptionRow,
       )
@@ -68,6 +71,20 @@ export default class ConsumptionManagementService {
       }
     })
     return results
+  }
+
+  private async pageThroughUsageRows(
+    usageRows: UsageDetailsListResult,
+  ): Promise<UsageDetailsListResult> {
+    const allUsageRows = [...usageRows]
+    while (usageRows.nextLink) {
+      const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
+        usageRows.nextLink,
+      )
+      allUsageRows.push(...nextUsageRows)
+      usageRows = nextUsageRows
+    }
+    return allUsageRows
   }
 
   private async getConsumptionUsageDetails(startDate: Date, endDate: Date) {
