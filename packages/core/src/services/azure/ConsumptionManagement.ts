@@ -46,7 +46,7 @@ export default class ConsumptionManagementService {
   ): Promise<EstimationResult[]> {
     const options = {
       expand: 'properties/meterDetails',
-      filter: `properties/usageStart ge '${startDate}' AND properties/usageEnd le '${endDate}'`,
+      filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
     }
 
     const usageRows = await this.consumptionManagementClient.usageDetails.list(
