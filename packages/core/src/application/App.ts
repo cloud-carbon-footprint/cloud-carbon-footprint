@@ -9,6 +9,7 @@ import { EstimationResult, reduceByTimestamp } from './EstimationResult'
 import cache from './Cache'
 import GCPAccount from './GCPAccount'
 import FilterResult, { getAccounts } from './FilterResult'
+import AzureAccount from './AzureAccount'
 export default class App {
   @cache()
   async getCostAndEstimates(
@@ -19,6 +20,7 @@ export default class App {
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
+    const AZURE = config.AZURE
 
     if (request.region) {
       const estimatesForAccounts: EstimationResult[][] = []
@@ -77,8 +79,22 @@ export default class App {
             .flat(),
         )
       }
+      const AzureEstimatesByRegion: EstimationResult[][] = []
+      if (AZURE?.USE_BILLING_DATA) {
+        const azureAccount = new AzureAccount()
+        await azureAccount.initializeAccount()
+        const estimates = await azureAccount.getDataFromConsumptionManagement(
+          startDate,
+          endDate,
+        )
+        AzureEstimatesByRegion.push(estimates)
+      }
+
       return reduceByTimestamp(
-        AWSEstimatesByRegion.flat().flat().concat(GCPEstimatesByRegion.flat()),
+        AWSEstimatesByRegion.flat()
+          .flat()
+          .concat(GCPEstimatesByRegion.flat())
+          .concat(AzureEstimatesByRegion.flat()),
       )
     }
   }

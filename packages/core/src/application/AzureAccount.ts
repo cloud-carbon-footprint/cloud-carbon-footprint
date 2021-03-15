@@ -23,7 +23,7 @@ export default class AzureAccount extends CloudProviderAccount {
   private credentials: ApplicationTokenCredentials | ServiceClientCredentials
   private subscriptionClient: SubscriptionClient
 
-  constructor(public name: string) {
+  constructor() {
     super()
   }
 

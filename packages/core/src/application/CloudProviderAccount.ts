@@ -12,7 +12,7 @@ import { union } from 'ramda'
 import moment from 'moment'
 
 export default class CloudProviderAccount {
-  name: string
+  name?: string
   async getRegionData(
     region: Region,
     startDate: Date,

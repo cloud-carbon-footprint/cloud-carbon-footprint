@@ -40,6 +40,7 @@ export interface CCFConfig {
     BILLING_ACCOUNT_NAME?: string
   }
   AZURE?: {
+    USE_BILLING_DATA?: boolean
     authentication?: {
       mode: string
       clientId?: string
@@ -140,6 +141,7 @@ const appConfig: CCFConfig = {
     BILLING_ACCOUNT_NAME: process.env.GCP_BILLING_ACCOUNT_NAME || '',
   },
   AZURE: {
+    USE_BILLING_DATA: !!process.env.AZURE_USE_BILLING_DATA,
     authentication: {
       mode: process.env.AZURE_AUTH_MODE || 'default',
       clientId: process.env.AZURE_CLIENT_ID || '',

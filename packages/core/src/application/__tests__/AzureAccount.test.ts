@@ -66,7 +66,7 @@ describe('Azure Account', () => {
     ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
 
     // when
-    const azureAccount = new AzureAccount('azure-account')
+    const azureAccount = new AzureAccount()
     await azureAccount.initializeAccount()
     const results = await azureAccount.getDataFromConsumptionManagement(
       startDate,

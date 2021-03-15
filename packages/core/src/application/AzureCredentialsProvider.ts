@@ -6,16 +6,16 @@ import {
   ApplicationTokenCredentials,
   loginWithServicePrincipalSecret,
 } from '@azure/ms-rest-nodeauth'
-import Config from './ConfigLoader'
+import config from './ConfigLoader'
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 
 export default class AzureCredentialsProvider {
   static async create(): Promise<ApplicationTokenCredentials> {
-    const clientId = Config().AZURE.authentication.clientId
-    const clientSecret = Config().AZURE.authentication.clientSecret
-    const tenantId = Config().AZURE.authentication.tenantId
+    const clientId = config().AZURE.authentication.clientId
+    const clientSecret = config().AZURE.authentication.clientSecret
+    const tenantId = config().AZURE.authentication.tenantId
 
-    switch (Config().AZURE.authentication.mode) {
+    switch (config().AZURE.authentication.mode) {
       case 'GCP':
         const clientIdFromGoogle = await this.getGoogleSecret(clientId)
         const clientSecretFromGoogle = await this.getGoogleSecret(clientSecret)
@@ -36,8 +36,9 @@ export default class AzureCredentialsProvider {
 
   static async getGoogleSecret(secretName: string): Promise<string> {
     const client = new SecretManagerServiceClient()
-
-    const name = `projects/cloud-carbon-footprint/secrets/${secretName}/versions/latest`
+    const name = `projects/${
+      config().GCP.BILLING_ACCOUNT_NAME
+    }/secrets/${secretName}/versions/latest`
 
     const [version] = await client.accessSecretVersion({
       name: name,
