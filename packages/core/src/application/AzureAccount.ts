@@ -28,8 +28,12 @@ export default class AzureAccount extends CloudProviderAccount {
   }
 
   public async initializeAccount(): Promise<void> {
-    this.credentials = await AzureCredentialsProvider.create()
-    this.subscriptionClient = new SubscriptionClient(this.credentials)
+    try {
+      this.credentials = await AzureCredentialsProvider.create()
+      this.subscriptionClient = new SubscriptionClient(this.credentials)
+    } catch (e) {
+      throw new Error(`Azure initializeAccount failed. Reason: ${e.message}`)
+    }
   }
 
   public async getDataFromConsumptionManagement(

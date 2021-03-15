@@ -110,4 +110,17 @@ describe('Azure Account', () => {
     expect(results).toEqual(expectedEstimates)
     expect(getEstimatesSpy).toHaveBeenNthCalledWith(2, startDate, endDate)
   })
+
+  it('Throws an error when AzureCredentialsProvider.create fails', async () => {
+    const errorMessage = 'Some error'
+    const apiError = new Error(errorMessage)
+
+    ;(createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
+
+    const azureAccount = new AzureAccount()
+
+    await expect(() => azureAccount.initializeAccount()).rejects.toThrow(
+      `Azure initializeAccount failed. Reason: ${errorMessage}`,
+    )
+  })
 })

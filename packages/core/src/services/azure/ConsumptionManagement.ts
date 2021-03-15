@@ -44,14 +44,7 @@ export default class ConsumptionManagementService {
     startDate: Date,
     endDate: Date,
   ): Promise<EstimationResult[]> {
-    const options = {
-      expand: 'properties/meterDetails',
-      filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
-    }
-
-    const usageRows = await this.consumptionManagementClient.usageDetails.list(
-      options,
-    )
+    const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
 
     const results: MutableEstimationResult[] = []
 
@@ -75,6 +68,20 @@ export default class ConsumptionManagementService {
       }
     })
     return results
+  }
+
+  private async getConsumptionUsageDetails(startDate: Date, endDate: Date) {
+    try {
+      const options = {
+        expand: 'properties/meterDetails',
+        filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
+      }
+      return await this.consumptionManagementClient.usageDetails.list(options)
+    } catch (e) {
+      throw new Error(
+        `Azure ConsumptionManagementClient.usageDetails.list failed. Reason: ${e.message}`,
+      )
+    }
   }
 
   private getEstimateByPricingUnit(
