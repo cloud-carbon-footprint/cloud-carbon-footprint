@@ -16,6 +16,7 @@ import FootprintEstimate, {
 } from '../../domain/FootprintEstimate'
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './VirtualMachineTypes'
+import { COMPUTE_USAGE_TYPES, UNSUPPORTED_SERVICES } from './ConsumptionTypes'
 
 export default class ConsumptionManagementService {
   constructor(
@@ -46,11 +47,14 @@ export default class ConsumptionManagementService {
         consumptionRow,
       )
 
+      if (this.isUnsupportedUsage(consumptionDetailRow.serviceName)) return []
+
       let footprintEstimate: FootprintEstimate
       switch (consumptionDetailRow.usageUnit) {
-        case '1 Hour':
-        case '10 Hours':
-        case '1000 Hours':
+        case COMPUTE_USAGE_TYPES.HOUR_1:
+        case COMPUTE_USAGE_TYPES.HOURS_10:
+        case COMPUTE_USAGE_TYPES.HOURS_100:
+        case COMPUTE_USAGE_TYPES.HOURS_1000:
           const computeUsage: ComputeUsage = {
             cpuUtilizationAverage:
               CLOUD_CONSTANTS.AZURE.AVG_CPU_UTILIZATION_2020,
@@ -76,6 +80,16 @@ export default class ConsumptionManagementService {
       )
     })
     return results
+  }
+
+  private isUnsupportedUsage(serviceName: string): boolean {
+    return this.containsAny(UNSUPPORTED_SERVICES, serviceName)
+  }
+
+  private containsAny(substrings: string[], stringToSearch: string): boolean {
+    return substrings.some((substring) =>
+      new RegExp(`\\b${substring}\\b`).test(stringToSearch),
+    )
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {

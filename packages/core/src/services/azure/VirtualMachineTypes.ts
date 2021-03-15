@@ -8,6 +8,8 @@ export const VIRTUAL_MACHINE_TYPE_VCPU_MAPPING: {
   [instanceType: string]: number
 } = {
   'vCPU Duration': 1,
+  vCore: 1,
+  '2 vCore': 2,
   'A1 v2': 1,
   'A2 v2': 2,
   'A2m v2': 2,

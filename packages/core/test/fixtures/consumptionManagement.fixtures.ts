@@ -64,4 +64,40 @@ export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponse[] =
     subscriptionName: 'test-subscription',
     location: 'US South Central',
   },
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: '2 vCore',
+      unit: '100 Hours',
+      serviceName: 'Azure Database for MySQL',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'Unknown',
+  },
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: '1-2 vCPU VM Support',
+      unit: '100 Hours',
+      serviceName: 'Virtual Machines Licenses',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK West',
+  },
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: 'VpnGw1',
+      unit: '100 Hours',
+      serviceName: 'VPN Gateway',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'Unknown',
+  },
 ]

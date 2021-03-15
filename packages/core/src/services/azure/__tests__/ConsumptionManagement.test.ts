@@ -100,6 +100,16 @@ describe('Azure Consumption Management Service', () => {
             cost: 12,
             region: 'US South Central',
           },
+          {
+            kilowattHours: 0.05521499999999999,
+            co2e: 0.000022494590999999995,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Azure Database for MySQL',
+            cost: 12,
+            region: 'Unknown',
+          },
         ],
       },
     ]
