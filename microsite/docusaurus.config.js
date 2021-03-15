@@ -17,7 +17,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'try-now',
+          to: 'docs/tryNow',
           label: 'Try Now',
           position: 'right',
           className: 'navbar__link',
@@ -35,9 +35,8 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+
           // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
         },
         blog: {
           showReadingTime: true,

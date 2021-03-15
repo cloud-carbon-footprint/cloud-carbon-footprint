@@ -6,7 +6,6 @@ import {
   ValueProp,
   Differentiator,
   InnovationPartners,
-  FooterImage,
 } from '../components'
 
 function Home() {
@@ -17,7 +16,6 @@ function Home() {
       <ValueProp />
       <Differentiator />
       <InnovationPartners />
-      <FooterImage />
     </MainLayout>
   )
 }
