@@ -9,6 +9,15 @@ export const UNSUPPORTED_SERVICES = [
   'VPN Gateway',
 ]
 
+export const UNSUPPORTED_USAGE_TYPES = [
+  'Server - Free',
+  'Rulesets',
+  'Rules',
+  'Policies',
+  'Requests',
+  'Custom Domain',
+]
+
 export enum COMPUTE_USAGE_UNITS {
   HOUR_1 = '1 Hour',
   HOURS_10 = '10 Hours',
@@ -20,6 +29,7 @@ export enum STORAGE_USAGE_UNITS {
   MONTH_1 = '1 /Month',
   MONTH_100 = '100 /Month',
   GB_MONTH_10 = '10 GB/Month',
+  DAY_30 = '30 /Day',
 }
 
 export const STORAGE_USAGE_TYPES: string[] = [
@@ -75,4 +85,12 @@ export const HDD_MANAGED_DISKS_STORAGE_GB: {
   S60: 8192,
   S70: 16384,
   S80: 32767,
+}
+
+export const CONTAINER_REGISTRY_STORAGE_GB: {
+  [registryType: string]: number
+} = {
+  Basic: 10,
+  Standard: 100,
+  Premium: 500,
 }

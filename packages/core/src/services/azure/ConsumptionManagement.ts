@@ -18,11 +18,13 @@ import ConsumptionDetailRow from './ConsumptionDetailRow'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './VirtualMachineTypes'
 import {
   COMPUTE_USAGE_UNITS,
+  CONTAINER_REGISTRY_STORAGE_GB,
   HDD_MANAGED_DISKS_STORAGE_GB,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
   STORAGE_USAGE_UNITS,
   UNSUPPORTED_SERVICES,
+  UNSUPPORTED_USAGE_TYPES,
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
 import moment from 'moment'
@@ -56,7 +58,7 @@ export default class ConsumptionManagementService {
         consumptionRow,
       )
 
-      if (this.isUnsupportedUsage(consumptionDetailRow.serviceName)) return []
+      if (this.isUnsupportedUsage(consumptionDetailRow)) return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         consumptionDetailRow,
@@ -100,6 +102,7 @@ export default class ConsumptionManagementService {
       case STORAGE_USAGE_UNITS.MONTH_1:
       case STORAGE_USAGE_UNITS.MONTH_100:
       case STORAGE_USAGE_UNITS.GB_MONTH_10:
+      case STORAGE_USAGE_UNITS.DAY_30:
         const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
           consumptionDetailRow,
         )
@@ -126,8 +129,16 @@ export default class ConsumptionManagementService {
     }
   }
 
-  private isUnsupportedUsage(serviceName: string): boolean {
-    return this.containsAny(UNSUPPORTED_SERVICES, serviceName)
+  private isUnsupportedUsage(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): boolean {
+    return (
+      this.containsAny(
+        UNSUPPORTED_SERVICES,
+        consumptionDetailRow.serviceName,
+      ) ||
+      this.containsAny(UNSUPPORTED_USAGE_TYPES, consumptionDetailRow.usageType)
+    )
   }
 
   private containsAny(substrings: string[], stringToSearch: string): boolean {
@@ -161,6 +172,14 @@ export default class ConsumptionManagementService {
       )
     }
 
+    if (this.isContainerRegistryStorage(consumptionDetailRow)) {
+      return this.convertGigaBytesToTerabyteHours(
+        CONTAINER_REGISTRY_STORAGE_GB[
+          consumptionDetailRow.usageType.replace(' Registry Unit', '')
+        ],
+      )
+    }
+
     // Convert Gb-Month to Terabyte Hours
     const daysInMonth = moment(consumptionDetailRow.timestamp).daysInMonth()
     return (consumptionDetailRow.usageAmount / 1000) * (24 * daysInMonth)
@@ -190,6 +209,17 @@ export default class ConsumptionManagementService {
         ...Object.keys(SSD_MANAGED_DISKS_STORAGE_GB),
         ...Object.keys(HDD_MANAGED_DISKS_STORAGE_GB),
       ],
+      consumptionDetailRow.usageType,
+    )
+  }
+
+  private isContainerRegistryStorage(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): boolean {
+    return this.containsAny(
+      Object.keys(CONTAINER_REGISTRY_STORAGE_GB).map(
+        (registryType) => `${registryType} Registry Unit`,
+      ),
       consumptionDetailRow.usageType,
     )
   }

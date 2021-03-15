@@ -151,4 +151,28 @@ export const mockConsumptionManagementResponseTwo: AzureUsageDetailsResponse[] =
     subscriptionName: 'test-subscription',
     location: 'EU West',
   },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 2,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Basic Registry Unit',
+      unit: '30 /Day',
+      serviceName: 'Container Registry',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'EU West',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 2,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Server - Free',
+      unit: '1 /Month',
+      serviceName: 'Storage',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'EU West',
+  },
 ]

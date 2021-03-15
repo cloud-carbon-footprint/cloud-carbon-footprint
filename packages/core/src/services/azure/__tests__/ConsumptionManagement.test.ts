@@ -173,6 +173,16 @@ describe('Azure Consumption Management Service', () => {
             cost: 5,
             region: 'EU West',
           },
+          {
+            kilowattHours: 0.00032399999999999996,
+            co2e: 1.2635999999999997e-7,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Container Registry',
+            cost: 5,
+            region: 'EU West',
+          },
         ],
       },
     ]
