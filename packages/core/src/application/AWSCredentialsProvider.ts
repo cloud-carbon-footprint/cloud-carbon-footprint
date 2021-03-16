@@ -2,30 +2,36 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { Credentials, config, ChainableTemporaryCredentials } from 'aws-sdk'
-import appConfig from './Config'
+import {
+  Credentials,
+  config as awsConfig,
+  ChainableTemporaryCredentials,
+} from 'aws-sdk'
+import config from './ConfigLoader'
 import GCPCredentials from './GCPCredentials'
 
 export default class AWSCredentialsProvider {
   static create(accountId: string): Credentials {
-    switch (appConfig.AWS.authentication.mode) {
+    switch (config().AWS.authentication.mode) {
       case 'GCP':
         return new GCPCredentials(
           accountId,
-          appConfig.AWS.authentication.options.targetRoleSessionName,
-          appConfig.AWS.authentication.options.proxyAccountId,
-          appConfig.AWS.authentication.options.proxyRoleName,
+          config().AWS.authentication.options.targetRoleSessionName,
+          config().AWS.authentication.options.proxyAccountId,
+          config().AWS.authentication.options.proxyRoleName,
         )
       case 'AWS':
         return new ChainableTemporaryCredentials({
           params: {
-            RoleArn: `arn:aws:iam::${accountId}:role/${appConfig.AWS.authentication.options.targetRoleSessionName}`,
-            RoleSessionName:
-              appConfig.AWS.authentication.options.targetRoleSessionName,
+            RoleArn: `arn:aws:iam::${accountId}:role/${
+              config().AWS.authentication.options.targetRoleSessionName
+            }`,
+            RoleSessionName: config().AWS.authentication.options
+              .targetRoleSessionName,
           },
         })
       default:
-        return new Credentials(config.credentials)
+        return new Credentials(awsConfig.credentials)
     }
   }
 }
