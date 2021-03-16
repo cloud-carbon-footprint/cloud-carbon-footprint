@@ -2,16 +2,20 @@
   "name": "@cloud-carbon-footprint/cli",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js"
+  },
   "scripts": {
     "precommit": "lint-staged && yarn test --coverage --bail",
     "test": "jest",
     "type-check": "tsc --noEmit",
     "sonar:scan": "sonar-scanner",
     "test:watch": "yarn test --coverage --watchAll",
-    "build": "rimraf dist && yarn build:tsc && yarn build:copy",
-    "build:copy": "cp package.json dist",
+    "build": "rimraf dist && yarn build:tsc",
     "build:tsc": "tsc --build tsconfig.json",
+    "prepack": "ts-node ../../scripts/prepack.ts",
+    "postpack": "ts-node ../../scripts/postpack.ts",
     "build:watch": "onchange 'src/**/*.ts' -- yarn build",
     "view:coverage": "serve coverage/lcov-report",
     "clean": "rm -rf coverage src/**/*.js src/**/*.map",
