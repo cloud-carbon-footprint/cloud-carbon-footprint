@@ -22,11 +22,13 @@ import {
 import cli from '../cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
-
+import config from '../../../../core/src/application/ConfigLoader'
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache
 jest.mock('../../../../core/src/application/Cache')
+
+jest.mock('../../../../core/src/application/ConfigLoader')
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -71,6 +73,30 @@ describe('csv test', () => {
   }
 
   let outputFilePath: string
+
+  beforeAll(() => {
+    ;(config as jest.Mock).mockReturnValue({
+      AWS: {
+        accounts: [{ id: '12345678', name: 'test account' }],
+        NAME: 'AWS',
+        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleSessionName: 'test-target',
+            proxyAccountId: 'test-account-id',
+            proxyRoleName: 'test-role-name',
+          },
+        },
+      },
+      GCP: {
+        projects: [{ id: 'test-project', name: 'test project' }],
+        NAME: 'GCP',
+        CURRENT_REGIONS: ['us-east1'],
+      },
+      LOGGING_MODE: 'test',
+    })
+  })
 
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)
