@@ -64,3 +64,7 @@
 .navbar__link {
   color: white;
 }
+
+a:hover {
+  text-decoration: none;
+}
