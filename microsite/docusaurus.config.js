@@ -18,7 +18,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/getting-started',
+          to: 'getting-started',
           label: 'Try Now',
           position: 'right',
           className: 'navbar__link',
@@ -35,6 +35,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          routeBasePath: 'getting-started',
           sidebarPath: require.resolve('./sidebars.js'),
 
           // Please change this to your repo.

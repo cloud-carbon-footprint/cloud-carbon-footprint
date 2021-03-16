@@ -1,6 +1,7 @@
 ---
 id: getting-started
 title: Try Now
+slug: /
 ---
 
 Get started with Cloud Carbon Footprint easily by downloading and installing one
