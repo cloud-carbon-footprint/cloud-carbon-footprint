@@ -7,10 +7,6 @@ fileignoreconfig:
   checksum: 603d112d8b03aeb6d03e1d62c403880201221e1e809ccb162932da8ec95cd530
 - filename: SONARQUBE.md
   checksum: 62dead161222879b89b7a818106768b8e2b32721104e90c4ea678a0921ae8782
-- filename: yarn.lock
-  checksum: 11dbcee8a68250a0131357926d95c54997df948bda0a8ba751aafa21a09aec62
-- filename: package.json
-  checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: client/.env.template
   checksum: 78b8264c13cab30e12466820794d83bf447bb2504ab254ffb3a45b32837cd1dd
 - filename: client/create_client_env_file.sh
@@ -57,6 +53,12 @@ fileignoreconfig:
   checksum: c5cafaa64e0d809ba7e5670faebfe68a4e6dd48804983526a3985b1ab28d3d11
 - filename: client/src/dashboard/transformData.tsx
   checksum: 77ec816e45b6b7cdbc59551939b955f8f57590414369e617af89d21f90d53b83
+- filename: package.json
+  checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
+- filename: packages/api/.env.template
+  checksum: cab199f02ce808bcf8b3bc14188bef7932e3f76d7af245dc1073e66dd4976c91
+- filename: packages/cli/.env.template
+  checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh
@@ -95,3 +97,5 @@ fileignoreconfig:
   checksum: 82864186893a139ba637e828644bc24138d9c1338e0e51000e02eaf06c9aa665
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
+- filename: yarn.lock
+  checksum: 11dbcee8a68250a0131357926d95c54997df948bda0a8ba751aafa21a09aec62

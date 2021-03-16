@@ -44,6 +44,14 @@ describe('App', () => {
         NAME: 'AWS',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleSessionName: 'test-target',
+            proxyAccountId: 'test-account-id',
+            proxyRoleName: 'test-role-name',
+          },
+        },
       },
       GCP: {
         projects: [
