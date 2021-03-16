@@ -33,15 +33,19 @@ import {
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
+import Logger from '../Logger'
 
 export default class ConsumptionManagementService {
+  private readonly consumptionManagementLogger: Logger
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly consumptionManagementClient: ConsumptionManagementClient,
-  ) {}
+  ) {
+    this.consumptionManagementLogger = new Logger('ConsumptionManagement')
+  }
 
   public async getEstimates(
     startDate: Date,
@@ -128,6 +132,7 @@ export default class ConsumptionManagementService {
       case STORAGE_USAGE_UNITS.MONTH_1:
       case STORAGE_USAGE_UNITS.MONTH_100:
       case STORAGE_USAGE_UNITS.GB_MONTH_10:
+      case STORAGE_USAGE_UNITS.GB_MONTH_100:
       case STORAGE_USAGE_UNITS.DAY_30:
         const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
           consumptionDetailRow,
@@ -149,6 +154,10 @@ export default class ConsumptionManagementService {
             consumptionDetailRow.region,
             'AZURE',
           )[0]
+        } else {
+          this.consumptionManagementLogger.warn(
+            `Unexpected usage type for storage service: ${consumptionDetailRow.usageType}`,
+          )
         }
         if (estimate) estimate.usesAverageCPUConstant = false
         return estimate
@@ -172,6 +181,11 @@ export default class ConsumptionManagementService {
             networkingEstimate.usesAverageCPUConstant = false
           return networkingEstimate
         }
+        break
+      default:
+        this.consumptionManagementLogger.warn(
+          `Unsupported usage unit: ${consumptionDetailRow.usageUnit}`,
+        )
     }
   }
 
@@ -183,7 +197,18 @@ export default class ConsumptionManagementService {
         UNSUPPORTED_SERVICES,
         consumptionDetailRow.serviceName,
       ) ||
-      this.containsAny(UNSUPPORTED_USAGE_TYPES, consumptionDetailRow.usageType)
+      this.containsAny(
+        UNSUPPORTED_USAGE_TYPES,
+        consumptionDetailRow.usageType,
+      ) ||
+      !this.containsAny(
+        [
+          ...Object.values(COMPUTE_USAGE_UNITS),
+          ...Object.values(STORAGE_USAGE_UNITS),
+          ...Object.values(NETWORKING_USAGE_UNITS),
+        ],
+        consumptionDetailRow.usageUnit,
+      )
     )
   }
 

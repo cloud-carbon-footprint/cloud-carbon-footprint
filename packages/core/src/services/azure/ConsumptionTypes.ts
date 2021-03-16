@@ -30,6 +30,7 @@ export enum STORAGE_USAGE_UNITS {
   MONTH_1 = '1 /Month',
   MONTH_100 = '100 /Month',
   GB_MONTH_10 = '10 GB/Month',
+  GB_MONTH_100 = '100 GB/Month',
   DAY_30 = '30 /Day',
 }
 
