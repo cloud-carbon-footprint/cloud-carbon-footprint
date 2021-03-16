@@ -44,6 +44,9 @@ describe('App', () => {
         NAME: 'AWS',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        authentication: {
+          mode: 'GCP',
+        },
       },
       GCP: {
         projects: [
