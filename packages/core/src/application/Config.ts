@@ -68,10 +68,10 @@ const appConfig: CCFConfig = {
     ATHENA_DB_TABLE: process.env.AWS_ATHENA_DB_TABLE || '',
     ATHENA_QUERY_RESULT_LOCATION:
       process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',
-    ATHENA_REGION: 'us-east-1',
+    ATHENA_REGION: process.env.AWS_ATHENA_REGION,
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
-      mode: 'GCP',
+      mode: process.env.AWS_AUTH_MODE || 'default',
       options: {
         targetRoleName: process.env.AWS_TARGET_ACCOUNT_ROLE_NAME,
         targetRoleSessionName: process.env.AWS_TARGET_ACCOUNT_ROLE_NAME,
