@@ -9,6 +9,7 @@ module.exports = {
   organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   themeConfig: {
+    sidebarCollapsible: false,
     navbar: {
       title: 'Cloud Carbon Footprint',
       logo: {
@@ -17,7 +18,7 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/tryNow',
+          to: 'docs/getting-started',
           label: 'Try Now',
           position: 'right',
           className: 'navbar__link',

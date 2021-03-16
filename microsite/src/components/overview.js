@@ -28,7 +28,7 @@ function Overview() {
           producing metrics that can be shared with employees, investors, and
           other stakeholders.
         </p>
-        <Link to="docs/tryNow">
+        <Link to="docs/getting-started">
           <Button variant="contained" classes={{ root: classes.paddingLow }}>
             TRY NOW
           </Button>

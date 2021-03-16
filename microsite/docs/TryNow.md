@@ -1,5 +1,5 @@
 ---
-id: tryNow
+id: getting-started
 title: Try Now
 ---
 
