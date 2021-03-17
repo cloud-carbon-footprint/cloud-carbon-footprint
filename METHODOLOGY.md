@@ -338,7 +338,7 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 ### Appendix II: AWS & GCP processor list:
 #### AWS processor list
-* Intel Xeon:  https://aws.amazon.com/intel/
+Intel Xeon:  https://aws.amazon.com/intel/
 * Intel Xeon® E5-2676 Processors
 * Intel Xeon® E5-2686 Processors
 * Intel® Xeon® E5-2686 v4 Processors
@@ -356,7 +356,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 * 2nd Gen
 	
 #### GCP processor list	
-* Intel Xeon: https://cloud.google.com/compute/docs/cpu-platforms
+Intel Xeon: https://cloud.google.com/compute/docs/cpu-platforms
 * Intel Xeon Scalable Processor (Cascade Lake)
 * Intel Xeon Scalable Processor (Skylake)
 * Intel Xeon E7 (Broadwell E7)
@@ -364,12 +364,13 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 * Intel Xeon E5 v3 (Haswell)
 * Intel Xeon E5 v2 (Ivy Bridge)
 * Intel Xeon E5 (Sandy Bridge)
-* AMD EPYC: https://cloud.google.com/compute/docs/cpu-platforms
+
+AMD EPYC: https://cloud.google.com/compute/docs/cpu-platforms
 * AMD EPYC 2nd Gen (Rome)
 
 
 #### Azure processor list
-* Intel Xeon: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+Intel Xeon: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
 * 2.3 GHz Intel Xeon® E5-2673 v4 (Broadwell)
 * 2.4 GHz Intel Xeon® E5-2673 v3 (Haswell)
 * 3.7GHz Intel XEON E-2176G
@@ -387,7 +388,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 * Intel® Xeon® Platinum 8280 (Cascade Lake)
 * Intel® Xeon® processor E5 v3 family\
 
-* AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
 * 1st Gen
 * 2nd Gen
 
