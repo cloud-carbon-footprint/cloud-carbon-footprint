@@ -27,19 +27,19 @@ import {
   mockAwsCloudWatchGetQueryResultsForLambda,
   mockAwsCostExplorerGetCostAndUsage,
   mockAwsCostExplorerGetCostAndUsageResponse,
-} from '../../../test/fixtures/awsMockFunctions'
-import { lambdaMockGetCostResponse } from '../../../test/fixtures/costexplorer.fixtures'
-import config from '../../../../core/src/application/ConfigLoader'
+} from '../../test/fixtures/awsMockFunctions'
+import { lambdaMockGetCostResponse } from '../../test/fixtures/costexplorer.fixtures'
+import config from '../../../core/src/application/ConfigLoader'
 import {
   mockCpuUtilizationTimeSeries,
   mockVCPUTimeSeries,
-} from '../../../test/fixtures/cloudmonitoring.fixtures'
+} from '../../test/fixtures/cloudmonitoring.fixtures'
 
 const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 const mockListTimeSeries = jest.fn()
 
-jest.mock('../../../../core/src/application/ConfigLoader')
+jest.mock('../../../core/src/application/ConfigLoader')
 
 jest.mock('@google-cloud/monitoring', () => {
   return {
@@ -56,7 +56,7 @@ jest.mock('@google-cloud/monitoring', () => {
 })
 
 //disable cache
-jest.mock('../../../../core/src/application/Cache')
+jest.mock('../../../core/src/application/Cache')
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
