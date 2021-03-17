@@ -245,7 +245,7 @@ export default class CostAndUsageReports {
 
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
     const params = {
-      QueryString: `SELECT DATE(line_item_usage_start_date) AS timestamp,
+      QueryString: `SELECT date(DATE_TRUNC('week', line_item_usage_start_date)) AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,

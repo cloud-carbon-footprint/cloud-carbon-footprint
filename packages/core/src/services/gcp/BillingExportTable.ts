@@ -207,7 +207,7 @@ export default class BillingExportTable {
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
     const query = `SELECT
-                    DATE(usage_start_time) as timestamp,
+                    DATE_TRUNC(DATE(usage_start_time), WEEK(MONDAY)) as timestamp,
                     project.name as accountName,
                     location.region as region,
                     service.description as serviceName,
