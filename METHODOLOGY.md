@@ -23,6 +23,14 @@
     
     * [Storage](#storage)
 
+    * [Networking](#networking)
+        
+        * [Scope](#scope)
+ 
+        * [Studies to date](#studies-to-date)
+ 
+        * [Chosen coefficient](#chosen-coefficient)
+
 * [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
 
 * [Appendix I: Energy coefficients](#appendix-i-energy-coefficients)
@@ -361,39 +369,39 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 
 
 #### Azure processor list
-Intel Xeon: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
-2.3 GHz Intel Xeon® E5-2673 v4 (Broadwell)
-2.4 GHz Intel Xeon® E5-2673 v3 (Haswell)
-3.7GHz Intel XEON E-2176G
-3.7GHz Intel XEON E-2288G
-Intel Xeon E5-2667 v3 Haswell 3.2 GHz
-Intel Xeon E7-8890 V4
-Intel Xeon scalable processors (aka Cascade lake)
-Intel Xeon® Platinum 8168 (Skylake)
-Intel® Xeon® 8171M 2.1 GHz (Skylake
-Intel® Xeon® E5-2673 v3 2.4 GHz (Haswell)
-Intel® Xeon® E5-2673 v4 2.3 GHz (Broadwell)
-Intel® Xeon® E7-8890 v3 2.5GHz (Haswell)
-Intel® Xeon® Platinum 8180M 2.5GHz (Skylake)
-Intel® Xeon® Platinum 8272CL
-Intel® Xeon® Platinum 8280 (Cascade Lake)
-Intel® Xeon® processor E5 v3 family
+* Intel Xeon: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+* 2.3 GHz Intel Xeon® E5-2673 v4 (Broadwell)
+* 2.4 GHz Intel Xeon® E5-2673 v3 (Haswell)
+* 3.7GHz Intel XEON E-2176G
+* 3.7GHz Intel XEON E-2288G
+* Intel Xeon E5-2667 v3 Haswell 3.2 GHz
+* Intel Xeon E7-8890 V4
+* Intel Xeon scalable processors (aka Cascade lake)
+* Intel Xeon® Platinum 8168 (Skylake)
+* Intel® Xeon® 8171M 2.1 GHz (Skylake
+* Intel® Xeon® E5-2673 v3 2.4 GHz (Haswell)
+* Intel® Xeon® E5-2673 v4 2.3 GHz (Broadwell)
+* Intel® Xeon® E7-8890 v3 2.5GHz (Haswell)
+* Intel® Xeon® Platinum 8180M 2.5GHz (Skylake)
+* Intel® Xeon® Platinum 8272CL
+* Intel® Xeon® Platinum 8280 (Cascade Lake)
+* Intel® Xeon® processor E5 v3 family\
 
-AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
-1st Gen
-2nd Gen
+* AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+* 1st Gen
+* 2nd Gen
 
 
 ### Appendix III: Recent Networking studies
  |Study|Scope|Year (data applied)|Energy intensity kWh/GB|
  |-----|-----|-------------------|-----------------------|
- |[Methodology To Model the Energy and Greenhouse Gas Emissions of Electronic Software Distributions](https://pubs.acs.org/doi/abs/10.1021/es202125j)|end-to-end|2010|0.13|
+ |[Methodology To Model the Energy and Greenhouse Gas Emissions of Electronic Software Distributions](https://pubs.acs.org/doi/abs/10.1021/es202125j) Williams & Tang|end-to-end|2010|0.13|
 |[Understanding the environmental costs of fixed line networking](https://dl.acm.org/doi/abs/10.1145/2602044.2602057) Krug|end-to-end|2012|0.14|
 |[Understanding the environmental costs of fixed line networking](https://dl.acm.org/doi/abs/10.1145/2602044.2602057) Krug|Internet core|2012|0.04|
-|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates (Aslan et al)](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630)|end-to-end|2015|0.06|
-|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates (Aslan et al)](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630)|Internet core|2015|0.004|
+|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630) Aslan et al|end-to-end|2015|0.06|
+|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630) Aslan et al |Internet core|2015|0.004|
 |[New perspectives on internet electricity use in 2030](https://www.researchgate.net/publication/342643762_New_perspectives_on_internet_electricity_use_in_2030), A. Andrae|Fixed access network|2020|0.07 - 0.055|
-|[Talk](https://www.youtube.com/watch?t=2520&v=Xo0PB5i_b4Y&feature=youtu.be)  by J. Malmodin|Fixed broadband network|?|0.1 - 0.001 (depending on the bitrate)|
+|[Talk](https://www.youtube.com/watch?t=2520&v=Xo0PB5i_b4Y&feature=youtu.be) by J. Malmodin|Fixed broadband network|?|0.1 - 0.001 (depending on the bitrate)|
 
 
 ### Appendix IV: Grid emissions factors:
