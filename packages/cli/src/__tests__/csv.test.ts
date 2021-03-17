@@ -18,17 +18,17 @@ import fs from 'fs'
 import {
   mockAwsCloudWatchGetMetricData,
   mockAwsCostExplorerGetCostAndUsage,
-} from '../../../test/fixtures/awsMockFunctions'
+} from '../../test/fixtures/awsMockFunctions'
 import cli from '../cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
-import config from '../../../../core/src/application/ConfigLoader'
+import config from '../../../core/src/application/ConfigLoader'
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache
-jest.mock('../../../../core/src/application/Cache')
+jest.mock('../../../core/src/application/Cache')
 
-jest.mock('../../../../core/src/application/ConfigLoader')
+jest.mock('../../../core/src/application/ConfigLoader')
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

@@ -12,7 +12,7 @@ function Overview() {
       <div className={clsx(styles.overviewItem, styles.overviewItemImage)}>
         <img
           className={styles.overviewImage}
-          src="img/cloud_carbon_footprint.jpeg"
+          src="img/cloud_carbon_footprint.png"
           alt="Cloud carbon footprint tool screen capture"
         />
       </div>

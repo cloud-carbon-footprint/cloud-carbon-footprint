@@ -53,6 +53,10 @@ fileignoreconfig:
   checksum: c5cafaa64e0d809ba7e5670faebfe68a4e6dd48804983526a3985b1ab28d3d11
 - filename: client/src/dashboard/transformData.tsx
   checksum: 77ec816e45b6b7cdbc59551939b955f8f57590414369e617af89d21f90d53b83
+- filename: microsite/src/components/differentiator.js
+  checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
+- filename: microsite/src/components/innovationPartners.js
+  checksum: 5099a14d9f5fb5fe776a55e3b3fe1c4953a4e18a94569a79775c3af0f03a98f4
 - filename: package.json
   checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: packages/api/.env.template

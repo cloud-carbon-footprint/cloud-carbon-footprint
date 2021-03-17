@@ -1,0 +1,26 @@
+.callToActionBannerWrapper {
+  display: flex;
+  justify-content: space-around;
+  background-color: #146133;
+  align-items: center;
+  padding: 35px 0;
+}
+
+.text {
+  color: #ffffff;
+}
+
+.text p {
+  margin: 0;
+}
+
+@media screen and (max-width: 950px) {
+  .callToActionBannerWrapper {
+    flex-wrap: wrap;
+    padding: 20px 30px;
+  }
+
+  .text p {
+    margin-bottom: 25px;
+  }
+}

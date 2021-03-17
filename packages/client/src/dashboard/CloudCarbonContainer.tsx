@@ -70,7 +70,7 @@ export default function CloudCarbonContainer(): ReactElement {
   if (config().PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
-    startDate = moment.utc().subtract(7, 'days')
+    startDate = moment.utc().subtract(12, 'months')
   }
 
   const { data, loading } = useRemoteService([], startDate, endDate)

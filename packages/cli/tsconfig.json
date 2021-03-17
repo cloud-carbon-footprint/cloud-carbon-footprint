@@ -1,19 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "noImplicitAny": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "lib": ["es2015", "es2019.array"],
-    "esModuleInterop": true,
+    "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./dist",
-    "experimentalDecorators": true,
-    "target": "ES5",
-    "downlevelIteration": true,
-    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "scripts"]
+  "include": ["./src"],
 }

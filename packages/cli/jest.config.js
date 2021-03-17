@@ -18,5 +18,5 @@ module.exports = {
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
-  coveragePathIgnorePatterns: ['<rootDir>/src/view/CliPrompts.ts'],
+  coveragePathIgnorePatterns: ['<rootDir>/src/CliPrompts.ts'],
 }

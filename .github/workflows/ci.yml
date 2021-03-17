@@ -84,11 +84,16 @@ jobs:
         run: |
           cd packages/core
           yarn build
+          yarn prepack
+          mkdir dist-core
+          cp package.json dist-core
+          mv dist dist-core
+          yarn postpack
           cd ../..
       - uses: actions/upload-artifact@v2
         with:
           name: core-build
-          path: packages/core/dist/
+          path: packages/core/dist-core/
       - name: build-client
         run: |
           cd packages/client
@@ -145,9 +150,8 @@ jobs:
       # End of yarn setup
       # - name: build type declarations
       #   run: yarn tsc:full
-
-      # - name: build packages
-      #   run: yarn lerna -- run --ignore example-app build
+      - name: build packages
+        run: yarn lerna run build
       # Publishes current version of packages that are not already present in the registry
       - name: publish
         if: github.event.pull_request.head.ref == 'changeset-release/trunk'

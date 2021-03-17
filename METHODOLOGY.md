@@ -23,6 +23,14 @@
     
     * [Storage](#storage)
 
+    * [Networking](#networking)
+        
+        * [Scope](#scope)
+ 
+        * [Studies to date](#studies-to-date)
+ 
+        * [Chosen coefficient](#chosen-coefficient)
+
 * [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
 
 * [Appendix I: Energy coefficients](#appendix-i-energy-coefficients)
@@ -54,7 +62,7 @@ such as RECs or power purchasing agreements.
 This application pulls usage data (compute, storage, networking, etc) from major cloud providers and calculates 
 estimated energy (Watt-Hours) and greenhouse gas emissions expressed as  carbon dioxide equivalents (metric tons CO2e). We 
 display these visualizations in a dashboard for developers, sustainability leaders and other stakeholders in an 
-organization to view and take action. It currently supports AWS and Google Cloud, and we have Azure also on the roadmap.
+organization to view and take action. It currently supports AWS, Google Cloud and Microsoft Azure.
 
 **We calculate our CO2e estimates with this formula:**  
 
@@ -86,17 +94,31 @@ and the output source (e.g front-end dashboard, CSV, etc) so new inputs and outp
 We support two approaches to gathering usage and cost data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
 
 #### 1. Using Billing Data for Cloud Usage (Holistic)
-By default, we query AWS Cost and Usage Reports with Amazon Athena, and GCP Billing Export Table using BigQuery. This pulls usage and cost data from all linked accounts in your AWS or GCP Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
+By default, we query cloud provider billing and usage APIs:
+* AWS Cost and Usage Reports with Amazon Athena 
+* GCP Billing Export Table using BigQuery.
+* Azure Consumption Management API
 
-Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute and Storage usage types are fed into the estimation formula. You can see our classifications of these usage types in packages/api/src/services/aws/CostAndUsageTypes.ts for AWS and packages/api/src/services/gcp/BillingExportTypes.ts for GCP. 
+This pulls usage and cost data from all linked accounts in your AWS, GCP, or Azure Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
+
+Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute, Storage and Networking usage types are fed into the estimation formula. You can see our classifications of these usage types in following files:
+* AWS: packages/core/src/services/aws/CostAndUsageTypes.ts
+* GCP: packages/core/services/gcp/BillingExportTypes.ts
+* Azure: packages/core/services/azure/ConsumptionTypes.ts
 
 The process by which we classified the usage types is:
-1. Consider the pricing (AWS) or usage (GCP) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage, and if it is bytes of Gigabytes it is likely to be networking. Most other units are ignored. 
+1. Consider the pricing (AWS) or usage (GCP, Azure) unit: if it is hours or seconds, it is likely to be a Compute usage type. If it is byte-seconds or GigaByte-Months, it is likely to be Storage, and if it is bytes of Gigabytes it is likely to be networking. Most other units are ignored. 
 2. We then further validate whether a line item is Compute, Storage, or Networking by looking at the more detailed usage type. E.g. if it contains content like “RAM”, it would be ignored.
 
-You can see more details about this logic in packages/api/src/services/aws/CostAndUsageReports.ts AWS and packages/api/src/services/gcp/BillingExportTable.ts for GCP. We welcome additions, improvements or suggested changes to these classifications or the process.
+You can see more details about this logic in following files:
 
-The way we determine total vCPU Hours for the compute estimation is different for each cloud provider. For AWS we multiply the usage amount by the product vCPUs, because our understanding is that the usage amount doesn’t include the vCPU count for a given usage row. For GCP, our understanding is that the vCPU count is included in the usage amount for a given row, so we simply use the usage amount by itself.
+* AWS: packages/core/src/services/aws/CostAndUsageReports.ts
+* GCP: packages/core/src/services/gcp/BillingExportTable.ts
+* Azure: packages/core/src/services/azure/ConsumptionManagement.ts
+
+We welcome additions, improvements or suggested changes to these classifications or the process.
+
+The way we determine total vCPU Hours for the compute estimation varies for each cloud provider. For AWS and Azure we multiply the usage amount by the product vCPUs, because our understanding is that the usage amount doesn’t include the vCPU count for a given usage row. For GCP, our understanding is that the vCPU count is included in the usage amount for a given row, so we simply use the usage amount by itself.
 
 For AWS Savings Plans, we only include the line item type `SavingsPlanCoveredUsage` because our understanding is that the other Savings Plans line item types refer to fees or discounts in the form of refunds. 
 
@@ -118,6 +140,7 @@ AWS
 GCP 
 * Compute Engine (compute)
 
+Azure is not currently supported for this approach.
 
 ### Energy Estimate (Watt-Hours) 
 
@@ -131,7 +154,7 @@ application also doesn’t currently include estimations for cloud GPU usage, bu
 We look at the servers used by cloud providers on their website and reference their energy usage from both the 
 [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database and the [2016 US Data Center Energy 
 Usage Report](https://eta.lbl.gov/publications/united-states-data-center-energy). Etsy looked into GCP servers and we 
-have additionally looked into AWS servers; see list of processors below in Appendix II. Of course this does not account 
+have additionally looked into AWS and Azure servers; see list of processors below in Appendix II. Of course this does not account 
 for any custom processors (such as AWS has) however this is the best information we found publicly available. 
 
 #### Compute
@@ -164,6 +187,7 @@ Based on publicly available information about which CPUs cloud providers use, we
  publicly available information provided by the cloud providers. In the case of GCP, they 
  [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a conservative guess 
  [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/). 
+  The same is true for [Azure](http://download.microsoft.com/download/8/2/9/8297f7c7-ae81-4e99-b1db-d65a01f7a8ef/microsoft_cloud_infrastructure_datacenter_and_network_fact_sheet.pdf).
 
 When the actual Avg vCPU Utilization for a given time period isn’t available from a cloud provider's API, we fall back 
 to a projected estimate for the average server utilization of servers in hyperscale data centers in 2020 of 50%, from 
@@ -183,6 +207,10 @@ Here are the compute constants used for each cloud provider:
 * Max Watts: 3.54
 * PUE: 1.11
 
+**Azure:**
+* Min Watts: 0.59
+* Max Matts: 3.5
+* PUE: 1.125
 
 ##### A note on AWS Lambda Compute Estimates
 
@@ -259,8 +287,7 @@ On top of that, these studies use different methodologies and end up with result
 ### Chosen coefficient
 It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: 0.001 kWh/Gb. Again, we welcome feedback or contributions to improve this coefficient.
 
-We want to thank @martin-laurent for providing this research and recommended coefficient.    
-
+We want to thank [@martin-laurent](https://github.com/martin-laurent) for providing this research and recommended coefficient.
 
 ### Carbon Estimates (CO2e)
 Once we have the estimated kilowatt hours for usage of a given cloud provider, we then convert that into estimated CO2e 
@@ -283,7 +310,7 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 ### Appendix I: Energy Coefficients:
 #### AWS
 * Minimum Watts (0% Cpu Utilization): 0.59
-* Maximum Watts (0% Cpu Utilization): 3.5
+* Maximum Watts (100% Cpu Utilization): 3.5
 * Average CPU Utilization for hyperscale data centers: 50%
 * HDD Storage Watt Hours / Terabyte: 0.65
 * SSD Storage Watt Hours / Terabyte: 1.2
@@ -292,17 +319,26 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 		
 #### GCP
 * Minimum Watts (0% Cpu Utilization): 0.58
-* Maximum Watts (0% Cpu Utilization): 3.54
+* Maximum Watts (100% Cpu Utilization): 3.54
 * Average CPU Utilization for hyperscale data centers: 50%
 * HDD Storage Watt Hours / Terabyte: 0.65
 * SSD Storage Watt Hours / Terabyte: 1.2
 * Networking Kilowatt Hours / Gigabyte: 0.001
 * Average PUE: 1.1
 
+### Azure
+
+* Minimum Watts (0% Cpu Utilization): 0.59
+* Maximum Watts (100% Cpu Utilization): 3.5
+* Average CPU Utilization for hyperscale data centers: 50%
+* HDD Storage Watt Hours / Terabyte: 0.65
+* SSD Storage Watt Hours / Terabyte: 1.2
+* Networking Kilowatt Hours / Gigabyte: 0.001
+* Average PUE: 1.125
 
 ### Appendix II: AWS & GCP processor list:
 #### AWS processor list
-* Intel Xeon:  https://aws.amazon.com/intel/
+Intel Xeon:  https://aws.amazon.com/intel/
 * Intel Xeon® E5-2676 Processors
 * Intel Xeon® E5-2686 Processors
 * Intel® Xeon® E5-2686 v4 Processors
@@ -320,7 +356,7 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 * 2nd Gen
 	
 #### GCP processor list	
-* Intel Xeon: https://cloud.google.com/compute/docs/cpu-platforms
+Intel Xeon: https://cloud.google.com/compute/docs/cpu-platforms
 * Intel Xeon Scalable Processor (Cascade Lake)
 * Intel Xeon Scalable Processor (Skylake)
 * Intel Xeon E7 (Broadwell E7)
@@ -328,20 +364,45 @@ AMD EPYC: https://aws.amazon.com/ec2/amd/
 * Intel Xeon E5 v3 (Haswell)
 * Intel Xeon E5 v2 (Ivy Bridge)
 * Intel Xeon E5 (Sandy Bridge)
-* AMD EPYC: https://cloud.google.com/compute/docs/cpu-platforms
+
+AMD EPYC: https://cloud.google.com/compute/docs/cpu-platforms
 * AMD EPYC 2nd Gen (Rome)
- 
+
+
+#### Azure processor list
+Intel Xeon: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+* 2.3 GHz Intel Xeon® E5-2673 v4 (Broadwell)
+* 2.4 GHz Intel Xeon® E5-2673 v3 (Haswell)
+* 3.7GHz Intel XEON E-2176G
+* 3.7GHz Intel XEON E-2288G
+* Intel Xeon E5-2667 v3 Haswell 3.2 GHz
+* Intel Xeon E7-8890 V4
+* Intel Xeon scalable processors (aka Cascade lake)
+* Intel Xeon® Platinum 8168 (Skylake)
+* Intel® Xeon® 8171M 2.1 GHz (Skylake
+* Intel® Xeon® E5-2673 v3 2.4 GHz (Haswell)
+* Intel® Xeon® E5-2673 v4 2.3 GHz (Broadwell)
+* Intel® Xeon® E7-8890 v3 2.5GHz (Haswell)
+* Intel® Xeon® Platinum 8180M 2.5GHz (Skylake)
+* Intel® Xeon® Platinum 8272CL
+* Intel® Xeon® Platinum 8280 (Cascade Lake)
+* Intel® Xeon® processor E5 v3 family\
+
+AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+* 1st Gen
+* 2nd Gen
+
 
 ### Appendix III: Recent Networking studies
  |Study|Scope|Year (data applied)|Energy intensity kWh/GB|
  |-----|-----|-------------------|-----------------------|
- |[Methodology To Model the Energy and Greenhouse Gas Emissions of Electronic Software Distributions](https://pubs.acs.org/doi/abs/10.1021/es202125j)|end-to-end|2010|0.13|
+ |[Methodology To Model the Energy and Greenhouse Gas Emissions of Electronic Software Distributions](https://pubs.acs.org/doi/abs/10.1021/es202125j) Williams & Tang|end-to-end|2010|0.13|
 |[Understanding the environmental costs of fixed line networking](https://dl.acm.org/doi/abs/10.1145/2602044.2602057) Krug|end-to-end|2012|0.14|
 |[Understanding the environmental costs of fixed line networking](https://dl.acm.org/doi/abs/10.1145/2602044.2602057) Krug|Internet core|2012|0.04|
-|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates (Aslan et al)](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630)|end-to-end|2015|0.06|
-|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates (Aslan et al)](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630)|Internet core|2015|0.004|
+|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630) Aslan et al|end-to-end|2015|0.06|
+|[Electricity Intensity of Internet Data Transmission: Untangling the Estimates](https://onlinelibrary.wiley.com/doi/full/10.1111/jiec.12630) Aslan et al |Internet core|2015|0.004|
 |[New perspectives on internet electricity use in 2030](https://www.researchgate.net/publication/342643762_New_perspectives_on_internet_electricity_use_in_2030), A. Andrae|Fixed access network|2020|0.07 - 0.055|
-|[Talk](https://www.youtube.com/watch?t=2520&v=Xo0PB5i_b4Y&feature=youtu.be)  by J. Malmodin|Fixed broadband network|?|0.1 - 0.001 (depending on the bitrate)|
+|[Talk](https://www.youtube.com/watch?t=2520&v=Xo0PB5i_b4Y&feature=youtu.be) by J. Malmodin|Fixed broadband network|?|0.1 - 0.001 (depending on the bitrate)|
 
 
 ### Appendix IV: Grid emissions factors:

@@ -1,4 +1,7 @@
 #!/bin/sh
 # . "$(dirname "$0")/_/husky.sh"
 
-./copyright_check.sh && ./branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan && yarn lerna run precommit --stream
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [[ "$branch" != "changeset-release/trunk" ]]; then
+    ./copyright_check.sh && ./branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan && yarn lerna run precommit --stream
+fi

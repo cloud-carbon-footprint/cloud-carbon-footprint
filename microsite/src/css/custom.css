@@ -15,7 +15,7 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
-  --ifm-navbar-background-color: #72a77a;
+  --ifm-navbar-background-color: #146133;
   --ifm-navbar-link-hover-color: #ffffff;
 }
 
@@ -67,4 +67,8 @@
 
 a:hover {
   text-decoration: none;
+}
+
+.sidebar_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocSidebar- {
+  height: auto !important;
 }
