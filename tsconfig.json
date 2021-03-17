@@ -7,6 +7,7 @@
     "sourceMap": true,
     "lib": ["es2015", "es2019.array"],
     "esModuleInterop": true,
+    "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./dist",
     "experimentalDecorators": true,
@@ -14,6 +15,6 @@
     "downlevelIteration": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "scripts"]
+  "include": ["./src"],
+  "exclude": ["node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]
 }
