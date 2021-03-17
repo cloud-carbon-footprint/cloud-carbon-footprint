@@ -1,7 +1,7 @@
 .heroBanner {
   padding: 10rem 13rem 8rem;
   overflow: hidden;
-  background-image: url('/img/hero_background.jpg');
+  background-image: url('/img/hero_background.png');
   background-size: cover;
 }
 
@@ -30,11 +30,11 @@
   .heroTitle {
     font-size: 40pt;
   }
-  
+
   .heroSubtitle {
     font-size: 28pt;
   }
-  
+
   .heroAdditionalText {
     font-size: 20pt;
   }
@@ -44,11 +44,11 @@
   .heroTitle {
     font-size: 36pt;
   }
-  
+
   .heroSubtitle {
     font-size: 24pt;
   }
-  
+
   .heroAdditionalText {
     font-size: 15pt;
   }
