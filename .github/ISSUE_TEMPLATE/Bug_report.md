@@ -1,6 +1,10 @@
 ---
 name: Bug report
 about: Create a report to help us improve Cloud Carbon Footprint
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 ### Preflight Checklist
