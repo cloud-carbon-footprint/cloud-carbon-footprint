@@ -84,11 +84,16 @@ jobs:
         run: |
           cd packages/core
           yarn build
+          yarn prepack
+          mkdir dist-core
+          cp package.json dist-core
+          mv dist dist-core
+          yarn postpack
           cd ../..
       - uses: actions/upload-artifact@v2
         with:
           name: core-build
-          path: packages/core/dist/
+          path: packages/core/dist-core/
       - name: build-client
         run: |
           cd packages/client
