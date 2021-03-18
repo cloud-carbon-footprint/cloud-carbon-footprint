@@ -21,7 +21,11 @@ function InnovationPartners() {
     return logosArray.map((logo, index) => {
       return (
         <div key={index} className={styles.innovationPartnerItem}>
-          <img alt={logo.alt} src={logo.path} />
+          <img
+            className={styles.innovationPartnerLogo}
+            alt={logo.alt}
+            src={logo.path}
+          />
         </div>
       )
     })
