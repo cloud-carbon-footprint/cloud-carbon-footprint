@@ -7,15 +7,16 @@ assignees: ''
 
 ---
 
-##Context
+## Context
+#### Overview
 
+#### Out of Scope:
+#### Related issues/Dependencies:
 
-###Out of Scope
-
-##Acceptance Criteria
+## Acceptance Criteria
 - [ ] When ... then...
 
-##Tech Tasks
+## Tech Tasks
 - [ ] Implementation steps
 
-###Tech Notes
+### Tech Notes
