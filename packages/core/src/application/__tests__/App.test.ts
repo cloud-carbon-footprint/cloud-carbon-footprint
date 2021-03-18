@@ -82,7 +82,7 @@ describe('App', () => {
       const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map(
         (v, i) => {
           return {
-            timestamp: moment(startDate).add(i, 'days').toDate(),
+            timestamp: moment.utc(startDate).add(i, 'days').toDate(),
             kilowattHours: 1.0944,
             co2e: 0.0007737845760000001,
           }
@@ -94,7 +94,7 @@ describe('App', () => {
 
       const costs: Cost[] = [...Array(7)].map((v, i) => {
         return {
-          timestamp: moment(startDate).add(i, 'days').toDate(),
+          timestamp: moment.utc(startDate).add(i, 'days').toDate(),
           currency: '$',
           amount: 5,
         }
@@ -298,7 +298,7 @@ describe('App', () => {
       const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map(
         (v, i) => {
           return {
-            timestamp: moment(startDate).subtract(i, 'days').toDate(),
+            timestamp: moment.utc(startDate).subtract(i, 'days').toDate(),
             kilowattHours: 1.0944,
             co2e: 0.0007737845760000001,
           }

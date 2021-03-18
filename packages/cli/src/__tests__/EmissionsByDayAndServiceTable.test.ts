@@ -7,8 +7,8 @@ import EmissionsByDayAndServiceTable from '../EmissionsByDayAndServiceTable'
 import moment = require('moment')
 
 describe('EmissionsTable', () => {
-  const timestamp1 = moment('2020-07-10').toDate()
-  const timestamp2 = moment('2020-07-09').toDate()
+  const timestamp1 = moment.utc('2020-07-10').toDate()
+  const timestamp2 = moment.utc('2020-07-09').toDate()
   const region = 'us-east-1'
 
   const input: EstimationResult[] = [
