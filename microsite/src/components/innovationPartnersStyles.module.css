@@ -1,18 +1,23 @@
-.logosContainer{
-    display:flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
+.logosContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.innovationPartnerItem{
-    display:flex;
-    max-width: 300px;
-    margin: 20px;
+.innovationPartnerItem {
+  display: flex;
+  margin: 20px;
+  max-width: 300px;
+  max-height: 100px;
 }
 
 @media screen and (max-width: 966px) {
-    .innovationPartnerItem{
-        max-width:150px;
-    }
+  .innovationPartnerItem {
+    max-width: 150px;
+  }
+}
+
+.innovationPartnerLogo {
+  object-fit: contain;
 }

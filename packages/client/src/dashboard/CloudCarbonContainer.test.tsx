@@ -30,10 +30,16 @@ jest.mock('../ConfigLoader', () => ({
       { key: 'gcp', name: 'GCP' },
     ],
     PREVIOUS_YEAR_OF_USAGE: true,
+    DATE_RANGE: {
+      VALUE: '7',
+      TYPE: 'days',
+    },
   }),
 }))
 
-const mockUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
+const mockUseRemoteService = useRemoteService as jest.MockedFunction<
+  typeof useRemoteService
+>
 
 describe('CloudCarbonContainer', () => {
   let data: EstimationResult[]

@@ -8,7 +8,7 @@ import moment = require('moment')
 
 describe('EmissionsByDayTable', () => {
   const region = 'us-east-1'
-  const timestamp = moment('2020-07-10').toDate()
+  const timestamp = moment.utc('2020-07-10').toDate()
 
   const input: EstimationResult[] = [
     {
@@ -77,7 +77,7 @@ describe('EmissionsByDayTable', () => {
       ],
     },
     {
-      timestamp: moment('2020-07-09').toDate(),
+      timestamp: moment.utc('2020-07-09').toDate(),
       serviceEstimates: [
         {
           cloudProvider: 'aws',

@@ -244,8 +244,13 @@ export default class CostAndUsageReports {
   }
 
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
+    const groupDatesByWeek = `DATE(DATE_TRUNC(week, line_item_usage_start_date))`
+    const groupDatesByDay = 'DATE(line_item_usage_start_date)'
+    const timestamp = configLoader().GROUP_QUERY_RESULTS_BY_WEEK
+      ? groupDatesByWeek
+      : groupDatesByDay
     const params = {
-      QueryString: `SELECT date(DATE_TRUNC('week', line_item_usage_start_date)) AS timestamp,
+      QueryString: `SELECT ${timestamp} AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,
