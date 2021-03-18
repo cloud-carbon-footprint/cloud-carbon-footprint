@@ -1,7 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-
+import moment from 'moment'
 import {
   UsageDetail,
   UsageDetailsListResult,
@@ -81,15 +81,13 @@ export default class ConsumptionManagementService {
     return results
   }
 
-  private updateTimestampByWeek(consumptionDetailRow: ConsumptionDetailRow) {
-    const timestamp = new Date(consumptionDetailRow.timestamp)
-    const dayOfWeek = timestamp.getDay()
-    const setNewDate = (date: Date, days: number): Date =>
-      new Date(date.setDate(date.getDate() - days))
-
-    let newDate = timestamp
-    if (dayOfWeek != 0) newDate = setNewDate(timestamp, dayOfWeek)
-    consumptionDetailRow.timestamp = newDate
+  private updateTimestampByWeek(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): void {
+    const firstDayOfWeek = moment
+      .utc(consumptionDetailRow.timestamp)
+      .startOf('isoWeek')
+    consumptionDetailRow.timestamp = new Date(firstDayOfWeek.toISOString())
   }
 
   private async pageThroughUsageRows(
