@@ -7,7 +7,7 @@ import useRemoteService from './client/RemoteServiceHook'
 import useFilters from './filters/FilterHook'
 import { ApexLineChart } from './charts/ApexLineChart'
 import { CarbonComparisonCard } from './CarbonComparisonCard'
-import moment from 'moment'
+import moment, { unitOfTime } from 'moment'
 import MonthFilter from './filters/MonthFilter'
 import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
 import ServiceFilter from './filters/ServiceFilter'
@@ -65,12 +65,16 @@ const useStyles = makeStyles((theme) => ({
 export default function CloudCarbonContainer(): ReactElement {
   const classes = useStyles()
 
+  const dateRangeType: string = config().DATE_RANGE.TYPE
+  const dateRangeValue: string = config().DATE_RANGE.VALUE
   const endDate: moment.Moment = moment.utc()
   let startDate: moment.Moment
   if (config().PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
-    startDate = moment.utc().subtract(12, 'months')
+    startDate = moment
+      .utc()
+      .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
   const { data, loading } = useRemoteService([], startDate, endDate)

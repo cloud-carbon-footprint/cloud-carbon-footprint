@@ -63,6 +63,8 @@ fileignoreconfig:
   checksum: cab199f02ce808bcf8b3bc14188bef7932e3f76d7af245dc1073e66dd4976c91
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
+- filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
+  checksum: 4d228f61da83e84b40a041f073e74917409a7fdeb09fdf70f3ef62720288d923
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh

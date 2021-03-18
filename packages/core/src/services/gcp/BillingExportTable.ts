@@ -206,8 +206,14 @@ export default class BillingExportTable {
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
+    const groupDatesByWeek =
+      'DATE_ADD(DATE_TRUNC(DATE(usage_start_time), WEEK), INTERVAL 1 DAY)'
+    const groupDatesByDay = 'DATE(usage_start_time)'
+    const timestamp = configLoader().GROUP_QUERY_RESULTS_BY_WEEK
+      ? groupDatesByWeek
+      : groupDatesByDay
     const query = `SELECT
-                    DATE_TRUNC(DATE(usage_start_time), WEEK(MONDAY)) as timestamp,
+                    ${timestamp} as timestamp,
                     project.name as accountName,
                     location.region as region,
                     service.description as serviceName,

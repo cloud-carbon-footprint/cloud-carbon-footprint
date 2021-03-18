@@ -34,6 +34,7 @@ import {
 import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
 import Logger from '../Logger'
+import configLoader from '../../application/ConfigLoader'
 
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
@@ -60,6 +61,9 @@ export default class ConsumptionManagementService {
         consumptionRow,
       )
 
+      configLoader().GROUP_QUERY_RESULTS_BY_WEEK &&
+        this.updateTimestampByWeek(consumptionDetailRow)
+
       if (this.isUnsupportedUsage(consumptionDetailRow)) return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(
@@ -75,6 +79,17 @@ export default class ConsumptionManagementService {
       }
     })
     return results
+  }
+
+  private updateTimestampByWeek(consumptionDetailRow: ConsumptionDetailRow) {
+    const timestamp = new Date(consumptionDetailRow.timestamp)
+    const dayOfWeek = timestamp.getDay()
+    const setNewDate = (date: Date, days: number): Date =>
+      new Date(date.setDate(date.getDate() - days))
+
+    let newDate = timestamp
+    if (dayOfWeek != 0) newDate = setNewDate(timestamp, dayOfWeek)
+    consumptionDetailRow.timestamp = newDate
   }
 
   private async pageThroughUsageRows(
