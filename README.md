@@ -18,9 +18,10 @@ If you would like to learn more about the various calculations and constants tha
 - AWS CLI `brew install awscli` (if you are authenticating with AWS - see below)
 - Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/). (if you want to deploy using Terraform)
 - Talisman (if you want to commit code)
-    - `curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
+  - `curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
 
 Note:
+
 - During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.
 - During install, Talisman will also ask you for the directory of your git repositories. If you don't want to install Talisman in all your git repos, then cancel out at this step.
 
@@ -45,6 +46,7 @@ This will run the webapp in development mode, using a mocked server. Open http:/
 ### Running the web-app with real data
 
 A few steps are required to run the app with real data, that are different for each cloud provider. Check out the steps for each cloud provider here:
+
 - [AWS](docs/AWS.md)
 - [GCP](docs/GCP.md)
 - [Azure](docs/Azure.md)
@@ -88,6 +90,18 @@ We support two approaches to gathering usage data for different cloud providers.
 2. **Using Cloud Usage APIs (Higher Accuracy)** - This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API. We achieve this by looping through the accounts (the list is in the [packages/api/.env]([packages/api/.env]) file) and then making the API calls on each account for the regions and services set in [packages/core/src/application/Config.ts](packages/core/src/application/Config.ts). The permissions required for this approach are in the [cloudformation/ccf.yaml](cloudformation/ccf.yaml) file. This approach is more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application.
 
 - For a more comprehensive read on the various calculations and constants that we use for the emissions algorithms, check out the [Methodology page](METHODOLOGY.md)
+
+#### Options to Improve Query Performance
+
+When running very large amounts of data with the default configuration of querying each day for the previous year, we have noticed that the time it takes to start the app increases significantly. We have added optional configuration to help with this performance issue to query and date filter in a few different ways:
+
+- Date Range
+  - In your `packages/client/.env` file, you can provide the following variables for a custom date range:
+    - `REACT_APP_DATE_RANGE_TYPE` (example values: day(s), week(s), month(s), etc..)
+    - `REACT_APP_DATE_RANGE_VALUE` (example values: number correlating to day/week/month etc..)
+- Group By Timestamp in Queries
+  - In your `packages/api/.env` file, you can provide the following variable for a custom query option to group the data by date type:
+    - `GROUP_QUERY_RESULTS_BY` (example values: day, week, month, quarter, year)
 
 ### Ensure real-time estimates
 

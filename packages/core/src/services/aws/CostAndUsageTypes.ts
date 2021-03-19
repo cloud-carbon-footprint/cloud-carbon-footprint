@@ -2,6 +2,8 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+import { QUERY_DATE_TYPES } from '../common/types'
+
 // This are the services we are over estimating to be SSD because we don't know what the underlying storage type is (SSD or HDD).
 export const SSD_SERVICES: string[] = [
   'AmazonDocDB',
@@ -153,4 +155,12 @@ export enum PRICING_UNITS {
   GB_2 = 'GigaBytes',
   SECONDS_1 = 'seconds',
   SECONDS_2 = 'Second',
+}
+
+export const AWS_QUERY_GROUP_BY: QUERY_DATE_TYPES = {
+  day: 'day',
+  week: 'week',
+  month: 'month',
+  quarter: 'quarter',
+  year: 'year',
 }

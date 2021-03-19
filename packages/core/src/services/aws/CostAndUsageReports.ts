@@ -31,12 +31,14 @@ import {
   PRICING_UNITS,
   UNKNOWN_USAGE_TYPES,
   LINE_ITEM_TYPES,
+  AWS_QUERY_GROUP_BY,
 } from './CostAndUsageTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 import { Athena } from 'aws-sdk'
 import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
 import NetworkingUsage from '../../domain/NetworkingUsage'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -106,10 +108,16 @@ export default class CostAndUsageReports {
           numberOfvCpus: costAndUsageReportRow.vCpuHours,
           usesAverageCPUConstant: true,
         }
+
+        const computeProcessors = this.getComputeProcessorsFromUsageType(
+          costAndUsageReportRow.usageType,
+        )
+
         return this.computeEstimator.estimate(
           [computeUsage],
           costAndUsageReportRow.region,
           'AWS',
+          computeProcessors,
         )[0]
       case PRICING_UNITS.GB_MONTH_1:
       case PRICING_UNITS.GB_MONTH_2:
@@ -184,6 +192,10 @@ export default class CostAndUsageReports {
     }
   }
 
+  private getComputeProcessorsFromUsageType(usageType: string): string[] {
+    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType.split(':')[1]]
+  }
+
   private getUsageAmountInTerabyteHours(
     costAndUsageReportRow: CostAndUsageReportsRow,
   ): number {
@@ -244,13 +256,10 @@ export default class CostAndUsageReports {
   }
 
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
-    const groupDatesByWeek = `DATE(DATE_TRUNC(week, line_item_usage_start_date))`
-    const groupDatesByDay = 'DATE(line_item_usage_start_date)'
-    const timestamp = configLoader().GROUP_QUERY_RESULTS_BY_WEEK
-      ? groupDatesByWeek
-      : groupDatesByDay
     const params = {
-      QueryString: `SELECT ${timestamp} AS timestamp,
+      QueryString: `SELECT DATE(DATE_TRUNC('${
+        AWS_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
+      }', line_item_usage_start_date)) AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,

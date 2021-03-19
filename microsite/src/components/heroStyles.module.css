@@ -21,11 +21,6 @@
   line-height: 1.4;
 }
 
-.heroAdditionalText {
-  font-size: 22pt;
-  line-height: 1.4;
-}
-
 @media screen and (max-width: 1280px) {
   .heroTitle {
     font-size: 40pt;
@@ -52,10 +47,6 @@
   .heroAdditionalText {
     font-size: 15pt;
   }
-}
-
-.heroSubtitleMargin {
-  margin-bottom: 4rem;
 }
 
 .heroNoMarginBottom {

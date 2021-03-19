@@ -37,7 +37,7 @@ interface FiltersConfig {
 }
 
 const defaultFiltersConfig = {
-  timeframe: 12,
+  timeframe: 36,
   dateRange: null,
   [DropdownFilter.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
   [DropdownFilter.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,

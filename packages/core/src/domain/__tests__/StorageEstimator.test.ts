@@ -33,11 +33,11 @@ describe('StorageEstimator', () => {
     })
 
     it('calculates the wattage of an SSD using its terabyteHours usage for the start date of the time period', () => {
-      expect(results[0].kilowattHours).toEqual(0.0014399999999999999)
+      expect(results[0].kilowattHours).toEqual(0.001362)
     })
 
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
-      expect(results[0].co2e).toEqual(6.544799999999999e-7)
+      expect(results[0].co2e).toEqual(6.19029e-7)
     })
   })
 
@@ -64,11 +64,11 @@ describe('StorageEstimator', () => {
     })
 
     it('calculates the wattage of an SSD using its Terabyte Hours of usage for the start date of the time period', () => {
-      expect(results[0].kilowattHours).toEqual(0.00078)
+      expect(results[0].kilowattHours).toEqual(0.00073775)
     })
 
     it('calculates the co2 emissions based on the wattage and us wattage carbon for the start date of the time period', () => {
-      expect(results[0].co2e).toEqual(3.5450999999999996e-7)
+      expect(results[0].co2e).toEqual(3.35307375e-7)
     })
   })
 
@@ -93,14 +93,14 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 6.544799999999999e-7,
+          co2e: 6.19029e-7,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
-          kilowattHours: 0.0014399999999999999,
+          kilowattHours: 0.001362,
         },
         {
-          co2e: 0.0000013089599999999998,
+          co2e: 0.000001238058,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
-          kilowattHours: 0.0028799999999999997,
+          kilowattHours: 0.002724,
         },
       ])
     })
@@ -125,14 +125,14 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 3.5450999999999996e-7,
+          co2e: 3.35307375e-7,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
-          kilowattHours: 0.00078,
+          kilowattHours: 0.00073775,
         },
         {
-          co2e: 7.090199999999999e-7,
+          co2e: 6.7061475e-7,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
-          kilowattHours: 0.00156,
+          kilowattHours: 0.0014755,
         },
       ])
     })

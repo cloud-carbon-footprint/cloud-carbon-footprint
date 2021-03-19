@@ -61,6 +61,15 @@ const MonthFilter: FunctionComponent<FilterProps> = ({
         >
           12M
         </Button>
+        <Button
+          disableElevation
+          variant={filters.timeframe > 12 ? 'contained' : undefined}
+          color={filters.timeframe > 12 ? 'primary' : 'default'}
+          onClick={() => setFilters(filters.withTimeFrame(36))}
+          className={classes.button}
+        >
+          All
+        </Button>
       </ButtonGroup>
     </>
   )

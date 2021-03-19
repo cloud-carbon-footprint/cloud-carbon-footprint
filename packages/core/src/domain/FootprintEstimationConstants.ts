@@ -91,8 +91,16 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
     },
-    getMinWatts: () => {
-      return CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG
+    getMinWatts: (computeProcessors: string[]): number => {
+      const minWattsForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.AWS.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      return averageWattsForProcessors
+        ? averageWattsForProcessors
+        : CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG
     },
     MAX_WATTS_AVG: 3.5,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -104,11 +112,19 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
     },
-    getMaxWatts: () => {
-      return CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
+    getMaxWatts: (computeProcessors: string[]): number => {
+      const maxWattsForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.AWS.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      return averageWattsForProcessors
+        ? averageWattsForProcessors
+        : CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
-    PUE_AVG: 1.2,
+    PUE_AVG: 1.135,
     getPUE: (): number => {
       return CLOUD_CONSTANTS.AWS.PUE_AVG
     },

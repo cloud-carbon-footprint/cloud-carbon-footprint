@@ -27,8 +27,8 @@ const appConfig: ClientConfig = {
   ],
   PREVIOUS_YEAR_OF_USAGE: previousYearOfUsage,
   DATE_RANGE: {
-    VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '7',
-    TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'days',
+    VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '12',
+    TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
 }
 

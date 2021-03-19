@@ -32,7 +32,10 @@ describe('MonthFilter', () => {
     expect(page.getByText('6M').closest('button')).not.toHaveClass(
       'MuiButton-containedPrimary',
     )
-    expect(page.getByText('12M').closest('button')).toHaveClass(
+    expect(page.getByText('12M').closest('button')).not.toHaveClass(
+      'MuiButton-containedPrimary',
+    )
+    expect(page.getByText('All').closest('button')).toHaveClass(
       'MuiButton-containedPrimary',
     )
   })
@@ -141,6 +144,36 @@ describe('MonthFilter', () => {
       'MuiButton-containedPrimary',
     )
     expect(page.getByText('12M').closest('button')).toHaveClass(
+      'MuiButton-containedPrimary',
+    )
+  })
+
+  test('clicking All button should filter up at least or beyond 12 months prior', () => {
+    const page = render(
+      <MonthFilter filters={filters} setFilters={mockSetFilters} />,
+    )
+
+    fireEvent.click(page.getByText('All'))
+
+    const newFilters = filters.withTimeFrame(36)
+    expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
+
+    page.rerender(
+      <MonthFilter filters={newFilters} setFilters={mockSetFilters} />,
+    )
+    expect(page.getByText('1M').closest('button')).not.toHaveClass(
+      'MuiButton-containedPrimary',
+    )
+    expect(page.getByText('3M').closest('button')).not.toHaveClass(
+      'MuiButton-containedPrimary',
+    )
+    expect(page.getByText('6M').closest('button')).not.toHaveClass(
+      'MuiButton-containedPrimary',
+    )
+    expect(page.getByText('12M').closest('button')).not.toHaveClass(
+      'MuiButton-containedPrimary',
+    )
+    expect(page.getByText('All').closest('button')).toHaveClass(
       'MuiButton-containedPrimary',
     )
   })

@@ -19,10 +19,10 @@ describe('useFilters', () => {
         .result
     })
 
-    test('it should filter up to 12 months prior by default', () => {
-      expect(result.current.filters.timeframe).toBe(12)
+    test('it should filter 12 months + prior by default', () => {
+      expect(result.current.filters.timeframe).toBe(36)
       expect(result.current.filteredData).toEqual(
-        estimationResults.slice(0, 13),
+        estimationResults.slice(0, 37),
       )
     })
 

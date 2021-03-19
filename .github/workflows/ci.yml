@@ -187,6 +187,8 @@ jobs:
       AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
       AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
       AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
       AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
       AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
       AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
@@ -232,6 +234,7 @@ jobs:
           # we need to do this until general solution is built
           sed -i 's/\^0\.1\.0/\.\/dist-core/g' package.json
           ./create_server_env_file.sh
+          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }} >> .npmrc
           cd ../..
 
           # Store service account
@@ -263,6 +266,8 @@ jobs:
       AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
       AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
       AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
       AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
       AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
       AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
