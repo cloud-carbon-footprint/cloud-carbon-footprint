@@ -113,7 +113,7 @@ jobs:
 #          name: api-dist
 #          path: packages/api/dist/
   release:
-    needs: build
+#    needs: build
     runs-on: ubuntu-latest
     env:
       CI: 'true'
