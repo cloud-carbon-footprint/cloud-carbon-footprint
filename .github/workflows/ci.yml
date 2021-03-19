@@ -14,104 +14,104 @@ on:
       - '.github/workflows/deploy-microsite.yml'
 
 jobs:
-  lint-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: setup node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      # Cache every node_modules folder inside the monorepo
-      - name: cache all node_modules
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
-        id: yarn-cache
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
-        uses: actions/cache@v2
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: yarn install
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-      - name: lint
-        run: yarn lint
-      - name: test
-        run: yarn test
-  build:
-    needs: lint-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      # Cache every node_modules folder inside the monorepo
-      - name: cache all node_modules
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
-        id: yarn-cache
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
-        uses: actions/cache@v2
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: yarn install
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-      - name: build-core
-        run: |
-          cd packages/core
-          yarn build
-          yarn prepack
-          mkdir dist-core
-          cp package.json dist-core
-          mv dist dist-core
-          yarn postpack
-          cd ../..
-      - uses: actions/upload-artifact@v2
-        with:
-          name: core-build
-          path: packages/core/dist-core/
-      - name: build-client
-        run: |
-          cd packages/client
-          yarn build
-          cd ../..
-      - uses: actions/upload-artifact@v2
-        with:
-          name: client-build
-          path: packages/client/build/
-      - name: build-api
-        run: |
-          cd packages/api
-          yarn build
-          cd ../..
-      - uses: actions/upload-artifact@v2
-        with:
-          name: api-dist
-          path: packages/api/dist/
+#  lint-test:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: setup node 14
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '14'
+#      # Cache every node_modules folder inside the monorepo
+#      - name: cache all node_modules
+#        id: cache-modules
+#        uses: actions/cache@v2
+#        with:
+#          path: '**/node_modules'
+#          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+#          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+#      - name: find location of global yarn cache
+#        id: yarn-cache
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        run: echo "::set-output name=dir::$(yarn cache dir)"
+#      - name: cache global yarn cache
+#        uses: actions/cache@v2
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        with:
+#          path: ${{ steps.yarn-cache.outputs.dir }}
+#          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-yarn-
+#      - name: yarn install
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        run: yarn install --immutable
+#      - name: lint
+#        run: yarn lint
+#      - name: test
+#        run: yarn test
+#  build:
+#    needs: lint-test
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: actions/setup-node@v2
+#        with:
+#          node-version: '14'
+#      # Cache every node_modules folder inside the monorepo
+#      - name: cache all node_modules
+#        id: cache-modules
+#        uses: actions/cache@v2
+#        with:
+#          path: '**/node_modules'
+#          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+#          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+#      - name: find location of global yarn cache
+#        id: yarn-cache
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        run: echo "::set-output name=dir::$(yarn cache dir)"
+#      - name: cache global yarn cache
+#        uses: actions/cache@v2
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        with:
+#          path: ${{ steps.yarn-cache.outputs.dir }}
+#          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-yarn-
+#      - name: yarn install
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        run: yarn install --immutable
+#      - name: build-core
+#        run: |
+#          cd packages/core
+#          yarn build
+#          yarn prepack
+#          mkdir dist-core
+#          cp package.json dist-core
+#          mv dist dist-core
+#          yarn postpack
+#          cd ../..
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: core-build
+#          path: packages/core/dist-core/
+#      - name: build-client
+#        run: |
+#          cd packages/client
+#          yarn build
+#          cd ../..
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: client-build
+#          path: packages/client/build/
+#      - name: build-api
+#        run: |
+#          cd packages/api
+#          yarn build
+#          cd ../..
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: api-dist
+#          path: packages/api/dist/
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -157,14 +157,14 @@ jobs:
 #        run: yarn lerna publish from-package --yes
 #        env:
 #          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
-#      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
-#      - name: Create a release tag
-#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-#        id: create_tag
-#        run: node scripts/create-release-tag.js
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      # Convert the newly created tag into a release with changelog information
+      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
+      - name: Create a release tag
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        id: create_tag
+        run: node scripts/create-release-tag.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Convert the newly created tag into a release with changelog information
 #      - name: Create release on GitHub
 #        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
 #        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
