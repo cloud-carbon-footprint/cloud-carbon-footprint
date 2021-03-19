@@ -7,7 +7,7 @@
     "main": "dist/index.js"
   },
   "scripts": {
-    "precommit": "lint-staged && yarn test --coverage --bail",
+    "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
     "type-check": "tsc --noEmit",
     "sonar:scan": "sonar-scanner",

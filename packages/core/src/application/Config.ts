@@ -151,7 +151,7 @@ const appConfig: CCFConfig = {
     },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
-  GROUP_QUERY_RESULTS_BY: process.env.GROUP_QUERY_RESULTS_BY || 'week',
+  GROUP_QUERY_RESULTS_BY: process.env.GROUP_QUERY_RESULTS_BY || 'day',
 }
 
 export default appConfig

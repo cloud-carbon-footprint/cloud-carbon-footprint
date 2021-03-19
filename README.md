@@ -51,18 +51,6 @@ A few steps are required to run the app with real data, that are different for e
 - [GCP](docs/GCP.md)
 - [Azure](docs/Azure.md)
 
-#### Custom Date Configuration
-
-When starting up the app, we have provided the option to configure in a few ways:
-
-- Date Range
-  - In your `packages/client/.env` file, you can provide the following variables for a custom date range:
-    - `REACT_APP_DATE_RANGE_TYPE` (example values: day(s), week(s), month(s), etc..)
-    - `REACT_APP_DATE_RANGE_VALUE` (example values: number correlating to day/week/month etc..)
-- Group By Timestamp in Queries
-  - In your `packages/api/.env` file, you can provide the following variable for a custom query option to group the data by date type:
-    - `GROUP_QUERY_RESULTS_BY` (example values: day, week, month, quarter, year)
-
 ## Running the CLI
 
 #### Local
@@ -102,6 +90,18 @@ We support two approaches to gathering usage data for different cloud providers.
 2. **Using Cloud Usage APIs (Higher Accuracy)** - This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API. We achieve this by looping through the accounts (the list is in the [packages/api/.env]([packages/api/.env]) file) and then making the API calls on each account for the regions and services set in [packages/core/src/application/Config.ts](packages/core/src/application/Config.ts). The permissions required for this approach are in the [cloudformation/ccf.yaml](cloudformation/ccf.yaml) file. This approach is more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application.
 
 - For a more comprehensive read on the various calculations and constants that we use for the emissions algorithms, check out the [Methodology page](METHODOLOGY.md)
+
+#### Options to Improve Query Performance
+
+When running very large amounts of data with the default configuration of querying each day for the previous year, we have noticed that the time it takes to start the app increases significantly. We have added optional configuration to help with this performance issue to query and date filter in a few different ways:
+
+- Date Range
+  - In your `packages/client/.env` file, you can provide the following variables for a custom date range:
+    - `REACT_APP_DATE_RANGE_TYPE` (example values: day(s), week(s), month(s), etc..)
+    - `REACT_APP_DATE_RANGE_VALUE` (example values: number correlating to day/week/month etc..)
+- Group By Timestamp in Queries
+  - In your `packages/api/.env` file, you can provide the following variable for a custom query option to group the data by date type:
+    - `GROUP_QUERY_RESULTS_BY` (example values: day, week, month, quarter, year)
 
 ### Ensure real-time estimates
 
