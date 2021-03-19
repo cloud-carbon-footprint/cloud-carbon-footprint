@@ -3,7 +3,6 @@ WORKDIR /usr/src/app
 COPY ./dist ./dist
 COPY .npmrc .npmrc
 COPY ./package.json .
-COPY ../core ./core
 RUN yarn install --immutable
 RUN rm -f .npmrc
 RUN rm -rf core
