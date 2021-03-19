@@ -53,6 +53,10 @@ fileignoreconfig:
   checksum: c5cafaa64e0d809ba7e5670faebfe68a4e6dd48804983526a3985b1ab28d3d11
 - filename: client/src/dashboard/transformData.tsx
   checksum: 77ec816e45b6b7cdbc59551939b955f8f57590414369e617af89d21f90d53b83
+- filename: docker-compose.yml
+  checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
+- filename: docker/nginx.conf
+  checksum: a4632d785a11f199217d4229a40eba5a38180d9945d96799dc9b5efc6a3bc06e
 - filename: microsite/src/components/differentiator.js
   checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
 - filename: microsite/src/components/innovationPartners.js
@@ -61,8 +65,12 @@ fileignoreconfig:
   checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: packages/api/.env.template
   checksum: cab199f02ce808bcf8b3bc14188bef7932e3f76d7af245dc1073e66dd4976c91
+- filename: packages/api/create_docker_secrets.sh
+  checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
+- filename: packages/core/src/application/Config.ts
+  checksum: 3a77339c9c83cab07bf380776ac0eaaae8d8b809332d9ff11f60c84d6f893e09
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
   checksum: 4d228f61da83e84b40a041f073e74917409a7fdeb09fdf70f3ef62720288d923
 - filename: server/.env.template

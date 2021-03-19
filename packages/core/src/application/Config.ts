@@ -1,7 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-
+import fs from 'fs'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -60,24 +60,33 @@ const getGCPProjects = () => {
   return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
 }
 
+// This function allows support for using Docker Secrets.
+const getEnvVar = (envVar: string): string => {
+  try {
+    return fs.readFileSync(`/run/secrets/${envVar}`, 'utf8').replace('\n', '')
+  } catch (err) {
+    return process.env[envVar]
+  }
+}
+
 const appConfig: CCFConfig = {
   AWS: {
     USE_BILLING_DATA: !!process.env.AWS_USE_BILLING_DATA,
-    BILLING_ACCOUNT_ID: process.env.AWS_BILLING_ACCOUNT_ID || '',
-    BILLING_ACCOUNT_NAME: process.env.AWS_BILLING_ACCOUNT_NAME || '',
-    ATHENA_DB_NAME: process.env.AWS_ATHENA_DB_NAME || '',
-    ATHENA_DB_TABLE: process.env.AWS_ATHENA_DB_TABLE || '',
+    BILLING_ACCOUNT_ID: getEnvVar('AWS_BILLING_ACCOUNT_ID') || '',
+    BILLING_ACCOUNT_NAME: getEnvVar('AWS_BILLING_ACCOUNT_NAME') || '',
+    ATHENA_DB_NAME: getEnvVar('AWS_ATHENA_DB_NAME') || '',
+    ATHENA_DB_TABLE: getEnvVar('AWS_ATHENA_DB_TABLE') || '',
     ATHENA_QUERY_RESULT_LOCATION:
-      process.env.AWS_ATHENA_QUERY_RESULT_LOCATION || '',
-    ATHENA_REGION: process.env.AWS_ATHENA_REGION,
+      getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
+    ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
-      mode: process.env.AWS_AUTH_MODE || 'default',
+      mode: getEnvVar('AWS_AUTH_MODE') || 'default',
       options: {
-        targetRoleName: process.env.AWS_TARGET_ACCOUNT_ROLE_NAME,
-        targetRoleSessionName: process.env.AWS_TARGET_ACCOUNT_ROLE_NAME,
-        proxyAccountId: process.env.AWS_PROXY_ACCOUNT_ID || '',
-        proxyRoleName: process.env.AWS_PROXY_ROLE_NAME || '',
+        targetRoleName: getEnvVar('AWS_TARGET_ACCOUNT_ROLE_NAME'),
+        targetRoleSessionName: getEnvVar('AWS_TARGET_ACCOUNT_ROLE_NAME'),
+        proxyAccountId: getEnvVar('AWS_PROXY_ACCOUNT_ID') || '',
+        proxyRoleName: getEnvVar('AWS_PROXY_ROLE_NAME') || '',
       },
     },
     NAME: 'AWS',
@@ -137,17 +146,17 @@ const appConfig: CCFConfig = {
       },
     ],
     USE_BILLING_DATA: !!process.env.GCP_USE_BILLING_DATA,
-    BIG_QUERY_TABLE: process.env.GCP_BIG_QUERY_TABLE || '',
-    BILLING_ACCOUNT_ID: process.env.GCP_BILLING_ACCOUNT_ID || '',
-    BILLING_ACCOUNT_NAME: process.env.GCP_BILLING_ACCOUNT_NAME || '',
+    BIG_QUERY_TABLE: getEnvVar('GCP_BIG_QUERY_TABLE') || '',
+    BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_ACCOUNT_ID') || '',
+    BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_ACCOUNT_NAME') || '',
   },
   AZURE: {
     USE_BILLING_DATA: !!process.env.AZURE_USE_BILLING_DATA,
     authentication: {
-      mode: process.env.AZURE_AUTH_MODE || 'default',
-      clientId: process.env.AZURE_CLIENT_ID || '',
-      clientSecret: process.env.AZURE_CLIENT_SECRET || '',
-      tenantId: process.env.AZURE_TENANT_ID || '',
+      mode: getEnvVar('AZURE_AUTH_MODE') || 'default',
+      clientId: getEnvVar('AZURE_CLIENT_ID') || '',
+      clientSecret: getEnvVar('AZURE_CLIENT_SECRET') || '',
+      tenantId: getEnvVar('AZURE_TENANT_ID') || '',
     },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',

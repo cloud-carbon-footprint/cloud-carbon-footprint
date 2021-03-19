@@ -1,13 +1,11 @@
 FROM node:14-alpine
 WORKDIR /usr/src/app
-RUN apk add --no-cache --virtual .build-deps g++ python3-dev libffi-dev openssl-dev git && \
-    apk add --no-cache --update python3 && \
-    apk --no-cache --update add build-base
-
 COPY ./dist ./dist
 COPY .npmrc .npmrc
 COPY ./package.json .
+COPY ../core ./core
 RUN yarn install --immutable
 RUN rm -f .npmrc
+RUN rm -rf core
 
 CMD [ "yarn", "start:webprod"]
