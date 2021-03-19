@@ -2,6 +2,8 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+import { QUERY_DATE_TYPES } from '../common/types'
+
 export const UNSUPPORTED_SERVICES = [
   'Virtual Machines Licenses',
   'Azure Bastion',
@@ -111,4 +113,12 @@ export const CONTAINER_REGISTRY_STORAGE_GB: {
   Basic: 10,
   Standard: 100,
   Premium: 500,
+}
+
+export const AZURE_QUERY_GROUP_BY: QUERY_DATE_TYPES = {
+  day: 'day',
+  week: 'isoWeek',
+  month: 'month',
+  quarter: 'quarter',
+  year: 'year',
 }

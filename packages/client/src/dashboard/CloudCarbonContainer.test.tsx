@@ -29,7 +29,6 @@ jest.mock('../ConfigLoader', () => ({
       { key: 'aws', name: 'AWS' },
       { key: 'gcp', name: 'GCP' },
     ],
-    PREVIOUS_YEAR_OF_USAGE: true,
     DATE_RANGE: {
       VALUE: '7',
       TYPE: 'days',
@@ -60,25 +59,6 @@ describe('CloudCarbonContainer', () => {
 
     expect(getByTestId('fake-line-chart')).toBeInTheDocument()
     // expect(getByTestId('fake-donut-chart')).toBeInTheDocument()
-  })
-
-  test('today and january first of the last year should be passed in to remote service hook', () => {
-    render(<CloudCarbonContainer />)
-
-    const parameters = mockUseRemoteService.mock.calls[0]
-
-    expect(parameters.length).toEqual(3)
-
-    const initial = parameters[0]
-    const startDate = parameters[1]
-    const endDate = parameters[2]
-
-    expect(initial).toEqual([])
-    expect(startDate.year()).toEqual(endDate.year() - 1)
-    expect(startDate.month()).toEqual(0)
-    expect(startDate.date()).toEqual(1)
-
-    expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
 
   test('show loading icon if data has not been returned', () => {

@@ -1,6 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
+import { QUERY_DATE_TYPES } from '../common/types'
 
 export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory']
 
@@ -94,3 +95,11 @@ export const NETWORKING_STRING_FORMATS: string[] = [
   'network traffic',
   'Download',
 ]
+
+export const GCP_QUERY_GROUP_BY: QUERY_DATE_TYPES = {
+  day: 'DAY',
+  week: 'ISOWEEK',
+  month: 'MONTH',
+  quarter: 'QUARTER',
+  year: 'YEAR',
+}

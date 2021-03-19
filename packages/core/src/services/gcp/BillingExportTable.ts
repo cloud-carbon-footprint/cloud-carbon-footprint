@@ -23,6 +23,7 @@ import {
   COMPUTE_STRING_FORMATS,
   UNSUPPORTED_USAGE_TYPES,
   NETWORKING_STRING_FORMATS,
+  GCP_QUERY_GROUP_BY,
 } from './BillingExportTypes'
 import BillingExportRow from './BillingExportRow'
 import Logger from '../Logger'
@@ -206,14 +207,10 @@ export default class BillingExportTable {
   }
 
   private async getUsage(start: Date, end: Date): Promise<any[]> {
-    const groupDatesByWeek =
-      'DATE_ADD(DATE_TRUNC(DATE(usage_start_time), WEEK), INTERVAL 1 DAY)'
-    const groupDatesByDay = 'DATE(usage_start_time)'
-    const timestamp = configLoader().GROUP_QUERY_RESULTS_BY_WEEK
-      ? groupDatesByWeek
-      : groupDatesByDay
     const query = `SELECT
-                    ${timestamp} as timestamp,
+                    DATE_TRUNC(DATE(usage_start_time), ${
+                      GCP_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
+                    }) as timestamp,
                     project.name as accountName,
                     location.region as region,
                     service.description as serviceName,

@@ -18,9 +18,10 @@ If you would like to learn more about the various calculations and constants tha
 - AWS CLI `brew install awscli` (if you are authenticating with AWS - see below)
 - Terraform [0.12.28](https://releases.hashicorp.com/terraform/0.12.28/). (if you want to deploy using Terraform)
 - Talisman (if you want to commit code)
-    - `curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
+  - `curl --silent https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash`
 
 Note:
+
 - During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.
 - During install, Talisman will also ask you for the directory of your git repositories. If you don't want to install Talisman in all your git repos, then cancel out at this step.
 
@@ -45,9 +46,22 @@ This will run the webapp in development mode, using a mocked server. Open http:/
 ### Running the web-app with real data
 
 A few steps are required to run the app with real data, that are different for each cloud provider. Check out the steps for each cloud provider here:
+
 - [AWS](docs/AWS.md)
 - [GCP](docs/GCP.md)
 - [Azure](docs/Azure.md)
+
+#### Custom Date Configuration
+
+When starting up the app, we have provided the option to configure in a few ways:
+
+- Date Range
+  - In your `packages/client/.env` file, you can provide the following variables for a custom date range:
+    - `REACT_APP_DATE_RANGE_TYPE` (example values: day(s), week(s), month(s), etc..)
+    - `REACT_APP_DATE_RANGE_VALUE` (example values: number correlating to day/week/month etc..)
+- Group By Timestamp in Queries
+  - In your `packages/api/.env` file, you can provide the following variable for a custom query option to group the data by date type:
+    - `GROUP_QUERY_RESULTS_BY` (example values: day, week, month, quarter, year)
 
 ## Running the CLI
 

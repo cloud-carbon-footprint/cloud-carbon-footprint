@@ -1,7 +1,7 @@
 /*
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
-import moment from 'moment'
+import moment, { unitOfTime } from 'moment'
 import {
   UsageDetail,
   UsageDetailsListResult,
@@ -30,6 +30,7 @@ import {
   STORAGE_USAGE_UNITS,
   UNSUPPORTED_SERVICES,
   UNSUPPORTED_USAGE_TYPES,
+  AZURE_QUERY_GROUP_BY,
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
@@ -61,8 +62,7 @@ export default class ConsumptionManagementService {
         consumptionRow,
       )
 
-      configLoader().GROUP_QUERY_RESULTS_BY_WEEK &&
-        this.updateTimestampByWeek(consumptionDetailRow)
+      this.updateTimestampByWeek(consumptionDetailRow)
 
       if (this.isUnsupportedUsage(consumptionDetailRow)) return []
 
@@ -84,9 +84,11 @@ export default class ConsumptionManagementService {
   private updateTimestampByWeek(
     consumptionDetailRow: ConsumptionDetailRow,
   ): void {
+    const startOfType: string =
+      AZURE_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
     const firstDayOfWeek = moment
       .utc(consumptionDetailRow.timestamp)
-      .startOf('isoWeek')
+      .startOf(startOfType as unitOfTime.StartOf)
     consumptionDetailRow.timestamp = new Date(firstDayOfWeek.toISOString())
   }
 

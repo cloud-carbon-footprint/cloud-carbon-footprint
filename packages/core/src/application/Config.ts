@@ -49,7 +49,7 @@ export interface CCFConfig {
     }
   }
   LOGGING_MODE?: string
-  GROUP_QUERY_RESULTS_BY_WEEK?: boolean
+  GROUP_QUERY_RESULTS_BY?: string
 }
 
 const getAWSAccounts = () => {
@@ -151,7 +151,7 @@ const appConfig: CCFConfig = {
     },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
-  GROUP_QUERY_RESULTS_BY_WEEK: !!process.env.GROUP_QUERY_RESULTS_BY_WEEK,
+  GROUP_QUERY_RESULTS_BY: process.env.GROUP_QUERY_RESULTS_BY || 'week',
 }
 
 export default appConfig
