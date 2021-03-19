@@ -108,7 +108,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       return CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
-    PUE_AVG: 1.2,
+    PUE_AVG: 1.135,
     getPUE: (): number => {
       return CLOUD_CONSTANTS.AWS.PUE_AVG
     },

@@ -70,8 +70,8 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.12,
-        co2e: estimateCo2(0.12, 'AWS', region),
+        kilowattHours: 0.1135,
+        co2e: estimateCo2(0.1135, 'AWS', region),
       },
     ])
   })
@@ -118,13 +118,13 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.12,
-        co2e: estimateCo2(0.12, 'AWS', region),
+        kilowattHours: 0.1135,
+        co2e: estimateCo2(0.1135, 'AWS', region),
       },
       {
         timestamp: new Date(endDate),
-        kilowattHours: 0.48,
-        co2e: estimateCo2(0.48, 'AWS', region),
+        kilowattHours: 0.454,
+        co2e: estimateCo2(0.454, 'AWS', region),
       },
     ])
   })
@@ -183,13 +183,13 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.24,
-        co2e: estimateCo2(0.24, 'AWS', region),
+        kilowattHours: 0.227,
+        co2e: estimateCo2(0.227, 'AWS', region),
       },
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.276,
-        co2e: estimateCo2(0.276, 'AWS', region),
+        kilowattHours: 0.26105,
+        co2e: estimateCo2(0.26105, 'AWS', region),
       },
     ])
   })
@@ -249,13 +249,13 @@ describe('Lambda', () => {
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.276,
-        co2e: estimateCo2(0.276, 'AWS', region),
+        kilowattHours: 0.26105,
+        co2e: estimateCo2(0.26105, 'AWS', region),
       },
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.276,
-        co2e: estimateCo2(0.276, 'AWS', region),
+        kilowattHours: 0.26105,
+        co2e: estimateCo2(0.26105, 'AWS', region),
       },
     ])
   })
