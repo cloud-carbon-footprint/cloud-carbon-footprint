@@ -97,10 +97,6 @@ Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footp
 
   This is also one of the pre-commit hook but it is also advisable to run tests regularly.
 
-### Changeset Version Update
-
-Once you are reading to commit your changes. run `yarn changeset` from the root directory. You will be prompted to choose which packages that need to be updated using the arrow keys and space bar. You will need to choose the appropriate update for each package that you have contributed to using the guidelines set with [Semantic Versioning](https://semver.org/). You will also be prompted to leave a detailed description of your changes. This process will create a markdown file in the .changesets directory to be included in your commit and pushed.
-
 ### Commit
 
 It is recommended to keep your changes grouped logically within individual commits. Many contributors find it easier to review changes that are split across multiple commits. There is no limit to the number of commits in a pull request. Please be sure to include your issue number in brackets and use easy to understand commit messages that summarize the work that you've done. A good commit message should describe what changed and why. See example below as reference.
@@ -129,6 +125,10 @@ While our tests run every time you commit thanks to the pre-commit hook describe
 ```
 $ yarn test
 ```
+
+### Changeset Version Update
+
+Once you have commited your changes. run `yarn changeset` from the root directory. You will be prompted to choose which packages that need to be updated using the arrow keys and space bar. You will need to choose the appropriate update for each package that you have contributed to using the guidelines set with [Semantic Versioning](https://semver.org/). You will also be prompted to leave a detailed description of your changes. This process will create a markdown file in the .changesets directory to be included in your commit and pushed. Changesets are only requested if you made an update to any of the packages.
 
 ### Push
 
