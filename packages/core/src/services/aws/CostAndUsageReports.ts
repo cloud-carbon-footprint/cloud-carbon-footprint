@@ -38,6 +38,7 @@ import { Athena } from 'aws-sdk'
 import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
 import NetworkingUsage from '../../domain/NetworkingUsage'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -107,10 +108,16 @@ export default class CostAndUsageReports {
           numberOfvCpus: costAndUsageReportRow.vCpuHours,
           usesAverageCPUConstant: true,
         }
+
+        const computeProcessors = this.getComputeProcessorsFromUsageType(
+          costAndUsageReportRow.usageType,
+        )
+
         return this.computeEstimator.estimate(
           [computeUsage],
           costAndUsageReportRow.region,
           'AWS',
+          computeProcessors,
         )[0]
       case PRICING_UNITS.GB_MONTH_1:
       case PRICING_UNITS.GB_MONTH_2:
@@ -183,6 +190,10 @@ export default class CostAndUsageReports {
           `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
         )
     }
+  }
+
+  private getComputeProcessorsFromUsageType(usageType: string): string[] {
+    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType.split(':')[1]]
   }
 
   private getUsageAmountInTerabyteHours(

@@ -368,8 +368,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            kilowattHours: 0.5013522,
-            co2e: 0.00022786457490000001,
+            kilowattHours: 0.5730615,
+            co2e: 0.00026045645175,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',

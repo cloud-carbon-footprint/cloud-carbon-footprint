@@ -2,6 +2,8 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
+import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
+
 export const RDS_INSTANCE_TYPES: { [instanceType: string]: number } = {
   'db.m5.24xlarge': 96,
   'db.m5.16xlarge': 64,
@@ -476,4 +478,13 @@ export const BURSTABLE_INSTANCE_BASELINE_UTILIZATION: {
   't4g.large': 30,
   't4g.xlarge': 40,
   't4g.2xlarge': 40,
+}
+
+export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
+  [instanceType: string]: string[]
+} = {
+  'c5.18xlarge': [
+    COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+    COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  ],
 }
