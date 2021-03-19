@@ -2,7 +2,13 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
+import {
+  COMPUTE_PROCESSOR_TYPES,
+  cascadeLakeSkylakeBroadwellHaswell,
+  cascadeLakeSkylake,
+  cascadeLakeSkylakeBroadwell,
+  cascadeLakeHaswell,
+} from '../../domain/ComputeProcessorTypes'
 
 export const VIRTUAL_MACHINE_TYPE_VCPU_MAPPING: {
   [instanceType: string]: number
@@ -362,29 +368,6 @@ export const VIRTUAL_MACHINE_TYPE_VCPU_MAPPING: {
   'HB120rs v2': 120,
   HC44rs: 44,
 }
-
-const cascadeLakeSkylakeBroadwellHaswell = [
-  COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
-  COMPUTE_PROCESSOR_TYPES.SKYLAKE,
-  COMPUTE_PROCESSOR_TYPES.BROADWELL,
-  COMPUTE_PROCESSOR_TYPES.HASWELL,
-]
-
-const cascadeLakeSkylake = [
-  COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
-  COMPUTE_PROCESSOR_TYPES.SKYLAKE,
-]
-
-const cascadeLakeSkylakeBroadwell = [
-  COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
-  COMPUTE_PROCESSOR_TYPES.SKYLAKE,
-  COMPUTE_PROCESSOR_TYPES.BROADWELL,
-]
-
-const cascadeLakeHaswell = [
-  COMPUTE_PROCESSOR_TYPES.HASWELL,
-  COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
-]
 
 export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
   [series: string]: string[]
