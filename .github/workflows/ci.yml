@@ -159,7 +159,7 @@ jobs:
 #          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
       - name: Create a release tag
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         id: create_tag
         run: node scripts/create-release-tag.js
         env:
