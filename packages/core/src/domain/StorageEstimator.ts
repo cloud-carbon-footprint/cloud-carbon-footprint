@@ -5,10 +5,7 @@
 import FootprintEstimate from './FootprintEstimate'
 import IFootprintEstimator from './IFootprintEstimator'
 import StorageUsage from './StorageUsage'
-import {
-  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-  CLOUD_CONSTANTS,
-} from './FootprintEstimationConstants'
+import { CLOUD_CONSTANTS, estimateCo2 } from './FootprintEstimationConstants'
 
 export class StorageEstimator implements IFootprintEstimator {
   coefficient: number
@@ -32,7 +29,7 @@ export class StorageEstimator implements IFootprintEstimator {
       return {
         timestamp: d.timestamp,
         kilowattHours: estimatedKilowattHours,
-        co2e: this.estimateCo2(estimatedKilowattHours, region, cloudProvider),
+        co2e: estimateCo2(estimatedKilowattHours, cloudProvider, region),
       }
     })
   }
@@ -49,19 +46,6 @@ export class StorageEstimator implements IFootprintEstimator {
         this.coefficient *
         CLOUD_CONSTANTS[cloudProvider].getPUE(region)) /
       1000
-    )
-  }
-
-  private estimateCo2(
-    estimatedKilowattHours: number,
-    region: string,
-    cloudProvider: string,
-  ) {
-    // This function multiplies the estimated watt-hours by the average CO2e emissions (Kgs) in the region being estimated,
-    // as provided by IEA and other energy reports
-    return (
-      estimatedKilowattHours *
-      CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[cloudProvider][region]
     )
   }
 }
