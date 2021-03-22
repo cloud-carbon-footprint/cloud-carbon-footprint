@@ -2,6 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import moment from 'moment'
+import { concat } from 'ramda'
 import FootprintEstimate, {
   MutableEstimationResult,
 } from '../../domain/FootprintEstimate'
@@ -193,7 +194,13 @@ export default class CostAndUsageReports {
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
-    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType.split(':')[1]]
+    const prefixes = ['db', 'cache', 'Kafka']
+    const includesPrefix = prefixes.find((prefix) => usageType.includes(prefix))
+    const processor = includesPrefix
+      ? usageType.split(concat(includesPrefix, '.')).pop()
+      : usageType.split(':').pop()
+
+    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor]
   }
 
   private getUsageAmountInTerabyteHours(

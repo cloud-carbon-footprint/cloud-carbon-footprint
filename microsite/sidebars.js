@@ -7,8 +7,13 @@ module.exports = {
     'Get Started': ['getting-started'],
     'Running Locally': [
       {
-        'Running the Web App': [{ 'Connect to Real Data': ['aws'] }],
+        'Running the Web App': [
+          'run-with-mocked-data',
+          { 'Connect to Real Data': ['aws', 'gcp', 'azure'] },
+          'run-with-docker',
+        ],
       },
+      'running-the-cli',
     ],
   },
 }

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 module.exports = {
   title: 'Cloud Carbon Footprint',
   tagline: 'Cloud Carbon Footprint',
@@ -9,7 +13,7 @@ module.exports = {
   organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   themeConfig: {
-    sidebarCollapsible: false,
+    sidebarCollapsible: true,
     navbar: {
       title: 'Cloud Carbon Footprint',
       logo: {

@@ -27,6 +27,8 @@ type CloudConstants = {
   [cloudProvider: string]: CloudConstantsByProvider
 }
 
+// the cloud constants are very repetitive for each cloud provider
+// this was to simplify any preferential changes to coefficients per provider
 export const CLOUD_CONSTANTS: CloudConstants = {
   GCP: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
