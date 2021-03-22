@@ -156,7 +156,7 @@ jobs:
 #      - name: publish
 #        run: yarn lerna publish from-package --yes
 #        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
       - name: Create a release tag
 #        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
@@ -178,23 +178,23 @@ jobs:
       - name: Build and push client to Docker Hub
         uses: docker/build-push-action@v2
         env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           context: packages/client
           push: true
           tags: cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
           build-args: |
-            NPM_TOKEN=${{ secrets.NPM_PUBLISH_TOKEN }}
+            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
       - name: Build and push api to Docker Hub
         uses: docker/build-push-action@v2
         env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           context: packages/api
           push: true
           tags: cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
           build-args: |
-            NPM_TOKEN=${{ secrets.NPM_PUBLISH_TOKEN }}
+            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
 #  deploy-staging:
 #    if: github.ref == 'refs/heads/trunk'
 #    needs: build
@@ -259,7 +259,7 @@ jobs:
 #          # we need to do this until general solution is built
 #          sed -i 's/\^0\.1\.0/\.\/dist-core/g' package.json
 #          ./create_server_env_file.sh
-#          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }} >> .npmrc
+#          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} >> .npmrc
 #          cd ../..
 #
 #          # Store service account
