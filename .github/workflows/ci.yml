@@ -171,11 +171,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to DockerHub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push client to Docker Hub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         uses: docker/build-push-action@v2
         with:
           context: packages/client
@@ -184,6 +186,7 @@ jobs:
             cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/client:latest
       - name: Build and push api to Docker Hub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         uses: docker/build-push-action@v2
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
