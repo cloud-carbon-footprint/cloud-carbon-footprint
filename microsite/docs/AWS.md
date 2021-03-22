@@ -11,17 +11,17 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
 2. Enable the Cost and Usage Billing AWS feature.
 
-   - This feature needs to be enabled so your account can start generating cost and usage reports. To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab. Make sure to select “Amazon Athena” for report data integration. Reference Cost and Usage Reports documentation [here](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html).
+   - This feature needs to be enabled so your account can start generating cost and usage reports. To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab. Make sure to select “Amazon Athena” for report data integration. Reference Cost and Usage Reports documentation [here.](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html)
 
 3. Setup Athena DB to save the Cost and Usage Reports.
 
-   - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html).
+   - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here.](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
 
 4. Configure aws credentials locally, using awscli.
 
    - After [installing awscli](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint#optional-prerequisites), run `aws configure` and provide your access key and secret access key. Also make sure you select the same region as the one you created your cost and usage reports in.
 
-   - We optionally support alternative methods of authenticating with AWS, which you can read about [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint#options-for-aws-authentication).
+   - We optionally support alternative methods of authenticating with AWS, which you can read about [here.](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint#options-for-aws-authentication)
 
 5. Configure environmental variables for the api and client.
 
