@@ -14,106 +14,106 @@ on:
       - '.github/workflows/deploy-microsite.yml'
 
 jobs:
-#  lint-test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: setup node 14
-#        uses: actions/setup-node@v2
-#        with:
-#          node-version: '14'
-#      # Cache every node_modules folder inside the monorepo
-#      - name: cache all node_modules
-#        id: cache-modules
-#        uses: actions/cache@v2
-#        with:
-#          path: '**/node_modules'
-#          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
-#          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-#      - name: find location of global yarn cache
-#        id: yarn-cache
-#        if: steps.cache-modules.outputs.cache-hit != 'true'
-#        run: echo "::set-output name=dir::$(yarn cache dir)"
-#      - name: cache global yarn cache
-#        uses: actions/cache@v2
-#        if: steps.cache-modules.outputs.cache-hit != 'true'
-#        with:
-#          path: ${{ steps.yarn-cache.outputs.dir }}
-#          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-#          restore-keys: |
-#            ${{ runner.os }}-yarn-
-#      - name: yarn install
-#        if: steps.cache-modules.outputs.cache-hit != 'true'
-#        run: yarn install --immutable
-#      - name: lint
-#        run: yarn lint
-#      - name: test
-#        run: yarn test
-#  build:
-#    needs: lint-test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-node@v2
-#        with:
-#          node-version: '14'
-#      # Cache every node_modules folder inside the monorepo
-#      - name: cache all node_modules
-#        id: cache-modules
-#        uses: actions/cache@v2
-#        with:
-#          path: '**/node_modules'
-#          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
-#          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-#      - name: find location of global yarn cache
-#        id: yarn-cache
-#        if: steps.cache-modules.outputs.cache-hit != 'true'
-#        run: echo "::set-output name=dir::$(yarn cache dir)"
-#      - name: cache global yarn cache
-#        uses: actions/cache@v2
-#        if: steps.cache-modules.outputs.cache-hit != 'true'
-#        with:
-#          path: ${{ steps.yarn-cache.outputs.dir }}
-#          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-#          restore-keys: |
-#            ${{ runner.os }}-yarn-
-#      - name: yarn install
-#        if: steps.cache-modules.outputs.cache-hit != 'true'
-#        run: yarn install --immutable
-#      - name: build-core
-#        run: |
-#          cd packages/core
-#          yarn build
-#          yarn prepack
-#          mkdir dist-core
-#          cp package.json dist-core
-#          mv dist dist-core
-#          yarn postpack
-#          cd ../..
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: core-build
-#          path: packages/core/dist-core/
-#      - name: build-client
-#        run: |
-#          cd packages/client
-#          yarn build
-#          cd ../..
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: client-build
-#          path: packages/client/build/
-#      - name: build-api
-#        run: |
-#          cd packages/api
-#          yarn build
-#          cd ../..
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: api-dist
-#          path: packages/api/dist/
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      # Cache every node_modules folder inside the monorepo
+      - name: cache all node_modules
+        id: cache-modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: find location of global yarn cache
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: cache global yarn cache
+        uses: actions/cache@v2
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+      - name: lint
+        run: yarn lint
+      - name: test
+        run: yarn test
+  build:
+    needs: lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      # Cache every node_modules folder inside the monorepo
+      - name: cache all node_modules
+        id: cache-modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+      - name: find location of global yarn cache
+        id: yarn-cache
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: cache global yarn cache
+        uses: actions/cache@v2
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: yarn install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: yarn install --immutable
+      - name: build-core
+        run: |
+          cd packages/core
+          yarn build
+          yarn prepack
+          mkdir dist-core
+          cp package.json dist-core
+          mv dist dist-core
+          yarn postpack
+          cd ../..
+      - uses: actions/upload-artifact@v2
+        with:
+          name: core-build
+          path: packages/core/dist-core/
+      - name: build-client
+        run: |
+          cd packages/client
+          yarn build
+          cd ../..
+      - uses: actions/upload-artifact@v2
+        with:
+          name: client-build
+          path: packages/client/build/
+      - name: build-api
+        run: |
+          cd packages/api
+          yarn build
+          cd ../..
+      - uses: actions/upload-artifact@v2
+        with:
+          name: api-dist
+          path: packages/api/dist/
   release:
-#    needs: build
+    needs: build
     runs-on: ubuntu-latest
     env:
       CI: 'true'
@@ -153,23 +153,23 @@ jobs:
       - name: build packages
         run: yarn lerna run build
       # Publishes current version of packages that are not already present in the registry
-#      - name: publish
-#        run: yarn lerna publish from-package --yes
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: publish
+        run: yarn lerna publish from-package --yes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
       - name: Create a release tag
-#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         id: create_tag
         run: node scripts/create-release-tag.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Convert the newly created tag into a release with changelog information
-#      - name: Create release on GitHub
-#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-#        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release on GitHub
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
@@ -191,157 +191,157 @@ jobs:
           tags: cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
           build-args: |
             NPM_TOKEN=${{ secrets.NPM_TOKEN }}
-#  deploy-staging:
-#    if: github.ref == 'refs/heads/trunk'
-#    needs: build
-#    runs-on: ubuntu-latest
-#    container:
-#      image: node:14.16.0-alpine3.10
-#    environment:
-#      name: staging
-#    env:
-#      HOST_URL: ${{ secrets.HOST_URL }}
-#      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-#      APP_SECRET: ${{ secrets.APP_SECRET }}
-#      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-#      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
-#      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
-#      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
-#      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
-#      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
-#      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
-#      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
-#      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
-#      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
-#      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
-#      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
-#      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
-#      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
-#      GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
-#      GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
-#      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
-#      GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
-#      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: core-build
-#          path: packages/api/dist-core
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: client-build
-#          path: packages/client/build
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: api-dist
-#          path: packages/api/dist
-#      - name: deploy-staging
-#        env:
-#          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
-#          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-#          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
-#        run: |
-#          apk add --update python3 py-crcmod bash libc6-compat curl
-#          export PATH=$PATH:/root/google-cloud-sdk/bin
-#          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-#
-#          cd packages/client
-#          ./create_client_env_file.sh
-#          cd ../..
-#
-#          cd packages/api
-#          # replacing @cloud-carbon-footprint/core with a local reference
-#          # we need to do this until general solution is built
-#          sed -i 's/\^0\.1\.0/\.\/dist-core/g' package.json
-#          ./create_server_env_file.sh
-#          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} >> .npmrc
-#          cd ../..
-#
-#          # Store service account
-#          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-#
-#          # Initialize gcloud CLI
-#          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-#
-#          gcloud --quiet config set project $GOOGLE_PROJECT_ID
-#
-#          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-#
-#          cd appengine
-#          ./deploy-staging.sh
-#          cd ..
-#  deploy-production:
-#    needs: deploy-staging
-#    runs-on: ubuntu-latest
-#    container:
-#      image: node:14.16.0-alpine3.10
-#    environment:
-#      name: production
-#    env:
-#      HOST_URL: ${{ secrets.HOST_URL }}
-#      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-#      APP_SECRET: ${{ secrets.APP_SECRET }}
-#      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-#      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
-#      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
-#      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
-#      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
-#      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
-#      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
-#      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
-#      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
-#      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
-#      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
-#      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
-#      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
-#      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
-#      GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
-#      GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
-#      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
-#      GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
-#      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: client-build
-#          path: packages/client/build
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: api-dist
-#          path: packages/api/dist
-#      - name: deploy-production
-#        env:
-#          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
-#          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-#          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
-#        run: |
-#          apk add --update python3 py-crcmod bash libc6-compat curl
-#          export PATH=$PATH:/root/google-cloud-sdk/bin
-#          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-#
-#          cd packages/client
-#          ./create_client_env_file.sh
-#          cd ../..
-#
-#          cd packages/api
-#          # replacing @cloud-carbon-footprint/core with a local reference
-#          # we need to do this until general solution is built
-#          sed -i 's/\^1\.0\.0/\.\/dist-core/g' package.json
-#          ./create_server_env_file.sh
-#          cd ../..
-#
-#          # Store service account
-#          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-#
-#          # Initialize gcloud CLI
-#          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-#
-#          gcloud --quiet config set project $GOOGLE_PROJECT_ID
-#
-#          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-#
-#          cd appengine
-#          ./deploy-production.sh
-#          cd ..
+  deploy-staging:
+    if: github.ref == 'refs/heads/trunk'
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.16.0-alpine3.10
+    environment:
+      name: staging
+    env:
+      HOST_URL: ${{ secrets.HOST_URL }}
+      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
+      GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: core-build
+          path: packages/api/dist-core
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-build
+          path: packages/client/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: api-dist
+          path: packages/api/dist
+      - name: deploy-staging
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
+        run: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cd packages/client
+          ./create_client_env_file.sh
+          cd ../..
+
+          cd packages/api
+          # replacing @cloud-carbon-footprint/core with a local reference
+          # we need to do this until general solution is built
+          sed -i 's/\^0\.1\.0/\.\/dist-core/g' package.json
+          ./create_server_env_file.sh
+          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} >> .npmrc
+          cd ../..
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
+          cd appengine
+          ./deploy-staging.sh
+          cd ..
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.16.0-alpine3.10
+    environment:
+      name: production
+    env:
+      HOST_URL: ${{ secrets.HOST_URL }}
+      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
+      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_TARGET_ACCOUNT_EMAIL: ${{ secrets.GCP_TARGET_ACCOUNT_EMAIL }}
+      GCP_TARGET_ACCOUNT_PRIVATE_KEY: ${{ secrets.GCP_TARGET_ACCOUNT_PRIVATE_KEY }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-build
+          path: packages/client/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: api-dist
+          path: packages/api/dist
+      - name: deploy-production
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
+        run: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cd packages/client
+          ./create_client_env_file.sh
+          cd ../..
+
+          cd packages/api
+          # replacing @cloud-carbon-footprint/core with a local reference
+          # we need to do this until general solution is built
+          sed -i 's/\^1\.0\.0/\.\/dist-core/g' package.json
+          ./create_server_env_file.sh
+          cd ../..
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+
+          cd appengine
+          ./deploy-production.sh
+          cd ..
