@@ -1,18 +1,78 @@
-version: "3.7"
- 
+version: "3.9"
+
 services:
-  server:
-    build: ./packages/api
+  client:
+    image: cloudcarbonfootprint/client:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
+  api:
+    image: docker.io/cloudcarbonfootprint/api:latest
     ports:
       - "4000:4000"
     volumes:
       - $HOME/.aws/credentials:/root/.aws/credentials
-  client:
-    build: ./packages/client
-    ports:
-      - "8080:8080"
-    environment: 
-      SERVER_HOST: server
-      SERVER_PORT: 4000
-    links: 
-      - "server"
+      - $HOME/.config/gcloud/service-account-keys.json:/root/.config/gcloud/service-account-keys.json
+    secrets:
+      - AWS_TARGET_ACCOUNT_ROLE_NAME
+      - AWS_ATHENA_DB_NAME
+      - AWS_ATHENA_DB_TABLE
+      - AWS_ATHENA_REGION
+      - AWS_ATHENA_QUERY_RESULT_LOCATION
+      - AWS_BILLING_ACCOUNT_ID
+      - AWS_BILLING_ACCOUNT_NAME
+      - GCP_BIG_QUERY_TABLE
+      - GCP_BILLING_ACCOUNT_ID
+      - GCP_BILLING_ACCOUNT_NAME
+      - AZURE_CLIENT_ID
+      - AZURE_CLIENT_SECRET
+      - AZURE_TENANT_ID
+    environment:
+      - AWS_USE_BILLING_DATA=true
+      - AWS_TARGET_ACCOUNT_ROLE_NAME=/run/secrets/AWS_TARGET_ACCOUNT_ROLE_NAME
+      - AWS_ATHENA_DB_NAME=/run/secrets/AWS_ATHENA_DB_NAME
+      - AWS_ATHENA_DB_TABLE=/run/secrets/AWS_ATHENA_DB_TABLE
+      - AWS_ATHENA_REGION=/run/secrets/AWS_ATHENA_REGION
+      - AWS_ATHENA_QUERY_RESULT_LOCATION=/run/secrets/AWS_ATHENA_QUERY_RESULT_LOCATION
+      - AWS_BILLING_ACCOUNT_ID=/run/secrets/AWS_BILLING_ACCOUNT_ID
+      - AWS_BILLING_ACCOUNT_NAME=/run/secrets/AWS_BILLING_ACCOUNT_NAME
+      - GCP_USE_BILLING_DATA=true
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/default-service-account-keys.json
+      - GCP_BIG_QUERY_TABLE=/run/secrets/GOOGLE_APPLICATION_CREDENTIALS
+      - GCP_BILLING_ACCOUNT_ID=/run/secrets/GCP_BIG_QUERY_TABLE
+      - GCP_BILLING_ACCOUNT_NAME=/run/secrets/GCP_BILLING_ACCOUNT_ID
+      - AZURE_USE_BILLING_DATA=true
+      - AZURE_CLIENT_ID=/run/secrets/AZURE_CLIENT_ID
+      - AZURE_CLIENT_SECRET=/run/secrets/AZURE_CLIENT_SECRET
+      - AZURE_TENANT_ID=/run/secrets/AZURE_TENANT_ID
+
+secrets:
+  AWS_TARGET_ACCOUNT_ROLE_NAME:
+    file: ~/.docker/secrets/AWS_TARGET_ACCOUNT_ROLE_NAME
+  AWS_ATHENA_DB_NAME:
+    file: ~/.docker/secrets/AWS_ATHENA_DB_NAME
+  AWS_ATHENA_DB_TABLE:
+    file: ~/.docker/secrets/AWS_ATHENA_DB_TABLE
+  AWS_ATHENA_REGION:
+    file: ~/.docker/secrets/AWS_ATHENA_REGION
+  AWS_ATHENA_QUERY_RESULT_LOCATION:
+    file: ~/.docker/secrets/AWS_ATHENA_QUERY_RESULT_LOCATION
+  AWS_BILLING_ACCOUNT_ID:
+    file: ~/.docker/secrets/AWS_BILLING_ACCOUNT_ID
+  AWS_BILLING_ACCOUNT_NAME:
+    file: ~/.docker/secrets/AWS_BILLING_ACCOUNT_NAME
+  GCP_BIG_QUERY_TABLE:
+    file: ~/.docker/secrets/GCP_BIG_QUERY_TABLE
+  GCP_BILLING_ACCOUNT_ID:
+    file: ~/.docker/secrets/GCP_BILLING_ACCOUNT_ID
+  GCP_BILLING_ACCOUNT_NAME:
+    file: ~/.docker/secrets/GCP_BILLING_ACCOUNT_NAME
+  AZURE_CLIENT_ID:
+    file: ~/.docker/secrets/AZURE_CLIENT_ID
+  AZURE_CLIENT_SECRET:
+    file: ~/.docker/secrets/AZURE_CLIENT_SECRET
+  AZURE_TENANT_ID:
+    file: ~/.docker/secrets/AZURE_TENANT_ID
