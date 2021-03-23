@@ -79,6 +79,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'dc1.8xlarge', // Redshift HDD
   'ds2.xlarge', // Redshift HDD
   'ds2.8xlarge', // Redshift HDD
+  'EU-TimedStorage-GDA-Staging', // S3 Glacier
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
