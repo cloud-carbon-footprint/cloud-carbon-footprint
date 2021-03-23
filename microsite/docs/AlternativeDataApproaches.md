@@ -1,0 +1,20 @@
+---
+id: alternative-data-approaches
+title: Alternative Data Approaches
+---
+
+We support two approaches to gathering usage data for different cloud providers.
+
+By default, we query AWS Cost and Usage Reports with Amazon Athena, GCP Billing Export Table using BigQuery, and Azure Consumption Management API. This pulls usage data from all Linked Accounts in your AWS, GCP or Azure Organization. This option is selected by default with following options set to true in the server `.env` file:
+
+`AWS_USE_BILLING_DATA` (AWS)  
+`GCP_USE_BILLING_DATA` (GCP)  
+`GCP_USE_BILLING_DATA` (GCP)
+
+You need to also set additional environment variables as specified in [api/.env.template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/api/.env.template), which was described in the Connecting Your Data section. You can see the permissions required by this approach in `ccf-athena.yaml` file. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but it is less accurate as we use a constant (rather than measure) CPU Utilization, set in [packages/core/src/domain/FootprintEstimationConstants.ts](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/domain/FootprintEstimationConstants.ts). This is the only approach currently supported for Microsoft Azure.
+
+### Using Cloud Usage APIs (Higher Accuracy)
+
+This alternative approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API. We achieve this by looping through the accounts (the list is in the [api/.env](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/%5Bapi/.env%5D) file) and then making the API calls on each account for the regions and services set in [packages/core/src/application/Config.ts](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/application/Config.ts). The permissions required for this approach are in the [ccf.yaml](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/ccf.yaml) file. This approach is more accurate as we use the actual CPU usage in the emission estimation but is confined to the services that have been implemented so far in the application. This option is not currently supported for Microsoft Azure.
+
+For a more comprehensive read on the various calculations and constants that we use for the emissions estimates, check out the [Methodology page](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md).

@@ -10,7 +10,14 @@ module.exports = {
       {
         'Running the Web App': [
           'run-with-mocked-data',
-          { 'Connect to Real Data': ['aws', 'gcp', 'azure'] },
+          {
+            'Connect to Real Data': [
+              'aws',
+              'gcp',
+              'azure',
+              'alternative-data-approaches',
+            ],
+          },
           'run-with-docker',
         ],
       },
