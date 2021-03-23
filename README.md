@@ -125,7 +125,7 @@ If you don't want to deploy the client application behind Okta, then the package
 
 Cloud Carbon Footprint should be deployable to other cloud providers such as [Heroku](https://www.heroku.com/) or [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). However only Google App Engine has been tested currently, so there may be some work involved in doing this.
 
-Don't forget to deploy your .env files or otherwise set the environment variables in your deployment.
+Don't forget to deploy your `.env` files or otherwise set the environment variables in your deployment.
 
 ## Support
 
