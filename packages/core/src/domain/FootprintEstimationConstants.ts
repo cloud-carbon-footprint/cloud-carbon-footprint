@@ -40,11 +40,21 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
       [COMPUTE_PROCESSOR_TYPES.HASWELL]: 1,
       [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 1.14,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 2.17,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 3.04,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
     },
-    getMinWatts: () => {
-      return CLOUD_CONSTANTS.GCP.MIN_WATTS_AVG
+    getMinWatts: (computeProcessors: string[]): number => {
+      const minWattsForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.GCP.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      return averageWattsForProcessors
+        ? averageWattsForProcessors
+        : CLOUD_CONSTANTS.GCP.MIN_WATTS_AVG
     },
     MAX_WATTS_AVG: 3.54,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -53,11 +63,21 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.68,
       [COMPUTE_PROCESSOR_TYPES.HASWELL]: 4.74,
       [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 5.42,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 8.58,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 8.25,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
     },
-    getMaxWatts: () => {
-      return CLOUD_CONSTANTS.GCP.MAX_WATTS_AVG
+    getMaxWatts: (computeProcessors: string[]): number => {
+      const maxWattsForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.GCP.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      return averageWattsForProcessors
+        ? averageWattsForProcessors
+        : CLOUD_CONSTANTS.GCP.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     PUE_AVG: 1.1,
@@ -90,6 +110,8 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
       [COMPUTE_PROCESSOR_TYPES.HASWELL]: 1,
       [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 1.14,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 2.17,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 3.04,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
     },
@@ -111,6 +133,8 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.68,
       [COMPUTE_PROCESSOR_TYPES.HASWELL]: 4.74,
       [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 5.42,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 8.58,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 8.25,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
     },
@@ -142,6 +166,8 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
       [COMPUTE_PROCESSOR_TYPES.HASWELL]: 1,
       [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 1.14,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 2.17,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 3.04,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
     },
@@ -163,6 +189,8 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.68,
       [COMPUTE_PROCESSOR_TYPES.HASWELL]: 4.74,
       [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 5.42,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 8.58,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 8.25,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
     },

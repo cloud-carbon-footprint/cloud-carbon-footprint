@@ -14,6 +14,7 @@ export default abstract class BillingDataRow {
   public timestamp: Date
   public vCpus: number
   public vCpuHours: number
+  public machineType: string
 
   protected constructor(init: Partial<BillingDataRow>) {
     Object.assign(this, init)

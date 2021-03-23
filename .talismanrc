@@ -75,6 +75,8 @@ fileignoreconfig:
   checksum: 4d228f61da83e84b40a041f073e74917409a7fdeb09fdf70f3ef62720288d923
 - filename: packages/core/src/services/common/types.ts
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
+- filename: packages/core/src/services/gcp/BillingExportTable.ts
+  checksum: 39e68fa8eeb0706e881d900f8cf69d9859131b087b1555a51015faded40f6504
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh

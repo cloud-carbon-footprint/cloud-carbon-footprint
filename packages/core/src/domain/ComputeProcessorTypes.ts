@@ -7,7 +7,9 @@ export enum COMPUTE_PROCESSOR_TYPES {
   SKYLAKE = 'Skylake',
   HASWELL = 'Haswell',
   BROADWELL = 'Broadwell',
-  COFFEE_LAKE = 'Coffee lake',
+  COFFEE_LAKE = 'Coffee Lake',
+  SANDY_BRIDGE = 'Sandy Bridge',
+  IVY_BRIDGE = 'Ivy Bridge',
   AMD_EPYC_1ST_GEN = 'AMD EPYC 1st Gen',
   AMD_EPYC_2ND_GEN = 'AMD EPYC 2nd Gen',
   GPU = 'GPU',
@@ -26,6 +28,16 @@ export const broadwellHaswell = [
   COMPUTE_PROCESSOR_TYPES.BROADWELL,
 ]
 
+export const broadwellSkylake = [
+  COMPUTE_PROCESSOR_TYPES.BROADWELL,
+  COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+]
+
+export const broadwelCascadeLake = [
+  COMPUTE_PROCESSOR_TYPES.BROADWELL,
+  COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+]
+
 export const cascadeLakeSkylakeBroadwellHaswell = [
   COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
   COMPUTE_PROCESSOR_TYPES.SKYLAKE,
@@ -42,4 +54,19 @@ export const cascadeLakeSkylakeBroadwell = [
 export const cascadeLakeHaswell = [
   COMPUTE_PROCESSOR_TYPES.HASWELL,
   COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE,
+]
+
+export const skyLakeBroadwellHaswellAMDRome = [
+  COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  COMPUTE_PROCESSOR_TYPES.BROADWELL,
+  COMPUTE_PROCESSOR_TYPES.HASWELL,
+  COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN,
+]
+
+export const skyLakeBroadwellHaswellSandyBridgeIvyBridge = [
+  COMPUTE_PROCESSOR_TYPES.SKYLAKE,
+  COMPUTE_PROCESSOR_TYPES.BROADWELL,
+  COMPUTE_PROCESSOR_TYPES.HASWELL,
+  COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE,
+  COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE,
 ]

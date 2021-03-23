@@ -25,10 +25,12 @@ import {
   NETWORKING_STRING_FORMATS,
   GCP_QUERY_GROUP_BY,
 } from './BillingExportTypes'
+import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
 import Logger from '../Logger'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
+import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -114,11 +116,41 @@ export default class BillingExportTable {
       usesAverageCPUConstant: true,
       timestamp,
     }
+
+    const computeProcessors = this.getComputeProcessorsFromUsageType(
+      usageRow.usageType,
+      usageRow.machineType,
+    )
+
     return this.computeEstimator.estimate(
       [computeUsage],
       usageRow.region,
       'GCP',
+      computeProcessors,
     )[0]
+  }
+
+  private getComputeProcessorsFromUsageType(
+    usageType: string,
+    machineType: string,
+  ): string[] {
+    const sharedCores = [
+      'e2-micro',
+      'e2-small',
+      'e2-medium',
+      'f1-micro',
+      'g1-small',
+    ]
+    const isSharedCore =
+      machineType && sharedCores.find((core) => machineType.includes(core))
+    const includesPrefix = usageType.substring(0, 2).toLowerCase()
+    const processor = isSharedCore ? isSharedCore : includesPrefix
+
+    return (
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
   }
 
   private getStorageFootprintEstimate(
@@ -216,10 +248,14 @@ export default class BillingExportTable {
                     service.description as serviceName,
                     sku.description as usageType,
                     usage.unit as usageUnit,
+                    system_labels.value AS machineType,
                     SUM(usage.amount) AS usageAmount,
                     SUM(cost) AS cost
                   FROM
                     \`${this.tableName}\`
+                  LEFT JOIN
+                    UNNEST(system_labels) AS system_labels
+                    ON system_labels.key = "compute.googleapis.com/machine_spec"
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
@@ -235,7 +271,8 @@ export default class BillingExportTable {
                     region,
                     serviceName,
                     usageType,
-                    usageUnit`
+                    usageUnit,
+                    machineType`
 
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)

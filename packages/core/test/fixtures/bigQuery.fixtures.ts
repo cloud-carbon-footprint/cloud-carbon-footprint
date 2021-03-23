@@ -19,6 +19,7 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
       vCpus: null as string | null,
       usageAmount: 2.83e16,
       cost: 5,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateOne,
@@ -30,6 +31,7 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
       vCpus: null as string | null,
       usageAmount: 3.91e18,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateOne,
@@ -41,6 +43,7 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
       vCpus: null as string | null,
       usageAmount: 380040914534400,
       cost: 10,
+      machineType: null,
     },
   ],
 ]
@@ -57,6 +60,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
       vCpus: null as string | null,
       usageAmount: 4.26e18,
       cost: 7,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateOne,
@@ -68,6 +72,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
       vCpus: '16',
       usageAmount: 80000,
       cost: 7,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -79,6 +84,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
       vCpus: null,
       usageAmount: 7.8e17,
       cost: 12,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -90,6 +96,7 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
       vCpus: null,
       usageAmount: 120,
       cost: 10,
+      machineType: null,
     },
   ],
 ]
@@ -106,6 +113,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
       vCpus: null,
       usageAmount: 120,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -117,6 +125,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
       vCpus: '1',
       usageAmount: 25438523,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -128,6 +137,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
       vCpus: null,
       usageAmount: 1010797200,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -139,6 +149,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
       vCpus: null,
       usageAmount: 41330372438,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -150,6 +161,7 @@ export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
       vCpus: null,
       usageAmount: 14551,
       cost: 10,
+      machineType: null,
     },
   ],
 ]
@@ -167,6 +179,7 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       vCpus: null,
       usageAmount: 14551,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -178,6 +191,7 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       vCpus: null,
       usageAmount: 18198540,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -190,6 +204,7 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       vCpus: null,
       usageAmount: 50000,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -201,6 +216,7 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       vCpus: null,
       usageAmount: 94360227,
       cost: 13,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -213,6 +229,7 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       vCpus: null,
       usageAmount: 26316000,
       cost: 13,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -224,6 +241,7 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
       vCpus: null,
       usageAmount: 1112952,
       cost: 13,
+      machineType: null,
     },
   ],
 ]
@@ -239,6 +257,7 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
       vCpus: null,
       usageAmount: 14551,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -250,6 +269,7 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
       vCpus: null,
       usageAmount: 1141961,
       cost: 190,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateTwo,
@@ -261,6 +281,7 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
       vCpus: null as string | null,
       usageAmount: 2.83e16,
       cost: 5,
+      machineType: null,
     },
   ],
 ]
@@ -277,6 +298,7 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
       vCpus: null as string | null,
       usageAmount: 165007339,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateOne,
@@ -288,6 +310,7 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
       vCpus: null as string | null,
       usageAmount: 165007339,
       cost: 10,
+      machineType: null,
     },
     {
       timestamp: bigQueryDateOne,
@@ -299,6 +322,48 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
       vCpus: null as string | null,
       usageAmount: 2597445774,
       cost: 10,
+      machineType: null,
+    },
+  ],
+]
+
+export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateOne,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'Compute Engine',
+      usageType: 'Small Instance with 1 VCPU running in EMEA',
+      usageUnit: 'seconds',
+      vCpus: '12',
+      usageAmount: 17512304,
+      cost: 10,
+      machineType: 'g1-small',
+    },
+    {
+      timestamp: bigQueryDateOne,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Compute Engine',
+      usageType: 'N1 Predefined Instance Core running in Americas',
+      usageUnit: 'seconds',
+      vCpus: '16',
+      usageAmount: 80000,
+      cost: 7,
+      machineType: 'n1-standard-1',
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'Compute Engine',
+      usageType: 'E2 Instance Core running in Americas',
+      usageUnit: 'seconds',
+      vCpus: '24',
+      usageAmount: 9234985,
+      cost: 10,
+      machineType: 'e2-medium',
     },
   ],
 ]

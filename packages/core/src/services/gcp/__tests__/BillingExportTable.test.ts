@@ -17,6 +17,7 @@ import {
   mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryAppEngineComputeUnknownRegion,
   mockQueryNetworkingIgnoreIngress,
+  mockQueryComputeWithDifferentMachineTypes,
 } from '../../../../test/fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -135,6 +136,71 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'Cloud Dataflow',
             cost: 12,
             region: 'us-west1',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimation results for Cloud SQL SSD Storage, Compute Engine and Cloud Dataflow HDD', async () => {
+    //given
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryComputeWithDifferentMachineTypes,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 11.043064321244447,
+            co2e: 0.005019072734005601,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Compute Engine',
+            cost: 10,
+            region: 'us-east1',
+          },
+          {
+            kilowattHours: 0.089936,
+            co2e: 0.000031615471888000004,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Compute Engine',
+            cost: 7,
+            region: 'us-west1',
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            kilowattHours: 5.823478930055557,
+            co2e: 0.0026467711737102506,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Compute Engine',
+            cost: 10,
+            region: 'us-east1',
           },
         ],
       },
