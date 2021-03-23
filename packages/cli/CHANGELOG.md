@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/cli
 
+## 0.2.1
+
+### Patch Changes
+
+- a0ac965: Fixes failing tests when running them in a different timezone
+- Updated dependencies [beabadf]
+- Updated dependencies [e2ac070]
+- Updated dependencies [29e9897]
+- Updated dependencies [75176d7]
+- Updated dependencies [ce0f249]
+- Updated dependencies [29e9897]
+- Updated dependencies [a0ac965]
+  - @cloud-carbon-footprint/core@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
