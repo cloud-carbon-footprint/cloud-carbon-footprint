@@ -17,6 +17,7 @@ export const SSD_SERVICES: string[] = [
   'AmazonKinesisAnalytics',
   'AmazonMQ',
   'AmazonECS',
+  'AmazonLightsail',
 ]
 
 export const SSD_USAGE_TYPES: string[] = [
