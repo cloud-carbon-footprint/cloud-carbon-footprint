@@ -9302,16 +9302,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docsify-cli@npm:^4.4.1":
-  version: 4.4.2
-  resolution: "docsify-cli@npm:4.4.2"
+"docsify-cli@npm:^4.4.2":
+  version: 4.4.3
+  resolution: "docsify-cli@npm:4.4.3"
   dependencies:
     chalk: ^2.4.2
     connect: ^3.6.0
     connect-livereload: ^0.6.0
     cp-file: ^7.0.0
-    docsify: ^4.10.2
-    docsify-server-renderer: ">=4"
+    docsify: ^4.12.1
+    docsify-server-renderer: ">=4.10.0"
     enquirer: ^2.3.6
     fs-extra: ^8.1.0
     get-port: ^5.0.0
@@ -9324,26 +9324,26 @@ __metadata:
     yargs: ^14.2.0
   bin:
     docsify: bin/docsify
-  checksum: 3426782418a512d9bd2f6c9112850d8da0e300090c3053da01445b4a08aea304fb24ca46111ba889bc2d84c0aba74ab1317f084b8a6c99375b58066b34687afc
+  checksum: 93625de793c0f1b39910c3ce9b646343f0752571e48d619193c678fd49b0f66e0252930e6d0ba598b27acef4d7ded7fc8d993de5046e73e7eb2eb77409ee8e87
   languageName: node
   linkType: hard
 
-"docsify-server-renderer@npm:>=4":
-  version: 4.12.0
-  resolution: "docsify-server-renderer@npm:4.12.0"
+"docsify-server-renderer@npm:>=4.10.0":
+  version: 4.12.1
+  resolution: "docsify-server-renderer@npm:4.12.1"
   dependencies:
     debug: ^4.3.2
-    docsify: ^4.11.6
+    docsify: ^4.12.0
     dompurify: ^2.2.6
     node-fetch: ^2.6.0
     resolve-pathname: ^3.0.0
-  checksum: cdd2d61390acd51c8d9a3d967136ae0891e80e33fb640a8f147437d1ac83f3029fe967eda8266687f98dd63461277fb1fc016216149ce187340e986ef782ef15
+  checksum: 1fc09e775c161c9e41f44e835ec74e54ef8a930057d280cf99942f34342b54aad5b851bcfb4273f37fe7e5e0bc1813dfe1e2d1065bf02faaea3dd09988504f2b
   languageName: node
   linkType: hard
 
-"docsify@npm:^4.10.2, docsify@npm:^4.11.6":
-  version: 4.12.0
-  resolution: "docsify@npm:4.12.0"
+"docsify@npm:^4.12.0, docsify@npm:^4.12.1":
+  version: 4.12.1
+  resolution: "docsify@npm:4.12.1"
   dependencies:
     dompurify: ^2.2.6
     marked: ^1.2.9
@@ -9353,7 +9353,7 @@ __metadata:
     strip-indent: ^3.0.0
     tinydate: ^1.3.0
     tweezer.js: ^1.4.0
-  checksum: 71082102471fd6f77d68cd0686f6b2f68d3405a5c7a0f4dc95bb8f4d0f3b04db0b988a89c18ddfbd893c580a16492f6f3d41fcca9b43a497db866c8f977e9e6d
+  checksum: fb83349809dd7bb7158b492b2c6fe704bf7b22a99e5fac6478f35c8380d05a347df9fe2cf87489d9523906629c080d4ba7f13923efbe6539f09efbddb11e2812
   languageName: node
   linkType: hard
 
@@ -20041,7 +20041,7 @@ resolve@1.18.1:
     "@hawkeyesec/scanner-cli": ^1.8.1
     "@types/fs-extra": ^9.0.8
     concurrently: ^6.0.0
-    docsify-cli: ^4.4.1
+    docsify-cli: ^4.4.2
     fs-extra: ^9.1.0
     husky: ^5.1.3
     lerna: ^4.0.0
