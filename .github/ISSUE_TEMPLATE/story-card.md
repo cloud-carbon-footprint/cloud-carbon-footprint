@@ -17,6 +17,6 @@ assignees: ''
 - [ ] When ... then...
 
 ## Tech Tasks
-- [ ] Run Changesets and consider release version
+- [ ] Run Changesets, bump any packages that have been updated/changed
 
 ### Tech Notes
