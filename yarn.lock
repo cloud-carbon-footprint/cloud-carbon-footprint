@@ -2053,7 +2053,7 @@ __metadata:
     express: ^4.17.1
     helmet: ^4.4.1
     immer: ^9.0.1
-    jest: 26.6.0
+    jest: 26.6.3
     json-server: ^0.16.3
     lint-staged: ^10.5.4
     lodash: ^4.17.20
@@ -13558,7 +13558,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-cli@npm:^26.6.0":
+"jest-cli@npm:^26.6.0, jest-cli@npm:^26.6.3":
   version: 26.6.3
   resolution: "jest-cli@npm:26.6.3"
   dependencies:
@@ -14098,6 +14098,19 @@ fsevents@^1.2.7:
   bin:
     jest: bin/jest.js
   checksum: 5db020fa88bc87ff4c8373be02605a3a42256b59151b30b22955dfa92142516150abf0e969fe8847bdf2bf0fbb338a1c93954b808fc8d7b0933f4bb15f1e0500
+  languageName: node
+  linkType: hard
+
+"jest@npm:26.6.3":
+  version: 26.6.3
+  resolution: "jest@npm:26.6.3"
+  dependencies:
+    "@jest/core": ^26.6.3
+    import-local: ^3.0.2
+    jest-cli: ^26.6.3
+  bin:
+    jest: bin/jest.js
+  checksum: 4ffcfefa2b30999a71c205e1aacf2b3d7af10f36c17ba1baf45677684116ad5aa6a5bb162ad2dd418f9ea99d18f24b70d8c83fb317b765a3acac361a50e9db9f
   languageName: node
   linkType: hard
 
