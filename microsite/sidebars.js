@@ -3,26 +3,36 @@
  */
 
 module.exports = {
-  tryNowSidebar: {
-    'Get Started': ['getting-started'],
-    'Running Locally': [
-      'getting-set-up',
-      {
-        'Running the Web App': [
-          'run-with-mocked-data',
-          {
-            'Connect to Real Data': [
-              'aws',
-              'gcp',
-              'azure',
-              'alternative-data-approaches',
-            ],
-          },
-          'run-with-docker',
-        ],
-      },
-      'running-the-cli',
-      'performance-configuration',
-    ],
-  },
+  tryNowSidebar: [
+    {
+      type: 'category',
+      label: 'Get Started',
+      collapsed: false,
+      items: ['getting-started'],
+    },
+    {
+      type: 'category',
+      label: 'Running Locally',
+      collapsed: false,
+      items: [
+        {
+          type: 'category',
+          label: 'Running the Web App',
+          collapsed: false,
+          items: [
+            'run-with-mocked-data',
+            {
+              type: 'category',
+              label: 'Connect to Real Data',
+              collapsed: false,
+              items: ['aws', 'gcp', 'azure', 'alternative-data-approaches'],
+            },
+            'run-with-docker',
+          ],
+        },
+        'running-the-cli',
+        'performance-configuration',
+      ],
+    },
+  ],
 }
