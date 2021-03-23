@@ -40,7 +40,7 @@ services:
       - AWS_BILLING_ACCOUNT_ID=/run/secrets/AWS_BILLING_ACCOUNT_ID
       - AWS_BILLING_ACCOUNT_NAME=/run/secrets/AWS_BILLING_ACCOUNT_NAME
       - GCP_USE_BILLING_DATA=true
-      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/default-service-account-keys.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/service-account-keys.json
       - GCP_BIG_QUERY_TABLE=/run/secrets/GOOGLE_APPLICATION_CREDENTIALS
       - GCP_BILLING_ACCOUNT_ID=/run/secrets/GCP_BIG_QUERY_TABLE
       - GCP_BILLING_ACCOUNT_NAME=/run/secrets/GCP_BILLING_ACCOUNT_ID
