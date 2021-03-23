@@ -25,7 +25,7 @@ import {
   NETWORKING_STRING_FORMATS,
   GCP_QUERY_GROUP_BY,
 } from './BillingExportTypes'
-import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './MachineTypes'
+import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING, SHARED_CORE_PROCESSORS } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
 import Logger from '../Logger'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
@@ -134,17 +134,10 @@ export default class BillingExportTable {
     usageType: string,
     machineType: string,
   ): string[] {
-    const sharedCores = [
-      'e2-micro',
-      'e2-small',
-      'e2-medium',
-      'f1-micro',
-      'g1-small',
-    ]
-    const isSharedCore =
-      machineType && sharedCores.find((core) => machineType.includes(core))
+    const sharedCoreMatch =
+      machineType && Object.values(SHARED_CORE_PROCESSORS).find((core) => machineType.includes(core))
     const includesPrefix = usageType.substring(0, 2).toLowerCase()
-    const processor = isSharedCore ? isSharedCore : includesPrefix
+    const processor = sharedCoreMatch ? sharedCoreMatch : includesPrefix
 
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor] || [
