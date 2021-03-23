@@ -310,11 +310,11 @@ Once we have the estimated kilowatt hours for usage of a given cloud provider, w
 using publicly available data on emission factors for a given electricity grid based on the mix of local energy sources.
 We do this based on the cloud provider datacenter region that each service is running in.
 
-*GCP:*
+**GCP:**
 
 Google has [published](https://cloud.google.com/sustainability/region-carbon) the grid carbon intensity for their GCP regions, so in this case we use their published factors.
 
-*AWS & Azure:*
+**AWS & Azure:**
 
 In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/egrid/download-data) that
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
