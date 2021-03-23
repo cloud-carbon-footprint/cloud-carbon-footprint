@@ -15,6 +15,7 @@ module.exports = {
         ],
       },
       'running-the-cli',
+      'performance-configuration',
     ],
   },
 }
