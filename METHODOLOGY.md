@@ -310,13 +310,21 @@ Once we have the estimated kilowatt hours for usage of a given cloud provider, w
 using publicly available data on emission factors for a given electricity grid based on the mix of local energy sources.
 We do this based on the cloud provider datacenter region that each service is running in.
 
+*GCP:*
+
+Google has [published](https://cloud.google.com/sustainability/region-carbon) the grid carbon intensity for their GCP regions, so in this case we use their published factors.
+
+*AWS & Azure:*
+
 In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/egrid/download-data) that
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more
 adequately reflect. Outside the US, we generally use carbonfootprint.com’s [country specific grid emissions factors report](https://www.carbonfootprint.com/).
 For most of Europe, however, we use [EEA emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6).
-In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report. You can see the full list of emissions factors in Appendix IV below.
+In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report. 
+
+You can see the full list of emissions factors in Appendix IV below.
 
 We understand this is a rough estimated conversion as these are only averages over a given year that is pre-2020, and
 they also don’t take into account time of day. We welcome improvements to this, for example [electrictyMap
@@ -465,31 +473,31 @@ AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/ser
 
 #### GCP
 
-| Region                  | Country     | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
-| ----------------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| us-central1             | USA         | MRO         | 0.000540461           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-east1                | USA         | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-east4                | USA         | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west1                | USA         | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west2                | USA         | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west3                | USA         | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west4                | USA         | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| asia-east1              | Taiwan      |             | 0.000544              | [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20)                                        |
-| asia-east2              | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| asia-northeast1         | Japan       |             | 0.000506              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| asia-northeast2         | Japan       |             | 0.000506              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| asia-northeast3         | South Korea |             | 0.0005                | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| asia-south1             | India       |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| asia-southeast1         | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
-| asia-southeast2         | Indonesia   |             | 0.000761              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| australia-southeast1    | Australia   |             | 0.00079               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| europe-north1           | Finland     |             | 0.000086              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| europe-west1            | Belgium     |             | 0.000167              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| europe-west2            | England     |             | 0.0002284             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| europe-west3            | Germany     |             | 0.000338              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| europe-west4            | Netherlands |             | 0.000390              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| europe-west6            | Switzerland |             | 0.00001182            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| northamerica-northeast1 | Canada      |             | 0.00013               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| southamerica-east1      | Brazil      |             | 0.000074              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| Region                  | Location          | CO2e (metric ton/kWh) | Source                                                                                                                      |
+| ----------------------- | ----------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| us-central1             | Iowa              | 0.000479              | [Google](https://cloud.google.com/sustainability/region-carbon)                                                             |
+| us-east1                | South Carolina    | 0.0005                | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-east4                | Northern Virginia | 0.000383              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west1                | Oregon            | 0.000117              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west2                | Los Angeles       | 0.000248              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west3                | Salt Lake City    | 0.000561              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west4                | Las Vegas         | 0.000491              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-east1              | Taiwan            | 0.000541              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-east2              | Hong Kong         | 0.000626              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast1         | Japan             | 0.000524              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast2         | Japan             | 0.000524              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast3         | South Korea       | 0.00054               | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-south1             | India             | 0.000723              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast1         | Singapore         | 0.000493              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast2         | Indonesia         | 0.000772              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| australia-southeast1    | Australia         | 0.000725              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-north1           | Finland           | 0.000181              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west1            | Belgium           | 0.000196              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west2            | England           | 0.000257              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west3            | Germany           | 0.000319              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west4            | Netherlands       | 0.000474              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west6            | Switzerland       | 0.000029              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| northamerica-northeast1 | Canada            | 0.000143              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| southamerica-east1      | Brazil            | 0.000109              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
 © 2020 ThoughtWorks, Inc. All rights reserved.
