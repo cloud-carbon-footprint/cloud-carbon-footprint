@@ -18,14 +18,6 @@ export enum SHARED_CORE_PROCESSORS {
   G1_SMALL = 'g1-small',
 }
 
-// export const sharedCoreProcessors = [
-//   'e2-micro',
-//   'e2-small',
-//   'e2-medium',
-//   'f1-micro',
-//   'g1-small',
-// ]
-
 export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
   [instanceType: string]: string[]
 } = {
