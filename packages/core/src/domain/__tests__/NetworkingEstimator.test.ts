@@ -46,7 +46,7 @@ describe('NetworkingEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 0.8066,
+        co2e: 1.1881000000000002,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
         kilowattHours: 10900,
       },
