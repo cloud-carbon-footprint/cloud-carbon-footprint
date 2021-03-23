@@ -6,6 +6,7 @@ module.exports = {
   tryNowSidebar: {
     'Get Started': ['getting-started'],
     'Running Locally': [
+      'getting-set-up',
       {
         'Running the Web App': [
           'run-with-mocked-data',
