@@ -17,6 +17,6 @@ assignees: ''
 - [ ] When ... then...
 
 ## Tech Tasks
-- [ ] Implementation steps
+- [ ] Run Changesets and consider release version
 
 ### Tech Notes
