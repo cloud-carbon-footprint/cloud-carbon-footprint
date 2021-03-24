@@ -22,21 +22,15 @@ module.exports = {
       collapsed: false,
       items: [
         'introduction',
+        'getting-set-up',
+        'run-with-mocked-data',
         {
           type: 'category',
-          label: 'Running the Web App',
+          label: 'Connect to Real Data',
           collapsed: false,
-          items: [
-            'run-with-mocked-data',
-            {
-              type: 'category',
-              label: 'Connect to Real Data',
-              collapsed: false,
-              items: ['aws', 'gcp', 'azure', 'alternative-data-approaches'],
-            },
-            'run-with-docker',
-          ],
+          items: ['aws', 'gcp', 'azure', 'alternative-data-approaches'],
         },
+        'run-with-docker',
         'running-the-cli',
         'performance-configurations',
         'deploying',
