@@ -6,6 +6,12 @@ module.exports = {
   tryNowSidebar: [
     {
       type: 'category',
+      label: 'Cloud Carbon Footprint',
+      collapsed: false,
+      items: ['overview'],
+    },
+    {
+      type: 'category',
       label: 'Get Started',
       collapsed: false,
       items: ['getting-started'],
@@ -15,6 +21,7 @@ module.exports = {
       label: 'Running Locally',
       collapsed: false,
       items: [
+        'introduction',
         {
           type: 'category',
           label: 'Running the Web App',
@@ -31,7 +38,7 @@ module.exports = {
           ],
         },
         'running-the-cli',
-        'performance-configuration',
+        'performance-configurations',
         'deploying',
       ],
     },

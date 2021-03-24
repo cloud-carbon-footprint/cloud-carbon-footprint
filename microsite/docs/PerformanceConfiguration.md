@@ -1,6 +1,6 @@
 ---
-id: performance-configuration
-title: Performance Configuration
+id: performance-configurations
+title: Performance Configurations
 ---
 
 ### Options to Improve Query Performance
