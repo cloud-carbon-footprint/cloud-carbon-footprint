@@ -160,8 +160,6 @@ Or if you want to use Github Actions, you can see the configuration for this in 
 
 It will deploy to `https://<something>.appspot.com`.
 
-If you don't want to deploy the client application behind Okta, then the packages/client/.env file is not needed, and the relevant code can be removed from [client/index.js](packages/client/index.js).
-
 ## Deploy to other cloud providers
 
 Cloud Carbon Footprint should be deployable to other cloud providers such as [Heroku](https://www.heroku.com/) or [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). However only Google App Engine has been tested currently, so there may be some work involved in doing this.

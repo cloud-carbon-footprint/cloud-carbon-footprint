@@ -207,11 +207,6 @@ jobs:
     environment:
       name: staging
     env:
-      HOST_URL: ${{ secrets.HOST_URL }}
-      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
       AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
       AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
       AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
@@ -286,11 +281,6 @@ jobs:
     environment:
       name: production
     env:
-      HOST_URL: ${{ secrets.HOST_URL }}
-      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
       AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
       AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
       AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
