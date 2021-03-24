@@ -26,4 +26,4 @@ The code has been written using domain driven design, to allow for easy extensio
 
 We have provided a few ways for you to get up and running, depending on your situation. To simply test out Cloud Carbon Footprint quickly, we have provided a few packages that can help you quickly spin up the whole app or the portion(s) you need. To test drive, visit the [Try Now](getting-started) page.
 
-If you are looking to run the app locally or to contribute, we recommend running the app locally. With this approach you can also get up and [running quickly with mocked data](run-with-mocked-data) or go ahead and [connect your own cloud data](aws) and estimate your actual emissions.
+If you are looking to run the app locally or to contribute, we recommend [running the app locally](introduction). With this approach you can also get up and [running quickly with mocked data](run-with-mocked-data) or go ahead and [connect your own cloud data](aws) and estimate your actual emissions.
