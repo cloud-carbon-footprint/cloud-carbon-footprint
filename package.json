@@ -28,6 +28,7 @@
     "start-app": "yarn workspace @cloud-carbon-footprint/client start",
     "start-api": "yarn workspace @cloud-carbon-footprint/api start",
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
+    "guided-install": "yarn install && yarn workspace @cloud-carbon-footprint/cli guided-install",
     "sonar:scan": "lerna run sonar:scan --stream",
     "test": "lerna run test -- --coverage",
     "deploy": "cd terraform && ./run.sh apply",

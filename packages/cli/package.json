@@ -21,7 +21,8 @@
     "clean": "rm -rf coverage src/**/*.js src/**/*.map",
     "lint": "eslint '*/**/*.ts' --quiet",
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "guided-install": "ts-node src/GuidedInstall.ts"
   },
   "keywords": [],
   "author": "",

@@ -11,6 +11,10 @@ If you would like to learn more about the various calculations and constants tha
 ## Getting Started & Prerequisites
 
 - Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
+- yarn (latest)
+- run `yarn guided-install`
+  - this will install dependencies, then guide you through setting up credentials and environment variables to analyze the footprint of your AWS, GCP, or Azure account
+  - for a quick demo, run `yarn install && yarn start-with-mock-data`
 
 ## Optional Prerequisites
 
