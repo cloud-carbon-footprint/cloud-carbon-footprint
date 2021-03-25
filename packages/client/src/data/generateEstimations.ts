@@ -109,7 +109,7 @@ const generateEstimations = (
     'lambda',
     'elasticache',
     'computeEngine',
-    'virtualMachines'
+    'virtualMachines',
   ],
 ): EstimationResult[] => {
   const todayAsMoment: moment.Moment = moment(today)
