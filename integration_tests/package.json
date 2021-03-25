@@ -1,0 +1,20 @@
+{
+    "name": "integration-tests-testcafe",
+    "version": "1.0.0",
+    "description": "Test repository to run integration tests",
+    "scripts": {
+        "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
+        "start-app": "yarn workspace @cloud-carbon-footprint/client start",
+        "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
+        "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
+        "headed": "testcafe 'chrome'",
+        "start-headless": "concurrently 'yarn start' 'sleep 30 && yarn headless'",
+        "start-headed": "concurrently 'yarn start' 'sleep 30 && yarn headed'"
+    },
+    "author": "",
+    "devDependencies": {
+        "@testing-library/testcafe": "^4.3.1",
+        "concurrently": "^6.0.0",
+        "testcafe": "^1.13.0"
+    }
+}
