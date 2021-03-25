@@ -142,7 +142,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id="carbonComparisonCard">
       {mtSum ? (
         <div>
           <CardContent className={classes.topContainer}>
@@ -182,6 +182,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           </CardContent>
           <CardActions className={classes.buttonContainer}>
             <Button
+              id="miles"
               variant="contained"
               color={updateButtonColor('miles')}
               size="medium"
@@ -190,6 +191,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               Miles
             </Button>
             <Button
+              id="gas"
               variant="contained"
               color={updateButtonColor('gas')}
               size="medium"
@@ -198,6 +200,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               Gas
             </Button>
             <Button
+              id="trees"
               variant="contained"
               color={updateButtonColor('trees')}
               size="medium"
