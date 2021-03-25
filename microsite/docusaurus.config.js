@@ -27,6 +27,19 @@ module.exports = {
           position: 'right',
           className: 'navbar__link',
         },
+        {
+          to: 'docs/overview',
+          label: 'Docs',
+          position: 'right',
+          className: 'navbar__link',
+        },
+        {
+          to:
+            'https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint',
+          label: 'Github',
+          position: 'right',
+          className: 'navbar__link',
+        },
       ],
     },
     footer: {},

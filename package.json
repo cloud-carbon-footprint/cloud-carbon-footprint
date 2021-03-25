@@ -17,7 +17,8 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "integration_tests"
     ]
   },
   "scripts": {

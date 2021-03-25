@@ -4,11 +4,12 @@
 
 import EstimatorCache from './EstimatorCache'
 import { EstimationResult } from './EstimationResult'
+import { EstimationRequest } from './CreateValidRequest'
 import { promises as fs } from 'fs'
 import moment from 'moment'
-import { EstimationRequest } from './CreateValidRequest'
 
 export const cachePath = process.env.CCF_CACHE_PATH || 'estimates.cache.json'
+export const testCachePath = 'estimates.cache.test.json'
 
 export default class EstimatorCacheFileSystem implements EstimatorCache {
   async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
@@ -47,8 +48,9 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
 
   private async loadEstimates(): Promise<EstimationResult[]> {
     let data = '[]'
+    const loadedCache = process.env.USE_TEST_CACHE ? testCachePath : cachePath
     try {
-      data = await fs.readFile(cachePath, 'utf8')
+      data = await fs.readFile(loadedCache, 'utf8')
     } catch (error) {
       console.warn(
         'WARN: Unable to read cache file. Got following error: \n' + error,
