@@ -1,0 +1,38 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "@changesets/cli": "^2.14.1",
+    "@hawkeyesec/scanner-cli": "^1.8.1",
+    "@types/fs-extra": "^9.0.8",
+    "concurrently": "^6.0.0",
+    "docsify-cli": "^4.4.2",
+    "fs-extra": "^9.1.0",
+    "husky": "^5.1.3",
+    "lerna": "^4.0.0",
+    "marked": ">=2.0.0",
+    "sonar-scanner": "^3.1.0",
+    "ts-node": "^9.1.1",
+    "typescript": "4.2.3"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "clean": "lerna clean --yes",
+    "lint": "lerna run lint",
+    "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
+    "start-with-mock-data": "yarn workspace @cloud-carbon-footprint/client start-with-mock-data",
+    "start-app": "yarn workspace @cloud-carbon-footprint/client start",
+    "start-api": "yarn workspace @cloud-carbon-footprint/api start",
+    "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
+    "sonar:scan": "lerna run sonar:scan --stream",
+    "test": "lerna run test -- --coverage",
+    "deploy": "cd terraform && ./run.sh apply",
+    "docs": "docsify serve --port 3001",
+    "release": "changeset version && yarn install",
+    "postinstall": "husky install"
+  }
+}

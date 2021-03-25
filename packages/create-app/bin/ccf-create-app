@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path')
+
+// Figure out whether we're running inside the cloud-carbon-footprint repo or as an installed dependency
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const isLocal = require('fs').existsSync(path.resolve(__dirname, '../src'))
+
+if (!isLocal) {
+  require('..')
+} else {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require('ts-node').register({
+    transpileOnly: true,
+    project: path.resolve(__dirname, '../../../tsconfig.json'),
+    compilerOptions: {
+      module: 'CommonJS',
+    },
+  })
+
+  require('../src')
+}

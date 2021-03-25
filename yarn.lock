@@ -2120,6 +2120,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@cloud-carbon-footprint/create-app-test@workspace:packages/create-app":
+  version: 0.0.0-use.local
+  resolution: "@cloud-carbon-footprint/create-app-test@workspace:packages/create-app"
+  dependencies:
+    "@types/fs-extra": ^9.0.9
+    "@types/recursive-readdir": ^2.2.0
+    commander: ^7.2.0
+    fs-extra: ^9.1.0
+    handlebars: ^4.7.7
+    recursive-readdir: ^2.2.2
+    rimraf: ^3.0.2
+    ts-node: ^9.1.1
+    typed-prompts: ^1.5.0
+    typescript: ^4.2.3
+  bin:
+    ccf-create-app: bin/ccf-create-app
+  languageName: unknown
+  linkType: soft
+
 "@cnakazawa/watch@npm:^1.0.3":
   version: 1.0.4
   resolution: "@cnakazawa/watch@npm:1.0.4"
@@ -4503,6 +4522,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fs-extra@npm:^9.0.9":
+  version: 9.0.9
+  resolution: "@types/fs-extra@npm:9.0.9"
+  dependencies:
+    "@types/node": "*"
+  checksum: b29b00e6c82f8a2586192f9d3c9d27b700e20000cfdd46c1d0d76388c542bac228b746792cd3567383cd3175b95db7f72a36117fbd4eb330de118f6568707b6b
+  languageName: node
+  linkType: hard
+
 "@types/glob@npm:^7.1.1":
   version: 7.1.3
   resolution: "@types/glob@npm:7.1.3"
@@ -4845,6 +4873,15 @@ __metadata:
     "@types/prop-types": "*"
     csstype: ^3.0.2
   checksum: de1cd27ce57a961379978f83676d60d88bf729337683d1d4cb22dd8f285ed4200db19f7243052dc67c80133fe6798da1497456fe6f67a5bba5f5e30ce2544bfa
+  languageName: node
+  linkType: hard
+
+"@types/recursive-readdir@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@types/recursive-readdir@npm:2.2.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: 9d5027f1908f7e86fccbaa7bb639b6a2ab7c8da513c70621018e46f69142c0db06de82e1cac5529f2c1932aa88a6587ff1bf8ca8dabacc8a51b2d1d04923e528
   languageName: node
   linkType: hard
 
@@ -7784,6 +7821,13 @@ __metadata:
   version: 7.1.0
   resolution: "commander@npm:7.1.0"
   checksum: 2b6dacb11f17cd9b702ae18b586b060327590dd57e2702edefbff701ec7c63b55338e70544210893bad280fc9579ffb839dd8ae0a6bc652fceffe3f9ad1c2c44
+  languageName: node
+  linkType: hard
+
+"commander@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "commander@npm:7.2.0"
+  checksum: bdc0eca5e25cd24af8440163d3c9a996785bbac4b49a590365699cdc1ed08cefbac8f268153208ab2bc5dc3cb1d3fb573fd1590c681e36e371342186bd331a4c
   languageName: node
   linkType: hard
 
@@ -11896,7 +11940,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"handlebars@npm:^4.7.6":
+"handlebars@npm:^4.7.6, handlebars@npm:^4.7.7":
   version: 4.7.7
   resolution: "handlebars@npm:4.7.7"
   dependencies:
@@ -19431,7 +19475,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"recursive-readdir@npm:2.2.2":
+"recursive-readdir@npm:2.2.2, recursive-readdir@npm:^2.2.2":
   version: 2.2.2
   resolution: "recursive-readdir@npm:2.2.2"
   dependencies:
@@ -22573,7 +22617,7 @@ resolve@1.18.1:
   languageName: node
   linkType: hard
 
-typescript@4.2.3:
+"typescript@4.2.3, typescript@^4.2.3":
   version: 4.2.3
   resolution: "typescript@npm:4.2.3"
   bin:
@@ -22583,7 +22627,7 @@ typescript@4.2.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.2.3#builtin<compat/typescript>":
+"typescript@patch:typescript@4.2.3#builtin<compat/typescript>, typescript@patch:typescript@^4.2.3#builtin<compat/typescript>":
   version: 4.2.3
   resolution: "typescript@patch:typescript@npm%3A4.2.3#builtin<compat/typescript>::version=4.2.3&hash=a45b0e"
   bin:
