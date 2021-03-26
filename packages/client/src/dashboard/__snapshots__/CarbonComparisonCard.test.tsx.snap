@@ -3,6 +3,7 @@
 exports[`CarbonComparisonCard renders with correct configuration 1`] = `
 <div
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
+  id="carbonComparisonCard"
 >
   <div>
     <div
@@ -71,6 +72,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       <button
         className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
         disabled={false}
+        id="miles"
         onBlur={[Function]}
         onClick={[Function]}
         onDragLeave={[Function]}
@@ -95,6 +97,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       <button
         className="MuiButtonBase-root MuiButton-root MuiButton-contained"
         disabled={false}
+        id="gas"
         onBlur={[Function]}
         onClick={[Function]}
         onDragLeave={[Function]}
@@ -119,6 +122,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       <button
         className="MuiButtonBase-root MuiButton-root MuiButton-contained"
         disabled={false}
+        id="trees"
         onBlur={[Function]}
         onClick={[Function]}
         onDragLeave={[Function]}
