@@ -17,6 +17,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       <p
         className="MuiTypography-root makeStyles-metricOne-8 MuiTypography-h4"
         data-testid="co2"
+        id="metric-one"
       >
         7
          metric tons CO2e
