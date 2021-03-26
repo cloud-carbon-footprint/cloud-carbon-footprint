@@ -14,7 +14,7 @@ function Hero() {
   return (
     <div>
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
-        <div>
+        <div className={styles.heroTextContainer}>
           <h1 className={styles.heroTitle}>{siteConfig.title}</h1>
           <p className={clsx(styles.heroSubtitle, styles.heroNoMarginBottom)}>
             Free and Open Source

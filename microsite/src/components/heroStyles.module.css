@@ -3,12 +3,23 @@
   overflow: hidden;
   background-image: url('/img/hero_background.png');
   background-size: cover;
+  width: 100%;
+}
+
+@media screen and (max-width: 1280px) {
+  .heroBanner {
+    padding: 10rem 8rem 8rem;
+    text-align: center;
+  }
+
+  .heroTextContainer {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 4rem 2rem 2rem;
-    text-align: center;
   }
 }
 
