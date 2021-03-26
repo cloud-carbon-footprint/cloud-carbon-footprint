@@ -9,7 +9,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'log',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   themeConfig: {
