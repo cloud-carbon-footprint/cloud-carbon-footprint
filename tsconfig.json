@@ -11,7 +11,7 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "experimentalDecorators": true,
-    "target": "ES6",
+    "target": "ES5",
     "downlevelIteration": true,
     "resolveJsonModule": true
   },

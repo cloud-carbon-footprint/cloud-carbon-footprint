@@ -100,7 +100,7 @@ export default function CloudCarbonContainer(): ReactElement {
       </div>
     </Grid>
   ) : (
-    <Box className={classes.boxContainer}>
+    <div className={classes.boxContainer}>
       <Grid container>
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
@@ -165,6 +165,6 @@ export default function CloudCarbonContainer(): ReactElement {
           </Grid>
         </Grid>
       </Grid>
-    </Box>
+    </div>
   )
 }

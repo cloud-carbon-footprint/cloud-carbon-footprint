@@ -151,6 +151,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             </Typography>
             <Typography
               className={classes.metricOne}
+              id="metric-one"
               variant="h4"
               component="p"
               data-testid="co2"

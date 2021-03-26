@@ -29,18 +29,18 @@ test('main components render with correct data when app loads', async (t) => {
 })
 
 test('side drawer opens and closes when clicked', async (t) => {
-  const drawerOpenButton = Selector('.makeStyles-infoButton-2')
-  const drawerCloseButton = Selector(
-    '.makeStyles-closeButtonContainer-3',
-  ).child('.MuiIconButton-root')
-  const drawerOpen = Selector('.makeStyles-drawerOpen-5').exists
+  const drawerOpenButton = Selector('#info-button')
+  const drawerCloseButton = Selector('#close-button-container').child(
+    '.MuiIconButton-root',
+  )
+  const drawerOpen = Selector('#drawer-open').exists
 
   await t.click(drawerOpenButton).expect(drawerOpen).ok()
   await t.click(drawerCloseButton).expect(drawerOpen).notOk()
 })
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
-  let totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('286')
+  let totalCo2Amount = Selector('#metric-one').withText('309')
   const cloudProviderDropDown = Selector('#cloud-provider-filter')
     .sibling('div')
     .child('button')
@@ -55,19 +55,19 @@ test('total metric tons is loaded correctly with different dropdown selections',
   await t.click(cloudProviderDropDown)
   const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
   await t.click(awsDropdownItem)
-  totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('80')
+  totalCo2Amount = Selector('#metric-one').withText('86')
   await t.expect(totalCo2Amount.exists).ok()
 
   await t.click(accountsDropDown)
   const accountsDropdownItem = Selector('#accounts-filter-option-1')
   await t.click(accountsDropdownItem)
-  totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('136')
+  totalCo2Amount = Selector('#metric-one').withText('152')
   await t.expect(totalCo2Amount.exists).ok()
 
   await t.click(servicesDropDown)
   const servicesDropdownItem = Selector('#services-filter-option-1')
   await t.click(servicesDropdownItem)
-  totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('124')
+  totalCo2Amount = Selector('#metric-one').withText('138')
   await t.expect(totalCo2Amount.exists).ok()
 })
 
@@ -75,9 +75,9 @@ test('carbon equivalency component displays each option when clicked', async (t)
   const gasButton = Selector('#gas')
   const treesButton = Selector('#trees')
   const milesButton = Selector('#miles')
-  const gallonsOfGas = Selector('p').withText('32,182')
-  const treeSeedlings = Selector('p').withText('4,729')
-  const milesDriven = Selector('p').withText('709,678')
+  const gallonsOfGas = Selector('p').withText('34,770')
+  const treeSeedlings = Selector('p').withText('5,109')
+  const milesDriven = Selector('p').withText('766,750')
 
   await t.click(gasButton).expect(gallonsOfGas.exists).ok()
   await t.click(treesButton).expect(treeSeedlings.exists).ok()
