@@ -117,7 +117,7 @@ exports[`CarbonFormulaDrawer renders 1`] = `
       </p>
       <a
         className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-methodology-11 MuiTypography-colorPrimary"
-        href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
+        href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
         onBlur={[Function]}
         onFocus={[Function]}
         rel="noopener"
