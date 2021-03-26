@@ -162,7 +162,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           available.
         </Typography>
         <Link
-          href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
+          href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
           target="_blank"
           rel="noopener"
           className={classes.methodology}

@@ -16,7 +16,7 @@ For feedback, questions, or if you’d like to collaborate on shaping the produc
 ### How it works
 
 Cloud Carbon Footprint works by taking your cloud provider usage data, converting it into energy, and then taking into account the power usage effectiveness of the cloud provider’s data centers and the carbon intensity of the region where the data center pulls power from.  
-For a more detailed and in depth explanation into the approach and methodology, please reference the [Methodology Page.](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md)
+For a more detailed and in depth explanation into the approach and methodology, please reference the [Methodology Page.](methodology)
 
 ### Fitting Cloud Carbon Footprint to your needs
 
