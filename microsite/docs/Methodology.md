@@ -3,29 +3,6 @@ id: methodology
 title: Methodology
 ---
 
-### Table of Contents
-
-- [Summary](#summary)
-- [Longer Version](#longer-version)
-  - [A note on our approach](#a-note-on-our-approach)
-  - [Options for cloud usage and cost data source](#options-for-cloud-usage-and-cost-data-source)
-    - [1. Using Billing Data for Cloud Usage (Holistic)](#1-using-billing-data-for-cloud-usage-holistic)
-    - [2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)](#2-using-cloud-usage-apis-for-cloud-usage-higher-accuracy)
-  - [Energy Estimate (Watt-Hours)](#energy-estimate-watt-hours)
-    - [Compute](#compute)
-      - [A note on AWS Lambda Compute Estimates](#a-note-on-aws-lambda-compute-estimates)
-      - [A note on AWS Aurora Serverless Compute Estimates](#a-note-on-aws-aurora-serverless-compute-estimates)
-    - [Storage](#storage)
-    - [Networking](#networking)
-      - [Scope](#scope)
-      - [Studies to date](#studies-to-date)
-      - [Chosen coefficient](#chosen-coefficient)
-  - [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
-  - [Appendix I: Energy coefficients](#appendix-i-energy-coefficients)
-  - [Appendix II: Processor lists](#appendix-ii-aws--gcp-processor-list)
-  - [Appendix III: Recent Networking studies](#appendix-iii-recent-networking-studies)
-  - [Appendix IV: Grid emissions factors](#appendix-iv-grid-emissions-factors)
-
 ## Summary
 
 Global greenhouse gas emissions from the tech sector are on par or larger than the aviation industry, at around
@@ -209,7 +186,7 @@ Here are the compute constants used for each cloud provider:
 - Max Matts: 3.5
 - PUE: 1.125
 
-##### A note on AWS Lambda Compute Estimates
+#### A note on AWS Lambda Compute Estimates
 
 In the case of AWS Lambda, AWS does not provide metrics for CPU Utilization and number of vCPU hours, so we need
 to take an alternative approach.
@@ -232,7 +209,7 @@ where:
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs.
 
-##### A note on AWS Aurora Serverless Compute Estimates
+#### A note on AWS Aurora Serverless Compute Estimates
 
 In the case of AWS Aurora Serverless using the Cost and Usage Reports, the pricing unit is `ACU-Hrs`. 1 ACU has
 approximately 2 GB of memory with corresponding CPU and networking, similar to what is used in Aurora user-provisioned
@@ -271,19 +248,19 @@ device. In this case we would use 20 GBs in the energy estimation formula for EB
 
 #### Networking
 
-##### Scope
+#### Scope
 
 Currently, our application takes into account only the data exchanged between different geographical data centers.
 
 For networking, it is safe to assume that the electricity used to power the internal network is close to 0, or at least negligible compared to the electricity required to power servers. We also have chosen to ignore traffic that leaves a data center to provide end-users with services, because this traffic is usually handled by CDN providers (Content delivery network) which are not necessarily the same provider as for cloud computing. This traffic is also dependent on the behavior of end-users. That said, we would welcome contributions to be able to include this in our approach.
 
-##### Studies to date
+#### Studies to date
 
 There have not been many studies that deal specifically with estimating the electricity impact of exchanging data across data-centers. Most studies focus on estimating the impact of end-user traffic from the data center to the mobile phone; integrating the scope of the core network (what we are interested in), the local access to internet (optical fiber, copper, or 3G/4G/5G) and eventually the connection to the phone (WiFi or 4G).
 
 On top of that, these studies use different methodologies and end up with results with orders of magnitude in differences. See appendix III below for a summary of the most recent studies. Note that it is very hard to find recent studies that provide an estimation for optical fiber networks, the scope we are interested in.
 
-##### Chosen coefficient
+#### Chosen coefficient
 
 It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: 0.001 kWh/Gb. Again, we welcome feedback or contributions to improve this coefficient.
 
@@ -337,7 +314,7 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 - Networking Kilowatt Hours / Gigabyte: 0.001
 - Average PUE: 1.1
 
-### Azure
+#### Azure
 
 - Minimum Watts (0% Cpu Utilization): 0.59
 - Maximum Watts (100% Cpu Utilization): 3.5
