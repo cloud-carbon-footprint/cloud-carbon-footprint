@@ -8,7 +8,8 @@ fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
 test.skip('loading screen appears when app is starting', async (t) => {
   const loading = Selector('.makeStyles-loadingMessage-19')
 
-  await t.expect(loading.exists).ok()
+  await t.expect(loading.exists).ok().wait(5000)
+  await t.expect(loading.exists).notOk()
 })
 
 test('main components render with correct data when app loads', async (t) => {
@@ -27,7 +28,7 @@ test('main components render with correct data when app loads', async (t) => {
   await t.expect(emissionsBreakdownContainer.exists).ok()
 })
 
-test('side drawer opens when clicked', async (t) => {
+test('side drawer opens and closes when clicked', async (t) => {
   const drawerOpenButton = Selector('.makeStyles-infoButton-2')
   const drawerCloseButton = Selector(
     '.makeStyles-closeButtonContainer-3',
@@ -38,7 +39,7 @@ test('side drawer opens when clicked', async (t) => {
   await t.click(drawerCloseButton).expect(drawerOpen).notOk()
 })
 
-test('total metric tons is loaded correctly', async (t) => {
+test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
   let totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('286')
   const cloudProviderDropDown = Selector('#cloud-provider-filter')
     .sibling('div')
