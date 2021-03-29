@@ -4,6 +4,8 @@
 
 import { createEnvFile, EnvConfig, listPrompt, log, microsite } from './common'
 import { AWSSetup } from './aws'
+import { GCPSetup } from './gcp'
+import { AzureSetup } from './azure'
 
 type ProvidersConfig = {
   [key: string]: { setup: () => Promise<EnvConfig>; docs: string }
@@ -14,11 +16,11 @@ const providers: ProvidersConfig = {
     docs: '/docs/aws',
   },
   GCP: {
-    setup: () => Promise.resolve(null),
+    setup: GCPSetup,
     docs: '/docs/gcp',
   },
   Azure: {
-    setup: () => Promise.resolve(null),
+    setup: AzureSetup,
     docs: '/docs/azure',
   },
 }

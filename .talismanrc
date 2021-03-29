@@ -119,3 +119,8 @@ fileignoreconfig:
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
   checksum: 60d1d6ee719866ba0c74a8da24fe3838f7323c79a35896ed7ae859de16919cdc
+- filename: packages/cli/src/GuidedInstall/azure.ts
+  checksum: f52e673ab66d4a135e57e8a455ae89afe399e02e03ca8bef47b9e2a245583e4c
+- filename: packages/cli/src/GuidedInstall/gcp.ts
+  checksum: 65e65ead9a03e8a171c71dc950e44083364be27702dd24961fe881e61bc2b1b2
+

@@ -4,7 +4,6 @@
 
 import {
   confirmPrompt,
-  createEnvFile,
   EnvConfig,
   inputPrompt,
   lineBreak,
@@ -13,7 +12,8 @@ import {
 } from './common'
 
 export async function AWSSetup(): Promise<EnvConfig> {
-  const env: { [key: string]: string } = {}
+  const env: EnvConfig = {}
+  env.AWS_USE_BILLING_DATA = 'true'
 
   env.AWS_BILLING_ACCOUNT_ID = await inputPrompt('Enter AWS account id:')
   env.AWS_BILLING_ACCOUNT_NAME = await inputPrompt('Enter AWS account name:')
@@ -30,9 +30,6 @@ export async function AWSSetup(): Promise<EnvConfig> {
   await confirmPrompt(
     `Enable the Cost and Usage Reports Billing AWS feature.\n\t- This feature needs to be enabled so your account can start generating cost and usage reports.\n\t- To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab.\n\t- Make sure to select “Amazon Athena” for report data integration.\n\t- Reference Cost and Usage Reports documentation [here](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html).`,
   )
-
-  env.AWS_USE_BILLING_DATA = 'true'
-  lineBreak()
 
   await confirmPrompt(
     `Setup Athena DB to save the Cost and Usage Reports.\n\t- In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them.\n\t- This is a standard AWS integration, outlined [here](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)`,
