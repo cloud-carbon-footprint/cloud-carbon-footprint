@@ -4,5 +4,7 @@
     ],
     "src": "tests/*test.js",
     "browsers": ["chrome:headless"],
-    "concurrency": 3
+    "concurrency": 3,
+    "appCommand": "yarn start",
+    "appInitDelay": 30000
   }
