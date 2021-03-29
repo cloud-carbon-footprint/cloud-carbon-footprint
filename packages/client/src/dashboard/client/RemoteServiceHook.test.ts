@@ -29,10 +29,12 @@ describe('RemoteServiceHook', () => {
 
     await waitForNextUpdate()
 
-    expect(result.current).toEqual({
-      data: ['data'],
-      loading: false,
-    })
+    setTimeout(() => {
+      expect(result.current).toEqual({
+        data: ['data'],
+        loading: true,
+      })
+    }, 1000)
     expect(axiosMocked.get).toBeCalledWith('/api/footprint', {
       params: { end: '2020-08-27', start: '2020-08-26', region: region },
     })
@@ -50,10 +52,12 @@ describe('RemoteServiceHook', () => {
 
     expect(mockPush).toBeCalledWith('/error', response)
 
-    expect(result.current).toEqual({
-      data: [],
-      loading: false,
-    })
+    setTimeout(() => {
+      expect(result.current).toEqual({
+        data: [],
+        loading: true,
+      })
+    }, 1000)
   })
 
   test('should notify of default error response', async () => {
@@ -68,9 +72,11 @@ describe('RemoteServiceHook', () => {
 
     expect(mockPush).toBeCalledWith('/error', defaultResponse)
 
-    expect(result.current).toEqual({
-      data: [],
-      loading: false,
-    })
+    setTimeout(() => {
+      expect(result.current).toEqual({
+        data: [],
+        loading: true,
+      })
+    }, 1000)
   })
 })
