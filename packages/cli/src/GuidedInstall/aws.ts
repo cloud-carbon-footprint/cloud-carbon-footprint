@@ -2,103 +2,16 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { confirm, input, list, prompt } from 'typed-prompts'
-import { prop } from 'ramda'
-import { exec as execCb } from 'child_process'
-import { promisify } from 'util'
-import fs from 'fs-extra'
-import dotenv from 'dotenv'
+import {
+  confirmPrompt,
+  createEnvFile,
+  inputPrompt,
+  lineBreak,
+  log,
+  runCmd,
+} from './common'
 
-const exec = promisify(execCb)
-const stat = promisify(fs.stat)
-
-const log = (m: string, leading = true) =>
-  console.log(`${leading ? '\n' : ''}# ${m}\n`)
-const lineBreak = () => console.log()
-const listPrompt = (message: string, options: string[]) =>
-  prompt<{ key: string }>([list('key', message, options)]).then(prop('key'))
-const confirmPrompt = (
-  message: string,
-  question = 'Is this step complete?',
-  requireYes = true,
-) =>
-  prompt<{ key: boolean }>([confirm('key', message + `\n${question}`)]).then(
-    (result) => {
-      if (requireYes && !result.key) {
-        log('Please try again when you have completed this step.')
-        process.exit(0)
-      }
-      console.log()
-      return result.key
-    },
-  )
-const inputPrompt = (message: string, required = true): Promise<string> =>
-  prompt<{ key: string }>([input('key', message)])
-    .then(prop('key'))
-    .then((result: string) => {
-      if (required && !result) {
-        log('Please enter a value.')
-        return inputPrompt(message, required)
-      }
-      return result
-    })
-
-const runCmd = async (cmd: string) => {
-  try {
-    await exec(cmd)
-  } catch (error) {
-    process.stdout.write(error.stderr)
-    process.stdout.write(error.stdout)
-    throw new Error(`Could not execute command ${cmd}`)
-  }
-}
-
-// will load existing .env and overwrite the given keys
-const createEnvFile = async (dir: string, env: { [key: string]: string }) => {
-  const path = `${dir}.env`
-  log(`Creating ${path}...`, false)
-  const exists = await stat(path)
-    .then(() => true)
-    .catch(() => false)
-
-  const existing = exists ? dotenv.config({ path }) : {}
-  if (existing.error) {
-    throw existing.error
-  }
-
-  const newEnv = { ...existing.parsed, ...env }
-  await fs.writeFile(
-    path,
-    Object.entries(newEnv).reduce(
-      (config, [k, v]) => `${config}${k}=${v}\n`,
-      '',
-    ),
-  )
-  log('...done', false)
-}
-
-async function GuidedInstall() {
-  log(
-    `Welcome to Cloud Carbon Footprint's Guided Install. This tool will walk you through the documentation and automate certain parts of it. Please see https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/tree/trunk/docs for details.`,
-  )
-
-  const provider: string = await listPrompt(
-    'Choose a cloud provider to configure:',
-    Object.keys(providers),
-  )
-
-  log(`${provider} setup`)
-  const setup = providers[provider]
-  await setup()
-}
-
-const providers: { [key: string]: () => Promise<void> } = {
-  AWS: AWSSetup,
-  GCP: () => null,
-  Azure: () => null,
-}
-
-async function AWSSetup() {
+export async function AWSSetup(): void {
   const env: { [key: string]: string } = {}
 
   env.AWS_BILLING_ACCOUNT_ID = await inputPrompt('Enter AWS account id:')
@@ -166,7 +79,3 @@ async function AWSSetup() {
   await createEnvFile('./', env)
   await createEnvFile('../api/', env)
 }
-
-GuidedInstall().catch((error) => {
-  console.error(`Something went wrong: ${error.message}`)
-})
