@@ -207,11 +207,6 @@ jobs:
     environment:
       name: staging
     env:
-      HOST_URL: ${{ secrets.HOST_URL }}
-      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
       AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
       AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
       AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
@@ -247,7 +242,6 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
         run: |
           apk add --update python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -262,7 +256,6 @@ jobs:
           # we need to do this until general solution is built
           sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core"/g' package.json
           ./create_server_env_file.sh
-          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} >> .npmrc
           cd ../..
 
           # Store service account
@@ -273,12 +266,11 @@ jobs:
 
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
-          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-
           cd appengine
           ./deploy-staging.sh
           cd ..
   deploy-production:
+    if: github.ref == 'refs/heads/trunk'
     needs: deploy-staging
     runs-on: ubuntu-latest
     container:
@@ -286,11 +278,6 @@ jobs:
     environment:
       name: production
     env:
-      HOST_URL: ${{ secrets.HOST_URL }}
-      OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      OKTA_CLIENT_ID: ${{ secrets.OKTA_CLIENT_ID }}
-      OKTA_CLIENT_SECRET: ${{ secrets.OKTA_CLIENT_SECRET }}
       AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
       AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
       AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
@@ -312,6 +299,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
+          name: core-build
+          path: packages/api/dist-core
+      - uses: actions/download-artifact@v2
+        with:
           name: client-build
           path: packages/client/build
       - uses: actions/download-artifact@v2
@@ -322,7 +313,6 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-          GOOGLE_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
         run: |
           apk add --update python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -335,7 +325,7 @@ jobs:
           cd packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
-          sed -i 's/\^1\.0\.0/\.\/dist-core/g' package.json
+          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core"/g' package.json
           ./create_server_env_file.sh
           cd ../..
 
@@ -346,8 +336,6 @@ jobs:
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
 
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
-
-          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
 
           cd appengine
           ./deploy-production.sh

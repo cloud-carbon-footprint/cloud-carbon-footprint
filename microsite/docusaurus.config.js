@@ -9,7 +9,7 @@ module.exports = {
   baseUrl: '/',
   onBrokenLinks: 'log',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   themeConfig: {
@@ -24,6 +24,19 @@ module.exports = {
         {
           to: 'docs/getting-started',
           label: 'Try Now',
+          position: 'right',
+          className: 'navbar__link',
+        },
+        {
+          to: 'docs/overview',
+          label: 'Docs',
+          position: 'right',
+          className: 'navbar__link',
+        },
+        {
+          to:
+            'https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint',
+          label: 'Github',
           position: 'right',
           className: 'navbar__link',
         },

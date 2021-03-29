@@ -179,19 +179,18 @@ This will help in visualizing the bundle size, seeing bundles that might not be 
 
 ## Continuous Integration Pipeline 🔁
 
-We use CircleCI for our pipeline. [Link to pipeline](https://app.circleci.com/pipelines/github/ThoughtWorks-Cleantech/cloud-carbon-footprint).
+We use Github Actions for our CI pipeline. [Link to pipeline](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/actions/workflows/ci.yml).
 
-You can learn more about CircleCI in the [CircleCI Documentation](https://circleci.com/docs/)
+You can learn more about Github Actions in the [Github Actions Documentation](https://docs.github.com/en/actions)
 
 ---
 
 ## Approval for Production
 
-When pushing up, CircleCI will automatically go through the steps of deploying to staging as long as all tests and linting past.
+When pushing up, Github Actions will automatically go through the steps of deploying to staging as long as all tests and linting past.
 
-To deploy to production, go to CircleCI and view the build to deploy. It is a manual approval, therefore if it is ready to be
-pushed into production, click on the `Hold` step and a pop-up should appear that asks to approve. Click approve and CircleCI
-will deploy to production.
+To deploy to production, go to Github Actions and view the CI workflow to deploy. It is a manual approval, therefore if it is ready to be
+pushed into production, click on "Review deployments", select production, then approve the deployment.  
 
 ---
 
@@ -294,10 +293,6 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
   the .talismanrc, which will allow it to pass for that commit.
 - However this checksum is only valid for that specific commit, if the file changed, and it has a talisman check, it
   will run a new checksum for the .talismanrc that will have to be updated
-
-### CircleCI
-
-- Sometimes the CircleCI build fails due to a `ENOMEM: not enough memory, read` error. This is a transient error and you can just restart the build from the last failed job.
 
 ---
 

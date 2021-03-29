@@ -9,9 +9,9 @@ When running the app locally, first choose if you would like to run with mocked 
 
 A few steps are required to run the app with real data, that are different for each cloud provider. Check out the steps for each cloud provider in the Connect to Real Data section:
 
-- AWS
-- GCP
-- Azure
+- [AWS](aws)
+- [GCP](gcp)
+- [Azure](azure)
 
 If you have a lot of data and begin to experience performance issues, check out our [Performance Configurations](performance-configurations) page for some options you can set up to improve it.
 

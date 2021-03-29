@@ -8,7 +8,7 @@ import styles from './callToActionBanner.module.css'
 function CallToActionBanner() {
   const classes = useStyles()
   return (
-    <div className={styles.callToActionBannerWrapper}>
+    <div className={styles.callToActionBannerContainer}>
       <div className={styles.text}>
         <h2>Cloud Carbon Emissions Measurement and Analysis Tool</h2>
         <p>

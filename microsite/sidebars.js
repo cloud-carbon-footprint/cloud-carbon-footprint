@@ -8,13 +8,7 @@ module.exports = {
       type: 'category',
       label: 'Cloud Carbon Footprint',
       collapsed: false,
-      items: ['overview'],
-    },
-    {
-      type: 'category',
-      label: 'Get Started',
-      collapsed: false,
-      items: ['getting-started'],
+      items: ['overview', 'methodology'],
     },
     {
       type: 'category',
@@ -22,7 +16,7 @@ module.exports = {
       collapsed: false,
       items: [
         'introduction',
-        'getting-set-up',
+        'getting-started',
         'run-with-mocked-data',
         {
           type: 'category',

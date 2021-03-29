@@ -4,7 +4,7 @@
 
 * [Client docs](packages/client/README.md)
 
-* [Methodology](METHODOLOGY.md)
+* [Methodology](microsite/docs/Methodology.md)
 
 * [Sonaqube](SONARQUBE.md)
 
