@@ -2,19 +2,30 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { listPrompt, log } from './common'
+import { createEnvFile, EnvConfig, listPrompt, log, microsite } from './common'
 import { AWSSetup } from './aws'
 
-type ProvidersConfig = { [key: string]: () => Promise<void> }
+type ProvidersConfig = {
+  [key: string]: { setup: () => Promise<EnvConfig>; docs: string }
+}
 const providers: ProvidersConfig = {
-  AWS: AWSSetup,
-  GCP: () => null,
-  Azure: () => null,
+  AWS: {
+    setup: AWSSetup,
+    docs: '/docs/aws',
+  },
+  GCP: {
+    setup: () => Promise.resolve(null),
+    docs: '/docs/gcp',
+  },
+  Azure: {
+    setup: () => Promise.resolve(null),
+    docs: '/docs/azure',
+  },
 }
 
 async function GuidedInstall() {
   log(
-    `Welcome to Cloud Carbon Footprint's Guided Install. This tool will walk you through the documentation and automate certain parts of it. Please see https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/tree/trunk/docs for details.`,
+    `Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: ${microsite}/docs/introduction`,
   )
 
   const provider: string = await listPrompt(
@@ -22,9 +33,16 @@ async function GuidedInstall() {
     Object.keys(providers),
   )
 
-  log(`${provider} setup`)
-  const setup = providers[provider]
-  await setup()
+  const { setup, docs } = providers[provider]
+  log(`${provider} setup. See ${microsite}${docs} for additional details.`)
+  const env = await setup()
+
+  await createEnvFile('./', env)
+  await createEnvFile('../api/', env)
+
+  log(
+    `Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit ${microsite}/docs/introduction`,
+  )
 }
 
 GuidedInstall().catch((error) => {

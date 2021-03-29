@@ -6,11 +6,16 @@ import { promisify } from 'util'
 import { exec as execCb } from 'child_process'
 import dotenv from 'dotenv'
 import fs from 'fs-extra'
+import { resolve } from 'path'
 import { confirm, input, list, prompt } from 'typed-prompts'
 import { prop } from 'ramda'
 
 const exec = promisify(execCb)
 const stat = promisify(fs.stat)
+
+export type EnvConfig = { [key: string]: string }
+
+export const microsite = 'https://redesigned-guide-07c796a7.pages.github.io'
 
 export const log = (m: string, leading = true): void =>
   console.log(`${leading ? '\n' : ''}# ${m}\n`)
@@ -53,7 +58,7 @@ export const inputPrompt = (
       return result
     })
 
-export const runCmd = async (cmd: string): void => {
+export const runCmd = async (cmd: string): Promise<void> => {
   try {
     await exec(cmd)
   } catch (error) {
@@ -62,13 +67,14 @@ export const runCmd = async (cmd: string): void => {
     throw new Error(`Could not execute command ${cmd}`)
   }
 }
+
 // will load existing .env and overwrite the given keys
 export const createEnvFile = async (
   dir: string,
   env: { [key: string]: string },
-): void => {
-  const path = `${dir}.env`
-  log(`Creating ${path}...`, false)
+): Promise<void> => {
+  const path = resolve(`${dir}.env`)
+  log(`Creating/updating ${path}...`, false)
   const exists = await stat(path)
     .then(() => true)
     .catch(() => false)

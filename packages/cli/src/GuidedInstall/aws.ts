@@ -5,13 +5,14 @@
 import {
   confirmPrompt,
   createEnvFile,
+  EnvConfig,
   inputPrompt,
   lineBreak,
   log,
   runCmd,
 } from './common'
 
-export async function AWSSetup(): void {
+export async function AWSSetup(): Promise<EnvConfig> {
   const env: { [key: string]: string } = {}
 
   env.AWS_BILLING_ACCOUNT_ID = await inputPrompt('Enter AWS account id:')
@@ -76,6 +77,5 @@ export async function AWSSetup(): void {
     )
   }
 
-  await createEnvFile('./', env)
-  await createEnvFile('../api/', env)
+  return env
 }
