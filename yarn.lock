@@ -13296,6 +13296,7 @@ fsevents@^1.2.7:
   dependencies:
     "@testing-library/testcafe": ^4.3.1
     concurrently: ^6.0.0
+    lint-staged: ^10.5.4
     testcafe: ^1.13.0
   languageName: unknown
   linkType: soft

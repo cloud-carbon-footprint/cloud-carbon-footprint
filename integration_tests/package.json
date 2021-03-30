@@ -7,12 +7,19 @@
         "start-app": "REACT_APP_END_DATE=03-18-2021 REACT_APP_DATE_RANGE_VALUE=1 REACT_APP_DATE_RANGE_TYPE=week yarn workspace @cloud-carbon-footprint/client start",
         "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
         "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
-        "headed": "testcafe 'chrome'"
+        "headed": "testcafe 'chrome'",
+        "precommit": "lint-staged --no-stash"
     },
     "author": "",
     "devDependencies": {
         "@testing-library/testcafe": "^4.3.1",
         "concurrently": "^6.0.0",
+        "lint-staged": "^10.5.4",
         "testcafe": "^1.13.0"
+    },
+    "lint-staged": {
+        "*.js": [
+            "yarn headless"
+        ]
     }
 }
