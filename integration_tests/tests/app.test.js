@@ -3,7 +3,12 @@
  */
 import { Selector } from 'testcafe'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`.beforeEach(
+  async (t) => {
+    const header = Selector('#app-bar-header')
+    await t.expect(header.exists).ok()
+  },
+)
 
 test('loading screen appears when app is starting', async (t) => {
   const loading = Selector('#loading-screen')

@@ -6,5 +6,6 @@
     "browsers": ["chrome:headless"],
     "concurrency": 3,
     "appCommand": "yarn start",
-    "appInitDelay": 30000
+    "pageRequestTimeout": 360000,
+    "pageLoadTimeout": 360000
   }
