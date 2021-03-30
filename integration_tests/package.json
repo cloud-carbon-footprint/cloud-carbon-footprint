@@ -5,10 +5,11 @@
     "scripts": {
         "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
         "start-app": "REACT_APP_END_DATE=03-18-2021 yarn workspace @cloud-carbon-footprint/client start",
+        "serve-app": "yarn workspace @cloud-carbon-footprint/client serve",
         "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
         "headed": "testcafe 'chrome'",
         "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
-        "headless-ci": "testcafe 'chromium:headless' 'tests/*test.js' --app 'yarn serve:build'"
+        "headless-ci": "testcafe 'chromium:headless' 'tests/*test.js' --app 'yarn serve-app'"
     },
     "author": "",
     "devDependencies": {
