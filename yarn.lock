@@ -2111,6 +2111,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.15.1
     apexcharts: ^3.25.0
     axios: ^0.21.1
+    concurrently: ^6.0.0
     dotenv: ^8.2.0
     eslint: ^7.21.0
     eslint-config-prettier: ^8.0.0
@@ -2166,7 +2167,7 @@ __metadata:
     eslint-config-prettier: ^8.0.0
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
-    googleapis: ^67.1.0
+    googleapis: ^68.0.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^10.5.4
@@ -12293,13 +12294,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^67.1.0":
-  version: 67.1.1
-  resolution: "googleapis@npm:67.1.1"
+"googleapis@npm:^68.0.0":
+  version: 68.0.0
+  resolution: "googleapis@npm:68.0.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.1
-  checksum: 09d33c1412b28a613dac06eb03ef8f4e5388505c567ff1eb6b458997b3805ccb5c02c3c1c1af3472162f27ded8ba717aa5079e22a590e20b7ca08be7922e0b65
+  checksum: 05ae2b306467134004c0bfd70be9b245cbb47e8bf627a01e69f9fb12eb0f3c4e0509981247d45947ef5342143d4e92f74795db223df6132f01e2b6b227a0bf62
   languageName: node
   linkType: hard
 
@@ -12911,12 +12912,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:^5.1.3":
-  version: 5.2.0
-  resolution: "husky@npm:5.2.0"
+"husky@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "husky@npm:6.0.0"
   bin:
     husky: lib/bin.js
-  checksum: a5a99bea465dbb8499e93d50eb632cc95ffea8cec3662c483af6587f4a5adcff8e5384cf9e1ff7275b2e3bff34f61404d60a7aa0e846c5b08f044ddeca7db688
+  checksum: 61e1f7f53f3c969d361c2a1d4ed8018b9447406ea6cd644a2526d18b76877d135001d8cbd48a1d201fc1614d96995e691ecd2b82a8d8513a6b4a313da1188ccd
   languageName: node
   linkType: hard
 
@@ -20981,7 +20982,7 @@ resolve@^2.0.0-next.3:
     concurrently: ^6.0.0
     docsify-cli: ^4.4.2
     fs-extra: ^9.1.0
-    husky: ^5.1.3
+    husky: ^6.0.0
     lerna: ^4.0.0
     marked: ">=2.0.0"
     sonar-scanner: ^3.1.0
