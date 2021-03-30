@@ -91,11 +91,17 @@ Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footp
 
 #### Testing
 
+##### Unit Testing
+
 - Run `yarn test` from the root directory.
 - If you are missing a test file in the coverage report, you may need to clear the test cache by running
   `yarn test:clean` from the client and / or server DIR.
 
-  This is also one of the pre-commit hook but it is also advisable to run tests regularly.
+##### Integration Testing
+
+- Run either `yarn headless` or `yarn headed` from the `integration_tests` directory. Running `yarn headed` will run the tests with chrome browsers.
+
+These are also part of the pre-commit hook but it is also advisable to run tests regularly.
 
 ### Commit
 
@@ -190,7 +196,7 @@ You can learn more about Github Actions in the [Github Actions Documentation](ht
 When pushing up, Github Actions will automatically go through the steps of deploying to staging as long as all tests and linting past.
 
 To deploy to production, go to Github Actions and view the CI workflow to deploy. It is a manual approval, therefore if it is ready to be
-pushed into production, click on "Review deployments", select production, then approve the deployment.  
+pushed into production, click on "Review deployments", select production, then approve the deployment.
 
 ---
 
