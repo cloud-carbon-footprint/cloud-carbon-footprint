@@ -17,4 +17,3 @@ jobs:
           runs: |
           cd integration_tests
           yarn headless
-          cd ..
