@@ -3,7 +3,7 @@
  */
 import { Selector } from 'testcafe'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:5000/`
+fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
 
 test('loading screen appears when app is starting', async (t) => {
   const loading = Selector('#loading-screen')
@@ -19,7 +19,7 @@ test('main components render with correct data when app loads', async (t) => {
   const carbonComparisonCard = Selector('#carbonComparisonCard')
   const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
 
-  await t.click(cloudProviders).expect(cloudProviders.exists).ok()
+  await t.wait(5000).expect(cloudProviders.exists).ok()
   await t.expect(accounts.exists).ok()
   await t.expect(services.exists).ok()
   await t.expect(lineChart.exists).ok()
@@ -50,7 +50,7 @@ test('total metric tons is loaded correctly with different dropdown selections',
     .sibling('div')
     .child('button')
 
-  await t.click(totalCo2Amount).expect(totalCo2Amount.exists).ok()
+  await t.wait(5000).expect(totalCo2Amount.exists).ok()
   await t.click(cloudProviderDropDown)
   const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
   await t.click(awsDropdownItem)
