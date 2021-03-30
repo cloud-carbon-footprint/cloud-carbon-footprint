@@ -3,7 +3,7 @@
  */
 import { Selector } from 'testcafe'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+fixture`Cloud Carbon Footprint`.page`http://localhost:5000/`
 
 test('loading screen appears when app is starting', async (t) => {
   const loading = Selector('#loading-screen')

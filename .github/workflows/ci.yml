@@ -49,16 +49,6 @@ jobs:
         run: yarn lint
       - name: test
         run: yarn test
-  integration-test:
-    name: Run TestCafe Tests
-    runs-on: windows-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v1
-      - name: Run tests
-        uses: DevExpress/testcafe-action@latest
-        with:
-          args: 'chrome tests'
   build:
     needs: lint-test
     runs-on: ubuntu-latest
@@ -122,6 +112,16 @@ jobs:
         with:
           name: api-dist
           path: packages/api/dist/
+  integration-test:
+    needs: build
+    name: Run TestCafe Tests
+    runs-on: windows-latest
+    steps:
+      - name: Run tests
+        run: |
+          cd integration_tests
+          yarn install && yarn run headless:ci
+          cd ../..
   release:
     needs: build
     runs-on: ubuntu-latest
