@@ -8,7 +8,7 @@
         "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
         "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
         "headed": "testcafe 'chrome'",
-        "precommit": "lint-staged --no-stash"
+        "precommit": "lint-staged --no-stash && yarn headless"
     },
     "author": "",
     "devDependencies": {
@@ -19,7 +19,8 @@
     },
     "lint-staged": {
         "*.js": [
-            "yarn headless"
-        ]
+            "yarn lint",
+            "prettier --write --ignore-unknown --config ../.prettierrc.json"
+          ]
     }
 }
