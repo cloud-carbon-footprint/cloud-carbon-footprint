@@ -123,4 +123,17 @@ fileignoreconfig:
   checksum: f52e673ab66d4a135e57e8a455ae89afe399e02e03ca8bef47b9e2a245583e4c
 - filename: packages/cli/src/GuidedInstall/gcp.ts
   checksum: 65e65ead9a03e8a171c71dc950e44083364be27702dd24961fe881e61bc2b1b2
+- filename: packages/cli/src/GuidedInstall/common.ts
+  checksum: 7af87675ba4931dfcaa6d72d0c4353b86a0b8098c80f0f0bedc22b6d9c6c1d80
+- filename: packages/cli/src/GuidedInstall/external.ts
+  checksum: 4a9ae883712dc10b5957860f5f10cf1744af94230995e23f510562f126290b47
+- filename: packages/cli/src/GuidedInstall/runner.ts
+  checksum: 0164db137100385627c51b01ff3aabef4c52303b2646e7814b4b3b15408babac
+- filename: packages/cli/src/__tests__/GuidedInstall/common.test.ts
+  checksum: 633698c06235a3092aaee2a7e852734c6a4f6544f05fc62c85710adf2b0ab7a6
+- filename: packages/cli/src/__tests__/GuidedInstall/runner.test.ts
+  checksum: 3ad76fe02d5a26db3067a8473eb6ff813cc408aa2bdaf691cc59dd79e13af2fe
+- filename: packages/cli/src/__tests__/GuidedInstall/__snapshots__/runner.test.ts.snap
+  checksum: 6c0dd40c0317f63ada1c53dd99fc670048f5afa7653bf46c8e804087fd90712e
+
 

@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GuidedInstall AWS with awscli config runs \`aws configure\` commands 1`] = `
+Array [
+  Array [
+    "aws configure set aws_access_key_id access key id --profile profile",
+  ],
+  Array [
+    "aws configure set aws_secret_access_key secret access key --profile profile",
+  ],
+  Array [
+    "aws configure set region region --profile profile",
+  ],
+]
+`;
+
+exports[`GuidedInstall AWS with awscli config shows the correct confirmation prompts for manual instructions 1`] = `
+Array [
+  Array [
+    "Ensure your AWS account has the correct permissions.
+	- You will need an [IAM user](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) that can create access-keys and modify your billing settings.",
+  ],
+  Array [
+    "Enable the Cost and Usage Reports Billing AWS feature.
+	- This feature needs to be enabled so your account can start generating cost and usage reports.
+	- To enable, navigate to your account's billing section, and click on the \\"Cost and Usage Reports\\" tab.
+	- Make sure to select “Amazon Athena” for report data integration.
+	- Reference Cost and Usage Reports documentation [here](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html).",
+  ],
+  Array [
+    "Setup Athena DB to save the Cost and Usage Reports.
+	- In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them.
+	- This is a standard AWS integration, outlined [here](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)",
+  ],
+  Array [
+    "Install the AWS CLI https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html",
+  ],
+  Array [
+    "Configure aws credentials locally, using awscli. See the documentation for more details on authenticating to AWS.",
+    "Would you like this tool to configure your awscli? If no, you will need to do it yourself.",
+    false,
+  ],
+]
+`;
+
+exports[`GuidedInstall AWS with awscli config shows the correct informational messages and documentation references 1`] = `
+Array [
+  Array [
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+  Array [
+    "AWS setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/aws for additional details.",
+  ],
+  Array [
+    "Configuring AWS CLI...",
+  ],
+  Array [
+    "...done",
+    false,
+  ],
+  Array [
+    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+]
+`;
+
+exports[`GuidedInstall AWS with awscli config shows the correct input prompts for collecting env vars 1`] = `
+Array [
+  Array [
+    "Enter AWS account id:",
+  ],
+  Array [
+    "Enter AWS account name:",
+  ],
+  Array [
+    "Enter AWS region:",
+  ],
+  Array [
+    "Enter AWS role name:",
+  ],
+  Array [
+    "Enter Athena DB name:",
+  ],
+  Array [
+    "Enter Athena DB table:",
+  ],
+  Array [
+    "Enter Athena DB query result location (eg s3://your-athena-query-results-location):",
+  ],
+  Array [
+    "Enter AWS access key id:",
+  ],
+  Array [
+    "Enter AWS secret access key:",
+  ],
+  Array [
+    "Optionally enter AWS profile:",
+    false,
+  ],
+]
+`;
+
+exports[`GuidedInstall AWS without awscli config shows the correct confirmation prompts for manual instructions 1`] = `
+Array [
+  Array [
+    "Ensure your AWS account has the correct permissions.
+	- You will need an [IAM user](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) that can create access-keys and modify your billing settings.",
+  ],
+  Array [
+    "Enable the Cost and Usage Reports Billing AWS feature.
+	- This feature needs to be enabled so your account can start generating cost and usage reports.
+	- To enable, navigate to your account's billing section, and click on the \\"Cost and Usage Reports\\" tab.
+	- Make sure to select “Amazon Athena” for report data integration.
+	- Reference Cost and Usage Reports documentation [here](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html).",
+  ],
+  Array [
+    "Setup Athena DB to save the Cost and Usage Reports.
+	- In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them.
+	- This is a standard AWS integration, outlined [here](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)",
+  ],
+  Array [
+    "Install the AWS CLI https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html",
+  ],
+  Array [
+    "Configure aws credentials locally, using awscli. See the documentation for more details on authenticating to AWS.",
+    "Would you like this tool to configure your awscli? If no, you will need to do it yourself.",
+    false,
+  ],
+  Array [
+    "Run \`aws configure\` and provide your access key and secret access key.
+	- Also make sure you select the same region as the one you created your cost and usage reports in.",
+  ],
+]
+`;
+
+exports[`GuidedInstall AWS without awscli config shows the correct informational messages and documentation references 1`] = `
+Array [
+  Array [
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+  Array [
+    "AWS setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/aws for additional details.",
+  ],
+  Array [
+    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+]
+`;
+
+exports[`GuidedInstall AWS without awscli config shows the correct input prompts for collecting env vars 1`] = `
+Array [
+  Array [
+    "Enter AWS account id:",
+  ],
+  Array [
+    "Enter AWS account name:",
+  ],
+  Array [
+    "Enter AWS region:",
+  ],
+  Array [
+    "Enter AWS role name:",
+  ],
+  Array [
+    "Enter Athena DB name:",
+  ],
+  Array [
+    "Enter Athena DB table:",
+  ],
+  Array [
+    "Enter Athena DB query result location (eg s3://your-athena-query-results-location):",
+  ],
+]
+`;
+
+exports[`GuidedInstall Azure shows the correct confirmation prompts for manual instructions 1`] = `
+Array [
+  Array [
+    "Register a new Azure Application via your Azure Portal, under “App Registrations”.
+	- You do not need to set a Redirect URI or configure platform Settings. Learn more about how to do this [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)",
+  ],
+  Array [
+    "Within this application, go to “Certificates and secrets”, and create a new Client secret",
+  ],
+]
+`;
+
+exports[`GuidedInstall Azure shows the correct informational messages and documentation references 1`] = `
+Array [
+  Array [
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+  Array [
+    "Azure setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/azure for additional details.",
+  ],
+  Array [
+    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+]
+`;
+
+exports[`GuidedInstall Azure shows the correct input prompts for collecting env vars 1`] = `
+Array [
+  Array [
+    "Enter Azure client id:",
+  ],
+  Array [
+    "Enter Azure client secret:",
+  ],
+  Array [
+    "Enter Azure tenant id:",
+  ],
+]
+`;
+
+exports[`GuidedInstall GCP shows the correct confirmation prompts for manual instructions 1`] = `
+Array [
+  Array [
+    "Ensure you have a GCP Service Account with the permission to start BigQuery jobs and read Bigquery job results. Learn more about GCP Service Accounts [here](https://cloud.google.com/docs/authentication/getting-started).",
+  ],
+  Array [
+    "Create and download a JSON private file for this Service Account to your local filesystem, and make sure to set the \`GOOGLE_APPLICATION_CREDENTIALS\` environment variable. Learn more about this authentication method [here](https://cloud.google.com/docs/authentication/getting-started)",
+  ],
+  Array [
+    "Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here](https://cloud.google.com/billing/docs/how-to/export-data-bigquery).",
+  ],
+]
+`;
+
+exports[`GuidedInstall GCP shows the correct informational messages and documentation references 1`] = `
+Array [
+  Array [
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+  Array [
+    "GCP setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/gcp for additional details.",
+  ],
+  Array [
+    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+  ],
+]
+`;
+
+exports[`GuidedInstall GCP shows the correct input prompts for collecting env vars 1`] = `
+Array [
+  Array [
+    "Enter GCP account id:",
+  ],
+  Array [
+    "Enter GCP account name:",
+  ],
+  Array [
+    "Enter BigQuery table name:",
+  ],
+]
+`;

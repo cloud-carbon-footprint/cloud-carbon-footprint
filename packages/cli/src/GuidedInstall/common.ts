@@ -2,45 +2,42 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { promisify } from 'util'
-import { exec as execCb } from 'child_process'
-import dotenv from 'dotenv'
-import fs from 'fs-extra'
-import { resolve } from 'path'
-import { confirm, input, list, prompt } from 'typed-prompts'
+import { confirm, input, list } from 'typed-prompts'
 import { prop } from 'ramda'
-
-const exec = promisify(execCb)
-const stat = promisify(fs.stat)
+import {
+  exit,
+  lineBreak,
+  log,
+  prompt,
+  readConfig,
+  resolve,
+  stat,
+  writeFile,
+} from './external'
 
 export type EnvConfig = { [key: string]: string }
 
 export const microsite = 'https://redesigned-guide-07c796a7.pages.github.io'
 
-export const log = (m: string, leading = true): void =>
-  console.log(`${leading ? '\n' : ''}# ${m}\n`)
-
-export const lineBreak = (): void => console.log()
-
 export const listPrompt = (
   message: string,
   options: string[],
 ): Promise<string> =>
-  prompt<{ key: string }>([list('key', message, options)]).then(prop('key'))
+  prompt<{ key: string }>(list('key', message, options)).then(prop('key'))
 
 export const confirmPrompt = (
   message: string,
   question = 'Is this step complete?',
   requireYes = true,
 ): Promise<boolean> =>
-  prompt<{ key: boolean }>([confirm('key', message + `\n${question}`)])
+  prompt<{ key: boolean }>(confirm('key', message + `\n${question}`))
     .then(prop('key'))
     .then((result) => {
       if (requireYes && !result) {
         log('Please try again when you have completed this step.')
-        process.exit(0)
+        exit()
       }
-      console.log()
+      lineBreak()
       return result
     })
 
@@ -48,7 +45,7 @@ export const inputPrompt = (
   message: string,
   required = true,
 ): Promise<string> =>
-  prompt<{ key: string }>([input('key', message)])
+  prompt<{ key: string }>(input('key', message))
     .then(prop('key'))
     .then((result: string) => {
       if (required && !result) {
@@ -58,17 +55,6 @@ export const inputPrompt = (
       return result
     })
 
-export const runCmd = async (cmd: string): Promise<void> => {
-  try {
-    await exec(cmd)
-  } catch (error) {
-    process.stdout.write(error.stderr)
-    process.stdout.write(error.stdout)
-    throw new Error(`Could not execute command ${cmd}`)
-  }
-}
-
-// will load existing .env and overwrite the given keys
 export const createEnvFile = async (
   dir: string,
   env: { [key: string]: string },
@@ -79,13 +65,13 @@ export const createEnvFile = async (
     .then(() => true)
     .catch(() => false)
 
-  const existing = exists ? dotenv.config({ path }) : {}
+  const existing = exists ? readConfig(path) : { parsed: undefined }
   if (existing.error) {
     throw existing.error
   }
 
   const newEnv = { ...existing.parsed, ...env }
-  await fs.writeFile(
+  await writeFile(
     path,
     Object.entries(newEnv).reduce(
       (config, [k, v]) => `${config}${k}=${v}\n`,
