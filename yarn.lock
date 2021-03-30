@@ -10411,7 +10411,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.0.0":
+"eslint-config-prettier@npm:^8.0.0, eslint-config-prettier@npm:^8.1.0":
   version: 8.1.0
   resolution: "eslint-config-prettier@npm:8.1.0"
   peerDependencies:
@@ -10582,6 +10582,13 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7
   checksum: 1c9cfbe6f378d09c620d127c6f6e7708e0f482787a38dbd935b137c70ea65af8d648fda6b2755cd028ebed461628e230038146ab3b10eb9a76f02388ae554565
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-testcafe@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "eslint-plugin-testcafe@npm:0.2.1"
+  checksum: a50b2411bf4e55a9246214aeeb9809ea8053fd6fd8a1f2e6def6a14276ab2a0edf8b00fa435600d0a324581de5a0b371f7412b8f0e72d0b2de62aa840b8dbe2a
   languageName: node
   linkType: hard
 
@@ -13296,7 +13303,11 @@ fsevents@^1.2.7:
   dependencies:
     "@testing-library/testcafe": ^4.3.1
     concurrently: ^6.0.0
+    eslint-config-prettier: ^8.1.0
+    eslint-plugin-prettier: ^3.3.1
+    eslint-plugin-testcafe: ^0.2.1
     lint-staged: ^10.5.4
+    prettier: ^2.2.1
     testcafe: ^1.13.0
   languageName: unknown
   linkType: soft
