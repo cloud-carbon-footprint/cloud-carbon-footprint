@@ -2,13 +2,16 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import { Selector } from 'testcafe'
+import waitOn from 'wait-on'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`.beforeEach(
-  async (t) => {
+fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+  .before(async () => {
+    await waitOn({ resources: ['http://localhost:3000/'] })
+  })
+  .beforeEach(async (t) => {
     const header = Selector('#app-bar-header')
     await t.expect(header.exists).ok()
-  },
-)
+  })
 
 test('loading screen appears when app is starting', async (t) => {
   const loading = Selector('#loading-screen')
@@ -39,7 +42,7 @@ test('side drawer opens and closes when clicked', async (t) => {
   )
   const drawerOpen = Selector('#drawer-open').exists
 
-  await t.click(drawerOpenButton).expect(drawerOpen).ok()
+  await t.wait(5000).click(drawerOpenButton).expect(drawerOpen).ok()
   await t.click(drawerCloseButton).expect(drawerOpen).notOk()
 })
 
@@ -83,7 +86,7 @@ test('carbon equivalency component displays each option when clicked', async (t)
   const treeSeedlings = Selector('p').withText('4,729')
   const milesDriven = Selector('p').withText('709,678')
 
-  await t.click(gasButton).expect(gallonsOfGas.exists).ok()
+  await t.wait(5000).click(gasButton).expect(gallonsOfGas.exists).ok()
   await t.click(treesButton).expect(treeSeedlings.exists).ok()
   await t.click(milesButton).expect(milesDriven.exists).ok()
 })
@@ -98,6 +101,7 @@ test('emissions breakdown component displays each bar chart when selected', asyn
   const service = Selector('tspan').withText('computeEngine')
 
   await t
+    .wait(5000)
     .click(dropDownSelector)
     .click(accountSelection)
     .expect(account.exists)
@@ -122,7 +126,7 @@ test('line chart displays the y-axis data when legend is clicked', async (t) => 
   const costAxis = Selector('text').withText('Cost ($)')
   const co2eAxis = Selector('text').withText('CO2e (metric tons)')
 
-  await t.click(kwhLegend).expect(kwhAxis.exists).ok()
+  await t.wait(5000).click(kwhLegend).expect(kwhAxis.exists).ok()
   await t.click(costLegend).expect(costAxis.exists).ok()
   await t.click(co2eLegend).expect(co2eAxis.exists).notOk()
 })
