@@ -1,65 +1,65 @@
 .valuePropCardsContainer {
-    display: flex;
+  display: flex;
 }
 
-@media screen and (max-width: 700px) {
-    .valuePropCardsContainer {
-      flex-direction: column;
-    }
+@media screen and (max-width: 900px) {
+  .valuePropCardsContainer {
+    flex-direction: column;
+  }
 }
 
 .valuePropCard {
-    flex-basis: 100%;
-    margin: 1rem;
-    padding-bottom: 2rem;
+  flex-basis: 100%;
+  margin: 1rem;
+  padding-bottom: 2rem;
 }
 
-@media screen and (max-width: 966px) {
-    .valuePropCardsContainer {
-        flex-wrap: wrap;
-        align-items: center;
-        justify-items: center;
-      }
+@media screen and (max-width: 1280px) {
+  .valuePropCardsContainer {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-items: center;
+  }
 
-    .valuePropCard {
-        flex: 40%;
-    }
+  .valuePropCard {
+    flex: 40%;
+  }
 }
 
 .valuePropCardHeaderContainer {
-    display: flex;
-    align-items: flex-start;
-    height: 5rem;
-    margin-top: 1rem;
+  display: flex;
+  align-items: flex-start;
+  height: 5rem;
+  margin-top: 1rem;
 }
 
 .valuePropCardIconContainer {
-    width: 12%;
-    margin-top: 0.3rem;
+  width: 12%;
+  margin-top: 0.3rem;
 }
 
 .valuePropCardTitleContainer {
-    width: 85%;
+  width: 85%;
 }
 
 .valuePropCardTitle {
-    font-size: 16pt;
-    line-height: 1.4;
+  font-size: 16pt;
+  line-height: 1.4;
 }
 
-@media screen and (max-width: 1280px) and (min-width: 966px){
-    .valuePropCardIconContainer {
-        width: 18%;
-        margin-top: 0.4rem;
-    }
+@media screen and (max-width: 1280px) and (min-width: 900px) {
+  .valuePropCardIconContainer {
+    width: 18%;
+    margin-top: 0.4rem;
+  }
 
-    .valuePropCardHeaderContainer {
-        height: 7rem;
-    }
+  .valuePropCardHeaderContainer {
+    height: 4rem;
+  }
 }
 
-@media screen and (max-width: 966px) and (min-width: 700px){
-    .valuePropCardDescriptionContainer {
-      height: 12rem;
-    }
+@media screen and (max-width: 1000px) and (min-width: 900px) {
+  .valuePropCardDescriptionContainer {
+    height: 10rem;
+  }
 }

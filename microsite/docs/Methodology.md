@@ -1,44 +1,7 @@
-# Methodology
-
-### Table of Contents
-
-[Summary](#summary)
-
-[Longer Version](#longer-version)
-
-- [A note on our approach](#a-note-on-our-approach)
-- [Options for cloud usage and cost data source](#options-for-cloud-usage-and-cost-data-source)
-
-  - [1. Using Billing Data for Cloud Usage (Holistic)](#1-using-billing-data-for-cloud-usage-holistic)
-
-  - [2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)](#2-using-cloud-usage-apis-for-cloud-usage-higher-accuracy)
-
-- [Energy Estimate (Watt-Hours)](#energy-estimate-watt-hours)
-
-  - [Compute](#compute)
-
-    - [A note on AWS Lambda Compute Estimates](#a-note-on-aws-lambda-compute-estimates)
-    - [A note on AWS Aurora Serverless Compute Estimates](#a-note-on-aws-aurora-serverless-compute-estimates)
-
-  - [Storage](#storage)
-
-  - [Networking](#networking)
-
-    - [Scope](#scope)
-
-    - [Studies to date](#studies-to-date)
-
-    - [Chosen coefficient](#chosen-coefficient)
-
-- [Carbon Estimates (CO2e)](#carbon-estimates-co2e)
-
-- [Appendix I: Energy coefficients](#appendix-i-energy-coefficients)
-
-- [Appendix II: Processor lists](#appendix-ii-aws--gcp-processor-list)
-
-- [Appendix III: Recent Networking studies](#appendix-iii-recent-networking-studies)
-
-- [Appendix IV: Grid emissions factors](#appendix-iv-grid-emissions-factors)
+---
+id: methodology
+title: Methodology
+---
 
 ## Summary
 
@@ -176,7 +139,6 @@ hour).
 
      Average Watts = Min Watts + Avg vCPU Utilization  * (Max Watts - Min Watts)
 
-
 Second, we then translate this into total Watt Hours based on the amount of time servers are being used, or
 virtual CPU hours, and the cloud provider’s Power Usage Effectiveness (PUE) score, ie. how energy efficient their data
 centers are.
@@ -224,7 +186,7 @@ Here are the compute constants used for each cloud provider:
 - Max Matts: 3.5
 - PUE: 1.125
 
-##### A note on AWS Lambda Compute Estimates
+#### A note on AWS Lambda Compute Estimates
 
 In the case of AWS Lambda, AWS does not provide metrics for CPU Utilization and number of vCPU hours, so we need
 to take an alternative approach.
@@ -247,7 +209,7 @@ where:
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs.
 
-##### A note on AWS Aurora Serverless Compute Estimates
+#### A note on AWS Aurora Serverless Compute Estimates
 
 In the case of AWS Aurora Serverless using the Cost and Usage Reports, the pricing unit is `ACU-Hrs`. 1 ACU has
 approximately 2 GB of memory with corresponding CPU and networking, similar to what is used in Aurora user-provisioned
@@ -268,8 +230,8 @@ Here is the estimated HDD energy usage:
 
 - HDD average capacity in 2020 = **10** Terabytes per disk
 - Average wattage per disk for 2020 = **6.5** Watts per disk
-        Watts per Terabyte = Watts per disk / Terabytes per disk:
-        6.65 W / 10 TB = **0.65 Watt-Hours per Terabyte-Hour for HDD**
+  Watts per Terabyte = Watts per disk / Terabytes per disk:
+  6.65 W / 10 TB = **0.65 Watt-Hours per Terabyte-Hour for HDD**
 
 Here is the estimated SSD energy usage:
 
@@ -284,21 +246,21 @@ bytes, because this is a more accurate reflection of the energy needed to suppor
 organization may have a 20 Gigabyte AWS EBS Volume allocated, but is only utilizing 2 Gigabytes for this block storage
 device. In this case we would use 20 GBs in the energy estimation formula for EBS storage.
 
-### Networking
+#### Networking
 
-### Scope
+#### Scope
 
 Currently, our application takes into account only the data exchanged between different geographical data centers.
 
 For networking, it is safe to assume that the electricity used to power the internal network is close to 0, or at least negligible compared to the electricity required to power servers. We also have chosen to ignore traffic that leaves a data center to provide end-users with services, because this traffic is usually handled by CDN providers (Content delivery network) which are not necessarily the same provider as for cloud computing. This traffic is also dependent on the behavior of end-users. That said, we would welcome contributions to be able to include this in our approach.
 
-### Studies to date
+#### Studies to date
 
 There have not been many studies that deal specifically with estimating the electricity impact of exchanging data across data-centers. Most studies focus on estimating the impact of end-user traffic from the data center to the mobile phone; integrating the scope of the core network (what we are interested in), the local access to internet (optical fiber, copper, or 3G/4G/5G) and eventually the connection to the phone (WiFi or 4G).
 
 On top of that, these studies use different methodologies and end up with results with orders of magnitude in differences. See appendix III below for a summary of the most recent studies. Note that it is very hard to find recent studies that provide an estimation for optical fiber networks, the scope we are interested in.
 
-### Chosen coefficient
+#### Chosen coefficient
 
 It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: 0.001 kWh/Gb. Again, we welcome feedback or contributions to improve this coefficient.
 
@@ -322,7 +284,7 @@ than the more granular eGRID subregion or state emissions factors because we fee
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more
 adequately reflect. Outside the US, we generally use carbonfootprint.com’s [country specific grid emissions factors report](https://www.carbonfootprint.com/).
 For most of Europe, however, we use [EEA emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6).
-In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report. 
+In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report.
 
 You can see the full list of emissions factors in Appendix IV below.
 
@@ -352,7 +314,7 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 - Networking Kilowatt Hours / Gigabyte: 0.001
 - Average PUE: 1.1
 
-### Azure
+#### Azure
 
 - Minimum Watts (0% Cpu Utilization): 0.59
 - Maximum Watts (100% Cpu Utilization): 3.5
@@ -473,9 +435,9 @@ AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/ser
 
 #### GCP
 
-| Region                  | Location          | CO2e (metric ton/kWh) | Source                                                                                                                      |
-| ----------------------- | ----------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| us-central1             | Iowa              | 0.000479              | [Google](https://cloud.google.com/sustainability/region-carbon)                                                             |
+| Region                  | Location          | CO2e (metric ton/kWh) | Source                                                          |
+| ----------------------- | ----------------- | --------------------- | --------------------------------------------------------------- |
+| us-central1             | Iowa              | 0.000479              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | us-east1                | South Carolina    | 0.0005                | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | us-east4                | Northern Virginia | 0.000383              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | us-west1                | Oregon            | 0.000117              | [Google](https://cloud.google.com/sustainability/region-carbon) |
@@ -500,4 +462,4 @@ AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/ser
 | northamerica-northeast1 | Canada            | 0.000143              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | southamerica-east1      | Brazil            | 0.000109              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+<!-- © 2020 ThoughtWorks, Inc. All rights reserved. -->

@@ -4,5 +4,8 @@
     ],
     "src": "tests/*test.js",
     "browsers": ["chrome:headless"],
-    "concurrency": 3
+    "concurrency": 3,
+    "appCommand": "yarn start",
+    "pageRequestTimeout": 360000,
+    "pageLoadTimeout": 360000
   }

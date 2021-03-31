@@ -1,4 +1,4 @@
-.callToActionBannerWrapper {
+.callToActionBannerContainer {
   display: flex;
   justify-content: space-around;
   background-color: #146133;
@@ -15,8 +15,8 @@
 }
 
 @media screen and (max-width: 950px) {
-  .callToActionBannerWrapper {
-    flex-wrap: wrap;
+  .callToActionBannerContainer {
+    flex-direction: column;
     padding: 20px 30px;
   }
 

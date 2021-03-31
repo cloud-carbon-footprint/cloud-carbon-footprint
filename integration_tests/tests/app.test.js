@@ -3,12 +3,17 @@
  */
 import { Selector } from 'testcafe'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`.beforeEach(
+  async (t) => {
+    const header = Selector('#app-bar-header')
+    await t.expect(header.exists).ok()
+  },
+)
 
-test.skip('loading screen appears when app is starting', async (t) => {
-  const loading = Selector('.makeStyles-loadingMessage-19')
-
+test('loading screen appears when app is starting', async (t) => {
+  const loading = Selector('#loading-screen')
   await t.expect(loading.exists).ok()
+  await t.wait(5000).expect(loading.exists).notOk()
 })
 
 test('main components render with correct data when app loads', async (t) => {
@@ -19,7 +24,7 @@ test('main components render with correct data when app loads', async (t) => {
   const carbonComparisonCard = Selector('#carbonComparisonCard')
   const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
 
-  await t.expect(cloudProviders.exists).ok()
+  await t.wait(5000).expect(cloudProviders.exists).ok()
   await t.expect(accounts.exists).ok()
   await t.expect(services.exists).ok()
   await t.expect(lineChart.exists).ok()
@@ -27,19 +32,19 @@ test('main components render with correct data when app loads', async (t) => {
   await t.expect(emissionsBreakdownContainer.exists).ok()
 })
 
-test('side drawer opens when clicked', async (t) => {
-  const drawerOpenButton = Selector('.makeStyles-infoButton-2')
-  const drawerCloseButton = Selector(
-    '.makeStyles-closeButtonContainer-3',
-  ).child('.MuiIconButton-root')
-  const drawerOpen = Selector('.makeStyles-drawerOpen-5').exists
+test('side drawer opens and closes when clicked', async (t) => {
+  const drawerOpenButton = Selector('#info-button')
+  const drawerCloseButton = Selector('#close-button-container').child(
+    '.MuiIconButton-root',
+  )
+  const drawerOpen = Selector('#drawer-open').exists
 
   await t.click(drawerOpenButton).expect(drawerOpen).ok()
   await t.click(drawerCloseButton).expect(drawerOpen).notOk()
 })
 
-test('total metric tons is loaded correctly', async (t) => {
-  let totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('286')
+test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
+  let totalCo2Amount = Selector('#metric-one').withText('286')
   const cloudProviderDropDown = Selector('#cloud-provider-filter')
     .sibling('div')
     .child('button')
@@ -50,23 +55,23 @@ test('total metric tons is loaded correctly', async (t) => {
     .sibling('div')
     .child('button')
 
-  await t.expect(totalCo2Amount.exists).ok()
+  await t.wait(5000).expect(totalCo2Amount.exists).ok()
   await t.click(cloudProviderDropDown)
   const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
   await t.click(awsDropdownItem)
-  totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('80')
+  totalCo2Amount = Selector('#metric-one').withText('80')
   await t.expect(totalCo2Amount.exists).ok()
 
   await t.click(accountsDropDown)
   const accountsDropdownItem = Selector('#accounts-filter-option-1')
   await t.click(accountsDropdownItem)
-  totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('136')
+  totalCo2Amount = Selector('#metric-one').withText('136')
   await t.expect(totalCo2Amount.exists).ok()
 
   await t.click(servicesDropDown)
   const servicesDropdownItem = Selector('#services-filter-option-1')
   await t.click(servicesDropdownItem)
-  totalCo2Amount = Selector('.makeStyles-metricOne-49').withText('124')
+  totalCo2Amount = Selector('#metric-one').withText('124')
   await t.expect(totalCo2Amount.exists).ok()
 })
 

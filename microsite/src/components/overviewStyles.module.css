@@ -5,7 +5,7 @@
   padding: 3rem 10%;
 }
 
-@media screen and (max-width: 966px) {
+@media screen and (max-width: 1280px) {
   .overviewContainer {
     flex-direction: column;
     padding: 2rem;
@@ -38,6 +38,12 @@
 .overviewImage {
   height: 100%;
   width: 100%;
+}
+
+@media screen and (max-width: 1280px) and (min-width: 966px) {
+  .overviewImage {
+    width: 75%;
+  }
 }
 
 .overviewTitle {

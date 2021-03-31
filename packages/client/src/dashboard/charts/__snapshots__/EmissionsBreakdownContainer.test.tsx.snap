@@ -3,6 +3,7 @@
 exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
 <div
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
+  id="emissionsBreakdownContainer"
 >
   <div
     className="MuiBox-root MuiBox-root-4"
@@ -24,7 +25,9 @@ exports[`EmissionsBreakdownContainer renders donut chart with dropdown 1`] = `
         >
           <div
             aria-haspopup="listbox"
+            aria-labelledby="breakdown-selector"
             className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-5"
+            id="breakdown-selector"
             onBlur={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
