@@ -49,7 +49,7 @@ const useRemoteService = (
           setError(DEFAULT_RESPONSE)
         }
       } finally {
-        setLoading(false)
+        setTimeout(() => setLoading(false), 1000)
       }
     }
 

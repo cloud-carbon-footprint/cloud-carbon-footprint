@@ -33,7 +33,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   GCP: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS_AVG: 0.58,
+    MIN_WATTS_AVG: 1.34,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
@@ -56,7 +56,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.GCP.MIN_WATTS_AVG
     },
-    MAX_WATTS_AVG: 3.54,
+    MAX_WATTS_AVG: 4.98,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
@@ -103,7 +103,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AWS: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS_AVG: 0.59,
+    MIN_WATTS_AVG: 0.71,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
@@ -114,6 +114,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 3.04,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
+      [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2]: 0.47,
     },
     getMinWatts: (computeProcessors: string[]): number => {
       const minWattsForProcessors: number[] = computeProcessors.map(
@@ -126,7 +127,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG
     },
-    MAX_WATTS_AVG: 3.5,
+    MAX_WATTS_AVG: 3.46,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
@@ -137,6 +138,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 8.25,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
       [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
+      [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2]: 1.69,
     },
     getMaxWatts: (computeProcessors: string[]): number => {
       const maxWattsForProcessors: number[] = computeProcessors.map(
@@ -159,7 +161,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AZURE: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS_AVG: 0.59,
+    MIN_WATTS_AVG: 0.77,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
@@ -182,7 +184,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AZURE.MIN_WATTS_AVG
     },
-    MAX_WATTS_AVG: 3.5,
+    MAX_WATTS_AVG: 3.74,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,

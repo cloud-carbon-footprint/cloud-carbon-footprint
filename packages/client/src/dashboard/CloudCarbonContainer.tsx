@@ -67,14 +67,21 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const dateRangeType: string = config().DATE_RANGE.TYPE
   const dateRangeValue: string = config().DATE_RANGE.VALUE
-  const endDate: moment.Moment = moment.utc()
+  let endDate: moment.Moment
   let startDate: moment.Moment
+  if (config().END_DATE) {
+    endDate = moment.utc(config().END_DATE)
+  } else {
+    endDate = moment.utc()
+  }
   if (config().PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
-    startDate = moment
-      .utc()
-      .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
+    startDate = config().END_DATE ? moment.utc(config().END_DATE) : moment.utc()
+    startDate.subtract(
+      dateRangeValue,
+      dateRangeType as unitOfTime.DurationConstructor,
+    )
   }
 
   const { data, loading } = useRemoteService([], startDate, endDate)
@@ -95,7 +102,7 @@ export default function CloudCarbonContainer(): ReactElement {
       style={{ minHeight: '100vh' }}
     >
       <CircularProgress size={100} />
-      <div className={classes.loadingMessage}>
+      <div className={classes.loadingMessage} id="loading-screen">
         Loading cloud data. This may take a while...
       </div>
     </Grid>
