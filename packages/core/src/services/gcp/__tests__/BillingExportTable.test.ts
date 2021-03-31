@@ -113,8 +113,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
           {
-            kilowattHours: 0.050447111111111116,
-            co2e: 0.000025223555555555558,
+            kilowattHours: 0.0773848888888889,
+            co2e: 0.00003869244444444445,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -143,7 +143,7 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns estimation results for Cloud SQL SSD Storage, Compute Engine and Cloud Dataflow HDD', async () => {
+  it('Returns estimation results for Compute with different machine types', async () => {
     //given
     mockJob.getQueryResults.mockResolvedValue(
       mockQueryComputeWithDifferentMachineTypes,
@@ -168,8 +168,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 11.043064321244447,
-            co2e: 0.005521532160622224,
+            kilowattHours: 16.939846240355557,
+            co2e: 0.008469923120177778,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -193,8 +193,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 5.823478930055557,
-            co2e: 0.0029117394650277784,
+            kilowattHours: 8.933103601444445,
+            co2e: 0.004466551800722223,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -257,8 +257,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 76.1286173436778,
-            co2e: 0.038064308671838895,
+            kilowattHours: 116.77982077962223,
+            co2e: 0.05838991038981112,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -296,12 +296,12 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.0003600539590722223,
+            co2e: 0.0005523157818777779,
             cost: 190,
             region: 'us-east1',
             serviceName: 'Cloud Dataflow',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.7201079181444445,
+            kilowattHours: 1.1046315637555557,
           },
           {
             accountName: 'test-account',
