@@ -7,7 +7,11 @@ import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
 import { sumCO2ByServiceOrRegion } from '../transformData'
-import { ApexChartProps } from './common/ChartTypes'
+import {
+  ApexChartProps,
+  EmissionsRatios,
+  chartBarCustomColors,
+} from './common/ChartTypes'
 import { Page, Pagination } from './Pagination'
 import ChartLegend from './ChartLegend'
 import NoDataPage from '../NoDataPage'
@@ -28,14 +32,6 @@ export interface Entry {
   y: number
 }
 
-const chartBarCustomColors = [
-  '#73B500',
-  '#00791E',
-  '#D99200',
-  '#DF5200',
-  '#790000',
-]
-
 export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   data,
   dataType,
@@ -48,36 +44,36 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     loading: _emissionsLoading,
   } = useRemoteEmissionService()
 
-  let getCustomBarColors
-  if (dataType === 'region' && emissionsData.length > 0) {
-    getCustomBarColors = [
-      function (data: any) {
-        const currentRegion = data.w.globals.labels[0]
-
-        const regionEmissioData = emissionsData.find(
-          (item) => item.region === currentRegion,
-        )
-
-        if (!regionEmissioData) {
-          return theme.palette.primary.main
+  const createCustomBarColors = () => {
+    const regionColorsMap: string[] = []
+    pageData.data.forEach((region) => {
+      const currentRegion = region.x
+      let color = chartBarCustomColors[0]
+      const regionEmissionData = emissionsData.find(
+        (item) => item.region === currentRegion,
+      ) as EmissionsRatios
+      if (!regionEmissionData) {
+        regionColorsMap.push(theme.palette.primary.main)
+      } else {
+        const { mtPerKwHour } = regionEmissionData
+        if (mtPerKwHour > 0.00064) {
+          color = chartBarCustomColors[4]
+        } else if (mtPerKwHour > 0.00048 && mtPerKwHour < 0.00064) {
+          color = chartBarCustomColors[3]
+        } else if (mtPerKwHour > 0.00032 && mtPerKwHour < 0.00048) {
+          color = chartBarCustomColors[2]
+        } else if (mtPerKwHour > 0.00016 && mtPerKwHour < 0.00032) {
+          color = chartBarCustomColors[1]
         }
+        regionColorsMap.push(color)
+      }
+    })
+    return regionColorsMap
+  }
 
-        const { mtPerKwHour } = regionEmissioData
-
-        if (mtPerKwHour > 0.00000064) {
-          return chartBarCustomColors[4]
-        } else if (mtPerKwHour > 0.00000048 && mtPerKwHour < 0.00000064) {
-          return chartBarCustomColors[3]
-        } else if (mtPerKwHour > 0.00000032 && mtPerKwHour < 0.00000048) {
-          return chartBarCustomColors[2]
-        } else if (mtPerKwHour > 0.00000016 && mtPerKwHour < 0.00000032) {
-          return chartBarCustomColors[1]
-        }
-        return chartBarCustomColors[0]
-      },
-    ]
-  } else {
-    getCustomBarColors = [theme.palette.primary.main]
+  let customBarColors = [theme.palette.primary.main]
+  if (dataType === 'region' && !!emissionsData.length) {
+    customBarColors = createCustomBarColors()
   }
 
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
@@ -117,7 +113,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         data: pageData.data,
       },
     ],
-    colors: getCustomBarColors,
+    colors: customBarColors,
     chart: {
       type: 'bar',
       toolbar: {
@@ -154,8 +150,11 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       bar: {
         horizontal: true,
         barHeight: `${7 * pageData.data.length}%`,
-        distributed: false,
+        distributed: true,
       },
+    },
+    legend: {
+      show: false,
     },
     dataLabels: {
       enabled: true,
