@@ -1,20 +1,19 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React from 'react'
 import styles from './differentiator.module.css'
 
 const differences = [
   {
     text:
-      'Architected to work for multiple cloud providers and displays cloud carbon metrics ' +
-      'in a single, holistic view',
+      'Architected to work for multiple cloud providers including, AWS, Google Cloud, ' +
+      'and Microsoft Azure, and displays cloud carbon metrics in a single holistic view',
   },
   {
     text:
-      'Supports AWS and Google Cloud, with plans to add Azure and other providers, ' +
-      'including potential for on-prem and co-located data centers',
-  },
-  {
-    text:
-      'Ability to measure usage at a granular service level and use actual server ' +
+      'Ability to measure usage at a granular service level and use actual server' +
       'utilization rather than average utilization for hyperscale data centers',
   },
   {
@@ -22,11 +21,14 @@ const differences = [
       'Provides estimates for both energy and carbon emissions from cloud usage',
   },
   {
-    text: 'Displays information in chart visual, table, or CSV',
+    text: 'Monitors your energy usage and carbon footprint visually via graphs and ' +
+      'charts, with the ability to keep track of data in tables and export metrics in ' +
+      'CSV to share with stakeholders',
   },
   {
     text:
-      'The solution is open and extensible; contributions and improvements encouraged',
+      'The solution is open and extensible with the potential to add other cloud ' +
+      'providers, on-prem or co-located data centers',
   },
 ]
 
