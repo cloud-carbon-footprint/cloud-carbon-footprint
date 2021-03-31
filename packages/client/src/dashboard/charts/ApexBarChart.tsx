@@ -2,14 +2,16 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, Fragment } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
 import { sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
 import { Page, Pagination } from './Pagination'
+import ChartLegend from './ChartLegend'
 import NoDataPage from '../NoDataPage'
+import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 
 const mapToRange = (
   value: number,
@@ -26,13 +28,58 @@ export interface Entry {
   y: number
 }
 
+const chartBarCustomColors = [
+  '#73B500',
+  '#00791E',
+  '#D99200',
+  '#DF5200',
+  '#790000',
+]
+
 export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   data,
   dataType,
 }) => {
   const [pageData, setPageData] = useState<Page<Entry>>({ data: [], page: 0 })
   const theme = useTheme()
-  const chartColors = [theme.palette.primary.main]
+
+  const {
+    data: emissionsData,
+    loading: _emissionsLoading,
+  } = useRemoteEmissionService()
+
+  let getCustomBarColors
+  if (dataType === 'region' && emissionsData.length > 0) {
+    getCustomBarColors = [
+      function (data: any) {
+        const currentRegion = data.w.globals.labels[0]
+
+        const regionEmissioData = emissionsData.find(
+          (item) => item.region === currentRegion,
+        )
+
+        if (!regionEmissioData) {
+          return theme.palette.primary.main
+        }
+
+        const { mtPerKwHour } = regionEmissioData
+
+        if (mtPerKwHour > 0.00000064) {
+          return chartBarCustomColors[4]
+        } else if (mtPerKwHour > 0.00000048 && mtPerKwHour < 0.00000064) {
+          return chartBarCustomColors[3]
+        } else if (mtPerKwHour > 0.00000032 && mtPerKwHour < 0.00000048) {
+          return chartBarCustomColors[2]
+        } else if (mtPerKwHour > 0.00000016 && mtPerKwHour < 0.00000032) {
+          return chartBarCustomColors[1]
+        }
+        return chartBarCustomColors[0]
+      },
+    ]
+  } else {
+    getCustomBarColors = [theme.palette.primary.main]
+  }
+
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
 
   const dataEntries: { x: string; y: number }[] = Object.entries(barChartData)
@@ -42,6 +89,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       y: item[1],
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
+
   const smallestCO2E = dataEntries?.[dataEntries?.length - 1]?.y
   const largestCO2E = dataEntries?.[0]?.y
   const totalCO2EByDataType = dataEntries.reduce((acc, currentValue) => {
@@ -69,10 +117,12 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         data: pageData.data,
       },
     ],
-    colors: chartColors,
+    colors: getCustomBarColors,
     chart: {
       type: 'bar',
       toolbar: {
+        offsetX: '100%',
+        offsetY: '100%',
         tools: {
           download: `
             <div class="apexcharts-menu-icon" title="Menu">
@@ -177,21 +227,32 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         alignContent: 'center',
       }}
     >
-      {pageData && pageData.data && pageData.data.length ? (
-        <Chart
-          options={options}
-          series={options.series}
-          type="bar"
-          height={options.height}
-        />
+      {emissionsData?.length ? (
+        <Fragment>
+          {dataType === 'region' && (
+            <ChartLegend
+              startLabel="Very low intensity"
+              endLabel="Very high intensity"
+              colorRange={chartBarCustomColors}
+            />
+          )}
+          <Chart
+            options={options}
+            series={options.series}
+            type="bar"
+            height={options.height}
+          />
+        </Fragment>
       ) : (
         <NoDataPage isTop={false} />
       )}
-      <Pagination
-        data={mappedDataEntries}
-        pageSize={pageSize}
-        handlePage={handlePage}
-      />
+      <div style={{ paddingTop: '10px' }}>
+        <Pagination
+          data={mappedDataEntries}
+          pageSize={pageSize}
+          handlePage={handlePage}
+        />
+      </div>
     </div>
   )
 }

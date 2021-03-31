@@ -6,21 +6,13 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useErrorHandling } from '../ErrorPage'
 
-import { EstimationResult, ServiceResult } from '../../models/types'
+import { EmissionsRatios, ServiceResult } from '../../models/types'
 
-const useRemoteService = (
-  initial: EstimationResult[],
-  startDate: moment.Moment,
-  endDate: moment.Moment,
-  region?: string,
-): ServiceResult<EstimationResult> => {
-  const [data, setData] = useState(initial)
+const useRemoteEmissionService = (): ServiceResult<EmissionsRatios> => {
+  const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
 
   const { handleApiError, error, setError } = useErrorHandling()
-
-  const start: string = startDate.format('YYYY-MM-DD').toString()
-  const end: string = endDate.format('YYYY-MM-DD').toString()
 
   useEffect(() => {
     const fetchEstimates = async () => {
@@ -28,13 +20,7 @@ const useRemoteService = (
       setLoading(true)
 
       try {
-        const res = await axios.get('/api/footprint', {
-          params: {
-            start: start,
-            end: end,
-            region: region,
-          },
-        })
+        const res = await axios.get('/api/regions/emissions-factors')
         setData(res.data)
       } catch (e) {
         const DEFAULT_RESPONSE = {
@@ -54,11 +40,11 @@ const useRemoteService = (
     }
 
     fetchEstimates()
-  }, [end, start, region, setError])
+  }, [setError])
 
   handleApiError(error)
 
   return { data, loading }
 }
 
-export default useRemoteService
+export default useRemoteEmissionService

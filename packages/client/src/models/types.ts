@@ -14,8 +14,8 @@ export interface serviceEstimate {
   usesAverageCPUConstant?: boolean
 }
 
-export interface ServiceResult {
-  data: EstimationResult[]
+export interface ServiceResult<T> {
+  data: T[]
   loading: boolean
 }
 
@@ -47,4 +47,9 @@ export enum UnknownTypes {
   UNKNOWN_REGION = 'Unknown Region',
   UNKNOWN_SERVICE = 'Unknown Service',
   UNKNOWN_ACCOUNT = 'Unknown Account',
+}
+
+export interface EmissionsRatios {
+  region: string
+  mtPerKwHour: number
 }
