@@ -27,7 +27,7 @@ test('main components render with correct data when app loads', async (t) => {
   const carbonComparisonCard = Selector('#carbonComparisonCard')
   const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
 
-  await t.wait(5000).expect(cloudProviders.exists).ok()
+  await t.expect(cloudProviders.exists).ok()
   await t.expect(accounts.exists).ok()
   await t.expect(services.exists).ok()
   await t.expect(lineChart.exists).ok()
@@ -42,7 +42,7 @@ test('side drawer opens and closes when clicked', async (t) => {
   )
   const drawerOpen = Selector('#drawer-open').exists
 
-  await t.wait(5000).click(drawerOpenButton).expect(drawerOpen).ok()
+  await t.click(drawerOpenButton).expect(drawerOpen).ok()
   await t.click(drawerCloseButton).expect(drawerOpen).notOk()
 })
 
@@ -58,7 +58,7 @@ test('total metric tons is loaded correctly with different dropdown selections',
     .sibling('div')
     .child('button')
 
-  await t.wait(5000).expect(totalCo2Amount.exists).ok()
+  await t.expect(totalCo2Amount.exists).ok()
   await t.click(cloudProviderDropDown)
   const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
   await t.click(awsDropdownItem)
@@ -86,7 +86,7 @@ test('carbon equivalency component displays each option when clicked', async (t)
   const treeSeedlings = Selector('p').withText('4,729')
   const milesDriven = Selector('p').withText('709,678')
 
-  await t.wait(5000).click(gasButton).expect(gallonsOfGas.exists).ok()
+  await t.click(gasButton).expect(gallonsOfGas.exists).ok()
   await t.click(treesButton).expect(treeSeedlings.exists).ok()
   await t.click(milesButton).expect(milesDriven.exists).ok()
 })
@@ -101,7 +101,6 @@ test('emissions breakdown component displays each bar chart when selected', asyn
   const service = Selector('tspan').withText('computeEngine')
 
   await t
-    .wait(5000)
     .click(dropDownSelector)
     .click(accountSelection)
     .expect(account.exists)
@@ -126,7 +125,7 @@ test('line chart displays the y-axis data when legend is clicked', async (t) => 
   const costAxis = Selector('text').withText('Cost ($)')
   const co2eAxis = Selector('text').withText('CO2e (metric tons)')
 
-  await t.wait(5000).click(kwhLegend).expect(kwhAxis.exists).ok()
+  await t.click(kwhLegend).expect(kwhAxis.exists).ok()
   await t.click(costLegend).expect(costAxis.exists).ok()
   await t.click(co2eLegend).expect(co2eAxis.exists).notOk()
 })
