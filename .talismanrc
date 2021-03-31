@@ -117,24 +117,7 @@ fileignoreconfig:
   checksum: 82864186893a139ba637e828644bc24138d9c1338e0e51000e02eaf06c9aa665
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
+- filename: packages/api/.env.template
+  checksum: 26d1b5312f6615fe4f6459cfd020aa5726cfa7f94a7001d7856c3410c294dbe1
 - filename: yarn.lock
-  checksum: b82a243dcc042ec60cdb0bdd4f814d3f3a58e3e59d65935da73cf73b844e49f0
-  checksum: 60d1d6ee719866ba0c74a8da24fe3838f7323c79a35896ed7ae859de16919cdc
-- filename: packages/cli/src/GuidedInstall/azure.ts
-  checksum: f52e673ab66d4a135e57e8a455ae89afe399e02e03ca8bef47b9e2a245583e4c
-- filename: packages/cli/src/GuidedInstall/gcp.ts
-  checksum: 65e65ead9a03e8a171c71dc950e44083364be27702dd24961fe881e61bc2b1b2
-- filename: packages/cli/src/GuidedInstall/common.ts
-  checksum: 7af87675ba4931dfcaa6d72d0c4353b86a0b8098c80f0f0bedc22b6d9c6c1d80
-- filename: packages/cli/src/GuidedInstall/external.ts
-  checksum: 4a9ae883712dc10b5957860f5f10cf1744af94230995e23f510562f126290b47
-- filename: packages/cli/src/GuidedInstall/runner.ts
-  checksum: 0164db137100385627c51b01ff3aabef4c52303b2646e7814b4b3b15408babac
-- filename: packages/cli/src/__tests__/GuidedInstall/common.test.ts
-  checksum: 633698c06235a3092aaee2a7e852734c6a4f6544f05fc62c85710adf2b0ab7a6
-- filename: packages/cli/src/__tests__/GuidedInstall/runner.test.ts
-  checksum: 3ad76fe02d5a26db3067a8473eb6ff813cc408aa2bdaf691cc59dd79e13af2fe
-- filename: packages/cli/src/__tests__/GuidedInstall/__snapshots__/runner.test.ts.snap
-  checksum: 6c0dd40c0317f63ada1c53dd99fc670048f5afa7653bf46c8e804087fd90712e
-
-
+  checksum: 7bb0b2251fb50a4631d4aa2cb19da0ac823e25a625524f5c125f51475ff85521

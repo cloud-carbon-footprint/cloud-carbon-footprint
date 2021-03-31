@@ -2,13 +2,16 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 import { Selector } from 'testcafe'
+import waitOn from 'wait-on'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`.beforeEach(
-  async (t) => {
+fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+  .before(async () => {
+    await waitOn({ resources: ['http://localhost:3000/'] })
+  })
+  .beforeEach(async (t) => {
     const header = Selector('#app-bar-header')
     await t.expect(header.exists).ok()
-  },
-)
+  })
 
 test('loading screen appears when app is starting', async (t) => {
   const loading = Selector('#loading-screen')
@@ -24,7 +27,7 @@ test('main components render with correct data when app loads', async (t) => {
   const carbonComparisonCard = Selector('#carbonComparisonCard')
   const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
 
-  await t.wait(5000).expect(cloudProviders.exists).ok()
+  await t.expect(cloudProviders.exists).ok()
   await t.expect(accounts.exists).ok()
   await t.expect(services.exists).ok()
   await t.expect(lineChart.exists).ok()
@@ -55,7 +58,7 @@ test('total metric tons is loaded correctly with different dropdown selections',
     .sibling('div')
     .child('button')
 
-  await t.wait(5000).expect(totalCo2Amount.exists).ok()
+  await t.expect(totalCo2Amount.exists).ok()
   await t.click(cloudProviderDropDown)
   const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
   await t.click(awsDropdownItem)
