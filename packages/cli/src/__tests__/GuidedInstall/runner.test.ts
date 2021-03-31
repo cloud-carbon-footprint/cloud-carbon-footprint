@@ -68,6 +68,7 @@ describe('GuidedInstall', () => {
       mockListPrompt.mockResolvedValue('GCP')
       mockConfirmPrompt.mockResolvedValue(true)
       mockInputPrompt
+        .mockResolvedValueOnce('private key file path')
         .mockResolvedValueOnce('account id')
         .mockResolvedValueOnce('account name')
         .mockResolvedValueOnce('BIG table')
@@ -81,6 +82,7 @@ describe('GuidedInstall', () => {
         GCP_BILLING_ACCOUNT_NAME: 'account name',
         GCP_BIG_QUERY_TABLE: 'BIG table',
         GCP_USE_BILLING_DATA: 'true',
+        GOOGLE_APPLICATION_CREDENTIALS: 'private key file path',
       }
       expect(mockCreateEnvFile).toHaveBeenCalledWith('./', expectedEnv)
       expect(mockCreateEnvFile).toHaveBeenCalledWith('../api/', expectedEnv)

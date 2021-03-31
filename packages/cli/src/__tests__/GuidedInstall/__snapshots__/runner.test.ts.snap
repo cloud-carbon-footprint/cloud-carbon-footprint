@@ -219,7 +219,7 @@ Array [
     "Ensure you have a GCP Service Account with the permission to start BigQuery jobs and read Bigquery job results. Learn more about GCP Service Accounts [here](https://cloud.google.com/docs/authentication/getting-started).",
   ],
   Array [
-    "Create and download a JSON private file for this Service Account to your local filesystem, and make sure to set the \`GOOGLE_APPLICATION_CREDENTIALS\` environment variable. Learn more about this authentication method [here](https://cloud.google.com/docs/authentication/getting-started)",
+    "Create and download a JSON private file for this Service Account to your local filesystem. Learn more about this authentication method [here](https://cloud.google.com/docs/authentication/getting-started)",
   ],
   Array [
     "Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here](https://cloud.google.com/billing/docs/how-to/export-data-bigquery).",
@@ -243,6 +243,9 @@ Array [
 
 exports[`GuidedInstall GCP shows the correct input prompts for collecting env vars 1`] = `
 Array [
+  Array [
+    "Enter the absolute path to your service account private key file:",
+  ],
   Array [
     "Enter GCP account id:",
   ],
