@@ -100,6 +100,7 @@ Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footp
 ##### Integration Testing
 
 - Run either `yarn headless` or `yarn headed` from the `integration_tests` directory. Running `yarn headed` will run the tests with chrome browsers.
+- If using macOS Catalina or later, in order to run the tests properly, you will need to open your `System Preferences`, navigate to `Security & Privacy`, select `Screen Recording` from the menu and then check `TestCafe Browser Tools`.
 
 These are also part of the pre-commit hook but it is also advisable to run tests regularly.
 
