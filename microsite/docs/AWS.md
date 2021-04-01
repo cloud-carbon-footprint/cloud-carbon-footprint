@@ -8,6 +8,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 1.  Ensure your aws account has the correct permissions
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
+    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena.
 
 2.  Enable the Cost and Usage Billing AWS feature.
 
@@ -38,6 +39,18 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 :warning: This will incur some cost. Use this sparingly if you wish to test with live data.
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
+
+### Unsupported Usage Types
+
+The application has a file containing supported usage types located [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/services/aws/CostAndUsageTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
+
+`2021-03-31T09:48:38.815Z [CostAndUsageReports] warn: Unexpected usage type for storage service: EU-WarmStorage-ByteHrs-EFS`
+
+If you come across a similar warning message, the steps to resolve are:
+
+1. Determine the type in question based on the warning message
+2. Add the type to the respective list in the `CostAndUsageTypes.ts` file
+3. Restart the application server
 
 ### Options for AWS Authentication
 

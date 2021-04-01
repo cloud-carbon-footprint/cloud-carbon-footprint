@@ -47,27 +47,34 @@ This will run the webapp in development mode, using a mocked server. Open http:/
 
 A few steps are required to run the app with real data, that are different for each cloud provider. Check out the steps for each cloud provider here:
 
-- [AWS](docs/AWS.md)
-- [GCP](docs/GCP.md)
-- [Azure](docs/Azure.md)
+- [AWS](microsite/docs/AWS.md)
+- [GCP](microsite/docs/GCP.md)
+- [Azure](microsite/docs/Azure.md)
 
 ## Run with Docker
+
 If you would like to run with Docker, you'll need install docker and docker-compose:
-* Install options for docker [here](https://docs.docker.com/get-docker/).
-* Install options for docker-compose (if it doesn’t come bundled with Docker) [here](https://docs.docker.com/compose/install/).
+
+- Install options for docker [here](https://docs.docker.com/get-docker/).
+- Install options for docker-compose (if it doesn’t come bundled with Docker) [here](https://docs.docker.com/compose/install/).
 
 ### Run with docker-compose
 
 1. Make sure you have configured your `packages/api/.env` file with the environment variables you need for your cloud provider(s).
 1. Ensure you have saved your environment variables as files on your local file system. Docker compose will use these securely as Docker Secrets at run time, in the ~/.docker/secrets directory. To aid with this, we have a script you can run that does this:
+
 ```
 cd packages/api && ./create_docker_secrets.sh && cd ../..
 ```
+
 1. Ensure you have cloud provider credentials files in the following locations on your filesystem:
-* AWS: `$HOME/.aws/credentials`
-* GCP: `$HOME/.config/gcloud/service-account-keys.json`
+
+- AWS: `$HOME/.aws/credentials`
+- GCP: `$HOME/.config/gcloud/service-account-keys.json`
+
 1. Remove any secrets in docker-compose.yml that you are not using.
 1. Run the application with docker compose:
+
 ```
 docker-compose up
 ```
@@ -77,9 +84,11 @@ You can then access the dashboard at http://localhost:80
 ### Run the API as a Docker Container
 
 If you would like to only run the API as a Docker Container, for example to deploy this as a service for your organization, you can pull and run it with these commands:
+
 ```
 docker pull cloudcarbonfootprint/api
 ```
+
 ```
 docker run \
 --env-file packages/api/.env \

@@ -29,6 +29,18 @@ Your Microsoft Azure account needs to have an App registered and Service Princip
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
 
+### Unsupported Usage Types
+
+The application has a file containing supported usage types located [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/services/azure/ConsumptionTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
+
+`2021-03-31T09:48:38.815Z [ConsumptionManagement] warn: Unexpected usage type for storage service: EU-WarmStorage-ByteHrs-EFS`
+
+If you come across a similar warning message, the steps to resolve are:
+
+1. Determine the type in question based on the warning message
+2. Add the type to the respective list in the `ConsumptionTypes.ts` file
+3. Restart the application server
+
 ### Options for Azure Authentication
 
 By default, the application authenticates with Azure using environment variables set in the api/.env file. However, if you want to store these secrets is Google Secrets Manager we also provide that option, if you want to set the AZURE_AUTH_MODE environment variable to “GCP”.
