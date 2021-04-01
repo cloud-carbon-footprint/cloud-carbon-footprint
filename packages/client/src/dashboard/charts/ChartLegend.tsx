@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React, { ReactElement } from 'react'
 
 interface TimeLineProps {
@@ -11,7 +15,7 @@ const { timelineWrapper, timelineStyles, dotStyles, barStyles, labelsStyle } = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    padding: '0 45px',
+    padding: '10px 45px',
     alignSelf: 'center',
   },
   labelsStyle: {

@@ -56,14 +56,16 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         regionColorsMap.push(theme.palette.primary.main)
       } else {
         const { mtPerKwHour } = regionEmissionData
-        if (mtPerKwHour > 0.00064) {
+        if (mtPerKwHour >= 0.00064) {
           color = chartBarCustomColors[4]
-        } else if (mtPerKwHour > 0.00048 && mtPerKwHour < 0.00064) {
+        } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
           color = chartBarCustomColors[3]
-        } else if (mtPerKwHour > 0.00032 && mtPerKwHour < 0.00048) {
+        } else if (mtPerKwHour >= 0.00032 && mtPerKwHour < 0.00048) {
           color = chartBarCustomColors[2]
-        } else if (mtPerKwHour > 0.00016 && mtPerKwHour < 0.00032) {
+        } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
           color = chartBarCustomColors[1]
+        } else {
+          color = chartBarCustomColors[0]
         }
         regionColorsMap.push(color)
       }
@@ -106,6 +108,11 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     return { x: entry.x, y: isNaN(yEntry) ? maxThreshold : yEntry }
   })
 
+  const toolbarOffset = {
+    x: -120,
+    y: dataType === 'region' ? -122 : -55,
+  }
+
   const options = {
     series: [
       {
@@ -117,8 +124,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     chart: {
       type: 'bar',
       toolbar: {
-        offsetX: '100%',
-        offsetY: '100%',
+        offsetX: toolbarOffset.x,
+        offsetY: toolbarOffset.y,
         tools: {
           download: `
             <div class="apexcharts-menu-icon" title="Menu">
@@ -230,8 +237,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         <Fragment>
           {dataType === 'region' && (
             <ChartLegend
-              startLabel="Very low intensity"
-              endLabel="Very high intensity"
+              startLabel="Low carbon intensity"
+              endLabel="High carbon intensity"
               colorRange={chartBarCustomColors}
             />
           )}

@@ -1,3 +1,7 @@
+/*
+ * © 2020 ThoughtWorks, Inc. All rights reserved.
+ */
+
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ChartLegend from './ChartLegend'
@@ -5,8 +9,8 @@ import ChartLegend from './ChartLegend'
 describe('ChartLegend', () => {
   it('Sould render component', () => {
     const props = {
-      startLabel: 'Very low intensity',
-      endLabel: 'Very high intensity',
+      startLabel: 'Low carbon intensity',
+      endLabel: 'High carbon intensity',
       colorRange: ['#73B500', '#00791E'],
     }
 

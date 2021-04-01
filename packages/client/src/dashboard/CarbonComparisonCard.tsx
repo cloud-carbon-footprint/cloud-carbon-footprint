@@ -56,6 +56,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '55%',
+      paddingTop: '5%',
     },
     buttonContainer: {
       display: 'flex',
