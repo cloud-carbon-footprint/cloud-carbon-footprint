@@ -35,11 +35,14 @@ The application has a file containing supported usage types located [here](https
 
 `2021-03-31T09:48:38.815Z [ConsumptionManagement] warn: Unexpected usage type for storage service: EU-WarmStorage-ByteHrs-EFS`
 
-If you come across a similar warning message, the steps to resolve are:
+If you come across a similar warning message, congratulations! You have found a usage type that the app currently isn’t aware of - this is a great opportunity for you to improve Cloud Carbon Footprint!
+
+The steps to resolve are:
 
 1. Determine the type in question based on the warning message
 2. Add the type to the respective list in the `ConsumptionTypes.ts` file
-3. Restart the application server
+3. Delete `estimates.cache.json` file and restart the application server
+4. Submit a PR with the update
 
 ### Options for Azure Authentication
 
