@@ -74,7 +74,7 @@ fileignoreconfig:
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
   checksum: e620bc3d204cc335b5b7277ff026ef6a05a981016856a2a7c46302dfb1a99d00
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
-  checksum: 4d228f61da83e84b40a041f073e74917409a7fdeb09fdf70f3ef62720288d923
+  checksum: 4b35ddbf7774e4c89756089fcc9123739e034f4a2f07394e357c8434fd3285a3
 - filename: packages/core/src/services/common/types.ts
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
 - filename: packages/core/src/services/gcp/BillingExportTable.ts

@@ -208,7 +208,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         : CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
-    PUE_AVG: 1.125,
+    PUE_AVG: 1.185,
     getPUE: (): number => {
       return CLOUD_CONSTANTS.AZURE.PUE_AVG
     },

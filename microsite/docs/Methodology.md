@@ -265,7 +265,11 @@ Here are the cloud provider PUEs being used:
 
 - **AWS:** 1.135
 - **GCP:** 1.1
-- **Azure:** 1.125
+- **Azure:** 1.185 <sup>1</sup>
+
+##### 1: "Organizations are increasingly using the power usage effectiveness (PUE) metric to evaluate the energy efficiency of potential cloud service providers. PUE is essentially the energy going into the datacenter divided by the energy used by the servers. Differing methodologies across the industry for obtaining this metric makes precise comparison across providers difficult. Nevertheless, we have achieved significant improvements as we have continued to evolve both our designs and our operations to achieve among the best efficiency in the industry. Currently, our weighted owned and operated fleet-wide PUE trailing 12-month average is 1.185, and our latest designs are achieving an annual PUE of 1.125." -- <cite>Microsoft Sustainability Team</cite>
+
+<br />
 
 ### Carbon Estimates (CO2e)
 
