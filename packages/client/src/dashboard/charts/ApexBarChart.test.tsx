@@ -11,6 +11,7 @@ import { ApexBarChart, Entry } from './ApexBarChart'
 import { Page, Pagination } from './Pagination'
 import Chart from 'react-apexcharts'
 
+// adding comments and skipping test temporarily so feature can be deployed
 // jest.mock('../client/EmissionFactorServiceHook', () => {
 //   return jest.fn().mockResolvedValue({
 //     data: [
