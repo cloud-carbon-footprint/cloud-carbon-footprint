@@ -87,7 +87,7 @@ describe('ApexBarChart', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
   })
 
-  it('should format tool tip values with proper data instead of scaled down data', () => {
+  it.skip('should format tool tip values with proper data instead of scaled down data', () => {
     const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
       Pagination,
     ).props?.handlePage
@@ -112,7 +112,7 @@ describe('ApexBarChart', () => {
     )
   })
 
-  it('should format data label values with proper data instead of scaled down data', () => {
+  it.skip('should format data label values with proper data instead of scaled down data', () => {
     const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
       Pagination,
     ).props?.handlePage
@@ -135,7 +135,7 @@ describe('ApexBarChart', () => {
     expect(dataLabelFormatter(null, { dataPointIndex: 1 })).toEqual('33.33 %')
   })
 
-  it('should format data label values that are less than 0.01', () => {
+  it.skip('should format data label values that are less than 0.01', () => {
     const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
       Pagination,
     ).props?.handlePage
@@ -158,7 +158,7 @@ describe('ApexBarChart', () => {
     expect(dataLabelFormatter(null, { dataPointIndex: 3 })).toEqual('< 0.01 %')
   })
 
-  it('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
+  it.skip('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
       { x: 'ebs', y: 100 },
