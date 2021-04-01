@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/create-app-test",
-  "version": "0.1.10",
+  "version": "0.2.1",
   "description": "Create app package for Cloud Carbon Footprint",
   "main": "dist/index.js",
   "bin": {

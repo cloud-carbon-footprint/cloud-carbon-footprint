@@ -7,6 +7,8 @@ import handlebars from 'handlebars'
 import { basename, dirname } from 'path'
 import recursive from 'recursive-readdir'
 
+import { packageVersions } from './versions'
+
 export async function templatingTask(
   templateDir: string,
   destinationDir: string,
@@ -25,7 +27,19 @@ export async function templatingTask(
 
       const template = await fs.readFile(file)
       const compiled = handlebars.compile(template.toString())
-      const contents = compiled({ name: basename(destination), ...context })
+      const contents = compiled(
+        { name: basename(destination), ...context },
+        {
+          helpers: {
+            version(name: keyof typeof packageVersions) {
+              if (name in packageVersions) {
+                return packageVersions[name]
+              }
+              throw new Error(`No version available for package ${name}`)
+            },
+          },
+        },
+      )
 
       await fs.writeFile(destination, contents).catch((error) => {
         throw new Error(

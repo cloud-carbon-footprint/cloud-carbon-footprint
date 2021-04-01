@@ -28,8 +28,7 @@ organization to view and take action. It currently supports AWS, Google Cloud an
 
 **We calculate our CO2e estimates with this formula:**
 
-    (Cloud provider service usage) x (Cloud provider Power Usage Effectiveness (PUE)) x
-    (Cloud energy conversion factors [kWh]) x  (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
+    (Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
 
 Our approach builds upon
 [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)
@@ -140,25 +139,18 @@ hour).
      Average Watts = Min Watts + Avg vCPU Utilization  * (Max Watts - Min Watts)
 
 Second, we then translate this into total Watt Hours based on the amount of time servers are being used, or
-virtual CPU hours, and the cloud provider’s Power Usage Effectiveness (PUE) score, ie. how energy efficient their data
-centers are.
+virtual CPU hours.
 
-     Compute Watt-Hours = Average Watts * vCPU Hours * Cloud Provider Power Usage Effectiveness (PUE)
+     Compute Watt-Hours = Average Watts * vCPU Hours
 
 Here are the input data sources for the variables in the formula, and context on where we have sourced them:
 
 - **Min Watts** (constant) - This is dependent on the CPU processor used by the Cloud provider to host the virtual machines.
   Based on publicly available information about which CPUs cloud providers use, we looked up the
-  [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database to determine this constant.
+  [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database to determine this constant per processor micro-architecture.
 - **Max Watts** (constant) - Same as Min Watts, above.
-- **Avg vCPU** Utilization (variable or constant) - This is either pulled from the cloud usage APIs or is a constant when using billing data.
+- **Avg vCPU Utilization** (variable or constant) - This is either pulled from the cloud provider APIs (see above) or falls back to 50% (see below).
 - **vCPU Hours** (variable) - This is pulled from the cloud usage APIs or billing data .
-- **PUE** (constant) - PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning
-  all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on
-  publicly available information provided by the cloud providers. In the case of GCP, they
-  [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a conservative guess
-  [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/).
-  The same is true for [Azure](http://download.microsoft.com/download/8/2/9/8297f7c7-ae81-4e99-b1db-d65a01f7a8ef/microsoft_cloud_infrastructure_datacenter_and_network_fact_sheet.pdf).
 
 When the actual Avg vCPU Utilization for a given time period isn’t available from a cloud provider's API, we fall back
 to a projected estimate for the average server utilization of servers in hyperscale data centers in 2020 of 50%, from
@@ -166,25 +158,24 @@ the [2016 U.S. Data Center Energy Usage Report](https://eta.lbl.gov/publications
 example, this may occur for AWS EC2 instances that are terminated over 2 weeks ago from when the application first
 queries an AWS Account.
 
-Here are the compute constants used for each cloud provider:
+When we know what underlying processor micro-architecture or group of micro-architectures are used for a given cloud provider virtual machine, we use the min and max watts for that micro-architecture or the average of a group of micro-architectures. See Appendix II for this list of processors and micro-architectures with the min and max watts.
+
+When we don’t know the underlying processor micro-architecture, we use the average of all micro-architectures used by that cloud provider. Here are those averages per cloud provider:
 
 **AWS:**
 
-- Min Watts: 0.59
-- Max Matts: 3.5
-- PUE: 1.135
+- Min Watts: 0.71
+- Max Matts: 3.46
 
 **GCP:**
 
-- Min Watts: 0.58
-- Max Watts: 3.54
-- PUE: 1.11
+- Min Watts: 1.34
+- Max Watts: 4.98
 
 **Azure:**
 
-- Min Watts: 0.59
-- Max Matts: 3.5
-- PUE: 1.125
+- Min Watts: 0.77
+- Max Matts: 3.74
 
 #### A note on AWS Lambda Compute Estimates
 
@@ -199,7 +190,7 @@ allocated memory over 1,792MB.
 
 Given this, the formula we derive is:
 
-    Total Watt-Hours = Average Watts X Running Time (Hours) X Estimated number of vCPUs X Cloud Provider Power Usage Effectiveness (PUE)
+    Total Watt-Hours = Average Watts X Running Time (Hours) X Estimated number of vCPUs
 
 where:
 
@@ -266,6 +257,16 @@ It is safe to assume hyper-scale cloud providers have a very energy efficient ne
 
 We want to thank [@martin-laurent](https://github.com/martin-laurent) for providing this research and recommended coefficient.
 
+### Power Usage Effectiveness
+
+After estimating the kilowatt hours for compute, storage and networking, we need to multiply this by the cloud provider Power Usage Effectiveness (PUE). PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on publicly available information provided by the cloud providers. In the case of GCP, they [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a consertive guess [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/). The same is true for [Azure](http://download.microsoft.com/download/8/2/9/8297f7c7-ae81-4e99-b1db-d65a01f7a8ef/microsoft_cloud_infrastructure_datacenter_and_network_fact_sheet.pdf).
+
+Here are the cloud provider PUEs being used:
+
+- **AWS:** 1.135
+- **GCP:** 1.1
+- **Azure:** 1.125
+
 ### Carbon Estimates (CO2e)
 
 Once we have the estimated kilowatt hours for usage of a given cloud provider, we then convert that into estimated CO2e
@@ -296,8 +297,8 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 #### AWS
 
-- Minimum Watts (0% Cpu Utilization): 0.59
-- Maximum Watts (100% Cpu Utilization): 3.5
+- Average Minimum Watts (0% Cpu Utilization): 0.71
+- Average Maximum Watts (100% Cpu Utilization): 3.46
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
@@ -306,8 +307,8 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 #### GCP
 
-- Minimum Watts (0% Cpu Utilization): 0.58
-- Maximum Watts (100% Cpu Utilization): 3.54
+- Average Minimum Watts (0% Cpu Utilization): 1.34
+- Average Maximum Watts (100% Cpu Utilization): 4.98
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
@@ -316,78 +317,21 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 #### Azure
 
-- Minimum Watts (0% Cpu Utilization): 0.59
-- Maximum Watts (100% Cpu Utilization): 3.5
+- Average Minimum Watts (0% Cpu Utilization): 0.77
+- Average Maximum Watts (100% Cpu Utilization): 3.74
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
 - Networking Kilowatt Hours / Gigabyte: 0.001
 - Average PUE: 1.125
 
-### Appendix II: AWS & GCP processor list:
+### Appendix II: Cloud provider compute processors and micro-architectures:
 
-#### AWS processor list
+You can see the full list of AWS, GCP and Azure microarchitectures and min/max coefficients used for Compute in [this spreadsheet](https://docs.google.com/spreadsheets/d/1O7Ug_eUZvbZA4dTaA-8DNhJhoZikKD2IdD8OeNQipe4/edit#gid=381149164).
 
-Intel Xeon: https://aws.amazon.com/intel/
+**Note on AWS Graviton 2 Processor:**
 
-- Intel Xeon® E5-2676 Processors
-- Intel Xeon® E5-2686 Processors
-- Intel® Xeon® E5-2686 v4 Processors
-- Intel Xeon® E5-2666 Processors
-- Intel® Xeon® E7 8880 v3 Processors
-- Intel® Xeon® Platinum 8124M Processors
-- Intel® Xeon® Platinum 8151 Processors
-- Intel® Xeon® Platinum 8175 Processors
-- Intel® Xeon® Platinum 8175M
-- Intel® Xeon® Platinum 8176M
-- Intel® Xeon® Scalable Processors
-
-AMD EPYC: https://aws.amazon.com/ec2/amd/
-
-- 1st Gen
-- 2nd Gen
-
-#### GCP processor list
-
-Intel Xeon: https://cloud.google.com/compute/docs/cpu-platforms
-
-- Intel Xeon Scalable Processor (Cascade Lake)
-- Intel Xeon Scalable Processor (Skylake)
-- Intel Xeon E7 (Broadwell E7)
-- Intel Xeon E5 v4 (Broadwell E5)
-- Intel Xeon E5 v3 (Haswell)
-- Intel Xeon E5 v2 (Ivy Bridge)
-- Intel Xeon E5 (Sandy Bridge)
-
-AMD EPYC: https://cloud.google.com/compute/docs/cpu-platforms
-
-- AMD EPYC 2nd Gen (Rome)
-
-#### Azure processor list
-
-Intel Xeon: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
-
-- 2.3 GHz Intel Xeon® E5-2673 v4 (Broadwell)
-- 2.4 GHz Intel Xeon® E5-2673 v3 (Haswell)
-- 3.7GHz Intel XEON E-2176G
-- 3.7GHz Intel XEON E-2288G
-- Intel Xeon E5-2667 v3 Haswell 3.2 GHz
-- Intel Xeon E7-8890 V4
-- Intel Xeon scalable processors (aka Cascade lake)
-- Intel Xeon® Platinum 8168 (Skylake)
-- Intel® Xeon® 8171M 2.1 GHz (Skylake
-- Intel® Xeon® E5-2673 v3 2.4 GHz (Haswell)
-- Intel® Xeon® E5-2673 v4 2.3 GHz (Broadwell)
-- Intel® Xeon® E7-8890 v3 2.5GHz (Haswell)
-- Intel® Xeon® Platinum 8180M 2.5GHz (Skylake)
-- Intel® Xeon® Platinum 8272CL
-- Intel® Xeon® Platinum 8280 (Cascade Lake)
-- Intel® Xeon® processor E5 v3 family\
-
-AMD EPYC: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
-
-- 1st Gen
-- 2nd Gen
+When it comes to the AWS Graviton 2 custom processor, it is likely more efficient than other processors however we are yet to find any reliable min or max watts values. For the time being, we apply the lowest min/max watts for any microarchitecture: AMD EPYC 2nd Gen.
 
 ### Appendix III: Recent Networking studies
 

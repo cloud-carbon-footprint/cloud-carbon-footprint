@@ -55,7 +55,6 @@ async function buildApp(appDir: string) {
       throw new Error(`Could not execute command ${cmd}`)
     }
   }
-
   await runCmd('yarn install')
 }
 
