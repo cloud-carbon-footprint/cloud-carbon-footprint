@@ -3,7 +3,6 @@
  */
 
 import { act, create, ReactTestRenderer } from 'react-test-renderer'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { EstimationResult } from '../../models/types'
 import moment from 'moment'
 import React from 'react'
