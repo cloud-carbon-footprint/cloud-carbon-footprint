@@ -64,7 +64,7 @@
     "@types/ramda": "^0.27.38",
     "aws-sdk": "^2.847.0",
     "dotenv": "^8.2.0",
-    "googleapis": "^68.0.0",
+    "googleapis": "^70.0.0",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "tsconfig-paths": "^3.9.0",
