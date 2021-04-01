@@ -14,8 +14,8 @@ export interface serviceEstimate {
   usesAverageCPUConstant?: boolean
 }
 
-export interface ServiceResult {
-  data: EstimationResult[]
+export interface ServiceResult<T> {
+  data: T[]
   loading: boolean
 }
 
@@ -48,3 +48,16 @@ export enum UnknownTypes {
   UNKNOWN_SERVICE = 'Unknown Service',
   UNKNOWN_ACCOUNT = 'Unknown Account',
 }
+
+export interface EmissionsRatios {
+  region: string
+  mtPerKwHour: number
+}
+
+export const chartBarCustomColors: string[] = [
+  '#73B500',
+  '#00791E',
+  '#D99200',
+  '#DF5200',
+  '#790000',
+]

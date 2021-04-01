@@ -2,14 +2,17 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, Fragment } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
 import { sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
+import { EmissionsRatios, chartBarCustomColors } from '../../models/types'
 import { Page, Pagination } from './Pagination'
+import ChartLegend from './ChartLegend'
 import NoDataPage from '../NoDataPage'
+import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 
 const mapToRange = (
   value: number,
@@ -32,7 +35,46 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
 }) => {
   const [pageData, setPageData] = useState<Page<Entry>>({ data: [], page: 0 })
   const theme = useTheme()
-  const chartColors = [theme.palette.primary.main]
+
+  const {
+    data: emissionsData,
+    loading: _emissionsLoading,
+  } = useRemoteEmissionService()
+
+  const createCustomBarColors = () => {
+    const regionColorsMap: string[] = []
+    pageData.data.forEach((region) => {
+      const currentRegion = region.x
+      let color = chartBarCustomColors[0]
+      const regionEmissionData = emissionsData.find(
+        (item) => item.region === currentRegion,
+      ) as EmissionsRatios
+      if (!regionEmissionData) {
+        regionColorsMap.push(theme.palette.primary.main)
+      } else {
+        const { mtPerKwHour } = regionEmissionData
+        if (mtPerKwHour >= 0.00064) {
+          color = chartBarCustomColors[4]
+        } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
+          color = chartBarCustomColors[3]
+        } else if (mtPerKwHour >= 0.00032 && mtPerKwHour < 0.00048) {
+          color = chartBarCustomColors[2]
+        } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
+          color = chartBarCustomColors[1]
+        } else {
+          color = chartBarCustomColors[0]
+        }
+        regionColorsMap.push(color)
+      }
+    })
+    return regionColorsMap
+  }
+
+  let customBarColors = [theme.palette.primary.main]
+  if (dataType === 'region' && !!emissionsData.length) {
+    customBarColors = createCustomBarColors()
+  }
+
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
 
   const dataEntries: { x: string; y: number }[] = Object.entries(barChartData)
@@ -42,6 +84,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       y: item[1],
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
+
   const smallestCO2E = dataEntries?.[dataEntries?.length - 1]?.y
   const largestCO2E = dataEntries?.[0]?.y
   const totalCO2EByDataType = dataEntries.reduce((acc, currentValue) => {
@@ -62,6 +105,11 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     return { x: entry.x, y: isNaN(yEntry) ? maxThreshold : yEntry }
   })
 
+  const toolbarOffset = {
+    x: -120,
+    y: dataType === 'region' ? -122 : -55,
+  }
+
   const options = {
     series: [
       {
@@ -69,10 +117,12 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         data: pageData.data,
       },
     ],
-    colors: chartColors,
+    colors: customBarColors,
     chart: {
       type: 'bar',
       toolbar: {
+        offsetX: toolbarOffset.x,
+        offsetY: toolbarOffset.y,
         tools: {
           download: `
             <div class="apexcharts-menu-icon" title="Menu">
@@ -104,15 +154,18 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       bar: {
         horizontal: true,
         barHeight: `${7 * pageData.data.length}%`,
-        distributed: false,
+        distributed: true,
       },
+    },
+    legend: {
+      show: false,
     },
     dataLabels: {
       enabled: true,
       textAnchor: 'start',
       formatter: function (_: number, opts: { dataPointIndex: number }) {
         const currentCO2E =
-          dataEntries[pageData.page * pageSize + opts.dataPointIndex].y
+          dataEntries[pageData.page * pageSize + opts.dataPointIndex]?.y
 
         const formattedPercentage = (currentCO2E / totalCO2EByDataType) * 100
         return formattedPercentage < 0.01
@@ -177,21 +230,32 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         alignContent: 'center',
       }}
     >
-      {pageData && pageData.data && pageData.data.length ? (
-        <Chart
-          options={options}
-          series={options.series}
-          type="bar"
-          height={options.height}
-        />
+      {emissionsData?.length ? (
+        <Fragment>
+          {dataType === 'region' && (
+            <ChartLegend
+              startLabel="Low carbon intensity"
+              endLabel="High carbon intensity"
+              colorRange={chartBarCustomColors}
+            />
+          )}
+          <Chart
+            options={options}
+            series={options.series}
+            type="bar"
+            height={options.height}
+          />
+        </Fragment>
       ) : (
         <NoDataPage isTop={false} />
       )}
-      <Pagination
-        data={mappedDataEntries}
-        pageSize={pageSize}
-        handlePage={handlePage}
-      />
+      <div style={{ paddingTop: '10px' }}>
+        <Pagination
+          data={mappedDataEntries}
+          pageSize={pageSize}
+          handlePage={handlePage}
+        />
+      </div>
     </div>
   )
 }

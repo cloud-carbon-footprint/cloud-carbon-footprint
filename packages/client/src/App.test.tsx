@@ -8,7 +8,7 @@ import App from './App'
 import generateEstimations from './data/generateEstimations'
 import moment from 'moment'
 import useRemoteService from './dashboard/client/RemoteServiceHook'
-import { ServiceResult } from './models/types'
+import { ServiceResult, EstimationResult } from './models/types'
 import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('./dashboard/client/RemoteServiceHook')
@@ -22,11 +22,16 @@ jest.mock('apexcharts', () => ({
   }),
 }))
 
-const mockedUseRemoteService = useRemoteService as jest.MockedFunction<typeof useRemoteService>
+const mockedUseRemoteService = useRemoteService as jest.MockedFunction<
+  typeof useRemoteService
+>
 
 describe('App', () => {
   beforeEach(() => {
-    const mockReturnValue: ServiceResult = { loading: false, data: generateEstimations(moment.utc(), 14) }
+    const mockReturnValue: ServiceResult<EstimationResult> = {
+      loading: false,
+      data: generateEstimations(moment.utc(), 14),
+    }
     mockedUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
