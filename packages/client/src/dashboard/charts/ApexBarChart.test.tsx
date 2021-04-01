@@ -158,7 +158,7 @@ describe('ApexBarChart', () => {
     expect(dataLabelFormatter(null, { dataPointIndex: 3 })).toEqual('< 0.01 %')
   })
 
-  it.skip('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
+  it('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
       { x: 'ebs', y: 100 },
