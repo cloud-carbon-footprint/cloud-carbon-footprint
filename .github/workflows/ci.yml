@@ -12,7 +12,6 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-
 jobs:
   lint-test:
     runs-on: ubuntu-latest
@@ -162,6 +161,12 @@ jobs:
         if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         id: create_tag
         run: node scripts/create-release-tag.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Creates and updates the next available tag with format "latest"
+      - name: Create latest release tag
+        id: create_latest_tag
+        uses: EndBug/latest-tag@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Convert the newly created tag into a release with changelog information
