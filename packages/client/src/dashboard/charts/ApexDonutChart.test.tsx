@@ -2,13 +2,44 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { act, create, ReactTestRenderer } from 'react-test-renderer'
-import { EstimationResult } from '../../models/types'
-import moment from 'moment'
 import React from 'react'
+import { act, create, ReactTestRenderer } from 'react-test-renderer'
+import moment from 'moment'
+import Chart from 'react-apexcharts'
+
+import {
+  EmissionsRatios,
+  EstimationResult,
+  ServiceResult,
+} from '../../models/types'
 import { ApexBarChart, Entry } from './ApexBarChart'
 import { Page, Pagination } from './Pagination'
-import Chart from 'react-apexcharts'
+import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+
+jest.mock('../client/EmissionFactorServiceHook')
+
+const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
+  typeof useRemoteEmissionService
+>
+
+const emissionsFactorData: EmissionsRatios[] = [
+  {
+    region: 'us-west-1',
+    mtPerKwHour: 0.000645,
+  },
+  {
+    region: 'us-west-2',
+    mtPerKwHour: 0.000635,
+  },
+  {
+    region: 'us-west-3',
+    mtPerKwHour: 0.000475,
+  },
+  {
+    region: 'us-west-4',
+    mtPerKwHour: 0.000315,
+  },
+]
 
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
@@ -56,13 +87,23 @@ describe('ApexBarChart', () => {
     },
   ]
   beforeEach(() => {
+    const mockReturnValue: ServiceResult<EmissionsRatios> = {
+      loading: false,
+      data: emissionsFactorData,
+    }
+    mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     fixture = create(<ApexBarChart data={data} dataType="service" />)
   })
+
+  afterEach(() => {
+    fixture.unmount()
+  })
+
   it('renders with correct configuration', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
   })
 
-  it.skip('should format tool tip values with proper data instead of scaled down data', () => {
+  it('should format tool tip values with proper data instead of scaled down data', () => {
     act(() => {
       const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
         Pagination,
@@ -87,7 +128,7 @@ describe('ApexBarChart', () => {
     )
   })
 
-  it.skip('should format data label values with proper data instead of scaled down data', () => {
+  it('should format data label values with proper data instead of scaled down data', () => {
     act(() => {
       const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
         Pagination,
@@ -110,7 +151,7 @@ describe('ApexBarChart', () => {
     expect(dataLabelFormatter(null, { dataPointIndex: 1 })).toEqual('33.33 %')
   })
 
-  it.skip('should format data label values that are less than 0.01', () => {
+  it('should format data label values that are less than 0.01', () => {
     act(() => {
       const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
         Pagination,

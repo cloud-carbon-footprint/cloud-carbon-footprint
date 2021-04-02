@@ -41,38 +41,12 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     loading: _emissionsLoading,
   } = useRemoteEmissionService()
 
-  const createCustomBarColors = () => {
-    const regionColorsMap: string[] = []
-    pageData.data.forEach((region) => {
-      const currentRegion = region.x
-      let color = chartBarCustomColors[0]
-      const regionEmissionData = emissionsData.find(
-        (item) => item.region === currentRegion,
-      ) as EmissionsRatios
-      if (!regionEmissionData) {
-        regionColorsMap.push(theme.palette.primary.main)
-      } else {
-        const { mtPerKwHour } = regionEmissionData
-        if (mtPerKwHour >= 0.00064) {
-          color = chartBarCustomColors[4]
-        } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
-          color = chartBarCustomColors[3]
-        } else if (mtPerKwHour >= 0.00032 && mtPerKwHour < 0.00048) {
-          color = chartBarCustomColors[2]
-        } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
-          color = chartBarCustomColors[1]
-        } else {
-          color = chartBarCustomColors[0]
-        }
-        regionColorsMap.push(color)
-      }
-    })
-    return regionColorsMap
-  }
+  const mainTheme = theme.palette.primary.main
+  const darkTheme = theme.palette.primary.dark
 
-  let customBarColors = [theme.palette.primary.main]
+  let customBarColors = [mainTheme]
   if (dataType === 'region' && !!emissionsData.length) {
-    customBarColors = createCustomBarColors()
+    customBarColors = createCustomBarColors(pageData, emissionsData, mainTheme)
   }
 
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
@@ -175,8 +149,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       offsetX: 16,
       background: {
         enabled: true,
-        foreColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.dark,
+        foreColor: mainTheme,
+        borderColor: darkTheme,
         padding: 6,
         borderRadius: 1,
         borderWidth: 1,
@@ -258,4 +232,37 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       </div>
     </div>
   )
+}
+
+export const createCustomBarColors = (
+  pageData: Page<Entry>,
+  emissionsData: EmissionsRatios[],
+  mainTheme: string,
+): string[] => {
+  const regionColorsMap: string[] = []
+  pageData.data.forEach((region) => {
+    const currentRegion = region.x
+    let color = chartBarCustomColors[0]
+    const regionEmissionData = emissionsData.find(
+      (item) => item.region === currentRegion,
+    ) as EmissionsRatios
+    if (!regionEmissionData) {
+      regionColorsMap.push(mainTheme)
+    } else {
+      const { mtPerKwHour } = regionEmissionData
+      if (mtPerKwHour >= 0.00064) {
+        color = chartBarCustomColors[4]
+      } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
+        color = chartBarCustomColors[3]
+      } else if (mtPerKwHour >= 0.00032 && mtPerKwHour < 0.00048) {
+        color = chartBarCustomColors[2]
+      } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
+        color = chartBarCustomColors[1]
+      } else {
+        color = chartBarCustomColors[0]
+      }
+      regionColorsMap.push(color)
+    }
+  })
+  return regionColorsMap
 }
