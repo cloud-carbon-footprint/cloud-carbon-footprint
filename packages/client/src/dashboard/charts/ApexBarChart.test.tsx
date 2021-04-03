@@ -15,35 +15,13 @@ import {
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
 import { Page, Pagination } from './Pagination'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+import { fakeEmissionFactors } from '../../data/generateEstimations'
 
 jest.mock('../client/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
   typeof useRemoteEmissionService
 >
-
-const emissionsFactorData: EmissionsRatios[] = [
-  {
-    region: 'us-west-1',
-    mtPerKwHour: 0.000645,
-  },
-  {
-    region: 'us-west-2',
-    mtPerKwHour: 0.000635,
-  },
-  {
-    region: 'us-west-3',
-    mtPerKwHour: 0.000475,
-  },
-  {
-    region: 'us-west-4',
-    mtPerKwHour: 0.000315,
-  },
-  {
-    region: 'us-east-1',
-    mtPerKwHour: 0.000155,
-  },
-]
 
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
@@ -93,7 +71,7 @@ describe('ApexBarChart', () => {
   beforeEach(() => {
     const mockReturnValue: ServiceResult<EmissionsRatios> = {
       loading: false,
-      data: emissionsFactorData,
+      data: fakeEmissionFactors,
     }
     mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     fixture = create(<ApexBarChart data={data} dataType="service" />)
@@ -104,6 +82,7 @@ describe('ApexBarChart', () => {
 
   afterEach(() => {
     fixture.unmount()
+    mockedUseEmissionFactorService.mockClear()
   })
 
   it('should format tool tip values with proper data instead of scaled down data', () => {
@@ -220,7 +199,7 @@ describe('ApexBarChart', () => {
     const pageData: Page<Entry> = { data: firstPagedata, page: 0 }
     const mainTheme = '#2C82BE'
 
-    const emissionsData: EmissionsRatios[] = emissionsFactorData
+    const emissionsData: EmissionsRatios[] = fakeEmissionFactors
     const colors = ['#790000', '#D99200', '#DF5200', '#00791E', '#73B500']
     const defaultColors = [
       '#2C82BE',

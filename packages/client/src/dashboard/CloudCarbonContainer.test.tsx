@@ -8,10 +8,18 @@ import { render } from '@testing-library/react'
 
 import CloudCarbonContainer from './CloudCarbonContainer'
 import useRemoteService from './client/RemoteServiceHook'
-import generateEstimations from '../data/generateEstimations'
-import { ServiceResult, EstimationResult } from '../models/types'
+import generateEstimations, {
+  fakeEmissionFactors,
+} from '../data/generateEstimations'
+import {
+  ServiceResult,
+  EstimationResult,
+  EmissionsRatios,
+} from '../models/types'
+import useRemoteEmissionService from './client/EmissionFactorServiceHook'
 
 jest.mock('./client/RemoteServiceHook')
+jest.mock('./client/EmissionFactorServiceHook')
 jest.mock('../themes')
 jest.mock('apexcharts', () => ({
   exec: jest.fn(() => {
@@ -37,6 +45,10 @@ jest.mock('../ConfigLoader', () => ({
   }),
 }))
 
+const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
+  typeof useRemoteEmissionService
+>
+
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
 >
@@ -51,10 +63,16 @@ describe('CloudCarbonContainer', () => {
       loading: false,
       data: data,
     }
+    const mockEmissionsReturnValue: ServiceResult<EmissionsRatios> = {
+      loading: false,
+      data: fakeEmissionFactors,
+    }
+    mockedUseEmissionFactorService.mockReturnValue(mockEmissionsReturnValue)
     mockUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
   afterEach(() => {
+    mockedUseEmissionFactorService.mockClear()
     mockUseRemoteService.mockClear()
   })
 

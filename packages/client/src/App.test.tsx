@@ -3,15 +3,24 @@
  */
 
 import React from 'react'
-import { render } from '@testing-library/react'
-import App from './App'
-import generateEstimations from './data/generateEstimations'
-import moment from 'moment'
-import useRemoteService from './dashboard/client/RemoteServiceHook'
-import { ServiceResult, EstimationResult } from './models/types'
 import { MemoryRouter } from 'react-router-dom'
+import { render } from '@testing-library/react'
+import generateEstimations, {
+  fakeEmissionFactors,
+} from './data/generateEstimations'
+import moment from 'moment'
+
+import App from './App'
+import useRemoteService from './dashboard/client/RemoteServiceHook'
+import useRemoteEmissionService from './dashboard/client/EmissionFactorServiceHook'
+import {
+  EmissionsRatios,
+  EstimationResult,
+  ServiceResult,
+} from './models/types'
 
 jest.mock('./dashboard/client/RemoteServiceHook')
+jest.mock('./dashboard/client/EmissionFactorServiceHook')
 jest.mock('./themes')
 jest.mock('apexcharts', () => ({
   exec: jest.fn(() => {
@@ -25,6 +34,9 @@ jest.mock('apexcharts', () => ({
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
 >
+const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
+  typeof useRemoteEmissionService
+>
 
 describe('App', () => {
   beforeEach(() => {
@@ -32,7 +44,21 @@ describe('App', () => {
       loading: false,
       data: generateEstimations(moment.utc(), 14),
     }
+    const mockEmissionsReturnValue: ServiceResult<EmissionsRatios> = {
+      loading: false,
+      data: fakeEmissionFactors,
+    }
+    mockedUseEmissionFactorService.mockReturnValue(mockEmissionsReturnValue)
     mockedUseRemoteService.mockReturnValue(mockReturnValue)
+  })
+
+  afterEach(() => {
+    mockedUseEmissionFactorService.mockClear()
+    mockedUseRemoteService.mockClear()
+  })
+
+  it('renders with correct configuration', () => {
+    expect(true).toEqual(true)
   })
 
   it('renders the page title', () => {
