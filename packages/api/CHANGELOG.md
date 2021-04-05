@@ -1,5 +1,23 @@
 # @cloud-carbon-footprint/api
 
+## 0.2.0
+
+### Minor Changes
+
+- 033a504: adds integration testing
+
+### Patch Changes
+
+- Updated dependencies [6c620db]
+- Updated dependencies [f3d4c8a]
+- Updated dependencies [c5f28fe]
+- Updated dependencies [906f14e]
+- Updated dependencies [bb82d7b]
+- Updated dependencies [033a504]
+- Updated dependencies [9b10f3b]
+- Updated dependencies [82aeb1e]
+  - @cloud-carbon-footprint/core@0.4.0
+
 ## 0.1.2
 
 ### Patch Changes
