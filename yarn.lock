@@ -2017,7 +2017,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/api@workspace:packages/api"
   dependencies:
-    "@cloud-carbon-footprint/core": ^0.3.0
+    "@cloud-carbon-footprint/core": ^0.4.0
     "@types/express": ^4.17.11
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
@@ -2059,7 +2059,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
   dependencies:
-    "@cloud-carbon-footprint/core": ^0.3.0
+    "@cloud-carbon-footprint/core": ^0.4.0
     "@types/cli-table": ^0.3.0
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
@@ -2155,7 +2155,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/core@^0.3.0, @cloud-carbon-footprint/core@workspace:packages/core":
+"@cloud-carbon-footprint/core@^0.4.0, @cloud-carbon-footprint/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/core@workspace:packages/core"
   dependencies:
