@@ -60,7 +60,7 @@ fileignoreconfig:
 - filename: microsite/src/components/differentiator.js
   checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
 - filename: microsite/src/components/innovationPartners.js
-  checksum: 5099a14d9f5fb5fe776a55e3b3fe1c4953a4e18a94569a79775c3af0f03a98f4
+  checksum: cf5de9e82c90a564f09e2adf21e003004675c0f74673fae6c0b5faad7818d498
 - filename: package.json
   checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: packages/api/.env.template
