@@ -9,7 +9,7 @@ When running the app locally, first choose if you would like to run with mocked 
 
 A few steps are required to run the app with real data, that are different for each cloud provider. 
 
-To make it easier configure your app with real data, we have [Guided Install instructions](getting-started#guided-install) that you can follow.   
+To make it easier to configure your app with real data, we have [Guided Install instructions](getting-started#guided-install) that you can follow.   
 
 To manually configure your cloud provider(s), check out the steps for each cloud provider in the Connect to Real Data section:
 
