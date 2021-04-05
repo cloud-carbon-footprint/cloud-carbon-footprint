@@ -36,6 +36,7 @@ async function getCommitMessageUsingTagName(tagName) {
   if (refData.status !== 200) {
     console.error('refData:')
     console.error(refData)
+    await deletePreviousTag(TAG_NAME)
     throw new Error(
       'Something went wrong when getting the tag SHA using tag name',
     )
@@ -52,6 +53,7 @@ async function getCommitMessageUsingTagName(tagName) {
   if (tagData.status !== 200) {
     console.error('tagData:')
     console.error(tagData)
+    await deletePreviousTag(TAG_NAME)
     throw new Error(
       'Something went wrong when getting the commit SHA using tag SHA',
     )
@@ -70,6 +72,7 @@ async function getCommitMessageUsingTagName(tagName) {
   if (commitData.status !== 200) {
     console.error('commitData:')
     console.error(commitData)
+    await deletePreviousTag(TAG_NAME)
     throw new Error(
       'Something went wrong when getting the commit message using commit SHA',
     )
@@ -85,6 +88,7 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
   // It should exactly match the pattern of changeset commit message, or else will abort.
   const expectedMessage = RegExp(EXPECTED_COMMIT_MESSAGE)
   if (!expectedMessage.test(commitMessage)) {
+    await deletePreviousTag(TAG_NAME)
     throw new Error(
       `Expected regex did not match commit message: ${commitMessage}`,
     )
@@ -112,7 +116,7 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
 }
 
 // Create Release on GitHub.
-async function createRelease(releaseDescription) {
+async function createRelease(releaseDescription, prevReleaseId) {
   // Create draft release if BOOL_CREATE_RELEASE is undefined
   // Publish release if BOOL_CREATE_RELEASE is not undefined
   const boolCreateDraft = !BOOL_CREATE_RELEASE
@@ -136,12 +140,14 @@ async function createRelease(releaseDescription) {
     console.log(releaseResponse.data.html_url)
   } else {
     console.error(releaseResponse)
+    await deletePreviousTag(TAG_NAME)
+    await updatePreviousRelease(prevReleaseId, LATEST_TAG_NAME)
     throw new Error('Something went wrong when creating the release.')
   }
 }
 
-// Get Previous Release on GitHub.
-async function getPreviousReleaseId() {
+// Get previous release info on GitHub.
+async function getPreviousRelease() {
   const prevRelease = await octokit.rest.repos.getReleaseByTag({
     owner: GH_OWNER,
     repo: GH_REPO,
@@ -153,13 +159,14 @@ async function getPreviousReleaseId() {
     console.log(prevRelease.data.html_url)
   } else {
     console.error(prevRelease)
+    await deletePreviousTag(TAG_NAME)
     throw new Error('Something went wrong when fetching the previous release.')
   }
 
   return { id: prevRelease.data.id, name: prevRelease.data.name }
 }
 
-// Update Previous Release on GitHub to have non-latest tag name.
+// Update previous latest release on GitHub to refer to tag created with same name.
 async function updatePreviousRelease(id, name) {
   const updateResponse = await octokit.repos.updateRelease({
     owner: GH_OWNER,
@@ -173,8 +180,56 @@ async function updatePreviousRelease(id, name) {
     console.log(updateResponse.data.html_url)
   } else {
     console.error(updateResponse)
+    await deletePreviousTag(TAG_NAME)
     throw new Error('Something went wrong when updating the previous release.')
   }
+}
+
+// Revert the latest ref and update git sha if create new release fails
+async function revertLatestRef() {
+  const existingTags = await octokit.repos.listTags({
+    owner: GH_OWNER,
+    repo: GH_REPO,
+    per_page: 5,
+  })
+
+  const updatedExistingTags = existingTags.data.filter(
+    (obj) => obj.name != 'latest',
+  )
+
+  const latestRefSha = updatedExistingTags[0].commit.sha
+
+  const updateRefResponse = await octokit.rest.git.updateRef({
+    owner: GH_OWNER,
+    repo: GH_REPO,
+    ref: 'tags/latest',
+    sha: latestRefSha,
+  })
+
+  if (updateRefResponse.status === 200) {
+    console.log('Reverted previous tag ref!')
+  } else {
+    console.error(updateRefResponse)
+    throw new Error('Something went wrong when reverting the previous tag ref.')
+  }
+}
+
+// Delete the newly created tag if create new release fails
+async function deletePreviousTag(name) {
+  const deleteResponse = await octokit.rest.git.deleteRef({
+    owner: GH_OWNER,
+    repo: GH_REPO,
+    ref: `tags/${name}`,
+  })
+
+  if (deleteResponse.status === 204) {
+    console.log('Deleted Newly Created Tag!')
+  } else {
+    console.error(deleteResponse)
+    throw new Error('Something went wrong when deleting the newly created tag.')
+  }
+
+  await revertLatestRef()
 }
 
 async function main() {
@@ -183,9 +238,9 @@ async function main() {
     commitMessage,
   )
 
-  const prevReleaseId = await getPreviousReleaseId()
+  const prevReleaseId = await getPreviousRelease()
   await updatePreviousRelease(prevReleaseId.id, prevReleaseId.name)
-  await createRelease(releaseDescription)
+  await createRelease(releaseDescription, prevReleaseId.id)
 }
 
 main().catch((error) => {

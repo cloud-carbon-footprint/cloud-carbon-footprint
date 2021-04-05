@@ -165,6 +165,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Creates and updates the next available tag with format "latest"
       - name: Create latest release tag
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         id: create_latest_tag
         uses: EndBug/latest-tag@latest
         env:
