@@ -7,6 +7,8 @@ In order to run Cloud Carbon Footprint locally, there are a few things you must 
 
 ### Prerequisites
 
+- Git
+
 - Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
 
 - Yarn (latest)
@@ -14,6 +16,8 @@ In order to run Cloud Carbon Footprint locally, there are a few things you must 
 ### Setup
 
 ```
+git clone --branch latest https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint.git
+cd cloud-carbon-footprint
 yarn guided-install
 ```
 
