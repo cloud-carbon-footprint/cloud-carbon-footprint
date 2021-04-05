@@ -2,7 +2,7 @@
  * © 2020 ThoughtWorks, Inc. All rights reserved.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { useErrorHandling } from '../ErrorPage'
 
@@ -10,18 +10,23 @@ import { EmissionsRatios, ServiceResult } from '../../models/types'
 
 const useRemoteEmissionService = (): ServiceResult<EmissionsRatios> => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(true)
+  const _isMounted = useRef(true)
   const { handleApiError, error, setError } = useErrorHandling()
 
   useEffect(() => {
     const fetchEstimates = async () => {
       setError({})
-      setLoading(true)
+      if (_isMounted.current) {
+        setLoading(true)
+      }
 
       try {
         const res = await axios.get('/api/regions/emissions-factors')
-        setData(res.data)
+
+        if (_isMounted.current) {
+          setData(res.data)
+        }
       } catch (e) {
         const DEFAULT_RESPONSE = {
           status: '520',
@@ -35,11 +40,16 @@ const useRemoteEmissionService = (): ServiceResult<EmissionsRatios> => {
           setError(DEFAULT_RESPONSE)
         }
       } finally {
-        setLoading(false)
+        if (_isMounted.current) {
+          setLoading(false)
+        }
       }
     }
 
     fetchEstimates()
+    return () => {
+      _isMounted.current = false
+    }
   }, [setError])
 
   handleApiError(error)

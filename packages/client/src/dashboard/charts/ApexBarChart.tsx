@@ -38,7 +38,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
 
   const {
     data: emissionsData,
-    loading: _emissionsLoading,
+    loading: emissionsLoading,
   } = useRemoteEmissionService()
 
   const mainTheme = theme.palette.primary.main
@@ -204,7 +204,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         alignContent: 'center',
       }}
     >
-      {emissionsData?.length ? (
+      {mappedDataEntries?.length && !emissionsLoading ? (
         <Fragment>
           {dataType === 'region' && (
             <ChartLegend
@@ -219,17 +219,17 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
             type="bar"
             height={options.height}
           />
+          <div style={{ paddingTop: '10px' }}>
+            <Pagination
+              data={mappedDataEntries}
+              pageSize={pageSize}
+              handlePage={handlePage}
+            />
+          </div>
         </Fragment>
       ) : (
         <NoDataPage isTop={false} />
       )}
-      <div style={{ paddingTop: '10px' }}>
-        <Pagination
-          data={mappedDataEntries}
-          pageSize={pageSize}
-          handlePage={handlePage}
-        />
-      </div>
     </div>
   )
 }
