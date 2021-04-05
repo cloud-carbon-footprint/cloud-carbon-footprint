@@ -1804,7 +1804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/assemble-release-plan@npm:^4.0.0, @changesets/assemble-release-plan@npm:^4.1.0":
+"@changesets/assemble-release-plan@npm:^4.0.0":
   version: 4.1.0
   resolution: "@changesets/assemble-release-plan@npm:4.1.0"
   dependencies:
@@ -1818,13 +1818,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/cli@npm:^2.14.1":
-  version: 2.14.1
-  resolution: "@changesets/cli@npm:2.14.1"
+"@changesets/assemble-release-plan@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@changesets/assemble-release-plan@npm:4.1.1"
+  dependencies:
+    "@babel/runtime": ^7.10.4
+    "@changesets/errors": ^0.1.4
+    "@changesets/get-dependents-graph": ^1.2.0
+    "@changesets/types": ^3.3.0
+    "@manypkg/get-packages": ^1.0.1
+    semver: ^5.4.1
+  checksum: 1edd6a017b0daf076abbf9aef6bd2225a5e5b00ae8c3f191d15f2f0a2cdf44eb6576fe9b12f1bab82e6d4336a3d5b3fa77f7b4c5f3309c3dce4195f777726099
+  languageName: node
+  linkType: hard
+
+"@changesets/cli@npm:^2.15.0":
+  version: 2.15.0
+  resolution: "@changesets/cli@npm:2.15.0"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/apply-release-plan": ^4.2.0
-    "@changesets/assemble-release-plan": ^4.1.0
+    "@changesets/assemble-release-plan": ^4.1.1
     "@changesets/config": ^1.5.0
     "@changesets/errors": ^0.1.4
     "@changesets/get-dependents-graph": ^1.2.0
@@ -1854,7 +1868,7 @@ __metadata:
     tty-table: ^2.8.10
   bin:
     changeset: bin.js
-  checksum: 319f1f6532ed58ea3b6464418e1f0334539c6e843c8cb69ffc08126775edd82abd0c8e6b5e1bdae8d6560f3cfff7b9591ebb035adf5178eacf3ed9f3ac1c2917
+  checksum: 2c6a095348d8a8d78e01244daa6e28b0c0374019894ce48c4dc659ea3b3151f2b24e29223746a5c95ee575339d642577c2f4056790745aa75db7316f0676d17d
   languageName: node
   linkType: hard
 
@@ -4608,12 +4622,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.8":
-  version: 9.0.9
-  resolution: "@types/fs-extra@npm:9.0.9"
+"@types/fs-extra@npm:^9.0.10":
+  version: 9.0.10
+  resolution: "@types/fs-extra@npm:9.0.10"
   dependencies:
     "@types/node": "*"
-  checksum: b29b00e6c82f8a2586192f9d3c9d27b700e20000cfdd46c1d0d76388c542bac228b746792cd3567383cd3175b95db7f72a36117fbd4eb330de118f6568707b6b
+  checksum: 047a134510d86e1d5041a89d591a328392d62567b8d67d40f238fb3029dc08971f163798077ed0679870a6842381f05d50d14f75ae6b05b736cb18ece0eb7f4f
   languageName: node
   linkType: hard
 
@@ -21029,9 +21043,9 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
-    "@changesets/cli": ^2.14.1
+    "@changesets/cli": ^2.15.0
     "@hawkeyesec/scanner-cli": ^1.8.1
-    "@types/fs-extra": ^9.0.8
+    "@types/fs-extra": ^9.0.10
     concurrently: ^6.0.0
     docsify-cli: ^4.4.2
     fs-extra: ^9.1.0
