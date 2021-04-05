@@ -46,10 +46,10 @@ Array [
 exports[`GuidedInstall AWS with awscli config shows the correct informational messages and documentation references 1`] = `
 Array [
   Array [
-    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://cloud-carbon-footprint.org/docs/introduction",
   ],
   Array [
-    "AWS setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/aws for additional details.",
+    "AWS setup. See https://cloud-carbon-footprint.org/docs/aws for additional details.",
   ],
   Array [
     "Configuring AWS CLI...",
@@ -59,7 +59,10 @@ Array [
     false,
   ],
   Array [
-    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Your Cloud Carbon Footprint application is now configured to use your cloud provider data. You can see these settings in the .env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://cloud-carbon-footprint.org/docs/introduction",
+  ],
+  Array [
+    "Please make sure your appConfig object in the client Config file (packages/client/src/Config.ts) includes your cloud provider(s) in the CURRENT_PROVIDERS array",
   ],
 ]
 `;
@@ -136,13 +139,16 @@ Array [
 exports[`GuidedInstall AWS without awscli config shows the correct informational messages and documentation references 1`] = `
 Array [
   Array [
-    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://cloud-carbon-footprint.org/docs/introduction",
   ],
   Array [
-    "AWS setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/aws for additional details.",
+    "AWS setup. See https://cloud-carbon-footprint.org/docs/aws for additional details.",
   ],
   Array [
-    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Your Cloud Carbon Footprint application is now configured to use your cloud provider data. You can see these settings in the .env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://cloud-carbon-footprint.org/docs/introduction",
+  ],
+  Array [
+    "Please make sure your appConfig object in the client Config file (packages/client/src/Config.ts) includes your cloud provider(s) in the CURRENT_PROVIDERS array",
   ],
 ]
 `;
@@ -188,13 +194,16 @@ Array [
 exports[`GuidedInstall Azure shows the correct informational messages and documentation references 1`] = `
 Array [
   Array [
-    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://cloud-carbon-footprint.org/docs/introduction",
   ],
   Array [
-    "Azure setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/azure for additional details.",
+    "Azure setup. See https://cloud-carbon-footprint.org/docs/azure for additional details.",
   ],
   Array [
-    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Your Cloud Carbon Footprint application is now configured to use your cloud provider data. You can see these settings in the .env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://cloud-carbon-footprint.org/docs/introduction",
+  ],
+  Array [
+    "Please make sure your appConfig object in the client Config file (packages/client/src/Config.ts) includes your cloud provider(s) in the CURRENT_PROVIDERS array",
   ],
 ]
 `;
@@ -230,13 +239,16 @@ Array [
 exports[`GuidedInstall GCP shows the correct informational messages and documentation references 1`] = `
 Array [
   Array [
-    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Please follow the following prompts to configure Cloud Carbon Footprint to connect to a cloud provider. To connect to multiple cloud providers, please repeat this script for each additional provider. For an understanding of the default configurations and other configuration options, please visit the docs on the microsite: https://cloud-carbon-footprint.org/docs/introduction",
   ],
   Array [
-    "GCP setup. See https://redesigned-guide-07c796a7.pages.github.io/docs/gcp for additional details.",
+    "GCP setup. See https://cloud-carbon-footprint.org/docs/gcp for additional details.",
   ],
   Array [
-    "Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://redesigned-guide-07c796a7.pages.github.io/docs/introduction",
+    "Your Cloud Carbon Footprint application is now configured to use your cloud provider data. You can see these settings in the .env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit https://cloud-carbon-footprint.org/docs/introduction",
+  ],
+  Array [
+    "Please make sure your appConfig object in the client Config file (packages/client/src/Config.ts) includes your cloud provider(s) in the CURRENT_PROVIDERS array",
   ],
 ]
 `;

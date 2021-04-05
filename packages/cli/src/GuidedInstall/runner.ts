@@ -44,6 +44,9 @@ export async function GuidedInstall(): Promise<void> {
   await createEnvFile('../api/', env)
 
   log(
-    `Your Cloud Carbon Footprint application is now connected to your cloud provider data. You can see these settings in the env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit ${microsite}/docs/introduction`,
+    `Your Cloud Carbon Footprint application is now configured to use your cloud provider data. You can see these settings in the .env files listed above. To connect to an additional cloud provider or update an existing one, please re-run this script. For questions or more configuration options, please visit ${microsite}/docs/introduction`,
+  )
+  log(
+    `Please make sure your appConfig object in the client Config file (packages/client/src/Config.ts) includes your cloud provider(s) in the CURRENT_PROVIDERS array`,
   )
 }
