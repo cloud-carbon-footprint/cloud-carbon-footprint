@@ -3,7 +3,11 @@ id: introduction
 title: Introduction
 ---
 
-When running the app locally, first choose if you would like to run with mocked data or connect to your cloud data.
+There are a few options when it comes to running the app locally.
+
+If you are hoping to get up and running quickly, check out the [Getting Started](getting-started) for how to begin, including a command to run for a quick install. This will guide you through running the app with your data (for additional details, read on below).
+
+If you’re not ready to connect your data, no problem - you can [run with mocked data](run-with-mocked-data).
 
 ### Connecting your Data
 
