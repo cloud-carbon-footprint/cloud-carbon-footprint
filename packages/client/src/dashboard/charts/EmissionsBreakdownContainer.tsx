@@ -41,6 +41,8 @@ const useStyles = makeStyles(() => {
     root: {
       width: '100%',
       height: '100%',
+      overflow: 'unset',
+      minHeight: '755px',
     },
     topContainer: {
       boxShadow: 'none',

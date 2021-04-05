@@ -8,12 +8,25 @@ import {
   ReactTestInstance,
   ReactTestRenderer,
 } from 'react-test-renderer'
+import { act, fireEvent, render, RenderResult } from '@testing-library/react'
+import { Select } from '@material-ui/core'
 
 import { EmissionsBreakdownContainer } from './EmissionsBreakdownContainer'
-import { Select } from '@material-ui/core'
-import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import { ApexBarChart } from './ApexBarChart'
+import {
+  EmissionsRatios,
+  EstimationResult,
+  ServiceResult,
+} from '../../models/types'
+import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+import { fakeEmissionFactors } from '../../data/generateEstimations'
+
 jest.mock('../../themes')
+jest.mock('../client/EmissionFactorServiceHook')
+
+const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
+  typeof useRemoteEmissionService
+>
 
 describe('EmissionsBreakdownContainer', () => {
   const date1 = new Date('2020-07-10T00:00:00.000Z')
@@ -21,7 +34,7 @@ describe('EmissionsBreakdownContainer', () => {
   let page: RenderResult
   let testRenderer: ReactTestRenderer, testInstance: ReactTestInstance
 
-  const dataWithHigherPrecision = [
+  const dataWithHigherPrecision: EstimationResult[] = [
     {
       timestamp: date1,
       serviceEstimates: [
@@ -29,7 +42,7 @@ describe('EmissionsBreakdownContainer', () => {
           cloudProvider: 'aws',
           accountName: 'testacct',
           serviceName: 'ebs',
-          wattHours: 12.2342,
+          kilowattHours: 12.2342,
           co2e: 15.12341,
           cost: 5.82572,
           region: 'us-east-1',
@@ -39,7 +52,7 @@ describe('EmissionsBreakdownContainer', () => {
           cloudProvider: 'aws',
           accountName: 'testacct',
           serviceName: 'ec2',
-          wattHours: 4.745634,
+          kilowattHours: 4.745634,
           co2e: 5.234236,
           cost: 4.732,
           region: 'us-east-1',
@@ -54,7 +67,7 @@ describe('EmissionsBreakdownContainer', () => {
           cloudProvider: 'aws',
           accountName: 'testacct',
           serviceName: 'ebs',
-          wattHours: 25.73446,
+          kilowattHours: 25.73446,
           co2e: 3.2600234,
           cost: 6.05931,
           region: 'us-east-1',
@@ -64,7 +77,7 @@ describe('EmissionsBreakdownContainer', () => {
           cloudProvider: 'aws',
           accountName: 'testacct',
           serviceName: 'ec2',
-          wattHours: 2.4523452,
+          kilowattHours: 2.4523452,
           co2e: 7.7536,
           cost: 6.2323,
           region: 'us-east-1',
@@ -75,6 +88,11 @@ describe('EmissionsBreakdownContainer', () => {
   ]
 
   beforeEach(() => {
+    const mockReturnValue: ServiceResult<EmissionsRatios> = {
+      loading: false,
+      data: fakeEmissionFactors,
+    }
+    mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     testRenderer = create(
       <EmissionsBreakdownContainer data={dataWithHigherPrecision} />,
     )
@@ -85,10 +103,12 @@ describe('EmissionsBreakdownContainer', () => {
   })
 
   afterEach(() => {
+    testRenderer.unmount()
     page.unmount()
+    mockedUseEmissionFactorService.mockClear()
   })
 
-  it('renders donut chart with dropdown', () => {
+  it('renders bar chart with dropdown', () => {
     //emulate click to test
     const allMenuItemInstancesList = testInstance.findAllByType(Select)
 
@@ -98,15 +118,15 @@ describe('EmissionsBreakdownContainer', () => {
   })
 
   it('checks to see if bar chart exists upon loading', () => {
-    const isApexDonutChartRendered = testInstance.findAllByType(ApexBarChart)
+    const isApexBarChartRendered = testInstance.findAllByType(ApexBarChart)
 
-    expect(isApexDonutChartRendered).toHaveLength(1)
+    expect(isApexBarChartRendered).toHaveLength(1)
   })
 
-  it('renders emission by region donut chart by default', () => {
-    const isApexDonutChartRendered = testInstance.findByType(ApexBarChart)
+  it('renders emission by region bar chart by default', () => {
+    const isApexBarChartRendered = testInstance.findByType(ApexBarChart)
 
-    expect(isApexDonutChartRendered.props.dataType).toBe('region')
+    expect(isApexBarChartRendered.props.dataType).toBe('region')
   })
 
   it('selects the correct option', () => {

@@ -29,6 +29,21 @@ Your Google Cloud Account needs to be configured to export Billing Data to BigQu
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
 
+### Unsupported Usage Types
+
+The application has a file containing supported usage types located [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/services/gcp/BillingExportTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
+
+`2021-03-31T09:48:38.815Z [BillingExportTable] warn: Unsupported Usage unit: EU-WarmStorage-ByteHrs-EFS`
+
+If you come across a similar warning message, congratulations! You have found a usage type that the app currently isn’t aware of - this is a great opportunity for you to improve Cloud Carbon Footprint!
+
+The steps to resolve are:
+
+1. Determine the type in question based on the warning message
+2. Add the type to the respective list in the `BillingExportTypes.ts` file
+3. Delete `estimates.cache.json` file and restart the application server
+4. Submit a PR with the update
+
 ### Options for Google Authentication
 
 We currently only support authentication with Google via the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.

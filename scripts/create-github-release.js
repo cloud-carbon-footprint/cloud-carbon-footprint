@@ -5,6 +5,8 @@ const { Octokit } = require('@octokit/rest')
 
 // See Examples above to learn about these command line arguments.
 const [TAG_NAME, BOOL_CREATE_RELEASE] = process.argv.slice(2)
+// Add latest tag name to route release to latest tag
+const LATEST_TAG_NAME = 'latest'
 
 if (!BOOL_CREATE_RELEASE) {
   console.log(
@@ -118,7 +120,7 @@ async function createRelease(releaseDescription) {
   const releaseResponse = await octokit.repos.createRelease({
     owner: GH_OWNER,
     repo: GH_REPO,
-    tag_name: TAG_NAME,
+    tag_name: LATEST_TAG_NAME,
     name: TAG_NAME,
     body: releaseDescription,
     draft: boolCreateDraft,
@@ -138,12 +140,51 @@ async function createRelease(releaseDescription) {
   }
 }
 
+// Get Previous Release on GitHub.
+async function getPreviousReleaseId() {
+  const prevRelease = await octokit.rest.repos.getReleaseByTag({
+    owner: GH_OWNER,
+    repo: GH_REPO,
+    tag: LATEST_TAG_NAME,
+  })
+
+  if (prevRelease.status === 200) {
+    console.log('Got Previous release!')
+    console.log(prevRelease.data.html_url)
+  } else {
+    console.error(prevRelease)
+    throw new Error('Something went wrong when fetching the previous release.')
+  }
+
+  return { id: prevRelease.data.id, name: prevRelease.data.name }
+}
+
+// Update Previous Release on GitHub to have non-latest tag name.
+async function updatePreviousRelease(id, name) {
+  const updateResponse = await octokit.repos.updateRelease({
+    owner: GH_OWNER,
+    repo: GH_REPO,
+    release_id: id,
+    tag_name: name,
+  })
+
+  if (updateResponse.status === 200) {
+    console.log('Updated Previous Release!')
+    console.log(updateResponse.data.html_url)
+  } else {
+    console.error(updateResponse)
+    throw new Error('Something went wrong when updating the previous release.')
+  }
+}
+
 async function main() {
   const commitMessage = await getCommitMessageUsingTagName(TAG_NAME)
   const releaseDescription = await getReleaseDescriptionFromCommitMessage(
     commitMessage,
   )
 
+  const prevReleaseId = await getPreviousReleaseId()
+  await updatePreviousRelease(prevReleaseId.id, prevReleaseId.name)
   await createRelease(releaseDescription)
 }
 

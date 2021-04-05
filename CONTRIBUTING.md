@@ -12,7 +12,7 @@ _If an issue has been closed and you still feel it's relevant, feel free to ping
 
 There are fundamentally three ways an individual can contribute:
 
-1. **Open an issue:** If you believe that you have found a new bug, you should report it by creating a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker.
+1. **Open an issue:** If you believe that you have found a new bug or have a feature addition or request, you should report it by creating a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker.
 1. **Help triage an open issue:** You can do this either by providing assistive details (a reproducible test case that demonstrates a bug) or by providing suggestions to address the issue.
 1. **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `ThoughtWorks-Cleantech/cloud-carbon-footprint` in a concrete and reviewable manner.
 
@@ -44,7 +44,7 @@ Most issues are resolved by opening a pull request. The process for opening and 
 
 ## Pull Requests 📥
 
-Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository.
+Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository. Please [link your PR](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) to an issue so we can more easily track the work being done
 
 ## Setting up your local environment
 
