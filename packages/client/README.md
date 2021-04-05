@@ -47,4 +47,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## License
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 Thoughtworks, Inc. All rights reserved.

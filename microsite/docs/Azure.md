@@ -50,4 +50,4 @@ By default, the application authenticates with Azure using environment variables
 
 The authentication mode is set inside [packages/core/src/application/Config.ts](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/application/Config.ts), and you can see these options being used in [packages/core/src/application/AzureCredentialsProvider.ts](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/application/AzureCredentialsProvider.ts).
 
-<!-- © 2020 ThoughtWorks, Inc. All rights reserved. -->
+<!-- © 2021 Thoughtworks, Inc. All rights reserved. -->

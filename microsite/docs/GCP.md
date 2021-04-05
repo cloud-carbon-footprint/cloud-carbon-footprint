@@ -48,4 +48,4 @@ The steps to resolve are:
 
 We currently only support authentication with Google via the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 
-<!-- © 2020 ThoughtWorks, Inc. All rights reserved. -->
+<!-- © 2021 Thoughtworks, Inc. All rights reserved. -->

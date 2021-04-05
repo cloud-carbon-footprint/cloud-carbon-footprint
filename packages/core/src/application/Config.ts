@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 Thoughtworks, Inc. All rights reserved.
  */
 import fs from 'fs'
 import dotenv from 'dotenv'

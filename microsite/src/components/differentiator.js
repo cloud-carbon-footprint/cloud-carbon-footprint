@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 Thoughtworks, Inc. All rights reserved.
  */
 
 import React from 'react'
@@ -21,7 +21,8 @@ const differences = [
       'Provides estimates for both energy and carbon emissions from cloud usage',
   },
   {
-    text: 'Monitors your energy usage and carbon footprint visually via graphs and ' +
+    text:
+      'Monitors your energy usage and carbon footprint visually via graphs and ' +
       'charts, with the ability to keep track of data in tables and export metrics in ' +
       'CSV to share with stakeholders',
   },

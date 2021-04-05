@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# © 2020 ThoughtWorks, Inc. All rights reserved.
+# © 2021 Thoughtworks, Inc. All rights reserved.
 #
 
 set -e

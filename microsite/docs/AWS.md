@@ -69,4 +69,4 @@ The authentication mode is set inside [packages/core/src/application/Config.ts.]
 
 api/.env is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/.adr/adr_5_aws_authentication.txt), as well as this article: https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/
 
-<!-- © 2020 ThoughtWorks, Inc. All rights reserved. -->
+<!-- © 2021 Thoughtworks, Inc. All rights reserved. -->

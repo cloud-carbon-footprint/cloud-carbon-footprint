@@ -1,11 +1,13 @@
 #!/bin/bash
 
 #
-# © 2020 ThoughtWorks, Inc. All rights reserved.
+# © 2021 Thoughtworks, Inc. All rights reserved.
 #
 
-copyright="© 2020 ThoughtWorks, Inc. All rights reserved."
+copyright="© 2021 Thoughtworks, Inc. All rights reserved."
 errorCode=0
+domain=`git config user.email`
+if [ $domain == *"thoughtworks.com"* ]; then continue; fi
 git diff --cached --name-status | while read x file; do
   if [ "$x" = 'D' ]; then continue; fi
   if [ ${x::1} = 'R' ]; then continue; fi
