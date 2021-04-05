@@ -135,6 +135,7 @@ export default function cache(): any {
 
       // write missing estimates to cache
       const estimatesToPersist = fillDates(missingDates, estimates)
+      console.log('Setting new estimates to cache file...')
       cacheService.setEstimates(estimatesToPersist)
 
       // so we don't return results with no estimates
