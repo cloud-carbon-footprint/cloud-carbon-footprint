@@ -7,15 +7,40 @@ In order to run Cloud Carbon Footprint locally, there are a few things you must 
 
 ### Prerequisites
 
+- Git
+
 - Node.js >= 12 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
 
-- Yarn
+- Yarn (latest)
 
-### Setup
+### Clone the repository 
 
-    yarn install
+```
+git clone --branch latest https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint.git
+cd cloud-carbon-footprint
+```
 
-This will install dependencies for all packages. We use [Lerna](https://lerna.js.org/) to manage both projects.
+### Guided Install
+
+```
+yarn guided-install
+```
+
+This will install dependencies for all packages, then guide you through setting up credentials and environment variables to analyze the footprint of your AWS, GCP, or Azure account. Then:
+
+```
+yarn start
+```
+
+If you have any problems with the guided install, you can instead [configure your cloud provider environment variables manually](introduction#connecting-your-data).  
+
+### Standard Install 
+
+```
+yarn install
+```
+
+For a quick demo, run `yarn install && yarn start-with-mock-data`
 
 ### Optional Prerequisites
 

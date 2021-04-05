@@ -130,3 +130,7 @@ at [https://www.contributor-covenant.org/translations][translations].
 [mozilla coc]: https://github.com/mozilla/diversity
 [faq]: https://www.contributor-covenant.org/faq
 [translations]: https://www.contributor-covenant.org/translations
+
+---
+
+© 2020 ThoughtWorks, Inc. All rights reserved.

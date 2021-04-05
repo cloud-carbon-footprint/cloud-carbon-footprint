@@ -27,3 +27,7 @@ Give us a star if you like the project or find this work interesting!
 <br>
 
 ##### Cloud Carbon Footprint is an open-source project, sponsored by ThoughtWorks Inc. under the Apache License, Version 2.0
+
+---
+
+© 2020 ThoughtWorks, Inc. All rights reserved.

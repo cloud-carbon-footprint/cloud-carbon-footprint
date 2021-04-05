@@ -64,15 +64,21 @@ fileignoreconfig:
 - filename: package.json
   checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: packages/api/.env.template
-  checksum: cab199f02ce808bcf8b3bc14188bef7932e3f76d7af245dc1073e66dd4976c91
+  checksum: 26d1b5312f6615fe4f6459cfd020aa5726cfa7f94a7001d7856c3410c294dbe1
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/estimates.cache.test.json
   checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
+- filename: packages/client/src/dashboard/charts/ChartLegend.tsx
+  checksum: 84729e69ef7d71bbc98ff3313eb28b9e3c2fb9c2eeb0a57a17fc39d9bb84cd6a
 - filename: packages/client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
+- filename: packages/client/src/dashboard/charts/__snapshots__/ApexDonutChart.test.tsx.snap
+  checksum: 528a3aadcf7ca3ba830c1abd41d2a8b3062582ef20210fa2cbe24231b1ee1386
+- filename: packages/client/src/dashboard/charts/__snapshots__/EmissionsBreakdownContainer.test.tsx.snap
+  checksum: a8cf0a51e6fd4cb8b972d8e195fbb2997ff1c17c989a43f8d4e7746a9740e54d
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
   checksum: e620bc3d204cc335b5b7277ff026ef6a05a981016856a2a7c46302dfb1a99d00
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
