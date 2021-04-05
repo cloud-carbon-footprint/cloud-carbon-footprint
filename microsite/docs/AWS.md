@@ -9,6 +9,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
     - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena.
+    - This role name will be used for the value in the environment variable: `AWS_TARGET_ACCOUNT_ROLE_NAME`
 
 2.  Enable the Cost and Usage Billing AWS feature.
 
@@ -16,7 +17,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
 3.  Setup Athena DB to save the Cost and Usage Reports.
 
-    - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here.](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
+    - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here.](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html) There is a lot of helpful detail in the guides that goes beyond the specific needs for our app, but once you are able to succesfully query the Cost and Usage Reports from Athena, you should be set up sufficiently.
 
 4.  Configure aws credentials locally, using awscli.
 
@@ -32,7 +33,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
     - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the appConfig object in the [client Config file](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the CURRENT_PROVIDERS array.
 
-6.  Finally, start up the application
+6.  Finally, after performing a `yarn install`, start up the application
 
         yarn start
 
