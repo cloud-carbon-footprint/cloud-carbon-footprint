@@ -149,6 +149,7 @@ export default class ConsumptionManagementService {
       case STORAGE_USAGE_UNITS.GB_MONTH_10:
       case STORAGE_USAGE_UNITS.GB_MONTH_100:
       case STORAGE_USAGE_UNITS.DAY_30:
+      case STORAGE_USAGE_UNITS.TB_MONTH_1:
         const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
           consumptionDetailRow,
         )

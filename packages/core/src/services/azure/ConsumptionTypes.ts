@@ -34,6 +34,7 @@ export enum STORAGE_USAGE_UNITS {
   GB_MONTH_10 = '10 GB/Month',
   GB_MONTH_100 = '100 GB/Month',
   DAY_30 = '30 /Day',
+  TB_MONTH_1 = '1 TB/Month',
 }
 
 export enum NETWORKING_USAGE_UNITS {
@@ -48,6 +49,10 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'Data Stored',
   'Metadata',
   'Registry Unit',
+  'ZRS Snapshots',
+  'LRS Snapshots',
+  'Data Retention',
+  'Standard Node',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
