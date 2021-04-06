@@ -1,6 +1,7 @@
 {
   "name": "@cloud-carbon-footprint/cli",
   "version": "0.3.0",
+  "license": "Apache-2.0",
   "description": "",
   "main": "src/index.ts",
   "publishConfig": {
@@ -26,7 +27,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",
