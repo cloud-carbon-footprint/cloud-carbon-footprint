@@ -26,7 +26,12 @@ module.exports = {
         },
         'run-with-docker',
         'running-the-cli',
-        'performance-configurations',
+        {
+          type: 'category',
+          label: 'Configuration Options',
+          collapsed: false,
+          items: ['performance-configurations', 'configurations-glossary'],
+        },
         'deploying',
       ],
     },
