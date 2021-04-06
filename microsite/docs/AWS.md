@@ -8,7 +8,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 1.  Ensure your aws account has the correct permissions
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
-    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena.
+    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena.
     - This role name will be used for the value in the environment variable: `AWS_TARGET_ACCOUNT_ROLE_NAME`
 
 2.  Enable the Cost and Usage Billing AWS feature.
@@ -21,17 +21,17 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
 4.  Configure aws credentials locally, using awscli.
 
-    - After [installing awscli](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint#optional-prerequisites), run `aws configure` and provide your access key and secret access key. Also make sure you select the same region as the one you created your cost and usage reports in.
+    - After [installing awscli](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint#optional-prerequisites), run `aws configure` and provide your access key and secret access key. Also make sure you select the same region as the one you created your cost and usage reports in.
 
-    - We optionally support alternative methods of authenticating with AWS, which you can read about [here.](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint#options-for-aws-authentication)
+    - We optionally support alternative methods of authenticating with AWS, which you can read about [here.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint#options-for-aws-authentication)
 
 5.  Configure environmental variables for the api and client.
 
-    - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate with AWS. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data” approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
+    - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate with AWS. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data” approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
 
-    - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [client/.env.template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
+    - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [client/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
-    - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the appConfig object in the [client Config file](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the CURRENT_PROVIDERS array.
+    - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the appConfig object in the [client Config file](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the CURRENT_PROVIDERS array.
 
 6.  Finally, after performing a `yarn install`, start up the application
 
@@ -43,7 +43,7 @@ DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your
 
 ### Unsupported Usage Types
 
-The application has a file containing supported usage types located [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/services/aws/CostAndUsageTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
+The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/services/aws/CostAndUsageTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
 
 `2021-03-31T09:48:38.815Z [CostAndUsageReports] warn: Unexpected usage type for storage service: EU-WarmStorage-ByteHrs-EFS`
 
@@ -58,7 +58,7 @@ The steps to resolve are:
 
 ### Options for AWS Authentication
 
-We currently support three modes of authentication with AWS, that you can see in [packages/core/src/application/AWSCredentialsProvider.ts:](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/application/AWSCredentialsProvider.ts)
+We currently support three modes of authentication with AWS, that you can see in [packages/core/src/application/AWSCredentialsProvider.ts:](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/application/AWSCredentialsProvider.ts)
 
 1. "default" - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.
 
@@ -66,8 +66,8 @@ We currently support three modes of authentication with AWS, that you can see in
 
 3. "GCP" - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
 
-The authentication mode is set inside [packages/core/src/application/Config.ts.](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/application/Config.ts)
+The authentication mode is set inside [packages/core/src/application/Config.ts.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/application/Config.ts)
 
-api/.env is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/.adr/adr_5_aws_authentication.txt), as well as this article: https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/
+api/.env is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/.adr/adr_5_aws_authentication.txt), as well as this article: https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/
 
 <!-- © 2021 ThoughtWorks, Inc. -->

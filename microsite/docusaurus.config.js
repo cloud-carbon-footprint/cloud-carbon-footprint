@@ -5,12 +5,12 @@
 module.exports = {
   title: 'Cloud Carbon Footprint',
   tagline: 'Cloud Carbon Footprint',
-  url: 'https://ThoughtWorks-Cleantech.github.io',
+  url: 'https://cloud-carbon-footprint.github.io',
   baseUrl: '/',
   onBrokenLinks: 'log',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
-  organizationName: 'ThoughtWorks-Cleantech', // Usually your GitHub org/user name.
+  organizationName: 'Tcloud-carbon-footprint', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   themeConfig: {
     sidebarCollapsible: true,
@@ -35,7 +35,7 @@ module.exports = {
         },
         {
           to:
-            'https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint',
+            'https://github.com/cloud-carbon-footprint/cloud-carbon-footprint',
           label: 'Github',
           position: 'right',
           className: 'navbar__link',

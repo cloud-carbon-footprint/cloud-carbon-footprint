@@ -16,7 +16,7 @@ In order to run Cloud Carbon Footprint locally, there are a few things you must 
 ### Clone the repository 
 
 ```
-git clone --branch latest https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint.git
+git clone --branch latest https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.git
 cd cloud-carbon-footprint
 ```
 

@@ -15,11 +15,11 @@ Your Google Cloud Account needs to be configured to export Billing Data to BigQu
 
 4.  Configure environmental variables for the api and client.
 
-    - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data'' approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
+    - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data'' approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
 
-    - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [client/.env.template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
+    - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [client/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
-    - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROVIDERS` array.
+    - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROVIDERS` array.
 
 5.  Finally, start up the application:
 
@@ -31,7 +31,7 @@ DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your
 
 ### Unsupported Usage Types
 
-The application has a file containing supported usage types located [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/core/src/services/gcp/BillingExportTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
+The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/services/gcp/BillingExportTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
 
 `2021-03-31T09:48:38.815Z [BillingExportTable] warn: Unsupported Usage unit: EU-WarmStorage-ByteHrs-EFS`
 

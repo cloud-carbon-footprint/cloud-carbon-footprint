@@ -4,7 +4,7 @@
 const { Octokit } = require('@octokit/rest')
 
 const baseOptions = {
-  owner: 'ThoughtWorks-Cleantech',
+  owner: 'cloud-carbon-footprint',
   repo: 'cloud-carbon-footprint',
 }
 

@@ -14,7 +14,7 @@ if (!BOOL_CREATE_RELEASE) {
   )
 }
 
-const GH_OWNER = 'ThoughtWorks-Cleantech'
+const GH_OWNER = 'cloud-carbon-footprint'
 const GH_REPO = 'cloud-carbon-footprint'
 const EXPECTED_COMMIT_MESSAGE = /^Merge pull request #(?<prNumber>[0-9]+) from/
 const CHANGESET_RELEASE_BRANCH =
@@ -60,7 +60,7 @@ async function getCommitMessageUsingTagName(tagName) {
   }
   const commitSha = tagData.data.object.sha
   console.log(
-    `The commit for the tag is https://github.com/ThoughtWorks-Cleantech/backstage/commit/${commitSha}`,
+    `The commit for the tag is https://github.com/cloud-carbon-footprint/backstage/commit/${commitSha}`,
   )
 
   // Get the commit message using the commit SHA
