@@ -6,7 +6,6 @@
     "@hawkeyesec/scanner-cli": "^1.8.1",
     "@types/fs-extra": "^9.0.10",
     "concurrently": "^6.0.0",
-    "docsify-cli": "^4.4.2",
     "fs-extra": "^9.1.0",
     "husky": "^6.0.0",
     "lerna": "^4.0.0",

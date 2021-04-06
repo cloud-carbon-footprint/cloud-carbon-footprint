@@ -9,7 +9,7 @@
   },
   "scripts": {
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
-    "test": "jest -o",
+    "test": "jest",
     "type-check": "tsc --noEmit",
     "sonar:scan": "sonar-scanner",
     "test:watch": "yarn test --coverage --watchAll",

@@ -8,7 +8,7 @@
         "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
         "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
         "headed": "testcafe 'chrome'",
-        "precommit:tests": "lint-staged --no-stash && yarn headless",
+        "precommit": "lint-staged --no-stash && yarn headless",
         "lint": "eslint '*/*.js' --quiet",
         "lint:fix": "eslint '*/*.js' --quiet --fix"
     },
