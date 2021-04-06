@@ -1,5 +1,5 @@
 /*
- * © 2021 Thoughtworks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import { createMuiTheme, Theme } from '@material-ui/core/styles'

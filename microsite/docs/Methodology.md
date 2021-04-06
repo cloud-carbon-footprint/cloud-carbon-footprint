@@ -410,4 +410,4 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 | northamerica-northeast1 | Canada            | 0.000143              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | southamerica-east1      | Brazil            | 0.000109              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
-<!-- © 2021 Thoughtworks, Inc. All rights reserved. -->
+<!-- © 2021 ThoughtWorks, Inc. -->

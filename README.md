@@ -30,4 +30,4 @@ Give us a star if you like the project or find this work interesting!
 
 ---
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

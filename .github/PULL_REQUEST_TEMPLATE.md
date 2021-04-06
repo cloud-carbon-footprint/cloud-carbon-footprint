@@ -27,4 +27,4 @@ Write a brief but concise description of the changes you have made while also ma
 
 Additional information relevant to the changes
 
-© 2021 Thoughtworks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

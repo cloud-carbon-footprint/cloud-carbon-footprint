@@ -51,4 +51,4 @@ $ yarn start
 
 <!-- Add any other context about the problem here. -->
 
-© 2021 Thoughtworks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

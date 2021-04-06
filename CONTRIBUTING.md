@@ -301,12 +301,12 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
 - However this checksum is only valid for that specific commit, if the file changed, and it has a talisman check, it
   will run a new checksum for the .talismanrc that will have to be updated
 
+#### Failing integration tests.
 
-#### Failing integration tests. 
+- If you have another process running on localhost:3000 when the integration tests run, they will fail.
+  This can happen when you are already running the client package, or the microsite.
+  Please stop this process before re-running the integration tests.
 
-- If you have another process running on localhost:3000 when the integration tests run, they will fail. 
-  This can happen when you are already running the client package, or the microsite. 
-  Please stop this process before re-running the integration tests.    
 ---
 
 ### Tech Stack and Development Tools
@@ -315,4 +315,4 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
 
 ---
 
-© 2021 Thoughtworks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

@@ -1,4 +1,4 @@
-/* © 2021 Thoughtworks, Inc. All rights reserved.
+/* © 2021 ThoughtWorks, Inc.
  */
 import AWSMock from 'aws-sdk-mock'
 import { CloudWatch } from 'aws-sdk'

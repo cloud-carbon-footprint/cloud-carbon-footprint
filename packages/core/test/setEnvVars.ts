@@ -1,5 +1,5 @@
 /*
- * © 2021 Thoughtworks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 process.env.AWS_PROXY_ACCOUNT_ID = '12345678'

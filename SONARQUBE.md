@@ -37,7 +37,7 @@ yarn sonar:scan
 ## Steps
 
 1. Run SonarQube server
-   ` docker run -d --name SonarQube -p 9000:9000 -p 9092:9092 sonarqube ` >**To verify if the container started without errors, run the commands:
+   `docker run -d --name SonarQube -p 9000:9000 -p 9092:9092 sonarqube` >**To verify if the container started without errors, run the commands:
    `docker ps` or ` docker ps -a` to list even the stopped containers**
 
 1. Now you can visit the Admin UI here: http://localhost:9000.
@@ -52,4 +52,4 @@ yarn sonar:scan
 1. If all goes well, You should be able to see the log trace while scanner is analyzing each file. **Ensure that you see “EXECUTION SUCCESS” at the end of scanning** for each project (i.e. client, server)
 1. Verify the vulnerabilities on the Admin UI http://localhost:9000
 
-© 2021 Thoughtworks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 #
-# © 2021 Thoughtworks, Inc. All rights reserved.
+# © 2021 ThoughtWorks, Inc.
 #
 
 set -x

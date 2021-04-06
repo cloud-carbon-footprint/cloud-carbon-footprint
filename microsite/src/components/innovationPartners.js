@@ -1,5 +1,5 @@
 /*
- * © 2021 Thoughtworks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import React from 'react'
@@ -11,7 +11,7 @@ const logosArray = [
   {
     path: 'img/logos/TWLogo.png',
     alt: 'ThoughtWorks logo',
-    url: 'https://www.thoughtworks.com'
+    url: 'https://www.thoughtworks.com',
   },
   {
     path: 'img/logos/GOLogo.png',
@@ -44,7 +44,11 @@ function InnovationPartners() {
   const Logos = () => {
     return logosArray.map((logo, index) => {
       return (
-        <Link key={index} className={styles.innovationPartnerItem} to={logo.url}>
+        <Link
+          key={index}
+          className={styles.innovationPartnerItem}
+          to={logo.url}
+        >
           <img
             className={styles.innovationPartnerLogo}
             alt={logo.alt}

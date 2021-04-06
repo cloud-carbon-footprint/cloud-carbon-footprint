@@ -133,4 +133,4 @@ at [https://www.contributor-covenant.org/translations][translations].
 
 ---
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.
