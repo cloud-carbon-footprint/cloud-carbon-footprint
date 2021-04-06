@@ -38,6 +38,11 @@ const logosArray = [
     alt: 'Teads logo',
     url: 'https://www.teads.com',
   },
+  {
+    path: 'img/logos/USCSLogo.png',
+    alt: 'US Coalition on Sustainability logo',
+    url: 'https://www.uscoalitiononsustainability.org',
+  },
 ]
 
 function InnovationPartners() {
