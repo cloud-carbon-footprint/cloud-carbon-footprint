@@ -35,7 +35,7 @@ title: Configurations Glossary
 
 <br/>
 
-### Optionally set this to "GCP" or "AWS" if your application is deployed to AWS or GCP.
+### Optionally set this to "GCP" or "AWS" if your application is deployed to AWS or GCP:
 
 | Variable             | Value                 | Notes                                                               |
 | -------------------- | --------------------- | ------------------------------------------------------------------- |
@@ -75,7 +75,7 @@ title: Configurations Glossary
 
 <br/>
 
-### Optionally set this to "GCP" if your Azure credentials are stored in Google Secrets Manager.
+### Optionally set this to "GCP" if your Azure credentials are stored in Google Secrets Manager:
 
 | Variable        | Value   | Notes  |
 | --------------- | ------- | ------ |
@@ -83,7 +83,7 @@ title: Configurations Glossary
 
 <br/>
 
-### Optionally set this to group timestamps from queried data to help with performance
+### Optionally set this to group timestamps from queried data to help with performance:
 
 | Variable               | Value | Notes                                     |
 | ---------------------- | ----- | ----------------------------------------- |
