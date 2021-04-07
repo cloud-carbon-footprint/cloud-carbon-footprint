@@ -11,6 +11,7 @@ import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import NetworkingEstimator from '../../../domain/NetworkingEstimator'
 import ConsumptionManagementService from '../ConsumptionManagement'
 import {
+  mockConsumptionManagementResponseFour,
   mockConsumptionManagementResponseOne,
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
@@ -289,6 +290,36 @@ describe('Azure Consumption Management Service', () => {
             cost: 5,
             region: 'EU West',
           },
+          {
+            kilowattHours: 0.018929664000000002,
+            co2e: 0.000004315963392000001,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'HDInsight',
+            cost: 5,
+            region: 'UK South',
+          },
+          {
+            kilowattHours: 0.068256,
+            co2e: 0.000015562368,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Azure Synapse Analytics',
+            cost: 5,
+            region: 'UK South',
+          },
+          {
+            kilowattHours: 0.00034127999999999996,
+            co2e: 2.4162623999999994e-7,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'AZURE',
+            accountName: 'test-subscription',
+            serviceName: 'Storage',
+            cost: 5,
+            region: 'IN Central',
+          },
         ],
       },
     ]
@@ -342,6 +373,29 @@ describe('Azure Consumption Management Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
+  })
+
+  it('Ignores Unknown/Unsupported Usage Types', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseFour,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    expect(result).toEqual([])
   })
 
   it('Pages through results', async () => {

@@ -10,6 +10,10 @@ export const UNSUPPORTED_SERVICES = [
   'Load Balancer',
   'VPN Gateway',
   'Azure Front Door Service',
+  'Azure Databricks',
+  'Azure Data Factory v2',
+  'API Management',
+  'Redis Cache', // Memory usage
 ]
 
 export const UNSUPPORTED_USAGE_TYPES = [
@@ -19,6 +23,8 @@ export const UNSUPPORTED_USAGE_TYPES = [
   'Policies',
   'Requests',
   'Custom Domain',
+  'Kafka Surcharge/Core',
+  'License',
 ]
 
 export enum COMPUTE_USAGE_UNITS {
@@ -52,7 +58,6 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'ZRS Snapshots',
   'LRS Snapshots',
   'Data Retention',
-  'Standard Node',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
