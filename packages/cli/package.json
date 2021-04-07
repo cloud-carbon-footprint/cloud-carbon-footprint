@@ -2,7 +2,6 @@
   "name": "@cloud-carbon-footprint/cli",
   "version": "0.3.0",
   "license": "Apache-2.0",
-  "private": false,
   "description": "Command Line Interface as an entrypoint to get cloud energy and carbon emissions.",
   "main": "src/index.ts",
   "publishConfig": {
@@ -63,7 +62,7 @@
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.1",
-    "typescript": "4.2.3"
+    "typescript": "4.2.4"
   },
   "dependencies": {
     "@cloud-carbon-footprint/core": "^0.4.0",

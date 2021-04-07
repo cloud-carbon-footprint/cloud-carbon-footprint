@@ -2050,7 +2050,7 @@ __metadata:
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
     tsconfig-paths: ^3.9.0
-    typescript: 4.2.3
+    typescript: 4.2.4
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -2093,7 +2093,7 @@ __metadata:
     ts-node-dev: ^1.1.1
     tsconfig-paths: ^3.9.0
     typed-prompts: ^1.5.0
-    typescript: 4.2.3
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -2151,7 +2151,7 @@ __metadata:
     react-scripts: ^4.0.2
     react-test-renderer: ^17.0.1
     styled-components: ^5.2.1
-    typescript: 4.2.3
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -2181,7 +2181,7 @@ __metadata:
     eslint-config-prettier: ^8.0.0
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
-    googleapis: ^70.0.0
+    googleapis: ^71.0.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^10.5.4
@@ -2196,7 +2196,7 @@ __metadata:
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
     tsconfig-paths: ^3.9.0
-    typescript: 4.2.3
+    typescript: 4.2.4
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -8236,6 +8236,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"concurrently@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "concurrently@npm:6.0.1"
+  dependencies:
+    chalk: ^4.1.0
+    date-fns: ^2.16.1
+    lodash: ^4.17.20
+    read-pkg: ^5.2.0
+    rxjs: ^6.6.3
+    spawn-command: ^0.0.2-1
+    supports-color: ^8.1.0
+    tree-kill: ^1.2.2
+    yargs: ^16.2.0
+  bin:
+    concurrently: bin/concurrently.js
+  checksum: 5b137fc8cc54bb8794a7e6f6798153af548f838510245d51a719de37b8b76a1aaa778d54d02acd770514388cf029a0ecab8ed9a3c3e88162abdaaabe4f20bd41
+  languageName: node
+  linkType: hard
+
 "config-chain@npm:^1.1.12":
   version: 1.1.12
   resolution: "config-chain@npm:1.1.12"
@@ -12195,13 +12214,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^70.0.0":
-  version: 70.0.0
-  resolution: "googleapis@npm:70.0.0"
+"googleapis@npm:^71.0.0":
+  version: 71.0.0
+  resolution: "googleapis@npm:71.0.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.2
-  checksum: 1ecd3bcc0f779b7a2a56910aa5ba50a225e15c5f645fcd0aee7c47a0f5998aa6f7b3e8b844226f07ac45fb5b22a317af4703e8ad78090fe9555d27a108f94770
+  checksum: bfb1938bb3071cc9da1c77316e6d837ff2b345b91291db1ee0e4ba53fe500743258195ef706cebcb4bfddd7d3bf5c98af4e7df16a391492b781c311b656f8aff
   languageName: node
   linkType: hard
 
@@ -20782,14 +20801,14 @@ resolve@^2.0.0-next.3:
     "@changesets/cli": ^2.15.0
     "@hawkeyesec/scanner-cli": ^1.8.1
     "@types/fs-extra": ^9.0.10
-    concurrently: ^6.0.0
+    concurrently: ^6.0.1
     fs-extra: ^9.1.0
     husky: ^6.0.0
     lerna: ^4.0.0
     marked: ">=2.0.0"
     sonar-scanner: ^3.1.0
     ts-node: ^9.1.1
-    typescript: 4.2.3
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -23623,13 +23642,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-typescript@4.2.3:
-  version: 4.2.3
-  resolution: "typescript@npm:4.2.3"
+typescript@4.2.4:
+  version: 4.2.4
+  resolution: "typescript@npm:4.2.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 06e8470f317db6f5e2fce809b20eb84a67a7d8179057abff36e5427bd1b891bd08e54581ff81f0fa36aef9b6d1eb0f54eaf6e2643c6dbd4e37a0adcc41eed256
+  checksum: edaede2fa77f56b7fba80ee624a2368ab1216e75b0434d968ccb47ab0a5e2f6d94f848b3b111c1237dd71e988cd376af26370dcdad3b94355c76e759f0dd0a1e
   languageName: node
   linkType: hard
 
@@ -23643,13 +23662,13 @@ typescript@^3.3.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.2.3#builtin<compat/typescript>":
-  version: 4.2.3
-  resolution: "typescript@patch:typescript@npm%3A4.2.3#builtin<compat/typescript>::version=4.2.3&hash=a45b0e"
+"typescript@patch:typescript@4.2.4#builtin<compat/typescript>":
+  version: 4.2.4
+  resolution: "typescript@patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: a8956044aabf730699bcc3c2475efdd3f35e509329325cf60b4989761d4c2188e2c474183e2cf92b8c201fcf976814a5a16f144508b2a832643c4f972d0ab803
+  checksum: 3be44317593182e8ce494c114e7ad9b0bb2553a22f3085cc6da4f0a36912c20850daa9be4c898af2ab6fc8b12f430c1c9e46ac715721867cd38643f2350d3ef9
   languageName: node
   linkType: hard
 
