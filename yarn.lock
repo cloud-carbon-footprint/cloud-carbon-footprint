@@ -13171,9 +13171,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"integration-tests-testcafe@workspace:integration_tests":
+"integration-tests@workspace:packages/integration-tests":
   version: 0.0.0-use.local
-  resolution: "integration-tests-testcafe@workspace:integration_tests"
+  resolution: "integration-tests@workspace:packages/integration-tests"
   dependencies:
     "@testing-library/testcafe": ^4.3.1
     concurrently: ^6.0.0
