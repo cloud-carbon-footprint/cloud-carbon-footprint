@@ -55,8 +55,9 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
     } catch (error) {
       console.warn(
         'WARN: Unable to read cache file. Got following error: \n' + error,
+        '\n',
+        'Creating new cache file...',
       )
-      new Logger('Creating new cache file...')
       await fs.writeFile(cachePath, '[]', 'utf8')
     }
     const dateTimeReviver = (key: string, value: string) => {
