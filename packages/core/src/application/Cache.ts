@@ -8,6 +8,7 @@ import EstimatorCache from './EstimatorCache'
 import moment, { Moment } from 'moment'
 import R from 'ramda'
 import { EstimationRequest } from './CreateValidRequest'
+import Logger from '../services/Logger'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 
@@ -135,7 +136,7 @@ export default function cache(): any {
 
       // write missing estimates to cache
       const estimatesToPersist = fillDates(missingDates, estimates)
-      console.log('Setting new estimates to cache file...')
+      new Logger('Setting new estimates to cache file...')
       cacheService.setEstimates(estimatesToPersist)
 
       // so we don't return results with no estimates

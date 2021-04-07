@@ -7,6 +7,7 @@ import { EstimationResult } from './EstimationResult'
 import { EstimationRequest } from './CreateValidRequest'
 import { promises as fs } from 'fs'
 import moment from 'moment'
+import Logger from '../services/Logger'
 
 export const cachePath = process.env.CCF_CACHE_PATH || 'estimates.cache.json'
 export const testCachePath = 'estimates.cache.test.json'
@@ -55,7 +56,7 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
       console.warn(
         'WARN: Unable to read cache file. Got following error: \n' + error,
       )
-      console.log('Creating new cache file...')
+      new Logger('Creating new cache file...')
       await fs.writeFile(cachePath, '[]', 'utf8')
     }
     const dateTimeReviver = (key: string, value: string) => {
