@@ -165,10 +165,6 @@ There are a number of more advanced mechanisms for managing commits using git re
 
 Feel free to post a comment in the pull request to ping reviewers if you are awaiting an answer on something.
 
-#### Approval and Request Changes Workflow
-
-TBD: Add context on approval and request change workflow
-
 ---
 
 ## Bundle size analysis 🔍
