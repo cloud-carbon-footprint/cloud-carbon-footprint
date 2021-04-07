@@ -2,11 +2,26 @@
   "name": "@cloud-carbon-footprint/cli",
   "version": "0.3.0",
   "license": "Apache-2.0",
+  "private": false,
   "description": "Command Line Interface as an entrypoint to get cloud energy and carbon emissions.",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "dist/index.js"
   },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+    "directory": "packages/cli"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
   "scripts": {
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
@@ -25,8 +40,6 @@
     "start": "ts-node src/index.ts",
     "guided-install": "ts-node src/GuidedInstall/index.ts"
   },
-  "keywords": [],
-  "author": "",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",

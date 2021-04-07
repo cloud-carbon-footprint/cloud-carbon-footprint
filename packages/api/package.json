@@ -2,11 +2,26 @@
   "name": "@cloud-carbon-footprint/api",
   "version": "0.2.0",
   "license": "Apache-2.0",
+  "private": false,
   "description": "The API endpoint as an entrypoint to get cloud energy and carbon emissions. Optionally used by the client dashboard.",
   "main": "src/server.ts",
   "publishConfig": {
     "main": "dist/server.js"
   },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+    "directory": "packages/api"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
   "scripts": {
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
@@ -32,8 +47,6 @@
     "docker:cli": "docker exec -w /cloud-carbon-footprint/packages/api -e AWS_PROFILE -it ccf_base yarn start:cli -- ",
     "docker:stop": "docker stop ccf_base"
   },
-  "keywords": [],
-  "author": "",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",

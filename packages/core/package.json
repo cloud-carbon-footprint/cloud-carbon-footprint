@@ -2,12 +2,27 @@
   "name": "@cloud-carbon-footprint/core",
   "version": "0.4.0",
   "license": "Apache-2.0",
+  "private": false,
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions.",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "publishConfig": {
     "main": "dist/index.js"
   },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
   "scripts": {
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
@@ -24,8 +39,6 @@
     "lint": "eslint '*/**/*.ts' --quiet",
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
-  "keywords": [],
-  "author": "",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",

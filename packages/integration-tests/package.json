@@ -1,6 +1,7 @@
 {
     "name": "integration-tests",
     "version": "1.0.0",
+    "private": true,
     "description": "Test repository to run integration tests",
     "scripts": {
         "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
@@ -12,7 +13,6 @@
         "lint": "eslint '*/*.js' --quiet",
         "lint:fix": "eslint '*/*.js' --quiet --fix"
     },
-    "author": "",
     "devDependencies": {
         "@testing-library/testcafe": "^4.3.1",
         "concurrently": "^6.0.0",
