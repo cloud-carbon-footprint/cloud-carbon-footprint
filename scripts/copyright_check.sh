@@ -1,6 +1,6 @@
 #!/bin/bash
 
-copyright="© 2021 Thoughtworks, Inc."
+copyright="© 2021 ThoughtWorks, Inc."
 errorCode=0
 domain=`git config user.email`
 
