@@ -228,6 +228,10 @@ jobs:
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+      REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+      REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -297,6 +301,13 @@ jobs:
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+      REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+      REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
