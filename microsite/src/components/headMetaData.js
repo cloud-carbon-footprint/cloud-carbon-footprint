@@ -20,8 +20,9 @@ function MetaData() {
       ></meta>
       <meta
         property="og:image"
-        content="https://www.cloudcarbonfootprint.org/img/fb-share-image.png"
+        content="https://www.cloudcarbonfootprint.org/img/social-share-image.png"
       />
+      <meta name="twitter:card" content="summary" />
       <meta
         name="twitter:title"
         content="Cloud Carbon Footprint - An open source tool to measure and analyze cloud carbon emissions"
@@ -32,9 +33,8 @@ function MetaData() {
       />
       <meta
         name="twitter:image"
-        content="https://www.cloudcarbonfootprint.org/img/twitter-share-image.png"
+        content="https://www.cloudcarbonfootprint.org/img/twtr-share-image.png"
       />
-      <meta name="twitter:card" content="summary_large_image" />
     </Head>
   )
 }
