@@ -2,7 +2,7 @@
   "name": "@cloud-carbon-footprint/cli",
   "version": "0.3.0",
   "license": "Apache-2.0",
-  "description": "",
+  "description": "Command Line Interface as an entrypoint to get cloud energy and carbon emissions.",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "dist/index.js"

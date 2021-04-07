@@ -2,7 +2,7 @@
   "name": "@cloud-carbon-footprint/api",
   "version": "0.2.0",
   "license": "Apache-2.0",
-  "description": "",
+  "description": "The API endpoint as an entrypoint to get cloud energy and carbon emissions. Optionally used by the client dashboard.",
   "main": "src/server.ts",
   "publishConfig": {
     "main": "dist/server.js"
