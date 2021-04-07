@@ -7,7 +7,6 @@ import { EstimationResult } from './EstimationResult'
 import { EstimationRequest } from './CreateValidRequest'
 import { promises as fs } from 'fs'
 import moment from 'moment'
-import Logger from '../services/Logger'
 
 export const cachePath = process.env.CCF_CACHE_PATH || 'estimates.cache.json'
 export const testCachePath = 'estimates.cache.test.json'
