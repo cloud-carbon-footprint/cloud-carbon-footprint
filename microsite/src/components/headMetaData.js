@@ -23,6 +23,14 @@ function MetaData() {
         content="https://www.cloudcarbonfootprint.org/img/fb-share-image.png"
       />
       <meta
+        name="twitter:title"
+        content="Cloud Carbon Footprint - An open source tool to measure and analyze cloud carbon emissions"
+      />
+      <meta
+        name="twitter:description"
+        content="An open source tool to measure and analyze cloud carbon emissions"
+      />
+      <meta
         name="twitter:image"
         content="https://www.cloudcarbonfootprint.org/img/twitter-share-image.png"
       />
