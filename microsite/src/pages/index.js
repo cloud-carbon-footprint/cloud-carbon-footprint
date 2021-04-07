@@ -26,12 +26,12 @@ function Home() {
         ></meta>
         <meta
           property="og:image"
-          content="https://cloud-carbon-footprint.org/img/share-image.png"
+          content="https://www.cloudcarbonfootprint.org/img/default-share-image.png"
         />
-        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:card" content="summary_large_image" />
         <meta
           property="twitter:image"
-          content="https://cloud-carbon-footprint.org/img/share-image-twitter.png"
+          content="https://www.cloudcarbonfootprint.org/img/twitter-share-image.png"
         />
       </Head>
       <Hero />
