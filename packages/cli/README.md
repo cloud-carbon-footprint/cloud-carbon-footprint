@@ -40,3 +40,7 @@ If you have any problems with the guided install, you can instead [configure you
 
 - [Cloud Carbon Footprint Readme](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/README.md)
 - [Cloud Carbon Footprint Documentation](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/tree/trunk/microsite/docs/README.md)
+
+## License
+
+© 2021 ThoughtWorks, Inc.

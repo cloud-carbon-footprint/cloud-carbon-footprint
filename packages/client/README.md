@@ -30,3 +30,7 @@ Please refer to the [documentation](https://www.cloudcarbonfootprint.org/docs/ru
 
 - [Cloud Carbon Footprint Readme](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/README.md)
 - [Cloud Carbon Footprint Documentation](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/tree/trunk/microsite/docs/README.md)
+
+## License
+
+© 2021 ThoughtWorks, Inc.

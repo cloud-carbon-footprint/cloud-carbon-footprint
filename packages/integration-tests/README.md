@@ -18,3 +18,7 @@ Once this task is completed, you can now navigate to the `packages/integration-t
 
 - [Cloud Carbon Footprint Readme](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/README.md)
 - [Cloud Carbon Footprint Documentation](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/tree/trunk/microsite/docs/README.md)
+
+## License
+
+© 2021 ThoughtWorks, Inc.
