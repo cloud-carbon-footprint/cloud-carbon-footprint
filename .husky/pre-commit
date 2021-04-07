@@ -4,7 +4,7 @@
 branch="$(git rev-parse --abbrev-ref HEAD)"
 packages=$( git diff --pretty="" --name-only -- packages/ | wc -l )
 if [[ "$branch" != "changeset-release/trunk" ]]; then
-    ./scripts/copyright_check.sh && ./scripts/branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan
+    ./scripts/copyright_check.sh && ./scripts/branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan || exit 1
     if [[ "$packages" > "0" ]]; then
         echo 'Detecting modified files in packages dir...'
         yarn lerna run precommit --stream
