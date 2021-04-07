@@ -1,5 +1,5 @@
 {
-    "name": "integration-tests-testcafe",
+    "name": "integration-tests",
     "version": "1.0.0",
     "description": "Test repository to run integration tests",
     "scripts": {
