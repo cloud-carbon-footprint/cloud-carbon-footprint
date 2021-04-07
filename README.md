@@ -23,3 +23,7 @@ Please read through our [code of conduct](CODE_OF_CONDUCT.md) for our expectatio
 Don’t be shy! Reach out with any questions, support requests, and further discussions in our discussion google group.
 
 Give us a star if you like the project or find this work interesting!
+
+## License
+
+Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
