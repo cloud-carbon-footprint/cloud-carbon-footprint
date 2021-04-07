@@ -13,6 +13,7 @@ export const UNSUPPORTED_SERVICES = [
   'Azure Databricks',
   'Azure Data Factory v2',
   'API Management',
+  'Advanced Data Security',
   'Redis Cache', // Memory usage
 ]
 
@@ -23,7 +24,7 @@ export const UNSUPPORTED_USAGE_TYPES = [
   'Policies',
   'Requests',
   'Custom Domain',
-  'Kafka Surcharge/Core',
+  'Kafka Surcharge',
   'License',
 ]
 

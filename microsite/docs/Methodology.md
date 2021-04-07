@@ -410,4 +410,50 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 | northamerica-northeast1 | Canada            | 0.000143              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | southamerica-east1      | Brazil            | 0.000109              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
+#### Azure
+
+<ins>Note:</ins> The application currently only supports a subset of Azure regions that are used by ThoughtWorks. 
+This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what
+is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies/). 
+For example, the website says "Central US", but the API provides the region as "US Central". In the case of "UK South",
+it is the same on both the website and the API. For any Azure customers using other regions, we would love to know what
+syntax is returned by the API for your region(s) so that we can add support for them. You can email [green-cloud@thoughtworks.com](mailto:green-cloud@thoughtworks.com), 
+or submit an issue or pull request.
+
+| Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |     
+| ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| US Central       | Iowa        | MRO         | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US East          | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US East 2        | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US East 3        | Georgia     | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US North Central | Illinois    | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US South Central | Texas       | TRE         | 0.000424877           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West Central  | Wyoming     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West          | California  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West 2        | Washington  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West 3        | Arizona     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |  
+| EU North         | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
+| EU West          | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |   
+| IN Central       | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| IN South         | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| IN West          | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |  
+| UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- © 2021 ThoughtWorks, Inc. -->
