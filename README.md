@@ -24,6 +24,10 @@ Don’t be shy! Reach out with any questions, support requests, and further disc
 
 Give us a star if you like the project or find this work interesting!
 
+## License
+
+Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+
 ---
 
 © 2021 ThoughtWorks, Inc.
