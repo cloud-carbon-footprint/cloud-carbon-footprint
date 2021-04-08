@@ -60,7 +60,7 @@ async function getCommitMessageUsingTagName(tagName) {
   }
   const commitSha = tagData.data.object.sha
   console.log(
-    `The commit for the tag is https://github.com/cloud-carbon-footprint/backstage/commit/${commitSha}`,
+    `The commit for the tag is https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/${commitSha}`,
   )
 
   // Get the commit message using the commit SHA
@@ -79,7 +79,7 @@ async function getCommitMessageUsingTagName(tagName) {
   }
 
   // Example Commit Message
-  // Merge pull request #3555 from backstage/changeset-release/master Version Packages
+  // Merge pull request #3555 from cloud-carbon-footprint/changeset-release/master Version Packages
   return commitData.data.message
 }
 
@@ -97,7 +97,7 @@ async function getReleaseDescriptionFromCommitMessage(commitMessage) {
   // Get the PR description from the commit message
   const prNumber = commitMessage.match(expectedMessage).groups.prNumber
   console.log(
-    `Identified the changeset Pull request - https://github.com/backstage/cloud-carbon-footprint/pull/${prNumber}`,
+    `Identified the changeset Pull request - https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/${prNumber}`,
   )
 
   const { data } = await octokit.pulls.get({
