@@ -412,9 +412,8 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 
 #### Azure
 
-<ins>Note:</ins> The application currently only supports a subset of Azure regions that are used by ThoughtWorks. 
-This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what
-is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies/). 
+**Note**: The application currently only supports a subset of Azure regions that are used by ThoughtWorks. 
+This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies). 
 For example, the website says "Central US", but the API provides the region as "US Central". In the case of "UK South",
 it is the same on both the website and the API. For any Azure customers using other regions, we would love to know what
 syntax is returned by the API for your region(s) so that we can add support for them. You can email [green-cloud@thoughtworks.com](mailto:green-cloud@thoughtworks.com), 
