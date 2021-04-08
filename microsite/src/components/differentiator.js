@@ -13,7 +13,7 @@ const differences = [
   },
   {
     text:
-      'Ability to measure usage at a granular service level and use actual server' +
+      'Ability to measure usage at a granular service level and use actual server ' +
       'utilization rather than average utilization for hyperscale data centers',
   },
   {
