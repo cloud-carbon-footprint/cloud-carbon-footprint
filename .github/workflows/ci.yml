@@ -257,7 +257,6 @@ jobs:
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
           sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
-          cat package.json
           ./create_server_env_file.sh
           cd ../..
 
@@ -319,10 +318,6 @@ jobs:
           apk add --update python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-
-          cd packages/client
-          ./create_client_env_file.sh
-          cd ../..
 
           cd packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
