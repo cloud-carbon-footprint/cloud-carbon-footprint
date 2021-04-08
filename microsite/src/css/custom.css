@@ -77,3 +77,15 @@ a:hover {
 .react-toggle {
   margin-left: 15px;
 }
+
+@media screen and (max-width: 400px) {
+  .navbar__title {
+    font-size: 1.3rem;
+    line-height: 22px;
+  }
+
+  .navbar__link {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100%;
+  }
+}
