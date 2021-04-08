@@ -260,7 +260,7 @@ jobs:
           cd packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
-          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core"/g' package.json
+          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
           ./create_server_env_file.sh
           cd ../..
 
@@ -330,7 +330,7 @@ jobs:
           cd packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
-          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core"/g' package.json
+          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
           ./create_server_env_file.sh
           cd ../..
 
