@@ -3,11 +3,19 @@ id: introduction
 title: Introduction
 ---
 
-When running the app locally, first choose if you would like to run with mocked data or connect to your cloud data.
+There are a few options when it comes to running the app locally.
+
+If you are hoping to get up and running quickly, check out the [Getting Started](getting-started) for how to begin, including a command to run for a quick install. This will guide you through running the app with your data (for additional details, read on below).
+
+If you’re not ready to connect your data, no problem - you can [run with mocked data](run-with-mocked-data).
 
 ### Connecting your Data
 
-A few steps are required to run the app with real data, that are different for each cloud provider. Check out the steps for each cloud provider in the Connect to Real Data section:
+A few steps are required to run the app with real data, that are different for each cloud provider. 
+
+To make it easier to configure your app with real data, we have [Guided Install instructions](getting-started#guided-install) that you can follow.   
+
+To manually configure your cloud provider(s), check out the steps for each cloud provider in the Connect to Real Data section:
 
 - [AWS](aws)
 - [GCP](gcp)

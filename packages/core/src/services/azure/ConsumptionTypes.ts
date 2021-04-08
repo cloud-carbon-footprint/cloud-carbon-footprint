@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import { QUERY_DATE_TYPES } from '../common/types'
@@ -10,6 +10,11 @@ export const UNSUPPORTED_SERVICES = [
   'Load Balancer',
   'VPN Gateway',
   'Azure Front Door Service',
+  'Azure Databricks',
+  'Azure Data Factory v2',
+  'API Management',
+  'Advanced Data Security',
+  'Redis Cache', // Memory usage
 ]
 
 export const UNSUPPORTED_USAGE_TYPES = [
@@ -19,6 +24,8 @@ export const UNSUPPORTED_USAGE_TYPES = [
   'Policies',
   'Requests',
   'Custom Domain',
+  'Kafka Surcharge',
+  'License',
 ]
 
 export enum COMPUTE_USAGE_UNITS {
@@ -34,6 +41,7 @@ export enum STORAGE_USAGE_UNITS {
   GB_MONTH_10 = '10 GB/Month',
   GB_MONTH_100 = '100 GB/Month',
   DAY_30 = '30 /Day',
+  TB_MONTH_1 = '1 TB/Month',
 }
 
 export enum NETWORKING_USAGE_UNITS {
@@ -48,6 +56,9 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'Data Stored',
   'Metadata',
   'Registry Unit',
+  'ZRS Snapshots',
+  'LRS Snapshots',
+  'Data Retention',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [

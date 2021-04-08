@@ -23,8 +23,8 @@ function Overview() {
         <p className={styles.overviewText}>
           Cloud Carbon Footprint is an open source tool that provides visibility
           and tooling to measure, monitor and reduce your cloud carbon
-          emissions. We use best practice methodologies to convert cloud
-          utilization into estimated energy usage and carbon emissions,
+          emissions. We use best practice methodologies such as <Link to="https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/">Etsy's Cloud Jewels</Link>,
+          to convert cloud utilization into estimated energy usage and carbon emissions,
           producing metrics that can be shared with employees, investors, and
           other stakeholders.
         </p>

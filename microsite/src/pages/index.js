@@ -6,11 +6,13 @@ import {
   ValueProp,
   Differentiator,
   InnovationPartners,
+  MetaData,
 } from '../components'
 
 function Home() {
   return (
     <MainLayout>
+      <MetaData />
       <Hero />
       <Overview />
       <ValueProp />

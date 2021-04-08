@@ -1,9 +1,13 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import moment from 'moment'
-import { EstimationResult, serviceEstimate } from '../models/types'
+import {
+  EmissionsRatios,
+  EstimationResult,
+  serviceEstimate,
+} from '../models/types'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))
@@ -97,6 +101,29 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
     },
   }
 }
+
+export const fakeEmissionFactors: EmissionsRatios[] = [
+  {
+    region: 'us-west-1',
+    mtPerKwHour: 0.000645,
+  },
+  {
+    region: 'us-west-2',
+    mtPerKwHour: 0.000635,
+  },
+  {
+    region: 'us-west-3',
+    mtPerKwHour: 0.000475,
+  },
+  {
+    region: 'us-west-4',
+    mtPerKwHour: 0.000315,
+  },
+  {
+    region: 'us-east-1',
+    mtPerKwHour: 0.000155,
+  },
+]
 
 const generateEstimations = (
   today: moment.Moment | Date,

@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 export enum COMPUTE_PROCESSOR_TYPES {

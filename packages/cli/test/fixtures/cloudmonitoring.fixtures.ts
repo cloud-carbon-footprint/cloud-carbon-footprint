@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 const dayOneHourOne = new Date('2020-07-01T22:00:00.000Z')

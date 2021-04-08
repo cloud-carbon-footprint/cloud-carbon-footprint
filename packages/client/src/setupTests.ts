@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 // jest-dom adds custom jest matchers for asserting on DOM nodes.

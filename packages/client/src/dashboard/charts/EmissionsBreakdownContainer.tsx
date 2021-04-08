@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import React, { ReactElement } from 'react'
@@ -41,6 +41,8 @@ const useStyles = makeStyles(() => {
     root: {
       width: '100%',
       height: '100%',
+      overflow: 'unset',
+      minHeight: '755px',
     },
     topContainer: {
       boxShadow: 'none',

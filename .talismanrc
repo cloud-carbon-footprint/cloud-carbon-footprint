@@ -60,21 +60,29 @@ fileignoreconfig:
 - filename: microsite/src/components/differentiator.js
   checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
 - filename: microsite/src/components/innovationPartners.js
-  checksum: 5099a14d9f5fb5fe776a55e3b3fe1c4953a4e18a94569a79775c3af0f03a98f4
+  checksum: cf5de9e82c90a564f09e2adf21e003004675c0f74673fae6c0b5faad7818d498
 - filename: package.json
   checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: packages/api/.env.template
   checksum: 26d1b5312f6615fe4f6459cfd020aa5726cfa7f94a7001d7856c3410c294dbe1
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
+- filename: packages/api/create_server_env_file.sh
+  checksum: 659170eb0cdaa9d06f8aeeddf76b5c2b4fb223642ee192ce6d0863b165838fad
 - filename: packages/api/estimates.cache.test.json
   checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
+- filename: packages/client/create_client_env_file.sh
+  checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
+- filename: packages/client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
+  checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
+- filename: packages/client/src/react-app-env.d.ts
+  checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
   checksum: e620bc3d204cc335b5b7277ff026ef6a05a981016856a2a7c46302dfb1a99d00
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
-  checksum: 4d228f61da83e84b40a041f073e74917409a7fdeb09fdf70f3ef62720288d923
+  checksum: 4b35ddbf7774e4c89756089fcc9123739e034f4a2f07394e357c8434fd3285a3
 - filename: packages/core/src/services/common/types.ts
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
 - filename: packages/core/src/services/gcp/BillingExportTable.ts
@@ -118,4 +126,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: 7d8c3d9fc8e12480d5d756d7ccdcce7daba1e7396499413579f0f91333dcb2b6
+  checksum: 0faae4853669ac08d62e94e2b6e4587c85ea719b1c334287542c19ec4f7ceaf2

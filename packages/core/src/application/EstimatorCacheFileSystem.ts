@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import EstimatorCache from './EstimatorCache'
@@ -37,7 +37,7 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
     })
   }
 
-  async setEstimates(estimates: EstimationResult[]) {
+  async setEstimates(estimates: EstimationResult[]): Promise<void> {
     const cachedEstimates = await this.loadEstimates()
     return fs.writeFile(
       cachePath,
@@ -54,10 +54,12 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
     } catch (error) {
       console.warn(
         'WARN: Unable to read cache file. Got following error: \n' + error,
+        '\n',
+        'Creating new cache file...',
       )
       await fs.writeFile(cachePath, '[]', 'utf8')
     }
-    const dateTimeReviver = (key: string, value: any) => {
+    const dateTimeReviver = (key: string, value: string) => {
       if (key === 'timestamp') return moment.utc(value).toDate()
       return value
     }

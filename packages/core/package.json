@@ -1,12 +1,27 @@
 {
   "name": "@cloud-carbon-footprint/core",
-  "version": "0.3.0",
-  "description": "",
+  "version": "0.5.0",
+  "license": "Apache-2.0",
+  "description": "The core logic to get cloud usage data and estimate energy and carbon emissions.",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "publishConfig": {
     "main": "dist/index.js"
   },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
   "scripts": {
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
@@ -23,9 +38,6 @@
     "lint": "eslint '*/**/*.ts' --quiet",
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",
@@ -50,7 +62,7 @@
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "4.2.3"
+    "typescript": "4.2.4"
   },
   "dependencies": {
     "@azure/arm-consumption": "^6.3.0",
@@ -64,7 +76,7 @@
     "@types/ramda": "^0.27.38",
     "aws-sdk": "^2.847.0",
     "dotenv": "^8.2.0",
-    "googleapis": "^68.0.0",
+    "googleapis": "^71.0.0",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "tsconfig-paths": "^3.9.0",

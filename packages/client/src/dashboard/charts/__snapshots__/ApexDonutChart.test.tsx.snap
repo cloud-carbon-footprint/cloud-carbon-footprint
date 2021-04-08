@@ -1,77 +1,289 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ApexDonutChart renders with correct configuration 1`] = `
+exports[`ApexBarChart renders with correct configuration 1`] = `
 <div
-  data-testid="fake-donut-chart"
-  height="500px"
-  options={
+  style={
     Object {
-      "chart": Object {
-        "background": "#fff",
-      },
-      "colors": Array [
-        "#000000",
-        "#FFFFFF",
-      ],
-      "dataLabels": Object {
-        "dropShadow": Object {
-          "blur": 3,
-          "color": "#424242",
-          "enabled": true,
-          "left": 0,
-          "opacity": 0.5,
-          "top": 0,
-        },
-        "style": Object {
-          "fontSize": "1rem",
-        },
-      },
-      "height": "500px",
-      "labels": Array [
-        "ebs",
-        "ec2",
-        "s3",
-      ],
-      "legend": Object {
-        "offsetY": -8,
-        "position": "bottom",
-      },
-      "series": Array [
-        3015.014,
-        2521.406,
-        1718.017,
-      ],
-      "stroke": Object {
-        "colors": Array [
-          "#fafafa",
-        ],
-      },
-      "theme": Object {
-        "mode": "light",
-      },
-      "title": Object {
-        "offsetY": -8,
-        "style": Object {
-          "fontSize": "24px",
-        },
-      },
-      "tooltip": Object {
-        "fillSeriesColor": false,
-        "y": Object {
-          "formatter": [Function],
-        },
-      },
+      "alignContent": "center",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "minHeight": "500px",
     }
   }
-  series={
-    Array [
-      3015.014,
-      2521.406,
-      1718.017,
-    ]
-  }
-  type="donut"
 >
-  fake chart
+  <div
+    data-testid="fake-bar-chart"
+    height="500px"
+    options={
+      Object {
+        "chart": Object {
+          "toolbar": Object {
+            "offsetX": -120,
+            "offsetY": -55,
+            "tools": Object {
+              "download": "
+            <div class=\\"apexcharts-menu-icon\\" title=\\"Menu\\">
+                <svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\">
+                <path d=\\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\\"></path>
+                </svg>
+            </div>   
+           ",
+            },
+          },
+          "type": "bar",
+        },
+        "colors": Array [
+          "#3f51b5",
+        ],
+        "dataLabels": Object {
+          "background": Object {
+            "borderColor": "#303f9f",
+            "borderRadius": 1,
+            "borderWidth": 1,
+            "enabled": true,
+            "foreColor": "#3f51b5",
+            "opacity": 0.9,
+            "padding": 6,
+          },
+          "enabled": true,
+          "formatter": [Function],
+          "offsetX": 16,
+          "textAnchor": "start",
+        },
+        "grid": Object {
+          "padding": Object {
+            "left": 32,
+          },
+          "show": false,
+          "xaxis": Object {
+            "lines": Object {
+              "show": false,
+            },
+          },
+          "yaxis": Object {
+            "lines": Object {
+              "show": false,
+            },
+          },
+        },
+        "height": "500px",
+        "legend": Object {
+          "show": false,
+        },
+        "plotOptions": Object {
+          "bar": Object {
+            "barHeight": "0%",
+            "distributed": true,
+            "horizontal": true,
+          },
+        },
+        "series": Array [
+          Object {
+            "data": Array [],
+            "name": "Total CO2e",
+          },
+        ],
+        "tooltip": Object {
+          "fillSeriesColor": false,
+          "x": Object {
+            "show": false,
+          },
+          "y": Object {
+            "formatter": [Function],
+          },
+        },
+        "xaxis": Object {
+          "axisBorder": Object {
+            "show": false,
+          },
+          "labels": Object {
+            "show": false,
+          },
+          "max": 100,
+          "type": "category",
+        },
+        "yaxis": Object {
+          "labels": Object {
+            "style": Object {
+              "fontSize": "13px",
+            },
+          },
+        },
+      }
+    }
+    series={
+      Array [
+        Object {
+          "data": Array [],
+          "name": "Total CO2e",
+        },
+      ]
+    }
+    type="bar"
+  >
+    fake chart
+  </div>
+  <div
+    style={
+      Object {
+        "paddingTop": "10px",
+      }
+    }
+  >
+    <div
+      className="makeStyles-paginationContainer-1"
+    >
+      <span
+        style={
+          Object {
+            "color": "#ababab",
+            "fontWeight": 700,
+            "marginRight": "8px",
+          }
+        }
+      >
+        1 - 4
+         of 
+        4
+      </span>
+      <button
+        aria-label="first page"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+        disabled={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={-1}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
+            />
+          </svg>
+        </span>
+      </button>
+      <button
+        aria-label="chevron-left"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+        disabled={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={-1}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+            />
+          </svg>
+        </span>
+      </button>
+      <button
+        aria-label="chevron-right"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+        disabled={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={-1}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+            />
+          </svg>
+        </span>
+      </button>
+      <button
+        aria-label="last page"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary Mui-disabled Mui-disabled"
+        disabled={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={-1}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;

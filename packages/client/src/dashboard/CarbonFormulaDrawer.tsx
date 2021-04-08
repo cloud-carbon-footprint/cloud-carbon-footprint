@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import React, { FunctionComponent, useState } from 'react'
@@ -162,7 +162,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           available.
         </Typography>
         <Link
-          href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
+          href="https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
           target="_blank"
           rel="noopener"
           className={classes.methodology}

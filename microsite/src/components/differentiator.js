@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import React from 'react'
@@ -13,7 +13,7 @@ const differences = [
   },
   {
     text:
-      'Ability to measure usage at a granular service level and use actual server' +
+      'Ability to measure usage at a granular service level and use actual server ' +
       'utilization rather than average utilization for hyperscale data centers',
   },
   {
@@ -21,7 +21,8 @@ const differences = [
       'Provides estimates for both energy and carbon emissions from cloud usage',
   },
   {
-    text: 'Monitors your energy usage and carbon footprint visually via graphs and ' +
+    text:
+      'Monitors your energy usage and carbon footprint visually via graphs and ' +
       'charts, with the ability to keep track of data in tables and export metrics in ' +
       'CSV to share with stakeholders',
   },

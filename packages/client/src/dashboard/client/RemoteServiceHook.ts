@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ const useRemoteService = (
   startDate: moment.Moment,
   endDate: moment.Moment,
   region?: string,
-): ServiceResult => {
+): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
 

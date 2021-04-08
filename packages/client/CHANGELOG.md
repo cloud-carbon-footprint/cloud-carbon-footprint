@@ -1,5 +1,27 @@
 # @cloud-carbon-footprint/client
 
+## 0.5.0
+
+### Minor Changes
+
+- 66676453: Fix: react hook error when loading data
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+
+## 0.4.0
+
+### Minor Changes
+
+- 033a504: adds integration testing
+- f33b9eb: adds color to regior bar chart based on carbon intensity
+
+### Patch Changes
+
+- c2b24e7: fix tests to use mock remote hooks
+- 063ae7d: updates jest, immer and testing library dependencies
+
 ## 0.3.0
 
 ### Minor Changes

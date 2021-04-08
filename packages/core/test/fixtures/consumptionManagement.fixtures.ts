@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 interface AzureUsageDetailsResponse {
@@ -175,6 +175,42 @@ export const mockConsumptionManagementResponseTwo: AzureUsageDetailsResponse[] =
     subscriptionName: 'test-subscription',
     location: 'EU West',
   },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 5,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'S30 Disk',
+      unit: '1 /Month',
+      serviceName: 'HDInsight',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 2,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'Data Stored',
+      unit: '1 TB/Month',
+      serviceName: 'Azure Synapse Analytics',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-02'),
+    usageQuantity: 10,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'ZRS Snapshots',
+      unit: '100 GB/Month',
+      serviceName: 'Storage',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'IN Central',
+  },
 ]
 
 export const mockConsumptionManagementResponseThree: AzureUsageDetailsResponse[] = [
@@ -210,6 +246,57 @@ export const mockConsumptionManagementResponseThree: AzureUsageDetailsResponse[]
       meterName: 'Data Transfer Out - ASIA To Any',
       unit: '1 TB',
       serviceName: 'Bandwidth',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+]
+
+export const mockConsumptionManagementResponseFour: AzureUsageDetailsResponse[] = [
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: 'Standard All-purpose Compute DBU',
+      unit: '10 Hours',
+      serviceName: 'Azure Databricks',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'Unknown',
+  },
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: 'Developer Units',
+      unit: '100 Hours',
+      serviceName: 'API Management',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: '6 vCPU VM License',
+      unit: '100 Hours',
+      serviceName: 'Virtual Machines Licenses',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK South',
+  },
+  {
+    usageStart: new Date('2020-11-03'),
+    usageQuantity: 12,
+    pretaxCost: 12,
+    meterDetails: {
+      meterName: 'Standard Node',
+      unit: '1 /Month',
+      serviceName: 'Advanced Data Security',
     },
     subscriptionName: 'test-subscription',
     location: 'UK South',

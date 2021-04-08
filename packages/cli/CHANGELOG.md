@@ -1,5 +1,32 @@
 # @cloud-carbon-footprint/cli
 
+## 0.3.1
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+- Updated dependencies [8175b41d]
+- Updated dependencies [0ccce96b]
+  - @cloud-carbon-footprint/core@0.5.0
+
+## 0.3.0
+
+### Minor Changes
+
+- 23d841e: Adds support for guided install command in the cli package.
+
+### Patch Changes
+
+- Updated dependencies [6c620db]
+- Updated dependencies [f3d4c8a]
+- Updated dependencies [c5f28fe]
+- Updated dependencies [906f14e]
+- Updated dependencies [bb82d7b]
+- Updated dependencies [033a504]
+- Updated dependencies [9b10f3b]
+- Updated dependencies [82aeb1e]
+  - @cloud-carbon-footprint/core@0.4.0
+
 ## 0.2.1
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 import moment, { unitOfTime } from 'moment'
 import {
@@ -149,6 +149,7 @@ export default class ConsumptionManagementService {
       case STORAGE_USAGE_UNITS.GB_MONTH_10:
       case STORAGE_USAGE_UNITS.GB_MONTH_100:
       case STORAGE_USAGE_UNITS.DAY_30:
+      case STORAGE_USAGE_UNITS.TB_MONTH_1:
         const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
           consumptionDetailRow,
         )
@@ -236,13 +237,16 @@ export default class ConsumptionManagementService {
   private getUsageAmountInTerabyteHours(
     consumptionDetailRow: ConsumptionDetailRow,
   ): number {
+    if (consumptionDetailRow.usageUnit === STORAGE_USAGE_UNITS.TB_MONTH_1)
+      return consumptionDetailRow.usageAmount * 24
+
     if (
       this.isSSDStorage(consumptionDetailRow) &&
       this.isManagedDiskStorage(consumptionDetailRow)
     ) {
       return this.convertGigaBytesToTerabyteHours(
         SSD_MANAGED_DISKS_STORAGE_GB[
-          consumptionDetailRow.usageType.replace(' Disks', '')
+          consumptionDetailRow.usageType.replace(/Disks?/, '').trim()
         ],
       )
     }
@@ -253,7 +257,7 @@ export default class ConsumptionManagementService {
     ) {
       return this.convertGigaBytesToTerabyteHours(
         HDD_MANAGED_DISKS_STORAGE_GB[
-          consumptionDetailRow.usageType.replace(' Disks', '')
+          consumptionDetailRow.usageType.replace(/Disks?/, '').trim()
         ],
       )
     }

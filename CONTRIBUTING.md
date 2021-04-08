@@ -2,7 +2,7 @@
 
 ## Issues ​⛔
 
-Issues are created [here](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/issues).
+Issues are created [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/issues).
 
 Issues will be closed if they have been inactive and the latest affected version no longer receives support.
 
@@ -12,9 +12,9 @@ _If an issue has been closed and you still feel it's relevant, feel free to ping
 
 There are fundamentally three ways an individual can contribute:
 
-1. **Open an issue:** If you believe that you have found a new bug or have a feature addition or request, you should report it by creating a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker.
+1. **Open an issue:** If you believe that you have found a new bug or have a feature addition or request, you should report it by creating a new issue in the `cloud-carbon-footprint/cloud-carbon-footprint` issue tracker.
 1. **Help triage an open issue:** You can do this either by providing assistive details (a reproducible test case that demonstrates a bug) or by providing suggestions to address the issue.
-1. **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `ThoughtWorks-Cleantech/cloud-carbon-footprint` in a concrete and reviewable manner.
+1. **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `cloud-carbon-footprint/cloud-carbon-footprint` in a concrete and reviewable manner.
 
 ### Asking for General Help
 
@@ -24,7 +24,7 @@ There are fundamentally three ways an individual can contribute:
 
 To submit a bug report:
 
-When opening a new issue in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` issue tracker, users will be presented with a [bug report template](/.git/ISSUE_TEMPLATE/Bug_report.md) that should be filled in.
+When opening a new issue in the `cloud-carbon-footprint/cloud-carbon-footprint` issue tracker, users will be presented with a [bug report template](/.git/ISSUE_TEMPLATE/Bug_report.md) that should be filled in.
 
 If you believe that you have found a bug in the cloud-carbon-footprint, please fill out the given template to the best of your ability.
 
@@ -44,7 +44,7 @@ Most issues are resolved by opening a pull request. The process for opening and 
 
 ## Pull Requests 📥
 
-Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository. Please [link your PR](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) to an issue so we can more easily track the work being done
+Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `cloud-carbon-footprint/cloud-carbon-footprint` repository. Please [link your PR](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) to an issue so we can more easily track the work being done
 
 ## Setting up your local environment
 
@@ -55,13 +55,13 @@ Fork the project on GitHub and clone your fork locally.
 ```
 $ git clone git@github.com:[your-username-here]/cloud-carbon-footprint.git
 $ cd cloud-carbon-footprint
-$ git remote add upstream https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint
+$ git remote add upstream https://github.com/cloud-carbon-footprint/cloud-carbon-footprint
 $ git fetch upstream
 ```
 
 ### Build
 
-See the [main repository README](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/README.md) for build directions.
+See the [main repository README](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/README.md) for build directions.
 
 ### Branch
 
@@ -76,7 +76,7 @@ $ git push origin/trunk
 
 ### Code
 
-Most pull requests opened against the `ThoughtWorks-Cleantech/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the packages/api/ folder or the documentation.
+Most pull requests opened against the `cloud-carbon-footprint/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the packages/api/ folder or the documentation.
 
 #### Linting
 
@@ -123,7 +123,7 @@ $ git fetch upstream
 $ git rebase upstream/trunk
 ```
 
-This ensures that your working branch has the latest changes from `ThoughtWorks-Cleantech/cloud-carbon-footprint` trunk.
+This ensures that your working branch has the latest changes from `cloud-carbon-footprint/cloud-carbon-footprint` trunk.
 
 ### Test
 
@@ -147,7 +147,7 @@ $ git push origin my-branch
 
 ### Opening the Pull Request
 
-From within GitHub, opening a new pull request will present you with a [template](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/.github/PULL_REQUEST_TEMPLATE.md) that should be filled out:
+From within GitHub, opening a new pull request will present you with a [template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/.github/PULL_REQUEST_TEMPLATE.md) that should be filled out:
 
 ### Discuss and Update
 
@@ -164,10 +164,6 @@ $ git push origin my-branch
 There are a number of more advanced mechanisms for managing commits using git rebase that can be used, but are beyond the scope of this guide.
 
 Feel free to post a comment in the pull request to ping reviewers if you are awaiting an answer on something.
-
-#### Approval and Request Changes Workflow
-
-TBD: Add context on approval and request change workflow
 
 ---
 
@@ -186,7 +182,7 @@ This will help in visualizing the bundle size, seeing bundles that might not be 
 
 ## Continuous Integration Pipeline 🔁
 
-We use Github Actions for our CI pipeline. [Link to pipeline](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/actions/workflows/ci.yml).
+We use Github Actions for our CI pipeline. [Link to pipeline](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/actions/workflows/ci.yml).
 
 You can learn more about Github Actions in the [Github Actions Documentation](https://docs.github.com/en/actions)
 
@@ -301,6 +297,12 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
 - However this checksum is only valid for that specific commit, if the file changed, and it has a talisman check, it
   will run a new checksum for the .talismanrc that will have to be updated
 
+#### Failing integration tests.
+
+- If you have another process running on localhost:3000 when the integration tests run, they will fail.
+  This can happen when you are already running the client package, or the microsite.
+  Please stop this process before re-running the integration tests.
+
 ---
 
 ### Tech Stack and Development Tools
@@ -309,4 +311,4 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
 
 ---
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

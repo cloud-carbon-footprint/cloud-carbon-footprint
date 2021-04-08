@@ -2,6 +2,11 @@
 # . "$(dirname "$0")/_/husky.sh"
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
+packages=$( git show --pretty="" --name-only -- packages/ | wc -l )
 if [[ "$branch" != "changeset-release/trunk" ]]; then
-    ./copyright_check.sh && ./branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan && yarn lerna run precommit --stream
+    ./scripts/copyright_check.sh && ./scripts/branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan || exit 1
+    if [[ "$packages" -gt "0" ]]; then
+        echo 'Detecting modified files in packages dir...'
+        yarn lerna run precommit --stream
+    fi
 fi

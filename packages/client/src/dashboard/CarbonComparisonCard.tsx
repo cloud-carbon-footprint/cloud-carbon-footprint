@@ -1,5 +1,5 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import React, { FunctionComponent, useState } from 'react'
@@ -37,6 +37,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
     root: {
       width: '100%',
       height: '100%',
+      minHeight: '755px',
     },
     title: {
       color: palette.primary.contrastText,
@@ -56,6 +57,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '55%',
+      paddingTop: '10%',
     },
     buttonContainer: {
       display: 'flex',

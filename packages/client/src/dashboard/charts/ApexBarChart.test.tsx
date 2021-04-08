@@ -1,14 +1,27 @@
 /*
- * © 2020 ThoughtWorks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
-import { act, create, ReactTestRenderer } from 'react-test-renderer'
-import { EstimationResult } from '../../models/types'
-import moment from 'moment'
 import React from 'react'
-import { ApexBarChart, Entry } from './ApexBarChart'
-import { Page, Pagination } from './Pagination'
+import { act, create, ReactTestRenderer } from 'react-test-renderer'
 import Chart from 'react-apexcharts'
+import moment from 'moment'
+
+import {
+  EstimationResult,
+  ServiceResult,
+  EmissionsRatios,
+} from '../../models/types'
+import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
+import { Page, Pagination } from './Pagination'
+import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+import { fakeEmissionFactors } from '../../data/generateEstimations'
+
+jest.mock('../client/EmissionFactorServiceHook')
+
+const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
+  typeof useRemoteEmissionService
+>
 
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
@@ -23,7 +36,7 @@ describe('ApexBarChart', () => {
           kilowattHours: 0,
           co2e: 3000.014,
           cost: 0,
-          region: 'us-west-2',
+          region: 'us-west-1',
         },
         {
           cloudProvider: 'AWS',
@@ -41,7 +54,7 @@ describe('ApexBarChart', () => {
           kilowattHours: 0,
           co2e: 2000.014,
           cost: 0,
-          region: 'us-west-2',
+          region: 'us-west-3',
         },
         {
           cloudProvider: 'AWS',
@@ -50,24 +63,34 @@ describe('ApexBarChart', () => {
           kilowattHours: 0,
           co2e: 0.000014,
           cost: 0,
-          region: 'us-west-2',
+          region: 'us-west-4',
         },
       ],
     },
   ]
   beforeEach(() => {
+    const mockReturnValue: ServiceResult<EmissionsRatios> = {
+      loading: false,
+      data: fakeEmissionFactors,
+    }
+    mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     fixture = create(<ApexBarChart data={data} dataType="service" />)
   })
   it('renders with correct configuration', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
   })
 
+  afterEach(() => {
+    fixture.unmount()
+    mockedUseEmissionFactorService.mockClear()
+  })
+
   it('should format tool tip values with proper data instead of scaled down data', () => {
+    const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
+      Pagination,
+    ).props?.handlePage
+    // make pagination send first page
     act(() => {
-      const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
-        Pagination,
-      ).props?.handlePage
-      // make pagination send first page
       handlePage({
         data: [
           { x: 'ebs', y: 100 },
@@ -88,11 +111,11 @@ describe('ApexBarChart', () => {
   })
 
   it('should format data label values with proper data instead of scaled down data', () => {
+    const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
+      Pagination,
+    ).props?.handlePage
+    // make pagination send first page
     act(() => {
-      const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
-        Pagination,
-      ).props?.handlePage
-      // make pagination send first page
       handlePage({
         data: [
           { x: 'ebs', y: 100 },
@@ -111,11 +134,11 @@ describe('ApexBarChart', () => {
   })
 
   it('should format data label values that are less than 0.01', () => {
+    const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
+      Pagination,
+    ).props?.handlePage
+    // make pagination send first page
     act(() => {
-      const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
-        Pagination,
-      ).props?.handlePage
-      // make pagination send first page
       handlePage({
         data: [
           { x: 'ebs', y: 100 },
@@ -143,5 +166,59 @@ describe('ApexBarChart', () => {
     ]
 
     expect(paginationComponent.props.data).toEqual(sortedData)
+  })
+
+  it('should set colors to each bar based on region emissions', () => {
+    fixture = create(<ApexBarChart data={data} dataType="region" />)
+    expect(fixture.toJSON()).toMatchSnapshot()
+    const paginationComponent = fixture.root.findByType(Pagination)
+    const sortedData = [
+      { x: 'us-west-1', y: 100 },
+      { x: 'us-west-3', y: 67.00015384528277 },
+      { x: 'us-west-2', y: 34.00030769056555 },
+      { x: 'us-west-4', y: 1 },
+    ]
+
+    const customColors = ['#790000', '#D99200', '#DF5200', '#00791E']
+
+    expect(paginationComponent.props.data).toEqual(sortedData)
+
+    const optionColors = fixture.root.findByType(Chart).props?.options?.colors
+    expect(optionColors).toBeDefined()
+    expect(optionColors).toEqual(customColors)
+  })
+
+  it('should create custom colors array', () => {
+    const firstPagedata = [
+      { x: 'us-west-1', y: 100 },
+      { x: 'us-west-3', y: 67.00015384528277 },
+      { x: 'us-west-2', y: 34.00030769056555 },
+      { x: 'us-west-4', y: 1 },
+      { x: 'us-east-1', y: 2 },
+    ]
+    const pageData: Page<Entry> = { data: firstPagedata, page: 0 }
+    const mainTheme = '#2C82BE'
+
+    const emissionsData: EmissionsRatios[] = fakeEmissionFactors
+    const colors = ['#790000', '#D99200', '#DF5200', '#00791E', '#73B500']
+    const defaultColors = [
+      '#2C82BE',
+      '#2C82BE',
+      '#2C82BE',
+      '#2C82BE',
+      '#2C82BE',
+    ]
+
+    const customColors = createCustomBarColors(
+      pageData,
+      emissionsData,
+      mainTheme,
+    )
+
+    expect(customColors).toEqual(colors)
+
+    const mainColors = createCustomBarColors(pageData, [], mainTheme)
+
+    expect(mainColors).toEqual(defaultColors)
   })
 })

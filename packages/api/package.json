@@ -1,11 +1,26 @@
 {
   "name": "@cloud-carbon-footprint/api",
-  "version": "0.1.2",
-  "description": "",
+  "version": "0.2.1",
+  "license": "Apache-2.0",
+  "description": "The API endpoint as an entrypoint to get cloud energy and carbon emissions. Optionally used by the client dashboard.",
   "main": "src/server.ts",
   "publishConfig": {
     "main": "dist/server.js"
   },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+    "directory": "packages/api"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
   "scripts": {
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
@@ -31,9 +46,6 @@
     "docker:cli": "docker exec -w /cloud-carbon-footprint/packages/api -e AWS_PROFILE -it ccf_base yarn start:cli -- ",
     "docker:stop": "docker stop ccf_base"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",
@@ -59,10 +71,10 @@
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.1",
-    "typescript": "4.2.3"
+    "typescript": "4.2.4"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/core": "^0.3.0",
+    "@cloud-carbon-footprint/core": "^0.5.0",
     "@types/express": "^4.17.11",
     "@types/prompts": "^2.0.9",
     "@types/ramda": "^0.27.38",

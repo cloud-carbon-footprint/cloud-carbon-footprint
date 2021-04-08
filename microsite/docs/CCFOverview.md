@@ -10,7 +10,7 @@ Cloud Carbon Footprint provides a way for organizations to measure, monitor, and
 The vision for this product is to be a trusted tool for its accuracy and comprehensiveness, and aids organizations to take tangible steps towards reducing their cloud emissions. In its future, we see built-in intelligence to make recommendations on actions that can be taken and what impact they will have.
 
 As an open source project, we hope that its evolution and direction is community driven and meets the needs and use cases identified. We welcome all feedback and input on how this product can grow, in terms of directions, features, methodology changes, and code updates.  
-For more visibility into the work planned and happening, please visit the [project board](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/projects/1) or [create an issue.](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/issues/new/choose)  
+For more visibility into the work planned and happening, please visit the [project board](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/projects/1) or [create an issue.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/issues/new/choose)  
 For feedback, questions, or if you’d like to collaborate on shaping the product direction, please reach out to green-cloud@thoughtworks.com.
 
 ### How it works

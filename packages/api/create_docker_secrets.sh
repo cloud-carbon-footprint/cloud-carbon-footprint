@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# © 2020 ThoughtWorks, Inc. All rights reserved.
+# © 2021 ThoughtWorks, Inc.
 #
 
 if [ ! -d $HOME/.docker/secrets ]; then

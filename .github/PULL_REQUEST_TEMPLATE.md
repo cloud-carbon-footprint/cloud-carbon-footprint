@@ -4,7 +4,7 @@
 Thank you for your Pull Request. Please provide a description above and review
 the requirements below.
 
-Contributors guide: https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/CONTRIBUTING.md
+Contributors guide: https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/CONTRIBUTING.md
 -->
 
 Write a brief but concise description of the changes you have made while also making sure to **link the relevant issue number to this PR** _( e.g. fixes #ISSUE-NUMBER - optional short description)_
@@ -27,4 +27,4 @@ Write a brief but concise description of the changes you have made while also ma
 
 Additional information relevant to the changes
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.

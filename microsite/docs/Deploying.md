@@ -7,11 +7,11 @@ title: Deploying
 
 Cloud Carbon Footprint is configured to be deployed to [Google App Engine](https://cloud.google.com/appengine/) (standard environment) using Github Actions. See the [Hello World example](https://cloud.google.com/nodejs/getting-started/hello-world) for instructions on setting up a Google Cloud Platform project and installing the Google Cloud SDK to your local machine.
 
-Before deploying, you'll need to build the application and create the packages/api/.env and packages/client/.env file as detailed above. There are two scripts to populate these files as part of the Github Actions pipeline: [packages/cli/create_server_env_file.sh](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/api/create_server_env_file.sh) and [client/create_client_env_file.sh](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/packages/client/create_client_env_file.sh).
+Before deploying, you'll need to build the application and create the packages/api/.env and packages/client/.env file as detailed above. There are two scripts to populate these files as part of the Github Actions pipeline: [packages/cli/create_server_env_file.sh](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/create_server_env_file.sh) and [client/create_client_env_file.sh](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/create_client_env_file.sh).
 
 Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with `./appengine/deploy-staging.sh` or `./appengine/deploy-production.sh`, depending on your environment.
 
-Or if you want to use Github Actions, you can see the configuration for this in [.github/ci.yml](https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/.github/ci.yml).
+Or if you want to use Github Actions, you can see the configuration for this in [.github/ci.yml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/.github/ci.yml).
 
 It will deploy to `https://<something>.appspot.com`.
 

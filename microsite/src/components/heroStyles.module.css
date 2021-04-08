@@ -25,11 +25,13 @@
 
 .heroTitle {
   font-size: 45pt;
+  color: white;
 }
 
 .heroSubtitle {
   font-size: 32pt;
   line-height: 1.4;
+  color: white;
 }
 
 @media screen and (max-width: 1280px) {

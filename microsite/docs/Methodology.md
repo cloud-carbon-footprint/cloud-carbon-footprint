@@ -259,13 +259,17 @@ We want to thank [@martin-laurent](https://github.com/martin-laurent) for provid
 
 ### Power Usage Effectiveness
 
-After estimating the kilowatt hours for compute, storage and networking, we need to multiply this by the cloud provider Power Usage Effectiveness (PUE). PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on publicly available information provided by the cloud providers. In the case of GCP, they [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a consertive guess [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/). The same is true for [Azure](http://download.microsoft.com/download/8/2/9/8297f7c7-ae81-4e99-b1db-d65a01f7a8ef/microsoft_cloud_infrastructure_datacenter_and_network_fact_sheet.pdf).
+After estimating the kilowatt hours for compute, storage and networking, we need to multiply this by the cloud provider Power Usage Effectiveness (PUE). PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on publicly available information provided by the cloud providers. In the case of GCP, they [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a conservative guess [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/). Microsoft's Sustainability team have provided a statement<sup>1</sup> as to the PUE for the Azure datacenters.
 
 Here are the cloud provider PUEs being used:
 
 - **AWS:** 1.135
 - **GCP:** 1.1
-- **Azure:** 1.125
+- **Azure:** 1.185
+
+[1] "Organizations are increasingly using the power usage effectiveness (PUE) metric to evaluate the energy efficiency of potential cloud service providers. PUE is essentially the energy going into the datacenter divided by the energy used by the servers. Differing methodologies across the industry for obtaining this metric makes precise comparison across providers difficult. Nevertheless, we have achieved significant improvements as we have continued to evolve both our designs and our operations to achieve among the best efficiency in the industry. Currently, our weighted owned and operated fleet-wide PUE trailing 12-month average is 1.185, and our latest designs are achieving an annual PUE of 1.125."
+
+<br />
 
 ### Carbon Estimates (CO2e)
 
@@ -406,4 +410,49 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 | northamerica-northeast1 | Canada            | 0.000143              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | southamerica-east1      | Brazil            | 0.000109              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
-<!-- © 2020 ThoughtWorks, Inc. All rights reserved. -->
+#### Azure
+
+**Note**: The application currently only supports a subset of Azure regions that are used by ThoughtWorks. 
+This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies). 
+For example, the website says "Central US", but the API provides the region as "US Central". In the case of "UK South",
+it is the same on both the website and the API. For any Azure customers using other regions, we would love to know what
+syntax is returned by the API for your region(s) so that we can add support for them. You can email [green-cloud@thoughtworks.com](mailto:green-cloud@thoughtworks.com), 
+or submit an issue or pull request.
+
+| Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |     
+| ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| US Central       | Iowa        | MRO         | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US East          | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US East 2        | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US East 3        | Georgia     | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US North Central | Illinois    | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US South Central | Texas       | TRE         | 0.000424877           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West Central  | Wyoming     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West          | California  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West 2        | Washington  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| US West 3        | Arizona     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
+| AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |  
+| EU North         | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
+| EU West          | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |   
+| IN Central       | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| IN South         | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| IN West          | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
+| UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |  
+| UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- © 2021 ThoughtWorks, Inc. -->

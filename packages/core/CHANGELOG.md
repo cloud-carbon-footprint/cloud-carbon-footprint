@@ -1,5 +1,31 @@
 # @cloud-carbon-footprint/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 0ccce96b: Adds additional Azure usage types and regions based on THoughtWorks' Azure usage
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+
+## 0.4.0
+
+### Minor Changes
+
+- 6c620db: Updates the GCP Emissions factors to use those published by Google
+- 033a504: adds integration testing
+- 82aeb1e: Updates average min/max compute coefficients for cloud providers based on microarchitectures. Adds min/max compute coefficient for Graviton 2 processor
+
+### Patch Changes
+
+- f3d4c8a: fixes azure pue value
+- c5f28fe: updates googleapis dependency version
+- 906f14e: updates consumption types for azure and adds logs
+- bb82d7b: updates gcp shared core processors list to enum
+- 9b10f3b: fixes hdd storage types list and lint fix
+
 ## 0.3.0
 
 ### Minor Changes
