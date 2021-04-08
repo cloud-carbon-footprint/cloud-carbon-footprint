@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 0ccce96b: Adds additional Azure usage types and regions based on THoughtWorks' Azure usage
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+
 ## 0.4.0
 
 ### Minor Changes
