@@ -91,7 +91,10 @@ const checkUnknownTypes = (dataType: string, value: serviceEstimate) => {
   if (dataType === ChartDataTypes.SERVICE && value.serviceName === null)
     value.serviceName = `${UnknownTypes.UNKNOWN_SERVICE} - ${value.cloudProvider}`
 
-  if (dataType === ChartDataTypes.REGION && value.region === 'unknown')
+  if (
+    dataType === ChartDataTypes.REGION &&
+    value.region.toLowerCase() === 'unknown'
+  )
     value.region = `${UnknownTypes.UNKNOWN_REGION} - ${value.cloudProvider}`
 }
 
