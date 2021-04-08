@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/client
 
+## 0.5.0
+
+### Minor Changes
+
+- 66676453: Fix: react hook error when loading data
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+
 ## 0.4.0
 
 ### Minor Changes
