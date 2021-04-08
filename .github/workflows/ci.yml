@@ -199,16 +199,12 @@ jobs:
       - name: Build and push api to Docker Hub
         if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         uses: docker/build-push-action@v2
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           context: packages/api
           push: true
           tags: |
             cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/api:latest
-          build-args: |
-            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
   deploy-staging:
     if: github.ref == 'refs/heads/trunk'
     needs: build
