@@ -27,6 +27,8 @@
     "commander": "^7.2.0",
     "fs-extra": "^9.1.0",
     "handlebars": "^4.7.7",
+    "inquirer": "^8.0.0",
+    "ora": "^5.4.0",
     "recursive-readdir": "^2.2.2",
     "rimraf": "^3.0.2",
     "typed-prompts": "^1.5.0",

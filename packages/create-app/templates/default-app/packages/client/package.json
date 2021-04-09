@@ -1,5 +1,5 @@
 {
-  "name": "@cloud-carbon-footprint/client",
+  "name": "@cloud-carbon-footprint/client-template",
   "version": "0.3.0",
   "dependencies": {
     "@babel/runtime": "^7.12.18",

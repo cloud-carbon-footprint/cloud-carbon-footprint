@@ -5,7 +5,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "lib": ["es2015", "es2019.array"],
+    "lib": ["es2019"],
     "esModuleInterop": true,
     "rootDir": "./src",
     "baseUrl": ".",

@@ -1,5 +1,5 @@
 {
-  "name": "@cloud-carbon-footprint/cli",
+  "name": "@cloud-carbon-footprint/cli-template",
   "version": "0.2.1",
   "description": "",
   "main": "src/index.ts",
@@ -10,7 +10,6 @@
     "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "sonar:scan": "sonar-scanner",
     "test:watch": "yarn test --coverage --watchAll",
     "build": "rimraf dist && yarn build:tsc",
     "build:tsc": "tsc --build tsconfig.json",
@@ -21,7 +20,8 @@
     "clean": "rm -rf coverage src/**/*.js src/**/*.map",
     "lint": "eslint '*/**/*.ts' --quiet",
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "guided-install": "ts-node src/GuidedInstall/index.ts"
   },
   "keywords": [],
   "author": "",
