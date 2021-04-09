@@ -16,4 +16,4 @@ With a local clone of this repo, from the main `create-app/` folder, run:
 $ yarn ccf-create-app
 ```
 
-© 2020 ThoughtWorks, Inc. All rights reserved.
+© 2021 ThoughtWorks, Inc.
