@@ -2,11 +2,28 @@
 # . "$(dirname "$0")/_/husky.sh"
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
-packages=$( git show --pretty="" --name-only -- packages/ | wc -l )
+root=$( git diff --pretty="" --name-only --staged -- packages/ | wc -l )
+api=$( git diff --pretty="" --name-only --staged -- packages/api | wc -l )
+cli=$( git diff --pretty="" --name-only --staged -- packages/cli | wc -l )
+client=$( git diff --pretty="" --name-only --staged -- packages/client | wc -l )
+core=$( git diff --pretty="" --name-only --staged -- packages/core | wc -l )
 if [[ "$branch" != "changeset-release/trunk" ]]; then
     ./scripts/copyright_check.sh && ./scripts/branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan || exit 1
-    if [[ "$packages" -gt "0" ]]; then
+    if [[ "$root" -gt "0" ]]; then
         echo 'Detecting modified files in packages dir...'
-        yarn lerna run precommit --stream
+        if [[ "$api" -gt "0" ]]; then
+            apiPackage='api,'
+        fi
+        if [[ "$cli" -gt "0" ]]; then
+            cliPackage='cli,'
+        fi
+        if [[ "$client" -gt "0" ]]; then
+            clientPackage='client,'
+        fi
+        if [[ "$core" -gt "0" ]]; then
+            corePackage='core,'
+        fi
+        packages="@cloud-carbon-footprint/{"$apiPackage""$cliPackage""$clientPackage""$corePackage"'integration-tests'}"
+        yarn lerna run precommit --stream --scope "$packages"
     fi
 fi
