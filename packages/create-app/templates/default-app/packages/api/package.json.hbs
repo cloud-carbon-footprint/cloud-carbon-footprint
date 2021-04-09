@@ -1,0 +1,85 @@
+{
+  "name": "@cloud-carbon-footprint/api-template",
+  "version": "0.1.2",
+  "description": "",
+  "main": "src/server.ts",
+  "publishConfig": {
+    "main": "dist/server.js"
+  },
+  "scripts": {
+    "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
+    "test": "jest",
+    "type-check": "tsc --noEmit",
+    "sonar:scan": "sonar-scanner",
+    "test:watch": "jest --coverage --watchAll",
+    "build": "rimraf dist && yarn build:tsc",
+    "build:tsc": "tsc --build tsconfig.json",
+    "build:watch": "onchange 'src/**/*.ts' -- yarn build",
+    "prepack": "ts-node ../../scripts/prepack.ts",
+    "postpack": "ts-node ../../scripts/postpack.ts",
+    "view:coverage": "serve coverage/lcov-report",
+    "clean": "rm -rf coverage src/**/*.js src/**/*.map",
+    "lint": "eslint '*/**/*.ts' --quiet",
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
+    "start": "yarn start:web",
+    "start:prod": "yarn start:webprod",
+    "start:web": "ts-node-dev src/server.ts",
+    "start:webprod": "NODE_ENV=production node dist/server.js",
+    "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/packages/api -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
+    "docker:setup": "docker exec -w /cloud-carbon-footprint/packages/api -it ccf_base yarn install --immutable",
+    "docker:test": "docker exec -w /cloud-carbon-footprint/packages/api -it ccf_base yarn test",
+    "docker:cli": "docker exec -w /cloud-carbon-footprint/packages/api -e AWS_PROFILE -it ccf_base yarn start:cli -- ",
+    "docker:stop": "docker stop ccf_base"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/jest-when": "^2.7.2",
+    "@types/node": "^14.14.30",
+    "@types/source-map-support": "^0.5.3",
+    "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "aws-sdk-mock": "^5.1.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-unused-imports": "^1.1.0",
+    "jest": "26.6.0",
+    "jest-when": "^3.2.0",
+    "lint-staged": "^10.5.4",
+    "onchange": "^7.1.0",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "serve": "^11.3.2",
+    "source-map-support": "^0.5.19",
+    "supertest": "^6.1.3",
+    "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "4.2.3"
+  },
+  "dependencies": {
+    "@cloud-carbon-footprint/core": "^{{version '@cloud-carbon-footprint/core'}}",
+    "@types/express": "^4.17.11",
+    "@types/prompts": "^2.0.9",
+    "@types/ramda": "^0.27.38",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "module-alias": "^2.2.2",
+    "tsconfig-paths": "^3.9.0",
+    "winston": "^3.3.3"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "yarn lint",
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ],
+    "*.{md}": [
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ]
+  }
+}

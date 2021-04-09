@@ -79,6 +79,8 @@ fileignoreconfig:
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
 - filename: packages/client/src/react-app-env.d.ts
   checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
+- filename: packages/client/stub-server/co2estimations.json
+  checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
   checksum: e620bc3d204cc335b5b7277ff026ef6a05a981016856a2a7c46302dfb1a99d00
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
@@ -87,6 +89,18 @@ fileignoreconfig:
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
 - filename: packages/core/src/services/gcp/BillingExportTable.ts
   checksum: 39e68fa8eeb0706e881d900f8cf69d9859131b087b1555a51015faded40f6504
+- filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/aws.ts
+  checksum: 402853f10d9ee56006cea9b63d6ec8d34d6eed506addf89d048d3072069d9f7b
+- filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/azure.ts
+  checksum: e0ce1795e639b87c4d18069c5b37b1383afd311370a7389b4d15d06c1654643e
+- filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/common.ts
+  checksum: a60dfd8cec90f024b7bd8ebd002455858d9d9a86346d1fe538c6524799b705dc
+- filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/external.ts
+  checksum: 8cbcdd56c389772ba6086966824c015f000d273f6d05e7a75befb24d40c64019
+- filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/runner.ts
+  checksum: ae3644fd8001fc1545fb3b365f24b2be657750bcbad705cd3da249b705aad74f
+- filename: packages/create-app/templates/default-app/packages/client/src/react-app-env.d.ts
+  checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh
@@ -126,4 +140,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: ee68071b6abaa4b274b2fd75021c2024d9756a586dac84c0fb55911d3c5f012c
+  checksum: eef94051154e75df98729bffbecac843dc5aca53909c1ab8c1a533ffa521b5dd
