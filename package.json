@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "@changesets/cli": "^2.15.0",
+    "@changesets/cli": "^2.16.0",
     "@hawkeyesec/scanner-cli": "^1.8.1",
     "@types/fs-extra": "^9.0.10",
     "concurrently": "^6.0.1",
