@@ -16,8 +16,7 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
-      "packages/create-app/*"
+      "packages/*"
     ]
   },
   "scripts": {
