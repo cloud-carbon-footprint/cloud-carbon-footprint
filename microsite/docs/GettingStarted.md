@@ -36,13 +36,13 @@ If you have any problems with the guided install, you can instead choose to do a
 
 ### Standard Install
 
+A standard install gives you more visibility and control around your particular setup.
+
 ```
 yarn install
 ```
 
-Alternatively, you can choose to only install dependencies for all packages and then [configure your cloud provider environment variables manually](aws).
-<br/>
-For a quick demo, run `yarn install && yarn start-with-mock-data`
+You can now continue by running with [mocked data](runwithmockeddata) or [manually configuring your cloud providers](aws)
 
 ### Optional Prerequisites
 
