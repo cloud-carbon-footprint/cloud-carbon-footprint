@@ -7,6 +7,9 @@ api=$( git diff --pretty="" --name-only --staged -- packages/api | wc -l )
 cli=$( git diff --pretty="" --name-only --staged -- packages/cli | wc -l )
 client=$( git diff --pretty="" --name-only --staged -- packages/client | wc -l )
 core=$( git diff --pretty="" --name-only --staged -- packages/core | wc -l )
+tests=$( git diff --pretty="" --name-only --staged -- packages/integration-tests | wc -l )
+create=$( git diff --pretty="" --name-only --staged -- packages/create-app | wc -l )
+
 if [[ "$branch" != "changeset-release/trunk" ]]; then
     ./scripts/copyright_check.sh && ./scripts/branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit && yarn hawkeye scan || exit 1
     if [[ "$root" -gt "0" ]]; then
@@ -18,12 +21,18 @@ if [[ "$branch" != "changeset-release/trunk" ]]; then
             cliPackage='cli,'
         fi
         if [[ "$client" -gt "0" ]]; then
-            clientPackage='client,'
+            clientPackage='client,integration-tests'
         fi
         if [[ "$core" -gt "0" ]]; then
             corePackage='core,'
         fi
-        packages="@cloud-carbon-footprint/{"$apiPackage""$cliPackage""$clientPackage""$corePackage"'integration-tests'}"
+        if [[ "$create" -gt "0" ]]; then
+            createPackage='create-app,'
+        fi
+        if [[ "$tests" -gt "0" && "$clientPackage" != *'integration-tests'* ]]; then
+            testsPackage='integration-tests,'
+        fi
+        packages="@cloud-carbon-footprint/{"$apiPackage""$cliPackage""$corePackage""$createPackage""$testsPackage""$clientPackage"}"
         yarn lerna run precommit --stream --scope "$packages"
     fi
 fi
