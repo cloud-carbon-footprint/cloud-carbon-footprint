@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/client
 
+## 0.5.1
+
+### Patch Changes
+
+- 6d43b26f: fixes type issue with apex charts
+- 58064ebd: fixes unknown region display name
+- c0cc067a: adds initial create app package
+
 ## 0.5.0
 
 ### Minor Changes
