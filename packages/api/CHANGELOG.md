@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/api
 
+## 0.2.2
+
+### Patch Changes
+
+- c0cc067a: adds initial create app package
+
 ## 0.2.1
 
 ### Patch Changes
