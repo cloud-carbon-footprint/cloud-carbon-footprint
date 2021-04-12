@@ -34,7 +34,8 @@ export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
   )
   const sortedCO2Emissions = donutDataEntries.map((entry) => entry.c02Value)
 
-  const options = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const options: any = {
     chart: {
       background: theme.palette.background.paper,
     },
