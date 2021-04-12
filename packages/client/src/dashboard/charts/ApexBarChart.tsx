@@ -84,7 +84,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     y: dataType === 'region' ? -122 : -55,
   }
 
-  const options = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const options: any = {
     series: [
       {
         name: 'Total CO2e',
