@@ -2187,9 +2187,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/create-app-test@workspace:packages/create-app":
+"@cloud-carbon-footprint/create-app@workspace:packages/create-app":
   version: 0.0.0-use.local
-  resolution: "@cloud-carbon-footprint/create-app-test@workspace:packages/create-app"
+  resolution: "@cloud-carbon-footprint/create-app@workspace:packages/create-app"
   dependencies:
     "@types/fs-extra": ^9.0.9
     "@types/inquirer": ^7.3.1
@@ -2202,6 +2202,7 @@ __metadata:
     fs-extra: ^9.1.0
     handlebars: ^4.7.7
     inquirer: ^8.0.0
+    lint-staged: ^10.5.4
     ora: ^5.4.0
     recursive-readdir: ^2.2.2
     rimraf: ^3.0.2
