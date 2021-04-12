@@ -136,7 +136,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
 
-  const options = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const options: any = {
     chart: {
       events: {
         beforeZoom: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {
