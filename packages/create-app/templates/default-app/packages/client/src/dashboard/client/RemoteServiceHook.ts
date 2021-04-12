@@ -13,7 +13,7 @@ const useRemoteService = (
   startDate: moment.Moment,
   endDate: moment.Moment,
   region?: string,
-): ServiceResult => {
+): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
 
@@ -49,7 +49,7 @@ const useRemoteService = (
           setError(DEFAULT_RESPONSE)
         }
       } finally {
-        setLoading(false)
+        setTimeout(() => setLoading(false), 1000)
       }
     }
 

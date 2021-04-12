@@ -95,10 +95,12 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
     setOpen(false)
   }
 
+  const drawerStatus = open ? 'open' : 'closed'
   return (
     <Drawer
       anchor="right"
       variant="permanent"
+      id={`drawer-` + drawerStatus}
       className={clsx(classes.drawer, {
         [classes.drawerOpen]: open,
         [classes.drawerClose]: !open,
@@ -118,6 +120,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
         className={clsx(classes.infoButton, {
           [classes.hide]: open,
         })}
+        id="info-button"
       >
         <Info data-testid="infoIcon" />
       </IconButton>
@@ -126,7 +129,10 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           [classes.hide]: !open,
         })}
       >
-        <div className={classes.closeButtonContainer}>
+        <div
+          className={classes.closeButtonContainer}
+          id="close-button-container"
+        >
           <IconButton onClick={handleDrawerClose}>
             <Close data-testid="closeIcon" />
           </IconButton>
@@ -156,7 +162,7 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           available.
         </Typography>
         <Link
-          href="https://github.com/ThoughtWorks-Cleantech/cloud-carbon-footprint/blob/trunk/METHODOLOGY.md"
+          href="https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
           target="_blank"
           rel="noopener"
           className={classes.methodology}

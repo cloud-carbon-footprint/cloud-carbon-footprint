@@ -17,6 +17,7 @@ module.exports = {
       items: [
         'introduction',
         'getting-started',
+        'create-app',
         'run-with-mocked-data',
         {
           type: 'category',

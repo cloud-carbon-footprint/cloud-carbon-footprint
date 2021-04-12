@@ -3,7 +3,11 @@
  */
 
 import moment from 'moment'
-import { EstimationResult, serviceEstimate } from '../models/types'
+import {
+  EmissionsRatios,
+  EstimationResult,
+  serviceEstimate,
+} from '../models/types'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))
@@ -32,7 +36,7 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
       kilowattHours: Math.random() / 1000,
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
-      region: 'us-east-1',
+      region: 'us-east-2',
       usesAverageCPUConstant: false,
     },
     ec2: {
@@ -42,7 +46,7 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
-      region: 'us-east-1',
+      region: 'us-west-1',
       usesAverageCPUConstant: false,
     },
     rds: {
@@ -52,7 +56,7 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
       cost: getRandomNumberInRange(1.5, 2),
-      region: 'us-east-1',
+      region: 'us-west-2',
       usesAverageCPUConstant: false,
     },
     lambda: {
@@ -85,8 +89,41 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
       region: 'us-east1',
       usesAverageCPUConstant: false,
     },
+    virtualMachines: {
+      cloudProvider: 'AZURE',
+      accountName: `azure account ${getRandomInt(5)}`,
+      serviceName: 'virtualMachines',
+      kilowattHours: getRandomNumberInRange(50, 75),
+      co2e: getRandomInt(6),
+      cost: getRandomNumberInRange(1.5, 2),
+      region: 'UK South',
+      usesAverageCPUConstant: false,
+    },
   }
 }
+
+export const fakeEmissionFactors: EmissionsRatios[] = [
+  {
+    region: 'us-west-1',
+    mtPerKwHour: 0.000645,
+  },
+  {
+    region: 'us-west-2',
+    mtPerKwHour: 0.000635,
+  },
+  {
+    region: 'us-west-3',
+    mtPerKwHour: 0.000475,
+  },
+  {
+    region: 'us-west-4',
+    mtPerKwHour: 0.000315,
+  },
+  {
+    region: 'us-east-1',
+    mtPerKwHour: 0.000155,
+  },
+]
 
 const generateEstimations = (
   today: moment.Moment | Date,
@@ -98,6 +135,8 @@ const generateEstimations = (
     'rds',
     'lambda',
     'elasticache',
+    'computeEngine',
+    'virtualMachines',
   ],
 ): EstimationResult[] => {
   const todayAsMoment: moment.Moment = moment(today)

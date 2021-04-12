@@ -41,6 +41,8 @@ const useStyles = makeStyles(() => {
     root: {
       width: '100%',
       height: '100%',
+      overflow: 'unset',
+      minHeight: '755px',
     },
     topContainer: {
       boxShadow: 'none',
@@ -73,19 +75,26 @@ export const EmissionsBreakdownContainer = (props: {
   }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id="emissionsBreakdownContainer">
       <Box padding={3}>
         <Paper className={classes.topContainer}>
           <p className={classes.title}>Emissions Breakdown</p>
           <FormControl variant={'outlined'}>
             <Select
+              id="breakdown-selector"
               value={value}
               onChange={handleChange}
               input={<BootstrapInput />}
             >
-              <MenuItem value={ChartDataTypes.REGION}>Region</MenuItem>
-              <MenuItem value={ChartDataTypes.ACCOUNT}>Account</MenuItem>
-              <MenuItem value={ChartDataTypes.SERVICE}>Service</MenuItem>
+              <MenuItem id="region-dropdown" value={ChartDataTypes.REGION}>
+                Region
+              </MenuItem>
+              <MenuItem id="account-dropdown" value={ChartDataTypes.ACCOUNT}>
+                Account
+              </MenuItem>
+              <MenuItem id="service-dropdown" value={ChartDataTypes.SERVICE}>
+                Service
+              </MenuItem>
             </Select>
           </FormControl>
         </Paper>

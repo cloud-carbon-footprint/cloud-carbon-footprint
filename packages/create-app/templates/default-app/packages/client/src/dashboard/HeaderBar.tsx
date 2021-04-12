@@ -19,7 +19,12 @@ const HeaderBar = (): ReactElement => {
   const classes = useStyles()
 
   return (
-    <AppBar position="sticky" square={true} className={classes.appBar}>
+    <AppBar
+      position="sticky"
+      square={true}
+      className={classes.appBar}
+      id="app-bar-header"
+    >
       <Toolbar>
         <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
           <Typography component="h1" variant="h5">

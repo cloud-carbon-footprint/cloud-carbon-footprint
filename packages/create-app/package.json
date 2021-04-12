@@ -1,12 +1,31 @@
 {
-  "name": "@cloud-carbon-footprint/create-app-test",
-  "version": "0.2.1",
+  "name": "@cloud-carbon-footprint/create-app",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
   "description": "Create app package for Cloud Carbon Footprint",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "ccf-create-app": "bin/ccf-create-app"
   },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+    "directory": "packages/create-app"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
   "scripts": {
+    "precommit": "lint-staged --no-stash",
     "build": "rimraf dist && yarn build:tsc",
     "build:tsc": "tsc --build tsconfig.json",
     "lint": "eslint '*/**/*.ts' --quiet",
@@ -28,6 +47,7 @@
     "fs-extra": "^9.1.0",
     "handlebars": "^4.7.7",
     "inquirer": "^8.0.0",
+    "lint-staged": "^10.5.4",
     "ora": "^5.4.0",
     "recursive-readdir": "^2.2.2",
     "rimraf": "^3.0.2",
@@ -43,5 +63,14 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-unused-imports": "^1.1.1",
     "ts-node": "^9.1.1"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "yarn lint",
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ],
+    "*.{md}": [
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ]
   }
 }

@@ -37,6 +37,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
     root: {
       width: '100%',
       height: '100%',
+      minHeight: '755px',
     },
     title: {
       color: palette.primary.contrastText,
@@ -56,6 +57,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '55%',
+      paddingTop: '10%',
     },
     buttonContainer: {
       display: 'flex',
@@ -142,7 +144,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id="carbonComparisonCard">
       {mtSum ? (
         <div>
           <CardContent className={classes.topContainer}>
@@ -151,6 +153,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             </Typography>
             <Typography
               className={classes.metricOne}
+              id="metric-one"
               variant="h4"
               component="p"
               data-testid="co2"
@@ -182,6 +185,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           </CardContent>
           <CardActions className={classes.buttonContainer}>
             <Button
+              id="miles"
               variant="contained"
               color={updateButtonColor('miles')}
               size="medium"
@@ -190,6 +194,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               Miles
             </Button>
             <Button
+              id="gas"
               variant="contained"
               color={updateButtonColor('gas')}
               size="medium"
@@ -198,6 +203,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               Gas
             </Button>
             <Button
+              id="trees"
               variant="contained"
               color={updateButtonColor('trees')}
               size="medium"
