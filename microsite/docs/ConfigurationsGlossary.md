@@ -8,8 +8,8 @@ title: Configurations Glossary
 ### Variables for both estimation approaches with AWS:
 
 | Variable                     | Example Value                 | Type   | Notes                                                                                                                                                                                                                          |
-| ---------------------------- | ----------------------------- | ----   | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| AWS_TARGET_ACCOUNT_ROLE_NAME | your-target-account-role-name | string | This variable is needed it you are authenticating with [ChainableTemporaryCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ChainableTemporaryCredentials.html). E.g. from one role to the authorized role. |
+| ---------------------------- | ----------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| AWS_TARGET_ACCOUNT_ROLE_NAME | your-target-account-role-name | string | This variable is needed if you are authenticating with [ChainableTemporaryCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ChainableTemporaryCredentials.html). E.g. from one role to the authorized role. |
 
 <br/>
 
@@ -20,7 +20,7 @@ title: Configurations Glossary
 | AWS_USE_BILLING_DATA             | true                                    | boolean | Use this to configure the application to query Cost and Usage Reports via AWS Athena. Unset to make this false. Defaults to true. |
 | AWS_ATHENA_DB_NAME               | your-athena-db-name                     | string  | The name of your AWS Athena Database with Cost and Usage Reports data                                                             |
 | AWS_ATHENA_DB_TABLE              | your-athena-db-table                    | string  | The name of your AWS Athena Table with Cost and Usage Reports data                                                                |
-| AWS_ATHENA_REGION                | your-athena-region                      | string  | The region your AWS Athena Database/Table were created in.                                                                        | 
+| AWS_ATHENA_REGION                | your-athena-region                      | string  | The region your AWS Athena Database/Table were created in.                                                                        |
 | AWS_ATHENA_QUERY_RESULT_LOCATION | s3://your-athena-query-results-location | string  | The AWS S3 Bucket that you want your Athena query results to reside in. Must be prefixed with "s3://".                            |
 | AWS_BILLING_ACCOUNT_ID           | your-billing-account-id                 | string  | Your AWS Billing Account ID, where Cost and Usage Reports are configured.                                                         |
 | AWS_BILLING_ACCOUNT_NAME         | your-billing-account-name               | string  | The name of your AWS Billing Account. This can be any value.                                                                      |
@@ -29,8 +29,8 @@ title: Configurations Glossary
 
 ### Variables needed for the Cloud Usage API (Higher Accuracy) approach with AWS:
 
-| Variable     | Example Value                                        | Type  |                                                                                                                                                      |
-| ------------ | ---------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Variable     | Example Value                                        | Type  | Notes                                                                                                                                                |     |
+| ------------ | ---------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | AWS_ACCOUNTS | [{"id":"your-account-id","name":"Your AWS Account"}] | array | This is array of objects with keys "id" and "name" that match the AWS accounts you want to pull usage data from to run energy/carbon estimation for. |
 
 <br/>
@@ -58,7 +58,7 @@ title: Configurations Glossary
 
 ### Variables needed for the Cloud Usage API (Higher Accuracy) approach with GCP:
 
-| Variable     | Example Value                                            | Notes | Notes                                                                                                                                                |
+| Variable     | Example Value                                            | Type  | Notes                                                                                                                                                |
 | ------------ | -------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GCP_PROJECTS | [{"id":"your-gcp-project-id","name":"Your GCP Project"}] | array | This is array of objects with keys "id" and "name" that match the GCP Projects you want to pull usage data from to run energy/carbon estimation for. |
 
@@ -66,8 +66,8 @@ title: Configurations Glossary
 
 ### Variables needed for the Billing Data (Holistic) approach with Azure:
 
-| Variable               | Example Value            | Type    |                                                                                                                   |
-| ---------------------- | ------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------- |
+| Variable               | Example Value            | Type    | Notes                                                                                                             |     |
+| ---------------------- | ------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------- | --- |
 | AZURE_USE_BILLING_DATA | true                     | boolean | Use this to configure the application to query Azure Consumption API. Unset to make this false. Defaults to true. |
 | AZURE_CLIENT_ID        | your-azure-client-id     | string  | The Azure Service Principal ID with permission to read the Consumption API from your Subscriptions.               |
 | AZURE_CLIENT_SECRET    | your-azure-client-secret | string  | The Azure Service Principal Secret with permission to read the Consumption API from your Subscriptions.           |
@@ -85,9 +85,9 @@ title: Configurations Glossary
 
 ### Optionally set this to group timestamps from queried data to help with performance:
 
-| Variable               | Value | Notes                                     |
-| ---------------------- | ----- | ----------------------------------------- |
-| GROUP_QUERY_RESULTS_BY | day   | string (e.g. day/week/month/quarter/year) |
+| Variable               | Value | Notes  | Notes                                                                                             |
+| ---------------------- | ----- | ------ | ------------------------------------------------------------------------------------------------- |
+| GROUP_QUERY_RESULTS_BY | day   | string | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year) |
 
 <br/>
 
@@ -99,7 +99,7 @@ title: Configurations Glossary
 
 <br/>
 
-### Optionally set the date range to query estimation data for, starting from today and going back a certain range. 
+### Optionally set the date range to query estimation data for, starting from today and going back a certain range.
 
 | Variable                   | Example Value | Type   | Notes                                                                                            |
 | -------------------------- | ------------- | ------ | ------------------------------------------------------------------------------------------------ |
