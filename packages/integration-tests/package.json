@@ -1,34 +1,34 @@
 {
-    "name": "integration-tests",
-    "version": "1.0.0",
-    "private": true,
-    "description": "Test repository to run integration tests",
-    "scripts": {
-        "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
-        "start-app": "REACT_APP_END_DATE=03-18-2021 REACT_APP_DATE_RANGE_VALUE=1 REACT_APP_DATE_RANGE_TYPE=week BROWSER=none yarn workspace @cloud-carbon-footprint/client start",
-        "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
-        "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
-        "headed": "testcafe 'chrome'",
-        "precommit": "lint-staged --no-stash && yarn headless",
-        "lint": "eslint '*/*.js' --quiet",
-        "lint:fix": "eslint '*/*.js' --quiet --fix"
-    },
-    "devDependencies": {
-        "@testing-library/testcafe": "^4.3.1",
-        "concurrently": "^6.0.0",
-        "eslint": "^7.23.0",
-        "eslint-config-prettier": "^8.1.0",
-        "eslint-plugin-prettier": "^3.3.1",
-        "eslint-plugin-testcafe": "^0.2.1",
-        "lint-staged": "^10.5.4",
-        "prettier": "^2.2.1",
-        "testcafe": "^1.13.0",
-        "wait-on": "^5.3.0"
-    },
-    "lint-staged": {
-        "*.js": [
-            "yarn lint",
-            "prettier --write --ignore-unknown --config ../.prettierrc.json"
-        ]
-    }
+  "name": "integration-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Test repository to run integration tests",
+  "scripts": {
+    "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
+    "start-client": "REACT_APP_END_DATE=03-18-2021 REACT_APP_DATE_RANGE_VALUE=1 REACT_APP_DATE_RANGE_TYPE=week BROWSER=none yarn workspace @cloud-carbon-footprint/client start",
+    "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
+    "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
+    "headed": "testcafe 'chrome'",
+    "precommit": "lint-staged --no-stash && yarn headless",
+    "lint": "eslint '*/*.js' --quiet",
+    "lint:fix": "eslint '*/*.js' --quiet --fix"
+  },
+  "devDependencies": {
+    "@testing-library/testcafe": "^4.3.1",
+    "concurrently": "^6.0.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-testcafe": "^0.2.1",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "testcafe": "^1.13.0",
+    "wait-on": "^5.3.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn lint",
+      "prettier --write --ignore-unknown --config ../.prettierrc.json"
+    ]
+  }
 }

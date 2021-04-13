@@ -23,9 +23,9 @@
   "scripts": {
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
-    "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
+    "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
     "start-with-mock-data": "yarn workspace @cloud-carbon-footprint/client start-with-mock-data",
-    "start-app": "yarn workspace @cloud-carbon-footprint/client start",
+    "start-client": "yarn workspace @cloud-carbon-footprint/client start",
     "start-api": "yarn workspace @cloud-carbon-footprint/api start",
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
     "guided-install": "yarn install && yarn workspace @cloud-carbon-footprint/cli guided-install",

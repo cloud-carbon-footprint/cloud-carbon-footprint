@@ -18,11 +18,11 @@
   "scripts": {
     "clean": "lerna clean --yes",
     "lint": "lerna run lint",
-    "start": "concurrently \"yarn start-app\" \"yarn start-api\"",
-    "start-with-mock-data": "yarn workspace @cloud-carbon-footprint/client start-with-mock-data",
-    "start-app": "yarn workspace @cloud-carbon-footprint/client start",
-    "start-api": "yarn workspace @cloud-carbon-footprint/api start",
-    "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
+    "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
+    "start-with-mock-data": "yarn workspace @cloud-carbon-footprint/client-template start-with-mock-data",
+    "start-client": "yarn workspace @cloud-carbon-footprint/client-template start",
+    "start-api": "yarn workspace @cloud-carbon-footprint/api-template start",
+    "start-cli": "yarn workspace @cloud-carbon-footprint/cli-template start",
     "test": "lerna run test -- --coverage",
     "guided-install": "cd packages/cli && yarn guided-install"
   }
