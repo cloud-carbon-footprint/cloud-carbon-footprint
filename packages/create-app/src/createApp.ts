@@ -74,6 +74,20 @@ async function moveApp(tempDir: string, destination: string, id: string) {
   })
 }
 
+async function grabCoreVersion() {
+  const runCmd = async (cmd: string) => {
+    try {
+      const version = await exec(cmd)
+      return version.stdout.substr(0, version.stdout.indexOf('\n'))
+    } catch (error) {
+      process.stdout.write(error.stderr)
+      process.stdout.write(error.stdout)
+      throw new Error(`Could not execute command ${chalk.cyan(cmd)}`)
+    }
+  }
+  return await runCmd('npm show @cloud-carbon-footprint/core version')
+}
+
 export default async (): Promise<void> => {
   const questions: Question[] = [
     {
@@ -99,8 +113,8 @@ export default async (): Promise<void> => {
   const templateDir = resolvePath(__dirname, '../templates/default-app')
   const tempDir = resolvePath(os.tmpdir(), answers.name)
   const appDir = resolvePath(targetDirectory, answers.name)
+  const coreVersion = await grabCoreVersion()
 
-  Task.log()
   Task.log('Creating the app...')
 
   try {
@@ -111,7 +125,7 @@ export default async (): Promise<void> => {
     await createTemporaryAppFolder(tempDir)
 
     Task.section('Preparing files')
-    await templatingTask(templateDir, tempDir, answers)
+    await templatingTask(templateDir, tempDir, answers, coreVersion)
 
     Task.section('Moving to final location')
     await moveApp(tempDir, appDir, answers.name)

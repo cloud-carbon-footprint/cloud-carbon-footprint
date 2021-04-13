@@ -158,6 +158,7 @@ jobs:
         run: yarn lerna run build
       # Publishes current version of packages that are not already present in the registry
       - name: publish
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         run: yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
