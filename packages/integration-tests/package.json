@@ -1,5 +1,5 @@
 {
-  "name": "integration-tests",
+  "name": "@cloud-carbon-footprint/integration-tests",
   "version": "1.0.0",
   "private": true,
   "description": "Test repository to run integration tests",
