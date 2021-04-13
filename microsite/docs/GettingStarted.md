@@ -42,7 +42,7 @@ A standard install gives you more visibility and control around your particular 
 yarn install
 ```
 
-You can now continue by running with [mocked data](runwithmockeddata) or [manually configuring your cloud providers](aws)
+You can now continue by running with [mocked data](run-with-mocked-data) or [manually configuring your cloud providers](aws)
 
 ### Optional Prerequisites
 
