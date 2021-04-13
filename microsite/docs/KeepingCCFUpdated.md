@@ -1,6 +1,6 @@
 ---
 id: keeping-ccf-updated
-title: Keep Cloud Carbon Footprint Updated
+title: Keeping Cloud Carbon Footprint Updated
 ---
 
 Cloud Carbon Footprint is always improving, so it's a good idea to stay in sync with the latest releases. Cloud Carbon Footprint is more of a library than an application or service; similar to create-react-app, the `@cloud-carbon-footprint/create-app` tool gives you a starting point that's meant to be evolved.

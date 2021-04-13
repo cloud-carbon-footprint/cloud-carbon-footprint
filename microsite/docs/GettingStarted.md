@@ -12,7 +12,7 @@ Creating a standalone app makes it simpler to customize the application for your
 
 If you want to contribute to the project, it's easier to fork and clone the repository. The @cloud-carbon-footprint packages will be included in the clone. That will let you stay up to date with the latest changes, and give you an easier path to make Pull Requests.
 
-#### Prerequisites
+### Prerequisites
 
 - Git
 
@@ -20,7 +20,7 @@ If you want to contribute to the project, it's easier to fork and clone the repo
 
 - Yarn (latest)
 
-### Create your Cloud Carbon Footprint App
+## Create your Cloud Carbon Footprint App
 
 We provide the @cloud-carbon-footprint/create-app package to scaffold standalone instances of Cloud Carbon Footprint.
 
@@ -32,7 +32,7 @@ npx @cloud-carbon-footprint/create-app
 
 You can read more about this process in [Create an app](create-app).
 
-### Contributing to Cloud Carbon Footprint
+## Contributing to Cloud Carbon Footprint
 
 If you intend to make changes to the core project's packages or project documentation, then you can fork and clone https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.
 
