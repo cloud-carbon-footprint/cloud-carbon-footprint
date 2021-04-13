@@ -2111,7 +2111,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.15.1
     apexcharts: ^3.25.0
     axios: ^0.21.1
-    concurrently: ^6.0.0
+    concurrently: ^6.0.2
     dotenv: ^8.2.0
     eslint: ^7.21.0
     eslint-config-prettier: ^8.0.0
@@ -8280,13 +8280,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^6.0.0, concurrently@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "concurrently@npm:6.0.1"
+"concurrently@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "concurrently@npm:6.0.2"
   dependencies:
     chalk: ^4.1.0
     date-fns: ^2.16.1
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     read-pkg: ^5.2.0
     rxjs: ^6.6.3
     spawn-command: ^0.0.2-1
@@ -8295,7 +8295,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     concurrently: bin/concurrently.js
-  checksum: 5b137fc8cc54bb8794a7e6f6798153af548f838510245d51a719de37b8b76a1aaa778d54d02acd770514388cf029a0ecab8ed9a3c3e88162abdaaabe4f20bd41
+  checksum: 2bb8892c8948bcfd8bd4079d720507acb3e49fdb5a4ad4e315f4ffdc768fb8cc7f3b25a1e98fbd7734efe6a8c86a5bd0f77001a212bd2db4ce67f05d0868f326
   languageName: node
   linkType: hard
 
@@ -13253,7 +13253,7 @@ fsevents@^1.2.7:
   resolution: "integration-tests@workspace:packages/integration-tests"
   dependencies:
     "@testing-library/testcafe": ^4.3.1
-    concurrently: ^6.0.0
+    concurrently: ^6.0.2
     eslint: ^7.23.0
     eslint-config-prettier: ^8.1.0
     eslint-plugin-prettier: ^3.3.1
@@ -20903,7 +20903,7 @@ resolve@^2.0.0-next.3:
     "@changesets/cli": ^2.16.0
     "@hawkeyesec/scanner-cli": ^1.8.1
     "@types/fs-extra": ^9.0.10
-    concurrently: ^6.0.1
+    concurrently: ^6.0.2
     fs-extra: ^9.1.0
     husky: ^6.0.0
     lerna: ^4.0.0
