@@ -5,7 +5,7 @@
     "@changesets/cli": "^2.16.0",
     "@hawkeyesec/scanner-cli": "^1.8.1",
     "@types/fs-extra": "^9.0.10",
-    "concurrently": "^6.0.1",
+    "concurrently": "^6.0.2",
     "fs-extra": "^9.1.0",
     "husky": "^6.0.0",
     "lerna": "^4.0.0",

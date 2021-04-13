@@ -3,7 +3,7 @@
   "private": true,
   "devDependencies": {
     "@types/fs-extra": "^9.0.8",
-    "concurrently": "^6.0.0",
+    "concurrently": "^6.0.2",
     "fs-extra": "^9.1.0",
     "lerna": "^4.0.0",
     "marked": ">=2.0.0",
