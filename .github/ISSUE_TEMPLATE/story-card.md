@@ -20,3 +20,7 @@ assignees: ''
 - [ ] Run Changesets, bump any packages that have been updated/changed
 
 ### Tech Notes
+
+## Review Tasks
+- [ ] eg. specific QA details, update methodology, or update microsite
+
