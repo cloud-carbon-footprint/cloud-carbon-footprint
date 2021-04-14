@@ -94,4 +94,7 @@ a:hover {
   .navbar__title {
     font-size: 1rem;
   }
+  .navbar__logo {
+    margin-right: 10px;
+  }
 }
