@@ -89,3 +89,9 @@ a:hover {
     width: 100%;
   }
 }
+
+@media screen and (max-width: 356px) {
+  .navbar__title {
+    font-size: 1rem;
+  }
+}
