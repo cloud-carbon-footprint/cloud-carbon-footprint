@@ -113,8 +113,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
           {
-            kilowattHours: 0.0773848888888889,
-            co2e: 0.00003869244444444445,
+            kilowattHours: 0.06489555555555557,
+            co2e: 0.00003244777777777779,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -168,8 +168,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 16.939846240355557,
-            co2e: 0.008469923120177778,
+            kilowattHours: 14.205883714222226,
+            co2e: 0.007102941857111114,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -193,8 +193,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 8.933103601444445,
-            co2e: 0.004466551800722223,
+            kilowattHours: 7.49136852652778,
+            co2e: 0.0037456842632638903,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -257,8 +257,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 116.77982077962223,
-            co2e: 0.05838991038981112,
+            kilowattHours: 97.93244464113891,
+            co2e: 0.04896622232056946,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',
@@ -296,12 +296,12 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 0.0005523157818777779,
+            co2e: 0.0004631762094861113,
             cost: 190,
             region: 'us-east1',
             serviceName: 'Cloud Dataflow',
             usesAverageCPUConstant: true,
-            kilowattHours: 1.1046315637555557,
+            kilowattHours: 0.9263524189722225,
           },
           {
             accountName: 'test-account',

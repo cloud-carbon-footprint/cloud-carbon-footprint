@@ -10,10 +10,12 @@ import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
-  MIN_WATTS_AVG: number
+  MIN_WATTS_AVG?: number
+  MIN_WATTS_MEDIAN?: number
   MIN_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
   getMinWatts: (computeProcessors?: string[]) => number
-  MAX_WATTS_AVG: number
+  MAX_WATTS_AVG?: number
+  MAX_WATTS_MEDIAN?: number
   MAX_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
   getMaxWatts: (computeProcessors?: string[]) => number
   PUE_AVG: number
@@ -33,7 +35,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   GCP: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS_AVG: 1.34,
+    MIN_WATTS_MEDIAN: 0.86,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
@@ -54,9 +56,9 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       const averageWattsForProcessors = getAverage(minWattsForProcessors)
       return averageWattsForProcessors
         ? averageWattsForProcessors
-        : CLOUD_CONSTANTS.GCP.MIN_WATTS_AVG
+        : CLOUD_CONSTANTS.GCP.MIN_WATTS_MEDIAN
     },
-    MAX_WATTS_AVG: 4.98,
+    MAX_WATTS_MEDIAN: 4.44,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
@@ -77,7 +79,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
       const averageWattsForProcessors = getAverage(maxWattsForProcessors)
       return averageWattsForProcessors
         ? averageWattsForProcessors
-        : CLOUD_CONSTANTS.GCP.MAX_WATTS_AVG
+        : CLOUD_CONSTANTS.GCP.MAX_WATTS_MEDIAN
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     PUE_AVG: 1.1,
