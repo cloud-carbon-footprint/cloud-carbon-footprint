@@ -12,6 +12,11 @@ import os from 'os'
 
 import { Task, templatingTask } from './lib/tasks'
 import { getTargetDir } from './lib/paths'
+import { Command } from 'commander'
+
+interface CommandWithArgs extends Command {
+  skipInstall: string
+}
 
 const exec = promisify(execCb)
 
@@ -88,13 +93,13 @@ async function grabCoreVersion() {
   return await runCmd('npm show @cloud-carbon-footprint/core version')
 }
 
-export default async (): Promise<void> => {
+export default async (cmd: CommandWithArgs): Promise<void> => {
   const questions: Question[] = [
     {
       type: 'input',
       name: 'name',
       message: chalk.blue('Enter a name for the app [required]'),
-      validate: (value: any) => {
+      validate: (value: string) => {
         if (!value) {
           return chalk.red('Please enter a name for the app')
         } else if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(value)) {
@@ -130,8 +135,10 @@ export default async (): Promise<void> => {
     Task.section('Moving to final location')
     await moveApp(tempDir, appDir, answers.name)
 
-    Task.section('Building the app')
-    await buildApp(appDir)
+    if (!cmd.skipInstall) {
+      Task.section('Building the app')
+      await buildApp(appDir)
+    }
 
     Task.log()
     Task.log(
