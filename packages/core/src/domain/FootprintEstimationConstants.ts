@@ -132,7 +132,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AWS.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        minWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG
@@ -156,7 +159,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AWS.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        maxWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
@@ -189,7 +195,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AZURE.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        minWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AZURE.MIN_WATTS_AVG
@@ -212,7 +221,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AZURE.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        maxWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
