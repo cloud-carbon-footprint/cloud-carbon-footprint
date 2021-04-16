@@ -28,7 +28,7 @@ organization to view and take action. It currently supports AWS, Google Cloud an
 
 **We calculate our CO2e estimates with this formula:**
 
-    (Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
+```(Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])```
 
 Our approach builds upon
 [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)
@@ -136,12 +136,12 @@ it still takes some power to run it (Minimum Watts). As the server utilization i
 consumed increases too. The total energy used is the min watts plus the watts from additional server usage (average per
 hour).
 
-     Average Watts = Min Watts + Avg vCPU Utilization  * (Max Watts - Min Watts)
+```Average Watts = Min Watts + Avg vCPU Utilization  * (Max Watts - Min Watts)```
 
 Second, we then translate this into total Watt Hours based on the amount of time servers are being used, or
 virtual CPU hours.
 
-     Compute Watt-Hours = Average Watts * vCPU Hours
+```Compute Watt-Hours = Average Watts * vCPU Hours```
 
 Here are the input data sources for the variables in the formula, and context on where we have sourced them:
 
@@ -190,13 +190,11 @@ allocated memory over 1,792MB.
 
 Given this, the formula we derive is:
 
-    Total Watt-Hours = Average Watts X Running Time (Hours) X Estimated number of vCPUs
+```Total Watt-Hours = Average Watts X Running Time (Hours) X Estimated number of vCPUs```
 
 where:
 
-    Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts)
-    Running Time = Lambda execution time / 3600 seconds
-    Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB
+```Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts) Running Time = Lambda execution time / 3600 seconds Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB```
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs.
 
@@ -229,8 +227,7 @@ Here is the estimated SSD energy usage:
 - SSD average capacity in 2020 = **5** Terabytes per disk
 - Average wattage per disk for 2020 = **6** Watts per disk
 
-        Watts per terabyte = Watts per disk / Terabytes per disk:
-        6 W / 5 TB = 1.2 Watt-Hours per Terabyte-Hour for SSD
+```Watts per terabyte = Watts per disk / Terabytes per disk: 6 W / 5 TB = 1.2 Watt-Hours per Terabyte-Hour for SSD```
 
 When it comes to measuring the Terabytes from cloud providers, we query for the allocated bytes rather than the utilized
 bytes, because this is a more accurate reflection of the energy needed to support that usage. For example, an
