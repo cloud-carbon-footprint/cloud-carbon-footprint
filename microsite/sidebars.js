@@ -34,7 +34,6 @@ module.exports = {
           items: ['performance-configurations', 'configurations-glossary'],
         },
         'deploying',
-        'keeping-ccf-updated',
       ],
     },
   ],
