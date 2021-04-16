@@ -5,12 +5,12 @@ title: Getting Started
 
 There are two different ways to get started with Cloud Carbon Footprint:
 
-- Recommended: Create a standalone app
-- Contributors: Clone the Cloud Carbon Footprint repository
+- Create a standalone app using the command line interface
+- Clone the Cloud Carbon Footprint repository
 
-Creating a standalone app makes it simpler to customize the application for your needs and stay up to date with the project. You will depend on @cloud-carbon-footprint packages from npm, making your app much smaller. This is the recommended approach for most installations.
+For the best way of staying up to date with the project, you can create a standalone app for simple customization according to your needs. This method uses the @cloud-carbon-footprint packages as npm dependencies, making for a more lightweight standalone app.
 
-If you want to contribute to the project, it's easier to fork and clone the repository. The @cloud-carbon-footprint packages will be included in the clone. That will let you stay up to date with the latest changes, and give you an easier path to make Pull Requests.
+Forking and cloning the repository is the best way to contribute to the project. Cloning the project will include all of the @cloud-carbon-footprint packages for local development and configuration. This path offers the option to create Pull Requests and to stay up to date with the latest changes.
 
 ### Prerequisites
 
@@ -22,9 +22,11 @@ If you want to contribute to the project, it's easier to fork and clone the repo
 
 ## Create your Cloud Carbon Footprint App
 
-We provide the @cloud-carbon-footprint/create-app package to scaffold standalone instances of Cloud Carbon Footprint.
+We provide the @cloud-carbon-footprint/create-app package to create standalone instances of Cloud Carbon Footprint.
 
-Using npx you can then run the following to create an app in a chosen subdirectory of your current working directory:
+This option offers a quick setup, but has @cloud-carbon-footprint packages as dependencies. This means you will inherit the core estimation logic, but will have less freedom over customizing that logic.
+
+Using npx, you can then run the following command to create an app within your current working directory:
 
 ```
 npx @cloud-carbon-footprint/create-app
@@ -32,9 +34,11 @@ npx @cloud-carbon-footprint/create-app
 
 You can read more about this process in [Create an app](create-app).
 
-## Contributing to Cloud Carbon Footprint
+## Configuring the App Locally
 
-If you intend to make changes to the core project's packages or project documentation, then you can fork and clone https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.
+This option has more visibility and control over configuring the application, but requires a more manual setup process than using the create-app command.
+
+You can fork and clone https://github.com/cloud-carbon-footprint/cloud-carbon-footprint in order to make changes to the core project's packages or project documentation.
 
 This will let you run the latest code off of the trunk branch, fix bugs or contribute new features, run test suites, etc.
 
@@ -52,14 +56,10 @@ cd cloud-carbon-footprint
 ### Guided Install
 
 ```
-yarn guided-install
+yarn install && yarn guided-install
 ```
 
-This will install dependencies for all packages, then guide you through setting up credentials and environment variables to analyze the footprint of your AWS, GCP, or Azure account. Then:
-
-```
-yarn start
-```
+This will install dependencies for all packages, then guide you through setting up credentials and environment variables to analyze the footprint of your AWS, GCP, or Azure account.
 
 If you have any problems with the guided install, you can instead choose to do a standard install.
 
@@ -72,6 +72,16 @@ yarn install
 ```
 
 You can now continue by running with [mocked data](run-with-mocked-data) or [manually configuring your cloud providers](aws)
+
+### Starting the App
+
+Now you can start the app using:
+
+```
+yarn start
+```
+
+As you get more experienced with the app, in future you can run just the frontend with `yarn start-client` in one window, and the backend with `yarn start-api` in a different window.
 
 ### Optional Prerequisites
 

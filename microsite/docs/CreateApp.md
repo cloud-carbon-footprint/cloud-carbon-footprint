@@ -3,22 +3,28 @@ id: create-app
 title: Create an App
 ---
 
-To get set up quickly with your own project you can create a Cloud Carbon Footprint App.
+Creating a Cloud Carbon Footprint App is a good way to quickly set up your own project.
 
-A Cloud Carbon Footprint App is a monorepo setup with lerna that includes everything you need to run Cloud Carbon Footprint in your own environment.
+Containing everything you need to run in your own environment, a Cloud Carbon Footprint App is a monorepo that is setup utilizing lerna.
 
-If you intend to develop a plugin or contribute to the Cloud Carbon Footprint project, you may want to [Run Cloud Carbon Footprint Locally](runninglocallyintro) instead.
+If you wish to have more control over the configuration of the app and all of its packages or contribute to the Cloud Carbon Footprint project, you may want to [Run Cloud Carbon Footprint Locally](getting-started#configuring-the-app-locally) instead.
 
 ### Create an App
 
 To create a Cloud Carbon Footprint app, you will need to have [Node.js](https://nodejs.org/en/download/) version >= 12 installed.
 
-Cloud Carbon Footprint provides a utility for creating new apps and it guides you through the initial setup of selecting the name of the app.
+Creating a Cloud Carbon Footprint app guides you through the initial setup of selecting the name of the app.
 
-The easiest way to run the create app package is with npx:
+The command to run the create app package using npx is:
 
 ```
 npx @cloud-carbon-footprint/create-app
+```
+
+In the case that you would prefer to install the app yourself, you can run the same command with the following flag:
+
+```
+npx @cloud-carbon-footprint/create-app --skip-install
 ```
 
 This will create a new Cloud Carbon Footprint App inside the current folder. The name of the app-folder is the name that was provided when prompted.
@@ -52,14 +58,16 @@ app
 
 ### Install and Start the App
 
-When the installation is complete you can stop the running node (`^c`) and open the app folder to start the installation process.
+When the installation is complete you can open the app folder to start the configuration process.
 
 ```
 cd my-ccf-app
-yarn install && yarn guided-install
+yarn guided-install
 ```
 
-The `yarn guided-install` command will lead you through a guided installation as referenced [here](gettingstarted#standard-install). You can also choose to only `yarn install` and then configure your app manually as referenced [here](aws).
+Note: If you used the `--skip-install` flag, you will need to run `yarn install` before running `yarn guided-install`.
+
+The `yarn guided-install` command will lead you through a guided installation as referenced [here](gettingstarted#standard-install). You can also choose to configure your app manually as referenced [here](aws).
 
 Once you are finished with the installation you are ready to start the application!
 
@@ -69,6 +77,4 @@ yarn start
 
 Open a browser and directly navigate to the frontend at `http://localhost:3000`.
 
-Now you're free to hack away on your own Cloud Carbon Footprint installation!
-
-As you get more experienced with the app, in future you can run just the frontend with `yarn start-app` in one window, and the backend with `yarn start-api` in a different window.
+Now you're free to start your own Cloud Carbon Footprint application! Happy Hacking!
