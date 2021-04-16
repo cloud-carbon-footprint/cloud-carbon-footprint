@@ -54,12 +54,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.GCP.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      let wattsForProcessors: number
-      if (computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE)) {
-        wattsForProcessors = median(minWattsForProcessors)
-      } else {
-        wattsForProcessors = getAverage(minWattsForProcessors)
-      }
+      const wattsForProcessors: number = getWattsByAverageOrMedian(
+        computeProcessors,
+        minWattsForProcessors,
+      )
       return wattsForProcessors
         ? wattsForProcessors
         : CLOUD_CONSTANTS.GCP.MIN_WATTS_MEDIAN
@@ -82,12 +80,11 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.GCP.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      let wattsForProcessors: number
-      if (computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE)) {
-        wattsForProcessors = median(maxWattsForProcessors)
-      } else {
-        wattsForProcessors = getAverage(maxWattsForProcessors)
-      }
+      const wattsForProcessors: number = getWattsByAverageOrMedian(
+        computeProcessors,
+        maxWattsForProcessors,
+      )
+
       return wattsForProcessors
         ? wattsForProcessors
         : CLOUD_CONSTANTS.GCP.MAX_WATTS_MEDIAN
@@ -318,6 +315,23 @@ export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     [AZURE_REGIONS.US_WEST_3]: US_NERC_REGIONS_EMISSIONS_FACTORS.WECC,
     [AZURE_REGIONS.UNKNOWN]: 0.0004074,
   },
+}
+
+// When we have a group of compute processor types, by we default calculate the average for this group of processors.
+// However when the group contains either the Sandy Bridge or Ivy Bridge processor type, we calculate the median.
+// This is because those processor types are outliers with much higher min/max watts that the other types, so we
+// want to take this into account to not over estimate the compute energy in kilowatts.
+function getWattsByAverageOrMedian(
+  computeProcessors: string[],
+  wattsForProcessors: number[],
+): number {
+  if (
+    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE) ||
+    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE)
+  ) {
+    return median(wattsForProcessors)
+  }
+  return getAverage(wattsForProcessors)
 }
 
 function getAverage(nums: number[]): number {
