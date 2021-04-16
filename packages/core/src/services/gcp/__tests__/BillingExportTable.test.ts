@@ -178,8 +178,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
           {
-            kilowattHours: 0.089936,
-            co2e: 0.000010522512,
+            kilowattHours: 0.06983666666666666,
+            co2e: 0.00000817089,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountName: 'test-account',

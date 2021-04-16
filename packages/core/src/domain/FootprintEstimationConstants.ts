@@ -1,6 +1,7 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
+import { median } from 'ramda'
 
 import { AWS_REGIONS } from '../services/aws/AWSRegions'
 import { GCP_REGIONS } from '../services/gcp/GCPRegions'
@@ -53,9 +54,14 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.GCP.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(minWattsForProcessors)
-      return averageWattsForProcessors
-        ? averageWattsForProcessors
+      let wattsForProcessors: number
+      if (computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE)) {
+        wattsForProcessors = median(minWattsForProcessors)
+      } else {
+        wattsForProcessors = getAverage(minWattsForProcessors)
+      }
+      return wattsForProcessors
+        ? wattsForProcessors
         : CLOUD_CONSTANTS.GCP.MIN_WATTS_MEDIAN
     },
     MAX_WATTS_MEDIAN: 4.44,
@@ -76,9 +82,14 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.GCP.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
-      return averageWattsForProcessors
-        ? averageWattsForProcessors
+      let wattsForProcessors: number
+      if (computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE)) {
+        wattsForProcessors = median(maxWattsForProcessors)
+      } else {
+        wattsForProcessors = getAverage(maxWattsForProcessors)
+      }
+      return wattsForProcessors
+        ? wattsForProcessors
         : CLOUD_CONSTANTS.GCP.MAX_WATTS_MEDIAN
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
