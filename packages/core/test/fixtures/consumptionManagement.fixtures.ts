@@ -15,7 +15,17 @@ interface AzureUsageDetailsResponse {
   location: string
 }
 
-export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponse[] = [
+interface AzureUsageDetailsResponseWithNextLink
+  extends Array<AzureUsageDetailsResponse> {
+  /**
+   * @member {string} [nextLink] The link (url) to the next page of results.
+   * **NOTE: This property will not be serialized. It can only be populated by
+   * the server.**
+   */
+  nextLink?: string
+}
+
+export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponseWithNextLink = [
   {
     usageStart: new Date('2020-11-02'),
     usageQuantity: 17,

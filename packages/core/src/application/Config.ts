@@ -41,7 +41,6 @@ export interface CCFConfig {
   }
   AZURE?: {
     USE_BILLING_DATA?: boolean
-    RATE_LIMIT?: string
     authentication?: {
       mode: string
       clientId?: string
@@ -153,7 +152,6 @@ const appConfig: CCFConfig = {
   },
   AZURE: {
     USE_BILLING_DATA: !!process.env.AZURE_USE_BILLING_DATA,
-    RATE_LIMIT: getEnvVar('AZURE_RATE_LIMIT') || '2',
     authentication: {
       mode: getEnvVar('AZURE_AUTH_MODE') || 'default',
       clientId: getEnvVar('AZURE_CLIENT_ID') || '',

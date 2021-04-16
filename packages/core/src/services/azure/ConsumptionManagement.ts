@@ -96,13 +96,43 @@ export default class ConsumptionManagementService {
     usageRows: UsageDetailsListResult,
   ): Promise<UsageDetailsListResult> {
     const allUsageRows = [...usageRows]
+    let retry = false
     while (usageRows.nextLink) {
-      const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
-        usageRows.nextLink,
-      )
-      allUsageRows.push(...nextUsageRows)
-      usageRows = nextUsageRows
+      try {
+        const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
+          usageRows.nextLink,
+        )
+        allUsageRows.push(...nextUsageRows)
+        usageRows = nextUsageRows
+      } catch (e) {
+        const errorMsg =
+          'Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason:'
+        if (
+          e.response.headers._headersMap[
+            'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests'
+          ]?.value == 0
+        ) {
+          this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
+          const retryAfterValue =
+            e.response.headers._headersMap[
+              'x-ms-ratelimit-microsoft.consumption-tenant-retry-after'
+            ]?.value
+          this.consumptionManagementLogger.info(
+            `Retrying after ${retryAfterValue} seconds`,
+          )
+          retry = true
+          await new Promise((resolve) => {
+            setTimeout(resolve, retryAfterValue * 1000)
+          })
+        } else {
+          throw new Error(`${errorMsg} ${e.message}`)
+        }
+      }
     }
+    retry &&
+      this.consumptionManagementLogger.info(
+        'Retry Successful! Continuing grabbing estimates...',
+      )
     return allUsageRows
   }
 
