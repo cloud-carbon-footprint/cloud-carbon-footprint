@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/cli
 
+## 0.3.2
+
+### Patch Changes
+
+- 81dfde6c: Improves .env.template files with links to cofiguration glossary
+- b0151b7d: Improves GCP guided-install prompts in the CLI and create-app packages
+- Updated dependencies [8b4c992d]
+- Updated dependencies [216ea2ec]
+  - @cloud-carbon-footprint/core@0.6.0
+
 ## 0.3.1
 
 ### Patch Changes
