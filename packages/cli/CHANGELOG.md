@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/cli
 
+## 0.3.1
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+- Updated dependencies [8175b41d]
+- Updated dependencies [0ccce96b]
+  - @cloud-carbon-footprint/core@0.5.0
+
 ## 0.3.0
 
 ### Minor Changes

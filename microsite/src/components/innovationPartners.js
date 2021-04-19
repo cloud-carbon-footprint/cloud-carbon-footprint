@@ -12,6 +12,10 @@ const logosArray = [
     path: 'img/logos/TWLogo.png',
     alt: 'ThoughtWorks logo',
     url: 'https://www.thoughtworks.com',
+  },{
+    path: 'img/logos/TomorrowLogo.png',
+    alt: 'Tomorrow logo',
+    url: 'https://www.tmrow.com',
   },
   {
     path: 'img/logos/GOLogo.png',

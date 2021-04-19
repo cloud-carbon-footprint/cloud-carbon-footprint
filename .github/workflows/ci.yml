@@ -94,8 +94,13 @@ jobs:
           name: core-build
           path: packages/core/dist-core/
       - name: build-client
+        env:
+          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
         run: |
           cd packages/client
+          ./create_client_env_file.sh
           yarn build
           cd ../..
       - uses: actions/upload-artifact@v2
@@ -153,6 +158,7 @@ jobs:
         run: yarn lerna run build
       # Publishes current version of packages that are not already present in the registry
       - name: publish
+        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         run: yarn lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -194,16 +200,12 @@ jobs:
       - name: Build and push api to Docker Hub
         if: github.event.pull_request.head.ref == 'changeset-release/trunk'
         uses: docker/build-push-action@v2
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           context: packages/api
           push: true
           tags: |
             cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/api:latest
-          build-args: |
-            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
   deploy-staging:
     if: github.ref == 'refs/heads/trunk'
     needs: build
@@ -228,10 +230,12 @@ jobs:
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
-      REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
-      REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
-      REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -255,14 +259,10 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cd packages/client
-          ./create_client_env_file.sh
-          cd ../..
-
           cd packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
-          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core"/g' package.json
+          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
           ./create_server_env_file.sh
           cd ../..
 
@@ -301,10 +301,12 @@ jobs:
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_ACCOUNT_ID: ${{ secrets.GCP_BILLING_ACCOUNT_ID }}
       GCP_BILLING_ACCOUNT_NAME: ${{ secrets.GCP_BILLING_ACCOUNT_NAME }}
+      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
-      REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
-      REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
-      REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -328,14 +330,10 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cd packages/client
-          ./create_client_env_file.sh
-          cd ../..
-
           cd packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
-          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core"/g' package.json
+          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
           ./create_server_env_file.sh
           cd ../..
 

@@ -31,9 +31,9 @@ DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your
 
 ### Unsupported Usage Types
 
-The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/services/azure/ConsumptionTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with the follownig warning:
+The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/services/azure/ConsumptionTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with a warning like this:
 
-`2021-03-31T09:48:38.815Z [ConsumptionManagement] warn: Unexpected usage type for storage service: EU-WarmStorage-ByteHrs-EFS`
+`2021-03-31T09:48:38.815Z [ConsumptionManagement] warn: Unexpected usage type for storage service: LRS Snapshots`
 
 If you come across a similar warning message, congratulations! You have found a usage type that the app currently isn’t aware of - this is a great opportunity for you to improve Cloud Carbon Footprint!
 
@@ -42,7 +42,7 @@ The steps to resolve are:
 1. Determine the type in question based on the warning message
 2. Add the type to the respective list in the `ConsumptionTypes.ts` file
 3. Delete `estimates.cache.json` file and restart the application server
-4. Submit a PR with the update
+4. Submit an issue or pull request with the update
 
 ### Options for Azure Authentication
 

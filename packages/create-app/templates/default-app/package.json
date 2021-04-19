@@ -1,0 +1,29 @@
+{
+  "name": "root-template",
+  "private": true,
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.8",
+    "concurrently": "^6.0.2",
+    "fs-extra": "^9.1.0",
+    "lerna": "^4.0.0",
+    "marked": ">=2.0.0",
+    "ts-node": "^9.1.1",
+    "typescript": "4.2.3"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "clean": "lerna clean --yes",
+    "lint": "lerna run lint",
+    "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
+    "start-with-mock-data": "yarn workspace @cloud-carbon-footprint/client-template start-with-mock-data",
+    "start-client": "yarn workspace @cloud-carbon-footprint/client-template start",
+    "start-api": "yarn workspace @cloud-carbon-footprint/api-template start",
+    "start-cli": "yarn workspace @cloud-carbon-footprint/cli-template start",
+    "test": "lerna run test -- --coverage",
+    "guided-install": "cd packages/cli && yarn guided-install"
+  }
+}

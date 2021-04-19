@@ -37,8 +37,14 @@ import NetworkingUsage from '../../domain/NetworkingUsage'
 import Logger from '../Logger'
 import configLoader from '../../application/ConfigLoader'
 
+type TenantHeaders = {
+  [key: string]: string
+}
+
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
+  private readonly consumptionManagementRateLimitRemainingHeader: string
+  private readonly consumptionManagementRetryAfterHeader: string
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
@@ -47,6 +53,10 @@ export default class ConsumptionManagementService {
     private readonly consumptionManagementClient: ConsumptionManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
+    this.consumptionManagementRateLimitRemainingHeader =
+      'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests'
+    this.consumptionManagementRetryAfterHeader =
+      'x-ms-ratelimit-microsoft.consumption-tenant-retry-after'
   }
 
   public async getEstimates(
@@ -96,14 +106,55 @@ export default class ConsumptionManagementService {
     usageRows: UsageDetailsListResult,
   ): Promise<UsageDetailsListResult> {
     const allUsageRows = [...usageRows]
+    let retry = false
     while (usageRows.nextLink) {
-      const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
-        usageRows.nextLink,
-      )
-      allUsageRows.push(...nextUsageRows)
-      usageRows = nextUsageRows
+      try {
+        const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
+          usageRows.nextLink,
+        )
+        allUsageRows.push(...nextUsageRows)
+        usageRows = nextUsageRows
+      } catch (e) {
+        // check to see if error is from exceeding the rate limit and grab retry time value
+        const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
+        const rateLimitRemaingValue = this.getConsumptionTenantValue(
+          e,
+          'remaining',
+        )
+        const errorMsg =
+          'Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason:'
+        if (rateLimitRemaingValue == 0) {
+          this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
+          this.consumptionManagementLogger.info(
+            `Retrying after ${retryAfterValue} seconds`,
+          )
+          retry = true
+          await this.wait(retryAfterValue * 1000)
+        } else {
+          throw new Error(`${errorMsg} ${e.message}`)
+        }
+      }
     }
+    retry &&
+      this.consumptionManagementLogger.info(
+        'Retry Successful! Continuing grabbing estimates...',
+      )
     return allUsageRows
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getConsumptionTenantValue(e: any, type: string) {
+    const tenantHeaders: TenantHeaders = {
+      retry: this.consumptionManagementRetryAfterHeader,
+      remaining: this.consumptionManagementRateLimitRemainingHeader,
+    }
+    return e.response.headers._headersMap[tenantHeaders[type]]?.value
+  }
+
+  private async wait(ms: number) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms)
+    })
   }
 
   private async getConsumptionUsageDetails(startDate: Date, endDate: Date) {

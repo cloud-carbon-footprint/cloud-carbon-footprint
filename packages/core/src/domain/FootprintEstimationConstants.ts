@@ -1,6 +1,7 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
+import { median } from 'ramda'
 
 import { AWS_REGIONS } from '../services/aws/AWSRegions'
 import { GCP_REGIONS } from '../services/gcp/GCPRegions'
@@ -10,10 +11,12 @@ import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
-  MIN_WATTS_AVG: number
+  MIN_WATTS_AVG?: number
+  MIN_WATTS_MEDIAN?: number
   MIN_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
   getMinWatts: (computeProcessors?: string[]) => number
-  MAX_WATTS_AVG: number
+  MAX_WATTS_AVG?: number
+  MAX_WATTS_MEDIAN?: number
   MAX_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
   getMaxWatts: (computeProcessors?: string[]) => number
   PUE_AVG: number
@@ -33,7 +36,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   GCP: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-    MIN_WATTS_AVG: 1.34,
+    MIN_WATTS_MEDIAN: 0.86,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.64,
@@ -51,12 +54,15 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.GCP.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(minWattsForProcessors)
-      return averageWattsForProcessors
-        ? averageWattsForProcessors
-        : CLOUD_CONSTANTS.GCP.MIN_WATTS_AVG
+      const wattsForProcessors: number = getWattsByAverageOrMedian(
+        computeProcessors,
+        minWattsForProcessors,
+      )
+      return wattsForProcessors
+        ? wattsForProcessors
+        : CLOUD_CONSTANTS.GCP.MIN_WATTS_MEDIAN
     },
-    MAX_WATTS_AVG: 4.98,
+    MAX_WATTS_MEDIAN: 4.44,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.94,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.15,
@@ -74,10 +80,14 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.GCP.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
-      return averageWattsForProcessors
-        ? averageWattsForProcessors
-        : CLOUD_CONSTANTS.GCP.MAX_WATTS_AVG
+      const wattsForProcessors: number = getWattsByAverageOrMedian(
+        computeProcessors,
+        maxWattsForProcessors,
+      )
+
+      return wattsForProcessors
+        ? wattsForProcessors
+        : CLOUD_CONSTANTS.GCP.MAX_WATTS_MEDIAN
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     PUE_AVG: 1.1,
@@ -122,7 +132,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AWS.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        minWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG
@@ -146,7 +159,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AWS.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        maxWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
@@ -179,7 +195,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AZURE.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(minWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        minWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AZURE.MIN_WATTS_AVG
@@ -202,7 +221,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AZURE.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      const averageWattsForProcessors = getAverage(maxWattsForProcessors)
+      const averageWattsForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        maxWattsForProcessors,
+      )
       return averageWattsForProcessors
         ? averageWattsForProcessors
         : CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
@@ -305,6 +327,23 @@ export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     [AZURE_REGIONS.US_WEST_3]: US_NERC_REGIONS_EMISSIONS_FACTORS.WECC,
     [AZURE_REGIONS.UNKNOWN]: 0.0004074,
   },
+}
+
+// When we have a group of compute processor types, by we default calculate the average for this group of processors.
+// However when the group contains either the Sandy Bridge or Ivy Bridge processor type, we calculate the median.
+// This is because those processor types are outliers with much higher min/max watts that the other types, so we
+// want to take this into account to not over estimate the compute energy in kilowatts.
+function getWattsByAverageOrMedian(
+  computeProcessors: string[],
+  wattsForProcessors: number[],
+): number {
+  if (
+    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE) ||
+    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE)
+  ) {
+    return median(wattsForProcessors)
+  }
+  return getAverage(wattsForProcessors)
 }
 
 function getAverage(nums: number[]): number {

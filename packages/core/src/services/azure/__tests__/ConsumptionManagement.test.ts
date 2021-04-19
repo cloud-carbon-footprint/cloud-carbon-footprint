@@ -471,4 +471,44 @@ describe('Azure Consumption Management Service', () => {
       `Azure ConsumptionManagementClient.usageDetails.list failed. Reason: ${errorMessage}`,
     )
   })
+
+  it('Throws an error when usageDetails.listNext fails', async () => {
+    const errorMessage = {
+      message: 'Something went wrong!',
+      response: {
+        headers: {
+          _headersMap: {
+            'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests': {
+              value: 1,
+            },
+            'x-ms-ratelimit-microsoft.consumption-tenant-retry-after': {
+              value: 60,
+            },
+          },
+        },
+      },
+    }
+
+    mockConsumptionManagementResponseOne.nextLink = 'mock next link'
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseOne,
+    )
+    mockUsageDetails.listNext.mockRejectedValue(errorMessage)
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    await expect(() =>
+      consumptionManagementService.getEstimates(startDate, endDate),
+    ).rejects.toThrow(
+      `Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason: ${errorMessage.message}`,
+    )
+  })
 })

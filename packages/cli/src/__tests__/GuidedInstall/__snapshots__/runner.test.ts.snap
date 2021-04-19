@@ -259,10 +259,10 @@ Array [
     "Enter the absolute path to your service account private key file:",
   ],
   Array [
-    "Enter GCP account id:",
+    "Enter GCP Project ID:",
   ],
   Array [
-    "Enter GCP account name:",
+    "Enter GCP Project Name:",
   ],
   Array [
     "Enter BigQuery table name:",

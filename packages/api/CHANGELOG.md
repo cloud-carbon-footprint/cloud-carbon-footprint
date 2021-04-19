@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/api
 
+## 0.2.2
+
+### Patch Changes
+
+- c0cc067a: adds initial create app package
+
+## 0.2.1
+
+### Patch Changes
+
+- 8175b41d: updates packages with readmes and metadata
+- 06ce5868: fixes create server env file to include group query by
+- Updated dependencies [8175b41d]
+- Updated dependencies [0ccce96b]
+  - @cloud-carbon-footprint/core@0.5.0
+
 ## 0.2.0
 
 ### Minor Changes

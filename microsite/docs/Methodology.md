@@ -28,7 +28,7 @@ organization to view and take action. It currently supports AWS, Google Cloud an
 
 **We calculate our CO2e estimates with this formula:**
 
-    (Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
+`(Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])`
 
 Our approach builds upon
 [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)
@@ -136,12 +136,12 @@ it still takes some power to run it (Minimum Watts). As the server utilization i
 consumed increases too. The total energy used is the min watts plus the watts from additional server usage (average per
 hour).
 
-     Average Watts = Min Watts + Avg vCPU Utilization  * (Max Watts - Min Watts)
+`Average Watts = Min Watts + Avg vCPU Utilization * (Max Watts - Min Watts)`
 
 Second, we then translate this into total Watt Hours based on the amount of time servers are being used, or
 virtual CPU hours.
 
-     Compute Watt-Hours = Average Watts * vCPU Hours
+`Compute Watt-Hours = Average Watts * vCPU Hours`
 
 Here are the input data sources for the variables in the formula, and context on where we have sourced them:
 
@@ -158,7 +158,7 @@ the [2016 U.S. Data Center Energy Usage Report](https://eta.lbl.gov/publications
 example, this may occur for AWS EC2 instances that are terminated over 2 weeks ago from when the application first
 queries an AWS Account.
 
-When we know what underlying processor micro-architecture or group of micro-architectures are used for a given cloud provider virtual machine, we use the min and max watts for that micro-architecture or the average of a group of micro-architectures. See Appendix II for this list of processors and micro-architectures with the min and max watts.
+When we know what underlying processor micro-architecture or group of micro-architectures are used for a given cloud provider virtual machine, we use the min and max watts for that micro-architecture or the average of a group of micro-architectures. When a group of micro-architectures includes either Ivy Bridge or Sandy Bridge, we use the median of that group. This is because we treat those micro-architectures as outliers due to their comparatively high min/max watts in order to not overestimate. See Appendix II for this list of processors and micro-architectures with the min and max watts.
 
 When we don’t know the underlying processor micro-architecture, we use the average of all micro-architectures used by that cloud provider. Here are those averages per cloud provider:
 
@@ -190,13 +190,11 @@ allocated memory over 1,792MB.
 
 Given this, the formula we derive is:
 
-    Total Watt-Hours = Average Watts X Running Time (Hours) X Estimated number of vCPUs
+`Total Watt-Hours = Average Watts X Running Time (Hours) X Estimated number of vCPUs`
 
 where:
 
-    Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts)
-    Running Time = Lambda execution time / 3600 seconds
-    Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB
+`Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts) Running Time = Lambda execution time / 3600 seconds Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB`
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs.
 
@@ -229,8 +227,7 @@ Here is the estimated SSD energy usage:
 - SSD average capacity in 2020 = **5** Terabytes per disk
 - Average wattage per disk for 2020 = **6** Watts per disk
 
-        Watts per terabyte = Watts per disk / Terabytes per disk:
-        6 W / 5 TB = 1.2 Watt-Hours per Terabyte-Hour for SSD
+`Watts per terabyte = Watts per disk / Terabytes per disk: 6 W / 5 TB = 1.2 Watt-Hours per Terabyte-Hour for SSD`
 
 When it comes to measuring the Terabytes from cloud providers, we query for the allocated bytes rather than the utilized
 bytes, because this is a more accurate reflection of the energy needed to support that usage. For example, an
@@ -412,48 +409,33 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 
 #### Azure
 
-<ins>Note:</ins> The application currently only supports a subset of Azure regions that are used by ThoughtWorks. 
-This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what
-is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies/). 
+**Note**: The application currently only supports a subset of Azure regions that are used by ThoughtWorks.
+This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies).
 For example, the website says "Central US", but the API provides the region as "US Central". In the case of "UK South",
 it is the same on both the website and the API. For any Azure customers using other regions, we would love to know what
-syntax is returned by the API for your region(s) so that we can add support for them. You can email [green-cloud@thoughtworks.com](mailto:green-cloud@thoughtworks.com), 
+syntax is returned by the API for your region(s) so that we can add support for them. You can email [green-cloud@thoughtworks.com](mailto:green-cloud@thoughtworks.com),
 or submit an issue or pull request.
 
-| Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |     
+| Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| US Central       | Iowa        | MRO         | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US East          | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US East 2        | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US East 3        | Georgia     | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US North Central | Illinois    | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US South Central | Texas       | TRE         | 0.000424877           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US West Central  | Wyoming     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US West          | California  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US West 2        | Washington  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| US West 3        | Arizona     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |   
-| AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
-| AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |  
+| US Central       | Iowa        | MRO         | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East          | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East 2        | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East 3        | Georgia     | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US North Central | Illinois    | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US South Central | Texas       | TRE         | 0.000424877           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West Central  | Wyoming     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West          | California  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West 2        | Washington  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West 3        | Arizona     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
 | EU North         | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| EU West          | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |   
-| IN Central       | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
-| IN South         | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
-| IN West          | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |  
-| UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |  
-| UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+| EU West          | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
+| IN Central       | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| IN South         | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| IN West          | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
+| UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
 
 <!-- © 2021 ThoughtWorks, Inc. -->
