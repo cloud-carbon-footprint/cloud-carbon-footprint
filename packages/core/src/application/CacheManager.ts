@@ -1,6 +1,7 @@
 /*
  * © 2021 Thoughtworks, Inc. All rights reserved.
  */
+
 import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
 import { EstimationResult } from './EstimationResult'
