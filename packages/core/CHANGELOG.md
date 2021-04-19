@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/core
 
+## 0.6.0
+
+### Minor Changes
+
+- 8b4c992d: Add support for using the median for a group of processors when there are outliers
+
+### Patch Changes
+
+- 216ea2ec: adds error handling for azure request error"
+
 ## 0.5.0
 
 ### Minor Changes

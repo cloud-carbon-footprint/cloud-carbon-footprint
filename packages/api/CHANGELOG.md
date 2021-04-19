@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/api
 
+## 0.2.3
+
+### Patch Changes
+
+- 81dfde6c: Improves .env.template files with links to cofiguration glossary
+- Updated dependencies [8b4c992d]
+- Updated dependencies [216ea2ec]
+  - @cloud-carbon-footprint/core@0.6.0
+
 ## 0.2.2
 
 ### Patch Changes
