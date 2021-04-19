@@ -12,33 +12,16 @@ import Cost from '../../domain/Cost'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 import AWSAccount from '../AWSAccount'
-import config from '../ConfigLoader'
 import GCPAccount from '../GCPAccount'
 
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
 jest.mock('../Cache')
-jest.mock('../ConfigLoader')
 jest.mock('../../services/Logger')
-
-const testRegions = ['us-east-1', 'us-east-2']
-
-describe('App', () => {
-  let app: App
-  const startDate = '2020-08-07'
-  const endDate = '2020-08-10'
-  const region = 'us-east-1'
-  const request: EstimationRequest = {
-    startDate: moment(startDate).toDate(),
-    endDate: moment(endDate).add(1, 'weeks').toDate(),
-    region: region,
-  }
-  const testAwsAccountName = 'test AWS account'
-  const testGcpAccountName = 'test GCP account'
-
-  beforeEach(() => {
-    ;(config as jest.Mock).mockReturnValue({
+jest.mock('../ConfigLoader', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
       AWS: {
         accounts: [{ id: '12345678', name: 'test AWS account' }],
         NAME: 'AWS',
@@ -61,8 +44,28 @@ describe('App', () => {
         NAME: 'GCP',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east1', 'us-west1', 'us-central1'],
+        CACHE_BUCKET_NAME: 'test-bucket-name',
       },
-    })
+    }
+  })
+})
+
+const testRegions = ['us-east-1', 'us-east-2']
+
+describe('App', () => {
+  let app: App
+  const startDate = '2020-08-07'
+  const endDate = '2020-08-10'
+  const region = 'us-east-1'
+  const request: EstimationRequest = {
+    startDate: moment(startDate).toDate(),
+    endDate: moment(endDate).add(1, 'weeks').toDate(),
+    region: region,
+  }
+  const testAwsAccountName = 'test AWS account'
+  const testGcpAccountName = 'test GCP account'
+
+  beforeEach(() => {
     app = new App()
   })
 

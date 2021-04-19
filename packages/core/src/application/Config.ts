@@ -38,6 +38,7 @@ export interface CCFConfig {
     BIG_QUERY_TABLE?: string
     BILLING_ACCOUNT_ID?: string
     BILLING_ACCOUNT_NAME?: string
+    CACHE_BUCKET_NAME?: string
   }
   AZURE?: {
     USE_BILLING_DATA?: boolean
@@ -50,6 +51,7 @@ export interface CCFConfig {
   }
   LOGGING_MODE?: string
   GROUP_QUERY_RESULTS_BY?: string
+  CACHE_MODE?: string
 }
 
 const getAWSAccounts = () => {
@@ -149,6 +151,7 @@ const appConfig: CCFConfig = {
     BIG_QUERY_TABLE: getEnvVar('GCP_BIG_QUERY_TABLE') || '',
     BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_ACCOUNT_ID') || '',
     BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_ACCOUNT_NAME') || '',
+    CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
   },
   AZURE: {
     USE_BILLING_DATA: !!process.env.AZURE_USE_BILLING_DATA,
@@ -161,6 +164,7 @@ const appConfig: CCFConfig = {
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   GROUP_QUERY_RESULTS_BY: process.env.GROUP_QUERY_RESULTS_BY || 'day',
+  CACHE_MODE: getEnvVar('CACHE_MODE') || '',
 }
 
 export default appConfig

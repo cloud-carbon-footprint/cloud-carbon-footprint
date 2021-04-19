@@ -39,8 +39,6 @@ const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 const mockListTimeSeries = jest.fn()
 
-jest.mock('../../../core/src/application/ConfigLoader')
-
 jest.mock('@google-cloud/monitoring', () => {
   return {
     MetricServiceClient: jest.fn().mockImplementation(() => {
@@ -53,6 +51,32 @@ jest.mock('@google-cloud/monitoring', () => {
       }
     }),
   }
+})
+
+jest.mock('../../../core/src/application/ConfigLoader', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      AWS: {
+        accounts: [{ id: '12345678', name: 'test account' }],
+        NAME: 'AWS',
+        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleSessionName: 'test-target',
+            proxyAccountId: 'test-account-id',
+            proxyRoleName: 'test-role-name',
+          },
+        },
+      },
+      GCP: {
+        projects: [{ id: 'test-project', name: 'test project' }],
+        NAME: 'GCP',
+        CURRENT_REGIONS: ['us-east1'],
+      },
+      LOGGING_MODE: 'test',
+    }
+  })
 })
 
 //disable cache
@@ -103,30 +127,6 @@ describe('cli', () => {
   }
 
   describe('ebs, s3, ec3, elasticache, rds', () => {
-    beforeAll(() => {
-      ;(config as jest.Mock).mockReturnValue({
-        AWS: {
-          accounts: [{ id: '12345678', name: 'test account' }],
-          NAME: 'AWS',
-          CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
-          authentication: {
-            mode: 'GCP',
-            options: {
-              targetRoleSessionName: 'test-target',
-              proxyAccountId: 'test-account-id',
-              proxyRoleName: 'test-role-name',
-            },
-          },
-        },
-        GCP: {
-          projects: [{ id: 'test-project', name: 'test project' }],
-          NAME: 'GCP',
-          CURRENT_REGIONS: ['us-east1'],
-        },
-        LOGGING_MODE: 'test',
-      })
-    })
-
     beforeEach(() => {
       mockAwsCloudWatchGetMetricData()
       mockAwsCostExplorerGetCostAndUsage()

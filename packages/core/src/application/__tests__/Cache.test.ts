@@ -11,7 +11,7 @@ import { EstimationRequest } from '../CreateValidRequest'
 let mockSetEstimates: jest.Mock
 let mockGetEstimates: jest.Mock
 
-jest.mock('../EstimatorCacheFileSystem', () => {
+jest.mock('../CacheManager', () => {
   return jest.fn().mockImplementation(() => {
     mockSetEstimates = jest.fn()
     mockGetEstimates = jest.fn()

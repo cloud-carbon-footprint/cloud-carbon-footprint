@@ -28,7 +28,36 @@ const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 //disable cache
 jest.mock('../../../core/src/application/Cache')
 
-jest.mock('../../../core/src/application/ConfigLoader')
+jest.mock('../../../core/src/application/ConfigLoader', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      AWS: {
+        accounts: [{ id: '12345678', name: 'test AWS account' }],
+        NAME: 'AWS',
+        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
+        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleSessionName: 'test-target',
+            proxyAccountId: 'test-account-id',
+            proxyRoleName: 'test-role-name',
+          },
+        },
+      },
+      GCP: {
+        projects: [
+          { id: '987654321', name: 'test GCP account' },
+          { id: '987654321', name: 'test GCP account 2' },
+        ],
+        NAME: 'GCP',
+        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
+        CURRENT_REGIONS: ['us-east1', 'us-west1', 'us-central1'],
+        CACHE_BUCKET_NAME: 'test-bucket-name',
+      },
+    }
+  })
+})
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

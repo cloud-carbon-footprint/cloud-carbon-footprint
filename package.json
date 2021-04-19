@@ -34,5 +34,8 @@
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install",
     "postinstall": "husky install"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^5.8.3"
   }
 }

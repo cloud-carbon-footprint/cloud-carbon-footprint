@@ -2,9 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import EstimatorCacheFileSystem, {
-  cachePath,
-} from '../EstimatorCacheFileSystem'
+import { cachePath } from '../EstimatorCacheFileSystem'
+import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { promises } from 'fs'
 import EstimatorCache from '../EstimatorCache'
 import moment from 'moment'
@@ -62,36 +61,13 @@ describe('EstimatorCacheFileSystem', () => {
       expect(estimates).toEqual(cachedData)
     })
 
-    it('should return only the requested dates', async () => {
-      //setup
-      const startDate = '2020-11-02'
-      const endDate = '2020-11-03'
-      const cachedData = buildFootprintEstimates(startDate, 3)
-
-      mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
-
-      //run
-      const request: EstimationRequest = {
-        startDate: moment.utc(startDate).toDate(),
-        endDate: moment.utc(endDate).toDate(),
-      }
-      const estimates = await estimatorCache.getEstimates(request)
-
-      //assert
-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 1))
-    })
-
     it('should return the first date in cache data if it is earlier than start date', async () => {
       //setup
       const dataFirstDate = '2020-11-01'
       const startDate = '2020-11-02'
       const endDate = '2020-11-03'
-      const cachedData = [...Array(3)].map((v, i) => {
-        return {
-          timestamp: moment.utc(dataFirstDate).add(i, 'days').toDate(),
-          serviceEstimates: [],
-        }
-      })
+
+      const cachedData = buildFootprintEstimates(dataFirstDate, 2)
 
       mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
 

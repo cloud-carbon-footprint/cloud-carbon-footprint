@@ -3,14 +3,14 @@
  */
 
 import { EstimationResult } from './EstimationResult'
-import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
+import CacheManager from './CacheManager'
 import EstimatorCache from './EstimatorCache'
 import moment, { Moment } from 'moment'
 import R from 'ramda'
 import { EstimationRequest } from './CreateValidRequest'
 import Logger from '../services/Logger'
 
-const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
+const cacheManager: EstimatorCache = new CacheManager()
 
 function getMissingDates(
   cachedEstimates: EstimationResult[],
@@ -119,7 +119,7 @@ export default function cache(): any {
     descriptor.value = async (
       request: EstimationRequest,
     ): Promise<EstimationResult[]> => {
-      const cachedEstimates: EstimationResult[] = await cacheService.getEstimates(
+      const cachedEstimates: EstimationResult[] = await cacheManager.getEstimates(
         request,
       )
 
@@ -137,7 +137,7 @@ export default function cache(): any {
       // write missing estimates to cache
       const estimatesToPersist = fillDates(missingDates, estimates)
       new Logger('Setting new estimates to cache file...')
-      cacheService.setEstimates(estimatesToPersist)
+      await cacheManager.setEstimates(estimatesToPersist)
 
       // so we don't return results with no estimates
       const filteredCachedEstimates = cachedEstimates.filter(
