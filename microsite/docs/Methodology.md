@@ -90,6 +90,8 @@ For AWS Savings Plans, we only include the line item type `SavingsPlanCoveredUsa
 
 When calculating total kilowatt hours for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
 
+For details on some of the specific usage type classifications, please view the [Classifying Usage Types page](classifying-usage-types).
+
 #### 2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)
 
 This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API to pull usage and cost data. We achieve this by looping through the accounts and then making the API calls on each account for the regions and services set in the application configuration. We retrieve an hourly granularity for usage and daily granularity for cost. This approach is arguably more accurate as we use the actual CPU utilization percentage in the emission estimation for compute usage, but is confined to the services that have been implemented so far in the application. We currently only support compute and storage for this approach.
