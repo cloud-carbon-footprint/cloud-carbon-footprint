@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/client
 
+## 0.5.2
+
+### Patch Changes
+
+- 81dfde6c: Improves .env.template files with links to cofiguration glossary
+
 ## 0.5.1
 
 ### Patch Changes

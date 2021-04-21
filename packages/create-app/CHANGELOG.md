@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/create-app
 
+## 0.3.3
+
+### Patch Changes
+
+- ac8ee553: adds a contributing md file to provide instruction for updating templates
+- 7aa471f5: adds an optional command line argument to skip the installation process when creating the app
+- b0151b7d: Improves GCP guided-install prompts in the CLI and create-app packages
+
 ## 0.3.2
 
 ### Patch Changes

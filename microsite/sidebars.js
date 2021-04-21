@@ -8,7 +8,13 @@ module.exports = {
       type: 'category',
       label: 'Cloud Carbon Footprint',
       collapsed: false,
-      items: ['overview', 'methodology'],
+      items: ['overview', {
+        type: 'category',
+        label: 'How It Works',
+        collapsed: false,
+        items: ['methodology', 'classifying-usage-types'],
+      },
+      ],
     },
     {
       type: 'category',
