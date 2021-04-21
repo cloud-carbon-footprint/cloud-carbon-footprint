@@ -1,5 +1,5 @@
 /*
- * © 2021 Thoughtworks, Inc. All rights reserved.
+ * "© 2021 ThoughtWorks, Inc.
  */
 
 import moment from 'moment'
@@ -16,17 +16,22 @@ const googleCloudCacheService: EstimatorCache = new EstimatorCacheGoogleCloudSto
 )
 
 export default class CacheManager implements EstimatorCache {
-  private readonly cacheMode: string
+  private readonly currentCacheMode: string
 
   constructor() {
-    this.cacheMode = configLoader().CACHE_MODE
+    this.currentCacheMode = configLoader().CACHE_MODE
+  }
+
+  cacheModes = {
+    GCS: 'GCS',
   }
 
   async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
+    const { GCS } = this.cacheModes
     let estimates
 
-    switch (this.cacheMode) {
-      case 'GCS':
+    switch (this.currentCacheMode) {
+      case GCS:
         estimates = await googleCloudCacheService.getEstimates(request)
         break
       default:
@@ -38,8 +43,10 @@ export default class CacheManager implements EstimatorCache {
   }
 
   async setEstimates(estimates: EstimationResult[]): Promise<void> {
-    switch (this.cacheMode) {
-      case 'GCS':
+    const { GCS } = this.cacheModes
+
+    switch (this.currentCacheMode) {
+      case GCS:
         return googleCloudCacheService.setEstimates(estimates)
       default:
         return cacheService.setEstimates(estimates)
