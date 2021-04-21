@@ -86,9 +86,6 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
         ],
         "tooltip": Object {
           "fillSeriesColor": false,
-          "x": Object {
-            "show": false,
-          },
           "y": Object {
             "formatter": [Function],
           },
@@ -98,7 +95,9 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
             "show": false,
           },
           "labels": Object {
-            "show": false,
+            "style": Object {
+              "fontSize": 0,
+            },
           },
           "max": 100,
           "type": "category",
@@ -534,9 +533,6 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
         ],
         "tooltip": Object {
           "fillSeriesColor": false,
-          "x": Object {
-            "show": false,
-          },
           "y": Object {
             "formatter": [Function],
           },
@@ -546,7 +542,9 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
             "show": false,
           },
           "labels": Object {
-            "show": false,
+            "style": Object {
+              "fontSize": 0,
+            },
           },
           "max": 100,
           "type": "category",

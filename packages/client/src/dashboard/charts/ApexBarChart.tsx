@@ -161,7 +161,9 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     xaxis: {
       type: 'category',
       labels: {
-        show: false,
+        style: {
+          fontSize: 0,
+        },
       },
       axisBorder: {
         show: false,
@@ -177,9 +179,6 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     },
     tooltip: {
       fillSeriesColor: false,
-      x: {
-        show: false,
-      },
       y: {
         formatter: function (value: number, opts: { dataPointIndex: number }) {
           return `${dataEntries[
