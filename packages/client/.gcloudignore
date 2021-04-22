@@ -4,3 +4,11 @@ coverage/
 src/
 stub-server/
 public/
+README.md
+CHANGELOG.md
+Dockerfile
+sonar-project.properties
+create_client_env_file.sh
+.eslintrc.js
+.env.template
+tsconfig.json
