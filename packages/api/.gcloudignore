@@ -4,3 +4,13 @@ coverage/
 *.cache.json
 src/
 test/
+README.md
+CHANGELOG.md
+Dockerfile
+sonar-project.properties
+create_docker_secrets.sh
+create_server_env_file.sh
+.eslintrc.js
+.env.template
+tsconfig.json
+jest.config.js
