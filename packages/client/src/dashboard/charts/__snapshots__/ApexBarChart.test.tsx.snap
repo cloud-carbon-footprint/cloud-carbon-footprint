@@ -595,7 +595,7 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
     }
   >
     <div
-      className="makeStyles-paginationContainer-6"
+      className="makeStyles-paginationContainer-7"
     >
       <span
         style={

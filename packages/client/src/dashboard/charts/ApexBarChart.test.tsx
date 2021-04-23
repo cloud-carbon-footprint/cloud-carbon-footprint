@@ -156,6 +156,16 @@ describe('ApexBarChart', () => {
     expect(dataLabelFormatter(null, { dataPointIndex: 3 })).toEqual('< 0.01 %')
   })
 
+  it('should truncate and add ellipses to only y-axis string labels that are longer than 15 characters', () => {
+    const dataLabelFormatter = fixture.root.findByType(Chart).props?.options
+      ?.yaxis?.labels?.formatter
+    expect(dataLabelFormatter).toBeDefined()
+    expect(dataLabelFormatter('Example Account Name')).toEqual(
+      'Example Account...',
+    )
+    expect(dataLabelFormatter(12345)).toEqual(12345)
+  })
+
   it('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
