@@ -161,7 +161,9 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     xaxis: {
       type: 'category',
       labels: {
-        show: false,
+        style: {
+          fontSize: 0,
+        },
       },
       axisBorder: {
         show: false,
@@ -170,15 +172,10 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     },
     yaxis: {
       labels: {
+        minWidth: 150,
+        maxWidth: 150,
         style: {
           fontSize: '13px',
-        },
-        align: 'left',
-        formatter: function (value: string) {
-          if (typeof value === 'string' && value.length > 15) {
-            return value.substring(0, 15) + '...'
-          }
-          return value
         },
       },
     },
@@ -207,16 +204,19 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignContent: 'center',
+        marginLeft: '-50px',
       }}
     >
       {mappedDataEntries?.length && !emissionsLoading ? (
         <Fragment>
           {dataType === 'region' && (
-            <ChartLegend
-              startLabel="Low carbon intensity"
-              endLabel="High carbon intensity"
-              colorRange={chartBarCustomColors}
-            />
+            <div style={{ marginLeft: '50px' }}>
+              <ChartLegend
+                startLabel="Low carbon intensity"
+                endLabel="High carbon intensity"
+                colorRange={chartBarCustomColors}
+              />
+            </div>
           )}
           <Chart
             options={options}

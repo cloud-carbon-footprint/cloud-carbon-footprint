@@ -8,6 +8,7 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       "display": "flex",
       "flexDirection": "column",
       "justifyContent": "center",
+      "marginLeft": "-50px",
       "minHeight": "500px",
     }
   }
@@ -95,15 +96,17 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
             "show": false,
           },
           "labels": Object {
-            "show": false,
+            "style": Object {
+              "fontSize": 0,
+            },
           },
           "max": 100,
           "type": "category",
         },
         "yaxis": Object {
           "labels": Object {
-            "align": "left",
-            "formatter": [Function],
+            "maxWidth": 150,
+            "minWidth": 150,
             "style": Object {
               "fontSize": "13px",
             },

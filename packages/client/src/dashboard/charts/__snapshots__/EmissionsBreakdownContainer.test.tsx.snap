@@ -66,6 +66,7 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
           "display": "flex",
           "flexDirection": "column",
           "justifyContent": "center",
+          "marginLeft": "-50px",
           "minHeight": "500px",
         }
       }
@@ -73,141 +74,149 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
       <div
         style={
           Object {
-            "alignSelf": "center",
-            "display": "flex",
-            "flexDirection": "column",
-            "padding": "10px 45px",
-            "width": "100%",
+            "marginLeft": "50px",
           }
         }
       >
         <div
           style={
             Object {
+              "alignSelf": "center",
               "display": "flex",
-              "fontWeight": 500,
-              "justifyContent": "space-between",
-              "paddingBottom": "12px",
-            }
-          }
-        >
-          <div>
-            Low carbon intensity
-          </div>
-          <div>
-            High carbon intensity
-          </div>
-        </div>
-        <div
-          style={
-            Object {
-              "alignItems": "center",
-              "display": "flex",
-              "justifyContent": "space-between",
+              "flexDirection": "column",
+              "padding": "10px 45px",
               "width": "100%",
             }
           }
         >
           <div
-            className="t-dot"
-            data-testid="timeline-dot"
             style={
               Object {
-                "backgroundColor": "#73B500",
-                "borderRadius": "8px",
-                "height": "15px",
-                "width": "15px",
+                "display": "flex",
+                "fontWeight": 500,
+                "justifyContent": "space-between",
+                "paddingBottom": "12px",
               }
             }
-          />
+          >
+            <div>
+              Low carbon intensity
+            </div>
+            <div>
+              High carbon intensity
+            </div>
+          </div>
           <div
-            className="t-bar"
             style={
               Object {
-                "backgroundColor": "#ababab",
-                "flexGrow": 2,
-                "height": "1px",
+                "alignItems": "center",
+                "display": "flex",
+                "justifyContent": "space-between",
+                "width": "100%",
               }
             }
-          />
-          <div
-            className="t-dot"
-            data-testid="timeline-dot"
-            style={
-              Object {
-                "backgroundColor": "#00791E",
-                "borderRadius": "8px",
-                "height": "15px",
-                "width": "15px",
+          >
+            <div
+              className="t-dot"
+              data-testid="timeline-dot"
+              style={
+                Object {
+                  "backgroundColor": "#73B500",
+                  "borderRadius": "8px",
+                  "height": "15px",
+                  "width": "15px",
+                }
               }
-            }
-          />
-          <div
-            className="t-bar"
-            style={
-              Object {
-                "backgroundColor": "#ababab",
-                "flexGrow": 2,
-                "height": "1px",
+            />
+            <div
+              className="t-bar"
+              style={
+                Object {
+                  "backgroundColor": "#ababab",
+                  "flexGrow": 2,
+                  "height": "1px",
+                }
               }
-            }
-          />
-          <div
-            className="t-dot"
-            data-testid="timeline-dot"
-            style={
-              Object {
-                "backgroundColor": "#D99200",
-                "borderRadius": "8px",
-                "height": "15px",
-                "width": "15px",
+            />
+            <div
+              className="t-dot"
+              data-testid="timeline-dot"
+              style={
+                Object {
+                  "backgroundColor": "#00791E",
+                  "borderRadius": "8px",
+                  "height": "15px",
+                  "width": "15px",
+                }
               }
-            }
-          />
-          <div
-            className="t-bar"
-            style={
-              Object {
-                "backgroundColor": "#ababab",
-                "flexGrow": 2,
-                "height": "1px",
+            />
+            <div
+              className="t-bar"
+              style={
+                Object {
+                  "backgroundColor": "#ababab",
+                  "flexGrow": 2,
+                  "height": "1px",
+                }
               }
-            }
-          />
-          <div
-            className="t-dot"
-            data-testid="timeline-dot"
-            style={
-              Object {
-                "backgroundColor": "#DF5200",
-                "borderRadius": "8px",
-                "height": "15px",
-                "width": "15px",
+            />
+            <div
+              className="t-dot"
+              data-testid="timeline-dot"
+              style={
+                Object {
+                  "backgroundColor": "#D99200",
+                  "borderRadius": "8px",
+                  "height": "15px",
+                  "width": "15px",
+                }
               }
-            }
-          />
-          <div
-            className="t-bar"
-            style={
-              Object {
-                "backgroundColor": "#ababab",
-                "flexGrow": 2,
-                "height": "1px",
+            />
+            <div
+              className="t-bar"
+              style={
+                Object {
+                  "backgroundColor": "#ababab",
+                  "flexGrow": 2,
+                  "height": "1px",
+                }
               }
-            }
-          />
-          <div
-            className="t-dot"
-            data-testid="timeline-dot"
-            style={
-              Object {
-                "backgroundColor": "#790000",
-                "borderRadius": "8px",
-                "height": "15px",
-                "width": "15px",
+            />
+            <div
+              className="t-dot"
+              data-testid="timeline-dot"
+              style={
+                Object {
+                  "backgroundColor": "#DF5200",
+                  "borderRadius": "8px",
+                  "height": "15px",
+                  "width": "15px",
+                }
               }
-            }
-          />
+            />
+            <div
+              className="t-bar"
+              style={
+                Object {
+                  "backgroundColor": "#ababab",
+                  "flexGrow": 2,
+                  "height": "1px",
+                }
+              }
+            />
+            <div
+              className="t-dot"
+              data-testid="timeline-dot"
+              style={
+                Object {
+                  "backgroundColor": "#790000",
+                  "borderRadius": "8px",
+                  "height": "15px",
+                  "width": "15px",
+                }
+              }
+            />
+          </div>
         </div>
       </div>
       <div
@@ -291,15 +300,17 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
                 "show": false,
               },
               "labels": Object {
-                "show": false,
+                "style": Object {
+                  "fontSize": 0,
+                },
               },
               "max": 100,
               "type": "category",
             },
             "yaxis": Object {
               "labels": Object {
-                "align": "left",
-                "formatter": [Function],
+                "maxWidth": 150,
+                "minWidth": 150,
                 "style": Object {
                   "fontSize": "13px",
                 },
