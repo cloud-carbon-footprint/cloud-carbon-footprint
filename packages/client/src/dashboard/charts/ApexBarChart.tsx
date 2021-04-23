@@ -161,9 +161,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     xaxis: {
       type: 'category',
       labels: {
-        style: {
-          fontSize: 0,
-        },
+        show: false,
       },
       axisBorder: {
         show: false,
@@ -174,6 +172,13 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       labels: {
         style: {
           fontSize: '13px',
+        },
+        align: 'left',
+        formatter: function (value: string) {
+          if (typeof value === 'string' && value.length > 15) {
+            return value.substring(0, 15) + '...'
+          }
+          return value
         },
       },
     },

@@ -291,15 +291,15 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
                 "show": false,
               },
               "labels": Object {
-                "style": Object {
-                  "fontSize": 0,
-                },
+                "show": false,
               },
               "max": 100,
               "type": "category",
             },
             "yaxis": Object {
               "labels": Object {
+                "align": "left",
+                "formatter": [Function],
                 "style": Object {
                   "fontSize": "13px",
                 },
