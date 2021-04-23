@@ -114,6 +114,7 @@ export default function cache(): any {
     propertyKey: string,
     descriptor: PropertyDescriptor,
   ) {
+    const cacheLogger = new Logger('cache')
     const decoratedFunction = descriptor.value
 
     descriptor.value = async (
@@ -136,7 +137,7 @@ export default function cache(): any {
 
       // write missing estimates to cache
       const estimatesToPersist = fillDates(missingDates, estimates)
-      new Logger('Setting new estimates to cache file...')
+      cacheLogger.info('Setting new estimates to cache file...')
       await cacheManager.setEstimates(estimatesToPersist)
 
       // so we don't return results with no estimates
