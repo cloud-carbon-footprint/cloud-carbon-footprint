@@ -122,7 +122,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         },
       },
       padding: {
-        left: 32,
+        left: dataType === 'region' ? -15 : -5,
       },
     },
     plotOptions: {
@@ -204,19 +204,16 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignContent: 'center',
-        marginLeft: '-50px',
       }}
     >
       {mappedDataEntries?.length && !emissionsLoading ? (
         <Fragment>
           {dataType === 'region' && (
-            <div style={{ marginLeft: '50px' }}>
-              <ChartLegend
-                startLabel="Low carbon intensity"
-                endLabel="High carbon intensity"
-                colorRange={chartBarCustomColors}
-              />
-            </div>
+            <ChartLegend
+              startLabel="Low carbon intensity"
+              endLabel="High carbon intensity"
+              colorRange={chartBarCustomColors}
+            />
           )}
           <Chart
             options={options}
