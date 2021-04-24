@@ -236,6 +236,8 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
+      CACHE_MODE: ${{ secrets.CACHE_MODE }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -307,6 +309,8 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
+      CACHE_MODE: ${{ secrets.CACHE_MODE }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
