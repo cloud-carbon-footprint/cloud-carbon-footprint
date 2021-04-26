@@ -196,7 +196,11 @@ Given this, the formula we derive is:
 
 where:
 
-`Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts) Running Time = Lambda execution time / 3600 seconds Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB`
+`Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts)`
+
+`Running Time = Lambda execution time / 3600 seconds` 
+
+`Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB`
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs.
 
@@ -221,8 +225,9 @@ Here is the estimated HDD energy usage:
 
 - HDD average capacity in 2020 = **10** Terabytes per disk
 - Average wattage per disk for 2020 = **6.5** Watts per disk
-  Watts per Terabyte = Watts per disk / Terabytes per disk:
-  6.65 W / 10 TB = **0.65 Watt-Hours per Terabyte-Hour for HDD**
+
+`Watts per Terabyte = Watts per disk / Terabytes per disk:
+6.65 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
 
 Here is the estimated SSD energy usage:
 
