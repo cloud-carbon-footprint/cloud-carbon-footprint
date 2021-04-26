@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/core
 
+## 0.6.1
+
+### Patch Changes
+
+- 021c345f: Google Cloud Storage option added to store cache file
+
 ## 0.6.0
 
 ### Minor Changes

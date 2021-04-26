@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/client
 
+## 0.6.0
+
+### Minor Changes
+
+- ce391719: Updates the filter options to be a fixed header
+
+### Patch Changes
+
+- 86a11f4e: Fixes issue with labels for emission breakdown chart being cut off
+- 67867f37: Fixes shifting of the bars on the Emissions Breakdown BarChart
+
 ## 0.5.2
 
 ### Patch Changes

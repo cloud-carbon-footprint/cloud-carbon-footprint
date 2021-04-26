@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/api
 
+## 0.2.4
+
+### Patch Changes
+
+- 5c35c569: updates create server env file
+- 9c61aa15: Fix to remove shadowing variables and use socket
+- Updated dependencies [021c345f]
+  - @cloud-carbon-footprint/core@0.6.1
+
 ## 0.2.3
 
 ### Patch Changes
