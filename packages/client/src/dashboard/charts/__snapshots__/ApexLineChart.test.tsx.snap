@@ -82,8 +82,8 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
       "yaxis": Array [
         Object {
           "decimalsInFloat": 3,
-          "forceNiceScale": true,
           "max": 1.1,
+          "tickAmount": 10,
           "title": Object {
             "offsetX": -8,
             "style": Object {
@@ -98,21 +98,20 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "axisTicks": Object {
-            "offsetX": -30,
-            "show": true,
+            "show": false,
           },
           "decimalsInFloat": 2,
-          "forceNiceScale": true,
           "max": 1.1,
           "opposite": true,
           "showAlways": false,
+          "tickAmount": 10,
           "title": Object {
             "opposite": -8,
             "style": Object {
               "color": undefined,
               "fontSize": "15px",
             },
-            "text": "kilowatt hours (kWh)",
+            "text": "Kilowatt Hours (kWh)",
           },
         },
         Object {
@@ -122,14 +121,13 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
             "show": true,
           },
           "axisTicks": Object {
-            "offsetX": -30,
-            "show": true,
+            "show": false,
           },
           "decimalsInFloat": 2,
-          "forceNiceScale": true,
           "max": 1.1,
           "opposite": true,
           "showAlways": false,
+          "tickAmount": 10,
           "title": Object {
             "offsetX": 6,
             "style": Object {

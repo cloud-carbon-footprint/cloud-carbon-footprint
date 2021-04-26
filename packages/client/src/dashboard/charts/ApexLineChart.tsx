@@ -70,6 +70,8 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
     { Cost: false },
   ])
 
+  const tickAmount = 10
+
   useEffect(() => {
     const newSortedData = sortByDate(data)
     const newDefaultRange = {
@@ -248,19 +250,21 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
             fontSize: '15px',
           },
         },
+        tickAmount,
         decimalsInFloat: 3,
-        forceNiceScale: true,
+        // forceNiceScale: true,
       },
       {
         max: 1.1 * maxKilowattHours,
         title: {
-          text: 'kilowatt hours (kWh)',
+          text: 'Kilowatt Hours (kWh)',
           opposite: -8,
           style: {
             fontSize: '15px',
             color: yellow,
           },
         },
+        tickAmount,
         decimalsInFloat: 2,
         opposite: true,
         axisBorder: {
@@ -268,11 +272,10 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
           color: yellow,
         },
         axisTicks: {
-          show: true,
-          offsetX: -30,
+          show: false,
         },
         showAlways: false,
-        forceNiceScale: true,
+        // forceNiceScale: true,
       },
       {
         max: 1.1 * maxCost,
@@ -284,6 +287,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
             color: green,
           },
         },
+        tickAmount,
         decimalsInFloat: 2,
         opposite: true,
         axisBorder: {
@@ -292,11 +296,10 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
           offsetX: -5,
         },
         axisTicks: {
-          show: true,
-          offsetX: -30,
+          show: false,
         },
         showAlways: false,
-        forceNiceScale: true,
+        // forceNiceScale: true,
       },
     ],
     grid: {
