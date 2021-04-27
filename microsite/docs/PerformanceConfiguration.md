@@ -25,3 +25,17 @@ In your `packages/api/.env` file, you can provide the following variable for a c
 In order to make local development a pleasant experience with a quick feedback loop, we have a cache file that is automatically generated. If you would like to see up to date estimates, you will have to delete `packages/cli/estimates.cache.json` and/or `packages/api/estimates.cache.json`. Depending on how much usage you have, it could take several minutes to fetch up to date estimates and regenerate the cache file.
 
 Note: If you don’t see one of these files, don’t worry. Simply start the server, and load the app for the first time.
+
+### Storing cache file
+
+Currently, we support storing the cache file with two different options:
+
+- Local filesystem (default, no configuration needed)
+- Google Cloud Storage
+
+If you are experiencing long load times in your staging or production environments, the option to store the cache file in the cloud and clear it when you would like to re-estimate may be the best option for you. In order to use the Google Cloud option, you have to set the following variables in your `.env` file:
+
+- `CACHE_MODE=GCS`
+- `GCS_CACHE_BUCKET_NAME=”some-bucket-name”`
+
+Note: The Google service account that you are using must have access and permissions to read/write into the bucket.
