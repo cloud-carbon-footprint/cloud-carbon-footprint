@@ -121,7 +121,7 @@ test('line chart displays the y-axis data when legend is clicked', async (t) => 
   const kwhLegend = Selector('span').withText('Kilowatt Hours')
   const costLegend = Selector('span').withText('Cost')
   const co2eLegend = Selector('span').withText('CO2e')
-  const kwhAxis = Selector('text').withText('kilowatt hours (kWh)')
+  const kwhAxis = Selector('text').withText('Kilowatt Hours (kWh)')
   const costAxis = Selector('text').withText('Cost ($)')
   const co2eAxis = Selector('text').withText('CO2e (metric tons)')
 
