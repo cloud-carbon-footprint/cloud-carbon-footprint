@@ -39,6 +39,7 @@ import { Athena } from 'aws-sdk'
 import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
 import NetworkingUsage from '../../domain/NetworkingUsage'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
@@ -200,7 +201,11 @@ export default class CostAndUsageReports {
       ? usageType.split(concat(includesPrefix, '.')).pop()
       : usageType.split(':').pop()
 
-    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor]
+    return (
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
   }
 
   private getUsageAmountInTerabyteHours(

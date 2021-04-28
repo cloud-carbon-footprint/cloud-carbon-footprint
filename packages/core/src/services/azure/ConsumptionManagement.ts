@@ -34,6 +34,7 @@ import {
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
+import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 import Logger from '../Logger'
 import configLoader from '../../application/ConfigLoader'
 
@@ -393,6 +394,10 @@ export default class ConsumptionManagementService {
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
-    return INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType]
+    return (
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
   }
 }
