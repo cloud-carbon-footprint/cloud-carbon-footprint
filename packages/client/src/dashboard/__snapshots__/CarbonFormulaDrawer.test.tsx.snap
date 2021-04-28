@@ -100,9 +100,9 @@ exports[`CarbonFormulaDrawer renders 1`] = `
         Our CO2e Estimate Formula:
       </p>
       <p
-        className="MuiTypography-root makeStyles-content-10 MuiTypography-body1"
+        className="MuiTypography-root makeStyles-content-10 makeStyles-formula-11 MuiTypography-body1"
       >
-        (Cloud provider service usage) x (Cloud provider Power Usage Effectiveness [PUE]) x (Cloud energy conversion factors [kWh]) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])
+        (Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (grid emissions factors [metric tons CO2e])
       </p>
       <hr
         className="MuiDivider-root"
@@ -116,7 +116,7 @@ exports[`CarbonFormulaDrawer renders 1`] = `
         Emissions data points marked with an * have been estimated with average CPU Utilization because the actual CPU Utilization is not available.
       </p>
       <a
-        className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-methodology-11 MuiTypography-colorPrimary"
+        className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-methodology-12 MuiTypography-colorPrimary"
         href="https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
         onBlur={[Function]}
         onFocus={[Function]}
@@ -127,7 +127,7 @@ exports[`CarbonFormulaDrawer renders 1`] = `
          
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root makeStyles-openIcon-12 MuiSvgIcon-fontSizeSmall"
+          className="MuiSvgIcon-root makeStyles-openIcon-13 MuiSvgIcon-fontSizeSmall"
           focusable="false"
           viewBox="0 0 24 24"
         >
