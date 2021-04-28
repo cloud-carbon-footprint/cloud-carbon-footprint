@@ -15,7 +15,6 @@ export interface ClientConfig {
     VALUE: string
     TYPE: string
   }
-  END_DATE: string | null
 }
 
 const previousYearOfUsage = !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE
@@ -31,7 +30,6 @@ const appConfig: ClientConfig = {
     VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '12',
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
-  END_DATE: process.env.REACT_APP_END_DATE || null,
 }
 
 export default appConfig

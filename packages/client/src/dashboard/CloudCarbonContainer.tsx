@@ -78,21 +78,14 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const dateRangeType: string = config().DATE_RANGE.TYPE
   const dateRangeValue: string = config().DATE_RANGE.VALUE
-  let endDate: moment.Moment
+  const endDate: moment.Moment = moment.utc()
   let startDate: moment.Moment
-  if (config().END_DATE) {
-    endDate = moment.utc(config().END_DATE)
-  } else {
-    endDate = moment.utc()
-  }
   if (config().PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
-    startDate = config().END_DATE ? moment.utc(config().END_DATE) : moment.utc()
-    startDate.subtract(
-      dateRangeValue,
-      dateRangeType as unitOfTime.DurationConstructor,
-    )
+    startDate = moment
+      .utc()
+      .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
   const { data, loading } = useRemoteService([], startDate, endDate)
