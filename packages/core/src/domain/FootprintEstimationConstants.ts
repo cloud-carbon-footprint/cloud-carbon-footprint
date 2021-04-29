@@ -21,6 +21,7 @@ type CloudConstantsByProvider = {
   getMaxWatts: (computeProcessors?: string[]) => number
   PUE_AVG: number
   NETWORKING_COEFFICIENT: number
+  MEMORY_COEFFICIENT?: number
   PUE_TRAILING_TWELVE_MONTH?: { [key: string]: number }
   getPUE: (region?: string) => number
   AVG_CPU_UTILIZATION_2020: number
@@ -90,6 +91,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         : CLOUD_CONSTANTS.GCP.MAX_WATTS_MEDIAN
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
+    MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
     PUE_AVG: 1.1,
     PUE_TRAILING_TWELVE_MONTH: {
       [GCP_REGIONS.US_EAST1]: 1.102,

@@ -10,7 +10,9 @@ import StorageUsage from '../../domain/StorageUsage'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import ComputeUsage from '../../domain/ComputeUsage'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import MemoryEstimator from '../../domain/MemoryEstimator'
 import NetworkingUsage from '../../domain/NetworkingUsage'
+import MemoryUsage from '../../domain/MemoryUsage'
 import FootprintEstimate, {
   MutableEstimationResult,
 } from '../../domain/FootprintEstimate'
@@ -44,6 +46,7 @@ export default class BillingExportTable {
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
+    private readonly memoryEstimator: MemoryEstimator,
     private readonly bigQuery: BigQuery,
   ) {
     this.tableName = configLoader().GCP.BIG_QUERY_TABLE
@@ -61,7 +64,6 @@ export default class BillingExportTable {
 
       if (
         this.isUnknownUsage(billingExportRow) ||
-        this.isMemoryUsage(billingExportRow.usageType) ||
         this.isUnsupportedUsage(billingExportRow.usageType)
       )
         return []
@@ -79,10 +81,17 @@ export default class BillingExportTable {
           }
           break
         case 'byte-seconds':
-          footprintEstimate = this.getStorageFootprintEstimate(
-            billingExportRow,
-            billingExportRow.timestamp,
-          )
+          if (this.isMemoryUsage(billingExportRow.usageType)) {
+            footprintEstimate = this.getMemoryFootprintEstimate(
+              billingExportRow,
+              billingExportRow.timestamp,
+            )
+          } else {
+            footprintEstimate = this.getStorageFootprintEstimate(
+              billingExportRow,
+              billingExportRow.timestamp,
+            )
+          }
           break
         case 'bytes':
           if (this.isNetworkingUsage(billingExportRow.usageType))
@@ -184,11 +193,31 @@ export default class BillingExportTable {
     }
   }
 
+  private getMemoryFootprintEstimate(
+    usageRow: BillingExportRow,
+    timestamp: Date,
+  ): FootprintEstimate {
+    const memoryUsage: MemoryUsage = {
+      timestamp,
+      gigabyteHours: this.convertByteSecondsToGigabyteHours(
+        usageRow.usageAmount,
+      ),
+    }
+    return {
+      usesAverageCPUConstant: false,
+      ...this.memoryEstimator.estimate(
+        [memoryUsage],
+        usageRow.region,
+        'GCP',
+      )[0],
+    }
+  }
+
   private getNetworkingFootprintEstimate(
     usageRow: BillingExportRow,
     timestamp: Date,
   ): FootprintEstimate {
-    const networkingUSage: NetworkingUsage = {
+    const networkingUsage: NetworkingUsage = {
       timestamp,
       gigabytes: this.convertBytesToGigabytes(usageRow.usageAmount),
     }
@@ -196,14 +225,14 @@ export default class BillingExportTable {
     return {
       usesAverageCPUConstant: false,
       ...this.networkingEstimator.estimate(
-        [networkingUSage],
+        [networkingUsage],
         usageRow.region,
         'GCP',
       )[0],
     }
   }
 
-  private isUnknownUsage(usageRow: any): boolean {
+  private isUnknownUsage(usageRow: BillingExportRow): boolean {
     return (
       this.containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
       this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
@@ -310,5 +339,9 @@ export default class BillingExportTable {
 
   private convertBytesToGigabytes(usageAmount: number): number {
     return usageAmount / 1073741824
+  }
+
+  private convertByteSecondsToGigabyteHours(usageAmount: number): number {
+    return usageAmount / 277778
   }
 }

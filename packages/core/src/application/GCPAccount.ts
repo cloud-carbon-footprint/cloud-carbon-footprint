@@ -13,6 +13,7 @@ import { ClientOptions } from 'google-gax'
 import BillingExportTable from '../services/gcp/BillingExportTable'
 import ComputeEstimator from '../domain/ComputeEstimator'
 import NetworkingEstimator from '../domain/NetworkingEstimator'
+import MemoryEstimator from '../domain/MemoryEstimator'
 import { StorageEstimator } from '../domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
 import { BigQuery } from '@google-cloud/bigquery'
@@ -51,6 +52,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
       new BigQuery({ projectId: this.projectId }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)

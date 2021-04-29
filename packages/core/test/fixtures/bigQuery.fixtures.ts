@@ -7,7 +7,7 @@ import { BigQueryDate } from '@google-cloud/bigquery'
 const bigQueryDateOne: BigQueryDate = { value: '2020-11-02' }
 const bigQueryDateTwo: BigQueryDate = { value: '2020-10-28' }
 
-export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
+export const mockQueryResultsAppEngineSSDStorage: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
@@ -19,18 +19,6 @@ export const mockQueryResultsAppEngineSSDStorageRAM: any[][] = [
       vCpus: null as string | null,
       usageAmount: 2.83e16,
       cost: 5,
-      machineType: null,
-    },
-    {
-      timestamp: bigQueryDateOne,
-      accountName: 'test-account',
-      region: 'us-east1',
-      serviceName: 'App Engine',
-      usageType: 'Flex Instance RAM',
-      usageUnit: 'byte-seconds',
-      vCpus: null as string | null,
-      usageAmount: 3.91e18,
-      cost: 10,
       machineType: null,
     },
     {
@@ -86,29 +74,58 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
       cost: 12,
       machineType: null,
     },
-    {
-      timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
-      region: 'us-west1',
-      serviceName: 'Cloud Functions',
-      usageType: 'Memory Time',
-      usageUnit: 'byte-seconds',
-      vCpus: null,
-      usageAmount: 120,
-      cost: 10,
-      machineType: null,
-    },
   ],
 ]
 
-export const mockQueryResultsComputeEngineRamAndUnknownUsages: any[][] = [
+export const mockQueryResultsComputeEngineRam: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
       accountName: 'test-account',
       region: 'us-west1',
       serviceName: 'Compute engine',
-      usageType: 'Commitment v1: Ram in EMEA for 1 Year',
+      usageType: 'Flex Instance RAM',
+      usageUnit: 'byte-seconds',
+      vCpus: null,
+      usageAmount: 120,
+      cost: 10,
+      machineType: null,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'europe-west1',
+      serviceName: 'Compute engine',
+      usageType: 'N1 Predefined Instance Ram running in EMEA',
+      usageUnit: 'byte-seconds',
+      vCpus: null,
+      usageAmount: 260,
+      cost: 8,
+      machineType: null,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-central1',
+      serviceName: 'Compute engine',
+      usageType: 'E2 Instance Ram running in Americas',
+      usageUnit: 'byte-seconds',
+      vCpus: null,
+      usageAmount: 380,
+      cost: 5,
+      machineType: null,
+    },
+  ],
+]
+
+export const mockQueryResultsUnknownUsages: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-west1',
+      serviceName: 'Compute engine',
+      usageType: 'Vpn Tunnel',
       usageUnit: 'byte-seconds',
       vCpus: null,
       usageAmount: 120,
