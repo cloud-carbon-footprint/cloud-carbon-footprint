@@ -36,6 +36,7 @@ Currently, we support storing the cache file with two different options:
 If you are experiencing long load times in your staging or production environments, the option to store the cache file in the cloud and clear it when you would like to re-estimate may be the best option for you. In order to use the Google Cloud option, you have to set the following variables in your `.env` file:
 
 `CACHE_MODE=GCS`
+
 `GCS_CACHE_BUCKET_NAME=”some-bucket-name”`
 
 Note: The Google service account that you are using must have access and permissions to read/write into the bucket.
