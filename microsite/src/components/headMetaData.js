@@ -9,7 +9,7 @@ function MetaData() {
   return (
     <Head>
       <title>{title}</title>
-      <description>{description}</description>
+      <meta name="description" content={description} />
       <img
         src="https://www.cloudcarbonfootprint.org/img/social-share-image.png"
         alt="Cloud carbon footprint tool screen capture"
@@ -37,3 +37,7 @@ function MetaData() {
 }
 
 export default MetaData
+
+const title = 'Cloud Carbon Footprint'
+const description =
+  'An open source tool to measure and analyze cloud carbon emissions'

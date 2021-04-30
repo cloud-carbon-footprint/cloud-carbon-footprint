@@ -8,7 +8,10 @@ import Link from '@docusaurus/Link'
 function Overview() {
   const classes = useStyles()
   return (
-    <div className={styles.overviewContainer}>
+    <section
+      id="carbon-footprint-of-your-cloud-usage"
+      className={styles.overviewContainer}
+    >
       <div className={clsx(styles.overviewItem, styles.overviewItemImage)}>
         <img
           className={styles.overviewImage}
@@ -17,16 +20,19 @@ function Overview() {
         />
       </div>
       <div className={clsx(styles.overviewItem, styles.overviewItemText)}>
-        <p className={styles.overviewTitle}>
+        <h2 className={styles.overviewTitle}>
           Get to know the carbon footprint of your cloud usage - and reduce it
-        </p>
+        </h2>
         <p className={styles.overviewText}>
           Cloud Carbon Footprint is an open source tool that provides visibility
           and tooling to measure, monitor and reduce your cloud carbon
-          emissions. We use best practice methodologies such as <Link to="https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/">Etsy's Cloud Jewels</Link>,
-          to convert cloud utilization into estimated energy usage and carbon emissions,
-          producing metrics that can be shared with employees, investors, and
-          other stakeholders.
+          emissions. We use best practice methodologies such as{' '}
+          <Link to="https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/">
+            Etsy's Cloud Jewels: Estimating kWh in the Cloud
+          </Link>
+          , to convert cloud utilization into estimated energy usage and carbon
+          emissions, producing metrics that can be shared with employees,
+          investors, and other stakeholders.
         </p>
         <Link to="docs/getting-started">
           <Button variant="contained" classes={{ root: classes.paddingLow }}>
@@ -34,7 +40,7 @@ function Overview() {
           </Button>
         </Link>
       </div>
-    </div>
+    </section>
   )
 }
 

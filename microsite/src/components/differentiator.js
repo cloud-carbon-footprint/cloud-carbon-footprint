@@ -48,22 +48,24 @@ function Check({ text }) {
 
 function Differentiator() {
   return (
-    <div className={styles.differentiatorContainer}>
-      <div className={styles.differentiatorListItem}>
-        <p className={styles.differentiatorListTitle}>
-          Solution Differentiators
-        </p>
-        {differences.map((content, idx) => (
-          <Check key={idx} {...content} />
-        ))}
+    <section id="solution-differentiators">
+      <div className={styles.differentiatorContainer}>
+        <div className={styles.differentiatorListItem}>
+          <h2 className={styles.differentiatorListTitle}>
+            Solution Differentiators
+          </h2>
+          {differences.map((content, idx) => (
+            <Check key={idx} {...content} />
+          ))}
+        </div>
+        <div className={styles.differentiatorImageItem}>
+          <img
+            src="img/infographic.png"
+            alt="Infographic showing the different paths data taken from the cloud providers may take: our frontend app, CLI app, raw data or analysis your way"
+          />
+        </div>
       </div>
-      <div className={styles.differentiatorImageItem}>
-        <img
-          src="img/infographic.png"
-          alt="Infographic showing the different paths data taken from the cloud providers may take: our frontend app, CLI app, raw data or analysis your way"
-        />
-      </div>
-    </div>
+    </section>
   )
 }
 

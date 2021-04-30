@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.heroBanner h2 {
+  font-weight: 400;
+}
+
 @media screen and (max-width: 1280px) {
   .heroBanner {
     padding: 10rem 8rem 8rem;

@@ -1,15 +1,16 @@
 .footerImageContainer {
-    background-image: url('/img/bottom_bar.png');
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 0;
+  background-image: url('/img/bottom_bar.png');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
 }
 
 .footerImageTitle {
-    text-align: center;
-    font-size: 18pt;
-    font-weight: bold;
-    color: white;
+  text-align: center;
+  font-size: 18pt;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 20px;
 }

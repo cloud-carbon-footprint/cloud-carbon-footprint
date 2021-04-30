@@ -45,6 +45,7 @@
 .valuePropCardTitle {
   font-size: 16pt;
   line-height: 1.4;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 1280px) and (min-width: 900px) {

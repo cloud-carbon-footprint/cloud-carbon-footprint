@@ -12,7 +12,8 @@ const logosArray = [
     path: 'img/logos/TWLogo.png',
     alt: 'ThoughtWorks logo',
     url: 'https://www.thoughtworks.com',
-  },{
+  },
+  {
     path: 'img/logos/TomorrowLogo.png',
     alt: 'Tomorrow logo',
     url: 'https://www.tmrow.com',
@@ -69,12 +70,14 @@ function InnovationPartners() {
   }
 
   return (
-    <div className="home__subsection-box-format">
-      <p className="home__subsection-title">INNOVATION PARTNERS</p>
-      <div className={styles.logosContainer}>
-        <Logos />
+    <section id="innovation-partners">
+      <div className="home__subsection-box-format">
+        <h2 className="home__subsection-title">INNOVATION PARTNERS</h2>
+        <div className={styles.logosContainer}>
+          <Logos />
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 
