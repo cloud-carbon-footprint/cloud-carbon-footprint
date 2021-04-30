@@ -8,15 +8,15 @@ import {
   useFilterDataFromEstimates,
 } from './transformData'
 import { renderHook } from '@testing-library/react-hooks'
+import { EstimationResult } from '../models/types'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
 const date2 = new Date('2020-07-11T00:00:00.000Z')
-const data: any = [
+const data: EstimationResult[] = [
   {
     timestamp: date1,
     serviceEstimates: [
       {
-        timestamp: date1,
         serviceName: 'ebs',
         kilowattHours: 12,
         co2e: 15,
@@ -27,7 +27,6 @@ const data: any = [
         accountName: 'test-a',
       },
       {
-        timestamp: date1,
         serviceName: 'ec2',
         kilowattHours: 4,
         co2e: 5,
@@ -43,7 +42,6 @@ const data: any = [
     timestamp: date2,
     serviceEstimates: [
       {
-        timestamp: date2,
         serviceName: 'ebs',
         kilowattHours: 25,
         co2e: 3,
@@ -54,7 +52,6 @@ const data: any = [
         accountName: 'test-a',
       },
       {
-        timestamp: date2,
         serviceName: 'ec2',
         kilowattHours: 2,
         co2e: 7,
@@ -68,27 +65,29 @@ const data: any = [
   },
 ]
 
-const dataWithHigherPrecision: any = [
+const dataWithHigherPrecision: EstimationResult[] = [
   {
     timestamp: date1,
     serviceEstimates: [
       {
-        timestamp: date1,
         serviceName: 'ebs',
         kilowattHours: 12.2342,
         co2e: 15.12341,
         cost: 5.82572,
         region: 'us-east-1',
         usesAverageCPUConstant: false,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
       },
       {
-        timestamp: date1,
         serviceName: 'ec2',
         kilowattHours: 4.745634,
         co2e: 5.234236,
         cost: 4.732,
         region: 'us-east-1',
         usesAverageCPUConstant: false,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
       },
     ],
   },
@@ -96,33 +95,34 @@ const dataWithHigherPrecision: any = [
     timestamp: date2,
     serviceEstimates: [
       {
-        timestamp: date2,
         serviceName: 'ebs',
         kilowattHours: 25.73446,
         co2e: 3.2600234,
         cost: 6.05931,
         region: 'us-east-1',
         usesAverageCPUConstant: false,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
       },
       {
-        timestamp: date2,
         serviceName: 'ec2',
         kilowattHours: 2.4523452,
         co2e: 7.7536,
         cost: 6.2323,
         region: 'us-east-1',
         usesAverageCPUConstant: true,
+        cloudProvider: 'AWS',
+        accountName: 'test-a',
       },
     ],
   },
 ]
 
-const dataWithUnknowns: any = [
+const dataWithUnknowns: any[] = [
   {
     timestamp: date1,
     serviceEstimates: [
       {
-        timestamp: date1,
         serviceName: null,
         kilowattHours: 5,
         co2e: 6,
@@ -133,7 +133,6 @@ const dataWithUnknowns: any = [
         accountName: 'test-a',
       },
       {
-        timestamp: date1,
         serviceName: 'ebs',
         kilowattHours: 7,
         co2e: 6,
@@ -149,7 +148,6 @@ const dataWithUnknowns: any = [
     timestamp: date2,
     serviceEstimates: [
       {
-        timestamp: date2,
         serviceName: null,
         kilowattHours: 5,
         co2e: 6,
@@ -160,7 +158,6 @@ const dataWithUnknowns: any = [
         accountName: 'test-b',
       },
       {
-        timestamp: date2,
         serviceName: 'ec2',
         kilowattHours: 7,
         co2e: 6,

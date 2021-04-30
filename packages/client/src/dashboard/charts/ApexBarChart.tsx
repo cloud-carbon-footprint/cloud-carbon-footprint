@@ -52,11 +52,13 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
 
   const dataEntries: { x: string[]; y: number }[] = Object.entries(barChartData)
-    .filter((item) => item[1][1] > 0)
-    .map((item) => ({
-      x: [item[0], `(${item[1][0]})`],
-      y: item[1][1],
-    }))
+    .filter((item: [string, [string, number]]) => item[1][1] > 0)
+    .map((item) => {
+      return {
+        x: [item[0], `(${item[1][0]})`],
+        y: item[1][1],
+      }
+    })
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
 
   const smallestCO2E = dataEntries?.[dataEntries?.length - 1]?.y
