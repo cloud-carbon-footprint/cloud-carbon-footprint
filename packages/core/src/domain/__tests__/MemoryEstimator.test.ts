@@ -4,7 +4,7 @@
 
 import MemoryEstimator from '../MemoryEstimator'
 import { GCP_REGIONS } from '../../services/gcp/GCPRegions'
-import { CLOUD_CONSTANTS } from '../FootPrintEstimationConstants'
+import { CLOUD_CONSTANTS } from '../FootprintEstimationConstants'
 
 describe('MemoryEstimator', () => {
   it('does estimates for GCP US Central 1', () => {
