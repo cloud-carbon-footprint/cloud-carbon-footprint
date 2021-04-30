@@ -101,12 +101,12 @@ const checkUnknownTypes = (dataType: string, value: serviceEstimate) => {
 const sumCO2ByServiceOrRegion = (
   data: EstimationResult[],
   dataType: string,
-): { string: number } => {
+): { string: [string, number] } => {
   const serviceEstimates = data.flatMap(
     (estimationResult) => estimationResult.serviceEstimates,
   )
 
-  return serviceEstimates.reduce((acc, initialValue, index, arr) => {
+  return serviceEstimates.reduce((acc, _initialValue, index, arr) => {
     const value = arr[index]
 
     checkUnknownTypes(dataType, value)
@@ -114,9 +114,9 @@ const sumCO2ByServiceOrRegion = (
     const property = getPropertyFromDataType(dataType, value)
 
     if (acc.hasOwnProperty(property)) {
-      acc[property] += value.co2e // { ec2: 18 }
+      acc[property] = [value.cloudProvider, acc[property][1] + value.co2e] // { ec2: 18 }
     } else {
-      acc[property] = value.co2e
+      acc[property] = [value.cloudProvider, value.co2e]
     }
 
     return acc

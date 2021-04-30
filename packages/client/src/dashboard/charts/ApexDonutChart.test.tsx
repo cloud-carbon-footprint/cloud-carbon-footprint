@@ -111,10 +111,10 @@ describe('ApexBarChart', () => {
       // make pagination send first page
       handlePage({
         data: [
-          { x: 'ebs', y: 100 },
-          { x: 'ec2', y: 67.00015384528277 },
-          { x: 's3', y: 34.00030769056555 },
-          { x: 'eks', y: 1 },
+          { x: ['ebs', '(AWS)'], y: 100 },
+          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+          { x: ['eks', '(AWS)'], y: 1 },
         ],
         page: 0,
       })
@@ -136,10 +136,10 @@ describe('ApexBarChart', () => {
       // make pagination send first page
       handlePage({
         data: [
-          { x: 'ebs', y: 100 },
-          { x: 'ec2', y: 67.00015384528277 },
-          { x: 's3', y: 34.00030769056555 },
-          { x: 'eks', y: 1 },
+          { x: ['ebs', '(AWS)'], y: 100 },
+          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+          { x: ['eks', '(AWS)'], y: 1 },
         ],
         page: 0,
       })
@@ -159,10 +159,10 @@ describe('ApexBarChart', () => {
       // make pagination send first page
       handlePage({
         data: [
-          { x: 'ebs', y: 100 },
-          { x: 'ec2', y: 67.00015384528277 },
-          { x: 's3', y: 34.00030769056555 },
-          { x: 'eks', y: 1 },
+          { x: ['ebs', '(AWS)'], y: 100 },
+          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+          { x: ['eks', '(AWS)'], y: 1 },
         ],
         page: 0,
       })
@@ -177,10 +177,10 @@ describe('ApexBarChart', () => {
   it('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
-      { x: 'ebs', y: 100 },
-      { x: 'ec2', y: 67.00015384528277 },
-      { x: 's3', y: 34.00030769056555 },
-      { x: 'eks', y: 1 },
+      { x: ['ebs', '(AWS)'], y: 100 },
+      { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+      { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+      { x: ['eks', '(AWS)'], y: 1 },
     ]
 
     expect(paginationComponent.props.data).toEqual(sortedData)

@@ -11,7 +11,7 @@ import { renderHook } from '@testing-library/react-hooks'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
 const date2 = new Date('2020-07-11T00:00:00.000Z')
-const data = [
+const data: any = [
   {
     timestamp: date1,
     serviceEstimates: [
@@ -68,7 +68,7 @@ const data = [
   },
 ]
 
-const dataWithHigherPrecision = [
+const dataWithHigherPrecision: any = [
   {
     timestamp: date1,
     serviceEstimates: [
@@ -117,7 +117,7 @@ const dataWithHigherPrecision = [
   },
 ]
 
-const dataWithUnknowns = [
+const dataWithUnknowns: any = [
   {
     timestamp: date1,
     serviceEstimates: [
@@ -176,7 +176,7 @@ const dataWithUnknowns = [
 
 describe('transformData', () => {
   it('returns the sum of CO2 per service', () => {
-    const expected = { ebs: 18, ec2: 12 }
+    const expected = { ebs: ['AWS', 18], ec2: ['AWS', 12] }
     expect(sumCO2ByServiceOrRegion(data, 'service')).toEqual(expected)
   })
 
@@ -205,10 +205,10 @@ describe('transformData', () => {
 
   it('handles data with null account names', () => {
     const expected = {
-      'test-a': 6,
-      'test-b': 6,
-      'Unknown Account - GCP': 6,
-      'Unknown Account - AWS': 6,
+      'test-a': ['AWS', 6],
+      'test-b': ['GCP', 6],
+      'Unknown Account - GCP': ['GCP', 6],
+      'Unknown Account - AWS': ['AWS', 6],
     }
     expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'account')).toEqual(
       expected,
@@ -217,10 +217,10 @@ describe('transformData', () => {
 
   it('handles data with null service names', () => {
     const expected = {
-      ebs: 6,
-      ec2: 6,
-      'Unknown Service - GCP': 6,
-      'Unknown Service - AWS': 6,
+      ebs: ['GCP', 6],
+      ec2: ['AWS', 6],
+      'Unknown Service - GCP': ['GCP', 6],
+      'Unknown Service - AWS': ['AWS', 6],
     }
     expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'service')).toEqual(
       expected,
@@ -229,9 +229,9 @@ describe('transformData', () => {
 
   it('handles data with unknown regions', () => {
     const expected = {
-      'us-east-1': 12,
-      'Unknown Region - GCP': 6,
-      'Unknown Region - AWS': 6,
+      'us-east-1': ['AWS', 12],
+      'Unknown Region - GCP': ['GCP', 6],
+      'Unknown Region - AWS': ['AWS', 6],
     }
     expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'region')).toEqual(
       expected,

@@ -25,7 +25,7 @@ const mapToRange = (
 }
 
 export interface Entry {
-  x: string
+  x: string[]
   y: number
 }
 
@@ -51,11 +51,11 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
 
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
 
-  const dataEntries: { x: string; y: number }[] = Object.entries(barChartData)
-    .filter((item) => item[1] > 0)
+  const dataEntries: { x: string[]; y: number }[] = Object.entries(barChartData)
+    .filter((item) => item[1][1] > 0)
     .map((item) => ({
-      x: item[0],
-      y: item[1],
+      x: [item[0], `(${item[1][0]})`],
+      y: item[1][1],
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
 
@@ -243,7 +243,7 @@ export const createCustomBarColors = (
 ): string[] => {
   const regionColorsMap: string[] = []
   pageData.data.forEach((region) => {
-    const currentRegion = region.x
+    const currentRegion = region.x[0]
     let color = chartBarCustomColors[0]
     const regionEmissionData = emissionsData.find(
       (item) => item.region === currentRegion,

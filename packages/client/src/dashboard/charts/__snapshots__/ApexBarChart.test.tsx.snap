@@ -514,19 +514,31 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
           Object {
             "data": Array [
               Object {
-                "x": "us-west-1",
+                "x": Array [
+                  "us-west-1",
+                  "(AWS)",
+                ],
                 "y": 100,
               },
               Object {
-                "x": "us-west-3",
+                "x": Array [
+                  "us-west-3",
+                  "(AWS)",
+                ],
                 "y": 67.00015384528277,
               },
               Object {
-                "x": "us-west-2",
+                "x": Array [
+                  "us-west-2",
+                  "(AWS)",
+                ],
                 "y": 34.00030769056555,
               },
               Object {
-                "x": "us-west-4",
+                "x": Array [
+                  "us-west-4",
+                  "(AWS)",
+                ],
                 "y": 1,
               },
             ],
@@ -567,19 +579,31 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
         Object {
           "data": Array [
             Object {
-              "x": "us-west-1",
+              "x": Array [
+                "us-west-1",
+                "(AWS)",
+              ],
               "y": 100,
             },
             Object {
-              "x": "us-west-3",
+              "x": Array [
+                "us-west-3",
+                "(AWS)",
+              ],
               "y": 67.00015384528277,
             },
             Object {
-              "x": "us-west-2",
+              "x": Array [
+                "us-west-2",
+                "(AWS)",
+              ],
               "y": 34.00030769056555,
             },
             Object {
-              "x": "us-west-4",
+              "x": Array [
+                "us-west-4",
+                "(AWS)",
+              ],
               "y": 1,
             },
           ],

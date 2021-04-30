@@ -93,10 +93,10 @@ describe('ApexBarChart', () => {
     act(() => {
       handlePage({
         data: [
-          { x: 'ebs', y: 100 },
-          { x: 'ec2', y: 67.00015384528277 },
-          { x: 's3', y: 34.00030769056555 },
-          { x: 'eks', y: 1 },
+          { x: ['ebs', '(AWS)'], y: 100 },
+          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+          { x: ['eks', '(AWS)'], y: 1 },
         ],
         page: 0,
       })
@@ -118,10 +118,10 @@ describe('ApexBarChart', () => {
     act(() => {
       handlePage({
         data: [
-          { x: 'ebs', y: 100 },
-          { x: 'ec2', y: 67.00015384528277 },
-          { x: 's3', y: 34.00030769056555 },
-          { x: 'eks', y: 1 },
+          { x: ['ebs', '(AWS)'], y: 100 },
+          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+          { x: ['eks', '(AWS)'], y: 1 },
         ],
         page: 0,
       })
@@ -141,10 +141,10 @@ describe('ApexBarChart', () => {
     act(() => {
       handlePage({
         data: [
-          { x: 'ebs', y: 100 },
-          { x: 'ec2', y: 67.00015384528277 },
-          { x: 's3', y: 34.00030769056555 },
-          { x: 'eks', y: 1 },
+          { x: ['ebs', '(AWS)'], y: 100 },
+          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+          { x: ['eks', '(AWS)'], y: 1 },
         ],
         page: 0,
       })
@@ -159,10 +159,10 @@ describe('ApexBarChart', () => {
   it('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
-      { x: 'ebs', y: 100 },
-      { x: 'ec2', y: 67.00015384528277 },
-      { x: 's3', y: 34.00030769056555 },
-      { x: 'eks', y: 1 },
+      { x: ['ebs', '(AWS)'], y: 100 },
+      { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
+      { x: ['s3', '(AWS)'], y: 34.00030769056555 },
+      { x: ['eks', '(AWS)'], y: 1 },
     ]
 
     expect(paginationComponent.props.data).toEqual(sortedData)
@@ -173,10 +173,10 @@ describe('ApexBarChart', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
-      { x: 'us-west-1', y: 100 },
-      { x: 'us-west-3', y: 67.00015384528277 },
-      { x: 'us-west-2', y: 34.00030769056555 },
-      { x: 'us-west-4', y: 1 },
+      { x: ['us-west-1', '(AWS)'], y: 100 },
+      { x: ['us-west-3', '(AWS)'], y: 67.00015384528277 },
+      { x: ['us-west-2', '(AWS)'], y: 34.00030769056555 },
+      { x: ['us-west-4', '(AWS)'], y: 1 },
     ]
 
     const customColors = ['#790000', '#D99200', '#DF5200', '#00791E']
@@ -190,11 +190,11 @@ describe('ApexBarChart', () => {
 
   it('should create custom colors array', () => {
     const firstPagedata = [
-      { x: 'us-west-1', y: 100 },
-      { x: 'us-west-3', y: 67.00015384528277 },
-      { x: 'us-west-2', y: 34.00030769056555 },
-      { x: 'us-west-4', y: 1 },
-      { x: 'us-east-1', y: 2 },
+      { x: ['us-west-1', '(AWS)'], y: 100 },
+      { x: ['us-west-3', '(AWS)'], y: 67.00015384528277 },
+      { x: ['us-west-2', '(AWS)'], y: 34.00030769056555 },
+      { x: ['us-west-4', '(AWS)'], y: 1 },
+      { x: ['us-east-1', '(AWS)'], y: 2 },
     ]
     const pageData: Page<Entry> = { data: firstPagedata, page: 0 }
     const mainTheme = '#2C82BE'
