@@ -2007,7 +2007,7 @@ __metadata:
     "@types/express": ^4.17.11
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
-    "@types/node": ^14.14.30
+    "@types/node": ^15.0.1
     "@types/prompts": ^2.0.9
     "@types/ramda": ^0.27.38
     "@types/source-map-support": ^0.5.3
@@ -2049,13 +2049,13 @@ __metadata:
     "@types/cli-table": ^0.3.0
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
-    "@types/node": ^14.14.30
+    "@types/node": ^15.0.1
     "@types/prompts": ^2.0.9
     "@types/ramda": ^0.27.38
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^4.15.1
     "@typescript-eslint/parser": ^4.15.1
-    aws-sdk: ^2.847.0
+    aws-sdk: ^2.890.0
     aws-sdk-mock: ^5.1.0
     cli-table: ^0.3.5
     commander: ^7.1.0
@@ -2099,7 +2099,7 @@ __metadata:
     "@types/jest": ^26.0.20
     "@types/lodash": ^4.14.168
     "@types/mockdate": ^2.0.0
-    "@types/node": ^14.14.31
+    "@types/node": ^15.0.1
     "@types/ramda": ^0.27.38
     "@types/react": ^17.0.2
     "@types/react-dates": ^21.8.1
@@ -2156,19 +2156,19 @@ __metadata:
     "@google-cloud/storage": ^5.8.4
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
-    "@types/node": ^14.14.30
+    "@types/node": ^15.0.1
     "@types/ramda": ^0.27.38
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^4.15.1
     "@typescript-eslint/parser": ^4.15.1
-    aws-sdk: ^2.847.0
+    aws-sdk: ^2.890.0
     aws-sdk-mock: ^5.1.0
     dotenv: ^8.2.0
     eslint: ^7.20.0
     eslint-config-prettier: ^8.0.0
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
-    googleapis: ^71.0.0
+    googleapis: ^73.0.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^10.5.4
@@ -4856,7 +4856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:^14.14.30, @types/node@npm:^14.14.31":
+"@types/node@npm:*, @types/node@npm:>=12.12.47":
   version: 14.14.41
   resolution: "@types/node@npm:14.14.41"
   checksum: 37dfb639644c8ee9b9846106834983f590d494b855e74645a4f169ea24199f7559366d25f6e72e83ba940b59eb6370e002bd53963d098d6d9fdf935a37011417
@@ -4881,6 +4881,13 @@ __metadata:
   version: 13.13.50
   resolution: "@types/node@npm:13.13.50"
   checksum: 794a9377f624bba147cd2945daeef42dfca2138e850acaad28cd0ea447ad7cab8686285305708d7e9d1aee28aa8c148183ca2e31cd8d2153d40c85b04d13c57d
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^15.0.1":
+  version: 15.0.1
+  resolution: "@types/node@npm:15.0.1"
+  checksum: 4e4fb69394efb224272ad7c6b6dc16a381b97e46a8f3c21d33fec51ef13a4d635f571b446d127eae333ea6a763f304b787f4b3f73e24e1f3b05a21b481900dfb
   languageName: node
   linkType: hard
 
@@ -6444,7 +6451,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-sdk@npm:^2.637.0, aws-sdk@npm:^2.847.0":
+"aws-sdk@npm:^2.637.0":
   version: 2.888.0
   resolution: "aws-sdk@npm:2.888.0"
   dependencies:
@@ -6458,6 +6465,23 @@ __metadata:
     uuid: 3.3.2
     xml2js: 0.4.19
   checksum: c1e6a066b5a3a00b3b070e30edc0c049434ca1b072551aeb0882ef608ca3a012a49391e04a71a62bbc5c0e2b80aea9878ab07f9e7c4bdf9d7a79f6bbc16b4877
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:^2.890.0":
+  version: 2.897.0
+  resolution: "aws-sdk@npm:2.897.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.15.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 3.3.2
+    xml2js: 0.4.19
+  checksum: 57f2f57f4a82483eb1b4a3a3ab7b4e9427480ed3fe10225abcceab2a435d2bdb43f535c67f245f39870d5d85a5632c94fddce3dddb8610fcca26ffdeb5f81df7
   languageName: node
   linkType: hard
 
@@ -12335,13 +12359,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^71.0.0":
-  version: 71.0.0
-  resolution: "googleapis@npm:71.0.0"
+"googleapis@npm:^73.0.0":
+  version: 73.0.0
+  resolution: "googleapis@npm:73.0.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.2
-  checksum: bfb1938bb3071cc9da1c77316e6d837ff2b345b91291db1ee0e4ba53fe500743258195ef706cebcb4bfddd7d3bf5c98af4e7df16a391492b781c311b656f8aff
+  checksum: 265f7586e85d8c162daaab650edf7bff8578534be9ec72576f54b711716751f304baa2f6196c450d3b2816c19d7826b4e8ce3f8cf4468294fb04566d86e5bdb9
   languageName: node
   linkType: hard
 
