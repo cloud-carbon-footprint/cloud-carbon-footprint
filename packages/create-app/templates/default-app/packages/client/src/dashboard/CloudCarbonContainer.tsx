@@ -27,16 +27,27 @@ const PADDING_LOADING = 2
 const useStyles = makeStyles((theme) => ({
   boxContainer: {
     padding: theme.spacing(3, 10),
+    marginTop: 62,
+  },
+  filterHeader: {
+    top: 0,
+    left: 'auto',
+    position: 'fixed',
+    marginTop: '64px',
+    width: '100%',
+    backgroundColor: '#fff',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    zIndex: 1199,
+    padding: '9px 10px 7px 10px',
   },
   filterContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    paddingBottom: theme.spacing(1),
+    justifyContent: 'center',
   },
   filter: {
     resize: 'none',
-    padding: theme.spacing(PADDING_FILTER),
-    paddingLeft: 0,
+    padding: '2px 4px 0 4px',
     marginRight: theme.spacing(PADDING_FILTER),
     minWidth: '240px',
   },
@@ -67,21 +78,14 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const dateRangeType: string = config().DATE_RANGE.TYPE
   const dateRangeValue: string = config().DATE_RANGE.VALUE
-  let endDate: moment.Moment
+  const endDate: moment.Moment = moment.utc()
   let startDate: moment.Moment
-  if (config().END_DATE) {
-    endDate = moment.utc(config().END_DATE)
-  } else {
-    endDate = moment.utc()
-  }
   if (config().PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
-    startDate = config().END_DATE ? moment.utc(config().END_DATE) : moment.utc()
-    startDate.subtract(
-      dateRangeValue,
-      dateRangeType as unitOfTime.DurationConstructor,
-    )
+    startDate = moment
+      .utc()
+      .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
   const { data, loading } = useRemoteService([], startDate, endDate)
@@ -107,8 +111,8 @@ export default function CloudCarbonContainer(): ReactElement {
       </div>
     </Grid>
   ) : (
-    <div className={classes.boxContainer}>
-      <Grid container>
+    <>
+      <div className={classes.filterHeader}>
         <Grid item xs={12}>
           <div className={classes.filterContainer}>
             <div className={classes.filterContainerSection}>
@@ -137,41 +141,45 @@ export default function CloudCarbonContainer(): ReactElement {
             </div>
           </div>
         </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Card style={{ width: '100%', height: '100%' }}>
-              <Box padding={3} paddingRight={4}>
-                {filteredData.length ? (
-                  <ApexLineChart data={filteredData} />
-                ) : (
-                  <div className={classes.noData}>
-                    <p>Cloud Usage</p>
-                    <NoDataPage isTop={true} />
-                  </div>
-                )}
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid
-              container
-              spacing={3}
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap-reverse',
-              }}
-            >
-              <Grid item className={classes.gridItemCards}>
-                <CarbonComparisonCard data={filteredData} />
-              </Grid>
-              <Grid item className={classes.gridItemCards}>
-                <EmissionsBreakdownContainer data={filteredData} />
+      </div>
+      <div className={classes.boxContainer}>
+        <Grid container>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Card style={{ width: '100%', height: '100%' }}>
+                <Box padding={3} paddingRight={4}>
+                  {filteredData.length ? (
+                    <ApexLineChart data={filteredData} />
+                  ) : (
+                    <div className={classes.noData}>
+                      <p>Cloud Usage</p>
+                      <NoDataPage isTop={true} />
+                    </div>
+                  )}
+                </Box>
+              </Card>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid
+                container
+                spacing={3}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap-reverse',
+                }}
+              >
+                <Grid item className={classes.gridItemCards}>
+                  <CarbonComparisonCard data={filteredData} />
+                </Grid>
+                <Grid item className={classes.gridItemCards}>
+                  <EmissionsBreakdownContainer data={filteredData} />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </>
   )
 }

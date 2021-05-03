@@ -25,7 +25,7 @@ export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
   }[] = Object.entries(donutData)
     .map((item) => ({
       serviceOrRegion: item[0],
-      c02Value: item[1],
+      c02Value: item[1][1],
     }))
     .sort((higherC02, lowerCO2) => lowerCO2.c02Value - higherC02.c02Value)
 

@@ -248,19 +248,20 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
             fontSize: '15px',
           },
         },
+        tickAmount: 10,
         decimalsInFloat: 3,
-        forceNiceScale: true,
       },
       {
         max: 1.1 * maxKilowattHours,
         title: {
-          text: 'kilowatt hours (kWh)',
+          text: 'Kilowatt Hours (kWh)',
           opposite: -8,
           style: {
             fontSize: '15px',
             color: yellow,
           },
         },
+        tickAmount: 10,
         decimalsInFloat: 2,
         opposite: true,
         axisBorder: {
@@ -268,11 +269,9 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
           color: yellow,
         },
         axisTicks: {
-          show: true,
-          offsetX: -30,
+          show: false,
         },
         showAlways: false,
-        forceNiceScale: true,
       },
       {
         max: 1.1 * maxCost,
@@ -284,6 +283,7 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
             color: green,
           },
         },
+        tickAmount: 10,
         decimalsInFloat: 2,
         opposite: true,
         axisBorder: {
@@ -292,11 +292,9 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
           offsetX: -5,
         },
         axisTicks: {
-          show: true,
-          offsetX: -30,
+          show: false,
         },
         showAlways: false,
-        forceNiceScale: true,
       },
     ],
     grid: {

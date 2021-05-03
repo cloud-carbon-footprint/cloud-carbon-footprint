@@ -25,7 +25,7 @@ const mapToRange = (
 }
 
 export interface Entry {
-  x: string
+  x: string[]
   y: number
 }
 
@@ -51,12 +51,14 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
 
   const barChartData = sumCO2ByServiceOrRegion(data, dataType)
 
-  const dataEntries: { x: string; y: number }[] = Object.entries(barChartData)
-    .filter((item) => item[1] > 0)
-    .map((item) => ({
-      x: item[0],
-      y: item[1],
-    }))
+  const dataEntries: { x: string[]; y: number }[] = Object.entries(barChartData)
+    .filter((item: [string, [string, number]]) => item[1][1] > 0)
+    .map((item) => {
+      return {
+        x: [item[0], `(${item[1][0]})`],
+        y: item[1][1],
+      }
+    })
     .sort((higherC02, lowerCO2) => lowerCO2.y - higherC02.y)
 
   const smallestCO2E = dataEntries?.[dataEntries?.length - 1]?.y
@@ -122,7 +124,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
         },
       },
       padding: {
-        left: 32,
+        left: dataType === 'region' ? -15 : -5,
       },
     },
     plotOptions: {
@@ -161,7 +163,9 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     xaxis: {
       type: 'category',
       labels: {
-        show: false,
+        style: {
+          fontSize: 0,
+        },
       },
       axisBorder: {
         show: false,
@@ -170,6 +174,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     },
     yaxis: {
       labels: {
+        minWidth: 150,
+        maxWidth: 150,
         style: {
           fontSize: '13px',
         },
@@ -177,9 +183,6 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     },
     tooltip: {
       fillSeriesColor: false,
-      x: {
-        show: false,
-      },
       y: {
         formatter: function (value: number, opts: { dataPointIndex: number }) {
           return `${dataEntries[
@@ -242,7 +245,7 @@ export const createCustomBarColors = (
 ): string[] => {
   const regionColorsMap: string[] = []
   pageData.data.forEach((region) => {
-    const currentRegion = region.x
+    const currentRegion = region.x[0]
     let color = chartBarCustomColors[0]
     const regionEmissionData = emissionsData.find(
       (item) => item.region === currentRegion,
