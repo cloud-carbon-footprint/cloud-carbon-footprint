@@ -5,7 +5,7 @@
 import { getCostFromCostExplorer } from '../CostMapper'
 import { AWS_REGIONS } from '../AWSRegions'
 import AWSMock from 'aws-sdk-mock'
-import { CostExplorer } from 'aws-sdk'
+import AWS from 'aws-sdk'
 import {
   GetCostAndUsageRequest,
   GetCostAndUsageResponse,
@@ -14,6 +14,7 @@ import { ServiceWrapper } from '../ServiceWrapper'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
+AWS.config.update({ region: 'us-east-1' })
 
 describe('CostMapper', function () {
   it('calculates cost ', async () => {
@@ -21,7 +22,7 @@ describe('CostMapper', function () {
       'CostExplorer',
       'getCostAndUsage',
       (
-        params: CostExplorer.GetCostAndUsageRequest,
+        params: AWS.CostExplorer.GetCostAndUsageRequest,
         callback: (a: Error, response: any) => any,
       ) => {
         callback(null, buildResponseBody())
@@ -30,12 +31,11 @@ describe('CostMapper', function () {
 
     const costs = await getCostFromCostExplorer(
       buildRequestParams(),
-      new ServiceWrapper(undefined, undefined, new CostExplorer()),
+      new ServiceWrapper(undefined, undefined, new AWS.CostExplorer()),
     )
 
     expect(costs).toEqual([
-      { amount: 2.3081821243, currency: 'USD', timestamp: new Date(startDate) },
-      { amount: 1.5, currency: 'USD', timestamp: new Date(startDate) },
+      { amount: 0, currency: 'USD', timestamp: new Date(startDate) },
     ])
   })
 })
