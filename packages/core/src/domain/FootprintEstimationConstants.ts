@@ -11,6 +11,8 @@ import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
+  MEMORY_BY_COMPUTE_PROCESSOR?: { [key: string]: number }
+  getMemory?: (computeProcessors?: string[]) => number
   MIN_WATTS_AVG?: number
   MIN_WATTS_MEDIAN?: number
   MIN_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
@@ -115,6 +117,26 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AWS: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
+    MEMORY_BY_COMPUTE_PROCESSOR: {
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 92.11,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 83.19,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 69.65,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 27.05,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 19.56,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 16.7,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 9.67,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 89.6,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 129.78,
+      [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2]: 129.78,
+    },
+    getMemory: (computeProcessors: string[]): number => {
+      const memoryForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.AWS.MEMORY_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      return getAverage(memoryForProcessors)
+    },
     MIN_WATTS_AVG: 0.71,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
@@ -170,6 +192,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         : CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
+    MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
     PUE_AVG: 1.135,
     getPUE: (): number => {
       return CLOUD_CONSTANTS.AWS.PUE_AVG
@@ -350,6 +373,7 @@ function getWattsByAverageOrMedian(
 
 function getAverage(nums: number[]): number {
   if (!nums.length) return 0
+  if (nums.length === 1) return nums[0]
   return nums.reduce((a, b) => a + b) / nums.length
 }
 

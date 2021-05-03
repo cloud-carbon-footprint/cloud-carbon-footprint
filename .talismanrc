@@ -81,8 +81,12 @@ fileignoreconfig:
   checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
 - filename: packages/client/stub-server/co2estimations.json
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
+- filename: packages/core/src/domain/FootprintEstimationConstants.ts
+  checksum: 78324c862f0ba591dbd2e7276f92034e4eebfab00bf77972c6f1a3c90e788eb1
+- filename: packages/core/src/services/aws/CostAndUsageReports.ts
+  checksum: 55126e27e72ead83fdfd451ba1e0109199692703db45a5af1a639e367422b004
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
-  checksum: e620bc3d204cc335b5b7277ff026ef6a05a981016856a2a7c46302dfb1a99d00
+  checksum: ad410c549b5fccfb07dc8ad830b537ef73b0d4965599cedb9e8a91965c5aae8b
 - filename: packages/core/src/services/azure/ConsumptionManagement.ts
   checksum: 27fa921d2e5c1fbb1044db6487348dc79fa57a4fc3ff10cea561e94d60d8e460
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts

@@ -12,6 +12,7 @@ import AWS, {
 import CostAndUsageReports from '../CostAndUsageReports'
 import ComputeEstimator from '../../../domain/ComputeEstimator'
 import NetworkingEstimator from '../../../domain/NetworkingEstimator'
+import MemoryEstimator from '../../../domain/MemoryEstimator'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import {
@@ -29,6 +30,7 @@ import {
   athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage,
   athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan,
   athenaMockGetQueryResultsNetworking,
+  athenaMockGetQueryResultsMemory,
 } from '../../../../test/fixtures/athena.fixtures'
 import { ServiceWrapper } from '../ServiceWrapper'
 
@@ -88,6 +90,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -217,6 +220,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -293,6 +297,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -344,6 +349,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -378,8 +384,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            kilowattHours: 0.5730615,
-            co2e: 0.00026045645175,
+            kilowattHours: 0.8087318999999998,
+            co2e: 0.0003675686485499999,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -407,6 +413,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -438,12 +445,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000013378133191150002,
+            co2e: 0.00004336637288347,
             cost: 4,
             region: 'us-west-1',
             serviceName: 'AmazonMSK',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.03805655,
+            kilowattHours: 0.12336359,
           },
         ],
       },
@@ -465,6 +472,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -486,32 +494,32 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000029844448634,
+            co2e: 0.000039049551158799994,
             cost: 5,
             region: 'us-west-2',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.084898,
+            kilowattHours: 0.11108359999999998,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0005239855281024,
+            co2e: 0.00054971571887232,
             cost: 25,
             region: 'us-west-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            kilowattHours: 1.4905727999999998,
+            kilowattHours: 1.5637670399999999,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000022933942613400002,
+            co2e: 0.00008291042199804,
             cost: 20,
             region: 'us-west-1',
             serviceName: 'ElasticMapReduce',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.0652398,
+            kilowattHours: 0.23585388000000002,
           },
           {
             accountName: '123456789',
@@ -543,6 +551,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -609,6 +618,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -633,6 +643,42 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
+  it('estimation for Memory', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsMemory)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
+      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+      new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-01-01'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.034421899799857505,
+            cost: 40,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+            kilowattHours: 75.73575313500001,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
   it('throws an error when the query status fails', async () => {
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionFailedResponse)
@@ -641,6 +687,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     await expect(() =>
@@ -657,6 +704,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
     await expect(() =>

@@ -22,6 +22,9 @@ export default class MemoryEstimator implements IFootprintEstimator {
     return data.map((data: MemoryUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(
         data.gigabyteHours,
+        data.gigabytes,
+        data.numberOfvCpus,
+        cloudProvider,
       )
       const estimatedCO2Emissions = estimateCo2(
         estimatedKilowattHours,
@@ -35,9 +38,19 @@ export default class MemoryEstimator implements IFootprintEstimator {
       }
     })
   }
-  private estimateKilowattHours(gigabyteHours: number) {
+  private estimateKilowattHours(
+    gigabyteHours: number,
+    gigabytes: number,
+    numberOfvCpus: number,
+    cloudProvider: string,
+  ) {
     // This function multiplies the usage amount in gigabyte hours by the memory coefficient
     // to get estimated kilowatt hours.
-    return gigabyteHours * this.coefficient
+    switch (cloudProvider) {
+      case 'GCP':
+        return gigabyteHours * this.coefficient
+      case 'AWS':
+        return gigabytes * this.coefficient * numberOfvCpus
+    }
   }
 }

@@ -39,8 +39,14 @@ import { Athena } from 'aws-sdk'
 import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
 import NetworkingUsage from '../../domain/NetworkingUsage'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import MemoryEstimator from '../../domain/MemoryEstimator'
+import MemoryUsage from '../../domain/MemoryUsage'
 import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
-import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
+import {
+  BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+  EC2_INSTANCE_TYPES,
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+} from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -53,6 +59,7 @@ export default class CostAndUsageReports {
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
+    private readonly memoryEstimator: MemoryEstimator,
     private readonly serviceWrapper: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
@@ -104,6 +111,17 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute
+        const {
+          gigabytes,
+          numberOfvCpus,
+        } = this.getGigabytesAndvCpusFromInstanceTypeAndProcessors(
+          costAndUsageReportRow.usageType,
+        )
+
+        const computeProcessors = this.getComputeProcessorsFromUsageType(
+          costAndUsageReportRow.usageType,
+        )
+
         const computeUsage: ComputeUsage = {
           timestamp: costAndUsageReportRow.timestamp,
           cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
@@ -111,9 +129,34 @@ export default class CostAndUsageReports {
           usesAverageCPUConstant: true,
         }
 
-        const computeProcessors = this.getComputeProcessorsFromUsageType(
-          costAndUsageReportRow.usageType,
-        )
+        const memoryUsage: MemoryUsage = {
+          timestamp: costAndUsageReportRow.timestamp,
+          numberOfvCpus: numberOfvCpus,
+          gigabytes: gigabytes,
+        }
+
+        const computeFootprint = this.computeEstimator.estimate(
+          [computeUsage],
+          costAndUsageReportRow.region,
+          'AWS',
+          computeProcessors,
+        )[0]
+
+        const memoryFootprint = this.memoryEstimator.estimate(
+          [memoryUsage],
+          costAndUsageReportRow.region,
+          'AWS',
+        )[0]
+
+        if (gigabytes) {
+          return {
+            timestamp: computeFootprint.timestamp,
+            kilowattHours:
+              computeFootprint.kilowattHours + memoryFootprint.kilowattHours,
+            co2e: computeFootprint.co2e + memoryFootprint.co2e,
+            usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
+          }
+        }
 
         return this.computeEstimator.estimate(
           [computeUsage],
@@ -195,17 +238,63 @@ export default class CostAndUsageReports {
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
-    const prefixes = ['db', 'cache', 'Kafka']
-    const includesPrefix = prefixes.find((prefix) => usageType.includes(prefix))
-    const processor = includesPrefix
-      ? usageType.split(concat(includesPrefix, '.')).pop()
-      : usageType.split(':').pop()
+    const instanceType = this.parseInstanceTypeFromUsageType(usageType)
 
     return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor] || [
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[instanceType] || [
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
+  }
+
+  private getGigabytesAndvCpusFromInstanceTypeAndProcessors(
+    usageType: string,
+  ): { [key: string]: number } {
+    const instanceType = this.parseInstanceTypeFromUsageType(usageType)
+    const [instanceFamily, instanceSize] = instanceType.split('.')
+    const checkForEC2Instances = Object.keys(EC2_INSTANCE_TYPES).includes(
+      instanceFamily,
+    )
+    const checkForBurstableInstances = Object.keys(
+      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+    ).includes(instanceType)
+    if (!checkForEC2Instances || checkForBurstableInstances) return {}
+
+    const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
+      instanceType
+    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+    const processorMemory = CLOUD_CONSTANTS.AWS.getMemory(processors)
+    const numberOfvCpus =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
+
+    const familyInstanceTypeValues: number[][] = Object.values(
+      EC2_INSTANCE_TYPES[instanceFamily],
+    )
+    const [
+      largestInstanceTypevCpus,
+      largestInstanceTypeMemory,
+    ] = familyInstanceTypeValues[familyInstanceTypeValues.length - 1]
+
+    const physicalChips = largestInstanceTypevCpus >= 96 ? 2 : 1
+    const instanceTypeMemory = largestInstanceTypeMemory / physicalChips
+    let gigabytes
+    if (instanceTypeMemory - processorMemory > 0) {
+      gigabytes = instanceTypeMemory - processorMemory
+    }
+
+    return {
+      gigabytes,
+      numberOfvCpus,
+    }
+  }
+
+  private parseInstanceTypeFromUsageType(usageType: string) {
+    const prefixes = ['db', 'cache', 'Kafka']
+    const includesPrefix = prefixes.find((prefix) => usageType.includes(prefix))
+    const instanceType = includesPrefix
+      ? usageType.split(concat(includesPrefix, '.')).pop()
+      : usageType.split(':').pop()
+    return instanceType
   }
 
   private getUsageAmountInTerabyteHours(

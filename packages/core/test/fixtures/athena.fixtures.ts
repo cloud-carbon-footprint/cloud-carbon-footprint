@@ -609,3 +609,51 @@ export const athenaMockGetQueryResultsNetworking: Athena.GetQueryResultsOutput =
     Rows: [queryResultsHeaders, ...queryResultsDataEight],
   },
 }
+
+const queryResultsDataNine = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-SpotUsage:t3.micro' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '2' },
+      { VarCharValue: '4354' },
+      { VarCharValue: '25' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE2-SpotUsage:m5.xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '2' },
+      { VarCharValue: '3450' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-SpotUsage:c5d.4xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '2' },
+      { VarCharValue: '9847' },
+      { VarCharValue: '5' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsMemory: Athena.GetQueryResultsOutput = {
+  ResultSet: {
+    Rows: [queryResultsHeaders, ...queryResultsDataNine],
+  },
+}

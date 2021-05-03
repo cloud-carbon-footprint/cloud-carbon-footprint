@@ -29,6 +29,7 @@ import CostAndUsageReports from '../services/aws/CostAndUsageReports'
 import ComputeEstimator from '../domain/ComputeEstimator'
 import { StorageEstimator } from '../domain/StorageEstimator'
 import NetworkingEstimator from '../domain/NetworkingEstimator'
+import MemoryEstimator from '../domain/MemoryEstimator'
 import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
 
 export default class AWSAccount extends CloudProviderAccount {
@@ -74,12 +75,16 @@ export default class AWSAccount extends CloudProviderAccount {
     })
   }
 
-  getDataFromCostAndUsageReports(startDate: Date, endDate: Date) {
+  getDataFromCostAndUsageReports(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<EstimationResult[]> {
     const costAndUsageReportsService = new CostAndUsageReports(
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
       new NetworkingEstimator(),
+      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       this.createServiceWrapper(
         this.getServiceConfigurationOptions(
           configLoader().AWS.ATHENA_REGION,
