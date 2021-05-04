@@ -37,7 +37,3 @@ function MetaData() {
 }
 
 export default MetaData
-
-const title = 'Cloud Carbon Footprint'
-const description =
-  'An open source tool to measure and analyze cloud carbon emissions'
