@@ -20,13 +20,15 @@ In your `packages/api/.env` file, you can provide the following variable for a c
 
 - `GROUP_QUERY_RESULTS_BY` (example values: day, week, month, quarter, year)
 
-### Ensure real-time estimates
+### Caching Configurations
+
+#### Ensure real-time estimates
 
 In order to make local development a pleasant experience with a quick feedback loop, we have a cache file that is automatically generated. If you would like to see up to date estimates, you will have to delete `packages/cli/estimates.cache.json` and/or `packages/api/estimates.cache.json`. Depending on how much usage you have, it could take several minutes to fetch up to date estimates and regenerate the cache file.
 
 Note: If you don’t see one of these files, don’t worry. Simply start the server, and load the app for the first time.
 
-### Storing cache file
+#### Storing cache file
 
 Currently, we support storing the cache file with two different options:
 
