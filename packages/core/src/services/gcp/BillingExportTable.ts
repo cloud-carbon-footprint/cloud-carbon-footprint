@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { BigQuery, Job } from '@google-cloud/bigquery'
+import { BigQuery, Job, RowMetadata } from '@google-cloud/bigquery'
 
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import StorageUsage from '../../domain/StorageUsage'
@@ -266,7 +266,7 @@ export default class BillingExportTable {
     )
   }
 
-  private async getUsage(start: Date, end: Date): Promise<any[]> {
+  private async getUsage(start: Date, end: Date): Promise<RowMetadata[]> {
     const query = `SELECT
                     DATE_TRUNC(DATE(usage_start_time), ${
                       GCP_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
@@ -307,7 +307,7 @@ export default class BillingExportTable {
   }
 
   private async getQueryResults(job: Job) {
-    let rows: any
+    let rows: RowMetadata
     try {
       ;[rows] = await job.getQueryResults()
     } catch (e) {
@@ -342,6 +342,6 @@ export default class BillingExportTable {
   }
 
   private convertByteSecondsToGigabyteHours(usageAmount: number): number {
-    return usageAmount / 277778
+    return usageAmount / 1073741824 / 3600
   }
 }

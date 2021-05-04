@@ -110,7 +110,7 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.VCPU_HOURS:
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
-        // Compute
+        // Compute / Memory
         const {
           gigabytes,
           numberOfvCpus,
@@ -131,8 +131,7 @@ export default class CostAndUsageReports {
 
         const memoryUsage: MemoryUsage = {
           timestamp: costAndUsageReportRow.timestamp,
-          numberOfvCpus: numberOfvCpus,
-          gigabytes: gigabytes,
+          gigabyteHours: gigabytes * numberOfvCpus,
         }
 
         const computeFootprint = this.computeEstimator.estimate(
