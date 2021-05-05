@@ -11,7 +11,7 @@ describe('MemoryEstimator', () => {
     const input = [
       {
         timestamp: new Date('2021-01-01'),
-        gigabyteHours: 41329608237.34059,
+        gigabyteHours: 90,
       },
     ]
 
@@ -21,9 +21,9 @@ describe('MemoryEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 7760.377879508967,
+        co2e: 0.000018758023200000002,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
-        kilowattHours: 16201206.429037511,
+        kilowattHours: 0.0391608,
       },
     ])
   })
