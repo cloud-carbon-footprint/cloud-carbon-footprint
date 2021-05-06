@@ -72,7 +72,7 @@
     "aws-sdk": "^2.890.0",
     "cli-table": "^0.3.5",
     "commander": "^7.1.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^9.0.0",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "tsconfig-paths": "^3.9.0",
