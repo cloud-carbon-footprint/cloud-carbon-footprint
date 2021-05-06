@@ -10,7 +10,7 @@ assignees: ''
 
 <!-- Please ensure you've completed the following steps by replacing [ ] with [x]-->
 
-- [ ] I have read the [Contributing Guidelines](../../CONTRIBUTING.md) for this project.
+- [ ] I have read the [Contributing Guidelines](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/CONTRIBUTING.md) for this project.
 - [ ] I have searched the issue tracker for an issue that matches the one I want to file, without success.
 
 ### Issue Details
