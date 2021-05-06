@@ -25,7 +25,7 @@
     "@types/lodash": "^4.14.168",
     "apexcharts": "^3.25.0",
     "axios": "^0.21.1",
-    "dotenv": "^8.2.0",
+    "dotenv": "^9.0.0",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
     "lodash": "^4.17.20",
