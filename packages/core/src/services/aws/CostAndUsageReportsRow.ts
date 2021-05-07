@@ -84,11 +84,11 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
   }
 
   private extractVCpuFromInstanceType(instanceType: string): number {
+    const [instanceFamily, instanceSize] = instanceType.split('.')
     if (this.usageType.includes('Kafka'))
       return MSK_INSTANCE_TYPES[`Kafka${this.usageType.split('Kafka').pop()}`]
     if (this.serviceName === 'AmazonRedshift')
-      return REDSHIFT_INSTANCE_TYPES[this.usageType.split(':').pop()] / 3600
-    const [instanceFamily, instanceSize] = instanceType.split('.')
+      return REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0] / 3600
     return EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
   }
 

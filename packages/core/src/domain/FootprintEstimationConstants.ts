@@ -11,6 +11,7 @@ import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
+  MEMORY_AVG?: number
   MEMORY_BY_COMPUTE_PROCESSOR?: { [key: string]: number }
   getMemory?: (computeProcessors?: string[]) => number
   MIN_WATTS_AVG?: number
@@ -117,6 +118,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AWS: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
+    MEMORY_AVG: 72.99,
     MEMORY_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 92.11,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 83.19,
@@ -135,7 +137,13 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AWS.MEMORY_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      return getAverage(memoryForProcessors)
+      const averageMemoryForProcessors = getWattsByAverageOrMedian(
+        computeProcessors,
+        memoryForProcessors,
+      )
+      return averageMemoryForProcessors
+        ? averageMemoryForProcessors
+        : CLOUD_CONSTANTS.AWS.MEMORY_AVG
     },
     MIN_WATTS_AVG: 0.71,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {

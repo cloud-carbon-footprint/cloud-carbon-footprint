@@ -46,6 +46,7 @@ import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
@@ -111,11 +112,9 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const {
-          gigabytes,
-          numberOfvCpus,
-        } = this.getGigabytesAndvCpusFromInstanceTypeAndProcessors(
+        const gigabyteHours = this.getGigabytesFromInstanceTypeAndProcessors(
           costAndUsageReportRow.usageType,
+          costAndUsageReportRow.usageAmount,
         )
 
         const computeProcessors = this.getComputeProcessorsFromUsageType(
@@ -131,7 +130,7 @@ export default class CostAndUsageReports {
 
         const memoryUsage: MemoryUsage = {
           timestamp: costAndUsageReportRow.timestamp,
-          gigabyteHours: gigabytes * numberOfvCpus,
+          gigabyteHours: gigabyteHours,
         }
 
         const computeFootprint = this.computeEstimator.estimate(
@@ -147,7 +146,9 @@ export default class CostAndUsageReports {
           'AWS',
         )[0]
 
-        if (gigabytes) {
+        // if there exist any gigabytes to calculate memory usage,
+        // add the kwh and co2e for both compute and memory
+        if (gigabyteHours) {
           return {
             timestamp: computeFootprint.timestamp,
             kilowattHours:
@@ -157,12 +158,7 @@ export default class CostAndUsageReports {
           }
         }
 
-        return this.computeEstimator.estimate(
-          [computeUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-          computeProcessors,
-        )[0]
+        return computeFootprint
       case PRICING_UNITS.GB_MONTH_1:
       case PRICING_UNITS.GB_MONTH_2:
       case PRICING_UNITS.GB_MONTH_3:
@@ -246,45 +242,116 @@ export default class CostAndUsageReports {
     )
   }
 
-  private getGigabytesAndvCpusFromInstanceTypeAndProcessors(
+  private getGigabytesFromInstanceTypeAndProcessors(
     usageType: string,
-  ): { [key: string]: number } {
+    usageAmount: number,
+  ): number {
     const instanceType = this.parseInstanceTypeFromUsageType(usageType)
     const [instanceFamily, instanceSize] = instanceType.split('.')
-    const checkForEC2Instances = Object.keys(EC2_INSTANCE_TYPES).includes(
-      instanceFamily,
-    )
-    const checkForBurstableInstances = Object.keys(
-      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
-    ).includes(instanceType)
-    if (!checkForEC2Instances || checkForBurstableInstances) return {}
 
+    // check to see if the instance type is contained in the AWSInstanceTypes lists
+    // or if the instance type is not a burstable instance, otherwise return void
+    const {
+      isValidInstanceType,
+      isBurstableInstance,
+    } = this.checkInstanceTypes(instanceFamily, instanceType)
+    if (!isValidInstanceType || isBurstableInstance) return
+
+    // grab the list of processors per instance type
+    // and then the aws specific memory constant for the processors
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
     const processorMemory = CLOUD_CONSTANTS.AWS.getMemory(processors)
-    const numberOfvCpus =
-      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
 
-    const familyInstanceTypeValues: number[][] = Object.values(
-      EC2_INSTANCE_TYPES[instanceFamily],
+    // grab the instance type vcpu from the AWSInstanceTypes lists
+    const instanceTypevCpus =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0] ||
+      REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
+
+    // grab the entire instance family that the instance type is classified within
+    const familyInstanceTypes: number[][] = Object.values(
+      EC2_INSTANCE_TYPES[instanceFamily] ||
+        REDSHIFT_INSTANCE_TYPES[instanceFamily],
     )
+
+    // grab the vcpu and memory (gb) from the largest instance type in the family
     const [
       largestInstanceTypevCpus,
       largestInstanceTypeMemory,
-    ] = familyInstanceTypeValues[familyInstanceTypeValues.length - 1]
+    ] = familyInstanceTypes[familyInstanceTypes.length - 1]
 
-    const physicalChips = largestInstanceTypevCpus >= 96 ? 2 : 1
+    const gigabyteHours = this.calculateGigabyteHours(
+      largestInstanceTypevCpus,
+      instanceFamily,
+      largestInstanceTypeMemory,
+      processorMemory,
+      instanceTypevCpus,
+      usageAmount,
+    )
+
+    return gigabyteHours
+  }
+
+  private calculateGigabyteHours(
+    largestInstanceTypevCpus: number,
+    instanceFamily: string,
+    largestInstanceTypeMemory: number,
+    processorMemory: number,
+    instanceTypevCpus: number,
+    usageAmount: number,
+  ) {
+    const physicalChips = this.getPhysicalChips(
+      largestInstanceTypevCpus,
+      instanceFamily,
+    )
     const instanceTypeMemory = largestInstanceTypeMemory / physicalChips
-    let gigabytes
+    let gigabyteHours
+    // once we calculate the memory from aws instance type data and cross reference it with the
+    // memory we calculate from the microarchitecture (SPECPower Data) associated with the instance type,
+    // we find the difference and calculate memory usage based on the additional gigabytes
     if (instanceTypeMemory - processorMemory > 0) {
-      gigabytes = instanceTypeMemory - processorMemory
-    }
+      // first we subract the memory calculated from the microarchitecture
+      // from the memory calculated from the instance type data
+      const largestInstanceGigabyteDelta = instanceTypeMemory - processorMemory
 
-    return {
-      gigabytes,
-      numberOfvCpus,
+      // we consider the largest instance type in the family to be a rough equivalent to a full processor
+      // we identify the ratio of the vcpus of the current instance type
+      // to the largest instance type in the family (ie. 48 vcpus / 12 vcpus = 4 vcpus)
+      const instancevCpuRatio = largestInstanceTypevCpus / instanceTypevCpus
+
+      // gigabytes per hour are then calculated by the taking the additional gb of memory from the delta
+      // and dividing it by the vcpu ratio, then multiping the usage amount in hours
+      gigabyteHours =
+        (largestInstanceGigabyteDelta / instancevCpuRatio) * usageAmount
     }
+    return gigabyteHours
+  }
+
+  private checkInstanceTypes(instanceFamily: string, instanceType: string) {
+    // a valid instance type is one that is mapped in the AWSInstanceTypes lists
+    const isValidInstanceType =
+      Object.keys(EC2_INSTANCE_TYPES).includes(instanceFamily) ||
+      Object.keys(REDSHIFT_INSTANCE_TYPES).includes(instanceFamily)
+    // we are not able to calculate memory usage for burstable (t family) instances
+    // unlike other instance families, the largest t instance is not equal to a full machine
+    const isBurstableInstance = Object.keys(
+      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+    ).includes(instanceType)
+    return { isValidInstanceType, isBurstableInstance }
+  }
+
+  private getPhysicalChips(
+    largestInstanceTypevCpus: number,
+    instanceFamily: string,
+  ): number {
+    // we can calculate the number of physical chips to be 2 if
+    // the instance type has >= 96 vcpus, otherwise there will be 1
+    // there are special cases for instance families m5zn and z1d where they are always 2
+    if (['m5zn', 'z1d'].includes(instanceFamily)) {
+      return 2
+    }
+    return largestInstanceTypevCpus >= 96 ? 2 : 1
   }
 
   private parseInstanceTypeFromUsageType(usageType: string) {

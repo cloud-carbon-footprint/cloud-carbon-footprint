@@ -124,16 +124,26 @@ export const MSK_INSTANCE_TYPES: { [instanceType: string]: number } = {
   'Kafka.m5.24xlarge': 96,
 }
 
-export const REDSHIFT_INSTANCE_TYPES: { [instanceType: string]: number } = {
-  'dc2.large': 2,
-  'dc2.8xlarge': 32,
-  'ra3.xlplus': 4,
-  'ra3.4xlarge': 12,
-  'ra3.16xlarge': 48,
-  'dc1.large': 2,
-  'dc1.8xlarge': 32,
-  'ds2.xlarge': 4,
-  'ds2.8xlarge': 36,
+export const REDSHIFT_INSTANCE_TYPES: {
+  [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, memory]
+} = {
+  dc2: {
+    large: [2, 15],
+    '8xlarge': [32, 244],
+  },
+  ra3: {
+    xlplus: [4, 32],
+    '4xlarge': [12, 96],
+    '16xlarge': [48, 384],
+  },
+  dc1: {
+    large: [2, 15],
+    '8xlarge': [32, 244],
+  },
+  ds2: {
+    xlarge: [4, 31],
+    '8xlarge': [36, 244],
+  },
 }
 
 export const EC2_INSTANCE_TYPES: {
