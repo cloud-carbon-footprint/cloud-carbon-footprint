@@ -297,12 +297,14 @@ export default class CostAndUsageReports {
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-    const processorMemory = CLOUD_CONSTANTS.AWS.getMemory(processors)
+    const processorMemoryGigabytesPerPhysicalChip = CLOUD_CONSTANTS.AWS.getMemory(
+      processors,
+    )
 
     // grab the instance type vcpu from the AWSInstanceTypes lists
-    const instanceTypevCpus =
-      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0] ||
-      REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
+    const instanceTypeMemory =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1] ||
+      REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
 
     // grab the entire instance family that the instance type is classified within
     const familyInstanceTypes: number[][] = Object.values(
@@ -316,49 +318,49 @@ export default class CostAndUsageReports {
       largestInstanceTypeMemory,
     ] = familyInstanceTypes[familyInstanceTypes.length - 1]
 
-    const gigabyteHours = this.calculateGigabyteHours(
+    return this.calculateGigabyteHours(
       largestInstanceTypevCpus,
-      instanceFamily,
       largestInstanceTypeMemory,
-      processorMemory,
-      instanceTypevCpus,
+      instanceFamily,
+      processorMemoryGigabytesPerPhysicalChip,
+      instanceTypeMemory,
       usageAmount,
     )
-
-    return gigabyteHours
   }
 
   private calculateGigabyteHours(
     largestInstanceTypevCpus: number,
-    instanceFamily: string,
     largestInstanceTypeMemory: number,
-    processorMemory: number,
-    instanceTypevCpus: number,
+    instanceFamily: string,
+    processorMemoryPerPhysicalChip: number,
+    instanceTypeMemory: number,
     usageAmount: number,
   ) {
     const physicalChips = this.getPhysicalChips(
       largestInstanceTypevCpus,
       instanceFamily,
     )
-    const instanceTypeMemory = largestInstanceTypeMemory / physicalChips
-    let gigabyteHours
-    // once we calculate the memory from aws instance type data and cross reference it with the
-    // memory we calculate from the microarchitecture (SPECPower Data) associated with the instance type,
-    // we find the difference and calculate memory usage based on the additional gigabytes
-    if (instanceTypeMemory - processorMemory > 0) {
-      // first we subract the memory calculated from the microarchitecture
-      // from the memory calculated from the instance type data
-      const largestInstanceGigabyteDelta = instanceTypeMemory - processorMemory
+    // Get the GB per physical chip for the largest instance in the family (roughly equivalent to a full processor)
+    const instanceFamilyMemoryPerPhysicalChip =
+      largestInstanceTypeMemory / physicalChips
 
-      // we consider the largest instance type in the family to be a rough equivalent to a full processor
-      // we identify the ratio of the vcpus of the current instance type
-      // to the largest instance type in the family (ie. 48 vcpus / 12 vcpus = 4 vcpus)
-      const instancevCpuRatio = largestInstanceTypevCpus / instanceTypevCpus
+    let gigabyteHours
+
+    // Get the difference between the largest instance GB per physical chip and the
+    // GB per physical chip for the associated microarchitecture from the SPEC Power database.
+    const largestInstanceGigabyteDelta =
+      instanceFamilyMemoryPerPhysicalChip - processorMemoryPerPhysicalChip
+
+    // If this difference is greater than zero, then we need to allocate additional estimation for memory
+    if (largestInstanceGigabyteDelta > 0) {
+      // we identify the ratio of the GB of the current instance type
+      // to the largest instance type in the family (ie. 256 GB / 8 GB = 32 GB)
+      const instanceMemoryRatio = largestInstanceTypeMemory / instanceTypeMemory
 
       // gigabytes per hour are then calculated by the taking the additional gb of memory from the delta
-      // and dividing it by the vcpu ratio, then multiping the usage amount in hours
+      // and dividing it by the vcpu ratio, then multiplying the usage amount in hours
       gigabyteHours =
-        (largestInstanceGigabyteDelta / instancevCpuRatio) * usageAmount
+        (largestInstanceGigabyteDelta / instanceMemoryRatio) * usageAmount
     }
     return gigabyteHours
   }
