@@ -112,43 +112,23 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const gigabyteHours = this.getGigabytesFromInstanceTypeAndProcessors(
+        const gigabyteHoursForMemoryUsage = this.getGigabytesFromInstanceTypeAndProcessors(
           costAndUsageReportRow.usageType,
           costAndUsageReportRow.usageAmount,
         )
 
-        const computeProcessors = this.getComputeProcessorsFromUsageType(
-          costAndUsageReportRow.usageType,
+        const computeFootprint = this.getComputeFootprintEstimate(
+          costAndUsageReportRow,
         )
 
-        const computeUsage: ComputeUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
-          numberOfvCpus: costAndUsageReportRow.vCpuHours,
-          usesAverageCPUConstant: true,
-        }
-
-        const memoryUsage: MemoryUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          gigabyteHours: gigabyteHours,
-        }
-
-        const computeFootprint = this.computeEstimator.estimate(
-          [computeUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-          computeProcessors,
-        )[0]
-
-        const memoryFootprint = this.memoryEstimator.estimate(
-          [memoryUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-        )[0]
+        const memoryFootprint = this.getMemoryFootprintEstimate(
+          costAndUsageReportRow,
+          gigabyteHoursForMemoryUsage,
+        )
 
         // if there exist any gigabytes to calculate memory usage,
         // add the kwh and co2e for both compute and memory
-        if (gigabyteHours) {
+        if (gigabyteHoursForMemoryUsage) {
           return {
             timestamp: computeFootprint.timestamp,
             kilowattHours:
@@ -165,71 +145,126 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
         // Storage
-        const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
-          costAndUsageReportRow,
-        )
-
-        const storageUsage: StorageUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          terabyteHours: usageAmountTerabyteHours,
-        }
-
-        let estimate: FootprintEstimate
-        if (this.usageTypeIsSSD(costAndUsageReportRow))
-          estimate = this.ssdStorageEstimator.estimate(
-            [storageUsage],
-            costAndUsageReportRow.region,
-            'AWS',
-          )[0]
-        else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
-          estimate = this.hddStorageEstimator.estimate(
-            [storageUsage],
-            costAndUsageReportRow.region,
-            'AWS',
-          )[0]
-        else
-          this.costAndUsageReportsLogger.warn(
-            `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
-          )
-        if (estimate) estimate.usesAverageCPUConstant = false
-        return estimate
+        return this.getStorageFootprintEstimate(costAndUsageReportRow)
       case PRICING_UNITS.SECONDS_1:
       case PRICING_UNITS.SECONDS_2:
         // Lambda
-        const lambdaComputeUsage: ComputeUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
-          numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
-          usesAverageCPUConstant: true,
-        }
-        return this.computeEstimator.estimate(
-          [lambdaComputeUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-        )[0]
+        return this.getLambdaComputeFootprintEstimate(costAndUsageReportRow)
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
         // Networking
-        let networkingEstimate: FootprintEstimate
-        if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
-          const networkingUsage: NetworkingUsage = {
-            timestamp: costAndUsageReportRow.timestamp,
-            gigabytes: costAndUsageReportRow.usageAmount,
-          }
-          networkingEstimate = this.networkingEstimator.estimate(
-            [networkingUsage],
-            costAndUsageReportRow.region,
-            'AWS',
-          )[0]
-        }
-        if (networkingEstimate)
-          networkingEstimate.usesAverageCPUConstant = false
-        return networkingEstimate
+        return this.getNetworkingFootprintEstimate(costAndUsageReportRow)
       default:
         this.costAndUsageReportsLogger.warn(
           `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
         )
     }
+  }
+
+  private getNetworkingFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ) {
+    let networkingEstimate: FootprintEstimate
+    if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
+      const networkingUsage: NetworkingUsage = {
+        timestamp: costAndUsageReportRow.timestamp,
+        gigabytes: costAndUsageReportRow.usageAmount,
+      }
+      networkingEstimate = this.networkingEstimator.estimate(
+        [networkingUsage],
+        costAndUsageReportRow.region,
+        'AWS',
+      )[0]
+    }
+    if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+    return networkingEstimate
+  }
+
+  private getStorageFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ) {
+    const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
+      costAndUsageReportRow,
+    )
+
+    const storageUsage: StorageUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      terabyteHours: usageAmountTerabyteHours,
+    }
+
+    let estimate: FootprintEstimate
+    if (this.usageTypeIsSSD(costAndUsageReportRow))
+      estimate = this.ssdStorageEstimator.estimate(
+        [storageUsage],
+        costAndUsageReportRow.region,
+        'AWS',
+      )[0]
+    else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
+      estimate = this.hddStorageEstimator.estimate(
+        [storageUsage],
+        costAndUsageReportRow.region,
+        'AWS',
+      )[0]
+    else
+      this.costAndUsageReportsLogger.warn(
+        `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
+      )
+    if (estimate) estimate.usesAverageCPUConstant = false
+    return estimate
+  }
+
+  private getComputeFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ): FootprintEstimate {
+    const computeProcessors = this.getComputeProcessorsFromUsageType(
+      costAndUsageReportRow.usageType,
+    )
+
+    const computeUsage: ComputeUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      numberOfvCpus: costAndUsageReportRow.vCpuHours,
+      usesAverageCPUConstant: true,
+    }
+
+    return this.computeEstimator.estimate(
+      [computeUsage],
+      costAndUsageReportRow.region,
+      'AWS',
+      computeProcessors,
+    )[0]
+  }
+
+  private getMemoryFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+    gigabyteHoursForMemoryUsage: number,
+  ): FootprintEstimate {
+    const memoryUsage: MemoryUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      gigabyteHours: gigabyteHoursForMemoryUsage,
+    }
+
+    return this.memoryEstimator.estimate(
+      [memoryUsage],
+      costAndUsageReportRow.region,
+      'AWS',
+    )[0]
+  }
+
+  private getLambdaComputeFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ): FootprintEstimate {
+    const lambdaComputeUsage: ComputeUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
+      usesAverageCPUConstant: true,
+    }
+    return this.computeEstimator.estimate(
+      [lambdaComputeUsage],
+      costAndUsageReportRow.region,
+      'AWS',
+    )[0]
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
