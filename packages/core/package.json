@@ -76,7 +76,7 @@
     "@google-cloud/storage": "^5.8.4",
     "@types/ramda": "^0.27.38",
     "aws-sdk": "^2.890.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^9.0.1",
     "googleapis": "^73.0.0",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
