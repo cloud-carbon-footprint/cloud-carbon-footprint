@@ -48,6 +48,7 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
+import { calculateGigabyteHours } from '../common/'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -318,51 +319,14 @@ export default class CostAndUsageReports {
       largestInstanceTypeMemory,
     ] = familyInstanceTypes[familyInstanceTypes.length - 1]
 
-    return this.calculateGigabyteHours(
+    return calculateGigabyteHours(
       largestInstanceTypevCpus,
       largestInstanceTypeMemory,
-      instanceFamily,
       processorMemoryGigabytesPerPhysicalChip,
       instanceTypeMemory,
       usageAmount,
-    )
-  }
-
-  private calculateGigabyteHours(
-    largestInstanceTypevCpus: number,
-    largestInstanceTypeMemory: number,
-    instanceFamily: string,
-    processorMemoryPerPhysicalChip: number,
-    instanceTypeMemory: number,
-    usageAmount: number,
-  ) {
-    const physicalChips = this.getPhysicalChips(
-      largestInstanceTypevCpus,
       instanceFamily,
     )
-    // Get the GB per physical chip for the largest instance in the family (roughly equivalent to a full processor)
-    const instanceFamilyMemoryPerPhysicalChip =
-      largestInstanceTypeMemory / physicalChips
-
-    let gigabyteHours
-
-    // Get the difference between the largest instance GB per physical chip and the
-    // GB per physical chip for the associated microarchitecture from the SPEC Power database.
-    const largestInstanceGigabyteDelta =
-      instanceFamilyMemoryPerPhysicalChip - processorMemoryPerPhysicalChip
-
-    // If this difference is greater than zero, then we need to allocate additional estimation for memory
-    if (largestInstanceGigabyteDelta > 0) {
-      // we identify the ratio of the GB of the current instance type
-      // to the largest instance type in the family (ie. 256 GB / 8 GB = 32 GB)
-      const instanceMemoryRatio = largestInstanceTypeMemory / instanceTypeMemory
-
-      // gigabytes per hour are then calculated by the taking the additional gb of memory from the delta
-      // and dividing it by the vcpu ratio, then multiplying the usage amount in hours
-      gigabyteHours =
-        (largestInstanceGigabyteDelta / instanceMemoryRatio) * usageAmount
-    }
-    return gigabyteHours
   }
 
   private checkInstanceTypes(instanceFamily: string, instanceType: string) {
@@ -376,19 +340,6 @@ export default class CostAndUsageReports {
       BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
     ).includes(instanceType)
     return { isValidInstanceType, isBurstableInstance }
-  }
-
-  private getPhysicalChips(
-    largestInstanceTypevCpus: number,
-    instanceFamily: string,
-  ): number {
-    // we can calculate the number of physical chips to be 2 if
-    // the instance type has >= 96 vcpus, otherwise there will be 1
-    // there are special cases for instance families m5zn and z1d where they are always 2
-    if (['m5zn', 'z1d'].includes(instanceFamily)) {
-      return 2
-    }
-    return largestInstanceTypevCpus >= 96 ? 2 : 1
   }
 
   private parseInstanceTypeFromUsageType(usageType: string) {

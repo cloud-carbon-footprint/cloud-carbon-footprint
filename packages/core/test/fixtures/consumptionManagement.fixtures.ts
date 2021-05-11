@@ -312,3 +312,53 @@ export const mockConsumptionManagementResponseFour: AzureUsageDetailsResponse[] 
     location: 'UK South',
   },
 ]
+export const mockConsumptionManagementResponseFive: AzureUsageDetailsResponse[] = [
+  {
+    usageStart: new Date('2021-11-03'),
+    usageQuantity: 5,
+    pretaxCost: 20,
+    meterDetails: {
+      meterName: 'D8 v3 Spot',
+      unit: '1 Hour',
+      serviceName: 'Virtual Machines',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'EU North',
+  },
+  {
+    usageStart: new Date('2021-11-03'),
+    usageQuantity: 48,
+    pretaxCost: 5,
+    meterDetails: {
+      meterName: 'C1 Cache Instance',
+      unit: '100 Hours',
+      serviceName: 'Redis Cache',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'AP Southeast',
+  },
+  {
+    usageStart: new Date('2021-11-02'),
+    usageQuantity: 0.111375,
+    pretaxCost: 10,
+    meterDetails: {
+      meterName: 'Execution Time',
+      unit: '50000 GB Seconds',
+      serviceName: 'Functions',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'US East 2',
+  },
+  {
+    usageStart: new Date('2021-11-02'),
+    usageQuantity: 14.44976379,
+    pretaxCost: 7,
+    meterDetails: {
+      meterName: 'Memory Duration',
+      unit: '1000 GB Hours',
+      serviceName: 'Container Instances',
+    },
+    subscriptionName: 'test-subscription',
+    location: 'UK West',
+  },
+]

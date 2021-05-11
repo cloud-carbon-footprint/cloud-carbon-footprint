@@ -10,6 +10,7 @@ import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
+import MemoryEstimator from '../../domain/MemoryEstimator'
 import { EstimationResult } from '../../application'
 import ComputeUsage from '../../domain/ComputeUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
@@ -18,25 +19,33 @@ import FootprintEstimate, {
   MutableEstimationResult,
 } from '../../domain/FootprintEstimate'
 import ConsumptionDetailRow from './ConsumptionDetailRow'
-import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './VirtualMachineTypes'
+import {
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
+} from './VirtualMachineTypes'
 import {
   COMPUTE_USAGE_UNITS,
   CONTAINER_REGISTRY_STORAGE_GB,
   HDD_MANAGED_DISKS_STORAGE_GB,
   NETWORKING_USAGE_TYPES,
   NETWORKING_USAGE_UNITS,
+  MEMORY_USAGE_TYPES,
+  MEMORY_USAGE_UNITS,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
   STORAGE_USAGE_UNITS,
   UNSUPPORTED_SERVICES,
   UNSUPPORTED_USAGE_TYPES,
   AZURE_QUERY_GROUP_BY,
+  CACHE_MEMORY_GB,
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
+import MemoryUsage from '../../domain/MemoryUsage'
 import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 import Logger from '../Logger'
 import configLoader from '../../application/ConfigLoader'
+import { calculateGigabyteHours } from '../common/'
 
 type TenantHeaders = {
   [key: string]: string
@@ -51,6 +60,7 @@ export default class ConsumptionManagementService {
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
+    private readonly memoryEstimator: MemoryEstimator,
     private readonly consumptionManagementClient: ConsumptionManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
@@ -180,74 +190,71 @@ export default class ConsumptionManagementService {
       case COMPUTE_USAGE_UNITS.HOURS_10:
       case COMPUTE_USAGE_UNITS.HOURS_100:
       case COMPUTE_USAGE_UNITS.HOURS_1000:
-        const computeUsage: ComputeUsage = {
-          cpuUtilizationAverage: CLOUD_CONSTANTS.AZURE.AVG_CPU_UTILIZATION_2020,
-          numberOfvCpus: consumptionDetailRow.vCpuHours,
-          usesAverageCPUConstant: true,
-          timestamp: consumptionDetailRow.timestamp,
-        }
-        const computeProcessors = this.getComputeProcessorsFromUsageType(
+        const gigabyteHoursForMemoryUsage = this.getGigabytesFromInstanceTypeAndProcessors(
           consumptionDetailRow.usageType,
+          consumptionDetailRow.usageAmount,
+          consumptionDetailRow.seriesName,
         )
 
-        return this.computeEstimator.estimate(
-          [computeUsage],
-          consumptionDetailRow.region,
-          'AZURE',
-          computeProcessors,
-        )[0]
+        const computeFootprint = this.getComputeFootprintEstimate(
+          consumptionDetailRow,
+        )
+
+        const memoryFootprint = this.getMemoryFootprintEstimate(
+          consumptionDetailRow,
+          gigabyteHoursForMemoryUsage,
+        )
+
+        // if memory usage, only return the memory footprint
+        if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
+          if (memoryFootprint) memoryFootprint.usesAverageCPUConstant = false
+          return memoryFootprint
+        }
+
+        // if there exist any gigabytes to calculate memory usage,
+        // add the kwh and co2e for both compute and memory
+        if (gigabyteHoursForMemoryUsage) {
+          return {
+            timestamp: computeFootprint.timestamp,
+            kilowattHours:
+              computeFootprint.kilowattHours + memoryFootprint.kilowattHours,
+            co2e: computeFootprint.co2e + memoryFootprint.co2e,
+            usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
+          }
+        }
+        return computeFootprint
       case STORAGE_USAGE_UNITS.MONTH_1:
       case STORAGE_USAGE_UNITS.MONTH_100:
       case STORAGE_USAGE_UNITS.GB_MONTH_10:
       case STORAGE_USAGE_UNITS.GB_MONTH_100:
       case STORAGE_USAGE_UNITS.DAY_30:
       case STORAGE_USAGE_UNITS.TB_MONTH_1:
-        const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
-          consumptionDetailRow,
-        )
-        const storageUsage: StorageUsage = {
-          timestamp: consumptionDetailRow.timestamp,
-          terabyteHours: usageAmountTerabyteHours,
-        }
-        let estimate: FootprintEstimate
-        if (this.isSSDStorage(consumptionDetailRow)) {
-          estimate = this.ssdStorageEstimator.estimate(
-            [storageUsage],
-            consumptionDetailRow.region,
-            'AZURE',
-          )[0]
-        } else if (this.isHDDStorage(consumptionDetailRow)) {
-          estimate = this.hddStorageEstimator.estimate(
-            [storageUsage],
-            consumptionDetailRow.region,
-            'AZURE',
-          )[0]
-        } else {
-          this.consumptionManagementLogger.warn(
-            `Unexpected usage type for storage service: ${consumptionDetailRow.usageType}`,
-          )
-        }
-        if (estimate) estimate.usesAverageCPUConstant = false
-        return estimate
+        return this.getStorageFootprintEstimate(consumptionDetailRow)
       case NETWORKING_USAGE_UNITS.GB_1:
       case NETWORKING_USAGE_UNITS.GB_10:
       case NETWORKING_USAGE_UNITS.GB_100:
       case NETWORKING_USAGE_UNITS.GB_200:
       case NETWORKING_USAGE_UNITS.TB_1:
-        if (this.isNetworkingUsage(consumptionDetailRow)) {
-          const networkingUsage: NetworkingUsage = {
-            timestamp: consumptionDetailRow.timestamp,
-            gigabytes: this.getGigabytesForNetworking(consumptionDetailRow),
-          }
-
-          const networkingEstimate = this.networkingEstimator.estimate(
-            [networkingUsage],
-            consumptionDetailRow.region,
-            'AZURE',
-          )[0]
-          if (networkingEstimate)
-            networkingEstimate.usesAverageCPUConstant = false
-          return networkingEstimate
+        return this.getNetworkingFootprintEstimate(consumptionDetailRow)
+      case MEMORY_USAGE_UNITS.GB_SECONDS_50000:
+        if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
+          const gigabyteHoursForMemoryUsage =
+            consumptionDetailRow.usageAmount / 3600
+          const memoryFootprint = this.getMemoryFootprintEstimate(
+            consumptionDetailRow,
+            gigabyteHoursForMemoryUsage,
+          )
+          if (memoryFootprint) memoryFootprint.usesAverageCPUConstant = false
+          return memoryFootprint
+        }
+      case MEMORY_USAGE_UNITS.GB_HOURS_1000:
+        if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
+          const memoryFootprint = this.getMemoryFootprintEstimate(
+            consumptionDetailRow,
+            consumptionDetailRow.usageAmount,
+          )
+          if (memoryFootprint) memoryFootprint.usesAverageCPUConstant = false
+          return memoryFootprint
         }
         break
       default:
@@ -255,6 +262,100 @@ export default class ConsumptionManagementService {
           `Unsupported usage unit: ${consumptionDetailRow.usageUnit}`,
         )
     }
+  }
+
+  private getNetworkingFootprintEstimate(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ) {
+    let networkingEstimate: FootprintEstimate
+    if (this.isNetworkingUsage(consumptionDetailRow)) {
+      const networkingUsage: NetworkingUsage = {
+        timestamp: consumptionDetailRow.timestamp,
+        gigabytes: this.getGigabytesForNetworking(consumptionDetailRow),
+      }
+      networkingEstimate = this.networkingEstimator.estimate(
+        [networkingUsage],
+        consumptionDetailRow.region,
+        'AZURE',
+      )[0]
+    }
+    if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+    return networkingEstimate
+  }
+
+  private getStorageFootprintEstimate(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ) {
+    const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
+      consumptionDetailRow,
+    )
+
+    const storageUsage: StorageUsage = {
+      timestamp: consumptionDetailRow.timestamp,
+      terabyteHours: usageAmountTerabyteHours,
+    }
+
+    let estimate: FootprintEstimate
+    if (this.isSSDStorage(consumptionDetailRow))
+      estimate = this.ssdStorageEstimator.estimate(
+        [storageUsage],
+        consumptionDetailRow.region,
+        'AZURE',
+      )[0]
+    else if (this.isHDDStorage(consumptionDetailRow))
+      estimate = this.hddStorageEstimator.estimate(
+        [storageUsage],
+        consumptionDetailRow.region,
+        'AZURE',
+      )[0]
+    else
+      this.consumptionManagementLogger.warn(
+        `Unexpected usage type for storage service: ${consumptionDetailRow.usageType}`,
+      )
+    if (estimate) estimate.usesAverageCPUConstant = false
+    return estimate
+  }
+
+  private getComputeFootprintEstimate(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): FootprintEstimate {
+    const computeProcessors = this.getComputeProcessorsFromUsageType(
+      consumptionDetailRow.usageType,
+    )
+
+    const computeUsage: ComputeUsage = {
+      timestamp: consumptionDetailRow.timestamp,
+      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      numberOfvCpus: consumptionDetailRow.vCpuHours,
+      usesAverageCPUConstant: true,
+    }
+
+    return this.computeEstimator.estimate(
+      [computeUsage],
+      consumptionDetailRow.region,
+      'AZURE',
+      computeProcessors,
+    )[0]
+  }
+
+  private getMemoryFootprintEstimate(
+    consumptionDetailRow: ConsumptionDetailRow,
+    gigabyteHoursForMemoryUsage: number,
+  ): FootprintEstimate {
+    const memoryUsage: MemoryUsage = {
+      timestamp: consumptionDetailRow.timestamp,
+      gigabyteHours: gigabyteHoursForMemoryUsage,
+    }
+
+    return this.memoryEstimator.estimate(
+      [memoryUsage],
+      consumptionDetailRow.region,
+      'AZURE',
+    )[0]
+  }
+
+  private isMemoryUsage(usageType: string) {
+    return this.containsAny(MEMORY_USAGE_TYPES, usageType)
   }
 
   private isUnsupportedUsage(
@@ -274,6 +375,7 @@ export default class ConsumptionManagementService {
           ...Object.values(COMPUTE_USAGE_UNITS),
           ...Object.values(STORAGE_USAGE_UNITS),
           ...Object.values(NETWORKING_USAGE_UNITS),
+          ...Object.values(MEMORY_USAGE_UNITS),
         ],
         consumptionDetailRow.usageUnit,
       )
@@ -399,5 +501,67 @@ export default class ConsumptionManagementService {
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
+  }
+
+  private getGigabytesFromInstanceTypeAndProcessors(
+    usageType: string,
+    usageAmount: number,
+    seriesName: string,
+  ): number {
+    // if the usage type is a memory usage type
+    // grab the gigabyte hours from the cache name
+    if (MEMORY_USAGE_TYPES.includes(usageType)) {
+      return this.getGigabyteHoursFromCacheName(usageType, usageAmount)
+    }
+    // grab the instance type memory from the virtual machine mappings list
+    const instanceTypeMemory =
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[1]
+
+    // check to see if the instance type is contained in the virtual machine mapping list
+    // or if there is memory associated with it, otherwise return void
+    const { isValidInstanceType } = this.checkInstanceTypes(seriesName)
+    if (!isValidInstanceType || !instanceTypeMemory) return
+
+    // grab the list of processors per instance type
+    // and then the Azure specific memory constant for the processors
+    const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
+      COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+    ]
+    const processorMemory = CLOUD_CONSTANTS.AZURE.getMemory(processors)
+
+    // grab the entire instance series that the instance type is classified within
+    const seriesInstanceTypes: number[][] = Object.values(
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName],
+    )
+
+    // grab the vcpu and memory (gb) from the largest instance type in the family
+    const [
+      largestInstanceTypevCpus,
+      largestInstanceTypeMemory,
+    ] = seriesInstanceTypes[seriesInstanceTypes.length - 1]
+
+    return calculateGigabyteHours(
+      largestInstanceTypevCpus,
+      largestInstanceTypeMemory,
+      processorMemory,
+      instanceTypeMemory,
+      usageAmount,
+    )
+  }
+
+  private getGigabyteHoursFromCacheName(
+    usageType: string,
+    usageAmount: number,
+  ) {
+    const cacheName = usageType.split(' ')[0]
+    return CACHE_MEMORY_GB[cacheName] * usageAmount
+  }
+
+  private checkInstanceTypes(seriesName: string) {
+    // a valid instance type is one that is mapped in the AWSInstanceTypes lists
+    const isValidInstanceType = Object.keys(
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
+    ).includes(seriesName)
+    return { isValidInstanceType }
   }
 }
