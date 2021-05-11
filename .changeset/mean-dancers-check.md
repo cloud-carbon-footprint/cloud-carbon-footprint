@@ -6,4 +6,4 @@
 '@cloud-carbon-footprint/create-app': patch
 ---
 
-updates dependencies for node types and aws-sdk
+The default `aws-sdk` dependency was bumped to `"^2.890.0"`,
