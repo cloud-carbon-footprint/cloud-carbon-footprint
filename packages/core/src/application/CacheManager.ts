@@ -50,6 +50,10 @@ export default class CacheManager implements EstimatorCache {
   async setEstimates(estimates: EstimationResult[]): Promise<void> {
     const { GCS } = this.cacheModes
 
+    if (estimates.length === 0) {
+      return
+    }
+
     switch (this.currentCacheMode) {
       case GCS:
         return googleCloudCacheService.setEstimates(estimates)

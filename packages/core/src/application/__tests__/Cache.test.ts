@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import EstimatorCache from '../EstimatorCache'
 import cache from '../Cache'
 import { EstimationResult, ServiceData } from '../EstimationResult'
 import moment from 'moment'
 import { EstimationRequest } from '../CreateValidRequest'
+import CacheManager from '../CacheManager'
 
 let mockSetEstimates: jest.Mock
 let mockGetEstimates: jest.Mock
@@ -15,11 +15,10 @@ jest.mock('../CacheManager', () => {
   return jest.fn().mockImplementation(() => {
     mockSetEstimates = jest.fn()
     mockGetEstimates = jest.fn()
-    const mockEstimatorCache: EstimatorCache = {
+    return {
       getEstimates: mockGetEstimates,
       setEstimates: mockSetEstimates,
     }
-    return mockEstimatorCache
   })
 })
 
@@ -220,6 +219,33 @@ describe('Cache', () => {
 
       //assert
       expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates)
+    })
+
+    it('should not save into cache when API response contains empty data', async () => {
+      //setup
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2019-12-31').toDate(),
+        endDate: moment.utc('2020-01-01').toDate(),
+        region: 'us-east-1',
+      }
+
+      const cachedEstimates: EstimationResult[] = []
+
+      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+
+      const computedEstimates = buildFootprintEstimates('2019-12-31', 1)
+      originalFunction.mockResolvedValueOnce(computedEstimates)
+
+      CacheManager.prototype.setEstimates = jest.fn()
+
+      const setEstimatesSpy = jest.spyOn(CacheManager.prototype, 'setEstimates')
+
+      //run
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+      await propertyDescriptor.value(rawRequest)
+
+      //assert
+      expect(setEstimatesSpy).not.toHaveBeenCalled()
     })
 
     it('caches dates with empty estimates if original function returns no results', async () => {
