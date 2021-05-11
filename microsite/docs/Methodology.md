@@ -28,7 +28,7 @@ organization to view and take action. It currently supports AWS, Google Cloud an
 
 **We calculate our CO2e estimates with this formula:**
 
-`(Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (EPA [US] or carbonfootprint.com [Non-US] grid emissions factors [CO2e])`
+`(Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (grid emissions factors [metric tons CO2e])`
 
 Our approach builds upon
 [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)
