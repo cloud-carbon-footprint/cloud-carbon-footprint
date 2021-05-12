@@ -2051,48 +2051,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloud-carbon-footprint/api-template@workspace:packages/create-app/lint-test-app/packages/api":
-  version: 0.0.0-use.local
-  resolution: "@cloud-carbon-footprint/api-template@workspace:packages/create-app/lint-test-app/packages/api"
-  dependencies:
-    "@cloud-carbon-footprint/core": ^0.6.1
-    "@types/express": ^4.17.11
-    "@types/jest": ^26.0.20
-    "@types/jest-when": ^2.7.2
-    "@types/node": ^14.14.30
-    "@types/prompts": ^2.0.9
-    "@types/ramda": ^0.27.38
-    "@types/source-map-support": ^0.5.3
-    "@types/supertest": ^2.0.10
-    "@typescript-eslint/eslint-plugin": ^4.15.1
-    "@typescript-eslint/parser": ^4.15.1
-    aws-sdk-mock: ^5.1.0
-    dotenv: ^8.2.0
-    eslint: ^7.20.0
-    eslint-config-prettier: ^8.0.0
-    eslint-plugin-prettier: ^3.3.1
-    eslint-plugin-unused-imports: ^1.1.0
-    express: ^4.17.1
-    helmet: ^4.4.1
-    jest: 26.6.0
-    jest-when: ^3.2.0
-    lint-staged: ^10.5.4
-    module-alias: ^2.2.2
-    onchange: ^7.1.0
-    prettier: ^2.2.1
-    rimraf: ^3.0.2
-    serve: ^11.3.2
-    source-map-support: ^0.5.19
-    supertest: ^6.1.3
-    ts-jest: ^26.5.1
-    ts-node: ^9.1.1
-    ts-node-dev: ^1.1.1
-    tsconfig-paths: ^3.9.0
-    typescript: 4.2.3
-    winston: ^3.3.3
-  languageName: unknown
-  linkType: soft
-
 "@cloud-carbon-footprint/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/api@workspace:packages/api"
@@ -2135,48 +2093,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/cli-template@workspace:packages/create-app/lint-test-app/packages/cli":
-  version: 0.0.0-use.local
-  resolution: "@cloud-carbon-footprint/cli-template@workspace:packages/create-app/lint-test-app/packages/cli"
-  dependencies:
-    "@cloud-carbon-footprint/core": ^0.6.1
-    "@types/cli-table": ^0.3.0
-    "@types/jest": ^26.0.20
-    "@types/jest-when": ^2.7.2
-    "@types/node": ^14.14.30
-    "@types/prompts": ^2.0.9
-    "@types/ramda": ^0.27.38
-    "@types/source-map-support": ^0.5.3
-    "@typescript-eslint/eslint-plugin": ^4.15.1
-    "@typescript-eslint/parser": ^4.15.1
-    aws-sdk: ^2.890.0
-    aws-sdk-mock: ^5.1.0
-    cli-table: ^0.3.5
-    commander: ^7.1.0
-    dotenv: ^8.2.0
-    eslint: ^7.20.0
-    eslint-config-prettier: ^8.0.0
-    eslint-plugin-prettier: ^3.3.1
-    eslint-plugin-unused-imports: ^1.1.0
-    jest: 26.6.0
-    jest-when: ^3.2.0
-    lint-staged: ^10.5.4
-    moment: ^2.29.1
-    onchange: ^7.1.0
-    prettier: ^2.2.1
-    ramda: ^0.27.1
-    rimraf: ^3.0.2
-    serve: ^11.3.2
-    source-map-support: ^0.5.19
-    ts-jest: ^26.5.1
-    ts-node: ^9.1.1
-    ts-node-dev: ^1.1.1
-    tsconfig-paths: ^3.9.0
-    typed-prompts: ^1.5.0
-    typescript: 4.2.3
-  languageName: unknown
-  linkType: soft
-
 "@cloud-carbon-footprint/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
@@ -2216,64 +2132,6 @@ __metadata:
     tsconfig-paths: ^3.9.0
     typed-prompts: ^1.5.0
     typescript: 4.2.4
-  languageName: unknown
-  linkType: soft
-
-"@cloud-carbon-footprint/client-template@workspace:packages/create-app/lint-test-app/packages/client":
-  version: 0.0.0-use.local
-  resolution: "@cloud-carbon-footprint/client-template@workspace:packages/create-app/lint-test-app/packages/client"
-  dependencies:
-    "@babel/runtime": ^7.12.18
-    "@material-ui/core": ^4.11.3
-    "@material-ui/icons": ^4.11.2
-    "@material-ui/lab": ^4.0.0-alpha.57
-    "@testing-library/dom": ^7.29.6
-    "@testing-library/jest-dom": ^5.11.9
-    "@testing-library/react": ^11.2.5
-    "@testing-library/react-hooks": ^5.0.3
-    "@testing-library/user-event": ^13.0.7
-    "@types/jest": ^26.0.20
-    "@types/lodash": ^4.14.168
-    "@types/mockdate": ^2.0.0
-    "@types/node": ^14.14.31
-    "@types/ramda": ^0.27.38
-    "@types/react": ^17.0.2
-    "@types/react-dates": ^21.8.1
-    "@types/react-dom": ^17.0.1
-    "@types/react-router": ^5.1.11
-    "@types/react-router-dom": ^5.1.7
-    "@types/styled-components": ^5.1.7
-    "@typescript-eslint/eslint-plugin": ^4.15.1
-    "@typescript-eslint/parser": ^4.15.1
-    apexcharts: ^3.25.0
-    axios: ^0.21.1
-    concurrently: ^6.0.2
-    dotenv: ^8.2.0
-    eslint: ^7.21.0
-    eslint-config-prettier: ^8.0.0
-    eslint-plugin-prettier: ^3.3.1
-    eslint-plugin-unused-imports: ^1.1.0
-    express: ^4.17.1
-    helmet: ^4.4.1
-    immer: ^9.0.1
-    jest: 26.6.3
-    json-server: ^0.16.3
-    lint-staged: ^10.5.4
-    lodash: ^4.17.20
-    mockdate: ^3.0.2
-    moment: ^2.29.1
-    prettier: ^2.2.1
-    ramda: ^0.27.1
-    react: ^17.0.1
-    react-apexcharts: ^1.3.7
-    react-dates: ^21.8.0
-    react-dom: ^17.0.1
-    react-is: ^17.0.1
-    react-router-dom: ^5.2.0
-    react-scripts: ^4.0.2
-    react-test-renderer: ^17.0.1
-    styled-components: ^5.2.1
-    typescript: 4.2.3
   languageName: unknown
   linkType: soft
 
@@ -4870,7 +4728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.10, @types/fs-extra@npm:^9.0.8, @types/fs-extra@npm:^9.0.9":
+"@types/fs-extra@npm:^9.0.10, @types/fs-extra@npm:^9.0.9":
   version: 9.0.11
   resolution: "@types/fs-extra@npm:9.0.11"
   dependencies:
@@ -5062,13 +4920,6 @@ __metadata:
   version: 12.20.12
   resolution: "@types/node@npm:12.20.12"
   checksum: df72a72ded771a04c5a6c938f7b7bfad16a08c8a64337a3829d6fdc9488dd93cb23bce42affe7e1c846994396f6e32937cbd35dfcd55bc8c1963814f3ec59c95
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^14.14.30, @types/node@npm:^14.14.31":
-  version: 14.14.44
-  resolution: "@types/node@npm:14.14.44"
-  checksum: 5c4db716325fc8a25b5b76b800acf0ff00c8fa1e7cfcb764fc79d79594939488cb9d2a756e188eb8e8a36da51e8e2be1ffe859be901b338779cb0aa12ad73b3a
   languageName: node
   linkType: hard
 
@@ -21155,20 +21006,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"root-template@workspace:packages/create-app/lint-test-app":
-  version: 0.0.0-use.local
-  resolution: "root-template@workspace:packages/create-app/lint-test-app"
-  dependencies:
-    "@types/fs-extra": ^9.0.8
-    concurrently: ^6.0.2
-    fs-extra: ^9.1.0
-    lerna: ^4.0.0
-    marked: ">=2.0.0"
-    ts-node: ^9.1.1
-    typescript: 4.2.3
-  languageName: unknown
-  linkType: soft
-
 "root@workspace:.":
   version: 0.0.0-use.local
   resolution: "root@workspace:."
@@ -23953,16 +23790,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-typescript@4.2.3:
-  version: 4.2.3
-  resolution: "typescript@npm:4.2.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 06e8470f317db6f5e2fce809b20eb84a67a7d8179057abff36e5427bd1b891bd08e54581ff81f0fa36aef9b6d1eb0f54eaf6e2643c6dbd4e37a0adcc41eed256
-  languageName: node
-  linkType: hard
-
 "typescript@4.2.4, typescript@^4.2.3":
   version: 4.2.4
   resolution: "typescript@npm:4.2.4"
@@ -23980,16 +23807,6 @@ typescript@^3.3.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 22bbe953faa34903587f3bd8fb6c343d754745d4177e49da523a2a3b814fe5eaf60d9b23c2d401d038a08a5ac2d8094b268ba75adee840cc2358fb5a866624ab
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@4.2.3#builtin<compat/typescript>":
-  version: 4.2.3
-  resolution: "typescript@patch:typescript@npm%3A4.2.3#builtin<compat/typescript>::version=4.2.3&hash=a45b0e"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: a8956044aabf730699bcc3c2475efdd3f35e509329325cf60b4989761d4c2188e2c474183e2cf92b8c201fcf976814a5a16f144508b2a832643c4f972d0ab803
   languageName: node
   linkType: hard
 
