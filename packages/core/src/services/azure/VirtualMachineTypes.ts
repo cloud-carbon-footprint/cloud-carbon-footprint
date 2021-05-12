@@ -527,7 +527,7 @@ export const VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING: {
   'I1 v2': [2, 8],
   'I2 v2': [4, 16],
   'I3 v2': [8, 32],
-  // constrained vcpus capable
+  // Constrained vCpus Capable
   'DS11-1 v2': [1, 14],
   'DS12-1 v2': [1, 28],
   'DS12-2 v2': [2, 28],

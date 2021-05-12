@@ -4,6 +4,10 @@
 
 import { QUERY_DATE_TYPES } from '../common/types'
 
+export type TenantHeaders = {
+  [key: string]: string
+}
+
 export const UNSUPPORTED_SERVICES = [
   'Virtual Machines Licenses',
   'Azure Bastion',

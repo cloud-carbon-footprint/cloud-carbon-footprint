@@ -38,6 +38,7 @@ import {
   UNSUPPORTED_USAGE_TYPES,
   AZURE_QUERY_GROUP_BY,
   CACHE_MEMORY_GB,
+  TenantHeaders,
 } from './ConsumptionTypes'
 import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
@@ -46,10 +47,6 @@ import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 import Logger from '../Logger'
 import configLoader from '../../application/ConfigLoader'
 import { calculateGigabyteHours } from '../common/'
-
-type TenantHeaders = {
-  [key: string]: string
-}
 
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
@@ -190,19 +187,12 @@ export default class ConsumptionManagementService {
       case COMPUTE_USAGE_UNITS.HOURS_10:
       case COMPUTE_USAGE_UNITS.HOURS_100:
       case COMPUTE_USAGE_UNITS.HOURS_1000:
-        const gigabyteHoursForMemoryUsage = this.getGigabytesFromInstanceTypeAndProcessors(
-          consumptionDetailRow.usageType,
-          consumptionDetailRow.usageAmount,
-          consumptionDetailRow.seriesName,
-        )
-
         const computeFootprint = this.getComputeFootprintEstimate(
           consumptionDetailRow,
         )
 
         const memoryFootprint = this.getMemoryFootprintEstimate(
           consumptionDetailRow,
-          gigabyteHoursForMemoryUsage,
         )
 
         // if memory usage, only return the memory footprint
@@ -211,11 +201,11 @@ export default class ConsumptionManagementService {
           return memoryFootprint
         }
 
-        // if there exist any gigabytes to calculate memory usage,
+        // if there exist any kilowatt hours from a memory footprint,
         // add the kwh and co2e for both compute and memory
-        if (gigabyteHoursForMemoryUsage) {
+        if (memoryFootprint.kilowattHours) {
           return {
-            timestamp: computeFootprint.timestamp,
+            timestamp: memoryFootprint.timestamp,
             kilowattHours:
               computeFootprint.kilowattHours + memoryFootprint.kilowattHours,
             co2e: computeFootprint.co2e + memoryFootprint.co2e,
@@ -237,26 +227,8 @@ export default class ConsumptionManagementService {
       case NETWORKING_USAGE_UNITS.TB_1:
         return this.getNetworkingFootprintEstimate(consumptionDetailRow)
       case MEMORY_USAGE_UNITS.GB_SECONDS_50000:
-        if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
-          const gigabyteHoursForMemoryUsage =
-            consumptionDetailRow.usageAmount / 3600
-          const memoryFootprint = this.getMemoryFootprintEstimate(
-            consumptionDetailRow,
-            gigabyteHoursForMemoryUsage,
-          )
-          if (memoryFootprint) memoryFootprint.usesAverageCPUConstant = false
-          return memoryFootprint
-        }
       case MEMORY_USAGE_UNITS.GB_HOURS_1000:
-        if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
-          const memoryFootprint = this.getMemoryFootprintEstimate(
-            consumptionDetailRow,
-            consumptionDetailRow.usageAmount,
-          )
-          if (memoryFootprint) memoryFootprint.usesAverageCPUConstant = false
-          return memoryFootprint
-        }
-        break
+        return this.getMemoryFootprintEstimate(consumptionDetailRow)
       default:
         this.consumptionManagementLogger.warn(
           `Unsupported usage unit: ${consumptionDetailRow.usageUnit}`,
@@ -340,18 +312,18 @@ export default class ConsumptionManagementService {
 
   private getMemoryFootprintEstimate(
     consumptionDetailRow: ConsumptionDetailRow,
-    gigabyteHoursForMemoryUsage: number,
   ): FootprintEstimate {
     const memoryUsage: MemoryUsage = {
       timestamp: consumptionDetailRow.timestamp,
-      gigabyteHours: gigabyteHoursForMemoryUsage,
+      gigabyteHours: this.getUsageAmountInGigabyteHours(consumptionDetailRow),
     }
-
-    return this.memoryEstimator.estimate(
+    const memoryEstimate = this.memoryEstimator.estimate(
       [memoryUsage],
       consumptionDetailRow.region,
       'AZURE',
     )[0]
+    memoryEstimate.usesAverageCPUConstant = false
+    return memoryEstimate
   }
 
   private isMemoryUsage(usageType: string) {
@@ -385,6 +357,18 @@ export default class ConsumptionManagementService {
   private containsAny(substrings: string[], stringToSearch: string): boolean {
     return substrings.some((substring) =>
       new RegExp(`\\b${substring}\\b`).test(stringToSearch),
+    )
+  }
+
+  private getUsageAmountInGigabyteHours(
+    consumptionDetailRow: ConsumptionDetailRow,
+  ): number {
+    if (consumptionDetailRow.usageUnit === MEMORY_USAGE_UNITS.GB_SECONDS_50000)
+      return consumptionDetailRow.usageAmount / 3600
+    return this.getGigabyteHoursFromInstanceTypeAndProcessors(
+      consumptionDetailRow.usageType,
+      consumptionDetailRow.usageAmount,
+      consumptionDetailRow.seriesName,
     )
   }
 
@@ -503,16 +487,19 @@ export default class ConsumptionManagementService {
     )
   }
 
-  private getGigabytesFromInstanceTypeAndProcessors(
+  private getGigabyteHoursFromInstanceTypeAndProcessors(
     usageType: string,
     usageAmount: number,
     seriesName: string,
   ): number {
-    // if the usage type is a memory usage type
-    // grab the gigabyte hours from the cache name
+    // if the usage type is a memory usage type, grab the
+    // gigabyte hours from the cache name or the usage amount
     if (MEMORY_USAGE_TYPES.includes(usageType)) {
-      return this.getGigabyteHoursFromCacheName(usageType, usageAmount)
+      if (usageType.includes('Cache'))
+        return this.getGigabyteHoursFromCacheName(usageType, usageAmount)
+      return usageAmount
     }
+
     // grab the instance type memory from the virtual machine mappings list
     const instanceTypeMemory =
       VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[1]

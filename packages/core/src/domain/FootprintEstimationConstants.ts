@@ -210,6 +210,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
     MEMORY_AVG: 72.99,
     MEMORY_BY_COMPUTE_PROCESSOR: {
+      // gigaBytes / physical chip
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 92.11,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 83.19,
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 69.65,
