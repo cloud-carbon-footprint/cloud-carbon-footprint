@@ -79,20 +79,9 @@ jobs:
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: yarn install --immutable
-      - name: build-core
+      - name: build-packages
         run: |
-          cd packages/core
-          yarn build
-          yarn prepack
-          mkdir dist-core
-          cp package.json dist-core
-          mv dist dist-core
-          yarn postpack
-          cd ../..
-      - uses: actions/upload-artifact@v2
-        with:
-          name: core-build
-          path: packages/core/dist-core/
+          yarn lerna run build --ignore @cloud-carbon-footprint/client --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
       - name: build-client
         env:
           REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
@@ -103,19 +92,16 @@ jobs:
           ./create_client_env_file.sh
           yarn build
           cd ../..
-      - uses: actions/upload-artifact@v2
-        with:
-          name: client-build
-          path: packages/client/build/
-      - name: build-api
+      - name: build-workspace
         run: |
-          cd packages/api
-          yarn build
-          cd ../..
+          mkdir -p dist-workspace/packages
+          yarn lerna run build:workspace --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
+          cp package.json dist-workspace
+          cp yarn.lock dist-workspace
       - uses: actions/upload-artifact@v2
         with:
-          name: api-dist
-          path: packages/api/dist/
+          name: dist-workspace
+          path: dist-workspace
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -242,16 +228,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: core-build
-          path: packages/api/dist-core
-      - uses: actions/download-artifact@v2
-        with:
-          name: client-build
-          path: packages/client/build
-      - uses: actions/download-artifact@v2
-        with:
-          name: api-dist
-          path: packages/api/dist
+          name: dist-workspace
+          path: dist-workspace
       - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -261,12 +239,17 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cd packages/api
+          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+          cp packages/api/app-staging.yaml dist-workspace/packages/api
+
+          cp packages/client/app-staging.yaml dist-workspace/packages/client
+
+          cd dist-workspace/packages/api
           # replacing @cloud-carbon-footprint/core with a local reference
           # we need to do this until general solution is built
-          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
+          # sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
           ./create_server_env_file.sh
-          cd ../..
+          cd ../../..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
