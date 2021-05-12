@@ -197,7 +197,6 @@ export default class ConsumptionManagementService {
 
         // if memory usage, only return the memory footprint
         if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
-          if (memoryFootprint) memoryFootprint.usesAverageCPUConstant = false
           return memoryFootprint
         }
 
