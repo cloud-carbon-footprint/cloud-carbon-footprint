@@ -8,7 +8,7 @@ import {
   Credentials,
   WebIdentityCredentials,
 } from 'aws-sdk'
-import { google } from 'googleapis'
+import { IAMCredentialsClient } from '@google-cloud/iam-credentials'
 import { GoogleAuth, JWT } from 'google-auth-library'
 
 export default class GCPCredentials extends Credentials {
@@ -53,11 +53,10 @@ export default class GCPCredentials extends Credentials {
     const auth = new GoogleAuth({
       scopes: 'https://www.googleapis.com/auth/cloud-platform',
     })
-    const iamCredentials = google.iamcredentials('v1')
 
     // TODO -- replace any with proper types
     const authClient: any = await auth.getClient()
-    google.options({ auth: authClient })
+    const iamCredentials = new IAMCredentialsClient({ auth: auth })
 
     const projectId = await auth.getProjectId()
 
@@ -65,13 +64,11 @@ export default class GCPCredentials extends Credentials {
       ? (<JWT>authClient).email
       : `${projectId}@appspot.gserviceaccount.com`
 
-    const res = await iamCredentials.projects.serviceAccounts.generateIdToken({
+    const [res] = await iamCredentials.generateIdToken({
       name: `projects/-/serviceAccounts/${authClientEmail}`,
-      requestBody: {
-        audience: `${authClientEmail}`,
-        includeEmail: true,
-      },
+      audience: `${authClientEmail}`,
+      includeEmail: true,
     })
-    return res.data.token
+    return res.token
   }
 }
