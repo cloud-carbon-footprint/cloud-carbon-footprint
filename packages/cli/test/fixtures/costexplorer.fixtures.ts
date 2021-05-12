@@ -41,83 +41,85 @@ export const lambdaMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const elastiCacheMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        Start: dayOne,
-        End: dayTwo,
+export const elastiCacheMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse =
+  {
+    ResultsByTime: [
+      {
+        TimePeriod: {
+          Start: dayOne,
+          End: dayTwo,
+        },
+        Groups: [
+          {
+            Keys: ['USE2-NodeUsage:cache.t3.medium'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '1000',
+              },
+            },
+          },
+          {
+            Keys: ['USE2-NodeUsage:cache.t2.micro'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '1000',
+              },
+            },
+          },
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1000',
+      {
+        TimePeriod: {
+          Start: dayTwo,
+          End: dayThree,
+        },
+        Groups: [
+          {
+            Keys: ['USE2-NodeUsage:cache.t3.medium'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '2000',
+              },
             },
           },
-        },
-        {
-          Keys: ['USE2-NodeUsage:cache.t2.micro'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1000',
-            },
-          },
-        },
-      ],
-    },
-    {
-      TimePeriod: {
-        Start: dayTwo,
-        End: dayThree,
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '2000',
-            },
-          },
-        },
-      ],
-    },
-  ],
-}
+    ],
+  }
 
-export const elastiCacheMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        Start: dayOne,
-        End: dayTwo,
+export const elastiCacheMockGetCostResponse: CostExplorer.GetCostAndUsageResponse =
+  {
+    ResultsByTime: [
+      {
+        TimePeriod: {
+          Start: dayOne,
+          End: dayTwo,
+        },
+        Groups: [
+          {
+            Keys: ['USE2-NodeUsage:cache.t3.medium'],
+            Metrics: { AmortizedCost: { Amount: '1.0', Unit: 'USD' } },
+          },
+          {
+            Keys: ['USE2-NodeUsage:cache.t2.micro'],
+            Metrics: { AmortizedCost: { Amount: '2.0', Unit: 'USD' } },
+          },
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: { AmortizedCost: { Amount: '1.0', Unit: 'USD' } },
+      {
+        TimePeriod: {
+          Start: dayTwo,
+          End: dayThree,
         },
-        {
-          Keys: ['USE2-NodeUsage:cache.t2.micro'],
-          Metrics: { AmortizedCost: { Amount: '2.0', Unit: 'USD' } },
-        },
-      ],
-    },
-    {
-      TimePeriod: {
-        Start: dayTwo,
-        End: dayThree,
+        Groups: [
+          {
+            Keys: ['USE2-NodeUsage:cache.t3.medium'],
+            Metrics: { AmortizedCost: { Amount: '3.0', Unit: 'USD' } },
+          },
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USE2-NodeUsage:cache.t3.medium'],
-          Metrics: { AmortizedCost: { Amount: '3.0', Unit: 'USD' } },
-        },
-      ],
-    },
-  ],
-}
+    ],
+  }
 
 export const s3MockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ResultsByTime: [
@@ -243,134 +245,138 @@ export const ebsMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
   ],
 }
 
-export const rdsComputeMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        End: dayTwo,
-        Start: dayOne,
-      },
-      Groups: [
-        {
-          Keys: ['USW1-InstanceUsage:db.t3.medium'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1000',
+export const rdsComputeMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse =
+  {
+    ResultsByTime: [
+      {
+        TimePeriod: {
+          End: dayTwo,
+          Start: dayOne,
+        },
+        Groups: [
+          {
+            Keys: ['USW1-InstanceUsage:db.t3.medium'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '1000',
+              },
             },
           },
-        },
-      ],
-    },
-    {
-      TimePeriod: {
-        End: dayThree,
-        Start: dayTwo,
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1000',
+      {
+        TimePeriod: {
+          End: dayThree,
+          Start: dayTwo,
+        },
+        Groups: [
+          {
+            Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '1000',
+              },
             },
           },
-        },
-      ],
-    },
-  ],
-}
+        ],
+      },
+    ],
+  }
 
-export const rdsComputeMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        Start: dayOne,
-        End: dayTwo,
-      },
-      Groups: [
-        {
-          Keys: ['USW1-InstanceUsage:db.t3.medium'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+export const rdsComputeMockGetCostResponse: CostExplorer.GetCostAndUsageResponse =
+  {
+    ResultsByTime: [
+      {
+        TimePeriod: {
+          Start: dayOne,
+          End: dayTwo,
         },
-      ],
-    },
-    {
-      TimePeriod: {
-        Start: dayTwo,
-        End: dayThree,
+        Groups: [
+          {
+            Keys: ['USW1-InstanceUsage:db.t3.medium'],
+            Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          },
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+      {
+        TimePeriod: {
+          Start: dayTwo,
+          End: dayThree,
         },
-      ],
-    },
-  ],
-}
+        Groups: [
+          {
+            Keys: ['USW1-InstanceUsage:db.r5.24xlarge'],
+            Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          },
+        ],
+      },
+    ],
+  }
 
-export const rdsStorageMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        Start: dayOne,
-        End: dayTwo,
-      },
-      Groups: [
-        {
-          Keys: ['USW1-RDS:GP2-Storage'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1000',
+export const rdsStorageMockGetUsageResponse: CostExplorer.GetCostAndUsageResponse =
+  {
+    ResultsByTime: [
+      {
+        TimePeriod: {
+          Start: dayOne,
+          End: dayTwo,
+        },
+        Groups: [
+          {
+            Keys: ['USW1-RDS:GP2-Storage'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '1000',
+              },
             },
           },
-        },
-      ],
-    },
-    {
-      TimePeriod: {
-        Start: dayTwo,
-        End: dayThree,
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USW1-RDS:GP2-Storage'],
-          Metrics: {
-            UsageQuantity: {
-              Amount: '1000',
+      {
+        TimePeriod: {
+          Start: dayTwo,
+          End: dayThree,
+        },
+        Groups: [
+          {
+            Keys: ['USW1-RDS:GP2-Storage'],
+            Metrics: {
+              UsageQuantity: {
+                Amount: '1000',
+              },
             },
           },
-        },
-      ],
-    },
-  ],
-}
+        ],
+      },
+    ],
+  }
 
-export const rdsStorageMockGetCostResponse: CostExplorer.GetCostAndUsageResponse = {
-  ResultsByTime: [
-    {
-      TimePeriod: {
-        Start: dayOne,
-        End: dayTwo,
-      },
-      Groups: [
-        {
-          Keys: ['USW1-RDS:GP2-Storage'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+export const rdsStorageMockGetCostResponse: CostExplorer.GetCostAndUsageResponse =
+  {
+    ResultsByTime: [
+      {
+        TimePeriod: {
+          Start: dayOne,
+          End: dayTwo,
         },
-      ],
-    },
-    {
-      TimePeriod: {
-        Start: dayTwo,
-        End: dayThree,
+        Groups: [
+          {
+            Keys: ['USW1-RDS:GP2-Storage'],
+            Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          },
+        ],
       },
-      Groups: [
-        {
-          Keys: ['USW1-RDS:GP2-Storage'],
-          Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+      {
+        TimePeriod: {
+          Start: dayTwo,
+          End: dayThree,
         },
-      ],
-    },
-  ],
-}
+        Groups: [
+          {
+            Keys: ['USW1-RDS:GP2-Storage'],
+            Metrics: { AmortizedCost: { Amount: '2.3081821243', Unit: 'USD' } },
+          },
+        ],
+      },
+    ],
+  }

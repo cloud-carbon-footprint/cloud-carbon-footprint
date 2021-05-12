@@ -72,19 +72,15 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-02').toDate(),
       }
 
-      const expectedEstimationResults: EstimationResult[] = buildFootprintEstimates(
-        '2020-01-01',
-        1,
-        dummyServiceEstimate,
-      )
+      const expectedEstimationResults: EstimationResult[] =
+        buildFootprintEstimates('2020-01-01', 1, dummyServiceEstimate)
       mockGetEstimates.mockResolvedValueOnce(expectedEstimationResults)
 
       const target = {}
       //run
       cacheDecorator(target, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(
-        rawRequest,
-      )
+      const estimationResult: EstimationResult[] =
+        await propertyDescriptor.value(rawRequest)
 
       //assert
       expect(estimationResult).toEqual(expectedEstimationResults)
@@ -121,9 +117,8 @@ describe('Cache', () => {
 
       //run
       cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(
-        rawRequest,
-      )
+      const estimationResult: EstimationResult[] =
+        await propertyDescriptor.value(rawRequest)
 
       //assert
       const expectedEstimationResults: EstimationResult[] = [
@@ -183,16 +178,12 @@ describe('Cache', () => {
 
       //run
       cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] = await propertyDescriptor.value(
-        rawRequest,
-      )
+      const estimationResult: EstimationResult[] =
+        await propertyDescriptor.value(rawRequest)
 
       //assert
-      const expectedEstimationResults: EstimationResult[] = buildFootprintEstimates(
-        '2020-07-31',
-        2,
-        dummyServiceEstimate,
-      )
+      const expectedEstimationResults: EstimationResult[] =
+        buildFootprintEstimates('2020-07-31', 2, dummyServiceEstimate)
 
       expect(originalFunction).not.toHaveBeenCalled()
       expect(estimationResult).toEqual(expectedEstimationResults)

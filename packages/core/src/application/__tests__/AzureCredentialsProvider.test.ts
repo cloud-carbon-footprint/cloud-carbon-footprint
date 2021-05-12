@@ -21,7 +21,8 @@ jest.mock('@google-cloud/secret-manager', () => {
 })
 jest.mock('../ConfigLoader')
 jest.mock('@azure/ms-rest-nodeauth')
-const mockLoginWithServicePrincipalSecret = loginWithServicePrincipalSecret as jest.Mock
+const mockLoginWithServicePrincipalSecret =
+  loginWithServicePrincipalSecret as jest.Mock
 
 describe('Azure Credentials Provider', () => {
   beforeEach(() => {

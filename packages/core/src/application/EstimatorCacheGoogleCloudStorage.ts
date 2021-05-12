@@ -14,7 +14,8 @@ export const cacheFileName =
 const storage = new Storage()
 
 export default class EstimatorCacheGoogleCloudStorage
-  implements EstimatorCache {
+  implements EstimatorCache
+{
   private readonly bucketName: string
   private readonly cacheFileName: string
 

@@ -26,8 +26,8 @@ export default class AWSCredentialsProvider {
             RoleArn: `arn:aws:iam::${accountId}:role/${
               config().AWS.authentication.options.targetRoleSessionName
             }`,
-            RoleSessionName: config().AWS.authentication.options
-              .targetRoleSessionName,
+            RoleSessionName:
+              config().AWS.authentication.options.targetRoleSessionName,
           },
         })
       default:
