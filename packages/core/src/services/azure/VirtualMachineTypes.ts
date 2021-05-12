@@ -13,39 +13,6 @@ import {
 export const VIRTUAL_MACHINE_TYPE_SERIES_MAPPING: {
   [series: string]: { [instanceType: string]: number[] } // [vcpus, memory]
 } = {
-  'non-series': {
-    'vCPU Duration': [1, null],
-    vCore: [1, null],
-    '2 vCore': [2, null],
-    D1: [1, 3.5],
-    D2: [2, 7],
-    D3: [4, 14],
-    D4: [8, 28],
-    // Basic Service Plan
-    B1: [1, 1.75],
-    B2: [2, 3.5],
-    B3: [4, 7],
-    // Standard Service Plan
-    S1: [1, 1.75],
-    S2: [2, 3.5],
-    S3: [4, 7],
-    // Premium v2 Service Plan
-    'P1 v2': [1, 3.5],
-    'P2 v2': [2, 7],
-    'P3 v2': [4, 14],
-    // Premium v3 Service Plan
-    'P1 v3': [2, 8],
-    'P2 v3': [4, 16],
-    'P3 v3': [8, 32],
-    // Isolated Service Plan
-    I1: [1, 3.5],
-    I2: [2, 7],
-    I3: [4, 14],
-    // Isolated v2 Plan
-    'I1 v2': [2, 8],
-    'I2 v2': [4, 16],
-    'I3 v2': [8, 32],
-  },
   'As-series': {
     A0: [1, 0.75],
     A1: [1, 1.75],
