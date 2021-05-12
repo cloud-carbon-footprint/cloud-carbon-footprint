@@ -176,8 +176,8 @@ export class Filters {
     )
     return resultsFilteredByService
       .map((estimationResult) => {
-        const filteredServiceEstimates = estimationResult.serviceEstimates.filter(
-          (serviceEstimate) => {
+        const filteredServiceEstimates =
+          estimationResult.serviceEstimates.filter((serviceEstimate) => {
             return (
               this.accounts.some(
                 (account) =>
@@ -186,8 +186,7 @@ export class Filters {
                   account.name === serviceEstimate.accountName,
               ) || allAccountsSelected
             )
-          },
-        )
+          })
         return {
           timestamp: estimationResult.timestamp,
           serviceEstimates: filteredServiceEstimates,

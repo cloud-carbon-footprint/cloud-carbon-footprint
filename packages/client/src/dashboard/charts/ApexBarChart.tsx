@@ -36,10 +36,8 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   const [pageData, setPageData] = useState<Page<Entry>>({ data: [], page: 0 })
   const theme = useTheme()
 
-  const {
-    data: emissionsData,
-    loading: emissionsLoading,
-  } = useRemoteEmissionService()
+  const { data: emissionsData, loading: emissionsLoading } =
+    useRemoteEmissionService()
 
   const mainTheme = theme.palette.primary.main
   const darkTheme = theme.palette.primary.dark
