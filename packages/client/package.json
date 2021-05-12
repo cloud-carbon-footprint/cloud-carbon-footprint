@@ -79,7 +79,7 @@
     "@testing-library/react-hooks": "^5.0.3",
     "@testing-library/user-event": "^13.0.7",
     "@types/jest": "^26.0.20",
-    "@types/mockdate": "^2.0.0",
+    "@types/mockdate": "^3.0.0",
     "@types/node": "^15.0.1",
     "@types/ramda": "^0.27.38",
     "@types/react": "^17.0.2",
