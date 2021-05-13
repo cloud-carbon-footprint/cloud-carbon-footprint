@@ -73,7 +73,9 @@ const getEnvVar = (envVar: string): string => {
 
 const appConfig: CCFConfig = {
   AWS: {
-    USE_BILLING_DATA: !!process.env.AWS_USE_BILLING_DATA,
+    USE_BILLING_DATA:
+      !!process.env.AWS_USE_BILLING_DATA &&
+      process.env.AWS_USE_BILLING_DATA !== 'false',
     BILLING_ACCOUNT_ID: getEnvVar('AWS_BILLING_ACCOUNT_ID') || '',
     BILLING_ACCOUNT_NAME: getEnvVar('AWS_BILLING_ACCOUNT_NAME') || '',
     ATHENA_DB_NAME: getEnvVar('AWS_ATHENA_DB_NAME') || '',
@@ -147,14 +149,18 @@ const appConfig: CCFConfig = {
         name: 'ComputeEngine',
       },
     ],
-    USE_BILLING_DATA: !!process.env.GCP_USE_BILLING_DATA,
+    USE_BILLING_DATA:
+      !!process.env.GCP_USE_BILLING_DATA &&
+      process.env.GCP_USE_BILLING_DATA !== 'false',
     BIG_QUERY_TABLE: getEnvVar('GCP_BIG_QUERY_TABLE') || '',
     BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_ACCOUNT_ID') || '',
     BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_ACCOUNT_NAME') || '',
     CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
   },
   AZURE: {
-    USE_BILLING_DATA: !!process.env.AZURE_USE_BILLING_DATA,
+    USE_BILLING_DATA:
+      !!process.env.AZURE_USE_BILLING_DATA &&
+      process.env.AZURE_USE_BILLING_DATA !== 'false',
     authentication: {
       mode: getEnvVar('AZURE_AUTH_MODE') || 'default',
       clientId: getEnvVar('AZURE_CLIENT_ID') || '',
