@@ -17,7 +17,7 @@
   --ifm-code-font-size: 95%;
   --ifm-navbar-background-color: #146133;
   --ifm-navbar-link-hover-color: #ffffff;
-  
+
 }
 
 html[data-theme='light'] {
@@ -72,10 +72,6 @@ html[data-theme='light'] {
 .navbar__link {
   color: white;
   margin-right: -10px;
-}
-
-a:hover {
-  text-decoration: none;
 }
 
 .sidebar_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocSidebar- {
