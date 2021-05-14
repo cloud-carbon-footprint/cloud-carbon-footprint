@@ -48,7 +48,7 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
-import { calculateGigabyteHours } from '../common/'
+import { calculateGigabyteHours, getPhysicalChips } from '../common/'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -315,13 +315,17 @@ export default class CostAndUsageReports {
     const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
       familyInstanceTypes[familyInstanceTypes.length - 1]
 
+    // there are special cases for instance families m5zn and z1d where they are always 2
+    const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
+      ? 2
+      : getPhysicalChips(largestInstanceTypevCpus)
+
     return calculateGigabyteHours(
-      largestInstanceTypevCpus,
+      physicalChips,
       largestInstanceTypeMemory,
       processorMemoryGigabytesPerPhysicalChip,
       instanceTypeMemory,
       usageAmount,
-      instanceFamily,
     )
   }
 
