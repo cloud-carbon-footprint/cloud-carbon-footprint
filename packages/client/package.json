@@ -44,7 +44,7 @@
   },
   "proxy": "http://localhost:4000",
   "scripts": {
-    "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
+    "precommit": "lint-staged --no-stash && yarn test --coverage --runInBand --bail",
     "start": "react-scripts start",
     "start-with-mock-data": "concurrently \"yarn start\" \"yarn start-stub-server\"",
     "sonar:scan": "sonar-scanner",
