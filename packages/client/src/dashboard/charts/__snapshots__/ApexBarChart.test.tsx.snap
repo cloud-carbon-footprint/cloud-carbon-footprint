@@ -106,8 +106,9 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
           "labels": Object {
             "maxWidth": 150,
             "minWidth": 150,
+            "offsetY": 5,
             "style": Object {
-              "fontSize": "13px",
+              "fontSize": "12px",
             },
           },
         },
@@ -567,8 +568,9 @@ exports[`ApexBarChart should set colors to each bar based on region emissions 1`
           "labels": Object {
             "maxWidth": 150,
             "minWidth": 150,
+            "offsetY": 5,
             "style": Object {
-              "fontSize": "13px",
+              "fontSize": "12px",
             },
           },
         },

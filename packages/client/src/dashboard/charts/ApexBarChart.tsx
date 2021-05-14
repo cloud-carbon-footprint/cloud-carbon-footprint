@@ -174,8 +174,9 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       labels: {
         minWidth: 150,
         maxWidth: 150,
+        offsetY: 5,
         style: {
-          fontSize: '13px',
+          fontSize: '12px',
         },
       },
     },
