@@ -86,11 +86,11 @@ fileignoreconfig:
 - filename: packages/core/src/services/aws/CostAndUsageReports.ts
   checksum: 55126e27e72ead83fdfd451ba1e0109199692703db45a5af1a639e367422b004
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
-  checksum: e5a57fb54719d13448f197c67ef4dfe60835fc5c17519e95ae474e3506cd40cb
+  checksum: f510cdb57ef982213cad2da27184a226c8ce4353b9821fa8d00767599cbf2cfa
 - filename: packages/core/src/services/azure/ConsumptionManagement.ts
   checksum: 27fa921d2e5c1fbb1044db6487348dc79fa57a4fc3ff10cea561e94d60d8e460
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
-  checksum: eef362de0241e594bf34e9c07837a8ef20e3e1dae2c8821ae8de8a18abaec371
+  checksum: ee532a9a6321e2844b8e9b4bf3c8de6e640d294d87c7965a11b091cc0f338d3e
 - filename: packages/core/src/services/common/types.ts
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
 - filename: packages/core/src/services/gcp/BillingExportTable.ts
