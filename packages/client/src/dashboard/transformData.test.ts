@@ -118,7 +118,23 @@ const dataWithHigherPrecision: EstimationResult[] = [
   },
 ]
 
-const dataWithUnknowns: EstimationResult[] = [
+interface serviceEstimateWithUnknowns {
+  cloudProvider: string
+  accountName: string | null
+  serviceName: string | null
+  kilowattHours: number
+  co2e: number
+  cost: number
+  region: string
+  usesAverageCPUConstant?: boolean
+}
+
+interface EstimationResultWithUnknowns {
+  timestamp: Date
+  serviceEstimates: serviceEstimateWithUnknowns[]
+}
+
+const dataWithUnknowns: EstimationResultWithUnknowns[] = [
   {
     timestamp: date1,
     serviceEstimates: [

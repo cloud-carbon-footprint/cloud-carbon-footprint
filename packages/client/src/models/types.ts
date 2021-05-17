@@ -5,8 +5,8 @@ import { DropdownOption } from '../dashboard/filters/DropdownFilter'
 
 export interface serviceEstimate {
   cloudProvider: string
-  accountName: string | null
-  serviceName: string | null
+  accountName: string
+  serviceName: string
   kilowattHours: number
   co2e: number
   cost: number
