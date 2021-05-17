@@ -198,7 +198,7 @@ where:
 
 `Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts)`
 
-`Running Time = Lambda execution time / 3600 seconds` 
+`Running Time = Lambda execution time / 3600 seconds`
 
 `Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB`
 
@@ -226,8 +226,7 @@ Here is the estimated HDD energy usage:
 - HDD average capacity in 2020 = **10** Terabytes per disk
 - Average wattage per disk for 2020 = **6.5** Watts per disk
 
-`Watts per Terabyte = Watts per disk / Terabytes per disk:
-6.65 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
+`Watts per Terabyte = Watts per disk / Terabytes per disk: 6.65 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
 
 Here is the estimated SSD energy usage:
 
@@ -287,7 +286,7 @@ Google has [published](https://cloud.google.com/sustainability/region-carbon) th
 
 **AWS & Azure:**
 
-In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/egrid/download-data) that
+In the United States, we use the EPA’s [eGRID2019 Data](https://www.epa.gov/egrid/download-data) that
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more
@@ -359,12 +358,12 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 
 | Region         | Country       | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | -------------- | ------------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| us-east-1      | United States | SERC        | 0.00045455            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-east-2      | United States | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west-1      | United States | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west-2      | United States | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-gov-east-1  | United States | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-gov-west-1  | United States | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-east-1      | United States | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-east-2      | United States | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-west-1      | United States | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-west-2      | United States | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-gov-east-1  | United States | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-gov-west-1  | United States | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | af-south-1     | South Africa  |             | 0.000928              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | ap-east-1      | Hong Kong     |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | ap-south-1     | India         |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
@@ -425,16 +424,16 @@ or submit an issue or pull request.
 
 | Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| US Central       | Iowa        | MRO         | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East          | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East 2        | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East 3        | Georgia     | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US North Central | Illinois    | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US South Central | Texas       | TRE         | 0.000424877           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West Central  | Wyoming     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West          | California  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West 2        | Washington  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West 3        | Arizona     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US Central       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East          | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East 2        | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East 3        | Georgia     | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US North Central | Illinois    | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US South Central | Texas       | TRE         | 0.000396293           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West Central  | Wyoming     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West          | California  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West 2        | Washington  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West 3        | Arizona     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
 | EU North         | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
