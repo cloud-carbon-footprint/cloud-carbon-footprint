@@ -118,7 +118,7 @@ const dataWithHigherPrecision: EstimationResult[] = [
   },
 ]
 
-const dataWithUnknowns: any[] = [
+const dataWithUnknowns: EstimationResult[] = [
   {
     timestamp: date1,
     serviceEstimates: [
