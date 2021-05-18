@@ -96,6 +96,8 @@ jobs:
         run: |
           mkdir -p dist-workspace/packages
           yarn lerna run build:workspace --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
+          cd dist-workspace
+          yarn lerna run build:update --scope @cloud-carbon-footprint/api
           cp package.json dist-workspace
           cp yarn.lock dist-workspace
       - uses: actions/upload-artifact@v2
