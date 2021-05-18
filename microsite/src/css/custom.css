@@ -33,6 +33,10 @@ html[data-theme='light'] {
   padding: 0 var(--ifm-pre-padding);
 }
 
+.navbar__brand {
+  text-decoration: none;
+}
+
 .navbar__title {
   color: #ffffff;
   font-size: 1.5rem;
@@ -79,6 +83,15 @@ html[data-theme='light'] {
 
 .react-toggle {
   margin-left: 15px;
+}
+
+a {
+  text-decoration: underline;
+}
+
+.menu__link,
+.table-of-contents__link {
+  text-decoration: none;
 }
 
 @media screen and (max-width: 400px) {
