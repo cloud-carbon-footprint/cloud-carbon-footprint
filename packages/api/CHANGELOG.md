@@ -1,5 +1,62 @@
 # @cloud-carbon-footprint/api
 
+## 0.2.5
+
+### Patch Changes
+
+- b63d8a67: The default `aws-sdk` dependency was bumped to `"^2.890.0"`,
+- f48a0f56: Fix to remove shadowing variables and use socket:
+
+  `packages/api/src/api.ts`:
+
+  ```diff
+      // ...
+
+          res: express.Response,
+      ): Promise<void> {
+      // Set the request time out to 10 minutes to allow the request enough time to complete.
+  -   req.connection.setTimeout(1000 * 60 * 10)
+  +   req.socket.setTimeout(1000 * 60 * 10)
+      const rawRequest: RawRequest = {
+          startDate: req.query.start?.toString(),
+          endDate: req.query.end?.toString(),
+
+      // ...
+
+      try {
+          const emissionsResults: EmissionsRatios[] = Object.values(
+          CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  -     ).reduce((result, cloudProvider) => {
+  -       return Object.keys(cloudProvider).reduce((result, key) => {
+  -         result.push({ region: key, mtPerKwHour: cloudProvider[key] })
+  -         return result
+  -       }, result)
+  +     ).reduce((cloudProviderResult, cloudProvider) => {
+  +       return Object.keys(cloudProvider).reduce((emissionDataResult, key) => {
+  +         cloudProviderResult.push({
+  +           region: key,
+  +           mtPerKwHour: cloudProvider[key],
+  +         })
+  +         return emissionDataResult
+  +       }, cloudProviderResult)
+          }, [])
+          res.json(emissionsResults)
+      } catch (e) {
+
+      // ...
+  ```
+
+- Updated dependencies [56bb6da6]
+- Updated dependencies [68365cbf]
+- Updated dependencies [b63d8a67]
+- Updated dependencies [8df5703b]
+- Updated dependencies [3e2f876d]
+- Updated dependencies [3abe3dca]
+- Updated dependencies [29f48e7c]
+- Updated dependencies [370c509d]
+- Updated dependencies [7d523b59]
+  - @cloud-carbon-footprint/core@0.7.0
+
 ## 0.2.4
 
 ### Patch Changes
