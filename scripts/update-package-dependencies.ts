@@ -1,62 +1,95 @@
+/*
+ * © 2021 ThoughtWorks, Inc.
+ */
 import { exec as execCb } from 'child_process'
 import { promisify } from 'util'
+import fs from 'fs'
+import path from 'path'
 
 const exec = promisify(execCb)
 
-const { dependencies } from './packaage.json'
-
 async function main() {
+  const args = process.argv.slice(2)
+  const currentPackageName = args[0]
+  const packageNames = args.slice(1)
 
-    const packageNams = process.argv.slice(2)
-    console.log(packageNames)
+  updatePackageDepencies(packageNames, currentPackageName)
+  // Make sure the package.json file is writen to, toi update the references
 
-    // const { Project } = require('@lerna/project');
-    // const { PackageGraph } = require('@lerna/package-graph');
-    //
-    // const project = new Project('../dist-workspace')
-    // const packages = await project.getPackages();
-    // const graph = new PackageGraph(packages);
-    //
-    // const node = graph.get(`@cloud-carbon-footprint/${packageName}`);
-    // if (!node) {
-    //     throw new Error(`Package '${packageName}' not found`);
-    // }
-    for (const package in packageNams) {
-        await runCmd(`cp ../${package} .`)
-        // pull the package.json in memory as a JS object
-        // Update the depedancies for all p
-
-        dependencies[`@cloud-footprint/${package}`] = `./${package}]`
-
-        // OR
-
-        const packeFile = fs.Read('package.json')
-
-        // Make sure the package.json file is writen to, toi update the references
-    }
-
-
-    //work on this to look for cloud carbon dependencies and change the relase dependency to the local one
-
-    // const pkgDeps = Object.keys(node.pkg.dependencies ?? {});
-    // const localDeps: string[] = Array.from(node.localDependencies.keys());
-    // const filteredDeps = localDeps.filter(dep => pkgDeps.includes(dep));
-
-    // searchNames.push(...filteredDeps);
-
+  //copy core/dist to api and rename it to core
+  copyDistDirectories(packageNames, currentPackageName)
 }
 
 const runCmd = async (cmd: string) => {
-    try {
-        await exec(cmd)
-    } catch (error) {
-        process.stdout.write(error.stderr)
-        process.stdout.write(error.stdout)
-        throw new Error(`Could not execute command ${cmd}`)
-    }
+  try {
+    await exec(cmd)
+  } catch (error) {
+    process.stdout.write(error.stderr)
+    process.stdout.write(error.stdout)
+    throw new Error(`Could not execute command ${cmd}`)
+  }
 }
 
 main().catch((error) => {
-    console.error(error.stack)
-    process.exit(1)
+  console.error(error.stack)
+  process.exit(1)
 })
+
+function copyDistDirectories(
+  packageNames: string[],
+  currentPackageName: string,
+) {
+  const baseDir: string = path.resolve(
+    __dirname,
+    `../dist-workspace/packages/${currentPackageName}`,
+  )
+
+  packageNames.forEach((name) => {
+    const targetDir = path.resolve(
+      __dirname,
+      `../dist-workspace/packages/${name}/dist`,
+    )
+
+    runCmd(`cp -R ${targetDir} ${baseDir}/${name}`)
+  })
+}
+
+function updatePackageDepencies(
+  packageNames: string[],
+  currentPackageName: string,
+) {
+  try {
+    const data = fs.readFileSync(
+      path.resolve(
+        __dirname,
+        `../dist-workspace/packages/${currentPackageName}/package.json`,
+      ),
+      'utf8',
+    )
+
+    const packageJSON = JSON.parse(data)
+
+    packageNames.forEach((name) => {
+      const localDeps = Object.keys(packageJSON.dependencies)
+        .filter((key) => key === `@cloud-carbon-footprint/${name}`)
+        .pop()
+      packageJSON.dependencies[localDeps] = `./${name}`
+    })
+
+    fs.writeFile(
+      path.resolve(
+        __dirname,
+        `../dist-workspace/packages/${currentPackageName}/package.json`,
+      ),
+      JSON.stringify(packageJSON),
+      (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+      },
+    )
+  } catch (err) {
+    console.error(err)
+  }
+}

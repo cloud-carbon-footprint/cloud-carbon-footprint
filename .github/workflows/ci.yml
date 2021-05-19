@@ -94,7 +94,6 @@ jobs:
           cd ../..
       - name: build-workspace
         run: |
-          mkdir -p dist-workspace/packages
           yarn lerna run build:workspace --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
           cd dist-workspace
           yarn lerna run build:update --scope @cloud-carbon-footprint/api
