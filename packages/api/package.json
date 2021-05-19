@@ -31,7 +31,7 @@
     "build:tsc": "tsc --build tsconfig.json",
     "build:watch": "onchange 'src/**/*.ts' -- yarn build",
     "build:workspace": "mkdir -p ../../dist-workspace/packages/api/dist && cp -R dist ../../dist-workspace/packages/api && mv ../../dist-workspace/packages/api/dist/package.json ../../dist-workspace/packages/api",
-    "build:update": "node ../../scripts/update-package-dependencies.js core",
+    "build:update": "ts-node ../../scripts/update-package-dependencies.ts core",
     "prepack": "ts-node ../../scripts/prepack.ts",
     "postpack": "ts-node ../../scripts/postpack.ts",
     "view:coverage": "serve coverage/lcov-report",
