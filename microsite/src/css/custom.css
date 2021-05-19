@@ -17,7 +17,6 @@
   --ifm-code-font-size: 95%;
   --ifm-navbar-background-color: #146133;
   --ifm-navbar-link-hover-color: #ffffff;
-  
 }
 
 html[data-theme='light'] {
@@ -32,6 +31,10 @@ html[data-theme='light'] {
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+.navbar__brand {
+  text-decoration: none;
 }
 
 .navbar__title {
@@ -74,16 +77,21 @@ html[data-theme='light'] {
   margin-right: -10px;
 }
 
-a:hover {
-  text-decoration: none;
-}
-
 .sidebar_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocSidebar- {
   height: auto !important;
 }
 
 .react-toggle {
   margin-left: 15px;
+}
+
+a {
+  text-decoration: underline;
+}
+
+.menu__link,
+.table-of-contents__link {
+  text-decoration: none;
 }
 
 @media screen and (max-width: 400px) {

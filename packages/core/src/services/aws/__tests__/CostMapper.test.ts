@@ -5,7 +5,7 @@
 import { getCostFromCostExplorer } from '../CostMapper'
 import { AWS_REGIONS } from '../AWSRegions'
 import AWSMock from 'aws-sdk-mock'
-import { CostExplorer } from 'aws-sdk'
+import AWS, { CostExplorer } from 'aws-sdk'
 import {
   GetCostAndUsageRequest,
   GetCostAndUsageResponse,
@@ -14,6 +14,10 @@ import { ServiceWrapper } from '../ServiceWrapper'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
+
+beforeAll(() => {
+  AWSMock.setSDKInstance(AWS)
+})
 
 describe('CostMapper', function () {
   it('calculates cost ', async () => {
@@ -30,7 +34,11 @@ describe('CostMapper', function () {
 
     const costs = await getCostFromCostExplorer(
       buildRequestParams(),
-      new ServiceWrapper(undefined, undefined, new CostExplorer()),
+      new ServiceWrapper(
+        undefined,
+        undefined,
+        new CostExplorer({ region: AWS_REGIONS.US_EAST_1 }),
+      ),
     )
 
     expect(costs).toEqual([

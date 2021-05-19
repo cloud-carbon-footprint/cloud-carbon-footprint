@@ -125,11 +125,12 @@ const queryResultsDataOne = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithEC2EBSLambda: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataOne],
-  },
-}
+export const athenaMockGetQueryResultsWithEC2EBSLambda: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataOne],
+    },
+  }
 
 const queryResultsDataTwo = [
   {
@@ -199,11 +200,12 @@ const queryResultsDataTwo = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithS3CloudWatchRDS: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataTwo],
-  },
-}
+export const athenaMockGetQueryResultsWithS3CloudWatchRDS: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataTwo],
+    },
+  }
 
 const queryResultsDataThree = [
   {
@@ -260,11 +262,12 @@ const queryResultsDataThree = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataThree],
-  },
-}
+export const athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataThree],
+    },
+  }
 
 const queryResultsDataFour = [
   {
@@ -321,11 +324,12 @@ const queryResultsDataFour = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithKenesisESAndEc2Spot: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataFour],
-  },
-}
+export const athenaMockGetQueryResultsWithKenesisESAndEc2Spot: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataFour],
+    },
+  }
 
 const queryResultsDataFive = [
   {
@@ -408,11 +412,12 @@ const queryResultsDataFive = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataFive],
-  },
-}
+export const athenaMockGetQueryResultsWithECSEksKafkaAndUnknownServices: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataFive],
+    },
+  }
 
 const queryResultsDataSix = [
   {
@@ -495,11 +500,12 @@ const queryResultsDataSix = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataSix],
-  },
-}
+export const athenaMockGetQueryResultsWithDocDBComputeEbsOptimizedSpotUsage: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataSix],
+    },
+  }
 
 const queryResultsDataSeven = [
   {
@@ -556,11 +562,12 @@ const queryResultsDataSeven = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataSeven],
-  },
-}
+export const athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataSeven],
+    },
+  }
 
 const queryResultsDataEight = [
   {
@@ -604,11 +611,12 @@ const queryResultsDataEight = [
   },
 ]
 
-export const athenaMockGetQueryResultsNetworking: Athena.GetQueryResultsOutput = {
-  ResultSet: {
-    Rows: [queryResultsHeaders, ...queryResultsDataEight],
-  },
-}
+export const athenaMockGetQueryResultsNetworking: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataEight],
+    },
+  }
 
 const queryResultsDataNine = [
   {
@@ -620,7 +628,7 @@ const queryResultsDataNine = [
       { VarCharValue: 'USW2-SpotUsage:t3.micro' },
       { VarCharValue: 'Hours' },
       { VarCharValue: '2' },
-      { VarCharValue: '4354' },
+      { VarCharValue: '17' },
       { VarCharValue: '25' },
     ],
   },
@@ -633,7 +641,7 @@ const queryResultsDataNine = [
       { VarCharValue: 'USE2-SpotUsage:m5.xlarge' },
       { VarCharValue: 'Hours' },
       { VarCharValue: '2' },
-      { VarCharValue: '3450' },
+      { VarCharValue: '15' },
       { VarCharValue: '10' },
     ],
   },
@@ -646,8 +654,21 @@ const queryResultsDataNine = [
       { VarCharValue: 'USW2-SpotUsage:c5d.4xlarge' },
       { VarCharValue: 'Hours' },
       { VarCharValue: '2' },
-      { VarCharValue: '9847' },
+      { VarCharValue: '13' },
       { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-SpotUsage:m5zn.2xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '8' },
+      { VarCharValue: '12' },
+      { VarCharValue: '7' },
     ],
   },
 ]

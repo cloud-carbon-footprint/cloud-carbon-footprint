@@ -112,7 +112,7 @@ It is recommended to keep your changes grouped logically within individual commi
 $ git commit -m "[issue-number] Adds support for estimating Azure Anomoly Detector carbon emissions"
 ```
 
-_Please Note_ We have configured the repository to run secrets scanning (Talisman), dependency version check (Hawkeye), tests and linting with a pre-commit hook. It is recommended you ensure this pre-commit hook is properly set up in your local environment, and to only commit from the command line to ensure that it runs.
+_Please Note_ We have configured the repository to run secrets scanning (Talisman), dependency version check, tests and linting with a pre-commit hook. It is recommended you ensure this pre-commit hook is properly set up in your local environment, and to only commit from the command line to ensure that it runs.
 
 ### Rebase
 
@@ -219,15 +219,6 @@ We've set up module aliasing within the server package, so modules within the su
 ## Lightweight ADR's (Architectural Decision Records) 📄
 
 We record any significant architectural choices we make with lightweight adr files, located in the .adr folder. There is a template included as well. For more information about Lightweight ADR's, see [ThoughtWork's Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records).
-
----
-
-## Hawkeye 👁
-
-- Used to check node packaging and vulnerability
-- This will run along every pre-commit hook
-- to run isolated, cd into server or client and run: `yarn hawkeye scan`
-- You can learn more about Hawkeye [here](https://github.com/hawkeyesec/scanner-cli)
 
 ---
 

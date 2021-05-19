@@ -46,7 +46,9 @@ import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
+import { calculateGigabyteHours, getPhysicalChips } from '../common/'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -111,43 +113,24 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const {
-          gigabytes,
-          numberOfvCpus,
-        } = this.getGigabytesAndvCpusFromInstanceTypeAndProcessors(
-          costAndUsageReportRow.usageType,
+        const gigabyteHoursForMemoryUsage =
+          this.getGigabytesFromInstanceTypeAndProcessors(
+            costAndUsageReportRow.usageType,
+            costAndUsageReportRow.usageAmount,
+          )
+
+        const computeFootprint = this.getComputeFootprintEstimate(
+          costAndUsageReportRow,
         )
 
-        const computeProcessors = this.getComputeProcessorsFromUsageType(
-          costAndUsageReportRow.usageType,
+        const memoryFootprint = this.getMemoryFootprintEstimate(
+          costAndUsageReportRow,
+          gigabyteHoursForMemoryUsage,
         )
 
-        const computeUsage: ComputeUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
-          numberOfvCpus: costAndUsageReportRow.vCpuHours,
-          usesAverageCPUConstant: true,
-        }
-
-        const memoryUsage: MemoryUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          gigabyteHours: gigabytes * numberOfvCpus,
-        }
-
-        const computeFootprint = this.computeEstimator.estimate(
-          [computeUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-          computeProcessors,
-        )[0]
-
-        const memoryFootprint = this.memoryEstimator.estimate(
-          [memoryUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-        )[0]
-
-        if (gigabytes) {
+        // if there exist any gigabytes to calculate memory usage,
+        // add the kwh and co2e for both compute and memory
+        if (gigabyteHoursForMemoryUsage) {
           return {
             timestamp: computeFootprint.timestamp,
             kilowattHours:
@@ -157,83 +140,133 @@ export default class CostAndUsageReports {
           }
         }
 
-        return this.computeEstimator.estimate(
-          [computeUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-          computeProcessors,
-        )[0]
+        return computeFootprint
       case PRICING_UNITS.GB_MONTH_1:
       case PRICING_UNITS.GB_MONTH_2:
       case PRICING_UNITS.GB_MONTH_3:
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
         // Storage
-        const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
-          costAndUsageReportRow,
-        )
-
-        const storageUsage: StorageUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          terabyteHours: usageAmountTerabyteHours,
-        }
-
-        let estimate: FootprintEstimate
-        if (this.usageTypeIsSSD(costAndUsageReportRow))
-          estimate = this.ssdStorageEstimator.estimate(
-            [storageUsage],
-            costAndUsageReportRow.region,
-            'AWS',
-          )[0]
-        else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
-          estimate = this.hddStorageEstimator.estimate(
-            [storageUsage],
-            costAndUsageReportRow.region,
-            'AWS',
-          )[0]
-        else
-          this.costAndUsageReportsLogger.warn(
-            `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
-          )
-        if (estimate) estimate.usesAverageCPUConstant = false
-        return estimate
+        return this.getStorageFootprintEstimate(costAndUsageReportRow)
       case PRICING_UNITS.SECONDS_1:
       case PRICING_UNITS.SECONDS_2:
         // Lambda
-        const lambdaComputeUsage: ComputeUsage = {
-          timestamp: costAndUsageReportRow.timestamp,
-          cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
-          numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
-          usesAverageCPUConstant: true,
-        }
-        return this.computeEstimator.estimate(
-          [lambdaComputeUsage],
-          costAndUsageReportRow.region,
-          'AWS',
-        )[0]
+        return this.getLambdaComputeFootprintEstimate(costAndUsageReportRow)
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
         // Networking
-        let networkingEstimate: FootprintEstimate
-        if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
-          const networkingUsage: NetworkingUsage = {
-            timestamp: costAndUsageReportRow.timestamp,
-            gigabytes: costAndUsageReportRow.usageAmount,
-          }
-          networkingEstimate = this.networkingEstimator.estimate(
-            [networkingUsage],
-            costAndUsageReportRow.region,
-            'AWS',
-          )[0]
-        }
-        if (networkingEstimate)
-          networkingEstimate.usesAverageCPUConstant = false
-        return networkingEstimate
+        return this.getNetworkingFootprintEstimate(costAndUsageReportRow)
       default:
         this.costAndUsageReportsLogger.warn(
           `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
         )
     }
+  }
+
+  private getNetworkingFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ) {
+    let networkingEstimate: FootprintEstimate
+    if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
+      const networkingUsage: NetworkingUsage = {
+        timestamp: costAndUsageReportRow.timestamp,
+        gigabytes: costAndUsageReportRow.usageAmount,
+      }
+      networkingEstimate = this.networkingEstimator.estimate(
+        [networkingUsage],
+        costAndUsageReportRow.region,
+        'AWS',
+      )[0]
+    }
+    if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+    return networkingEstimate
+  }
+
+  private getStorageFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ) {
+    const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
+      costAndUsageReportRow,
+    )
+
+    const storageUsage: StorageUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      terabyteHours: usageAmountTerabyteHours,
+    }
+
+    let estimate: FootprintEstimate
+    if (this.usageTypeIsSSD(costAndUsageReportRow))
+      estimate = this.ssdStorageEstimator.estimate(
+        [storageUsage],
+        costAndUsageReportRow.region,
+        'AWS',
+      )[0]
+    else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
+      estimate = this.hddStorageEstimator.estimate(
+        [storageUsage],
+        costAndUsageReportRow.region,
+        'AWS',
+      )[0]
+    else
+      this.costAndUsageReportsLogger.warn(
+        `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
+      )
+    if (estimate) estimate.usesAverageCPUConstant = false
+    return estimate
+  }
+
+  private getComputeFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ): FootprintEstimate {
+    const computeProcessors = this.getComputeProcessorsFromUsageType(
+      costAndUsageReportRow.usageType,
+    )
+
+    const computeUsage: ComputeUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      numberOfvCpus: costAndUsageReportRow.vCpuHours,
+      usesAverageCPUConstant: true,
+    }
+
+    return this.computeEstimator.estimate(
+      [computeUsage],
+      costAndUsageReportRow.region,
+      'AWS',
+      computeProcessors,
+    )[0]
+  }
+
+  private getMemoryFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+    gigabyteHoursForMemoryUsage: number,
+  ): FootprintEstimate {
+    const memoryUsage: MemoryUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      gigabyteHours: gigabyteHoursForMemoryUsage,
+    }
+
+    return this.memoryEstimator.estimate(
+      [memoryUsage],
+      costAndUsageReportRow.region,
+      'AWS',
+    )[0]
+  }
+
+  private getLambdaComputeFootprintEstimate(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+  ): FootprintEstimate {
+    const lambdaComputeUsage: ComputeUsage = {
+      timestamp: costAndUsageReportRow.timestamp,
+      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
+      usesAverageCPUConstant: true,
+    }
+    return this.computeEstimator.estimate(
+      [lambdaComputeUsage],
+      costAndUsageReportRow.region,
+      'AWS',
+    )[0]
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
@@ -246,45 +279,67 @@ export default class CostAndUsageReports {
     )
   }
 
-  private getGigabytesAndvCpusFromInstanceTypeAndProcessors(
+  private getGigabytesFromInstanceTypeAndProcessors(
     usageType: string,
-  ): { [key: string]: number } {
+    usageAmount: number,
+  ): number {
     const instanceType = this.parseInstanceTypeFromUsageType(usageType)
     const [instanceFamily, instanceSize] = instanceType.split('.')
-    const checkForEC2Instances = Object.keys(EC2_INSTANCE_TYPES).includes(
-      instanceFamily,
-    )
-    const checkForBurstableInstances = Object.keys(
-      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
-    ).includes(instanceType)
-    if (!checkForEC2Instances || checkForBurstableInstances) return {}
 
+    // check to see if the instance type is contained in the AWSInstanceTypes lists
+    // or if the instance type is not a burstable instance, otherwise return void
+    const { isValidInstanceType, isBurstableInstance } =
+      this.checkInstanceTypes(instanceFamily, instanceType)
+    if (!isValidInstanceType || isBurstableInstance) return
+
+    // grab the list of processors per instance type
+    // and then the aws specific memory constant for the processors
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-    const processorMemory = CLOUD_CONSTANTS.AWS.getMemory(processors)
-    const numberOfvCpus =
-      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
+    const processorMemoryGigabytesPerPhysicalChip =
+      CLOUD_CONSTANTS.AWS.getMemory(processors)
 
-    const familyInstanceTypeValues: number[][] = Object.values(
-      EC2_INSTANCE_TYPES[instanceFamily],
+    // grab the instance type vcpu from the AWSInstanceTypes lists
+    const instanceTypeMemory =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1] ||
+      REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
+
+    // grab the entire instance family that the instance type is classified within
+    const familyInstanceTypes: number[][] = Object.values(
+      EC2_INSTANCE_TYPES[instanceFamily] ||
+        REDSHIFT_INSTANCE_TYPES[instanceFamily],
     )
-    const [
-      largestInstanceTypevCpus,
+
+    // grab the vcpu and memory (gb) from the largest instance type in the family
+    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
+      familyInstanceTypes[familyInstanceTypes.length - 1]
+
+    // there are special cases for instance families m5zn and z1d where they are always 2
+    const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
+      ? 2
+      : getPhysicalChips(largestInstanceTypevCpus)
+
+    return calculateGigabyteHours(
+      physicalChips,
       largestInstanceTypeMemory,
-    ] = familyInstanceTypeValues[familyInstanceTypeValues.length - 1]
+      processorMemoryGigabytesPerPhysicalChip,
+      instanceTypeMemory,
+      usageAmount,
+    )
+  }
 
-    const physicalChips = largestInstanceTypevCpus >= 96 ? 2 : 1
-    const instanceTypeMemory = largestInstanceTypeMemory / physicalChips
-    let gigabytes
-    if (instanceTypeMemory - processorMemory > 0) {
-      gigabytes = instanceTypeMemory - processorMemory
-    }
-
-    return {
-      gigabytes,
-      numberOfvCpus,
-    }
+  private checkInstanceTypes(instanceFamily: string, instanceType: string) {
+    // a valid instance type is one that is mapped in the AWSInstanceTypes lists
+    const isValidInstanceType =
+      Object.keys(EC2_INSTANCE_TYPES).includes(instanceFamily) ||
+      Object.keys(REDSHIFT_INSTANCE_TYPES).includes(instanceFamily)
+    // we are not able to calculate memory usage for burstable (t family) instances
+    // unlike other instance families, the largest t instance is not equal to a full machine
+    const isBurstableInstance = Object.keys(
+      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+    ).includes(instanceType)
+    return { isValidInstanceType, isBurstableInstance }
   }
 
   private parseInstanceTypeFromUsageType(usageType: string) {
@@ -419,9 +474,8 @@ export default class CostAndUsageReports {
     queryExecutionInput: GetQueryExecutionInput,
   ) {
     while (true) {
-      const queryExecutionResults: GetQueryExecutionOutput = await this.serviceWrapper.getAthenaQueryExecution(
-        queryExecutionInput,
-      )
+      const queryExecutionResults: GetQueryExecutionOutput =
+        await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === ('FAILED' || 'CANCELLED'))
         throw new Error(
@@ -431,9 +485,8 @@ export default class CostAndUsageReports {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(
-      queryExecutionInput,
-    )
+    const results: GetQueryResultsOutput[] =
+      await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
   }
 }

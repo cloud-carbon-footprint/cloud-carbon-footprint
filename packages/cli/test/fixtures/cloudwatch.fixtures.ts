@@ -46,18 +46,19 @@ export const ec2MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
   Messages: [],
 }
 
-export const elastiCacheMockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 'cpuUtilization',
-      Label: 'AWS/ElastiCache CPUUtilization',
-      Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
-      Values: [1.0456, 2.03242],
-      StatusCode: 'Complete',
-      Messages: [],
-    },
-  ],
-}
+export const elastiCacheMockGetMetricDataResponse: CloudWatch.GetMetricDataOutput =
+  {
+    MetricDataResults: [
+      {
+        Id: 'cpuUtilization',
+        Label: 'AWS/ElastiCache CPUUtilization',
+        Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
+        Values: [1.0456, 2.03242],
+        StatusCode: 'Complete',
+        Messages: [],
+      },
+    ],
+  }
 
 export const s3MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
   MetricDataResults: [
@@ -72,17 +73,18 @@ export const s3MockGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
   ],
 }
 
-export const rdsMockComputeGetMetricDataResponse: CloudWatch.GetMetricDataOutput = {
-  MetricDataResults: [
-    {
-      Id: 'cpuUtilization',
-      Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
-      Values: [22.983333333333334, 31.435897435897434],
-    },
-    {
-      Id: 'cpuUtilization',
-      Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
-      Values: [11.566666666666666, 24.25],
-    },
-  ],
-}
+export const rdsMockComputeGetMetricDataResponse: CloudWatch.GetMetricDataOutput =
+  {
+    MetricDataResults: [
+      {
+        Id: 'cpuUtilization',
+        Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
+        Values: [22.983333333333334, 31.435897435897434],
+      },
+      {
+        Id: 'cpuUtilization',
+        Timestamps: [new Date(dayOne + hourOne), new Date(dayOne + hourTwo)],
+        Values: [11.566666666666666, 24.25],
+      },
+    ],
+  }

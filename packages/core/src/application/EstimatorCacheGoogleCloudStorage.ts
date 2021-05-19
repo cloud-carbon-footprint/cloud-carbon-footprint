@@ -14,7 +14,8 @@ export const cacheFileName =
 const storage = new Storage()
 
 export default class EstimatorCacheGoogleCloudStorage
-  implements EstimatorCache {
+  implements EstimatorCache
+{
   private readonly bucketName: string
   private readonly cacheFileName: string
 
@@ -54,7 +55,7 @@ export default class EstimatorCacheGoogleCloudStorage
         .file(this.cacheFileName)
 
       const cachedJson = await this.streamToString(
-        streamOfcacheFile.createReadStream(),
+        await streamOfcacheFile.createReadStream(),
       )
 
       const dateTimeReviver = (key: string, value: string) => {

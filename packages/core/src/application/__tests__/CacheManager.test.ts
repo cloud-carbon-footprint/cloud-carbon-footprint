@@ -28,10 +28,13 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
 }
 
 describe('CacheManager - CACHE_MODE: GCS', () => {
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   describe('getEstimates', () => {
     it('should return estimates', async () => {
       //setup
-
       const startDate = '2020-11-02'
       const endDate = '2020-11-03'
 
@@ -111,25 +114,43 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         EstimatorCacheGoogleCloudStorage.prototype.setEstimates,
       ).toHaveBeenCalledWith(cachedData)
     })
+    it('should not set estimates on empty data', async () => {
+      //setup
+      const cachedData: EstimationResult[] = []
+
+      const cacheManager = new CacheManager()
+
+      const setEstimatesSpy = jest.spyOn(
+        EstimatorCacheGoogleCloudStorage.prototype,
+        'setEstimates',
+      )
+
+      //run
+      const estimates = await cacheManager.setEstimates(cachedData)
+
+      //assert
+      expect(estimates).resolves
+      expect(setEstimatesSpy).not.toHaveBeenCalled()
+    })
   })
 })
 
 describe('CacheManager - CACHE_MODE: fileSystem', () => {
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   describe('getEstimates', () => {
     it('should return estimates', async () => {
       //setup
-
       const startDate = '2020-11-02'
       const endDate = '2020-11-03'
-
       EstimatorCacheFileSystem.prototype.getEstimates = jest
         .fn()
         .mockImplementation(() => {
           return buildFootprintEstimates(startDate, 1)
         })
-
       mockConfig.CACHE_MODE = ''
-
       const cacheManager = new CacheManager()
 
       //run
@@ -142,20 +163,16 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       //assert
       expect(estimates).toEqual(buildFootprintEstimates(startDate, 1))
     })
-
     it('should return only requested dates', async () => {
       //setup
       const startDate = '2020-11-02'
       const endDate = '2020-11-04'
-
       EstimatorCacheFileSystem.prototype.getEstimates = jest
         .fn()
         .mockImplementation(() => {
           return buildFootprintEstimates(startDate, 5)
         })
-
       mockConfig.CACHE_MODE = ''
-
       const cacheManager = new CacheManager()
 
       //run
@@ -197,6 +214,25 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       expect(
         EstimatorCacheFileSystem.prototype.setEstimates,
       ).toHaveBeenCalledWith(cachedData)
+    })
+
+    it('should not set estimates on empty data', async () => {
+      //setup
+      const cachedData: EstimationResult[] = []
+
+      const cacheManager = new CacheManager()
+
+      const setEstimatesSpy = jest.spyOn(
+        EstimatorCacheFileSystem.prototype,
+        'setEstimates',
+      )
+
+      //run
+      const estimates = await cacheManager.setEstimates(cachedData)
+
+      //assert
+      expect(estimates).resolves
+      expect(setEstimatesSpy).not.toHaveBeenCalled()
     })
   })
 })

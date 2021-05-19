@@ -11,6 +11,7 @@ import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
+  MEMORY_AVG?: number
   MEMORY_BY_COMPUTE_PROCESSOR?: { [key: string]: number }
   getMemory?: (computeProcessors?: string[]) => number
   MIN_WATTS_AVG?: number
@@ -117,7 +118,9 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AWS: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
+    MEMORY_AVG: 72.99,
     MEMORY_BY_COMPUTE_PROCESSOR: {
+      // gigaBytes / physical chip
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 92.11,
       [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 83.19,
       [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 69.65,
@@ -135,7 +138,10 @@ export const CLOUD_CONSTANTS: CloudConstants = {
           return CLOUD_CONSTANTS.AWS.MEMORY_BY_COMPUTE_PROCESSOR[processor]
         },
       )
-      return getAverage(memoryForProcessors)
+      const averageMemoryForProcessors = getAverage(memoryForProcessors)
+      return averageMemoryForProcessors
+        ? averageMemoryForProcessors
+        : CLOUD_CONSTANTS.AWS.MEMORY_AVG
     },
     MIN_WATTS_AVG: 0.71,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -202,6 +208,30 @@ export const CLOUD_CONSTANTS: CloudConstants = {
   AZURE: {
     SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
     HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
+    MEMORY_AVG: 72.99,
+    MEMORY_BY_COMPUTE_PROCESSOR: {
+      // gigaBytes / physical chip
+      [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 92.11,
+      [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 83.19,
+      [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 69.65,
+      [COMPUTE_PROCESSOR_TYPES.HASWELL]: 27.05,
+      [COMPUTE_PROCESSOR_TYPES.COFFEE_LAKE]: 19.56,
+      [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]: 16.7,
+      [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 9.67,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 89.6,
+      [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 129.78,
+    },
+    getMemory: (computeProcessors: string[]): number => {
+      const memoryForProcessors: number[] = computeProcessors.map(
+        (processor: string) => {
+          return CLOUD_CONSTANTS.AZURE.MEMORY_BY_COMPUTE_PROCESSOR[processor]
+        },
+      )
+      const averageMemoryForProcessors = getAverage(memoryForProcessors)
+      return averageMemoryForProcessors
+        ? averageMemoryForProcessors
+        : CLOUD_CONSTANTS.AZURE.MEMORY_AVG
+    },
     MIN_WATTS_AVG: 0.77,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
       [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.62,
@@ -255,6 +285,7 @@ export const CLOUD_CONSTANTS: CloudConstants = {
         : CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
+    MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
     PUE_AVG: 1.185,
     getPUE: (): number => {
       return CLOUD_CONSTANTS.AZURE.PUE_AVG
@@ -264,11 +295,11 @@ export const CLOUD_CONSTANTS: CloudConstants = {
 }
 
 const US_NERC_REGIONS_EMISSIONS_FACTORS: { [nercRegion: string]: number } = {
-  RFC: 0.000475105,
-  SERC: 0.0004545,
-  WECC: 0.000351533,
-  MRO: 0.000540461,
-  TRE: 0.000424877,
+  RFC: 0.000440187,
+  SERC: 0.000415755,
+  WECC: 0.000350861,
+  MRO: 0.00047223,
+  TRE: 0.000396293,
 }
 
 export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {

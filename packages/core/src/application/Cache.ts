@@ -120,9 +120,8 @@ export default function cache(): any {
     descriptor.value = async (
       request: EstimationRequest,
     ): Promise<EstimationResult[]> => {
-      const cachedEstimates: EstimationResult[] = await cacheManager.getEstimates(
-        request,
-      )
+      const cachedEstimates: EstimationResult[] =
+        await cacheManager.getEstimates(request)
 
       // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)
@@ -135,10 +134,12 @@ export default function cache(): any {
         await Promise.all(missingEstimates)
       ).flat()
 
-      // write missing estimates to cache
-      const estimatesToPersist = fillDates(missingDates, estimates)
-      cacheLogger.info('Setting new estimates to cache file...')
-      await cacheManager.setEstimates(estimatesToPersist)
+      if (estimates.length > 0) {
+        // write missing estimates to cache
+        const estimatesToPersist = fillDates(missingDates, estimates)
+        cacheLogger.info('Setting new estimates to cache file...')
+        await cacheManager.setEstimates(estimatesToPersist)
+      }
 
       // so we don't return results with no estimates
       const filteredCachedEstimates = cachedEstimates.filter(

@@ -1,7 +1,7 @@
 .heroBanner {
   padding: 10rem 13rem 8rem;
   overflow: hidden;
-  background-image: url('/img/hero_background.png');
+  background-image: url('/img/hero_background.webp');
   background-size: cover;
   width: 100%;
 }

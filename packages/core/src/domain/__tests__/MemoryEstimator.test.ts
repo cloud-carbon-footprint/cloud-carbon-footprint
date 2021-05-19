@@ -4,6 +4,7 @@
 
 import MemoryEstimator from '../MemoryEstimator'
 import { GCP_REGIONS } from '../../services/gcp/GCPRegions'
+import { AWS_REGIONS } from '../../services/aws/AWSRegions'
 import { CLOUD_CONSTANTS } from '../FootprintEstimationConstants'
 
 describe('MemoryEstimator', () => {
@@ -24,6 +25,27 @@ describe('MemoryEstimator', () => {
         co2e: 0.000018758023200000002,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
         kilowattHours: 0.0391608,
+      },
+    ])
+  })
+
+  it('does estimates for AWS US East 1 region', () => {
+    const input = [
+      {
+        timestamp: new Date('2021-02-01'),
+        gigabyteHours: 80,
+      },
+    ]
+
+    const result = new MemoryEstimator(
+      CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT,
+    ).estimate(input, AWS_REGIONS.US_EAST_1, 'AWS')
+
+    expect(result).toEqual([
+      {
+        co2e: 0.000014798217168,
+        timestamp: new Date('2021-02-01T00:00:00.000Z'),
+        kilowattHours: 0.035593599999999996,
       },
     ])
   })

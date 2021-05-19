@@ -18,6 +18,7 @@ assignees: ''
 
 ## Tech Tasks
 - [ ] Run Changesets, bump any packages that have been updated/changed
+- [ ] Did you make changes to the client, api or cli package? If so, considering updating the create-app templates.
 
 ### Tech Notes
 

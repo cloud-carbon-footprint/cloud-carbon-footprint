@@ -13,11 +13,15 @@ function Overview() {
       className={styles.overviewContainer}
     >
       <div className={clsx(styles.overviewItem, styles.overviewItemImage)}>
-        <img
-          className={styles.overviewImage}
-          src="img/cloud_carbon_footprint.png"
-          alt="Cloud carbon footprint tool screen capture"
-        />
+        <picture>
+          <source srcSet="img/cloud_carbon_footprint-small.webp 600w, img/cloud_carbon_footprint.webp 1200w" />
+          <img
+            className={styles.overviewImage}
+            type="image/webp"
+            src="img/cloud_carbon_footprint-small.webp"
+            alt="Cloud carbon footprint tool screen capture"
+          />
+        </picture>
       </div>
       <div className={clsx(styles.overviewItem, styles.overviewItemText)}>
         <h2 className={styles.overviewTitle}>

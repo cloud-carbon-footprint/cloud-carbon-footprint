@@ -4,7 +4,10 @@
 
 import BillingDataRow from '../../domain/BillingDataRow'
 import { UsageDetail } from '@azure/arm-consumption/esm/models'
-import { VIRTUAL_MACHINE_TYPE_VCPU_MAPPING } from './VirtualMachineTypes'
+import {
+  VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
+  VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
+} from './VirtualMachineTypes'
 
 export default class ConsumptionDetailRow extends BillingDataRow {
   constructor(usageDetail: UsageDetail) {
@@ -22,10 +25,15 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     super(consumptionDetails)
     this.usageType = this.parseUsageType()
     this.vCpuHours = this.usageAmount * this.getVCpus()
+    this.seriesName = this.getSeriesFromInstanceType()
   }
 
   private getVCpus(): number {
-    return VIRTUAL_MACHINE_TYPE_VCPU_MAPPING[this.usageType]
+    const seriesName = this.getSeriesFromInstanceType()
+    return (
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[this.usageType]?.[0] ||
+      VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[this.usageType]?.[0]
+    )
   }
 
   private parseUsageType(): string {
@@ -33,5 +41,17 @@ export default class ConsumptionDetailRow extends BillingDataRow {
       return this.usageType.replace(' Spot', '')
     if (this.usageType.includes('/')) return this.usageType.split('/')[0]
     return this.usageType
+  }
+
+  private getSeriesFromInstanceType() {
+    for (const seriesName in VIRTUAL_MACHINE_TYPE_SERIES_MAPPING) {
+      if (
+        VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName].hasOwnProperty(
+          this.usageType,
+        )
+      ) {
+        return seriesName
+      }
+    }
   }
 }

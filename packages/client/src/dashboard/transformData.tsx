@@ -137,10 +137,8 @@ const useFilterDataFromEstimates = (
   data: EstimationResult[],
 ): FilterResultResponse => {
   const [filteredData] = useState(data)
-  const [
-    filterResultResponse,
-    setFilterResultResponse,
-  ] = useState<FilterResultResponse>({ accounts: [], services: [] })
+  const [filterResultResponse, setFilterResultResponse] =
+    useState<FilterResultResponse>({ accounts: [], services: [] })
 
   useEffect(() => {
     const serviceEstimates = pluck('serviceEstimates', data).flat()

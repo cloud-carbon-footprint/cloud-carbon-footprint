@@ -1,5 +1,43 @@
 # @cloud-carbon-footprint/core
 
+## 0.7.0
+
+### Minor Changes
+
+- 68365cbf: implements memory calculations for gcp
+- 8df5703b: implements memory calculations for azure
+- 3e2f876d: adds improvements to memory implementation for aws
+- 370c509d: implements memory calculations for aws
+
+### Patch Changes
+
+- 56bb6da6: #244 Bug fixed by changing configs boolean conditionals:
+  In order to update, you need to apply the following changes in the `client` package:
+
+  `packages/client/src/dashboard/CarbonFormulaDrawer.tsx`:
+
+  ```diff
+      // ...
+
+        }
+      }
+
+  -    const previousYearOfUsage = !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE
+  +    const previousYearOfUsage =
+  +        !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE &&
+  +        process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE !== 'false'
+
+      const appConfig: ClientConfig = {
+          CURRENT_PROVIDERS: [
+
+      // ...
+  ```
+
+- b63d8a67: The default `aws-sdk` dependency was bumped to `"^2.890.0"`,
+- 3abe3dca: Adds support for AmazonNeptune storage service to AWS CostAndUSageReports
+- 29f48e7c: Bug Fixed: Cache file is written with empty API data
+- 7d523b59: adds default unknown processor types for azure and aws
+
 ## 0.6.1
 
 ### Patch Changes

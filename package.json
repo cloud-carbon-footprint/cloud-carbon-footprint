@@ -3,16 +3,15 @@
   "private": true,
   "devDependencies": {
     "@changesets/cli": "^2.16.0",
-    "@hawkeyesec/scanner-cli": "^1.8.1",
-    "@types/fs-extra": "^9.0.10",
-    "concurrently": "^6.0.2",
-    "fs-extra": "^9.1.0",
+    "@types/fs-extra": "^9.0.11",
+    "concurrently": "^6.1.0",
+    "fs-extra": "^10.0.0",
     "husky": "^6.0.0",
     "lerna": "^4.0.0",
-    "marked": ">=2.0.0",
+    "marked": "^2.0.3",
     "sonar-scanner": "^3.1.0",
     "ts-node": "^9.1.1",
-    "typescript": "4.2.4"
+    "typescript": "^4.2.4"
   },
   "workspaces": {
     "packages": [
@@ -31,7 +30,7 @@
     "guided-install": "yarn install && yarn workspace @cloud-carbon-footprint/cli guided-install",
     "create-app": "yarn workspace @cloud-carbon-footprint/create-app start",
     "sonar:scan": "lerna run sonar:scan --stream",
-    "test": "lerna run test -- --coverage",
+    "test": "lerna run test -- --coverage --runInBand",
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install",

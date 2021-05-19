@@ -18,9 +18,10 @@ import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 
 jest.mock('../client/EmissionFactorServiceHook')
 
-const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
-  typeof useRemoteEmissionService
->
+const mockedUseEmissionFactorService =
+  useRemoteEmissionService as jest.MockedFunction<
+    typeof useRemoteEmissionService
+  >
 
 const emissionsFactorData: EmissionsRatios[] = [
   {
@@ -105,9 +106,8 @@ describe('ApexBarChart', () => {
 
   it('should format tool tip values with proper data instead of scaled down data', () => {
     act(() => {
-      const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
-        Pagination,
-      ).props?.handlePage
+      const handlePage: (page: Page<Entry>) => void =
+        fixture.root.findByType(Pagination).props?.handlePage
       // make pagination send first page
       handlePage({
         data: [
@@ -120,8 +120,8 @@ describe('ApexBarChart', () => {
       })
     })
 
-    const yFormatter = fixture.root.findByType(Chart).props?.options?.tooltip?.y
-      ?.formatter
+    const yFormatter =
+      fixture.root.findByType(Chart).props?.options?.tooltip?.y?.formatter
     expect(yFormatter).toBeDefined()
     expect(yFormatter(null, { dataPointIndex: 1 })).toEqual(
       '2000.014 metric tons',
@@ -130,9 +130,8 @@ describe('ApexBarChart', () => {
 
   it('should format data label values with proper data instead of scaled down data', () => {
     act(() => {
-      const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
-        Pagination,
-      ).props?.handlePage
+      const handlePage: (page: Page<Entry>) => void =
+        fixture.root.findByType(Pagination).props?.handlePage
       // make pagination send first page
       handlePage({
         data: [
@@ -145,17 +144,16 @@ describe('ApexBarChart', () => {
       })
     })
 
-    const dataLabelFormatter = fixture.root.findByType(Chart).props?.options
-      ?.dataLabels?.formatter
+    const dataLabelFormatter =
+      fixture.root.findByType(Chart).props?.options?.dataLabels?.formatter
     expect(dataLabelFormatter).toBeDefined()
     expect(dataLabelFormatter(null, { dataPointIndex: 1 })).toEqual('33.33 %')
   })
 
   it('should format data label values that are less than 0.01', () => {
     act(() => {
-      const handlePage: (page: Page<Entry>) => void = fixture.root.findByType(
-        Pagination,
-      ).props?.handlePage
+      const handlePage: (page: Page<Entry>) => void =
+        fixture.root.findByType(Pagination).props?.handlePage
       // make pagination send first page
       handlePage({
         data: [
@@ -168,8 +166,8 @@ describe('ApexBarChart', () => {
       })
     })
 
-    const dataLabelFormatter = fixture.root.findByType(Chart).props?.options
-      ?.dataLabels?.formatter
+    const dataLabelFormatter =
+      fixture.root.findByType(Chart).props?.options?.dataLabels?.formatter
     expect(dataLabelFormatter).toBeDefined()
     expect(dataLabelFormatter(null, { dataPointIndex: 3 })).toEqual('< 0.01 %')
   })

@@ -9,42 +9,42 @@ import styles from './innovationPartnersStyles.module.css'
 
 const logosArray = [
   {
-    path: 'img/logos/TWLogo.png',
+    path: 'img/logos/TWLogo-small.webp',
     alt: 'ThoughtWorks logo',
     url: 'https://www.thoughtworks.com',
   },
   {
-    path: 'img/logos/TomorrowLogo.png',
+    path: 'img/logos/TomorrowLogo-small.webp',
     alt: 'Tomorrow logo',
     url: 'https://www.tmrow.com',
   },
   {
-    path: 'img/logos/GOLogo.png',
+    path: 'img/logos/GOLogo.webp',
     alt: 'GO logo',
     url: 'https://www.goclimate.com',
   },
   {
-    path: 'img/logos/OCFLogo.png',
+    path: 'img/logos/OCFLogo.webp',
     alt: 'Open Climate Fix logo',
     url: 'https://openclimatefix.org',
   },
   {
-    path: 'img/logos/TGWFLogo.png',
+    path: 'img/logos/TGWFLogo.webp',
     alt: 'The Green Web Foundation logo',
     url: 'https://www.thegreenwebfoundation.org',
   },
   {
-    path: 'img/logos/TMLogo.png',
+    path: 'img/logos/TMLogo.webp',
     alt: 'Thinking Machines logo',
     url: 'https://thinkingmachin.es',
   },
   {
-    path: 'img/logos/TeadsLogo.png',
+    path: 'img/logos/TeadsLogo.webp',
     alt: 'Teads logo',
     url: 'https://www.teads.com',
   },
   {
-    path: 'img/logos/USCSLogo.png',
+    path: 'img/logos/USCSLogo.webp',
     alt: 'US Coalition on Sustainability logo',
     url: 'https://www.uscoalitiononsustainability.org',
   },

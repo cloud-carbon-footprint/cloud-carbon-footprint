@@ -60,7 +60,8 @@ function Differentiator() {
         </div>
         <div className={styles.differentiatorImageItem}>
           <img
-            src="img/infographic.png"
+            className={styles.overviewImage}
+            src="img/infographic.webp"
             alt="Infographic showing the different paths data taken from the cloud providers may take: our frontend app, CLI app, raw data or analysis your way"
           />
         </div>

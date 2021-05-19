@@ -4,6 +4,10 @@
 
 import { QUERY_DATE_TYPES } from '../common/types'
 
+export type TenantHeaders = {
+  [key: string]: string
+}
+
 export const UNSUPPORTED_SERVICES = [
   'Virtual Machines Licenses',
   'Azure Bastion',
@@ -14,7 +18,6 @@ export const UNSUPPORTED_SERVICES = [
   'Azure Data Factory v2',
   'API Management',
   'Advanced Data Security',
-  'Redis Cache', // Memory usage
 ]
 
 export const UNSUPPORTED_USAGE_TYPES = [
@@ -52,6 +55,11 @@ export enum NETWORKING_USAGE_UNITS {
   GB_200 = '200 GB',
 }
 
+export enum MEMORY_USAGE_UNITS {
+  GB_SECONDS_50000 = '50000 GB Seconds',
+  GB_HOURS_1000 = '1000 GB Hours',
+}
+
 export const STORAGE_USAGE_TYPES: string[] = [
   'Data Stored',
   'Metadata',
@@ -68,6 +76,36 @@ export const NETWORKING_USAGE_TYPES: string[] = [
   'Geo-Replication v2 Data transfer',
   'Data Processed - Egress',
 ]
+
+export const MEMORY_USAGE_TYPES: string[] = [
+  'Execution Time',
+  'Memory Duration',
+  'C1 Cache Instance',
+]
+
+export const CACHE_MEMORY_GB: {
+  [cacheName: string]: number
+} = {
+  C0: 250,
+  C1: 1,
+  C2: 2.5,
+  C3: 6,
+  C4: 13,
+  C5: 26,
+  C6: 53,
+  P1: 6,
+  P2: 13,
+  P3: 26,
+  P4: 53,
+  P5: 120,
+  E10: 12,
+  E20: 25,
+  E50: 50,
+  E100: 100,
+  F300: 384,
+  F700: 715,
+  F1500: 1455,
+}
 
 export const SSD_MANAGED_DISKS_STORAGE_GB: {
   [diskType: string]: number

@@ -17,7 +17,9 @@ export interface ClientConfig {
   }
 }
 
-const previousYearOfUsage = !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE
+const previousYearOfUsage =
+  !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE &&
+  process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE !== 'false'
 
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
