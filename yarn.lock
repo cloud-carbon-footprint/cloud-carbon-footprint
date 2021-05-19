@@ -2199,15 +2199,15 @@ __metadata:
   dependencies:
     "@azure/arm-consumption": ^6.3.0
     "@azure/arm-subscriptions": ^3.0.0
-    "@azure/ms-rest-js": ^2.2.3
-    "@azure/ms-rest-nodeauth": ^3.0.7
-    "@google-cloud/bigquery": ^5.5.0
+    "@azure/ms-rest-js": ^2.5.0
+    "@azure/ms-rest-nodeauth": ^3.0.9
+    "@google-cloud/bigquery": ^5.6.0
     "@google-cloud/iam-credentials": ^1.0.1
-    "@google-cloud/logging-winston": ^4.0.4
-    "@google-cloud/monitoring": ^2.2.0
-    "@google-cloud/secret-manager": ^3.5.0
-    "@google-cloud/storage": ^5.8.4
-    "@types/jest": ^26.0.20
+    "@google-cloud/logging-winston": ^4.0.5
+    "@google-cloud/monitoring": ^2.3.1
+    "@google-cloud/secret-manager": ^3.6.1
+    "@google-cloud/storage": ^5.8.5
+    "@types/jest": ^26.0.23
     "@types/jest-when": ^2.7.2
     "@types/node": ^15.3.0
     "@types/ramda": ^0.27.40
@@ -2216,11 +2216,11 @@ __metadata:
     "@typescript-eslint/parser": ^4.24.0
     aws-sdk: ^2.910.0
     aws-sdk-mock: ^5.1.0
-    dotenv: ^8.2.0
-    eslint: ^7.20.0
-    eslint-config-prettier: ^8.0.0
-    eslint-plugin-prettier: ^3.3.1
-    eslint-plugin-unused-imports: ^1.1.0
+    dotenv: ^9.0.2
+    eslint: ^7.26.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.0
+    eslint-plugin-unused-imports: ^1.1.1
     jest: 26.6.0
     jest-when: ^3.3.1
     lint-staged: ^11.0.0
@@ -2411,7 +2411,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
 "@google-cloud/iam-credentials@npm:^1.0.1":
   version: 1.0.1
   resolution: "@google-cloud/iam-credentials@npm:1.0.1"
@@ -2421,14 +2420,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-cloud/logging-winston@npm:^4.0.4":
-  version: 4.0.4
-  resolution: "@google-cloud/logging-winston@npm:4.0.4"
-=======
 "@google-cloud/logging-winston@npm:^4.0.5":
   version: 4.0.5
   resolution: "@google-cloud/logging-winston@npm:4.0.5"
->>>>>>> trunk
   dependencies:
     "@google-cloud/logging": ^9.0.0
     google-auth-library: ^7.0.0
@@ -12446,6 +12440,28 @@ fsevents@^1.2.7:
   bin:
     compileProtos: build/tools/compileProtos.js
   checksum: b728b0f72a4d8614f404a9319ca6b0828d68944b0f96a5eb120e6d244e0b062a8b1419b95d20541bf1a7820407fb601cdcb3b7e2e5de67cf554399e618b09be7
+  languageName: node
+  linkType: hard
+
+"google-gax@npm:^2.9.2":
+  version: 2.13.0
+  resolution: "google-gax@npm:2.13.0"
+  dependencies:
+    "@grpc/grpc-js": ~1.3.0
+    "@grpc/proto-loader": ^0.6.1
+    "@types/long": ^4.0.0
+    abort-controller: ^3.0.0
+    duplexify: ^4.0.0
+    fast-text-encoding: ^1.0.3
+    google-auth-library: ^7.0.2
+    is-stream-ended: ^0.1.4
+    node-fetch: ^2.6.1
+    object-hash: ^2.1.1
+    protobufjs: ^6.10.2
+    retry-request: ^4.0.0
+  bin:
+    compileProtos: build/tools/compileProtos.js
+  checksum: 3ad0c1b5150987ce598f910aec258dffb5b4201c9237b55f41cf910c6ee3d53db9ce9859107b24f778046709dbd57508c047fddb6f3c3796e59bb927b36ca03f
   languageName: node
   linkType: hard
 
