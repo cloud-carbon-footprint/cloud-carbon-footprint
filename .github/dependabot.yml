@@ -7,17 +7,3 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - dependencies
-  - package-ecosystem: npm
-    directory: '/packages/server/'
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-  - package-ecosystem: npm
-    directory: '/packages/client/'
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies

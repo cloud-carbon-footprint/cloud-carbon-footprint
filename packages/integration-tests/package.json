@@ -14,15 +14,15 @@
     "lint:fix": "eslint '*/*.js' --quiet --fix"
   },
   "devDependencies": {
-    "@testing-library/testcafe": "^4.3.1",
-    "concurrently": "^6.0.2",
-    "eslint": "^7.23.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "@testing-library/testcafe": "^4.4.0",
+    "concurrently": "^6.1.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-testcafe": "^0.2.1",
-    "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1",
-    "testcafe": "^1.13.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0",
+    "testcafe": "^1.14.2",
     "wait-on": "^5.3.0"
   },
   "lint-staged": {

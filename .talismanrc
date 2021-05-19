@@ -1,6 +1,8 @@
 fileignoreconfig:
 - filename: .circleci/config.yml
   checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
+- filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
+  checksum: 3bfb33cac24525b03528d71814b90abc6e0bf7cdcd9e95f6aae8d342d3666268
 - filename: CONTRIBUTING.md
   checksum: 454a26b0f80e1406f9f80ab12bd11183ebbf54a8b387c8667af258eeafb89ba7
 - filename: README.md
@@ -81,6 +83,8 @@ fileignoreconfig:
   checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
 - filename: packages/client/stub-server/co2estimations.json
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
+- filename: packages/core/package.json
+  checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/domain/FootprintEstimationConstants.ts
   checksum: 78324c862f0ba591dbd2e7276f92034e4eebfab00bf77972c6f1a3c90e788eb1
 - filename: packages/core/src/services/aws/CostAndUsageReports.ts
@@ -148,4 +152,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: b1486b6e865c8cd460daa0031972daa35e3dfe957e3975d5df1f2b10f869c937
+  checksum: 2d8413559451e68ee9db9e3af0032c991f8c73dc0fd44d5054e7a960213e90ed
