@@ -210,6 +210,7 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+dist-workspace
 packages/client/build
 # Gatsby files
 .cache/
