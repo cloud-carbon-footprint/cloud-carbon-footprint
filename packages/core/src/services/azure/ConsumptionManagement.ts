@@ -46,7 +46,7 @@ import MemoryUsage from '../../domain/MemoryUsage'
 import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
 import Logger from '../Logger'
 import configLoader from '../../application/ConfigLoader'
-import { calculateGigabyteHours } from '../common/'
+import { calculateGigabyteHours, getPhysicalChips } from '../common/'
 
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
@@ -521,7 +521,7 @@ export default class ConsumptionManagementService {
       seriesInstanceTypes[seriesInstanceTypes.length - 1]
 
     return calculateGigabyteHours(
-      largestInstanceTypevCpus,
+      getPhysicalChips(largestInstanceTypevCpus),
       largestInstanceTypeMemory,
       processorMemory,
       instanceTypeMemory,

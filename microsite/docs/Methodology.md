@@ -30,11 +30,9 @@ organization to view and take action. It currently supports AWS, Google Cloud an
 
 `(Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (grid emissions factors [metric tons CO2e])`
 
-Our approach builds upon
-[Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)
-(cloud energy conversion factors). Like Etsy, we currently estimate CO2e emissions for cloud compute and storage
-services, with the addition of networking. Memory usage is not estimated yet due to its arguably comparatively small footprint and
-current lack of available energy conversion factors. We similarly use point estimates without confidence intervals due
+Our approach builds upon [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/) 
+(cloud energy conversion factors) for estimating CO2e emissions for cloud compute and storage services, with 
+the addition of networking and memory usage. We similarly use point estimates without confidence intervals due
 to the experimental nature of the project, which are not meant as a replacement for data from cloud providers and we
 cannot guarantee their accuracy.
 
@@ -115,12 +113,11 @@ Azure is not currently supported for this approach.
 
 ### Energy Estimate (Watt-Hours)
 
-In order to estimate energy used by cloud providers we are leveraging the methodology that Etsy created called "[Cloud
-Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)" to determine energy coefficients
-(kWh) for cloud service usage. Like Etsy’s approach, our application currently supports energy estimates for cloud
-compute and storage. We've also added networking, but not memory. We are yet to find actionable public research for
-memory, and arguably this contributes a small fraction of a cloud customer’s overall energy use. The
-application also doesn’t currently include estimations for cloud GPU usage, but this is on the roadmap. You can see a summary of all our energy coefficients in Appendix I below.
+In order to estimate energy used by cloud providers we are leveraging the methodology that Etsy created called 
+“[Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)” to determine 
+energy coefficients (kWh) for cloud service compute and storage usage. In addition, we’ve added energy estimation 
+for networking and memory usage. The application also doesn’t currently include estimations for cloud GPU usage, 
+but this is on the roadmap. You can see a summary of all our energy coefficients in Appendix I below.
 
 We look at the servers used by cloud providers on their website and reference their energy usage from both the
 [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database and the [2016 US Data Center Energy
@@ -198,7 +195,7 @@ where:
 
 `Average Watts = Min Watts + 50% (Average for hyperscale data centers) * (Max Watts - Min Watts)`
 
-`Running Time = Lambda execution time / 3600 seconds` 
+`Running Time = Lambda execution time / 3600 seconds`
 
 `Estimated number of vCPUs = Lambda memory allocated (MB) / 1,792 MB`
 
@@ -226,8 +223,7 @@ Here is the estimated HDD energy usage:
 - HDD average capacity in 2020 = **10** Terabytes per disk
 - Average wattage per disk for 2020 = **6.5** Watts per disk
 
-`Watts per Terabyte = Watts per disk / Terabytes per disk:
-6.65 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
+`Watts per Terabyte = Watts per disk / Terabytes per disk: 6.65 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
 
 Here is the estimated SSD energy usage:
 
@@ -257,9 +253,75 @@ On top of that, these studies use different methodologies and end up with result
 
 #### Chosen coefficient
 
-It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: 0.001 kWh/Gb. Again, we welcome feedback or contributions to improve this coefficient.
+It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: **0.001 kWh/Gb**. Again, we welcome feedback or contributions to improve this coefficient.
 
 We want to thank [@martin-laurent](https://github.com/martin-laurent) for providing this research and recommended coefficient.
+
+#### Memory
+
+#### Chosen Coefficient
+
+For the purpose of estimating energy consumption for memory, we are assuming hyper-scale cloud providers are utilizing
+the more efficient memory systems on the market: DDR4 or potentially DDR5. Two memory manufacturers have provided some information
+about the energy profile of DDR4 memory systems. [Crucial](https://www.crucial.com/support/articles-faq-memory/how-much-power-does-memory-use) 
+says that “As a rule of thumb, however, you want to allocate around 3 watts of power for every 8GB of DDR3 or DDR4 
+memory,” which amounts to ~0.375 W/GB. [Micron](https://www.micron.com/-/media/client/global/documents/products/technical-note/dram/tn4007_ddr4_power_calculation.pdf) 
+provides a power model that states “... each DRAM will consume approximately 408.3mW of total power,” which equals a 
+power consumption of ~0.4083 W/GB. Given this information, we have decided to take the average of both these figures, 
+and go with 0.392 W/GB, or **0.000392 kWh/GB**. We want to acknowledge that this is a complex subject with limited available data, and welcome additional research or studies to improve this coefficient.
+
+#### Applying the coefficient
+
+When we utilize the SPECPower Database for estimating compute (above), this also includes some level of energy estimation 
+for memory, because the rows in that database represent the min and max watts for entire servers, which includes memory 
+usage. Because of this, we only want to apply an additional estimation for memory when the instance you have selected 
+from a given cloud provider has a higher amount of memory allocated per physical CPU than what is provided in the SPECPower database.
+
+The way in which we apply this coefficient is slightly different per cloud provider:
+
+#### AWS
+
+Our approach to estimating memory for AWS is as follows:
+
+1. For each microarchitecture in the SPEC Power Database we have determined the average memory (GB) / physical CPU (Chips)
+1. For each AWS instance family, we have determined how many physical CPUs we believe are provisioned for the instance type that is roughly equivalent to an entire server, like the rows in the SPEC Power Database. This is often the largest instance in a family, e.g. a “metal” instance.
+1. For each AWS instance family, we calculate the difference between the GB / physical CPU from the associated microarchitectures in the SPECPower Database, and the GB / physical CPUs for the comparable instance size, referred to in step 2.
+1. If this difference (in GB) is greater than zero, we know an additional memory estimation should be added for this usage row. The amount of kilo-watt hours added for memory is directly proportional to the size of the instance - this is because memory allocated scales linearly within a family. We multiply this proportional amount of additional memory by the chosen coefficient to get kilo-watts hours.
+1. If the GB / physical CPU difference is less than or equal to zero, we ignore the usage. We also ignore the usage for any burstable instances, because there is no instance size comparable (large enough) to the SPECPower Database rows.   
+1. You can see a full list of these instance types and calculations for memory [here](https://docs.google.com/spreadsheets/d/1O7Ug_eUZvbZA4dTaA-8DNhJhoZikKD2IdD8OeNQipe4/edit#gid=1756293863).
+
+Here is that formula summarized:
+
+`Kilowatt hours = Memory (GB) exceeding SPECPower database average x Memory coefficient x usage amount (Hours)`
+
+#### GCP
+
+Because Google Cloud provides memory specific usage rows in the Billing Export data, the approach is a lot simpler. 
+We take the usage amount in byte-seconds, convert this to gigabyte-hours, then multiply it by the chosen memory 
+coefficient to get the kilowatt hours.
+
+Here is that formula summarized:
+
+`Kilowatt hours = Memory usage (GB-Hours) x Memory coefficient`
+
+This approach may be slightly overestimating the total energy and carbon emissions for GCP, because of the 
+note above about the min/max watts coefficients from the SPECPower database including some level of memory usage 
+for compute estimates. We think this approach is still more accurate than not taking into account the memory usage 
+rows at all, and are researching a better way to factor this in for compute estimates. 
+We welcome any and all feedback/suggestions on how to improve this.  
+
+#### Azure
+
+Our approach to estimating memory for Azure is very similar to AWS. When it comes to compute instances, it is exactly 
+the same approach, and [here](https://docs.google.com/spreadsheets/d/1O7Ug_eUZvbZA4dTaA-8DNhJhoZikKD2IdD8OeNQipe4/edit#gid=1789644751) 
+is a spreadsheet with the full list of instance types and calculations for memory.
+
+In addition to compute instance usage rows, we have found that Azure also has some usage rows that correspond directly 
+to memory usage, e.g. “Memory Duration”.  In those cases, we apply the same simplified formula as GCP (above).
+
+We want to thank [@benjamindavyteads](https://github.com/benjamindavyteads) for collaborating with us on this approach, 
+and providing much of the research behind it, including the count of physical CPUs for AWS instances that are roughly 
+equivalent to the SPEC Power database rows.
 
 ### Power Usage Effectiveness
 
@@ -273,8 +335,6 @@ Here are the cloud provider PUEs being used:
 
 [1] "Organizations are increasingly using the power usage effectiveness (PUE) metric to evaluate the energy efficiency of potential cloud service providers. PUE is essentially the energy going into the datacenter divided by the energy used by the servers. Differing methodologies across the industry for obtaining this metric makes precise comparison across providers difficult. Nevertheless, we have achieved significant improvements as we have continued to evolve both our designs and our operations to achieve among the best efficiency in the industry. Currently, our weighted owned and operated fleet-wide PUE trailing 12-month average is 1.185, and our latest designs are achieving an annual PUE of 1.125."
 
-<br />
-
 ### Carbon Estimates (CO2e)
 
 Once we have the estimated kilowatt hours for usage of a given cloud provider, we then convert that into estimated CO2e
@@ -287,7 +347,7 @@ Google has [published](https://cloud.google.com/sustainability/region-carbon) th
 
 **AWS & Azure:**
 
-In the United States, we use the EPA’s [eGRID2018v2 Data](https://www.epa.gov/egrid/download-data) that
+In the United States, we use the EPA’s [eGRID2019 Data](https://www.epa.gov/egrid/download-data) that
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more
@@ -310,7 +370,8 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
-- Networking Kilowatt Hours / Gigabyte: 0.001
+- Networking Kilowatt Hours / Gigabyte: 0.001 
+- Memory Kilowatt Hours / Gigabyte: 0.000392
 - Average PUE: 1.135
 
 #### GCP
@@ -321,6 +382,7 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
 - Networking Kilowatt Hours / Gigabyte: 0.001
+- Memory Kilowatt Hours / Gigabyte: 0.000392
 - Average PUE: 1.1
 
 #### Azure
@@ -331,6 +393,7 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
 - Networking Kilowatt Hours / Gigabyte: 0.001
+- Memory Kilowatt Hours / Gigabyte: 0.000392
 - Average PUE: 1.125
 
 ### Appendix II: Cloud provider compute processors and micro-architectures:
@@ -339,7 +402,9 @@ You can see the full list of AWS, GCP and Azure microarchitectures and min/max c
 
 **Note on AWS Graviton 2 Processor:**
 
-When it comes to the AWS Graviton 2 custom processor, it is likely more efficient than other processors however we are yet to find any reliable min or max watts values. For the time being, we apply the lowest min/max watts for any microarchitecture: AMD EPYC 2nd Gen.
+When it comes to the AWS Graviton 2 custom processor, it is likely more efficient than other processors however 
+we are yet to find any reliable min or max watts values. For the time being, we apply the lowest min/max watts for any microarchitecture: AMD EPYC 2nd Gen.
+The same is true for the GB / physical chip used to estimate energy for memory usage.
 
 ### Appendix III: Recent Networking studies
 
@@ -359,12 +424,12 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 
 | Region         | Country       | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | -------------- | ------------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| us-east-1      | United States | SERC        | 0.00045455            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-east-2      | United States | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west-1      | United States | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-west-2      | United States | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-gov-east-1  | United States | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-gov-west-1  | United States | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-east-1      | United States | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-east-2      | United States | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-west-1      | United States | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-west-2      | United States | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-gov-east-1  | United States | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-gov-west-1  | United States | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | af-south-1     | South Africa  |             | 0.000928              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | ap-east-1      | Hong Kong     |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | ap-south-1     | India         |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
@@ -425,16 +490,16 @@ or submit an issue or pull request.
 
 | Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| US Central       | Iowa        | MRO         | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East          | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East 2        | Virginia    | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East 3        | Georgia     | SERC        | 0.0004545             | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US North Central | Illinois    | RFC         | 0.000475105           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US South Central | Texas       | TRE         | 0.000424877           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West Central  | Wyoming     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West          | California  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West 2        | Washington  | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West 3        | Arizona     | WECC        | 0.000351533           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US Central       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East          | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East 2        | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US East 3        | Georgia     | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US North Central | Illinois    | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US South Central | Texas       | TRE         | 0.000396293           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West Central  | Wyoming     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West          | California  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West 2        | Washington  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| US West 3        | Arizona     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
 | EU North         | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |

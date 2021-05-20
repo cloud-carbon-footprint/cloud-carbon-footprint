@@ -2,31 +2,19 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-export const getPhysicalChips = (
-  largestInstanceTypevCpus: number,
-  instanceFamily?: string,
-): number => {
+export const getPhysicalChips = (largestInstanceTypevCpus: number): number => {
   // we roughly equivalate one physical chip to be at most 96 vCpus
   // to calculate, we take the vCpus of the largest instance type and divide by 96
-  // there are special cases for instance families m5zn and z1d where they are always 2
-  if (['m5zn', 'z1d'].includes(instanceFamily)) {
-    return 2
-  }
   return Math.ceil(largestInstanceTypevCpus / 96)
 }
 
 export const calculateGigabyteHours = (
-  largestInstanceTypevCpus: number,
+  physicalChips: number,
   largestInstanceTypeMemory: number,
   processorMemory: number,
   instanceTypeMemory: number,
   usageAmount: number,
-  instanceFamily?: string,
 ): number => {
-  const physicalChips = getPhysicalChips(
-    largestInstanceTypevCpus,
-    instanceFamily,
-  )
   const instanceMemory = largestInstanceTypeMemory / physicalChips
   let gigabyteHours
   // once we calculate the memory from aws instance type data and cross reference it with the

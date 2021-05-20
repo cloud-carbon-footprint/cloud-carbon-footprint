@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/cli
 
+## 0.3.3
+
+### Patch Changes
+
+- b63d8a67: The default `aws-sdk` dependency was bumped to `"^2.890.0"`,
+- Updated dependencies [56bb6da6]
+- Updated dependencies [68365cbf]
+- Updated dependencies [b63d8a67]
+- Updated dependencies [8df5703b]
+- Updated dependencies [3e2f876d]
+- Updated dependencies [3abe3dca]
+- Updated dependencies [29f48e7c]
+- Updated dependencies [370c509d]
+- Updated dependencies [7d523b59]
+  - @cloud-carbon-footprint/core@0.7.0
+
 ## 0.3.2
 
 ### Patch Changes

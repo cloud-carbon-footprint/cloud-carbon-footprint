@@ -43,7 +43,7 @@ describe('MemoryEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 0.000016177291199999997,
+        co2e: 0.000014798217168,
         timestamp: new Date('2021-02-01T00:00:00.000Z'),
         kilowattHours: 0.035593599999999996,
       },

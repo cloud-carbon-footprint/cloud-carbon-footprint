@@ -302,8 +302,9 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
               "labels": Object {
                 "maxWidth": 150,
                 "minWidth": 150,
+                "offsetY": 5,
                 "style": Object {
-                  "fontSize": "13px",
+                  "fontSize": "12px",
                 },
               },
             },

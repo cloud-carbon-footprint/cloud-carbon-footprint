@@ -251,250 +251,55 @@
   ],
   "footprint": [
     {
-      "timestamp": "2021-03-04T00:00:00.000Z",
+      "timestamp": "2021-03-25T00:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 4",
+          "accountName": "aws account 0",
           "serviceName": "ebs",
-          "kilowattHours": 0.49444119132471065,
-          "co2e": 3,
-          "cost": 2.2130966137948187,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "s3",
-          "kilowattHours": 0.0008009546045809324,
-          "co2e": 5,
-          "cost": 1.8135285045946383,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ec2",
-          "kilowattHours": 50.78030610552026,
+          "kilowattHours": 0.9099318685999922,
           "co2e": 2,
-          "cost": 2.017123113388575,
+          "cost": 2.0611247334106126,
           "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "s3",
+          "kilowattHours": 0.000986946262424086,
+          "co2e": 1,
+          "cost": 2.341122015683861,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.176579830111365,
+          "co2e": 3,
+          "cost": 2.4154850519158613,
+          "region": "us-west-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 3",
           "serviceName": "rds",
-          "kilowattHours": 50.643226083419435,
-          "co2e": 0,
-          "cost": 1.82838153717916,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "lambda",
-          "kilowattHours": 71.82508735350623,
-          "co2e": 5,
-          "cost": 1.5610929806057197,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 2",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.634009247290166,
-          "co2e": 1,
-          "cost": 1.9585813109453105,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-03-03T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ebs",
-          "kilowattHours": 0.1451723739639188,
+          "kilowattHours": 50.15554852182787,
           "co2e": 4,
-          "cost": 2.374118472708018,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "s3",
-          "kilowattHours": 0.0009595099860075678,
-          "co2e": 5,
-          "cost": 1.95169755790399,
-          "region": "us-east-1",
+          "cost": 1.8825350541114,
+          "region": "us-west-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 50.38929882662002,
-          "co2e": 0,
-          "cost": 1.6999383854903374,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 50.688676915681235,
-          "co2e": 4,
-          "cost": 2.43051851922802,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
           "serviceName": "lambda",
-          "kilowattHours": 68.89411642594771,
+          "kilowattHours": 72.26453941514701,
           "co2e": 2,
-          "cost": 2.089809729815828,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 2",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.35145915773034,
-          "co2e": 4,
-          "cost": 1.5057272771790382,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-03-02T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.15029661579500453,
-          "co2e": 4,
-          "cost": 1.8894147905347483,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "s3",
-          "kilowattHours": 0.0004481524291945991,
-          "co2e": 3,
-          "cost": 1.8755851420989391,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ec2",
-          "kilowattHours": 62.023128989872184,
-          "co2e": 3,
-          "cost": 2.2378744498632663,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "rds",
-          "kilowattHours": 72.86308953042715,
-          "co2e": 4,
-          "cost": 2.423682291021069,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "lambda",
-          "kilowattHours": 50.60519666783323,
-          "co2e": 2,
-          "cost": 1.6392536676375409,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 3",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.72573952658492,
-          "co2e": 2,
-          "cost": 2.1401737717683864,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-03-01T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ebs",
-          "kilowattHours": 0.7015282737319803,
-          "co2e": 2,
-          "cost": 1.6751388836178842,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.0008799523964115393,
-          "co2e": 3,
-          "cost": 2.054558053706897,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 73.68302219712467,
-          "co2e": 0,
-          "cost": 2.0919329495747117,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 51.01864979386944,
-          "co2e": 0,
-          "cost": 1.553655515519684,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.50422434145082,
-          "co2e": 4,
-          "cost": 2.0713766056590384,
+          "cost": 2.0084835420769656,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
@@ -502,205 +307,30 @@
           "cloudProvider": "AWS",
           "accountName": "gcp account 4",
           "serviceName": "elasticache",
-          "kilowattHours": 50.644452130374496,
-          "co2e": 0,
-          "cost": 1.8089509927751206,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-28T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ebs",
-          "kilowattHours": 0.33910914454897245,
-          "co2e": 1,
-          "cost": 1.9969079446569182,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "s3",
-          "kilowattHours": 0.0007476314822742487,
-          "co2e": 4,
-          "cost": 2.4995825215647995,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ec2",
-          "kilowattHours": 50.00169899096117,
-          "co2e": 4,
-          "cost": 1.674035709230614,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 50.89039999444859,
-          "co2e": 1,
-          "cost": 2.118846854442472,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "lambda",
-          "kilowattHours": 50.7758598249279,
-          "co2e": 3,
-          "cost": 2.480495038008698,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 2",
-          "serviceName": "elasticache",
-          "kilowattHours": 55.53058434909409,
-          "co2e": 4,
-          "cost": 1.6335211776327545,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-27T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ebs",
-          "kilowattHours": 0.18741242670463,
-          "co2e": 3,
-          "cost": 2.3354850282147095,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "s3",
-          "kilowattHours": 0.0007373316838466728,
-          "co2e": 3,
-          "cost": 2.4964782972432324,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 50.02633722553088,
-          "co2e": 4,
-          "cost": 1.939129667589906,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "rds",
-          "kilowattHours": 50.72948443835948,
-          "co2e": 3,
-          "cost": 2.4160249514597787,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "lambda",
-          "kilowattHours": 56.59451249873119,
+          "kilowattHours": 50.727903398223255,
           "co2e": 5,
-          "cost": 2.2938969552990374,
+          "cost": 1.9935817888548006,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 2",
-          "serviceName": "elasticache",
-          "kilowattHours": 72.0136188368901,
-          "co2e": 5,
-          "cost": 1.9800317483145802,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-26T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ebs",
-          "kilowattHours": 0.5297248420318463,
-          "co2e": 1,
-          "cost": 1.9624558505469205,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.0006437346418361857,
-          "co2e": 0,
-          "cost": 2.014554320632236,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ec2",
-          "kilowattHours": 50.72944241428397,
-          "co2e": 0,
-          "cost": 1.995234001241126,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 50.37920770877826,
-          "co2e": 5,
-          "cost": 1.8889899918459243,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "lambda",
-          "kilowattHours": 64.90955906586757,
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 68.54797801901817,
           "co2e": 4,
-          "cost": 2.411471420600862,
-          "region": "us-east-1",
+          "cost": 1.8688785461442674,
+          "region": "us-east1",
           "usesAverageCPUConstant": false
         },
         {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 69.5566118068898,
-          "co2e": 3,
-          "cost": 2.109078725929154,
-          "region": "us-east-1",
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 4",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.02721869884774,
+          "co2e": 2,
+          "cost": 2.2910467204304323,
+          "region": "UK South",
           "usesAverageCPUConstant": false
         }
       ]
@@ -710,116 +340,51 @@
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ebs",
-          "kilowattHours": 0.6365857914553426,
-          "co2e": 4,
-          "cost": 1.7220818756970941,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
           "accountName": "aws account 0",
-          "serviceName": "s3",
-          "kilowattHours": 0.0009038368140221824,
-          "co2e": 5,
-          "cost": 2.1213242269927264,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ec2",
-          "kilowattHours": 50.899517715173175,
-          "co2e": 2,
-          "cost": 1.6712368998470537,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 50.382357641482976,
-          "co2e": 4,
-          "cost": 2.493702800258405,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.66303252684274,
-          "co2e": 2,
-          "cost": 2.4011979319227823,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 2",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.02580106624607,
-          "co2e": 1,
-          "cost": 2.498610145721564,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-24T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
           "serviceName": "ebs",
-          "kilowattHours": 0.8334788336313903,
-          "co2e": 3,
-          "cost": 2.389328062518218,
+          "kilowattHours": 0.9281382786569483,
+          "co2e": 2,
+          "cost": 2.225771432143803,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 2",
+          "accountName": "aws account 3",
           "serviceName": "s3",
-          "kilowattHours": 0.0005222039674496364,
-          "co2e": 1,
-          "cost": 1.684216648468909,
-          "region": "us-east-1",
+          "kilowattHours": 0.00003270772530525257,
+          "co2e": 4,
+          "cost": 1.5028221506352941,
+          "region": "us-east-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 2",
+          "accountName": "aws account 3",
           "serviceName": "ec2",
-          "kilowattHours": 50.70189853752075,
+          "kilowattHours": 50.558103056454314,
           "co2e": 0,
-          "cost": 2.2276189376057234,
-          "region": "us-east-1",
+          "cost": 2.440745140900739,
+          "region": "us-west-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 3",
           "serviceName": "rds",
-          "kilowattHours": 64.31978876888766,
-          "co2e": 2,
-          "cost": 2.470633831344259,
-          "region": "us-east-1",
+          "kilowattHours": 62.615457571422965,
+          "co2e": 0,
+          "cost": 1.5955486508938537,
+          "region": "us-west-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 3",
+          "accountName": "aws account 0",
           "serviceName": "lambda",
-          "kilowattHours": 50.19126844352734,
-          "co2e": 2,
-          "cost": 1.5168577281431335,
+          "kilowattHours": 50.903421738830794,
+          "co2e": 1,
+          "cost": 2.238206567880293,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
@@ -827,259 +392,84 @@
           "cloudProvider": "AWS",
           "accountName": "gcp account 3",
           "serviceName": "elasticache",
-          "kilowattHours": 50.6013969778662,
-          "co2e": 3,
-          "cost": 1.5448147731145816,
+          "kilowattHours": 50.25001144079886,
+          "co2e": 5,
+          "cost": 2.293443645415854,
           "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 1",
+          "serviceName": "computeEngine",
+          "kilowattHours": 65.28200479098749,
+          "co2e": 3,
+          "cost": 1.6177172869839958,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 61.90994721222564,
+          "co2e": 2,
+          "cost": 2.2081554041299234,
+          "region": "UK South",
           "usesAverageCPUConstant": false
         }
       ]
     },
     {
-      "timestamp": "2021-02-23T00:00:00.000Z",
+      "timestamp": "2021-01-25T00:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 0",
+          "accountName": "aws account 1",
           "serviceName": "ebs",
-          "kilowattHours": 0.14431816134229036,
-          "co2e": 5,
-          "cost": 2.4967301529257773,
+          "kilowattHours": 0.9290466782034781,
+          "co2e": 0,
+          "cost": 1.9170203054445436,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 4",
+          "accountName": "aws account 1",
           "serviceName": "s3",
-          "kilowattHours": 0.0008011303925517519,
+          "kilowattHours": 0.00007414638904524828,
           "co2e": 0,
-          "cost": 1.6915923831969453,
-          "region": "us-east-1",
+          "cost": 2.3496108515083787,
+          "region": "us-east-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 3",
           "serviceName": "ec2",
-          "kilowattHours": 50.39730820375574,
-          "co2e": 3,
-          "cost": 1.8418221547155498,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 71.55058274383833,
-          "co2e": 5,
-          "cost": 1.8134570057739523,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "lambda",
-          "kilowattHours": 50.390004029193335,
-          "co2e": 3,
-          "cost": 2.0453572814230503,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 4",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.609185968827454,
-          "co2e": 1,
-          "cost": 1.9766901673300916,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-22T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ebs",
-          "kilowattHours": 0.16939385152158826,
-          "co2e": 5,
-          "cost": 1.694034608922398,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.00039631223375608557,
-          "co2e": 1,
-          "cost": 2.325138427314881,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ec2",
-          "kilowattHours": 50.41345596724307,
-          "co2e": 5,
-          "cost": 2.1202858353699923,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "rds",
-          "kilowattHours": 50.81712795312881,
-          "co2e": 0,
-          "cost": 1.9845162771496703,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "lambda",
-          "kilowattHours": 50.92223880313184,
-          "co2e": 1,
-          "cost": 1.6327203853878283,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.16589406638872,
-          "co2e": 2,
-          "cost": 1.8585290185918213,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-21T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.27821396391053343,
-          "co2e": 5,
-          "cost": 1.9799996192894354,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "s3",
-          "kilowattHours": 0.0005129768930679994,
+          "kilowattHours": 50.74719344234976,
           "co2e": 4,
-          "cost": 2.223707509096494,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ec2",
-          "kilowattHours": 55.19422877047119,
-          "co2e": 5,
-          "cost": 1.9157147225555862,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 50.80191321563119,
-          "co2e": 2,
-          "cost": 2.34822582866441,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "lambda",
-          "kilowattHours": 50.50403856702453,
-          "co2e": 0,
-          "cost": 2.4211730745711697,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.495115044496444,
-          "co2e": 2,
-          "cost": 2.36027099571717,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-20T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.0000053905706158818845,
-          "co2e": 5,
-          "cost": 2.176136645314308,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.0005600967940638227,
-          "co2e": 1,
-          "cost": 1.5402348323967967,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 50.98647467388651,
-          "co2e": 0,
-          "cost": 1.5724336399375345,
-          "region": "us-east-1",
+          "cost": 1.8854738557659787,
+          "region": "us-west-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 4",
           "serviceName": "rds",
-          "kilowattHours": 50.267698198495374,
-          "co2e": 3,
-          "cost": 1.873012352573603,
-          "region": "us-east-1",
+          "kilowattHours": 62.70792733734538,
+          "co2e": 2,
+          "cost": 1.9619661070136278,
+          "region": "us-west-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 4",
+          "accountName": "aws account 2",
           "serviceName": "lambda",
-          "kilowattHours": 50.73142400457095,
-          "co2e": 3,
-          "cost": 1.9251820511812738,
+          "kilowattHours": 50.18018466997432,
+          "co2e": 2,
+          "cost": 1.7366812626585235,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
@@ -1087,519 +477,84 @@
           "cloudProvider": "AWS",
           "accountName": "gcp account 3",
           "serviceName": "elasticache",
-          "kilowattHours": 67.49547367986719,
-          "co2e": 2,
-          "cost": 2.1414067789098157,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-19T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ebs",
-          "kilowattHours": 0.18280766431229023,
-          "co2e": 1,
-          "cost": 1.9737849477185452,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.00029778314132297056,
+          "kilowattHours": 72.83814860729936,
           "co2e": 0,
-          "cost": 1.68055348447601,
+          "cost": 2.28301997160316,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ec2",
-          "kilowattHours": 50.83957492446679,
-          "co2e": 1,
-          "cost": 1.6476001202633164,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 50.689526149548065,
-          "co2e": 3,
-          "cost": 1.957694932147092,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.60079075518349,
-          "co2e": 3,
-          "cost": 2.3725262405993917,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.11683945210077,
-          "co2e": 0,
-          "cost": 1.7147027126707834,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-18T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.000536390142574561,
-          "co2e": 2,
-          "cost": 1.986112206616278,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "s3",
-          "kilowattHours": 0.0009622383103960883,
-          "co2e": 2,
-          "cost": 1.8620980915814602,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ec2",
-          "kilowattHours": 55.843149634145405,
-          "co2e": 1,
-          "cost": 2.0141523489677917,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "rds",
-          "kilowattHours": 50.83419814790943,
-          "co2e": 2,
-          "cost": 2.0299328588781167,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.63471703468155,
-          "co2e": 2,
-          "cost": 2.0649005869999213,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.87083266831928,
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.642678514609926,
           "co2e": 4,
-          "cost": 2.2491255707866102,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-17T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ebs",
-          "kilowattHours": 0.8702635165430557,
-          "co2e": 1,
-          "cost": 2.212721246576126,
-          "region": "us-east-1",
+          "cost": 2.112304415112801,
+          "region": "us-east1",
           "usesAverageCPUConstant": false
         },
         {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "s3",
-          "kilowattHours": 0.0004978391993616584,
-          "co2e": 3,
-          "cost": 2.158088290546212,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 50.96011363072402,
-          "co2e": 3,
-          "cost": 1.8531962886877276,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 50.70895892839095,
-          "co2e": 0,
-          "cost": 2.320250623151522,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 51.78680729900986,
-          "co2e": 2,
-          "cost": 2.383676000012552,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 4",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.13133605031274,
-          "co2e": 3,
-          "cost": 1.6559308911800312,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-16T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ebs",
-          "kilowattHours": 0.9366669917287036,
-          "co2e": 4,
-          "cost": 1.9400714582234182,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "s3",
-          "kilowattHours": 0.00011680249214776995,
-          "co2e": 1,
-          "cost": 1.9124279548017056,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ec2",
-          "kilowattHours": 50.203035062188356,
-          "co2e": 2,
-          "cost": 2.157087921056907,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 50.22936387322165,
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.39790599515025,
           "co2e": 5,
-          "cost": 2.124648852339407,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "lambda",
-          "kilowattHours": 54.51041595055724,
-          "co2e": 2,
-          "cost": 1.7123326420834288,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 54.13268620761433,
-          "co2e": 1,
-          "cost": 2.1570397406828987,
-          "region": "us-east-1",
+          "cost": 1.844015443986478,
+          "region": "UK South",
           "usesAverageCPUConstant": false
         }
       ]
     },
     {
-      "timestamp": "2021-02-15T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.4212740287803012,
-          "co2e": 3,
-          "cost": 1.8947469467412044,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "s3",
-          "kilowattHours": 0.00069616683128021,
-          "co2e": 2,
-          "cost": 1.9584128156645426,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ec2",
-          "kilowattHours": 73.51484541947555,
-          "co2e": 0,
-          "cost": 2.3215847659403597,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "rds",
-          "kilowattHours": 50.15060228687794,
-          "co2e": 3,
-          "cost": 2.364034766519766,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "lambda",
-          "kilowattHours": 55.493562393093235,
-          "co2e": 2,
-          "cost": 1.992829304538287,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.6960285501413,
-          "co2e": 0,
-          "cost": 1.7408588771448594,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-14T00:00:00.000Z",
+      "timestamp": "2020-12-25T00:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 3",
           "serviceName": "ebs",
-          "kilowattHours": 0.8181176809309914,
-          "co2e": 4,
-          "cost": 1.8026776293754971,
+          "kilowattHours": 0.7903104123827822,
+          "co2e": 0,
+          "cost": 1.5941517912292598,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 2",
+          "accountName": "aws account 3",
           "serviceName": "s3",
-          "kilowattHours": 0.0008115129525315836,
+          "kilowattHours": 0.0008485340026475967,
           "co2e": 5,
-          "cost": 1.5351263014119938,
-          "region": "us-east-1",
+          "cost": 2.422188298668747,
+          "region": "us-east-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 1",
+          "accountName": "aws account 2",
           "serviceName": "ec2",
-          "kilowattHours": 60.661313620325444,
-          "co2e": 3,
-          "cost": 1.553657750264192,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "rds",
-          "kilowattHours": 50.710882547366715,
-          "co2e": 5,
-          "cost": 2.3234401111958274,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.04034649001175,
-          "co2e": 3,
-          "cost": 2.1423804122298247,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.455950372142645,
-          "co2e": 4,
-          "cost": 1.8330314633173423,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-13T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ebs",
-          "kilowattHours": 0.8483038310221267,
-          "co2e": 2,
-          "cost": 2.3328121682760754,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.0009555867666666623,
+          "kilowattHours": 50.571988266018494,
           "co2e": 0,
-          "cost": 1.5397300929228754,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ec2",
-          "kilowattHours": 50.31493023527997,
-          "co2e": 1,
-          "cost": 1.6608397370938826,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 58.134238227424326,
-          "co2e": 3,
-          "cost": 1.5009483206715908,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "lambda",
-          "kilowattHours": 51.94469458909902,
-          "co2e": 4,
-          "cost": 1.5122230660914857,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.659637961771026,
-          "co2e": 0,
-          "cost": 2.0061279902043747,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-12T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ebs",
-          "kilowattHours": 0.6696803724855698,
-          "co2e": 4,
-          "cost": 1.8272810453925625,
-          "region": "us-east-1",
+          "cost": 1.813087747561918,
+          "region": "us-west-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 3",
-          "serviceName": "s3",
-          "kilowattHours": 0.0003959246824343692,
-          "co2e": 3,
-          "cost": 2.1311223062245497,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ec2",
-          "kilowattHours": 70.86501966530504,
-          "co2e": 3,
-          "cost": 2.1673720899122326,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
           "serviceName": "rds",
-          "kilowattHours": 50.04519253717046,
-          "co2e": 4,
-          "cost": 2.035566202464649,
-          "region": "us-east-1",
+          "kilowattHours": 50.54507810450079,
+          "co2e": 0,
+          "cost": 2.3595674179586856,
+          "region": "us-west-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 0",
+          "accountName": "aws account 4",
           "serviceName": "lambda",
-          "kilowattHours": 50.809576699716295,
-          "co2e": 4,
-          "cost": 2.4253963960888,
+          "kilowattHours": 50.31390279587026,
+          "co2e": 2,
+          "cost": 1.6209696239449094,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
@@ -1607,584 +562,169 @@
           "cloudProvider": "AWS",
           "accountName": "gcp account 2",
           "serviceName": "elasticache",
-          "kilowattHours": 60.157523398617016,
+          "kilowattHours": 72.80796713063573,
           "co2e": 1,
-          "cost": 2.337001050129741,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-11T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ebs",
-          "kilowattHours": 0.2429223507959808,
-          "co2e": 2,
-          "cost": 2.3763040484830453,
+          "cost": 1.7561720671460492,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "s3",
-          "kilowattHours": 0.0006083807076379699,
-          "co2e": 2,
-          "cost": 2.0407887230169752,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ec2",
-          "kilowattHours": 64.97634464405184,
-          "co2e": 4,
-          "cost": 1.7059708619185507,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "rds",
-          "kilowattHours": 63.748177863062054,
-          "co2e": 3,
-          "cost": 2.2252351384411595,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.11091956188107,
-          "co2e": 3,
-          "cost": 1.86798072576887,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 4",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.741716261115435,
-          "co2e": 1,
-          "cost": 2.10700955454075,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-10T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.8814543910943089,
-          "co2e": 3,
-          "cost": 2.3190217999738914,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "s3",
-          "kilowattHours": 0.0005445686862242671,
-          "co2e": 5,
-          "cost": 1.78275026997565,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ec2",
-          "kilowattHours": 58.59060710092634,
-          "co2e": 3,
-          "cost": 1.7913216890897636,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 55.07413021945114,
-          "co2e": 1,
-          "cost": 1.5908947383248107,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "lambda",
-          "kilowattHours": 60.142986521136116,
-          "co2e": 4,
-          "cost": 1.649919188319751,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.2228784124824,
-          "co2e": 2,
-          "cost": 1.8278295172989205,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-09T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ebs",
-          "kilowattHours": 0.8878001280119872,
-          "co2e": 1,
-          "cost": 2.1479602474837307,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "s3",
-          "kilowattHours": 0.0008945354563519399,
-          "co2e": 0,
-          "cost": 1.618021205892621,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ec2",
-          "kilowattHours": 50.466809705740225,
-          "co2e": 2,
-          "cost": 2.370509109507646,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "rds",
-          "kilowattHours": 50.765346872826,
-          "co2e": 2,
-          "cost": 2.4798146790505933,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "lambda",
-          "kilowattHours": 60.09434768338259,
-          "co2e": 2,
-          "cost": 1.8393552940091584,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 71.89010215688168,
-          "co2e": 2,
-          "cost": 2.3363161200845015,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-08T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "ebs",
-          "kilowattHours": 0.3133992803178942,
-          "co2e": 5,
-          "cost": 1.728813772180138,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "s3",
-          "kilowattHours": 0.0004401479432041586,
-          "co2e": 5,
-          "cost": 2.242483371845579,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ec2",
-          "kilowattHours": 50.23020730704126,
-          "co2e": 2,
-          "cost": 1.6695459182814345,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 65.33326692174765,
-          "co2e": 2,
-          "cost": 2.3361070497032115,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "lambda",
-          "kilowattHours": 50.052862713800664,
-          "co2e": 4,
-          "cost": 1.8250239316668155,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 1",
-          "serviceName": "elasticache",
-          "kilowattHours": 67.05593109643303,
-          "co2e": 0,
-          "cost": 2.0044334213506536,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-07T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ebs",
-          "kilowattHours": 0.5976691544765846,
-          "co2e": 5,
-          "cost": 1.8856274023385238,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "s3",
-          "kilowattHours": 0.00028493604008090134,
-          "co2e": 3,
-          "cost": 2.1349986220087445,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 50.97042957890518,
-          "co2e": 5,
-          "cost": 2.4564126459191282,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 50.980421992425136,
-          "co2e": 0,
-          "cost": 2.0323170626498257,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.49877045944823,
-          "co2e": 3,
-          "cost": 1.723705616824107,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 4",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.39993762440272,
-          "co2e": 2,
-          "cost": 2.083330989715047,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-06T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ebs",
-          "kilowattHours": 0.8809568621673511,
-          "co2e": 1,
-          "cost": 1.81444841853126,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "s3",
-          "kilowattHours": 0.0006150457051711948,
-          "co2e": 3,
-          "cost": 2.0984043839687345,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "ec2",
-          "kilowattHours": 65.35640284803961,
-          "co2e": 2,
-          "cost": 1.885527107368366,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "rds",
-          "kilowattHours": 50.58121596243701,
-          "co2e": 2,
-          "cost": 2.409224082921058,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.47196352573657,
-          "co2e": 3,
-          "cost": 2.319985430932144,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.7347328894684,
-          "co2e": 3,
-          "cost": 1.9876138811728965,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-05T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ebs",
-          "kilowattHours": 0.849131166006841,
-          "co2e": 4,
-          "cost": 1.9720461217606964,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "s3",
-          "kilowattHours": 0.00021374131682839415,
-          "co2e": 1,
-          "cost": 1.5011186856564835,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "ec2",
-          "kilowattHours": 50.7744524749338,
-          "co2e": 0,
-          "cost": 2.0392186309111704,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 3",
-          "serviceName": "rds",
-          "kilowattHours": 50.97763955690067,
-          "co2e": 5,
-          "cost": 2.482319889142876,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "lambda",
-          "kilowattHours": 50.88800538962508,
-          "co2e": 5,
-          "cost": 2.1654192704082327,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "gcp account 0",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.11129084431783,
-          "co2e": 1,
-          "cost": 2.127809297841804,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        }
-      ]
-    },
-    {
-      "timestamp": "2021-02-04T00:00:00.000Z",
-      "serviceEstimates": [
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ebs",
-          "kilowattHours": 0.3851925060185062,
-          "co2e": 5,
-          "cost": 2.0228614423639213,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "s3",
-          "kilowattHours": 0.00010182828618676987,
-          "co2e": 3,
-          "cost": 1.9593128681677234,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "ec2",
-          "kilowattHours": 50.0973195276711,
-          "co2e": 5,
-          "cost": 2.2465422996530107,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 0",
-          "serviceName": "rds",
-          "kilowattHours": 50.56609244160566,
-          "co2e": 0,
-          "cost": 2.4523694290363487,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
-          "accountName": "aws account 2",
-          "serviceName": "lambda",
-          "kilowattHours": 50.464544361086034,
-          "co2e": 1,
-          "cost": 2.0623590058412806,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
+          "cloudProvider": "GCP",
           "accountName": "gcp account 2",
-          "serviceName": "elasticache",
-          "kilowattHours": 50.164898147322354,
-          "co2e": 3,
-          "cost": 2.3411464160422546,
-          "region": "us-east-1",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.995343212272175,
+          "co2e": 5,
+          "cost": 2.291652099168084,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 64.71563943290937,
+          "co2e": 4,
+          "cost": 2.1519820863003964,
+          "region": "UK South",
           "usesAverageCPUConstant": false
         }
       ]
     },
     {
-      "timestamp": "2021-02-03T00:00:00.000Z",
+      "timestamp": "2020-11-25T00:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 1",
-          "serviceName": "ebs",
-          "kilowattHours": 0.8308305316326909,
-          "co2e": 3,
-          "cost": 2.4066869990057027,
-          "region": "us-east-1",
-          "usesAverageCPUConstant": false
-        },
-        {
-          "cloudProvider": "AWS",
           "accountName": "aws account 3",
-          "serviceName": "s3",
-          "kilowattHours": 0.00007781499380023949,
-          "co2e": 1,
-          "cost": 1.6704189082281542,
+          "serviceName": "ebs",
+          "kilowattHours": 0.616242116061845,
+          "co2e": 3,
+          "cost": 1.7611637388166252,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 4",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.00009916949627876193,
+          "co2e": 0,
+          "cost": 2.4426180887131026,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
           "serviceName": "ec2",
-          "kilowattHours": 50.60257725883221,
-          "co2e": 1,
-          "cost": 1.8988142285608138,
-          "region": "us-east-1",
+          "kilowattHours": 50.149667680040125,
+          "co2e": 5,
+          "cost": 2.2645178139778706,
+          "region": "us-west-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 4",
           "serviceName": "rds",
-          "kilowattHours": 50.33875104222089,
-          "co2e": 5,
-          "cost": 2.283586830477267,
+          "kilowattHours": 50.15605062459718,
+          "co2e": 1,
+          "cost": 2.345203244211236,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "lambda",
+          "kilowattHours": 55.97282211541847,
+          "co2e": 2,
+          "cost": 1.6084626580032653,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 4",
-          "serviceName": "lambda",
-          "kilowattHours": 50.603147637245314,
+          "accountName": "gcp account 0",
+          "serviceName": "elasticache",
+          "kilowattHours": 50.082598224165906,
+          "co2e": 1,
+          "cost": 2.051192241648004,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 0",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.58370656686491,
+          "co2e": 2,
+          "cost": 2.002632458514051,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.91095442793027,
+          "co2e": 4,
+          "cost": 1.9447149842967881,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-10-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "ebs",
+          "kilowattHours": 0.8445236465308483,
+          "co2e": 3,
+          "cost": 1.8371062169192403,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.0002648754924918617,
           "co2e": 0,
-          "cost": 2.460474818063905,
+          "cost": 2.236483110571217,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.37629287099671,
+          "co2e": 0,
+          "cost": 2.449362850757937,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.52526081119707,
+          "co2e": 2,
+          "cost": 2.302982452488826,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "lambda",
+          "kilowattHours": 50.357072062609866,
+          "co2e": 4,
+          "cost": 2.3300950152526614,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
@@ -2192,64 +732,339 @@
           "cloudProvider": "AWS",
           "accountName": "gcp account 1",
           "serviceName": "elasticache",
-          "kilowattHours": 50.06848149996475,
-          "co2e": 0,
-          "cost": 2.0196643379855876,
+          "kilowattHours": 66.94984534593364,
+          "co2e": 3,
+          "cost": 2.4527664313659665,
           "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 0",
+          "serviceName": "computeEngine",
+          "kilowattHours": 53.70289639150512,
+          "co2e": 0,
+          "cost": 1.8981217535028845,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 4",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.82389577797691,
+          "co2e": 3,
+          "cost": 1.5108425566125716,
+          "region": "UK South",
           "usesAverageCPUConstant": false
         }
       ]
     },
     {
-      "timestamp": "2021-02-02T00:00:00.000Z",
+      "timestamp": "2020-09-25T00:00:00.000Z",
       "serviceEstimates": [
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 3",
+          "accountName": "aws account 0",
           "serviceName": "ebs",
-          "kilowattHours": 0.6675064168499127,
-          "co2e": 2,
-          "cost": 2.499836468789939,
+          "kilowattHours": 0.33278898489743725,
+          "co2e": 3,
+          "cost": 2.201012388385645,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
-          "accountName": "aws account 0",
+          "accountName": "aws account 1",
           "serviceName": "s3",
-          "kilowattHours": 0.0008155688537593624,
-          "co2e": 2,
-          "cost": 1.8171314820892135,
-          "region": "us-east-1",
+          "kilowattHours": 0.00098701927251199,
+          "co2e": 4,
+          "cost": 1.645103657701107,
+          "region": "us-east-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 4",
           "serviceName": "ec2",
-          "kilowattHours": 50.53936282460954,
-          "co2e": 0,
-          "cost": 1.9558917040498165,
-          "region": "us-east-1",
+          "kilowattHours": 50.904310297531644,
+          "co2e": 5,
+          "cost": 2.235818514499144,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.12852654254913,
+          "co2e": 2,
+          "cost": 1.5786907055484218,
+          "region": "us-west-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 2",
-          "serviceName": "rds",
-          "kilowattHours": 50.36797399066686,
-          "co2e": 2,
-          "cost": 1.71912078122106,
+          "serviceName": "lambda",
+          "kilowattHours": 59.54349975897656,
+          "co2e": 1,
+          "cost": 2.324453671310117,
           "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 1",
+          "serviceName": "elasticache",
+          "kilowattHours": 69.72713040208887,
+          "co2e": 1,
+          "cost": 1.8748107561117062,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 63.69530490695243,
+          "co2e": 4,
+          "cost": 2.4104193295098923,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 0",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 65.60925208439582,
+          "co2e": 3,
+          "cost": 2.4070137425368685,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-08-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ebs",
+          "kilowattHours": 0.7421818551593697,
+          "co2e": 3,
+          "cost": 2.498136748374863,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.0002180651158962681,
+          "co2e": 5,
+          "cost": 1.7632736153406632,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ec2",
+          "kilowattHours": 54.239336047864754,
+          "co2e": 3,
+          "cost": 1.9661288302344184,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "rds",
+          "kilowattHours": 50.23120235816861,
+          "co2e": 2,
+          "cost": 2.0142111162898986,
+          "region": "us-west-2",
           "usesAverageCPUConstant": false
         },
         {
           "cloudProvider": "AWS",
           "accountName": "aws account 3",
           "serviceName": "lambda",
-          "kilowattHours": 51.94874174537237,
+          "kilowattHours": 50.86615400739505,
+          "co2e": 0,
+          "cost": 2.164622206937599,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 1",
+          "serviceName": "elasticache",
+          "kilowattHours": 51.26659783867282,
+          "co2e": 3,
+          "cost": 1.6231795006271335,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 59.19683162717123,
+          "co2e": 5,
+          "cost": 1.6906306697783389,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.27713613081028,
+          "co2e": 0,
+          "cost": 1.7863670364270168,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-07-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.5648293345133781,
+          "co2e": 5,
+          "cost": 2.3304265345916653,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "s3",
+          "kilowattHours": 0.00005263625919629122,
           "co2e": 2,
-          "cost": 1.5852078218151553,
+          "cost": 1.6038362843689178,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ec2",
+          "kilowattHours": 64.1169430041115,
+          "co2e": 2,
+          "cost": 1.8957903016901754,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "rds",
+          "kilowattHours": 50.69439982629539,
+          "co2e": 2,
+          "cost": 2.3649041975938676,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 50.69873776324742,
+          "co2e": 4,
+          "cost": 2.1212012771669846,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 4",
+          "serviceName": "elasticache",
+          "kilowattHours": 50.28175003192596,
+          "co2e": 3,
+          "cost": 1.7570663458717493,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 2",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.71620115791394,
+          "co2e": 5,
+          "cost": 2.0052165772682793,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 0",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.146548832423804,
+          "co2e": 5,
+          "cost": 2.4727258099898037,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-06-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.35269028620932774,
+          "co2e": 2,
+          "cost": 2.426536030208615,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.00007772936246220752,
+          "co2e": 2,
+          "cost": 1.9926068310477163,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ec2",
+          "kilowattHours": 50.00593572462313,
+          "co2e": 3,
+          "cost": 1.9838511921282318,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.803461347266776,
+          "co2e": 3,
+          "cost": 2.229003808663734,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "lambda",
+          "kilowattHours": 52.62976125953012,
+          "co2e": 5,
+          "cost": 1.6972395592555778,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
         },
@@ -2257,10 +1072,455 @@
           "cloudProvider": "AWS",
           "accountName": "gcp account 3",
           "serviceName": "elasticache",
-          "kilowattHours": 50.72758118037671,
-          "co2e": 1,
-          "cost": 2.254343450091338,
+          "kilowattHours": 50.98807880163021,
+          "co2e": 2,
+          "cost": 1.6236333213217602,
           "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 64.63052755166217,
+          "co2e": 0,
+          "cost": 2.30459191166866,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 53.31425378242701,
+          "co2e": 1,
+          "cost": 1.6930870858502807,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-05-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.3793961762889928,
+          "co2e": 5,
+          "cost": 1.5660349090236223,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.0007881261941471649,
+          "co2e": 1,
+          "cost": 2.107104300712024,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.4099085739953,
+          "co2e": 2,
+          "cost": 1.7912671435326524,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "rds",
+          "kilowattHours": 56.61135475563019,
+          "co2e": 3,
+          "cost": 2.0547082075494254,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 50.16319007556745,
+          "co2e": 1,
+          "cost": 2.3442440999125886,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 4",
+          "serviceName": "elasticache",
+          "kilowattHours": 66.08793309572448,
+          "co2e": 0,
+          "cost": 1.89506691677191,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 1",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.2235650164992,
+          "co2e": 0,
+          "cost": 1.6300863324887378,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 3",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.27485053251475,
+          "co2e": 3,
+          "cost": 1.7666414199697307,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-04-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.0025963667867079376,
+          "co2e": 4,
+          "cost": 2.110850189120251,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "s3",
+          "kilowattHours": 0.00038988295545011175,
+          "co2e": 5,
+          "cost": 1.750590801038299,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ec2",
+          "kilowattHours": 50.58419719553395,
+          "co2e": 3,
+          "cost": 2.331961666410219,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "rds",
+          "kilowattHours": 50.09219672002729,
+          "co2e": 1,
+          "cost": 2.171231385841728,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "lambda",
+          "kilowattHours": 50.34788323768369,
+          "co2e": 2,
+          "cost": 2.178860527900543,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 1",
+          "serviceName": "elasticache",
+          "kilowattHours": 68.0807086208259,
+          "co2e": 1,
+          "cost": 1.8790892873060863,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 2",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.876621782936894,
+          "co2e": 5,
+          "cost": 2.008009566294815,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 69.14280006058016,
+          "co2e": 1,
+          "cost": 2.159049075087805,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-03-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.847821319053617,
+          "co2e": 3,
+          "cost": 1.8756121359502171,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "s3",
+          "kilowattHours": 0.000630093974723783,
+          "co2e": 3,
+          "cost": 2.3698572941873914,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.10307382046631,
+          "co2e": 4,
+          "cost": 2.351022985532233,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "rds",
+          "kilowattHours": 50.22293041559674,
+          "co2e": 3,
+          "cost": 1.5327957463127884,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "lambda",
+          "kilowattHours": 68.18586584927158,
+          "co2e": 2,
+          "cost": 2.205957045144824,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 1",
+          "serviceName": "elasticache",
+          "kilowattHours": 61.44127617897667,
+          "co2e": 2,
+          "cost": 2.2445063541267265,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 68.47759811709409,
+          "co2e": 2,
+          "cost": 2.026647361534485,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.5125618456214,
+          "co2e": 2,
+          "cost": 1.9833785822656285,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-02-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ebs",
+          "kilowattHours": 0.9119831149849784,
+          "co2e": 3,
+          "cost": 1.7466850895849164,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.00010168764085273696,
+          "co2e": 2,
+          "cost": 2.0929755865584747,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "ec2",
+          "kilowattHours": 50.13033413155082,
+          "co2e": 3,
+          "cost": 2.030781896188273,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 53.81264913939785,
+          "co2e": 5,
+          "cost": 1.7863504430322306,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 63.45075892152083,
+          "co2e": 4,
+          "cost": 1.8740007850011755,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 2",
+          "serviceName": "elasticache",
+          "kilowattHours": 71.15138851526754,
+          "co2e": 3,
+          "cost": 1.6684896105816076,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.77403726191187,
+          "co2e": 4,
+          "cost": 1.7839515021969587,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 4",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.373127573933836,
+          "co2e": 2,
+          "cost": 1.8199290662411896,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-01-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ebs",
+          "kilowattHours": 0.8148394263939371,
+          "co2e": 3,
+          "cost": 1.9952062784974551,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.00010100550904187954,
+          "co2e": 5,
+          "cost": 2.479801470978538,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ec2",
+          "kilowattHours": 50.933103987612505,
+          "co2e": 3,
+          "cost": 2.014818576889102,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "rds",
+          "kilowattHours": 50.92736661108625,
+          "co2e": 2,
+          "cost": 2.0552869714092585,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "lambda",
+          "kilowattHours": 70.47173348463286,
+          "co2e": 5,
+          "cost": 1.8418849726705238,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "gcp account 0",
+          "serviceName": "elasticache",
+          "kilowattHours": 50.51043411548123,
+          "co2e": 4,
+          "cost": 1.9021326841241781,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 57.666701915218034,
+          "co2e": 1,
+          "cost": 1.611910606014586,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.773157853289746,
+          "co2e": 5,
+          "cost": 2.2728625664822433,
+          "region": "UK South",
           "usesAverageCPUConstant": false
         }
       ]

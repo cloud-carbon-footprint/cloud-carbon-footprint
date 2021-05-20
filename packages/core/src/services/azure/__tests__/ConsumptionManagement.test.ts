@@ -98,7 +98,7 @@ describe('Azure Consumption Management Service', () => {
           },
           {
             kilowattHours: 0.020198324999999996,
-            co2e: 0.000010916406927824999,
+            co2e: 0.000009538255014749998,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -113,7 +113,7 @@ describe('Azure Consumption Management Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 0.026721749999999996,
-            co2e: 0.000011353456974749998,
+            co2e: 0.000010589642472749997,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -195,7 +195,7 @@ describe('Azure Consumption Management Service', () => {
             },
             {
               kilowattHours: 0.020198324999999996,
-              co2e: 0.000010916406927824999,
+              co2e: 0.000009538255014749998,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountName: 'test-subscription',
@@ -205,7 +205,7 @@ describe('Azure Consumption Management Service', () => {
             },
             {
               kilowattHours: 0.026721749999999996,
-              co2e: 0.000011353456974749998,
+              co2e: 0.000010589642472749997,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountName: 'test-subscription',
@@ -434,7 +434,7 @@ describe('Azure Consumption Management Service', () => {
           {
             accountName: 'test-subscription',
             cloudProvider: 'AZURE',
-            co2e: 6.53165926875e-12,
+            co2e: 5.9748514835625e-12,
             cost: 10,
             region: 'US East 2',
             serviceName: 'Functions',

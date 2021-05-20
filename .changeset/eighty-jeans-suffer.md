@@ -4,6 +4,7 @@
 '@cloud-carbon-footprint/client': patch
 '@cloud-carbon-footprint/core': patch
 '@cloud-carbon-footprint/create-app': patch
+'@cloud-carbon-footprint/integration-tests': patch
 ---
 
-The default `aws-sdk` dependency was bumped to `"^2.890.0"`,
+Updates depedancies to the latest
