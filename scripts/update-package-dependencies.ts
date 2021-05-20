@@ -6,21 +6,21 @@ import { promisify } from 'util'
 import fs from 'fs'
 import path from 'path'
 
-const exec = promisify(execCb)
-
 async function main() {
-  const args = process.argv.slice(2)
-  const currentPackageName = args[0]
-  const packageNames = args.slice(1)
+  const currentPackageName = process.argv.slice(2)[0]
+  const packageNames = process.argv.slice(2).slice(1)
 
   updatePackageDepencies(packageNames, currentPackageName)
-  // Make sure the package.json file is writen to, toi update the references
-
-  //copy core/dist to api and rename it to core
   copyDistDirectories(packageNames, currentPackageName)
 }
 
-const runCmd = async (cmd: string) => {
+main().catch((error) => {
+  console.error(error.stack)
+  process.exit(1)
+})
+
+async function runCmd(cmd: string) {
+  const exec = promisify(execCb)
   try {
     await exec(cmd)
   } catch (error) {
@@ -30,11 +30,6 @@ const runCmd = async (cmd: string) => {
   }
 }
 
-main().catch((error) => {
-  console.error(error.stack)
-  process.exit(1)
-})
-
 function copyDistDirectories(
   packageNames: string[],
   currentPackageName: string,
@@ -43,14 +38,13 @@ function copyDistDirectories(
     __dirname,
     `../dist-workspace/packages/${currentPackageName}`,
   )
-
   packageNames.forEach((name) => {
     const targetDir = path.resolve(
       __dirname,
-      `../dist-workspace/packages/${name}/dist`,
+      `../dist-workspace/packages/${name}`,
     )
-
-    runCmd(`cp -R ${targetDir} ${baseDir}/${name}`)
+    runCmd(`cp -R ${targetDir}/dist ${baseDir}/${name}`)
+    runCmd(`cp -R ${targetDir}/package.json ${baseDir}/${name}`)
   })
 }
 
@@ -66,9 +60,7 @@ function updatePackageDepencies(
       ),
       'utf8',
     )
-
     const packageJSON = JSON.parse(data)
-
     packageNames.forEach((name) => {
       const localDeps = Object.keys(packageJSON.dependencies)
         .filter((key) => key === `@cloud-carbon-footprint/${name}`)

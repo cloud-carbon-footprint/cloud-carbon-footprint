@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [trunk]
+    branches: [build-refactor]
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
@@ -95,10 +95,13 @@ jobs:
       - name: build-workspace
         run: |
           yarn lerna run build:workspace --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
-          cd dist-workspace
-          yarn lerna run build:update --scope @cloud-carbon-footprint/api
           cp package.json dist-workspace
           cp yarn.lock dist-workspace
+
+          # replacing local @cloud-carbon-footprint dependencies with a local reference
+          cd dist-workspace
+          yarn install && yarn lerna run build:update --scope @cloud-carbon-footprint/api
+          cd ..
       - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace
@@ -246,9 +249,6 @@ jobs:
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
           cd dist-workspace/packages/api
-          # replacing @cloud-carbon-footprint/core with a local reference
-          # we need to do this until general solution is built
-          # sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
           ./create_server_env_file.sh
           cd ../../..
 
