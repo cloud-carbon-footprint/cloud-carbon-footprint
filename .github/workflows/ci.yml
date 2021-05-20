@@ -296,9 +296,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
-      with:
-        name: dist-workspace
-        path: dist-workspace
+        with:
+          name: dist-workspace
+          path: dist-workspace
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
