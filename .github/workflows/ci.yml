@@ -197,7 +197,7 @@ jobs:
             cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/api:latest
   deploy-staging:
-    if: github.ref == 'refs/heads/trunk'
+    if: github.ref == 'refs/heads/build-refactor'
     needs: build
     runs-on: ubuntu-latest
     container:
