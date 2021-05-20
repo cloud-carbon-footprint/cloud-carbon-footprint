@@ -65,7 +65,7 @@ By default, we query cloud provider billing and usage APIs:
 
 This pulls usage and cost data from all linked accounts in your AWS, GCP, or Azure Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
 
-Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, and currently only the Compute, Storage and Networking usage types are fed into the estimation formula. You can see our classifications of these usage types in following files:
+Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, with Unknown being unused in the estimation formula. You can see our classifications of these usage types in following files:
 
 - AWS: packages/core/src/services/aws/CostAndUsageTypes.ts
 - GCP: packages/core/services/gcp/BillingExportTypes.ts
