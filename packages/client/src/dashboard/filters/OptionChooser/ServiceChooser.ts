@@ -18,8 +18,10 @@ export class ServiceChooser extends OptionChooser {
 
   protected chooseProviders(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
-    getCloudProvidersFromServices(this.selections).forEach(
-      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
+    getCloudProvidersFromServices(
+      this.selections,
+    ).forEach((cloudProviderOption) =>
+      desiredSelections.add(cloudProviderOption),
     )
     return desiredSelections
   }

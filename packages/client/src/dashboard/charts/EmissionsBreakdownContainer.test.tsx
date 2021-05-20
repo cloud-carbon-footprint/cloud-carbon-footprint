@@ -24,10 +24,9 @@ import { fakeEmissionFactors } from '../../data/generateEstimations'
 jest.mock('../../themes')
 jest.mock('../client/EmissionFactorServiceHook')
 
-const mockedUseEmissionFactorService =
-  useRemoteEmissionService as jest.MockedFunction<
-    typeof useRemoteEmissionService
-  >
+const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
+  typeof useRemoteEmissionService
+>
 
 describe('EmissionsBreakdownContainer', () => {
   const date1 = new Date('2020-07-10T00:00:00.000Z')

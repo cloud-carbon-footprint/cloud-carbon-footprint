@@ -90,8 +90,9 @@ export default function CloudCarbonContainer(): ReactElement {
 
   const { data, loading } = useRemoteService([], startDate, endDate)
 
-  const filteredDataResults: FilterResultResponse =
-    useFilterDataFromEstimates(data)
+  const filteredDataResults: FilterResultResponse = useFilterDataFromEstimates(
+    data,
+  )
   const { filteredData, filters, setFilters } = useFilters(
     data,
     filteredDataResults,

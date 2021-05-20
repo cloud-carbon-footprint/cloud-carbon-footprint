@@ -171,9 +171,8 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const beforeZoomCallback =
-        testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
-          ?.beforeZoom
+      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props
+        ?.options?.chart?.events?.beforeZoom
 
       expect(beforeZoomCallback).toBeDefined()
       beforeZoomCallback(undefined, {
@@ -216,9 +215,8 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const beforeZoomCallback =
-        testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
-          ?.beforeZoom
+      const beforeZoomCallback = testRenderer.root?.findByType(Chart)?.props
+        ?.options?.chart?.events?.beforeZoom
 
       expect(beforeZoomCallback).toBeDefined()
       beforeZoomCallback(undefined, {
@@ -259,9 +257,8 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const beforeResetZoomCallback =
-        testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
-          ?.beforeResetZoom
+      const beforeResetZoomCallback = testRenderer.root?.findByType(Chart)
+        ?.props?.options?.chart?.events?.beforeResetZoom
 
       expect(beforeResetZoomCallback).toBeDefined()
       beforeResetZoomCallback()
@@ -384,9 +381,8 @@ describe('ApexLineChart', () => {
     })
 
     act(() => {
-      const afterLegendClickCallback =
-        testRenderer.root?.findByType(Chart)?.props?.options?.chart?.events
-          ?.legendClick
+      const afterLegendClickCallback = testRenderer.root?.findByType(Chart)
+        ?.props?.options?.chart?.events?.legendClick
 
       expect(afterLegendClickCallback).toBeDefined()
       afterLegendClickCallback(undefined, 1)

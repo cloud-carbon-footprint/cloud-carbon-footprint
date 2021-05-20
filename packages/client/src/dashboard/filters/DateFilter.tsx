@@ -132,8 +132,9 @@ const DateFilter: FunctionComponent<FilterProps> = ({
   )
   const startDate = filters.dateRange?.startDate || null
   const endDate = filters.dateRange?.endDate || null
-  const [focusedInput, setFocusedInput] =
-    useState<'startDate' | 'endDate' | null>(null)
+  const [focusedInput, setFocusedInput] = useState<
+    'startDate' | 'endDate' | null
+  >(null)
 
   return (
     <StyledWrapper>
@@ -167,9 +168,10 @@ const DateFilter: FunctionComponent<FilterProps> = ({
   )
 }
 
-const isOutsideRange =
-  (start: moment.Moment, end: moment.Moment) => (current: moment.Moment) => {
-    return !current.isBetween(start, end, 'day', '[]')
-  }
+const isOutsideRange = (start: moment.Moment, end: moment.Moment) => (
+  current: moment.Moment,
+) => {
+  return !current.isBetween(start, end, 'day', '[]')
+}
 
 export default DateFilter
