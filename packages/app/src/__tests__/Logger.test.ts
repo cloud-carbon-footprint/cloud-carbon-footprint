@@ -26,8 +26,8 @@ jest.mock('winston', () => {
   }
 })
 
-import Logger from './Logger'
-import mockConfig from '../application/Config'
+import Logger from '../Logger'
+import mockConfig from '../Config'
 
 describe('Logger', () => {
   const testMessage = 'test log message'

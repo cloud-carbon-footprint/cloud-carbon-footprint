@@ -2,15 +2,19 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import moment from 'moment'
 import App from '../App'
-import UsageData from '../../domain/IUsageData'
-import FootprintEstimate from '../../domain/FootprintEstimate'
+import {
+  UsageData,
+  FootprintEstimate,
+  ICloudService,
+  Cost,
+} from '@cloud-carbon-footprint/core'
+
 import { EstimationResult } from '../EstimationResult'
-import moment = require('moment')
-import ICloudService from '../../domain/ICloudService'
-import Cost from '../../domain/Cost'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
+
 import AWSAccount from '../AWSAccount'
 import GCPAccount from '../GCPAccount'
 
@@ -18,9 +22,11 @@ const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
 jest.mock('../Cache')
-jest.mock('../../services/Logger')
-jest.mock('../ConfigLoader', () => {
-  return jest.fn().mockImplementation(() => {
+jest.mock('@cloud-carbon-footprint/core', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/core'),
+  Logger: jest.fn(),
+  cache: jest.fn(),
+  configLoader: jest.fn().mockImplementation(() => {
     return {
       AWS: {
         accounts: [{ id: '12345678', name: 'test AWS account' }],
@@ -47,8 +53,8 @@ jest.mock('../ConfigLoader', () => {
         CACHE_BUCKET_NAME: 'test-bucket-name',
       },
     }
-  })
-})
+  }),
+}))
 
 const testRegions = ['us-east-1', 'us-east-2']
 

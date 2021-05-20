@@ -5,5 +5,5 @@
     "baseUrl": ".",
     "outDir": "./dist"
   },
-  "include": ["./src", "../app/src/RawRequest.ts"]
+  "include": ["./src"]
 }

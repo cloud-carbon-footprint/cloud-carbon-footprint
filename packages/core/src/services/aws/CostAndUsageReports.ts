@@ -8,7 +8,7 @@ import FootprintEstimate, {
 } from '../../domain/FootprintEstimate'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
-import configLoader from '../../application/ConfigLoader'
+import configLoader from '../../ConfigLoader'
 import {
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
@@ -20,8 +20,8 @@ import {
 import ComputeUsage from '../../domain/ComputeUsage'
 import StorageUsage from '../../domain/StorageUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
-import Logger from '../Logger'
-import { EstimationResult } from '../../application/EstimationResult'
+import Logger from '../../Logger'
+import { EstimationResult } from '../common/types'
 import { ServiceWrapper } from './ServiceWrapper'
 import {
   SSD_USAGE_TYPES,

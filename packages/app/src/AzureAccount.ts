@@ -12,7 +12,7 @@ import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import CloudProviderAccount from './CloudProviderAccount'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '../../../app/EstimationResult'
 import ConsumptionManagementService from '../services/azure/ConsumptionManagement'
 import ComputeEstimator from '../domain/ComputeEstimator'
 import { StorageEstimator } from '../domain/StorageEstimator'

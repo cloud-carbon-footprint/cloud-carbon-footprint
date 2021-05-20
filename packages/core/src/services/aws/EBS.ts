@@ -13,7 +13,7 @@ import FootprintEstimate from '../../domain/FootprintEstimate'
 import Cost from '../../domain/Cost'
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
-import Logger from '../Logger'
+import Logger from '../../Logger'
 
 export default class EBS implements ICloudService {
   serviceName = 'EBS'

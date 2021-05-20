@@ -1,4 +1,3 @@
-export * from './application'
+export { default as configLoader } from './ConfigLoader'
 export * from './domain'
 export * from './services'
-export * from './view'

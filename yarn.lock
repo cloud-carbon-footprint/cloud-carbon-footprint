@@ -2093,6 +2093,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@cloud-carbon-footprint/app@workspace:packages/app":
+  version: 0.0.0-use.local
+  resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
+  dependencies:
+    "@cloud-carbon-footprint/core": ^0.7.0
+    "@types/jest": ^26.0.23
+    "@types/node": ^15.3.1
+    "@typescript-eslint/eslint-plugin": ^4.24.0
+    "@typescript-eslint/parser": ^4.24.0
+    eslint: ^7.26.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.0
+    eslint-plugin-unused-imports: ^1.1.1
+    jest: ^26.6.3
+    lint-staged: ^11.0.0
+    prettier: ^2.3.0
+    ts-jest: ^26.5.6
+    ts-node: ^9.1.1
+    ts-node-dev: ^1.1.6
+    typescript: ^4.2.4
+  languageName: unknown
+  linkType: soft
+
 "@cloud-carbon-footprint/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
@@ -4916,6 +4939,13 @@ __metadata:
   version: 15.3.0
   resolution: "@types/node@npm:15.3.0"
   checksum: 44039665ab71a6ec12e6637a9db4ec3123fdfaf52952ca8028a6f1b37c41c2d380e88d28a41e02693bf9d4815307e0ad938815bf8ffedc5f4d045855fa28db06
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^15.3.1":
+  version: 15.3.1
+  resolution: "@types/node@npm:15.3.1"
+  checksum: 1c3c94f4c8e1df26b24a00637fdd5a50a5ea7afd0e97cbd298cf675d49ad5436b8b2b111b349194e2fb8bfc81291a67dff9eac80abbf610f938f7a89ba5ba426
   languageName: node
   linkType: hard
 
@@ -14305,7 +14335,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-cli@npm:^26.6.0":
+"jest-cli@npm:^26.6.0, jest-cli@npm:^26.6.3":
   version: 26.6.3
   resolution: "jest-cli@npm:26.6.3"
   dependencies:
@@ -14845,6 +14875,19 @@ fsevents@^1.2.7:
   bin:
     jest: bin/jest.js
   checksum: 5db020fa88bc87ff4c8373be02605a3a42256b59151b30b22955dfa92142516150abf0e969fe8847bdf2bf0fbb338a1c93954b808fc8d7b0933f4bb15f1e0500
+  languageName: node
+  linkType: hard
+
+"jest@npm:^26.6.3":
+  version: 26.6.3
+  resolution: "jest@npm:26.6.3"
+  dependencies:
+    "@jest/core": ^26.6.3
+    import-local: ^3.0.2
+    jest-cli: ^26.6.3
+  bin:
+    jest: bin/jest.js
+  checksum: 4ffcfefa2b30999a71c205e1aacf2b3d7af10f36c17ba1baf45677684116ad5aa6a5bb162ad2dd418f9ea99d18f24b70d8c83fb317b765a3acac361a50e9db9f
   languageName: node
   linkType: hard
 

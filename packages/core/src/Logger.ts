@@ -12,7 +12,7 @@ const { combine, timestamp, label, printf } = format
 import { LoggingWinston } from '@google-cloud/logging-winston'
 
 import ILogger from './ILogger'
-import configLoader from '../application/ConfigLoader'
+import configLoader from './ConfigLoader'
 
 const env = process.env.NODE_ENV || 'development'
 

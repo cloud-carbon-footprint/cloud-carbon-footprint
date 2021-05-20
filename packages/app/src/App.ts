@@ -2,9 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { configLoader } from '@cloud-carbon-footprint/core'
 import { EstimationRequest } from './CreateValidRequest'
 import AWSAccount from './AWSAccount'
-import configLoader from './ConfigLoader'
 import { EstimationResult, reduceByTimestamp } from './EstimationResult'
 import cache from './Cache'
 import GCPAccount from './GCPAccount'

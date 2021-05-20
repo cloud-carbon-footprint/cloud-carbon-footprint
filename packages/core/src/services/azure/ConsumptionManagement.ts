@@ -11,7 +11,7 @@ import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
 import MemoryEstimator from '../../domain/MemoryEstimator'
-import { EstimationResult } from '../../application'
+import { EstimationResult } from '../../../../app/src'
 import ComputeUsage from '../../domain/ComputeUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 import FootprintEstimate, {

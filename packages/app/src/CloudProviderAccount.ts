@@ -3,7 +3,10 @@
  */
 
 import Region from '../domain/Region'
-import { EstimationResult, reduceByTimestamp } from './EstimationResult'
+import {
+  EstimationResult,
+  reduceByTimestamp,
+} from '../../../app/EstimationResult'
 import FootprintEstimate, {
   aggregateEstimatesByDay,
 } from '../domain/FootprintEstimate'

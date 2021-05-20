@@ -3,12 +3,12 @@
  */
 
 import { EstimationResult } from './EstimationResult'
-import CacheManager from './CacheManager'
-import EstimatorCache from './EstimatorCache'
+import CacheManager from '@cloud-carbon-footprint/core/src/application/CacheManager'
+import EstimatorCache from '@cloud-carbon-footprint/core/src/application/EstimatorCache'
 import moment, { Moment } from 'moment'
 import R from 'ramda'
-import { EstimationRequest } from './CreateValidRequest'
-import Logger from '../services/Logger'
+import { EstimationRequest } from '@cloud-carbon-footprint/core/src/application/CreateValidRequest'
+import Logger from '@cloud-carbon-footprint/core/src/services/Logger'
 
 const cacheManager: EstimatorCache = new CacheManager()
 

@@ -2,17 +2,26 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ICloudService from '../domain/ICloudService'
-import EBS from '../services/aws/EBS'
-import S3 from '../services/aws/S3'
-import EC2 from '../services/aws/EC2'
-import ElastiCache from '../services/aws/ElastiCache'
-import RDS from '../services/aws/RDS'
-import RDSComputeService from '../services/aws/RDSCompute'
-import RDSStorage from '../services/aws/RDSStorage'
-import Lambda from '../services/aws/Lambda'
+import {
+  ICloudService,
+  EBS,
+  S3,
+  EC2,
+  ElastiCache,
+  RDS,
+  RDSComputeService,
+  RDSStorage,
+  Lambda,
+  ServiceWrapper,
+  Region,
+  CostAndUsageReports,
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  CLOUD_CONSTANTS,
+} from '@cloud-carbon-footprint/core'
 import configLoader from './ConfigLoader'
-import { ServiceWrapper } from '../services/aws/ServiceWrapper'
 import {
   CloudWatch,
   CostExplorer,
@@ -23,14 +32,7 @@ import {
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 import AWSCredentialsProvider from './AWSCredentialsProvider'
 import { EstimationResult } from './EstimationResult'
-import Region from '../domain/Region'
 import CloudProviderAccount from './CloudProviderAccount'
-import CostAndUsageReports from '../services/aws/CostAndUsageReports'
-import ComputeEstimator from '../domain/ComputeEstimator'
-import { StorageEstimator } from '../domain/StorageEstimator'
-import NetworkingEstimator from '../domain/NetworkingEstimator'
-import MemoryEstimator from '../domain/MemoryEstimator'
-import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials

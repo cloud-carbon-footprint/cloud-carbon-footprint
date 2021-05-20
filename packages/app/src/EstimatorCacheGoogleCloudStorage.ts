@@ -6,7 +6,7 @@ import { Storage } from '@google-cloud/storage'
 import { Stream } from 'stream'
 import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '../../../app/EstimationResult'
 
 export const cacheFileName =
   process.env.CCF_CACHE_PATH || 'estimates.cache.json'

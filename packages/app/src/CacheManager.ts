@@ -4,7 +4,7 @@
 
 import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '../../../app/EstimationResult'
 import { EstimationRequest } from './CreateValidRequest'
 import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
 import EstimatorCacheGoogleCloudStorage from './EstimatorCacheGoogleCloudStorage'

@@ -3,7 +3,7 @@
  */
 
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '../../../app/EstimationResult'
 import { promises as fs } from 'fs'
 import moment from 'moment'
 

@@ -1,0 +1,4722 @@
+diff --git a/packages/core/src/application/AWSAccount.ts b/packages/core/src/application/AWSAccount.ts
+deleted file mode 100644
+index 6f52434e..00000000
+--- a/packages/core/src/application/AWSAccount.ts
++++ /dev/null
+@@ -1,163 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import ICloudService from '../domain/ICloudService'
+-import EBS from '../services/aws/EBS'
+-import S3 from '../services/aws/S3'
+-import EC2 from '../services/aws/EC2'
+-import ElastiCache from '../services/aws/ElastiCache'
+-import RDS from '../services/aws/RDS'
+-import RDSComputeService from '../services/aws/RDSCompute'
+-import RDSStorage from '../services/aws/RDSStorage'
+-import Lambda from '../services/aws/Lambda'
+-import configLoader from './ConfigLoader'
+-import { ServiceWrapper } from '../services/aws/ServiceWrapper'
+-import {
+-  CloudWatch,
+-  CostExplorer,
+-  Credentials,
+-  CloudWatchLogs,
+-  Athena,
+-} from 'aws-sdk'
+-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+-import AWSCredentialsProvider from './AWSCredentialsProvider'
+-import { EstimationResult } from './EstimationResult'
+-import Region from '../domain/Region'
+-import CloudProviderAccount from './CloudProviderAccount'
+-import CostAndUsageReports from '../services/aws/CostAndUsageReports'
+-import ComputeEstimator from '../domain/ComputeEstimator'
+-import { StorageEstimator } from '../domain/StorageEstimator'
+-import NetworkingEstimator from '../domain/NetworkingEstimator'
+-import MemoryEstimator from '../domain/MemoryEstimator'
+-import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
+-
+-export default class AWSAccount extends CloudProviderAccount {
+-  private readonly credentials: Credentials
+-
+-  constructor(
+-    public accountId: string,
+-    public name: string,
+-    private regions: string[],
+-  ) {
+-    super()
+-    this.credentials = AWSCredentialsProvider.create(accountId)
+-  }
+-
+-  async getDataForRegions(
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]> {
+-    const results: EstimationResult[][] = []
+-    for (const regionId of this.regions) {
+-      const regionEstimates: EstimationResult[] = await Promise.all(
+-        await this.getDataForRegion(regionId, startDate, endDate),
+-      )
+-      results.push(regionEstimates)
+-    }
+-
+-    return results.flat()
+-  }
+-
+-  getDataForRegion(
+-    regionId: string,
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]> {
+-    const awsServices = this.getServices(regionId)
+-    const region = new Region(regionId, awsServices, configLoader().AWS.NAME)
+-    return this.getRegionData(region, startDate, endDate)
+-  }
+-
+-  getServices(regionId: string): ICloudService[] {
+-    return configLoader().AWS.CURRENT_SERVICES.map(({ key }) => {
+-      return this.getService(key, regionId, this.credentials)
+-    })
+-  }
+-
+-  getDataFromCostAndUsageReports(
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]> {
+-    const costAndUsageReportsService = new CostAndUsageReports(
+-      new ComputeEstimator(),
+-      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
+-      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
+-      new NetworkingEstimator(),
+-      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
+-      this.createServiceWrapper(
+-        this.getServiceConfigurationOptions(
+-          configLoader().AWS.ATHENA_REGION,
+-          this.credentials,
+-        ),
+-      ),
+-    )
+-    return costAndUsageReportsService.getEstimates(startDate, endDate)
+-  }
+-
+-  private getService(
+-    key: string,
+-    region: string,
+-    credentials: Credentials,
+-  ): ICloudService {
+-    if (this.services[key] === undefined)
+-      throw new Error('Unsupported service: ' + key)
+-    const options = this.getServiceConfigurationOptions(region, credentials)
+-    return this.services[key](options)
+-  }
+-
+-  private getServiceConfigurationOptions(
+-    region: string,
+-    credentials: Credentials,
+-  ): ServiceConfigurationOptions {
+-    return {
+-      region: region,
+-      credentials: credentials,
+-    }
+-  }
+-
+-  private cw: CloudWatch
+-  private ce: CostExplorer
+-  private cwl: CloudWatchLogs
+-  private ath: Athena
+-
+-  private createServiceWrapper(options: ServiceConfigurationOptions) {
+-    return new ServiceWrapper(
+-      this.cw ? this.cw : new CloudWatch(options),
+-      this.cwl ? this.cwl : new CloudWatchLogs(options),
+-      this.ce
+-        ? this.ce
+-        : new CostExplorer({
+-            region: 'us-east-1',
+-            credentials: options.credentials,
+-          }),
+-      this.ath ? this.ath : new Athena(options),
+-    )
+-  }
+-
+-  private services: {
+-    [id: string]: (options: ServiceConfigurationOptions) => ICloudService
+-  } = {
+-    ebs: (options) => {
+-      return new EBS(this.createServiceWrapper(options))
+-    },
+-    s3: (options) => {
+-      return new S3(this.createServiceWrapper(options))
+-    },
+-    ec2: (options) => {
+-      return new EC2(this.createServiceWrapper(options))
+-    },
+-    elasticache: (options) => {
+-      return new ElastiCache(this.createServiceWrapper(options))
+-    },
+-    rds: (options) => {
+-      return new RDS(
+-        new RDSComputeService(this.createServiceWrapper(options)),
+-        new RDSStorage(this.createServiceWrapper(options)),
+-      )
+-    },
+-    lambda: (options) => {
+-      return new Lambda(120000, 1000, this.createServiceWrapper(options))
+-    },
+-  }
+-}
+diff --git a/packages/core/src/application/AWSCredentialsProvider.ts b/packages/core/src/application/AWSCredentialsProvider.ts
+deleted file mode 100644
+index c92fe333..00000000
+--- a/packages/core/src/application/AWSCredentialsProvider.ts
++++ /dev/null
+@@ -1,37 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import {
+-  Credentials,
+-  config as awsConfig,
+-  ChainableTemporaryCredentials,
+-} from 'aws-sdk'
+-import config from './ConfigLoader'
+-import GCPCredentials from './GCPCredentials'
+-
+-export default class AWSCredentialsProvider {
+-  static create(accountId: string): Credentials {
+-    switch (config().AWS.authentication.mode) {
+-      case 'GCP':
+-        return new GCPCredentials(
+-          accountId,
+-          config().AWS.authentication.options.targetRoleSessionName,
+-          config().AWS.authentication.options.proxyAccountId,
+-          config().AWS.authentication.options.proxyRoleName,
+-        )
+-      case 'AWS':
+-        return new ChainableTemporaryCredentials({
+-          params: {
+-            RoleArn: `arn:aws:iam::${accountId}:role/${
+-              config().AWS.authentication.options.targetRoleSessionName
+-            }`,
+-            RoleSessionName:
+-              config().AWS.authentication.options.targetRoleSessionName,
+-          },
+-        })
+-      default:
+-        return new Credentials(awsConfig.credentials)
+-    }
+-  }
+-}
+diff --git a/packages/core/src/application/App.ts b/packages/core/src/application/App.ts
+deleted file mode 100644
+index 5f45a3d9..00000000
+--- a/packages/core/src/application/App.ts
++++ /dev/null
+@@ -1,105 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { EstimationRequest } from './CreateValidRequest'
+-import AWSAccount from './AWSAccount'
+-import configLoader from './ConfigLoader'
+-import { EstimationResult, reduceByTimestamp } from './EstimationResult'
+-import cache from './Cache'
+-import GCPAccount from './GCPAccount'
+-import FilterResult, { getAccounts } from './FilterResult'
+-import AzureAccount from './AzureAccount'
+-export default class App {
+-  @cache()
+-  async getCostAndEstimates(
+-    request: EstimationRequest,
+-  ): Promise<EstimationResult[]> {
+-    const startDate = request.startDate
+-    const endDate = request.endDate
+-    const config = configLoader()
+-    const AWS = config.AWS
+-    const GCP = config.GCP
+-    const AZURE = config.AZURE
+-
+-    if (request.region) {
+-      const estimatesForAccounts: EstimationResult[][] = []
+-      for (const account of AWS.accounts) {
+-        const estimates: EstimationResult[] = await Promise.all(
+-          await new AWSAccount(
+-            account.id,
+-            account.name,
+-            AWS.CURRENT_REGIONS,
+-          ).getDataForRegion(request.region, startDate, endDate),
+-        )
+-        estimatesForAccounts.push(estimates)
+-      }
+-      return estimatesForAccounts.flat()
+-    } else {
+-      const AWSEstimatesByRegion: EstimationResult[][] = []
+-      if (AWS.USE_BILLING_DATA) {
+-        const estimates = await new AWSAccount(
+-          AWS.BILLING_ACCOUNT_ID,
+-          AWS.BILLING_ACCOUNT_NAME,
+-          [AWS.ATHENA_REGION],
+-        ).getDataFromCostAndUsageReports(startDate, endDate)
+-        AWSEstimatesByRegion.push(estimates)
+-      } else {
+-        // Resolve AWS Estimates synchronously in order to avoid hitting API limits
+-        for (const account of AWS.accounts) {
+-          const estimates: EstimationResult[] = await Promise.all(
+-            await new AWSAccount(
+-              account.id,
+-              account.name,
+-              AWS.CURRENT_REGIONS,
+-            ).getDataForRegions(startDate, endDate),
+-          )
+-          AWSEstimatesByRegion.push(estimates)
+-        }
+-      }
+-      let GCPEstimatesByRegion: EstimationResult[][] = []
+-      if (GCP.USE_BILLING_DATA) {
+-        const estimates = await new GCPAccount(
+-          GCP.BILLING_ACCOUNT_ID,
+-          GCP.BILLING_ACCOUNT_NAME,
+-          [],
+-        ).getDataFromBillingExportTable(startDate, endDate)
+-        GCPEstimatesByRegion.push(estimates)
+-      } else {
+-        // Resolve GCP Estimates asynchronously
+-        GCPEstimatesByRegion = await Promise.all(
+-          GCP.projects
+-            .map((project) => {
+-              return new GCPAccount(
+-                project.id,
+-                project.name,
+-                GCP.CURRENT_REGIONS,
+-              ).getDataForRegions(startDate, endDate)
+-            })
+-            .flat(),
+-        )
+-      }
+-      const AzureEstimatesByRegion: EstimationResult[][] = []
+-      if (AZURE?.USE_BILLING_DATA) {
+-        const azureAccount = new AzureAccount()
+-        await azureAccount.initializeAccount()
+-        const estimates = await azureAccount.getDataFromConsumptionManagement(
+-          startDate,
+-          endDate,
+-        )
+-        AzureEstimatesByRegion.push(estimates)
+-      }
+-
+-      return reduceByTimestamp(
+-        AWSEstimatesByRegion.flat()
+-          .flat()
+-          .concat(GCPEstimatesByRegion.flat())
+-          .concat(AzureEstimatesByRegion.flat()),
+-      )
+-    }
+-  }
+-
+-  getFilterData(): FilterResult {
+-    return { accounts: getAccounts() }
+-  }
+-}
+diff --git a/packages/core/src/application/AzureAccount.ts b/packages/core/src/application/AzureAccount.ts
+deleted file mode 100644
+index 8d8dbab6..00000000
+--- a/packages/core/src/application/AzureAccount.ts
++++ /dev/null
+@@ -1,68 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { ServiceClientCredentials } from '@azure/ms-rest-js'
+-import {
+-  SubscriptionClient,
+-  SubscriptionModels,
+-} from '@azure/arm-subscriptions'
+-import { ApplicationTokenCredentials } from '@azure/ms-rest-nodeauth'
+-import { ConsumptionManagementClient } from '@azure/arm-consumption'
+-
+-import CloudProviderAccount from './CloudProviderAccount'
+-import AzureCredentialsProvider from './AzureCredentialsProvider'
+-import { EstimationResult } from './EstimationResult'
+-import ConsumptionManagementService from '../services/azure/ConsumptionManagement'
+-import ComputeEstimator from '../domain/ComputeEstimator'
+-import { StorageEstimator } from '../domain/StorageEstimator'
+-import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
+-import NetworkingEstimator from '../domain/NetworkingEstimator'
+-import MemoryEstimator from '../domain/MemoryEstimator'
+-
+-export default class AzureAccount extends CloudProviderAccount {
+-  private credentials: ApplicationTokenCredentials | ServiceClientCredentials
+-  private subscriptionClient: SubscriptionClient
+-
+-  constructor() {
+-    super()
+-  }
+-
+-  public async initializeAccount(): Promise<void> {
+-    try {
+-      this.credentials = await AzureCredentialsProvider.create()
+-      this.subscriptionClient = new SubscriptionClient(this.credentials)
+-    } catch (e) {
+-      throw new Error(`Azure initializeAccount failed. Reason: ${e.message}`)
+-    }
+-  }
+-
+-  public async getDataFromConsumptionManagement(
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]> {
+-    const subscriptions = await this.subscriptionClient.subscriptions.list()
+-
+-    const estimationResults = await Promise.all(
+-      subscriptions.map(
+-        async (subscription: SubscriptionModels.Subscription) => {
+-          const consumptionManagementService = new ConsumptionManagementService(
+-            new ComputeEstimator(),
+-            new StorageEstimator(CLOUD_CONSTANTS.AZURE.SSDCOEFFICIENT),
+-            new StorageEstimator(CLOUD_CONSTANTS.AZURE.HDDCOEFFICIENT),
+-            new NetworkingEstimator(),
+-            new MemoryEstimator(CLOUD_CONSTANTS.AZURE.MEMORY_COEFFICIENT),
+-            new ConsumptionManagementClient(
+-              // eslint-disable-next-line
+-              // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+-              this.credentials,
+-              subscription.subscriptionId,
+-            ),
+-          )
+-          return consumptionManagementService.getEstimates(startDate, endDate)
+-        },
+-      ),
+-    )
+-    return estimationResults.flat()
+-  }
+-}
+diff --git a/packages/core/src/application/AzureCredentialsProvider.ts b/packages/core/src/application/AzureCredentialsProvider.ts
+deleted file mode 100644
+index ccd7bd46..00000000
+--- a/packages/core/src/application/AzureCredentialsProvider.ts
++++ /dev/null
+@@ -1,48 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import {
+-  ApplicationTokenCredentials,
+-  loginWithServicePrincipalSecret,
+-} from '@azure/ms-rest-nodeauth'
+-import config from './ConfigLoader'
+-import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
+-
+-export default class AzureCredentialsProvider {
+-  static async create(): Promise<ApplicationTokenCredentials> {
+-    const clientId = config().AZURE.authentication.clientId
+-    const clientSecret = config().AZURE.authentication.clientSecret
+-    const tenantId = config().AZURE.authentication.tenantId
+-
+-    switch (config().AZURE.authentication.mode) {
+-      case 'GCP':
+-        const clientIdFromGoogle = await this.getGoogleSecret(clientId)
+-        const clientSecretFromGoogle = await this.getGoogleSecret(clientSecret)
+-        const tenantIdFromGoogle = await this.getGoogleSecret(tenantId)
+-        return await loginWithServicePrincipalSecret(
+-          clientIdFromGoogle,
+-          clientSecretFromGoogle,
+-          tenantIdFromGoogle,
+-        )
+-      default:
+-        return await loginWithServicePrincipalSecret(
+-          clientId,
+-          clientSecret,
+-          tenantId,
+-        )
+-    }
+-  }
+-
+-  static async getGoogleSecret(secretName: string): Promise<string> {
+-    const client = new SecretManagerServiceClient()
+-    const name = `projects/${
+-      config().GCP.BILLING_ACCOUNT_NAME
+-    }/secrets/${secretName}/versions/latest`
+-
+-    const [version] = await client.accessSecretVersion({
+-      name: name,
+-    })
+-    return version.payload.data.toString()
+-  }
+-}
+diff --git a/packages/core/src/application/Cache.ts b/packages/core/src/application/Cache.ts
+deleted file mode 100644
+index 69696cd9..00000000
+--- a/packages/core/src/application/Cache.ts
++++ /dev/null
+@@ -1,154 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { EstimationResult } from './EstimationResult'
+-import CacheManager from './CacheManager'
+-import EstimatorCache from './EstimatorCache'
+-import moment, { Moment } from 'moment'
+-import R from 'ramda'
+-import { EstimationRequest } from './CreateValidRequest'
+-import Logger from '../services/Logger'
+-
+-const cacheManager: EstimatorCache = new CacheManager()
+-
+-function getMissingDates(
+-  cachedEstimates: EstimationResult[],
+-  request: EstimationRequest,
+-): Moment[] {
+-  const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
+-    return moment.utc(timestamp)
+-  })
+-  cachedDates.sort((a, b) => {
+-    return a.valueOf() - b.valueOf()
+-  })
+-
+-  const missingDates: Moment[] = []
+-  const dateIndex = moment.utc(request.startDate)
+-  for (let i = 0; i < cachedDates.length; i++) {
+-    while (dateIndex.isBefore(cachedDates[i])) {
+-      missingDates.push(moment.utc(dateIndex.toDate()))
+-      dateIndex.add(1, 'day')
+-    }
+-    dateIndex.add(1, 'day')
+-  }
+-
+-  while (dateIndex.isBefore(moment.utc(request.endDate))) {
+-    missingDates.push(moment.utc(dateIndex.toDate()))
+-    dateIndex.add(1, 'day')
+-  }
+-  return missingDates
+-}
+-
+-function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
+-  const groupMissingDates = missingDates.reduce((acc, date) => {
+-    const lastSubArray = acc[acc.length - 1]
+-
+-    if (
+-      !lastSubArray ||
+-      !moment
+-        .utc(date)
+-        .subtract(1, 'day')
+-        .isSame(lastSubArray[lastSubArray.length - 1])
+-    ) {
+-      acc.push([])
+-    }
+-
+-    acc[acc.length - 1].push(date.clone())
+-
+-    return acc
+-  }, [])
+-
+-  const requestDates = groupMissingDates.map((group) => {
+-    return {
+-      start: group[0],
+-      end: moment(group[group.length - 1]).add('1', 'day'),
+-    }
+-  })
+-
+-  return requestDates.map((dates) => {
+-    return {
+-      startDate: dates.start.utc().toDate(),
+-      endDate: dates.end.utc().toDate(),
+-    }
+-  })
+-}
+-
+-function concat(
+-  cachedEstimates: EstimationResult[],
+-  estimates: EstimationResult[],
+-) {
+-  return [...cachedEstimates, ...estimates].sort((a, b) => {
+-    return a.timestamp.getTime() - b.timestamp.getTime()
+-  })
+-}
+-
+-function fillDates(
+-  missingDates: Moment[],
+-  estimates: EstimationResult[],
+-): EstimationResult[] {
+-  const dates: Moment[] = estimates.map(({ timestamp }) => {
+-    return moment.utc(timestamp)
+-  })
+-
+-  const difference = R.difference(missingDates, dates)
+-  const emptyEstimates = difference.map((timestamp) => {
+-    return {
+-      timestamp: timestamp.toDate(),
+-      serviceEstimates: [],
+-    }
+-  })
+-  return [...emptyEstimates, ...estimates].sort(
+-    (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+-  )
+-}
+-
+-/*
+- This function provides a decorator. When this decorates a function, that
+- function passes itself into the cache() as @descriptor. The cache() function
+- then combines and returns data from the cache and decorated function.
+- */
+-export default function cache(): any {
+-  return function (
+-    target: any,
+-    propertyKey: string,
+-    descriptor: PropertyDescriptor,
+-  ) {
+-    const cacheLogger = new Logger('cache')
+-    const decoratedFunction = descriptor.value
+-
+-    descriptor.value = async (
+-      request: EstimationRequest,
+-    ): Promise<EstimationResult[]> => {
+-      const cachedEstimates: EstimationResult[] =
+-        await cacheManager.getEstimates(request)
+-
+-      // get estimates for dates missing from the cache
+-      const missingDates = getMissingDates(cachedEstimates, request)
+-      const missingEstimates = getMissingDataRequests(missingDates).map(
+-        (request) => {
+-          return decoratedFunction.apply(target, [request])
+-        },
+-      )
+-      const estimates: EstimationResult[] = (
+-        await Promise.all(missingEstimates)
+-      ).flat()
+-
+-      if (estimates.length > 0) {
+-        // write missing estimates to cache
+-        const estimatesToPersist = fillDates(missingDates, estimates)
+-        cacheLogger.info('Setting new estimates to cache file...')
+-        await cacheManager.setEstimates(estimatesToPersist)
+-      }
+-
+-      // so we don't return results with no estimates
+-      const filteredCachedEstimates = cachedEstimates.filter(
+-        ({ serviceEstimates }) => {
+-          return serviceEstimates.length !== 0
+-        },
+-      )
+-
+-      return concat(filteredCachedEstimates, estimates)
+-    }
+-  }
+-}
+diff --git a/packages/core/src/application/CacheManager.ts b/packages/core/src/application/CacheManager.ts
+deleted file mode 100644
+index b5d50d05..00000000
+--- a/packages/core/src/application/CacheManager.ts
++++ /dev/null
+@@ -1,91 +0,0 @@
+-/*
+- * "© 2021 ThoughtWorks, Inc.
+- */
+-
+-import moment from 'moment'
+-import EstimatorCache from './EstimatorCache'
+-import { EstimationResult } from './EstimationResult'
+-import { EstimationRequest } from './CreateValidRequest'
+-import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
+-import EstimatorCacheGoogleCloudStorage from './EstimatorCacheGoogleCloudStorage'
+-import configLoader from './ConfigLoader'
+-import Logger from '../services/Logger'
+-
+-const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
+-const googleCloudCacheService: EstimatorCache =
+-  new EstimatorCacheGoogleCloudStorage(configLoader().GCP.CACHE_BUCKET_NAME)
+-
+-export default class CacheManager implements EstimatorCache {
+-  private readonly currentCacheMode: string
+-  private readonly cacheLogger: Logger
+-
+-  constructor() {
+-    this.currentCacheMode = configLoader().CACHE_MODE
+-    this.cacheLogger = new Logger('cache')
+-  }
+-
+-  cacheModes = {
+-    GCS: 'GCS',
+-  }
+-
+-  async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
+-    const { GCS } = this.cacheModes
+-    let estimates
+-
+-    switch (this.currentCacheMode) {
+-      case GCS:
+-        this.cacheLogger.info('Using GCS bucket cache file...')
+-        estimates = await googleCloudCacheService.getEstimates(request)
+-        break
+-      default:
+-        this.cacheLogger.info('Using local cache file...')
+-        estimates = await cacheService.getEstimates(request)
+-        break
+-    }
+-
+-    return estimates ? this.formatEstimates(request, estimates) : []
+-  }
+-
+-  async setEstimates(estimates: EstimationResult[]): Promise<void> {
+-    const { GCS } = this.cacheModes
+-
+-    if (estimates.length === 0) {
+-      return
+-    }
+-
+-    switch (this.currentCacheMode) {
+-      case GCS:
+-        return googleCloudCacheService.setEstimates(estimates)
+-      default:
+-        return cacheService.setEstimates(estimates)
+-    }
+-  }
+-
+-  private formatEstimates(
+-    request: EstimationRequest,
+-    estimates: EstimationResult[],
+-  ) {
+-    const formatDateToTime = (timestamp: string | Date) =>
+-      timestamp instanceof Date
+-        ? timestamp.getTime()
+-        : new Date(timestamp).getTime()
+-
+-    const endDate = moment.utc(request.endDate)
+-
+-    const startDate = estimates.length
+-      ? moment.utc(
+-          estimates.sort(
+-            (a, b) =>
+-              formatDateToTime(new Date(a.timestamp)) -
+-              formatDateToTime(new Date(b.timestamp)),
+-          )[0].timestamp,
+-        )
+-      : moment.utc(request.startDate)
+-
+-    return estimates.filter(({ timestamp }) => {
+-      return moment
+-        .utc(timestamp)
+-        .isBetween(startDate, endDate, undefined, '[)')
+-    })
+-  }
+-}
+diff --git a/packages/core/src/application/CloudProviderAccount.ts b/packages/core/src/application/CloudProviderAccount.ts
+deleted file mode 100644
+index 7c14972d..00000000
+--- a/packages/core/src/application/CloudProviderAccount.ts
++++ /dev/null
+@@ -1,86 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import Region from '../domain/Region'
+-import { EstimationResult, reduceByTimestamp } from './EstimationResult'
+-import FootprintEstimate, {
+-  aggregateEstimatesByDay,
+-} from '../domain/FootprintEstimate'
+-import Cost, { aggregateCostsByDay } from '../domain/Cost'
+-import { union } from 'ramda'
+-import moment from 'moment'
+-
+-export default class CloudProviderAccount {
+-  name?: string
+-  async getRegionData(
+-    region: Region,
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]> {
+-    const [regionEstimates, regionCosts] = await Promise.all([
+-      region.getEstimates(startDate, endDate),
+-      region.getCosts(startDate, endDate),
+-    ])
+-
+-    const estimatesGroupByService: EstimationResult[][] = region.services.map(
+-      (service) => {
+-        const estimates: FootprintEstimate[] =
+-          regionEstimates[service.serviceName]
+-        const estimatesByDay = aggregateEstimatesByDay(estimates)
+-
+-        const costs: Cost[] = regionCosts[service.serviceName]
+-        const costsByDay = aggregateCostsByDay(costs)
+-
+-        const dates = union(
+-          Object.keys(estimatesByDay),
+-          Object.keys(costsByDay),
+-        )
+-
+-        const dataByDay = dates.reduce(
+-          (
+-            acc: {
+-              [date: string]: { estimate: FootprintEstimate; cost: Cost }
+-            },
+-            date,
+-          ) => {
+-            acc[date] = {
+-              estimate: estimatesByDay[date],
+-              cost: costsByDay[date],
+-            }
+-            return acc
+-          },
+-          {},
+-        )
+-
+-        const estimationResults: EstimationResult[] = Object.entries(
+-          dataByDay,
+-        ).map(([date, { estimate, cost }]) => {
+-          return {
+-            timestamp: moment.utc(date).toDate(),
+-            serviceEstimates: [
+-              {
+-                cloudProvider: region.cloudProvider,
+-                accountName: this.name,
+-                serviceName: service.serviceName,
+-                region: region.id,
+-                kilowattHours: estimate?.kilowattHours || 0,
+-                co2e: estimate?.co2e || 0,
+-                cost: cost?.amount || 0,
+-                usesAverageCPUConstant: estimate?.usesAverageCPUConstant,
+-              },
+-            ],
+-          }
+-        })
+-
+-        return estimationResults
+-      },
+-    )
+-
+-    let estimates = reduceByTimestamp(estimatesGroupByService.flat())
+-    estimates = estimates.sort(
+-      (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+-    )
+-    return estimates
+-  }
+-}
+diff --git a/packages/core/src/application/Config.ts b/packages/core/src/application/Config.ts
+deleted file mode 100644
+index ae4effde..00000000
+--- a/packages/core/src/application/Config.ts
++++ /dev/null
+@@ -1,176 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-import fs from 'fs'
+-import dotenv from 'dotenv'
+-dotenv.config()
+-
+-export interface CCFConfig {
+-  AWS?: {
+-    USE_BILLING_DATA?: boolean
+-    BILLING_ACCOUNT_ID?: string
+-    BILLING_ACCOUNT_NAME?: string
+-    ATHENA_DB_NAME?: string
+-    ATHENA_DB_TABLE?: string
+-    ATHENA_QUERY_RESULT_LOCATION?: string
+-    ATHENA_REGION?: string
+-    NAME: string
+-    CURRENT_SERVICES: { key: string; name: string }[]
+-    CURRENT_REGIONS: string[]
+-    accounts?: {
+-      id: string
+-      name?: string
+-    }[]
+-    authentication?: {
+-      mode: string
+-      options?: Record<string, string>
+-    }
+-  }
+-  GCP?: {
+-    NAME: string
+-    CURRENT_SERVICES: { key: string; name: string }[]
+-    CURRENT_REGIONS: string[]
+-    projects?: {
+-      id: string
+-      name?: string
+-    }[]
+-    USE_BILLING_DATA?: boolean
+-    BIG_QUERY_TABLE?: string
+-    BILLING_ACCOUNT_ID?: string
+-    BILLING_ACCOUNT_NAME?: string
+-    CACHE_BUCKET_NAME?: string
+-  }
+-  AZURE?: {
+-    USE_BILLING_DATA?: boolean
+-    authentication?: {
+-      mode: string
+-      clientId?: string
+-      clientSecret?: string
+-      tenantId?: string
+-    }
+-  }
+-  LOGGING_MODE?: string
+-  GROUP_QUERY_RESULTS_BY?: string
+-  CACHE_MODE?: string
+-}
+-
+-const getAWSAccounts = () => {
+-  return process.env.AWS_ACCOUNTS ? process.env.AWS_ACCOUNTS : '[]'
+-}
+-
+-const getGCPProjects = () => {
+-  return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
+-}
+-
+-// This function allows support for using Docker Secrets.
+-const getEnvVar = (envVar: string): string => {
+-  try {
+-    return fs.readFileSync(`/run/secrets/${envVar}`, 'utf8').replace('\n', '')
+-  } catch (err) {
+-    return process.env[envVar]
+-  }
+-}
+-
+-const appConfig: CCFConfig = {
+-  AWS: {
+-    USE_BILLING_DATA:
+-      !!process.env.AWS_USE_BILLING_DATA &&
+-      process.env.AWS_USE_BILLING_DATA !== 'false',
+-    BILLING_ACCOUNT_ID: getEnvVar('AWS_BILLING_ACCOUNT_ID') || '',
+-    BILLING_ACCOUNT_NAME: getEnvVar('AWS_BILLING_ACCOUNT_NAME') || '',
+-    ATHENA_DB_NAME: getEnvVar('AWS_ATHENA_DB_NAME') || '',
+-    ATHENA_DB_TABLE: getEnvVar('AWS_ATHENA_DB_TABLE') || '',
+-    ATHENA_QUERY_RESULT_LOCATION:
+-      getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
+-    ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
+-    accounts: JSON.parse(getAWSAccounts()) || [],
+-    authentication: {
+-      mode: getEnvVar('AWS_AUTH_MODE') || 'default',
+-      options: {
+-        targetRoleName: getEnvVar('AWS_TARGET_ACCOUNT_ROLE_NAME'),
+-        targetRoleSessionName: getEnvVar('AWS_TARGET_ACCOUNT_ROLE_NAME'),
+-        proxyAccountId: getEnvVar('AWS_PROXY_ACCOUNT_ID') || '',
+-        proxyRoleName: getEnvVar('AWS_PROXY_ROLE_NAME') || '',
+-      },
+-    },
+-    NAME: 'AWS',
+-    CURRENT_REGIONS: [
+-      'us-east-1',
+-      'us-east-2',
+-      'us-west-1',
+-      'us-west-2',
+-      'ap-south-1',
+-      'ap-northeast-2',
+-      'ap-southeast-1',
+-      'ap-southeast-2',
+-      'ap-northeast-1',
+-      'ca-central-1',
+-      'eu-central-1',
+-      'eu-west-1',
+-      'eu-west-2',
+-      'eu-west-3',
+-      'eu-north-1',
+-      'sa-east-1',
+-    ],
+-    CURRENT_SERVICES: [
+-      {
+-        key: 'ebs',
+-        name: 'EBS',
+-      },
+-      {
+-        key: 's3',
+-        name: 'S3',
+-      },
+-      {
+-        key: 'ec2',
+-        name: 'EC2',
+-      },
+-      {
+-        key: 'elasticache',
+-        name: 'ElastiCache',
+-      },
+-      {
+-        key: 'rds',
+-        name: 'RDS',
+-      },
+-      {
+-        key: 'lambda',
+-        name: 'Lambda',
+-      },
+-    ],
+-  },
+-  GCP: {
+-    projects: JSON.parse(getGCPProjects()) || [],
+-    NAME: 'GCP',
+-    CURRENT_REGIONS: ['us-east1', 'us-central1', 'us-west1'],
+-    CURRENT_SERVICES: [
+-      {
+-        key: 'computeEngine',
+-        name: 'ComputeEngine',
+-      },
+-    ],
+-    USE_BILLING_DATA:
+-      !!process.env.GCP_USE_BILLING_DATA &&
+-      process.env.GCP_USE_BILLING_DATA !== 'false',
+-    BIG_QUERY_TABLE: getEnvVar('GCP_BIG_QUERY_TABLE') || '',
+-    BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_ACCOUNT_ID') || '',
+-    BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_ACCOUNT_NAME') || '',
+-    CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
+-  },
+-  AZURE: {
+-    USE_BILLING_DATA:
+-      !!process.env.AZURE_USE_BILLING_DATA &&
+-      process.env.AZURE_USE_BILLING_DATA !== 'false',
+-    authentication: {
+-      mode: getEnvVar('AZURE_AUTH_MODE') || 'default',
+-      clientId: getEnvVar('AZURE_CLIENT_ID') || '',
+-      clientSecret: getEnvVar('AZURE_CLIENT_SECRET') || '',
+-      tenantId: getEnvVar('AZURE_TENANT_ID') || '',
+-    },
+-  },
+-  LOGGING_MODE: process.env.LOGGING_MODE || '',
+-  GROUP_QUERY_RESULTS_BY: process.env.GROUP_QUERY_RESULTS_BY || 'day',
+-  CACHE_MODE: getEnvVar('CACHE_MODE') || '',
+-}
+-
+-export default appConfig
+diff --git a/packages/core/src/application/ConfigLoader.ts b/packages/core/src/application/ConfigLoader.ts
+deleted file mode 100644
+index f392aae5..00000000
+--- a/packages/core/src/application/ConfigLoader.ts
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import configFile, { CCFConfig } from './Config'
+-
+-export default function config(): CCFConfig {
+-  return configFile
+-}
+diff --git a/packages/core/src/application/CreateValidRequest.ts b/packages/core/src/application/CreateValidRequest.ts
+deleted file mode 100644
+index 9cc495cb..00000000
+--- a/packages/core/src/application/CreateValidRequest.ts
++++ /dev/null
+@@ -1,110 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import moment from 'moment'
+-import { values, contains } from 'ramda'
+-import appConfig from './Config'
+-import { RawRequest } from '../view/RawRequest'
+-
+-export interface EstimationRequest {
+-  startDate: Date
+-  endDate: Date
+-  region?: string
+-  //cloudProvider?:CloudProviderEnum
+-}
+-
+-export class EstimationRequestValidationError extends Error {
+-  constructor(message: string) {
+-    super(message)
+-    this.name = 'EstimationRequestValidationError'
+-    Object.setPrototypeOf(this, EstimationRequestValidationError.prototype)
+-  }
+-}
+-
+-export class PartialDataError extends Error {
+-  constructor(message: string) {
+-    super(message)
+-    this.name = 'PartialDataError'
+-    Object.setPrototypeOf(this, PartialDataError.prototype)
+-  }
+-}
+-
+-// eslint-disable-next-line
+-// @ts-ignore
+-moment.suppressDeprecationWarnings = true
+-
+-function validate(
+-  startDate: moment.Moment,
+-  endDate: moment.Moment,
+-  region?: string,
+-): void | EstimationRequestValidationError {
+-  const errors = []
+-  if (!startDate.isValid()) {
+-    errors.push('Start date is not in a recognized RFC2822 or ISO format')
+-  }
+-
+-  if (!endDate.isValid()) {
+-    errors.push('End date is not in a recognized RFC2822 or ISO format')
+-  }
+-
+-  if (region && !contains(region, values(appConfig.AWS.CURRENT_REGIONS))) {
+-    errors.push('Not a valid region for this account')
+-  }
+-
+-  if (startDate.isSameOrAfter(endDate)) {
+-    errors.push('Start date is not before end date')
+-  }
+-
+-  const now = moment()
+-  if (startDate.isAfter(now)) {
+-    errors.push('Start date is in the future')
+-  }
+-
+-  if (endDate.isAfter(now)) {
+-    errors.push('End date is in the future')
+-  }
+-
+-  if (errors.length > 0) {
+-    throw new EstimationRequestValidationError(errors.join(', '))
+-  }
+-}
+-
+-function rawRequestToEstimationRequest(request: RawRequest): EstimationRequest {
+-  return {
+-    startDate: moment.utc(request.startDate).toDate(),
+-    endDate: moment.utc(request.endDate).toDate(),
+-    region: request.region,
+-  }
+-}
+-
+-function validateDatesPresent(
+-  startDate: string,
+-  endDate: string,
+-): void | EstimationRequestValidationError {
+-  const errors = []
+-  if (!startDate) {
+-    errors.push('Start date must be provided')
+-  }
+-
+-  if (!endDate) {
+-    errors.push('End date must be provided')
+-  }
+-
+-  if (errors.length > 0) {
+-    throw new EstimationRequestValidationError(errors.join(', '))
+-  }
+-}
+-
+-// throws EstimationRequestValidationError if either validation fails
+-export default function CreateValidRequest(
+-  request: RawRequest,
+-): EstimationRequest {
+-  validateDatesPresent(request.startDate, request.endDate)
+-
+-  const startDate = moment.utc(request.startDate)
+-  const endDate = moment.utc(request.endDate)
+-
+-  validate(startDate, endDate, request.region)
+-  return rawRequestToEstimationRequest(request)
+-}
+diff --git a/packages/core/src/application/EstimationResult.ts b/packages/core/src/application/EstimationResult.ts
+deleted file mode 100644
+index 4473ac10..00000000
+--- a/packages/core/src/application/EstimationResult.ts
++++ /dev/null
+@@ -1,51 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { reduceBy } from 'ramda'
+-
+-export interface EstimationResult {
+-  readonly timestamp: Date
+-  readonly serviceEstimates: ServiceData[]
+-}
+-
+-export interface ServiceData {
+-  readonly cloudProvider: string
+-  readonly accountName: string
+-  readonly serviceName: string
+-  readonly kilowattHours: number
+-  readonly co2e: number
+-  readonly cost: number
+-  readonly region: string
+-  readonly usesAverageCPUConstant: boolean
+-}
+-
+-export const reduceByTimestamp = (
+-  estimationResults: EstimationResult[],
+-): EstimationResult[] => {
+-  // We need this mutable type in order to set the first timestamp based on the estimationResults values.
+-  interface MutableEstimationResult {
+-    timestamp: Date
+-    serviceEstimates: ServiceData[]
+-  }
+-
+-  const accumulatingFn = (
+-    acc: MutableEstimationResult,
+-    value: MutableEstimationResult,
+-  ) => {
+-    acc.timestamp = acc.timestamp || new Date(value.timestamp)
+-    acc.serviceEstimates = acc.serviceEstimates.concat(value.serviceEstimates)
+-    return acc
+-  }
+-  const getTimeOfEstimate = (estimationResult: { timestamp: Date }) =>
+-    estimationResult.timestamp.toISOString()
+-
+-  const result = reduceBy(
+-    accumulatingFn,
+-    { timestamp: undefined, serviceEstimates: [] },
+-    getTimeOfEstimate,
+-    estimationResults,
+-  )
+-
+-  return Object.values(result)
+-}
+diff --git a/packages/core/src/application/EstimatorCache.ts b/packages/core/src/application/EstimatorCache.ts
+deleted file mode 100644
+index 7de327ea..00000000
+--- a/packages/core/src/application/EstimatorCache.ts
++++ /dev/null
+@@ -1,11 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { EstimationResult } from './EstimationResult'
+-import { EstimationRequest } from './CreateValidRequest'
+-
+-export default interface EstimatorCache {
+-  getEstimates(request: EstimationRequest): Promise<EstimationResult[]>
+-  setEstimates(data: EstimationResult[]): void
+-}
+diff --git a/packages/core/src/application/EstimatorCacheFileSystem.ts b/packages/core/src/application/EstimatorCacheFileSystem.ts
+deleted file mode 100644
+index 39d2d173..00000000
+--- a/packages/core/src/application/EstimatorCacheFileSystem.ts
++++ /dev/null
+@@ -1,47 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import EstimatorCache from './EstimatorCache'
+-import { EstimationResult } from './EstimationResult'
+-import { promises as fs } from 'fs'
+-import moment from 'moment'
+-
+-export const cachePath = process.env.CCF_CACHE_PATH || 'estimates.cache.json'
+-export const testCachePath = 'estimates.cache.test.json'
+-
+-export default class EstimatorCacheFileSystem implements EstimatorCache {
+-  getEstimates(): Promise<EstimationResult[]> {
+-    return this.loadEstimates()
+-  }
+-
+-  async setEstimates(estimates: EstimationResult[]): Promise<void> {
+-    const cachedEstimates = await this.loadEstimates()
+-
+-    return fs.writeFile(
+-      cachePath,
+-      JSON.stringify(cachedEstimates.concat(estimates)),
+-      'utf8',
+-    )
+-  }
+-
+-  private async loadEstimates(): Promise<EstimationResult[]> {
+-    let data = '[]'
+-    const loadedCache = process.env.USE_TEST_CACHE ? testCachePath : cachePath
+-    try {
+-      data = await fs.readFile(loadedCache, 'utf8')
+-    } catch (error) {
+-      console.warn(
+-        'WARN: Unable to read cache file. Got following error: \n' + error,
+-        '\n',
+-        'Creating new cache file...',
+-      )
+-      await fs.writeFile(cachePath, '[]', 'utf8')
+-    }
+-    const dateTimeReviver = (key: string, value: string) => {
+-      if (key === 'timestamp') return moment.utc(value).toDate()
+-      return value
+-    }
+-    return JSON.parse(data, dateTimeReviver)
+-  }
+-}
+diff --git a/packages/core/src/application/EstimatorCacheGoogleCloudStorage.ts b/packages/core/src/application/EstimatorCacheGoogleCloudStorage.ts
+deleted file mode 100644
+index 24bfe2d4..00000000
+--- a/packages/core/src/application/EstimatorCacheGoogleCloudStorage.ts
++++ /dev/null
+@@ -1,86 +0,0 @@
+-/*
+- * © 2021 Thoughtworks, Inc. All rights reserved.
+- */
+-
+-import { Storage } from '@google-cloud/storage'
+-import { Stream } from 'stream'
+-import moment from 'moment'
+-import EstimatorCache from './EstimatorCache'
+-import { EstimationResult } from './EstimationResult'
+-
+-export const cacheFileName =
+-  process.env.CCF_CACHE_PATH || 'estimates.cache.json'
+-
+-const storage = new Storage()
+-
+-export default class EstimatorCacheGoogleCloudStorage
+-  implements EstimatorCache
+-{
+-  private readonly bucketName: string
+-  private readonly cacheFileName: string
+-
+-  constructor(bucketName: string) {
+-    this.bucketName = bucketName
+-    this.cacheFileName = cacheFileName
+-  }
+-
+-  getEstimates(): Promise<EstimationResult[]> {
+-    return this.getCloudFileContent()
+-  }
+-
+-  async setEstimates(estimates: EstimationResult[]): Promise<void> {
+-    const cachedEstimates = await this.getCloudFileContent()
+-
+-    try {
+-      const mergedData = cachedEstimates
+-        ? cachedEstimates.concat(estimates)
+-        : estimates
+-
+-      const estimatesJsonData = JSON.stringify(mergedData)
+-
+-      const cacheFile = storage.bucket(this.bucketName).file(this.cacheFileName)
+-
+-      await cacheFile.save(estimatesJsonData, {
+-        contentType: 'application/json',
+-      })
+-    } catch (err) {
+-      console.warn(`Setting estimates error: ${err.message}`)
+-    }
+-  }
+-
+-  private async getCloudFileContent(): Promise<EstimationResult[]> {
+-    try {
+-      const streamOfcacheFile = storage
+-        .bucket(this.bucketName)
+-        .file(this.cacheFileName)
+-
+-      const cachedJson = await this.streamToString(
+-        await streamOfcacheFile.createReadStream(),
+-      )
+-
+-      const dateTimeReviver = (key: string, value: string) => {
+-        if (key === 'timestamp') return moment.utc(value).toDate()
+-        return value
+-      }
+-
+-      const cacheFileContent = cachedJson || '[]'
+-
+-      return JSON.parse(cacheFileContent, dateTimeReviver)
+-    } catch (err) {
+-      if (err.code !== 404) {
+-        console.warn(`Error loading cloud data: ${err.message}`)
+-      }
+-    }
+-  }
+-
+-  private streamToString(stream: Stream): Promise<string> {
+-    const chunks: Buffer[] = []
+-    return new Promise((resolve, reject) => {
+-      stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)))
+-      stream.on('error', (err) => reject(err))
+-      stream.on('end', () => {
+-        resolve(Buffer.concat(chunks).toString('utf8'))
+-      })
+-    })
+-  }
+-}
+diff --git a/packages/core/src/application/FilterResult.ts b/packages/core/src/application/FilterResult.ts
+deleted file mode 100644
+index 2dbbe949..00000000
+--- a/packages/core/src/application/FilterResult.ts
++++ /dev/null
+@@ -1,45 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-export default interface FilterResult {
+-  accounts: Account[]
+-}
+-
+-export interface Account {
+-  cloudProvider: string
+-  key: string
+-  name: string
+-}
+-
+-export const getAccounts = (): Account[] => {
+-  const listOfAllAccounts: Account[] = []
+-
+-  if (process.env.AWS_ACCOUNTS) {
+-    const awsAccounts: { id: string; name: string }[] = JSON.parse(
+-      process.env.AWS_ACCOUNTS,
+-    )
+-    awsAccounts.forEach((awsAccount: { id: string; name: string }) => {
+-      listOfAllAccounts.push({
+-        cloudProvider: 'aws',
+-        key: awsAccount.id,
+-        name: awsAccount.name,
+-      })
+-    })
+-  }
+-
+-  if (process.env.GCP_PROJECTS) {
+-    const gcpAccounts: { id: string; name: string }[] = JSON.parse(
+-      process.env.GCP_PROJECTS,
+-    )
+-    gcpAccounts.forEach((gcpAccount: { id: string; name: string }) => {
+-      listOfAllAccounts.push({
+-        cloudProvider: 'gcp',
+-        key: gcpAccount.id,
+-        name: gcpAccount.name,
+-      })
+-    })
+-  }
+-
+-  return listOfAllAccounts
+-}
+diff --git a/packages/core/src/application/GCPAccount.ts b/packages/core/src/application/GCPAccount.ts
+deleted file mode 100644
+index 97639b6c..00000000
+--- a/packages/core/src/application/GCPAccount.ts
++++ /dev/null
+@@ -1,83 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import CloudProviderAccount from './CloudProviderAccount'
+-import { EstimationResult } from './EstimationResult'
+-import Region from '../domain/Region'
+-import configLoader from './ConfigLoader'
+-import ICloudService from '../domain/ICloudService'
+-import ComputeEngine from '../services/gcp/ComputeEngine'
+-import { v3 } from '@google-cloud/monitoring'
+-import { ClientOptions } from 'google-gax'
+-import BillingExportTable from '../services/gcp/BillingExportTable'
+-import ComputeEstimator from '../domain/ComputeEstimator'
+-import NetworkingEstimator from '../domain/NetworkingEstimator'
+-import MemoryEstimator from '../domain/MemoryEstimator'
+-import { StorageEstimator } from '../domain/StorageEstimator'
+-import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
+-import { BigQuery } from '@google-cloud/bigquery'
+-
+-export default class GCPAccount extends CloudProviderAccount {
+-  constructor(
+-    public projectId: string,
+-    public name: string,
+-    private regions: string[],
+-  ) {
+-    super()
+-  }
+-
+-  getDataForRegions(
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]>[] {
+-    return this.regions.map((regionId) => {
+-      return this.getDataForRegion(regionId, startDate, endDate)
+-    })
+-  }
+-
+-  getDataForRegion(
+-    regionId: string,
+-    startDate: Date,
+-    endDate: Date,
+-  ): Promise<EstimationResult[]> {
+-    const gcpServices = this.getServices()
+-    const region = new Region(regionId, gcpServices, configLoader().GCP.NAME)
+-    return this.getRegionData(region, startDate, endDate)
+-  }
+-
+-  getDataFromBillingExportTable(startDate: Date, endDate: Date) {
+-    const billingExportTableService = new BillingExportTable(
+-      new ComputeEstimator(),
+-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
+-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
+-      new NetworkingEstimator(),
+-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+-      new BigQuery({ projectId: this.projectId }),
+-    )
+-    return billingExportTableService.getEstimates(startDate, endDate)
+-  }
+-
+-  getServices(): ICloudService[] {
+-    return configLoader().GCP.CURRENT_SERVICES.map(({ key }) => {
+-      return this.getService(key)
+-    })
+-  }
+-
+-  private getService(key: string): ICloudService {
+-    if (this.services[key] === undefined)
+-      throw new Error('Unsupported service: ' + key)
+-    const options: ClientOptions = {
+-      projectId: this.projectId,
+-    }
+-    return this.services[key](options)
+-  }
+-
+-  private services: {
+-    [id: string]: (options: ClientOptions) => ICloudService
+-  } = {
+-    computeEngine: (options) => {
+-      return new ComputeEngine(new v3.MetricServiceClient(options))
+-    },
+-  }
+-}
+diff --git a/packages/core/src/application/GCPCredentials.ts b/packages/core/src/application/GCPCredentials.ts
+deleted file mode 100644
+index bb68f81c..00000000
+--- a/packages/core/src/application/GCPCredentials.ts
++++ /dev/null
+@@ -1,74 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import {
+-  AWSError,
+-  ChainableTemporaryCredentials,
+-  Credentials,
+-  WebIdentityCredentials,
+-} from 'aws-sdk'
+-import { IAMCredentialsClient } from '@google-cloud/iam-credentials'
+-import { GoogleAuth, JWT } from 'google-auth-library'
+-
+-export default class GCPCredentials extends Credentials {
+-  constructor(
+-    private accountId: string,
+-    private targetRoleSessionName: string,
+-    private proxyAccountId: string,
+-    private proxyRoleName: string,
+-  ) {
+-    super(undefined)
+-  }
+-
+-  async refresh(callback: (err?: AWSError) => void): Promise<void> {
+-    try {
+-      const token = await this.getTokenId()
+-      const credentials = new ChainableTemporaryCredentials({
+-        params: {
+-          RoleArn: `arn:aws:iam::${this.accountId}:role/${this.targetRoleSessionName}`,
+-          RoleSessionName: this.targetRoleSessionName,
+-        },
+-        masterCredentials: new WebIdentityCredentials({
+-          RoleArn: `arn:aws:iam::${this.proxyAccountId}:role/${this.proxyRoleName}`,
+-          RoleSessionName: this.proxyRoleName,
+-          WebIdentityToken: token,
+-        }),
+-      })
+-
+-      await credentials.getPromise()
+-
+-      this.accessKeyId = credentials.accessKeyId
+-      this.secretAccessKey = credentials.secretAccessKey
+-      this.sessionToken = credentials.sessionToken
+-      this.expireTime = new Date(Date.now() + 1000 * 60 * 60) //Credentials expiration time to 1 hour
+-      callback()
+-    } catch (e) {
+-      callback(e)
+-    }
+-  }
+-
+-  // TODO -- add tests for this function and mock the AWS SDK responses.
+-  async getTokenId() {
+-    const auth = new GoogleAuth({
+-      scopes: 'https://www.googleapis.com/auth/cloud-platform',
+-    })
+-
+-    // TODO -- replace any with proper types
+-    const authClient: any = await auth.getClient()
+-    const iamCredentials = new IAMCredentialsClient({ auth: auth })
+-
+-    const projectId = await auth.getProjectId()
+-
+-    const authClientEmail = (<JWT>authClient).email
+-      ? (<JWT>authClient).email
+-      : `${projectId}@appspot.gserviceaccount.com`
+-
+-    const [res] = await iamCredentials.generateIdToken({
+-      name: `projects/-/serviceAccounts/${authClientEmail}`,
+-      audience: `${authClientEmail}`,
+-      includeEmail: true,
+-    })
+-    return res.token
+-  }
+-}
+diff --git a/packages/core/src/application/__tests__/AWSAccount.test.ts b/packages/core/src/application/__tests__/AWSAccount.test.ts
+deleted file mode 100644
+index 3187d845..00000000
+--- a/packages/core/src/application/__tests__/AWSAccount.test.ts
++++ /dev/null
+@@ -1,144 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { Credentials } from 'aws-sdk'
+-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+-import AWSCredentialsProvider from '../AWSCredentialsProvider'
+-import mockConfig from '../Config'
+-
+-jest.mock('../AWSCredentialsProvider')
+-
+-/* eslint-disable @typescript-eslint/no-var-requires */
+-describe('AWSAccount', () => {
+-  const CloudWatch = jest.fn()
+-  const CostExplorer = jest.fn()
+-  const CloudWatchLogs = jest.fn()
+-  const Athena = jest.fn()
+-  let expectedCredentials: Credentials
+-
+-  beforeEach(() => {
+-    jest.doMock('aws-sdk', () => {
+-      return {
+-        CloudWatch: CloudWatch,
+-        CostExplorer: CostExplorer,
+-        CloudWatchLogs: CloudWatchLogs,
+-        Athena: Athena,
+-      }
+-    })
+-
+-    const mockedCreate = jest.fn()
+-    expectedCredentials = new Credentials('test', 'test', 'test')
+-    mockedCreate.mockReturnValue(expectedCredentials)
+-    AWSCredentialsProvider.create = mockedCreate
+-  })
+-
+-  afterEach(() => {
+-    jest.restoreAllMocks()
+-  })
+-
+-  it('should return empty if no service in config file', () => {
+-    mockConfig.AWS.CURRENT_SERVICES = []
+-    const AWSAccount = require('../AWSAccount').default
+-    const services = new AWSAccount().getServices()
+-    expect(services).toHaveLength(0)
+-  })
+-
+-  it('should throw error if unknown service', () => {
+-    mockConfig.AWS.CURRENT_SERVICES = [
+-      {
+-        key: 'duck',
+-        name: '',
+-      },
+-    ]
+-
+-    const awsAccount = require('../AWSAccount').default
+-    const account = new awsAccount('123', 'us-east-1')
+-    expect(() => {
+-      account.getServices()
+-    }).toThrowError('Unsupported service: duck')
+-  })
+-
+-  it('should return instances from registered services in configuration file', () => {
+-    const EBS = require('../../services/aws/EBS').default
+-    expectAWSService('ebs').toBeInstanceOf(EBS)
+-    expect(CloudWatch).toHaveBeenCalledWith({
+-      region: 'some-region',
+-      credentials: expectedCredentials,
+-    })
+-    expect(CostExplorer).toHaveBeenCalledWith({
+-      region: 'us-east-1',
+-      credentials: expectedCredentials,
+-    })
+-  })
+-
+-  it('should return s3 instance', () => {
+-    const S3 = require('../../services/aws/S3').default
+-    expectAWSService('s3').toBeInstanceOf(S3)
+-  })
+-
+-  it('should return ec2 instance', () => {
+-    const EC2 = require('../../services/aws/EC2').default
+-    expectAWSService('ec2').toBeInstanceOf(EC2)
+-  })
+-
+-  it('should return elasticache instance', () => {
+-    const ElastiCache = require('../../services/aws/ElastiCache').default
+-    expectAWSService('elasticache').toBeInstanceOf(ElastiCache)
+-  })
+-
+-  it('should return rds instance', () => {
+-    const RDS = require('../../services/aws/RDS').default
+-    expectAWSService('rds').toBeInstanceOf(RDS)
+-  })
+-
+-  it('should return lambda instance', () => {
+-    const Lambda = require('../../services/aws/Lambda').default
+-    expectAWSService('lambda').toBeInstanceOf(Lambda)
+-  })
+-
+-  describe('credentials provider', () => {
+-    it('should set credentials to cloudwatch client', () => {
+-      // when
+-      expectAWSService('ebs')
+-
+-      //then
+-      const options: ServiceConfigurationOptions = CloudWatch.mock.calls[0][0]
+-      expect(options.credentials).toEqual(expectedCredentials)
+-    })
+-
+-    it('should set credentials to costExplorer client', () => {
+-      // when
+-      expectAWSService('s3')
+-
+-      //then
+-      const options: ServiceConfigurationOptions = CostExplorer.mock.calls[0][0]
+-      expect(options.credentials).toEqual(expectedCredentials)
+-    })
+-
+-    it('should set credentials to CloudWatchLogs client', () => {
+-      // when
+-      expectAWSService('lambda')
+-
+-      //then
+-      const options: ServiceConfigurationOptions =
+-        CloudWatchLogs.mock.calls[0][0]
+-      expect(options.credentials).toEqual(expectedCredentials)
+-    })
+-  })
+-})
+-
+-function expectAWSService(key: string) {
+-  mockConfig.AWS.CURRENT_SERVICES = [
+-    {
+-      key: key,
+-      name: '',
+-    },
+-  ]
+-  const testRegion = 'some-region'
+-  const AWSAccount = require('../AWSAccount').default
+-  const services = new AWSAccount('12345678', 'test account', [
+-    testRegion,
+-  ]).getServices(testRegion)
+-  return expect(services[0])
+-}
+diff --git a/packages/core/src/application/__tests__/AWSCredentialsProvider.test.ts b/packages/core/src/application/__tests__/AWSCredentialsProvider.test.ts
+deleted file mode 100644
+index f3246b31..00000000
+--- a/packages/core/src/application/__tests__/AWSCredentialsProvider.test.ts
++++ /dev/null
+@@ -1,109 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import AWSCredentialsProvider from '../AWSCredentialsProvider'
+-import GCPCredentials from '../GCPCredentials'
+-import mockConfig from '../Config'
+-import { ChainableTemporaryCredentials, Credentials } from 'aws-sdk'
+-import Mock = jest.Mock
+-
+-jest.mock('../Config.ts', () => {
+-  return {
+-    AWS: {
+-      authentication: {
+-        mode: 'GCP',
+-        options: {
+-          targetRoleName: 'testTargetRoleName',
+-          targetRoleSessionName: 'testRoleSessionName',
+-          proxyAccountId: '987654321',
+-          proxyRoleName: 'testProxyRoleName',
+-        },
+-      },
+-    },
+-  }
+-})
+-
+-jest.mock('aws-sdk', () => {
+-  return {
+-    ChainableTemporaryCredentials: jest.fn(),
+-    Credentials: jest.fn(),
+-    config: jest.requireActual('aws-sdk').config,
+-  }
+-})
+-
+-function mockChainableTemporaryCredentials(
+-  targetAccessKeyId: string,
+-  targetSecretAccessKey: string,
+-  targetSessionToken: string,
+-) {
+-  const chainableTemporaryCredentials =
+-    ChainableTemporaryCredentials as unknown as Mock
+-  chainableTemporaryCredentials.mockImplementationOnce(() => {
+-    return new Credentials(
+-      targetAccessKeyId,
+-      targetSecretAccessKey,
+-      targetSessionToken,
+-    )
+-  })
+-  return chainableTemporaryCredentials
+-}
+-
+-describe('AWSCredentialsProvider', () => {
+-  it('create returns GCPCredentialsProvider', () => {
+-    // given
+-    const accountId = '12345678910'
+-    const targetRoleSessionName = 'testRoleSessionName'
+-    const proxyAccountId = '987654321'
+-    const proxyRoleName = 'testProxyRoleName'
+-    const expectedCredentials = new GCPCredentials(
+-      accountId,
+-      targetRoleSessionName,
+-      proxyAccountId,
+-      proxyRoleName,
+-    )
+-
+-    // when
+-    const credentials = AWSCredentialsProvider.create(accountId)
+-
+-    // then
+-    expect(credentials).toEqual(expectedCredentials)
+-  })
+-
+-  it('create returns ChainableTemporaryCredentials', () => {
+-    // given
+-    mockConfig.AWS.authentication.mode = 'AWS'
+-    const mockedChainableTemporaryCredentials =
+-      mockChainableTemporaryCredentials('', '', '')
+-    const accountId = '123'
+-    const params = {
+-      params: {
+-        RoleArn: `arn:aws:iam::${accountId}:role/testRoleSessionName`,
+-        RoleSessionName: `testRoleSessionName`,
+-      },
+-    }
+-    // when
+-    const credentials = AWSCredentialsProvider.create(accountId)
+-    // then
+-    expect(credentials).toBeInstanceOf(Credentials)
+-    expect(mockedChainableTemporaryCredentials).toHaveBeenCalledWith(params)
+-  })
+-
+-  it('create returns Credentials by default', () => {
+-    // given
+-    mockConfig.AWS.authentication.mode = undefined
+-    const accountId = '123'
+-    const credentialsOptions = { accessKeyId: '', secretAccessKey: '' }
+-    const credentialsMock = Credentials as unknown as Mock
+-    credentialsMock.mockImplementationOnce(() => {
+-      return new Credentials(credentialsOptions)
+-    })
+-
+-    // when
+-    const credentials = AWSCredentialsProvider.create(accountId)
+-
+-    // then
+-    expect(credentials).toBeInstanceOf(Credentials)
+-    expect(credentialsMock).toHaveBeenCalledWith(credentialsOptions)
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/App.test.ts b/packages/core/src/application/__tests__/App.test.ts
+deleted file mode 100644
+index 0700e804..00000000
+--- a/packages/core/src/application/__tests__/App.test.ts
++++ /dev/null
+@@ -1,758 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import App from '../App'
+-import UsageData from '../../domain/IUsageData'
+-import FootprintEstimate from '../../domain/FootprintEstimate'
+-import { EstimationResult } from '../EstimationResult'
+-import moment = require('moment')
+-import ICloudService from '../../domain/ICloudService'
+-import Cost from '../../domain/Cost'
+-import cache from '../Cache'
+-import { EstimationRequest } from '../CreateValidRequest'
+-import AWSAccount from '../AWSAccount'
+-import GCPAccount from '../GCPAccount'
+-
+-const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
+-const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
+-
+-jest.mock('../Cache')
+-jest.mock('../../services/Logger')
+-jest.mock('../ConfigLoader', () => {
+-  return jest.fn().mockImplementation(() => {
+-    return {
+-      AWS: {
+-        accounts: [{ id: '12345678', name: 'test AWS account' }],
+-        NAME: 'AWS',
+-        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
+-        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+-        authentication: {
+-          mode: 'GCP',
+-          options: {
+-            targetRoleSessionName: 'test-target',
+-            proxyAccountId: 'test-account-id',
+-            proxyRoleName: 'test-role-name',
+-          },
+-        },
+-      },
+-      GCP: {
+-        projects: [
+-          { id: '987654321', name: 'test GCP account' },
+-          { id: '987654321', name: 'test GCP account 2' },
+-        ],
+-        NAME: 'GCP',
+-        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
+-        CURRENT_REGIONS: ['us-east1', 'us-west1', 'us-central1'],
+-        CACHE_BUCKET_NAME: 'test-bucket-name',
+-      },
+-    }
+-  })
+-})
+-
+-const testRegions = ['us-east-1', 'us-east-2']
+-
+-describe('App', () => {
+-  let app: App
+-  const startDate = '2020-08-07'
+-  const endDate = '2020-08-10'
+-  const region = 'us-east-1'
+-  const request: EstimationRequest = {
+-    startDate: moment(startDate).toDate(),
+-    endDate: moment(endDate).add(1, 'weeks').toDate(),
+-    region: region,
+-  }
+-  const testAwsAccountName = 'test AWS account'
+-  const testGcpAccountName = 'test GCP account'
+-
+-  beforeEach(() => {
+-    app = new App()
+-  })
+-
+-  describe('getCostAndEstimates', () => {
+-    it('returns ebs estimates for a week', async () => {
+-      const mockGetCostAndEstimatesPerService: jest.Mock<
+-        Promise<FootprintEstimate[]>
+-      > = jest.fn()
+-      const mockGetCostPerService: jest.Mock<Promise<Cost[]>> = jest.fn()
+-      setUpServices(
+-        getServices as jest.Mock,
+-        [mockGetCostAndEstimatesPerService],
+-        ['ebs'],
+-        [mockGetCostPerService],
+-      )
+-
+-      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map(
+-        (v, i) => {
+-          return {
+-            timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-            kilowattHours: 1.0944,
+-            co2e: 0.0007737845760000001,
+-          }
+-        },
+-      )
+-      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(
+-        expectedUsageEstimate,
+-      )
+-
+-      const costs: Cost[] = [...Array(7)].map((v, i) => {
+-        return {
+-          timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-          currency: '$',
+-          amount: 5,
+-        }
+-      })
+-      mockGetCostPerService.mockResolvedValueOnce(costs)
+-
+-      const estimationResult: EstimationResult[] =
+-        await app.getCostAndEstimates(request)
+-
+-      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
+-        (v, i) => {
+-          return {
+-            timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-            serviceEstimates: [
+-              {
+-                cloudProvider: 'AWS',
+-                accountName: testAwsAccountName,
+-                serviceName: 'ebs',
+-                kilowattHours: 1.0944,
+-                co2e: 0.0007737845760000001,
+-                cost: 5,
+-                region: region,
+-                usesAverageCPUConstant: false,
+-              },
+-            ],
+-          }
+-        },
+-      )
+-
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-
+-    it('returns estimates for 2 services', async () => {
+-      const mockGetEstimates1: jest.Mock<Promise<FootprintEstimate[]>> =
+-        jest.fn()
+-      const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> =
+-        jest.fn()
+-      const mockGetCostPerService1: jest.Mock<Promise<Cost[]>> = jest.fn()
+-      const mockGetCostPerService2: jest.Mock<Promise<Cost[]>> = jest.fn()
+-      setUpServices(
+-        getServices as jest.Mock,
+-        [mockGetEstimates1, mockGetEstimates2],
+-        ['serviceOne', 'serviceTwo'],
+-        [mockGetCostPerService1, mockGetCostPerService2],
+-      )
+-
+-      const expectedStorageEstimate: FootprintEstimate[] = [
+-        {
+-          timestamp: new Date(startDate),
+-          kilowattHours: 2,
+-          co2e: 2,
+-        },
+-      ]
+-      mockGetEstimates1.mockResolvedValueOnce(expectedStorageEstimate)
+-
+-      const expectedStorageEstimate2: FootprintEstimate[] = [
+-        {
+-          timestamp: new Date(startDate),
+-          kilowattHours: 1,
+-          co2e: 1,
+-        },
+-      ]
+-      mockGetEstimates2.mockResolvedValueOnce(expectedStorageEstimate2)
+-
+-      const expectedCosts: Cost[] = [
+-        {
+-          timestamp: new Date(startDate),
+-          currency: '$',
+-          amount: 3,
+-        },
+-      ]
+-      mockGetCostPerService1.mockResolvedValueOnce(expectedCosts)
+-
+-      const expectedCosts2: Cost[] = [
+-        {
+-          timestamp: new Date(startDate),
+-          currency: '$$',
+-          amount: 4,
+-        },
+-      ]
+-      mockGetCostPerService2.mockResolvedValueOnce(expectedCosts2)
+-
+-      const estimationResult: EstimationResult[] =
+-        await app.getCostAndEstimates(request)
+-
+-      const expectedEstimationResults = [
+-        {
+-          timestamp: new Date(startDate),
+-          serviceEstimates: [
+-            {
+-              cloudProvider: 'AWS',
+-              accountName: testAwsAccountName,
+-              serviceName: 'serviceOne',
+-              kilowattHours: 2,
+-              co2e: 2,
+-              cost: 3,
+-              region: region,
+-              usesAverageCPUConstant: false,
+-            },
+-            {
+-              cloudProvider: 'AWS',
+-              accountName: testAwsAccountName,
+-              serviceName: 'serviceTwo',
+-              kilowattHours: 1,
+-              co2e: 1,
+-              cost: 4,
+-              region: region,
+-              usesAverageCPUConstant: false,
+-            },
+-          ],
+-        },
+-      ]
+-
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-
+-    it('aggregates per day', async () => {
+-      const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+-        jest.fn()
+-      setUpServices(
+-        getServices as jest.Mock,
+-        [mockGetEstimates],
+-        ['serviceOne'],
+-        [jest.fn().mockResolvedValue([])],
+-      )
+-      const expectedStorageEstimate: FootprintEstimate[] = [
+-        {
+-          timestamp: new Date(startDate + 'T01:00:00Z'),
+-          kilowattHours: 1,
+-          co2e: 2,
+-        },
+-        {
+-          timestamp: new Date(startDate + 'T12:59:59Z'),
+-          kilowattHours: 1,
+-          co2e: 2,
+-        },
+-        {
+-          timestamp: new Date(startDate + 'T23:59:59Z'),
+-          kilowattHours: 1,
+-          co2e: 2,
+-        },
+-      ]
+-      mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
+-
+-      const estimationResult: EstimationResult[] =
+-        await app.getCostAndEstimates(request)
+-
+-      const expectedEstimationResults = [
+-        {
+-          timestamp: new Date(startDate),
+-          serviceEstimates: [
+-            {
+-              cloudProvider: 'AWS',
+-              accountName: testAwsAccountName,
+-              serviceName: 'serviceOne',
+-              kilowattHours: 3,
+-              co2e: 6,
+-              cost: 0,
+-              region: region,
+-              usesAverageCPUConstant: false,
+-            },
+-          ],
+-        },
+-      ]
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-
+-    it('uses cache decorator', async () => {
+-      const mockGetCostAndEstimatesPerService: jest.Mock<
+-        Promise<FootprintEstimate[]>
+-      > = jest.fn()
+-      setUpServices(
+-        getServices as jest.Mock,
+-        [mockGetCostAndEstimatesPerService],
+-        ['ebs'],
+-        [jest.fn().mockResolvedValue([])],
+-      )
+-      mockGetCostAndEstimatesPerService.mockResolvedValueOnce([])
+-
+-      await app.getCostAndEstimates(request)
+-      expect(cache).toHaveBeenCalled()
+-    })
+-
+-    it('returns ebs estimates ordered by timestamp ascending', async () => {
+-      const mockGetCostAndEstimatesPerService: jest.Mock<
+-        Promise<FootprintEstimate[]>
+-      > = jest.fn()
+-      setUpServices(
+-        getServices as jest.Mock,
+-        [mockGetCostAndEstimatesPerService],
+-        ['ebs'],
+-        [jest.fn().mockResolvedValue([])],
+-      )
+-
+-      const expectedUsageEstimate: FootprintEstimate[] = [...Array(7)].map(
+-        (v, i) => {
+-          return {
+-            timestamp: moment.utc(startDate).subtract(i, 'days').toDate(),
+-            kilowattHours: 1.0944,
+-            co2e: 0.0007737845760000001,
+-          }
+-        },
+-      )
+-      mockGetCostAndEstimatesPerService.mockResolvedValueOnce(
+-        expectedUsageEstimate,
+-      )
+-
+-      const estimationResult: EstimationResult[] =
+-        await app.getCostAndEstimates(request)
+-
+-      const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
+-        (v, i) => {
+-          return {
+-            timestamp: moment
+-              .utc(startDate)
+-              .subtract(6 - i, 'days')
+-              .toDate(),
+-            serviceEstimates: [
+-              {
+-                cloudProvider: 'AWS',
+-                accountName: testAwsAccountName,
+-                serviceName: 'ebs',
+-                kilowattHours: 1.0944,
+-                co2e: 0.0007737845760000001,
+-                cost: 0,
+-                region: region,
+-                usesAverageCPUConstant: false,
+-              },
+-            ],
+-          }
+-        },
+-      )
+-
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-  })
+-
+-  it('returns estimates for multiple regions', async () => {
+-    const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+-    setUpServices(
+-      getServices as jest.Mock,
+-      [mockGetEstimates],
+-      ['serviceOne'],
+-      [jest.fn().mockResolvedValue([])],
+-    )
+-    setUpServices(
+-      getGCPServices as jest.Mock,
+-      [jest.fn().mockResolvedValue([])],
+-      [],
+-      [jest.fn().mockResolvedValue([])],
+-    )
+-
+-    const expectedStorageEstimate: FootprintEstimate[] = [
+-      {
+-        timestamp: new Date(startDate),
+-        kilowattHours: 3,
+-        co2e: 6,
+-      },
+-    ]
+-    mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
+-
+-    const start = moment(startDate).toDate()
+-    const end = moment(startDate).add(1, 'day').toDate()
+-    const request: EstimationRequest = {
+-      startDate: start,
+-      endDate: end,
+-    }
+-
+-    const result = await app.getCostAndEstimates(request)
+-
+-    const expectedEstimationResults = [
+-      {
+-        timestamp: new Date(startDate),
+-        serviceEstimates: [
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceOne',
+-            kilowattHours: 3,
+-            co2e: 6,
+-            cost: 0,
+-            region: testRegions[0],
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceOne',
+-            kilowattHours: 3,
+-            co2e: 6,
+-            cost: 0,
+-            region: testRegions[1],
+-            usesAverageCPUConstant: false,
+-          },
+-        ],
+-      },
+-    ]
+-
+-    // expect(AWSAccount).toHaveBeenCalledWith('12345678', 'us-east-1')
+-    // expect(AWSAccount).toHaveBeenCalledWith('12345678', 'us-east-2')
+-
+-    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+-      1,
+-      new Date(start),
+-      new Date(end),
+-      'us-east-1',
+-      'AWS',
+-    )
+-    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+-      2,
+-      new Date(start),
+-      new Date(end),
+-      'us-east-2',
+-      'AWS',
+-    )
+-
+-    expect(result).toEqual(expectedEstimationResults)
+-  })
+-
+-  it('returns estimates for multiple services in multiple regions', async () => {
+-    const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+-    const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> = jest.fn()
+-    const mockGetCostPerService1: jest.Mock<Promise<Cost[]>> = jest.fn()
+-    const mockGetCostPerService2: jest.Mock<Promise<Cost[]>> = jest.fn()
+-
+-    setUpServices(
+-      getServices as jest.Mock,
+-      [mockGetEstimates, mockGetEstimates2],
+-      ['serviceOne', 'serviceTwo'],
+-      [mockGetCostPerService1, mockGetCostPerService2],
+-    )
+-    setUpServices(
+-      getGCPServices as jest.Mock,
+-      [jest.fn().mockResolvedValue([])],
+-      [],
+-      [jest.fn().mockResolvedValue([])],
+-    )
+-
+-    const expectedStorageEstimate: FootprintEstimate[] = [
+-      {
+-        timestamp: new Date(startDate),
+-        kilowattHours: 3,
+-        co2e: 6,
+-      },
+-    ]
+-    mockGetEstimates.mockResolvedValue(expectedStorageEstimate)
+-
+-    const expectedStorageEstimate2: FootprintEstimate[] = [
+-      {
+-        timestamp: new Date(startDate),
+-        kilowattHours: 4,
+-        co2e: 8,
+-      },
+-    ]
+-    mockGetEstimates2.mockResolvedValue(expectedStorageEstimate2)
+-
+-    const expectedCosts: Cost[] = [
+-      {
+-        timestamp: new Date(startDate),
+-        currency: '$',
+-        amount: 3,
+-      },
+-    ]
+-    mockGetCostPerService1.mockResolvedValue(expectedCosts)
+-    mockGetCostPerService2.mockResolvedValue(expectedCosts)
+-
+-    const start = moment(startDate).toDate()
+-    const end = moment(startDate).add(1, 'day').toDate()
+-    const request: EstimationRequest = {
+-      startDate: start,
+-      endDate: end,
+-    }
+-
+-    const result = await app.getCostAndEstimates(request)
+-
+-    const expectedEstimationResults = [
+-      {
+-        timestamp: new Date(startDate),
+-        serviceEstimates: [
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceOne',
+-            kilowattHours: 3,
+-            co2e: 6,
+-            cost: 3,
+-            region: testRegions[0],
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceTwo',
+-            kilowattHours: 4,
+-            co2e: 8,
+-            cost: 3,
+-            region: testRegions[0],
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceOne',
+-            kilowattHours: 3,
+-            co2e: 6,
+-            cost: 3,
+-            region: testRegions[1],
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceTwo',
+-            kilowattHours: 4,
+-            co2e: 8,
+-            cost: 3,
+-            region: testRegions[1],
+-            usesAverageCPUConstant: false,
+-          },
+-        ],
+-      },
+-    ]
+-
+-    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+-      1,
+-      new Date(start),
+-      new Date(end),
+-      'us-east-1',
+-      'AWS',
+-    )
+-    expect(mockGetEstimates).toHaveBeenNthCalledWith(
+-      2,
+-      new Date(start),
+-      new Date(end),
+-      'us-east-2',
+-      'AWS',
+-    )
+-
+-    expect(result).toEqual(expectedEstimationResults)
+-  })
+-
+-  it('returns estimates for multiple regions and accounts in multiple cloud providers', async () => {
+-    const mockGetAWSEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+-      jest.fn()
+-    setUpServices(
+-      getServices as jest.Mock,
+-      [mockGetAWSEstimates],
+-      ['serviceOne'],
+-      [jest.fn().mockResolvedValue([])],
+-    )
+-
+-    const mockGetGCPEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+-      jest.fn()
+-    setUpServices(
+-      getGCPServices as jest.Mock,
+-      [mockGetGCPEstimates],
+-      ['serviceTwo'],
+-      [jest.fn().mockResolvedValue([])],
+-    )
+-
+-    const expectedStorageEstimate: FootprintEstimate[] = [
+-      {
+-        timestamp: new Date(startDate),
+-        kilowattHours: 3,
+-        co2e: 6,
+-      },
+-    ]
+-    mockGetAWSEstimates.mockResolvedValue(expectedStorageEstimate)
+-
+-    const expectedStorageEstimate2: FootprintEstimate[] = [
+-      {
+-        timestamp: new Date(startDate),
+-        kilowattHours: 4,
+-        co2e: 8,
+-      },
+-    ]
+-    mockGetGCPEstimates.mockResolvedValue(expectedStorageEstimate2)
+-
+-    const start = moment(startDate).toDate()
+-    const end = moment(startDate).add(1, 'day').toDate()
+-    const request: EstimationRequest = {
+-      startDate: start,
+-      endDate: end,
+-    }
+-
+-    const result = await app.getCostAndEstimates(request)
+-
+-    const expectedEstimationResults = [
+-      {
+-        timestamp: new Date(startDate),
+-        serviceEstimates: [
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceOne',
+-            kilowattHours: 3,
+-            co2e: 6,
+-            cost: 0,
+-            region: 'us-east-1',
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'AWS',
+-            accountName: testAwsAccountName,
+-            serviceName: 'serviceOne',
+-            kilowattHours: 3,
+-            co2e: 6,
+-            cost: 0,
+-            region: 'us-east-2',
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'GCP',
+-            accountName: testGcpAccountName,
+-            serviceName: 'serviceTwo',
+-            kilowattHours: 4,
+-            co2e: 8,
+-            cost: 0,
+-            region: 'us-east1',
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'GCP',
+-            accountName: testGcpAccountName,
+-            serviceName: 'serviceTwo',
+-            kilowattHours: 4,
+-            co2e: 8,
+-            cost: 0,
+-            region: 'us-west1',
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            cloudProvider: 'GCP',
+-            accountName: testGcpAccountName,
+-            serviceName: 'serviceTwo',
+-            kilowattHours: 4,
+-            co2e: 8,
+-            cost: 0,
+-            region: 'us-central1',
+-            usesAverageCPUConstant: false,
+-          },
+-          {
+-            accountName: 'test GCP account 2',
+-            cloudProvider: 'GCP',
+-            co2e: 8,
+-            cost: 0,
+-            region: 'us-east1',
+-            serviceName: 'serviceTwo',
+-            usesAverageCPUConstant: false,
+-            kilowattHours: 4,
+-          },
+-          {
+-            accountName: 'test GCP account 2',
+-            cloudProvider: 'GCP',
+-            co2e: 8,
+-            cost: 0,
+-            region: 'us-west1',
+-            serviceName: 'serviceTwo',
+-            usesAverageCPUConstant: false,
+-            kilowattHours: 4,
+-          },
+-          {
+-            accountName: 'test GCP account 2',
+-            cloudProvider: 'GCP',
+-            co2e: 8,
+-            cost: 0,
+-            region: 'us-central1',
+-            serviceName: 'serviceTwo',
+-            usesAverageCPUConstant: false,
+-            kilowattHours: 4,
+-          },
+-        ],
+-      },
+-    ]
+-
+-    expect(mockGetAWSEstimates).toHaveBeenCalledTimes(2)
+-    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(
+-      1,
+-      new Date(start),
+-      new Date(end),
+-      'us-east-1',
+-      'AWS',
+-    )
+-    expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(
+-      2,
+-      new Date(start),
+-      new Date(end),
+-      'us-east-2',
+-      'AWS',
+-    )
+-
+-    expect(mockGetGCPEstimates).toHaveBeenCalledTimes(6)
+-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+-      1,
+-      new Date(start),
+-      new Date(end),
+-      'us-east1',
+-      'GCP',
+-    )
+-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+-      2,
+-      new Date(start),
+-      new Date(end),
+-      'us-west1',
+-      'GCP',
+-    )
+-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+-      3,
+-      new Date(start),
+-      new Date(end),
+-      'us-central1',
+-      'GCP',
+-    )
+-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+-      4,
+-      new Date(start),
+-      new Date(end),
+-      'us-east1',
+-      'GCP',
+-    )
+-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+-      5,
+-      new Date(start),
+-      new Date(end),
+-      'us-west1',
+-      'GCP',
+-    )
+-    expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
+-      6,
+-      new Date(start),
+-      new Date(end),
+-      'us-central1',
+-      'GCP',
+-    )
+-
+-    expect(result).toEqual(expectedEstimationResults)
+-  })
+-})
+-
+-function setUpServices(
+-  servicesRegistered: jest.Mock<ICloudService[]>,
+-  mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>>[],
+-  serviceNames: string[],
+-  mockGetCosts: jest.Mock<Promise<Cost[]>>[],
+-) {
+-  let mockGetUsage: jest.Mock<Promise<UsageData[]>>
+-  const mockCloudServices: ICloudService[] = mockGetEstimates.map(
+-    (mockGetEstimate, i) => {
+-      return {
+-        getEstimates: mockGetEstimate,
+-        serviceName: serviceNames[i],
+-        getUsage: mockGetUsage,
+-        getCosts: mockGetCosts[i],
+-      }
+-    },
+-  )
+-  servicesRegistered.mockReturnValue(mockCloudServices)
+-}
+diff --git a/packages/core/src/application/__tests__/AzureAccount.test.ts b/packages/core/src/application/__tests__/AzureAccount.test.ts
+deleted file mode 100644
+index 07720142..00000000
+--- a/packages/core/src/application/__tests__/AzureAccount.test.ts
++++ /dev/null
+@@ -1,126 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import ConsumptionManagementService from '../../services/azure/ConsumptionManagement'
+-import AzureCredentialsProvider from '../AzureCredentialsProvider'
+-import { EstimationResult } from '../EstimationResult'
+-import AzureAccount from '../AzureAccount'
+-
+-const mockListSubscriptions = { list: jest.fn() }
+-
+-jest.mock('@azure/arm-subscriptions', () => {
+-  return {
+-    SubscriptionClient: jest.fn().mockImplementation(() => {
+-      return {
+-        subscriptions: mockListSubscriptions,
+-      }
+-    }),
+-  }
+-})
+-
+-jest.mock('@azure/arm-consumption')
+-
+-const createCredentialsSpy = jest.spyOn(AzureCredentialsProvider, 'create')
+-
+-const getEstimatesSpy = jest.spyOn(
+-  ConsumptionManagementService.prototype,
+-  'getEstimates',
+-)
+-
+-describe('Azure Account', () => {
+-  const startDate: Date = new Date('2021-01-01')
+-  const endDate: Date = new Date('2021-01-01')
+-
+-  it('gets results from getDataFromConsumptionManagement function', async () => {
+-    const mockCredentials = {
+-      clientId: 'test-client-id',
+-      secret: 'test-client-secret',
+-      domain: 'test-tenant-id',
+-    }
+-    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+-
+-    mockListSubscriptions.list.mockResolvedValue([
+-      { subscriptionId: 'sub-1' },
+-      { subscriptionId: 'sub-2' },
+-    ])
+-
+-    const mockEstimates: EstimationResult[] = [
+-      {
+-        timestamp: startDate,
+-        serviceEstimates: [
+-          {
+-            kilowattHours: 0.09313874999999999,
+-            co2e: 0.000021235635,
+-            usesAverageCPUConstant: true,
+-            cloudProvider: 'AZURE',
+-            accountName: 'test-subscription',
+-            serviceName: 'Virtual Machines',
+-            cost: 5,
+-            region: 'UK South',
+-          },
+-        ],
+-      },
+-    ]
+-
+-    ;(getEstimatesSpy as jest.Mock).mockResolvedValue(mockEstimates)
+-
+-    // when
+-    const azureAccount = new AzureAccount()
+-    await azureAccount.initializeAccount()
+-    const results = await azureAccount.getDataFromConsumptionManagement(
+-      startDate,
+-      endDate,
+-    )
+-
+-    // then
+-    const expectedEstimates: EstimationResult[] = [
+-      {
+-        timestamp: startDate,
+-        serviceEstimates: [
+-          {
+-            kilowattHours: 0.09313874999999999,
+-            co2e: 0.000021235635,
+-            usesAverageCPUConstant: true,
+-            cloudProvider: 'AZURE',
+-            accountName: 'test-subscription',
+-            serviceName: 'Virtual Machines',
+-            cost: 5,
+-            region: 'UK South',
+-          },
+-        ],
+-      },
+-      {
+-        timestamp: startDate,
+-        serviceEstimates: [
+-          {
+-            kilowattHours: 0.09313874999999999,
+-            co2e: 0.000021235635,
+-            usesAverageCPUConstant: true,
+-            cloudProvider: 'AZURE',
+-            accountName: 'test-subscription',
+-            serviceName: 'Virtual Machines',
+-            cost: 5,
+-            region: 'UK South',
+-          },
+-        ],
+-      },
+-    ]
+-
+-    expect(results).toEqual(expectedEstimates)
+-    expect(getEstimatesSpy).toHaveBeenNthCalledWith(2, startDate, endDate)
+-  })
+-
+-  it('Throws an error when AzureCredentialsProvider.create fails', async () => {
+-    const errorMessage = 'Some error'
+-    const apiError = new Error(errorMessage)
+-
+-    ;(createCredentialsSpy as jest.Mock).mockRejectedValue(apiError)
+-
+-    const azureAccount = new AzureAccount()
+-
+-    await expect(() => azureAccount.initializeAccount()).rejects.toThrow(
+-      `Azure initializeAccount failed. Reason: ${errorMessage}`,
+-    )
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/AzureCredentialsProvider.test.ts b/packages/core/src/application/__tests__/AzureCredentialsProvider.test.ts
+deleted file mode 100644
+index d4d0e80f..00000000
+--- a/packages/core/src/application/__tests__/AzureCredentialsProvider.test.ts
++++ /dev/null
+@@ -1,84 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { google } from '@google-cloud/secret-manager/build/protos/protos'
+-import { loginWithServicePrincipalSecret } from '@azure/ms-rest-nodeauth'
+-import IAccessSecretVersionResponse = google.cloud.secretmanager.v1.IAccessSecretVersionResponse
+-import AzureCredentialsProvider from '../AzureCredentialsProvider'
+-import config from '../ConfigLoader'
+-
+-const mockSecretAccessVersion = jest.fn()
+-
+-jest.mock('@google-cloud/secret-manager', () => {
+-  return {
+-    SecretManagerServiceClient: jest.fn().mockImplementation(() => {
+-      return {
+-        accessSecretVersion: mockSecretAccessVersion,
+-      }
+-    }),
+-  }
+-})
+-jest.mock('../ConfigLoader')
+-jest.mock('@azure/ms-rest-nodeauth')
+-const mockLoginWithServicePrincipalSecret =
+-  loginWithServicePrincipalSecret as jest.Mock
+-
+-describe('Azure Credentials Provider', () => {
+-  beforeEach(() => {
+-    ;(config as jest.Mock).mockReturnValue({
+-      AZURE: {
+-        authentication: {
+-          mode: 'GCP',
+-        },
+-      },
+-      GCP: {
+-        BILLING_ACCOUNT_NAME: 'test-account',
+-      },
+-    })
+-  })
+-
+-  it('Provides Credentials for GCP', async () => {
+-    const azureClientId = 'some-client-id'
+-    const azureClientSecret = 'some-secret-version'
+-    const azureTenantId = 'some-tenant-id'
+-
+-    const mockSecretClientId = buildMockSecretResponse(azureClientId)
+-    const mockSecretVersion = buildMockSecretResponse(azureClientSecret)
+-    const mockSecretTenantId = buildMockSecretResponse(azureTenantId)
+-
+-    const expectedCredentials = {
+-      clientId: azureClientId,
+-      secret: azureClientSecret,
+-      domain: azureTenantId,
+-    }
+-
+-    mockSecretAccessVersion.mockResolvedValueOnce(mockSecretClientId)
+-    mockSecretAccessVersion.mockResolvedValueOnce(mockSecretVersion)
+-    mockSecretAccessVersion.mockResolvedValueOnce(mockSecretTenantId)
+-    mockLoginWithServicePrincipalSecret.mockResolvedValue(expectedCredentials)
+-
+-    const credentials = await AzureCredentialsProvider.create()
+-
+-    expect(mockLoginWithServicePrincipalSecret).toHaveBeenCalledWith(
+-      azureClientId,
+-      azureClientSecret,
+-      azureTenantId,
+-    )
+-    expect(credentials).toEqual(expectedCredentials)
+-  })
+-
+-  function buildMockSecretResponse(
+-    secret: string,
+-  ): IAccessSecretVersionResponse[] {
+-    const secretBuffer = Buffer.from(secret)
+-    return [
+-      {
+-        name: 'some-secret',
+-        payload: {
+-          data: secretBuffer,
+-        },
+-      },
+-    ]
+-  }
+-})
+diff --git a/packages/core/src/application/__tests__/Cache.test.ts b/packages/core/src/application/__tests__/Cache.test.ts
+deleted file mode 100644
+index 6c93382b..00000000
+--- a/packages/core/src/application/__tests__/Cache.test.ts
++++ /dev/null
+@@ -1,319 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import cache from '../Cache'
+-import { EstimationResult, ServiceData } from '../EstimationResult'
+-import moment from 'moment'
+-import { EstimationRequest } from '../CreateValidRequest'
+-import CacheManager from '../CacheManager'
+-
+-let mockSetEstimates: jest.Mock
+-let mockGetEstimates: jest.Mock
+-
+-jest.mock('../CacheManager', () => {
+-  return jest.fn().mockImplementation(() => {
+-    mockSetEstimates = jest.fn()
+-    mockGetEstimates = jest.fn()
+-    return {
+-      getEstimates: mockGetEstimates,
+-      setEstimates: mockSetEstimates,
+-    }
+-  })
+-})
+-
+-const dummyServiceEstimate: ServiceData[] = [
+-  {
+-    cloudProvider: '',
+-    accountName: '',
+-    serviceName: '',
+-    kilowattHours: 0,
+-    co2e: 0,
+-    cost: 0,
+-    region: '',
+-    usesAverageCPUConstant: false,
+-  },
+-]
+-
+-function buildFootprintEstimates(
+-  startDate: string,
+-  consecutiveDays: number,
+-  serviceEstimates: ServiceData[] = [],
+-) {
+-  return [...Array(consecutiveDays)].map((v, i) => {
+-    return {
+-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-      serviceEstimates: [...serviceEstimates],
+-    }
+-  })
+-}
+-
+-describe('Cache', () => {
+-  let cacheDecorator: (
+-    target: any,
+-    propertyKey: string,
+-    descriptor: PropertyDescriptor,
+-  ) => void
+-  let originalFunction: jest.Mock
+-  let propertyDescriptor: PropertyDescriptor
+-
+-  beforeEach(() => {
+-    jest.clearAllMocks()
+-    cacheDecorator = cache()
+-    originalFunction = jest.fn()
+-    propertyDescriptor = { value: originalFunction }
+-  })
+-
+-  describe('cache-returned function', () => {
+-    it('returns cached data from cache service instead of calling the real method', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2020-01-01').toDate(),
+-        endDate: moment.utc('2020-01-02').toDate(),
+-      }
+-
+-      const expectedEstimationResults: EstimationResult[] =
+-        buildFootprintEstimates('2020-01-01', 1, dummyServiceEstimate)
+-      mockGetEstimates.mockResolvedValueOnce(expectedEstimationResults)
+-
+-      const target = {}
+-      //run
+-      cacheDecorator(target, 'propertyTest', propertyDescriptor)
+-      const estimationResult: EstimationResult[] =
+-        await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-
+-    it('fetches dates not stored in cache', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2019-12-31').toDate(),
+-        endDate: moment.utc('2020-01-08').toDate(),
+-      }
+-
+-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+-        '2020-01-03',
+-        2,
+-        dummyServiceEstimate,
+-      )
+-
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      const computedEstimates1 = buildFootprintEstimates(
+-        '2019-12-31',
+-        3,
+-        dummyServiceEstimate,
+-      )
+-      const computedEstimates2 = buildFootprintEstimates(
+-        '2020-01-05',
+-        3,
+-        dummyServiceEstimate,
+-      )
+-      originalFunction
+-        .mockResolvedValueOnce(computedEstimates1)
+-        .mockResolvedValueOnce(computedEstimates2)
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      const estimationResult: EstimationResult[] =
+-        await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      const expectedEstimationResults: EstimationResult[] = [
+-        ...computedEstimates1,
+-        ...cachedEstimates,
+-        ...computedEstimates2,
+-      ]
+-
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-
+-    it('calls original function with the expected request', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2019-12-31').toDate(),
+-        endDate: moment.utc('2020-01-02').toDate(),
+-        region: 'us-east-1',
+-      }
+-
+-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+-        '2019-12-31',
+-        1,
+-      )
+-
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      const computedEstimates = buildFootprintEstimates('2020-01-01', 1)
+-      originalFunction.mockResolvedValueOnce(computedEstimates)
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      expect(originalFunction).toHaveBeenCalledWith({
+-        startDate: moment.utc('2020-01-01').toDate(),
+-        endDate: moment.utc('2020-01-02').toDate(),
+-      })
+-    })
+-
+-    it('does not fetch dates when cache service returns unordered estimates', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2020-07-31').toDate(),
+-        endDate: moment.utc('2020-08-01').toDate(),
+-        region: 'us-east-1',
+-      }
+-
+-      //unordered dates
+-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+-        '2020-08-01',
+-        1,
+-        dummyServiceEstimate,
+-      ).concat(buildFootprintEstimates('2020-07-31', 1, dummyServiceEstimate))
+-
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      const estimationResult: EstimationResult[] =
+-        await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      const expectedEstimationResults: EstimationResult[] =
+-        buildFootprintEstimates('2020-07-31', 2, dummyServiceEstimate)
+-
+-      expect(originalFunction).not.toHaveBeenCalled()
+-      expect(estimationResult).toEqual(expectedEstimationResults)
+-    })
+-
+-    it('saves new data into cache', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2019-12-31').toDate(),
+-        endDate: moment.utc('2020-01-01').toDate(),
+-        region: 'us-east-1',
+-      }
+-
+-      const cachedEstimates: EstimationResult[] = []
+-
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      const computedEstimates = buildFootprintEstimates('2019-12-31', 1)
+-      originalFunction.mockResolvedValueOnce(computedEstimates)
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates)
+-    })
+-
+-    it('should not save into cache when API response contains empty data', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2019-12-31').toDate(),
+-        endDate: moment.utc('2020-01-01').toDate(),
+-        region: 'us-east-1',
+-      }
+-
+-      const cachedEstimates: EstimationResult[] = []
+-
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      const computedEstimates = buildFootprintEstimates('2019-12-31', 1)
+-      originalFunction.mockResolvedValueOnce(computedEstimates)
+-
+-      CacheManager.prototype.setEstimates = jest.fn()
+-
+-      const setEstimatesSpy = jest.spyOn(CacheManager.prototype, 'setEstimates')
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      expect(setEstimatesSpy).not.toHaveBeenCalled()
+-    })
+-
+-    it('caches dates with empty estimates if original function returns no results', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2020-07-10').toDate(),
+-        endDate: moment.utc('2020-07-20').toDate(),
+-      }
+-
+-      const cachedEstimates: EstimationResult[] = []
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      const computedEstimates: EstimationResult[] = buildFootprintEstimates(
+-        '2020-07-10',
+-        5,
+-        [
+-          {
+-            cloudProvider: '',
+-            accountName: '',
+-            serviceName: '',
+-            kilowattHours: 0,
+-            co2e: 0,
+-            cost: 0,
+-            region: '',
+-            usesAverageCPUConstant: false,
+-          },
+-        ],
+-      )
+-      originalFunction.mockResolvedValueOnce(computedEstimates)
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      expect(mockSetEstimates).toHaveBeenCalledWith(
+-        computedEstimates.concat(buildFootprintEstimates('2020-07-15', 5)),
+-      )
+-    })
+-
+-    it('removes empty estimates', async () => {
+-      //setup
+-      const rawRequest: EstimationRequest = {
+-        startDate: moment.utc('2020-07-10').toDate(),
+-        endDate: moment.utc('2020-07-20').toDate(),
+-      }
+-
+-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+-        '2020-07-15',
+-        5,
+-      )
+-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+-
+-      const computedEstimates: EstimationResult[] = buildFootprintEstimates(
+-        '2020-07-10',
+-        5,
+-        [
+-          {
+-            cloudProvider: '',
+-            accountName: '',
+-            serviceName: '',
+-            kilowattHours: 0,
+-            co2e: 0,
+-            cost: 0,
+-            region: '',
+-            usesAverageCPUConstant: false,
+-          },
+-        ],
+-      )
+-      originalFunction.mockResolvedValueOnce(computedEstimates)
+-
+-      //run
+-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+-      const results = await propertyDescriptor.value(rawRequest)
+-
+-      //assert
+-      expect(results).toEqual(computedEstimates)
+-    })
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/CacheManager.test.ts b/packages/core/src/application/__tests__/CacheManager.test.ts
+deleted file mode 100644
+index a4b86449..00000000
+--- a/packages/core/src/application/__tests__/CacheManager.test.ts
++++ /dev/null
+@@ -1,238 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-import moment from 'moment'
+-import CacheManager from '../CacheManager'
+-import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
+-import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
+-import { EstimationRequest } from '../CreateValidRequest'
+-import { EstimationResult } from '../EstimationResult'
+-
+-import mockConfig from '../Config'
+-
+-jest.mock('../Config.ts', () => {
+-  return {
+-    GCP: {
+-      CACHE_BUCKET_NAME: 'test-bucket-name',
+-    },
+-  }
+-})
+-
+-function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+-  return [...Array(consecutiveDays)].map((v, i) => {
+-    return {
+-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-      serviceEstimates: [],
+-    }
+-  })
+-}
+-
+-describe('CacheManager - CACHE_MODE: GCS', () => {
+-  afterEach(() => {
+-    jest.resetAllMocks()
+-  })
+-
+-  describe('getEstimates', () => {
+-    it('should return estimates', async () => {
+-      //setup
+-      const startDate = '2020-11-02'
+-      const endDate = '2020-11-03'
+-
+-      EstimatorCacheGoogleCloudStorage.prototype.getEstimates = jest
+-        .fn()
+-        .mockImplementation(() => {
+-          return buildFootprintEstimates(startDate, 1)
+-        })
+-
+-      mockConfig.CACHE_MODE = 'GCS'
+-
+-      const cacheManager = new CacheManager()
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await cacheManager.getEstimates(request)
+-
+-      //assert
+-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 1))
+-    })
+-
+-    it('should return only requested dates', async () => {
+-      //setup
+-      const startDate = '2020-11-02'
+-      const endDate = '2020-11-04'
+-
+-      EstimatorCacheGoogleCloudStorage.prototype.getEstimates = jest
+-        .fn()
+-        .mockImplementation(() => {
+-          return buildFootprintEstimates(startDate, 5)
+-        })
+-
+-      mockConfig.CACHE_MODE = 'GCS'
+-
+-      const cacheManager = new CacheManager()
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await cacheManager.getEstimates(request)
+-
+-      //assert
+-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 2))
+-    })
+-  })
+-
+-  describe('setEstimates', () => {
+-    it('should return estimates', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const cachedData: EstimationResult[] = buildFootprintEstimates(
+-        startDate,
+-        1,
+-      )
+-
+-      EstimatorCacheGoogleCloudStorage.prototype.setEstimates = jest
+-        .fn()
+-        .mockImplementation(() => {
+-          return Promise.resolve()
+-        })
+-
+-      mockConfig.CACHE_MODE = 'GCS'
+-
+-      const cacheManager = new CacheManager()
+-
+-      //run
+-      const estimates = await cacheManager.setEstimates(cachedData)
+-
+-      //assert
+-      expect(estimates).resolves
+-      expect(
+-        EstimatorCacheGoogleCloudStorage.prototype.setEstimates,
+-      ).toHaveBeenCalledWith(cachedData)
+-    })
+-    it('should not set estimates on empty data', async () => {
+-      //setup
+-      const cachedData: EstimationResult[] = []
+-
+-      const cacheManager = new CacheManager()
+-
+-      const setEstimatesSpy = jest.spyOn(
+-        EstimatorCacheGoogleCloudStorage.prototype,
+-        'setEstimates',
+-      )
+-
+-      //run
+-      const estimates = await cacheManager.setEstimates(cachedData)
+-
+-      //assert
+-      expect(estimates).resolves
+-      expect(setEstimatesSpy).not.toHaveBeenCalled()
+-    })
+-  })
+-})
+-
+-describe('CacheManager - CACHE_MODE: fileSystem', () => {
+-  afterEach(() => {
+-    jest.resetAllMocks()
+-  })
+-
+-  describe('getEstimates', () => {
+-    it('should return estimates', async () => {
+-      //setup
+-      const startDate = '2020-11-02'
+-      const endDate = '2020-11-03'
+-      EstimatorCacheFileSystem.prototype.getEstimates = jest
+-        .fn()
+-        .mockImplementation(() => {
+-          return buildFootprintEstimates(startDate, 1)
+-        })
+-      mockConfig.CACHE_MODE = ''
+-      const cacheManager = new CacheManager()
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await cacheManager.getEstimates(request)
+-
+-      //assert
+-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 1))
+-    })
+-    it('should return only requested dates', async () => {
+-      //setup
+-      const startDate = '2020-11-02'
+-      const endDate = '2020-11-04'
+-      EstimatorCacheFileSystem.prototype.getEstimates = jest
+-        .fn()
+-        .mockImplementation(() => {
+-          return buildFootprintEstimates(startDate, 5)
+-        })
+-      mockConfig.CACHE_MODE = ''
+-      const cacheManager = new CacheManager()
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await cacheManager.getEstimates(request)
+-
+-      //assert
+-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 2))
+-    })
+-  })
+-
+-  describe('setEstimates', () => {
+-    it('should set estimates', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const cachedData: EstimationResult[] = buildFootprintEstimates(
+-        startDate,
+-        1,
+-      )
+-
+-      EstimatorCacheFileSystem.prototype.setEstimates = jest
+-        .fn()
+-        .mockImplementation(() => {
+-          return Promise.resolve()
+-        })
+-
+-      mockConfig.CACHE_MODE = ''
+-
+-      const cacheManager = new CacheManager()
+-
+-      //run
+-      const estimates = await cacheManager.setEstimates(cachedData)
+-
+-      //assert
+-      expect(estimates).resolves
+-      expect(
+-        EstimatorCacheFileSystem.prototype.setEstimates,
+-      ).toHaveBeenCalledWith(cachedData)
+-    })
+-
+-    it('should not set estimates on empty data', async () => {
+-      //setup
+-      const cachedData: EstimationResult[] = []
+-
+-      const cacheManager = new CacheManager()
+-
+-      const setEstimatesSpy = jest.spyOn(
+-        EstimatorCacheFileSystem.prototype,
+-        'setEstimates',
+-      )
+-
+-      //run
+-      const estimates = await cacheManager.setEstimates(cachedData)
+-
+-      //assert
+-      expect(estimates).resolves
+-      expect(setEstimatesSpy).not.toHaveBeenCalled()
+-    })
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/CreateValidRequest.test.ts b/packages/core/src/application/__tests__/CreateValidRequest.test.ts
+deleted file mode 100644
+index 3ccaa0c1..00000000
+--- a/packages/core/src/application/__tests__/CreateValidRequest.test.ts
++++ /dev/null
+@@ -1,195 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import CreateValidRequest from '../CreateValidRequest'
+-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
+-import moment = require('moment')
+-
+-describe('CreateValidRequest', () => {
+-  it('parses the start and end dates in utc', () => {
+-    const input = {
+-      startDate: '2020-07-01',
+-      endDate: '2020-07-13',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    const result = CreateValidRequest(input)
+-
+-    expect(result).toEqual({
+-      startDate: moment.utc('2020-07-01').toDate(),
+-      endDate: moment.utc('2020-07-13').toDate(),
+-      region: AWS_REGIONS.US_EAST_1,
+-    })
+-  })
+-
+-  it('ensures the start date is before the end date', () => {
+-    const input = {
+-      startDate: '2020-07-14',
+-      endDate: '2020-07-13',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow(
+-      'Start date is not before end date',
+-    )
+-  })
+-
+-  it('ensures the start date is not the end date', () => {
+-    const input = {
+-      startDate: '2020-07-13',
+-      endDate: '2020-07-13',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow(
+-      'Start date is not before end date',
+-    )
+-  })
+-
+-  it('ensures the start date is in the past', () => {
+-    const input = {
+-      startDate: '3000-07-14',
+-      endDate: '3000-07-15',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow(
+-      'Start date is in the future',
+-    )
+-  })
+-
+-  it('ensures the end date is in the past', () => {
+-    const input = {
+-      startDate: '2020-01-13',
+-      endDate: '3000-07-15',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow('End date is in the future')
+-  })
+-
+-  it('ensures the raw start date is a parseable date', () => {
+-    const input = {
+-      startDate: 'haha lol',
+-      endDate: '2020-07-10',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow(
+-      'Start date is not in a recognized RFC2822 or ISO format',
+-    )
+-  })
+-
+-  it('ensures the raw end date is a parseable date', () => {
+-    const input = {
+-      startDate: '2020-01-10',
+-      endDate: 'haha lol',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow(
+-      'End date is not in a recognized RFC2822 or ISO format',
+-    )
+-  })
+-
+-  describe('given: a date is null', () => {
+-    it('throws error for missing start date', () => {
+-      const input = {
+-        startDate: null as string,
+-        endDate: '2020-01-10',
+-        region: AWS_REGIONS.US_EAST_1,
+-      }
+-
+-      expect(() => CreateValidRequest(input)).toThrow(
+-        'Start date must be provided',
+-      )
+-    })
+-
+-    it('throws error for missing end date', () => {
+-      const input = {
+-        startDate: '2020-01-10',
+-        endDate: null as string,
+-        region: AWS_REGIONS.US_EAST_1,
+-      }
+-
+-      expect(() => CreateValidRequest(input)).toThrow(
+-        'End date must be provided',
+-      )
+-    })
+-  })
+-
+-  describe('given: a date is undefined', () => {
+-    it('throws error for missing start date', () => {
+-      const input = {
+-        startDate: undefined as string,
+-        endDate: '2020-01-10',
+-        region: AWS_REGIONS.US_EAST_1,
+-      }
+-
+-      expect(() => CreateValidRequest(input)).toThrow(
+-        'Start date must be provided',
+-      )
+-    })
+-
+-    it('throws error for missing end date', () => {
+-      const input = {
+-        startDate: '2020-01-10',
+-        endDate: undefined as string,
+-        region: AWS_REGIONS.US_EAST_1,
+-      }
+-
+-      expect(() => CreateValidRequest(input)).toThrow(
+-        'End date must be provided',
+-      )
+-    })
+-  })
+-
+-  describe('given: a date is an empty string', () => {
+-    it('throws error for empty start date', () => {
+-      const input = {
+-        startDate: '',
+-        endDate: '2020-01-10',
+-        region: AWS_REGIONS.US_EAST_1,
+-      }
+-
+-      expect(() => CreateValidRequest(input)).toThrow(
+-        'Start date must be provided',
+-      )
+-    })
+-
+-    it('throws error for empty end date', () => {
+-      const input = {
+-        startDate: '',
+-        endDate: null as string,
+-        region: AWS_REGIONS.US_EAST_1,
+-      }
+-
+-      expect(() => CreateValidRequest(input)).toThrow(
+-        'End date must be provided',
+-      )
+-    })
+-  })
+-
+-  it('reports multiple errors', () => {
+-    const input = {
+-      startDate: '3000-07-14',
+-      endDate: '3000-07-13',
+-      region: AWS_REGIONS.US_EAST_1,
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow(
+-      'Start date is not before end date, Start date is in the future',
+-    )
+-  })
+-
+-  it('ensures the region is valid', () => {
+-    const input = {
+-      startDate: '2000-07-10',
+-      endDate: '2020-07-10',
+-      region: 'us-east-800',
+-    }
+-
+-    expect(() => CreateValidRequest(input)).toThrow('Not a valid region')
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/EstimatorCacheFileSystem.test.ts b/packages/core/src/application/__tests__/EstimatorCacheFileSystem.test.ts
+deleted file mode 100644
+index 62428523..00000000
+--- a/packages/core/src/application/__tests__/EstimatorCacheFileSystem.test.ts
++++ /dev/null
+@@ -1,143 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { cachePath } from '../EstimatorCacheFileSystem'
+-import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
+-import { promises } from 'fs'
+-import EstimatorCache from '../EstimatorCache'
+-import moment from 'moment'
+-import { EstimationResult } from '../EstimationResult'
+-import { EstimationRequest } from '../CreateValidRequest'
+-
+-jest.mock('fs', () => {
+-  return { promises: { readFile: jest.fn(), writeFile: jest.fn() } }
+-})
+-
+-const mockFs = promises as jest.Mocked<typeof promises>
+-
+-function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+-  return [...Array(consecutiveDays)].map((v, i) => {
+-    return {
+-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-      serviceEstimates: [],
+-    }
+-  })
+-}
+-
+-describe('EstimatorCacheFileSystem', () => {
+-  let estimatorCache: EstimatorCache
+-
+-  beforeEach(() => {
+-    estimatorCache = new EstimatorCacheFileSystem()
+-  })
+-
+-  const originalWarn = console.warn
+-  afterEach(() => {
+-    console.warn = originalWarn
+-    estimatorCache = new EstimatorCacheFileSystem()
+-  })
+-
+-  describe('getEstimates', () => {
+-    it('should return estimates of a request', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const endDate = '2020-10-02'
+-
+-      const cachedData: EstimationResult[] = buildFootprintEstimates(
+-        startDate,
+-        1,
+-      )
+-      mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await estimatorCache.getEstimates(request)
+-
+-      //assert
+-      expect(estimates).toEqual(cachedData)
+-    })
+-
+-    it('should return the first date in cache data if it is earlier than start date', async () => {
+-      //setup
+-      const dataFirstDate = '2020-11-01'
+-      const startDate = '2020-11-02'
+-      const endDate = '2020-11-03'
+-
+-      const cachedData = buildFootprintEstimates(dataFirstDate, 2)
+-
+-      mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedData))
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await estimatorCache.getEstimates(request)
+-
+-      //assert
+-      expect(estimates).toEqual(buildFootprintEstimates(dataFirstDate, 2))
+-    })
+-
+-    it('should read from cache file and decode in utf8', async () => {
+-      //setup
+-      mockFs.readFile.mockResolvedValueOnce('[]')
+-
+-      //run
+-      await estimatorCache.getEstimates({} as EstimationRequest)
+-
+-      //assert
+-      expect(mockFs.readFile).toHaveBeenCalledWith(cachePath, 'utf8')
+-    })
+-
+-    it('should return empty when file doesnt exist', async () => {
+-      //setup
+-      mockFs.readFile.mockRejectedValueOnce('ENOENT: no such file or directory')
+-      console.warn = jest.fn()
+-
+-      //run
+-      const estimates = await estimatorCache.getEstimates(
+-        {} as EstimationRequest,
+-      )
+-
+-      //assert
+-      expect(estimates).toEqual([])
+-      expect(console.warn).toHaveBeenCalled()
+-    })
+-
+-    it('should create the cache file if it does not exist', async () => {
+-      //setup
+-      mockFs.readFile.mockRejectedValueOnce('ENOENT: no such file or directory')
+-      console.warn = jest.fn()
+-
+-      //run
+-      await estimatorCache.getEstimates({} as EstimationRequest)
+-
+-      //assert
+-      expect(mockFs.writeFile).toHaveBeenCalledWith(cachePath, '[]', 'utf8')
+-    })
+-  })
+-
+-  describe('setEstimates', () => {
+-    it('should append estimates', async () => {
+-      //run
+-      const cachedEstimates = buildFootprintEstimates('2020-04-10', 1)
+-      const estimatesToSave = buildFootprintEstimates('2020-06-25', 1)
+-
+-      mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedEstimates))
+-
+-      //setup
+-      await estimatorCache.setEstimates(estimatesToSave)
+-
+-      //assert
+-      expect(mockFs.writeFile).toHaveBeenCalledWith(
+-        cachePath,
+-        JSON.stringify(cachedEstimates.concat(estimatesToSave)),
+-        'utf8',
+-      )
+-    })
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/EstimatorCacheGoogleCloudStorage.test.ts b/packages/core/src/application/__tests__/EstimatorCacheGoogleCloudStorage.test.ts
+deleted file mode 100644
+index 105296e6..00000000
+--- a/packages/core/src/application/__tests__/EstimatorCacheGoogleCloudStorage.test.ts
++++ /dev/null
+@@ -1,175 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-import moment from 'moment'
+-import { PassThrough } from 'stream'
+-import EstimatorCache from '../EstimatorCache'
+-import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
+-import { EstimationResult } from '../EstimationResult'
+-import { EstimationRequest } from '../CreateValidRequest'
+-
+-const creatReadStreamMock = jest.fn()
+-const writeGcsFile = jest.fn()
+-
+-jest.mock('@google-cloud/storage', () => {
+-  return {
+-    Storage: jest.fn().mockImplementation(() => {
+-      return {
+-        bucket: jest.fn().mockImplementation(() => {
+-          return {
+-            file: jest.fn().mockImplementation(() => {
+-              return {
+-                createReadStream: creatReadStreamMock,
+-                save: writeGcsFile,
+-              }
+-            }),
+-          }
+-        }),
+-      }
+-    }),
+-  }
+-})
+-
+-jest.mock('../ConfigLoader', () => {
+-  return jest.fn().mockImplementation(() => {
+-    return {
+-      GCP: {
+-        CACHE_BUCKET_NAME: 'test-bucket-name',
+-      },
+-      CACHE_MODE: 'GCS',
+-    }
+-  })
+-})
+-
+-function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+-  return [...Array(consecutiveDays)].map((v, i) => {
+-    return {
+-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+-      serviceEstimates: [],
+-    }
+-  })
+-}
+-
+-describe('CacheManager', () => {
+-  let estimatorCacheGoogleCloudStorage: EstimatorCache
+-
+-  beforeEach(() => {
+-    const bucketName = 'test-bucket-name'
+-    estimatorCacheGoogleCloudStorage = new EstimatorCacheGoogleCloudStorage(
+-      bucketName,
+-    )
+-  })
+-
+-  const originalWarn = console.warn
+-  afterEach(() => {
+-    console.warn = originalWarn
+-    jest.clearAllMocks()
+-  })
+-
+-  describe('getEstimates', () => {
+-    it('should get estimates from GCS file', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const endDate = '2020-10-02'
+-
+-      const mockedStream = new PassThrough()
+-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
+-      mockedStream.end()
+-
+-      creatReadStreamMock.mockReturnValue(mockedStream)
+-
+-      const cachedData: EstimationResult[] = buildFootprintEstimates(
+-        startDate,
+-        1,
+-      )
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      const estimates = await estimatorCacheGoogleCloudStorage.getEstimates(
+-        request,
+-      )
+-
+-      //assert
+-      expect(estimates).toEqual(cachedData)
+-    })
+-
+-    it('should console.warn on file writing error', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const endDate = '2020-10-02'
+-
+-      const mockedStream = new PassThrough()
+-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
+-      mockedStream.end()
+-
+-      creatReadStreamMock.mockRejectedValue('ERROR')
+-
+-      console.warn = jest.fn()
+-
+-      //run
+-      const request: EstimationRequest = {
+-        startDate: moment.utc(startDate).toDate(),
+-        endDate: moment.utc(endDate).toDate(),
+-      }
+-      await estimatorCacheGoogleCloudStorage.getEstimates(request)
+-
+-      //assert
+-      expect(console.warn).toHaveBeenCalled()
+-    })
+-  })
+-
+-  describe('setEstimates', () => {
+-    it('should set estimates to GCS File', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const cachedData: EstimationResult[] = buildFootprintEstimates(
+-        startDate,
+-        1,
+-      )
+-
+-      const mockedStream = new PassThrough()
+-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
+-      mockedStream.end()
+-
+-      creatReadStreamMock.mockReturnValue(mockedStream)
+-
+-      writeGcsFile.mockResolvedValue(true)
+-
+-      //run
+-      const write = await estimatorCacheGoogleCloudStorage.setEstimates(
+-        cachedData,
+-      )
+-
+-      //assert
+-      expect(write).resolves
+-    })
+-
+-    it('should console.warn on file writing error', async () => {
+-      //setup
+-      const startDate = '2020-10-01'
+-      const cachedData: EstimationResult[] = buildFootprintEstimates(
+-        startDate,
+-        1,
+-      )
+-
+-      const mockedStream = new PassThrough()
+-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
+-      mockedStream.end()
+-
+-      creatReadStreamMock.mockReturnValue(mockedStream)
+-
+-      writeGcsFile.mockRejectedValue('ERROR')
+-
+-      console.warn = jest.fn()
+-
+-      //run
+-      await estimatorCacheGoogleCloudStorage.setEstimates(cachedData)
+-
+-      //assert
+-      expect(console.warn).toHaveBeenCalled()
+-    })
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/FilterResult.test.ts b/packages/core/src/application/__tests__/FilterResult.test.ts
+deleted file mode 100644
+index 2639bf3b..00000000
+--- a/packages/core/src/application/__tests__/FilterResult.test.ts
++++ /dev/null
+@@ -1,34 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import { Account, getAccounts } from '../FilterResult'
+-
+-describe('getFilterResults', () => {
+-  it('AWS results', () => {
+-    const mockAwsAccount: Account = {
+-      cloudProvider: 'aws',
+-      key: '123456678',
+-      name: 'Test Account',
+-    }
+-    const mockGcpAccount: Account = {
+-      cloudProvider: 'gcp',
+-      key: '123456679',
+-      name: 'GCP Test Account',
+-    }
+-    const expectedArrayResults = [mockAwsAccount, mockGcpAccount]
+-
+-    expect(expectedArrayResults).toEqual(getAccounts())
+-  })
+-  it('no GCP results', () => {
+-    delete process.env.GCP_PROJECTS
+-    const mockAwsAccount: Account = {
+-      cloudProvider: 'aws',
+-      key: '123456678',
+-      name: 'Test Account',
+-    }
+-    const expectedArrayResults = [mockAwsAccount]
+-
+-    expect(expectedArrayResults).toEqual(getAccounts())
+-  })
+-})
+diff --git a/packages/core/src/application/__tests__/GCPAccount.test.ts b/packages/core/src/application/__tests__/GCPAccount.test.ts
+deleted file mode 100644
+index 1efb0809..00000000
+--- a/packages/core/src/application/__tests__/GCPAccount.test.ts
++++ /dev/null
+@@ -1,65 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-jest.mock('../../services/Logger')
+-import mockConfig from '../Config'
+-
+-const mockMetricServiceClient = jest.fn()
+-jest.mock('@google-cloud/monitoring', () => {
+-  return {
+-    v3: {
+-      MetricServiceClient: mockMetricServiceClient,
+-    },
+-  }
+-})
+-
+-describe('GCPAccount', () => {
+-  const projectId = 'test-project'
+-
+-  /* eslint-disable @typescript-eslint/no-var-requires */
+-  afterEach(() => {
+-    jest.restoreAllMocks()
+-  })
+-
+-  it('should return empty if no service in config file', () => {
+-    mockConfig.GCP.CURRENT_SERVICES = []
+-
+-    const GCPAccount = require('../GCPAccount').default
+-    const services = new GCPAccount(['us-east1']).getServices()
+-    expect(services).toHaveLength(0)
+-  })
+-
+-  it('should throw error if unknown service', () => {
+-    mockConfig.GCP.CURRENT_SERVICES = [{ key: 'goose', name: '' }]
+-
+-    const GCPAccount = require('../GCPAccount').default
+-    const account = new GCPAccount(['us-east1'])
+-    expect(() => {
+-      account.getServices()
+-    }).toThrowError('Unsupported service: goose')
+-  })
+-
+-  it('should return computeEngine instance and inject MetricServiceClient', () => {
+-    const ComputeEngine = require('../../services/gcp/ComputeEngine').default
+-    expectGCPService('computeEngine').toBeInstanceOf(ComputeEngine)
+-    expect(mockMetricServiceClient).toHaveBeenCalledWith({
+-      projectId: projectId,
+-    })
+-  })
+-})
+-
+-function expectGCPService(key: string) {
+-  mockConfig.GCP.CURRENT_SERVICES = [
+-    {
+-      key: key,
+-      name: '',
+-    },
+-  ]
+-
+-  const GCPAccount = require('../GCPAccount').default
+-  const services = new GCPAccount('test-project', 'test project', [
+-    'us-east1',
+-  ]).getServices()
+-  return expect(services[0])
+-}
+diff --git a/packages/core/src/application/__tests__/GCPCredentials.test.ts b/packages/core/src/application/__tests__/GCPCredentials.test.ts
+deleted file mode 100644
+index a644683a..00000000
+--- a/packages/core/src/application/__tests__/GCPCredentials.test.ts
++++ /dev/null
+@@ -1,156 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import GCPCredentials from '../GCPCredentials'
+-import { ChainableTemporaryCredentials, WebIdentityCredentials } from 'aws-sdk'
+-import Mock = jest.Mock
+-
+-const Credentials = jest.requireActual('aws-sdk').Credentials
+-jest.mock('aws-sdk', () => {
+-  return {
+-    ChainableTemporaryCredentials: jest.fn(),
+-    WebIdentityCredentials: jest.fn(),
+-    Credentials: jest.requireActual('aws-sdk').Credentials,
+-  }
+-})
+-
+-function mockChainableTemporaryCredentials(
+-  targetAccessKeyId: string,
+-  targetSecretAccessKey: string,
+-  targetSessionToken: string,
+-) {
+-  const chainableTemporaryCredentials =
+-    ChainableTemporaryCredentials as unknown as Mock
+-  chainableTemporaryCredentials.mockImplementationOnce(() => {
+-    return new Credentials(
+-      targetAccessKeyId,
+-      targetSecretAccessKey,
+-      targetSessionToken,
+-    )
+-  })
+-  return chainableTemporaryCredentials
+-}
+-
+-function mockWebIdentityCredentials(
+-  targetAccessKeyId: string,
+-  targetSecretAccessKey: string,
+-  targetSessionToken: string,
+-) {
+-  const webIdentityCredentials = WebIdentityCredentials as unknown as Mock
+-  const credentials = new Credentials(
+-    targetAccessKeyId,
+-    targetSecretAccessKey,
+-    targetSessionToken,
+-  )
+-  webIdentityCredentials.mockImplementationOnce(() => {
+-    return credentials
+-  })
+-  return { webIdentityCredentials, webIdentityReturnedCredentials: credentials }
+-}
+-
+-let credentials: any
+-let mockedGetTokenId: any
+-
+-describe('GCPCredentials instance', () => {
+-  beforeEach(() => {
+-    const accountId = '1233452012'
+-    const targetRoleSessionName = 'mySessionName'
+-    const proxyAccountId = '11111'
+-    const proxyRoleName = 'proxyRoleName'
+-    const token = '0000'
+-    credentials = new GCPCredentials(
+-      accountId,
+-      targetRoleSessionName,
+-      proxyAccountId,
+-      proxyRoleName,
+-    )
+-
+-    mockedGetTokenId = jest
+-      .spyOn(credentials, 'getTokenId')
+-      .mockImplementation(async () => {
+-        return token
+-      })
+-  })
+-
+-  afterEach(() => {
+-    mockedGetTokenId.mockRestore()
+-  })
+-
+-  it('should set credentials when calling get()', async () => {
+-    //given
+-    const targetAccessKeyId = 'alsorandomchars'
+-    const targetSecretAccessKey = 'verylongstringwithrandomchars'
+-    const targetSessionToken = 'hi'
+-
+-    mockChainableTemporaryCredentials(
+-      targetAccessKeyId,
+-      targetSecretAccessKey,
+-      targetSessionToken,
+-    )
+-
+-    //when
+-    await credentials.getPromise()
+-
+-    //then
+-    expect(credentials.accessKeyId).toEqual(targetAccessKeyId)
+-    expect(credentials.secretAccessKey).toEqual(targetSecretAccessKey)
+-    expect(credentials.sessionToken).toEqual(targetSessionToken)
+-    expect(credentials.expireTime).toBeInstanceOf(Date)
+-  })
+-
+-  it('should create ChainableTemporaryCredentials with expected options', async () => {
+-    //given
+-    const chainableTemporaryCredentials = mockChainableTemporaryCredentials(
+-      '',
+-      '',
+-      '',
+-    )
+-    const { webIdentityReturnedCredentials } = mockWebIdentityCredentials(
+-      'a',
+-      'b',
+-      'c',
+-    )
+-
+-    const accountId = '1233452012'
+-    const targetRoleSessionName = 'mySessionName'
+-    const chainableTemporaryCredentialsOptions = {
+-      params: {
+-        RoleArn: `arn:aws:iam::${accountId}:role/${targetRoleSessionName}`,
+-        RoleSessionName: targetRoleSessionName,
+-      },
+-      masterCredentials: webIdentityReturnedCredentials,
+-    }
+-
+-    //when
+-    await credentials.getPromise()
+-
+-    //then
+-    expect(chainableTemporaryCredentials).toHaveBeenCalledWith(
+-      chainableTemporaryCredentialsOptions,
+-    )
+-  })
+-
+-  it('should create WebIdentityCredentials with expected options', async () => {
+-    //given
+-    mockChainableTemporaryCredentials('', '', '')
+-    const { webIdentityCredentials } = mockWebIdentityCredentials('a', 'b', 'c')
+-
+-    const proxyAccountId = '11111'
+-    const proxyRoleName = 'proxyRoleName'
+-    const token = '0000'
+-
+-    const webOptions = {
+-      RoleArn: `arn:aws:iam::${proxyAccountId}:role/${proxyRoleName}`,
+-      RoleSessionName: proxyRoleName,
+-      WebIdentityToken: token,
+-    }
+-
+-    //when
+-    await credentials.getPromise()
+-
+-    //then
+-    expect(webIdentityCredentials).toHaveBeenCalledWith(webOptions)
+-    mockedGetTokenId.mockRestore()
+-  })
+-})
+diff --git a/packages/core/src/application/index.ts b/packages/core/src/application/index.ts
+deleted file mode 100644
+index e727eae7..00000000
+--- a/packages/core/src/application/index.ts
++++ /dev/null
+@@ -1,14 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-export { default as App } from './App'
+-export {
+-  default as CreateValidRequest,
+-  EstimationRequestValidationError,
+-  PartialDataError,
+-} from './CreateValidRequest'
+-export { default as configLoader } from './ConfigLoader'
+-export { default as AWSAccount } from './AWSAccount'
+-export { default as GCPAccount } from './GCPAccount'
+-export * from './EstimationResult'
+diff --git a/packages/core/src/domain/index.ts b/packages/core/src/domain/index.ts
+index b24e6cbe..1cb6c091 100644
+--- a/packages/core/src/domain/index.ts
++++ b/packages/core/src/domain/index.ts
+@@ -1 +1,13 @@
+-export { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from './FootprintEstimationConstants'
++export {
++  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
++  CLOUD_CONSTANTS,
++} from './FootprintEstimationConstants'
++export { default as UsageData } from './IUsageData'
++export { default as FootprintEstimate } from './FootprintEstimate'
++export { default as ICloudService } from './ICloudService'
++export { default as Cost } from './Cost'
++export { default as Region } from './Region'
++export { default as ComputeEstimator } from './ComputeEstimator'
++export { StorageEstimator } from './StorageEstimator'
++export { default as NetworkingEstimator } from './NetworkingEstimator'
++export { default as MemoryEstimator } from './MemoryEstimator'
+diff --git a/packages/core/src/index.ts b/packages/core/src/index.ts
+index 6b06ec0f..d675b295 100644
+--- a/packages/core/src/index.ts
++++ b/packages/core/src/index.ts
+@@ -1,4 +1,3 @@
+-export * from './application'
++export { default as configLoader } from './ConfigLoader'
+ export * from './domain'
+ export * from './services'
+-export * from './view'
+diff --git a/packages/core/src/services/ILogger.ts b/packages/core/src/services/ILogger.ts
+deleted file mode 100644
+index 316810b7..00000000
+--- a/packages/core/src/services/ILogger.ts
++++ /dev/null
+@@ -1,10 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-export default interface ILogger {
+-  debug(message: string): void
+-  info(message: string): void
+-  warn(message: string): void
+-  error(message: string, error: Error): void
+-}
+diff --git a/packages/core/src/services/Logger.test.ts b/packages/core/src/services/Logger.test.ts
+deleted file mode 100644
+index 47cae435..00000000
+--- a/packages/core/src/services/Logger.test.ts
++++ /dev/null
+@@ -1,134 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-const mockLogger = {
+-  debug: jest.fn(),
+-  info: jest.fn(),
+-  error: jest.fn(),
+-  warn: jest.fn(),
+-}
+-
+-jest.mock('winston', () => {
+-  return {
+-    format: {
+-      colorize: jest.fn(),
+-      combine: jest.fn(),
+-      label: jest.fn(),
+-      timestamp: jest.fn(),
+-      printf: jest.fn(),
+-    },
+-    transports: {
+-      Console: jest.fn(),
+-      File: jest.fn(),
+-    },
+-    createLogger: jest.fn().mockReturnValue(mockLogger),
+-  }
+-})
+-
+-import Logger from './Logger'
+-import mockConfig from '../application/Config'
+-
+-describe('Logger', () => {
+-  const testMessage = 'test log message'
+-  const testErr = new Error('error test message')
+-
+-  describe('Default logger', () => {
+-    const testLogger = new Logger('test')
+-
+-    afterEach(() => {
+-      jest.resetAllMocks()
+-    })
+-
+-    it('logs debug', () => {
+-      // when
+-      testLogger.debug(testMessage)
+-
+-      // then
+-      expect(mockLogger.debug).toHaveBeenCalledWith(testMessage)
+-    })
+-
+-    it('logs info', () => {
+-      // when
+-      testLogger.info(testMessage)
+-
+-      // then
+-      expect(mockLogger.info).toHaveBeenCalledWith(testMessage)
+-    })
+-
+-    it('logs warning', () => {
+-      // when
+-      testLogger.warn(testMessage)
+-
+-      // then
+-      expect(mockLogger.warn).toHaveBeenCalledWith(testMessage)
+-    })
+-
+-    it('logs error', () => {
+-      // when
+-      testLogger.error(testMessage, testErr)
+-
+-      // then
+-      expect(mockLogger.error).toHaveBeenCalledWith(
+-        `${testMessage}${testErr.stack}`,
+-      )
+-    })
+-  })
+-
+-  describe('GCP logger', () => {
+-    mockConfig.LOGGING_MODE = 'GCP'
+-    const testLogger = new Logger('test')
+-
+-    afterEach(() => {
+-      jest.resetAllMocks()
+-    })
+-
+-    it('logs debug', () => {
+-      // when
+-      testLogger.debug(testMessage)
+-
+-      // then
+-      expect(mockLogger.debug).toHaveBeenCalledWith(testMessage)
+-    })
+-
+-    it('logs info', () => {
+-      // when
+-      testLogger.info(testMessage)
+-
+-      // then
+-      expect(mockLogger.info).toHaveBeenCalledWith(testMessage)
+-    })
+-
+-    it('logs warning', () => {
+-      // when
+-      testLogger.warn(testMessage)
+-
+-      // then
+-      expect(mockLogger.warn).toHaveBeenCalledWith(testMessage)
+-    })
+-
+-    it('logs error', () => {
+-      // when
+-      testLogger.error(testMessage, testErr)
+-      const mockErr = Object.getPrototypeOf(testLogger)
+-
+-      // then
+-      expect(mockLogger.error).toHaveBeenCalledWith(
+-        `${testMessage}${testErr.stack}`,
+-      )
+-      expect(mockErr.getLogLevel('test')).toEqual('debug')
+-    })
+-
+-    it('Info Log Info', () => {
+-      // when
+-      testLogger.error(testMessage, testErr)
+-      const mockErr = Object.getPrototypeOf(testLogger)
+-
+-      // then
+-      expect(mockLogger.error).toHaveBeenCalledWith(
+-        `${testMessage}${testErr.stack}`,
+-      )
+-      expect(mockErr.getLogLevel('otherTestEnv')).toEqual('info')
+-    })
+-  })
+-})
+diff --git a/packages/core/src/services/Logger.ts b/packages/core/src/services/Logger.ts
+deleted file mode 100644
+index 76e09f59..00000000
+--- a/packages/core/src/services/Logger.ts
++++ /dev/null
+@@ -1,94 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-import {
+-  createLogger,
+-  format,
+-  transports,
+-  Logger as WinstonLogger,
+-} from 'winston'
+-const { combine, timestamp, label, printf } = format
+-import { LoggingWinston } from '@google-cloud/logging-winston'
+-
+-import ILogger from './ILogger'
+-import configLoader from '../application/ConfigLoader'
+-
+-const env = process.env.NODE_ENV || 'development'
+-
+-enum LOGGING_LEVELS {
+-  ERROR = 'error',
+-  INFO = 'info',
+-  DEBUG = 'debug',
+-}
+-
+-export default class Logger implements ILogger {
+-  private logger: WinstonLogger
+-
+-  private readonly format = printf(({ level, message, label, timestamp }) => {
+-    return `${timestamp} [${label}] ${level}: ${message} `
+-  })
+-
+-  constructor(logLabel: string) {
+-    try {
+-      switch (configLoader().LOGGING_MODE) {
+-        case 'GCP':
+-          this.logger = this.getGCPLogger()
+-          break
+-        default:
+-          this.logger = this.getDefaultLogger(logLabel)
+-      }
+-    } catch (error) {
+-      this.getDefaultLogger(logLabel).error(error)
+-    }
+-  }
+-
+-  private getGCPLogger() {
+-    return createLogger({
+-      level: this.getLogLevel(env),
+-      transports: [new transports.Console(), new LoggingWinston()],
+-      silent: env === 'test',
+-    })
+-  }
+-
+-  private getDefaultLogger(logLabel: string) {
+-    return createLogger({
+-      level: this.getLogLevel(env),
+-      format: combine(label({ label: logLabel }), timestamp(), this.format),
+-      transports: [
+-        new transports.Console({
+-          format: format.combine(format.colorize(), this.format),
+-        }),
+-        new transports.File({
+-          filename: 'logs/error.log',
+-          level: LOGGING_LEVELS.ERROR,
+-        }),
+-        new transports.File({ filename: 'logs/combined.log' }),
+-      ],
+-      silent: env === 'test',
+-    })
+-  }
+-
+-  private getLogLevel(env: string): string {
+-    if (env === 'test' || env === 'development') {
+-      return LOGGING_LEVELS.DEBUG
+-    }
+-    return LOGGING_LEVELS.INFO
+-  }
+-
+-  debug(message: string): void {
+-    this.logger.debug(message)
+-  }
+-
+-  info(message: string): void {
+-    this.logger.info(message)
+-  }
+-
+-  warn(message: string): void {
+-    this.logger.warn(message)
+-  }
+-
+-  error(message: string, error: Error): void {
+-    this.logger.error(message + error.stack)
+-  }
+-}
+diff --git a/packages/core/src/services/aws/CostAndUsageReports.ts b/packages/core/src/services/aws/CostAndUsageReports.ts
+index 309708c3..9de0259f 100644
+--- a/packages/core/src/services/aws/CostAndUsageReports.ts
++++ b/packages/core/src/services/aws/CostAndUsageReports.ts
+@@ -8,7 +8,7 @@ import FootprintEstimate, {
+ } from '../../domain/FootprintEstimate'
+ import ComputeEstimator from '../../domain/ComputeEstimator'
+ import { StorageEstimator } from '../../domain/StorageEstimator'
+-import configLoader from '../../application/ConfigLoader'
++import configLoader from '../../ConfigLoader'
+ import {
+   GetQueryExecutionInput,
+   GetQueryExecutionOutput,
+@@ -20,8 +20,8 @@ import {
+ import ComputeUsage from '../../domain/ComputeUsage'
+ import StorageUsage from '../../domain/StorageUsage'
+ import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+-import Logger from '../Logger'
+-import { EstimationResult } from '../../application/EstimationResult'
++import Logger from '../../Logger'
++import { EstimationResult } from '../common/types'
+ import { ServiceWrapper } from './ServiceWrapper'
+ import {
+   SSD_USAGE_TYPES,
+diff --git a/packages/core/src/services/aws/EBS.ts b/packages/core/src/services/aws/EBS.ts
+index cdda19dd..57a32e69 100644
+--- a/packages/core/src/services/aws/EBS.ts
++++ b/packages/core/src/services/aws/EBS.ts
+@@ -13,7 +13,7 @@ import FootprintEstimate from '../../domain/FootprintEstimate'
+ import Cost from '../../domain/Cost'
+ import { getCostFromCostExplorer } from './CostMapper'
+ import { ServiceWrapper } from './ServiceWrapper'
+-import Logger from '../Logger'
++import Logger from '../../Logger'
+ 
+ export default class EBS implements ICloudService {
+   serviceName = 'EBS'
+diff --git a/packages/core/src/services/aws/RDSStorage.ts b/packages/core/src/services/aws/RDSStorage.ts
+index 687f8764..70b91bfd 100644
+--- a/packages/core/src/services/aws/RDSStorage.ts
++++ b/packages/core/src/services/aws/RDSStorage.ts
+@@ -14,7 +14,7 @@ import FootprintEstimate from '../../domain/FootprintEstimate'
+ import Cost from '../../domain/Cost'
+ import { getCostFromCostExplorer } from './CostMapper'
+ import { ServiceWrapper } from './ServiceWrapper'
+-import Logger from '../Logger'
++import Logger from '../../Logger'
+ 
+ export default class RDSStorage implements ICloudService {
+   serviceName = 'rds-storage'
+diff --git a/packages/core/src/services/azure/ConsumptionManagement.ts b/packages/core/src/services/azure/ConsumptionManagement.ts
+index 600a1416..d7235fcb 100644
+--- a/packages/core/src/services/azure/ConsumptionManagement.ts
++++ b/packages/core/src/services/azure/ConsumptionManagement.ts
+@@ -11,7 +11,7 @@ import ComputeEstimator from '../../domain/ComputeEstimator'
+ import { StorageEstimator } from '../../domain/StorageEstimator'
+ import NetworkingEstimator from '../../domain/NetworkingEstimator'
+ import MemoryEstimator from '../../domain/MemoryEstimator'
+-import { EstimationResult } from '../../application'
++import { EstimationResult } from '../../../../app/src'
+ import ComputeUsage from '../../domain/ComputeUsage'
+ import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+ import FootprintEstimate, {
+diff --git a/packages/core/src/services/common/types.ts b/packages/core/src/services/common/types.ts
+index cc7fb974..e91ec544 100644
+--- a/packages/core/src/services/common/types.ts
++++ b/packages/core/src/services/common/types.ts
+@@ -5,3 +5,19 @@
+ export type QUERY_DATE_TYPES = {
+   [key: string]: string
+ }
++
++export interface EstimationResult {
++  readonly timestamp: Date
++  readonly serviceEstimates: ServiceData[]
++}
++
++export interface ServiceData {
++  readonly cloudProvider: string
++  readonly accountName: string
++  readonly serviceName: string
++  readonly kilowattHours: number
++  readonly co2e: number
++  readonly cost: number
++  readonly region: string
++  readonly usesAverageCPUConstant: boolean
++}
+diff --git a/packages/core/src/services/gcp/BillingExportTable.ts b/packages/core/src/services/gcp/BillingExportTable.ts
+index 3da0b9b9..3cd427ef 100644
+--- a/packages/core/src/services/gcp/BillingExportTable.ts
++++ b/packages/core/src/services/gcp/BillingExportTable.ts
+@@ -16,8 +16,8 @@ import MemoryUsage from '../../domain/MemoryUsage'
+ import FootprintEstimate, {
+   MutableEstimationResult,
+ } from '../../domain/FootprintEstimate'
+-import { EstimationResult } from '../../application/EstimationResult'
+-import configLoader from '../../application/ConfigLoader'
++import { EstimationResult } from '../common/types'
++import configLoader from '../../ConfigLoader'
+ import {
+   MEMORY_USAGE_TYPES,
+   UNKNOWN_USAGE_TYPES,
+@@ -32,7 +32,7 @@ import {
+   SHARED_CORE_PROCESSORS,
+ } from './MachineTypes'
+ import BillingExportRow from './BillingExportRow'
+-import Logger from '../Logger'
++import Logger from '../../Logger'
+ import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+ import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
+ import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
+diff --git a/packages/core/src/services/index.ts b/packages/core/src/services/index.ts
+index d93ff277..9d8bc37a 100644
+--- a/packages/core/src/services/index.ts
++++ b/packages/core/src/services/index.ts
+@@ -2,6 +2,7 @@
+  * © 2021 ThoughtWorks, Inc.
+  */
+ 
+-export { default as Logger } from './Logger'
++export { default as CostAndUsageReports } from './aws/CostAndUsageReports'
++export { default as BillingExportTable } from './gcp/BillingExportTable'
+ export * from './aws'
+ export * from './gcp'
+diff --git a/packages/core/src/view/RawRequest.ts b/packages/core/src/view/RawRequest.ts
+deleted file mode 100644
+index 0868a7bf..00000000
+--- a/packages/core/src/view/RawRequest.ts
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-export interface RawRequest {
+-  startDate?: string
+-  endDate?: string
+-  region?: string
+-}
+diff --git a/packages/core/src/view/index.ts b/packages/core/src/view/index.ts
+deleted file mode 100644
+index 1ae36f12..00000000
+--- a/packages/core/src/view/index.ts
++++ /dev/null
+@@ -1,5 +0,0 @@
+-/*
+- * © 2021 ThoughtWorks, Inc.
+- */
+-
+-export * from './RawRequest'
+diff --git a/packages/core/tsconfig.json b/packages/core/tsconfig.json
+index bbf7de33..e82bc3c0 100644
+--- a/packages/core/tsconfig.json
++++ b/packages/core/tsconfig.json
+@@ -3,7 +3,7 @@
+   "compilerOptions": {
+     "rootDir": "./src",
+     "baseUrl": ".",
+-    "outDir": "./dist",
++    "outDir": "./dist"
+   },
+-  "include": ["./src"],
++  "include": ["./src", "../app/src/RawRequest.ts"]
+ }
+diff --git a/yarn.lock b/yarn.lock
+index bb4de7af..eab786c1 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -2093,6 +2093,29 @@ __metadata:
+   languageName: unknown
+   linkType: soft
+ 
++"@cloud-carbon-footprint/app@workspace:packages/app":
++  version: 0.0.0-use.local
++  resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
++  dependencies:
++    "@cloud-carbon-footprint/core": ^0.7.0
++    "@types/jest": ^26.0.23
++    "@types/node": ^15.3.1
++    "@typescript-eslint/eslint-plugin": ^4.24.0
++    "@typescript-eslint/parser": ^4.24.0
++    eslint: ^7.26.0
++    eslint-config-prettier: ^8.3.0
++    eslint-plugin-prettier: ^3.4.0
++    eslint-plugin-unused-imports: ^1.1.1
++    jest: ^26.6.3
++    lint-staged: ^11.0.0
++    prettier: ^2.3.0
++    ts-jest: ^26.5.6
++    ts-node: ^9.1.1
++    ts-node-dev: ^1.1.6
++    typescript: ^4.2.4
++  languageName: unknown
++  linkType: soft
++
+ "@cloud-carbon-footprint/cli@workspace:packages/cli":
+   version: 0.0.0-use.local
+   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
+@@ -4919,6 +4942,13 @@ __metadata:
+   languageName: node
+   linkType: hard
+ 
++"@types/node@npm:^15.3.1":
++  version: 15.3.1
++  resolution: "@types/node@npm:15.3.1"
++  checksum: 1c3c94f4c8e1df26b24a00637fdd5a50a5ea7afd0e97cbd298cf675d49ad5436b8b2b111b349194e2fb8bfc81291a67dff9eac80abbf610f938f7a89ba5ba426
++  languageName: node
++  linkType: hard
++
+ "@types/node@npm:^8.0.47":
+   version: 8.10.66
+   resolution: "@types/node@npm:8.10.66"
+@@ -14305,7 +14335,7 @@ fsevents@^1.2.7:
+   languageName: node
+   linkType: hard
+ 
+-"jest-cli@npm:^26.6.0":
++"jest-cli@npm:^26.6.0, jest-cli@npm:^26.6.3":
+   version: 26.6.3
+   resolution: "jest-cli@npm:26.6.3"
+   dependencies:
+@@ -14848,6 +14878,19 @@ fsevents@^1.2.7:
+   languageName: node
+   linkType: hard
+ 
++"jest@npm:^26.6.3":
++  version: 26.6.3
++  resolution: "jest@npm:26.6.3"
++  dependencies:
++    "@jest/core": ^26.6.3
++    import-local: ^3.0.2
++    jest-cli: ^26.6.3
++  bin:
++    jest: bin/jest.js
++  checksum: 4ffcfefa2b30999a71c205e1aacf2b3d7af10f36c17ba1baf45677684116ad5aa6a5bb162ad2dd418f9ea99d18f24b70d8c83fb317b765a3acac361a50e9db9f
++  languageName: node
++  linkType: hard
++
+ "jju@npm:^1.1.0":
+   version: 1.4.0
+   resolution: "jju@npm:1.4.0"

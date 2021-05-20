@@ -5,7 +5,7 @@
 import moment from 'moment'
 import { values, contains } from 'ramda'
 import appConfig from './Config'
-import { RawRequest } from '../view/RawRequest'
+import { RawRequest } from './RawRequest'
 
 export interface EstimationRequest {
   startDate: Date
