@@ -94,14 +94,12 @@ jobs:
           cd ../..
       - name: build-workspace
         run: |
-          yarn lerna run build:workspace --ignore @cloud-carbon-footprint/cli --ignore @cloud-carbon-footprint/create-app --ignore @cloud-carbon-footprint/integration-tests
+          yarn lerna run build:workspace
           cp package.json dist-workspace
           cp yarn.lock dist-workspace
 
           # replacing local @cloud-carbon-footprint dependencies with a local reference
-          cd dist-workspace
-          yarn install && yarn lerna run build:update --scope @cloud-carbon-footprint/api
-          cd ..
+          yarn lerna run build:update --scope @cloud-carbon-footprint/api
       - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace
