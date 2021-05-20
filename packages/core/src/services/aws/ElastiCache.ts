@@ -40,9 +40,8 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ScanBy: 'TimestampAscending',
     }
 
-    const metricDataResponses = await this.serviceWrapper.getMetricDataResponses(
-      cloudWatchParams,
-    )
+    const metricDataResponses =
+      await this.serviceWrapper.getMetricDataResponses(cloudWatchParams)
 
     const costExplorerParams = {
       TimePeriod: {
@@ -69,9 +68,8 @@ export default class ElastiCache extends ServiceWithCPUUtilization {
       ],
       Metrics: ['UsageQuantity'],
     }
-    const costAndUsageResponses = await this.serviceWrapper.getCostAndUsageResponses(
-      costExplorerParams,
-    )
+    const costAndUsageResponses =
+      await this.serviceWrapper.getCostAndUsageResponses(costExplorerParams)
 
     return getComputeUsage(
       metricDataResponses,

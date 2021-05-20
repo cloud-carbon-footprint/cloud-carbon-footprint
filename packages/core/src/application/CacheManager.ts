@@ -12,9 +12,8 @@ import configLoader from './ConfigLoader'
 import Logger from '../services/Logger'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
-const googleCloudCacheService: EstimatorCache = new EstimatorCacheGoogleCloudStorage(
-  configLoader().GCP.CACHE_BUCKET_NAME,
-)
+const googleCloudCacheService: EstimatorCache =
+  new EstimatorCacheGoogleCloudStorage(configLoader().GCP.CACHE_BUCKET_NAME)
 
 export default class CacheManager implements EstimatorCache {
   private readonly currentCacheMode: string

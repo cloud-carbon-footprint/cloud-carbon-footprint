@@ -113,10 +113,11 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const gigabyteHoursForMemoryUsage = this.getGigabytesFromInstanceTypeAndProcessors(
-          costAndUsageReportRow.usageType,
-          costAndUsageReportRow.usageAmount,
-        )
+        const gigabyteHoursForMemoryUsage =
+          this.getGigabytesFromInstanceTypeAndProcessors(
+            costAndUsageReportRow.usageType,
+            costAndUsageReportRow.usageAmount,
+          )
 
         const computeFootprint = this.getComputeFootprintEstimate(
           costAndUsageReportRow,
@@ -287,10 +288,8 @@ export default class CostAndUsageReports {
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists
     // or if the instance type is not a burstable instance, otherwise return void
-    const {
-      isValidInstanceType,
-      isBurstableInstance,
-    } = this.checkInstanceTypes(instanceFamily, instanceType)
+    const { isValidInstanceType, isBurstableInstance } =
+      this.checkInstanceTypes(instanceFamily, instanceType)
     if (!isValidInstanceType || isBurstableInstance) return
 
     // grab the list of processors per instance type
@@ -298,9 +297,8 @@ export default class CostAndUsageReports {
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-    const processorMemoryGigabytesPerPhysicalChip = CLOUD_CONSTANTS.AWS.getMemory(
-      processors,
-    )
+    const processorMemoryGigabytesPerPhysicalChip =
+      CLOUD_CONSTANTS.AWS.getMemory(processors)
 
     // grab the instance type vcpu from the AWSInstanceTypes lists
     const instanceTypeMemory =
@@ -314,10 +312,8 @@ export default class CostAndUsageReports {
     )
 
     // grab the vcpu and memory (gb) from the largest instance type in the family
-    const [
-      largestInstanceTypevCpus,
-      largestInstanceTypeMemory,
-    ] = familyInstanceTypes[familyInstanceTypes.length - 1]
+    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
+      familyInstanceTypes[familyInstanceTypes.length - 1]
 
     return calculateGigabyteHours(
       largestInstanceTypevCpus,
@@ -474,9 +470,8 @@ export default class CostAndUsageReports {
     queryExecutionInput: GetQueryExecutionInput,
   ) {
     while (true) {
-      const queryExecutionResults: GetQueryExecutionOutput = await this.serviceWrapper.getAthenaQueryExecution(
-        queryExecutionInput,
-      )
+      const queryExecutionResults: GetQueryExecutionOutput =
+        await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === ('FAILED' || 'CANCELLED'))
         throw new Error(
@@ -486,9 +481,8 @@ export default class CostAndUsageReports {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(
-      queryExecutionInput,
-    )
+    const results: GetQueryResultsOutput[] =
+      await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
   }
 }

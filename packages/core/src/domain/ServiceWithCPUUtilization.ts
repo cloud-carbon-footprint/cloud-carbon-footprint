@@ -9,7 +9,8 @@ import ComputeUsage from './ComputeUsage'
 import Cost from './Cost'
 
 export default abstract class ServiceWithCPUUtilization
-  implements ICloudService {
+  implements ICloudService
+{
   private readonly estimator: ComputeEstimator
 
   protected constructor() {

@@ -15,8 +15,9 @@ describe('useFilters', () => {
     let result: HookResult<UseFiltersResults>
 
     beforeEach(() => {
-      result = renderHook(() => useFilters(estimationResults, filteredResult))
-        .result
+      result = renderHook(() =>
+        useFilters(estimationResults, filteredResult),
+      ).result
     })
 
     test('it should filter 12 months + prior by default', () => {

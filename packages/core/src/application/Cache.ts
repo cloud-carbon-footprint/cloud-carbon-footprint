@@ -120,9 +120,8 @@ export default function cache(): any {
     descriptor.value = async (
       request: EstimationRequest,
     ): Promise<EstimationResult[]> => {
-      const cachedEstimates: EstimationResult[] = await cacheManager.getEstimates(
-        request,
-      )
+      const cachedEstimates: EstimationResult[] =
+        await cacheManager.getEstimates(request)
 
       // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)

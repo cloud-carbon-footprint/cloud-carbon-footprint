@@ -104,9 +104,8 @@ describe('App', () => {
       })
       mockGetCostPerService.mockResolvedValueOnce(costs)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
-        request,
-      )
+      const estimationResult: EstimationResult[] =
+        await app.getCostAndEstimates(request)
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
         (v, i) => {
@@ -132,12 +131,10 @@ describe('App', () => {
     })
 
     it('returns estimates for 2 services', async () => {
-      const mockGetEstimates1: jest.Mock<
-        Promise<FootprintEstimate[]>
-      > = jest.fn()
-      const mockGetEstimates2: jest.Mock<
-        Promise<FootprintEstimate[]>
-      > = jest.fn()
+      const mockGetEstimates1: jest.Mock<Promise<FootprintEstimate[]>> =
+        jest.fn()
+      const mockGetEstimates2: jest.Mock<Promise<FootprintEstimate[]>> =
+        jest.fn()
       const mockGetCostPerService1: jest.Mock<Promise<Cost[]>> = jest.fn()
       const mockGetCostPerService2: jest.Mock<Promise<Cost[]>> = jest.fn()
       setUpServices(
@@ -183,9 +180,8 @@ describe('App', () => {
       ]
       mockGetCostPerService2.mockResolvedValueOnce(expectedCosts2)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
-        request,
-      )
+      const estimationResult: EstimationResult[] =
+        await app.getCostAndEstimates(request)
 
       const expectedEstimationResults = [
         {
@@ -219,9 +215,8 @@ describe('App', () => {
     })
 
     it('aggregates per day', async () => {
-      const mockGetEstimates: jest.Mock<
-        Promise<FootprintEstimate[]>
-      > = jest.fn()
+      const mockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+        jest.fn()
       setUpServices(
         getServices as jest.Mock,
         [mockGetEstimates],
@@ -247,9 +242,8 @@ describe('App', () => {
       ]
       mockGetEstimates.mockResolvedValueOnce(expectedStorageEstimate)
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
-        request,
-      )
+      const estimationResult: EstimationResult[] =
+        await app.getCostAndEstimates(request)
 
       const expectedEstimationResults = [
         {
@@ -311,9 +305,8 @@ describe('App', () => {
         expectedUsageEstimate,
       )
 
-      const estimationResult: EstimationResult[] = await app.getCostAndEstimates(
-        request,
-      )
+      const estimationResult: EstimationResult[] =
+        await app.getCostAndEstimates(request)
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
         (v, i) => {
@@ -547,9 +540,8 @@ describe('App', () => {
   })
 
   it('returns estimates for multiple regions and accounts in multiple cloud providers', async () => {
-    const mockGetAWSEstimates: jest.Mock<
-      Promise<FootprintEstimate[]>
-    > = jest.fn()
+    const mockGetAWSEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+      jest.fn()
     setUpServices(
       getServices as jest.Mock,
       [mockGetAWSEstimates],
@@ -557,9 +549,8 @@ describe('App', () => {
       [jest.fn().mockResolvedValue([])],
     )
 
-    const mockGetGCPEstimates: jest.Mock<
-      Promise<FootprintEstimate[]>
-    > = jest.fn()
+    const mockGetGCPEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+      jest.fn()
     setUpServices(
       getGCPServices as jest.Mock,
       [mockGetGCPEstimates],

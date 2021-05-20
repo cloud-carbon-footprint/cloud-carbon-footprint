@@ -73,6 +73,8 @@ fileignoreconfig:
   checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
+- filename: packages/cli/test/fixtures/costexplorer.fixtures.ts
+  checksum: dcbb008ad44a405dc87fa33b10b38768bc2be49593679add8c893dc71f93b32e
 - filename: packages/client/create_client_env_file.sh
   checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
 - filename: packages/client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
