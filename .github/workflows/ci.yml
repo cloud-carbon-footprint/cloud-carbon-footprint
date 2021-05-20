@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [build-refactor]
+    branches: [trunk]
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
@@ -195,7 +195,7 @@ jobs:
             cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/api:latest
   deploy-staging:
-    if: github.ref == 'refs/heads/build-refactor'
+    if: github.ref == 'refs/heads/trunk'
     needs: build
     runs-on: ubuntu-latest
     container:
@@ -296,17 +296,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
-        with:
-          name: core-build
-          path: packages/api/dist-core
-      - uses: actions/download-artifact@v2
-        with:
-          name: client-build
-          path: packages/client/build
-      - uses: actions/download-artifact@v2
-        with:
-          name: api-dist
-          path: packages/api/dist
+      with:
+        name: dist-workspace
+        path: dist-workspace
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -316,12 +308,14 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cd packages/api
-          # replacing @cloud-carbon-footprint/core with a local reference
-          # we need to do this until general solution is built
-          sed -i 's/"@cloud-carbon-footprint\/core".*/"@cloud-carbon-footprint\/core": "\.\/dist-core",/g' package.json
+          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+          cp packages/api/app-production.yaml dist-workspace/packages/api
+
+          cp packages/client/app-production.yaml dist-workspace/packages/client
+
+          cd dist-workspace/packages/api
           ./create_server_env_file.sh
-          cd ../..
+          cd ../../..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
