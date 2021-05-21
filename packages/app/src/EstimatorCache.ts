@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { EstimationResult } from '../../../app/EstimationResult'
+import { EstimationResult } from './EstimationResult'
 import { EstimationRequest } from './CreateValidRequest'
 
 export default interface EstimatorCache {

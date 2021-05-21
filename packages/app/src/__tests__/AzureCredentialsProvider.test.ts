@@ -6,7 +6,7 @@ import { google } from '@google-cloud/secret-manager/build/protos/protos'
 import { loginWithServicePrincipalSecret } from '@azure/ms-rest-nodeauth'
 import IAccessSecretVersionResponse = google.cloud.secretmanager.v1.IAccessSecretVersionResponse
 import AzureCredentialsProvider from '../AzureCredentialsProvider'
-import config from '../ConfigLoader'
+import { configLoader as config } from '@cloud-carbon-footprint/common'
 
 const mockSecretAccessVersion = jest.fn()
 
@@ -19,7 +19,7 @@ jest.mock('@google-cloud/secret-manager', () => {
     }),
   }
 })
-jest.mock('../ConfigLoader')
+jest.mock('@cloud-carbon-footprint/common')
 jest.mock('@azure/ms-rest-nodeauth')
 const mockLoginWithServicePrincipalSecret =
   loginWithServicePrincipalSecret as jest.Mock

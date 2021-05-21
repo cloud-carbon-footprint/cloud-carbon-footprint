@@ -22,8 +22,8 @@ const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
 jest.mock('../Cache')
-jest.mock('@cloud-carbon-footprint/core', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/core'),
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/common'),
   Logger: jest.fn(),
   cache: jest.fn(),
   configLoader: jest.fn().mockImplementation(() => {

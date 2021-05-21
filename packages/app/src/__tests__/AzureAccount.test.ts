@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ConsumptionManagementService from '../../services/azure/ConsumptionManagement'
+import { ConsumptionManagementService } from '@cloud-carbon-footprint/core'
 import AzureCredentialsProvider from '../AzureCredentialsProvider'
 import { EstimationResult } from '../EstimationResult'
 import AzureAccount from '../AzureAccount'

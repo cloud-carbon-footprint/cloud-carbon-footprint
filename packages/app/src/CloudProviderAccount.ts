@@ -2,15 +2,14 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import Region from '../domain/Region'
 import {
-  EstimationResult,
-  reduceByTimestamp,
-} from '../../../app/EstimationResult'
-import FootprintEstimate, {
+  FootprintEstimate,
   aggregateEstimatesByDay,
-} from '../domain/FootprintEstimate'
-import Cost, { aggregateCostsByDay } from '../domain/Cost'
+  aggregateCostsByDay,
+  Region,
+  Cost,
+} from '@cloud-carbon-footprint/core'
+import { EstimationResult, reduceByTimestamp } from './EstimationResult'
 import { union } from 'ramda'
 import moment from 'moment'
 

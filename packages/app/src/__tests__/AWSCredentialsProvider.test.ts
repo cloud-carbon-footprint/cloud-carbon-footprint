@@ -4,25 +4,9 @@
 
 import AWSCredentialsProvider from '../AWSCredentialsProvider'
 import GCPCredentials from '../GCPCredentials'
-import mockConfig from '../Config'
+import { Config as mockConfig } from '@cloud-carbon-footprint/common'
 import { ChainableTemporaryCredentials, Credentials } from 'aws-sdk'
 import Mock = jest.Mock
-
-jest.mock('../Config.ts', () => {
-  return {
-    AWS: {
-      authentication: {
-        mode: 'GCP',
-        options: {
-          targetRoleName: 'testTargetRoleName',
-          targetRoleSessionName: 'testRoleSessionName',
-          proxyAccountId: '987654321',
-          proxyRoleName: 'testProxyRoleName',
-        },
-      },
-    },
-  }
-})
 
 jest.mock('aws-sdk', () => {
   return {
@@ -50,6 +34,22 @@ function mockChainableTemporaryCredentials(
 }
 
 describe('AWSCredentialsProvider', () => {
+  beforeAll(() => {
+    mockConfig.AWS = {
+      CURRENT_REGIONS: [],
+      CURRENT_SERVICES: [],
+      NAME: '',
+      authentication: {
+        mode: 'GCP',
+        options: {
+          targetRoleName: 'testTargetRoleName',
+          targetRoleSessionName: 'testRoleSessionName',
+          proxyAccountId: '987654321',
+          proxyRoleName: 'testProxyRoleName',
+        },
+      },
+    }
+  })
   it('create returns GCPCredentialsProvider', () => {
     // given
     const accountId = '12345678910'

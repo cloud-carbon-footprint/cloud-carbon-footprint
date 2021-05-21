@@ -4,7 +4,10 @@
 
 import moment from 'moment'
 import { values, contains } from 'ramda'
-import appConfig from './Config'
+import {
+  configLoader,
+  EstimationRequestValidationError,
+} from '@cloud-carbon-footprint/common'
 import { RawRequest } from './RawRequest'
 
 export interface EstimationRequest {
@@ -12,22 +15,6 @@ export interface EstimationRequest {
   endDate: Date
   region?: string
   //cloudProvider?:CloudProviderEnum
-}
-
-export class EstimationRequestValidationError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'EstimationRequestValidationError'
-    Object.setPrototypeOf(this, EstimationRequestValidationError.prototype)
-  }
-}
-
-export class PartialDataError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'PartialDataError'
-    Object.setPrototypeOf(this, PartialDataError.prototype)
-  }
 }
 
 // eslint-disable-next-line
@@ -48,7 +35,7 @@ function validate(
     errors.push('End date is not in a recognized RFC2822 or ISO format')
   }
 
-  if (region && !contains(region, values(appConfig.AWS.CURRENT_REGIONS))) {
+  if (region && !contains(region, values(configLoader().AWS.CURRENT_REGIONS))) {
     errors.push('Not a valid region for this account')
   }
 

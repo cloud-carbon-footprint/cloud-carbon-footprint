@@ -2,12 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { Logger } from '@cloud-carbon-footprint/common'
+import { google } from '@google-cloud/monitoring/build/protos/protos'
 import ServiceWithCPUUtilization from '../../domain/ServiceWithCPUUtilization'
 import ComputeUsage from '../../domain/ComputeUsage'
 import Cost from '../../domain/Cost'
-import Logger from '../Logger'
-
-import { google } from '@google-cloud/monitoring/build/protos/protos'
 import Aligner = google.monitoring.v3.Aggregation.Aligner
 import Reducer = google.monitoring.v3.Aggregation.Reducer
 import Full = google.monitoring.v3.ListTimeSeriesRequest.TimeSeriesView.FULL

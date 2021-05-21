@@ -3,13 +3,12 @@
  */
 
 import moment from 'moment'
+import { configLoader, Logger } from '@cloud-carbon-footprint/common'
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from '../../../app/EstimationResult'
+import { EstimationResult } from './EstimationResult'
 import { EstimationRequest } from './CreateValidRequest'
 import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
 import EstimatorCacheGoogleCloudStorage from './EstimatorCacheGoogleCloudStorage'
-import configLoader from './ConfigLoader'
-import Logger from '../services/Logger'
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 const googleCloudCacheService: EstimatorCache =

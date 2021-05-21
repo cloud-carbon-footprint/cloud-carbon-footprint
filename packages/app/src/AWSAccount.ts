@@ -21,7 +21,7 @@ import {
   MemoryEstimator,
   CLOUD_CONSTANTS,
 } from '@cloud-carbon-footprint/core'
-import configLoader from './ConfigLoader'
+import { configLoader } from '@cloud-carbon-footprint/common'
 import {
   CloudWatch,
   CostExplorer,

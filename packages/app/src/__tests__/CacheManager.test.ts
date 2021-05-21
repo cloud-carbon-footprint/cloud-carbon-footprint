@@ -8,15 +8,7 @@ import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { EstimationRequest } from '../CreateValidRequest'
 import { EstimationResult } from '../EstimationResult'
 
-import mockConfig from '../Config'
-
-jest.mock('../Config.ts', () => {
-  return {
-    GCP: {
-      CACHE_BUCKET_NAME: 'test-bucket-name',
-    },
-  }
-})
+import { Config as mockConfig } from '@cloud-carbon-footprint/common'
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   return [...Array(consecutiveDays)].map((v, i) => {
@@ -28,6 +20,10 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
 }
 
 describe('CacheManager - CACHE_MODE: GCS', () => {
+  beforeAll(() => {
+    mockConfig.GCP.CACHE_BUCKET_NAME = 'test-bucket-name'
+  })
+
   afterEach(() => {
     jest.resetAllMocks()
   })

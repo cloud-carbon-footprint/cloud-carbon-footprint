@@ -13,7 +13,7 @@ import {
   GetMetricDataOutput,
 } from 'aws-sdk/clients/cloudwatch'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { PartialDataError } from '../../application/CreateValidRequest'
+import { PartialDataError } from '@cloud-carbon-footprint/common'
 
 export class ServiceWrapper {
   constructor(

@@ -30,16 +30,19 @@ jest.mock('@google-cloud/storage', () => {
   }
 })
 
-jest.mock('../ConfigLoader', () => {
-  return jest.fn().mockImplementation(() => {
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/core'),
+  Logger: jest.fn(),
+  cache: jest.fn(),
+  configLoader: jest.fn().mockImplementation(() => {
     return {
       GCP: {
         CACHE_BUCKET_NAME: 'test-bucket-name',
       },
       CACHE_MODE: 'GCS',
     }
-  })
-})
+  }),
+}))
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   return [...Array(consecutiveDays)].map((v, i) => {

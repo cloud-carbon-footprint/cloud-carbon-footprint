@@ -71,6 +71,7 @@
     "@azure/arm-subscriptions": "^3.0.0",
     "@azure/ms-rest-js": "^2.5.0",
     "@azure/ms-rest-nodeauth": "^3.0.9",
+    "@cloud-carbon-footprint/common": "^0.0.1",
     "@google-cloud/bigquery": "^5.6.0",
     "@google-cloud/iam-credentials": "^1.0.1",
     "@google-cloud/logging-winston": "^4.0.5",

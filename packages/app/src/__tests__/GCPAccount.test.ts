@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-jest.mock('../../services/Logger')
-import mockConfig from '../Config'
+import { Config as mockConfig } from '@cloud-carbon-footprint/common'
+import { ComputeEngine } from '@cloud-carbon-footprint/core'
 
 const mockMetricServiceClient = jest.fn()
 jest.mock('@google-cloud/monitoring', () => {
@@ -41,7 +41,6 @@ describe('GCPAccount', () => {
   })
 
   it('should return computeEngine instance and inject MetricServiceClient', () => {
-    const ComputeEngine = require('../../services/gcp/ComputeEngine').default
     expectGCPService('computeEngine').toBeInstanceOf(ComputeEngine)
     expect(mockMetricServiceClient).toHaveBeenCalledWith({
       projectId: projectId,

@@ -10,15 +10,18 @@ import {
 import { ApplicationTokenCredentials } from '@azure/ms-rest-nodeauth'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
+import {
+  ConsumptionManagementService,
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  CLOUD_CONSTANTS,
+} from '@cloud-carbon-footprint/core'
+
 import CloudProviderAccount from './CloudProviderAccount'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
-import { EstimationResult } from '../../../app/EstimationResult'
-import ConsumptionManagementService from '../services/azure/ConsumptionManagement'
-import ComputeEstimator from '../domain/ComputeEstimator'
-import { StorageEstimator } from '../domain/StorageEstimator'
-import { CLOUD_CONSTANTS } from '../domain/FootprintEstimationConstants'
-import NetworkingEstimator from '../domain/NetworkingEstimator'
-import MemoryEstimator from '../domain/MemoryEstimator'
+import { EstimationResult } from './EstimationResult'
 
 export default class AzureAccount extends CloudProviderAccount {
   private credentials: ApplicationTokenCredentials | ServiceClientCredentials

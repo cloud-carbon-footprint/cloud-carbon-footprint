@@ -17,7 +17,7 @@ import FootprintEstimate, {
   MutableEstimationResult,
 } from '../../domain/FootprintEstimate'
 import { EstimationResult } from '../common/types'
-import configLoader from '../../ConfigLoader'
+import configLoader from '../../../../common/src/ConfigLoader'
 import {
   MEMORY_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
@@ -32,7 +32,7 @@ import {
   SHARED_CORE_PROCESSORS,
 } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
-import Logger from '../../Logger'
+import Logger from '../../../../common/src/Logger'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
 import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'

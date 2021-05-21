@@ -1,10 +1,10 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
+import moment from 'moment'
+import { AWS_REGIONS } from '@cloud-carbon-footprint/core'
 
 import CreateValidRequest from '../CreateValidRequest'
-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
-import moment = require('moment')
 
 describe('CreateValidRequest', () => {
   it('parses the start and end dates in utc', () => {
