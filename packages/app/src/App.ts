@@ -105,8 +105,7 @@ export default class App {
     }
   }
 
-  // TODO: add test for this function
-  async getEmissionsFactors(): Promise<EmissionRatioResult[]> {
+  getEmissionsFactors(): EmissionRatioResult[] {
     return Object.values(
       CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
     ).reduce((cloudProviderResult, cloudProvider) => {
@@ -115,7 +114,6 @@ export default class App {
           region: key,
           mtPerKwHour: cloudProvider[key],
         })
-        console.log(emissionDataResult)
         return emissionDataResult
       }, cloudProviderResult)
     }, [])

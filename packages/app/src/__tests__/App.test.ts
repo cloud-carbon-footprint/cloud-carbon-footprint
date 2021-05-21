@@ -11,7 +11,10 @@ import {
   Cost,
 } from '@cloud-carbon-footprint/core'
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  EmissionRatioResult,
+  EstimationResult,
+} from '@cloud-carbon-footprint/common'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 
@@ -54,6 +57,20 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
       },
     }
   }),
+}))
+
+jest.mock('@cloud-carbon-footprint/core', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/core'),
+  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
+    AWS: {
+      awsRegion1: 1,
+      awsRegion2: 2,
+    },
+    GCP: {
+      gcpRegion1: 3,
+      gcpRegion2: 4,
+    },
+  },
 }))
 
 const testRegions = ['us-east-1', 'us-east-2']
@@ -740,6 +757,33 @@ describe('App', () => {
     )
 
     expect(result).toEqual(expectedEstimationResults)
+  })
+
+  it('returns emissions ratios from the getEmissionsFactors function', () => {
+    // given
+    const expectedResponse: EmissionRatioResult[] = [
+      {
+        region: 'awsRegion1',
+        mtPerKwHour: 1,
+      },
+      {
+        region: 'awsRegion2',
+        mtPerKwHour: 2,
+      },
+      {
+        region: 'gcpRegion1',
+        mtPerKwHour: 3,
+      },
+      {
+        region: 'gcpRegion2',
+        mtPerKwHour: 4,
+      },
+    ]
+    // when
+    const response = app.getEmissionsFactors()
+
+    // then
+    expect(response).toEqual(expectedResponse)
   })
 })
 

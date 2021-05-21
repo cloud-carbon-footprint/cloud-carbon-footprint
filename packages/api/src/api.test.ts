@@ -27,20 +27,6 @@ jest.mock('@cloud-carbon-footprint/app', () => ({
   }),
 }))
 
-jest.mock('@cloud-carbon-footprint/core', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/core'),
-  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
-    AWS: {
-      awsRegion1: 1,
-      awsRegion2: 2,
-    },
-    GCP: {
-      gcpRegion1: 3,
-      gcpRegion2: 4,
-    },
-  },
-}))
-
 describe('api', () => {
   let server: express.Express
 
