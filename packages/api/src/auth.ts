@@ -4,7 +4,7 @@
 
 import express from 'express'
 
-import { Logger } from '@cloud-carbon-footprint/core'
+import { Logger } from '@cloud-carbon-footprint/common'
 
 const authLogger = new Logger('auth')
 

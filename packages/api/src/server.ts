@@ -11,7 +11,7 @@ import helmet from 'helmet'
 
 import api from './api'
 import auth from './auth'
-import { Logger } from '@cloud-carbon-footprint/core'
+import { Logger } from '@cloud-carbon-footprint/common'
 
 const port = process.env.PORT || 4000
 const httpApp = express()

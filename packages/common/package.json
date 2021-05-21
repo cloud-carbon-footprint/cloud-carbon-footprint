@@ -58,5 +58,14 @@
   },
   "dependencies": {
     "winston": "^3.3.3"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "yarn lint",
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ],
+    "*.{md}": [
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ]
   }
 }
