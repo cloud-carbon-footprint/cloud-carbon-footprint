@@ -6,16 +6,17 @@ import React from 'react'
 import moment from 'moment'
 import { render } from '@testing-library/react'
 
+import {
+  EstimationResult,
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+
 import CloudCarbonContainer from './CloudCarbonContainer'
 import useRemoteService from './client/RemoteServiceHook'
 import generateEstimations, {
   fakeEmissionFactors,
 } from '../data/generateEstimations'
-import {
-  ServiceResult,
-  EstimationResult,
-  EmissionsRatios,
-} from '../models/types'
+import { ServiceResult } from '../models/types'
 import useRemoteEmissionService from './client/EmissionFactorServiceHook'
 
 jest.mock('./client/RemoteServiceHook')
@@ -45,9 +46,10 @@ jest.mock('../ConfigLoader', () => ({
   }),
 }))
 
-const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
-  typeof useRemoteEmissionService
->
+const mockedUseEmissionFactorService =
+  useRemoteEmissionService as jest.MockedFunction<
+    typeof useRemoteEmissionService
+  >
 
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
@@ -63,7 +65,7 @@ describe('CloudCarbonContainer', () => {
       loading: false,
       data: data,
     }
-    const mockEmissionsReturnValue: ServiceResult<EmissionsRatios> = {
+    const mockEmissionsReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: fakeEmissionFactors,
     }

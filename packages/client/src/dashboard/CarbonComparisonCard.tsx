@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
-import { EstimationResult } from '../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import NoDataPage from './NoDataPage'
 
 type Selection = 'miles' | 'gas' | 'trees'

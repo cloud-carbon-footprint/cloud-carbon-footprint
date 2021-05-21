@@ -2,10 +2,13 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 import moment from 'moment'
+
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import generateEstimations from '../../data/generateEstimations'
-import { EstimationResult, FilterResultResponse } from '../../models/types'
+import { FilterResultResponse } from '../../models/types'
+import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 
 jest.mock('./AccountFilter', () => ({
   ACCOUNT_OPTIONS: [

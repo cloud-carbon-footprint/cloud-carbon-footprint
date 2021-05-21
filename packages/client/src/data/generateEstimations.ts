@@ -3,11 +3,8 @@
  */
 
 import moment from 'moment'
-import {
-  EmissionsRatios,
-  EstimationResult,
-  serviceEstimate,
-} from '../models/types'
+import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
+import { EmissionsRatios } from '../models/types'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))
@@ -17,7 +14,7 @@ const getRandomNumberInRange = (minValue: number, maxValue: number): number => {
   return Math.max(Math.random() * maxValue, minValue + Math.random())
 }
 
-const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
+const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
   return {
     ebs: {
       cloudProvider: 'AWS',

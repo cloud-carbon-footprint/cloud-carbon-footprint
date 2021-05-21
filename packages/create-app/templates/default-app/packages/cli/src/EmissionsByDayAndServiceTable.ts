@@ -11,7 +11,7 @@ import {
 } from './EmissionsTableUtils'
 import { pluck, uniq } from 'ramda'
 import moment from 'moment'
-import { EstimationResult } from '@cloud-carbon-footprint/core'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 const displayDate = (timestamp: Date) =>
   moment(timestamp).utc().format('YYYY-MM-DD')

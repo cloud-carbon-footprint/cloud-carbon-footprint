@@ -14,7 +14,7 @@ import {
   toMiles,
   toTrees,
 } from './CarbonComparisonCard'
-import { EstimationResult } from '../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/commmon'
 
 const data = [
   {

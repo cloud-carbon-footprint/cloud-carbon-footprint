@@ -8,10 +8,11 @@ import moment from 'moment'
 import Chart from 'react-apexcharts'
 
 import {
-  EmissionsRatios,
   EstimationResult,
-  ServiceResult,
-} from '../../models/types'
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+
+import { ServiceResult } from '../../models/types'
 import { ApexBarChart, Entry } from './ApexBarChart'
 import { Page, Pagination } from './Pagination'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
@@ -23,7 +24,7 @@ const mockedUseEmissionFactorService =
     typeof useRemoteEmissionService
   >
 
-const emissionsFactorData: EmissionsRatios[] = [
+const emissionsFactorData: EmissionRatioResult[] = [
   {
     region: 'us-west-1',
     mtPerKwHour: 0.000645,
@@ -88,7 +89,7 @@ describe('ApexBarChart', () => {
     },
   ]
   beforeEach(() => {
-    const mockReturnValue: ServiceResult<EmissionsRatios> = {
+    const mockReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: emissionsFactorData,
     }

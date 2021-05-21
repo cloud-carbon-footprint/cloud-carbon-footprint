@@ -1,14 +1,17 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
+
+import { renderHook } from '@testing-library/react-hooks'
+
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import {
   sumCO2,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,
 } from './transformData'
-import { renderHook } from '@testing-library/react-hooks'
-import { EstimationResult } from '../models/types'
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
 const date2 = new Date('2020-07-11T00:00:00.000Z')

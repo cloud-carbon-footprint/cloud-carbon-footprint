@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { EstimationResult } from '@cloud-carbon-footprint/app'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import EmissionsByDayTable from '../EmissionsByDayTable'
 
 describe('EmissionsByDayTable', () => {

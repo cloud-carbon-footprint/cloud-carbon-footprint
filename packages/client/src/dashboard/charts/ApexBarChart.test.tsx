@@ -9,9 +9,10 @@ import moment from 'moment'
 
 import {
   EstimationResult,
-  ServiceResult,
-  EmissionsRatios,
-} from '../../models/types'
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+
+import { ServiceResult } from '../../models/types'
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
 import { Page, Pagination } from './Pagination'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
@@ -70,7 +71,7 @@ describe('ApexBarChart', () => {
     },
   ]
   beforeEach(() => {
-    const mockReturnValue: ServiceResult<EmissionsRatios> = {
+    const mockReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: fakeEmissionFactors,
     }
@@ -197,7 +198,7 @@ describe('ApexBarChart', () => {
     const pageData: Page<Entry> = { data: firstPagedata, page: 0 }
     const mainTheme = '#2C82BE'
 
-    const emissionsData: EmissionsRatios[] = fakeEmissionFactors
+    const emissionsData: EmissionRatioResult[] = fakeEmissionFactors
     const colors = ['#790000', '#D99200', '#DF5200', '#00791E', '#73B500']
     const defaultColors = [
       '#2C82BE',

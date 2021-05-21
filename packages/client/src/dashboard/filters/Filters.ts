@@ -2,11 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import {
-  EstimationResult,
-  FilterResultResponse,
-  UnknownTypes,
-} from '../../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
+import { FilterResultResponse, UnknownTypes } from '../../models/types'
 import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
 import * as FiltersUtil from './FiltersUtil'

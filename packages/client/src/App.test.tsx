@@ -14,10 +14,10 @@ import App from './App'
 import useRemoteService from './dashboard/client/RemoteServiceHook'
 import useRemoteEmissionService from './dashboard/client/EmissionFactorServiceHook'
 import {
-  EmissionsRatios,
   EstimationResult,
-  ServiceResult,
-} from './models/types'
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+import { ServiceResult } from './models/types'
 
 jest.mock('./dashboard/client/RemoteServiceHook')
 jest.mock('./dashboard/client/EmissionFactorServiceHook')
@@ -34,9 +34,10 @@ jest.mock('apexcharts', () => ({
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
 >
-const mockedUseEmissionFactorService = useRemoteEmissionService as jest.MockedFunction<
-  typeof useRemoteEmissionService
->
+const mockedUseEmissionFactorService =
+  useRemoteEmissionService as jest.MockedFunction<
+    typeof useRemoteEmissionService
+  >
 
 describe('App', () => {
   beforeEach(() => {
@@ -44,7 +45,7 @@ describe('App', () => {
       loading: false,
       data: generateEstimations(moment.utc(), 14),
     }
-    const mockEmissionsReturnValue: ServiceResult<EmissionsRatios> = {
+    const mockEmissionsReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: fakeEmissionFactors,
     }

@@ -3,7 +3,7 @@
  */
 
 import { displayCo2e, displayWattHours, Totals } from './EmissionsTableUtils'
-import { EstimationResult } from '@cloud-carbon-footprint/core'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export default function EmissionsByDayTable(
   estimationResults: EstimationResult[],
