@@ -2,13 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-export { default as App } from './App'
-export {
-  default as CreateValidRequest,
-  EstimationRequestValidationError,
-  PartialDataError,
-} from './CreateValidRequest'
-export { default as configLoader } from './ConfigLoader'
+export { default as App, EmissionsRatios } from './App'
+export { default as CreateValidRequest } from './CreateValidRequest'
 export { default as AWSAccount } from './AWSAccount'
 export { default as GCPAccount } from './GCPAccount'
 export * from './EstimationResult'
+export { RawRequest } from './RawRequest'

@@ -2,6 +2,26 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import express from 'express'
+import api from './api'
+import request from 'supertest'
+import { EstimationResult, EmissionsRatios } from '@cloud-carbon-footprint/app'
+
+const mockGetCostAndEstimates = jest.fn()
+const mockGetFilterData = jest.fn()
+const mockGetEmissionsFactors = jest.fn()
+
+jest.mock('@cloud-carbon-footprint/app', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/app'),
+  App: jest.fn().mockImplementation(() => {
+    return {
+      getCostAndEstimates: mockGetCostAndEstimates,
+      getEmissionsFactors: mockGetEmissionsFactors,
+      getFilterData: mockGetFilterData,
+    }
+  }),
+}))
+
 jest.mock('@cloud-carbon-footprint/core', () => ({
   ...jest.requireActual('@cloud-carbon-footprint/core'),
   CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
@@ -14,21 +34,7 @@ jest.mock('@cloud-carbon-footprint/core', () => ({
       gcpRegion2: 4,
     },
   },
-  App: jest.fn().mockImplementation(() => {
-    return {
-      getCostAndEstimates: mockGetCostAndEstimates,
-      getFilterData: mockGetFilterData,
-    }
-  }),
 }))
-
-import express from 'express'
-import api, { EmissionsRatios } from './api'
-import request from 'supertest'
-import { EstimationResult } from '@cloud-carbon-footprint/core'
-
-const mockGetCostAndEstimates = jest.fn()
-const mockGetFilterData = jest.fn()
 
 describe('api', () => {
   let server: express.Express
@@ -107,10 +113,6 @@ describe('api', () => {
 
   describe('/regions/emissions-factors', () => {
     it('returns data for regional emissions factors', async () => {
-      const response = await request(server).get(
-        encodeURI(`/regions/emissions-factors`),
-      )
-
       const expectedResponse: EmissionsRatios[] = [
         {
           region: 'awsRegion1',
@@ -129,6 +131,11 @@ describe('api', () => {
           mtPerKwHour: 4,
         },
       ]
+
+      mockGetEmissionsFactors.mockResolvedValueOnce(expectedResponse)
+      const response = await request(server).get(
+        encodeURI(`/regions/emissions-factors`),
+      )
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual(expectedResponse)

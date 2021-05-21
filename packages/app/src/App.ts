@@ -10,6 +10,13 @@ import cache from './Cache'
 import GCPAccount from './GCPAccount'
 import FilterResult, { getAccounts } from './FilterResult'
 import AzureAccount from './AzureAccount'
+import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
+
+export type EmissionsRatios = {
+  region: string
+  mtPerKwHour: number
+}
+
 export default class App {
   @cache()
   async getCostAndEstimates(
@@ -97,6 +104,22 @@ export default class App {
           .concat(AzureEstimatesByRegion.flat()),
       )
     }
+  }
+
+  // TODO: add test for this function
+  async getEmissionsFactors(): Promise<EmissionsRatios[]> {
+    return Object.values(
+      CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+    ).reduce((cloudProviderResult, cloudProvider) => {
+      return Object.keys(cloudProvider).reduce((emissionDataResult, key) => {
+        cloudProviderResult.push({
+          region: key,
+          mtPerKwHour: cloudProvider[key],
+        })
+        console.log(emissionDataResult)
+        return emissionDataResult
+      }, cloudProviderResult)
+    }, [])
   }
 
   getFilterData(): FilterResult {
