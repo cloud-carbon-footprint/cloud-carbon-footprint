@@ -19,8 +19,8 @@ import {
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
 } from 'aws-sdk/clients/athena'
-import { EstimationResult } from '../../../application/EstimationResult'
-import config from '../../../application/ConfigLoader'
+import { EstimationResult } from '@cloud-carbon-footprint/app'
+import { configLoader } from '@cloud-carbon-footprint/common'
 import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
   athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB,
@@ -34,7 +34,19 @@ import {
 } from '../../../../test/fixtures/athena.fixtures'
 import { ServiceWrapper } from '../ServiceWrapper'
 
-jest.mock('../../../application/ConfigLoader')
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  configLoader: jest.fn().mockImplementation(() => {
+    return {
+      AWS: {
+        ATHENA_DB_NAME: 'test-db',
+        ATHENA_DB_TABLE: 'test-table',
+        ATHENA_QUERY_RESULT_LOCATION: 'test-location',
+        ATHENA_REGION: 'test-region',
+      },
+    }
+  }),
+}))
 
 describe('CostAndUsageReports Service', () => {
   const startDate = new Date('2020-10-01')
@@ -59,16 +71,16 @@ describe('CostAndUsageReports Service', () => {
     AWSMock.setSDKInstance(AWS)
   })
 
-  beforeEach(() => {
-    ;(config as jest.Mock).mockReturnValue({
-      AWS: {
-        ATHENA_DB_NAME: 'test-db',
-        ATHENA_DB_TABLE: 'test-table',
-        ATHENA_QUERY_RESULT_LOCATION: 'test-location',
-        ATHENA_REGION: 'test-region',
-      },
-    })
-  })
+  // beforeEach(() => {
+  //   ;(configLoader as jest.Mock).mockReturnValue({
+  //     AWS: {
+  //       ATHENA_DB_NAME: 'test-db',
+  //       ATHENA_DB_TABLE: 'test-table',
+  //       ATHENA_QUERY_RESULT_LOCATION: 'test-location',
+  //       ATHENA_REGION: 'test-region',
+  //     },
+  //   })
+  // })
 
   afterEach(() => {
     AWSMock.restore()

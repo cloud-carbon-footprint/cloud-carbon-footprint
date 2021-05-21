@@ -3,8 +3,8 @@
  */
 
 import { BigQuery } from '@google-cloud/bigquery'
+import { EstimationResult } from '@cloud-carbon-footprint/app'
 
-import { EstimationResult } from '../../../application/EstimationResult'
 import ComputeEstimator from '../../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import NetworkingEstimator from '../../../domain/NetworkingEstimator'

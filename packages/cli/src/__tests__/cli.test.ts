@@ -182,38 +182,6 @@ describe('cli', () => {
       ;(getAWSServices as jest.Mock).mockReturnValue([
         new Lambda(60000, 1000, getServiceWrapper()),
       ])
-      jest.mock('@cloud-carbon-footprint/common', () => ({
-        ...jest.requireActual('@cloud-carbon-footprint/common'),
-        Logger: jest.fn().mockReturnValue({
-          debug: jest.fn(),
-          info: jest.fn(),
-          error: jest.fn(),
-          warn: jest.fn(),
-        }),
-        configLoader: jest.fn().mockImplementation(() => {
-          return {
-            AWS: {
-              accounts: [{ id: '12345678', name: 'test account' }],
-              NAME: 'aws',
-              CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
-            },
-            authentication: {
-              mode: 'GCP',
-              options: {
-                targetRoleSessionName: 'test-target',
-                proxyAccountId: 'test-account-id',
-                proxyRoleName: 'test-role-name',
-              },
-            },
-            GCP: {
-              projects: [],
-              NAME: 'gcp',
-              CURRENT_REGIONS: ['us-east1'],
-            },
-            LOGGING_MODE: 'test',
-          }
-        }),
-      }))
     })
 
     it('lambda estimates', async () => {
