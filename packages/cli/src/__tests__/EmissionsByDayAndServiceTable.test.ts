@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/core'
+import { EstimationResult } from '@cloud-carbon-footprint/app'
 import EmissionsByDayAndServiceTable from '../EmissionsByDayAndServiceTable'
 import moment = require('moment')
 

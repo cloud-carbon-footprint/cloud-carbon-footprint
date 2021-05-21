@@ -3,7 +3,6 @@
  */
 
 import {
-  AWSAccount,
   EBS,
   S3,
   EC2,
@@ -13,6 +12,7 @@ import {
   RDSStorage,
   ServiceWrapper,
 } from '@cloud-carbon-footprint/core'
+import { AWSAccount } from '@cloud-carbon-footprint/app'
 import path from 'path'
 import fs from 'fs'
 import {
@@ -22,14 +22,23 @@ import {
 import cli from '../cli'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
-import config from '../../../core/src/application/ConfigLoader'
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache
-jest.mock('../../../core/src/application/Cache')
+jest.mock('@cloud-carbon-footprint/app', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/app'),
+  cache: jest.fn(),
+}))
 
-jest.mock('../../../core/src/application/ConfigLoader', () => {
-  return jest.fn().mockImplementation(() => {
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  Logger: jest.fn().mockReturnValue({
+    debug: jest.fn(),
+    info: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+  }),
+  configLoader: jest.fn().mockImplementation(() => {
     return {
       AWS: {
         accounts: [{ id: '12345678', name: 'test AWS account' }],
@@ -56,8 +65,8 @@ jest.mock('../../../core/src/application/ConfigLoader', () => {
         CACHE_BUCKET_NAME: 'test-bucket-name',
       },
     }
-  })
-})
+  }),
+}))
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -104,27 +113,38 @@ describe('csv test', () => {
   let outputFilePath: string
 
   beforeAll(() => {
-    ;(config as jest.Mock).mockReturnValue({
-      AWS: {
-        accounts: [{ id: '12345678', name: 'test account' }],
-        NAME: 'AWS',
-        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
-        authentication: {
-          mode: 'GCP',
-          options: {
-            targetRoleSessionName: 'test-target',
-            proxyAccountId: 'test-account-id',
-            proxyRoleName: 'test-role-name',
+    jest.mock('@cloud-carbon-footprint/common', () => ({
+      ...jest.requireActual('@cloud-carbon-footprint/common'),
+      Logger: jest.fn().mockReturnValue({
+        debug: jest.fn(),
+        info: jest.fn(),
+        error: jest.fn(),
+        warn: jest.fn(),
+      }),
+      configLoader: jest.fn().mockImplementation(() => {
+        return {
+          AWS: {
+            accounts: [{ id: '12345678', name: 'test account' }],
+            NAME: 'AWS',
+            CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+            authentication: {
+              mode: 'GCP',
+              options: {
+                targetRoleSessionName: 'test-target',
+                proxyAccountId: 'test-account-id',
+                proxyRoleName: 'test-role-name',
+              },
+            },
           },
-        },
-      },
-      GCP: {
-        projects: [{ id: 'test-project', name: 'test project' }],
-        NAME: 'GCP',
-        CURRENT_REGIONS: ['us-east1'],
-      },
-      LOGGING_MODE: 'test',
-    })
+          GCP: {
+            projects: [{ id: 'test-project', name: 'test project' }],
+            NAME: 'GCP',
+            CURRENT_REGIONS: ['us-east1'],
+          },
+          LOGGING_MODE: 'test',
+        }
+      }),
+    }))
   })
 
   beforeEach(() => {

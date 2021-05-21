@@ -3,7 +3,11 @@
  */
 
 import commander from 'commander'
-import { App, CreateValidRequest } from '@cloud-carbon-footprint/core'
+import {
+  App,
+  CreateValidRequest,
+  EstimationResult,
+} from '@cloud-carbon-footprint/app'
 import * as process from 'process'
 import EmissionsByDayAndServiceTable from './EmissionsByDayAndServiceTable'
 import EmissionsByServiceTable from './EmissionsByServiceTable'
@@ -51,7 +55,7 @@ export default async function cli(argv: string[] = process.argv) {
   const estimationRequest = CreateValidRequest({ startDate, endDate, region })
   const { table, colWidths } = await new App()
     .getCostAndEstimates(estimationRequest)
-    .then((estimations) => {
+    .then((estimations: EstimationResult[]) => {
       if (groupBy === 'service') {
         return EmissionsByServiceTable(estimations)
       }

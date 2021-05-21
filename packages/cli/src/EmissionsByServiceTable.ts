@@ -10,7 +10,7 @@ import {
   initialTotals,
   Totals,
 } from './EmissionsTableUtils'
-import { EstimationResult } from '@cloud-carbon-footprint/core'
+import { EstimationResult } from '@cloud-carbon-footprint/app'
 import { pluck, uniq } from 'ramda'
 
 export default function EmissionsByServiceTable(

@@ -2123,6 +2123,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
   dependencies:
+    "@cloud-carbon-footprint/common": ^0.0.1
     "@cloud-carbon-footprint/core": ^0.7.0
     "@types/cli-table": ^0.3.0
     "@types/jest": ^26.0.23
