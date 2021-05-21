@@ -5,7 +5,7 @@
 import moment from 'moment'
 import { configLoader, Logger } from '@cloud-carbon-footprint/common'
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
 import EstimatorCacheGoogleCloudStorage from './EstimatorCacheGoogleCloudStorage'

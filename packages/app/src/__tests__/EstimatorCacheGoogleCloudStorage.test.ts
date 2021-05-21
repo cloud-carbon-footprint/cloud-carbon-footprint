@@ -5,7 +5,7 @@ import moment from 'moment'
 import { PassThrough } from 'stream'
 import EstimatorCache from '../EstimatorCache'
 import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
-import { EstimationResult } from '../EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from '../CreateValidRequest'
 
 const creatReadStreamMock = jest.fn()

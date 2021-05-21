@@ -3,19 +3,18 @@
  */
 
 import commander from 'commander'
-import {
-  App,
-  CreateValidRequest,
-  EstimationResult,
-} from '@cloud-carbon-footprint/app'
+import moment from 'moment'
+import path from 'path'
 import * as process from 'process'
+
+import { App, CreateValidRequest } from '@cloud-carbon-footprint/app'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import EmissionsByDayAndServiceTable from './EmissionsByDayAndServiceTable'
 import EmissionsByServiceTable from './EmissionsByServiceTable'
 import EmissionsByDayTable from './EmissionsByDayTable'
 import CliPrompts from './CliPrompts'
 import { exportToCSV } from './CSV'
-import moment from 'moment'
-import path from 'path'
 
 export default async function cli(argv: string[] = process.argv) {
   const program = new commander.Command()

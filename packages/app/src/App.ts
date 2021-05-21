@@ -5,17 +5,16 @@
 import { configLoader } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import AWSAccount from './AWSAccount'
-import { EstimationResult, reduceByTimestamp } from './EstimationResult'
+import {
+  EstimationResult,
+  reduceByTimestamp,
+} from '@cloud-carbon-footprint/common'
 import cache from './Cache'
 import GCPAccount from './GCPAccount'
 import FilterResult, { getAccounts } from './FilterResult'
 import AzureAccount from './AzureAccount'
 import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
-
-export type EmissionsRatios = {
-  region: string
-  mtPerKwHour: number
-}
+import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
 export default class App {
   @cache()
@@ -107,7 +106,7 @@ export default class App {
   }
 
   // TODO: add test for this function
-  async getEmissionsFactors(): Promise<EmissionsRatios[]> {
+  async getEmissionsFactors(): Promise<EmissionRatioResult[]> {
     return Object.values(
       CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
     ).reduce((cloudProviderResult, cloudProvider) => {

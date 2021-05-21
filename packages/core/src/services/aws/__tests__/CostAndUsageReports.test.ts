@@ -19,8 +19,7 @@ import {
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
 } from 'aws-sdk/clients/athena'
-import { EstimationResult } from '@cloud-carbon-footprint/app'
-import { configLoader } from '@cloud-carbon-footprint/common'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
   athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB,

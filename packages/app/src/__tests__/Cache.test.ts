@@ -3,7 +3,7 @@
  */
 
 import cache from '../Cache'
-import { EstimationResult, ServiceData } from '../EstimationResult'
+import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
 import moment from 'moment'
 import { EstimationRequest } from '../CreateValidRequest'
 import CacheManager from '../CacheManager'

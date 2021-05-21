@@ -3,7 +3,7 @@
  */
 
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { promises as fs } from 'fs'
 import moment from 'moment'
 

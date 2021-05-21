@@ -1,6 +1,8 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
+import { union } from 'ramda'
+import moment from 'moment'
 
 import {
   FootprintEstimate,
@@ -9,9 +11,10 @@ import {
   Region,
   Cost,
 } from '@cloud-carbon-footprint/core'
-import { EstimationResult, reduceByTimestamp } from './EstimationResult'
-import { union } from 'ramda'
-import moment from 'moment'
+import {
+  EstimationResult,
+  reduceByTimestamp,
+} from '@cloud-carbon-footprint/common'
 
 export default class CloudProviderAccount {
   name?: string

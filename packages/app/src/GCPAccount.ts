@@ -15,7 +15,7 @@ import {
 } from '@cloud-carbon-footprint/core'
 import { configLoader } from '@cloud-carbon-footprint/common'
 import CloudProviderAccount from './CloudProviderAccount'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { v3 } from '@google-cloud/monitoring'
 import { ClientOptions } from 'google-gax'
 import { BigQuery } from '@google-cloud/bigquery'

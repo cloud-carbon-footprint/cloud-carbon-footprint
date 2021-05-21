@@ -4,7 +4,7 @@
 
 import moment, { Moment } from 'moment'
 import R from 'ramda'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { Logger } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import EstimatorCache from './EstimatorCache'

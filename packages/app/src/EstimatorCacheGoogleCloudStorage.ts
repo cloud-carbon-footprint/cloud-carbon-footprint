@@ -1,12 +1,12 @@
 /*
- * © 2021 Thoughtworks, Inc. All rights reserved.
+ * © 2021 ThoughtWorks, Inc.
  */
 
 import { Storage } from '@google-cloud/storage'
 import { Stream } from 'stream'
 import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export const cacheFileName =
   process.env.CCF_CACHE_PATH || 'estimates.cache.json'

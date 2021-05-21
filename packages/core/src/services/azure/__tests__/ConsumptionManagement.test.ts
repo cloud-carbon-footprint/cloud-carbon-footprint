@@ -5,6 +5,8 @@
 import { ServiceClientCredentials } from '@azure/ms-rest-js'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
+import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
+
 import ComputeEstimator from '../../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
@@ -18,8 +20,6 @@ import {
   mockConsumptionManagementResponseTwo,
   mockConsumptionManagementResponseFive,
 } from '../../../../test/fixtures/consumptionManagement.fixtures'
-import { EstimationResult } from '@cloud-carbon-footprint/app'
-import { configLoader } from '@cloud-carbon-footprint/common'
 
 const mockUsageDetails = { list: jest.fn(), listNext: jest.fn() }
 

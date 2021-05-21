@@ -7,7 +7,7 @@ import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { promises } from 'fs'
 import EstimatorCache from '../EstimatorCache'
 import moment from 'moment'
-import { EstimationResult } from '../EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from '../CreateValidRequest'
 
 jest.mock('fs', () => {

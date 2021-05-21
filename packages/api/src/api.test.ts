@@ -3,9 +3,14 @@
  */
 
 import express from 'express'
-import api from './api'
 import request from 'supertest'
-import { EstimationResult, EmissionsRatios } from '@cloud-carbon-footprint/app'
+
+import {
+  EstimationResult,
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+
+import api from './api'
 
 const mockGetCostAndEstimates = jest.fn()
 const mockGetFilterData = jest.fn()
@@ -113,7 +118,7 @@ describe('api', () => {
 
   describe('/regions/emissions-factors', () => {
     it('returns data for regional emissions factors', async () => {
-      const expectedResponse: EmissionsRatios[] = [
+      const expectedResponse: EmissionRatioResult[] = [
         {
           region: 'awsRegion1',
           mtPerKwHour: 1,

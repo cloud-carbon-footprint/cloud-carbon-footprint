@@ -3,6 +3,15 @@
  */
 
 import {
+  CloudWatch,
+  CostExplorer,
+  Credentials,
+  CloudWatchLogs,
+  Athena,
+} from 'aws-sdk'
+import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+
+import {
   ICloudService,
   EBS,
   S3,
@@ -21,17 +30,9 @@ import {
   MemoryEstimator,
   CLOUD_CONSTANTS,
 } from '@cloud-carbon-footprint/core'
-import { configLoader } from '@cloud-carbon-footprint/common'
-import {
-  CloudWatch,
-  CostExplorer,
-  Credentials,
-  CloudWatchLogs,
-  Athena,
-} from 'aws-sdk'
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
+
 import AWSCredentialsProvider from './AWSCredentialsProvider'
-import { EstimationResult } from './EstimationResult'
 import CloudProviderAccount from './CloudProviderAccount'
 
 export default class AWSAccount extends CloudProviderAccount {

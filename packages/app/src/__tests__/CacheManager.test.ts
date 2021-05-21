@@ -6,7 +6,7 @@ import CacheManager from '../CacheManager'
 import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
 import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { EstimationRequest } from '../CreateValidRequest'
-import { EstimationResult } from '../EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 import { Config as mockConfig } from '@cloud-carbon-footprint/common'
 

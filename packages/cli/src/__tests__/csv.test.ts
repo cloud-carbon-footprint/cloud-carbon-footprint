@@ -2,6 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import path from 'path'
+import fs from 'fs'
+import AWSMock from 'aws-sdk-mock'
+import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+
 import {
   EBS,
   S3,
@@ -13,15 +18,13 @@ import {
   ServiceWrapper,
 } from '@cloud-carbon-footprint/core'
 import { AWSAccount } from '@cloud-carbon-footprint/app'
-import path from 'path'
-import fs from 'fs'
+
 import {
   mockAwsCloudWatchGetMetricData,
   mockAwsCostExplorerGetCostAndUsage,
 } from '../../test/fixtures/awsMockFunctions'
 import cli from '../cli'
-import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache

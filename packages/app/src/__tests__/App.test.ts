@@ -11,7 +11,7 @@ import {
   Cost,
 } from '@cloud-carbon-footprint/core'
 
-import { EstimationResult } from '../EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 

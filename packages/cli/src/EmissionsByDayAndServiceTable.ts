@@ -2,6 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { pluck, uniq } from 'ramda'
+import moment from 'moment'
+
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import {
   displayCo2e,
   displayServiceName,
@@ -9,9 +14,6 @@ import {
   initialTotals,
   Totals,
 } from './EmissionsTableUtils'
-import { pluck, uniq } from 'ramda'
-import moment from 'moment'
-import { EstimationResult } from '@cloud-carbon-footprint/app'
 
 const displayDate = (timestamp: Date) =>
   moment(timestamp).utc().format('YYYY-MM-DD')

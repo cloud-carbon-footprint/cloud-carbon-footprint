@@ -2,8 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import { displayCo2e, displayWattHours, Totals } from './EmissionsTableUtils'
-import { EstimationResult } from '@cloud-carbon-footprint/app'
 
 export default function EmissionsByDayTable(
   estimationResults: EstimationResult[],

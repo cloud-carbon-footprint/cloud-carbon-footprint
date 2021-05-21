@@ -21,7 +21,7 @@ import {
 
 import CloudProviderAccount from './CloudProviderAccount'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
-import { EstimationResult } from './EstimationResult'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export default class AzureAccount extends CloudProviderAccount {
   private credentials: ApplicationTokenCredentials | ServiceClientCredentials
