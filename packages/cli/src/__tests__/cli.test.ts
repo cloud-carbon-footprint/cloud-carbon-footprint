@@ -26,12 +26,12 @@ import {
   mockAwsCloudWatchGetQueryResultsForLambda,
   mockAwsCostExplorerGetCostAndUsage,
   mockAwsCostExplorerGetCostAndUsageResponse,
-} from '../../test/fixtures/awsMockFunctions'
-import { lambdaMockGetCostResponse } from '../../test/fixtures/costexplorer.fixtures'
+} from './fixtures/awsMockFunctions'
+import { lambdaMockGetCostResponse } from './fixtures/costexplorer.fixtures'
 import {
   mockCpuUtilizationTimeSeries,
   mockVCPUTimeSeries,
-} from '../../test/fixtures/cloudmonitoring.fixtures'
+} from './fixtures/cloudmonitoring.fixtures'
 
 const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')

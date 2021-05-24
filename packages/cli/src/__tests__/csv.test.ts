@@ -22,7 +22,7 @@ import { AWSAccount } from '@cloud-carbon-footprint/app'
 import {
   mockAwsCloudWatchGetMetricData,
   mockAwsCostExplorerGetCostAndUsage,
-} from '../../test/fixtures/awsMockFunctions'
+} from './fixtures/awsMockFunctions'
 import cli from '../cli'
 
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')

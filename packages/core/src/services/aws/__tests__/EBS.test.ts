@@ -9,7 +9,7 @@ import EBS from '../EBS'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import { AWS_REGIONS } from '../AWSRegions'
-import { buildCostExplorerGetUsageResponse } from '../../../../test/fixtures/builders'
+import { buildCostExplorerGetUsageResponse } from './fixtures/builders'
 import { ServiceWrapper } from '../ServiceWrapper'
 
 beforeAll(() => {

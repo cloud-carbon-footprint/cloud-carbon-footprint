@@ -11,7 +11,7 @@ import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import {
   buildCostExplorerGetCostResponse,
   buildCostExplorerGetUsageResponse,
-} from '../../../../test/fixtures/builders'
+} from './fixtures/builders'
 import { ServiceWrapper } from '../ServiceWrapper'
 import { Logger } from '@cloud-carbon-footprint/common'
 

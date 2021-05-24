@@ -30,7 +30,7 @@ import {
   athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan,
   athenaMockGetQueryResultsNetworking,
   athenaMockGetQueryResultsMemory,
-} from '../../../../test/fixtures/athena.fixtures'
+} from './fixtures/athena.fixtures'
 import { ServiceWrapper } from '../ServiceWrapper'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({

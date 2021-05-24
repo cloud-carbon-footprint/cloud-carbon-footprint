@@ -5,7 +5,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import S3 from '../S3'
-import { buildCostExplorerGetCostResponse } from '../../../../test/fixtures/builders'
+import { buildCostExplorerGetCostResponse } from './fixtures/builders'
 import { ServiceWrapper } from '../ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../mockAWSCloudWatchGetMetricDataCall'
 

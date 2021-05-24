@@ -11,7 +11,6 @@ import {
 } from '@cloud-carbon-footprint/common'
 import cache from './Cache'
 import GCPAccount from './GCPAccount'
-import FilterResult, { getAccounts } from './FilterResult'
 import AzureAccount from './AzureAccount'
 import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
@@ -117,9 +116,5 @@ export default class App {
         return emissionDataResult
       }, cloudProviderResult)
     }, [])
-  }
-
-  getFilterData(): FilterResult {
-    return { accounts: getAccounts() }
   }
 }

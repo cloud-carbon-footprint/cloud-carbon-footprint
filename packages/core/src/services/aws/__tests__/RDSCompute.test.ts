@@ -9,7 +9,7 @@ import {
   buildCostExplorerGetCostRequest,
   buildCostExplorerGetCostResponse,
   buildCostExplorerGetUsageResponse,
-} from '../../../../test/fixtures/builders'
+} from './fixtures/builders'
 import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import { ServiceWrapper } from '../ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../mockAWSCloudWatchGetMetricDataCall'

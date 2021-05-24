@@ -20,7 +20,7 @@ import {
   mockQueryNetworkingIgnoreIngress,
   mockQueryComputeWithDifferentMachineTypes,
   mockQueryResultsComputeEngineRam,
-} from '../../../../test/fixtures/bigQuery.fixtures'
+} from './fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
 const mockCreateQueryJob = jest.fn().mockResolvedValue([mockJob, 'test-job-id'])

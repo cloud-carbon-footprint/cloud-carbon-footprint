@@ -19,7 +19,7 @@ import {
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
   mockConsumptionManagementResponseFive,
-} from '../../../../test/fixtures/consumptionManagement.fixtures'
+} from './fixtures/consumptionManagement.fixtures'
 
 const mockUsageDetails = { list: jest.fn(), listNext: jest.fn() }
 

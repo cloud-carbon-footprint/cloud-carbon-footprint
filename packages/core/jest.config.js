@@ -4,7 +4,6 @@
 
 module.exports = {
   roots: ['<rootDir>/src'],
-  setupFiles: ['<rootDir>/test/setEnvVars.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
@@ -18,4 +17,9 @@ module.exports = {
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  testPathIgnorePatterns: [
+    '<rootDir>/src/services/aws/__tests__/fixtures',
+    '<rootDir>/src/services/azure/__tests__/fixtures',
+    '<rootDir>/src/services/gcp/__tests__/fixtures',
+  ],
 }

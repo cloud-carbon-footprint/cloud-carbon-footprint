@@ -3,7 +3,7 @@
  */
 
 import EC2 from '../EC2'
-import { buildCostExplorerGetCostResponse } from '../../../../test/fixtures/builders'
+import { buildCostExplorerGetCostResponse } from './fixtures/builders'
 import AWSMock from 'aws-sdk-mock'
 
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'

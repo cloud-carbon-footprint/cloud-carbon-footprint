@@ -3,8 +3,7 @@
  */
 
 module.exports = {
-  roots: ['<rootDir>/test', '<rootDir>/src'],
-  setupFiles: ['<rootDir>/test/setEnvVars.ts'],
+  roots: ['<rootDir>/src'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
@@ -19,4 +18,5 @@ module.exports = {
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coveragePathIgnorePatterns: ['<rootDir>/src/CliPrompts.ts'],
+  testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],
 }
