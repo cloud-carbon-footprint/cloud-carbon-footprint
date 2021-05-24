@@ -96,20 +96,12 @@ export default class App {
         AzureEstimatesByRegion.push(estimates)
       }
 
-      console.log(
+      return reduceByTimestamp(
         AWSEstimatesByRegion.flat()
           .flat()
           .concat(GCPEstimatesByRegion.flat())
           .concat(AzureEstimatesByRegion.flat()),
       )
-      const result = reduceByTimestamp(
-        AWSEstimatesByRegion.flat()
-          .flat()
-          .concat(GCPEstimatesByRegion.flat())
-          .concat(AzureEstimatesByRegion.flat()),
-      )
-      console.log('after calling reduceByTimestap', result)
-      return result
     }
   }
 
