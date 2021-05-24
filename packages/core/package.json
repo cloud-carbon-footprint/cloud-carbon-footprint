@@ -67,7 +67,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@azure/arm-consumption": "^6.3.0",
+    "@azure/arm-consumption": "^7.0.0",
     "@azure/arm-subscriptions": "^3.0.0",
     "@azure/ms-rest-js": "^2.5.0",
     "@azure/ms-rest-nodeauth": "^3.0.9",
