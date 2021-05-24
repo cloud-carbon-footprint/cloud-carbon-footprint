@@ -5,70 +5,50 @@
 import { reduceByTimestamp } from '../EstimationResult'
 
 describe('Estimation Result', () => {
+  const estimateOne = {
+    cloudProvider: 'AWS',
+    accountName: 'test account',
+    serviceName: 'service test',
+    kilowattHours: 25,
+    co2e: 56,
+    cost: 24,
+    region: 'us-east-1',
+    usesAverageCPUConstant: false,
+  }
+  const estimateTwo = {
+    cloudProvider: 'GCP',
+    accountName: 'test account',
+    serviceName: 'service test',
+    kilowattHours: 25,
+    co2e: 56,
+    cost: 24,
+    region: 'us-east-1',
+    usesAverageCPUConstant: false,
+  }
+
+  const exampleDate = new Date('2021-05-21')
+
   it('reduces by timestamp', () => {
     // given
     const initialData = [
       {
-        timestamp: new Date('2021-05-21'),
-        serviceEstimates: [
-          {
-            cloudProvider: 'AWS',
-            accountName: 'test account',
-            serviceName: 'service test',
-            kilowattHours: 25,
-            co2e: 56,
-            cost: 24,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-        ],
+        timestamp: exampleDate,
+        serviceEstimates: [estimateOne],
       },
       {
-        timestamp: new Date('2021-05-21'),
-        serviceEstimates: [
-          {
-            cloudProvider: 'GCP',
-            accountName: 'test account',
-            serviceName: 'service test',
-            kilowattHours: 25,
-            co2e: 56,
-            cost: 24,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-        ],
+        timestamp: exampleDate,
+        serviceEstimates: [estimateTwo],
       },
     ]
 
     // when
     const result = reduceByTimestamp(initialData)
-    // then
 
+    // then
     const expectedResult = [
       {
-        timestamp: new Date('2021-05-21'),
-        serviceEstimates: [
-          {
-            cloudProvider: 'AWS',
-            accountName: 'test account',
-            serviceName: 'service test',
-            kilowattHours: 25,
-            co2e: 56,
-            cost: 24,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-          {
-            cloudProvider: 'GCP',
-            accountName: 'test account',
-            serviceName: 'service test',
-            kilowattHours: 25,
-            co2e: 56,
-            cost: 24,
-            region: 'us-east-1',
-            usesAverageCPUConstant: false,
-          },
-        ],
+        timestamp: exampleDate,
+        serviceEstimates: [estimateOne, estimateTwo],
       },
     ]
 
