@@ -79,7 +79,7 @@
     "@google-cloud/storage": "^5.8.5",
     "@types/ramda": "^0.27.40",
     "aws-sdk": "^2.910.0",
-    "dotenv": "^9.0.2",
+    "dotenv": "^10.0.0",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "tsconfig-paths": "^3.9.0",
