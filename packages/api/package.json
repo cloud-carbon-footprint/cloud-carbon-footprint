@@ -31,7 +31,7 @@
     "build:tsc": "tsc --build tsconfig.json",
     "build:watch": "onchange 'src/**/*.ts' -- yarn build",
     "build:workspace": "mkdir -p ../../dist-workspace/packages/api/dist && cp -R dist ../../dist-workspace/packages/api && mv ../../dist-workspace/packages/api/dist/package.json ../../dist-workspace/packages/api",
-    "build:update": "ts-node ../../scripts/update-package-dependencies.ts api app common",
+    "build:update": "node ../../scripts/update-package-dependencies.js api app common",
     "prepack": "ts-node ../../scripts/prepack.ts",
     "postpack": "ts-node ../../scripts/postpack.ts",
     "view:coverage": "serve coverage/lcov-report",
@@ -76,8 +76,8 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@cloud-carbon-footprint/app": "^0.0.1",
     "@cloud-carbon-footprint/common": "^0.0.1",
-    "@cloud-carbon-footprint/core": "^0.7.0",
     "@types/express": "^4.17.11",
     "@types/prompts": "^2.0.12",
     "@types/ramda": "^0.27.40",

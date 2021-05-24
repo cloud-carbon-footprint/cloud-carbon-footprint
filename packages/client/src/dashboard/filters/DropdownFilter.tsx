@@ -27,7 +27,7 @@ interface DropdownFilterProps {
   options: DropdownOption[]
   selections: DropdownOption[]
   selectionToOption: (selection: DropdownOption) => DropdownOption
-  updateSelections: (selections: DropdownOption[]) => void
+  updateSelections: (selections: (string | DropdownOption)[]) => void
 }
 
 const useStyles = makeStyles((theme) => ({

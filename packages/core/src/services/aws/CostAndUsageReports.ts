@@ -19,10 +19,11 @@ import {
   Row,
 } from 'aws-sdk/clients/athena'
 
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import ComputeUsage from '../../domain/ComputeUsage'
 import StorageUsage from '../../domain/StorageUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
-import { EstimationResult } from '../common/types'
 import { ServiceWrapper } from './ServiceWrapper'
 import {
   SSD_USAGE_TYPES,

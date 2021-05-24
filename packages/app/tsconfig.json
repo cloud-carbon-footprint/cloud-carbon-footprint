@@ -5,5 +5,5 @@
     "baseUrl": ".",
     "outDir": "./dist"
   },
-  "include": ["./src", "../common/src/EmissionRatioResult.ts"]
+  "include": ["./src"]
 }

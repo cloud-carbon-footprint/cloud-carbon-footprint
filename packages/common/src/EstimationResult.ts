@@ -11,13 +11,14 @@ export interface EstimationResult {
 
 export interface ServiceData {
   readonly cloudProvider: string
-  readonly accountName: string
-  readonly serviceName: string
   readonly kilowattHours: number
   readonly co2e: number
   readonly cost: number
-  readonly region: string
   readonly usesAverageCPUConstant?: boolean
+  // these attributes are mutable because it is required by the client package
+  accountName: string
+  serviceName: string
+  region: string
 }
 
 export const reduceByTimestamp = (
@@ -25,7 +26,7 @@ export const reduceByTimestamp = (
 ): EstimationResult[] => {
   // We need this mutable type in order to set the first timestamp based on the estimationResults values.
   interface MutableEstimationResult {
-    timestamp: Date
+    timestamp: Date | undefined
     serviceEstimates: ServiceData[]
   }
 

@@ -1,10 +1,11 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { exec as execCb } from 'child_process'
-import { promisify } from 'util'
-import fs from 'fs'
-import path from 'path'
+
+const { exec } = require('child_process')
+const { promisify } = require('util')
+const fs = require('fs')
+const path = require('path')
 
 async function main() {
   const currentPackageName = process.argv.slice(2)[0]
@@ -19,10 +20,10 @@ main().catch((error) => {
   process.exit(1)
 })
 
-async function runCmd(cmd: string) {
-  const exec = promisify(execCb)
+async function runCmd(cmd) {
+  const promisifyExec = promisify(exec)
   try {
-    await exec(cmd)
+    await promisifyExec(cmd)
   } catch (error) {
     process.stdout.write(error.stderr)
     process.stdout.write(error.stdout)
@@ -30,28 +31,29 @@ async function runCmd(cmd: string) {
   }
 }
 
-function copyDistDirectories(
-  packageNames: string[],
-  currentPackageName: string,
-) {
-  const baseDir: string = path.resolve(
+function copyDistDirectories(packageNames, currentPackageName) {
+  const baseDir = path.resolve(
     __dirname,
     `../dist-workspace/packages/${currentPackageName}`,
   )
+
   packageNames.forEach((name) => {
     const targetDir = path.resolve(
       __dirname,
       `../dist-workspace/packages/${name}`,
     )
-    runCmd(`cp -R ${targetDir}/dist ${baseDir}/${name}`)
-    runCmd(`cp -R ${targetDir}/package.json ${baseDir}/${name}`)
+    runCmd(`cp -a ${targetDir} ${baseDir}/${name}`)
+    if (!!['client'].includes(currentPackageName)) {
+      runCmd(`cp -a ${baseDir}/${name} ${baseDir}/dist`)
+    }
   })
+
+  if (!!['client', 'api'].includes(currentPackageName)) {
+    runCmd(`cp -a ${baseDir}/package.json ${baseDir}/dist/package.json`)
+  }
 }
 
-function updatePackageDepencies(
-  packageNames: string[],
-  currentPackageName: string,
-) {
+function updatePackageDepencies(packageNames, currentPackageName) {
   try {
     const data = fs.readFileSync(
       path.resolve(
@@ -65,7 +67,7 @@ function updatePackageDepencies(
       const localDeps = Object.keys(packageJSON.dependencies)
         .filter((key) => key === `@cloud-carbon-footprint/${name}`)
         .pop()
-      packageJSON.dependencies[localDeps] = `./${name}`
+      packageJSON.dependencies[localDeps] = `./${name}/dist`
     })
 
     fs.writeFile(

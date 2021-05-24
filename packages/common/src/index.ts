@@ -6,9 +6,6 @@ export { default as Logger } from './Logger'
 export { default as configLoader } from './ConfigLoader'
 export { default as Config } from './Config'
 export { PartialDataError, EstimationRequestValidationError } from './Errors'
-export {
-  EstimationResult,
-  reduceByTimestamp,
-  ServiceData,
-} from './EstimationResult'
-export { EmissionRatioResult } from './EmissionRatioResult'
+export { reduceByTimestamp } from './EstimationResult'
+export type { EstimationResult, ServiceData } from './EstimationResult'
+export type { EmissionRatioResult } from './EmissionRatioResult'
