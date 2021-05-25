@@ -53,7 +53,7 @@ Change Carbon equivalency component to be globally relevant
 -            textOne: 'greenhouse gas emissions from',
 -            textTwo: 'miles driven on average',
 +            total: totalFlights,
-+            textOne: 'CO2 emissions from',
++            textOne: 'CO2e emissions from',
 +            textTwo: 'direct one way flights from NYC to London',
         },
         phones: {
@@ -62,7 +62,8 @@ Change Carbon equivalency component to be globally relevant
             ),
 -            total: gasSum,
 +            total: totalPhones,
-            textOne: 'CO2 emissions from',
+-            textOne: 'CO2 emissions from',
++            textOne: 'CO2e emissions from',
 -            textTwo: 'gallons of gasoline consumed',
 +            textTwo: 'smartphones charged',
         },

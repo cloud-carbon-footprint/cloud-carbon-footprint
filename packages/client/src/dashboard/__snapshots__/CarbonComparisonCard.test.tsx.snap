@@ -52,7 +52,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <p
           className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
         >
-          CO2 emissions from
+          CO2e emissions from
         </p>
         <p
           className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"

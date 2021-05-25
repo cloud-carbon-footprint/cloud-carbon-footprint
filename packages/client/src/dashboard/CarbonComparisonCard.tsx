@@ -143,7 +143,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           <FlightTakeoff className={classes.icon} data-testid="flightsIcon" />
         ),
         total: totalFlights,
-        textOne: 'CO2 emissions from',
+        textOne: 'CO2e emissions from',
         textTwo: 'direct one way flights from NYC to London',
       },
       phones: {
@@ -151,7 +151,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           <PhonelinkRing className={classes.icon} data-testid="phonesIcon" />
         ),
         total: totalPhones,
-        textOne: 'CO2 emissions from',
+        textOne: 'CO2e emissions from',
         textTwo: 'smartphones charged',
       },
       trees: {
