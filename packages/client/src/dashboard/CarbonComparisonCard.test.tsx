@@ -58,11 +58,10 @@ describe('CarbonComparisonCard', () => {
     expect(root.toJSON()).toMatchSnapshot()
   })
 
-  it.only('selects carbon comparison correctly', async () => {
+  it('selects carbon comparison correctly', async () => {
     const { getByText, getByTestId } = render(
       <CarbonComparisonCard data={data} />,
     )
-    //1-miles->flightsIcon 2-gas->Phones 3-trees
 
     const phonesButton = getByText('Phones')
     const flightsIcon = getByTestId('flightsIcon')
@@ -96,10 +95,38 @@ describe('CarbonComparisonCard', () => {
     expect(flightsIcon).toBeInstanceOf(SVGSVGElement)
   })
 
-  it('should show EPA source', async () => {
-    const { getByTestId } = render(<CarbonComparisonCard data={data} />)
+  it.only('should show corresponding sources for each pane', async () => {
+    /*
+    miles -> Flights
+    gas -> Phones
+     */
+    const { getByTestId, getByText } = render(
+      <CarbonComparisonCard data={data} />,
+    )
     const source = getByTestId('epa-source')
+    expect(source).toHaveTextContent(
+      'Source: Flight Carbon Footprint Calculator',
+    )
+
+    const phonesButton = getByText('Phones')
+    act(() => {
+      fireEvent.click(phonesButton)
+    })
     expect(source).toHaveTextContent('Source: EPA Equivalencies Calculator')
+
+    const treesButton = getByText('Trees')
+    act(() => {
+      fireEvent.click(treesButton)
+    })
+    expect(source).toHaveTextContent('Source: EPA Equivalencies Calculator')
+
+    const flightsButton = getByText('Flights')
+    act(() => {
+      fireEvent.click(flightsButton)
+    })
+    expect(source).toHaveTextContent(
+      'Source: Flight Carbon Footprint Calculator',
+    )
   })
 
   it('should open EPA page in other tab when clicking EPA link', async () => {

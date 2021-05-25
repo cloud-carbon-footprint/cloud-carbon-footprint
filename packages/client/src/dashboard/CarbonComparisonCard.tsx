@@ -12,12 +12,17 @@ import {
   Button,
   Link,
 } from '@material-ui/core'
-import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
+import {
+  FlightTakeoff,
+  PhonelinkRing,
+  Eco,
+  OpenInNew,
+} from '@material-ui/icons'
 import { sumCO2 } from './transformData'
 import { EstimationResult } from '../models/types'
 import NoDataPage from './NoDataPage'
 
-type Selection = 'miles' | 'gas' | 'trees'
+type Selection = 'flights' | 'phones' | 'trees'
 
 type ComparisonItem = {
   icon: React.ReactNode
@@ -28,10 +33,22 @@ type ComparisonItem = {
 
 type Comparison = {
   [char: string]: ComparisonItem
-  gas: ComparisonItem
-  miles: ComparisonItem
+  flights: ComparisonItem
+  phones: ComparisonItem
   trees: ComparisonItem
 }
+
+type SourceItem = {
+  href: string
+  title: string
+}
+
+type Source = {
+  [char: string]: SourceItem
+  flights: SourceItem
+  epa: SourceItem
+}
+
 const useStyles = makeStyles(({ palette, spacing, typography }) => {
   return {
     root: {
@@ -103,7 +120,7 @@ export const toTrees = (co2mt: number): number => co2mt * 16.5337915448
 export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> =
   ({ data }) => {
     const classes = useStyles()
-    const [selection, setSelection] = useState('miles')
+    const [selection, setSelection] = useState('flights')
     const mtSum: number = sumCO2(data)
 
     const milesSum = toMiles(mtSum)
@@ -114,25 +131,38 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
       number.toLocaleString(undefined, { maximumFractionDigits: decimalPlaces })
 
     const comparisons: Comparison = {
-      gas: {
+      flights: {
         icon: (
-          <LocalGasStation className={classes.icon} data-testid="phonesIcon" />
+          <FlightTakeoff className={classes.icon} data-testid="flightsIcon" />
+        ),
+        total: milesSum,
+        textOne: 'greenhouse gas emissions from',
+        textTwo: 'miles driven on average',
+      },
+      phones: {
+        icon: (
+          <PhonelinkRing className={classes.icon} data-testid="phonesIcon" />
         ),
         total: gasSum,
         textOne: 'CO2 emissions from',
         textTwo: 'gallons of gasoline consumed',
-      },
-      miles: {
-        icon: <DriveEta className={classes.icon} data-testid="flightsIcon" />,
-        total: milesSum,
-        textOne: 'greenhouse gas emissions from',
-        textTwo: 'miles driven on average',
       },
       trees: {
         icon: <Eco className={classes.icon} data-testid="treesIcon" />,
         total: treesSum,
         textOne: 'carbon sequestered by',
         textTwo: 'tree seedlings grown for 10 years',
+      },
+    }
+
+    const sources: Source = {
+      flights: {
+        href: 'https://calculator.carbonfootprint.com/calculator.aspx?tab=3',
+        title: 'Flight Carbon Footprint Calculator',
+      },
+      epa: {
+        href: 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
+        title: 'EPA Equivalencies Calculator',
       },
     }
 
@@ -143,6 +173,8 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
     const updateButtonColor = (buttonSelection: Selection) => {
       return buttonSelection === selection ? 'primary' : 'default'
     }
+
+    const currentSource = sources[selection] || sources.epa
 
     return (
       <Card className={classes.root} id="carbonComparisonCard">
@@ -196,18 +228,18 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               <Button
                 id="flights"
                 variant="contained"
-                color={updateButtonColor('miles')}
+                color={updateButtonColor('flights')}
                 size="medium"
-                onClick={() => updateSelection('miles')}
+                onClick={() => updateSelection('flights')}
               >
                 Flights
               </Button>
               <Button
                 id="phones"
                 variant="contained"
-                color={updateButtonColor('gas')}
+                color={updateButtonColor('phones')}
                 size="medium"
-                onClick={() => updateSelection('gas')}
+                onClick={() => updateSelection('phones')}
               >
                 Phones
               </Button>
@@ -224,12 +256,12 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             <Typography className={classes.source} data-testid="epa-source">
               Source:{' '}
               <Link
-                href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+                href={currentSource.href}
                 target="_blank"
                 rel="noopener"
                 className={classes.sourceLink}
               >
-                EPA Equivalencies Calculator{' '}
+                {currentSource.title}{' '}
                 <OpenInNew
                   fontSize={'small'}
                   className={classes.openIcon}
