@@ -116,14 +116,14 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
     const comparisons: Comparison = {
       gas: {
         icon: (
-          <LocalGasStation className={classes.icon} data-testid="gasIcon" />
+          <LocalGasStation className={classes.icon} data-testid="phonesIcon" />
         ),
         total: gasSum,
         textOne: 'CO2 emissions from',
         textTwo: 'gallons of gasoline consumed',
       },
       miles: {
-        icon: <DriveEta className={classes.icon} data-testid="milesIcon" />,
+        icon: <DriveEta className={classes.icon} data-testid="flightsIcon" />,
         total: milesSum,
         textOne: 'greenhouse gas emissions from',
         textTwo: 'miles driven on average',
@@ -194,22 +194,22 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             </CardContent>
             <CardActions className={classes.buttonContainer}>
               <Button
-                id="miles"
+                id="flights"
                 variant="contained"
                 color={updateButtonColor('miles')}
                 size="medium"
                 onClick={() => updateSelection('miles')}
               >
-                Miles
+                Flights
               </Button>
               <Button
-                id="gas"
+                id="phones"
                 variant="contained"
                 color={updateButtonColor('gas')}
                 size="medium"
                 onClick={() => updateSelection('gas')}
               >
-                Gas
+                Phones
               </Button>
               <Button
                 id="trees"

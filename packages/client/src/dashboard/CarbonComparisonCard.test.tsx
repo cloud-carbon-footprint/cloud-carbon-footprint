@@ -58,22 +58,23 @@ describe('CarbonComparisonCard', () => {
     expect(root.toJSON()).toMatchSnapshot()
   })
 
-  it('selects carbon comparison correctly', async () => {
+  it.only('selects carbon comparison correctly', async () => {
     const { getByText, getByTestId } = render(
       <CarbonComparisonCard data={data} />,
     )
+    //1-miles->flightsIcon 2-gas->Phones 3-trees
 
-    const gasButton = getByText('Gas')
-    const milesIcon = getByTestId('milesIcon')
-    expect(gasButton).toBeInstanceOf(HTMLElement)
-    expect(milesIcon).toBeInstanceOf(SVGSVGElement)
+    const phonesButton = getByText('Phones')
+    const flightsIcon = getByTestId('flightsIcon')
+    expect(phonesButton).toBeInstanceOf(HTMLElement)
+    expect(flightsIcon).toBeInstanceOf(SVGSVGElement)
 
     act(() => {
-      fireEvent.click(gasButton)
+      fireEvent.click(phonesButton)
     })
 
-    const gasIcon = getByTestId('gasIcon')
-    expect(gasIcon).toBeInstanceOf(SVGSVGElement)
+    const phonesIcon = getByTestId('phonesIcon')
+    expect(phonesIcon).toBeInstanceOf(SVGSVGElement)
 
     const treesButton = getByText('Trees')
     expect(treesButton).toBeInstanceOf(HTMLElement)
@@ -85,14 +86,14 @@ describe('CarbonComparisonCard', () => {
     const treesIcon = getByTestId('treesIcon')
     expect(treesIcon).toBeInstanceOf(SVGSVGElement)
 
-    const milesButton = getByText('Miles')
-    expect(milesButton).toBeInstanceOf(HTMLElement)
+    const flightsButton = getByText('Flights')
+    expect(flightsButton).toBeInstanceOf(HTMLElement)
 
     act(() => {
-      fireEvent.click(milesButton)
+      fireEvent.click(flightsButton)
     })
 
-    expect(milesIcon).toBeInstanceOf(SVGSVGElement)
+    expect(flightsIcon).toBeInstanceOf(SVGSVGElement)
   })
 
   it('should show EPA source', async () => {
