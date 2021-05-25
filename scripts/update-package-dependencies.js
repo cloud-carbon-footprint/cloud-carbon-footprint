@@ -37,20 +37,21 @@ function copyDistDirectories(packageNames, currentPackageName) {
     `../dist-workspace/packages/${currentPackageName}`,
   )
 
+  if (['common', 'core', 'app'].includes(currentPackageName)) {
+    runCmd(`cp -a ${baseDir}/package.json ${baseDir}/dist/package.json`)
+  }
+
   packageNames.forEach((name) => {
     const targetDir = path.resolve(
       __dirname,
       `../dist-workspace/packages/${name}`,
     )
-    runCmd(`cp -a ${targetDir} ${baseDir}/${name}`)
-    if (!!['client'].includes(currentPackageName)) {
-      runCmd(`cp -a ${baseDir}/${name} ${baseDir}/dist`)
+    runCmd(`cp -a ${targetDir} ${baseDir}`)
+
+    if (['client'].includes(currentPackageName) === false) {
+      runCmd(`cp -a ${targetDir} ${baseDir}/dist`)
     }
   })
-
-  if (!!['client', 'api'].includes(currentPackageName)) {
-    runCmd(`cp -a ${baseDir}/package.json ${baseDir}/dist/package.json`)
-  }
 }
 
 function updatePackageDepencies(packageNames, currentPackageName) {
