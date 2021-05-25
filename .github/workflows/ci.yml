@@ -88,6 +88,7 @@ jobs:
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
         run: |
+          cp packages/client/.env dist-workspace/packages/client
           cd packages/client
           ./create_client_env_file.sh
           yarn build
@@ -95,6 +96,9 @@ jobs:
       - name: build-workspace
         run: |
           yarn lerna run build:workspace
+          cp package.json dist-workspace
+          cp yarn.lock dist-workspace
+
           # replacing local @cloud-carbon-footprint dependencies with a local reference
           yarn lerna run build:update --scope @cloud-carbon-footprint/common --scope @cloud-carbon-footprint/core --scope @cloud-carbon-footprint/app --scope @cloud-carbon-footprint/api --scope @cloud-carbon-footprint/client
       - uses: actions/upload-artifact@v2
@@ -238,21 +242,15 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
+          cp packages/api/.env dist-workspace/packages/api
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
-          rm yarn.lock
-          rm package.json
 
           cd dist-workspace/packages/api
-          yarn install
           ./create_server_env_file.sh
-          cd ../../..
-
-          cd dist-workspace/packages/client
-          yarn install
           cd ../../..
 
           # Store service account
@@ -313,21 +311,17 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
+          cp packages/api/.env dist-workspace/packages/api
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-production.yaml dist-workspace/packages/api
 
           cp packages/client/app-production.yaml dist-workspace/packages/client
 
-          rm yarn.lock
-          rm package.json
-
           cd dist-workspace/packages/api
-          yarn install
           ./create_server_env_file.sh
           cd ../../..
 
           cd dist-workspace/packages/client
-          yarn install
           cd ../../..
 
           # Store service account
