@@ -37,10 +37,6 @@ function copyDistDirectories(packageNames, currentPackageName) {
     `../dist-workspace/packages/${currentPackageName}`,
   )
 
-  if (['common', 'core', 'app'].includes(currentPackageName)) {
-    runCmd(`cp -a ${baseDir}/package.json ${baseDir}/dist/package.json`)
-  }
-
   packageNames.forEach((name) => {
     const targetDir = path.resolve(
       __dirname,
@@ -68,7 +64,7 @@ function updatePackageDepencies(packageNames, currentPackageName) {
       const localDeps = Object.keys(packageJSON.dependencies)
         .filter((key) => key === `@cloud-carbon-footprint/${name}`)
         .pop()
-      packageJSON.dependencies[localDeps] = `./${name}/dist`
+      packageJSON.dependencies[localDeps] = `./${name}`
     })
 
     fs.writeFile(
