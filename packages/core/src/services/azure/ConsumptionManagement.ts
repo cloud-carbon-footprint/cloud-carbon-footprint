@@ -7,11 +7,15 @@ import {
   UsageDetailsListResult,
 } from '@azure/arm-consumption/esm/models'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
+import {
+  configLoader,
+  Logger,
+  EstimationResult,
+} from '@cloud-carbon-footprint/common'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import NetworkingEstimator from '../../domain/NetworkingEstimator'
 import MemoryEstimator from '../../domain/MemoryEstimator'
-import { EstimationResult } from '../../application'
 import ComputeUsage from '../../domain/ComputeUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 import FootprintEstimate, {
@@ -44,8 +48,6 @@ import StorageUsage from '../../domain/StorageUsage'
 import NetworkingUsage from '../../domain/NetworkingUsage'
 import MemoryUsage from '../../domain/MemoryUsage'
 import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
-import Logger from '../Logger'
-import configLoader from '../../application/ConfigLoader'
 import { calculateGigabyteHours, getPhysicalChips } from '../common/'
 
 export default class ConsumptionManagementService {

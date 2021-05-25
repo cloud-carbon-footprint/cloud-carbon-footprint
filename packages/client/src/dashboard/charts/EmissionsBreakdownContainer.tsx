@@ -15,7 +15,8 @@ import {
   Select,
   withStyles,
 } from '@material-ui/core'
-import { ChartDataTypes, EstimationResult } from '../../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { ChartDataTypes } from '../../models/types'
 import { ApexBarChart } from './ApexBarChart'
 
 const BootstrapInput = withStyles(() =>

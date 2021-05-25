@@ -2,9 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/core'
+import moment from 'moment'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import EmissionsByDayTable from '../EmissionsByDayTable'
-import moment = require('moment')
 
 describe('EmissionsByDayTable', () => {
   const region = 'us-east-1'

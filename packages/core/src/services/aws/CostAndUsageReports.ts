@@ -3,12 +3,13 @@
  */
 import moment from 'moment'
 import { concat } from 'ramda'
+import { configLoader, Logger } from '@cloud-carbon-footprint/common'
+
 import FootprintEstimate, {
   MutableEstimationResult,
 } from '../../domain/FootprintEstimate'
 import ComputeEstimator from '../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../domain/StorageEstimator'
-import configLoader from '../../application/ConfigLoader'
 import {
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
@@ -17,11 +18,12 @@ import {
   StartQueryExecutionOutput,
   Row,
 } from 'aws-sdk/clients/athena'
+
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
 import ComputeUsage from '../../domain/ComputeUsage'
 import StorageUsage from '../../domain/StorageUsage'
 import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
-import Logger from '../Logger'
-import { EstimationResult } from '../../application/EstimationResult'
 import { ServiceWrapper } from './ServiceWrapper'
 import {
   SSD_USAGE_TYPES,

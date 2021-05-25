@@ -19,7 +19,7 @@ import {
   OpenInNew,
 } from '@material-ui/icons'
 import { sumCO2 } from './transformData'
-import { EstimationResult } from '../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import NoDataPage from './NoDataPage'
 
 type Selection = 'flights' | 'phones' | 'trees'

@@ -2,33 +2,30 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-jest.mock('@cloud-carbon-footprint/core', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/core'),
-  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
-    AWS: {
-      awsRegion1: 1,
-      awsRegion2: 2,
-    },
-    GCP: {
-      gcpRegion1: 3,
-      gcpRegion2: 4,
-    },
-  },
+import express from 'express'
+import request from 'supertest'
+
+import {
+  EstimationResult,
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+
+import api from './api'
+
+const mockGetCostAndEstimates = jest.fn()
+const mockGetFilterData = jest.fn()
+const mockGetEmissionsFactors = jest.fn()
+
+jest.mock('@cloud-carbon-footprint/app', () => ({
+  ...jest.requireActual('@cloud-carbon-footprint/app'),
   App: jest.fn().mockImplementation(() => {
     return {
       getCostAndEstimates: mockGetCostAndEstimates,
+      getEmissionsFactors: mockGetEmissionsFactors,
       getFilterData: mockGetFilterData,
     }
   }),
 }))
-
-import express from 'express'
-import api, { EmissionsRatios } from './api'
-import request from 'supertest'
-import { EstimationResult } from '@cloud-carbon-footprint/core'
-
-const mockGetCostAndEstimates = jest.fn()
-const mockGetFilterData = jest.fn()
 
 describe('api', () => {
   let server: express.Express
@@ -107,11 +104,7 @@ describe('api', () => {
 
   describe('/regions/emissions-factors', () => {
     it('returns data for regional emissions factors', async () => {
-      const response = await request(server).get(
-        encodeURI(`/regions/emissions-factors`),
-      )
-
-      const expectedResponse: EmissionsRatios[] = [
+      const expectedResponse: EmissionRatioResult[] = [
         {
           region: 'awsRegion1',
           mtPerKwHour: 1,
@@ -129,6 +122,11 @@ describe('api', () => {
           mtPerKwHour: 4,
         },
       ]
+
+      mockGetEmissionsFactors.mockResolvedValueOnce(expectedResponse)
+      const response = await request(server).get(
+        encodeURI(`/regions/emissions-factors`),
+      )
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual(expectedResponse)

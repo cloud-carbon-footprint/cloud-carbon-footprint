@@ -11,13 +11,14 @@ import {
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import { Select } from '@material-ui/core'
 
+import {
+  EstimationResult,
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
+
 import { EmissionsBreakdownContainer } from './EmissionsBreakdownContainer'
 import { ApexBarChart } from './ApexBarChart'
-import {
-  EmissionsRatios,
-  EstimationResult,
-  ServiceResult,
-} from '../../models/types'
+import { ServiceResult } from '../../models/types'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 import { fakeEmissionFactors } from '../../data/generateEstimations'
 
@@ -89,7 +90,7 @@ describe('EmissionsBreakdownContainer', () => {
   ]
 
   beforeEach(() => {
-    const mockReturnValue: ServiceResult<EmissionsRatios> = {
+    const mockReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: fakeEmissionFactors,
     }

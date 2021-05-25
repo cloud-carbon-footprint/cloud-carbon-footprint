@@ -6,7 +6,7 @@ import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatchLogs, CostExplorer, CloudWatch } from 'aws-sdk'
 import Lambda from '../Lambda'
 import { estimateCo2 } from '../../../domain/FootprintEstimationConstants'
-import { buildCostExplorerGetCostResponse } from '../../../../test/fixtures/builders'
+import { buildCostExplorerGetCostResponse } from './fixtures/builders'
 import { ServiceWrapper } from '../ServiceWrapper'
 
 describe('Lambda', () => {

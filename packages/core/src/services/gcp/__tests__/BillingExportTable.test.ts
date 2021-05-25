@@ -3,8 +3,8 @@
  */
 
 import { BigQuery } from '@google-cloud/bigquery'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { EstimationResult } from '../../../application/EstimationResult'
 import ComputeEstimator from '../../../domain/ComputeEstimator'
 import { StorageEstimator } from '../../../domain/StorageEstimator'
 import NetworkingEstimator from '../../../domain/NetworkingEstimator'
@@ -20,7 +20,7 @@ import {
   mockQueryNetworkingIgnoreIngress,
   mockQueryComputeWithDifferentMachineTypes,
   mockQueryResultsComputeEngineRam,
-} from '../../../../test/fixtures/bigQuery.fixtures'
+} from './fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
 const mockCreateQueryJob = jest.fn().mockResolvedValue([mockJob, 'test-job-id'])

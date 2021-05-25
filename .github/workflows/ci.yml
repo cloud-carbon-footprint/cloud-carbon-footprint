@@ -99,7 +99,7 @@ jobs:
           cp yarn.lock dist-workspace
 
           # replacing local @cloud-carbon-footprint dependencies with a local reference
-          yarn lerna run build:update --scope @cloud-carbon-footprint/api
+          yarn lerna run build:update --scope @cloud-carbon-footprint/common --scope @cloud-carbon-footprint/core --scope @cloud-carbon-footprint/app --scope @cloud-carbon-footprint/api --scope @cloud-carbon-footprint/client
       - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace
