@@ -95,11 +95,7 @@ describe('CarbonComparisonCard', () => {
     expect(flightsIcon).toBeInstanceOf(SVGSVGElement)
   })
 
-  it.only('should show corresponding sources for each pane', async () => {
-    /*
-    miles -> Flights
-    gas -> Phones
-     */
+  it('should show corresponding sources for each pane', async () => {
     const { getByTestId, getByText } = render(
       <CarbonComparisonCard data={data} />,
     )
@@ -129,15 +125,30 @@ describe('CarbonComparisonCard', () => {
     )
   })
 
-  it('should open EPA page in other tab when clicking EPA link', async () => {
+  it('should open Flight Carbon Calculator page in other tab when clicking flight link', async () => {
     const { getByText } = render(<CarbonComparisonCard data={data} />)
+    const epaLink = getByText('Flight Carbon Footprint Calculator').closest('a')
+    expect(epaLink).toHaveAttribute(
+      'href',
+      'https://calculator.carbonfootprint.com/calculator.aspx?tab=3',
+    )
+    expect(epaLink).toHaveAttribute('target', '_blank')
+    //for security reasons https://web.dev/external-anchors-use-rel-noopener/
+    expect(epaLink).toHaveAttribute('rel', 'noopener')
+  })
+
+  it.only('should open EPA page in other tab when clicking EPA link', async () => {
+    const { getByText } = render(<CarbonComparisonCard data={data} />)
+    const phonesButton = getByText('Phones')
+    act(() => {
+      fireEvent.click(phonesButton)
+    })
     const epaLink = getByText('EPA Equivalencies Calculator').closest('a')
     expect(epaLink).toHaveAttribute(
       'href',
       'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
     )
     expect(epaLink).toHaveAttribute('target', '_blank')
-    //for security reasons https://web.dev/external-anchors-use-rel-noopener/
     expect(epaLink).toHaveAttribute('rel', 'noopener')
   })
 
@@ -174,6 +185,7 @@ describe('CarbonComparisonCard', () => {
       )
     })
 
+    // TODO: Update this test for calculating flights instead of miles
     it('should format miles', async () => {
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('comparison')
@@ -183,6 +195,7 @@ describe('CarbonComparisonCard', () => {
       expect(co2).toHaveTextContent(expected)
     })
 
+    // TODO: Update this test for calculating phones instead of gas
     it('should format gas', async () => {
       const { getByText, getByTestId } = render(
         <CarbonComparisonCard data={data} />,
