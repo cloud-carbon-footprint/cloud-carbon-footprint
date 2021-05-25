@@ -12,12 +12,17 @@ import {
   Button,
   Link,
 } from '@material-ui/core'
-import { DriveEta, LocalGasStation, Eco, OpenInNew } from '@material-ui/icons'
+import {
+  FlightTakeoff,
+  PhonelinkRing,
+  Eco,
+  OpenInNew,
+} from '@material-ui/icons'
 import { sumCO2 } from './transformData'
 import { EstimationResult } from '../models/types'
 import NoDataPage from './NoDataPage'
 
-type Selection = 'miles' | 'gas' | 'trees'
+type Selection = 'flights' | 'phones' | 'trees'
 
 type ComparisonItem = {
   icon: React.ReactNode
@@ -28,10 +33,22 @@ type ComparisonItem = {
 
 type Comparison = {
   [char: string]: ComparisonItem
-  gas: ComparisonItem
-  miles: ComparisonItem
+  flights: ComparisonItem
+  phones: ComparisonItem
   trees: ComparisonItem
 }
+
+type SourceItem = {
+  href: string
+  title: string
+}
+
+type Source = {
+  [char: string]: SourceItem
+  flights: SourceItem
+  epa: SourceItem
+}
+
 const useStyles = makeStyles(({ palette, spacing, typography }) => {
   return {
     root: {
@@ -96,43 +113,63 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
   }
 })
 
-export const toMiles = (co2mt: number): number => co2mt * 2481.3918390475
-export const toGas = (co2mt: number): number => co2mt * 112.5247230304
+export const toFlights = (co2mt: number): number => co2mt * 1.2345679 // direct one way flight from NYC to London per metric ton per CO2
+export const toPhones = (co2mt: number): number => co2mt * 121643 // phones charged per metric ton of CO2
 export const toTrees = (co2mt: number): number => co2mt * 16.5337915448
 
 export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> =
   ({ data }) => {
     const classes = useStyles()
-    const [selection, setSelection] = useState('miles')
+    const [selection, setSelection] = useState('flights')
     const mtSum: number = sumCO2(data)
 
-    const milesSum = toMiles(mtSum)
-    const gasSum = toGas(mtSum)
+    const totalFlights = toFlights(mtSum)
+    const totalPhones = toPhones(mtSum)
     const treesSum = toTrees(mtSum)
 
-    const formatNumber = (number: number, decimalPlaces = 0) =>
-      number.toLocaleString(undefined, { maximumFractionDigits: decimalPlaces })
+    const formatNumber = (number: number, decimalPlaces = 0) => {
+      if (number >= 1000000000) return `${(number / 1000000000).toFixed(1)}+ B`
+
+      if (number >= 1000000) return `${(number / 1000000).toFixed(1)}+ M`
+
+      return number.toLocaleString(undefined, {
+        maximumFractionDigits: decimalPlaces,
+      })
+    }
 
     const comparisons: Comparison = {
-      gas: {
+      flights: {
         icon: (
-          <LocalGasStation className={classes.icon} data-testid="gasIcon" />
+          <FlightTakeoff className={classes.icon} data-testid="flightsIcon" />
         ),
-        total: gasSum,
+        total: totalFlights,
         textOne: 'CO2 emissions from',
-        textTwo: 'gallons of gasoline consumed',
+        textTwo: 'direct one way flights from NYC to London',
       },
-      miles: {
-        icon: <DriveEta className={classes.icon} data-testid="milesIcon" />,
-        total: milesSum,
-        textOne: 'greenhouse gas emissions from',
-        textTwo: 'miles driven on average',
+      phones: {
+        icon: (
+          <PhonelinkRing className={classes.icon} data-testid="phonesIcon" />
+        ),
+        total: totalPhones,
+        textOne: 'CO2 emissions from',
+        textTwo: 'smartphones charged',
       },
       trees: {
         icon: <Eco className={classes.icon} data-testid="treesIcon" />,
         total: treesSum,
         textOne: 'carbon sequestered by',
         textTwo: 'tree seedlings grown for 10 years',
+      },
+    }
+
+    const sources: Source = {
+      flights: {
+        href: 'https://calculator.carbonfootprint.com/calculator.aspx?tab=3',
+        title: 'Flight Carbon Footprint Calculator',
+      },
+      epa: {
+        href: 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
+        title: 'EPA Equivalencies Calculator',
       },
     }
 
@@ -143,6 +180,8 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
     const updateButtonColor = (buttonSelection: Selection) => {
       return buttonSelection === selection ? 'primary' : 'default'
     }
+
+    const currentSource = sources[selection] || sources.epa
 
     return (
       <Card className={classes.root} id="carbonComparisonCard">
@@ -194,22 +233,22 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             </CardContent>
             <CardActions className={classes.buttonContainer}>
               <Button
-                id="miles"
+                id="flights"
                 variant="contained"
-                color={updateButtonColor('miles')}
+                color={updateButtonColor('flights')}
                 size="medium"
-                onClick={() => updateSelection('miles')}
+                onClick={() => updateSelection('flights')}
               >
-                Miles
+                Flights
               </Button>
               <Button
-                id="gas"
+                id="phones"
                 variant="contained"
-                color={updateButtonColor('gas')}
+                color={updateButtonColor('phones')}
                 size="medium"
-                onClick={() => updateSelection('gas')}
+                onClick={() => updateSelection('phones')}
               >
-                Gas
+                Phones
               </Button>
               <Button
                 id="trees"
@@ -224,12 +263,12 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
             <Typography className={classes.source} data-testid="epa-source">
               Source:{' '}
               <Link
-                href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+                href={currentSource.href}
                 target="_blank"
                 rel="noopener"
                 className={classes.sourceLink}
               >
-                EPA Equivalencies Calculator{' '}
+                {currentSource.title}{' '}
                 <OpenInNew
                   fontSize={'small'}
                   className={classes.openIcon}

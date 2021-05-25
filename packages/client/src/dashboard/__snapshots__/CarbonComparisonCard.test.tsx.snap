@@ -37,12 +37,12 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <svg
           aria-hidden={true}
           className="MuiSvgIcon-root makeStyles-icon-10"
-          data-testid="milesIcon"
+          data-testid="flightsIcon"
           focusable="false"
           viewBox="0 0 24 24"
         >
           <path
-            d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"
+            d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.43-1.93.51 4.14 7.17-4.97 1.33-1.97-1.54-1.45.39 2.59 4.49s7.12-1.9 16.57-4.43c.81-.23 1.28-1.05 1.07-1.85z"
           />
         </svg>
       </div>
@@ -52,18 +52,18 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <p
           className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
         >
-          greenhouse gas emissions from
+          CO2 emissions from
         </p>
         <p
           className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
           data-testid="comparison"
         >
-          17,370
+          9
         </p>
         <p
           className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
         >
-          miles driven on average
+          direct one way flights from NYC to London
         </p>
       </div>
     </div>
@@ -73,7 +73,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
       <button
         className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
         disabled={false}
-        id="miles"
+        id="flights"
         onBlur={[Function]}
         onClick={[Function]}
         onDragLeave={[Function]}
@@ -92,13 +92,13 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <span
           className="MuiButton-label"
         >
-          Miles
+          Flights
         </span>
       </button>
       <button
         className="MuiButtonBase-root MuiButton-root MuiButton-contained"
         disabled={false}
-        id="gas"
+        id="phones"
         onBlur={[Function]}
         onClick={[Function]}
         onDragLeave={[Function]}
@@ -117,7 +117,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <span
           className="MuiButton-label"
         >
-          Gas
+          Phones
         </span>
       </button>
       <button
@@ -154,13 +154,13 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
        
       <a
         className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-sourceLink-12 MuiTypography-colorPrimary"
-        href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+        href="https://calculator.carbonfootprint.com/calculator.aspx?tab=3"
         onBlur={[Function]}
         onFocus={[Function]}
         rel="noopener"
         target="_blank"
       >
-        EPA Equivalencies Calculator
+        Flight Carbon Footprint Calculator
          
         <svg
           aria-hidden={true}

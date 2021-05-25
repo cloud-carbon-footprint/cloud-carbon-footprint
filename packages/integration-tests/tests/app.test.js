@@ -79,16 +79,16 @@ test('total metric tons is loaded correctly with different dropdown selections',
 })
 
 test('carbon equivalency component displays each option when clicked', async (t) => {
-  const gasButton = Selector('#gas')
+  const flightsButton = Selector('#flights')
+  const phonesButton = Selector('#phones')
   const treesButton = Selector('#trees')
-  const milesButton = Selector('#miles')
-  const gallonsOfGas = Selector('p').withText('34,770')
+  const flightsTaken = Selector('p').withText('381')
+  const phonesCharged = Selector('p').withText('37.6+ M')
   const treeSeedlings = Selector('p').withText('5,109')
-  const milesDriven = Selector('p').withText('766,750')
 
-  await t.click(gasButton).expect(gallonsOfGas.exists).ok()
+  await t.click(flightsButton).expect(flightsTaken.exists).ok()
+  await t.click(phonesButton).expect(phonesCharged.exists).ok()
   await t.click(treesButton).expect(treeSeedlings.exists).ok()
-  await t.click(milesButton).expect(milesDriven.exists).ok()
 })
 
 test('emissions breakdown component displays each bar chart when selected', async (t) => {

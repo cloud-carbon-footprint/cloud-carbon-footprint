@@ -10,9 +10,8 @@ import { act } from 'react-dom/test-utils'
 
 import {
   CarbonComparisonCard,
-  toGas,
-  toMiles,
   toTrees,
+  toFlights,
 } from './CarbonComparisonCard'
 import { EstimationResult } from '@cloud-carbon-footprint/commmon'
 
@@ -137,7 +136,7 @@ describe('CarbonComparisonCard', () => {
     expect(epaLink).toHaveAttribute('rel', 'noopener')
   })
 
-  it.only('should open EPA page in other tab when clicking EPA link', async () => {
+  it('should open EPA page in other tab when clicking EPA link', async () => {
     const { getByText } = render(<CarbonComparisonCard data={data} />)
     const phonesButton = getByText('Phones')
     act(() => {
@@ -185,28 +184,50 @@ describe('CarbonComparisonCard', () => {
       )
     })
 
-    // TODO: Update this test for calculating flights instead of miles
-    it('should format miles', async () => {
+    it('should format flights', async () => {
       const { getByTestId } = render(<CarbonComparisonCard data={data} />)
       const co2 = getByTestId('comparison')
-      const expected = toMiles(co2kg).toLocaleString(undefined, {
+      const expected = toFlights(co2kg).toLocaleString(undefined, {
         maximumFractionDigits: 0,
       })
       expect(co2).toHaveTextContent(expected)
     })
 
-    // TODO: Update this test for calculating phones instead of gas
-    it('should format gas', async () => {
+    it('should format number of phones that are less than a million', async () => {
+      data[0].serviceEstimates[0].co2e = 8
       const { getByText, getByTestId } = render(
         <CarbonComparisonCard data={data} />,
       )
       act(() => {
-        fireEvent.click(getByText('Gas'))
+        fireEvent.click(getByText('Phones'))
       })
       const co2 = getByTestId('comparison')
-      const expected = toGas(co2kg).toLocaleString(undefined, {
-        maximumFractionDigits: 0,
+      const expected = '973,144'
+      expect(co2).toHaveTextContent(expected)
+    })
+
+    it('should format number of phones that are over a million', async () => {
+      data[0].serviceEstimates[0].co2e = 309
+      const { getByText, getByTestId } = render(
+        <CarbonComparisonCard data={data} />,
+      )
+      act(() => {
+        fireEvent.click(getByText('Phones'))
       })
+      const co2 = getByTestId('comparison')
+      const expected = '37.6+ M'
+      expect(co2).toHaveTextContent(expected)
+    })
+
+    it('should format number of phones that are over a billion', async () => {
+      const { getByText, getByTestId } = render(
+        <CarbonComparisonCard data={data} />,
+      )
+      act(() => {
+        fireEvent.click(getByText('Phones'))
+      })
+      const co2 = getByTestId('comparison')
+      const expected = '1.2+ B'
       expect(co2).toHaveTextContent(expected)
     })
 
