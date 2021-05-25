@@ -7,4 +7,4 @@
 '@cloud-carbon-footprint/integration-tests': patch
 ---
 
-Updates depedancies to the latest
+Updates dependencies to the latest
