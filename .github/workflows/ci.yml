@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [trunk, app-package]
+    branches: [trunk]
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
@@ -195,7 +195,7 @@ jobs:
             cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
             cloudcarbonfootprint/api:latest
   deploy-staging:
-    if: github.ref == 'refs/heads/app-package'
+    if: github.ref == 'refs/heads/trunk'
     needs: build
     runs-on: ubuntu-latest
     container:
