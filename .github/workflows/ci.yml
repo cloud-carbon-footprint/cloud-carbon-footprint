@@ -243,6 +243,9 @@ jobs:
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
+          rm yarn.lock
+          rm package.json
+
           cd dist-workspace/packages/api
           yarn install
           ./create_server_env_file.sh
@@ -314,6 +317,9 @@ jobs:
           cp packages/api/app-production.yaml dist-workspace/packages/api
 
           cp packages/client/app-production.yaml dist-workspace/packages/client
+
+          rm yarn.lock
+          rm package.json
 
           cd dist-workspace/packages/api
           yarn install
