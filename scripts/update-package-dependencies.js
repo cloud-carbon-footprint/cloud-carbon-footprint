@@ -64,7 +64,7 @@ function updatePackageDepencies(packageNames, currentPackageName) {
       const localDeps = Object.keys(packageJSON.dependencies)
         .filter((key) => key === `@cloud-carbon-footprint/${name}`)
         .pop()
-      packageJSON.dependencies[localDeps] = `./${name}`
+      packageJSON.dependencies[localDeps] = `file:./${name}`
     })
 
     fs.writeFile(
