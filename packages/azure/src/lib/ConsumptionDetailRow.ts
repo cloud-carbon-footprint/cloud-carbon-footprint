@@ -4,6 +4,7 @@
 
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import { UsageDetail } from '@azure/arm-consumption/esm/models'
+
 import {
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
   VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,

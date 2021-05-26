@@ -1,6 +1,8 @@
 export {
   CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   CLOUD_CONSTANTS,
+  CloudConstantsByProvider,
+  CloudConstantsEmissionsFactors,
   getWattsByAverageOrMedian,
   getAverage,
   estimateCo2,
@@ -31,3 +33,4 @@ export { default as StorageUsage } from './StorageUsage'
 export { default as NetworkingUsage } from './NetworkingUsage'
 export { default as MemoryUsage } from './MemoryUsage'
 export { default as BillingDataRow } from './BillingDataRow'
+export { default as CloudConstantsUsage } from './CloudConstantsUsage'

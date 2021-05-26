@@ -2,10 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { ConsumptionManagementService } from '@cloud-carbon-footprint/core'
-import AzureCredentialsProvider from '@cloud-carbon-footprint/azure/application/AzureCredentialsProvider'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import AzureAccount from '@cloud-carbon-footprint/azure/application/AzureAccount'
+
+import AzureAccount from '../application/AzureAccount'
+import AzureCredentialsProvider from '../application/AzureCredentialsProvider'
+import ConsumptionManagementService from '../lib/ConsumptionManagement'
 
 const mockListSubscriptions = { list: jest.fn() }
 

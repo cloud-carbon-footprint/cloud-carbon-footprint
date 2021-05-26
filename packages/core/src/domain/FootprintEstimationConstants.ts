@@ -7,7 +7,7 @@ import { AWS_REGIONS } from '../services/aws/AWSRegions'
 import { GCP_REGIONS } from '../services/gcp/GCPRegions'
 import { COMPUTE_PROCESSOR_TYPES } from './ComputeProcessorTypes'
 
-type CloudConstantsByProvider = {
+export type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
   HDDCOEFFICIENT: number
   MEMORY_AVG?: number
@@ -31,6 +31,10 @@ type CloudConstantsByProvider = {
 
 type CloudConstants = {
   [cloudProvider: string]: CloudConstantsByProvider
+}
+
+export type CloudConstantsEmissionsFactors = {
+  [region: string]: number
 }
 
 // the cloud constants are very repetitive for each cloud provider
@@ -299,11 +303,8 @@ export function getAverage(nums: number[]): number {
 
 export function estimateCo2(
   estimatedWattHours: number,
-  cloudProvider: string,
   region: string,
+  emissionsFactors?: CloudConstantsEmissionsFactors,
 ): number {
-  return (
-    estimatedWattHours *
-    CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[cloudProvider][region]
-  )
+  return estimatedWattHours * emissionsFactors[region]
 }

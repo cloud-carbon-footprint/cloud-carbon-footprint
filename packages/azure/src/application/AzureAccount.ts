@@ -11,17 +11,17 @@ import { ApplicationTokenCredentials } from '@azure/ms-rest-nodeauth'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import {
-  ConsumptionManagementService,
   ComputeEstimator,
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
   CLOUD_CONSTANTS,
 } from '@cloud-carbon-footprint/core'
-
 import { CloudProviderAccount } from '@cloud-carbon-footprint/app'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+
+import ConsumptionManagementService from '../lib/ConsumptionManagement'
 
 export default class AzureAccount extends CloudProviderAccount {
   private credentials: ApplicationTokenCredentials | ServiceClientCredentials

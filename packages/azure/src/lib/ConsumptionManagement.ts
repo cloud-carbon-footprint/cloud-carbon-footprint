@@ -2,11 +2,12 @@
  * © 2021 ThoughtWorks, Inc.
  */
 import moment, { unitOfTime } from 'moment'
+import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import {
   UsageDetail,
   UsageDetailsListResult,
 } from '@azure/arm-consumption/esm/models'
-import { ConsumptionManagementClient } from '@azure/arm-consumption'
+
 import {
   configLoader,
   Logger,
@@ -28,7 +29,10 @@ import {
   getPhysicalChips,
   CLOUD_CONSTANTS,
   COMPUTE_PROCESSOR_TYPES,
+  CloudConstantsUsage,
+  CloudConstantsEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
+
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
@@ -51,6 +55,11 @@ import {
   CACHE_MEMORY_GB,
   TenantHeaders,
 } from './ConsumptionTypes'
+
+import {
+  AZURE_CLOUD_CONSTANTS,
+  AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from '../domain'
 
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger
@@ -185,13 +194,21 @@ export default class ConsumptionManagementService {
   private getEstimateByPricingUnit(
     consumptionDetailRow: ConsumptionDetailRow,
   ): FootprintEstimate {
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      this.getEmissionsFactors()
+    const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
+      consumptionDetailRow.region,
+    )
     switch (consumptionDetailRow.usageUnit) {
       case COMPUTE_USAGE_UNITS.HOUR_1:
       case COMPUTE_USAGE_UNITS.HOURS_10:
       case COMPUTE_USAGE_UNITS.HOURS_100:
       case COMPUTE_USAGE_UNITS.HOURS_1000:
-        const computeFootprint =
-          this.getComputeFootprintEstimate(consumptionDetailRow)
+        const computeFootprint = this.getComputeFootprintEstimate(
+          consumptionDetailRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
 
         const memoryFootprint =
           this.getMemoryFootprintEstimate(consumptionDetailRow)
@@ -289,6 +306,8 @@ export default class ConsumptionManagementService {
 
   private getComputeFootprintEstimate(
     consumptionDetailRow: ConsumptionDetailRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeProcessors = this.getComputeProcessorsFromUsageType(
       consumptionDetailRow.usageType,
@@ -301,11 +320,19 @@ export default class ConsumptionManagementService {
       usesAverageCPUConstant: true,
     }
 
+    const computeConstants: CloudConstantsUsage = {
+      minWatts: this.getMinwatts(computeProcessors),
+      maxWatts: this.getMaxwatts(computeProcessors),
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
+
     return this.computeEstimator.estimate(
       [computeUsage],
       consumptionDetailRow.region,
       'AZURE',
+      emissionsFactors,
       computeProcessors,
+      computeConstants,
     )[0]
   }
 
@@ -547,5 +574,29 @@ export default class ConsumptionManagementService {
       VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
     ).includes(seriesName)
     return { isValidInstanceType }
+  }
+
+  private getMinwatts(computeProcessors: string[]): number {
+    return AZURE_CLOUD_CONSTANTS.getMinWatts(computeProcessors)
+  }
+
+  private getMaxwatts(computeProcessors: string[]): number {
+    return AZURE_CLOUD_CONSTANTS.getMaxWatts(computeProcessors)
+  }
+
+  private getPowerUsageEffectiveness(region: string): number {
+    return AZURE_CLOUD_CONSTANTS.getPUE(region)
+  }
+
+  private getNetworkingCoefficient(): number {
+    return AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT
+  }
+
+  private getCpuUtilizationAverage(): number {
+    return AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
+  }
+
+  private getEmissionsFactors(): { [region: string]: number } {
+    return AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
   }
 }
