@@ -93,6 +93,8 @@ fileignoreconfig:
   checksum: 55126e27e72ead83fdfd451ba1e0109199692703db45a5af1a639e367422b004
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
   checksum: f510cdb57ef982213cad2da27184a226c8ce4353b9821fa8d00767599cbf2cfa
+- filename: packages/core/src/services/aws/__tests__/RDSStorage.test.ts
+  checksum: a6db0f870691981e2f7bfb3999382462862be4f52c167d5bb3eefd0af5b0c1d4
 - filename: packages/core/src/services/azure/ConsumptionManagement.ts
   checksum: 27fa921d2e5c1fbb1044db6487348dc79fa57a4fc3ff10cea561e94d60d8e460
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
