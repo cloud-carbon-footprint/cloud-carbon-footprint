@@ -490,23 +490,23 @@ or submit an issue or pull request.
 
 | Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| US Central       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East          | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East 2        | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US East 3        | Georgia     | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US North Central | Illinois    | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US South Central | Texas       | TRE         | 0.000396293           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West Central  | Wyoming     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West          | California  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West 2        | Washington  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| US West 3        | Arizona     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| AP East          | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| AP Southeast     | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
-| EU North         | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| EU West          | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| IN Central       | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| IN South         | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| IN West          | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| Central US       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US          | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 2        | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 3        | Georgia     | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| North Central US | Illinois    | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| South Central US | Texas       | TRE         | 0.000396293           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West Central US  | Wyoming     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US          | California  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US 2        | Washington  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US 3        | Arizona     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East Asia        | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| Southeast Asia   | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
+| North Europe     | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
+| West Europe      | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
+| Central India    | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| South India      | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| West India       | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 | UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
 | UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
 
