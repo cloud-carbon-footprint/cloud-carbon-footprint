@@ -246,9 +246,11 @@ jobs:
           rm yarn.lock
           rm package.json
 
-          # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
           cd dist-workspace/packages/api
+          # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
           npm install --package-lock-only --quiet
+          # We also need the sub packages node_modules installed, even though api/node_modules is ignored.
+          NODE_ENV=production npm ci --quiet
           ./create_server_env_file.sh
           cd ../../..
 
@@ -319,8 +321,9 @@ jobs:
           rm package.json
 
           # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
-          cd dist-workspace/packages/api
           npm install --package-lock-only --quiet
+          # We also need the sub packages node_modules installed, even though api/node_modules is ignored.
+          NODE_ENV=production npm ci --quiet
           ./create_server_env_file.sh
           cd ../../..
 
