@@ -1,10 +1,12 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { median } from 'ramda'
-
+import {
+  getAverage,
+  getWattsByAverageOrMedian,
+  COMPUTE_PROCESSOR_TYPES,
+} from '@cloud-carbon-footprint/core'
 import { AZURE_REGIONS } from '../lib/AzureRegions'
-import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core/domain/ComputeProcessorTypes'
 
 type CloudConstantsByProvider = {
   SSDCOEFFICIENT: number
@@ -54,13 +56,15 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstants = {
     getMemory: (computeProcessors: string[]): number => {
       const memoryForProcessors: number[] = computeProcessors.map(
         (processor: string) => {
-          return CLOUD_CONSTANTS.AZURE.MEMORY_BY_COMPUTE_PROCESSOR[processor]
+          return AZURE_CLOUD_CONSTANTS.AZURE.MEMORY_BY_COMPUTE_PROCESSOR[
+            processor
+          ]
         },
       )
       const averageMemoryForProcessors = getAverage(memoryForProcessors)
       return averageMemoryForProcessors
         ? averageMemoryForProcessors
-        : CLOUD_CONSTANTS.AZURE.MEMORY_AVG
+        : AZURE_CLOUD_CONSTANTS.AZURE.MEMORY_AVG
     },
     MIN_WATTS_AVG: 0.77,
     MIN_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -77,7 +81,9 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstants = {
     getMinWatts: (computeProcessors: string[]): number => {
       const minWattsForProcessors: number[] = computeProcessors.map(
         (processor: string) => {
-          return CLOUD_CONSTANTS.AZURE.MIN_WATTS_BY_COMPUTE_PROCESSOR[processor]
+          return AZURE_CLOUD_CONSTANTS.AZURE.MIN_WATTS_BY_COMPUTE_PROCESSOR[
+            processor
+          ]
         },
       )
       const averageWattsForProcessors = getWattsByAverageOrMedian(
@@ -86,7 +92,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstants = {
       )
       return averageWattsForProcessors
         ? averageWattsForProcessors
-        : CLOUD_CONSTANTS.AZURE.MIN_WATTS_AVG
+        : AZURE_CLOUD_CONSTANTS.AZURE.MIN_WATTS_AVG
     },
     MAX_WATTS_AVG: 3.74,
     MAX_WATTS_BY_COMPUTE_PROCESSOR: {
@@ -103,7 +109,9 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstants = {
     getMaxWatts: (computeProcessors: string[]): number => {
       const maxWattsForProcessors: number[] = computeProcessors.map(
         (processor: string) => {
-          return CLOUD_CONSTANTS.AZURE.MAX_WATTS_BY_COMPUTE_PROCESSOR[processor]
+          return AZURE_CLOUD_CONSTANTS.AZURE.MAX_WATTS_BY_COMPUTE_PROCESSOR[
+            processor
+          ]
         },
       )
       const averageWattsForProcessors = getWattsByAverageOrMedian(
@@ -112,13 +120,13 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstants = {
       )
       return averageWattsForProcessors
         ? averageWattsForProcessors
-        : CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
+        : AZURE_CLOUD_CONSTANTS.AZURE.MAX_WATTS_AVG
     },
     NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
     MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
     PUE_AVG: 1.185,
     getPUE: (): number => {
-      return CLOUD_CONSTANTS.AZURE.PUE_AVG
+      return AZURE_CLOUD_CONSTANTS.AZURE.PUE_AVG
     },
     AVG_CPU_UTILIZATION_2020: 50,
   },

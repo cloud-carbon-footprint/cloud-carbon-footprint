@@ -12,16 +12,23 @@ import {
   Logger,
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
-import ComputeEstimator from '@cloud-carbon-footprint/core/domain/ComputeEstimator'
-import { StorageEstimator } from '@cloud-carbon-footprint/core/domain/StorageEstimator'
-import NetworkingEstimator from '@cloud-carbon-footprint/core/domain/NetworkingEstimator'
-import MemoryEstimator from '@cloud-carbon-footprint/core/domain/MemoryEstimator'
-import ComputeUsage from '@cloud-carbon-footprint/core/domain/ComputeUsage'
-import { CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core/domain/FootprintEstimationConstants'
-import FootprintEstimate, {
+import {
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  ComputeUsage,
+  StorageUsage,
+  NetworkingUsage,
+  MemoryUsage,
+  FootprintEstimate,
   appendOrAccumulateEstimatesByDay,
   MutableEstimationResult,
-} from '@cloud-carbon-footprint/core/domain/FootprintEstimate'
+  calculateGigabyteHours,
+  getPhysicalChips,
+  CLOUD_CONSTANTS,
+  COMPUTE_PROCESSOR_TYPES,
+} from '@cloud-carbon-footprint/core'
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
@@ -44,11 +51,6 @@ import {
   CACHE_MEMORY_GB,
   TenantHeaders,
 } from './ConsumptionTypes'
-import StorageUsage from '@cloud-carbon-footprint/core/domain/StorageUsage'
-import NetworkingUsage from '@cloud-carbon-footprint/core/domain/NetworkingUsage'
-import MemoryUsage from '@cloud-carbon-footprint/core/domain/MemoryUsage'
-import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core/domain/ComputeProcessorTypes'
-import { calculateGigabyteHours, getPhysicalChips } from '@cloud-carbon-footprint/core/services/common'
 
 export default class ConsumptionManagementService {
   private readonly consumptionManagementLogger: Logger

@@ -4,4 +4,4 @@
 
 export * from './aws'
 export * from './gcp'
-export * from '../../../azure/src/lib'
+export * from './common'

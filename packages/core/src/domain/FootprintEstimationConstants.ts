@@ -278,7 +278,7 @@ export const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
 // However when the group contains either the Sandy Bridge or Ivy Bridge processor type, we calculate the median.
 // This is because those processor types are outliers with much higher min/max watts that the other types, so we
 // want to take this into account to not over estimate the compute energy in kilowatts.
-function getWattsByAverageOrMedian(
+export function getWattsByAverageOrMedian(
   computeProcessors: string[],
   wattsForProcessors: number[],
 ): number {
@@ -291,7 +291,7 @@ function getWattsByAverageOrMedian(
   return getAverage(wattsForProcessors)
 }
 
-function getAverage(nums: number[]): number {
+export function getAverage(nums: number[]): number {
   if (!nums.length) return 0
   if (nums.length === 1) return nums[0]
   return nums.reduce((a, b) => a + b) / nums.length

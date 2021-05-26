@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import BillingDataRow from '@cloud-carbon-footprint/core/domain/BillingDataRow'
+import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import { UsageDetail } from '@azure/arm-consumption/esm/models'
 import {
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
