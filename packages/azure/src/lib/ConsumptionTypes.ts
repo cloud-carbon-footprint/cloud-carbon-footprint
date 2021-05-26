@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { QUERY_DATE_TYPES } from '../common/types'
+import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/core/services/common/types'
 
 export type TenantHeaders = {
   [key: string]: string

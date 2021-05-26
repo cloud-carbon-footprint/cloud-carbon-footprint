@@ -8,7 +8,7 @@ import {
   cascadeLakeSkylake,
   cascadeLakeSkylakeBroadwell,
   cascadeLakeHaswell,
-} from '../../domain/ComputeProcessorTypes'
+} from '@cloud-carbon-footprint/core/domain/ComputeProcessorTypes'
 
 export const VIRTUAL_MACHINE_TYPE_SERIES_MAPPING: {
   [series: string]: { [instanceType: string]: number[] } // [vcpus, memory]

@@ -3,9 +3,9 @@
  */
 
 import { ConsumptionManagementService } from '@cloud-carbon-footprint/core'
-import AzureCredentialsProvider from '../AzureCredentialsProvider'
+import AzureCredentialsProvider from '@cloud-carbon-footprint/azure/application/AzureCredentialsProvider'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import AzureAccount from '../AzureAccount'
+import AzureAccount from '@cloud-carbon-footprint/azure/application/AzureAccount'
 
 const mockListSubscriptions = { list: jest.fn() }
 

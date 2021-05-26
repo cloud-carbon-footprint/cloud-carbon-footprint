@@ -7,12 +7,12 @@ import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
 
-import ComputeEstimator from '../../../domain/ComputeEstimator'
-import { StorageEstimator } from '../../../domain/StorageEstimator'
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
-import NetworkingEstimator from '../../../domain/NetworkingEstimator'
-import MemoryEstimator from '../../../domain/MemoryEstimator'
-import ConsumptionManagementService from '../ConsumptionManagement'
+import ComputeEstimator from '@cloud-carbon-footprint/core/domain/ComputeEstimator'
+import { StorageEstimator } from '@cloud-carbon-footprint/core/domain/StorageEstimator'
+import { CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core/domain/FootprintEstimationConstants'
+import NetworkingEstimator from '@cloud-carbon-footprint/core/domain/NetworkingEstimator'
+import MemoryEstimator from '@cloud-carbon-footprint/core/domain/MemoryEstimator'
+import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import {
   mockConsumptionManagementResponseFour,
   mockConsumptionManagementResponseOne,

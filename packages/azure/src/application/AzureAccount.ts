@@ -19,7 +19,7 @@ import {
   CLOUD_CONSTANTS,
 } from '@cloud-carbon-footprint/core'
 
-import CloudProviderAccount from './CloudProviderAccount'
+import CloudProviderAccount from '@cloud-carbon-footprint/app/CloudProviderAccount'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 

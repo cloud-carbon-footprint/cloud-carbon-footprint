@@ -1,0 +1,68 @@
+{
+  "name": "@cloud-carbon-footprint/azure",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Microsoft Azure.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js"
+  },
+  "homepage": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.git",
+    "directory": "packages/azure"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
+  "scripts": {
+    "precommit": "lint-staged --no-stash && yarn test --coverage --runInBand --bail",
+    "test": "jest",
+    "type-check": "tsc --noEmit",
+    "sonar:scan": "sonar-scanner",
+    "test:watch": "yarn test --coverage --watchAll",
+    "build": "rimraf dist && yarn build:tsc && yarn prepack && cp package.json dist && yarn postpack",
+    "build:workspace": "mkdir -p ../../dist-workspace/packages/app/dist && cp -R dist ../../dist-workspace/packages/app && mv ../../dist-workspace/packages/app/dist/package.json ../../dist-workspace/packages/app",
+    "build:update": "node ../../scripts/update-package-dependencies.js app core common",
+    "prepack": "ts-node ../../scripts/prepack.ts",
+    "postpack": "ts-node ../../scripts/postpack.ts",
+    "build:tsc": "tsc --build tsconfig.json",
+    "build:watch": "onchange 'src/**/*.ts' -- yarn build",
+    "view:coverage": "serve coverage/lcov-report",
+    "clean": "rm -rf coverage src/**/*.js src/**/*.map",
+    "lint": "eslint '*/**/*.ts' --quiet",
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
+  },
+  "dependencies": {
+    "@azure/arm-consumption": "^6.3.0",
+    "@azure/arm-subscriptions": "^3.0.0",
+    "@azure/ms-rest-js": "^2.2.3",
+    "@azure/ms-rest-nodeauth": "^3.0.7",
+    "@cloud-carbon-footprint/common": "^0.0.1",
+    "@cloud-carbon-footprint/core": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-unused-imports": "^1.1.1",
+    "jest": "^27.0.1",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0",
+    "ts-jest": "^27.0.0",
+    "ts-node": "^10.0.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.4"
+  }
+}

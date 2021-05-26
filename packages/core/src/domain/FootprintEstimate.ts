@@ -5,7 +5,7 @@
 import { reduceBy } from 'ramda'
 import CostAndUsageReportsRow from '../services/aws/CostAndUsageReportsRow'
 import BillingExportRow from '../services/gcp/BillingExportRow'
-import ConsumptionDetailRow from '../services/azure/ConsumptionDetailRow'
+import ConsumptionDetailRow from '../../../azure/src/lib/ConsumptionDetailRow'
 
 export default interface FootprintEstimate {
   timestamp: Date
