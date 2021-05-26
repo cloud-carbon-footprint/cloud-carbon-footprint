@@ -2,14 +2,14 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import IFootprintEstimator from './IFootprintEstimator'
-import FootprintEstimate from './FootprintEstimate'
-import ComputeUsage from './ComputeUsage'
 import {
   CloudConstantsEmissionsFactors,
+  CloudConstantsUsage,
+  ComputeUsage,
   estimateCo2,
-} from './FootprintEstimationConstants'
-import CloudConstantsUsage from './CloudConstantsUsage'
+  FootprintEstimate,
+  IFootprintEstimator,
+} from '.'
 
 //averageCPUUtilization expected to be in percentage
 const ENERGY_ESTIMATION_FORMULA = (
@@ -31,16 +31,16 @@ export default class ComputeEstimator implements IFootprintEstimator {
   estimate(
     data: ComputeUsage[],
     region: string,
-    emissionsFactors?: CloudConstantsEmissionsFactors,
-    constants?: CloudConstantsUsage,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): FootprintEstimate[] {
     return data.map((usage) => {
       const estimatedKilowattHours = ENERGY_ESTIMATION_FORMULA(
         usage.cpuUtilizationAverage,
         usage.numberOfvCpus,
-        constants?.minWatts,
-        constants?.maxWatts,
-        constants?.powerUsageEffectiveness,
+        constants.minWatts,
+        constants.maxWatts,
+        constants.powerUsageEffectiveness,
       )
 
       const estimatedCO2Emissions = estimateCo2(

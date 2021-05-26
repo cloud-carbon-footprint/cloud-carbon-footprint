@@ -100,7 +100,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -230,7 +230,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -307,7 +307,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -359,7 +359,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -423,7 +423,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -482,7 +482,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -561,7 +561,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -628,7 +628,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -663,7 +663,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -707,7 +707,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )
@@ -724,7 +724,7 @@ describe('CostAndUsageReports Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
     )

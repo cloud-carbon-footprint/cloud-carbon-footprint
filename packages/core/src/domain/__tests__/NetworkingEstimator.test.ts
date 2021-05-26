@@ -15,7 +15,7 @@ describe('NetworkingEstimator', () => {
       },
     ]
 
-    const result = new NetworkingEstimator().estimate(
+    const result = new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT).estimate(
       input,
       AWS_REGIONS.US_EAST_1,
       'AWS',
@@ -38,7 +38,7 @@ describe('NetworkingEstimator', () => {
       },
     ]
 
-    const result = new NetworkingEstimator().estimate(
+    const result = new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT).estimate(
       input,
       GCP_REGIONS.SOUTHAMERICA_EAST1,
       'GCP',

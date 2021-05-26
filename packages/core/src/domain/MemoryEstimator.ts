@@ -2,10 +2,14 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import IFootprintEstimator from './IFootprintEstimator'
-import FootprintEstimate from './FootprintEstimate'
-import { CLOUD_CONSTANTS, estimateCo2 } from './FootprintEstimationConstants'
-import MemoryUsage from './MemoryUsage'
+import {
+  CloudConstantsEmissionsFactors,
+  CloudConstantsUsage,
+  MemoryUsage,
+  estimateCo2,
+  FootprintEstimate,
+  IFootprintEstimator,
+} from '.'
 
 export default class MemoryEstimator implements IFootprintEstimator {
   coefficient: number
@@ -17,18 +21,18 @@ export default class MemoryEstimator implements IFootprintEstimator {
   estimate(
     data: MemoryUsage[],
     region: string,
-    cloudProvider: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): FootprintEstimate[] {
     return data.map((data: MemoryUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(
         data.gigabyteHours,
-        cloudProvider,
-        region,
+        constants.powerUsageEffectiveness,
       )
       const estimatedCO2Emissions = estimateCo2(
         estimatedKilowattHours,
-        cloudProvider,
         region,
+        emissionsFactors,
       )
       return {
         timestamp: data.timestamp,
@@ -39,15 +43,10 @@ export default class MemoryEstimator implements IFootprintEstimator {
   }
   private estimateKilowattHours(
     gigabyteHours: number,
-    cloudProvider: string,
-    region: string,
+    powerUsageEffectiveness: number,
   ) {
     // This function multiplies the usage amount in gigabyte hours by the memory coefficient then the cloud provider PUE,
     // to get estimated kilowatt hours.
-    return (
-      gigabyteHours *
-      this.coefficient *
-      CLOUD_CONSTANTS[cloudProvider].getPUE(region)
-    )
+    return gigabyteHours * this.coefficient * powerUsageEffectiveness
   }
 }

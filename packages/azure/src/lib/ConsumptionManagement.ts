@@ -89,15 +89,17 @@ export default class ConsumptionManagementService {
     const results: MutableEstimationResult[] = []
 
     allUsageRows.map((consumptionRow: UsageDetail) => {
-      const consumptionDetailRow: ConsumptionDetailRow =
-        new ConsumptionDetailRow(consumptionRow)
+      const consumptionDetailRow: ConsumptionDetailRow = new ConsumptionDetailRow(
+        consumptionRow,
+      )
 
       this.updateTimestampByWeek(consumptionDetailRow)
 
       if (this.isUnsupportedUsage(consumptionDetailRow)) return []
 
-      const footprintEstimate =
-        this.getEstimateByPricingUnit(consumptionDetailRow)
+      const footprintEstimate = this.getEstimateByPricingUnit(
+        consumptionDetailRow,
+      )
 
       if (footprintEstimate) {
         appendOrAccumulateEstimatesByDay(
@@ -128,10 +130,9 @@ export default class ConsumptionManagementService {
     let retry = false
     while (usageRows.nextLink) {
       try {
-        const nextUsageRows =
-          await this.consumptionManagementClient.usageDetails.listNext(
-            usageRows.nextLink,
-          )
+        const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
+          usageRows.nextLink,
+        )
         allUsageRows.push(...nextUsageRows)
         usageRows = nextUsageRows
       } catch (e) {
@@ -194,8 +195,7 @@ export default class ConsumptionManagementService {
   private getEstimateByPricingUnit(
     consumptionDetailRow: ConsumptionDetailRow,
   ): FootprintEstimate {
-    const emissionsFactors: CloudConstantsEmissionsFactors =
-      this.getEmissionsFactors()
+    const emissionsFactors: CloudConstantsEmissionsFactors = this.getEmissionsFactors()
     const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
       consumptionDetailRow.region,
     )
@@ -210,8 +210,9 @@ export default class ConsumptionManagementService {
           emissionsFactors,
         )
 
-        const memoryFootprint =
-          this.getMemoryFootprintEstimate(consumptionDetailRow)
+        const memoryFootprint = this.getMemoryFootprintEstimate(
+          consumptionDetailRow,
+        )
 
         // if memory usage, only return the memory footprint
         if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
@@ -275,8 +276,9 @@ export default class ConsumptionManagementService {
   private getStorageFootprintEstimate(
     consumptionDetailRow: ConsumptionDetailRow,
   ) {
-    const usageAmountTerabyteHours =
-      this.getUsageAmountInTerabyteHours(consumptionDetailRow)
+    const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
+      consumptionDetailRow,
+    )
 
     const storageUsage: StorageUsage = {
       timestamp: consumptionDetailRow.timestamp,
@@ -329,9 +331,7 @@ export default class ConsumptionManagementService {
     return this.computeEstimator.estimate(
       [computeUsage],
       consumptionDetailRow.region,
-      'AZURE',
       emissionsFactors,
-      computeProcessors,
       computeConstants,
     )[0]
   }
@@ -548,8 +548,10 @@ export default class ConsumptionManagementService {
     )
 
     // grab the vcpu and memory (gb) from the largest instance type in the family
-    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
-      seriesInstanceTypes[seriesInstanceTypes.length - 1]
+    const [
+      largestInstanceTypevCpus,
+      largestInstanceTypeMemory,
+    ] = seriesInstanceTypes[seriesInstanceTypes.length - 1]
 
     return calculateGigabyteHours(
       getPhysicalChips(largestInstanceTypevCpus),

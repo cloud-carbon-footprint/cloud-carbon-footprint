@@ -53,7 +53,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new ComputeEstimator(),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
       new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(),
+      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
       new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
       new BigQuery({ projectId: this.projectId }),
     )
