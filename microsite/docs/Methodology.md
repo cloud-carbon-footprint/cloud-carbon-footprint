@@ -66,8 +66,8 @@ This pulls usage and cost data from all linked accounts in your AWS, GCP, or Azu
 Before estimating the energy and carbon emission, we validate whether a given usage is Compute, Storage, Networking, Memory or Unknown, with Unknown being unused in the estimation formula. You can see our classifications of these usage types in following files:
 
 - AWS: packages/core/src/services/aws/CostAndUsageTypes.ts
-- GCP: packages/core/services/gcp/BillingExportTypes.ts
-- Azure: packages/core/services/azure/ConsumptionTypes.ts
+- GCP: packages/core/src/services/gcp/BillingExportTypes.ts
+- Azure: packages/core/src/services/azure/ConsumptionTypes.ts
 
 The process by which we classified the usage types is:
 
