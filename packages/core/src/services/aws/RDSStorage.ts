@@ -79,7 +79,7 @@ export default class RDSStorage implements ICloudService {
       return DiskType.SSD
     if (
       awsGroupKey.endsWith('StorageUsage') ||
-      awsGroupKey.endsWith('RDS:ChargedBackupUsage')
+      awsGroupKey.endsWith('ChargedBackupUsage')
     )
       return DiskType.HDD
     this.rdsStorageLogger.warn(
