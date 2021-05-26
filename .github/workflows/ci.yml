@@ -243,14 +243,15 @@ jobs:
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
           rm yarn.lock
           rm package.json
 
           cd dist-workspace/packages/api
-          # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
-          npm install --package-lock-only --quiet
-          # We also need the sub packages node_modules installed, even though api/node_modules is ignored.
-          NODE_ENV=production npm ci --quiet
+          # Generate yarn.lock file
+          yarn install
           ./create_server_env_file.sh
           cd ../../..
 
@@ -317,13 +318,15 @@ jobs:
 
           cp packages/client/app-production.yaml dist-workspace/packages/client
 
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
           rm yarn.lock
           rm package.json
 
-          # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
-          npm install --package-lock-only --quiet
-          # We also need the sub packages node_modules installed, even though api/node_modules is ignored.
-          NODE_ENV=production npm ci --quiet
+          cd dist-workspace/packages/api
+          # Generate yarn.lock file
+          yarn install
           ./create_server_env_file.sh
           cd ../../..
 
