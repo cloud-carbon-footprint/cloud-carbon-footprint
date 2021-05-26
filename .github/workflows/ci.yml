@@ -88,7 +88,6 @@ jobs:
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
         run: |
-          cp packages/client/.env dist-workspace/packages/client
           cd packages/client
           ./create_client_env_file.sh
           yarn build
@@ -242,7 +241,6 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cp packages/api/.env dist-workspace/packages/api
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
 
@@ -311,7 +309,6 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
-          cp packages/api/.env dist-workspace/packages/api
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-production.yaml dist-workspace/packages/api
 
