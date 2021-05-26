@@ -95,8 +95,6 @@ jobs:
       - name: build-workspace
         run: |
           yarn lerna run build:workspace
-          cp package.json dist-workspace
-          cp yarn.lock dist-workspace
           # replacing local @cloud-carbon-footprint dependencies with a local reference
           yarn lerna run build:update --scope @cloud-carbon-footprint/common --scope @cloud-carbon-footprint/core --scope @cloud-carbon-footprint/app --scope @cloud-carbon-footprint/api --scope @cloud-carbon-footprint/client
       - uses: actions/upload-artifact@v2
@@ -245,13 +243,14 @@ jobs:
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
+          rm yarn.lock
+          rm package.json
+
+          # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
           cd dist-workspace/packages/api
+          npm install --package-lock-only --quiet
           ./create_server_env_file.sh
           cd ../../..
-
-          cd dist-workspace
-          yarn install
-          cd ..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -319,13 +318,11 @@ jobs:
           rm yarn.lock
           rm package.json
 
+          # We need to deploy a package-lock.json file so that App Engine can resolve the local dependencies
           cd dist-workspace/packages/api
+          npm install --package-lock-only --quiet
           ./create_server_env_file.sh
           cd ../../..
-
-          cd dist-workspace
-          yarn install
-          cd ..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
