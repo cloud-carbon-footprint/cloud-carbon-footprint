@@ -121,11 +121,11 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
   ({ data }) => {
     const classes = useStyles()
     const [selection, setSelection] = useState('flights')
-    const mtSum: number = sumCO2(data)
+    const totalMetricTons: number = sumCO2(data)
 
-    const totalFlights = toFlights(mtSum)
-    const totalPhones = toPhones(mtSum)
-    const treesSum = toTrees(mtSum)
+    const totalFlights = toFlights(totalMetricTons)
+    const totalPhones = toPhones(totalMetricTons)
+    const totalTrees = toTrees(totalMetricTons)
 
     const formatNumber = (number: number, decimalPlaces = 0) => {
       if (number >= 1000000000) return `${(number / 1000000000).toFixed(1)}+ B`
@@ -156,7 +156,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
       },
       trees: {
         icon: <Eco className={classes.icon} data-testid="treesIcon" />,
-        total: treesSum,
+        total: totalTrees,
         textOne: 'carbon sequestered by',
         textTwo: 'tree seedlings grown for 10 years',
       },
@@ -183,9 +183,9 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
 
     const currentSource = sources[selection] || sources.epa
 
-    return (
-      <Card className={classes.root} id="carbonComparisonCard">
-        {mtSum ? (
+    if (totalMetricTons) {
+      return (
+        <Card className={classes.root} id="carbonComparisonCard">
           <div>
             <CardContent className={classes.topContainer}>
               <Typography className={classes.title} gutterBottom>
@@ -198,7 +198,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
                 component="p"
                 data-testid="co2"
               >
-                {formatNumber(mtSum, 1)} metric tons CO2e
+                {formatNumber(totalMetricTons, 1)} metric tons CO2e
               </Typography>
               <Typography className={classes.posOne}>
                 that is equivalent to
@@ -269,14 +269,15 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
                 className={classes.sourceLink}
               >
                 {currentSource.title}{' '}
-                <OpenInNew
-                  fontSize={'small'}
-                  className={classes.openIcon}
-                ></OpenInNew>
+                <OpenInNew fontSize={'small'} className={classes.openIcon} />
               </Link>
             </Typography>
           </div>
-        ) : (
+        </Card>
+      )
+    } else {
+      return (
+        <Card className={classes.root} id="carbonComparisonCard">
           <div>
             <CardContent className={classes.topContainer}>
               <Typography
@@ -292,9 +293,9 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               <NoDataPage isTop={false} />
             </div>
           </div>
-        )}
-      </Card>
-    )
+        </Card>
+      )
+    }
   }
 
 type CarbonComparisonCardProps = {
