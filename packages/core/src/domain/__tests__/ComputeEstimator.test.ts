@@ -3,9 +3,13 @@
  */
 
 import ComputeEstimator from '../ComputeEstimator'
-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
 
 describe('ComputeEstimator', () => {
+  const awsConstants = {
+    powerUsageEffectiveness: 1.135,
+    minWatts: 0.71,
+    maxWatts: 3.46,
+  }
   it('do estimates for AWS US East 1 region', () => {
     const input = [
       {
@@ -15,11 +19,15 @@ describe('ComputeEstimator', () => {
         usesAverageCPUConstant: false,
       },
     ]
-
+    const awsUsEast1Region = 'us-east-1'
+    const awsEmissionsFactors = {
+      [awsUsEast1Region]: 0.000415755,
+    }
     const result = new ComputeEstimator().estimate(
       input,
-      AWS_REGIONS.US_EAST_1,
-      'AWS',
+      awsUsEast1Region,
+      awsEmissionsFactors,
+      awsConstants,
     )
 
     expect(result).toEqual([
@@ -41,11 +49,15 @@ describe('ComputeEstimator', () => {
         usesAverageCPUConstant: false,
       },
     ]
-
+    const awsAfSouth1Region = 'af-south-1'
+    const awsEmissionsFactors = {
+      [awsAfSouth1Region]: 0.000928,
+    }
     const result = new ComputeEstimator().estimate(
       input,
-      AWS_REGIONS.AF_SOUTH_1,
-      'AWS',
+      awsAfSouth1Region,
+      awsEmissionsFactors,
+      awsConstants,
     )
 
     expect(result).toEqual([

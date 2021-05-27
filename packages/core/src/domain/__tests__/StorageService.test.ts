@@ -53,6 +53,14 @@ describe('StorageService', () => {
       testSDDService.getUsage = getUsageMock
     })
 
+    const awsUsEast1Region = 'us-east-1'
+    const awsEmissionsFactors = {
+      [awsUsEast1Region]: 0.000415755,
+    }
+    const awsConstants = {
+      powerUsageEffectiveness: 1.135,
+    }
+
     it('should return estimates for the HDD storage usage of a day', async () => {
       //setup
       const date = new Date('2020-07-07')
@@ -69,7 +77,8 @@ describe('StorageService', () => {
         date,
         date,
         AWS_REGIONS.US_EAST_1,
-        'AWS',
+        awsEmissionsFactors,
+        awsConstants,
       )
 
       //assert
@@ -81,8 +90,9 @@ describe('StorageService', () => {
               terabyteHours: 10,
             },
           ],
-          AWS_REGIONS.US_EAST_1,
-          'AWS',
+          awsUsEast1Region,
+          awsEmissionsFactors,
+          awsConstants,
         ),
       )
       expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)
@@ -104,7 +114,8 @@ describe('StorageService', () => {
         date,
         date,
         AWS_REGIONS.US_EAST_1,
-        'AWS',
+        awsEmissionsFactors,
+        awsConstants,
       )
 
       //assert
@@ -116,8 +127,9 @@ describe('StorageService', () => {
               terabyteHours: 10,
             },
           ],
-          AWS_REGIONS.US_EAST_1,
-          'AWS',
+          awsUsEast1Region,
+          awsEmissionsFactors,
+          awsConstants,
         ),
       )
       expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)

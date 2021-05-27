@@ -7,8 +7,12 @@ import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import IFootprintEstimator from './IFootprintEstimator'
-import { CLOUD_CONSTANTS } from './FootprintEstimationConstants'
+import {
+  CloudConstantsEmissionsFactors,
+  CLOUD_CONSTANTS,
+} from './FootprintEstimationConstants'
 import Cost from './Cost'
+import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator
@@ -21,10 +25,11 @@ export default abstract class StorageService implements ICloudService {
     start: Date,
     end: Date,
     region: string,
-    cloudProvider: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): Promise<FootprintEstimate[]> {
     const usage = await this.getUsage(start, end, region)
-    return this.estimator.estimate(usage, region, cloudProvider)
+    return this.estimator.estimate(usage, region, emissionsFactors, constants)
   }
 
   /**

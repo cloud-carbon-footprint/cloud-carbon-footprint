@@ -3,11 +3,9 @@
  */
 
 import MemoryEstimator from '../MemoryEstimator'
-import { GCP_REGIONS } from '../../services/gcp/GCPRegions'
-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
-import { CLOUD_CONSTANTS } from '../FootprintEstimationConstants'
 
 describe('MemoryEstimator', () => {
+  const memoryCoefficient = 0.000392
   it('does estimates for GCP US Central 1', () => {
     const input = [
       {
@@ -15,10 +13,19 @@ describe('MemoryEstimator', () => {
         gigabyteHours: 90,
       },
     ]
-
-    const result = new MemoryEstimator(
-      CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT,
-    ).estimate(input, GCP_REGIONS.US_CENTRAL1, 'GCP')
+    const gcpUsCentral1Region = 'us - central1'
+    const gcpEmissionsFactors = {
+      [gcpUsCentral1Region]: 0.000479,
+    }
+    const gcpConstants = {
+      powerUsageEffectiveness: 1.11,
+    }
+    const result = new MemoryEstimator(memoryCoefficient).estimate(
+      input,
+      gcpUsCentral1Region,
+      gcpEmissionsFactors,
+      gcpConstants,
+    )
 
     expect(result).toEqual([
       {
@@ -36,10 +43,19 @@ describe('MemoryEstimator', () => {
         gigabyteHours: 80,
       },
     ]
-
-    const result = new MemoryEstimator(
-      CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT,
-    ).estimate(input, AWS_REGIONS.US_EAST_1, 'AWS')
+    const awsUsEast1Region = 'us-east-1'
+    const awsEmissionsFactors = {
+      [awsUsEast1Region]: 0.000415755,
+    }
+    const awsConstants = {
+      powerUsageEffectiveness: 1.135,
+    }
+    const result = new MemoryEstimator(memoryCoefficient).estimate(
+      input,
+      awsUsEast1Region,
+      awsEmissionsFactors,
+      awsConstants,
+    )
 
     expect(result).toEqual([
       {

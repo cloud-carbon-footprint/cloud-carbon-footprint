@@ -2,11 +2,10 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
 import NetworkingEstimator from '../NetworkingEstimator'
-import { GCP_REGIONS } from '../../services/gcp/GCPRegions'
 
 describe('NetworkingEstimator', () => {
+  const networkingCoefficient = 0.001
   it('does estimates for AWS US East 1 region', () => {
     const input = [
       {
@@ -14,11 +13,18 @@ describe('NetworkingEstimator', () => {
         gigabytes: 10000000,
       },
     ]
-
-    const result = new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT).estimate(
+    const awsUsEast1Region = 'us-east-1'
+    const awsEmissionsFactors = {
+      [awsUsEast1Region]: 0.000415755,
+    }
+    const awsConstants = {
+      powerUsageEffectiveness: 1.135,
+    }
+    const result = new NetworkingEstimator(networkingCoefficient).estimate(
       input,
-      AWS_REGIONS.US_EAST_1,
-      'AWS',
+      awsUsEast1Region,
+      awsEmissionsFactors,
+      awsConstants,
     )
 
     expect(result).toEqual([
@@ -37,11 +43,18 @@ describe('NetworkingEstimator', () => {
         gigabytes: 10000000,
       },
     ]
-
-    const result = new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT).estimate(
+    const gcpSouthAmericaEast1Region = 'southamerica-east1'
+    const gcpEmissionsFactors = {
+      [gcpSouthAmericaEast1Region]: 0.000109,
+    }
+    const gcpConstants = {
+      powerUsageEffectiveness: 1.09,
+    }
+    const result = new NetworkingEstimator(networkingCoefficient).estimate(
       input,
-      GCP_REGIONS.SOUTHAMERICA_EAST1,
-      'GCP',
+      gcpSouthAmericaEast1Region,
+      gcpEmissionsFactors,
+      gcpConstants,
     )
 
     expect(result).toEqual([

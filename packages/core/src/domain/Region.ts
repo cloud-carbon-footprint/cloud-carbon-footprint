@@ -5,12 +5,15 @@
 import ICloudService from './ICloudService'
 import FootprintEstimate from './FootprintEstimate'
 import Cost from './Cost'
+import { CloudConstantsEmissionsFactors } from './FootprintEstimationConstants'
+import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default class Region {
   constructor(
     public id: string,
     public services: ICloudService[],
-    public cloudProvider: string,
+    public emissionsFactors: CloudConstantsEmissionsFactors,
+    public constants: CloudConstantsUsage,
   ) {}
 
   public async getEstimates(
@@ -23,7 +26,8 @@ export default class Region {
           startDate,
           endDate,
           this.id,
-          this.cloudProvider,
+          this.emissionsFactors,
+          this.constants,
         )
       }),
     )

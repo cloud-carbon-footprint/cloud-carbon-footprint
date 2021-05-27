@@ -4,6 +4,8 @@
 
 import FootprintEstimate from './FootprintEstimate'
 import Cost from './Cost'
+import { CloudConstantsEmissionsFactors } from './FootprintEstimationConstants'
+import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default interface ICloudService {
   serviceName: string
@@ -11,7 +13,8 @@ export default interface ICloudService {
     start: Date,
     end: Date,
     region: string,
-    cloudProvider: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): Promise<FootprintEstimate[]>
   getCosts(start: Date, end: Date, region: string): Promise<Cost[]>
 }

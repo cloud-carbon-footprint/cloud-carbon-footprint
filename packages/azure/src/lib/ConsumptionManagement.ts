@@ -345,7 +345,7 @@ export default class ConsumptionManagementService {
 
     const computeUsage: ComputeUsage = {
       timestamp: consumptionDetailRow.timestamp,
-      cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: this.getCpuUtilizationAverage(),
       numberOfvCpus: consumptionDetailRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
@@ -622,10 +622,6 @@ export default class ConsumptionManagementService {
 
   private getPowerUsageEffectiveness(region: string): number {
     return AZURE_CLOUD_CONSTANTS.getPUE(region)
-  }
-
-  private getNetworkingCoefficient(): number {
-    return AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT
   }
 
   private getCpuUtilizationAverage(): number {

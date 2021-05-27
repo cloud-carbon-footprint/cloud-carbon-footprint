@@ -7,6 +7,8 @@ import FootprintEstimate from './FootprintEstimate'
 import ComputeEstimator from './ComputeEstimator'
 import ComputeUsage from './ComputeUsage'
 import Cost from './Cost'
+import { CloudConstantsEmissionsFactors } from './FootprintEstimationConstants'
+import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default abstract class ServiceWithCPUUtilization
   implements ICloudService
@@ -21,10 +23,11 @@ export default abstract class ServiceWithCPUUtilization
     start: Date,
     end: Date,
     region: string,
-    cloudProvider: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): Promise<FootprintEstimate[]> {
     const usage = await this.getUsage(start, end, region)
-    return this.estimator.estimate(usage, region, cloudProvider)
+    return this.estimator.estimate(usage, region, emissionsFactors, constants)
   }
 
   abstract getUsage(

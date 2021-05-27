@@ -4,11 +4,18 @@
 
 import { StorageEstimator } from '../StorageEstimator'
 import FootprintEstimate from '../FootprintEstimate'
-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
 
 describe('StorageEstimator', () => {
   const SSD_COEFFICIENT = 1.2
   const HDD_COEFFICIENT = 0.65
+
+  const awsUsEast1Region = 'us-east-1'
+  const awsEmissionsFactors = {
+    [awsUsEast1Region]: 0.000415755,
+  }
+  const awsConstants = {
+    powerUsageEffectiveness: 1.135,
+  }
 
   describe('estimating a single SSD result', () => {
     const estimator: StorageEstimator = new StorageEstimator(SSD_COEFFICIENT)
@@ -20,8 +27,9 @@ describe('StorageEstimator', () => {
           timestamp: new Date('1998-01-01'),
         },
       ],
-      AWS_REGIONS.US_EAST_1,
-      'AWS',
+      awsUsEast1Region,
+      awsEmissionsFactors,
+      awsConstants,
     )
 
     it('creates one estimate', () => {
@@ -51,8 +59,9 @@ describe('StorageEstimator', () => {
           timestamp: new Date('1998-01-01'),
         },
       ],
-      AWS_REGIONS.US_EAST_1,
-      'AWS',
+      awsUsEast1Region,
+      awsEmissionsFactors,
+      awsConstants,
     )
 
     it('creates one estimate', () => {
@@ -87,8 +96,9 @@ describe('StorageEstimator', () => {
             timestamp: new Date('1998-01-01'),
           },
         ],
-        AWS_REGIONS.US_EAST_1,
-        'AWS',
+        awsUsEast1Region,
+        awsEmissionsFactors,
+        awsConstants,
       )
 
       expect(results).toEqual([
@@ -119,8 +129,9 @@ describe('StorageEstimator', () => {
             timestamp: new Date('1998-01-01'),
           },
         ],
-        AWS_REGIONS.US_EAST_1,
-        'AWS',
+        awsUsEast1Region,
+        awsEmissionsFactors,
+        awsConstants,
       )
 
       expect(results).toEqual([
