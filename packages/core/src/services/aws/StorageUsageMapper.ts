@@ -5,10 +5,14 @@
 import moment from 'moment'
 import { CostExplorer } from 'aws-sdk'
 import StorageUsage from '../../domain/StorageUsage'
-import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+import {
+  CloudConstantsEmissionsFactors,
+  CLOUD_CONSTANTS,
+} from '../../domain/FootprintEstimationConstants'
 import FootprintEstimate from '../../domain/FootprintEstimate'
 import { StorageEstimator } from '../../domain/StorageEstimator'
 import { ServiceWrapper } from './ServiceWrapper'
+import CloudConstantsUsage from 'src/domain/CloudConstantsUsage'
 
 export class VolumeUsage implements StorageUsage {
   readonly terabyteHours: number
@@ -68,6 +72,8 @@ export function getEstimatesFromCostExplorer(
   end: Date,
   region: string,
   volumeUsages: VolumeUsage[],
+  emissionsFactors: CloudConstantsEmissionsFactors,
+  constants: CloudConstantsUsage,
 ): FootprintEstimate[] {
   const ssdEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
   const hddEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
@@ -78,8 +84,8 @@ export function getEstimatesFromCostExplorer(
     ({ diskType: diskType }) => DiskType.HDD === diskType,
   )
   const footprintEstimates = [
-    ...ssdEstimator.estimate(ssdUsage, region, 'AWS'),
-    ...hddEstimator.estimate(hddUsage, region, 'AWS'),
+    ...ssdEstimator.estimate(ssdUsage, region, emissionsFactors, constants),
+    ...hddEstimator.estimate(hddUsage, region, emissionsFactors, constants),
   ]
 
   return Object.values(

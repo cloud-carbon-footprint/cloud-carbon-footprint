@@ -9,6 +9,8 @@ import FootprintEstimate from '../../domain/FootprintEstimate'
 import Cost from '../../domain/Cost'
 import moment from 'moment'
 import { reduceBy, concat } from 'ramda'
+import { CloudConstantsEmissionsFactors } from '../../domain/FootprintEstimationConstants'
+import CloudConstantsUsage from '../../domain/CloudConstantsUsage'
 
 export default class RDS implements ICloudService {
   serviceName = 'RDS'
@@ -22,17 +24,22 @@ export default class RDS implements ICloudService {
     start: Date,
     end: Date,
     region: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): Promise<FootprintEstimate[]> {
     const rdsComputeEstimates = this.rdsComputeService.getEstimates(
       start,
       end,
       region,
-      'AWS',
+      emissionsFactors,
+      constants,
     )
     const rdsStorageEstimates = this.rdsStorageService.getEstimates(
       start,
       end,
       region,
+      emissionsFactors,
+      constants,
     )
     const resolvedEstimates: FootprintEstimate[][] = await Promise.all([
       rdsComputeEstimates,

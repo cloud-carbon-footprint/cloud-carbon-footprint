@@ -15,6 +15,8 @@ import FootprintEstimate from '../../domain/FootprintEstimate'
 import Cost from '../../domain/Cost'
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
+import { CloudConstantsEmissionsFactors } from 'src/domain/FootprintEstimationConstants'
+import CloudConstantsUsage from 'src/domain/CloudConstantsUsage'
 
 export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'
@@ -28,9 +30,18 @@ export default class RDSStorage implements ICloudService {
     start: Date,
     end: Date,
     region: string,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    constants: CloudConstantsUsage,
   ): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
-    return getEstimatesFromCostExplorer(start, end, region, usage)
+    return getEstimatesFromCostExplorer(
+      start,
+      end,
+      region,
+      usage,
+      emissionsFactors,
+      constants,
+    )
   }
 
   async getUsage(

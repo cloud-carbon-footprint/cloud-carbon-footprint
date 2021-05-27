@@ -53,10 +53,19 @@ describe('RDS Service', function () {
     rdsStorageMockGetEstimates.mockResolvedValueOnce(rdsStorageEstimate)
 
     const rdsService: RDS = new RDS(rdsComputeMock, rdsStorageMock)
+
+    const emissionsFactors = {
+      [region]: 0.000415755,
+    }
+    const constants = {
+      powerUsageEffectiveness: 1.135,
+    }
     const rdsEstimates = await rdsService.getEstimates(
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
 
     expect(rdsEstimates).toEqual([
