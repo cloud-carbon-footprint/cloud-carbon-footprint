@@ -47,9 +47,14 @@ const FootprintApiMiddleware = async function (
     res.json(estimationResults)
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
-    if (e instanceof EstimationRequestValidationError) {
+    if (
+      e.constructor.name ===
+      EstimationRequestValidationError.prototype.constructor.name
+    ) {
       res.status(400).send(e.message)
-    } else if (e instanceof PartialDataError) {
+    } else if (
+      e.constructor.name === PartialDataError.prototype.constructor.name
+    ) {
       res.status(416).send(e.message)
     } else res.status(500).send('Internal Server Error')
   }
