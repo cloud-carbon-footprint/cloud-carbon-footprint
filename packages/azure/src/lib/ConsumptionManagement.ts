@@ -27,7 +27,6 @@ import {
   MutableEstimationResult,
   calculateGigabyteHours,
   getPhysicalChips,
-  CLOUD_CONSTANTS,
   COMPUTE_PROCESSOR_TYPES,
   CloudConstantsUsage,
   CloudConstantsEmissionsFactors,
@@ -89,17 +88,15 @@ export default class ConsumptionManagementService {
     const results: MutableEstimationResult[] = []
 
     allUsageRows.map((consumptionRow: UsageDetail) => {
-      const consumptionDetailRow: ConsumptionDetailRow = new ConsumptionDetailRow(
-        consumptionRow,
-      )
+      const consumptionDetailRow: ConsumptionDetailRow =
+        new ConsumptionDetailRow(consumptionRow)
 
       this.updateTimestampByWeek(consumptionDetailRow)
 
       if (this.isUnsupportedUsage(consumptionDetailRow)) return []
 
-      const footprintEstimate = this.getEstimateByPricingUnit(
-        consumptionDetailRow,
-      )
+      const footprintEstimate =
+        this.getEstimateByPricingUnit(consumptionDetailRow)
 
       if (footprintEstimate) {
         appendOrAccumulateEstimatesByDay(
@@ -130,9 +127,10 @@ export default class ConsumptionManagementService {
     let retry = false
     while (usageRows.nextLink) {
       try {
-        const nextUsageRows = await this.consumptionManagementClient.usageDetails.listNext(
-          usageRows.nextLink,
-        )
+        const nextUsageRows =
+          await this.consumptionManagementClient.usageDetails.listNext(
+            usageRows.nextLink,
+          )
         allUsageRows.push(...nextUsageRows)
         usageRows = nextUsageRows
       } catch (e) {
@@ -195,7 +193,8 @@ export default class ConsumptionManagementService {
   private getEstimateByPricingUnit(
     consumptionDetailRow: ConsumptionDetailRow,
   ): FootprintEstimate {
-    const emissionsFactors: CloudConstantsEmissionsFactors = this.getEmissionsFactors()
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      this.getEmissionsFactors()
     const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
       consumptionDetailRow.region,
     )
@@ -212,6 +211,8 @@ export default class ConsumptionManagementService {
 
         const memoryFootprint = this.getMemoryFootprintEstimate(
           consumptionDetailRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
         )
 
         // if memory usage, only return the memory footprint
@@ -237,16 +238,28 @@ export default class ConsumptionManagementService {
       case STORAGE_USAGE_UNITS.GB_MONTH_100:
       case STORAGE_USAGE_UNITS.DAY_30:
       case STORAGE_USAGE_UNITS.TB_MONTH_1:
-        return this.getStorageFootprintEstimate(consumptionDetailRow)
+        return this.getStorageFootprintEstimate(
+          consumptionDetailRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
       case NETWORKING_USAGE_UNITS.GB_1:
       case NETWORKING_USAGE_UNITS.GB_10:
       case NETWORKING_USAGE_UNITS.GB_100:
       case NETWORKING_USAGE_UNITS.GB_200:
       case NETWORKING_USAGE_UNITS.TB_1:
-        return this.getNetworkingFootprintEstimate(consumptionDetailRow)
+        return this.getNetworkingFootprintEstimate(
+          consumptionDetailRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
       case MEMORY_USAGE_UNITS.GB_SECONDS_50000:
       case MEMORY_USAGE_UNITS.GB_HOURS_1000:
-        return this.getMemoryFootprintEstimate(consumptionDetailRow)
+        return this.getMemoryFootprintEstimate(
+          consumptionDetailRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
       default:
         this.consumptionManagementLogger.warn(
           `Unsupported usage unit: ${consumptionDetailRow.usageUnit}`,
@@ -256,6 +269,8 @@ export default class ConsumptionManagementService {
 
   private getNetworkingFootprintEstimate(
     consumptionDetailRow: ConsumptionDetailRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     let networkingEstimate: FootprintEstimate
     if (this.isNetworkingUsage(consumptionDetailRow)) {
@@ -263,10 +278,16 @@ export default class ConsumptionManagementService {
         timestamp: consumptionDetailRow.timestamp,
         gigabytes: this.getGigabytesForNetworking(consumptionDetailRow),
       }
+
+      const networkingConstants: CloudConstantsUsage = {
+        powerUsageEffectiveness: powerUsageEffectiveness,
+      }
+
       networkingEstimate = this.networkingEstimator.estimate(
         [networkingUsage],
         consumptionDetailRow.region,
-        'AZURE',
+        emissionsFactors,
+        networkingConstants,
       )[0]
     }
     if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
@@ -275,14 +296,19 @@ export default class ConsumptionManagementService {
 
   private getStorageFootprintEstimate(
     consumptionDetailRow: ConsumptionDetailRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
-    const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
-      consumptionDetailRow,
-    )
+    const usageAmountTerabyteHours =
+      this.getUsageAmountInTerabyteHours(consumptionDetailRow)
 
     const storageUsage: StorageUsage = {
       timestamp: consumptionDetailRow.timestamp,
       terabyteHours: usageAmountTerabyteHours,
+    }
+
+    const storageConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
     let estimate: FootprintEstimate
@@ -290,13 +316,15 @@ export default class ConsumptionManagementService {
       estimate = this.ssdStorageEstimator.estimate(
         [storageUsage],
         consumptionDetailRow.region,
-        'AZURE',
+        emissionsFactors,
+        storageConstants,
       )[0]
     else if (this.isHDDStorage(consumptionDetailRow))
       estimate = this.hddStorageEstimator.estimate(
         [storageUsage],
         consumptionDetailRow.region,
-        'AZURE',
+        emissionsFactors,
+        storageConstants,
       )[0]
     else
       this.consumptionManagementLogger.warn(
@@ -317,7 +345,7 @@ export default class ConsumptionManagementService {
 
     const computeUsage: ComputeUsage = {
       timestamp: consumptionDetailRow.timestamp,
-      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: consumptionDetailRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
@@ -338,15 +366,23 @@ export default class ConsumptionManagementService {
 
   private getMemoryFootprintEstimate(
     consumptionDetailRow: ConsumptionDetailRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const memoryUsage: MemoryUsage = {
       timestamp: consumptionDetailRow.timestamp,
       gigabyteHours: this.getUsageAmountInGigabyteHours(consumptionDetailRow),
     }
+
+    const memoryConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
+
     const memoryEstimate = this.memoryEstimator.estimate(
       [memoryUsage],
       consumptionDetailRow.region,
-      'AZURE',
+      emissionsFactors,
+      memoryConstants,
     )[0]
     memoryEstimate.usesAverageCPUConstant = false
     return memoryEstimate
@@ -540,7 +576,7 @@ export default class ConsumptionManagementService {
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
       COMPUTE_PROCESSOR_TYPES.UNKNOWN,
     ]
-    const processorMemory = CLOUD_CONSTANTS.AZURE.getMemory(processors)
+    const processorMemory = AZURE_CLOUD_CONSTANTS.getMemory(processors)
 
     // grab the entire instance series that the instance type is classified within
     const seriesInstanceTypes: number[][] = Object.values(
@@ -548,10 +584,8 @@ export default class ConsumptionManagementService {
     )
 
     // grab the vcpu and memory (gb) from the largest instance type in the family
-    const [
-      largestInstanceTypevCpus,
-      largestInstanceTypeMemory,
-    ] = seriesInstanceTypes[seriesInstanceTypes.length - 1]
+    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
+      seriesInstanceTypes[seriesInstanceTypes.length - 1]
 
     return calculateGigabyteHours(
       getPhysicalChips(largestInstanceTypevCpus),
@@ -571,7 +605,7 @@ export default class ConsumptionManagementService {
   }
 
   private checkInstanceTypes(seriesName: string) {
-    // a valid instance type is one that is mapped in the AWSInstanceTypes lists
+    // a valid instance type is one that is mapped in the VirtualMachineTypes lists
     const isValidInstanceType = Object.keys(
       VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
     ).includes(seriesName)

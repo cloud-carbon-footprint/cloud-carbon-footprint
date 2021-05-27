@@ -2,18 +2,19 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { configLoader } from '@cloud-carbon-footprint/common'
-import { EstimationRequest } from './CreateValidRequest'
-import AWSAccount from './AWSAccount'
 import {
+  configLoader,
   EstimationResult,
   reduceByTimestamp,
+  EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
+import { AzureAccount } from '@cloud-carbon-footprint/azure'
+import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
+
 import cache from './Cache'
 import GCPAccount from './GCPAccount'
-import AzureAccount from '@cloud-carbon-footprint/azure/application/AzureAccount'
-import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
-import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
+import { EstimationRequest } from './CreateValidRequest'
+import AWSAccount from './AWSAccount'
 
 export default class App {
   @cache()

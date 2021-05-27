@@ -15,7 +15,6 @@ import {
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
-  CLOUD_CONSTANTS,
 } from '@cloud-carbon-footprint/core'
 import { CloudProviderAccount } from '@cloud-carbon-footprint/app'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
@@ -52,12 +51,12 @@ export default class AzureAccount extends CloudProviderAccount {
         async (subscription: SubscriptionModels.Subscription) => {
           const consumptionManagementService = new ConsumptionManagementService(
             new ComputeEstimator(),
-            new StorageEstimator(CLOUD_CONSTANTS.AZURE.SSDCOEFFICIENT),
-            new StorageEstimator(CLOUD_CONSTANTS.AZURE.HDDCOEFFICIENT),
+            new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+            new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
             new NetworkingEstimator(
               AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT,
             ),
-            new MemoryEstimator(CLOUD_CONSTANTS.AZURE.MEMORY_COEFFICIENT),
+            new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
             new ConsumptionManagementClient(
               // eslint-disable-next-line
               // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
