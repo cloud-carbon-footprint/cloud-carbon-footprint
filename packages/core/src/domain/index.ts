@@ -1,5 +1,6 @@
 export {
   CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  US_NERC_REGIONS_EMISSIONS_FACTORS,
   CLOUD_CONSTANTS,
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
@@ -13,6 +14,7 @@ export {
   cascadeLakeSkylake,
   cascadeLakeSkylakeBroadwell,
   cascadeLakeHaswell,
+  broadwellHaswell,
 } from './ComputeProcessorTypes'
 export { default as UsageData } from './IUsageData'
 export {
@@ -28,7 +30,12 @@ export { default as ComputeEstimator } from './ComputeEstimator'
 export { StorageEstimator } from './StorageEstimator'
 export { default as NetworkingEstimator } from './NetworkingEstimator'
 export { default as MemoryEstimator } from './MemoryEstimator'
-export { default as ComputeUsage } from './ComputeUsage'
+export {
+  default as ComputeUsage,
+  buildComputeUsages,
+  extractRawComputeUsages,
+  RawComputeUsage,
+} from './ComputeUsage'
 export { default as StorageUsage } from './StorageUsage'
 export { default as NetworkingUsage } from './NetworkingUsage'
 export { default as MemoryUsage } from './MemoryUsage'
@@ -36,3 +43,4 @@ export { default as BillingDataRow } from './BillingDataRow'
 export { default as CloudConstantsUsage } from './CloudConstantsUsage'
 export { default as IUsageData } from './IUsageData'
 export { default as IFootprintEstimator } from './IFootprintEstimator'
+export { default as CloudProviderAccount } from './CloudProviderAccount'

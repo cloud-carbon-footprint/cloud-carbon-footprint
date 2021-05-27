@@ -28,12 +28,13 @@ import {
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
-  CLOUD_CONSTANTS,
+  CloudProviderAccount,
 } from '@cloud-carbon-footprint/core'
 import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
 
 import AWSCredentialsProvider from './AWSCredentialsProvider'
-import CloudProviderAccount from './CloudProviderAccount'
+
+import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -84,10 +85,10 @@ export default class AWSAccount extends CloudProviderAccount {
   ): Promise<EstimationResult[]> {
     const costAndUsageReportsService = new CostAndUsageReports(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.AWS.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.AWS.MEMORY_COEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       this.createServiceWrapper(
         this.getServiceConfigurationOptions(
           configLoader().AWS.ATHENA_REGION,

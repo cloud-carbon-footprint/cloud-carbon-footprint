@@ -13,7 +13,7 @@ import {
   RDS,
   Lambda,
 } from '@cloud-carbon-footprint/core'
-import AWSCredentialsProvider from '../AWSCredentialsProvider'
+import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 
 jest.mock('../AWSCredentialsProvider')
 

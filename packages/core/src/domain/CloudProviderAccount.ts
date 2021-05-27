@@ -10,7 +10,7 @@ import {
   aggregateCostsByDay,
   Region,
   Cost,
-} from '@cloud-carbon-footprint/core'
+} from '.'
 import {
   EstimationResult,
   reduceByTimestamp,

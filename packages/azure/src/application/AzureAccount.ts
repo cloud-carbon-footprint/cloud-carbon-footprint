@@ -15,10 +15,10 @@ import {
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
+  CloudProviderAccount,
 } from '@cloud-carbon-footprint/core'
-import { CloudProviderAccount } from '@cloud-carbon-footprint/app'
-import AzureCredentialsProvider from './AzureCredentialsProvider'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+import AzureCredentialsProvider from './AzureCredentialsProvider'
 
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
