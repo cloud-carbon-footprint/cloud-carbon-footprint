@@ -8,7 +8,7 @@ import {
   broadwelCascadeLake,
   skyLakeBroadwellHaswellAMDRome,
   skyLakeBroadwellHaswellSandyBridgeIvyBridge,
-} from '../../domain/ComputeProcessorTypes'
+} from '@cloud-carbon-footprint/core'
 
 export enum SHARED_CORE_PROCESSORS {
   E2_MICRO = 'e2-micro',

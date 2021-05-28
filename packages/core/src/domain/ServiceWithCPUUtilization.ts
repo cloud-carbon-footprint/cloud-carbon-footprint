@@ -11,7 +11,8 @@ import { CloudConstantsEmissionsFactors } from './FootprintEstimationConstants'
 import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default abstract class ServiceWithCPUUtilization
-  implements ICloudService {
+  implements ICloudService
+{
   private readonly estimator: ComputeEstimator
 
   protected constructor() {

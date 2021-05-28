@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ComputeEngine from '../ComputeEngine'
+import Reducer = google.monitoring.v3.Aggregation.Reducer
 import { MetricServiceClient } from '@google-cloud/monitoring'
 import { google } from '@google-cloud/monitoring/build/protos/protos'
-import Reducer = google.monitoring.v3.Aggregation.Reducer
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
+import { ComputeEngine } from '../lib'
+import { GCP_CLOUD_CONSTANTS } from '../domain'
 
 const mockListTimeSeries = jest.fn()
 
@@ -247,7 +247,7 @@ describe('ComputeEngine', () => {
       },
       {
         cpuUtilizationAverage:
-          CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020 / 100,
+          GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020 / 100,
         numberOfvCpus: 2,
         timestamp: dayOneHourTwo,
         usesAverageCPUConstant: true,

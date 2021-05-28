@@ -5,5 +5,5 @@
     "baseUrl": ".",
     "outDir": "./dist"
   },
-  "include": ["./src"]
+  "include": ["./src", "../app/src/GCPCredentials.ts", "../app/src/__tests__/AWSCredentialsProvider.test.ts",]
 }

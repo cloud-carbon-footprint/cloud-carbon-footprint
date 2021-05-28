@@ -12,6 +12,8 @@ import {
   configLoader,
   Logger,
   EstimationResult,
+  calculateGigabyteHours,
+  getPhysicalChips,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -25,8 +27,6 @@ import {
   FootprintEstimate,
   appendOrAccumulateEstimatesByDay,
   MutableEstimationResult,
-  calculateGigabyteHours,
-  getPhysicalChips,
   COMPUTE_PROCESSOR_TYPES,
   CloudConstantsUsage,
   CloudConstantsEmissionsFactors,

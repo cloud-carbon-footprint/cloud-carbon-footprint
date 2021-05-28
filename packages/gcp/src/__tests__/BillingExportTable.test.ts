@@ -4,13 +4,15 @@
 
 import { BigQuery } from '@google-cloud/bigquery'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+} from '@cloud-carbon-footprint/core'
 
-import ComputeEstimator from '../../../domain/ComputeEstimator'
-import { StorageEstimator } from '../../../domain/StorageEstimator'
-import NetworkingEstimator from '../../../domain/NetworkingEstimator'
-import MemoryEstimator from '../../../domain/MemoryEstimator'
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
-import BillingExportTable from '../BillingExportTable'
+import { GCP_CLOUD_CONSTANTS } from '../domain'
+import BillingExportTable from '../lib/BillingExportTable'
 import {
   mockQueryResultsAppEngineSSDStorage,
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
@@ -48,10 +50,10 @@ describe('GCP BillingExportTable Service', () => {
     // when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -89,10 +91,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -155,10 +157,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -219,10 +221,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -244,10 +246,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -283,10 +285,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -330,10 +332,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -377,10 +379,10 @@ describe('GCP BillingExportTable Service', () => {
     //when
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -442,10 +444,10 @@ describe('GCP BillingExportTable Service', () => {
 
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 
@@ -469,10 +471,10 @@ describe('GCP BillingExportTable Service', () => {
 
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.SSDCOEFFICIENT),
-      new StorageEstimator(CLOUD_CONSTANTS.GCP.HDDCOEFFICIENT),
-      new NetworkingEstimator(CLOUD_CONSTANTS.GCP.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(CLOUD_CONSTANTS.GCP.MEMORY_COEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new BigQuery(),
     )
 

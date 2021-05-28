@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import { GCP_REGIONS } from './GCPRegions'
-import BillingDataRow from '../../domain/BillingDataRow'
 import { BigQueryDate } from '@google-cloud/bigquery'
 
 export default class BillingExportRow extends BillingDataRow {

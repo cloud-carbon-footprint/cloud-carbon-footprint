@@ -3,7 +3,7 @@
  */
 
 import { Config as mockConfig } from '@cloud-carbon-footprint/common'
-import { ComputeEngine } from '@cloud-carbon-footprint/core'
+import { ComputeEngine } from '../lib'
 
 const mockMetricServiceClient = jest.fn()
 jest.mock('@google-cloud/monitoring', () => {

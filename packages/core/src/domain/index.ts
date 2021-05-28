@@ -1,7 +1,5 @@
 export {
-  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
-  CLOUD_CONSTANTS,
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   getWattsByAverageOrMedian,
@@ -15,6 +13,10 @@ export {
   cascadeLakeSkylakeBroadwell,
   cascadeLakeHaswell,
   broadwellHaswell,
+  broadwellSkylake,
+  broadwelCascadeLake,
+  skyLakeBroadwellHaswellAMDRome,
+  skyLakeBroadwellHaswellSandyBridgeIvyBridge,
 } from './ComputeProcessorTypes'
 export { default as UsageData } from './IUsageData'
 export {

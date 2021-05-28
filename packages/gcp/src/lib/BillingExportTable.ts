@@ -11,17 +11,23 @@ import {
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
 
-import ComputeEstimator from '../../domain/ComputeEstimator'
-import StorageUsage from '../../domain/StorageUsage'
-import { StorageEstimator } from '../../domain/StorageEstimator'
-import ComputeUsage from '../../domain/ComputeUsage'
-import NetworkingEstimator from '../../domain/NetworkingEstimator'
-import MemoryEstimator from '../../domain/MemoryEstimator'
-import NetworkingUsage from '../../domain/NetworkingUsage'
-import MemoryUsage from '../../domain/MemoryUsage'
-import FootprintEstimate, {
+import {
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  ComputeUsage,
+  StorageUsage,
+  NetworkingUsage,
+  MemoryUsage,
+  FootprintEstimate,
   MutableEstimationResult,
-} from '../../domain/FootprintEstimate'
+  appendOrAccumulateEstimatesByDay,
+  COMPUTE_PROCESSOR_TYPES,
+  CloudConstantsEmissionsFactors,
+  CloudConstantsUsage,
+} from '@cloud-carbon-footprint/core'
+
 import {
   MEMORY_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
@@ -36,9 +42,10 @@ import {
   SHARED_CORE_PROCESSORS,
 } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
-import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
-import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
-import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
+import {
+  GCP_CLOUD_CONSTANTS,
+  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from '../domain'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -72,12 +79,19 @@ export default class BillingExportTable {
         return []
 
       let footprintEstimate: FootprintEstimate
+      const emissionsFactors: CloudConstantsEmissionsFactors =
+        this.getEmissionsFactors()
+      const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
+        billingExportRow.region,
+      )
       switch (usageRow.usageUnit) {
         case 'seconds':
           if (this.isComputeUsage(billingExportRow.usageType))
             footprintEstimate = this.getComputeFootprintEstimate(
               billingExportRow,
               billingExportRow.timestamp,
+              powerUsageEffectiveness,
+              emissionsFactors,
             )
           else {
             return []
@@ -88,11 +102,15 @@ export default class BillingExportTable {
             footprintEstimate = this.getMemoryFootprintEstimate(
               billingExportRow,
               billingExportRow.timestamp,
+              powerUsageEffectiveness,
+              emissionsFactors,
             )
           } else {
             footprintEstimate = this.getStorageFootprintEstimate(
               billingExportRow,
               billingExportRow.timestamp,
+              powerUsageEffectiveness,
+              emissionsFactors,
             )
           }
           break
@@ -101,6 +119,8 @@ export default class BillingExportTable {
             footprintEstimate = this.getNetworkingFootprintEstimate(
               billingExportRow,
               billingExportRow.timestamp,
+              powerUsageEffectiveness,
+              emissionsFactors,
             )
           else {
             return []
@@ -124,9 +144,11 @@ export default class BillingExportTable {
   private getComputeFootprintEstimate(
     usageRow: BillingExportRow,
     timestamp: Date,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeUsage: ComputeUsage = {
-      cpuUtilizationAverage: CLOUD_CONSTANTS.GCP.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
@@ -137,11 +159,17 @@ export default class BillingExportTable {
       usageRow.machineType,
     )
 
+    const computeConstants: CloudConstantsUsage = {
+      minWatts: this.getMinwatts(computeProcessors),
+      maxWatts: this.getMaxwatts(computeProcessors),
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
+
     return this.computeEstimator.estimate(
       [computeUsage],
       usageRow.region,
-      'GCP',
-      computeProcessors,
+      emissionsFactors,
+      computeConstants,
     )[0]
   }
 
@@ -167,6 +195,8 @@ export default class BillingExportTable {
   private getStorageFootprintEstimate(
     usageRow: BillingExportRow,
     timestamp: Date,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     // storage estimation requires usage amount in terabyte hours
     const usageAmountTerabyteHours = this.convertByteSecondsToTerabyteHours(
@@ -176,13 +206,17 @@ export default class BillingExportTable {
       timestamp,
       terabyteHours: usageAmountTerabyteHours,
     }
+    const storageConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
     if (usageRow.usageType.includes('SSD')) {
       return {
         usesAverageCPUConstant: false,
         ...this.ssdStorageEstimator.estimate(
           [storageUsage],
           usageRow.region,
-          'GCP',
+          emissionsFactors,
+          storageConstants,
         )[0],
       }
     }
@@ -191,7 +225,8 @@ export default class BillingExportTable {
       ...this.hddStorageEstimator.estimate(
         [storageUsage],
         usageRow.region,
-        'GCP',
+        emissionsFactors,
+        storageConstants,
       )[0],
     }
   }
@@ -199,6 +234,8 @@ export default class BillingExportTable {
   private getMemoryFootprintEstimate(
     usageRow: BillingExportRow,
     timestamp: Date,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const memoryUsage: MemoryUsage = {
       timestamp,
@@ -206,12 +243,16 @@ export default class BillingExportTable {
         usageRow.usageAmount,
       ),
     }
+    const memoryConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
     return {
       usesAverageCPUConstant: false,
       ...this.memoryEstimator.estimate(
         [memoryUsage],
         usageRow.region,
-        'GCP',
+        emissionsFactors,
+        memoryConstants,
       )[0],
     }
   }
@@ -219,10 +260,15 @@ export default class BillingExportTable {
   private getNetworkingFootprintEstimate(
     usageRow: BillingExportRow,
     timestamp: Date,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const networkingUsage: NetworkingUsage = {
       timestamp,
       gigabytes: this.convertBytesToGigabytes(usageRow.usageAmount),
+    }
+    const networkingConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
     return {
@@ -230,7 +276,8 @@ export default class BillingExportTable {
       ...this.networkingEstimator.estimate(
         [networkingUsage],
         usageRow.region,
-        'GCP',
+        emissionsFactors,
+        networkingConstants,
       )[0],
     }
   }
@@ -267,6 +314,22 @@ export default class BillingExportTable {
     return substrings.some((substring) =>
       new RegExp(`\\b${substring}\\b`).test(stringToSearch),
     )
+  }
+
+  private getMinwatts(computeProcessors: string[]): number {
+    return GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors)
+  }
+
+  private getMaxwatts(computeProcessors: string[]): number {
+    return GCP_CLOUD_CONSTANTS.getMaxWatts(computeProcessors)
+  }
+
+  private getPowerUsageEffectiveness(region: string): number {
+    return GCP_CLOUD_CONSTANTS.getPUE(region)
+  }
+
+  private getEmissionsFactors(): { [region: string]: number } {
+    return GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
   }
 
   private async getUsage(start: Date, end: Date): Promise<RowMetadata[]> {

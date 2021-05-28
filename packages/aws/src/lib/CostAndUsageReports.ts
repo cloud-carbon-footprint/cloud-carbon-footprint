@@ -17,6 +17,8 @@ import {
   configLoader,
   Logger,
   EstimationResult,
+  calculateGigabyteHours,
+  getPhysicalChips,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -30,10 +32,7 @@ import {
   StorageUsage,
   NetworkingUsage,
   MemoryUsage,
-  calculateGigabyteHours,
-  getPhysicalChips,
   COMPUTE_PROCESSOR_TYPES,
-  CLOUD_CONSTANTS,
   appendOrAccumulateEstimatesByDay,
   CloudConstantsEmissionsFactors,
   CloudConstantsUsage,
@@ -62,7 +61,7 @@ import {
 import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from 'src/domain'
+} from '../domain'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -275,7 +274,7 @@ export default class CostAndUsageReports {
 
     const computeUsage: ComputeUsage = {
       timestamp: costAndUsageReportRow.timestamp,
-      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: costAndUsageReportRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
@@ -327,7 +326,7 @@ export default class CostAndUsageReports {
 
     const lambdaComputeUsage: ComputeUsage = {
       timestamp: costAndUsageReportRow.timestamp,
-      cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
       usesAverageCPUConstant: true,
     }
@@ -374,7 +373,7 @@ export default class CostAndUsageReports {
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
     const processorMemoryGigabytesPerPhysicalChip =
-      CLOUD_CONSTANTS.AWS.getMemory(processors)
+      AWS_CLOUD_CONSTANTS.getMemory(processors)
 
     // grab the instance type vcpu from the AWSInstanceTypes lists
     const instanceTypeMemory =
