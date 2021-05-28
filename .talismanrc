@@ -3,6 +3,8 @@ fileignoreconfig:
   checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
 - filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
   checksum: 3bfb33cac24525b03528d71814b90abc6e0bf7cdcd9e95f6aae8d342d3666268
+- filename: .yarn/releases/yarn-3.0.0-rc.2.cjs
+  checksum: ce4c3cd77bc38974d47f7554e4b9271fc458c0c5e6bbc0b6dfad2ee01d1c78e6
 - filename: CONTRIBUTING.md
   checksum: 454a26b0f80e1406f9f80ab12bd11183ebbf54a8b387c8667af258eeafb89ba7
 - filename: README.md
@@ -156,4 +158,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: 832d4e31b26ae3c6dcbcafb76c532481387bec1cf0c83789a4040909b267bf93
+  checksum: 2e308d00326848af5bf7abadca5846155f33892cfb6340cf90c23a900e49fd8b
