@@ -34,7 +34,10 @@ jest.mock('@azure/arm-consumption', () => {
 })
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
   configLoader: jest.fn().mockImplementation(() => {
     return {
       GROUP_QUERY_RESULTS_BY: 'day',

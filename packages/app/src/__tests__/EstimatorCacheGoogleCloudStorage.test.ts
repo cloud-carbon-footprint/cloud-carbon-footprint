@@ -31,7 +31,10 @@ jest.mock('@google-cloud/storage', () => {
 })
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/core'),
+  ...(jest.requireActual('@cloud-carbon-footprint/core') as Record<
+    string,
+    unknown
+  >),
   Logger: jest.fn(),
   cache: jest.fn(),
   configLoader: jest.fn().mockImplementation(() => {

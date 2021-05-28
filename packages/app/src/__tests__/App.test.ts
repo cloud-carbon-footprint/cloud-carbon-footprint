@@ -26,7 +26,10 @@ const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
 jest.mock('../Cache')
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
   Logger: jest.fn(),
   cache: jest.fn(),
   configLoader: jest.fn().mockImplementation(() => {
@@ -60,7 +63,10 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 }))
 
 jest.mock('@cloud-carbon-footprint/core', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/core'),
+  ...(jest.requireActual('@cloud-carbon-footprint/core') as Record<
+    string,
+    unknown
+  >),
   CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     AWS: {
       awsRegion1: 1,
