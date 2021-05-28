@@ -2112,6 +2112,7 @@ __metadata:
     "@cloud-carbon-footprint/aws": ^0.0.1
     "@cloud-carbon-footprint/azure": ^0.0.1
     "@cloud-carbon-footprint/common": ^0.0.1
+    "@cloud-carbon-footprint/gcp": ^0.0.1
     "@google-cloud/monitoring": ^2.3.1
     "@types/jest": ^26.0.23
     "@types/node": ^15.3.1
@@ -2402,6 +2403,42 @@ __metadata:
     typescript: ^4.2.4
   bin:
     ccf-create-app: bin/ccf-create-app
+  languageName: unknown
+  linkType: soft
+
+"@cloud-carbon-footprint/gcp@^0.0.1, @cloud-carbon-footprint/gcp@workspace:packages/gcp":
+  version: 0.0.0-use.local
+  resolution: "@cloud-carbon-footprint/gcp@workspace:packages/gcp"
+  dependencies:
+    "@azure/arm-consumption": ^6.3.0
+    "@azure/arm-subscriptions": ^3.0.0
+    "@azure/ms-rest-js": ^2.2.3
+    "@azure/ms-rest-nodeauth": ^3.0.7
+    "@cloud-carbon-footprint/common": ^0.0.1
+    "@cloud-carbon-footprint/core": ^0.7.0
+    "@types/jest": ^26.0.20
+    "@types/jest-when": ^2.7.2
+    "@types/node": ^14.14.30
+    "@types/source-map-support": ^0.5.3
+    "@typescript-eslint/eslint-plugin": ^4.15.1
+    "@typescript-eslint/parser": ^4.15.1
+    eslint: ^7.20.0
+    eslint-config-prettier: ^8.0.0
+    eslint-plugin-prettier: ^3.3.1
+    eslint-plugin-unused-imports: ^1.1.0
+    jest: 26.6.0
+    jest-when: ^3.2.0
+    lint-staged: ^10.5.4
+    onchange: ^7.1.0
+    prettier: ^2.2.1
+    rimraf: ^3.0.2
+    serve: ^11.3.2
+    source-map-support: ^0.5.19
+    ts-jest: ^26.5.1
+    ts-node: ^9.1.1
+    ts-node-dev: ^1.1.1
+    tsconfig-paths: ^3.9.0
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 

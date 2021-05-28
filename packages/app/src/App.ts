@@ -6,14 +6,14 @@ import {
   configLoader,
   EstimationResult,
   reduceByTimestamp,
-  EmissionRatioResult,
+  // EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
-import { AzureAccount } from '@cloud-carbon-footprint/azure'
-import { AWSAccount } from '@cloud-carbon-footprint/aws'
-import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
+// import { AzureAccount, AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/azure'
+// import { AWSAccount, AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/aws'
+// import { GCPAccount, GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/gcp'
+// import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
 
 import cache from './Cache'
-import GCPAccount from './GCPAccount'
 import { EstimationRequest } from './CreateValidRequest'
 
 export default class App {
@@ -105,17 +105,17 @@ export default class App {
     }
   }
 
-  getEmissionsFactors(): EmissionRatioResult[] {
-    return Object.values(
-      CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-    ).reduce((cloudProviderResult, cloudProvider) => {
-      return Object.keys(cloudProvider).reduce((emissionDataResult, key) => {
-        cloudProviderResult.push({
-          region: key,
-          mtPerKwHour: cloudProvider[key],
-        })
-        return emissionDataResult
-      }, cloudProviderResult)
-    }, [])
-  }
+  // getEmissionsFactors(): EmissionRatioResult[] {
+  //   return Object.values(
+  //     CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  //   ).reduce((cloudProviderResult, cloudProvider) => {
+  //     return Object.keys(cloudProvider).reduce((emissionDataResult, key) => {
+  //       cloudProviderResult.push({
+  //         region: key,
+  //         mtPerKwHour: cloudProvider[key],
+  //       })
+  //       return emissionDataResult
+  //     }, cloudProviderResult)
+  //   }, [])
+  // }
 }

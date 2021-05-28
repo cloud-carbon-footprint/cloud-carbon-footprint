@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 import moment from 'moment'
-import { AWS_REGIONS } from '@cloud-carbon-footprint/core'
+import { AWS_REGIONS } from '@cloud-carbon-footprint/aws'
 
 import CreateValidRequest from '../CreateValidRequest'
 
