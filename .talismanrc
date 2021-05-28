@@ -79,6 +79,8 @@ fileignoreconfig:
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
 - filename: packages/client/create_client_env_file.sh
   checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
+- filename: packages/client/src/dashboard/CarbonComparisonCard.tsx
+  checksum: a6d730cbbe92f07d790330601269a7003cab5af635899efb335d9e97df5350f8
 - filename: packages/client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
 - filename: packages/client/src/data/generateEstimations.ts

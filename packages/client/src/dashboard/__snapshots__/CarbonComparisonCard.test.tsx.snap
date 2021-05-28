@@ -92,7 +92,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <span
           className="MuiButton-label"
         >
-          Flights
+          flights
         </span>
       </button>
       <button
@@ -117,7 +117,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <span
           className="MuiButton-label"
         >
-          Phones
+          phones
         </span>
       </button>
       <button
@@ -142,7 +142,7 @@ exports[`CarbonComparisonCard renders with correct configuration 1`] = `
         <span
           className="MuiButton-label"
         >
-          Trees
+          trees
         </span>
       </button>
     </div>

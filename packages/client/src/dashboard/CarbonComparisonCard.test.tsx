@@ -62,7 +62,7 @@ describe('CarbonComparisonCard', () => {
       <CarbonComparisonCard data={data} />,
     )
 
-    const phonesButton = getByText('Phones')
+    const phonesButton = getByText('phones')
     const flightsIcon = getByTestId('flightsIcon')
     expect(phonesButton).toBeInstanceOf(HTMLElement)
     expect(flightsIcon).toBeInstanceOf(SVGSVGElement)
@@ -74,7 +74,7 @@ describe('CarbonComparisonCard', () => {
     const phonesIcon = getByTestId('phonesIcon')
     expect(phonesIcon).toBeInstanceOf(SVGSVGElement)
 
-    const treesButton = getByText('Trees')
+    const treesButton = getByText('trees')
     expect(treesButton).toBeInstanceOf(HTMLElement)
 
     act(() => {
@@ -84,7 +84,7 @@ describe('CarbonComparisonCard', () => {
     const treesIcon = getByTestId('treesIcon')
     expect(treesIcon).toBeInstanceOf(SVGSVGElement)
 
-    const flightsButton = getByText('Flights')
+    const flightsButton = getByText('flights')
     expect(flightsButton).toBeInstanceOf(HTMLElement)
 
     act(() => {
@@ -103,19 +103,19 @@ describe('CarbonComparisonCard', () => {
       'Source: Flight Carbon Footprint Calculator',
     )
 
-    const phonesButton = getByText('Phones')
+    const phonesButton = getByText('phones')
     act(() => {
       fireEvent.click(phonesButton)
     })
     expect(source).toHaveTextContent('Source: EPA Equivalencies Calculator')
 
-    const treesButton = getByText('Trees')
+    const treesButton = getByText('trees')
     act(() => {
       fireEvent.click(treesButton)
     })
     expect(source).toHaveTextContent('Source: EPA Equivalencies Calculator')
 
-    const flightsButton = getByText('Flights')
+    const flightsButton = getByText('flights')
     act(() => {
       fireEvent.click(flightsButton)
     })
@@ -138,7 +138,7 @@ describe('CarbonComparisonCard', () => {
 
   it('should open EPA page in other tab when clicking EPA link', async () => {
     const { getByText } = render(<CarbonComparisonCard data={data} />)
-    const phonesButton = getByText('Phones')
+    const phonesButton = getByText('phones')
     act(() => {
       fireEvent.click(phonesButton)
     })
@@ -199,7 +199,7 @@ describe('CarbonComparisonCard', () => {
         <CarbonComparisonCard data={data} />,
       )
       act(() => {
-        fireEvent.click(getByText('Phones'))
+        fireEvent.click(getByText('phones'))
       })
       const co2 = getByTestId('comparison')
       const expected = '973,144'
@@ -212,7 +212,7 @@ describe('CarbonComparisonCard', () => {
         <CarbonComparisonCard data={data} />,
       )
       act(() => {
-        fireEvent.click(getByText('Phones'))
+        fireEvent.click(getByText('phones'))
       })
       const co2 = getByTestId('comparison')
       const expected = '37.6+ M'
@@ -224,7 +224,7 @@ describe('CarbonComparisonCard', () => {
         <CarbonComparisonCard data={data} />,
       )
       act(() => {
-        fireEvent.click(getByText('Phones'))
+        fireEvent.click(getByText('phones'))
       })
       const co2 = getByTestId('comparison')
       const expected = '1.2+ B'
@@ -236,7 +236,7 @@ describe('CarbonComparisonCard', () => {
         <CarbonComparisonCard data={data} />,
       )
       act(() => {
-        fireEvent.click(getByText('Trees'))
+        fireEvent.click(getByText('trees'))
       })
       const co2 = getByTestId('comparison')
       const expected = toTrees(co2kg).toLocaleString(undefined, {

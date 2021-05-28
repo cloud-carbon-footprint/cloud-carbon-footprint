@@ -24,11 +24,17 @@ import NoDataPage from './NoDataPage'
 
 type Selection = 'flights' | 'phones' | 'trees'
 
+type SourceItem = {
+  href: string
+  title: string
+}
+
 type ComparisonItem = {
   icon: React.ReactNode
   total: number
   textOne: string
   textTwo: string
+  source: SourceItem
 }
 
 type Comparison = {
@@ -36,17 +42,6 @@ type Comparison = {
   flights: ComparisonItem
   phones: ComparisonItem
   trees: ComparisonItem
-}
-
-type SourceItem = {
-  href: string
-  title: string
-}
-
-type Source = {
-  [char: string]: SourceItem
-  flights: SourceItem
-  epa: SourceItem
 }
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => {
@@ -137,6 +132,11 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
       })
     }
 
+    const epaSource = {
+      href: 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
+      title: 'EPA Equivalencies Calculator',
+    }
+
     const comparisons: Comparison = {
       flights: {
         icon: (
@@ -145,6 +145,10 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
         total: totalFlights,
         textOne: 'CO2e emissions from',
         textTwo: 'direct one way flights from NYC to London',
+        source: {
+          href: 'https://calculator.carbonfootprint.com/calculator.aspx?tab=3',
+          title: 'Flight Carbon Footprint Calculator',
+        },
       },
       phones: {
         icon: (
@@ -153,23 +157,14 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
         total: totalPhones,
         textOne: 'CO2e emissions from',
         textTwo: 'smartphones charged',
+        source: epaSource,
       },
       trees: {
         icon: <Eco className={classes.icon} data-testid="treesIcon" />,
         total: totalTrees,
         textOne: 'carbon sequestered by',
         textTwo: 'tree seedlings grown for 10 years',
-      },
-    }
-
-    const sources: Source = {
-      flights: {
-        href: 'https://calculator.carbonfootprint.com/calculator.aspx?tab=3',
-        title: 'Flight Carbon Footprint Calculator',
-      },
-      epa: {
-        href: 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
-        title: 'EPA Equivalencies Calculator',
+        source: epaSource,
       },
     }
 
@@ -181,7 +176,7 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
       return buttonSelection === selection ? 'primary' : 'default'
     }
 
-    const currentSource = sources[selection] || sources.epa
+    const currentSource = comparisons[selection].source
 
     if (totalMetricTons) {
       return (
@@ -232,33 +227,18 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
               </CardContent>
             </CardContent>
             <CardActions className={classes.buttonContainer}>
-              <Button
-                id="flights"
-                variant="contained"
-                color={updateButtonColor('flights')}
-                size="medium"
-                onClick={() => updateSelection('flights')}
-              >
-                Flights
-              </Button>
-              <Button
-                id="phones"
-                variant="contained"
-                color={updateButtonColor('phones')}
-                size="medium"
-                onClick={() => updateSelection('phones')}
-              >
-                Phones
-              </Button>
-              <Button
-                id="trees"
-                variant="contained"
-                color={updateButtonColor('trees')}
-                size="medium"
-                onClick={() => updateSelection('trees')}
-              >
-                Trees
-              </Button>
+              {Object.keys(comparisons).map((comparisonOption: Selection) => (
+                <Button
+                  key={comparisonOption}
+                  id={comparisonOption}
+                  variant="contained"
+                  color={updateButtonColor(comparisonOption)}
+                  size="medium"
+                  onClick={() => updateSelection(comparisonOption)}
+                >
+                  {comparisonOption}
+                </Button>
+              ))}
             </CardActions>
             <Typography className={classes.source} data-testid="epa-source">
               Source:{' '}
@@ -275,27 +255,27 @@ export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> 
           </div>
         </Card>
       )
-    } else {
-      return (
-        <Card className={classes.root} id="carbonComparisonCard">
-          <div>
-            <CardContent className={classes.topContainer}>
-              <Typography
-                className={classes.metricOne}
-                variant="h4"
-                component="p"
-                data-testid="co2"
-              >
-                Emissions comparison
-              </Typography>
-            </CardContent>
-            <div className={classes.noData}>
-              <NoDataPage isTop={false} />
-            </div>
-          </div>
-        </Card>
-      )
     }
+
+    return (
+      <Card className={classes.root} id="carbonComparisonCard">
+        <div>
+          <CardContent className={classes.topContainer}>
+            <Typography
+              className={classes.metricOne}
+              variant="h4"
+              component="p"
+              data-testid="co2"
+            >
+              Emissions comparison
+            </Typography>
+          </CardContent>
+          <div className={classes.noData}>
+            <NoDataPage isTop={false} />
+          </div>
+        </div>
+      </Card>
+    )
   }
 
 type CarbonComparisonCardProps = {
