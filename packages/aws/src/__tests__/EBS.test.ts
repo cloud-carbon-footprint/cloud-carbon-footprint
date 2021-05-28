@@ -5,12 +5,11 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CostExplorer, CloudWatch, CloudWatchLogs } from 'aws-sdk'
 import { Logger } from '@cloud-carbon-footprint/common'
-import EBS from '../EBS'
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
-import { StorageEstimator } from '../../../domain/StorageEstimator'
-import { AWS_REGIONS } from '../AWSRegions'
+import { CLOUD_CONSTANTS, StorageEstimator } from '@cloud-carbon-footprint/core'
+import EBS from '../lib/EBS'
+import { AWS_REGIONS } from '../lib/AWSRegions'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 import { buildCostExplorerGetUsageResponse } from './fixtures/builders'
-import { ServiceWrapper } from '../ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

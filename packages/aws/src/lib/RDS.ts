@@ -2,15 +2,17 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ICloudService from '../../domain/ICloudService'
-import RDSComputeService from './RDSCompute'
-import RDSStorage from './RDSStorage'
-import FootprintEstimate from '../../domain/FootprintEstimate'
-import Cost from '../../domain/Cost'
 import moment from 'moment'
 import { reduceBy, concat } from 'ramda'
-import { CloudConstantsEmissionsFactors } from '../../domain/FootprintEstimationConstants'
-import CloudConstantsUsage from '../../domain/CloudConstantsUsage'
+import {
+  ICloudService,
+  FootprintEstimate,
+  Cost,
+  CloudConstantsEmissionsFactors,
+  CloudConstantsUsage,
+} from '@cloud-carbon-footprint/core'
+import RDSComputeService from './RDSCompute'
+import RDSStorage from './RDSStorage'
 
 export default class RDS implements ICloudService {
   serviceName = 'RDS'

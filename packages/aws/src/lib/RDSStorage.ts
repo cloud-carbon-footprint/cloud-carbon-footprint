@@ -2,21 +2,24 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { Logger } from '@cloud-carbon-footprint/common'
 import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import ICloudService from '../../domain/ICloudService'
+import { Logger } from '@cloud-carbon-footprint/common'
+import {
+  ICloudService,
+  FootprintEstimate,
+  Cost,
+  CloudConstantsEmissionsFactors,
+  CloudConstantsUsage,
+} from '@cloud-carbon-footprint/core'
+
 import {
   DiskType,
   getEstimatesFromCostExplorer,
   getUsageFromCostExplorer,
   VolumeUsage,
 } from './StorageUsageMapper'
-import FootprintEstimate from '../../domain/FootprintEstimate'
-import Cost from '../../domain/Cost'
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
-import { CloudConstantsEmissionsFactors } from 'src/domain/FootprintEstimationConstants'
-import CloudConstantsUsage from 'src/domain/CloudConstantsUsage'
 
 export default class RDSStorage implements ICloudService {
   serviceName = 'rds-storage'

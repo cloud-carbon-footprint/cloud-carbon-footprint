@@ -4,15 +4,16 @@
 
 import moment from 'moment'
 import { CostExplorer } from 'aws-sdk'
-import StorageUsage from '../../domain/StorageUsage'
 import {
+  StorageUsage,
+  FootprintEstimate,
+  StorageEstimator,
+  CloudConstantsUsage,
   CloudConstantsEmissionsFactors,
-  CLOUD_CONSTANTS,
-} from '../../domain/FootprintEstimationConstants'
-import FootprintEstimate from '../../domain/FootprintEstimate'
-import { StorageEstimator } from '../../domain/StorageEstimator'
+} from '@cloud-carbon-footprint/core'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
+
 import { ServiceWrapper } from './ServiceWrapper'
-import CloudConstantsUsage from 'src/domain/CloudConstantsUsage'
 
 export class VolumeUsage implements StorageUsage {
   readonly terabyteHours: number
@@ -36,8 +37,9 @@ export async function getUsageFromCostExplorer(
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
   serviceWrapper: ServiceWrapper,
 ): Promise<VolumeUsage[]> {
-  const responses: CostExplorer.GetCostAndUsageResponse[] =
-    await serviceWrapper.getCostAndUsageResponses(params)
+  const responses: CostExplorer.GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(
+    params,
+  )
 
   return responses
     .map((response) => {
@@ -75,8 +77,8 @@ export function getEstimatesFromCostExplorer(
   emissionsFactors: CloudConstantsEmissionsFactors,
   constants: CloudConstantsUsage,
 ): FootprintEstimate[] {
-  const ssdEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT)
-  const hddEstimator = new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT)
+  const ssdEstimator = new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT)
+  const hddEstimator = new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT)
   const ssdUsage = volumeUsages.filter(
     ({ diskType: diskType }) => DiskType.SSD === diskType,
   )

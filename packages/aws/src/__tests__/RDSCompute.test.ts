@@ -4,15 +4,15 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
-import RDSComputeService from '../RDSCompute'
+import { CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
+import RDSComputeService from '../lib/RDSCompute'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
+import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
 import {
   buildCostExplorerGetCostRequest,
   buildCostExplorerGetCostResponse,
   buildCostExplorerGetUsageResponse,
 } from './fixtures/builders'
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
-import { ServiceWrapper } from '../ServiceWrapper'
-import mockAWSCloudWatchGetMetricDataCall from '../mockAWSCloudWatchGetMetricDataCall'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

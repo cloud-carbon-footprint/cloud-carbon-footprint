@@ -3,6 +3,7 @@
  */
 
 import { Athena } from 'aws-sdk'
+import { BillingDataRow, CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
@@ -10,8 +11,6 @@ import {
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
 import { PRICING_UNITS } from './CostAndUsageTypes'
-import BillingDataRow from '../../domain/BillingDataRow'
-import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
 
 const GLUE_VCPUS_PER_USAGE = 4
 

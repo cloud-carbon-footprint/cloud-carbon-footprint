@@ -4,10 +4,10 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatchLogs, CostExplorer, CloudWatch } from 'aws-sdk'
-import Lambda from '../Lambda'
-import { estimateCo2 } from '../../../domain/FootprintEstimationConstants'
+import { estimateCo2 } from '@cloud-carbon-footprint/core'
+import Lambda from '../lib/Lambda'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 import { buildCostExplorerGetCostResponse } from './fixtures/builders'
-import { ServiceWrapper } from '../ServiceWrapper'
 
 describe('Lambda', () => {
   beforeAll(() => {

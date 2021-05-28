@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { QUERY_DATE_TYPES } from '../common/types'
+import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/core'
 
 // This are the services we are over estimating to be SSD because we don't know what the underlying storage type is (SSD or HDD).
 export const SSD_SERVICES: string[] = [

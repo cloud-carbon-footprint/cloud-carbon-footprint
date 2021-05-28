@@ -2,15 +2,15 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { getCostFromCostExplorer } from '../CostMapper'
-import { AWS_REGIONS } from '../AWSRegions'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CostExplorer } from 'aws-sdk'
 import {
   GetCostAndUsageRequest,
   GetCostAndUsageResponse,
 } from 'aws-sdk/clients/costexplorer'
-import { ServiceWrapper } from '../ServiceWrapper'
+import { getCostFromCostExplorer } from '../lib/CostMapper'
+import { AWS_REGIONS } from '../lib/AWSRegions'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'

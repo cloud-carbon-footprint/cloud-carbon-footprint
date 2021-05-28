@@ -4,8 +4,8 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, Athena } from 'aws-sdk'
-import { ServiceWrapper } from '../ServiceWrapper'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 
 const startDate = '2020-08-06'
 const endDate = '2020-08-07'
@@ -80,8 +80,9 @@ describe('aws service helper', () => {
   })
 
   it('enablePagination decorator should follow CloudWatch next pages', async () => {
-    const firstPageResponse =
-      buildAwsCloudWatchGetMetricDataResponse('tokenToNextPage')
+    const firstPageResponse = buildAwsCloudWatchGetMetricDataResponse(
+      'tokenToNextPage',
+    )
     const secondPageResponse = buildAwsCloudWatchGetMetricDataResponse(null)
     const metricDataRequest = buildAwsCloudWatchGetMetricDataRequest()
 
@@ -110,8 +111,9 @@ describe('aws service helper', () => {
   })
 
   it('enablePagination decorator should follow Athena next pages', async () => {
-    const firstPageResponse =
-      buildAthenaGetQueryResultsResponse('tokenToNextPage')
+    const firstPageResponse = buildAthenaGetQueryResultsResponse(
+      'tokenToNextPage',
+    )
     const secondPageResponse = buildAthenaGetQueryResultsResponse(null)
 
     const athenaGetResultsSpy = jest.fn()

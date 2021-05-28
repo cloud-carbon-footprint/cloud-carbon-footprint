@@ -2,18 +2,19 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ICloudService from '../../domain/ICloudService'
-import FootprintEstimate from '../../domain/FootprintEstimate'
-import {
-  estimateCo2,
-  CLOUD_CONSTANTS,
-} from '../../domain/FootprintEstimationConstants'
-import { getCostFromCostExplorer } from './CostMapper'
-import Cost from '../../domain/Cost'
-import { isEmpty } from 'ramda'
-import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
-import { ServiceWrapper } from './ServiceWrapper'
 import { GetQueryResultsResponse } from 'aws-sdk/clients/cloudwatchlogs'
+import { GetCostAndUsageRequest } from 'aws-sdk/clients/costexplorer'
+import {
+  ICloudService,
+  FootprintEstimate,
+  Cost,
+  estimateCo2,
+} from '@cloud-carbon-footprint/core'
+
+import { getCostFromCostExplorer } from './CostMapper'
+import { isEmpty } from 'ramda'
+import { ServiceWrapper } from './ServiceWrapper'
+import { AWS_CLOUD_CONSTANTS } from '../domain/'
 
 export default class Lambda implements ICloudService {
   private readonly LOG_GROUP_SIZE_REQUEST_LIMIT = 20
@@ -56,7 +57,7 @@ export default class Lambda implements ICloudService {
       const wattsField = resultByDate[1]
       const timestamp = new Date(timestampField.value.substr(0, 10))
       const wattHours =
-        Number.parseFloat(wattsField.value) * CLOUD_CONSTANTS.AWS.getPUE()
+        Number.parseFloat(wattsField.value) * AWS_CLOUD_CONSTANTS.getPUE()
       const co2e = estimateCo2(wattHours, 'AWS', region)
       return {
         timestamp,
@@ -112,9 +113,9 @@ export default class Lambda implements ICloudService {
     groupNames: string[],
   ): Promise<string> => {
     const averageWatts =
-      CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG +
-      (CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020 / 100) *
-        (CLOUD_CONSTANTS.AWS.MAX_WATTS_AVG - CLOUD_CONSTANTS.AWS.MIN_WATTS_AVG)
+      AWS_CLOUD_CONSTANTS.MIN_WATTS_AVG +
+      (AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020 / 100) *
+        (AWS_CLOUD_CONSTANTS.MAX_WATTS_AVG - AWS_CLOUD_CONSTANTS.MIN_WATTS_AVG)
 
     const query = `
             filter @type = "REPORT"

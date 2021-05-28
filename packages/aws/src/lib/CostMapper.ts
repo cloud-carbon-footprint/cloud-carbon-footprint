@@ -4,15 +4,16 @@
 
 import { CostExplorer } from 'aws-sdk'
 import { GetCostAndUsageResponse } from 'aws-sdk/clients/costexplorer'
+import { Cost } from '@cloud-carbon-footprint/core'
 import { ServiceWrapper } from './ServiceWrapper'
-import Cost from '../../domain/Cost'
 
 export async function getCostFromCostExplorer(
   params: CostExplorer.GetCostAndUsageRequest,
   serviceWrapper: ServiceWrapper,
 ): Promise<Cost[]> {
-  const responses: GetCostAndUsageResponse[] =
-    await serviceWrapper.getCostAndUsageResponses(params)
+  const responses: GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(
+    params,
+  )
 
   return responses
     .map((response) => {

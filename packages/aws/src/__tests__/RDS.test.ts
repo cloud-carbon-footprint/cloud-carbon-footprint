@@ -2,13 +2,12 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import RDS from '../RDS'
-import FootprintEstimate from '../../../domain/FootprintEstimate'
-import RDSStorage from '../RDSStorage'
-import RDSComputeService from '../RDSCompute'
-import Cost from '../../../domain/Cost'
-import { ServiceWrapper } from '../ServiceWrapper'
 import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+import { FootprintEstimate, Cost } from '@cloud-carbon-footprint/core'
+import RDS from '../lib/RDS'
+import RDSStorage from '../lib/RDSStorage'
+import RDSComputeService from '../lib/RDSCompute'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 
 describe('RDS Service', function () {
   const startDate = '2020-08-16'
@@ -38,16 +37,18 @@ describe('RDS Service', function () {
       },
     ]
 
-    const rdsComputeMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
-      jest.fn()
+    const rdsComputeMockGetEstimates: jest.Mock<
+      Promise<FootprintEstimate[]>
+    > = jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService(
       getServiceWrapper(),
     )
     rdsComputeMock.getEstimates = rdsComputeMockGetEstimates
     rdsComputeMockGetEstimates.mockResolvedValueOnce(rdsComputeEstimate)
 
-    const rdsStorageMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
-      jest.fn()
+    const rdsStorageMockGetEstimates: jest.Mock<
+      Promise<FootprintEstimate[]>
+    > = jest.fn()
     const rdsStorageMock: RDSStorage = new RDSStorage(getServiceWrapper())
     rdsStorageMock.getEstimates = rdsStorageMockGetEstimates
     rdsStorageMockGetEstimates.mockResolvedValueOnce(rdsStorageEstimate)

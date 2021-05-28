@@ -4,16 +4,14 @@
 
 import AWS, { CostExplorer, CloudWatchLogs, CloudWatch } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
-import RDSStorage from '../RDSStorage'
-import { StorageEstimator } from '../../../domain/StorageEstimator'
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
-
+import { Logger } from '@cloud-carbon-footprint/common'
+import { StorageEstimator, CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
+import RDSStorage from '../lib/RDSStorage'
 import {
   buildCostExplorerGetCostResponse,
   buildCostExplorerGetUsageResponse,
 } from './fixtures/builders'
-import { ServiceWrapper } from '../ServiceWrapper'
-import { Logger } from '@cloud-carbon-footprint/common'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

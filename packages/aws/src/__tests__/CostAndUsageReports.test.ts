@@ -9,17 +9,20 @@ import AWS, {
   CostExplorer,
   Athena as AWSAthena,
 } from 'aws-sdk'
-import CostAndUsageReports from '../CostAndUsageReports'
-import ComputeEstimator from '../../../domain/ComputeEstimator'
-import NetworkingEstimator from '../../../domain/NetworkingEstimator'
-import MemoryEstimator from '../../../domain/MemoryEstimator'
-import { StorageEstimator } from '../../../domain/StorageEstimator'
-import { CLOUD_CONSTANTS } from '../../../domain/FootprintEstimationConstants'
 import {
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
 } from 'aws-sdk/clients/athena'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  ComputeEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  StorageEstimator,
+  CLOUD_CONSTANTS,
+} from '@cloud-carbon-footprint/core'
+import CostAndUsageReports from '../lib/CostAndUsageReports'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 import {
   athenaMockGetQueryResultsWithEC2EBSLambda,
   athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB,
@@ -31,7 +34,6 @@ import {
   athenaMockGetQueryResultsNetworking,
   athenaMockGetQueryResultsMemory,
 } from './fixtures/athena.fixtures'
-import { ServiceWrapper } from '../ServiceWrapper'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...jest.requireActual('@cloud-carbon-footprint/common'),

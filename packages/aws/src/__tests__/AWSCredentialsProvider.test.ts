@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import AWSCredentialsProvider from '../AWSCredentialsProvider'
-import GCPCredentials from '../GCPCredentials'
+import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
+import GCPCredentials from '../application/GCPCredentials'
 import { Config as mockConfig } from '@cloud-carbon-footprint/common'
 import { ChainableTemporaryCredentials, Credentials } from 'aws-sdk'
 import Mock = jest.Mock
@@ -21,8 +21,7 @@ function mockChainableTemporaryCredentials(
   targetSecretAccessKey: string,
   targetSessionToken: string,
 ) {
-  const chainableTemporaryCredentials =
-    ChainableTemporaryCredentials as unknown as Mock
+  const chainableTemporaryCredentials = (ChainableTemporaryCredentials as unknown) as Mock
   chainableTemporaryCredentials.mockImplementationOnce(() => {
     return new Credentials(
       targetAccessKeyId,
@@ -73,8 +72,11 @@ describe('AWSCredentialsProvider', () => {
   it('create returns ChainableTemporaryCredentials', () => {
     // given
     mockConfig.AWS.authentication.mode = 'AWS'
-    const mockedChainableTemporaryCredentials =
-      mockChainableTemporaryCredentials('', '', '')
+    const mockedChainableTemporaryCredentials = mockChainableTemporaryCredentials(
+      '',
+      '',
+      '',
+    )
     const accountId = '123'
     const params = {
       params: {
@@ -94,7 +96,7 @@ describe('AWSCredentialsProvider', () => {
     mockConfig.AWS.authentication.mode = undefined
     const accountId = '123'
     const credentialsOptions = { accessKeyId: '', secretAccessKey: '' }
-    const credentialsMock = Credentials as unknown as Mock
+    const credentialsMock = (Credentials as unknown) as Mock
     credentialsMock.mockImplementationOnce(() => {
       return new Credentials(credentialsOptions)
     })

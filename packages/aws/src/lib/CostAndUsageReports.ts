@@ -3,13 +3,7 @@
  */
 import moment from 'moment'
 import { concat } from 'ramda'
-import { configLoader, Logger } from '@cloud-carbon-footprint/common'
-
-import FootprintEstimate, {
-  MutableEstimationResult,
-} from '../../domain/FootprintEstimate'
-import ComputeEstimator from '../../domain/ComputeEstimator'
-import { StorageEstimator } from '../../domain/StorageEstimator'
+import { Athena } from 'aws-sdk'
 import {
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
@@ -19,11 +13,30 @@ import {
   Row,
 } from 'aws-sdk/clients/athena'
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  configLoader,
+  Logger,
+  EstimationResult,
+} from '@cloud-carbon-footprint/common'
 
-import ComputeUsage from '../../domain/ComputeUsage'
-import StorageUsage from '../../domain/StorageUsage'
-import { CLOUD_CONSTANTS } from '../../domain/FootprintEstimationConstants'
+import {
+  FootprintEstimate,
+  MutableEstimationResult,
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  ComputeUsage,
+  StorageUsage,
+  NetworkingUsage,
+  MemoryUsage,
+  calculateGigabyteHours,
+  getPhysicalChips,
+  COMPUTE_PROCESSOR_TYPES,
+  CLOUD_CONSTANTS,
+  appendOrAccumulateEstimatesByDay,
+} from '@cloud-carbon-footprint/core'
+
 import { ServiceWrapper } from './ServiceWrapper'
 import {
   SSD_USAGE_TYPES,
@@ -37,20 +50,13 @@ import {
   AWS_QUERY_GROUP_BY,
 } from './CostAndUsageTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
-import { Athena } from 'aws-sdk'
-import { appendOrAccumulateEstimatesByDay } from '../../domain/FootprintEstimate'
-import NetworkingUsage from '../../domain/NetworkingUsage'
-import NetworkingEstimator from '../../domain/NetworkingEstimator'
-import MemoryEstimator from '../../domain/MemoryEstimator'
-import MemoryUsage from '../../domain/MemoryUsage'
-import { COMPUTE_PROCESSOR_TYPES } from '../../domain/ComputeProcessorTypes'
+
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
-import { calculateGigabyteHours, getPhysicalChips } from '../common/'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -115,11 +121,10 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const gigabyteHoursForMemoryUsage =
-          this.getGigabytesFromInstanceTypeAndProcessors(
-            costAndUsageReportRow.usageType,
-            costAndUsageReportRow.usageAmount,
-          )
+        const gigabyteHoursForMemoryUsage = this.getGigabytesFromInstanceTypeAndProcessors(
+          costAndUsageReportRow.usageType,
+          costAndUsageReportRow.usageAmount,
+        )
 
         const computeFootprint = this.getComputeFootprintEstimate(
           costAndUsageReportRow,
@@ -290,8 +295,10 @@ export default class CostAndUsageReports {
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists
     // or if the instance type is not a burstable instance, otherwise return void
-    const { isValidInstanceType, isBurstableInstance } =
-      this.checkInstanceTypes(instanceFamily, instanceType)
+    const {
+      isValidInstanceType,
+      isBurstableInstance,
+    } = this.checkInstanceTypes(instanceFamily, instanceType)
     if (!isValidInstanceType || isBurstableInstance) return
 
     // grab the list of processors per instance type
@@ -299,8 +306,9 @@ export default class CostAndUsageReports {
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-    const processorMemoryGigabytesPerPhysicalChip =
-      CLOUD_CONSTANTS.AWS.getMemory(processors)
+    const processorMemoryGigabytesPerPhysicalChip = CLOUD_CONSTANTS.AWS.getMemory(
+      processors,
+    )
 
     // grab the instance type vcpu from the AWSInstanceTypes lists
     const instanceTypeMemory =
@@ -314,8 +322,10 @@ export default class CostAndUsageReports {
     )
 
     // grab the vcpu and memory (gb) from the largest instance type in the family
-    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
-      familyInstanceTypes[familyInstanceTypes.length - 1]
+    const [
+      largestInstanceTypevCpus,
+      largestInstanceTypeMemory,
+    ] = familyInstanceTypes[familyInstanceTypes.length - 1]
 
     // there are special cases for instance families m5zn and z1d where they are always 2
     const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
@@ -476,8 +486,9 @@ export default class CostAndUsageReports {
     queryExecutionInput: GetQueryExecutionInput,
   ) {
     while (true) {
-      const queryExecutionResults: GetQueryExecutionOutput =
-        await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
+      const queryExecutionResults: GetQueryExecutionOutput = await this.serviceWrapper.getAthenaQueryExecution(
+        queryExecutionInput,
+      )
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === ('FAILED' || 'CANCELLED'))
         throw new Error(
@@ -487,8 +498,9 @@ export default class CostAndUsageReports {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput[] =
-      await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
+    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(
+      queryExecutionInput,
+    )
     return results.flatMap((result) => result.ResultSet.Rows)
   }
 }

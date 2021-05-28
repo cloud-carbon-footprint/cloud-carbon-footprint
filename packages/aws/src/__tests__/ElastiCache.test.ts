@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ElastiCache from '../ElastiCache'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
-import { ServiceWrapper } from '../ServiceWrapper'
-import mockAWSCloudWatchGetMetricDataCall from '../mockAWSCloudWatchGetMetricDataCall'
+import ElastiCache from '../lib/ElastiCache'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
+import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)

@@ -3,15 +3,17 @@
  */
 
 import { Logger } from '@cloud-carbon-footprint/common'
-import ICloudService from '../../domain/ICloudService'
+import {
+  ICloudService,
+  FootprintEstimate,
+  Cost,
+} from '@cloud-carbon-footprint/core'
 import {
   DiskType,
   getEstimatesFromCostExplorer,
   getUsageFromCostExplorer,
   VolumeUsage,
 } from './StorageUsageMapper'
-import FootprintEstimate from '../../domain/FootprintEstimate'
-import Cost from '../../domain/Cost'
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
 
