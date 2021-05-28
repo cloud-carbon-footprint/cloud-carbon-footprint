@@ -7,7 +7,7 @@ import FootprintEstimate from './FootprintEstimate'
 import ComputeEstimator from './ComputeEstimator'
 import ComputeUsage from './ComputeUsage'
 import Cost from './Cost'
-import { CloudConstantsEmissionsFactors } from './FootprintEstimationConstants'
+import { CloudConstantsEmissionsFactors } from '.'
 import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default abstract class ServiceWithCPUUtilization

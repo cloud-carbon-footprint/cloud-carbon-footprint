@@ -13,6 +13,16 @@ import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 
 import {
   ICloudService,
+  Region,
+  ComputeEstimator,
+  StorageEstimator,
+  NetworkingEstimator,
+  MemoryEstimator,
+  CloudProviderAccount,
+} from '@cloud-carbon-footprint/core'
+import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
+
+import {
   EBS,
   S3,
   EC2,
@@ -22,15 +32,8 @@ import {
   RDSStorage,
   Lambda,
   ServiceWrapper,
-  Region,
   CostAndUsageReports,
-  ComputeEstimator,
-  StorageEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  CloudProviderAccount,
-} from '@cloud-carbon-footprint/core'
-import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
+} from '../lib'
 
 import AWSCredentialsProvider from './AWSCredentialsProvider'
 

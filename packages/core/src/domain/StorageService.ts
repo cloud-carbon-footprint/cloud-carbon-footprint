@@ -7,10 +7,7 @@ import FootprintEstimate from './FootprintEstimate'
 import { StorageEstimator } from './StorageEstimator'
 import StorageUsage from './StorageUsage'
 import IFootprintEstimator from './IFootprintEstimator'
-import {
-  CloudConstantsEmissionsFactors,
-  CLOUD_CONSTANTS,
-} from './FootprintEstimationConstants'
+import { CloudConstantsEmissionsFactors } from '.'
 import Cost from './Cost'
 import CloudConstantsUsage from './CloudConstantsUsage'
 
@@ -47,7 +44,7 @@ export default abstract class StorageService implements ICloudService {
 
 export abstract class SSDStorageService extends StorageService {
   protected constructor() {
-    super(CLOUD_CONSTANTS['AWS'].SSDCOEFFICIENT)
+    super(1.2) // ssdCoefficient
   }
 
   abstract getUsage(
@@ -61,7 +58,7 @@ export abstract class SSDStorageService extends StorageService {
 
 export abstract class HDDStorageService extends StorageService {
   protected constructor() {
-    super(CLOUD_CONSTANTS['AWS'].HDDCOEFFICIENT)
+    super(0.65) // hddCoefficient
   }
 
   abstract getUsage(

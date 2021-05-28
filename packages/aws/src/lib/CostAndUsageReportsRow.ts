@@ -3,7 +3,7 @@
  */
 
 import { Athena } from 'aws-sdk'
-import { BillingDataRow, CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
+import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
@@ -11,6 +11,7 @@ import {
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
 import { PRICING_UNITS } from './CostAndUsageTypes'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 const GLUE_VCPUS_PER_USAGE = 4
 
@@ -78,7 +79,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     return (
       this.extractVCpuFromInstanceType(instanceType) *
       (BURSTABLE_INSTANCE_BASELINE_UTILIZATION[instanceType] /
-        CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020)
+        AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020)
     )
   }
 

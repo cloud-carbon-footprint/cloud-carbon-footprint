@@ -5,7 +5,7 @@
 import AWS, { CostExplorer, CloudWatchLogs, CloudWatch } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import { Logger } from '@cloud-carbon-footprint/common'
-import { StorageEstimator, CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
+import { StorageEstimator } from '@cloud-carbon-footprint/core'
 import RDSStorage from '../lib/RDSStorage'
 import {
   buildCostExplorerGetCostResponse,
@@ -269,7 +269,7 @@ describe('RDSStorage', () => {
 
     const rdsService = new RDSStorage(getServiceWrapper())
     const ssdStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT,
     )
 
     const result = await rdsService.getEstimates(
@@ -309,7 +309,7 @@ describe('RDSStorage', () => {
 
     const rdsService = new RDSStorage(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT,
     )
 
     const result = await rdsService.getEstimates(

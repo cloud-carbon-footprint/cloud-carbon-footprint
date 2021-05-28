@@ -6,11 +6,11 @@ import { HDDStorageService, SSDStorageService } from '../StorageService'
 import StorageUsage from '../StorageUsage'
 import FootprintEstimate from '../FootprintEstimate'
 import { StorageEstimator } from '../StorageEstimator'
-import { CLOUD_CONSTANTS } from '../FootprintEstimationConstants'
-import { AWS_REGIONS } from '../../services/aws/AWSRegions'
 import Cost from '../Cost'
 
 describe('StorageService', () => {
+  const ssdCoefficient = 1.2
+  const hddCoefficient = 0.65
   describe('getEstimates', () => {
     class TestHDDService extends HDDStorageService {
       serviceName = 'testService'
@@ -76,14 +76,14 @@ describe('StorageService', () => {
       const estimates: FootprintEstimate[] = await testHDDService.getEstimates(
         date,
         date,
-        AWS_REGIONS.US_EAST_1,
+        awsUsEast1Region,
         awsEmissionsFactors,
         awsConstants,
       )
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT).estimate(
+        new StorageEstimator(hddCoefficient).estimate(
           [
             {
               timestamp: date,
@@ -95,7 +95,7 @@ describe('StorageService', () => {
           awsConstants,
         ),
       )
-      expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)
+      expect(getUsageMock).toBeCalledWith(date, date, awsUsEast1Region)
     })
 
     it('should return estimates for the SSD storage usage of a day', async () => {
@@ -113,14 +113,14 @@ describe('StorageService', () => {
       const estimates: FootprintEstimate[] = await testSDDService.getEstimates(
         date,
         date,
-        AWS_REGIONS.US_EAST_1,
+        awsUsEast1Region,
         awsEmissionsFactors,
         awsConstants,
       )
 
       //assert
       expect(estimates).toEqual(
-        new StorageEstimator(CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT).estimate(
+        new StorageEstimator(ssdCoefficient).estimate(
           [
             {
               timestamp: date,
@@ -132,7 +132,7 @@ describe('StorageService', () => {
           awsConstants,
         ),
       )
-      expect(getUsageMock).toBeCalledWith(date, date, AWS_REGIONS.US_EAST_1)
+      expect(getUsageMock).toBeCalledWith(date, date, awsUsEast1Region)
     })
   })
 })

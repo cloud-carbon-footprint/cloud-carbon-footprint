@@ -1,11 +1,4 @@
-export {
-  US_NERC_REGIONS_EMISSIONS_FACTORS,
-  CloudConstantsByProvider,
-  CloudConstantsEmissionsFactors,
-  getWattsByAverageOrMedian,
-  getAverage,
-  estimateCo2,
-} from './FootprintEstimationConstants'
+export { US_NERC_REGIONS_EMISSIONS_FACTORS } from './FootprintEstimationConstants'
 export {
   COMPUTE_PROCESSOR_TYPES,
   cascadeLakeSkylakeBroadwellHaswell,
@@ -24,6 +17,9 @@ export {
   appendOrAccumulateEstimatesByDay,
   MutableEstimationResult,
   aggregateEstimatesByDay,
+  getWattsByAverageOrMedian,
+  getAverage,
+  estimateCo2,
 } from './FootprintEstimate'
 export { default as ICloudService } from './ICloudService'
 export { default as Cost, aggregateCostsByDay } from './Cost'
@@ -42,7 +38,11 @@ export { default as StorageUsage } from './StorageUsage'
 export { default as NetworkingUsage } from './NetworkingUsage'
 export { default as MemoryUsage } from './MemoryUsage'
 export { default as BillingDataRow } from './BillingDataRow'
-export { default as CloudConstantsUsage } from './CloudConstantsUsage'
+export {
+  default as CloudConstantsUsage,
+  CloudConstantsByProvider,
+  CloudConstantsEmissionsFactors,
+} from './CloudConstantsUsage'
 export { default as IUsageData } from './IUsageData'
 export { default as IFootprintEstimator } from './IFootprintEstimator'
 export { default as CloudProviderAccount } from './CloudProviderAccount'

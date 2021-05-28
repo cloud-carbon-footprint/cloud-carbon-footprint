@@ -25,7 +25,7 @@ describe('GCPAccount', () => {
   it('should return empty if no service in config file', () => {
     mockConfig.GCP.CURRENT_SERVICES = []
 
-    const GCPAccount = require('../GCPAccount').default
+    const GCPAccount = require('../application/GCPAccount').default
     const services = new GCPAccount(['us-east1']).getServices()
     expect(services).toHaveLength(0)
   })
@@ -33,7 +33,7 @@ describe('GCPAccount', () => {
   it('should throw error if unknown service', () => {
     mockConfig.GCP.CURRENT_SERVICES = [{ key: 'goose', name: '' }]
 
-    const GCPAccount = require('../GCPAccount').default
+    const GCPAccount = require('../application/GCPAccount').default
     const account = new GCPAccount(['us-east1'])
     expect(() => {
       account.getServices()
@@ -56,7 +56,7 @@ function expectGCPService(key: string) {
     },
   ]
 
-  const GCPAccount = require('../GCPAccount').default
+  const GCPAccount = require('../application/GCPAccount').default
   const services = new GCPAccount('test-project', 'test project', [
     'us-east1',
   ]).getServices()

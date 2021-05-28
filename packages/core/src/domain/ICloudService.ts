@@ -4,7 +4,7 @@
 
 import FootprintEstimate from './FootprintEstimate'
 import Cost from './Cost'
-import { CloudConstantsEmissionsFactors } from './FootprintEstimationConstants'
+import { CloudConstantsEmissionsFactors } from '.'
 import CloudConstantsUsage from './CloudConstantsUsage'
 
 export default interface ICloudService {

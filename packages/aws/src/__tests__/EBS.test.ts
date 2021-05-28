@@ -5,7 +5,7 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CostExplorer, CloudWatch, CloudWatchLogs } from 'aws-sdk'
 import { Logger } from '@cloud-carbon-footprint/common'
-import { CLOUD_CONSTANTS, StorageEstimator } from '@cloud-carbon-footprint/core'
+import { StorageEstimator } from '@cloud-carbon-footprint/core'
 import EBS from '../lib/EBS'
 import { AWS_REGIONS } from '../lib/AWSRegions'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
@@ -261,7 +261,7 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT,
     )
     const result = await ebsService.getEstimates(
       new Date(startDate),
@@ -299,7 +299,7 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT,
     )
     const result = await ebsService.getEstimates(
       new Date(startDate),
@@ -337,7 +337,7 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT,
     )
     const result = await ebsService.getEstimates(
       new Date(startDate),
@@ -375,7 +375,7 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(getServiceWrapper())
     const sddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT,
     )
     const result = await ebsService.getEstimates(
       new Date(startDate),
@@ -474,10 +474,10 @@ describe('Ebs', () => {
 
     const ebsService = new EBS(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT,
     )
     const sddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.SSDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT,
     )
 
     const result = await ebsService.getEstimates(

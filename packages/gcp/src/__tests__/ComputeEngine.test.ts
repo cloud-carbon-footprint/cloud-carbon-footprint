@@ -2,9 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import Reducer = google.monitoring.v3.Aggregation.Reducer
 import { MetricServiceClient } from '@google-cloud/monitoring'
 import { google } from '@google-cloud/monitoring/build/protos/protos'
+import Reducer = google.monitoring.v3.Aggregation.Reducer
 import { ComputeEngine } from '../lib'
 import { GCP_CLOUD_CONSTANTS } from '../domain'
 

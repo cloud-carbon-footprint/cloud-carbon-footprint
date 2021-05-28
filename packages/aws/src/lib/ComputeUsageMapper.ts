@@ -57,5 +57,5 @@ export function getComputeUsage(
     NODE_TYPES,
   )
 
-  return buildComputeUsages(rawCpuUtilizations.concat(rawvCpuHours), 'AWS')
+  return buildComputeUsages(rawCpuUtilizations.concat(rawvCpuHours))
 }

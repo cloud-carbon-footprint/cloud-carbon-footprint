@@ -16,9 +16,9 @@ import {
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
 import { AWSAccount } from '@cloud-carbon-footprint/aws'
+import { GCPAccount } from '@cloud-carbon-footprint/gcp'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
-import GCPAccount from '../GCPAccount'
 
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')

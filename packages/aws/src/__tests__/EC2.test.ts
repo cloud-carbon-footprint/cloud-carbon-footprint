@@ -5,11 +5,11 @@
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 
-import { CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
 import EC2 from '../lib/EC2'
 import { buildCostExplorerGetCostResponse } from './fixtures/builders'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -29,7 +29,7 @@ describe('EC2', () => {
   const region = 'us-east-one'
   const startDate = '2020-07-10'
   const endDate = '2020-07-11'
-  const AVG_CPU_UTILIZATION_2020 = CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020
+  const AVG_CPU_UTILIZATION_2020 = AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
   const metricDataQueries = [
     {
       Id: 'cpuUtilizationWithEmptyValues',

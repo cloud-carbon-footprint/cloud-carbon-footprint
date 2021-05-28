@@ -4,7 +4,6 @@
 
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
-import { CLOUD_CONSTANTS } from '@cloud-carbon-footprint/core'
 import RDSComputeService from '../lib/RDSCompute'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
@@ -13,6 +12,7 @@ import {
   buildCostExplorerGetCostResponse,
   buildCostExplorerGetUsageResponse,
 } from './fixtures/builders'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -180,7 +180,7 @@ describe('RDS Compute', function () {
         usesAverageCPUConstant: false,
       },
       {
-        cpuUtilizationAverage: CLOUD_CONSTANTS['AWS'].AVG_CPU_UTILIZATION_2020,
+        cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
         numberOfvCpus: 96,
         timestamp: new Date('2020-01-26T00:00:00.000Z'),
         usesAverageCPUConstant: true,
