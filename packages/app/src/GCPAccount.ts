@@ -45,7 +45,7 @@ export default class GCPAccount extends CloudProviderAccount {
   ): Promise<EstimationResult[]> {
     const gcpServices = this.getServices()
     const region = new Region(regionId, gcpServices, configLoader().GCP.NAME)
-    return this.getRegionData(region, startDate, endDate)
+    return this.getRegionData('GCP', region, startDate, endDate)
   }
 
   getDataFromBillingExportTable(startDate: Date, endDate: Date) {

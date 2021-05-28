@@ -19,6 +19,7 @@ import {
 export default class CloudProviderAccount {
   name?: string
   async getRegionData(
+    cloudProvider: string,
     region: Region,
     startDate: Date,
     endDate: Date,
@@ -65,7 +66,7 @@ export default class CloudProviderAccount {
             timestamp: moment.utc(date).toDate(),
             serviceEstimates: [
               {
-                cloudProvider: region.cloudProvider,
+                cloudProvider: cloudProvider,
                 accountName: this.name,
                 serviceName: service.serviceName,
                 region: region.id,

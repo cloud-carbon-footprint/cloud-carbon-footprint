@@ -37,18 +37,16 @@ describe('RDS Service', function () {
       },
     ]
 
-    const rdsComputeMockGetEstimates: jest.Mock<
-      Promise<FootprintEstimate[]>
-    > = jest.fn()
+    const rdsComputeMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+      jest.fn()
     const rdsComputeMock: RDSComputeService = new RDSComputeService(
       getServiceWrapper(),
     )
     rdsComputeMock.getEstimates = rdsComputeMockGetEstimates
     rdsComputeMockGetEstimates.mockResolvedValueOnce(rdsComputeEstimate)
 
-    const rdsStorageMockGetEstimates: jest.Mock<
-      Promise<FootprintEstimate[]>
-    > = jest.fn()
+    const rdsStorageMockGetEstimates: jest.Mock<Promise<FootprintEstimate[]>> =
+      jest.fn()
     const rdsStorageMock: RDSStorage = new RDSStorage(getServiceWrapper())
     rdsStorageMock.getEstimates = rdsStorageMockGetEstimates
     rdsStorageMockGetEstimates.mockResolvedValueOnce(rdsStorageEstimate)

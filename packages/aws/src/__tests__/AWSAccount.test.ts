@@ -5,14 +5,7 @@
 import { Credentials } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 import { Config as mockConfig } from '@cloud-carbon-footprint/common'
-import {
-  EBS,
-  S3,
-  EC2,
-  ElastiCache,
-  RDS,
-  Lambda,
-} from '@cloud-carbon-footprint/core'
+import { EBS, S3, EC2, ElastiCache, RDS, Lambda } from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 
 jest.mock('../AWSCredentialsProvider')

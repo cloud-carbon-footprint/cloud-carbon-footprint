@@ -10,6 +10,10 @@ import EBS from '../lib/EBS'
 import { AWS_REGIONS } from '../lib/AWSRegions'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import { buildCostExplorerGetUsageResponse } from './fixtures/builders'
+import {
+  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  AWS_CLOUD_CONSTANTS,
+} from '../domain'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -19,6 +23,10 @@ describe('Ebs', () => {
   const startDate = '2020-06-27'
   const endDate = '2020-06-30'
   const region = AWS_REGIONS.US_EAST_1
+  const emissionsFactors = AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+  const constants = {
+    powerUsageEffectiveness: AWS_CLOUD_CONSTANTS.getPUE(),
+  }
 
   const getServiceWrapper = () =>
     new ServiceWrapper(
@@ -259,12 +267,15 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
     expect(result).toEqual(
       hddStorageEstimator.estimate(
         [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })
@@ -294,12 +305,15 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
     expect(result).toEqual(
       hddStorageEstimator.estimate(
         [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })
@@ -329,12 +343,15 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
     expect(result).toEqual(
       hddStorageEstimator.estimate(
         [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })
@@ -364,12 +381,15 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
     expect(result).toEqual(
       sddStorageEstimator.estimate(
         [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })
@@ -397,6 +417,8 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
     expect(result).toEqual([])
   })
@@ -424,6 +446,8 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
     expect(Logger.prototype.warn).toHaveBeenCalledWith(
       'Unexpected Cost explorer Dimension Name: EBS:anything',
@@ -460,17 +484,21 @@ describe('Ebs', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
 
     const ssdEstimates = sddStorageEstimator.estimate(
       [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
       region,
-      'AWS',
+      emissionsFactors,
+      constants,
     )
     const hddEstimates = hddStorageEstimator.estimate(
       [{ terabyteHours: 0.72, timestamp: new Date(startDate) }],
       region,
-      'AWS',
+      emissionsFactors,
+      constants,
     )
     expect(result).toEqual([
       {

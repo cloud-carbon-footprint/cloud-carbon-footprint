@@ -35,6 +35,8 @@ import {
   COMPUTE_PROCESSOR_TYPES,
   CLOUD_CONSTANTS,
   appendOrAccumulateEstimatesByDay,
+  CloudConstantsEmissionsFactors,
+  CloudConstantsUsage,
 } from '@cloud-carbon-footprint/core'
 
 import { ServiceWrapper } from './ServiceWrapper'
@@ -57,6 +59,10 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
+import {
+  AWS_CLOUD_CONSTANTS,
+  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from 'src/domain'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -113,6 +119,11 @@ export default class CostAndUsageReports {
   private getEstimateByPricingUnit(
     costAndUsageReportRow: CostAndUsageReportsRow,
   ): FootprintEstimate {
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      this.getEmissionsFactors()
+    const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
+      costAndUsageReportRow.region,
+    )
     switch (costAndUsageReportRow.usageUnit) {
       case PRICING_UNITS.HOURS_1:
       case PRICING_UNITS.HOURS_2:
@@ -121,18 +132,23 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const gigabyteHoursForMemoryUsage = this.getGigabytesFromInstanceTypeAndProcessors(
-          costAndUsageReportRow.usageType,
-          costAndUsageReportRow.usageAmount,
-        )
+        const gigabyteHoursForMemoryUsage =
+          this.getGigabytesFromInstanceTypeAndProcessors(
+            costAndUsageReportRow.usageType,
+            costAndUsageReportRow.usageAmount,
+          )
 
         const computeFootprint = this.getComputeFootprintEstimate(
           costAndUsageReportRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
         )
 
         const memoryFootprint = this.getMemoryFootprintEstimate(
           costAndUsageReportRow,
           gigabyteHoursForMemoryUsage,
+          powerUsageEffectiveness,
+          emissionsFactors,
         )
 
         // if there exist any gigabytes to calculate memory usage,
@@ -154,15 +170,27 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.GB_MONTH_4:
       case PRICING_UNITS.GB_HOURS:
         // Storage
-        return this.getStorageFootprintEstimate(costAndUsageReportRow)
+        return this.getStorageFootprintEstimate(
+          costAndUsageReportRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
       case PRICING_UNITS.SECONDS_1:
       case PRICING_UNITS.SECONDS_2:
         // Lambda
-        return this.getLambdaComputeFootprintEstimate(costAndUsageReportRow)
+        return this.getLambdaComputeFootprintEstimate(
+          costAndUsageReportRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
         // Networking
-        return this.getNetworkingFootprintEstimate(costAndUsageReportRow)
+        return this.getNetworkingFootprintEstimate(
+          costAndUsageReportRow,
+          powerUsageEffectiveness,
+          emissionsFactors,
+        )
       default:
         this.costAndUsageReportsLogger.warn(
           `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
@@ -172,6 +200,8 @@ export default class CostAndUsageReports {
 
   private getNetworkingFootprintEstimate(
     costAndUsageReportRow: CostAndUsageReportsRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     let networkingEstimate: FootprintEstimate
     if (this.usageTypeIsNetworking(costAndUsageReportRow)) {
@@ -179,10 +209,14 @@ export default class CostAndUsageReports {
         timestamp: costAndUsageReportRow.timestamp,
         gigabytes: costAndUsageReportRow.usageAmount,
       }
+      const networkingConstants: CloudConstantsUsage = {
+        powerUsageEffectiveness: powerUsageEffectiveness,
+      }
       networkingEstimate = this.networkingEstimator.estimate(
         [networkingUsage],
         costAndUsageReportRow.region,
-        'AWS',
+        emissionsFactors,
+        networkingConstants,
       )[0]
     }
     if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
@@ -191,6 +225,8 @@ export default class CostAndUsageReports {
 
   private getStorageFootprintEstimate(
     costAndUsageReportRow: CostAndUsageReportsRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     const usageAmountTerabyteHours = this.getUsageAmountInTerabyteHours(
       costAndUsageReportRow,
@@ -201,18 +237,24 @@ export default class CostAndUsageReports {
       terabyteHours: usageAmountTerabyteHours,
     }
 
+    const storageConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
+
     let estimate: FootprintEstimate
     if (this.usageTypeIsSSD(costAndUsageReportRow))
       estimate = this.ssdStorageEstimator.estimate(
         [storageUsage],
         costAndUsageReportRow.region,
-        'AWS',
+        emissionsFactors,
+        storageConstants,
       )[0]
     else if (this.usageTypeIsHDD(costAndUsageReportRow.usageType))
       estimate = this.hddStorageEstimator.estimate(
         [storageUsage],
         costAndUsageReportRow.region,
-        'AWS',
+        emissionsFactors,
+        storageConstants,
       )[0]
     else
       this.costAndUsageReportsLogger.warn(
@@ -224,6 +266,8 @@ export default class CostAndUsageReports {
 
   private getComputeFootprintEstimate(
     costAndUsageReportRow: CostAndUsageReportsRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeProcessors = this.getComputeProcessorsFromUsageType(
       costAndUsageReportRow.usageType,
@@ -236,43 +280,68 @@ export default class CostAndUsageReports {
       usesAverageCPUConstant: true,
     }
 
+    const computeConstants: CloudConstantsUsage = {
+      minWatts: this.getMinwatts(computeProcessors),
+      maxWatts: this.getMaxwatts(computeProcessors),
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
+
     return this.computeEstimator.estimate(
       [computeUsage],
       costAndUsageReportRow.region,
-      'AWS',
-      computeProcessors,
+      emissionsFactors,
+      computeConstants,
     )[0]
   }
 
   private getMemoryFootprintEstimate(
     costAndUsageReportRow: CostAndUsageReportsRow,
     gigabyteHoursForMemoryUsage: number,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const memoryUsage: MemoryUsage = {
       timestamp: costAndUsageReportRow.timestamp,
       gigabyteHours: gigabyteHoursForMemoryUsage,
     }
+    const memoryConstants: CloudConstantsUsage = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
 
     return this.memoryEstimator.estimate(
       [memoryUsage],
       costAndUsageReportRow.region,
-      'AWS',
+      emissionsFactors,
+      memoryConstants,
     )[0]
   }
 
   private getLambdaComputeFootprintEstimate(
     costAndUsageReportRow: CostAndUsageReportsRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
+    const computeProcessors = this.getComputeProcessorsFromUsageType(
+      costAndUsageReportRow.usageType,
+    )
+
     const lambdaComputeUsage: ComputeUsage = {
       timestamp: costAndUsageReportRow.timestamp,
       cpuUtilizationAverage: CLOUD_CONSTANTS.AWS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
       usesAverageCPUConstant: true,
     }
+
+    const lambdaComputeConstants: CloudConstantsUsage = {
+      minWatts: this.getMinwatts(computeProcessors),
+      maxWatts: this.getMaxwatts(computeProcessors),
+      powerUsageEffectiveness: powerUsageEffectiveness,
+    }
     return this.computeEstimator.estimate(
       [lambdaComputeUsage],
       costAndUsageReportRow.region,
-      'AWS',
+      emissionsFactors,
+      lambdaComputeConstants,
     )[0]
   }
 
@@ -295,10 +364,8 @@ export default class CostAndUsageReports {
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists
     // or if the instance type is not a burstable instance, otherwise return void
-    const {
-      isValidInstanceType,
-      isBurstableInstance,
-    } = this.checkInstanceTypes(instanceFamily, instanceType)
+    const { isValidInstanceType, isBurstableInstance } =
+      this.checkInstanceTypes(instanceFamily, instanceType)
     if (!isValidInstanceType || isBurstableInstance) return
 
     // grab the list of processors per instance type
@@ -306,9 +373,8 @@ export default class CostAndUsageReports {
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-    const processorMemoryGigabytesPerPhysicalChip = CLOUD_CONSTANTS.AWS.getMemory(
-      processors,
-    )
+    const processorMemoryGigabytesPerPhysicalChip =
+      CLOUD_CONSTANTS.AWS.getMemory(processors)
 
     // grab the instance type vcpu from the AWSInstanceTypes lists
     const instanceTypeMemory =
@@ -322,10 +388,8 @@ export default class CostAndUsageReports {
     )
 
     // grab the vcpu and memory (gb) from the largest instance type in the family
-    const [
-      largestInstanceTypevCpus,
-      largestInstanceTypeMemory,
-    ] = familyInstanceTypes[familyInstanceTypes.length - 1]
+    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
+      familyInstanceTypes[familyInstanceTypes.length - 1]
 
     // there are special cases for instance families m5zn and z1d where they are always 2
     const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
@@ -422,6 +486,22 @@ export default class CostAndUsageReports {
     return suffixes.some((suffix) => string.endsWith(suffix))
   }
 
+  private getMinwatts(computeProcessors: string[]): number {
+    return AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors)
+  }
+
+  private getMaxwatts(computeProcessors: string[]): number {
+    return AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors)
+  }
+
+  private getPowerUsageEffectiveness(region: string): number {
+    return AWS_CLOUD_CONSTANTS.getPUE(region)
+  }
+
+  private getEmissionsFactors(): { [region: string]: number } {
+    return AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+  }
+
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
     const params = {
       QueryString: `SELECT DATE(DATE_TRUNC('${
@@ -486,9 +566,8 @@ export default class CostAndUsageReports {
     queryExecutionInput: GetQueryExecutionInput,
   ) {
     while (true) {
-      const queryExecutionResults: GetQueryExecutionOutput = await this.serviceWrapper.getAthenaQueryExecution(
-        queryExecutionInput,
-      )
+      const queryExecutionResults: GetQueryExecutionOutput =
+        await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
       const queryStatus = queryExecutionResults.QueryExecution.Status
       if (queryStatus.State === ('FAILED' || 'CANCELLED'))
         throw new Error(
@@ -498,9 +577,8 @@ export default class CostAndUsageReports {
 
       await wait(1000)
     }
-    const results: GetQueryResultsOutput[] = await this.serviceWrapper.getAthenaQueryResultSets(
-      queryExecutionInput,
-    )
+    const results: GetQueryResultsOutput[] =
+      await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
   }
 }

@@ -80,9 +80,8 @@ describe('aws service helper', () => {
   })
 
   it('enablePagination decorator should follow CloudWatch next pages', async () => {
-    const firstPageResponse = buildAwsCloudWatchGetMetricDataResponse(
-      'tokenToNextPage',
-    )
+    const firstPageResponse =
+      buildAwsCloudWatchGetMetricDataResponse('tokenToNextPage')
     const secondPageResponse = buildAwsCloudWatchGetMetricDataResponse(null)
     const metricDataRequest = buildAwsCloudWatchGetMetricDataRequest()
 
@@ -111,9 +110,8 @@ describe('aws service helper', () => {
   })
 
   it('enablePagination decorator should follow Athena next pages', async () => {
-    const firstPageResponse = buildAthenaGetQueryResultsResponse(
-      'tokenToNextPage',
-    )
+    const firstPageResponse =
+      buildAthenaGetQueryResultsResponse('tokenToNextPage')
     const secondPageResponse = buildAthenaGetQueryResultsResponse(null)
 
     const athenaGetResultsSpy = jest.fn()

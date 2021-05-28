@@ -14,7 +14,10 @@ import {
 import { getCostFromCostExplorer } from './CostMapper'
 import { isEmpty } from 'ramda'
 import { ServiceWrapper } from './ServiceWrapper'
-import { AWS_CLOUD_CONSTANTS } from '../domain/'
+import {
+  AWS_CLOUD_CONSTANTS,
+  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from '../domain/'
 
 export default class Lambda implements ICloudService {
   private readonly LOG_GROUP_SIZE_REQUEST_LIMIT = 20
@@ -58,7 +61,11 @@ export default class Lambda implements ICloudService {
       const timestamp = new Date(timestampField.value.substr(0, 10))
       const wattHours =
         Number.parseFloat(wattsField.value) * AWS_CLOUD_CONSTANTS.getPUE()
-      const co2e = estimateCo2(wattHours, 'AWS', region)
+      const co2e = estimateCo2(
+        wattHours,
+        region,
+        AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      )
       return {
         timestamp,
         kilowattHours: wattHours,

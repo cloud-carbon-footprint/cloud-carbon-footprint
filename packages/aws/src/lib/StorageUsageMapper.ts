@@ -37,9 +37,8 @@ export async function getUsageFromCostExplorer(
   diskTypeCallBack: (awsGroupKey: string) => DiskType,
   serviceWrapper: ServiceWrapper,
 ): Promise<VolumeUsage[]> {
-  const responses: CostExplorer.GetCostAndUsageResponse[] = await serviceWrapper.getCostAndUsageResponses(
-    params,
-  )
+  const responses: CostExplorer.GetCostAndUsageResponse[] =
+    await serviceWrapper.getCostAndUsageResponses(params)
 
   return responses
     .map((response) => {
@@ -70,8 +69,6 @@ function estimateTerabyteHours(sizeGbMonth: number, timestamp: string) {
 }
 
 export function getEstimatesFromCostExplorer(
-  start: Date,
-  end: Date,
   region: string,
   volumeUsages: VolumeUsage[],
   emissionsFactors: CloudConstantsEmissionsFactors,

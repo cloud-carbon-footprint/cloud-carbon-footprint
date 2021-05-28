@@ -38,8 +38,6 @@ export default class RDSStorage implements ICloudService {
   ): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
     return getEstimatesFromCostExplorer(
-      start,
-      end,
       region,
       usage,
       emissionsFactors,

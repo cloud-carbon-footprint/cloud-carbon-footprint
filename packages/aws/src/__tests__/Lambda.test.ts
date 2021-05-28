@@ -8,6 +8,7 @@ import { estimateCo2 } from '@cloud-carbon-footprint/core'
 import Lambda from '../lib/Lambda'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import { buildCostExplorerGetCostResponse } from './fixtures/builders'
+import { AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../domain'
 
 describe('Lambda', () => {
   beforeAll(() => {
@@ -71,7 +72,11 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         kilowattHours: 0.1135,
-        co2e: estimateCo2(0.1135, 'AWS', region),
+        co2e: estimateCo2(
+          0.1135,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
     ])
   })
@@ -119,12 +124,20 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         kilowattHours: 0.1135,
-        co2e: estimateCo2(0.1135, 'AWS', region),
+        co2e: estimateCo2(
+          0.1135,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
       {
         timestamp: new Date(endDate),
         kilowattHours: 0.454,
-        co2e: estimateCo2(0.454, 'AWS', region),
+        co2e: estimateCo2(
+          0.454,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
     ])
   })
@@ -184,12 +197,20 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         kilowattHours: 0.227,
-        co2e: estimateCo2(0.227, 'AWS', region),
+        co2e: estimateCo2(
+          0.227,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
       {
         timestamp: new Date(startDate),
         kilowattHours: 0.26105,
-        co2e: estimateCo2(0.26105, 'AWS', region),
+        co2e: estimateCo2(
+          0.26105,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
     ])
   })
@@ -250,12 +271,20 @@ describe('Lambda', () => {
       {
         timestamp: new Date(startDate),
         kilowattHours: 0.26105,
-        co2e: estimateCo2(0.26105, 'AWS', region),
+        co2e: estimateCo2(
+          0.26105,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
       {
         timestamp: new Date(startDate),
         kilowattHours: 0.26105,
-        co2e: estimateCo2(0.26105, 'AWS', region),
+        co2e: estimateCo2(
+          0.26105,
+          region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        ),
       },
     ])
   })

@@ -12,6 +12,10 @@ import {
   buildCostExplorerGetUsageResponse,
 } from './fixtures/builders'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
+import {
+  AWS_CLOUD_CONSTANTS,
+  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from '../domain'
 
 beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
@@ -26,6 +30,10 @@ describe('RDSStorage', () => {
   const dayTwo = '2020-07-25'
   const endDate = '2020-07-26'
   const region = 'us-east-1'
+  const emissionsFactors = AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+  const constants = {
+    powerUsageEffectiveness: AWS_CLOUD_CONSTANTS.getPUE(),
+  }
   const getServiceWrapper = () =>
     new ServiceWrapper(
       new CloudWatch(),
@@ -268,13 +276,16 @@ describe('RDSStorage', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
 
     expect(result).toEqual(
       ssdStorageEstimator.estimate(
         [{ terabyteHours: 0.744, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })
@@ -305,13 +316,16 @@ describe('RDSStorage', () => {
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
 
     expect(result).toEqual(
       hddStorageEstimator.estimate(
         [{ terabyteHours: 0.744, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })

@@ -34,7 +34,10 @@ import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
 
 import AWSCredentialsProvider from './AWSCredentialsProvider'
 
-import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
+import {
+  AWS_CLOUD_CONSTANTS,
+  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from '../domain'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -69,8 +72,23 @@ export default class AWSAccount extends CloudProviderAccount {
     endDate: Date,
   ): Promise<EstimationResult[]> {
     const awsServices = this.getServices(regionId)
-    const region = new Region(regionId, awsServices, configLoader().AWS.NAME)
-    return this.getRegionData(region, startDate, endDate)
+    const awsConstants = {
+      minWatts: AWS_CLOUD_CONSTANTS.MIN_WATTS_AVG,
+      maxWatts: AWS_CLOUD_CONSTANTS.MAX_WATTS_AVG,
+      powerUsageEffectiveness: AWS_CLOUD_CONSTANTS.getPUE(),
+    }
+    const region = new Region(
+      regionId,
+      awsServices,
+      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      awsConstants,
+    )
+    return this.getRegionData(
+      configLoader().AWS.NAME,
+      region,
+      startDate,
+      endDate,
+    )
   }
 
   getServices(regionId: string): ICloudService[] {

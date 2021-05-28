@@ -20,7 +20,8 @@ function mockChainableTemporaryCredentials(
   targetSecretAccessKey: string,
   targetSessionToken: string,
 ) {
-  const chainableTemporaryCredentials = (ChainableTemporaryCredentials as unknown) as Mock
+  const chainableTemporaryCredentials =
+    ChainableTemporaryCredentials as unknown as Mock
   chainableTemporaryCredentials.mockImplementationOnce(() => {
     return new Credentials(
       targetAccessKeyId,
@@ -36,7 +37,7 @@ function mockWebIdentityCredentials(
   targetSecretAccessKey: string,
   targetSessionToken: string,
 ) {
-  const webIdentityCredentials = (WebIdentityCredentials as unknown) as Mock
+  const webIdentityCredentials = WebIdentityCredentials as unknown as Mock
   const credentials = new Credentials(
     targetAccessKeyId,
     targetSecretAccessKey,

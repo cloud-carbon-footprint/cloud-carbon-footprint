@@ -15,10 +15,9 @@ import {
   EmissionRatioResult,
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
+import { AWSAccount } from '@cloud-carbon-footprint/aws'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
-
-import AWSAccount from '../AWSAccount'
 import GCPAccount from '../GCPAccount'
 
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
