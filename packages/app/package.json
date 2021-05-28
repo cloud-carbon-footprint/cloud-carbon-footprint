@@ -40,10 +40,9 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/common": "^0.0.1",
     "@cloud-carbon-footprint/aws": "^0.0.1",
     "@cloud-carbon-footprint/azure": "^0.0.1",
-    "@cloud-carbon-footprint/gcp": "^0.0.1",
+    "@cloud-carbon-footprint/common": "^0.0.1",
     "@google-cloud/monitoring": "^2.3.1"
   },
   "devDependencies": {
