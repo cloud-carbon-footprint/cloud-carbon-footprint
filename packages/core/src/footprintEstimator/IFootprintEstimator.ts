@@ -2,18 +2,14 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import {
-  CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
-  FootprintEstimate,
-  IUsageData,
-} from '.'
+import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
+import { FootprintEstimate, IUsageData } from '.'
 
 export default interface IFootprintEstimator {
   estimate(
     data: IUsageData[],
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): FootprintEstimate[]
 }

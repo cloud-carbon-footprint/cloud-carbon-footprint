@@ -2,18 +2,16 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ICloudService from './ICloudService'
-import FootprintEstimate from './FootprintEstimate'
-import Cost from './Cost'
-import { CloudConstantsEmissionsFactors } from '.'
-import CloudConstantsUsage from './CloudConstantsUsage'
+import { Cost } from '../cost'
+import { ICloudService, FootprintEstimate } from '../footprintEstimator'
+import { CloudConstants, CloudConstantsEmissionsFactors } from '../cloud'
 
 export default class Region {
   constructor(
     public id: string,
     public services: ICloudService[],
     public emissionsFactors: CloudConstantsEmissionsFactors,
-    public constants: CloudConstantsUsage,
+    public constants: CloudConstants,
   ) {}
 
   public async getEstimates(

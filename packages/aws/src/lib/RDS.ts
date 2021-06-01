@@ -9,7 +9,7 @@ import {
   FootprintEstimate,
   Cost,
   CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
+  CloudConstants,
 } from '@cloud-carbon-footprint/core'
 import RDSComputeService from './RDSCompute'
 import RDSStorage from './RDSStorage'
@@ -27,7 +27,7 @@ export default class RDS implements ICloudService {
     end: Date,
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): Promise<FootprintEstimate[]> {
     const rdsComputeEstimates = this.rdsComputeService.getEstimates(
       start,

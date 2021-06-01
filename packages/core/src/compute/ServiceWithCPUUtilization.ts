@@ -2,13 +2,10 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import ICloudService from './ICloudService'
-import FootprintEstimate from './FootprintEstimate'
-import ComputeEstimator from './ComputeEstimator'
-import ComputeUsage from './ComputeUsage'
-import Cost from './Cost'
-import { CloudConstantsEmissionsFactors } from '.'
-import CloudConstantsUsage from './CloudConstantsUsage'
+import { Cost } from '../cost'
+import { FootprintEstimate, ICloudService } from '../footprintEstimator'
+import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
+import { ComputeUsage, ComputeEstimator } from '.'
 
 export default abstract class ServiceWithCPUUtilization
   implements ICloudService
@@ -24,7 +21,7 @@ export default abstract class ServiceWithCPUUtilization
     end: Date,
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): Promise<FootprintEstimate[]> {
     const usage = await this.getUsage(start, end, region)
     return this.estimator.estimate(usage, region, emissionsFactors, constants)

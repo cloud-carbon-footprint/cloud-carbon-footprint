@@ -2,13 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { reduceBy } from 'ramda'
-import { median } from 'ramda'
-import {
-  BillingDataRow,
-  COMPUTE_PROCESSOR_TYPES,
-  CloudConstantsEmissionsFactors,
-} from '.'
+import { median, reduceBy } from 'ramda'
+
+import { COMPUTE_PROCESSOR_TYPES } from '../compute'
+import { CloudConstantsEmissionsFactors } from '../cloud'
+import { BillingDataRow } from '.'
 
 export default interface FootprintEstimate {
   timestamp: Date

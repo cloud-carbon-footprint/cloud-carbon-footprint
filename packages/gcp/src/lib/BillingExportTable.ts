@@ -25,7 +25,7 @@ import {
   appendOrAccumulateEstimatesByDay,
   COMPUTE_PROCESSOR_TYPES,
   CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
+  CloudConstants,
 } from '@cloud-carbon-footprint/core'
 
 import {
@@ -159,7 +159,7 @@ export default class BillingExportTable {
       usageRow.machineType,
     )
 
-    const computeConstants: CloudConstantsUsage = {
+    const computeConstants: CloudConstants = {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
@@ -206,7 +206,7 @@ export default class BillingExportTable {
       timestamp,
       terabyteHours: usageAmountTerabyteHours,
     }
-    const storageConstants: CloudConstantsUsage = {
+    const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
     if (usageRow.usageType.includes('SSD')) {
@@ -243,7 +243,7 @@ export default class BillingExportTable {
         usageRow.usageAmount,
       ),
     }
-    const memoryConstants: CloudConstantsUsage = {
+    const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
     return {
@@ -267,7 +267,7 @@ export default class BillingExportTable {
       timestamp,
       gigabytes: this.convertBytesToGigabytes(usageRow.usageAmount),
     }
-    const networkingConstants: CloudConstantsUsage = {
+    const networkingConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 

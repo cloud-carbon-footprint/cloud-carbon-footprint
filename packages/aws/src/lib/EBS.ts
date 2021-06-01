@@ -8,7 +8,7 @@ import {
   FootprintEstimate,
   Cost,
   CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
+  CloudConstants,
 } from '@cloud-carbon-footprint/core'
 import {
   DiskType,
@@ -32,7 +32,7 @@ export default class EBS implements ICloudService {
     end: Date,
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): Promise<FootprintEstimate[]> {
     const usage: VolumeUsage[] = await this.getUsage(start, end, region)
     return getEstimatesFromCostExplorer(

@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import IUsageData from './IUsageData'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
+import { IUsageData } from '../footprintEstimator'
 
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number

@@ -35,7 +35,7 @@ import {
   COMPUTE_PROCESSOR_TYPES,
   appendOrAccumulateEstimatesByDay,
   CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
+  CloudConstants,
 } from '@cloud-carbon-footprint/core'
 
 import { ServiceWrapper } from './ServiceWrapper'
@@ -208,7 +208,7 @@ export default class CostAndUsageReports {
         timestamp: costAndUsageReportRow.timestamp,
         gigabytes: costAndUsageReportRow.usageAmount,
       }
-      const networkingConstants: CloudConstantsUsage = {
+      const networkingConstants: CloudConstants = {
         powerUsageEffectiveness: powerUsageEffectiveness,
       }
       networkingEstimate = this.networkingEstimator.estimate(
@@ -236,7 +236,7 @@ export default class CostAndUsageReports {
       terabyteHours: usageAmountTerabyteHours,
     }
 
-    const storageConstants: CloudConstantsUsage = {
+    const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
@@ -279,7 +279,7 @@ export default class CostAndUsageReports {
       usesAverageCPUConstant: true,
     }
 
-    const computeConstants: CloudConstantsUsage = {
+    const computeConstants: CloudConstants = {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
@@ -303,7 +303,7 @@ export default class CostAndUsageReports {
       timestamp: costAndUsageReportRow.timestamp,
       gigabyteHours: gigabyteHoursForMemoryUsage,
     }
-    const memoryConstants: CloudConstantsUsage = {
+    const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
@@ -331,7 +331,7 @@ export default class CostAndUsageReports {
       usesAverageCPUConstant: true,
     }
 
-    const lambdaComputeConstants: CloudConstantsUsage = {
+    const lambdaComputeConstants: CloudConstants = {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,

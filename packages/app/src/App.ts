@@ -8,10 +8,9 @@ import {
   reduceByTimestamp,
   // EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
-// import { AzureAccount, AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/azure'
-// import { AWSAccount, AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/aws'
-// import { GCPAccount, GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/gcp'
-// import { CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '@cloud-carbon-footprint/core'
+import { AzureAccount } from '@cloud-carbon-footprint/azure'
+import { AWSAccount } from '@cloud-carbon-footprint/aws'
+import { GCPAccount } from '@cloud-carbon-footprint/gcp'
 
 import cache from './Cache'
 import { EstimationRequest } from './CreateValidRequest'

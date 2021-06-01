@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { HDDStorageService, SSDStorageService } from '../StorageService'
 import StorageUsage from '../StorageUsage'
-import FootprintEstimate from '../FootprintEstimate'
+import { HDDStorageService, SSDStorageService } from '../StorageService'
+import { FootprintEstimate } from '../../footprintEstimator'
 import { StorageEstimator } from '../StorageEstimator'
-import Cost from '../Cost'
+import { Cost } from '../../cost'
 
 describe('StorageService', () => {
   const ssdCoefficient = 1.2

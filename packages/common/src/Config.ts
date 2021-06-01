@@ -54,6 +54,10 @@ export interface CCFConfig {
   CACHE_MODE?: string
 }
 
+export type QUERY_DATE_TYPES = {
+  [key: string]: string
+}
+
 const getAWSAccounts = () => {
   return process.env.AWS_ACCOUNTS ? process.env.AWS_ACCOUNTS : '[]'
 }

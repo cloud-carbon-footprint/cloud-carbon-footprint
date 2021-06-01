@@ -3,13 +3,12 @@
  */
 
 import {
-  CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
-  ComputeUsage,
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '.'
+} from '../footprintEstimator'
+import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
+import { ComputeUsage } from '.'
 
 //averageCPUUtilization expected to be in percentage
 const ENERGY_ESTIMATION_FORMULA = (
@@ -32,7 +31,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
     data: ComputeUsage[],
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): FootprintEstimate[] {
     return data.map((usage) => {
       const estimatedKilowattHours = ENERGY_ESTIMATION_FORMULA(

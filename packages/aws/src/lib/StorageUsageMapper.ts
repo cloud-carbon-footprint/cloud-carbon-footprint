@@ -8,7 +8,7 @@ import {
   StorageUsage,
   FootprintEstimate,
   StorageEstimator,
-  CloudConstantsUsage,
+  CloudConstants,
   CloudConstantsEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
@@ -72,7 +72,7 @@ export function getEstimatesFromCostExplorer(
   region: string,
   volumeUsages: VolumeUsage[],
   emissionsFactors: CloudConstantsEmissionsFactors,
-  constants: CloudConstantsUsage,
+  constants: CloudConstants,
 ): FootprintEstimate[] {
   const ssdEstimator = new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT)
   const hddEstimator = new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT)

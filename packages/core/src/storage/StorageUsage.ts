@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import IUsageData from './IUsageData'
+import { IUsageData } from '../footprintEstimator'
 
 export default interface StorageUsage extends IUsageData {
   readonly terabyteHours: number

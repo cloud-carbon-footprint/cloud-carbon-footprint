@@ -28,7 +28,7 @@ import {
   appendOrAccumulateEstimatesByDay,
   MutableEstimationResult,
   COMPUTE_PROCESSOR_TYPES,
-  CloudConstantsUsage,
+  CloudConstants,
   CloudConstantsEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
 
@@ -279,7 +279,7 @@ export default class ConsumptionManagementService {
         gigabytes: this.getGigabytesForNetworking(consumptionDetailRow),
       }
 
-      const networkingConstants: CloudConstantsUsage = {
+      const networkingConstants: CloudConstants = {
         powerUsageEffectiveness: powerUsageEffectiveness,
       }
 
@@ -307,7 +307,7 @@ export default class ConsumptionManagementService {
       terabyteHours: usageAmountTerabyteHours,
     }
 
-    const storageConstants: CloudConstantsUsage = {
+    const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
@@ -350,7 +350,7 @@ export default class ConsumptionManagementService {
       usesAverageCPUConstant: true,
     }
 
-    const computeConstants: CloudConstantsUsage = {
+    const computeConstants: CloudConstants = {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
@@ -374,7 +374,7 @@ export default class ConsumptionManagementService {
       gigabyteHours: this.getUsageAmountInGigabyteHours(consumptionDetailRow),
     }
 
-    const memoryConstants: CloudConstantsUsage = {
+    const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 

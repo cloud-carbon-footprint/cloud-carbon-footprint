@@ -7,10 +7,9 @@ import moment from 'moment'
 import {
   FootprintEstimate,
   aggregateEstimatesByDay,
-  aggregateCostsByDay,
-  Region,
-  Cost,
-} from '.'
+} from '../footprintEstimator'
+import { aggregateCostsByDay, Cost } from '../cost'
+import { Region } from '../region'
 import {
   EstimationResult,
   reduceByTimestamp,

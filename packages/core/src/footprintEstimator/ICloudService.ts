@@ -2,10 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import FootprintEstimate from './FootprintEstimate'
-import Cost from './Cost'
-import { CloudConstantsEmissionsFactors } from '.'
-import CloudConstantsUsage from './CloudConstantsUsage'
+import { Cost } from '../cost'
+import { CloudConstants, CloudConstantsEmissionsFactors } from '../cloud'
+import { FootprintEstimate } from '.'
 
 export default interface ICloudService {
   serviceName: string
@@ -14,7 +13,7 @@ export default interface ICloudService {
     end: Date,
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): Promise<FootprintEstimate[]>
   getCosts(start: Date, end: Date, region: string): Promise<Cost[]>
 }

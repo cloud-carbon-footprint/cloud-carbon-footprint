@@ -3,7 +3,7 @@
  */
 
 import { StorageEstimator } from '../StorageEstimator'
-import FootprintEstimate from '../FootprintEstimate'
+import { FootprintEstimate } from '../../footprintEstimator'
 
 describe('StorageEstimator', () => {
   const SSD_COEFFICIENT = 1.2

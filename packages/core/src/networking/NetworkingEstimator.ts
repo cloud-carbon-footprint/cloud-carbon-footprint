@@ -2,14 +2,13 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
 import {
-  CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
-  NetworkingUsage,
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '.'
+} from '../footprintEstimator'
+import { NetworkingUsage } from '.'
 
 export default class NetworkingEstimator implements IFootprintEstimator {
   coefficient: number
@@ -22,7 +21,7 @@ export default class NetworkingEstimator implements IFootprintEstimator {
     data: NetworkingUsage[],
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): FootprintEstimate[] {
     return data.map((data: NetworkingUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(

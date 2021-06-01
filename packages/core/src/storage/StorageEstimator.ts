@@ -2,14 +2,13 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
 import {
-  CloudConstantsEmissionsFactors,
-  CloudConstantsUsage,
-  StorageUsage,
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '.'
+} from '../footprintEstimator'
+import { StorageUsage } from '.'
 
 export class StorageEstimator implements IFootprintEstimator {
   coefficient: number
@@ -22,7 +21,7 @@ export class StorageEstimator implements IFootprintEstimator {
     data: StorageUsage[],
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstantsUsage,
+    constants: CloudConstants,
   ): FootprintEstimate[] {
     return data.map((d: StorageUsage) => {
       const estimatedKilowattHours = this.estimateKilowattHours(
