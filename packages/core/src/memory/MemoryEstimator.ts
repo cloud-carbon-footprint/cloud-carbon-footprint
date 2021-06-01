@@ -7,7 +7,7 @@ import {
   FootprintEstimate,
   IFootprintEstimator,
   estimateCo2,
-} from '../footprintEstimator'
+} from '../footprint'
 import { MemoryUsage } from '.'
 
 export default class MemoryEstimator implements IFootprintEstimator {

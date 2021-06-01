@@ -6,6 +6,7 @@ export default interface CloudConstants {
   readonly minWatts?: number
   readonly maxWatts?: number
   readonly powerUsageEffectiveness?: number
+  readonly avgCpuUtilization?: number
 }
 
 export type CloudConstantsByProvider = {

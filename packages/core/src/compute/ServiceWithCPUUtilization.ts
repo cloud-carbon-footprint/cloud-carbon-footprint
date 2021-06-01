@@ -3,7 +3,7 @@
  */
 
 import { Cost } from '../cost'
-import { FootprintEstimate, ICloudService } from '../footprintEstimator'
+import { FootprintEstimate, ICloudService } from '../footprint'
 import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
 import { ComputeUsage, ComputeEstimator } from '.'
 

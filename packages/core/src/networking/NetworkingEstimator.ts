@@ -7,7 +7,7 @@ import {
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '../footprintEstimator'
+} from '../footprint'
 import { NetworkingUsage } from '.'
 
 export default class NetworkingEstimator implements IFootprintEstimator {

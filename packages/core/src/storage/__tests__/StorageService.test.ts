@@ -4,7 +4,7 @@
 
 import StorageUsage from '../StorageUsage'
 import { HDDStorageService, SSDStorageService } from '../StorageService'
-import { FootprintEstimate } from '../../footprintEstimator'
+import { FootprintEstimate } from '../../footprint'
 import { StorageEstimator } from '../StorageEstimator'
 import { Cost } from '../../cost'
 
@@ -15,7 +15,7 @@ describe('StorageService', () => {
     class TestHDDService extends HDDStorageService {
       serviceName = 'testService'
       constructor() {
-        super()
+        super(hddCoefficient)
       }
 
       getUsage(): Promise<StorageUsage[]> {
@@ -30,7 +30,7 @@ describe('StorageService', () => {
     class TestSSDService extends SSDStorageService {
       serviceName = 'testService'
       constructor() {
-        super()
+        super(ssdCoefficient)
       }
 
       getUsage(): Promise<StorageUsage[]> {

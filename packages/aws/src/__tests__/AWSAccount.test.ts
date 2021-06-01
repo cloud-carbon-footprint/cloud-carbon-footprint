@@ -8,7 +8,7 @@ import { Config as mockConfig } from '@cloud-carbon-footprint/common'
 import { EBS, S3, EC2, ElastiCache, RDS, Lambda } from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 
-jest.mock('../AWSCredentialsProvider')
+jest.mock('../application/AWSCredentialsProvider')
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 describe('AWSAccount', () => {
@@ -40,7 +40,7 @@ describe('AWSAccount', () => {
 
   it('should return empty if no service in config file', () => {
     mockConfig.AWS.CURRENT_SERVICES = []
-    const AWSAccount = require('../AWSAccount').default
+    const AWSAccount = require('../application/AWSAccount').default
     const services = new AWSAccount().getServices()
     expect(services).toHaveLength(0)
   })
@@ -53,7 +53,7 @@ describe('AWSAccount', () => {
       },
     ]
 
-    const awsAccount = require('../AWSAccount').default
+    const awsAccount = require('../application/AWSAccount').default
     const account = new awsAccount('123', 'us-east-1')
     expect(() => {
       account.getServices()
@@ -131,7 +131,7 @@ function expectAWSService(key: string) {
     },
   ]
   const testRegion = 'some-region'
-  const AWSAccount = require('../AWSAccount').default
+  const AWSAccount = require('../application/AWSAccount').default
   const services = new AWSAccount('12345678', 'test account', [
     testRegion,
   ]).getServices(testRegion)

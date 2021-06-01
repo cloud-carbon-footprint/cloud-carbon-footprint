@@ -11,11 +11,13 @@ import {
   extractRawComputeUsages,
   RawComputeUsage,
   ServiceWithCPUUtilization,
+  CloudConstants,
 } from '@cloud-carbon-footprint/core'
 
 import { getCostFromCostExplorer } from './CostMapper'
 
 import { ServiceWrapper } from './ServiceWrapper'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 export default class EC2 extends ServiceWithCPUUtilization {
   serviceName = 'EC2'
@@ -70,7 +72,10 @@ export default class EC2 extends ServiceWithCPUUtilization {
     const rawComputeUsages: RawComputeUsage[] = metricDataResults.flatMap(
       extractRawComputeUsages,
     )
-    return buildComputeUsages(rawComputeUsages)
+    const cloudConstants: CloudConstants = {
+      avgCpuUtilization: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+    }
+    return buildComputeUsages(rawComputeUsages, cloudConstants)
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {

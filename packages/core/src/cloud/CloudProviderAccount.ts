@@ -4,10 +4,7 @@
 import { union } from 'ramda'
 import moment from 'moment'
 
-import {
-  FootprintEstimate,
-  aggregateEstimatesByDay,
-} from '../footprintEstimator'
+import { FootprintEstimate, aggregateEstimatesByDay } from '../footprint'
 import { aggregateCostsByDay, Cost } from '../cost'
 import { Region } from '../region'
 import {

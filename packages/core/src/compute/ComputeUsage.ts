@@ -3,7 +3,8 @@
  */
 
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { IUsageData } from '../footprintEstimator'
+import { CloudConstants } from '../cloud'
+import { IUsageData } from '../footprint'
 
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number
@@ -15,11 +16,13 @@ export class ComputeUsageBuilder {
   private timestamp: string
   private cpuUtilizations: number[]
   private numberOfvCpus: number
+  private constants: CloudConstants
 
-  constructor(timestamp: string) {
+  constructor(timestamp: string, constants: CloudConstants) {
     this.timestamp = timestamp
     this.cpuUtilizations = []
     this.numberOfvCpus = 0
+    this.constants = constants
   }
 
   addCpuUtilization(cpuUtilization: number): ComputeUsageBuilder {
@@ -39,7 +42,7 @@ export class ComputeUsageBuilder {
     const cpuUtilizationAverage = hasMeasurements
       ? this.cpuUtilizations.reduce((sum, x) => sum + x) /
         this.cpuUtilizations.length
-      : 50 //avg cpu utilization 2020
+      : this.constants.avgCpuUtilization
     return {
       timestamp: new Date(this.timestamp),
       cpuUtilizationAverage,
@@ -69,9 +72,10 @@ export const extractRawComputeUsages: (
 const mergeUsageByTimestamp = (
   acc: GroupedComputeUsages,
   data: RawComputeUsage,
+  constants: CloudConstants,
 ) => {
   const usageToUpdate =
-    acc[data.timestamp] || new ComputeUsageBuilder(data.timestamp)
+    acc[data.timestamp] || new ComputeUsageBuilder(data.timestamp, constants)
   if (data.id === 'cpuUtilization') {
     acc[data.timestamp] = usageToUpdate.addCpuUtilization(data.value)
   } else if (data.id === 'vCPUs') {
@@ -82,9 +86,10 @@ const mergeUsageByTimestamp = (
 
 export function buildComputeUsages(
   rawComputeUsages: RawComputeUsage[],
+  constants: CloudConstants,
 ): ComputeUsage[] {
   const groupedComputeUsages: GroupedComputeUsages = rawComputeUsages.reduce(
-    (acc, data) => mergeUsageByTimestamp(acc, data),
+    (acc, data) => mergeUsageByTimestamp(acc, data, constants),
     {},
   )
   return Object.values(groupedComputeUsages)

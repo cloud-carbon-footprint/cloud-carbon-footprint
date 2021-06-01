@@ -9,7 +9,7 @@ import {
   IFootprintEstimator,
   FootprintEstimate,
   ICloudService,
-} from '../footprintEstimator'
+} from '../footprint'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator
@@ -43,8 +43,10 @@ export default abstract class StorageService implements ICloudService {
 }
 
 export abstract class SSDStorageService extends StorageService {
-  protected constructor() {
-    super(1.2) // ssdCoefficient
+  coefficient: number
+
+  protected constructor(coefficient: number) {
+    super(coefficient) // ssdCoefficient
   }
 
   abstract getUsage(
@@ -57,8 +59,10 @@ export abstract class SSDStorageService extends StorageService {
 }
 
 export abstract class HDDStorageService extends StorageService {
-  protected constructor() {
-    super(0.65) // hddCoefficient
+  coefficient: number
+
+  protected constructor(coefficient: number) {
+    super(coefficient) // hddCoefficient
   }
 
   abstract getUsage(

@@ -10,12 +10,13 @@ import {
 } from '@cloud-carbon-footprint/core'
 import { getCostFromCostExplorer } from './CostMapper'
 import { ServiceWrapper } from './ServiceWrapper'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 export default class S3 extends HDDStorageService {
   serviceName = 'S3'
 
   constructor(private readonly serviceWrapper: ServiceWrapper) {
-    super()
+    super(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT)
   }
 
   async getUsage(startDate: Date, endDate: Date): Promise<StorageUsage[]> {

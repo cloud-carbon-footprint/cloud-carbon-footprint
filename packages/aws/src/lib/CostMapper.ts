@@ -13,7 +13,7 @@ export async function getCostFromCostExplorer(
 ): Promise<Cost[]> {
   const responses: GetCostAndUsageResponse[] =
     await serviceWrapper.getCostAndUsageResponses(params)
-
+  console.log('###', responses)
   return responses
     .map((response) => {
       return response.ResultsByTime.map((result) => {

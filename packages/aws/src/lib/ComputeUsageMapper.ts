@@ -11,7 +11,9 @@ import {
   buildComputeUsages,
   extractRawComputeUsages,
   RawComputeUsage,
+  CloudConstants,
 } from '@cloud-carbon-footprint/core'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 function getNumberVcpusByDate(
   getCostAndUsageResponses: CostExplorer.GetCostAndUsageResponse[],
@@ -57,5 +59,12 @@ export function getComputeUsage(
     NODE_TYPES,
   )
 
-  return buildComputeUsages(rawCpuUtilizations.concat(rawvCpuHours))
+  const cloudConstants: CloudConstants = {
+    avgCpuUtilization: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+  }
+
+  return buildComputeUsages(
+    rawCpuUtilizations.concat(rawvCpuHours),
+    cloudConstants,
+  )
 }

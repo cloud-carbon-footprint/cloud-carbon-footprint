@@ -29,7 +29,7 @@
     "sonar:scan": "sonar-scanner",
     "test:watch": "yarn test --coverage --watchAll",
     "build": "rimraf dist && yarn build:tsc && yarn prepack && cp package.json dist && yarn postpack",
-    "build:workspace": "mkdir -p ../../dist-workspace/packages/app/dist && cp -R dist ../../dist-workspace/packages/app && mv ../../dist-workspace/packages/app/dist/package.json ../../dist-workspace/packages/app",
+    "build:workspace": "mkdir -p ../../dist-workspace/packages/aws/dist && cp -R dist ../../dist-workspace/packages/aws && mv ../../dist-workspace/packages/aws/dist/package.json ../../dist-workspace/packages/aws",
     "build:update": "node ../../scripts/update-package-dependencies.js aws core common",
     "prepack": "ts-node ../../scripts/prepack.ts",
     "postpack": "ts-node ../../scripts/postpack.ts",

@@ -6,7 +6,7 @@ import {
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '../footprintEstimator'
+} from '../footprint'
 import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
 import { ComputeUsage } from '.'
 

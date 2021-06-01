@@ -7,7 +7,7 @@ import {
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '../footprintEstimator'
+} from '../footprint'
 import { StorageUsage } from '.'
 
 export class StorageEstimator implements IFootprintEstimator {
