@@ -2,8 +2,8 @@
 
 exports[`csv test formats table into csv file 1`] = `
 "Date (UTC),EBS kilowatt hours,EBS metric tons CO2e Emissions,S3 kilowatt hours,S3 metric tons CO2e Emissions,EC2 kilowatt hours,EC2 metric tons CO2e Emissions,ElastiCache kilowatt hours,ElastiCache metric tons CO2e Emissions,RDS kilowatt hours,RDS metric tons CO2e Emissions,ComputeEngine kilowatt hours,ComputeEngine metric tons CO2e Emissions,SUM kilowatt hours,SUM metric tons CO2e Emissions
-2020-07-01,2.03,0.000867,0.08,0.000036,39.48,0.016895,5.12,0.002193,8.07,0.003452,5.78,0.002892,60.56,0.026335
+2020-07-01,2.03,0.000867,0.08,0.000036,39.48,0.016895,5.12,0.002193,8.07,0.003452,0.00,0.000000,54.78,0.023443
 2020-07-02,4.05,0.001735,0.00,0.000000,0.00,0.000000,18.93,0.008102,456.39,0.195322,0.00,0.000000,479.37,0.205159
-Total,6.08,0.002602,0.08,0.000036,39.48,0.016895,24.06,0.010295,464.46,0.198774,5.78,0.002892,539.94,0.231494
+Total,6.08,0.002602,0.08,0.000036,39.48,0.016895,24.06,0.010295,464.46,0.198774,0.00,0.000000,534.15,0.228601
 "
 `;

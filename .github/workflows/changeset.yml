@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Set yarn version to 3
-        run: yarn set version 3.0.0-rc.2
       - name: Install Dependencies
         run: yarn --immutable
       - name: Create Release Pull Request
