@@ -76,10 +76,10 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
             key: 'rds',
             name: 'RDS',
           },
-          // {
-          //   key: 'lambda',
-          //   name: 'Lambda',
-          // },
+          {
+            key: 'lambda',
+            name: 'Lambda',
+          },
         ],
         authentication: {
           mode: 'GCP',
@@ -135,7 +135,7 @@ describe('cli', () => {
         .mockResolvedValueOnce([mockVCPUTimeSeries, {}, {}])
     })
 
-    test.only('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
+    test('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
       const result = await cli(rawRequest)
 
       expect(result).toMatchSnapshot()

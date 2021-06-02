@@ -72,5 +72,14 @@
     "ts-node-dev": "^1.1.1",
     "tsconfig-paths": "^3.9.0",
     "typescript": "4.2.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "yarn lint",
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ],
+    "*.{md}": [
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ]
   }
 }
