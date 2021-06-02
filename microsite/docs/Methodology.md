@@ -10,7 +10,7 @@ Global greenhouse gas emissions from the tech sector are on par or larger than t
 and [2% for aviation](https://www.atag.org/facts-figures.html) respectively. Within ICT, data centers consume around 1%
 of greenhouse gas emissions and
 [global electricity usage](https://www.iea.org/reports/data-centres-and-data-transmission-networks).
-Currently most cloud providers do not disclose energy or carbon emissions from cloud usage to their customers
+Currently, most cloud providers do not disclose energy or carbon emissions from cloud usage to their customers
 (at an aggregate or individual level), which can be a challenge for organizations who want to baseline and reduce
 their carbon footprint. This application is a starting point to enable organizations to have greater visibility into
 their emissions across multiple cloud providers.
