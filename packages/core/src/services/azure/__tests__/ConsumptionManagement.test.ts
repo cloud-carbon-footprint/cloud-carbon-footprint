@@ -77,8 +77,8 @@ describe('Azure Consumption Management Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 0.09810615,
-            co2e: 0.000022368202200000002,
+            kilowattHours: 0.09850905000000001,
+            co2e: 0.000022460063400000004,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -97,8 +97,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'EU West',
           },
           {
-            kilowattHours: 0.020198324999999996,
-            co2e: 0.000009538255014749998,
+            kilowattHours: 0.020281275000000005,
+            co2e: 0.000009577426493250003,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -316,12 +316,12 @@ describe('Azure Consumption Management Service', () => {
           {
             accountName: 'test-subscription',
             cloudProvider: 'AZURE',
-            co2e: 0.000053720031599999995,
+            co2e: 0.000053775320619,
             cost: 20,
             region: 'EU North',
             serviceName: 'Virtual Machines',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.1700001,
+            kilowattHours: 0.17017506525,
           },
           {
             accountName: 'test-subscription',
@@ -444,7 +444,7 @@ describe('Azure Consumption Management Service', () => {
 
   describe('When group query results by week is true', () => {
     beforeEach(() => {
-      ;(configLoader as jest.Mock).mockReturnValue({
+      ; (configLoader as jest.Mock).mockReturnValue({
         GROUP_QUERY_RESULTS_BY: 'week',
       })
     })
@@ -479,8 +479,8 @@ describe('Azure Consumption Management Service', () => {
           timestamp: new Date('2020-11-02'),
           serviceEstimates: [
             {
-              kilowattHours: 0.09810615,
-              co2e: 0.000022368202200000002,
+              kilowattHours: 0.09850905000000001,
+              co2e: 0.000022460063400000004,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountName: 'test-subscription',
@@ -499,8 +499,8 @@ describe('Azure Consumption Management Service', () => {
               region: 'EU West',
             },
             {
-              kilowattHours: 0.020198324999999996,
-              co2e: 0.000009538255014749998,
+              kilowattHours: 0.020281275000000005,
+              co2e: 0.000009577426493250003,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountName: 'test-subscription',
