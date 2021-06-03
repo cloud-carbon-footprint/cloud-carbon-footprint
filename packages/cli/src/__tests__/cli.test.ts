@@ -3,23 +3,9 @@
  */
 
 import cli from '../cli'
-import {
-  RDS,
-  RDSStorage,
-  RDSComputeService,
-  EBS,
-  S3,
-  EC2,
-  ElastiCache,
-  Lambda,
-  ServiceWrapper,
-  ComputeEngine,
-} from '@cloud-carbon-footprint/core'
-import { AWSAccount, GCPAccount } from '@cloud-carbon-footprint/app'
 import { EstimationRequestValidationError } from '@cloud-carbon-footprint/common'
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
-import { MetricServiceClient } from '@google-cloud/monitoring'
+import AWS from 'aws-sdk'
 
 import {
   mockAwsCloudWatchGetMetricData,
@@ -33,8 +19,6 @@ import {
   mockVCPUTimeSeries,
 } from './fixtures/cloudmonitoring.fixtures'
 
-const getAWSServices = jest.spyOn(AWSAccount.prototype, 'getServices')
-const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 const mockListTimeSeries = jest.fn()
 
 jest.mock('@google-cloud/monitoring', () => {
@@ -77,6 +61,32 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
         accounts: [{ id: '12345678', name: 'test account' }],
         NAME: 'AWS',
         CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        CURRENT_SERVICES: [
+          {
+            key: 'ebs',
+            name: 'EBS',
+          },
+          {
+            key: 's3',
+            name: 'S3',
+          },
+          {
+            key: 'ec2',
+            name: 'EC2',
+          },
+          {
+            key: 'elasticache',
+            name: 'ElastiCache',
+          },
+          {
+            key: 'rds',
+            name: 'RDS',
+          },
+          {
+            key: 'lambda',
+            name: 'Lambda',
+          },
+        ],
         authentication: {
           mode: 'GCP',
           options: {
@@ -90,6 +100,12 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
         projects: [{ id: 'test-project', name: 'test project' }],
         NAME: 'GCP',
         CURRENT_REGIONS: ['us-east1'],
+        CURRENT_SERVICES: [
+          {
+            key: 'computeEngine',
+            name: 'ComputeEngine',
+          },
+        ],
       },
       LOGGING_MODE: 'test',
     }
@@ -116,30 +132,6 @@ describe('cli', () => {
     end,
   ]
 
-  function getCloudWatch() {
-    return new CloudWatch({ region: 'us-east-1' })
-  }
-
-  function getCloudWatchLogs() {
-    return new CloudWatchLogs({ region: 'us-east-1' })
-  }
-
-  function getCostExplorer() {
-    return new CostExplorer({ region: 'us-east-1' })
-  }
-
-  function getServiceWrapper() {
-    return new ServiceWrapper(
-      getCloudWatch(),
-      getCloudWatchLogs(),
-      getCostExplorer(),
-    )
-  }
-
-  function getCloudMonitoring() {
-    return new MetricServiceClient()
-  }
-
   describe('ebs, s3, ec3, elasticache, rds', () => {
     beforeEach(() => {
       mockAwsCloudWatchGetMetricData()
@@ -147,19 +139,6 @@ describe('cli', () => {
       mockListTimeSeries
         .mockResolvedValueOnce([mockCpuUtilizationTimeSeries, {}, {}])
         .mockResolvedValueOnce([mockVCPUTimeSeries, {}, {}])
-      ;(getAWSServices as jest.Mock).mockReturnValue([
-        new EBS(getServiceWrapper()),
-        new S3(getServiceWrapper()),
-        new EC2(getServiceWrapper()),
-        new ElastiCache(getServiceWrapper()),
-        new RDS(
-          new RDSComputeService(getServiceWrapper()),
-          new RDSStorage(getServiceWrapper()),
-        ),
-      ])
-      ;(getGCPServices as jest.Mock).mockReturnValue([
-        new ComputeEngine(getCloudMonitoring()),
-      ])
     })
 
     test('ebs, s3, ec2, elasticache, rds, grouped by day and service', async () => {
@@ -185,9 +164,6 @@ describe('cli', () => {
     beforeEach(() => {
       mockAwsCloudWatchGetQueryResultsForLambda()
       mockAwsCostExplorerGetCostAndUsageResponse(lambdaMockGetCostResponse)
-      ;(getAWSServices as jest.Mock).mockReturnValue([
-        new Lambda(60000, 1000, getServiceWrapper()),
-      ])
     })
 
     it('lambda estimates', async () => {

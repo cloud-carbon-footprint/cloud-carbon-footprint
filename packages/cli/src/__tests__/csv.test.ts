@@ -5,27 +5,13 @@
 import path from 'path'
 import fs from 'fs'
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
-
-import {
-  EBS,
-  S3,
-  EC2,
-  ElastiCache,
-  RDS,
-  RDSComputeService,
-  RDSStorage,
-  ServiceWrapper,
-} from '@cloud-carbon-footprint/core'
-import { AWSAccount } from '@cloud-carbon-footprint/app'
+import AWS from 'aws-sdk'
 
 import {
   mockAwsCloudWatchGetMetricData,
   mockAwsCostExplorerGetCostAndUsage,
 } from './fixtures/awsMockFunctions'
 import cli from '../cli'
-
-const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 
 //disable cache
 jest.mock('@cloud-carbon-footprint/app', () => ({
@@ -52,8 +38,33 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
       AWS: {
         accounts: [{ id: '12345678', name: 'test AWS account' }],
         NAME: 'AWS',
-        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
         CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        CURRENT_SERVICES: [
+          {
+            key: 'ebs',
+            name: 'EBS',
+          },
+          {
+            key: 's3',
+            name: 'S3',
+          },
+          {
+            key: 'ec2',
+            name: 'EC2',
+          },
+          {
+            key: 'elasticache',
+            name: 'ElastiCache',
+          },
+          {
+            key: 'rds',
+            name: 'RDS',
+          },
+          {
+            key: 'lambda',
+            name: 'Lambda',
+          },
+        ],
         authentication: {
           mode: 'GCP',
           options: {
@@ -98,26 +109,6 @@ describe('csv test', () => {
     '--region',
     'us-east-1',
   ]
-
-  function getCloudWatch() {
-    return new CloudWatch({ region: 'us-east-1' })
-  }
-
-  function getCloudWatchLogs() {
-    return new CloudWatchLogs({ region: 'us-east-1' })
-  }
-
-  function getCostExplorer() {
-    return new CostExplorer({ region: 'us-east-1' })
-  }
-
-  function getServiceWrapper() {
-    return new ServiceWrapper(
-      getCloudWatch(),
-      getCloudWatchLogs(),
-      getCostExplorer(),
-    )
-  }
 
   let outputFilePath: string
 
@@ -176,16 +167,6 @@ describe('csv test', () => {
   test('formats table into csv file', async () => {
     mockAwsCloudWatchGetMetricData()
     mockAwsCostExplorerGetCostAndUsage()
-    ;(getServices as jest.Mock).mockReturnValue([
-      new EBS(getServiceWrapper()),
-      new S3(getServiceWrapper()),
-      new EC2(getServiceWrapper()),
-      new ElastiCache(getServiceWrapper()),
-      new RDS(
-        new RDSComputeService(getServiceWrapper()),
-        new RDSStorage(getServiceWrapper()),
-      ),
-    ])
 
     await cli([...rawRequest, '--format', 'csv', '--groupBy', 'dayAndService'])
 

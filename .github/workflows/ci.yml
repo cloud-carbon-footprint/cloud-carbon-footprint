@@ -96,7 +96,8 @@ jobs:
         run: |
           yarn lerna run build:workspace
           # replacing local @cloud-carbon-footprint dependencies with a local reference
-          yarn lerna run build:update --scope @cloud-carbon-footprint/common --scope @cloud-carbon-footprint/core --scope @cloud-carbon-footprint/app --scope @cloud-carbon-footprint/api --scope @cloud-carbon-footprint/client
+          yarn lerna run build:update
+      - uses: actions/upload-artifact@v2
       - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace

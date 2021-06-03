@@ -1,0 +1,85 @@
+{
+  "name": "@cloud-carbon-footprint/aws",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Amazon Web Services.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js"
+  },
+  "homepage": "https://www.cloudcarbonfootprint.org/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.git",
+    "directory": "packages/aws"
+  },
+  "keywords": [
+    "thoughtworks",
+    "cloud",
+    "sustainability",
+    "climate",
+    "carbon-emissions",
+    "carbon-footprint"
+  ],
+  "scripts": {
+    "precommit": "lint-staged --no-stash && yarn test --coverage --runInBand --bail",
+    "test": "jest",
+    "type-check": "tsc --noEmit",
+    "sonar:scan": "sonar-scanner",
+    "test:watch": "yarn test --coverage --watchAll",
+    "build": "rimraf dist && yarn build:tsc && yarn prepack && cp package.json dist && yarn postpack",
+    "build:workspace": "mkdir -p ../../dist-workspace/packages/aws/dist && cp -R dist ../../dist-workspace/packages/aws && mv ../../dist-workspace/packages/aws/dist/package.json ../../dist-workspace/packages/aws",
+    "build:update": "node ../../scripts/update-package-dependencies.js aws core common",
+    "prepack": "ts-node ../../scripts/prepack.ts",
+    "postpack": "ts-node ../../scripts/postpack.ts",
+    "build:tsc": "tsc --build tsconfig.json",
+    "build:watch": "onchange 'src/**/*.ts' -- yarn build",
+    "view:coverage": "serve coverage/lcov-report",
+    "clean": "rm -rf coverage src/**/*.js src/**/*.map",
+    "lint": "eslint '*/**/*.ts' --quiet",
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
+  },
+  "dependencies": {
+    "@azure/arm-consumption": "^6.3.0",
+    "@azure/arm-subscriptions": "^3.0.0",
+    "@azure/ms-rest-js": "^2.2.3",
+    "@azure/ms-rest-nodeauth": "^3.0.7",
+    "@cloud-carbon-footprint/common": "^0.0.1",
+    "@cloud-carbon-footprint/core": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/jest-when": "^2.7.2",
+    "@types/node": "^14.14.30",
+    "@types/source-map-support": "^0.5.3",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-unused-imports": "^1.1.0",
+    "jest": "26.6.0",
+    "jest-when": "^3.2.0",
+    "lint-staged": "^10.5.4",
+    "onchange": "^7.1.0",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "serve": "^11.3.2",
+    "source-map-support": "^0.5.19",
+    "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "4.2.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "yarn lint",
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ],
+    "*.{md}": [
+      "prettier --write --ignore-unknown --config ../../.prettierrc.json"
+    ]
+  }
+}

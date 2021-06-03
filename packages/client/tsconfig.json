@@ -20,8 +20,5 @@
     "strict": false,
     "isolatedModules": true
   },
-  "include": [
-    "src",
-    "node_modules/apexcharts/types/apexcharts.d.ts"
-  ]
+  "include": ["src"]
 }

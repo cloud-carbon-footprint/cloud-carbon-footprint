@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "outDir": "./dist"
+  },
+  "include": ["./src", "../app/src/GCPCredentials.ts", "../app/src/__tests__/AWSCredentialsProvider.test.ts",]
+}

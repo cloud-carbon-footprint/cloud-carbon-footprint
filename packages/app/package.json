@@ -29,7 +29,7 @@
     "test:watch": "yarn test --coverage --watchAll",
     "build": "rimraf dist && yarn build:tsc && yarn prepack && cp package.json dist && yarn postpack",
     "build:workspace": "mkdir -p ../../dist-workspace/packages/app/dist && cp -R dist ../../dist-workspace/packages/app && mv ../../dist-workspace/packages/app/dist/package.json ../../dist-workspace/packages/app",
-    "build:update": "node ../../scripts/update-package-dependencies.js app core common",
+    "build:update": "node ../../scripts/update-package-dependencies.js app aws gcp azure common",
     "prepack": "ts-node ../../scripts/prepack.ts",
     "postpack": "ts-node ../../scripts/postpack.ts",
     "build:tsc": "tsc --build tsconfig.json",
@@ -40,8 +40,10 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
+    "@cloud-carbon-footprint/aws": "^0.0.1",
+    "@cloud-carbon-footprint/azure": "^0.0.1",
     "@cloud-carbon-footprint/common": "^0.0.1",
-    "@cloud-carbon-footprint/core": "^0.7.0",
+    "@cloud-carbon-footprint/gcp": "^0.0.1",
     "@google-cloud/monitoring": "^2.3.1"
   },
   "devDependencies": {
