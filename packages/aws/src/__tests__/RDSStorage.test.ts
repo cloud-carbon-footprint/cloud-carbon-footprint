@@ -353,20 +353,23 @@ describe('RDSStorage', () => {
 
     const rdsService = new RDSStorage(getServiceWrapper())
     const hddStorageEstimator = new StorageEstimator(
-      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+      AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT,
     )
 
     const result = await rdsService.getEstimates(
       new Date(startDate),
       new Date(endDate),
       region,
+      emissionsFactors,
+      constants,
     )
 
     expect(result).toEqual(
       hddStorageEstimator.estimate(
         [{ terabyteHours: 0.744, timestamp: new Date(startDate) }],
         region,
-        'AWS',
+        emissionsFactors,
+        constants,
       ),
     )
   })
