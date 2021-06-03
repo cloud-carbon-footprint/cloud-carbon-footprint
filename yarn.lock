@@ -25,6 +25,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/arm-consumption@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@azure/arm-consumption@npm:7.0.0"
+  dependencies:
+    "@azure/ms-rest-azure-js": ^2.0.1
+    "@azure/ms-rest-js": ^2.0.4
+    tslib: ^1.10.0
+  checksum: d644820f9133cf6eb387abc4fa0644a97a9b62fc13596baa7c221a98b88de5d2eb698f40aa3b8da5a41dfd3d025a934e090cb2ca415135086e7f2dd71dd3a431
+  languageName: node
+  linkType: hard
+
 "@azure/arm-subscriptions@npm:^3.0.0":
   version: 3.0.0
   resolution: "@azure/arm-subscriptions@npm:3.0.0"
@@ -2079,7 +2090,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
     aws-sdk-mock: ^5.1.0
-    dotenv: ^9.0.2
+    dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -2100,7 +2111,7 @@ __metadata:
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
     tsconfig-paths: ^3.9.0
-    typescript: ^4.2.4
+    typescript: 4.2.4
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -2129,7 +2140,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.2.4
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -2224,7 +2235,7 @@ __metadata:
     aws-sdk-mock: ^5.1.0
     cli-table: ^0.3.6
     commander: ^7.2.0
-    dotenv: ^9.0.2
+    dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -2244,7 +2255,7 @@ __metadata:
     ts-node-dev: ^1.1.6
     tsconfig-paths: ^3.9.0
     typed-prompts: ^1.5.0
-    typescript: ^4.2.4
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -2260,7 +2271,7 @@ __metadata:
     "@testing-library/dom": ^7.31.0
     "@testing-library/jest-dom": ^5.12.0
     "@testing-library/react": ^11.2.7
-    "@testing-library/react-hooks": ^6.0.0
+    "@testing-library/react-hooks": ^7.0.0
     "@testing-library/user-event": ^13.1.9
     "@types/jest": ^26.0.23
     "@types/lodash": ^4.14.169
@@ -2277,8 +2288,8 @@ __metadata:
     "@typescript-eslint/parser": ^4.24.0
     apexcharts: ^3.26.3
     axios: ^0.21.1
-    concurrently: ^6.1.0
-    dotenv: ^9.0.2
+    concurrently: ^6.2.0
+    dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -2303,7 +2314,7 @@ __metadata:
     react-scripts: ^4.0.3
     react-test-renderer: ^17.0.2
     styled-components: ^5.3.0
-    typescript: ^4.2.4
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -2326,7 +2337,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.2.4
+    typescript: 4.2.4
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -2335,7 +2346,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/core@workspace:packages/core"
   dependencies:
-    "@azure/arm-consumption": ^6.3.0
+    "@azure/arm-consumption": ^7.0.0
     "@azure/arm-subscriptions": ^3.0.0
     "@azure/ms-rest-js": ^2.5.0
     "@azure/ms-rest-nodeauth": ^3.0.9
@@ -2355,7 +2366,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.24.0
     aws-sdk: ^2.910.0
     aws-sdk-mock: ^5.1.0
-    dotenv: ^9.0.2
+    dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -2374,7 +2385,7 @@ __metadata:
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
     tsconfig-paths: ^3.9.0
-    typescript: ^4.2.4
+    typescript: 4.2.4
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -2400,7 +2411,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^9.1.1
     typed-prompts: ^1.5.0
-    typescript: ^4.2.4
+    typescript: 4.2.4
   bin:
     ccf-create-app: bin/ccf-create-app
   languageName: unknown
@@ -2447,7 +2458,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/integration-tests@workspace:packages/integration-tests"
   dependencies:
     "@testing-library/testcafe": ^4.4.0
-    concurrently: ^6.1.0
+    concurrently: ^6.2.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -4676,15 +4687,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-hooks@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@testing-library/react-hooks@npm:6.0.0"
+"@testing-library/react-hooks@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@testing-library/react-hooks@npm:7.0.0"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@types/react": ">=16.9.0"
     "@types/react-dom": ">=16.9.0"
     "@types/react-test-renderer": ">=16.9.0"
-    filter-console: ^0.1.1
     react-error-boundary: ^3.1.0
   peerDependencies:
     react: ">=16.9.0"
@@ -4695,7 +4705,7 @@ __metadata:
       optional: true
     react-test-renderer:
       optional: true
-  checksum: 9c7fd8be188219413e6bc6d4abfd52e827c86c460d51b6031e98d65baf566c615448b11d83b75366b360297a2b37ab14e1e32868f8e7f64e05059cf5d4e667c1
+  checksum: fc6b60fab0a464ab7137dc61ce0d092905dca56396e1716303ec72897d3de013d39d86ec9667508c6de603496c0719a953d34389a38cd445265d0f77483c9a5b
   languageName: node
   linkType: hard
 
@@ -8786,9 +8796,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "concurrently@npm:6.1.0"
+"concurrently@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "concurrently@npm:6.2.0"
   dependencies:
     chalk: ^4.1.0
     date-fns: ^2.16.1
@@ -8801,7 +8811,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     concurrently: bin/concurrently.js
-  checksum: daa788a222c1c78604f01b39318a003260fb1c47bdaf0336587437414e7727b8de899bd66e58e922572c66a24308874d035caecbd9b1eead3ea451a52d1a8fec
+  checksum: e75f311dc77ee1b486ebb65d513e1e719cc2b7589f08f2f6263b93d7d71c72609ce8c57ed3a0f791484be7e5b4435621c7d5e6d190d076c76d593bdcdb9aaf08
   languageName: node
   linkType: hard
 
@@ -10410,10 +10420,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^9.0.2":
-  version: 9.0.2
-  resolution: "dotenv@npm:9.0.2"
-  checksum: 062a31a2fd024a8a7efee4f2d3972d488a1485e0545b97ab3c338f59f17689a2ae84b6e8ddb9ebca2902cc9b4926e7b672a476f5e326c6902648312fc3da54d9
+"dotenv@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "dotenv@npm:10.0.0"
+  checksum: 9c45712e213de63bdb646b8e5344749b7566e25a67bbd3f03711d54e40eff10066c1f23eff0081d0949fda7c8efcc6e9e8bf18d0f023a8274f55f5d5f97bb6db
   languageName: node
   linkType: hard
 
@@ -11900,13 +11910,6 @@ __metadata:
   dependencies:
     to-regex-range: ^5.0.1
   checksum: efca43d59b487ad4bc0b2b1cb9e51617c75a7b0159db51fa190c75c3d634ea5fad1ff4750d7c14346add4cd065e3c46e8f99af333edf2b4ec2a424f87e491a85
-  languageName: node
-  linkType: hard
-
-"filter-console@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "filter-console@npm:0.1.1"
-  checksum: f9def51f7ece9c9c469f78e1551ce33dfde02fd32bd70a6fbe8da4a9377ebb65a2a4fc6196ebf8e6ea8668a5465bde7fe3459101d1042e73bb9e3e1eb3f22fb6
   languageName: node
   linkType: hard
 
@@ -16489,12 +16492,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"marked@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "marked@npm:2.0.3"
+"marked@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "marked@npm:2.0.5"
   bin:
     marked: bin/marked
-  checksum: 18940065203f4eacf84538d57478cdab170ca024c01e8cb992871f48fedb8a534bb69a908edd5b2c4d0468fb751ed4da52996cda5a45f063e71e433bbb7f04f7
+  checksum: 2abd419cf5ea066e0d973fb81310f8a504319b36018436018c45265429395438f8dec891a61ca7cca5bd76ee4c454385781dbe6cdd04dcc78d9c6dc407d66cec
   languageName: node
   linkType: hard
 
@@ -21493,14 +21496,14 @@ resolve@^2.0.0-next.3:
   dependencies:
     "@changesets/cli": ^2.16.0
     "@types/fs-extra": ^9.0.11
-    concurrently: ^6.1.0
+    concurrently: ^6.2.0
     fs-extra: ^10.0.0
     husky: ^6.0.0
     lerna: ^4.0.0
-    marked: ^2.0.3
+    marked: ^2.0.5
     sonar-scanner: ^3.1.0
     ts-node: ^9.1.1
-    typescript: ^4.2.4
+    typescript: 4.2.4
   languageName: unknown
   linkType: soft
 
@@ -24258,7 +24261,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"typescript@4.2.4, typescript@^4.2.4":
+typescript@4.2.4:
   version: 4.2.4
   resolution: "typescript@npm:4.2.4"
   bin:
@@ -24278,7 +24281,7 @@ typescript@^3.3.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.2.4#builtin<compat/typescript>, typescript@patch:typescript@^4.2.4#builtin<compat/typescript>":
+"typescript@patch:typescript@4.2.4#builtin<compat/typescript>":
   version: 4.2.4
   resolution: "typescript@patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"
   bin:

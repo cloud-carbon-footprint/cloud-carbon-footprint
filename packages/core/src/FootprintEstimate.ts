@@ -4,9 +4,8 @@
 
 import { median, reduceBy } from 'ramda'
 
-import { COMPUTE_PROCESSOR_TYPES } from '../compute'
-import { CloudConstantsEmissionsFactors } from '../cloud'
-import { BillingDataRow } from '.'
+import { COMPUTE_PROCESSOR_TYPES } from './compute'
+import { BillingDataRow, CloudConstantsEmissionsFactors } from '.'
 
 export default interface FootprintEstimate {
   timestamp: Date

@@ -37,12 +37,18 @@ jest.mock('@google-cloud/monitoring', () => {
 
 //disable cache
 jest.mock('@cloud-carbon-footprint/app', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/app'),
+  ...(jest.requireActual('@cloud-carbon-footprint/app') as Record<
+    string,
+    unknown
+  >),
   cache: jest.fn(),
 }))
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
   Logger: jest.fn().mockReturnValue({
     debug: jest.fn(),
     info: jest.fn(),

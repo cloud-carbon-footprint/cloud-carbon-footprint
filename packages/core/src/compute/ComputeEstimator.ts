@@ -6,8 +6,9 @@ import {
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '../footprint'
-import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
+  CloudConstantsEmissionsFactors,
+  CloudConstants,
+} from '../.'
 import { ComputeUsage } from '.'
 
 //averageCPUUtilization expected to be in percentage

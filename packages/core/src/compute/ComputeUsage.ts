@@ -3,8 +3,7 @@
  */
 
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
-import { CloudConstants } from '../cloud'
-import { IUsageData } from '../footprint'
+import { IUsageData, CloudConstants } from '../.'
 
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number

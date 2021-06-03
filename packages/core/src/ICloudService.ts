@@ -2,9 +2,12 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { Cost } from '../cost'
-import { CloudConstants, CloudConstantsEmissionsFactors } from '../cloud'
-import { FootprintEstimate } from '.'
+import { Cost } from './cost'
+import {
+  FootprintEstimate,
+  CloudConstants,
+  CloudConstantsEmissionsFactors,
+} from '.'
 
 export default interface ICloudService {
   serviceName: string

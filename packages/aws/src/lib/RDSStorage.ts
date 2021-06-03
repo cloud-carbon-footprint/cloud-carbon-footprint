@@ -89,7 +89,11 @@ export default class RDSStorage implements ICloudService {
       awsGroupKey.endsWith('PIOPS-Storage')
     )
       return DiskType.SSD
-    if (awsGroupKey.endsWith('StorageUsage')) return DiskType.HDD
+    if (
+      awsGroupKey.endsWith('StorageUsage') ||
+      awsGroupKey.endsWith('ChargedBackupUsage')
+    )
+      return DiskType.HDD
     this.rdsStorageLogger.warn(
       'Unexpected Cost explorer Dimension Name: ' + awsGroupKey,
     )

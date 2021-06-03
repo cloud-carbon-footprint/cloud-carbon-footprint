@@ -2,12 +2,13 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
 import {
+  CloudConstantsEmissionsFactors,
+  CloudConstants,
   estimateCo2,
   FootprintEstimate,
   IFootprintEstimator,
-} from '../footprint'
+} from '../.'
 import { StorageUsage } from '.'
 
 export class StorageEstimator implements IFootprintEstimator {

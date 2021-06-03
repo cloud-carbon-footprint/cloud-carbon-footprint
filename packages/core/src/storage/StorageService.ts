@@ -2,14 +2,15 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { StorageEstimator, StorageUsage } from '.'
 import { Cost } from '../cost'
-import { CloudConstants, CloudConstantsEmissionsFactors } from '../cloud'
 import {
+  CloudConstants,
+  CloudConstantsEmissionsFactors,
   IFootprintEstimator,
   FootprintEstimate,
   ICloudService,
-} from '../footprint'
+} from '../.'
+import { StorageEstimator, StorageUsage } from '.'
 
 export default abstract class StorageService implements ICloudService {
   estimator: IFootprintEstimator

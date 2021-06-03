@@ -2,9 +2,13 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { Cost } from '../cost'
-import { ICloudService, FootprintEstimate } from '../footprint'
-import { CloudConstants, CloudConstantsEmissionsFactors } from '../cloud'
+import { Cost } from './cost'
+import {
+  ICloudService,
+  FootprintEstimate,
+  CloudConstants,
+  CloudConstantsEmissionsFactors,
+} from '.'
 
 export default class Region {
   constructor(

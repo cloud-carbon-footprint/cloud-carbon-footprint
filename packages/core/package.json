@@ -64,10 +64,10 @@
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.6",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.2.4"
+    "typescript": "4.2.4"
   },
   "dependencies": {
-    "@azure/arm-consumption": "^6.3.0",
+    "@azure/arm-consumption": "^7.0.0",
     "@azure/arm-subscriptions": "^3.0.0",
     "@azure/ms-rest-js": "^2.5.0",
     "@azure/ms-rest-nodeauth": "^3.0.9",
@@ -80,7 +80,7 @@
     "@google-cloud/storage": "^5.8.5",
     "@types/ramda": "^0.27.40",
     "aws-sdk": "^2.910.0",
-    "dotenv": "^9.0.2",
+    "dotenv": "^10.0.0",
     "moment": "^2.29.1",
     "ramda": "^0.27.1",
     "tsconfig-paths": "^3.9.0",

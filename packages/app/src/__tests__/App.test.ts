@@ -3,20 +3,19 @@
  */
 
 import moment from 'moment'
-import App from '../App'
 import {
   UsageData,
   FootprintEstimate,
   ICloudService,
   Cost,
 } from '@cloud-carbon-footprint/core'
-
 import {
   EmissionRatioResult,
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
 import { AWSAccount } from '@cloud-carbon-footprint/aws'
 import { GCPAccount } from '@cloud-carbon-footprint/gcp'
+import App from '../App'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 
@@ -25,7 +24,10 @@ const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
 jest.mock('../Cache')
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
   Logger: jest.fn(),
   cache: jest.fn(),
   configLoader: jest.fn().mockImplementation(() => {

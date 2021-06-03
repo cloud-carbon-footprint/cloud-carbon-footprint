@@ -45,6 +45,18 @@ jest.mock('@azure/arm-consumption', () => {
   }
 })
 
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  configLoader: jest.fn().mockImplementation(() => {
+    return {
+      GROUP_QUERY_RESULTS_BY: 'day',
+    }
+  }),
+}))
+
 describe('Azure Consumption Management Service', () => {
   const startDate = new Date('2020-11-02')
   const endDate = new Date('2020-11-03')

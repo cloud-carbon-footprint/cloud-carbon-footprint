@@ -17,7 +17,10 @@ const mockGetFilterData = jest.fn()
 const mockGetEmissionsFactors = jest.fn()
 
 jest.mock('@cloud-carbon-footprint/app', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/app'),
+  ...(jest.requireActual('@cloud-carbon-footprint/app') as Record<
+    string,
+    unknown
+  >),
   App: jest.fn().mockImplementation(() => {
     return {
       getCostAndEstimates: mockGetCostAndEstimates,

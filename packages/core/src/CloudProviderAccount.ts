@@ -3,14 +3,13 @@
  */
 import { union } from 'ramda'
 import moment from 'moment'
-
-import { FootprintEstimate, aggregateEstimatesByDay } from '../footprint'
-import { aggregateCostsByDay, Cost } from '../cost'
-import { Region } from '../region'
 import {
   EstimationResult,
   reduceByTimestamp,
 } from '@cloud-carbon-footprint/common'
+
+import { aggregateCostsByDay, Cost } from './cost'
+import { Region, FootprintEstimate, aggregateEstimatesByDay } from '.'
 
 export default class CloudProviderAccount {
   name?: string

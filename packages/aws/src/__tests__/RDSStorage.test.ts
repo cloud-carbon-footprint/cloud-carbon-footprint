@@ -330,6 +330,47 @@ describe('RDSStorage', () => {
     )
   })
 
+  it('should get estimates for RDS ChargedBackup HDD storage', async () => {
+    AWSMock.mock(
+      'CostExplorer',
+      'getCostAndUsage',
+      (
+        params: CostExplorer.GetCostAndUsageRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
+        callback(
+          null,
+          buildCostExplorerGetUsageResponse([
+            {
+              start: startDate,
+              amount: 1,
+              keys: ['USE1-RDS:ChargedBackupUsage'],
+            },
+          ]),
+        )
+      },
+    )
+
+    const rdsService = new RDSStorage(getServiceWrapper())
+    const hddStorageEstimator = new StorageEstimator(
+      CLOUD_CONSTANTS.AWS.HDDCOEFFICIENT,
+    )
+
+    const result = await rdsService.getEstimates(
+      new Date(startDate),
+      new Date(endDate),
+      region,
+    )
+
+    expect(result).toEqual(
+      hddStorageEstimator.estimate(
+        [{ terabyteHours: 0.744, timestamp: new Date(startDate) }],
+        region,
+        'AWS',
+      ),
+    )
+  })
+
   it('should get costs for RDS', async () => {
     AWSMock.mock(
       'CostExplorer',

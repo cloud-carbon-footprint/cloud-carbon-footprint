@@ -244,16 +244,17 @@ jobs:
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
           rm yarn.lock
           rm package.json
 
           cd dist-workspace/packages/api
+          # Generate yarn.lock file
+          yarn install
           ./create_server_env_file.sh
           cd ../../..
-
-          cd dist-workspace
-          yarn install
-          cd ..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -318,16 +319,17 @@ jobs:
 
           cp packages/client/app-production.yaml dist-workspace/packages/client
 
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
           rm yarn.lock
           rm package.json
 
           cd dist-workspace/packages/api
+          # Generate yarn.lock file
+          yarn install
           ./create_server_env_file.sh
           cd ../../..
-
-          cd dist-workspace
-          yarn install
-          cd ..
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json

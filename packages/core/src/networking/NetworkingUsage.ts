@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { IUsageData } from '../footprint'
+import { IUsageData } from '../.'
 
 export default interface NetworkingUsage extends IUsageData {
   readonly gigabytes: number

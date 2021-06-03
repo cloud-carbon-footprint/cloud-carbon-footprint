@@ -3,6 +3,8 @@ fileignoreconfig:
   checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
 - filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
   checksum: 3bfb33cac24525b03528d71814b90abc6e0bf7cdcd9e95f6aae8d342d3666268
+- filename: .yarn/releases/yarn-3.0.0-rc.2.cjs
+  checksum: ce4c3cd77bc38974d47f7554e4b9271fc458c0c5e6bbc0b6dfad2ee01d1c78e6
 - filename: CONTRIBUTING.md
   checksum: 454a26b0f80e1406f9f80ab12bd11183ebbf54a8b387c8667af258eeafb89ba7
 - filename: README.md
@@ -73,10 +75,14 @@ fileignoreconfig:
   checksum: 659170eb0cdaa9d06f8aeeddf76b5c2b4fb223642ee192ce6d0863b165838fad
 - filename: packages/api/estimates.cache.test.json
   checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
+- filename: packages/aws/src/__tests__/RDSStorage.test.ts
+  checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
 - filename: packages/client/create_client_env_file.sh
   checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
+- filename: packages/client/src/dashboard/CarbonComparisonCard.tsx
+  checksum: a6d730cbbe92f07d790330601269a7003cab5af635899efb335d9e97df5350f8
 - filename: packages/client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
 - filename: packages/client/src/data/generateEstimations.ts
@@ -93,6 +99,8 @@ fileignoreconfig:
   checksum: 55126e27e72ead83fdfd451ba1e0109199692703db45a5af1a639e367422b004
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
   checksum: f510cdb57ef982213cad2da27184a226c8ce4353b9821fa8d00767599cbf2cfa
+- filename: packages/core/src/services/aws/__tests__/RDSStorage.test.ts
+  checksum: a6db0f870691981e2f7bfb3999382462862be4f52c167d5bb3eefd0af5b0c1d4
 - filename: packages/core/src/services/azure/ConsumptionManagement.ts
   checksum: 27fa921d2e5c1fbb1044db6487348dc79fa57a4fc3ff10cea561e94d60d8e460
 - filename: packages/core/src/services/azure/__tests__/ConsumptionManagement.test.ts
@@ -154,4 +162,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: 28a64d9220e6fe6964a22c1f6d8310daf141533dcb2c1a2fb5f0e056c97bbb9c
+  checksum: db353531c2c6426132fb5497836a9939c95bcb66a3a692e5d3a348ba9cd7a89d

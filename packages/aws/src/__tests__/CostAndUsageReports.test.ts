@@ -36,7 +36,10 @@ import {
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/common'),
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
   configLoader: jest.fn().mockImplementation(() => {
     return {
       AWS: {

@@ -3,8 +3,12 @@
  */
 
 import { Cost } from '../cost'
-import { FootprintEstimate, ICloudService } from '../footprint'
-import { CloudConstantsEmissionsFactors, CloudConstants } from '../cloud'
+import {
+  FootprintEstimate,
+  ICloudService,
+  CloudConstantsEmissionsFactors,
+  CloudConstants,
+} from '../.'
 import { ComputeUsage, ComputeEstimator } from '.'
 
 export default abstract class ServiceWithCPUUtilization
