@@ -4,8 +4,8 @@
 
 import StorageUsage from '../StorageUsage'
 import { HDDStorageService, SSDStorageService } from '../StorageService'
-import { FootprintEstimate } from '../../footprint'
 import { StorageEstimator } from '../StorageEstimator'
+import { FootprintEstimate } from '../../.'
 import { Cost } from '../../cost'
 
 describe('StorageService', () => {
