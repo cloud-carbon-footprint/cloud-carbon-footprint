@@ -20,5 +20,6 @@ module.exports = {
   modulePathIgnorePatterns: [
     '<rootDir>/src/server.ts',
     '<rootDir>/src/auth.ts',
+    'index.ts',
   ],
 }

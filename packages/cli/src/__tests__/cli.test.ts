@@ -2,11 +2,12 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import cli from '../cli'
-import { EstimationRequestValidationError } from '@cloud-carbon-footprint/common'
 import AWSMock from 'aws-sdk-mock'
 import AWS from 'aws-sdk'
-
+import {
+  EstimationRequestValidationError,
+  EstimationResult,
+} from '@cloud-carbon-footprint/common'
 import {
   mockAwsCloudWatchGetMetricData,
   mockAwsCloudWatchGetQueryResultsForLambda,
@@ -18,6 +19,7 @@ import {
   mockCpuUtilizationTimeSeries,
   mockVCPUTimeSeries,
 } from './fixtures/cloudmonitoring.fixtures'
+import cli from '../cli'
 
 const mockListTimeSeries = jest.fn()
 
@@ -35,12 +37,22 @@ jest.mock('@google-cloud/monitoring', () => {
   }
 })
 
-//disable cache
+const mockGetCostAndEstimates = jest.fn()
+const mockGetFilterData = jest.fn()
+const mockGetEmissionsFactors = jest.fn()
+
 jest.mock('@cloud-carbon-footprint/app', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/app') as Record<
     string,
     unknown
   >),
+  App: jest.fn().mockImplementation(() => {
+    return {
+      getCostAndEstimates: mockGetCostAndEstimates,
+      getEmissionsFactors: mockGetEmissionsFactors,
+      getFilterData: mockGetFilterData,
+    }
+  }),
   cache: jest.fn(),
 }))
 
@@ -131,6 +143,15 @@ describe('cli', () => {
     '--endDate',
     end,
   ]
+
+  beforeEach(() => {
+    const expectedResponse: EstimationResult[] = []
+    mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
 
   describe('ebs, s3, ec3, elasticache, rds', () => {
     beforeEach(() => {

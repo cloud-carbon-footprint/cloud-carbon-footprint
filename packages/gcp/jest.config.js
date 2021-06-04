@@ -9,13 +9,14 @@ module.exports = {
   },
   coverageThreshold: {
     global: {
-      statements: 90,
-      branches: 81,
-      functions: 89,
-      lines: 90,
+      statements: 96,
+      branches: 98,
+      functions: 91,
+      lines: 96,
     },
   },
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],
+  modulePathIgnorePatterns: ['index.ts'],
 }

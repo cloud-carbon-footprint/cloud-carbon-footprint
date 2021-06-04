@@ -12,13 +12,24 @@ import {
   mockAwsCostExplorerGetCostAndUsage,
 } from './fixtures/awsMockFunctions'
 import cli from '../cli'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-//disable cache
+const mockGetCostAndEstimates = jest.fn()
+const mockGetFilterData = jest.fn()
+const mockGetEmissionsFactors = jest.fn()
+
 jest.mock('@cloud-carbon-footprint/app', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/app') as Record<
     string,
     unknown
   >),
+  App: jest.fn().mockImplementation(() => {
+    return {
+      getCostAndEstimates: mockGetCostAndEstimates,
+      getEmissionsFactors: mockGetEmissionsFactors,
+      getFilterData: mockGetFilterData,
+    }
+  }),
   cache: jest.fn(),
 }))
 
@@ -153,6 +164,8 @@ describe('csv test', () => {
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)
     outputFilePath = path.join(process.cwd(), 'results-2020-08-05-20:41:31.csv')
+    const expectedResponse: EstimationResult[] = []
+    mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
   })
 
   afterEach(() => {
