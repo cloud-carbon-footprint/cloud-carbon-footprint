@@ -98,7 +98,6 @@ jobs:
           # replacing local @cloud-carbon-footprint dependencies with a local reference
           yarn lerna run build:update
       - uses: actions/upload-artifact@v2
-      - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace
           path: dist-workspace
