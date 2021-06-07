@@ -23,6 +23,7 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     '<rootDir>/src/index.ts',
+    '<rootDir>/src/compute/ServiceWithCPUUtilization.ts',
     '<rootDir>/src/.*/index.ts',
   ],
 }
