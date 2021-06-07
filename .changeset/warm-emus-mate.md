@@ -14,8 +14,8 @@ In order to update create-app templates, refer to the follow [commit](https://gi
 The following changes were made to,
 'packages/create-app/templates/default-app/packages/client/tsconfig.json':
 
-```
-    ...
+```diff
+    // ...
         "skipLibCheck": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
@@ -38,7 +38,7 @@ The following changes were made to,
 -      ]
 +      "include": ["src"]
     }
-    ...
+    // ...
 ```
 
 Additionally, the following dependencies have been updated and should also be updated in their respective template package.json file:
