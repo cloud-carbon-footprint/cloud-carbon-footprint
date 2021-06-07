@@ -7,17 +7,14 @@ import express from 'express'
 import {
   App,
   CreateValidRequest,
+  RawRequest,
+} from '@cloud-carbon-footprint/app'
+
+import {
   EstimationRequestValidationError,
   PartialDataError,
-  CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   Logger,
-  RawRequest,
-} from '@cloud-carbon-footprint/core'
-
-export type EmissionsRatios = {
-  region: string
-  mtPerKwHour: number
-}
+} from '@cloud-carbon-footprint/common'
 
 const apiLogger = new Logger('api')
 
@@ -68,18 +65,9 @@ const EmissionsApiMiddleware = async function (
   res: express.Response,
 ): Promise<void> {
   apiLogger.info(`Regions emissions factors API request started`)
+  const footprintApp = new App()
   try {
-    const emissionsResults: EmissionsRatios[] = Object.values(
-      CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-    ).reduce((cloudProviderResult, cloudProvider) => {
-      return Object.keys(cloudProvider).reduce((emissionDataResult, key) => {
-        cloudProviderResult.push({
-          region: key,
-          mtPerKwHour: cloudProvider[key],
-        })
-        return emissionDataResult
-      }, cloudProviderResult)
-    }, [])
+    const emissionsResults = await footprintApp.getEmissionsFactors()
     res.json(emissionsResults)
   } catch (e) {
     apiLogger.error(`Unable to process regions emissions factors request.`, e)

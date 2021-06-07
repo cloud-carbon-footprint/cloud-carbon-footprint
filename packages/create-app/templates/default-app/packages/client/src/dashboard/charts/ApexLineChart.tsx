@@ -10,7 +10,7 @@ import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
 import { sumServiceTotals, getMaxOfDataSeries } from '../transformData'
-import { EstimationResult } from '../../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import Chart from 'react-apexcharts'
 import ApexCharts from 'apexcharts'
 import * as _ from 'lodash'

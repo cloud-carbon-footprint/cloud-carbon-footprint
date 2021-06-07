@@ -3,25 +3,9 @@
  */
 import { DropdownOption } from '../dashboard/filters/DropdownFilter'
 
-export interface serviceEstimate {
-  cloudProvider: string
-  accountName: string
-  serviceName: string
-  kilowattHours: number
-  co2e: number
-  cost: number
-  region: string
-  usesAverageCPUConstant?: boolean
-}
-
 export interface ServiceResult<T> {
   data: T[]
   loading: boolean
-}
-
-export interface EstimationResult {
-  timestamp: Date
-  serviceEstimates: serviceEstimate[]
 }
 
 export interface cloudEstPerDay {
@@ -47,11 +31,6 @@ export enum UnknownTypes {
   UNKNOWN_REGION = 'Unknown Region',
   UNKNOWN_SERVICE = 'Unknown Service',
   UNKNOWN_ACCOUNT = 'Unknown Account',
-}
-
-export interface EmissionsRatios {
-  region: string
-  mtPerKwHour: number
 }
 
 export const chartBarCustomColors: string[] = [

@@ -3,7 +3,8 @@
  */
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { EstimationResult, FilterResultResponse } from '../../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { FilterResultResponse } from '../../models/types'
 import { Filters, filtersConfigGenerator } from './Filters'
 const useFilters = (
   data: EstimationResult[],

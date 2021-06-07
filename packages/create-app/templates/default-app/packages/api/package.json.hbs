@@ -22,13 +22,16 @@
     "carbon-footprint"
   ],
   "scripts": {
-    "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
+    "precommit": "lint-staged --no-stash && yarn test --coverage --runInBand --bail",
+    "test": "jest",
     "type-check": "tsc --noEmit",
     "sonar:scan": "sonar-scanner",
     "test:watch": "jest --coverage --watchAll",
-    "build": "rimraf dist && yarn build:tsc",
+    "build": "rimraf dist && yarn build:tsc && yarn prepack && cp package.json dist && yarn postpack",
     "build:tsc": "tsc --build tsconfig.json",
     "build:watch": "onchange 'src/**/*.ts' -- yarn build",
+    "build:workspace": "mkdir -p ../../dist-workspace/packages/api/dist && cp -R dist ../../dist-workspace/packages/api && mv ../../dist-workspace/packages/api/dist/package.json ../../dist-workspace/packages/api",
+    "build:update": "node ../../scripts/update-package-dependencies.js api app common",
     "prepack": "ts-node ../../scripts/prepack.ts",
     "postpack": "ts-node ../../scripts/postpack.ts",
     "view:coverage": "serve coverage/lcov-report",

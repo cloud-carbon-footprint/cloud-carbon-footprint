@@ -5,10 +5,11 @@
 import React, { FunctionComponent, useState, Fragment } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
+import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
 import { sumCO2ByServiceOrRegion } from '../transformData'
 import { ApexChartProps } from './common/ChartTypes'
-import { EmissionsRatios, chartBarCustomColors } from '../../models/types'
+import { chartBarCustomColors } from '../../models/types'
 import { Page, Pagination } from './Pagination'
 import ChartLegend from './ChartLegend'
 import NoDataPage from '../NoDataPage'
@@ -239,7 +240,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
 
 export const createCustomBarColors = (
   pageData: Page<Entry>,
-  emissionsData: EmissionsRatios[],
+  emissionsData: EmissionRatioResult[],
   mainTheme: string,
 ): string[] => {
   const regionColorsMap: string[] = []
@@ -248,7 +249,7 @@ export const createCustomBarColors = (
     let color = chartBarCustomColors[0]
     const regionEmissionData = emissionsData.find(
       (item) => item.region === currentRegion,
-    ) as EmissionsRatios
+    ) as EmissionRatioResult
     if (!regionEmissionData) {
       regionColorsMap.push(mainTheme)
     } else {

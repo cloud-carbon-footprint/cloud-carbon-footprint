@@ -4,9 +4,11 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useErrorHandling } from '../ErrorPage'
 
-import { EstimationResult, ServiceResult } from '../../models/types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+
+import { useErrorHandling } from '../ErrorPage'
+import { ServiceResult } from '../../models/types'
 
 const useRemoteService = (
   initial: EstimationResult[],

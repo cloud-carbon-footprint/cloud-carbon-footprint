@@ -4,10 +4,10 @@
 
 import moment from 'moment'
 import {
-  EmissionsRatios,
   EstimationResult,
-  serviceEstimate,
-} from '../models/types'
+  ServiceData,
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))
@@ -17,7 +17,7 @@ const getRandomNumberInRange = (minValue: number, maxValue: number): number => {
   return Math.max(Math.random() * maxValue, minValue + Math.random())
 }
 
-const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
+const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
   return {
     ebs: {
       cloudProvider: 'AWS',
@@ -102,7 +102,7 @@ const fakeServiceMap: () => { [key: string]: serviceEstimate } = () => {
   }
 }
 
-export const fakeEmissionFactors: EmissionsRatios[] = [
+export const fakeEmissionFactors: EmissionRatioResult[] = [
   {
     region: 'us-west-1',
     mtPerKwHour: 0.000645,

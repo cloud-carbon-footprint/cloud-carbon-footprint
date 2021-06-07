@@ -4,11 +4,12 @@
 
 import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
+import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 import { useErrorHandling } from '../ErrorPage'
 
-import { EmissionsRatios, ServiceResult } from '../../models/types'
+import { ServiceResult } from '../../models/types'
 
-const useRemoteEmissionService = (): ServiceResult<EmissionsRatios> => {
+const useRemoteEmissionService = (): ServiceResult<EmissionRatioResult> => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const _isMounted = useRef(true)

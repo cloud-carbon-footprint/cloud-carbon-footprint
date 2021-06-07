@@ -22,8 +22,10 @@
     "carbon-footprint"
   ],
   "scripts": {
-    "precommit": "lint-staged --no-stash && yarn test --coverage --bail",
+    "precommit": "lint-staged --no-stash && yarn test --coverage --runInBand --bail",
+    "test": "jest",
     "type-check": "tsc --noEmit",
+    "sonar:scan": "sonar-scanner",
     "test:watch": "yarn test --coverage --watchAll",
     "build": "rimraf dist && yarn build:tsc",
     "build:tsc": "tsc --build tsconfig.json",

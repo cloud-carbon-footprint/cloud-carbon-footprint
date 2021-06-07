@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
+
 import {
-  EstimationResult,
   cloudEstPerDay,
   ChartDataTypes,
-  serviceEstimate,
   FilterResultResponse,
   UnknownTypes,
 } from '../models/types'
@@ -73,7 +73,7 @@ export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
 
 const getPropertyFromDataType = (
   dataType: string,
-  value: serviceEstimate,
+  value: ServiceData,
 ): string => {
   const dataTypeMapping: { [key: string]: string } = {
     [ChartDataTypes.REGION]: value.region,
@@ -84,7 +84,7 @@ const getPropertyFromDataType = (
   return dataTypeMapping[dataType]
 }
 
-const checkUnknownTypes = (dataType: string, value: serviceEstimate) => {
+const checkUnknownTypes = (dataType: string, value: ServiceData) => {
   if (dataType === ChartDataTypes.ACCOUNT && value.accountName === null)
     value.accountName = `${UnknownTypes.UNKNOWN_ACCOUNT} - ${value.cloudProvider}`
 
