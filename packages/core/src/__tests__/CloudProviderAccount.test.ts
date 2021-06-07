@@ -27,7 +27,6 @@ describe('CloudProviderAccount', () => {
 
   const testCloudProvider = new CloudProviderAccount()
 
-  const testService = new mockCloudService()
   const testEmissionsFactors: CloudConstantsEmissionsFactors = {
     'test-region': 0.123,
   }
