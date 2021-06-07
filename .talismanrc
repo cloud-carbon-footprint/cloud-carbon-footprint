@@ -93,6 +93,8 @@ fileignoreconfig:
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
 - filename: packages/core/package.json
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
+- filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts
+  checksum: e555cf176c9994abaa53a21136b41c9721a70823dac263e3174395157e816890
 - filename: packages/core/src/domain/FootprintEstimationConstants.ts
   checksum: 78324c862f0ba591dbd2e7276f92034e4eebfab00bf77972c6f1a3c90e788eb1
 - filename: packages/core/src/services/aws/CostAndUsageReports.ts
