@@ -33,11 +33,6 @@ export enum UnknownTypes {
   UNKNOWN_ACCOUNT = 'Unknown Account',
 }
 
-export interface EmissionsRatios {
-  region: string
-  mtPerKwHour: number
-}
-
 export const chartBarCustomColors: string[] = [
   '#73B500',
   '#00791E',

@@ -3,8 +3,11 @@
  */
 
 import moment from 'moment'
-import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
-import { EmissionsRatios } from '../models/types'
+import {
+  EstimationResult,
+  ServiceData,
+  EmissionRatioResult,
+} from '@cloud-carbon-footprint/common'
 
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max))
@@ -99,7 +102,7 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
   }
 }
 
-export const fakeEmissionFactors: EmissionsRatios[] = [
+export const fakeEmissionFactors: EmissionRatioResult[] = [
   {
     region: 'us-west-1',
     mtPerKwHour: 0.000645,
