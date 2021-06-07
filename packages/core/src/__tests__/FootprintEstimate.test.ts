@@ -5,9 +5,11 @@
 import FootprintEstimate, {
   aggregateEstimatesByDay,
   appendOrAccumulateEstimatesByDay,
+  getWattsByAverageOrMedian,
   MutableServiceEstimate,
 } from '../FootprintEstimate'
 import BillingDataRow from '../BillingDataRow'
+import { COMPUTE_PROCESSOR_TYPES } from '../compute'
 
 describe('FootprintEstimate', () => {
   const dayOne = new Date('2021-01-01')
@@ -189,5 +191,64 @@ describe('FootprintEstimate', () => {
       },
     ]
     expect(results).toEqual(newResultTwo)
+  })
+
+  describe('getWattsByAverageOrMedian', () => {
+    it('returns median', () => {
+      // given
+      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]
+      const wattsForProcessors: number[] = [1, 2, 3, 4, 5]
+      // when
+
+      const result = getWattsByAverageOrMedian(
+        computeProcessors,
+        wattsForProcessors,
+      )
+
+      // then
+      expect(result).toEqual(3)
+    })
+    it('returns 0 with no wattsForProcessors', () => {
+      // given
+      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]
+      const wattsForProcessors: number[] = []
+      // when
+
+      const result = getWattsByAverageOrMedian(
+        computeProcessors,
+        wattsForProcessors,
+      )
+
+      // then
+      expect(result).toEqual(0)
+    })
+    it('returns first watts with 1 wattsForProcessors', () => {
+      // given
+      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]
+      const wattsForProcessors: number[] = [5]
+      // when
+
+      const result = getWattsByAverageOrMedian(
+        computeProcessors,
+        wattsForProcessors,
+      )
+
+      // then
+      expect(result).toEqual(5)
+    })
+    it('returns mean watts with >1 wattsForProcessors', () => {
+      // given
+      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]
+      const wattsForProcessors: number[] = [5, 7, 1, 4, 12, 20]
+      // when
+
+      const result = getWattsByAverageOrMedian(
+        computeProcessors,
+        wattsForProcessors,
+      )
+
+      // then
+      expect(result).toEqual(8.166666666666666)
+    })
   })
 })
