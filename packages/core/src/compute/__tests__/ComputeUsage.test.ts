@@ -7,7 +7,6 @@ import ComputeUsage, {
   RawComputeUsage,
 } from '../ComputeUsage'
 import CloudConstants from '../../CloudConstantsTypes'
-import { AWS_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/aws'
 
 describe('ComputeUsage', () => {
   const dayOneHourOne = '2020-07-10T22:00:00.000Z'
@@ -77,7 +76,7 @@ describe('ComputeUsage', () => {
     ]
 
     const cloudConstants: CloudConstants = {
-      avgCpuUtilization: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      avgCpuUtilization: 50,
     }
 
     // when
