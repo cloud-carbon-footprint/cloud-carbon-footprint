@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/azure",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Microsoft Azure.",
   "main": "src/index.ts",
@@ -46,7 +46,7 @@
     "@azure/ms-rest-js": "^2.2.3",
     "@azure/ms-rest-nodeauth": "^3.0.7",
     "@cloud-carbon-footprint/common": "^0.0.1",
-    "@cloud-carbon-footprint/core": "^0.7.0"
+    "@cloud-carbon-footprint/core": "^0.8.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

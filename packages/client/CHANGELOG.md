@@ -1,5 +1,154 @@
 # @cloud-carbon-footprint/client
 
+## 0.8.0
+
+### Minor Changes
+
+- d24c1274: Change Carbon equivalency component to be globally relevant
+
+  `packages/client/src/dashboard/CarbonComparisonCard.tsx`:
+
+  ```diff
+      // ...
+
+          }
+      })
+
+  -    export const toMiles = (co2mt: number): number => co2mt * 2481.3918390475
+  -    export const toGas = (co2mt: number): number => co2mt * 112.5247230304
+  +    export const toFlights = (co2mt: number): number => co2mt * 1.2345679 // direct one way flight from NYC to London per metric ton per CO2
+  +    export const toPhones = (co2mt: number): number => co2mt * 121643 // phones charged per metric ton of CO2
+      export const toTrees = (co2mt: number): number => co2mt * 16.5337915448
+
+      export const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> =
+
+      // ...
+
+          const [selection, setSelection] = useState('flights')
+          const mtSum: number = sumCO2(data)
+
+  -        const milesSum = toMiles(mtSum)
+  -        const gasSum = toGas(mtSum)
+  +        const totalFlights = toFlights(mtSum)
+  +        const totalPhones = toPhones(mtSum)
+          const treesSum = toTrees(mtSum)
+
+  -        const formatNumber = (number: number, decimalPlaces = 0) =>
+  -        number.toLocaleString(undefined, { maximumFractionDigits: decimalPlaces })
+  +        const formatNumber = (number: number, decimalPlaces = 0) => {
+  +        if (number >= 1000000000) return `${(number / 1000000000).toFixed(1)}+ B`
+  +
+  +        if (number >= 1000000) return `${(number / 1000000).toFixed(1)}+ M`
+  +
+  +        return number.toLocaleString(undefined, {
+  +            maximumFractionDigits: decimalPlaces,
+  +           })
+  +        }
+
+          const comparisons: Comparison = {
+          flights: {
+              icon: (
+                  <FlightTakeoff className={classes.icon} data-testid="flightsIcon" />
+              ),
+  -            total: milesSum,
+  -            textOne: 'greenhouse gas emissions from',
+  -            textTwo: 'miles driven on average',
+  +            total: totalFlights,
+  +            textOne: 'CO2e emissions from',
+  +            textTwo: 'direct one way flights from NYC to London',
+          },
+          phones: {
+              icon: (
+                  <PhonelinkRing className={classes.icon} data-testid="phonesIcon" />
+              ),
+  -            total: gasSum,
+  +            total: totalPhones,
+  -            textOne: 'CO2 emissions from',
+  +            textOne: 'CO2e emissions from',
+  -            textTwo: 'gallons of gasoline consumed',
+  +            textTwo: 'smartphones charged',
+          },
+          trees: {
+              icon: <Eco className={classes.icon} data-testid="treesIcon" />,
+
+      // ...
+  ```
+
+- ababb826: Extracts two new packages app and common to avoid circular dependancies and make it easier to extract cloud provider packages
+- e84a4c7a: Extract logic into the new packages: app, common, gcp, aws, azure:
+
+  There are many files that have been updated/extracted.
+  In order to update create-app templates, refer to the follow [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8c6aaed52e9f3949e134852986d50362aad3367a).
+
+  The following changes were made to,
+  'packages/create-app/templates/default-app/packages/client/tsconfig.json':
+
+  ```diff
+      // ...
+          "skipLibCheck": true,
+          "esModuleInterop": true,
+          "allowSyntheticDefaultImports": true,
+  -        "strict": true,
+          "forceConsistentCasingInFileNames": true,
+          "module": "esnext",
+          "moduleResolution": "node",
+          "resolveJsonModule": true,
+  -        "isolatedModules": true,
+          "noEmit": true,
+          "jsx": "react-jsx",
+  -        "noFallthroughCasesInSwitch": true
+  +        "noFallthroughCasesInSwitch": true,
+  +        "strict": false,
+  +        "isolatedModules": true
+        },
+  -      "include": [
+  -        "src",
+  -        "node_modules/apexcharts/types/apexcharts.d.ts"
+  -      ]
+  +      "include": ["src"]
+      }
+      // ...
+  ```
+
+  Additionally, the following dependencies have been updated and should also be updated in their respective template package.json file:
+
+  - @cloud-carbon-footprint root package.json:
+    - "@types/fs-extra": "^9.0.11"
+    - "concurrently": "^6.2.0"
+    - "marked": ">=2.0.5"
+  - @cloud-carbon-footprint/api and @cloud-carbon-footprint/cli:
+    - "dotenv": "^10.0.0"
+    - "@cloud-carbon-footprint/app": Can be added with `yarn up @cloud-carbon-footprint/app`
+    - "@cloud-carbon-footprint/common": Can be added with `yarn up @cloud-carbon-footprint/common`
+  - @cloud-carbon-footprint/client:
+    - "dotenv": "^10.0.0"
+    - "@testing-library/react-hooks": "^7.0.0"
+    - "concurrently": "^6.2.0"
+    - "@cloud-carbon-footprint/common": Can be added with `yarn up @cloud-carbon-footprint/common`
+
+### Patch Changes
+
+- c7fa7db0: Updates dependencies to the latest
+- e1353b87: Refactor CarbonComparisonCard to be more resuable with configuring comparison types
+- c5889453: Updates CarbonFormulaDrawer to link to the microsite
+
+  `packages/client/src/dashboard/CarbonFormulaDrawer.tsx`:
+
+  ```diff
+      // ...
+
+          available.
+          </Typography>
+          <Link
+  -          href="https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/microsite/docs/Methodology.md"
+  +          href="https://www.cloudcarbonfootprint.org/docs/methodology"
+            target="_blank"
+            rel="noopener"
+            className={classes.methodology}
+
+      // ...
+  ```
+
 ## 0.7.0
 
 ### Minor Changes
