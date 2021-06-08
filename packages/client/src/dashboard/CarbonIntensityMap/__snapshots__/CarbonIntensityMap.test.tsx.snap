@@ -5,10 +5,10 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
 >
   <div
-    className="MuiBox-root MuiBox-root-6"
+    className="MuiBox-root MuiBox-root-5"
   >
     <div
-      className="MuiBox-root MuiBox-root-7 makeStyles-topContainer-4"
+      className="MuiBox-root MuiBox-root-6 makeStyles-topContainer-3"
     >
       <p
         className="MuiTypography-root makeStyles-title-2 MuiTypography-body1"
@@ -26,7 +26,7 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
           <div
             aria-haspopup="listbox"
             aria-labelledby="map-select"
-            className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-8"
+            className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-7"
             id="map-select"
             onBlur={[Function]}
             onFocus={[Function]}
@@ -59,16 +59,11 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
         </div>
       </div>
     </div>
-    <p
-      className="MuiTypography-root makeStyles-title-2 makeStyles-cloudProvider-3 MuiTypography-body1"
-    >
-      AWS
-    </p>
     <div
-      className="MuiBox-root MuiBox-root-9"
+      className="MuiBox-root MuiBox-root-8"
     >
       <svg
-        className="makeStyles-map-5"
+        className="makeStyles-map-4"
         data-testid="awsIntensityMap"
       >
         AWSMap.svg

@@ -59,9 +59,6 @@ export const CarbonIntensityMap = (): ReactElement => {
             </Select>
           </FormControl>
         </Box>
-        <Typography className={`${classes.title} ${classes.cloudProvider}`}>
-          {cloudProvider}
-        </Typography>
         <Box paddingX={3}>{intensityMaps[cloudProvider]}</Box>
       </Box>
     </Card>

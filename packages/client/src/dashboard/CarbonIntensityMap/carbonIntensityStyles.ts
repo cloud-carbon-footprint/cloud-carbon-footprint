@@ -9,7 +9,7 @@ import {
   withStyles,
 } from '@material-ui/core'
 
-export const useStyles = makeStyles(({ palette }) => ({
+export const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
     height: '100%',
@@ -22,10 +22,6 @@ export const useStyles = makeStyles(({ palette }) => ({
     fontWeight: 900,
     color: 'rgba(0, 0, 0, 0.87)',
     padding: '.2em',
-  },
-  cloudProvider: {
-    color: palette.primary.light,
-    textAlign: 'center',
   },
   topContainer: {
     display: 'flex',
