@@ -1,6 +1,6 @@
 # @cloud-carbon-footprint/create-app
 
-## 0.4.0
+## 0.4.4
 
 ### Minor Changes
 

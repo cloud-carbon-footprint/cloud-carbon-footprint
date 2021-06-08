@@ -18,7 +18,9 @@ import chalk from 'chalk'
 
 const exec = promisify(execCb)
 
-const grabPackageVersion = async (packageName: string): Promise<string> => {
+export const grabPackageVersion = async (
+  packageName: string,
+): Promise<string> => {
   const runCmd = async (cmd: string) => {
     try {
       const version = await exec(cmd)
@@ -32,7 +34,9 @@ const grabPackageVersion = async (packageName: string): Promise<string> => {
   return await runCmd(`npm show @cloud-carbon-footprint/${packageName} version`)
 }
 
-export const packageVersions = {
-  '@cloud-carbon-footprint/app': grabPackageVersion('app'),
-  '@cloud-carbon-footprint/common': grabPackageVersion('common'),
+export const packageVersions = async () => {
+  return {
+    '@cloud-carbon-footprint/app': await grabPackageVersion('app'),
+    '@cloud-carbon-footprint/common': await grabPackageVersion('common'),
+  }
 }

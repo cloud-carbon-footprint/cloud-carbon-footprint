@@ -70,15 +70,16 @@ export async function templatingTask(
       await Task.forItem('templating', basename(file), async () => {
         const destination = destinationFile.replace(/\.hbs$/, '')
 
+        const versions = await packageVersions()
         const template = await fs.readFile(file)
         const compiled = handlebars.compile(template.toString())
         const contents = compiled(
           { name: basename(destination), ...context },
           {
             helpers: {
-              version(name: keyof typeof packageVersions) {
-                if (name in packageVersions) {
-                  return packageVersions[name]
+              version(name: keyof typeof versions) {
+                if (name in versions) {
+                  return versions[name]
                 }
                 throw new Error(`No version available for package ${name}`)
               },
