@@ -16,6 +16,8 @@ import {
   withStyles,
 } from '@material-ui/core'
 import { ReactComponent as AWSMap } from './AWSMap.svg'
+import { ReactComponent as GCPMap } from './GCPMap.svg'
+import { ReactComponent as AzureMap } from './AzureMap.svg'
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
@@ -31,15 +33,16 @@ const useStyles = makeStyles(({ palette }) => ({
     color: 'rgba(0, 0, 0, 0.87)',
     padding: '.2em',
   },
+  cloudProvider: {
+    color: palette.primary.light,
+    textAlign: 'center',
+  },
   topContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     marginBottom: '24px',
-  },
-  highlight: {
-    color: palette.primary.main,
   },
   map: {
     width: '100%',
@@ -65,45 +68,53 @@ const BootstrapInput = withStyles(() =>
   }),
 )(InputBase)
 
+type CloudProvider = 'AWS' | 'GCP' | 'Azure'
+
+type IntensityMaps = {
+  [provider in CloudProvider]: React.ReactNode
+}
+
 export const CarbonIntensityMap = (): ReactElement => {
-  const [cloudProvider] = useState('AWS')
+  const [cloudProvider, setCloudProvider] = useState('AWS')
   const classes = useStyles()
 
-  // const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
-  //   setCloudProvider(event.target.value)
-  // }
+  const intensityMaps: IntensityMaps = {
+    AWS: <AWSMap className={classes.map} data-testid="awsIntensityMap" />,
+    GCP: <GCPMap className={classes.map} data-testid="gcpIntensityMap" />,
+    Azure: <AzureMap className={classes.map} data-testid="azureIntensityMap" />,
+  }
+
+  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
+    setCloudProvider(event.target.value)
+  }
 
   return (
     <Card className={classes.root}>
       <Box padding={3}>
         <Box className={classes.topContainer}>
           <Typography className={classes.title}>
-            Carbon Intensity Map -{' '}
-            <span className={classes.highlight}>{cloudProvider}</span>
+            Carbon Intensity Map
           </Typography>
           <FormControl variant="outlined">
             <Select
               id="map-select"
               data-testid="select"
               value={cloudProvider}
-              // onChange={handleChange}
+              onChange={handleChange}
               input={<BootstrapInput />}
             >
-              <MenuItem id="map-options" value="AWS">
-                AWS
-              </MenuItem>
-              <MenuItem id="map-options" value="GCP">
-                GCP
-              </MenuItem>
-              <MenuItem id="map-options" value="Azure">
-                Azure
-              </MenuItem>
+              {Object.keys(intensityMaps).map((mapOption) => (
+                <MenuItem key={mapOption} id="map-option" value={mapOption}>
+                  {mapOption}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Box>
-        <Box padding={3}>
-          <AWSMap className={classes.map} data-testid="intensityMap" />
-        </Box>
+        <Typography className={`${classes.title} ${classes.cloudProvider}`}>
+          {cloudProvider}
+        </Typography>
+        <Box paddingX={3}>{intensityMaps[cloudProvider]}</Box>
       </Box>
     </Card>
   )

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Carbon Intensity Map renders with correct configuration 1`] = `
+exports[`Carbon Intensity Map should render with correct configuration 1`] = `
 <div
   className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
 >
@@ -8,18 +8,12 @@ exports[`Carbon Intensity Map renders with correct configuration 1`] = `
     className="MuiBox-root MuiBox-root-6"
   >
     <div
-      className="MuiBox-root MuiBox-root-7 makeStyles-topContainer-3"
+      className="MuiBox-root MuiBox-root-7 makeStyles-topContainer-4"
     >
       <p
         className="MuiTypography-root makeStyles-title-2 MuiTypography-body1"
       >
-        Carbon Intensity Map -
-         
-        <span
-          className="makeStyles-highlight-4"
-        >
-          AWS
-        </span>
+        Carbon Intensity Map
       </p>
       <div
         className="MuiFormControl-root"
@@ -65,12 +59,17 @@ exports[`Carbon Intensity Map renders with correct configuration 1`] = `
         </div>
       </div>
     </div>
+    <p
+      className="MuiTypography-root makeStyles-title-2 makeStyles-cloudProvider-3 MuiTypography-body1"
+    >
+      AWS
+    </p>
     <div
       className="MuiBox-root MuiBox-root-9"
     >
       <svg
         className="makeStyles-map-5"
-        data-testid="intensityMap"
+        data-testid="awsIntensityMap"
       >
         AWSMap.svg
       </svg>
