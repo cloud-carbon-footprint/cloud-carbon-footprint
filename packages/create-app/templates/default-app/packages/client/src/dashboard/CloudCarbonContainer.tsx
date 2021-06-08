@@ -20,6 +20,7 @@ import { useFilterDataFromEstimates } from './transformData'
 import { FilterResultResponse } from '../models/types'
 import NoDataPage from './NoDataPage'
 import config from '../ConfigLoader'
+import { CarbonIntensityMap } from './CarbonIntensityMap/CarbonIntensityMap'
 
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
@@ -174,6 +175,9 @@ export default function CloudCarbonContainer(): ReactElement {
                 <Grid item className={classes.gridItemCards}>
                   <EmissionsBreakdownContainer data={filteredData} />
                 </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <CarbonIntensityMap />
               </Grid>
             </Grid>
           </Grid>

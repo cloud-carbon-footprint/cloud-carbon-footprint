@@ -166,6 +166,11 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
           Emissions data points marked with an * have been estimated with
           average CPU Utilization because the actual CPU Utilization is not
           available.
+          <br />
+          <br />
+          Cloud Provider regions on map are an approximation based on public
+          information given by each cloud provider. Regional grid emissions
+          factor sources vary based on country.
         </Typography>
         <Link
           href="https://www.cloudcarbonfootprint.org/docs/methodology"
