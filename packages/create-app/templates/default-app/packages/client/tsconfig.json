@@ -18,7 +18,7 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     "strict": false,
-    "isolatedModules": true
+    "isolatedModules": true,
   },
-  "include": ["src"]
+  "include": ["src","./node_modules/**/*"]
 }
