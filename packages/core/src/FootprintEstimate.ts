@@ -174,5 +174,8 @@ export function estimateCo2(
   region: string,
   emissionsFactors?: CloudConstantsEmissionsFactors,
 ): number {
-  return estimatedWattHours * emissionsFactors[region]
+  return (
+    estimatedWattHours *
+    (emissionsFactors[region] || emissionsFactors['unknown'])
+  )
 }

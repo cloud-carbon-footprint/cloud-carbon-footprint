@@ -341,6 +341,18 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
       cost: 10,
       machineType: null,
     },
+    {
+      timestamp: bigQueryDateOne,
+      accountName: 'test-account',
+      region: 'europe-central2',
+      serviceName: 'Cloud Pub/Sub',
+      usageType: 'Download Australia',
+      usageUnit: 'bytes',
+      vCpus: null as string | null,
+      usageAmount: 2597445774,
+      cost: 10,
+      machineType: null,
+    },
   ],
 ]
 

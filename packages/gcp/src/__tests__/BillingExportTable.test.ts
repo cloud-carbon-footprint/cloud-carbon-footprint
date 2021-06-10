@@ -368,6 +368,16 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
             kilowattHours: 0.0026658039940036836,
           },
+          {
+            accountName: 'test-account',
+            cloudProvider: 'GCP',
+            co2e: 0.0000010933661307394432,
+            cost: 10,
+            kilowattHours: 0.0026609658742323523,
+            region: 'europe-central2',
+            serviceName: 'Cloud Pub/Sub',
+            usesAverageCPUConstant: false,
+          },
         ],
       },
     ]
