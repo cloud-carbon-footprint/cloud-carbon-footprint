@@ -456,7 +456,7 @@ describe('Azure Consumption Management Service', () => {
 
   describe('When group query results by week is true', () => {
     beforeEach(() => {
-      ; (configLoader as jest.Mock).mockReturnValue({
+      ;(configLoader as jest.Mock).mockReturnValue({
         GROUP_QUERY_RESULTS_BY: 'week',
       })
     })
