@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/core
 
+## 0.8.1
+
+### Patch Changes
+
+- 3f283737: Adds support for regions with unknown constants
+- Updated dependencies [8e24c32b]
+  - @cloud-carbon-footprint/common@0.0.2
+
 ## 0.8.0
 
 ### Minor Changes
