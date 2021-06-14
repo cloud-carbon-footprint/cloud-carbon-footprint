@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/core",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions.",
   "main": "src/index.ts",
@@ -65,7 +65,7 @@
     "typescript": "4.2.4"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/common": "^0.0.1",
+    "@cloud-carbon-footprint/common": "^0.0.2",
     "@types/ramda": "^0.27.40",
     "aws-sdk": "^2.910.0",
     "moment": "^2.29.1",
