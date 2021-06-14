@@ -397,7 +397,7 @@ export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
   ],
 ]
 
-export const mockQueryStorageWithReplicationFactors: any[][] = [
+export const mockQueryCloudStorageWithReplicationFactors: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
@@ -433,6 +433,67 @@ export const mockQueryStorageWithReplicationFactors: any[][] = [
       vCpus: null,
       usageAmount: 5.15376128e8,
       cost: 220,
+      machineType: null,
+    },
+  ],
+]
+
+export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors: any[][] =
+  [
+    [
+      {
+        timestamp: bigQueryDateTwo,
+        accountName: 'test-account',
+        region: 'us-east1',
+        serviceName: 'Compute Engine',
+        usageType: 'Storage PD Capacity',
+        usageUnit: 'byte-seconds',
+        vCpus: null,
+        usageAmount: 1.571922596855808e15,
+        cost: 150,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountName: 'test-account',
+        region: 'us-central1',
+        serviceName: 'Cloud Filestore',
+        usageType:
+          'Filestore Capacity Basic HDD (Standard) Iowa/South Carolina/Oregon',
+        usageUnit: 'byte-seconds',
+        vCpus: null,
+        usageAmount: 9.49978046398464e16,
+        cost: 70,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountName: 'test-account',
+        region: 'us-east4',
+        serviceName: 'Cloud SQL',
+        usageType:
+          'Cloud SQL for PostgreSQL: Regional - Standard storage in Northern Virginia',
+        usageUnit: 'byte-seconds',
+        vCpus: null,
+        usageAmount: 6.57129996288e14,
+        cost: 80,
+        machineType: null,
+      },
+    ],
+  ]
+
+export const mockQueryMemoryStoreWithReplicationFactors: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: 'us-central1',
+      serviceName: 'Cloud Memorystore for Redis',
+      usageType: 'Redis Capacity Basic M1 Iowa/South Carolina/Oregon',
+      usageUnit: 'byte-seconds',
+      vCpus: null,
+      usageAmount: 9.27712935936e13,
+      cost: 170,
       machineType: null,
     },
   ],

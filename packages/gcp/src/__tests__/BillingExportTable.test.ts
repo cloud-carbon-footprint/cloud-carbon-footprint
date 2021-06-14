@@ -22,7 +22,9 @@ import {
   mockQueryNetworkingIgnoreIngress,
   mockQueryComputeWithDifferentMachineTypes,
   mockQueryResultsComputeEngineRam,
-  mockQueryStorageWithReplicationFactors,
+  mockQueryCloudStorageWithReplicationFactors,
+  mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors,
+  mockQueryMemoryStoreWithReplicationFactors,
 } from './fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -150,10 +152,10 @@ describe('GCP BillingExportTable Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns estimation results for Storage based on replication factors', async () => {
+  it('Returns estimation results for Cloud Storage based on replication factors', async () => {
     //given
     mockJob.getQueryResults.mockResolvedValue(
-      mockQueryStorageWithReplicationFactors,
+      mockQueryCloudStorageWithReplicationFactors,
     )
     //when
     const billingExportTableService = new BillingExportTable(
@@ -209,6 +211,108 @@ describe('GCP BillingExportTable Service', () => {
             region: 'unknown',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimation results for Cloud Memorystore for Redis based on replication factors', async () => {
+    //given
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryMemoryStoreWithReplicationFactors,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.0000338203125,
+            co2e: 1.6199929687500003e-8,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud Memorystore for Redis',
+            cost: 170,
+            region: 'us-central1',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimation results for ComputeEngine, CloudFileStore and CloudSQL based on replication factors', async () => {
+    //given
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.0005689233735351563,
+            co2e: 2.8446168676757816e-7,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Compute Engine',
+            cost: 150,
+            region: 'us-east1',
+          },
+          {
+            kilowattHours: 0.034632,
+            co2e: 0.000016588728000000003,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud Filestore',
+            cost: 70,
+            region: 'us-central1',
+          },
+          {
+            kilowattHours: 0.00023740234375,
+            co2e: 9.092509765625e-8,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud SQL',
+            cost: 80,
+            region: 'us-east4',
           },
         ],
       },

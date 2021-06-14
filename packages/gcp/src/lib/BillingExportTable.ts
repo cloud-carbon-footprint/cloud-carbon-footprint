@@ -416,14 +416,31 @@ export default class BillingExportTable {
   }
 
   private getReplicationFactor(usageType: string, serviceName: string): number {
-    if (serviceName === 'Cloud Storage') {
-      if (usageType.includes('Dual-region'))
-        return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_STORAGE_DUAL_REGION // 4
-      if (usageType.includes('Multi-region')) {
+    switch (serviceName) {
+      case 'Cloud Storage':
+        if (usageType.includes('Dual-region'))
+          return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .CLOUD_STORAGE_DUAL_REGION // 4
+        if (usageType.includes('Multi-region')) {
+          return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .CLOUD_STORAGE_MULTI_REGION // 6
+        }
         return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
-          .CLOUD_STORAGE_MULTI_REGION
-      }
-      return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_STORAGE_SINGLE_REGION
+          .CLOUD_STORAGE_SINGLE_REGION // 2
+      case 'Compute Engine':
+        if (usageType === 'Storage PD Capacity')
+          return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .COMPUTE_ENGINE_REGIONAL_DISKS // 2
+        break
+      case 'Cloud Filestore':
+        return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_FILESTORE // 2
+      case 'Cloud SQL':
+        if (usageType.includes('Regional - Standard storage'))
+          return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .CLOUD_SQL_HIGH_AVAILABILITY // 2
+        break
+      case 'Cloud Memorystore for Redis':
+        return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_MEMORY_STORE_REDIS // 2
     }
   }
 }
