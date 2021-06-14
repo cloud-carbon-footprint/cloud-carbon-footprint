@@ -17,7 +17,7 @@ import {
   MemoryEstimator,
   CloudProviderAccount,
 } from '@cloud-carbon-footprint/core'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, Logger } from '@cloud-carbon-footprint/common'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
 
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
@@ -26,9 +26,12 @@ import { AZURE_CLOUD_CONSTANTS } from '../domain'
 export default class AzureAccount extends CloudProviderAccount {
   private credentials: ApplicationTokenCredentials | ServiceClientCredentials
   private subscriptionClient: SubscriptionClient
+  private logger: Logger;
 
   constructor() {
     super()
+
+    this.logger = new Logger('AzureAccount');
   }
 
   public async initializeAccount(): Promise<void> {
@@ -45,6 +48,11 @@ export default class AzureAccount extends CloudProviderAccount {
     endDate: Date,
   ): Promise<EstimationResult[]> {
     const subscriptions = await this.subscriptionClient.subscriptions.list()
+
+    if (subscriptions.length === 0) {
+      this.logger.warn("No subscription returned for these Azure credentials, be sure the registered application has " +
+          "enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.")
+    }
 
     const estimationResults = await Promise.all(
       subscriptions.map(
