@@ -43,6 +43,9 @@
     "templates"
   ],
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "chalk": "^4.1.1",
     "commander": "^7.2.0",
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",

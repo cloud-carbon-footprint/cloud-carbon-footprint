@@ -77,6 +77,8 @@ fileignoreconfig:
   checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
+- filename: packages/azure/package.json
+  checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template
   checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
 - filename: packages/client/create_client_env_file.sh
@@ -168,4 +170,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: db353531c2c6426132fb5497836a9939c95bcb66a3a692e5d3a348ba9cd7a89d
+  checksum: 3dfd957d487ada19b62cfd99c8f0e3d34d237c551fb6b62ec9a01b0327c9a589

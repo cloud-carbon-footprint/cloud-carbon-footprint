@@ -58,6 +58,7 @@
     "typescript": "4.2.4"
   },
   "dependencies": {
+    "@google-cloud/logging-winston": "^4.0.5",
     "winston": "^3.3.3"
   },
   "lint-staged": {

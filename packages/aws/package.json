@@ -41,12 +41,13 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@azure/arm-consumption": "^6.3.0",
-    "@azure/arm-subscriptions": "^3.0.0",
-    "@azure/ms-rest-js": "^2.2.3",
-    "@azure/ms-rest-nodeauth": "^3.0.7",
     "@cloud-carbon-footprint/common": "^0.0.1",
-    "@cloud-carbon-footprint/core": "^0.8.0"
+    "@cloud-carbon-footprint/core": "^0.8.0",
+    "@google-cloud/iam-credentials": "^1.0.3",
+    "aws-sdk": "^2.927.0",
+    "aws-sdk-mock": "^5.1.0",
+    "moment": "^2.29.1",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
@@ -70,7 +71,6 @@
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.1",
-    "tsconfig-paths": "^3.9.0",
     "typescript": "4.2.4"
   },
   "lint-staged": {
