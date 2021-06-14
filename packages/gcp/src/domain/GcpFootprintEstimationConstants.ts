@@ -87,6 +87,9 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       : GCP_CLOUD_CONSTANTS.PUE_AVG
   },
   AVG_CPU_UTILIZATION_2020: 50,
+  REPLICATION_FACTORS: {
+    CLOUD_STORAGE_DUAL_REGION: 4,
+  },
 }
 
 export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =

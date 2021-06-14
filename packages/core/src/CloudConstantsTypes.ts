@@ -7,6 +7,7 @@ export default interface CloudConstants {
   readonly maxWatts?: number
   readonly powerUsageEffectiveness?: number
   readonly avgCpuUtilization?: number
+  readonly replicationFactor?: number
 }
 
 export type CloudConstantsByProvider = {
@@ -29,6 +30,7 @@ export type CloudConstantsByProvider = {
   PUE_TRAILING_TWELVE_MONTH?: { [key: string]: number }
   getPUE: (region?: string) => number
   AVG_CPU_UTILIZATION_2020: number
+  REPLICATION_FACTORS?: { [key: string]: number }
 }
 
 export type CloudConstantsEmissionsFactors = {

@@ -22,6 +22,7 @@ import {
   mockQueryNetworkingIgnoreIngress,
   mockQueryComputeWithDifferentMachineTypes,
   mockQueryResultsComputeEngineRam,
+  mockQueryStorageWithReplicationFactors,
 } from './fixtures/bigQuery.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -142,6 +143,47 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'Cloud Dataflow',
             cost: 12,
             region: 'us-west1',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimation results for Storage based on replication factors', async () => {
+    //given
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryStorageWithReplicationFactors,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            kilowattHours: 3.551443417867025e-13,
+            co2e: 1.4592550719777743e-16,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud Storage',
+            cost: 10,
+            region: 'unknown',
           },
         ],
       },

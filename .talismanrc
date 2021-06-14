@@ -99,6 +99,8 @@ fileignoreconfig:
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
 - filename: packages/core/package.json
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
+- filename: packages/core/src/CloudConstantsTypes.ts
+  checksum: 89c7a076bf40dab9e37f8f6f8581906ce16982beb6418e9120738904a0477110
 - filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts
   checksum: e555cf176c9994abaa53a21136b41c9721a70823dac263e3174395157e816890
 - filename: packages/core/src/domain/FootprintEstimationConstants.ts

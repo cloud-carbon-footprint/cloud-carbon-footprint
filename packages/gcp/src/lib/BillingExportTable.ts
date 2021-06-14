@@ -208,6 +208,7 @@ export default class BillingExportTable {
     }
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(usageRow.usageType),
     }
     if (usageRow.usageType.includes('SSD')) {
       return {
@@ -409,5 +410,10 @@ export default class BillingExportTable {
 
   private convertByteSecondsToGigabyteHours(usageAmount: number): number {
     return usageAmount / 1073741824 / 3600
+  }
+
+  private getReplicationFactor(usageType: string): number {
+    if (usageType.includes('Dual-region'))
+      return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_STORAGE_DUAL_REGION // 4
   }
 }

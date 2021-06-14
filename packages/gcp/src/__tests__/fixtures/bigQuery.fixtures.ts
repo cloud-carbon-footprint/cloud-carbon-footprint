@@ -396,3 +396,20 @@ export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
     },
   ],
 ]
+
+export const mockQueryStorageWithReplicationFactors: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountName: 'test-account',
+      region: null,
+      serviceName: 'Cloud Storage',
+      usageType: 'Standard Storage Iowa/South Carolina Dual-region',
+      usageUnit: 'byte-seconds',
+      vCpus: null,
+      usageAmount: 491520.0,
+      cost: 10,
+      machineType: null,
+    },
+  ],
+]

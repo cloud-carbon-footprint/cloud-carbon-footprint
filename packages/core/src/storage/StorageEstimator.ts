@@ -28,6 +28,7 @@ export class StorageEstimator implements IFootprintEstimator {
       const estimatedKilowattHours = this.estimateKilowattHours(
         d.terabyteHours,
         constants.powerUsageEffectiveness,
+        constants.replicationFactor,
       )
 
       return {
@@ -41,9 +42,16 @@ export class StorageEstimator implements IFootprintEstimator {
   private estimateKilowattHours(
     terabyteHours: number,
     powerUsageEffectiveness: number,
+    replicationFactor = 1,
   ) {
-    // This function multiplies the usage in terabyte hours this by the SSD or HDD co-efficient,
+    // This function multiplies the usage in terabyte hours this by the SSD or HDD co-efficient and the storage's replication factor,
     // then by PUE to account for extra power used by data center (lights, infrastructure, etc.), then converts to kilowatt-hours
-    return (terabyteHours * this.coefficient * powerUsageEffectiveness) / 1000
+    return (
+      (terabyteHours *
+        this.coefficient *
+        powerUsageEffectiveness *
+        replicationFactor) /
+      1000
+    )
   }
 }
