@@ -99,8 +99,8 @@ describe('App', () => {
   const testAwsAccountName = 'test AWS account'
   const testGcpAccountName = 'test GCP account'
   const awsCloudConstants = {
-    maxWatts: 3.46,
-    minWatts: 0.71,
+    maxWatts: 3.75,
+    minWatts: 0.78,
     powerUsageEffectiveness: 1.135,
   }
   const awsEmissionsFactors = {
