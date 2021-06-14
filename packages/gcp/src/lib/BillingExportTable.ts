@@ -208,7 +208,10 @@ export default class BillingExportTable {
     }
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(usageRow.usageType),
+      replicationFactor: this.getReplicationFactor(
+        usageRow.usageType,
+        usageRow.serviceName,
+      ),
     }
     if (usageRow.usageType.includes('SSD')) {
       return {
@@ -412,8 +415,15 @@ export default class BillingExportTable {
     return usageAmount / 1073741824 / 3600
   }
 
-  private getReplicationFactor(usageType: string): number {
-    if (usageType.includes('Dual-region'))
-      return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_STORAGE_DUAL_REGION // 4
+  private getReplicationFactor(usageType: string, serviceName: string): number {
+    if (serviceName === 'Cloud Storage') {
+      if (usageType.includes('Dual-region'))
+        return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_STORAGE_DUAL_REGION // 4
+      if (usageType.includes('Multi-region')) {
+        return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+          .CLOUD_STORAGE_MULTI_REGION
+      }
+      return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_STORAGE_SINGLE_REGION
+    }
   }
 }

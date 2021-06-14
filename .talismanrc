@@ -133,6 +133,8 @@ fileignoreconfig:
   checksum: b4619da2416bd6931676e6d2cdda49ea1ee3f71e867ffe3c879f25689c1c72cf
 - filename: packages/create-app/templates/default-app/packages/client/src/react-app-env.d.ts
   checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6
+- filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
+  checksum: 107e5b624be2a1f43f5fa2fa55b3bff0c6b11df962e505343626e5bf6ecf0bd6
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh

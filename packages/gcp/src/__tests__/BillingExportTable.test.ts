@@ -185,6 +185,31 @@ describe('GCP BillingExportTable Service', () => {
             cost: 10,
             region: 'unknown',
           },
+          {
+            accountName: 'test-account',
+            cloudProvider: 'GCP',
+            co2e: 2.0489133847375458e-8,
+            cost: 120,
+            kilowattHours: 0.000042774809702245215,
+            region: 'us-central1',
+            serviceName: 'Cloud Storage',
+            usesAverageCPUConstant: false,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            accountName: 'test-account',
+            cloudProvider: 'GCP',
+            co2e: 2.295120937378743e-13,
+            cost: 220,
+            kilowattHours: 5.585721305881937e-10,
+            region: 'unknown',
+            serviceName: 'Cloud Storage',
+            usesAverageCPUConstant: false,
+          },
         ],
       },
     ]
