@@ -446,6 +446,7 @@ export default class BillingExportTable {
         if (usageType.includes('Standard'))
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .CLOUD_MEMORY_STORE_REDIS // 2
+        break
     }
   }
 }

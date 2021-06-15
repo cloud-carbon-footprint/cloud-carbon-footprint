@@ -32,6 +32,7 @@ import {
   athenaMockGetQueryResultsWithRedshiftStorageComputeSavingsPlan,
   athenaMockGetQueryResultsNetworking,
   athenaMockGetQueryResultsMemory,
+  athenaMockGetQueryResultsS3WithReplicationFactors,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
@@ -74,17 +75,6 @@ describe('CostAndUsageReports Service', () => {
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
   })
-
-  // beforeEach(() => {
-  //   ;(configLoader as jest.Mock).mockReturnValue({
-  //     AWS: {
-  //       ATHENA_DB_NAME: 'test-db',
-  //       ATHENA_DB_TABLE: 'test-table',
-  //       ATHENA_QUERY_RESULT_LOCATION: 'test-location',
-  //       ATHENA_REGION: 'test-region',
-  //     },
-  //   })
-  // })
 
   afterEach(() => {
     AWSMock.restore()
@@ -248,12 +238,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 4.708412284344377e-19,
+            co2e: 1.4125236853033129e-18,
             cost: 9,
             region: 'us-west-1',
             serviceName: 'AmazonS3',
             usesAverageCPUConstant: false,
-            kilowattHours: 1.3419594324659556e-15,
+            kilowattHours: 4.025878297397867e-15,
           },
           {
             accountName: '123456789',
@@ -698,6 +688,117 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
             kilowattHours: 0.25278720000000005,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for S3 with replication factors', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsS3WithReplicationFactors)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-01-02'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 1.736321917146274e-8,
+            cost: 10,
+            region: 'us-east-1',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000041763103682367596,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-03'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 1.6062469809065667e-8,
+            cost: 5,
+            region: 'us-east-1',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000038634459739667996,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-04'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 4.4037041259836565e-7,
+            cost: 7,
+            region: 'us-east-1',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00105920653413276,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-05'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 4.405144400710844e-8,
+            cost: 10,
+            region: 'us-east-1',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00010595529580428001,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-06'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 1.1260191649476905e-8,
+            cost: 5,
+            region: 'us-west-1',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000032093027294218805,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-07'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 3.2829392206615134e-8,
+            cost: 7,
+            region: 'us-west-1',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00009356808595602,
           },
         ],
       },

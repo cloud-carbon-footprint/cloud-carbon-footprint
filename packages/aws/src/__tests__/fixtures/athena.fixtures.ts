@@ -678,3 +678,91 @@ export const athenaMockGetQueryResultsMemory: Athena.GetQueryResultsOutput = {
     Rows: [queryResultsHeaders, ...queryResultsDataNine],
   },
 }
+
+const queryResultsDataTen = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-02' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'USE1-BytesDeleted-STANDARD' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.0253623422' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-03' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'USE1-BytesDeleted-SIA' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.023462346' },
+      { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-04' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'USE1-BytesDeleted-INT' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.64324622' },
+      { VarCharValue: '7' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-05' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'USE1-BytesDeleted-GDA' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.06434566' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-06' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'USW1-OverwriteBytes-Put-GLACIER' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.0292346929' },
+      { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-07' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'USW1-OverwriteBytes-Put-RRS' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.085234535' },
+      { VarCharValue: '7' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsS3WithReplicationFactors: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataTen],
+    },
+  }

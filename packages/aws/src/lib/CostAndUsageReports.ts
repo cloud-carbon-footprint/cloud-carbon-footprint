@@ -238,6 +238,10 @@ export default class CostAndUsageReports {
 
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(
+        costAndUsageReportRow.usageType,
+        costAndUsageReportRow.serviceName,
+      ),
     }
 
     let estimate: FootprintEstimate
@@ -479,6 +483,25 @@ export default class CostAndUsageReports {
       ) ||
       serviceName === 'AmazonSimpleDB'
     )
+  }
+
+  private getReplicationFactor(usageType: string, serviceName: string): number {
+    switch (serviceName) {
+      case 'AmazonS3':
+        if (usageType.includes('STANDARD'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_STANDARD // 3
+        if (usageType.includes('SIA'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_STANDARD_IA // 3
+        if (usageType.includes('INT'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_INTELLIGENT_TIERING // 3
+        if (usageType.includes('GLACIER'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_GLACIER // 3
+        if (usageType.includes('GDA'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_GLACIER_DEEP_ARCHIVE // 3
+        if (usageType.includes('RRS'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_REDUCED_REDUNDANCY // 3
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3 // 2
+    }
   }
 
   private endsWithAny(suffixes: string[], string: string): boolean {

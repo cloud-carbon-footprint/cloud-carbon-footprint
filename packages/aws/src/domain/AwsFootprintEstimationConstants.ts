@@ -101,6 +101,15 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     return AWS_CLOUD_CONSTANTS.PUE_AVG
   },
   AVG_CPU_UTILIZATION_2020: 50,
+  REPLICATION_FACTORS: {
+    S3: 3,
+    S3_STANDARD: 3,
+    S3_STANDARD_IA: 3,
+    S3_INTELLIGENT_TIERING: 3,
+    S3_GLACIER: 2,
+    S3_GLACIER_DEEP_ARCHIVE: 3,
+    S3_REDUCED_REDUNDANCY: 2,
+  },
 }
 
 export const AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =

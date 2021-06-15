@@ -81,6 +81,12 @@ export const HDD_USAGE_TYPES: string[] = [
   'ds2.xlarge', // Redshift HDD
   'ds2.8xlarge', // Redshift HDD
   'EU-TimedStorage-GDA-Staging', // S3 Glacier
+  'BytesDeleted-STANDARD', // S3 STANDARD
+  'BytesDeleted-SIA', // S3 STANDARD_IA storage
+  'BytesDeleted-INT', // S3 Intelligent Tiering storage
+  'BytesDeleted-GDA', // S3 GLACIER DEEP ARCHIVE storage
+  'OverwriteBytes-Put-GLACIER', // S3 GLACIER storage
+  'OverwriteBytes-Put-RRS', // S3 Reduced Redundancy storage
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
