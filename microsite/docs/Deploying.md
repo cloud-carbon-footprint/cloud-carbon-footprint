@@ -11,7 +11,7 @@ Before deploying, you'll need to build the application and create the packages/a
 
 Once you've set up the CGP project and have the command line tools, Cloud Carbon Footprint can be deployed with `./appengine/deploy-staging.sh` or `./appengine/deploy-production.sh`, depending on your environment.
 
-Or if you want to use Github Actions, you can see the configuration for this in [.github/ci.yml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/.github/ci.yml).
+Or if you want to use Github Actions, you can see the configuration for this in [.github/workflows/ci.yml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/.github/workflows/ci.yml).
 
 It will deploy to `https://<something>.appspot.com`.
 

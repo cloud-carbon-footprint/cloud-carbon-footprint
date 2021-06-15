@@ -43,7 +43,7 @@ DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your
 
 ### Unsupported Usage Types
 
-The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/services/aws/CostAndUsageTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with a warning like this:
+The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/aws/src/lib/CostAndUsageTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with a warning like this:
 
 `2021-03-31T09:48:38.815Z [CostAndUsageReports] warn: Unexpected usage type for storage service: EU-WarmStorage-ByteHrs-EFS`
 
@@ -58,7 +58,7 @@ The steps to resolve are:
 
 ### Options for AWS Authentication
 
-We currently support three modes of authentication with AWS, that you can see in [packages/core/src/application/AWSCredentialsProvider.ts:](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/application/AWSCredentialsProvider.ts)
+We currently support three modes of authentication with AWS, that you can see in [packages/aws/src/application/AWSCredentialsProvider.ts:](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/aws/src/application/AWSCredentialsProvider.ts)
 
 1. "default" - this uses the AWS credentials that exist in the environment the application is running in, for example if you configure your local environment.
 
@@ -66,7 +66,7 @@ We currently support three modes of authentication with AWS, that you can see in
 
 3. "GCP" - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
 
-The authentication mode is set inside [packages/core/src/application/Config.ts.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/application/Config.ts)
+The authentication mode is set inside [packages/common/src/Config.ts.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/common/src/Config.ts)
 
 api/.env is where you configure the options for the "GCP" mode, and set the AWS Accounts you want to run the application against. You can read more about this mode of authentication in [.adr/adr_5_aws_authentication.txt](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/.adr/adr_5_aws_authentication.txt), as well as this article: https://cevo.com.au/post/2019-07-29-using-gcp-service-accounts-to-access-aws/
 

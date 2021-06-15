@@ -48,6 +48,6 @@ The steps to resolve are:
 
 By default, the application authenticates with Azure using environment variables set in the api/.env file. However, if you want to store these secrets is Google Secrets Manager we also provide that option, if you want to set the AZURE_AUTH_MODE environment variable to “GCP”.
 
-The authentication mode is set inside [packages/core/src/application/Config.ts](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/application/Config.ts), and you can see these options being used in [packages/core/src/application/AzureCredentialsProvider.ts](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/application/AzureCredentialsProvider.ts).
+The authentication mode is set inside [packages/common/src/Config.ts](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/common/src/Config.ts), and you can see these options being used in [packages/azure/src/application/AzureCredentialsProvider.ts](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/azure/src/application/AzureCredentialsProvider.ts).
 
 <!-- © 2021 ThoughtWorks, Inc. -->
