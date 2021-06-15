@@ -98,70 +98,6 @@ describe('App', () => {
   }
   const testAwsAccountName = 'test AWS account'
   const testGcpAccountName = 'test GCP account'
-  const awsCloudConstants = {
-    maxWatts: 3.75,
-    minWatts: 0.78,
-    powerUsageEffectiveness: 1.135,
-  }
-  const awsEmissionsFactors = {
-    'af-south-1': 0.000928,
-    'ap-east-1': 0.00081,
-    'ap-northeast-1': 0.000506,
-    'ap-northeast-2': 0.0005,
-    'ap-northeast-3': 0.000506,
-    'ap-south-1': 0.000708,
-    'ap-southeast-1': 0.0004085,
-    'ap-southeast-2': 0.00079,
-    'ca-central-1': 0.00013,
-    'cn-north-1': 0.000555,
-    'cn-northwest-1': 0.000555,
-    'eu-central-1': 0.000338,
-    'eu-north-1': 0.000008,
-    'eu-south-1': 0.000233,
-    'eu-west-1': 0.000316,
-    'eu-west-2': 0.000228,
-    'eu-west-3': 0.000052,
-    'me-south-1': 0.000732,
-    'sa-east-1': 0.000074,
-    'us-east-1': 0.000415755,
-    'us-east-2': 0.000440187,
-    'us-gov-east-1': 0.000415755,
-    'us-gov-west-1': 0.000350861,
-    'us-west-1': 0.000350861,
-    'us-west-2': 0.000350861,
-  }
-
-  const gcpCloudConstants = {
-    powerUsageEffectiveness: 1.1,
-  }
-  const gcpEmissionsfactors = {
-    'asia-east1': 0.000541,
-    'asia-east2': 0.000626,
-    'asia-northeast1': 0.000524,
-    'asia-northeast2': 0.000524,
-    'asia-northeast3': 0.00054,
-    'asia-south1': 0.000723,
-    'asia-southeast1': 0.000493,
-    'asia-southeast2': 0.000772,
-    'australia-southeast1': 0.000725,
-    'europe-north1': 0.000181,
-    'europe-west1': 0.000196,
-    'europe-west2': 0.000257,
-    'europe-west3': 0.000319,
-    'europe-west4': 0.000474,
-    'europe-west6': 0.000029,
-    'northamerica-northeast1': 0.000143,
-    'southamerica-east1': 0.000109,
-    unknown: 0.0004108907,
-    'us-central1': 0.000479,
-    'us-central2': 0.000479,
-    'us-east1': 0.0005,
-    'us-east4': 0.000383,
-    'us-west1': 0.000117,
-    'us-west2': 0.000248,
-    'us-west3': 0.000561,
-    'us-west4': 0.000491,
-  }
 
   beforeEach(() => {
     app = new App()
@@ -502,16 +438,16 @@ describe('App', () => {
       new Date(start),
       new Date(end),
       'us-east-1',
-      awsEmissionsFactors,
-      awsCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetEstimates).toHaveBeenNthCalledWith(
       2,
       new Date(start),
       new Date(end),
       'us-east-2',
-      awsEmissionsFactors,
-      awsCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
 
     expect(result).toEqual(expectedEstimationResults)
@@ -626,16 +562,16 @@ describe('App', () => {
       new Date(start),
       new Date(end),
       'us-east-1',
-      awsEmissionsFactors,
-      awsCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetEstimates).toHaveBeenNthCalledWith(
       2,
       new Date(start),
       new Date(end),
       'us-east-2',
-      awsEmissionsFactors,
-      awsCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
 
     expect(result).toEqual(expectedEstimationResults)
@@ -781,16 +717,16 @@ describe('App', () => {
       new Date(start),
       new Date(end),
       'us-east-1',
-      awsEmissionsFactors,
-      awsCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetAWSEstimates).toHaveBeenNthCalledWith(
       2,
       new Date(start),
       new Date(end),
       'us-east-2',
-      awsEmissionsFactors,
-      awsCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
 
     expect(mockGetGCPEstimates).toHaveBeenCalledTimes(6)
@@ -799,48 +735,48 @@ describe('App', () => {
       new Date(start),
       new Date(end),
       'us-east1',
-      gcpEmissionsfactors,
-      gcpCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
       2,
       new Date(start),
       new Date(end),
       'us-west1',
-      gcpEmissionsfactors,
-      gcpCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
       3,
       new Date(start),
       new Date(end),
       'us-central1',
-      gcpEmissionsfactors,
-      gcpCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
       4,
       new Date(start),
       new Date(end),
       'us-east1',
-      gcpEmissionsfactors,
-      gcpCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
       5,
       new Date(start),
       new Date(end),
       'us-west1',
-      gcpEmissionsfactors,
-      gcpCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
     expect(mockGetGCPEstimates).toHaveBeenNthCalledWith(
       6,
       new Date(start),
       new Date(end),
       'us-central1',
-      gcpEmissionsfactors,
-      gcpCloudConstants,
+      expect.anything(),
+      expect.anything(),
     )
 
     expect(result).toEqual(expectedEstimationResults)

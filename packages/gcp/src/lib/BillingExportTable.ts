@@ -342,7 +342,7 @@ export default class BillingExportTable {
                       GCP_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
                     }) as timestamp,
                     project.name as accountName,
-                    location.region as region,
+                    ifnull(location.region, location.location) as region,
                     service.description as serviceName,
                     sku.description as usageType,
                     usage.unit as usageUnit,
@@ -428,19 +428,24 @@ export default class BillingExportTable {
         return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
           .CLOUD_STORAGE_SINGLE_REGION // 2
       case 'Compute Engine':
-        if (usageType === 'Storage PD Capacity')
+        if (usageType.includes('Regional'))
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .COMPUTE_ENGINE_REGIONAL_DISKS // 2
         break
       case 'Cloud Filestore':
         return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_FILESTORE // 2
       case 'Cloud SQL':
-        if (usageType.includes('Regional - Standard storage'))
+        if (
+          usageType.includes('Regional - Standard storage') ||
+          usageType.includes('HA')
+        )
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .CLOUD_SQL_HIGH_AVAILABILITY // 2
         break
       case 'Cloud Memorystore for Redis':
-        return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_MEMORY_STORE_REDIS // 2
+        if (usageType.includes('Standard'))
+          return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .CLOUD_MEMORY_STORE_REDIS // 2
     }
   }
 }

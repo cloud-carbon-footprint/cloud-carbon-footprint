@@ -8,7 +8,11 @@ import {
   COMPUTE_PROCESSOR_TYPES,
 } from '@cloud-carbon-footprint/core'
 
-import { GCP_REGIONS } from '../lib/GCPRegions'
+import {
+  GCP_REGIONS,
+  GCP_DUAL_REGIONS,
+  GCP_MULTI_REGIONS,
+} from '../lib/GCPRegions'
 
 export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
@@ -125,5 +129,11 @@ export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFa
     [GCP_REGIONS.EUROPE_WEST6]: 0.000029,
     [GCP_REGIONS.NORTHAMERICA_NORTHEAST1]: 0.000143,
     [GCP_REGIONS.SOUTHAMERICA_EAST1]: 0.000109,
+    [GCP_DUAL_REGIONS.ASIA1]: 0.000524,
+    [GCP_DUAL_REGIONS.EUR4]: 0.0003275,
+    [GCP_DUAL_REGIONS.NAM4]: 0.0004895,
+    [GCP_MULTI_REGIONS.ASIA]: 0.0006076,
+    [GCP_MULTI_REGIONS.EU]: 0.0002427,
+    [GCP_MULTI_REGIONS.US]: 0.00040725,
     [GCP_REGIONS.UNKNOWN]: 0.0004108907, // Average of the above regions
   }

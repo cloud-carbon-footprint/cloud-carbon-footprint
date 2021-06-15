@@ -179,13 +179,13 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 3.551443417867025e-13,
-            co2e: 1.4592550719777743e-16,
+            co2e: 1.7384315530459089e-16,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
             serviceName: 'Cloud Storage',
             cost: 10,
-            region: 'unknown',
+            region: 'nam4',
           },
           {
             accountName: 'test-account',
@@ -205,53 +205,12 @@ describe('GCP BillingExportTable Service', () => {
           {
             accountName: 'test-account',
             cloudProvider: 'GCP',
-            co2e: 2.295120937378743e-13,
+            co2e: 2.274785001820419e-13,
             cost: 220,
             kilowattHours: 5.585721305881937e-10,
-            region: 'unknown',
+            region: 'us',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
-          },
-        ],
-      },
-    ]
-    expect(result).toEqual(expectedResult)
-  })
-
-  it('Returns estimation results for Cloud Memorystore for Redis based on replication factors', async () => {
-    //given
-    mockJob.getQueryResults.mockResolvedValue(
-      mockQueryMemoryStoreWithReplicationFactors,
-    )
-    //when
-    const billingExportTableService = new BillingExportTable(
-      new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
-      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new BigQuery(),
-    )
-
-    const result = await billingExportTableService.getEstimates(
-      startDate,
-      endDate,
-    )
-
-    // then
-    const expectedResult: EstimationResult[] = [
-      {
-        timestamp: new Date('2020-10-28'),
-        serviceEstimates: [
-          {
-            kilowattHours: 0.0000338203125,
-            co2e: 1.6199929687500003e-8,
-            usesAverageCPUConstant: false,
-            cloudProvider: 'GCP',
-            accountName: 'test-account',
-            serviceName: 'Cloud Memorystore for Redis',
-            cost: 170,
-            region: 'us-central1',
           },
         ],
       },
@@ -285,14 +244,24 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 0.0005689233735351563,
-            co2e: 2.8446168676757816e-7,
+            kilowattHours: 0.00028446168676757815,
+            co2e: 1.4223084338378908e-7,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountName: 'test-account',
             serviceName: 'Compute Engine',
             cost: 150,
             region: 'us-east1',
+          },
+          {
+            kilowattHours: 8.234108336182544e-11,
+            co2e: 4.3146727681596535e-14,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Compute Engine',
+            cost: 150,
+            region: 'asia-northeast1',
           },
           {
             kilowattHours: 0.034632,
@@ -313,6 +282,67 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'Cloud SQL',
             cost: 80,
             region: 'us-east4',
+          },
+          {
+            kilowattHours: 6.587286728972686e-10,
+            co2e: 4.762608305047252e-13,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud SQL',
+            cost: 80,
+            region: 'asia-south1',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimation results for Cloud Memorystore for Redis based on replication factors', async () => {
+    //given
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryMemoryStoreWithReplicationFactors,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.00001691015625,
+            co2e: 8.099964843750001e-9,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud Memorystore for Redis',
+            cost: 170,
+            region: 'us-central1',
+          },
+          {
+            kilowattHours: 0.00003412500000000001,
+            co2e: 1.6345875000000003e-8,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountName: 'test-account',
+            serviceName: 'Cloud Memorystore for Redis',
+            cost: 170,
+            region: 'us-central2',
           },
         ],
       },

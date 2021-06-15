@@ -30,3 +30,15 @@ export enum GCP_REGIONS {
   US_WEST4 = 'us-west4',
   UNKNOWN = 'unknown',
 }
+
+export enum GCP_DUAL_REGIONS {
+  ASIA1 = 'asia1',
+  EUR4 = 'eur4',
+  NAM4 = 'nam4',
+}
+
+export enum GCP_MULTI_REGIONS {
+  ASIA = 'asia',
+  EU = 'europe',
+  US = 'us',
+}
