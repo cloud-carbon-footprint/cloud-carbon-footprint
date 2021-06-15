@@ -8,8 +8,7 @@ import moment from 'moment'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import {
-  CarbonComparisonCard,
+import CarbonComparisonCard, {
   toTrees,
   toFlights,
 } from './CarbonComparisonCard'

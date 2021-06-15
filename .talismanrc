@@ -87,6 +87,8 @@ fileignoreconfig:
   checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
 - filename: packages/client/src/dashboard/CarbonComparisonCard.tsx
   checksum: a6d730cbbe92f07d790330601269a7003cab5af635899efb335d9e97df5350f8
+- filename: packages/client/src/dashboard/CarbonComparisonCard/CarbonComparisonCard.tsx
+  checksum: 177d08d7377e169a0c19d3b8604d8e7eefc0435069efb451d6109dfba0e405db
 - filename: packages/client/src/dashboard/CarbonIntensityMap/CarbonIntensityMap.tsx
   checksum: 5a4d16d65565f35442198bc6cc244bc0d4919354f7deb23ae23ea1296da6ed0a
 - filename: packages/client/src/dashboard/CarbonIntensityMap/__snapshots__/CarbonIntensityMap.test.tsx.snap

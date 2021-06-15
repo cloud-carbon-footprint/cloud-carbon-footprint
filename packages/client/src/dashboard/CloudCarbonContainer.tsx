@@ -6,7 +6,8 @@ import React, { ReactElement } from 'react'
 import useRemoteService from './client/RemoteServiceHook'
 import useFilters from './filters/FilterHook'
 import { ApexLineChart } from './charts/ApexLineChart'
-import { CarbonComparisonCard } from './CarbonComparisonCard'
+import CarbonComparisonCard from './CarbonComparisonCard'
+import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import moment, { unitOfTime } from 'moment'
 import MonthFilter from './filters/MonthFilter'
 import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
@@ -14,7 +15,6 @@ import ServiceFilter from './filters/ServiceFilter'
 import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
-import { EmissionsBreakdownContainer } from './charts/EmissionsBreakdownContainer'
 import AccountFilter from './filters/AccountFilter'
 import { useFilterDataFromEstimates } from './transformData'
 import { FilterResultResponse } from '../models/types'
@@ -173,7 +173,7 @@ export default function CloudCarbonContainer(): ReactElement {
                   <CarbonComparisonCard data={filteredData} />
                 </Grid>
                 <Grid item className={classes.gridItemCards}>
-                  <EmissionsBreakdownContainer data={filteredData} />
+                  <EmissionsBreakdownCard data={filteredData} />
                 </Grid>
               </Grid>
             </Grid>

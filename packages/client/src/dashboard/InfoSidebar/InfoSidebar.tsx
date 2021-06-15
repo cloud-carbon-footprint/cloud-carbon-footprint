@@ -86,7 +86,7 @@ const useStyles = makeStyles(
   },
 )
 
-export const CarbonFormulaDrawer: FunctionComponent = () => {
+const InfoSidebar: FunctionComponent = () => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
 
@@ -185,3 +185,5 @@ export const CarbonFormulaDrawer: FunctionComponent = () => {
     </Drawer>
   )
 }
+
+export default InfoSidebar

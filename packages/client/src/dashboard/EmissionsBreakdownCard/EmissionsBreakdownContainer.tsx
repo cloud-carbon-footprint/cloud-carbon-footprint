@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from '../../models/types'
-import { ApexBarChart } from './ApexBarChart'
+import { ApexBarChart } from '../charts/ApexBarChart'
 
 const BootstrapInput = withStyles(() =>
   createStyles({
@@ -65,7 +65,7 @@ const useStyles = makeStyles(() => {
   }
 })
 
-export const EmissionsBreakdownContainer = (props: {
+const EmissionsBreakdownContainer = (props: {
   data: EstimationResult[]
 }): ReactElement => {
   const classes = useStyles()
@@ -104,3 +104,5 @@ export const EmissionsBreakdownContainer = (props: {
     </Card>
   )
 }
+
+export default EmissionsBreakdownContainer

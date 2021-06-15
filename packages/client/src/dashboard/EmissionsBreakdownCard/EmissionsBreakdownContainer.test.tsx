@@ -16,8 +16,8 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import { EmissionsBreakdownContainer } from './EmissionsBreakdownContainer'
-import { ApexBarChart } from './ApexBarChart'
+import EmissionsBreakdownContainer from './'
+import { ApexBarChart } from '../charts/ApexBarChart'
 import { ServiceResult } from '../../models/types'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 import { fakeEmissionFactors } from '../../data/generateEstimations'

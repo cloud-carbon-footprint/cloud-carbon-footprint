@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route } from 'react-router-dom'
 import ErrorPage from './dashboard/ErrorPage'
 import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
-import { CarbonFormulaDrawer } from './dashboard/CarbonFormulaDrawer'
+import InfoSidebar from './dashboard/InfoSidebar'
 import HeaderBar from './dashboard/HeaderBar'
 
 function App(): ReactElement {
@@ -30,7 +30,7 @@ function App(): ReactElement {
             <ErrorPage />
           </Route>
           <Route path="/">
-            <CarbonFormulaDrawer />
+            <InfoSidebar />
             <CloudCarbonContainer />
           </Route>
         </Switch>
