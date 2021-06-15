@@ -501,6 +501,18 @@ export default class CostAndUsageReports {
         if (usageType.includes('RRS'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_REDUCED_REDUNDANCY // 3
         return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3 // 2
+      case 'AmazonEC2':
+        if (usageType.includes('EBS') && !usageType.includes('SnapshotUsage'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EC2_EBS_VOLUME // 2
+        break
+      case 'AmazonEFS':
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS // 2
+      case 'AmazonRDS':
+        if (usageType.includes('Aurora'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_AURORA // 6
+        if (usageType.includes('Multi-AZ'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_MULTI_AZ // 2
+        break
     }
   }
 

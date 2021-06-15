@@ -33,6 +33,7 @@ import {
   athenaMockGetQueryResultsNetworking,
   athenaMockGetQueryResultsMemory,
   athenaMockGetQueryResultsS3WithReplicationFactors,
+  athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
@@ -173,8 +174,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-29'),
         serviceEstimates: [
           {
-            kilowattHours: 0.0030399840000000003,
-            co2e: 0.0000012638885479200001,
+            kilowattHours: 0.006079968000000001,
+            co2e: 0.0000025277770958400002,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -799,6 +800,74 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonS3',
             usesAverageCPUConstant: false,
             kilowattHours: 0.00009356808595602,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for EC2, RDS and EFS with replication factors', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(
+      athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors,
+    )
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-01-01'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000034337982056187456,
+            cost: 10,
+            region: 'ap-south-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.048499974655632,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 4.1057135342038235e-21,
+            cost: 5,
+            region: 'eu-west-1',
+            serviceName: 'AmazonEFS',
+            usesAverageCPUConstant: false,
+            kilowattHours: 1.2992764348746279e-17,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000017125243198903984,
+            cost: 7,
+            region: 'eu-central-1',
+            serviceName: 'AmazonRDS',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.05066639999675736,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 1.048436818829637e-8,
+            cost: 10,
+            region: 'ap-south-1',
+            serviceName: 'AmazonRDS',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000014808429644486398,
           },
         ],
       },

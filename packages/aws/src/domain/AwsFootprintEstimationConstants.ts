@@ -109,6 +109,10 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     S3_GLACIER: 2,
     S3_GLACIER_DEEP_ARCHIVE: 3,
     S3_REDUCED_REDUNDANCY: 2,
+    EC2_EBS_VOLUME: 2,
+    EFS: 2,
+    RDS_AURORA: 6,
+    RDS_MULTI_AZ: 2,
   },
 }
 

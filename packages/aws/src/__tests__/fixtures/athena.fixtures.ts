@@ -766,3 +766,65 @@ export const athenaMockGetQueryResultsS3WithReplicationFactors: Athena.GetQueryR
       Rows: [queryResultsHeaders, ...queryResultsDataTen],
     },
   }
+
+const queryResultsDataEleven = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'ap-south-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APS3-EBS:VolumeUsage.gp2' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '23.9310345' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AmazonEFS' },
+      { VarCharValue: 'EU-TimedStorage-ByteHrs' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.0052443816' },
+      { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-central-1' },
+      { VarCharValue: 'AmazonRDS' },
+      { VarCharValue: 'EUC1-RDS:Multi-AZ-GP2-Storage' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '24.9999999984' },
+      { VarCharValue: '7' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'ap-south-1' },
+      { VarCharValue: 'AmazonRDS' },
+      { VarCharValue: 'APS3-Aurora:StorageUsage' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.0044965104' },
+      { VarCharValue: '10' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataEleven],
+    },
+  }
