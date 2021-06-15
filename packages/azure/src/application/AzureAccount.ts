@@ -26,12 +26,12 @@ import { AZURE_CLOUD_CONSTANTS } from '../domain'
 export default class AzureAccount extends CloudProviderAccount {
   private credentials: ApplicationTokenCredentials | ServiceClientCredentials
   private subscriptionClient: SubscriptionClient
-  private logger: Logger;
+  private logger: Logger
 
   constructor() {
     super()
 
-    this.logger = new Logger('AzureAccount');
+    this.logger = new Logger('AzureAccount')
   }
 
   public async initializeAccount(): Promise<void> {
@@ -50,8 +50,10 @@ export default class AzureAccount extends CloudProviderAccount {
     const subscriptions = await this.subscriptionClient.subscriptions.list()
 
     if (subscriptions.length === 0) {
-      this.logger.warn("No subscription returned for these Azure credentials, be sure the registered application has " +
-          "enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.")
+      this.logger.warn(
+        'No subscription returned for these Azure credentials, be sure the registered application has ' +
+          'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
+      )
     }
 
     const estimationResults = await Promise.all(
