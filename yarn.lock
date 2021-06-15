@@ -2299,6 +2299,7 @@ __metadata:
     "@types/node": ^15.3.1
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
+    dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
