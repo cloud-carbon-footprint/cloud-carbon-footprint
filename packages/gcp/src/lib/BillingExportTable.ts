@@ -46,6 +46,7 @@ import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
+import { GCP_DUAL_REGIONS, GCP_MULTI_REGIONS } from './GCPRegions'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -208,10 +209,7 @@ export default class BillingExportTable {
     }
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        usageRow.usageType,
-        usageRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(usageRow),
     }
     if (usageRow.usageType.includes('SSD')) {
       return {
@@ -415,35 +413,45 @@ export default class BillingExportTable {
     return usageAmount / 1073741824 / 3600
   }
 
-  private getReplicationFactor(usageType: string, serviceName: string): number {
-    switch (serviceName) {
+  private getReplicationFactor(usageRow: BillingExportRow): number {
+    switch (usageRow.serviceName) {
       case 'Cloud Storage':
-        if (usageType.includes('Dual-region'))
+        if (usageRow.usageType.includes('Dual-region'))
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .CLOUD_STORAGE_DUAL_REGION // 4
-        if (usageType.includes('Multi-region')) {
+        if (usageRow.usageType.includes('Multi-region')) {
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .CLOUD_STORAGE_MULTI_REGION // 6
         }
         return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
           .CLOUD_STORAGE_SINGLE_REGION // 2
       case 'Compute Engine':
-        if (usageType.includes('Regional'))
+        if (usageRow.usageType.includes('Regional'))
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .COMPUTE_ENGINE_REGIONAL_DISKS // 2
+        if (this.containsAny(['Snapshot', 'Image'], usageRow.usageType)) {
+          if (Object.values(<any>GCP_MULTI_REGIONS).includes(usageRow.region))
+            return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+              .CLOUD_STORAGE_MULTI_REGION
+          if (Object.values(<any>GCP_DUAL_REGIONS).includes(usageRow.region))
+            return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+              .CLOUD_STORAGE_DUAL_REGION
+          return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .CLOUD_STORAGE_SINGLE_REGION
+        }
         break
       case 'Cloud Filestore':
         return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS.CLOUD_FILESTORE // 2
       case 'Cloud SQL':
         if (
-          usageType.includes('Regional - Standard storage') ||
-          usageType.includes('HA')
+          usageRow.usageType.includes('Regional - Standard storage') ||
+          usageRow.usageType.includes('HA')
         )
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .CLOUD_SQL_HIGH_AVAILABILITY // 2
         break
       case 'Cloud Memorystore for Redis':
-        if (usageType.includes('Standard'))
+        if (usageRow.usageType.includes('Standard'))
           return GCP_CLOUD_CONSTANTS.REPLICATION_FACTORS
             .CLOUD_MEMORY_STORE_REDIS // 2
         break
