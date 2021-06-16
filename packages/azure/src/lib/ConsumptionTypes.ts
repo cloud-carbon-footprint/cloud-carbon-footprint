@@ -41,8 +41,10 @@ export enum COMPUTE_USAGE_UNITS {
 export enum STORAGE_USAGE_UNITS {
   MONTH_1 = '1 /Month',
   MONTH_100 = '100 /Month',
+  GB_MONTH_1 = '1 GB/Month',
   GB_MONTH_10 = '10 GB/Month',
   GB_MONTH_100 = '100 GB/Month',
+  DAY_10 = '10 /Day',
   DAY_30 = '30 /Day',
   TB_MONTH_1 = '1 TB/Month',
 }
@@ -64,8 +66,10 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'Data Stored',
   'Metadata',
   'Registry Unit',
-  'ZRS Snapshots',
-  'LRS Snapshots',
+  'ZRS',
+  'LRS',
+  'GRS',
+  'GZRS',
   'Data Retention',
 ]
 

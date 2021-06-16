@@ -98,6 +98,17 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     return AZURE_CLOUD_CONSTANTS.PUE_AVG
   },
   AVG_CPU_UTILIZATION_2020: 50,
+  REPLICATION_FACTORS: {
+    STORAGE_LRS: 3,
+    STORAGE_ZRS: 3,
+    STORAGE_GRS: 6,
+    STORAGE_GZRS: 6,
+    STORAGE_DISKS: 3,
+    DATABASE_MYSQL: 3,
+    COSMOS_DB: 4,
+    SQL_DB: 3,
+    REDIS_CACHE: 2,
+  },
 }
 
 export const AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =

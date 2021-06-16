@@ -19,6 +19,8 @@ import {
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
   mockConsumptionManagementResponseFive,
+  mockConsumptionManagementResponseSix,
+  mockConsumptionManagementResponseSeven,
 } from './fixtures/consumptionManagement.fixtures'
 
 import { ConsumptionManagementService } from '../lib'
@@ -134,8 +136,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'US South Central',
           },
           {
-            kilowattHours: 0.06441659999999999,
-            co2e: 0.000026243322839999996,
+            kilowattHours: 0.19324979999999997,
+            co2e: 0.00007872996851999998,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -175,8 +177,8 @@ describe('Azure Consumption Management Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 0.003458304,
-            co2e: 7.88493312e-7,
+            kilowattHours: 0.010374912000000002,
+            co2e: 0.0000023654799360000005,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -185,8 +187,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'UK South',
           },
           {
-            kilowattHours: 0.00013651199999999998,
-            co2e: 5.323967999999999e-8,
+            kilowattHours: 0.000409536,
+            co2e: 1.5971904e-7,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -195,8 +197,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'EU West',
           },
           {
-            kilowattHours: 0.00006825599999999999,
-            co2e: 2.6619839999999995e-8,
+            kilowattHours: 0.000204768,
+            co2e: 7.985952e-8,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -235,8 +237,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'UK South',
           },
           {
-            kilowattHours: 0.00034127999999999996,
-            co2e: 2.4162623999999994e-7,
+            kilowattHours: 0.0010238399999999998,
+            co2e: 7.248787199999998e-7,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountName: 'test-subscription',
@@ -338,12 +340,12 @@ describe('Azure Consumption Management Service', () => {
           {
             accountName: 'test-subscription',
             cloudProvider: 'AZURE',
-            co2e: 0.000009108308160000001,
+            co2e: 0.000018216616320000003,
             cost: 5,
             region: 'AP Southeast',
             serviceName: 'Redis Cache',
             usesAverageCPUConstant: false,
-            kilowattHours: 0.02229696,
+            kilowattHours: 0.04459392,
           },
         ],
       },
@@ -369,6 +371,178 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Container Instances',
             usesAverageCPUConstant: false,
             kilowattHours: 0.0067122042757308,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for Storage services with replication factors', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseSix,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-11-03'),
+        serviceEstimates: [
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 9.5338454664096e-11,
+            cost: 20,
+            region: 'US West',
+            serviceName: 'Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000000271727136,
+          },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 4.95774469834128e-10,
+            cost: 15,
+            region: 'US South Central',
+            serviceName: 'Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.0000012510300960000003,
+          },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 7.003065600000001e-13,
+            cost: 10,
+            region: 'UK South',
+            serviceName: 'Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 3.07152e-9,
+          },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 1.9751656334780162e-9,
+            cost: 5,
+            region: 'US West 2',
+            serviceName: 'Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000005629481856,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-11-04'),
+        serviceEstimates: [
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 0.000002987974656,
+            cost: 2,
+            region: 'UK South',
+            serviceName: 'Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.013105152,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for Database and Cache services with replication factors', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseSeven,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-11-03'),
+        serviceEstimates: [
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 3.1375741947030145e-10,
+            cost: 20,
+            region: 'UK South',
+            serviceName: 'Azure Database for MySQL',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00000137612903276448,
+          },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 0.0000036717462,
+            cost: 45,
+            region: 'UK South',
+            serviceName: 'SQL Database',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.016104149999999998,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-11-04'),
+        serviceEstimates: [
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 0.0000440609544,
+            cost: 30,
+            region: 'UK South',
+            serviceName: 'Azure Database for MySQL',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.19324979999999997,
+          },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 1.386495475056257e-9,
+            cost: 35,
+            region: 'US Central',
+            serviceName: 'Azure Cosmos DB',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.00000293605970619456,
+          },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 1.6315385804115026e-10,
+            cost: 40,
+            region: 'UK South',
+            serviceName: 'SQL Database',
+            usesAverageCPUConstant: false,
+            kilowattHours: 7.155870966717116e-7,
           },
         ],
       },
@@ -531,8 +705,8 @@ describe('Azure Consumption Management Service', () => {
               region: 'US South Central',
             },
             {
-              kilowattHours: 0.06441659999999999,
-              co2e: 0.000026243322839999996,
+              kilowattHours: 0.19324979999999997,
+              co2e: 0.00007872996851999998,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountName: 'test-subscription',

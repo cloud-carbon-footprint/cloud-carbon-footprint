@@ -367,3 +367,131 @@ export const mockConsumptionManagementResponseFive: AzureUsageDetailsResponse[] 
       location: 'UK West',
     },
   ]
+
+export const mockConsumptionManagementResponseSix: AzureUsageDetailsResponse[] =
+  [
+    {
+      usageStart: new Date('2021-11-03'),
+      usageQuantity: 0.002654,
+      pretaxCost: 20,
+      meterDetails: {
+        meterName: 'Hot LRS Data Stored',
+        unit: '100 GB/Month',
+        serviceName: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'US West',
+    },
+    {
+      usageStart: new Date('2021-11-03'),
+      usageQuantity: 0.012219,
+      pretaxCost: 15,
+      meterDetails: {
+        meterName: 'Cool ZRS Data Stored',
+        unit: '1 GB/Month',
+        serviceName: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'US South Central',
+    },
+    {
+      usageStart: new Date('2021-11-03'),
+      usageQuantity: 0.000015,
+      pretaxCost: 10,
+      meterDetails: {
+        meterName: 'RA-GRS Data Stored',
+        unit: '100 GB/Month',
+        serviceName: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'UK South',
+    },
+    {
+      usageStart: new Date('2021-11-03'),
+      usageQuantity: 0.027492,
+      pretaxCost: 5,
+      meterDetails: {
+        meterName: 'Cool RA-GZRS Data Stored',
+        unit: '1 GB/Month',
+        serviceName: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'US West 2',
+    },
+    {
+      usageStart: new Date('2021-11-04'),
+      usageQuantity: 0.2973480663,
+      pretaxCost: 2,
+      meterDetails: {
+        meterName: 'P10 Disks',
+        unit: '100 GB/Month',
+        serviceName: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'UK South',
+    },
+  ]
+
+export const mockConsumptionManagementResponseSeven: AzureUsageDetailsResponse[] =
+  [
+    {
+      usageStart: new Date('2021-11-03'),
+      usageQuantity: 0.01344086022,
+      pretaxCost: 20,
+      meterDetails: {
+        meterName: 'Data Stored',
+        unit: '10 GB/Month',
+        serviceName: 'Azure Database for MySQL',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'UK South',
+    },
+    {
+      usageStart: new Date('2021-11-04'),
+      usageQuantity: 12,
+      pretaxCost: 30,
+      meterDetails: {
+        meterName: '2 vCore',
+        unit: '100 Hours',
+        serviceName: 'Azure Database for MySQL',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'UK South',
+    },
+    {
+      usageStart: new Date('2021-11-04'),
+      usageQuantity: 0.02150770413,
+      pretaxCost: 35,
+      meterDetails: {
+        meterName: 'Data Stored',
+        unit: '10 GB/Month',
+        serviceName: 'Azure Cosmos DB',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'US Central',
+    },
+    {
+      usageStart: new Date('2021-11-04'),
+      usageQuantity: 0.006989247310827,
+      pretaxCost: 40,
+      meterDetails: {
+        meterName: 'Data Stored',
+        unit: '10 GB/Month',
+        serviceName: 'SQL Database',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'UK South',
+    },
+    {
+      usageStart: new Date('2021-11-03'),
+      usageQuantity: 2,
+      pretaxCost: 45,
+      meterDetails: {
+        meterName: 'vCore',
+        unit: '10 Hours',
+        serviceName: 'SQL Database',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'UK South',
+    },
+  ]
