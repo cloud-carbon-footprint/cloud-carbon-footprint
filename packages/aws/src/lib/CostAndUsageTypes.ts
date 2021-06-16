@@ -8,7 +8,6 @@ import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
 export const SSD_SERVICES: string[] = [
   'AmazonDocDB',
   'AmazonDynamoDB',
-  'AmazonECR',
   'AmazonEFS',
   'AmazonES',
   'AmazonSimpleDB',

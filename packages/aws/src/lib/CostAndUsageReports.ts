@@ -502,9 +502,10 @@ export default class CostAndUsageReports {
             usageType,
           )
         )
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_TWO // 2
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .S3_ONE_ZONE_REDUCED_REDUNDANCY // 2
         if (this.includesAny(['TimedStorage', 'EarlyDelete'], usageType))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_THREE // 3
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3 // 3
         break
       case 'AmazonEC2':
         if (usageType.includes('VolumeUsage'))
@@ -514,20 +515,28 @@ export default class CostAndUsageReports {
         break
       case 'AmazonEFS':
         if (usageType.includes('ZIA'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS_TWO
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS_THREE // 2
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS_ONE_ZONE // 2
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS // 3
       case 'AmazonRDS':
         if (usageType.includes('BackupUsage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_BACKUP // 6
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_BACKUP // 3
         if (usageType.includes('Aurora'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_AURORA // 6
         if (usageType.includes('Multi-AZ'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_MULTI_AZ // 2
         break
       case 'AmazonDocDB':
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DOCUMENT_DB // 2
+        if (usageType.includes('BackupUsage'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DOCUMENT_DB_BACKUP // 3
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DOCUMENT_DB_STORAGE // 2
       case 'AmazonDynamoDB':
         return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DYNAMO_DB // 2
+      case 'AmazonECR':
+        if (usageType.includes('TimedStorage'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.ECR_STORAGE // 3
+        break
+      default:
+        return 1
     }
   }
 
