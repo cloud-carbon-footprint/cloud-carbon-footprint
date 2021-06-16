@@ -115,6 +115,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     DOCUMENT_DB_STORAGE: 2,
     DYNAMO_DB: 2,
     ECR_STORAGE: 3,
+    DOCUMENT_ELASTICACHE_BACKUP: 3,
   },
 }
 

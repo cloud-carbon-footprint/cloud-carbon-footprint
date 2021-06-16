@@ -535,6 +535,11 @@ export default class CostAndUsageReports {
         if (usageType.includes('TimedStorage'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.ECR_STORAGE // 3
         break
+      case 'AmazonElastiCache':
+        if (usageType.includes('BackupUsage'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS
+            .DOCUMENT_ELASTICACHE_BACKUP // 3
+        break
       default:
         return 1
     }
