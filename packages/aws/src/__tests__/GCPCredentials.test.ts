@@ -15,6 +15,26 @@ jest.mock('aws-sdk', () => {
   }
 })
 
+const authClientMock = { email: 'test@test.com' }
+const mockToken = 'some-token'
+
+jest.mock('google-auth-library', () => {
+  return {
+    GoogleAuth: jest.fn().mockImplementation(() => ({
+      getClient: jest.fn().mockResolvedValue(authClientMock),
+      getProjectId: jest.fn().mockResolvedValue('test-project.id'),
+    })),
+  }
+})
+
+jest.mock('@google-cloud/iam-credentials', () => {
+  return {
+    IAMCredentialsClient: jest.fn().mockImplementation(() => ({
+      generateIdToken: jest.fn().mockResolvedValue([{ token: mockToken }]),
+    })),
+  }
+})
+
 function mockChainableTemporaryCredentials(
   targetAccessKeyId: string,
   targetSecretAccessKey: string,
@@ -50,7 +70,6 @@ function mockWebIdentityCredentials(
 }
 
 let credentials: any
-let mockedGetTokenId: any
 
 describe('GCPCredentials instance', () => {
   beforeEach(() => {
@@ -58,23 +77,12 @@ describe('GCPCredentials instance', () => {
     const targetRoleSessionName = 'mySessionName'
     const proxyAccountId = '11111'
     const proxyRoleName = 'proxyRoleName'
-    const token = '0000'
     credentials = new GCPCredentials(
       accountId,
       targetRoleSessionName,
       proxyAccountId,
       proxyRoleName,
     )
-
-    mockedGetTokenId = jest
-      .spyOn(credentials, 'getTokenId')
-      .mockImplementation(async () => {
-        return token
-      })
-  })
-
-  afterEach(() => {
-    mockedGetTokenId.mockRestore()
   })
 
   it('should set credentials when calling get()', async () => {
@@ -138,12 +146,11 @@ describe('GCPCredentials instance', () => {
 
     const proxyAccountId = '11111'
     const proxyRoleName = 'proxyRoleName'
-    const token = '0000'
 
     const webOptions = {
       RoleArn: `arn:aws:iam::${proxyAccountId}:role/${proxyRoleName}`,
       RoleSessionName: proxyRoleName,
-      WebIdentityToken: token,
+      WebIdentityToken: mockToken,
     }
 
     //when
@@ -151,6 +158,5 @@ describe('GCPCredentials instance', () => {
 
     //then
     expect(webIdentityCredentials).toHaveBeenCalledWith(webOptions)
-    mockedGetTokenId.mockRestore()
   })
 })
