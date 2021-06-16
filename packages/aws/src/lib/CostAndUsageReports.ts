@@ -496,26 +496,29 @@ export default class CostAndUsageReports {
   private getReplicationFactor(usageType: string, serviceName: string): number {
     switch (serviceName) {
       case 'AmazonS3':
-        if (usageType.includes('STANDARD'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_STANDARD // 3
-        if (usageType.includes('SIA'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_STANDARD_IA // 3
-        if (usageType.includes('INT'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_INTELLIGENT_TIERING // 3
-        if (usageType.includes('GLACIER'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_GLACIER // 3
-        if (usageType.includes('GDA'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_GLACIER_DEEP_ARCHIVE // 3
-        if (usageType.includes('RRS'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_REDUCED_REDUNDANCY // 3
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3 // 2
+        if (
+          this.includesAny(
+            ['TimedStorage-ZIA', 'EarlyDelete-ZIA', 'TimedStorage-RRS'],
+            usageType,
+          )
+        )
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_TWO // 2
+        if (this.includesAny(['TimedStorage', 'EarlyDelete'], usageType))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3_THREE // 3
+        break
       case 'AmazonEC2':
-        if (usageType.includes('EBS') && !usageType.includes('SnapshotUsage'))
+        if (usageType.includes('VolumeUsage'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EC2_EBS_VOLUME // 2
+        if (usageType.includes('SnapshotUsage'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EC2_EBS_SNAPSHOT // 3
         break
       case 'AmazonEFS':
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS // 2
+        if (usageType.includes('ZIA'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS_TWO
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS_THREE // 2
       case 'AmazonRDS':
+        if (usageType.includes('BackupUsage'))
+          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_BACKUP // 6
         if (usageType.includes('Aurora'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_AURORA // 6
         if (usageType.includes('Multi-AZ'))
@@ -526,6 +529,10 @@ export default class CostAndUsageReports {
       case 'AmazonDynamoDB':
         return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DYNAMO_DB // 2
     }
+  }
+
+  private includesAny(substrings: string[], string: string): boolean {
+    return substrings.some((substring) => string.includes(substring))
   }
 
   private endsWithAny(suffixes: string[], string: string): boolean {

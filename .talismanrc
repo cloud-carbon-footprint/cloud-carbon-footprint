@@ -76,7 +76,7 @@ fileignoreconfig:
 - filename: packages/api/estimates.cache.test.json
   checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 1a6d784ac6b3671874c0e66c745dc0eb1bc3bf37f42307a694052e61b3be638e
+  checksum: 13d9fe76704017b7446776fd717b655740a11d74dc833a1a87def97ad075e33e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/azure/package.json

@@ -28,6 +28,7 @@ export const SSD_USAGE_TYPES: string[] = [
   'VolumeUsage.piops', // EBS
   'GP2-Storage', // RDS
   'PIOPS-Storage', // RDS
+  'Aurora:StorageUsage', // RDS Aurora Storage
   'Kafka.Storage.GP2', // Kafka
   'ES:Magnetic-Storage', // ElasticSearch Magnetic Storage
   'TimedPITRStorage-ByteHrs', // DynamoDB Point-In-Time-Recovery
@@ -50,7 +51,6 @@ export const HDD_USAGE_TYPES: string[] = [
   'SnapshotUsage', // Snapshots in S3
   'TimedStorage-ByteHrs', // Many different services
   'RDS:StorageUsage', // RDS HDD Storage
-  'Aurora:StorageUsage', // RDS Aurora Storage
   'GlacierByteHrs', // Glacier
   'Aurora:BackupUsage', // Aurora back up in S3
   'RDS:ChargedBackupUsage', // RDS Backup in S3
@@ -63,6 +63,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'TimedStorage-GlacierStaging', // Glacier Staging
   'TimedStorage-SIA-SmObjects', // S3 STANDARD_IA storage (small)
   'TimedStorage-GDA-ByteHrs', // S3 Glacier Deep Archive storage
+  'TimedStorage-GDA-Staging', // S3 Glacier Deep Archive storage
   'TimedStorage-ZIA-ByteHrs', // S3 ONEZONE_IA storage
   'TimedStorage-INT-FA-ByteHrs', // S3 frequent access tier of INTELLIGENT_TIERING Storage
   'EarlyDelete-GDA', // S3 Glacier Deep Archive storage deleted before the minimum 180-day commitment ended
