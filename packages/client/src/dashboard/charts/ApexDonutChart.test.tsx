@@ -15,9 +15,9 @@ import {
 import { ServiceResult } from '../../models/types'
 import { ApexBarChart, Entry } from '../EmissionsBreakdownCard/ApexBarChart'
 import { Page, Pagination } from './Pagination'
-import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+import { useRemoteEmissionService } from '../../utils/hooks'
 
-jest.mock('../client/EmissionFactorServiceHook')
+jest.mock('../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<

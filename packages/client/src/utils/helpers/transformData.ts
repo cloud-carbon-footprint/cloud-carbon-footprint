@@ -9,10 +9,11 @@ import {
   ChartDataTypes,
   FilterResultResponse,
   UnknownTypes,
-} from '../models/types'
+} from '../../models/types'
 import { pluck, uniq } from 'ramda'
 import { useEffect, useState } from 'react'
-import { DropdownOption } from './filters/DropdownFilter'
+import { DropdownOption } from '../../dashboard/filters/DropdownFilter'
+
 const sumServiceTotals = (
   data: EstimationResult[],
 ): { [key: string]: cloudEstPerDay[] } => {

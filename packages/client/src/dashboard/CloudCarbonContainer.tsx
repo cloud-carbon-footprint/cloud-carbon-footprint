@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement } from 'react'
-import useRemoteService from './client/RemoteServiceHook'
+import { useRemoteService } from '../utils/hooks'
 import useFilters from './filters/FilterHook'
 import { ApexLineChart } from './charts/ApexLineChart'
 import CarbonIntensityMap from './CarbonIntensityMap'
@@ -17,9 +17,9 @@ import CloudProviderFilter from './filters/CloudProviderFilter'
 import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import AccountFilter from './filters/AccountFilter'
-import { useFilterDataFromEstimates } from './transformData'
+import { useFilterDataFromEstimates } from '../utils/helpers'
 import { FilterResultResponse } from '../models/types'
-import NoDataPage from './NoDataPage'
+import NoDataMessage from '../common/NoDataMessage'
 import config from '../ConfigLoader'
 
 const PADDING_FILTER = 0.5
@@ -153,7 +153,7 @@ export default function CloudCarbonContainer(): ReactElement {
                   ) : (
                     <div className={classes.noData}>
                       <p>Cloud Usage</p>
-                      <NoDataPage isTop={true} />
+                      <NoDataMessage isTop={true} />
                     </div>
                   )}
                 </Box>

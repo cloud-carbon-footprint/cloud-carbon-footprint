@@ -15,10 +15,10 @@ import {
 import { ServiceResult } from '../../models/types'
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
 import { Page, Pagination } from '../charts/Pagination'
-import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+import { useRemoteEmissionService } from '../../utils/hooks'
 import { fakeEmissionFactors } from '../../data/generateEstimations'
 
-jest.mock('../client/EmissionFactorServiceHook')
+jest.mock('../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<

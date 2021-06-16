@@ -6,10 +6,10 @@ import React, { ReactElement } from 'react'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route } from 'react-router-dom'
-import ErrorPage from './dashboard/ErrorPage'
+import ErrorPage from './layout/ErrorPage'
 import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
-import InfoSidebar from './dashboard/InfoSidebar'
-import HeaderBar from './dashboard/HeaderBar'
+import InfoSidebar from './layout/InfoSidebar'
+import HeaderBar from './layout/HeaderBar'
 
 function App(): ReactElement {
   const useStyles = makeStyles(() => ({

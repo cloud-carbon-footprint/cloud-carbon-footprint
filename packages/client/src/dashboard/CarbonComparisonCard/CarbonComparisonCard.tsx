@@ -18,9 +18,9 @@ import {
   Eco,
   OpenInNew,
 } from '@material-ui/icons'
-import { sumCO2 } from '../transformData'
+import { sumCO2 } from '../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import NoDataPage from '../NoDataPage'
+import NoDataMessage from '../../common/NoDataMessage'
 
 type Selection = 'flights' | 'phones' | 'trees'
 
@@ -266,7 +266,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
           </Typography>
         </CardContent>
         <div className={classes.noData}>
-          <NoDataPage isTop={false} />
+          <NoDataMessage isTop={false} />
         </div>
       </div>
     </Card>

@@ -11,16 +11,15 @@ import generateEstimations, {
 import moment from 'moment'
 
 import App from './App'
-import useRemoteService from './dashboard/client/RemoteServiceHook'
-import useRemoteEmissionService from './dashboard/client/EmissionFactorServiceHook'
+import { useRemoteService, useRemoteEmissionService } from './utils/hooks'
 import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from './models/types'
 
-jest.mock('./dashboard/client/RemoteServiceHook')
-jest.mock('./dashboard/client/EmissionFactorServiceHook')
+jest.mock('./utils/hooks/RemoteServiceHook')
+jest.mock('./utils/hooks/EmissionFactorServiceHook')
 jest.mock('./themes')
 jest.mock('apexcharts', () => ({
   exec: jest.fn(() => {

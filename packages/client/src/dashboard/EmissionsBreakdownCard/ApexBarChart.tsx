@@ -7,13 +7,13 @@ import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
-import { sumCO2ByServiceOrRegion } from '../transformData'
+import { sumCO2ByServiceOrRegion } from '../../utils/helpers'
 import { ApexChartProps } from '../charts/common/ChartTypes'
 import { chartBarCustomColors } from '../../models/types'
 import { Page, Pagination } from '../charts/Pagination'
 import ChartLegend from '../charts/ChartLegend'
-import NoDataPage from '../NoDataPage'
-import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
+import NoDataMessage from '../../common/NoDataMessage'
+import useRemoteEmissionService from '../../utils/hooks/EmissionFactorServiceHook'
 
 const mapToRange = (
   value: number,
@@ -232,7 +232,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
           </div>
         </Fragment>
       ) : (
-        <NoDataPage isTop={false} />
+        <NoDataMessage isTop={false} />
       )}
     </div>
   )

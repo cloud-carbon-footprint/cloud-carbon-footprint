@@ -6,10 +6,10 @@ import React, { ReactElement } from 'react'
 import { Box, Card, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import shruggingCloud from '../V1Shrugging-cloud-icon.svg'
-import emptyStateIcon from '../V1Empty-state-generic-icon.svg'
+import shruggingCloud from './V1Shrugging-cloud-icon.svg'
+import emptyStateIcon from './V1Empty-state-generic-icon.svg'
 
-const NoDataPage = (props: { isTop: boolean }): ReactElement => {
+const NoDataMessage = (props: { isTop: boolean }): ReactElement => {
   const useStyles = makeStyles((theme) => {
     return {
       root: {
@@ -36,7 +36,7 @@ const NoDataPage = (props: { isTop: boolean }): ReactElement => {
   const classes = useStyles()
   return (
     <Card className={classes.root}>
-      <Box data-testid="no-data-page">
+      <Box data-testid="no-data-message">
         <Grid container>
           <Grid item xs={12}>
             {props.isTop ? (
@@ -60,4 +60,4 @@ const NoDataPage = (props: { isTop: boolean }): ReactElement => {
   )
 }
 
-export default NoDataPage
+export default NoDataMessage

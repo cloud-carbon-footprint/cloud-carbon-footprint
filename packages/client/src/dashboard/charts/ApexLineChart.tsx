@@ -9,7 +9,7 @@ import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
 import { CustomTooltip } from './CustomTooltip'
 
 import { getChartColors } from '../../themes'
-import { sumServiceTotals, getMaxOfDataSeries } from '../transformData'
+import { sumServiceTotals, getMaxOfDataSeries } from '../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import Chart from 'react-apexcharts'
 import ApexCharts from 'apexcharts'

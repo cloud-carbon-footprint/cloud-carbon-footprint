@@ -12,15 +12,14 @@ import {
 } from '@cloud-carbon-footprint/common'
 
 import CloudCarbonContainer from './CloudCarbonContainer'
-import useRemoteService from './client/RemoteServiceHook'
+import { useRemoteService, useRemoteEmissionService } from '../utils/hooks'
 import generateEstimations, {
   fakeEmissionFactors,
 } from '../data/generateEstimations'
 import { ServiceResult } from '../models/types'
-import useRemoteEmissionService from './client/EmissionFactorServiceHook'
 
-jest.mock('./client/RemoteServiceHook')
-jest.mock('./client/EmissionFactorServiceHook')
+jest.mock('../utils/hooks/RemoteServiceHook')
+jest.mock('../utils/hooks/EmissionFactorServiceHook')
 jest.mock('../themes')
 jest.mock('apexcharts', () => ({
   exec: jest.fn(() => {
