@@ -18,11 +18,13 @@ const ENERGY_ESTIMATION_FORMULA = (
   minWatts: number,
   maxWatts: number,
   powerUsageEffectiveness: number,
+  replicationFactor = 1,
 ) => {
   return (
     ((minWatts + (averageCPUUtilization / 100) * (maxWatts - minWatts)) *
       virtualCPUHours *
-      powerUsageEffectiveness) /
+      powerUsageEffectiveness *
+      replicationFactor) /
     1000
   )
 }
@@ -41,6 +43,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
         constants.minWatts,
         constants.maxWatts,
         constants.powerUsageEffectiveness,
+        constants.replicationFactor,
       )
 
       const estimatedCO2Emissions = estimateCo2(

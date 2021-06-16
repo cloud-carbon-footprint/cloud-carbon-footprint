@@ -113,6 +113,9 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     EFS: 2,
     RDS_AURORA: 6,
     RDS_MULTI_AZ: 2,
+    DOCUMENT_DB: 2,
+    DYNAMO_DB: 2,
+    SIMPLE_DB: 2,
   },
 }
 

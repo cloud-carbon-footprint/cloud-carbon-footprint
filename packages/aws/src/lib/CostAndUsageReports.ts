@@ -287,6 +287,10 @@ export default class CostAndUsageReports {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(
+        costAndUsageReportRow.usageType,
+        costAndUsageReportRow.serviceName,
+      ),
     }
 
     return this.computeEstimator.estimate(
@@ -309,6 +313,10 @@ export default class CostAndUsageReports {
     }
     const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(
+        costAndUsageReportRow.usageType,
+        costAndUsageReportRow.serviceName,
+      ),
     }
 
     return this.memoryEstimator.estimate(
@@ -513,6 +521,10 @@ export default class CostAndUsageReports {
         if (usageType.includes('Multi-AZ'))
           return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_MULTI_AZ // 2
         break
+      case 'AmazonDocDB':
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DOCUMENT_DB // 2
+      case 'AmazonDynamoDB':
+        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DYNAMO_DB // 2
     }
   }
 

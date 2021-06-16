@@ -820,11 +820,73 @@ const queryResultsDataEleven = [
       { VarCharValue: '10' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonRDS' },
+      { VarCharValue: 'Multi-AZUsage:db.m4.large' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '2' },
+      { VarCharValue: '24.0' },
+      { VarCharValue: '20' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataEleven],
+    },
+  }
+
+const queryResultsDataTwelve = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'ap-south-1' },
+      { VarCharValue: 'AmazonDocDB' },
+      { VarCharValue: 'APS3-StorageUsage' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.00508608' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'ap-southeast-1' },
+      { VarCharValue: 'AmazonDocDB' },
+      { VarCharValue: 'APS1-InstanceUsage:db.r5.large' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '2' },
+      { VarCharValue: '2.018888' },
+      { VarCharValue: '6' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonDynamoDB' },
+      { VarCharValue: 'TimedStorage-ByteHrs' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '0.0000142996' },
+      { VarCharValue: '5' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsDatabasesWithReplicationFactors: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataTwelve],
     },
   }

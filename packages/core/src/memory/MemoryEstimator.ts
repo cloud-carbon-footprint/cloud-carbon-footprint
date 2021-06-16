@@ -28,6 +28,7 @@ export default class MemoryEstimator implements IFootprintEstimator {
       const estimatedKilowattHours = this.estimateKilowattHours(
         data.gigabyteHours,
         constants.powerUsageEffectiveness,
+        constants.replicationFactor,
       )
       const estimatedCO2Emissions = estimateCo2(
         estimatedKilowattHours,
@@ -44,9 +45,15 @@ export default class MemoryEstimator implements IFootprintEstimator {
   private estimateKilowattHours(
     gigabyteHours: number,
     powerUsageEffectiveness: number,
+    replicationFactor = 1,
   ) {
     // This function multiplies the usage amount in gigabyte hours by the memory coefficient then the cloud provider PUE,
     // to get estimated kilowatt hours.
-    return gigabyteHours * this.coefficient * powerUsageEffectiveness
+    return (
+      gigabyteHours *
+      this.coefficient *
+      powerUsageEffectiveness *
+      replicationFactor
+    )
   }
 }

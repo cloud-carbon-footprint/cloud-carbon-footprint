@@ -34,6 +34,7 @@ import {
   athenaMockGetQueryResultsMemory,
   athenaMockGetQueryResultsS3WithReplicationFactors,
   athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors,
+  athenaMockGetQueryResultsDatabasesWithReplicationFactors,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
@@ -329,8 +330,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-31'),
         serviceEstimates: [
           {
-            kilowattHours: 0.000006709797162329778,
-            co2e: 2.3542061421721883e-9,
+            kilowattHours: 0.000013419594324659556,
+            co2e: 4.708412284344377e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
             accountName: '123456789',
@@ -491,22 +492,22 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00005632924239075,
+            co2e: 0.0001126584847815,
             cost: 10,
             region: 'us-west-1',
             serviceName: 'AmazonDocDB',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.16054575,
+            kilowattHours: 0.3210915,
           },
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00003536492535383826,
+            co2e: 0.00007072985070767652,
             cost: 5,
             region: 'us-west-2',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.10079468893333332,
+            kilowattHours: 0.20158937786666664,
           },
           {
             accountName: '123456789',
@@ -600,12 +601,12 @@ describe('CostAndUsageReports Service', () => {
           {
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.0000072158774982,
+            co2e: 0.0000432952649892,
             cost: 15,
             region: 'us-west-1',
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.0205662,
+            kilowattHours: 0.1233972,
           },
         ],
       },
@@ -868,6 +869,74 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonRDS',
             usesAverageCPUConstant: false,
             kilowattHours: 0.000014808429644486398,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.00017233986726103502,
+            cost: 20,
+            region: 'us-east-1',
+            serviceName: 'AmazonRDS',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.414522657,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for DocumentDB and DynamoDB with replication factors', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(
+      athenaMockGetQueryResultsDatabasesWithReplicationFactors,
+    )
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-01-01'),
+        serviceEstimates: [
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 7.297876060323839e-9,
+            cost: 10,
+            region: 'ap-south-1',
+            serviceName: 'AmazonDocDB',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000010307734548479999,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0000088269738866314,
+            cost: 6,
+            region: 'ap-southeast-1',
+            serviceName: 'AmazonDocDB',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.0216082592084,
+          },
+          {
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 1.4728843470358698e-23,
+            cost: 5,
+            region: 'us-east-1',
+            serviceName: 'AmazonDynamoDB',
+            usesAverageCPUConstant: false,
+            kilowattHours: 3.5426738031674176e-20,
           },
         ],
       },
