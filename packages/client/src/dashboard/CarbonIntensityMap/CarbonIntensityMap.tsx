@@ -22,7 +22,7 @@ type IntensityMaps = {
   [provider in CloudProvider]: React.ReactNode
 }
 
-export const CarbonIntensityMap = (): ReactElement => {
+const CarbonIntensityMap = (): ReactElement => {
   const [cloudProvider, setCloudProvider] = useState('AWS')
   const classes = useStyles()
 
@@ -64,3 +64,5 @@ export const CarbonIntensityMap = (): ReactElement => {
     </Card>
   )
 }
+
+export default CarbonIntensityMap

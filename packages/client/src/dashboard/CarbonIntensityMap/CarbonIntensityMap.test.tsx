@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { CarbonIntensityMap } from './CarbonIntensityMap'
+import CarbonIntensityMap from './CarbonIntensityMap'
 import { fireEvent, render, within } from '@testing-library/react'
 import { create } from 'react-test-renderer'
 

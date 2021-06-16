@@ -6,6 +6,7 @@ import React, { ReactElement } from 'react'
 import useRemoteService from './client/RemoteServiceHook'
 import useFilters from './filters/FilterHook'
 import { ApexLineChart } from './charts/ApexLineChart'
+import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import moment, { unitOfTime } from 'moment'
@@ -20,7 +21,6 @@ import { useFilterDataFromEstimates } from './transformData'
 import { FilterResultResponse } from '../models/types'
 import NoDataPage from './NoDataPage'
 import config from '../ConfigLoader'
-import { CarbonIntensityMap } from './CarbonIntensityMap/CarbonIntensityMap'
 
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
