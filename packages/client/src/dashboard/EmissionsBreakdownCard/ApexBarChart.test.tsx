@@ -14,7 +14,7 @@ import {
 
 import { ServiceResult } from '../../models/types'
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
-import { Page, Pagination } from './Pagination'
+import { Page, Pagination } from '../charts/Pagination'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 import { fakeEmissionFactors } from '../../data/generateEstimations'
 

@@ -8,10 +8,10 @@ import Chart from 'react-apexcharts'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
 import { sumCO2ByServiceOrRegion } from '../transformData'
-import { ApexChartProps } from './common/ChartTypes'
+import { ApexChartProps } from '../charts/common/ChartTypes'
 import { chartBarCustomColors } from '../../models/types'
-import { Page, Pagination } from './Pagination'
-import ChartLegend from './ChartLegend'
+import { Page, Pagination } from '../charts/Pagination'
+import ChartLegend from '../charts/ChartLegend'
 import NoDataPage from '../NoDataPage'
 import useRemoteEmissionService from '../client/EmissionFactorServiceHook'
 
