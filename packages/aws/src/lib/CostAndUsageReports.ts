@@ -58,6 +58,7 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
+import { AWS_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
@@ -238,10 +239,7 @@ export default class CostAndUsageReports {
 
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        costAndUsageReportRow.usageType,
-        costAndUsageReportRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
     }
 
     let estimate: FootprintEstimate
@@ -287,10 +285,7 @@ export default class CostAndUsageReports {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        costAndUsageReportRow.usageType,
-        costAndUsageReportRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
     }
 
     return this.computeEstimator.estimate(
@@ -313,10 +308,7 @@ export default class CostAndUsageReports {
     }
     const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        costAndUsageReportRow.usageType,
-        costAndUsageReportRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
     }
 
     return this.memoryEstimator.estimate(
@@ -493,55 +485,14 @@ export default class CostAndUsageReports {
     )
   }
 
-  private getReplicationFactor(usageType: string, serviceName: string): number {
-    switch (serviceName) {
-      case 'AmazonS3':
-        if (
-          this.includesAny(
-            ['TimedStorage-ZIA', 'EarlyDelete-ZIA', 'TimedStorage-RRS'],
-            usageType,
-          )
-        )
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS
-            .S3_ONE_ZONE_REDUCED_REDUNDANCY // 2
-        if (this.includesAny(['TimedStorage', 'EarlyDelete'], usageType))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.S3 // 3
-        break
-      case 'AmazonEC2':
-        if (usageType.includes('VolumeUsage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EC2_EBS_VOLUME // 2
-        if (usageType.includes('SnapshotUsage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EC2_EBS_SNAPSHOT // 3
-        break
-      case 'AmazonEFS':
-        if (usageType.includes('ZIA'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS_ONE_ZONE // 2
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.EFS // 3
-      case 'AmazonRDS':
-        if (usageType.includes('BackupUsage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_BACKUP // 3
-        if (usageType.includes('Aurora'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_AURORA // 6
-        if (usageType.includes('Multi-AZ'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.RDS_MULTI_AZ // 2
-        break
-      case 'AmazonDocDB':
-        if (usageType.includes('BackupUsage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DOCUMENT_DB_BACKUP // 3
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DOCUMENT_DB_STORAGE // 2
-      case 'AmazonDynamoDB':
-        return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.DYNAMO_DB // 2
-      case 'AmazonECR':
-        if (usageType.includes('TimedStorage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS.ECR_STORAGE // 3
-        break
-      case 'AmazonElastiCache':
-        if (usageType.includes('BackupUsage'))
-          return AWS_CLOUD_CONSTANTS.REPLICATION_FACTORS
-            .DOCUMENT_ELASTICACHE_BACKUP // 3
-        break
-      default:
-        return 1
+  private getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
+    try {
+      return AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+        usageRow.usageType,
+        usageRow.region,
+      )
+    } catch (err) {
+      return 1
     }
   }
 

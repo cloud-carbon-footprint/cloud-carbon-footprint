@@ -46,7 +46,7 @@ import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import { REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
+import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -415,7 +415,7 @@ export default class BillingExportTable {
 
   private getReplicationFactor(usageRow: BillingExportRow): number {
     try {
-      return REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+      return GCP_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
         usageRow.usageType,
         usageRow.region,
       )

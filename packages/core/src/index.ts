@@ -12,6 +12,7 @@ export {
   default as CloudConstants,
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
+  ReplicationFactorsForService,
 } from './CloudConstantsTypes'
 export { US_NERC_REGIONS_EMISSIONS_FACTORS } from './FootprintEstimationConstants'
 export { default as UsageData } from './IUsageData'

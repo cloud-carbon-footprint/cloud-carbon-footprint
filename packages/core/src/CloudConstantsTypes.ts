@@ -36,3 +36,7 @@ export type CloudConstantsByProvider = {
 export type CloudConstantsEmissionsFactors = {
   [region: string]: number
 }
+
+export type ReplicationFactorsForService = {
+  [key: string]: (usageType?: string, region?: string) => number
+}

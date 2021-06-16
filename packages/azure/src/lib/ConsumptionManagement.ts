@@ -55,6 +55,8 @@ import {
   TenantHeaders,
 } from './ConsumptionTypes'
 
+import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
+
 import {
   AZURE_CLOUD_CONSTANTS,
   AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
@@ -311,10 +313,7 @@ export default class ConsumptionManagementService {
 
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        consumptionDetailRow.usageType,
-        consumptionDetailRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
 
     let estimate: FootprintEstimate
@@ -360,10 +359,7 @@ export default class ConsumptionManagementService {
       minWatts: this.getMinwatts(computeProcessors),
       maxWatts: this.getMaxwatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        consumptionDetailRow.usageType,
-        consumptionDetailRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
 
     return this.computeEstimator.estimate(
@@ -386,10 +382,7 @@ export default class ConsumptionManagementService {
 
     const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(
-        consumptionDetailRow.usageType,
-        consumptionDetailRow.serviceName,
-      ),
+      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
 
     const memoryEstimate = this.memoryEstimator.estimate(
@@ -646,32 +639,14 @@ export default class ConsumptionManagementService {
     return AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
   }
 
-  private getReplicationFactor(usageType: string, serviceName: string): number {
-    switch (serviceName) {
-      case 'Storage':
-        if (usageType.includes('LRS'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.STORAGE_LRS
-        if (usageType.includes('GZRS'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.STORAGE_GZRS
-        if (usageType.includes('ZRS'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.STORAGE_ZRS
-        if (usageType.includes('GRS'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.STORAGE_GRS
-        if (usageType.includes('Disks'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.STORAGE_DISKS
-        break
-      case 'Azure Database for MySQL':
-        return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.DATABASE_MYSQL
-      case 'Azure Cosmos DB':
-        if (usageType.includes('Data Stored'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.COSMOS_DB
-        break
-      case 'SQL Database':
-        if (usageType.includes('Data Stored') || usageType.includes('vCore'))
-          return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.SQL_DB
-        break
-      case 'Redis Cache':
-        return AZURE_CLOUD_CONSTANTS.REPLICATION_FACTORS.REDIS_CACHE
+  private getReplicationFactor(usageRow: ConsumptionDetailRow): number {
+    try {
+      return AZURE_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+        usageRow.usageType,
+        usageRow.region,
+      )
+    } catch (err) {
+      return 1
     }
   }
 }
