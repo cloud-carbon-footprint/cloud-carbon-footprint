@@ -15,6 +15,7 @@ describe('StorageEstimator', () => {
   }
   const awsConstants = {
     powerUsageEffectiveness: 1.135,
+    replicationFactor: 1,
   }
 
   describe('estimating a single SSD result', () => {
@@ -117,7 +118,7 @@ describe('StorageEstimator', () => {
 
     it('provides one result for each HDD input', () => {
       const estimator: StorageEstimator = new StorageEstimator(HDD_COEFFICIENT)
-
+      awsConstants.replicationFactor = 2
       const results = estimator.estimate(
         [
           {
@@ -136,14 +137,14 @@ describe('StorageEstimator', () => {
 
       expect(results).toEqual([
         {
-          co2e: 3.0672325125e-7,
+          co2e: 0.0000006134465025,
           timestamp: new Date('2008-01-01T00:00:00.000Z'),
-          kilowattHours: 0.00073775,
+          kilowattHours: 0.0014755,
         },
         {
-          co2e: 6.134465025e-7,
+          co2e: 0.000001226893005,
           timestamp: new Date('1998-01-01T00:00:00.000Z'),
-          kilowattHours: 0.0014755,
+          kilowattHours: 0.002951,
         },
       ])
     })

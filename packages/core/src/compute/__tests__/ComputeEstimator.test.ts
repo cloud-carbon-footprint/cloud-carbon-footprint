@@ -9,6 +9,7 @@ describe('ComputeEstimator', () => {
     powerUsageEffectiveness: 1.135,
     minWatts: 0.71,
     maxWatts: 3.46,
+    replicationFactor: 2,
   }
   it('do estimates for AWS US East 1 region', () => {
     const input = [
@@ -32,9 +33,9 @@ describe('ComputeEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 3.4801291968749996e-7,
+        co2e: 6.960258393749999e-7,
         timestamp: new Date('2020-01-01T00:00:00.000Z'),
-        kilowattHours: 0.0008370624999999999,
+        kilowattHours: 0.0016741249999999998,
         usesAverageCPUConstant: false,
       },
     ])
@@ -53,6 +54,7 @@ describe('ComputeEstimator', () => {
     const awsEmissionsFactors = {
       [awsAfSouth1Region]: 0.000928,
     }
+    awsConstants.replicationFactor = 1
     const result = new ComputeEstimator().estimate(
       input,
       awsAfSouth1Region,

@@ -19,6 +19,7 @@ describe('MemoryEstimator', () => {
     }
     const gcpConstants = {
       powerUsageEffectiveness: 1.11,
+      replicationFactor: 2,
     }
     const result = new MemoryEstimator(memoryCoefficient).estimate(
       input,
@@ -29,9 +30,9 @@ describe('MemoryEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 0.000018758023200000002,
+        co2e: 0.000037516046400000004,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
-        kilowattHours: 0.0391608,
+        kilowattHours: 0.0783216,
       },
     ])
   })
