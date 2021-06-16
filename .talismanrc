@@ -139,6 +139,8 @@ fileignoreconfig:
   checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
   checksum: 9e02b7704ea5ec465151f5691cf1f9ed25a489a22dd9d2923d334bb45125e470
+- filename: packages/gcp/src/lib/ReplicationFactors.ts
+  checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh
