@@ -1,7 +1,7 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { DropdownOption } from '../dashboard/filters/DropdownFilter'
+import { DropdownOption } from '../../dashboard/filters/DropdownFilter'
 
 export interface ServiceResult<T> {
   data: T[]

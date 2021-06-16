@@ -12,11 +12,11 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import { ServiceResult } from '../../models/types'
+import { ServiceResult } from '../../utils/models/types'
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
 import { Page, Pagination } from '../charts/Pagination'
 import { useRemoteEmissionService } from '../../utils/hooks'
-import { fakeEmissionFactors } from '../../data/generateEstimations'
+import { fakeEmissionFactors } from '../../utils/data'
 
 jest.mock('../../utils/hooks/EmissionFactorServiceHook')
 

@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import generateEstimations from './generateEstimations'
 import moment from 'moment'
+import { generateEstimations } from './generateEstimations'
 
 describe('generateEstimations', () => {
   test('should generate data up to one month prior', () => {

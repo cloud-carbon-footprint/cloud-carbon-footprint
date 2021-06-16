@@ -18,7 +18,7 @@ import DateFilter from './filters/DateFilter'
 import { makeStyles } from '@material-ui/core/styles'
 import AccountFilter from './filters/AccountFilter'
 import { useFilterDataFromEstimates } from '../utils/helpers'
-import { FilterResultResponse } from '../models/types'
+import { FilterResultResponse } from '../utils/models/types'
 import NoDataMessage from '../common/NoDataMessage'
 import config from '../ConfigLoader'
 

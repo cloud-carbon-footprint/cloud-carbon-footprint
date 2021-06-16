@@ -13,10 +13,8 @@ import {
 
 import CloudCarbonContainer from './CloudCarbonContainer'
 import { useRemoteService, useRemoteEmissionService } from '../utils/hooks'
-import generateEstimations, {
-  fakeEmissionFactors,
-} from '../data/generateEstimations'
-import { ServiceResult } from '../models/types'
+import { generateEstimations, fakeEmissionFactors } from '../utils/data'
+import { ServiceResult } from '../utils/models/types'
 
 jest.mock('../utils/hooks/RemoteServiceHook')
 jest.mock('../utils/hooks/EmissionFactorServiceHook')

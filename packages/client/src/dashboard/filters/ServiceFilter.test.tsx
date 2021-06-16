@@ -7,7 +7,7 @@ import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
 import { Filters, filtersConfigGenerator } from './Filters'
-import { FilterResultResponse } from '../../models/types'
+import { FilterResultResponse } from '../../utils/models/types'
 
 jest.mock('./AccountFilter', () => ({
   ACCOUNT_OPTIONS: [

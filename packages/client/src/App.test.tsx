@@ -5,9 +5,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
-import generateEstimations, {
-  fakeEmissionFactors,
-} from './data/generateEstimations'
+import { generateEstimations, fakeEmissionFactors } from './utils/data'
 import moment from 'moment'
 
 import App from './App'
@@ -16,7 +14,7 @@ import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from './models/types'
+import { ServiceResult } from './utils/models/types'
 
 jest.mock('./utils/hooks/RemoteServiceHook')
 jest.mock('./utils/hooks/EmissionFactorServiceHook')

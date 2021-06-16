@@ -18,9 +18,9 @@ import {
 
 import EmissionsBreakdownContainer from './EmissionsBreakdownContainer'
 import { ApexBarChart } from './ApexBarChart'
-import { ServiceResult } from '../../models/types'
+import { ServiceResult } from '../../utils/models/types'
 import { useRemoteEmissionService } from '../../utils/hooks'
-import { fakeEmissionFactors } from '../../data/generateEstimations'
+import { fakeEmissionFactors } from '../../utils/data'
 
 jest.mock('../../themes')
 jest.mock('../../utils/hooks/EmissionFactorServiceHook')

@@ -102,7 +102,7 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
   }
 }
 
-export const fakeEmissionFactors: EmissionRatioResult[] = [
+const fakeEmissionFactors: EmissionRatioResult[] = [
   {
     region: 'us-west-1',
     mtPerKwHour: 0.000645,
@@ -166,4 +166,4 @@ const generateEstimations = (
   return estimationResults
 }
 
-export default generateEstimations
+export { fakeEmissionFactors, generateEstimations }

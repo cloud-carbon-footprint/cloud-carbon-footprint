@@ -9,7 +9,7 @@ import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
 import { sumCO2ByServiceOrRegion } from '../../utils/helpers'
 import { ApexChartProps } from '../charts/common/ChartTypes'
-import { chartBarCustomColors } from '../../models/types'
+import { chartBarCustomColors } from '../../utils/models/types'
 import { Page, Pagination } from '../charts/Pagination'
 import ChartLegend from '../charts/ChartLegend'
 import NoDataMessage from '../../common/NoDataMessage'
