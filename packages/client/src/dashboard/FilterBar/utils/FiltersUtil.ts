@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from './DropdownFilter'
-import createOptionChooser from './OptionChooser'
+import { DropdownOption } from '../Filters/DropdownFilter'
+import createOptionChooser from './options'
 
 export enum DropdownFilter {
   SERVICES = 'services',

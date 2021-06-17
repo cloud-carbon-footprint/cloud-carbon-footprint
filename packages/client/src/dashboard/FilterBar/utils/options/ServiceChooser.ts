@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from '../DropdownFilter'
+import { DropdownOption } from '../../Filters/DropdownFilter'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../AccountFilter'
-import { SERVICE_OPTIONS } from '../ServiceFilter'
+import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
+import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'
@@ -30,7 +30,7 @@ export class ServiceChooser extends OptionChooser {
       getCloudProvidersFromServices(this.selections),
     )
     currentCloudProviders.forEach((currentCloudProvider) => {
-      //if currentCloudprovider has an option that oldCP has, keep the accounts from old that are under that CP
+      //if current Cloud provider has an option that oldCP has, keep the accounts from old that are under that CP
       if (
         isDropdownOptionInDropdownOptions(
           this.oldSelections.cloudProviders,
@@ -42,7 +42,7 @@ export class ServiceChooser extends OptionChooser {
             desiredSelections.add(oldAccountOption)
         })
       } else {
-        //if currentCloudprovider doesnt have an option that oldCP has, add all the accounts from that CP
+        //if current Cloud provider doesnt have an option that oldCP has, add all the accounts from that CP
         ACCOUNT_OPTIONS.forEach((accountOption) => {
           accountOption.cloudProvider === currentCloudProvider.key &&
             desiredSelections.add(accountOption)

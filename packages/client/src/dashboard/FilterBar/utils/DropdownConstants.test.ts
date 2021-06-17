@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from './DropdownFilter'
+import { DropdownOption } from '../Filters/DropdownFilter'
 import {
   alphabetizeDropdownOptions,
   buildAndOrderDropdownOptions,

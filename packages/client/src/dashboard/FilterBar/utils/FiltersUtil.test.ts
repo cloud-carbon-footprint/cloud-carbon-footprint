@@ -2,13 +2,13 @@
  * © 2021 ThoughtWorks, Inc.
  */
 import * as FiltersUtil from './FiltersUtil'
-import { DropdownOption } from './DropdownFilter'
+import { DropdownOption } from '../Filters/DropdownFilter'
 import {
   ALL_CLOUD_PROVIDERS_VALUE,
   ALL_SERVICES_VALUE,
 } from './DropdownConstants'
 
-jest.mock('./AccountFilter', () => ({
+jest.mock('../Filters/AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
     { key: 'all', name: 'All Accounts', cloudProvider: '' },
     { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
@@ -18,7 +18,7 @@ jest.mock('./AccountFilter', () => ({
   ],
 }))
 
-jest.mock('./ServiceFilter', () => ({
+jest.mock('../Filters/ServiceFilter', () => ({
   SERVICE_OPTIONS: [
     { key: 'all', name: 'All Services' },
     { key: 'ebs', name: 'EBS', cloudProvider: 'aws' },
@@ -31,7 +31,7 @@ jest.mock('./ServiceFilter', () => ({
   ],
 }))
 
-jest.mock('../../ConfigLoader', () => {
+jest.mock('../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

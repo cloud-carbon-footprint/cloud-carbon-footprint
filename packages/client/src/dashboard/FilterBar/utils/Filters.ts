@@ -4,14 +4,14 @@
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { FilterResultResponse, UnknownTypes } from '../../utils/models/types'
+import { FilterResultResponse, UnknownTypes } from '../../../utils/models/types'
 import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownFilter } from './FiltersUtil'
-import { DropdownOption } from './DropdownFilter'
-import { ACCOUNT_OPTIONS } from './AccountFilter'
-import { SERVICE_OPTIONS } from './ServiceFilter'
+import { DropdownOption } from '../Filters/DropdownFilter'
+import { ACCOUNT_OPTIONS } from '../Filters/AccountFilter'
+import { SERVICE_OPTIONS } from '../Filters/ServiceFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,

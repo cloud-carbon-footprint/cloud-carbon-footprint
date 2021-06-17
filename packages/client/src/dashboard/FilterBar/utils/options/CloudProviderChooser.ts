@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from '../DropdownFilter'
+import { DropdownOption } from '../../Filters/DropdownFilter'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../AccountFilter'
-import { SERVICE_OPTIONS } from '../ServiceFilter'
+import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
+import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 import { OptionChooser } from './OptionChooser'
 
 export class CloudProviderChooser extends OptionChooser {

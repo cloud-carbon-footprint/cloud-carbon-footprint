@@ -1,7 +1,7 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { DropdownOption } from '../../dashboard/filters/DropdownFilter'
+import { DropdownOption } from '../../dashboard/FilterBar/Filters/DropdownFilter'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {

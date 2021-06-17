@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from './DropdownFilter'
-import config from '../../ConfigLoader'
+import { DropdownOption } from '../Filters/DropdownFilter'
+import config from '../../../ConfigLoader'
 
 export const ALL_KEY = 'all'
 export const ALL_ACCOUNTS_VALUE = 'All Accounts'

@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent } from 'react'
 import { Button, ButtonGroup } from '@material-ui/core'
-import { FilterProps } from './Filters'
+import { FilterProps } from '../utils/Filters'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({

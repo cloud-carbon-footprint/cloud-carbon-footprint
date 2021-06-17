@@ -3,20 +3,22 @@
  */
 
 import React, { ReactElement } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import { useRemoteService } from '../utils/hooks'
-import useFilters from './filters/FilterHook'
+import useFilters from './FilterBar/utils/FilterHook'
+import {
+  MonthFilter,
+  ServiceFilter,
+  DateFilter,
+  AccountFilter,
+} from './FilterBar/Filters'
 import ApexLineChart from './CloudUsage/ApexLineChart'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import moment, { unitOfTime } from 'moment'
-import MonthFilter from './filters/MonthFilter'
 import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
-import ServiceFilter from './filters/ServiceFilter'
-import CloudProviderFilter from './filters/CloudProviderFilter'
-import DateFilter from './filters/DateFilter'
-import { makeStyles } from '@material-ui/core/styles'
-import AccountFilter from './filters/AccountFilter'
+import CloudProviderFilter from './FilterBar/Filters/CloudProviderFilter'
 import { useFilterDataFromEstimates } from '../utils/helpers'
 import { FilterResultResponse } from '../utils/models/types'
 import NoDataMessage from '../common/NoDataMessage'

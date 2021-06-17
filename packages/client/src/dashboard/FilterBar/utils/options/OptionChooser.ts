@@ -3,7 +3,7 @@
  */
 
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { DropdownOption } from '../DropdownFilter'
+import { DropdownOption } from '../../Filters/DropdownFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
@@ -11,8 +11,8 @@ import {
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../AccountFilter'
-import { SERVICE_OPTIONS } from '../ServiceFilter'
+import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
+import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilter

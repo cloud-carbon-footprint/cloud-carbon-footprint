@@ -3,7 +3,7 @@
  */
 
 import React, { Dispatch, SetStateAction } from 'react'
-import { DateRange, Filters } from './Filters'
+import { DateRange, Filters } from '../utils/Filters'
 import { render, RenderResult, act, fireEvent } from '@testing-library/react'
 import moment from 'moment'
 import MockDate from 'mockdate'
