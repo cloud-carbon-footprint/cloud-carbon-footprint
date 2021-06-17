@@ -6,11 +6,12 @@ import React from 'react'
 import { act, create, ReactTestRenderer } from 'react-test-renderer'
 import moment from 'moment'
 
-import { ApexLineChart } from './ApexLineChart'
+import ApexLineChart from './ApexLineChart'
 import { render } from '@testing-library/react'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 
+jest.mock('apexcharts')
 jest.mock('../../themes')
 describe('ApexLineChart', () => {
   class EstimationResultBuilder {

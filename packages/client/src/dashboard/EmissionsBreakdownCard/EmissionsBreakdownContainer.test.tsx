@@ -22,6 +22,7 @@ import { ServiceResult } from '../../utils/models/types'
 import { useRemoteEmissionService } from '../../utils/hooks'
 import { fakeEmissionFactors } from '../../utils/data'
 
+jest.mock('apexcharts')
 jest.mock('../../themes')
 jest.mock('../../utils/hooks/EmissionFactorServiceHook')
 

@@ -13,7 +13,6 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
   }
 >
   <div
-    data-testid="fake-bar-chart"
     height="500px"
     options={
       Object {
@@ -123,9 +122,8 @@ exports[`ApexBarChart renders with correct configuration 1`] = `
       ]
     }
     type="bar"
-  >
-    fake chart
-  </div>
+    width="100%"
+  />
   <div
     style={
       Object {

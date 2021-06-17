@@ -3,7 +3,6 @@
 exports[`ApexLineChart renders with correct configuration 1`] = `
 <div
   aria-label="apex-line-chart"
-  data-testid="fake-line-chart"
   height="500px"
   options={
     Object {
@@ -157,7 +156,6 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
     ]
   }
   type="line"
->
-  fake chart
-</div>
+  width="100%"
+/>
 `;

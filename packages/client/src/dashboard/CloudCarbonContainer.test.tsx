@@ -16,18 +16,10 @@ import { useRemoteService, useRemoteEmissionService } from '../utils/hooks'
 import { generateEstimations, fakeEmissionFactors } from '../utils/data'
 import { ServiceResult } from '../utils/models/types'
 
+jest.mock('apexcharts')
 jest.mock('../utils/hooks/RemoteServiceHook')
 jest.mock('../utils/hooks/EmissionFactorServiceHook')
 jest.mock('../themes')
-jest.mock('apexcharts', () => ({
-  exec: jest.fn(() => {
-    /* eslint-disable */
-    return new Promise((resolve, reject) => {
-      resolve('uri')
-    })
-  }),
-}))
-
 jest.mock('../ConfigLoader', () => ({
   __esModule: true,
   default: () => ({
@@ -73,13 +65,6 @@ describe('CloudCarbonContainer', () => {
   afterEach(() => {
     mockedUseEmissionFactorService.mockClear()
     mockUseRemoteService.mockClear()
-  })
-
-  test('match against snapshot', () => {
-    const { getByTestId } = render(<CloudCarbonContainer />)
-
-    expect(getByTestId('fake-line-chart')).toBeInTheDocument()
-    // expect(getByTestId('fake-donut-chart')).toBeInTheDocument()
   })
 
   test('today and january first of the last year should be passed in to remote service hook', () => {

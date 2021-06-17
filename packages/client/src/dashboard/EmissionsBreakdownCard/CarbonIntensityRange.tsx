@@ -42,7 +42,7 @@ const { timelineWrapper, timelineStyles, dotStyles, barStyles, labelsStyle } = {
   },
 }
 
-export default function BasicTimeline(props: TimeLineProps): ReactElement {
+const CarbonIntensityRange = (props: TimeLineProps): ReactElement => {
   const { startLabel, endLabel, colorRange = [] } = props
 
   const Dot = (props: { color: string }): ReactElement => (
@@ -75,3 +75,5 @@ export default function BasicTimeline(props: TimeLineProps): ReactElement {
     </div>
   )
 }
+
+export default CarbonIntensityRange

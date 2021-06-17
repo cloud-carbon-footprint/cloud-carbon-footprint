@@ -14,10 +14,11 @@ import {
 
 import { ServiceResult } from '../../utils/models/types'
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
-import { Page, Pagination } from '../charts/Pagination'
+import Pagination, { Page } from './Pagination'
 import { useRemoteEmissionService } from '../../utils/hooks'
 import { fakeEmissionFactors } from '../../utils/data'
 
+jest.mock('apexcharts')
 jest.mock('../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =

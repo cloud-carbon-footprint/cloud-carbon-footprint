@@ -5,7 +5,7 @@
 import React, { ReactElement } from 'react'
 import { useRemoteService } from '../utils/hooks'
 import useFilters from './filters/FilterHook'
-import { ApexLineChart } from './charts/ApexLineChart'
+import ApexLineChart from './CloudUsage/ApexLineChart'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'

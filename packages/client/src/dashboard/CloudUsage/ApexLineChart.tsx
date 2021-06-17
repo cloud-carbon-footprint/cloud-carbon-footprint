@@ -11,6 +11,7 @@ import { CustomTooltip } from './CustomTooltip'
 import { getChartColors } from '../../themes'
 import { sumServiceTotals, getMaxOfDataSeries } from '../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { ApexChartProps } from '../../utils/models/types'
 import Chart from 'react-apexcharts'
 import ApexCharts from 'apexcharts'
 import * as _ from 'lodash'
@@ -29,13 +30,13 @@ const formatDateToTime = (timestamp: string | Date) =>
     ? timestamp.getTime()
     : new Date(timestamp).getTime()
 
-export const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
+const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
   return data.sort((a: EstimationResult, b: EstimationResult) => {
     return formatDateToTime(a.timestamp) - formatDateToTime(b.timestamp)
   })
 }
 
-export const filterBy = (
+const filterBy = (
   data: EstimationResult[],
   range: DateRange,
   defaultRange: DateRange,
@@ -51,9 +52,7 @@ export const filterBy = (
   })
 }
 
-export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
-  data,
-}) => {
+const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
   const theme = useTheme()
   const [dateRange, setDateRange] = React.useState<DateRange>({
     min: null,
@@ -315,6 +314,4 @@ export const ApexLineChart: FunctionComponent<ApexLineChartProps> = ({
   )
 }
 
-type ApexLineChartProps = {
-  data: EstimationResult[]
-}
+export default ApexLineChart

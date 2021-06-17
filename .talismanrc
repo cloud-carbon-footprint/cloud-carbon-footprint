@@ -93,6 +93,8 @@ fileignoreconfig:
   checksum: 5a4d16d65565f35442198bc6cc244bc0d4919354f7deb23ae23ea1296da6ed0a
 - filename: packages/client/src/dashboard/CarbonIntensityMap/__snapshots__/CarbonIntensityMap.test.tsx.snap
   checksum: b187fe1f3dc3c24f061ff4c3d9ae80c6fdac881f260624665005e65fb83f7f28
+- filename: packages/client/src/dashboard/__snapshots__/CloudCarbonContainer.test.tsx.snap
+  checksum: 8867112b213b8cf8f6248b141228a856f01a7f5dffe895567224aac010dbaecb
 - filename: packages/client/src/dashboard/charts/__snapshots__/ApexBarChart.test.tsx.snap
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
 - filename: packages/client/src/data/generateEstimations.ts
@@ -133,7 +135,7 @@ fileignoreconfig:
   checksum: 8cbcdd56c389772ba6086966824c015f000d273f6d05e7a75befb24d40c64019
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/runner.ts
   checksum: ae3644fd8001fc1545fb3b365f24b2be657750bcbad705cd3da249b705aad74f
-- filename: packages/create-app/templates/default-app/packages/client/src/dashboard/charts/ChartLegend.tsx
+- filename: packages/create-app/templates/default-app/packages/client/src/dashboard/charts/CarbonIntensityRange.tsx
   checksum: b4619da2416bd6931676e6d2cdda49ea1ee3f71e867ffe3c879f25689c1c72cf
 - filename: packages/create-app/templates/default-app/packages/client/src/react-app-env.d.ts
   checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6

@@ -20,21 +20,34 @@ interface UsePaginateData<T> {
   paginatedData: T[][]
   totalPages: number
 }
-export const usePaginateData: <T>(
-  data: T[],
-  pageSize: number,
-) => UsePaginateData<T> = (data, pageSize) => {
-  const paginatedData = []
-  const newEntries = [...data]
-  while (newEntries.length > 0) {
-    const paginatedSubData = newEntries.splice(0, pageSize)
-    paginatedData.push(paginatedSubData)
-  }
-  return {
-    paginatedData,
-    totalPages: paginatedData.length,
-  }
+
+interface PaginateData<T> {
+  data: T[]
+  pageSize: number
 }
+
+interface PaginationProps<T> extends PaginateData<T> {
+  handlePage: (page: Page<T>) => void
+}
+
+export interface Page<T> {
+  data: T[]
+  page: number
+}
+
+const usePaginateData: <T>(data: T[], pageSize: number) => UsePaginateData<T> =
+  (data, pageSize) => {
+    const paginatedData = []
+    const newEntries = [...data]
+    while (newEntries.length > 0) {
+      const paginatedSubData = newEntries.splice(0, pageSize)
+      paginatedData.push(paginatedSubData)
+    }
+    return {
+      paginatedData,
+      totalPages: paginatedData.length,
+    }
+  }
 
 const useStyles = makeStyles(() => {
   return {
@@ -47,21 +60,7 @@ const useStyles = makeStyles(() => {
   }
 })
 
-interface PaginateData<T> {
-  data: T[]
-  pageSize: number
-}
-
-export interface Page<T> {
-  data: T[]
-  page: number
-}
-
-export interface PaginationProps<T> extends PaginateData<T> {
-  handlePage: (page: Page<T>) => void
-}
-
-export const Pagination: <T>(
+const Pagination: <T>(
   props: PropsWithChildren<PaginationProps<T>>,
 ) => ReactElement = ({ data, pageSize, handlePage }) => {
   const { paginationContainer } = useStyles()
@@ -131,3 +130,5 @@ export const Pagination: <T>(
     </div>
   )
 }
+
+export default Pagination

@@ -211,7 +211,6 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
         </div>
       </div>
       <div
-        data-testid="fake-bar-chart"
         height="500px"
         options={
           Object {
@@ -319,9 +318,8 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
           ]
         }
         type="bar"
-      >
-        fake chart
-      </div>
+        width="100%"
+      />
       <div
         style={
           Object {

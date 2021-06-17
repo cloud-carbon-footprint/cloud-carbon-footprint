@@ -8,10 +8,10 @@ import Chart from 'react-apexcharts'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
 import { sumCO2ByServiceOrRegion } from '../../utils/helpers'
-import { ApexChartProps } from '../charts/common/ChartTypes'
+import { ApexChartProps } from '../../utils/models/types'
 import { chartBarCustomColors } from '../../utils/models/types'
-import { Page, Pagination } from '../charts/Pagination'
-import ChartLegend from '../charts/ChartLegend'
+import Pagination, { Page } from './Pagination'
+import CarbonIntensityRange from './CarbonIntensityRange'
 import NoDataMessage from '../../common/NoDataMessage'
 import useRemoteEmissionService from '../../utils/hooks/EmissionFactorServiceHook'
 
@@ -211,7 +211,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
       {mappedDataEntries?.length && !emissionsLoading ? (
         <Fragment>
           {dataType === 'region' && (
-            <ChartLegend
+            <CarbonIntensityRange
               startLabel="Low carbon intensity"
               endLabel="High carbon intensity"
               colorRange={chartBarCustomColors}

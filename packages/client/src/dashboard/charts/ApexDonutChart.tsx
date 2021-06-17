@@ -8,7 +8,7 @@ import Chart from 'react-apexcharts'
 
 import { getChartColors } from '../../themes'
 import { sumCO2ByServiceOrRegion } from '../../utils/helpers'
-import { ApexChartProps } from './common/ChartTypes'
+import { ApexChartProps } from '../../utils/models/types'
 
 export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
   data,

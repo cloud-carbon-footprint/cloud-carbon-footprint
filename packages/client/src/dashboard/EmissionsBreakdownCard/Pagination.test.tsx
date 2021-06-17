@@ -7,7 +7,7 @@ import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import React from 'react'
-import { Pagination } from './Pagination'
+import Pagination from './Pagination'
 
 describe('Pagination', () => {
   const handlePage = jest.fn()

@@ -2,6 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 import { DropdownOption } from '../../dashboard/filters/DropdownFilter'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -20,6 +21,11 @@ export enum ChartDataTypes {
   REGION = 'region',
   SERVICE = 'service',
   ACCOUNT = 'account',
+}
+
+export type ApexChartProps = {
+  data: EstimationResult[]
+  dataType?: string
 }
 
 export interface FilterResultResponse {

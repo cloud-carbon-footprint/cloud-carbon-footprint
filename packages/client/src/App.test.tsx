@@ -16,17 +16,10 @@ import {
 } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from './utils/models/types'
 
+jest.mock('apexcharts')
 jest.mock('./utils/hooks/RemoteServiceHook')
 jest.mock('./utils/hooks/EmissionFactorServiceHook')
 jest.mock('./themes')
-jest.mock('apexcharts', () => ({
-  exec: jest.fn(() => {
-    /* eslint-disable */
-    return new Promise((resolve, reject) => {
-      resolve('uri')
-    })
-  }),
-}))
 
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
