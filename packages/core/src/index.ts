@@ -24,6 +24,11 @@ export {
   getWattsByAverageOrMedian,
   getAverage,
   estimateCo2,
+  getMinwatts,
+  getMaxwatts,
+  getPowerUsageEffectiveness,
+  getCpuUtilizationAverage,
+  getEmissionsFactors,
 } from './FootprintEstimate'
 export { default as ICloudService } from './ICloudService'
 export { default as BillingDataRow } from './BillingDataRow'

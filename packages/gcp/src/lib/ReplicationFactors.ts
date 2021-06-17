@@ -3,6 +3,7 @@
  */
 
 import { ReplicationFactorsForService } from '@cloud-carbon-footprint/core'
+import { containsAny } from '@cloud-carbon-footprint/common'
 import { GCP_CLOUD_CONSTANTS } from '../domain'
 import { GCP_DUAL_REGIONS, GCP_MULTI_REGIONS } from './GCPRegions'
 
@@ -52,9 +53,3 @@ export const GCP_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
         return REPLICATION_FACTORS.CLOUD_MEMORY_STORE_REDIS
     },
   }
-
-const containsAny = (substrings: string[], stringToSearch: string): boolean => {
-  return substrings.some((substring) =>
-    new RegExp(`\\b${substring}\\b`).test(stringToSearch),
-  )
-}

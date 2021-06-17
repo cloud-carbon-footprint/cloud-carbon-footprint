@@ -3,6 +3,7 @@
  */
 
 import { ReplicationFactorsForService } from '@cloud-carbon-footprint/core'
+import { containsAny } from '@cloud-carbon-footprint/common'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
 const { REPLICATION_FACTORS } = AWS_CLOUD_CONSTANTS
@@ -70,9 +71,3 @@ export const AWS_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
         return REPLICATION_FACTORS.SIMPLE_DB // 2
     },
   }
-
-const containsAny = (substrings: string[], stringToSearch: string): boolean => {
-  return substrings.some((substring) =>
-    new RegExp(`\\b${substring}\\b`).test(stringToSearch),
-  )
-}

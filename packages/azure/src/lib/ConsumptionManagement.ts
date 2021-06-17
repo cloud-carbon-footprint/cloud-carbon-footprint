@@ -12,6 +12,10 @@ import {
   configLoader,
   Logger,
   EstimationResult,
+  convertTerabytesToGigabytes,
+  convertGigaBytesToTerabyteHours,
+  containsAny,
+  wait,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -30,6 +34,11 @@ import {
   CloudConstantsEmissionsFactors,
   calculateGigabyteHours,
   getPhysicalChips,
+  getMinwatts,
+  getMaxwatts,
+  getPowerUsageEffectiveness,
+  getCpuUtilizationAverage,
+  getEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
@@ -150,7 +159,7 @@ export default class ConsumptionManagementService {
             `Retrying after ${retryAfterValue} seconds`,
           )
           retry = true
-          await this.wait(retryAfterValue * 1000)
+          await wait(retryAfterValue * 1000)
         } else {
           throw new Error(`${errorMsg} ${e.message}`)
         }
@@ -172,12 +181,6 @@ export default class ConsumptionManagementService {
     return e.response.headers._headersMap[tenantHeaders[type]]?.value
   }
 
-  private async wait(ms: number) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms)
-    })
-  }
-
   private async getConsumptionUsageDetails(startDate: Date, endDate: Date) {
     try {
       const options = {
@@ -196,9 +199,10 @@ export default class ConsumptionManagementService {
     consumptionDetailRow: ConsumptionDetailRow,
   ): FootprintEstimate {
     const emissionsFactors: CloudConstantsEmissionsFactors =
-      this.getEmissionsFactors()
-    const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
+      getEmissionsFactors(AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH)
+    const powerUsageEffectiveness: number = getPowerUsageEffectiveness(
       consumptionDetailRow.region,
+      AZURE_CLOUD_CONSTANTS,
     )
     switch (consumptionDetailRow.usageUnit) {
       case COMPUTE_USAGE_UNITS.HOUR_1:
@@ -350,14 +354,14 @@ export default class ConsumptionManagementService {
 
     const computeUsage: ComputeUsage = {
       timestamp: consumptionDetailRow.timestamp,
-      cpuUtilizationAverage: this.getCpuUtilizationAverage(),
+      cpuUtilizationAverage: getCpuUtilizationAverage(AZURE_CLOUD_CONSTANTS),
       numberOfvCpus: consumptionDetailRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
 
     const computeConstants: CloudConstants = {
-      minWatts: this.getMinwatts(computeProcessors),
-      maxWatts: this.getMaxwatts(computeProcessors),
+      minWatts: getMinwatts(computeProcessors, AZURE_CLOUD_CONSTANTS),
+      maxWatts: getMaxwatts(computeProcessors, AZURE_CLOUD_CONSTANTS),
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
@@ -396,22 +400,16 @@ export default class ConsumptionManagementService {
   }
 
   private isMemoryUsage(usageType: string) {
-    return this.containsAny(MEMORY_USAGE_TYPES, usageType)
+    return containsAny(MEMORY_USAGE_TYPES, usageType)
   }
 
   private isUnsupportedUsage(
     consumptionDetailRow: ConsumptionDetailRow,
   ): boolean {
     return (
-      this.containsAny(
-        UNSUPPORTED_SERVICES,
-        consumptionDetailRow.serviceName,
-      ) ||
-      this.containsAny(
-        UNSUPPORTED_USAGE_TYPES,
-        consumptionDetailRow.usageType,
-      ) ||
-      !this.containsAny(
+      containsAny(UNSUPPORTED_SERVICES, consumptionDetailRow.serviceName) ||
+      containsAny(UNSUPPORTED_USAGE_TYPES, consumptionDetailRow.usageType) ||
+      !containsAny(
         [
           ...Object.values(COMPUTE_USAGE_UNITS),
           ...Object.values(STORAGE_USAGE_UNITS),
@@ -420,12 +418,6 @@ export default class ConsumptionManagementService {
         ],
         consumptionDetailRow.usageUnit,
       )
-    )
-  }
-
-  private containsAny(substrings: string[], stringToSearch: string): boolean {
-    return substrings.some((substring) =>
-      new RegExp(`\\b${substring}\\b`).test(stringToSearch),
     )
   }
 
@@ -451,7 +443,7 @@ export default class ConsumptionManagementService {
       this.isSSDStorage(consumptionDetailRow) &&
       this.isManagedDiskStorage(consumptionDetailRow)
     ) {
-      return this.convertGigaBytesToTerabyteHours(
+      return convertGigaBytesToTerabyteHours(
         SSD_MANAGED_DISKS_STORAGE_GB[
           consumptionDetailRow.usageType.replace(/Disks?/, '').trim()
         ],
@@ -462,7 +454,7 @@ export default class ConsumptionManagementService {
       this.isHDDStorage(consumptionDetailRow) &&
       this.isManagedDiskStorage(consumptionDetailRow)
     ) {
-      return this.convertGigaBytesToTerabyteHours(
+      return convertGigaBytesToTerabyteHours(
         HDD_MANAGED_DISKS_STORAGE_GB[
           consumptionDetailRow.usageType.replace(/Disks?/, '').trim()
         ],
@@ -470,29 +462,27 @@ export default class ConsumptionManagementService {
     }
 
     if (this.isContainerRegistryStorage(consumptionDetailRow)) {
-      return this.convertGigaBytesToTerabyteHours(
+      return convertGigaBytesToTerabyteHours(
         CONTAINER_REGISTRY_STORAGE_GB[
           consumptionDetailRow.usageType.replace(' Registry Unit', '')
         ],
       )
     }
 
-    return this.convertGigaBytesToTerabyteHours(
-      consumptionDetailRow.usageAmount,
-    )
+    return convertGigaBytesToTerabyteHours(consumptionDetailRow.usageAmount)
   }
 
   private isSSDStorage(consumptionDetailRow: ConsumptionDetailRow): boolean {
     return (
-      this.containsAny(
+      containsAny(
         Object.keys(SSD_MANAGED_DISKS_STORAGE_GB),
         consumptionDetailRow.usageType,
-      ) || this.containsAny(STORAGE_USAGE_TYPES, consumptionDetailRow.usageType)
+      ) || containsAny(STORAGE_USAGE_TYPES, consumptionDetailRow.usageType)
     )
   }
 
   private isHDDStorage(consumptionDetailRow: ConsumptionDetailRow): boolean {
-    return this.containsAny(
+    return containsAny(
       Object.keys(HDD_MANAGED_DISKS_STORAGE_GB),
       consumptionDetailRow.usageType,
     )
@@ -501,7 +491,7 @@ export default class ConsumptionManagementService {
   private isManagedDiskStorage(
     consumptionDetailRow: ConsumptionDetailRow,
   ): boolean {
-    return this.containsAny(
+    return containsAny(
       [
         ...Object.keys(SSD_MANAGED_DISKS_STORAGE_GB),
         ...Object.keys(HDD_MANAGED_DISKS_STORAGE_GB),
@@ -513,7 +503,7 @@ export default class ConsumptionManagementService {
   private isContainerRegistryStorage(
     consumptionDetailRow: ConsumptionDetailRow,
   ): boolean {
-    return this.containsAny(
+    return containsAny(
       Object.keys(CONTAINER_REGISTRY_STORAGE_GB).map(
         (registryType) => `${registryType} Registry Unit`,
       ),
@@ -525,10 +515,8 @@ export default class ConsumptionManagementService {
     consumptionDetailRow: ConsumptionDetailRow,
   ): boolean {
     return (
-      this.containsAny(
-        NETWORKING_USAGE_TYPES,
-        consumptionDetailRow.usageType,
-      ) && !consumptionDetailRow.usageType.includes('To Any')
+      containsAny(NETWORKING_USAGE_TYPES, consumptionDetailRow.usageType) &&
+      !consumptionDetailRow.usageType.includes('To Any')
     )
   }
 
@@ -536,16 +524,8 @@ export default class ConsumptionManagementService {
     consumptionDetailRow: ConsumptionDetailRow,
   ): number {
     if (consumptionDetailRow.usageUnit.includes('TB'))
-      return this.convertTerabytesToGigabytes(consumptionDetailRow.usageAmount)
+      return convertTerabytesToGigabytes(consumptionDetailRow.usageAmount)
     return consumptionDetailRow.usageAmount
-  }
-
-  private convertTerabytesToGigabytes(terabytes: number): number {
-    return terabytes * 1000
-  }
-
-  private convertGigaBytesToTerabyteHours(gigaBytes: number): number {
-    return (gigaBytes / 1000) * 24
   }
 
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
@@ -619,34 +599,13 @@ export default class ConsumptionManagementService {
     return { isValidInstanceType }
   }
 
-  private getMinwatts(computeProcessors: string[]): number {
-    return AZURE_CLOUD_CONSTANTS.getMinWatts(computeProcessors)
-  }
-
-  private getMaxwatts(computeProcessors: string[]): number {
-    return AZURE_CLOUD_CONSTANTS.getMaxWatts(computeProcessors)
-  }
-
-  private getPowerUsageEffectiveness(region: string): number {
-    return AZURE_CLOUD_CONSTANTS.getPUE(region)
-  }
-
-  private getCpuUtilizationAverage(): number {
-    return AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
-  }
-
-  private getEmissionsFactors(): { [region: string]: number } {
-    return AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
-  }
-
   private getReplicationFactor(usageRow: ConsumptionDetailRow): number {
-    try {
-      return AZURE_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+    return (
+      AZURE_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
+      AZURE_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
         usageRow.usageType,
         usageRow.region,
       )
-    } catch (err) {
-      return 1
-    }
+    )
   }
 }

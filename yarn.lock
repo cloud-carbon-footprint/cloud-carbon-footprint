@@ -2306,6 +2306,7 @@ __metadata:
     eslint-plugin-unused-imports: ^1.1.1
     jest: ^26.6.0
     lint-staged: ^11.0.0
+    moment: ^2.29.1
     prettier: ^2.3.0
     rimraf: ^3.0.2
     ts-jest: ^26.5.6

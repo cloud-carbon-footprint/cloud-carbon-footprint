@@ -9,6 +9,10 @@ import {
   Logger,
   configLoader,
   EstimationResult,
+  containsAny,
+  convertByteSecondsToTerabyteHours,
+  convertBytesToGigabytes,
+  convertByteSecondsToGigabyteHours,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -26,6 +30,11 @@ import {
   COMPUTE_PROCESSOR_TYPES,
   CloudConstantsEmissionsFactors,
   CloudConstants,
+  getMinwatts,
+  getMaxwatts,
+  getPowerUsageEffectiveness,
+  getEmissionsFactors,
+  getCpuUtilizationAverage,
 } from '@cloud-carbon-footprint/core'
 
 import {
@@ -81,9 +90,10 @@ export default class BillingExportTable {
 
       let footprintEstimate: FootprintEstimate
       const emissionsFactors: CloudConstantsEmissionsFactors =
-        this.getEmissionsFactors()
-      const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
+        getEmissionsFactors(GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH)
+      const powerUsageEffectiveness: number = getPowerUsageEffectiveness(
         billingExportRow.region,
+        GCP_CLOUD_CONSTANTS,
       )
       switch (usageRow.usageUnit) {
         case 'seconds':
@@ -149,7 +159,7 @@ export default class BillingExportTable {
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeUsage: ComputeUsage = {
-      cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: getCpuUtilizationAverage(GCP_CLOUD_CONSTANTS),
       numberOfvCpus: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
@@ -161,8 +171,8 @@ export default class BillingExportTable {
     )
 
     const computeConstants: CloudConstants = {
-      minWatts: this.getMinwatts(computeProcessors),
-      maxWatts: this.getMaxwatts(computeProcessors),
+      minWatts: getMinwatts(computeProcessors, GCP_CLOUD_CONSTANTS),
+      maxWatts: getMaxwatts(computeProcessors, GCP_CLOUD_CONSTANTS),
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
@@ -200,7 +210,7 @@ export default class BillingExportTable {
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     // storage estimation requires usage amount in terabyte hours
-    const usageAmountTerabyteHours = this.convertByteSecondsToTerabyteHours(
+    const usageAmountTerabyteHours = convertByteSecondsToTerabyteHours(
       usageRow.usageAmount,
     )
     const storageUsage: StorageUsage = {
@@ -241,9 +251,7 @@ export default class BillingExportTable {
   ): FootprintEstimate {
     const memoryUsage: MemoryUsage = {
       timestamp,
-      gigabyteHours: this.convertByteSecondsToGigabyteHours(
-        usageRow.usageAmount,
-      ),
+      gigabyteHours: convertByteSecondsToGigabyteHours(usageRow.usageAmount),
     }
     const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
@@ -267,7 +275,7 @@ export default class BillingExportTable {
   ): FootprintEstimate {
     const networkingUsage: NetworkingUsage = {
       timestamp,
-      gigabytes: this.convertBytesToGigabytes(usageRow.usageAmount),
+      gigabytes: convertBytesToGigabytes(usageRow.usageAmount),
     }
     const networkingConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
@@ -286,8 +294,8 @@ export default class BillingExportTable {
 
   private isUnknownUsage(usageRow: BillingExportRow): boolean {
     return (
-      this.containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
-      this.containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
+      containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
+      containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
       !usageRow.usageType
     )
   }
@@ -295,43 +303,31 @@ export default class BillingExportTable {
   private isMemoryUsage(usageType: string): boolean {
     // We only want to ignore memory usage that is not also compute usage (determined by containing VCPU usage)
     return (
-      this.containsAny(MEMORY_USAGE_TYPES, usageType) &&
-      !this.containsAny(COMPUTE_STRING_FORMATS, usageType)
+      containsAny(MEMORY_USAGE_TYPES, usageType) &&
+      !containsAny(COMPUTE_STRING_FORMATS, usageType)
     )
   }
 
   private isUnsupportedUsage(usageType: string): boolean {
-    return this.containsAny(UNSUPPORTED_USAGE_TYPES, usageType)
+    return containsAny(UNSUPPORTED_USAGE_TYPES, usageType)
   }
 
   private isComputeUsage(usageType: string): boolean {
-    return this.containsAny(COMPUTE_STRING_FORMATS, usageType)
+    return containsAny(COMPUTE_STRING_FORMATS, usageType)
   }
 
   private isNetworkingUsage(usageType: string): boolean {
-    return this.containsAny(NETWORKING_STRING_FORMATS, usageType)
+    return containsAny(NETWORKING_STRING_FORMATS, usageType)
   }
 
-  private containsAny(substrings: string[], stringToSearch: string): boolean {
-    return substrings.some((substring) =>
-      new RegExp(`\\b${substring}\\b`).test(stringToSearch),
+  private getReplicationFactor(usageRow: BillingExportRow): number {
+    return (
+      GCP_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
+      GCP_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+        usageRow.usageType,
+        usageRow.region,
+      )
     )
-  }
-
-  private getMinwatts(computeProcessors: string[]): number {
-    return GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors)
-  }
-
-  private getMaxwatts(computeProcessors: string[]): number {
-    return GCP_CLOUD_CONSTANTS.getMaxWatts(computeProcessors)
-  }
-
-  private getPowerUsageEffectiveness(region: string): number {
-    return GCP_CLOUD_CONSTANTS.getPUE(region)
-  }
-
-  private getEmissionsFactors(): { [region: string]: number } {
-    return GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
   }
 
   private async getUsage(start: Date, end: Date): Promise<RowMetadata[]> {
@@ -398,29 +394,5 @@ export default class BillingExportTable {
       )
     }
     return job
-  }
-
-  private convertByteSecondsToTerabyteHours(usageAmount: number): number {
-    // This function converts byte-seconds into terabyte hours by first converting bytes to terabytes, then seconds to hours.
-    return usageAmount / 1099511627776 / 3600
-  }
-
-  private convertBytesToGigabytes(usageAmount: number): number {
-    return usageAmount / 1073741824
-  }
-
-  private convertByteSecondsToGigabyteHours(usageAmount: number): number {
-    return usageAmount / 1073741824 / 3600
-  }
-
-  private getReplicationFactor(usageRow: BillingExportRow): number {
-    try {
-      return GCP_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
-        usageRow.usageType,
-        usageRow.region,
-      )
-    } catch (err) {
-      return 1
-    }
   }
 }

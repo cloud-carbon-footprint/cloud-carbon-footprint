@@ -5,7 +5,11 @@
 import { median, reduceBy } from 'ramda'
 
 import { COMPUTE_PROCESSOR_TYPES } from './compute'
-import { BillingDataRow, CloudConstantsEmissionsFactors } from '.'
+import {
+  BillingDataRow,
+  CloudConstantsByProvider,
+  CloudConstantsEmissionsFactors,
+} from '.'
 
 export default interface FootprintEstimate {
   timestamp: Date
@@ -62,31 +66,30 @@ export interface MutableServiceEstimate {
 
 export const appendOrAccumulateEstimatesByDay = (
   results: MutableEstimationResult[],
-  costAndUsageReportRow: BillingDataRow,
+  rowData: BillingDataRow,
   footprintEstimate: FootprintEstimate,
 ): void => {
   const serviceEstimate: MutableServiceEstimate = {
-    cloudProvider: costAndUsageReportRow.cloudProvider,
+    cloudProvider: rowData.cloudProvider,
     kilowattHours: footprintEstimate.kilowattHours,
     co2e: footprintEstimate.co2e,
     usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
-    serviceName: costAndUsageReportRow.serviceName,
-    accountName: costAndUsageReportRow.accountName,
-    region: costAndUsageReportRow.region,
-    cost: costAndUsageReportRow.cost,
+    serviceName: rowData.serviceName,
+    accountName: rowData.accountName,
+    region: rowData.region,
+    cost: rowData.cost,
   }
 
-  if (dayExistsInEstimates(results, costAndUsageReportRow.timestamp)) {
+  if (dayExistsInEstimates(results, rowData.timestamp)) {
     const estimatesForDay = results.find(
       (estimate) =>
-        estimate.timestamp.getTime() ===
-        costAndUsageReportRow.timestamp.getTime(),
+        estimate.timestamp.getTime() === rowData.timestamp.getTime(),
     )
 
     if (
       estimateExistsForRegionAndService(
         results,
-        costAndUsageReportRow.timestamp,
+        rowData.timestamp,
         serviceEstimate,
       )
     ) {
@@ -108,7 +111,7 @@ export const appendOrAccumulateEstimatesByDay = (
     }
   } else {
     results.push({
-      timestamp: costAndUsageReportRow.timestamp,
+      timestamp: rowData.timestamp,
       serviceEstimates: [serviceEstimate],
     })
   }
@@ -167,6 +170,39 @@ export function getAverage(nums: number[]): number {
   if (!nums.length) return 0
   if (nums.length === 1) return nums[0]
   return nums.reduce((a, b) => a + b) / nums.length
+}
+
+export const getMinwatts = (
+  computeProcessors: string[],
+  constants: CloudConstantsByProvider,
+): number => {
+  return constants.getMinWatts(computeProcessors)
+}
+
+export const getMaxwatts = (
+  computeProcessors: string[],
+  constants: CloudConstantsByProvider,
+): number => {
+  return constants.getMaxWatts(computeProcessors)
+}
+
+export const getPowerUsageEffectiveness = (
+  region: string,
+  constants: CloudConstantsByProvider,
+): number => {
+  return constants.getPUE(region)
+}
+
+export const getCpuUtilizationAverage = (
+  constants: CloudConstantsByProvider,
+): number => {
+  return constants.AVG_CPU_UTILIZATION_2020
+}
+
+export const getEmissionsFactors = (
+  emissionsFactors: CloudConstantsEmissionsFactors,
+): { [region: string]: number } => {
+  return emissionsFactors
 }
 
 export function estimateCo2(

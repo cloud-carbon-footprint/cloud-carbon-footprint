@@ -3,6 +3,7 @@
  */
 
 import { ReplicationFactorsForService } from '@cloud-carbon-footprint/core'
+import { containsAny } from '@cloud-carbon-footprint/common'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
 const { REPLICATION_FACTORS } = AZURE_CLOUD_CONSTANTS
@@ -39,9 +40,3 @@ export const AZURE_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForServic
       return REPLICATION_FACTORS.REDIS_CACHE
     },
   }
-
-const containsAny = (substrings: string[], stringToSearch: string): boolean => {
-  return substrings.some((substring) =>
-    new RegExp(`\\b${substring}\\b`).test(stringToSearch),
-  )
-}

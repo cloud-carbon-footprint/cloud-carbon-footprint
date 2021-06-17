@@ -17,6 +17,11 @@ import {
   configLoader,
   Logger,
   EstimationResult,
+  convertByteHoursToTerabyteHours,
+  convertGigabyteHoursToTerabyteHours,
+  convertGigabyteMonthsToTerabyteHours,
+  endsWithAny,
+  wait,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -36,6 +41,11 @@ import {
   CloudConstants,
   calculateGigabyteHours,
   getPhysicalChips,
+  getMinwatts,
+  getMaxwatts,
+  getPowerUsageEffectiveness,
+  getCpuUtilizationAverage,
+  getEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
 
 import { ServiceWrapper } from './ServiceWrapper'
@@ -114,9 +124,10 @@ export default class CostAndUsageReports {
     costAndUsageReportRow: CostAndUsageReportsRow,
   ): FootprintEstimate {
     const emissionsFactors: CloudConstantsEmissionsFactors =
-      this.getEmissionsFactors()
-    const powerUsageEffectiveness: number = this.getPowerUsageEffectiveness(
+      getEmissionsFactors(AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH)
+    const powerUsageEffectiveness: number = getPowerUsageEffectiveness(
       costAndUsageReportRow.region,
+      AWS_CLOUD_CONSTANTS,
     )
     switch (costAndUsageReportRow.usageUnit) {
       case PRICING_UNITS.HOURS_1:
@@ -270,14 +281,14 @@ export default class CostAndUsageReports {
 
     const computeUsage: ComputeUsage = {
       timestamp: costAndUsageReportRow.timestamp,
-      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: getCpuUtilizationAverage(AWS_CLOUD_CONSTANTS),
       numberOfvCpus: costAndUsageReportRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
 
     const computeConstants: CloudConstants = {
-      minWatts: this.getMinwatts(computeProcessors),
-      maxWatts: this.getMaxwatts(computeProcessors),
+      minWatts: getMinwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
+      maxWatts: getMaxwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
     }
@@ -330,8 +341,8 @@ export default class CostAndUsageReports {
     }
 
     const lambdaComputeConstants: CloudConstants = {
-      minWatts: this.getMinwatts(computeProcessors),
-      maxWatts: this.getMaxwatts(computeProcessors),
+      minWatts: getMinwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
+      maxWatts: getMaxwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
     return this.computeEstimator.estimate(
@@ -429,15 +440,20 @@ export default class CostAndUsageReports {
   ): number {
     if (this.usageTypeisByteHours(costAndUsageReportRow.usageType)) {
       // Convert from Byte-Hours to Terabyte Hours
-      return costAndUsageReportRow.usageAmount / 1099511627776
+      return convertByteHoursToTerabyteHours(costAndUsageReportRow.usageAmount)
     }
     // Convert from GB-Hours to Terabyte Hours
-    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS)
-      return costAndUsageReportRow.usageAmount / 1000
+    if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS) {
+      return convertGigabyteHoursToTerabyteHours(
+        costAndUsageReportRow.usageAmount,
+      )
+    }
 
     // Convert Gb-Month to Terabyte Hours
-    const daysInMonth = moment(costAndUsageReportRow.timestamp).daysInMonth()
-    return (costAndUsageReportRow.usageAmount / 1000) * (24 * daysInMonth)
+    return convertGigabyteMonthsToTerabyteHours(
+      costAndUsageReportRow.usageAmount,
+      costAndUsageReportRow.timestamp,
+    )
   }
 
   private usageTypeIsSSD(costAndUsageRow: CostAndUsageReportsRow): boolean {
@@ -446,32 +462,32 @@ export default class CostAndUsageReports {
     // 2. The usage is from a service we don't know the underlying storage type so overestimate and assume SSD,
     // but not when the usage type is backup, which we assume this is usage using S3 (which is HDD).
     return (
-      this.endsWithAny(SSD_USAGE_TYPES, costAndUsageRow.usageType) ||
-      (this.endsWithAny(SSD_SERVICES, costAndUsageRow.serviceName) &&
+      endsWithAny(SSD_USAGE_TYPES, costAndUsageRow.usageType) ||
+      (endsWithAny(SSD_SERVICES, costAndUsageRow.serviceName) &&
         !costAndUsageRow.usageType.includes('Backup'))
     )
   }
 
   private usageTypeIsHDD(usageType: string): boolean {
-    return this.endsWithAny(HDD_USAGE_TYPES, usageType)
+    return endsWithAny(HDD_USAGE_TYPES, usageType)
   }
 
   private usageTypeisByteHours(usageType: string): boolean {
-    return this.endsWithAny(BYTE_HOURS_USAGE_TYPES, usageType)
+    return endsWithAny(BYTE_HOURS_USAGE_TYPES, usageType)
   }
 
   private usageTypeIsNetworking(
     costAndUsageRow: CostAndUsageReportsRow,
   ): boolean {
     return (
-      this.endsWithAny(NETWORKING_USAGE_TYPES, costAndUsageRow.usageType) &&
+      endsWithAny(NETWORKING_USAGE_TYPES, costAndUsageRow.usageType) &&
       costAndUsageRow.serviceName !== 'AmazonCloudFront'
     )
   }
 
   private usageTypeIsUnknown(usageType: string): boolean {
     return (
-      this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
+      endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
       UNKNOWN_USAGE_TYPES.some((unknownUsageType) =>
         usageType.includes(unknownUsageType),
       )
@@ -479,34 +495,13 @@ export default class CostAndUsageReports {
   }
 
   private getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
-    try {
-      return AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+    return (
+      AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
+      AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
         usageRow.usageType,
         usageRow.region,
       )
-    } catch (err) {
-      return 1
-    }
-  }
-
-  private endsWithAny(suffixes: string[], string: string): boolean {
-    return suffixes.some((suffix) => string.endsWith(suffix))
-  }
-
-  private getMinwatts(computeProcessors: string[]): number {
-    return AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors)
-  }
-
-  private getMaxwatts(computeProcessors: string[]): number {
-    return AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors)
-  }
-
-  private getPowerUsageEffectiveness(region: string): number {
-    return AWS_CLOUD_CONSTANTS.getPUE(region)
-  }
-
-  private getEmissionsFactors(): { [region: string]: number } {
-    return AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+    )
   }
 
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
@@ -588,10 +583,4 @@ export default class CostAndUsageReports {
       await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
   }
-}
-
-async function wait(ms: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
 }
