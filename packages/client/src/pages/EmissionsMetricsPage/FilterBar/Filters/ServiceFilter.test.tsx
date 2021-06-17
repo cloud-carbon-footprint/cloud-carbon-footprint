@@ -7,7 +7,7 @@ import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
 import { Filters, filtersConfigGenerator } from '../utils/Filters'
-import { FilterResultResponse } from '../../../utils/models/types'
+import { FilterResultResponse } from '../../../../utils/models/types'
 
 jest.mock('./AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
@@ -17,7 +17,7 @@ jest.mock('./AccountFilter', () => ({
   ],
 }))
 
-jest.mock('../../../ConfigLoader', () => {
+jest.mock('../../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

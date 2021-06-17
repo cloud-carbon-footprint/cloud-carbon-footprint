@@ -12,7 +12,7 @@ import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 
 jest.mock('apexcharts')
-jest.mock('../../themes')
+jest.mock('../../../themes')
 describe('ApexLineChart', () => {
   class EstimationResultBuilder {
     private timestamp = moment('2019-08-10T00:00:00.000Z').toDate()

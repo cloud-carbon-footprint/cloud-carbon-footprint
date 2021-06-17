@@ -6,8 +6,8 @@ import moment from 'moment'
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { generateEstimations } from '../../../utils/data'
-import { FilterResultResponse } from '../../../utils/models/types'
+import { generateEstimations } from '../../../../utils/data'
+import { FilterResultResponse } from '../../../../utils/models/types'
 import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 
 jest.mock('../Filters/AccountFilter', () => ({
@@ -79,7 +79,7 @@ declare global {
   }
 }
 
-jest.mock('../../../ConfigLoader', () => {
+jest.mock('../../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

@@ -4,45 +4,27 @@
 
 import React from 'react'
 import { act, create, ReactTestRenderer } from 'react-test-renderer'
-import moment from 'moment'
 import Chart from 'react-apexcharts'
+import moment from 'moment'
 
 import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import { ServiceResult } from '../../utils/models/types'
-import { ApexBarChart, Entry } from '../EmissionsBreakdownCard/ApexBarChart'
-import Pagination, { Page } from '../EmissionsBreakdownCard/Pagination'
-import { useRemoteEmissionService } from '../../utils/hooks'
+import { ServiceResult } from '../../../utils/models/types'
+import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
+import Pagination, { Page } from './Pagination'
+import { useRemoteEmissionService } from '../../../utils/hooks'
+import { fakeEmissionFactors } from '../../../utils/data'
 
 jest.mock('apexcharts')
-jest.mock('../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<
     typeof useRemoteEmissionService
   >
-
-const emissionsFactorData: EmissionRatioResult[] = [
-  {
-    region: 'us-west-1',
-    mtPerKwHour: 0.000645,
-  },
-  {
-    region: 'us-west-2',
-    mtPerKwHour: 0.000635,
-  },
-  {
-    region: 'us-west-3',
-    mtPerKwHour: 0.000475,
-  },
-  {
-    region: 'us-west-4',
-    mtPerKwHour: 0.000315,
-  },
-]
 
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
@@ -57,7 +39,7 @@ describe('ApexBarChart', () => {
           kilowattHours: 0,
           co2e: 3000.014,
           cost: 0,
-          region: 'us-west-2',
+          region: 'us-west-1',
         },
         {
           cloudProvider: 'AWS',
@@ -75,7 +57,7 @@ describe('ApexBarChart', () => {
           kilowattHours: 0,
           co2e: 2000.014,
           cost: 0,
-          region: 'us-west-2',
+          region: 'us-west-3',
         },
         {
           cloudProvider: 'AWS',
@@ -84,7 +66,7 @@ describe('ApexBarChart', () => {
           kilowattHours: 0,
           co2e: 0.000014,
           cost: 0,
-          region: 'us-west-2',
+          region: 'us-west-4',
         },
       ],
     },
@@ -92,25 +74,25 @@ describe('ApexBarChart', () => {
   beforeEach(() => {
     const mockReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
-      data: emissionsFactorData,
+      data: fakeEmissionFactors,
     }
     mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     fixture = create(<ApexBarChart data={data} dataType="service" />)
   })
-
-  afterEach(() => {
-    fixture.unmount()
-  })
-
   it('renders with correct configuration', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
   })
 
+  afterEach(() => {
+    fixture.unmount()
+    mockedUseEmissionFactorService.mockClear()
+  })
+
   it('should format tool tip values with proper data instead of scaled down data', () => {
+    const handlePage: (page: Page<Entry>) => void =
+      fixture.root.findByType(Pagination).props?.handlePage
+    // make pagination send first page
     act(() => {
-      const handlePage: (page: Page<Entry>) => void =
-        fixture.root.findByType(Pagination).props?.handlePage
-      // make pagination send first page
       handlePage({
         data: [
           { x: ['ebs', '(AWS)'], y: 100 },
@@ -131,10 +113,10 @@ describe('ApexBarChart', () => {
   })
 
   it('should format data label values with proper data instead of scaled down data', () => {
+    const handlePage: (page: Page<Entry>) => void =
+      fixture.root.findByType(Pagination).props?.handlePage
+    // make pagination send first page
     act(() => {
-      const handlePage: (page: Page<Entry>) => void =
-        fixture.root.findByType(Pagination).props?.handlePage
-      // make pagination send first page
       handlePage({
         data: [
           { x: ['ebs', '(AWS)'], y: 100 },
@@ -153,10 +135,10 @@ describe('ApexBarChart', () => {
   })
 
   it('should format data label values that are less than 0.01', () => {
+    const handlePage: (page: Page<Entry>) => void =
+      fixture.root.findByType(Pagination).props?.handlePage
+    // make pagination send first page
     act(() => {
-      const handlePage: (page: Page<Entry>) => void =
-        fixture.root.findByType(Pagination).props?.handlePage
-      // make pagination send first page
       handlePage({
         data: [
           { x: ['ebs', '(AWS)'], y: 100 },
@@ -184,5 +166,59 @@ describe('ApexBarChart', () => {
     ]
 
     expect(paginationComponent.props.data).toEqual(sortedData)
+  })
+
+  it('should set colors to each bar based on region emissions', () => {
+    fixture = create(<ApexBarChart data={data} dataType="region" />)
+    expect(fixture.toJSON()).toMatchSnapshot()
+    const paginationComponent = fixture.root.findByType(Pagination)
+    const sortedData = [
+      { x: ['us-west-1', '(AWS)'], y: 100 },
+      { x: ['us-west-3', '(AWS)'], y: 67.00015384528277 },
+      { x: ['us-west-2', '(AWS)'], y: 34.00030769056555 },
+      { x: ['us-west-4', '(AWS)'], y: 1 },
+    ]
+
+    const customColors = ['#790000', '#D99200', '#DF5200', '#00791E']
+
+    expect(paginationComponent.props.data).toEqual(sortedData)
+
+    const optionColors = fixture.root.findByType(Chart).props?.options?.colors
+    expect(optionColors).toBeDefined()
+    expect(optionColors).toEqual(customColors)
+  })
+
+  it('should create custom colors array', () => {
+    const firstPagedata = [
+      { x: ['us-west-1', '(AWS)'], y: 100 },
+      { x: ['us-west-3', '(AWS)'], y: 67.00015384528277 },
+      { x: ['us-west-2', '(AWS)'], y: 34.00030769056555 },
+      { x: ['us-west-4', '(AWS)'], y: 1 },
+      { x: ['us-east-1', '(AWS)'], y: 2 },
+    ]
+    const pageData: Page<Entry> = { data: firstPagedata, page: 0 }
+    const mainTheme = '#2C82BE'
+
+    const emissionsData: EmissionRatioResult[] = fakeEmissionFactors
+    const colors = ['#790000', '#D99200', '#DF5200', '#00791E', '#73B500']
+    const defaultColors = [
+      '#2C82BE',
+      '#2C82BE',
+      '#2C82BE',
+      '#2C82BE',
+      '#2C82BE',
+    ]
+
+    const customColors = createCustomBarColors(
+      pageData,
+      emissionsData,
+      mainTheme,
+    )
+
+    expect(customColors).toEqual(colors)
+
+    const mainColors = createCustomBarColors(pageData, [], mainTheme)
+
+    expect(mainColors).toEqual(defaultColors)
   })
 })

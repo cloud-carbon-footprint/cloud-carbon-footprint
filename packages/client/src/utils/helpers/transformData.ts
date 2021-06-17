@@ -12,7 +12,7 @@ import {
 } from '../models/types'
 import { pluck, uniq } from 'ramda'
 import { useEffect, useState } from 'react'
-import { DropdownOption } from '../../dashboard/FilterBar/Filters/DropdownFilter'
+import { DropdownOption } from '../../pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
 
 const sumServiceTotals = (
   data: EstimationResult[],

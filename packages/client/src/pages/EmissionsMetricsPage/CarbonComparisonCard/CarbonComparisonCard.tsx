@@ -18,9 +18,9 @@ import {
   Eco,
   OpenInNew,
 } from '@material-ui/icons'
-import { sumCO2 } from '../../utils/helpers'
+import { sumCO2 } from '../../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import NoDataMessage from '../../common/NoDataMessage'
+import NoDataMessage from '../../../common/NoDataMessage'
 
 type Selection = 'flights' | 'phones' | 'trees'
 

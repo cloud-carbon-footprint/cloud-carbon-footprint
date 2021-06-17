@@ -11,16 +11,16 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import CloudCarbonContainer from './CloudCarbonContainer'
-import { useRemoteService, useRemoteEmissionService } from '../utils/hooks'
-import { generateEstimations, fakeEmissionFactors } from '../utils/data'
-import { ServiceResult } from '../utils/models/types'
+import EmissionsMetricsPage from './EmissionsMetricsPage'
+import { useRemoteService, useRemoteEmissionService } from '../../utils/hooks'
+import { generateEstimations, fakeEmissionFactors } from '../../utils/data'
+import { ServiceResult } from '../../utils/models/types'
 
 jest.mock('apexcharts')
-jest.mock('../utils/hooks/RemoteServiceHook')
-jest.mock('../utils/hooks/EmissionFactorServiceHook')
-jest.mock('../themes')
-jest.mock('../ConfigLoader', () => ({
+jest.mock('../../utils/hooks/RemoteServiceHook')
+jest.mock('../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('../../themes')
+jest.mock('../../ConfigLoader', () => ({
   __esModule: true,
   default: () => ({
     CURRENT_PROVIDERS: [
@@ -44,7 +44,7 @@ const mockUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
 >
 
-describe('CloudCarbonContainer', () => {
+describe('Emissions Metrics Page', () => {
   let data: EstimationResult[]
 
   beforeEach(() => {
@@ -68,7 +68,7 @@ describe('CloudCarbonContainer', () => {
   })
 
   test('today and january first of the last year should be passed in to remote service hook', () => {
-    render(<CloudCarbonContainer />)
+    render(<EmissionsMetricsPage />)
 
     const parameters = mockUseRemoteService.mock.calls[0]
 
@@ -93,7 +93,7 @@ describe('CloudCarbonContainer', () => {
     }
     mockUseRemoteService.mockReturnValue(mockLoading)
 
-    const { getByRole } = render(<CloudCarbonContainer />)
+    const { getByRole } = render(<EmissionsMetricsPage />)
 
     expect(getByRole('progressbar')).toBeInTheDocument()
   })

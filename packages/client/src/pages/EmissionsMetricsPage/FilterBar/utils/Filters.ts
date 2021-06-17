@@ -4,7 +4,10 @@
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { FilterResultResponse, UnknownTypes } from '../../../utils/models/types'
+import {
+  FilterResultResponse,
+  UnknownTypes,
+} from '../../../../utils/models/types'
 import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
 import * as FiltersUtil from './FiltersUtil'

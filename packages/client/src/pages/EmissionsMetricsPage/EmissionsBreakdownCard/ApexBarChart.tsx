@@ -7,13 +7,13 @@ import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
-import { sumCO2ByServiceOrRegion } from '../../utils/helpers'
-import { ApexChartProps } from '../../utils/models/types'
-import { chartBarCustomColors } from '../../utils/models/types'
+import { sumCO2ByServiceOrRegion } from '../../../utils/helpers'
+import { ApexChartProps } from '../../../utils/models/types'
+import { chartBarCustomColors } from '../../../utils/models/types'
 import Pagination, { Page } from './Pagination'
 import CarbonIntensityRange from './CarbonIntensityRange'
-import NoDataMessage from '../../common/NoDataMessage'
-import useRemoteEmissionService from '../../utils/hooks/EmissionFactorServiceHook'
+import NoDataMessage from '../../../common/NoDataMessage'
+import useRemoteEmissionService from '../../../utils/hooks/EmissionFactorServiceHook'
 
 const mapToRange = (
   value: number,

@@ -4,7 +4,7 @@
 
 import React, { ReactElement } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { useRemoteService } from '../utils/hooks'
+import { useRemoteService } from '../../utils/hooks'
 import useFilters from './FilterBar/utils/FilterHook'
 import {
   MonthFilter,
@@ -19,10 +19,10 @@ import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import moment, { unitOfTime } from 'moment'
 import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
 import CloudProviderFilter from './FilterBar/Filters/CloudProviderFilter'
-import { useFilterDataFromEstimates } from '../utils/helpers'
-import { FilterResultResponse } from '../utils/models/types'
-import NoDataMessage from '../common/NoDataMessage'
-import config from '../ConfigLoader'
+import { useFilterDataFromEstimates } from '../../utils/helpers'
+import { FilterResultResponse } from '../../utils/models/types'
+import NoDataMessage from '../../common/NoDataMessage'
+import config from '../../ConfigLoader'
 
 const PADDING_FILTER = 0.5
 const PADDING_LOADING = 2
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function CloudCarbonContainer(): ReactElement {
+export default function EmissionsMetricsPage(): ReactElement {
   const classes = useStyles()
 
   const dateRangeType: string = config().DATE_RANGE.TYPE
