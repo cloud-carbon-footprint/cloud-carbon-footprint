@@ -95,13 +95,7 @@ export default class CostAndUsageReports {
         rowData.Data,
       )
 
-      if (
-        this.usageTypeIsUnknown(
-          costAndUsageReportRow.usageType,
-          costAndUsageReportRow.serviceName,
-        )
-      )
-        return []
+      if (this.usageTypeIsUnknown(costAndUsageReportRow.usageType)) return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         costAndUsageReportRow,
@@ -475,13 +469,12 @@ export default class CostAndUsageReports {
     )
   }
 
-  private usageTypeIsUnknown(usageType: string, serviceName: string): boolean {
+  private usageTypeIsUnknown(usageType: string): boolean {
     return (
       this.endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
       UNKNOWN_USAGE_TYPES.some((unknownUsageType) =>
         usageType.includes(unknownUsageType),
-      ) ||
-      serviceName === 'AmazonSimpleDB'
+      )
     )
   }
 
@@ -494,10 +487,6 @@ export default class CostAndUsageReports {
     } catch (err) {
       return 1
     }
-  }
-
-  private includesAny(substrings: string[], string: string): boolean {
-    return substrings.some((substring) => string.includes(substring))
   }
 
   private endsWithAny(suffixes: string[], string: string): boolean {

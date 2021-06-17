@@ -934,6 +934,19 @@ const queryResultsDataTwelve = [
       { VarCharValue: '5' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'ap-southeast-1' },
+      { VarCharValue: 'AmazonSimpleDB' },
+      { VarCharValue: 'APS2-TimedStorage-ByteHrs' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: '5' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsDatabasesWithReplicationFactors: Athena.GetQueryResultsOutput =

@@ -16,6 +16,7 @@ enum SERVICES {
   DYNAMO_DB = 'AmazonDynamoDB',
   ECR = 'AmazonECR',
   ELASTICACHE = 'AmazonElastiCache',
+  SIMPLE_DB = 'AmazonSimpleDB',
 }
 
 export const AWS_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService =
@@ -63,6 +64,10 @@ export const AWS_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
     [SERVICES.ELASTICACHE]: (usageType: string): number => {
       if (usageType.includes('BackupUsage'))
         return REPLICATION_FACTORS.DOCUMENT_ELASTICACHE_BACKUP // 3
+    },
+    [SERVICES.SIMPLE_DB]: (usageType: string): number => {
+      if (usageType.includes('TimedStorage'))
+        return REPLICATION_FACTORS.SIMPLE_DB // 2
     },
   }
 
