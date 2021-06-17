@@ -458,6 +458,16 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: false,
             kilowattHours: 0.013105152,
           },
+          {
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 0.0000012564564480000002,
+            cost: 2,
+            region: 'IN West',
+            serviceName: 'Storage',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.0017746560000000003,
+          },
         ],
       },
     ]

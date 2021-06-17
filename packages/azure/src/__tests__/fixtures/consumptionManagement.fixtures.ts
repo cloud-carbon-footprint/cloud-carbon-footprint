@@ -424,11 +424,23 @@ export const mockConsumptionManagementResponseSix: AzureUsageDetailsResponse[] =
       pretaxCost: 2,
       meterDetails: {
         meterName: 'P10 Disks',
-        unit: '100 GB/Month',
+        unit: '1 /Month',
         serviceName: 'Storage',
       },
       subscriptionName: 'test-subscription',
       location: 'UK South',
+    },
+    {
+      usageStart: new Date('2021-11-04'),
+      usageQuantity: 123456789,
+      pretaxCost: 2,
+      meterDetails: {
+        meterName: 'S4 Disks',
+        unit: '1 /Month',
+        serviceName: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      location: 'IN West',
     },
   ]
 
