@@ -237,6 +237,21 @@ bytes, because this is a more accurate reflection of the energy needed to suppor
 organization may have a 20 Gigabyte AWS EBS Volume allocated, but is only utilizing 2 Gigabytes for this block storage
 device. In this case we would use 20 GBs in the energy estimation formula for EBS storage.
 
+
+#### Storage Services Replication Factors
+
+In order to achieve adequate durability and availability for data stores and to ensure better redundancy in the case 
+of service outages, most cloud provider storage and database services automatically replicate your data as well as any 
+associated compute and memory resources. Sometimes this is within an individual data center, other times it is within a 
+geographical location or across multiple geographical locations.
+
+Because of this, the actual infrastructure (and energy) required to provide a given amount of storage can be multiple 
+times more than what might be provided by cloud providers as the allocated amount of usage. After analyzing cloud 
+storage and database services, we have determined a number of “replication factors” to take this into account, which 
+you can see the details of in this [spreadsheet](https://docs.google.com/spreadsheets/d/1D7mIGKkdO1djPoMVmlXRmzA7_4tTiGZLYdVbfe85xQM/edit#gid=735227650). 
+These replication factors are applied to the total energy and CO2e estimate for each storage or database service 
+(inclusive of all types of resources replicated).
+
 #### Networking
 
 #### Scope
