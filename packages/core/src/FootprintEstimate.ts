@@ -5,11 +5,7 @@
 import { median, reduceBy } from 'ramda'
 
 import { COMPUTE_PROCESSOR_TYPES } from './compute'
-import {
-  BillingDataRow,
-  CloudConstantsByProvider,
-  CloudConstantsEmissionsFactors,
-} from '.'
+import { BillingDataRow, CloudConstantsEmissionsFactors } from '.'
 
 export default interface FootprintEstimate {
   timestamp: Date
@@ -170,39 +166,6 @@ export function getAverage(nums: number[]): number {
   if (!nums.length) return 0
   if (nums.length === 1) return nums[0]
   return nums.reduce((a, b) => a + b) / nums.length
-}
-
-export const getMinwatts = (
-  computeProcessors: string[],
-  constants: CloudConstantsByProvider,
-): number => {
-  return constants.getMinWatts(computeProcessors)
-}
-
-export const getMaxwatts = (
-  computeProcessors: string[],
-  constants: CloudConstantsByProvider,
-): number => {
-  return constants.getMaxWatts(computeProcessors)
-}
-
-export const getPowerUsageEffectiveness = (
-  region: string,
-  constants: CloudConstantsByProvider,
-): number => {
-  return constants.getPUE(region)
-}
-
-export const getCpuUtilizationAverage = (
-  constants: CloudConstantsByProvider,
-): number => {
-  return constants.AVG_CPU_UTILIZATION_2020
-}
-
-export const getEmissionsFactors = (
-  emissionsFactors: CloudConstantsEmissionsFactors,
-): { [region: string]: number } => {
-  return emissionsFactors
 }
 
 export function estimateCo2(

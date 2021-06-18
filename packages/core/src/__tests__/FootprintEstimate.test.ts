@@ -5,35 +5,15 @@
 import FootprintEstimate, {
   aggregateEstimatesByDay,
   appendOrAccumulateEstimatesByDay,
-  getCpuUtilizationAverage,
-  getEmissionsFactors,
-  getMinwatts,
-  getMaxwatts,
-  getPowerUsageEffectiveness,
   getWattsByAverageOrMedian,
   MutableServiceEstimate,
 } from '../FootprintEstimate'
 import BillingDataRow from '../BillingDataRow'
 import { COMPUTE_PROCESSOR_TYPES } from '../compute'
-import { CloudConstantsByProvider } from '../CloudConstantsTypes'
 
 describe('FootprintEstimate', () => {
   const dayOne = new Date('2021-01-01')
   const dayTwo = new Date('2021-01-02')
-
-  const region = 'us-east-1'
-  const computeProcessors = ['unknown']
-  const cloudConstants: CloudConstantsByProvider = {
-    ...expect.anything(),
-    getMinWatts: jest.fn().mockReturnValue(1.23),
-    getMaxWatts: jest.fn().mockReturnValue(3.69),
-    getPUE: jest.fn().mockReturnValue(1.185),
-    AVG_CPU_UTILIZATION_2020: 50,
-  }
-
-  const cloudEmissionsFactors = {
-    [region]: 0.000415755,
-  }
 
   it('aggregateEstimatesByDay', () => {
     // given
@@ -269,27 +249,6 @@ describe('FootprintEstimate', () => {
 
       // then
       expect(result).toEqual(8.166666666666666)
-    })
-    it('gets min watts', () => {
-      const result = getMinwatts(computeProcessors, cloudConstants)
-      expect(result).toEqual(1.23)
-    })
-    it('gets max watts', () => {
-      const result = getMaxwatts(computeProcessors, cloudConstants)
-      expect(result).toEqual(3.69)
-    })
-    it('gets power usage effectiveness', () => {
-      const result = getPowerUsageEffectiveness(region, cloudConstants)
-      expect(result).toEqual(1.185)
-    })
-    it('gets cpu utilization average', () => {
-      const result = getCpuUtilizationAverage(cloudConstants)
-      expect(result).toEqual(50)
-    })
-    it('gets emissions factors', () => {
-      const expectedResult = { 'us-east-1': 0.000415755 }
-      const result = getEmissionsFactors(cloudEmissionsFactors)
-      expect(result).toEqual(expectedResult)
     })
   })
 })

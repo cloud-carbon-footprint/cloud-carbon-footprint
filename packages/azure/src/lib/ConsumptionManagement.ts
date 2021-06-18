@@ -34,11 +34,6 @@ import {
   CloudConstantsEmissionsFactors,
   calculateGigabyteHours,
   getPhysicalChips,
-  getMinwatts,
-  getMaxwatts,
-  getPowerUsageEffectiveness,
-  getCpuUtilizationAverage,
-  getEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
@@ -199,10 +194,9 @@ export default class ConsumptionManagementService {
     consumptionDetailRow: ConsumptionDetailRow,
   ): FootprintEstimate {
     const emissionsFactors: CloudConstantsEmissionsFactors =
-      getEmissionsFactors(AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH)
-    const powerUsageEffectiveness: number = getPowerUsageEffectiveness(
+      AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+    const powerUsageEffectiveness: number = AZURE_CLOUD_CONSTANTS.getPUE(
       consumptionDetailRow.region,
-      AZURE_CLOUD_CONSTANTS,
     )
     switch (consumptionDetailRow.usageUnit) {
       case COMPUTE_USAGE_UNITS.HOUR_1:
@@ -354,14 +348,14 @@ export default class ConsumptionManagementService {
 
     const computeUsage: ComputeUsage = {
       timestamp: consumptionDetailRow.timestamp,
-      cpuUtilizationAverage: getCpuUtilizationAverage(AZURE_CLOUD_CONSTANTS),
+      cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: consumptionDetailRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
 
     const computeConstants: CloudConstants = {
-      minWatts: getMinwatts(computeProcessors, AZURE_CLOUD_CONSTANTS),
-      maxWatts: getMaxwatts(computeProcessors, AZURE_CLOUD_CONSTANTS),
+      minWatts: AZURE_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
+      maxWatts: AZURE_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }

@@ -30,11 +30,6 @@ import {
   COMPUTE_PROCESSOR_TYPES,
   CloudConstantsEmissionsFactors,
   CloudConstants,
-  getMinwatts,
-  getMaxwatts,
-  getPowerUsageEffectiveness,
-  getEmissionsFactors,
-  getCpuUtilizationAverage,
 } from '@cloud-carbon-footprint/core'
 
 import {
@@ -90,10 +85,9 @@ export default class BillingExportTable {
 
       let footprintEstimate: FootprintEstimate
       const emissionsFactors: CloudConstantsEmissionsFactors =
-        getEmissionsFactors(GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH)
-      const powerUsageEffectiveness: number = getPowerUsageEffectiveness(
+        GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+      const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
         billingExportRow.region,
-        GCP_CLOUD_CONSTANTS,
       )
       switch (usageRow.usageUnit) {
         case 'seconds':
@@ -159,7 +153,7 @@ export default class BillingExportTable {
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeUsage: ComputeUsage = {
-      cpuUtilizationAverage: getCpuUtilizationAverage(GCP_CLOUD_CONSTANTS),
+      cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
@@ -171,8 +165,8 @@ export default class BillingExportTable {
     )
 
     const computeConstants: CloudConstants = {
-      minWatts: getMinwatts(computeProcessors, GCP_CLOUD_CONSTANTS),
-      maxWatts: getMaxwatts(computeProcessors, GCP_CLOUD_CONSTANTS),
+      minWatts: GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
+      maxWatts: GCP_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 

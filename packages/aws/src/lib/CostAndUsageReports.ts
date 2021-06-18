@@ -41,11 +41,6 @@ import {
   CloudConstants,
   calculateGigabyteHours,
   getPhysicalChips,
-  getMinwatts,
-  getMaxwatts,
-  getPowerUsageEffectiveness,
-  getCpuUtilizationAverage,
-  getEmissionsFactors,
 } from '@cloud-carbon-footprint/core'
 
 import { ServiceWrapper } from './ServiceWrapper'
@@ -124,10 +119,9 @@ export default class CostAndUsageReports {
     costAndUsageReportRow: CostAndUsageReportsRow,
   ): FootprintEstimate {
     const emissionsFactors: CloudConstantsEmissionsFactors =
-      getEmissionsFactors(AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH)
-    const powerUsageEffectiveness: number = getPowerUsageEffectiveness(
+      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+    const powerUsageEffectiveness: number = AWS_CLOUD_CONSTANTS.getPUE(
       costAndUsageReportRow.region,
-      AWS_CLOUD_CONSTANTS,
     )
     switch (costAndUsageReportRow.usageUnit) {
       case PRICING_UNITS.HOURS_1:
@@ -281,14 +275,14 @@ export default class CostAndUsageReports {
 
     const computeUsage: ComputeUsage = {
       timestamp: costAndUsageReportRow.timestamp,
-      cpuUtilizationAverage: getCpuUtilizationAverage(AWS_CLOUD_CONSTANTS),
+      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       numberOfvCpus: costAndUsageReportRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
 
     const computeConstants: CloudConstants = {
-      minWatts: getMinwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
-      maxWatts: getMaxwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
+      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
+      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
     }
@@ -341,8 +335,8 @@ export default class CostAndUsageReports {
     }
 
     const lambdaComputeConstants: CloudConstants = {
-      minWatts: getMinwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
-      maxWatts: getMaxwatts(computeProcessors, AWS_CLOUD_CONSTANTS),
+      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
+      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
     return this.computeEstimator.estimate(
