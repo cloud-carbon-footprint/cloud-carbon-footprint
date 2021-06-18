@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![CI](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/cloud-carbon-footprint/cloud-carbon-footprint/branch/trunk/graph/badge.svg)](https://codecov.io/gh/cloud-carbon-footprint/cloud-carbon-footprint)
 
 [Cloud Carbon Footprint](https://www.cloudcarbonfootprint.org) is an application that estimates the energy (kilowatt hours) and carbon emissions (metric tons CO2e) of public cloud provider utilization.
 
