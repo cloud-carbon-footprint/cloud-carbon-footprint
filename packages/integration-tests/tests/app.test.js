@@ -92,29 +92,31 @@ test('carbon equivalency component displays each option when clicked', async (t)
 })
 
 test('emissions breakdown component displays each bar chart when selected', async (t) => {
+  // Maximize the window in orde for all DOM elements to be visible.
+  // For some reason this stops this test failing, and can help with debugging.
+  await t.maximizeWindow()
+
   const dropDownSelector = Selector('#breakdown-selector')
-  const regionSelection = Selector('#region-dropdown')
   const accountSelection = Selector('#account-dropdown')
-  const serviceSelection = Selector('#service-dropdown')
-  const region = Selector('tspan').withText('us-east-1')
   const account = Selector('tspan').withText('aws account 3')
+
+  await t.click(dropDownSelector)
+  await t.click(accountSelection)
+  await t.expect(account.exists).ok()
+
+  const serviceSelection = Selector('#service-dropdown')
   const service = Selector('tspan').withText('computeEngine')
 
-  await t
-    .click(dropDownSelector)
-    .click(accountSelection)
-    .expect(account.exists)
-    .ok()
-  await t
-    .click(dropDownSelector)
-    .click(regionSelection)
-    .expect(region.exists)
-    .ok()
-  await t
-    .click(dropDownSelector)
-    .click(serviceSelection)
-    .expect(service.exists)
-    .ok()
+  await t.click(dropDownSelector)
+  await t.click(serviceSelection)
+  await t.expect(service.exists).ok()
+
+  const regionSelection = Selector('#region-dropdown')
+  const region = Selector('tspan').withText('us-east-1')
+
+  await t.click(dropDownSelector)
+  await t.click(regionSelection)
+  await t.expect(region.exists).ok()
 })
 
 test('line chart displays the y-axis data when legend is clicked', async (t) => {

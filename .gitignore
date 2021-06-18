@@ -271,4 +271,7 @@ sketch
 #terraform
 terraform/.terraform/
 
+#TestCafe
+screenshots
+
 
