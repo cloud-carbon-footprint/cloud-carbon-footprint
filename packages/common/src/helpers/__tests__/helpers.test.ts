@@ -2,7 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { containsAny, endsWithAny } from '../helpers'
+import { containsAny, endsWithAny, wait } from '../helpers'
+
+jest.useFakeTimers()
 
 describe('Helpers', () => {
   it('contains any', () => {
@@ -26,5 +28,16 @@ describe('Helpers', () => {
 
     expect(resultOne).toBe(true)
     expect(resultTwo).toBe(false)
+  })
+
+  it('waits one second', async () => {
+    const waitTime = 1000
+
+    const promise = wait(waitTime)
+    jest.runAllTimers()
+    await promise
+
+    expect(setTimeout).toHaveBeenCalledTimes(1)
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), waitTime)
   })
 })

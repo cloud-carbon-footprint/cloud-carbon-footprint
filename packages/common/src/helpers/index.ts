@@ -11,6 +11,6 @@ export {
   convertGigabyteMonthsToTerabyteHours,
   convertTerabytesToGigabytes,
   convertGigaBytesToTerabyteHours,
-} from './calculations'
+} from './unitConversion'
 
 export { containsAny, endsWithAny, wait } from './helpers'

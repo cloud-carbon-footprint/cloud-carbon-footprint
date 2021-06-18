@@ -10,7 +10,7 @@ import {
   convertGigabyteMonthsToTerabyteHours,
   convertGigaBytesToTerabyteHours,
   convertTerabytesToGigabytes,
-} from '../helpers'
+} from '../unitConversion'
 
 describe('Calculations helpers', () => {
   const usageAmount = 5
