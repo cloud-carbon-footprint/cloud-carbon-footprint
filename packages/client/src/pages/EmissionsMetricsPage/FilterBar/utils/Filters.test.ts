@@ -7,7 +7,7 @@ import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 import { generateEstimations } from '../../../../utils/data'
-import { FilterResultResponse } from '../../../../utils/models/types'
+import { FilterResultResponse } from '../../../../Types'
 import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 
 jest.mock('../Filters/AccountFilter', () => ({

@@ -14,7 +14,7 @@ import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from './utils/models/types'
+import { ServiceResult } from './Types'
 
 jest.mock('apexcharts')
 jest.mock('./utils/hooks/RemoteServiceHook')

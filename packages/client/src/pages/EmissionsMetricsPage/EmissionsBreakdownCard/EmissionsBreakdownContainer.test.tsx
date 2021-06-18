@@ -18,7 +18,7 @@ import {
 
 import EmissionsBreakdownContainer from './EmissionsBreakdownContainer'
 import { ApexBarChart } from './ApexBarChart'
-import { ServiceResult } from '../../../utils/models/types'
+import { ServiceResult } from '../../../Types'
 import { useRemoteEmissionService } from '../../../utils/hooks'
 import { fakeEmissionFactors } from '../../../utils/data'
 

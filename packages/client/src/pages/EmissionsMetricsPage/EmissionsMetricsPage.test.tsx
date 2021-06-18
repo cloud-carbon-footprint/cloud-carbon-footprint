@@ -14,7 +14,7 @@ import {
 import EmissionsMetricsPage from './EmissionsMetricsPage'
 import { useRemoteService, useRemoteEmissionService } from '../../utils/hooks'
 import { generateEstimations, fakeEmissionFactors } from '../../utils/data'
-import { ServiceResult } from '../../utils/models/types'
+import { ServiceResult } from '../../Types'
 
 jest.mock('apexcharts')
 jest.mock('../../utils/hooks/RemoteServiceHook')

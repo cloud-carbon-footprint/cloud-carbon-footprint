@@ -12,7 +12,7 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import { ServiceResult } from '../../../utils/models/types'
+import { ServiceResult } from '../../../Types'
 import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
 import Pagination, { Page } from './Pagination'
 import { useRemoteEmissionService } from '../../../utils/hooks'

@@ -20,7 +20,7 @@ import moment, { unitOfTime } from 'moment'
 import { Box, Card, CircularProgress, Grid } from '@material-ui/core'
 import CloudProviderFilter from './FilterBar/Filters/CloudProviderFilter'
 import { useFilterDataFromEstimates } from '../../utils/helpers'
-import { FilterResultResponse } from '../../utils/models/types'
+import { FilterResultResponse } from '../../Types'
 import NoDataMessage from '../../common/NoDataMessage'
 import config from '../../ConfigLoader'
 

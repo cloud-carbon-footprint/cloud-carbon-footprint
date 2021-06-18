@@ -1,7 +1,7 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { DropdownOption } from '../../pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
+import { DropdownOption } from './pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {

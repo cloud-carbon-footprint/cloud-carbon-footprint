@@ -9,7 +9,7 @@ import {
   ChartDataTypes,
   FilterResultResponse,
   UnknownTypes,
-} from '../models/types'
+} from '../../Types'
 import { pluck, uniq } from 'ramda'
 import { useEffect, useState } from 'react'
 import { DropdownOption } from '../../pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'

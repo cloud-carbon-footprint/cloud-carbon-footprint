@@ -7,7 +7,7 @@ import axios from 'axios'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 import { useErrorHandling } from '../../layout/ErrorPage'
 
-import { ServiceResult } from '../models/types'
+import { ServiceResult } from '../../Types'
 
 const useRemoteEmissionService = (): ServiceResult<EmissionRatioResult> => {
   const [data, setData] = useState([])
