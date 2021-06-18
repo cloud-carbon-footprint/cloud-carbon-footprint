@@ -61,7 +61,10 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 }))
 
 jest.mock('@cloud-carbon-footprint/aws', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/aws'),
+  ...(jest.requireActual('@cloud-carbon-footprint/aws') as Record<
+    string,
+    unknown
+  >),
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     awsRegion1: 1,
     awsRegion2: 2,
@@ -69,7 +72,10 @@ jest.mock('@cloud-carbon-footprint/aws', () => ({
 }))
 
 jest.mock('@cloud-carbon-footprint/gcp', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/gcp'),
+  ...(jest.requireActual('@cloud-carbon-footprint/gcp') as Record<
+    string,
+    unknown
+  >),
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     gcpRegion1: 3,
     gcpRegion2: 4,
@@ -77,7 +83,10 @@ jest.mock('@cloud-carbon-footprint/gcp', () => ({
 }))
 
 jest.mock('@cloud-carbon-footprint/azure', () => ({
-  ...jest.requireActual('@cloud-carbon-footprint/azure'),
+  ...(jest.requireActual('@cloud-carbon-footprint/azure') as Record<
+    string,
+    unknown
+  >),
   AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
     azureRegion1: 5,
     azureRegion2: 6,
