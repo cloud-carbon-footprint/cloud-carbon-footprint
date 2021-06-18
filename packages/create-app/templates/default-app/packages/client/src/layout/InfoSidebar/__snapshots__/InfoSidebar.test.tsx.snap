@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CarbonFormulaDrawer renders 1`] = `
+<div
+  className="MuiDrawer-root MuiDrawer-docked makeStyles-drawer-3 makeStyles-drawerClose-5"
+  id="drawer-closed"
+>
+  <div
+    className="MuiPaper-root MuiDrawer-paper makeStyles-drawerClose-5 MuiDrawer-paperAnchorRight MuiDrawer-paperAnchorDockedRight MuiPaper-elevation0"
+  >
+    <button
+      aria-label="open drawer"
+      className="MuiButtonBase-root MuiIconButton-root makeStyles-infoButton-1 MuiIconButton-colorInherit MuiIconButton-edgeStart"
+      disabled={false}
+      id="info-button"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <span
+        className="MuiIconButton-label"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          data-testid="infoIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+          />
+        </svg>
+      </span>
+    </button>
+    <div
+      className="makeStyles-toolbar-6 makeStyles-hide-7"
+    >
+      <div
+        className="makeStyles-closeButtonContainer-2"
+        id="close-button-container"
+      >
+        <button
+          className="MuiButtonBase-root MuiIconButton-root"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={0}
+          type="button"
+        >
+          <span
+            className="MuiIconButton-label"
+          >
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              data-testid="closeIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <p
+        className="MuiTypography-root makeStyles-contentTitle-8 MuiTypography-body1"
+      >
+        How do we get our carbon estimates?
+      </p>
+      <hr
+        className="MuiDivider-root"
+      />
+      <p
+        className="MuiTypography-root makeStyles-content-10 MuiTypography-body1"
+      >
+        Our CO2e Estimate Formula:
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-content-10 makeStyles-formula-11 MuiTypography-body1"
+      >
+        (Cloud provider service usage) x (Cloud energy conversion factors [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (grid emissions factors [metric tons CO2e])
+      </p>
+      <hr
+        className="MuiDivider-root"
+      />
+      <p
+        className="MuiTypography-root makeStyles-content-10 MuiTypography-body1"
+      >
+        Currently we estimate CO2e emissions for cloud compute, storage and networking. Memory usage is not estimated yet due to their arguably comparatively small footprint and current lack of available energy conversion factors.
+        <br />
+        <br />
+        Emissions data points marked with an * have been estimated with average CPU Utilization because the actual CPU Utilization is not available.
+        <br />
+        <br />
+        Cloud Provider regions on map are an approximation based on public information given by each cloud provider. Regional grid emissions factor sources vary based on country.
+      </p>
+      <a
+        className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-methodology-12 MuiTypography-colorPrimary"
+        href="https://www.cloudcarbonfootprint.org/docs/methodology"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        Read more in our full methodology here
+         
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-openIcon-13 MuiSvgIcon-fontSizeSmall"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+`;

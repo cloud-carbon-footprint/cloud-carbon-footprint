@@ -6,10 +6,10 @@ import React, { ReactElement } from 'react'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route } from 'react-router-dom'
-import ErrorPage from './dashboard/ErrorPage'
-import CloudCarbonContainer from './dashboard/CloudCarbonContainer'
-import { CarbonFormulaDrawer } from './dashboard/CarbonFormulaDrawer'
-import HeaderBar from './dashboard/HeaderBar'
+import ErrorPage from './layout/ErrorPage'
+import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
+import InfoSidebar from './layout/InfoSidebar'
+import HeaderBar from './layout/HeaderBar'
 
 function App(): ReactElement {
   const useStyles = makeStyles(() => ({
@@ -30,8 +30,8 @@ function App(): ReactElement {
             <ErrorPage />
           </Route>
           <Route path="/">
-            <CarbonFormulaDrawer />
-            <CloudCarbonContainer />
+            <InfoSidebar />
+            <EmissionsMetricsPage />
           </Route>
         </Switch>
       </Container>

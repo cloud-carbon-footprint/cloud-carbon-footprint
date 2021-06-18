@@ -4,7 +4,7 @@
 
 import React, { useMemo } from 'react'
 import ReactDOM from 'react-dom'
-import { determineTheme } from './themes'
+import { determineTheme } from './utils/themes'
 import { ThemeProvider, CssBaseline } from '@material-ui/core'
 
 import App from './App'
