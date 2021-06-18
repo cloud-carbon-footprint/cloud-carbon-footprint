@@ -18,7 +18,7 @@ import Pagination, { Page } from '../Pagination'
 import { useRemoteEmissionService } from '../../../../utils/hooks'
 
 jest.mock('apexcharts')
-jest.mock('../../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('../../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<

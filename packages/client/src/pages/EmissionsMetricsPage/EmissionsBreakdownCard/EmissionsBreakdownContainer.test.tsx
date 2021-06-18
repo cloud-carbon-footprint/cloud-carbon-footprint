@@ -23,7 +23,7 @@ import { useRemoteEmissionService } from '../../../utils/hooks'
 import { fakeEmissionFactors } from '../../../utils/data'
 
 jest.mock('apexcharts')
-jest.mock('../../../themes')
+jest.mock('../../../utils/themes')
 jest.mock('../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =

@@ -6,7 +6,7 @@ import React, { FunctionComponent } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
-import { getChartColors } from '../../../../themes'
+import { getChartColors } from '../../../../utils/themes'
 import { sumCO2ByServiceOrRegion } from '../../../../utils/helpers'
 import { ApexChartProps } from '../../../../Types'
 

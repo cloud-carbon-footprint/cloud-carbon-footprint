@@ -8,7 +8,7 @@ import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
 import { CustomTooltip } from './CustomTooltip'
 
-import { getChartColors } from '../../../themes'
+import { getChartColors } from '../../../utils/themes'
 import { sumServiceTotals, getMaxOfDataSeries } from '../../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ApexChartProps } from '../../../Types'
