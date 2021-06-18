@@ -2083,7 +2083,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2114,7 +2114,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2149,7 +2149,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2185,7 +2185,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2227,7 +2227,7 @@ __metadata:
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
     typed-prompts: ^1.5.0
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2286,7 +2286,7 @@ __metadata:
     react-scripts: ^4.0.3
     react-test-renderer: ^17.0.2
     styled-components: ^5.3.0
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2312,7 +2312,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: 4.2.4
+    typescript: ^4.3.4
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -2346,7 +2346,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -2374,7 +2374,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^9.1.1
     typed-prompts: ^1.5.0
-    typescript: 4.2.4
+    typescript: ^4.3.4
   bin:
     ccf-create-app: bin/ccf-create-app
   languageName: unknown
@@ -2410,7 +2410,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -21419,7 +21419,7 @@ resolve@^2.0.0-next.3:
     lerna: ^4.0.0
     sonar-scanner: ^3.1.0
     ts-node: ^9.1.1
-    typescript: 4.2.4
+    typescript: ^4.3.4
   languageName: unknown
   linkType: soft
 
@@ -24142,16 +24142,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-typescript@4.2.4:
-  version: 4.2.4
-  resolution: "typescript@npm:4.2.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: edaede2fa77f56b7fba80ee624a2368ab1216e75b0434d968ccb47ab0a5e2f6d94f848b3b111c1237dd71e988cd376af26370dcdad3b94355c76e759f0dd0a1e
-  languageName: node
-  linkType: hard
-
 typescript@^3.3.3:
   version: 3.9.9
   resolution: "typescript@npm:3.9.9"
@@ -24162,23 +24152,33 @@ typescript@^3.3.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.2.4#builtin<compat/typescript>":
-  version: 4.2.4
-  resolution: "typescript@patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"
+typescript@^4.3.4:
+  version: 4.3.4
+  resolution: "typescript@npm:4.3.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3be44317593182e8ce494c114e7ad9b0bb2553a22f3085cc6da4f0a36912c20850daa9be4c898af2ab6fc8b12f430c1c9e46ac715721867cd38643f2350d3ef9
+  checksum: 9791c5fe98db6cb70ec0efad8d3d2eb957b9643ee600b90bff49267de69768d0d5f59c41a8fd731cfd63df1ccfb2cb25505a2015d7b39ac10ea51f605a058e16
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^3.3.3#builtin<compat/typescript>":
   version: 3.9.9
-  resolution: "typescript@patch:typescript@npm%3A3.9.9#builtin<compat/typescript>::version=3.9.9&hash=a45b0e"
+  resolution: "typescript@patch:typescript@npm%3A3.9.9#builtin<compat/typescript>::version=3.9.9&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 05a113f2ec0d0fc3263335c230d2eb7b94d851e51b5766f63b88b611127d08782ce41132eb32b9d3d434de8340f698f7ec2f72ebb4d33c3b2976b27de1f47ace
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.3.4#builtin<compat/typescript>":
+  version: 4.3.4
+  resolution: "typescript@patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: c8766e84a4f71e925cc059af8286cc7f41819fe821d433b90c83e9b36729cbda7a8e4be3292d8a1433cd717d529c93217d58d173418f43862290b206bd88b284
   languageName: node
   linkType: hard
 
