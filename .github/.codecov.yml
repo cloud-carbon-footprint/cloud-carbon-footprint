@@ -1,0 +1,41 @@
+coverage:
+  status:
+    project:
+      default:
+        threshold: 0% # Ref: https://docs.codecov.io/docs/codecovyml-reference#coveragestatus
+        target: auto
+        informational: true # Don't block PRs
+flags:
+  client:
+    paths:
+      - packages/client/
+    carryforward: true
+  core:
+    paths:
+      - packages/core/
+    carryforward: true
+  app:
+    paths:
+      - packages/app/
+    carryforward: true
+  api:
+    paths:
+      - packages/api/
+    carryforward: true
+  cli:
+    paths:
+      - packages/cli/
+    carryforward: true
+  aws:
+    paths:
+      - packages/aws/
+    carryforward: true
+  gcp:
+    paths:
+      - packages/gcp/
+    carryforward: true
+  azure:
+    paths:
+      - packages/azure/
+    carryforward: true
+
