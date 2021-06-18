@@ -6,9 +6,9 @@ import React, { FunctionComponent } from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 
-import { getChartColors } from '../../../themes'
-import { sumCO2ByServiceOrRegion } from '../../../utils/helpers'
-import { ApexChartProps } from '../../../Types'
+import { getChartColors } from '../../../../themes'
+import { sumCO2ByServiceOrRegion } from '../../../../utils/helpers'
+import { ApexChartProps } from '../../../../Types'
 
 export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
   data,
