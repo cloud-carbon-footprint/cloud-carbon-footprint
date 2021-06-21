@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/gcp",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Google Cloud Platform.",
   "main": "src/index.ts",
@@ -41,8 +41,8 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/common": "^0.0.2",
-    "@cloud-carbon-footprint/core": "^0.8.1",
+    "@cloud-carbon-footprint/common": "^0.0.3",
+    "@cloud-carbon-footprint/core": "^0.8.2",
     "@google-cloud/bigquery": "^5.6.0",
     "@google-cloud/monitoring": "^2.3.1",
     "google-gax": "^2.15.0",

@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/core
 
+## 0.8.2
+
+### Patch Changes
+
+- e93d31ec: Extracts common data from cloud providers
+- 3b42775b: Updates @types/node to 15.12.4
+- Updated dependencies [e93d31ec]
+- Updated dependencies [3b42775b]
+- Updated dependencies [53366130]
+  - @cloud-carbon-footprint/common@0.0.3
+
 ## 0.8.1
 
 ### Patch Changes
