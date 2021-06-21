@@ -12,7 +12,7 @@ import {
   DateFilter,
   AccountFilter,
 } from './FilterBar/Filters'
-import ApexLineChart from './CloudUsage/ApexLineChart'
+import ApexLineChart from './EmissionsOverTimeCard/ApexLineChart'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
