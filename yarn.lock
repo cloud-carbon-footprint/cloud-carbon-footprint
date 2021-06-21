@@ -14,14 +14,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-consumption@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "@azure/arm-consumption@npm:6.3.0"
+"@azure/arm-consumption@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@azure/arm-consumption@npm:7.1.0"
   dependencies:
-    "@azure/ms-rest-azure-js": ^1.1.0
-    "@azure/ms-rest-js": ^1.1.0
-    tslib: ^1.9.3
-  checksum: 02eb1a9b260f3886b7743ddb7f5fbcbb7c0b0233d0bfdd5ebbac0ca03b08ee33b6cea1fbd65b5ba90214cb6c0613e7c4523985b7d3c90d1638e6212d2b99b4fd
+    "@azure/core-auth": ^1.1.4
+    "@azure/ms-rest-azure-js": ^2.1.0
+    "@azure/ms-rest-js": ^2.2.0
+    tslib: ^1.10.0
+  checksum: cc00437a2593de172274c29994ec5dd0760fb0ffee81ded500f3e193cc496b1ee282fe0f3837039e4e509596ff1ec28c75b08856705027b6ca04e1a7a46c6efa
   languageName: node
   linkType: hard
 
@@ -53,18 +54,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/ms-rest-azure-js@npm:^1.1.0":
-  version: 1.4.0
-  resolution: "@azure/ms-rest-azure-js@npm:1.4.0"
-  dependencies:
-    "@azure/core-auth": ^1.1.4
-    "@azure/ms-rest-js": ^1.10.0
-    tslib: ^1.9.3
-  checksum: c68f0f8365eb74eda61b01507a829fcb61aefd7d4ddbbf66f75e7058204fa25799a62bb93c64a84456b532084f0f11d060245dde901bb8e238f3b53fc7c26866
-  languageName: node
-  linkType: hard
-
-"@azure/ms-rest-azure-js@npm:^2.0.1":
+"@azure/ms-rest-azure-js@npm:^2.0.1, @azure/ms-rest-azure-js@npm:^2.1.0":
   version: 2.1.0
   resolution: "@azure/ms-rest-azure-js@npm:2.1.0"
   dependencies:
@@ -72,22 +62,6 @@ __metadata:
     "@azure/ms-rest-js": ^2.2.0
     tslib: ^1.10.0
   checksum: c4b4db574b5b3a2b88c66d39658ecad27f8826f4c09432e9174836d68a0823209e1fa5b6110c04f93f7e94c69dc051fdce3ebae9c6431ccc036567feb14c444f
-  languageName: node
-  linkType: hard
-
-"@azure/ms-rest-js@npm:^1.1.0, @azure/ms-rest-js@npm:^1.10.0":
-  version: 1.11.2
-  resolution: "@azure/ms-rest-js@npm:1.11.2"
-  dependencies:
-    "@azure/core-auth": ^1.1.4
-    axios: ^0.21.1
-    form-data: ^2.3.2
-    tough-cookie: ^2.4.3
-    tslib: ^1.9.2
-    tunnel: 0.0.6
-    uuid: ^3.2.1
-    xml2js: ^0.4.19
-  checksum: a96f2f075ecbef968ad85606087ad8a1d40382d4b9581d184049c46027f2d470b6b669d5dfec722545f54b10e75f8d60ea5a950a69393bc8c431ec81dd5f561b
   languageName: node
   linkType: hard
 
@@ -2157,7 +2131,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
-    "@azure/arm-consumption": ^6.3.0
+    "@azure/arm-consumption": ^7.1.0
     "@azure/arm-subscriptions": ^3.0.0
     "@azure/ms-rest-js": ^2.2.3
     "@azure/ms-rest-nodeauth": ^3.0.7
@@ -12056,7 +12030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^2.3.2, form-data@npm:^2.5.0":
+"form-data@npm:^2.5.0":
   version: 2.5.1
   resolution: "form-data@npm:2.5.1"
   dependencies:
@@ -23713,7 +23687,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tough-cookie@npm:^2.3.3, tough-cookie@npm:^2.4.3, tough-cookie@npm:~2.5.0":
+"tough-cookie@npm:^2.3.3, tough-cookie@npm:~2.5.0":
   version: 2.5.0
   resolution: "tough-cookie@npm:2.5.0"
   dependencies:
@@ -23927,7 +23901,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.10.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0, tslib@npm:^1.9.2, tslib@npm:^1.9.3":
+"tslib@npm:^1.10.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: f44fe7f216946b17d3e3074df3746372703cf24e9127b4c045511456e8e4bf25515fb0a1bb3937676cc305651c5d4fcb6377b0588a4c6a957e748c4c28905d17
@@ -24556,7 +24530,7 @@ typescript@^4.3.4:
   languageName: node
   linkType: hard
 
-"uuid@npm:^3.0.1, uuid@npm:^3.1.0, uuid@npm:^3.2.1, uuid@npm:^3.3.2, uuid@npm:^3.4.0":
+"uuid@npm:^3.0.1, uuid@npm:^3.1.0, uuid@npm:^3.3.2, uuid@npm:^3.4.0":
   version: 3.4.0
   resolution: "uuid@npm:3.4.0"
   bin:
