@@ -21,8 +21,6 @@ if (process.env.NODE_ENV === 'production') {
   httpApp.use(auth)
 }
 
-// eslint-disable-next-line
-//@ts-ignore
 httpApp.use(helmet())
 
 httpApp.use('/api', api)
