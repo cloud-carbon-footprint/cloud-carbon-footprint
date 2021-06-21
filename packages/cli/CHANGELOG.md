@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/cli
 
+## 0.4.2
+
+### Patch Changes
+
+- 3b42775b: Updates @types/node to 15.12.4
+- Updated dependencies [e93d31ec]
+- Updated dependencies [3b42775b]
+- Updated dependencies [53366130]
+  - @cloud-carbon-footprint/common@0.0.3
+  - @cloud-carbon-footprint/app@0.0.4
+
 ## 0.4.1
 
 ### Patch Changes
