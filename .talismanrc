@@ -97,6 +97,12 @@ fileignoreconfig:
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
 - filename: packages/client/src/data/generateEstimations.ts
   checksum: 5c2b39dccc594712914041a5285f8604e43ce7b246abef01d695ac7ee9e3e394
+- filename: packages/client/src/pages/EmissionsMetricsPage/CarbonComparisonCard/CarbonComparisonCard.tsx
+  checksum: 239dbd0152befa9cce15d540a4e736ac788a15a8c15562dadb08e93bf386da93
+- filename: packages/client/src/pages/EmissionsMetricsPage/CarbonIntensityMap/CarbonIntensityMap.tsx
+  checksum: 95d72d07b8b7882138bd5c88a943f4ee798a1aa4ce9e184d17664d632f633227
+- filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
+  checksum: 907b0cab109a300d64724250d557e0f896029448bacdccb90b4cda3633568226
 - filename: packages/client/src/react-app-env.d.ts
   checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
 - filename: packages/client/stub-server/co2estimations.json

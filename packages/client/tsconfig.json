@@ -19,6 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "strict": false,
     "isolatedModules": true,
+    "baseUrl": "src"
   },
   "include": ["src","./node_modules/**/*"]
 }

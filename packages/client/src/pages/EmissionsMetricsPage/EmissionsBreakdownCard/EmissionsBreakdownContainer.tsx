@@ -5,6 +5,7 @@
 import React, { ReactElement } from 'react'
 import {
   Box,
+  Grid,
   Card,
   createStyles,
   FormControl,
@@ -66,6 +67,7 @@ const useStyles = makeStyles(() => {
 })
 
 const EmissionsBreakdownContainer = (props: {
+  containerClass: string
   data: EstimationResult[]
 }): ReactElement => {
   const classes = useStyles()
@@ -76,32 +78,34 @@ const EmissionsBreakdownContainer = (props: {
   }
 
   return (
-    <Card className={classes.root} id="emissionsBreakdownContainer">
-      <Box padding={3}>
-        <Paper className={classes.topContainer}>
-          <p className={classes.title}>Emissions Breakdown</p>
-          <FormControl variant={'outlined'}>
-            <Select
-              id="breakdown-selector"
-              value={value}
-              onChange={handleChange}
-              input={<BootstrapInput />}
-            >
-              <MenuItem id="region-dropdown" value={ChartDataTypes.REGION}>
-                Region
-              </MenuItem>
-              <MenuItem id="account-dropdown" value={ChartDataTypes.ACCOUNT}>
-                Account
-              </MenuItem>
-              <MenuItem id="service-dropdown" value={ChartDataTypes.SERVICE}>
-                Service
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Paper>
-        <ApexBarChart data={props.data} dataType={value} />
-      </Box>
-    </Card>
+    <Grid item className={props.containerClass}>
+      <Card className={classes.root} id="emissionsBreakdownContainer">
+        <Box padding={3}>
+          <Paper className={classes.topContainer}>
+            <p className={classes.title}>Emissions Breakdown</p>
+            <FormControl variant={'outlined'}>
+              <Select
+                id="breakdown-selector"
+                value={value}
+                onChange={handleChange}
+                input={<BootstrapInput />}
+              >
+                <MenuItem id="region-dropdown" value={ChartDataTypes.REGION}>
+                  Region
+                </MenuItem>
+                <MenuItem id="account-dropdown" value={ChartDataTypes.ACCOUNT}>
+                  Account
+                </MenuItem>
+                <MenuItem id="service-dropdown" value={ChartDataTypes.SERVICE}>
+                  Service
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Paper>
+          <ApexBarChart data={props.data} dataType={value} />
+        </Box>
+      </Card>
+    </Grid>
   )
 }
 

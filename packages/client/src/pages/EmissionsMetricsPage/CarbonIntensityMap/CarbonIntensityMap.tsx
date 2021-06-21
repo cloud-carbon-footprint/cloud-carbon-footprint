@@ -10,6 +10,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Grid,
 } from '@material-ui/core'
 import { ReactComponent as AWSMap } from './AWSMap.svg'
 import { ReactComponent as GCPMap } from './GCPMap.svg'
@@ -37,31 +38,33 @@ const CarbonIntensityMap = (): ReactElement => {
   }
 
   return (
-    <Card className={classes.root}>
-      <Box padding={3}>
-        <Box className={classes.topContainer}>
-          <Typography className={classes.title}>
-            Carbon Intensity Map
-          </Typography>
-          <FormControl variant="outlined">
-            <Select
-              id="map-select"
-              data-testid="select"
-              value={cloudProvider}
-              onChange={handleChange}
-              input={<BootstrapInput />}
-            >
-              {Object.keys(intensityMaps).map((providerOption) => (
-                <MenuItem key={providerOption} value={providerOption}>
-                  {providerOption}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+    <Grid item xs={12}>
+      <Card className={classes.root}>
+        <Box padding={3}>
+          <Box className={classes.topContainer}>
+            <Typography className={classes.title}>
+              Carbon Intensity Map
+            </Typography>
+            <FormControl variant="outlined">
+              <Select
+                id="map-select"
+                data-testid="select"
+                value={cloudProvider}
+                onChange={handleChange}
+                input={<BootstrapInput />}
+              >
+                {Object.keys(intensityMaps).map((providerOption) => (
+                  <MenuItem key={providerOption} value={providerOption}>
+                    {providerOption}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box paddingX={3}>{intensityMaps[cloudProvider]}</Box>
         </Box>
-        <Box paddingX={3}>{intensityMaps[cloudProvider]}</Box>
-      </Box>
-    </Card>
+      </Card>
+    </Grid>
   )
 }
 
