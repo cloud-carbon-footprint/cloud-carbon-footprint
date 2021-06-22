@@ -186,7 +186,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
 
   if (totalMetricTons) {
     return (
-      <Grid item className={containerClass}>
+      <Grid data-testid="carbonComparison" item className={containerClass}>
         <Card className={classes.root} id="carbonComparisonCard">
           <div>
             <CardContent className={classes.topContainer}>

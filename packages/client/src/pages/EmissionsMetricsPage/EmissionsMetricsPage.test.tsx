@@ -11,10 +11,10 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import EmissionsMetricsPage from './EmissionsMetricsPage'
 import { useRemoteService, useRemoteEmissionService } from '../../utils/hooks'
 import { generateEstimations, fakeEmissionFactors } from '../../utils/data'
 import { ServiceResult } from '../../Types'
+import EmissionsMetricsPage from './EmissionsMetricsPage'
 
 jest.mock('apexcharts')
 jest.mock('../../utils/hooks/RemoteServiceHook')
@@ -67,7 +67,7 @@ describe('Emissions Metrics Page', () => {
     mockUseRemoteService.mockClear()
   })
 
-  test('today and january first of the last year should be passed in to remote service hook', () => {
+  it('should passed in to remote service hook today and january first of the last year', () => {
     render(<EmissionsMetricsPage />)
 
     const parameters = mockUseRemoteService.mock.calls[0]
@@ -86,7 +86,7 @@ describe('Emissions Metrics Page', () => {
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
 
-  test('show loading icon if data has not been returned', () => {
+  it('should show loading icon if data has not been returned', () => {
     const mockLoading: ServiceResult<EstimationResult> = {
       loading: true,
       data: data,
@@ -96,5 +96,15 @@ describe('Emissions Metrics Page', () => {
     const { getByRole } = render(<EmissionsMetricsPage />)
 
     expect(getByRole('progressbar')).toBeInTheDocument()
+  })
+
+  it('should render all components in the page', () => {
+    const { getByText, getByTestId } = render(<EmissionsMetricsPage />)
+
+    expect(getByTestId('filterBar')).toBeInTheDocument()
+    expect(getByTestId('cloudUsage')).toBeInTheDocument()
+    expect(getByText('Emissions Breakdown')).toBeInTheDocument()
+    expect(getByTestId('carbonComparison')).toBeInTheDocument()
+    expect(getByText('Carbon Intensity Map')).toBeInTheDocument()
   })
 })

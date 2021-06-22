@@ -18,7 +18,7 @@ const EmissionsOverTimeCard: FunctionComponent<EmissionsOverTimeProps> = ({
   classes,
   filteredData,
 }): ReactElement => (
-  <Grid item xs={12}>
+  <Grid data-testid="cloudUsage" item xs={12}>
     <Card style={{ width: '100%', height: '100%' }}>
       <Box padding={3} paddingRight={4}>
         {filteredData.length ? (

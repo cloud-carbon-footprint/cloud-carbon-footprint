@@ -34,7 +34,7 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
   const classes = useStyles()
 
   return (
-    <div className={classes.filterHeader}>
+    <div data-testid="filterBar" className={classes.filterHeader}>
       <Grid item xs={12}>
         <div className={classes.filterContainer}>
           <div className={classes.filterContainerSection}>

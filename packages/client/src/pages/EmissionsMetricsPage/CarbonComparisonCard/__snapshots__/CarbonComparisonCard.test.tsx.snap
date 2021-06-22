@@ -3,6 +3,7 @@
 exports[`CarbonComparisonCard renders with correct configuration 1`] = `
 <div
   className="MuiGrid-root MuiGrid-item"
+  data-testid="carbonComparison"
 >
   <div
     className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
