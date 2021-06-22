@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 0.4.14
+
+### Patch Changes
+
+- 16b8253d: Updates create-appp package to use yarn 2.4.2, and allows for implicit anys so CCF modules can be imported successfully
+
 ## 0.4.13
 
 ### Patch Changes
