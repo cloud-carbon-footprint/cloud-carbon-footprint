@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 0.4.15
+
+### Patch Changes
+
+- d3899a0a: Removed files for yarn 2.4.2 to fix the yarn install for create-app template
+
 ## 0.4.14
 
 ### Patch Changes
