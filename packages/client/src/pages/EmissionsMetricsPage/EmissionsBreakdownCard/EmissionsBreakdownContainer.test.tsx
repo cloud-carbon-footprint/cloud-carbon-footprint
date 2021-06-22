@@ -36,6 +36,7 @@ describe('EmissionsBreakdownContainer', () => {
   const date2 = new Date('2020-07-11T00:00:00.000Z')
   let page: RenderResult
   let testRenderer: ReactTestRenderer, testInstance: ReactTestInstance
+  const styleClass = 'test-style-class'
 
   const dataWithHigherPrecision: EstimationResult[] = [
     {
@@ -97,11 +98,17 @@ describe('EmissionsBreakdownContainer', () => {
     }
     mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     testRenderer = create(
-      <EmissionsBreakdownContainer data={dataWithHigherPrecision} />,
+      <EmissionsBreakdownContainer
+        containerClass={styleClass}
+        data={dataWithHigherPrecision}
+      />,
     )
     testInstance = testRenderer.root
     page = render(
-      <EmissionsBreakdownContainer data={dataWithHigherPrecision} />,
+      <EmissionsBreakdownContainer
+        containerClass={styleClass}
+        data={dataWithHigherPrecision}
+      />,
     )
   })
 

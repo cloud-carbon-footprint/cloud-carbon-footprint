@@ -2,7 +2,7 @@
 
 exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
 <div
-  className="MuiGrid-root MuiGrid-item"
+  className="MuiGrid-root test-style-class MuiGrid-item"
 >
   <div
     className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
