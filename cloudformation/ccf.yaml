@@ -9,7 +9,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: 'arn:aws:iam::<REPLACE WITH CCF ACCOUNT ID>:role/CCFService'
+              AWS: 'arn:aws:iam::<REPLACE-WITH-YOUR-AWS-ACCOUNT-ID>:<role OR user>/<REPLACE-WITH-YOUR-ROLE-OR-USER-NAME>'
             Action: sts:AssumeRole
       Policies:
         - PolicyName: cloudwatch

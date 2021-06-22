@@ -9,7 +9,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: "arn:aws:iam::<REPLACE-WITH-YOUR-CFF-ACCOUNT-ID>:role/CCFService"
+              AWS: 'arn:aws:iam::<REPLACE-WITH-YOUR-AWS-ACCOUNT-ID>:<role OR user>/<REPLACE-WITH-YOUR-ROLE-OR-USER-NAME>'
             Action: sts:AssumeRole
       Policies:
         - PolicyName: athena
@@ -21,16 +21,18 @@ Resources:
                   - athena:StartQueryExecution
                   - athena:GetQueryExecution
                   - athena:GetQueryResults
-                Resource: "*"
+                  - athena:GetWorkGroup
+                Resource: '*'
         - PolicyName: glue
           PolicyDocument:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
+                  - glue:GetDatabase
                   - glue:GetTable
                   - glue:GetPartitions
-                Resource: "*"
+                Resource: '*'
         - PolicyName: s3
           PolicyDocument:
             Version: 2012-10-17
@@ -43,6 +45,7 @@ Resources:
                   - s3:ListBucketMultipartUploads
                   - s3:ListMultipartUploadParts
                   - s3:AbortMultipartUpload
+                  - s3:CreateBucket
                   - s3:PutObject
                 Resource:
                   - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>
