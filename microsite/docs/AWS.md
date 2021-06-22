@@ -8,7 +8,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 1.  Ensure your aws account has the correct permissions
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
-    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify "arn:aws:iam::<REPLACE-WITH-YOUR-AWS-ACCOUNT-ID>:<role OR user>/<REPLACE-WITH-YOUR-ROLE-OR-USER-NAME>" is where you define the user or role that will have permissions to assume the "ccf-athena" role. 
+    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify the "AssumeRolePolicyDocument" is where you define the user or role that will have permissions to assume the "ccf-athena" role. 
     - This role name will be used for the value in the environment variable: `AWS_TARGET_ACCOUNT_ROLE_NAME`
 
 2.  Enable the Cost and Usage Billing AWS feature.
