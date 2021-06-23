@@ -5,11 +5,10 @@
 import React, { ReactElement } from 'react'
 import { Box, Card, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-
 import shruggingCloud from './V1Shrugging-cloud-icon.svg'
 import emptyStateIcon from './V1Empty-state-generic-icon.svg'
 
-const NoDataMessage = (props: { isTop: boolean }): ReactElement => {
+const NoDataMessage = (props: { isTop?: boolean }): ReactElement => {
   const useStyles = makeStyles((theme) => {
     return {
       root: {
