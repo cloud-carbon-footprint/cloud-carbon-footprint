@@ -24,6 +24,7 @@ exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
         >
           <div
             className="MuiInputBase-root MuiInputBase-formControl"
+            data-testid="select"
             onClick={[Function]}
           >
             <div

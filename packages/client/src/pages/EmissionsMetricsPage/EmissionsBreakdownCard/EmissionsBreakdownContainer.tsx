@@ -3,40 +3,11 @@
  */
 
 import React, { ReactElement } from 'react'
-import {
-  Box,
-  Grid,
-  Card,
-  createStyles,
-  FormControl,
-  InputBase,
-  makeStyles,
-  MenuItem,
-  Paper,
-  Select,
-  withStyles,
-} from '@material-ui/core'
+import { Box, Grid, Card, makeStyles, Paper } from '@material-ui/core'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ChartDataTypes } from '../../../Types'
+import { ChartDataTypes } from 'Types'
 import { ApexBarChart } from './ApexBarChart'
-
-const BootstrapInput = withStyles(() =>
-  createStyles({
-    input: {
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      padding: '10px 26px 10px 12px',
-      width: '65px',
-      '&:hover': {
-        borderColor: 'black',
-      },
-      '&:focus': {
-        backgroundColor: 'white',
-        borderRadius: 4,
-      },
-    },
-  }),
-)(InputBase)
+import SelectDropdown from '../../../common/SelectDropdown'
 
 const useStyles = makeStyles(() => {
   return {
@@ -71,10 +42,10 @@ const EmissionsBreakdownContainer = (props: {
   data: EstimationResult[]
 }): ReactElement => {
   const classes = useStyles()
-  const [value, setValue] = React.useState(ChartDataTypes.REGION)
+  const [chartType, setChartType] = React.useState(ChartDataTypes.REGION)
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setValue(event.target.value as ChartDataTypes)
+    setChartType(event.target.value as ChartDataTypes)
   }
 
   return (
@@ -83,26 +54,14 @@ const EmissionsBreakdownContainer = (props: {
         <Box padding={3}>
           <Paper className={classes.topContainer}>
             <p className={classes.title}>Emissions Breakdown</p>
-            <FormControl variant={'outlined'}>
-              <Select
-                id="breakdown-selector"
-                value={value}
-                onChange={handleChange}
-                input={<BootstrapInput />}
-              >
-                <MenuItem id="region-dropdown" value={ChartDataTypes.REGION}>
-                  Region
-                </MenuItem>
-                <MenuItem id="account-dropdown" value={ChartDataTypes.ACCOUNT}>
-                  Account
-                </MenuItem>
-                <MenuItem id="service-dropdown" value={ChartDataTypes.SERVICE}>
-                  Service
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <SelectDropdown
+              id="breakdown"
+              value={chartType}
+              dropdownOptions={Object.values(ChartDataTypes)}
+              handleChange={handleChange}
+            />
           </Paper>
-          <ApexBarChart data={props.data} dataType={value} />
+          <ApexBarChart data={props.data} dataType={chartType} />
         </Box>
       </Card>
     </Grid>

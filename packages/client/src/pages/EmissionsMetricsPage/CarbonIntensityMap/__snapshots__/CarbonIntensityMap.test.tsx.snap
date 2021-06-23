@@ -28,9 +28,9 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
           >
             <div
               aria-haspopup="listbox"
-              aria-labelledby="map-select"
+              aria-labelledby="map-selector"
               className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-7"
-              id="map-select"
+              id="map-selector"
               onBlur={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}

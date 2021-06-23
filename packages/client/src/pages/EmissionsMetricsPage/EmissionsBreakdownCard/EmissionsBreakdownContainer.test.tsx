@@ -44,6 +44,7 @@ describe('EmissionsBreakdownContainer', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
+          accountId: '1',
           accountName: 'testacct',
           serviceName: 'ebs',
           kilowattHours: 12.2342,
@@ -54,6 +55,7 @@ describe('EmissionsBreakdownContainer', () => {
         },
         {
           cloudProvider: 'aws',
+          accountId: '2',
           accountName: 'testacct',
           serviceName: 'ec2',
           kilowattHours: 4.745634,
@@ -69,6 +71,7 @@ describe('EmissionsBreakdownContainer', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
+          accountId: '3',
           accountName: 'testacct',
           serviceName: 'ebs',
           kilowattHours: 25.73446,
@@ -79,6 +82,7 @@ describe('EmissionsBreakdownContainer', () => {
         },
         {
           cloudProvider: 'aws',
+          accountId: '4',
           accountName: 'testacct',
           serviceName: 'ec2',
           kilowattHours: 2.4523452,

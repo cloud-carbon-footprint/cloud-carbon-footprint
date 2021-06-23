@@ -3,19 +3,12 @@
  */
 
 import React, { ReactElement, useState } from 'react'
-import {
-  Card,
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  Grid,
-} from '@material-ui/core'
+import { Card, Box, Typography, Grid } from '@material-ui/core'
 import { ReactComponent as AWSMap } from './AWSMap.svg'
 import { ReactComponent as GCPMap } from './GCPMap.svg'
 import { ReactComponent as AzureMap } from './AzureMap.svg'
-import { useStyles, BootstrapInput } from './carbonIntensityStyles'
+import { useStyles } from './carbonIntensityStyles'
+import SelectDropdown from '../../../common/SelectDropdown'
 
 type CloudProvider = 'AWS' | 'GCP' | 'Azure'
 
@@ -45,21 +38,12 @@ const CarbonIntensityMap = (): ReactElement => {
             <Typography className={classes.title}>
               Carbon Intensity Map
             </Typography>
-            <FormControl variant="outlined">
-              <Select
-                id="map-select"
-                data-testid="select"
-                value={cloudProvider}
-                onChange={handleChange}
-                input={<BootstrapInput />}
-              >
-                {Object.keys(intensityMaps).map((providerOption) => (
-                  <MenuItem key={providerOption} value={providerOption}>
-                    {providerOption}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <SelectDropdown
+              id="map"
+              value={cloudProvider}
+              dropdownOptions={Object.keys(intensityMaps)}
+              handleChange={handleChange}
+            />
           </Box>
           <Box paddingX={3}>{intensityMaps[cloudProvider]}</Box>
         </Box>
