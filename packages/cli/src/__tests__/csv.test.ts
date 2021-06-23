@@ -79,7 +79,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
         authentication: {
           mode: 'GCP',
           options: {
-            targetRoleSessionName: 'test-target',
+            targetRoleName: 'test-target',
             proxyAccountId: 'test-account-id',
             proxyRoleName: 'test-role-name',
           },
@@ -122,44 +122,6 @@ describe('csv test', () => {
   ]
 
   let outputFilePath: string
-
-  beforeAll(() => {
-    jest.mock('@cloud-carbon-footprint/common', () => ({
-      ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
-        string,
-        unknown
-      >),
-      Logger: jest.fn().mockReturnValue({
-        debug: jest.fn(),
-        info: jest.fn(),
-        error: jest.fn(),
-        warn: jest.fn(),
-      }),
-      configLoader: jest.fn().mockImplementation(() => {
-        return {
-          AWS: {
-            accounts: [{ id: '12345678', name: 'test account' }],
-            NAME: 'AWS',
-            CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
-            authentication: {
-              mode: 'GCP',
-              options: {
-                targetRoleSessionName: 'test-target',
-                proxyAccountId: 'test-account-id',
-                proxyRoleName: 'test-role-name',
-              },
-            },
-          },
-          GCP: {
-            projects: [{ id: 'test-project', name: 'test project' }],
-            NAME: 'GCP',
-            CURRENT_REGIONS: ['us-east1'],
-          },
-          LOGGING_MODE: 'test',
-        }
-      }),
-    }))
-  })
 
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockImplementation(() => 1596660091000)

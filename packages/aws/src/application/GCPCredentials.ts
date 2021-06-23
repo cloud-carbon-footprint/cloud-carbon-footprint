@@ -14,7 +14,7 @@ import { GoogleAuth, JWT } from 'google-auth-library'
 export default class GCPCredentials extends Credentials {
   constructor(
     private accountId: string,
-    private targetRoleSessionName: string,
+    private targetRoleName: string,
     private proxyAccountId: string,
     private proxyRoleName: string,
   ) {
@@ -26,8 +26,8 @@ export default class GCPCredentials extends Credentials {
       const token = await this.getTokenId()
       const credentials = new ChainableTemporaryCredentials({
         params: {
-          RoleArn: `arn:aws:iam::${this.accountId}:role/${this.targetRoleSessionName}`,
-          RoleSessionName: this.targetRoleSessionName,
+          RoleArn: `arn:aws:iam::${this.accountId}:role/${this.targetRoleName}`,
+          RoleSessionName: this.targetRoleName,
         },
         masterCredentials: new WebIdentityCredentials({
           RoleArn: `arn:aws:iam::${this.proxyAccountId}:role/${this.proxyRoleName}`,

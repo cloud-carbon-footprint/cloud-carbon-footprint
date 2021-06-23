@@ -92,7 +92,6 @@ const appConfig: CCFConfig = {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
       options: {
         targetRoleName: getEnvVar('AWS_TARGET_ACCOUNT_ROLE_NAME'),
-        targetRoleSessionName: getEnvVar('AWS_TARGET_ACCOUNT_ROLE_NAME'),
         proxyAccountId: getEnvVar('AWS_PROXY_ACCOUNT_ID') || '',
         proxyRoleName: getEnvVar('AWS_PROXY_ROLE_NAME') || '',
       },

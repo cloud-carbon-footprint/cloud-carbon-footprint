@@ -74,12 +74,12 @@ let credentials: any
 describe('GCPCredentials instance', () => {
   beforeEach(() => {
     const accountId = '1233452012'
-    const targetRoleSessionName = 'mySessionName'
+    const targetRoleName = 'myRoleName'
     const proxyAccountId = '11111'
     const proxyRoleName = 'proxyRoleName'
     credentials = new GCPCredentials(
       accountId,
-      targetRoleSessionName,
+      targetRoleName,
       proxyAccountId,
       proxyRoleName,
     )
@@ -121,11 +121,11 @@ describe('GCPCredentials instance', () => {
     )
 
     const accountId = '1233452012'
-    const targetRoleSessionName = 'mySessionName'
+    const targetRoleName = 'myRoleName'
     const chainableTemporaryCredentialsOptions = {
       params: {
-        RoleArn: `arn:aws:iam::${accountId}:role/${targetRoleSessionName}`,
-        RoleSessionName: targetRoleSessionName,
+        RoleArn: `arn:aws:iam::${accountId}:role/${targetRoleName}`,
+        RoleSessionName: targetRoleName,
       },
       masterCredentials: webIdentityReturnedCredentials,
     }

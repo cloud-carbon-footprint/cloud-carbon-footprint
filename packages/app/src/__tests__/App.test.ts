@@ -40,7 +40,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
         authentication: {
           mode: 'GCP',
           options: {
-            targetRoleSessionName: 'test-target',
+            targetRoleName: 'test-target',
             proxyAccountId: 'test-account-id',
             proxyRoleName: 'test-role-name',
           },

@@ -16,7 +16,7 @@ export default class AWSCredentialsProvider {
       case 'GCP':
         return new GCPCredentials(
           accountId,
-          configLoader().AWS.authentication.options.targetRoleSessionName,
+          configLoader().AWS.authentication.options.targetRoleName,
           configLoader().AWS.authentication.options.proxyAccountId,
           configLoader().AWS.authentication.options.proxyRoleName,
         )
@@ -24,10 +24,10 @@ export default class AWSCredentialsProvider {
         return new ChainableTemporaryCredentials({
           params: {
             RoleArn: `arn:aws:iam::${accountId}:role/${
-              configLoader().AWS.authentication.options.targetRoleSessionName
+              configLoader().AWS.authentication.options.targetRoleName
             }`,
             RoleSessionName:
-              configLoader().AWS.authentication.options.targetRoleSessionName,
+              configLoader().AWS.authentication.options.targetRoleName,
           },
         })
       default:

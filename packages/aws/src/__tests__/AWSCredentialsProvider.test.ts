@@ -34,6 +34,9 @@ function mockChainableTemporaryCredentials(
 }
 
 describe('AWSCredentialsProvider', () => {
+  const targetRoleName = 'testTargetRoleName'
+  const proxyAccountId = '987654321'
+  const proxyRoleName = 'testProxyRoleName'
   beforeAll(() => {
     mockConfig.AWS = {
       CURRENT_REGIONS: [],
@@ -42,10 +45,9 @@ describe('AWSCredentialsProvider', () => {
       authentication: {
         mode: 'GCP',
         options: {
-          targetRoleName: 'testTargetRoleName',
-          targetRoleSessionName: 'testRoleSessionName',
-          proxyAccountId: '987654321',
-          proxyRoleName: 'testProxyRoleName',
+          targetRoleName: targetRoleName,
+          proxyAccountId: proxyAccountId,
+          proxyRoleName: proxyRoleName,
         },
       },
     }
@@ -53,12 +55,9 @@ describe('AWSCredentialsProvider', () => {
   it('create returns GCPCredentialsProvider', () => {
     // given
     const accountId = '12345678910'
-    const targetRoleSessionName = 'testRoleSessionName'
-    const proxyAccountId = '987654321'
-    const proxyRoleName = 'testProxyRoleName'
     const expectedCredentials = new GCPCredentials(
       accountId,
-      targetRoleSessionName,
+      targetRoleName,
       proxyAccountId,
       proxyRoleName,
     )
@@ -78,8 +77,8 @@ describe('AWSCredentialsProvider', () => {
     const accountId = '123'
     const params = {
       params: {
-        RoleArn: `arn:aws:iam::${accountId}:role/testRoleSessionName`,
-        RoleSessionName: `testRoleSessionName`,
+        RoleArn: `arn:aws:iam::${accountId}:role/${targetRoleName}`,
+        RoleSessionName: `${targetRoleName}`,
       },
     }
     // when
