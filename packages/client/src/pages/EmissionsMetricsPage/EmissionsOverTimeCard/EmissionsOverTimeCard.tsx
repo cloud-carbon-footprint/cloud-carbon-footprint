@@ -6,8 +6,8 @@ import React, { FunctionComponent, ReactElement } from 'react'
 import { Box, Card, Grid } from '@material-ui/core'
 import { ClassNameMap } from '@material-ui/styles'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import ApexLineChart from './ApexLineChart'
 import NoDataMessage from 'common/NoDataMessage'
+import ApexLineChart from './ApexLineChart/ApexLineChart'
 
 type EmissionsOverTimeProps = {
   classes: ClassNameMap<string>
@@ -19,7 +19,7 @@ const EmissionsOverTimeCard: FunctionComponent<EmissionsOverTimeProps> = ({
   filteredData,
 }): ReactElement => (
   <Grid data-testid="cloudUsage" item xs={12}>
-    <Card style={{ width: '100%', height: '100%' }}>
+    <Card className={classes.gridCardFull}>
       <Box padding={3} paddingRight={4}>
         {filteredData.length ? (
           <ApexLineChart data={filteredData} />

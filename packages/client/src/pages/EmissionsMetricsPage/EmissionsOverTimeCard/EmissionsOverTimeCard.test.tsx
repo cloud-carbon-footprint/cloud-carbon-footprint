@@ -7,14 +7,13 @@ import {
   ReactTestInstance,
   ReactTestRenderer,
 } from 'react-test-renderer'
-
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-
+import NoDataMessage from 'common/NoDataMessage'
 import ApexLineChart from './ApexLineChart'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 
 jest.mock('apexcharts')
-jest.mock('../../../utils/themes')
+jest.mock('utils/themes')
 
 describe('Emissions Over Time Card', () => {
   const date1 = new Date('2020-07-10T00:00:00.000Z')
@@ -63,14 +62,25 @@ describe('Emissions Over Time Card', () => {
     testRenderer.unmount()
   })
 
-  it('checks to see if line chart exists upon loading', () => {
-    const isApexLineChartRendered = testInstance.findAllByType(ApexLineChart)
+  it('should render the apex line chart after loading', () => {
+    const apexLineChart = testInstance.findAllByType(ApexLineChart)
 
-    expect(isApexLineChartRendered).toHaveLength(1)
+    expect(apexLineChart).toHaveLength(1)
   })
-  it('should render co2e emissions line chart by default', () => {
-    const isApexLineChartRendered = testInstance.findByType(ApexLineChart)
 
-    expect(isApexLineChartRendered.props.data).toBe(dataWithHigherPrecision)
+  it('should pass data to the line chart to render co2e emissions', () => {
+    const apexLineChart = testInstance.findByType(ApexLineChart)
+
+    expect(apexLineChart.props.data).toBe(dataWithHigherPrecision)
+  })
+
+  it('should render no data message when there is no data to display', () => {
+    testRenderer = create(
+      <EmissionsOverTimeCard classes={styleClass} filteredData={[]} />,
+    )
+
+    const noDataMessage = testRenderer.root.findAllByType(NoDataMessage)
+
+    expect(noDataMessage).toHaveLength(1)
   })
 })

@@ -5,14 +5,14 @@
 import React from 'react'
 import { act, create, ReactTestRenderer } from 'react-test-renderer'
 import moment from 'moment'
-
-import ApexLineChart from './ApexLineChart'
-import { render } from '@testing-library/react'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
+import { render } from '@testing-library/react'
+import ApexLineChart from './ApexLineChart'
 
 jest.mock('apexcharts')
-jest.mock('../../../utils/themes')
+jest.mock('utils/themes')
+
 describe('ApexLineChart', () => {
   class EstimationResultBuilder {
     private timestamp = moment('2019-08-10T00:00:00.000Z').toDate()
@@ -57,6 +57,29 @@ describe('ApexLineChart', () => {
         serviceEstimates: this.serviceEstimates,
       }
     }
+  }
+
+  const setDateRangeSpy = jest.fn()
+  const setChartDataSpy = jest.fn()
+  const setDefaultDateRangeSpy = jest.fn()
+  const setToggledSeriesSpy = jest.fn()
+  // Use this function to mock the component's state, and pass any initial values you'd want to override for a specific test
+  const mockUseState = (
+    initialDateRange = { min: null, max: null },
+    initialChartData = [],
+    initialDefaultDateRange = { min: null, max: null },
+    initialToggledSeries = [
+      { CO2e: true },
+      { 'Kilowatt Hours': false },
+      { Cost: false },
+    ],
+  ) => {
+    jest
+      .spyOn(React, 'useState')
+      .mockReturnValueOnce([initialDateRange, setDateRangeSpy])
+      .mockReturnValueOnce([initialChartData, setChartDataSpy])
+      .mockReturnValueOnce([initialDefaultDateRange, setDefaultDateRangeSpy])
+      .mockReturnValueOnce([initialToggledSeries, setToggledSeriesSpy])
   }
 
   it('renders with correct configuration', () => {
@@ -134,18 +157,7 @@ describe('ApexLineChart', () => {
   })
 
   it('should set date range when data actually provided', () => {
-    const setDateRangeSpy = jest.fn()
-    const setChartDataSpy = jest.fn()
-    const setDefaultDateRangeSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
-      .mockReturnValueOnce([[], setChartDataSpy])
-      .mockReturnValueOnce([{ min: null, max: null }, setDefaultDateRangeSpy])
-      .mockReturnValueOnce([
-        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
-        jest.fn(),
-      ])
+    mockUseState()
 
     act(() => {
       create(<ApexLineChart data={[new EstimationResultBuilder().build()]} />)
@@ -155,16 +167,7 @@ describe('ApexLineChart', () => {
   })
 
   it('should not set date range state when zooming with apex line chart and less than two filtered items are within the range', () => {
-    const setDateRangeSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
-      .mockReturnValueOnce([[], jest.fn()])
-      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([
-        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
-        jest.fn(),
-      ])
+    mockUseState()
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -189,16 +192,7 @@ describe('ApexLineChart', () => {
   })
 
   it('should set date range state when zooming with apex line chart and at least two filtered items are within the range', () => {
-    const setDateRangeSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
-      .mockReturnValueOnce([[], jest.fn()])
-      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([
-        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
-        jest.fn(),
-      ])
+    mockUseState()
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -237,22 +231,10 @@ describe('ApexLineChart', () => {
   })
 
   it('should set the current default range state when resetting zoom through apex charts', () => {
-    const setDateRangeSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, setDateRangeSpy])
-      .mockReturnValueOnce([[], jest.fn()])
-      .mockReturnValueOnce([
-        {
-          min: new Date('2019-07-10T00:00:00.000Z'),
-          max: new Date('2019-11-10T00:00:00.000Z'),
-        },
-        jest.fn(),
-      ])
-      .mockReturnValueOnce([
-        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
-        jest.fn(),
-      ])
+    mockUseState(undefined, undefined, {
+      min: new Date('2019-07-10T00:00:00.000Z'),
+      max: new Date('2019-11-10T00:00:00.000Z'),
+    })
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -299,15 +281,7 @@ describe('ApexLineChart', () => {
         .build(),
     ]
 
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([newDateRange, jest.fn()])
-      .mockReturnValueOnce([initialData, jest.fn()])
-      .mockReturnValueOnce([defaultDateRange, jest.fn()])
-      .mockReturnValueOnce([
-        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
-        jest.fn(),
-      ])
+    mockUseState(newDateRange, initialData, defaultDateRange)
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -368,16 +342,7 @@ describe('ApexLineChart', () => {
   })
 
   it('should update toggle series state when a series is clicked in the legend', () => {
-    const setLegendToggleSpy = jest.fn()
-    jest
-      .spyOn(React, 'useState')
-      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([[], jest.fn()])
-      .mockReturnValueOnce([{ min: null, max: null }, jest.fn()])
-      .mockReturnValueOnce([
-        [{ CO2e: true }, { 'Kilowatt Hours': false }, { Cost: false }],
-        setLegendToggleSpy,
-      ])
+    mockUseState()
 
     let testRenderer: ReactTestRenderer
     act(() => {
@@ -393,7 +358,7 @@ describe('ApexLineChart', () => {
       afterLegendClickCallback(undefined, 1)
     })
 
-    expect(setLegendToggleSpy).toHaveBeenCalledWith([
+    expect(setToggledSeriesSpy).toHaveBeenCalledWith([
       { CO2e: true },
       { 'Kilowatt Hours': true },
       { Cost: false },

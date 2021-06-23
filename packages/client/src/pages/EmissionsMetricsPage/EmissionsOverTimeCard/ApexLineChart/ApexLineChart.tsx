@@ -4,56 +4,27 @@
 
 import React, { FunctionComponent, useEffect } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import ApexCharts from 'apexcharts'
+import Chart from 'react-apexcharts'
 import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
-import { CustomTooltip } from './CustomTooltip'
-
-import { getChartColors } from '../../../utils/themes'
-import { sumServiceTotals, getMaxOfDataSeries } from '../../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ApexChartProps } from '../../../Types'
-import Chart from 'react-apexcharts'
-import ApexCharts from 'apexcharts'
+import { ApexChartProps, DateRange } from 'Types'
+import { getChartColors } from 'utils/themes'
+import { sumServiceTotals, getMaxOfDataSeries } from 'utils/helpers'
+import { filterBy, sortByDate } from './chartHelpers'
+import CustomTooltip from './CustomTooltip'
 import * as _ from 'lodash'
-
-export interface DateRange {
-  min: Date | null
-  max: Date | null
-}
 
 type LegendToggle = {
   [key: string]: boolean
 }
 
-const formatDateToTime = (timestamp: string | Date) =>
-  timestamp instanceof Date
-    ? timestamp.getTime()
-    : new Date(timestamp).getTime()
-
-const sortByDate = (data: EstimationResult[]): EstimationResult[] => {
-  return data.sort((a: EstimationResult, b: EstimationResult) => {
-    return formatDateToTime(a.timestamp) - formatDateToTime(b.timestamp)
-  })
-}
-
-const filterBy = (
-  data: EstimationResult[],
-  range: DateRange,
-  defaultRange: DateRange,
-): EstimationResult[] => {
-  if (!range.min || !range.max) return data
-  if (_.isEqual(range, defaultRange)) return data
-
-  const min = formatDateToTime(range.min)
-  const max = formatDateToTime(range.max)
-  return data.filter((a: EstimationResult) => {
-    const result = formatDateToTime(a.timestamp)
-    return result >= min && result <= max
-  })
-}
-
 const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
   const theme = useTheme()
+  const colors = getChartColors(theme)
+  const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
+
   const [dateRange, setDateRange] = React.useState<DateRange>({
     min: null,
     max: null,
@@ -68,6 +39,23 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     { 'Kilowatt Hours': false },
     { Cost: false },
   ])
+
+  const filteredByZoomRange = filterBy(chartData, dateRange, defaultRange)
+
+  // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
+  // Why, you might ask? Don't ask me, ask ApexCharts.
+  const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
+  const PanToolIconHTML = renderToStaticMarkup(<PanTool />)
+  const RotateLeftIconHTML = renderToStaticMarkup(<RotateLeft />)
+  const ZoomInIconHTML = renderToStaticMarkup(<ZoomIn />)
+
+  const cloudEstimationData = sumServiceTotals(filteredByZoomRange)
+  const co2SeriesData = cloudEstimationData.co2Series
+  const kilowattHoursSeriesData = cloudEstimationData.kilowattHoursSeries
+  const costSeriesData = cloudEstimationData.costSeries
+  const maxCO2e = getMaxOfDataSeries(co2SeriesData)
+  const maxKilowattHours = getMaxOfDataSeries(kilowattHoursSeriesData)
+  const maxCost = getMaxOfDataSeries(costSeriesData)
 
   useEffect(() => {
     const newSortedData = sortByDate(data)
@@ -92,22 +80,6 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     }
   }, [data])
 
-  const filteredByZoomRange = filterBy(chartData, dateRange, defaultRange)
-  // We need to get the HTML string version of these icons since ApexCharts doesn't take in custom React components.
-  // Why, you might ask? Don't ask me, ask ApexCharts.
-  const GetAppIconHTML = renderToStaticMarkup(<GetApp />)
-  const PanToolIconHTML = renderToStaticMarkup(<PanTool />)
-  const RotateLeftIconHTML = renderToStaticMarkup(<RotateLeft />)
-  const ZoomInIconHTML = renderToStaticMarkup(<ZoomIn />)
-
-  const cloudEstimationData = sumServiceTotals(filteredByZoomRange)
-  const co2SeriesData = cloudEstimationData.co2Series
-  const kilowattHoursSeriesData = cloudEstimationData.kilowattHoursSeries
-  const costSeriesData = cloudEstimationData.costSeries
-  const maxCO2e = getMaxOfDataSeries(co2SeriesData)
-  const maxKilowattHours = getMaxOfDataSeries(kilowattHoursSeriesData)
-  const maxCost = getMaxOfDataSeries(costSeriesData)
-
   useEffect(() => {
     ApexCharts.exec('lineChart', 'updateSeries', [
       {
@@ -131,9 +103,6 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
         : ApexCharts.exec('lineChart', 'hideSeries', [seriesKey])
     })
   }, [co2SeriesData, kilowattHoursSeriesData, costSeriesData, toggledSeries])
-
-  const colors = getChartColors(theme)
-  const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const options: any = {
@@ -213,10 +182,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       shared: true,
       custom: function ({ dataPointIndex }: { dataPointIndex: number }) {
         return renderToStaticMarkup(
-          <CustomTooltip
-            data={co2SeriesData}
-            dataPointIndex={dataPointIndex}
-          />,
+          <CustomTooltip dataPoint={co2SeriesData[dataPointIndex]} />,
         )
       },
     },
@@ -303,6 +269,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       },
     },
   }
+
   return (
     <Chart
       aria-label="apex-line-chart"

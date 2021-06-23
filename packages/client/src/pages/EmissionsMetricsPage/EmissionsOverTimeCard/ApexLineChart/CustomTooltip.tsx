@@ -11,30 +11,29 @@ The custom tooltip also allows us to add an asterisk for data points that were e
 
 import React, { ReactElement } from 'react'
 import moment from 'moment'
-import { cloudEstPerDay } from '../../../Types'
+import { cloudEstPerDay } from 'Types'
 
-export const CustomTooltip = ({
-  data,
-  dataPointIndex,
-}: {
-  data: cloudEstPerDay[]
-  dataPointIndex: number
-}): ReactElement => {
-  if (data && data[dataPointIndex] && data[dataPointIndex].x) {
+type CustomTooltipProps = {
+  dataPoint: cloudEstPerDay
+}
+
+const CustomTooltip = ({ dataPoint }: CustomTooltipProps): ReactElement => {
+  if (dataPoint?.x) {
     return (
       <div style={{ padding: '10px' }}>
         <div>
-          <b>{moment.utc(data[dataPointIndex].x).format('MMMM DD')}</b>
+          <b>{moment.utc(dataPoint.x).format('MMMM DD')}</b>
         </div>
-        {data[dataPointIndex].usesAverageCPUConstant ? (
-          <div>{data[dataPointIndex].y} metric tons CO2e*</div>
-        ) : (
-          <div> {data[dataPointIndex].y} metric tons CO2e</div>
-        )}
-        <div>{data[dataPointIndex].kilowattHours} kilowatt hrs</div>
-        <div>${data[dataPointIndex].cost} cost</div>
+        <div>
+          {dataPoint.y} metric tons CO2e
+          {dataPoint.usesAverageCPUConstant && '*'}
+        </div>
+        <div>{dataPoint.kilowattHours} kilowatt hrs</div>
+        <div>${dataPoint.cost} cost</div>
       </div>
     )
   }
   return <div />
 }
+
+export default CustomTooltip

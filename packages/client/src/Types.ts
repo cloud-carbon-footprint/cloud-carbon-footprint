@@ -28,6 +28,11 @@ export type ApexChartProps = {
   dataType?: string
 }
 
+export type DateRange = {
+  min: Date | null
+  max: Date | null
+}
+
 export interface FilterResultResponse {
   accounts: DropdownOption[]
   services: DropdownOption[]

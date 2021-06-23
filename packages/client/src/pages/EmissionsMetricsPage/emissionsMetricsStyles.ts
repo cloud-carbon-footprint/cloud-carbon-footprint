@@ -18,11 +18,15 @@ const useStyles = makeStyles((theme) => ({
     justifyItems: 'center',
     minHeight: '100vh',
   },
-  gridItemCards: {
+  gridCardHalf: {
     width: '50%',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
+  },
+  gridCardFull: {
+    width: '100%',
+    height: '100%',
   },
   gridCardRow: {
     flexDirection: 'row',
