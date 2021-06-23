@@ -9,6 +9,8 @@ import moment = require('moment')
 describe('EmissionsTable', () => {
   const timestamp1 = moment.utc('2020-07-10').toDate()
   const timestamp2 = moment.utc('2020-07-09').toDate()
+  const testAccountId = 'test account id'
+  const testAccountName = 'test account'
   const region = 'us-east-1'
 
   const input: EstimationResult[] = [
@@ -17,7 +19,8 @@ describe('EmissionsTable', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'EBS',
           kilowattHours: 1,
           co2e: 1,
@@ -27,7 +30,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'S3',
           kilowattHours: 2,
           co2e: 2,
@@ -37,7 +41,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'EC2',
           kilowattHours: 3,
           co2e: 3,
@@ -47,7 +52,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'ElastiCache',
           kilowattHours: 4,
           co2e: 4,
@@ -57,7 +63,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'RDS',
           kilowattHours: 4,
           co2e: 4,
@@ -67,7 +74,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'Lambda',
           kilowattHours: 1,
           co2e: 1,
@@ -77,7 +85,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'gcp',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'ComputeEngine',
           kilowattHours: 1,
           co2e: 1,
@@ -92,7 +101,8 @@ describe('EmissionsTable', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'EBS',
           kilowattHours: 7,
           co2e: 8,
@@ -102,7 +112,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'S3',
           kilowattHours: 55,
           co2e: 1,
@@ -112,7 +123,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'EC2',
           kilowattHours: 90,
           co2e: 77,
@@ -122,7 +134,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'ElastiCache',
           kilowattHours: 747,
           co2e: 787,
@@ -132,7 +145,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'RDS',
           kilowattHours: 747,
           co2e: 787,
@@ -142,7 +156,8 @@ describe('EmissionsTable', () => {
         },
         {
           cloudProvider: 'aws',
-          accountName: 'test account',
+          accountId: testAccountId,
+          accountName: testAccountName,
           serviceName: 'Lambda',
           kilowattHours: 300,
           co2e: 300,

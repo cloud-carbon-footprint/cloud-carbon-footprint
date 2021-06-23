@@ -15,6 +15,10 @@ import {
 
 const date1 = new Date('2020-07-10T00:00:00.000Z')
 const date2 = new Date('2020-07-11T00:00:00.000Z')
+const testAccountA = 'test-a'
+const testAccountB = 'test-b'
+const testAccountC = 'test-c'
+
 const data: EstimationResult[] = [
   {
     timestamp: date1,
@@ -27,7 +31,8 @@ const data: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: false,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
       {
         serviceName: 'ec2',
@@ -37,7 +42,8 @@ const data: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: false,
         cloudProvider: 'GCP',
-        accountName: 'test-b',
+        accountId: testAccountB,
+        accountName: testAccountB,
       },
     ],
   },
@@ -52,7 +58,8 @@ const data: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: false,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
       {
         serviceName: 'ec2',
@@ -62,7 +69,8 @@ const data: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: true,
         cloudProvider: 'AWS',
-        accountName: 'test-c',
+        accountId: testAccountC,
+        accountName: testAccountC,
       },
     ],
   },
@@ -80,7 +88,8 @@ const dataWithHigherPrecision: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: false,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
       {
         serviceName: 'ec2',
@@ -90,7 +99,8 @@ const dataWithHigherPrecision: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: false,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
     ],
   },
@@ -105,7 +115,8 @@ const dataWithHigherPrecision: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: false,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
       {
         serviceName: 'ec2',
@@ -115,7 +126,8 @@ const dataWithHigherPrecision: EstimationResult[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: true,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
     ],
   },
@@ -123,6 +135,7 @@ const dataWithHigherPrecision: EstimationResult[] = [
 
 interface serviceEstimateWithUnknowns {
   cloudProvider: string
+  accountId: string | null
   accountName: string | null
   serviceName: string | null
   kilowattHours: number
@@ -149,7 +162,8 @@ const dataWithUnknowns: EstimationResultWithUnknowns[] = [
         region: 'unknown',
         usesAverageCPUConstant: true,
         cloudProvider: 'AWS',
-        accountName: 'test-a',
+        accountId: testAccountA,
+        accountName: testAccountA,
       },
       {
         serviceName: 'ebs',
@@ -159,6 +173,7 @@ const dataWithUnknowns: EstimationResultWithUnknowns[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: true,
         cloudProvider: 'GCP',
+        accountId: null,
         accountName: null,
       },
     ],
@@ -174,7 +189,8 @@ const dataWithUnknowns: EstimationResultWithUnknowns[] = [
         region: 'unknown',
         usesAverageCPUConstant: true,
         cloudProvider: 'GCP',
-        accountName: 'test-b',
+        accountId: testAccountB,
+        accountName: testAccountB,
       },
       {
         serviceName: 'ec2',
@@ -184,6 +200,7 @@ const dataWithUnknowns: EstimationResultWithUnknowns[] = [
         region: 'us-east-1',
         usesAverageCPUConstant: true,
         cloudProvider: 'AWS',
+        accountId: null,
         accountName: null,
       },
     ],
@@ -206,9 +223,9 @@ describe('transformData', () => {
     // then
     const expectedResult = {
       accounts: [
-        { cloudProvider: 'aws', key: 'test-a', name: 'test-a' },
-        { cloudProvider: 'gcp', key: 'test-b', name: 'test-b' },
-        { cloudProvider: 'aws', key: 'test-c', name: 'test-c' },
+        { cloudProvider: 'aws', key: testAccountA, name: testAccountA },
+        { cloudProvider: 'gcp', key: testAccountB, name: testAccountB },
+        { cloudProvider: 'aws', key: testAccountC, name: testAccountC },
       ],
       services: [
         { cloudProvider: 'aws', key: 'ebs', name: 'ebs' },
@@ -221,8 +238,8 @@ describe('transformData', () => {
 
   it('handles data with null account names', () => {
     const expected = {
-      'test-a': ['AWS', 6],
-      'test-b': ['GCP', 6],
+      [testAccountA]: ['AWS', 6],
+      [testAccountB]: ['GCP', 6],
       'Unknown Account - GCP': ['GCP', 6],
       'Unknown Account - AWS': ['AWS', 6],
     }

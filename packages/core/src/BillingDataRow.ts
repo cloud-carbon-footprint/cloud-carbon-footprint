@@ -4,6 +4,7 @@
 
 export default abstract class BillingDataRow {
   public serviceName: string
+  public accountId: string
   public accountName: string
   public usageAmount: number
   public usageType: string

@@ -82,6 +82,7 @@ describe('FootprintEstimate', () => {
             co2e: 0.00000256064317404202,
             usesAverageCPUConstant: false,
             serviceName: 'App Engine',
+            accountId: 'test account id',
             accountName: 'test-account',
             region: 'us-east1',
             cost: 5,
@@ -92,6 +93,7 @@ describe('FootprintEstimate', () => {
 
     const billingDataRowOne: BillingDataRow = {
       timestamp: dayOne,
+      accountId: 'test account id',
       accountName: 'test-account',
       region: 'us-east1',
       usageType: 'test',
@@ -122,6 +124,7 @@ describe('FootprintEstimate', () => {
 
     // then - accumulate
     const accumulatedServicesEstimate: MutableServiceEstimate = {
+      accountId: 'test account id',
       accountName: 'test-account',
       cloudProvider: 'GCP',
       co2e: 0.000002595030070637751,
@@ -142,6 +145,7 @@ describe('FootprintEstimate', () => {
     // given - append
     const billingDataRowTwo: BillingDataRow = {
       timestamp: dayTwo,
+      accountId: 'test account id',
       accountName: 'test-account',
       region: 'us-east1',
       serviceName: 'App Engine',
@@ -181,6 +185,7 @@ describe('FootprintEstimate', () => {
             cloudProvider: 'GCP',
             usesAverageCPUConstant: false,
             serviceName: 'App Engine',
+            accountId: 'test account id',
             accountName: 'test-account',
             region: 'us-east1',
             co2e: 3.438689659573138e-8,

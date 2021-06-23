@@ -36,6 +36,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.usageUnit = this.getUsageUnit()
     this.timestamp = new Date(this.timestamp)
     this.cost = Number(this.cost)
+    this.accountId = this.accountName
     this.cloudProvider = 'AWS'
   }
 

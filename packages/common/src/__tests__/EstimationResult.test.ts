@@ -7,6 +7,7 @@ import { reduceByTimestamp } from '../EstimationResult'
 describe('Estimation Result', () => {
   const estimateOne = {
     cloudProvider: 'AWS',
+    accountId: 'test account id',
     accountName: 'test account',
     serviceName: 'service test',
     kilowattHours: 25,
@@ -17,6 +18,7 @@ describe('Estimation Result', () => {
   }
   const estimateTwo = {
     cloudProvider: 'GCP',
+    accountId: 'test account id',
     accountName: 'test account',
     serviceName: 'service test',
     kilowattHours: 25,

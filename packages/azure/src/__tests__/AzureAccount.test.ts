@@ -32,6 +32,8 @@ const getEstimatesSpy = jest.spyOn(
 describe('Azure Account', () => {
   const startDate: Date = new Date('2021-01-01')
   const endDate: Date = new Date('2021-01-01')
+  const testAccountId = 'test-subscription-id'
+  const testAccountName = 'test-subscription'
 
   it('gets results from getDataFromConsumptionManagement function', async () => {
     const mockCredentials = {
@@ -55,7 +57,8 @@ describe('Azure Account', () => {
             co2e: 0.000021235635,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
-            accountName: 'test-subscription',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'UK South',
@@ -84,7 +87,8 @@ describe('Azure Account', () => {
             co2e: 0.000021235635,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
-            accountName: 'test-subscription',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'UK South',
@@ -99,7 +103,8 @@ describe('Azure Account', () => {
             co2e: 0.000021235635,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
-            accountName: 'test-subscription',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'UK South',

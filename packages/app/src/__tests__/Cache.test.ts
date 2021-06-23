@@ -25,6 +25,7 @@ jest.mock('../CacheManager', () => {
 const dummyServiceEstimate: ServiceData[] = [
   {
     cloudProvider: '',
+    accountId: '',
     accountName: '',
     serviceName: '',
     kilowattHours: 0,
@@ -255,6 +256,7 @@ describe('Cache', () => {
         [
           {
             cloudProvider: '',
+            accountId: '',
             accountName: '',
             serviceName: '',
             kilowattHours: 0,
@@ -296,6 +298,7 @@ describe('Cache', () => {
         [
           {
             cloudProvider: '',
+            accountId: '',
             accountName: '',
             serviceName: '',
             kilowattHours: 0,

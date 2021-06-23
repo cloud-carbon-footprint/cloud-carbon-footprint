@@ -23,7 +23,7 @@ import {
 
 export default class GCPAccount extends CloudProviderAccount {
   constructor(
-    public projectId: string,
+    public id: string,
     public name: string,
     private regions: string[],
   ) {
@@ -66,7 +66,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new BigQuery({ projectId: this.projectId }),
+      new BigQuery({ projectId: this.id }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)
   }
@@ -81,7 +81,7 @@ export default class GCPAccount extends CloudProviderAccount {
     if (this.services[key] === undefined)
       throw new Error('Unsupported service: ' + key)
     const options: ClientOptions = {
-      projectId: this.projectId,
+      projectId: this.id,
     }
     return this.services[key](options)
   }

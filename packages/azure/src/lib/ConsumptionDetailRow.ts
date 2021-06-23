@@ -14,6 +14,7 @@ export default class ConsumptionDetailRow extends BillingDataRow {
   constructor(usageDetail: UsageDetail) {
     const consumptionDetails = {
       cloudProvider: 'AZURE',
+      accountId: usageDetail.subscriptionGuid,
       accountName: usageDetail.subscriptionName,
       timestamp: new Date(usageDetail.usageStart),
       usageType: usageDetail.meterDetails.meterName,

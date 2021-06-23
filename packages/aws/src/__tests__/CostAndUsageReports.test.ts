@@ -58,7 +58,8 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 describe('CostAndUsageReports Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
-
+  const testAccountId = '123456789'
+  const testAccountName = '123456789'
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
   const getQueryExecutionResponse = {
     QueryExecution: { Status: { State: 'SUCCEEDED' } },
@@ -139,7 +140,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 8.758128528000001e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonEC2',
             cost: 3,
             region: 'us-east-1',
@@ -149,7 +151,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 4.6364016336000006e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonEC2',
             cost: 3,
             region: 'us-east-2',
@@ -164,7 +167,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 4.6364016336000006e-7,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonEC2',
             cost: 4,
             region: 'us-east-2',
@@ -179,7 +183,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0000025277770958400002,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonEC2',
             cost: 5,
             region: 'us-east-1',
@@ -194,7 +199,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0000028887403626900003,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonEC2',
             cost: 6,
             region: 'us-west-1',
@@ -204,7 +210,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 5.011026040416666e-9,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AWSLambda',
             cost: 15,
             region: 'us-west-1',
@@ -238,7 +245,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 1.4125236853033129e-18,
             cost: 9,
@@ -248,7 +256,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 4.025878297397867e-15,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 1.1814261933977831e-18,
             cost: 10,
@@ -258,7 +267,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 2.6839188649319113e-15,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000011410104946500003,
             cost: 11,
@@ -268,7 +278,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.0027444300000000004,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000017776863770400002,
             cost: 12,
@@ -278,7 +289,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.005066640000000001,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 3.6955487408000006e-7,
             cost: 13,
@@ -319,7 +331,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.000008550500481000001,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AWSGlue',
             cost: 5,
             region: 'us-east-1',
@@ -334,7 +347,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 4.708412284344377e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonDynamoDB',
             cost: 13,
             region: 'us-west-1',
@@ -371,7 +385,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0000034383314700900004,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonKinesisAnalytics',
             cost: 912,
             region: 'us-east-2',
@@ -381,7 +396,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.000013154879190095999,
             usesAverageCPUConstant: false,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonES',
             cost: 73,
             region: 'us-west-1',
@@ -396,7 +412,8 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.0002828647973079765,
             usesAverageCPUConstant: true,
             cloudProvider: 'AWS',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             serviceName: 'AmazonEC2',
             cost: 10,
             region: 'us-east-1',
@@ -431,7 +448,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 6.594881633999999e-9,
             cost: 2,
@@ -441,7 +459,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000014981999999999998,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000004509923436375,
             cost: 2,
@@ -451,7 +470,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.012853874999999999,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000020200596181916677,
             cost: 4,
@@ -490,7 +510,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0001126584847815,
             cost: 10,
@@ -500,7 +521,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.3210915,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00003536492535383826,
             cost: 5,
@@ -510,7 +532,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.10079468893333332,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0006218601175152745,
             cost: 25,
@@ -520,7 +543,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 1.7723831304000002,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00000180396937455,
             cost: 20,
@@ -530,7 +554,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.00514155,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000034629593454714295,
             cost: 20,
@@ -540,7 +565,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.0986988963,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000074816879208749995,
             cost: 20,
@@ -579,7 +605,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000021064809132000003,
             cost: 10,
@@ -589,7 +616,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.005066640000000001,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00012117541047916851,
             cost: 10,
@@ -599,7 +627,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.34536585850000007,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00052033326270464,
             cost: 15,
@@ -609,7 +638,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 1.4830182400000003,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000432952649892,
             cost: 15,
@@ -646,7 +676,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-01'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0007427421499500001,
             cost: 22,
@@ -682,7 +713,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-01'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00014604639719904827,
             cost: 40,
@@ -692,7 +724,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.35127995381666666,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00008869316977920002,
             cost: 7,
@@ -728,7 +761,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-02'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 5.787739723820913e-9,
             cost: 10,
@@ -743,7 +777,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-03'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 5.35415660302189e-9,
             cost: 5,
@@ -758,7 +793,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-04'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 1.9880880300061107e-12,
             cost: 7,
@@ -773,7 +809,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-05'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 4.405144400710844e-8,
             cost: 10,
@@ -788,7 +825,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-06'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 2.192987610097726e-10,
             cost: 5,
@@ -803,7 +841,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-07'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 4.127128828214698e-10,
             cost: 7,
@@ -841,7 +880,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-01'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000034337982056187456,
             cost: 10,
@@ -851,7 +891,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.048499974655632,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000016383336907398734,
             cost: 10,
@@ -861,7 +902,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.039406229407701006,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 6.158570301305735e-21,
             cost: 5,
@@ -871,7 +913,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 1.9489146523119416e-17,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 1.9355756655316373e-8,
             cost: 10,
@@ -881,7 +924,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000027338639343667196,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 2.339731883828851e-9,
             cost: 10,
@@ -891,7 +935,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000007404214822243199,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000017125243199999997,
             cost: 7,
@@ -901,7 +946,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.0506664,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00017233986726103502,
             cost: 20,
@@ -939,7 +985,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2021-01-01'),
         serviceEstimates: [
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 7.297876060323839e-9,
             cost: 10,
@@ -949,7 +996,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000010307734548479999,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 2.8307616003763196e-9,
             cost: 10,
@@ -959,7 +1007,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000008375034320639999,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000088269738866314,
             cost: 6,
@@ -969,7 +1018,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.0216082592084,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 1.4728843470358698e-23,
             cost: 5,
@@ -979,7 +1029,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 3.5426738031674176e-20,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 8.719281928699677e-11,
             cost: 5,
@@ -989,7 +1040,8 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 2.4851100375076387e-7,
           },
           {
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 1.2494368619346096e-10,
             cost: 5,

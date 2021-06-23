@@ -12,6 +12,7 @@ import { aggregateCostsByDay, Cost } from './cost'
 import { Region, FootprintEstimate, aggregateEstimatesByDay } from '.'
 
 export default class CloudProviderAccount {
+  id?: string
   name?: string
   async getRegionData(
     cloudProvider: string,
@@ -62,6 +63,7 @@ export default class CloudProviderAccount {
             serviceEstimates: [
               {
                 cloudProvider: cloudProvider,
+                accountId: this.id,
                 accountName: this.name,
                 serviceName: service.serviceName,
                 region: region.id,

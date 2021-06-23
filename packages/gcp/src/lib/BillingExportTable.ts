@@ -329,6 +329,7 @@ export default class BillingExportTable {
                     DATE_TRUNC(DATE(usage_start_time), ${
                       GCP_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
                     }) as timestamp,
+                    project.id as accountId,
                     project.name as accountName,
                     ifnull(location.region, location.location) as region,
                     service.description as serviceName,
@@ -353,6 +354,7 @@ export default class BillingExportTable {
                       .format('YYYY-MM-DD')}')
                   GROUP BY
                     timestamp,
+                    accountId,
                     accountName,
                     region,
                     serviceName,

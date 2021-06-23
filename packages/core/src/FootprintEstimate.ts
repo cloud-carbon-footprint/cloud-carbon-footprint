@@ -51,6 +51,7 @@ export interface MutableEstimationResult {
 
 export interface MutableServiceEstimate {
   cloudProvider: string
+  accountId: string
   accountName: string
   serviceName: string
   kilowattHours: number
@@ -71,6 +72,7 @@ export const appendOrAccumulateEstimatesByDay = (
     co2e: footprintEstimate.co2e,
     usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
     serviceName: rowData.serviceName,
+    accountId: rowData.accountId,
     accountName: rowData.accountName,
     region: rowData.region,
     cost: rowData.cost,

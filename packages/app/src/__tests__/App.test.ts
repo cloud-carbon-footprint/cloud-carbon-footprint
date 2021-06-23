@@ -49,7 +49,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
       GCP: {
         projects: [
           { id: '987654321', name: 'test GCP account' },
-          { id: '987654321', name: 'test GCP account 2' },
+          { id: '11223344', name: 'test GCP account 2' },
         ],
         NAME: 'GCP',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
@@ -105,8 +105,12 @@ describe('App', () => {
     endDate: moment(endDate).add(1, 'weeks').toDate(),
     region: region,
   }
+  const testAwsAccountId = '12345678'
   const testAwsAccountName = 'test AWS account'
-  const testGcpAccountName = 'test GCP account'
+  const testGcpAccountIdOne = '987654321'
+  const testGcpAccountIdTwo = '11223344'
+  const testGcpAccountNameOne = 'test GCP account'
+  const testGcpAccountNameTwo = 'test GCP account 2'
 
   beforeEach(() => {
     app = new App()
@@ -157,6 +161,7 @@ describe('App', () => {
             serviceEstimates: [
               {
                 cloudProvider: 'AWS',
+                accountId: testAwsAccountId,
                 accountName: testAwsAccountName,
                 serviceName: 'ebs',
                 kilowattHours: 1.0944,
@@ -232,6 +237,7 @@ describe('App', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
+              accountId: testAwsAccountId,
               accountName: testAwsAccountName,
               serviceName: 'serviceOne',
               kilowattHours: 2,
@@ -242,6 +248,7 @@ describe('App', () => {
             },
             {
               cloudProvider: 'AWS',
+              accountId: testAwsAccountId,
               accountName: testAwsAccountName,
               serviceName: 'serviceTwo',
               kilowattHours: 1,
@@ -294,6 +301,7 @@ describe('App', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
+              accountId: testAwsAccountId,
               accountName: testAwsAccountName,
               serviceName: 'serviceOne',
               kilowattHours: 3,
@@ -361,6 +369,7 @@ describe('App', () => {
             serviceEstimates: [
               {
                 cloudProvider: 'AWS',
+                accountId: testAwsAccountId,
                 accountName: testAwsAccountName,
                 serviceName: 'ebs',
                 kilowattHours: 1.0944,
@@ -417,6 +426,7 @@ describe('App', () => {
         serviceEstimates: [
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             kilowattHours: 3,
@@ -427,6 +437,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             kilowattHours: 3,
@@ -518,12 +529,13 @@ describe('App', () => {
 
     const result = await app.getCostAndEstimates(request)
 
-    const expectedEstimationResults = [
+    const expectedEstimationResults: EstimationResult[] = [
       {
         timestamp: new Date(startDate),
         serviceEstimates: [
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             kilowattHours: 3,
@@ -534,6 +546,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceTwo',
             kilowattHours: 4,
@@ -544,6 +557,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             kilowattHours: 3,
@@ -554,6 +568,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceTwo',
             kilowattHours: 4,
@@ -632,12 +647,13 @@ describe('App', () => {
 
     const result = await app.getCostAndEstimates(request)
 
-    const expectedEstimationResults = [
+    const expectedEstimationResults: EstimationResult[] = [
       {
         timestamp: new Date(startDate),
         serviceEstimates: [
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             kilowattHours: 3,
@@ -648,6 +664,7 @@ describe('App', () => {
           },
           {
             cloudProvider: 'AWS',
+            accountId: testAwsAccountId,
             accountName: testAwsAccountName,
             serviceName: 'serviceOne',
             kilowattHours: 3,
@@ -658,7 +675,8 @@ describe('App', () => {
           },
           {
             cloudProvider: 'GCP',
-            accountName: testGcpAccountName,
+            accountId: testGcpAccountIdOne,
+            accountName: testGcpAccountNameOne,
             serviceName: 'serviceTwo',
             kilowattHours: 4,
             co2e: 8,
@@ -668,7 +686,8 @@ describe('App', () => {
           },
           {
             cloudProvider: 'GCP',
-            accountName: testGcpAccountName,
+            accountId: testGcpAccountIdOne,
+            accountName: testGcpAccountNameOne,
             serviceName: 'serviceTwo',
             kilowattHours: 4,
             co2e: 8,
@@ -678,7 +697,8 @@ describe('App', () => {
           },
           {
             cloudProvider: 'GCP',
-            accountName: testGcpAccountName,
+            accountId: testGcpAccountIdOne,
+            accountName: testGcpAccountNameOne,
             serviceName: 'serviceTwo',
             kilowattHours: 4,
             co2e: 8,
@@ -687,7 +707,8 @@ describe('App', () => {
             usesAverageCPUConstant: false,
           },
           {
-            accountName: 'test GCP account 2',
+            accountId: testGcpAccountIdTwo,
+            accountName: testGcpAccountNameTwo,
             cloudProvider: 'GCP',
             co2e: 8,
             cost: 0,
@@ -697,7 +718,8 @@ describe('App', () => {
             kilowattHours: 4,
           },
           {
-            accountName: 'test GCP account 2',
+            accountId: testGcpAccountIdTwo,
+            accountName: testGcpAccountNameTwo,
             cloudProvider: 'GCP',
             co2e: 8,
             cost: 0,
@@ -707,7 +729,8 @@ describe('App', () => {
             kilowattHours: 4,
           },
           {
-            accountName: 'test GCP account 2',
+            accountId: testGcpAccountIdTwo,
+            accountName: testGcpAccountNameTwo,
             cloudProvider: 'GCP',
             co2e: 8,
             cost: 0,

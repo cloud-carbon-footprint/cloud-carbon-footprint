@@ -72,7 +72,7 @@ fileignoreconfig:
 - filename: packages/api/create_server_env_file.sh
   checksum: 659170eb0cdaa9d06f8aeeddf76b5c2b4fb223642ee192ce6d0863b165838fad
 - filename: packages/api/estimates.cache.test.json
-  checksum: cfc3b9636053ffd7d98c2456432cc08294b891bbf86c88af58cb8f105669aed2
+  checksum: 47701f39ac93d11ebf30ebc3eb7499971094144b82bbd558aebdaa551d8228f3
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
   checksum: 13d9fe76704017b7446776fd717b655740a11d74dc833a1a87def97ad075e33e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
@@ -105,6 +105,10 @@ fileignoreconfig:
   checksum: 907b0cab109a300d64724250d557e0f896029448bacdccb90b4cda3633568226
 - filename: packages/client/src/react-app-env.d.ts
   checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
+- filename: packages/client/src/utils/data/generateEstimations.ts
+  checksum: c40c051a28ed21afeef16a0c835403d6a72fe565bf95ce37ab72e3757243031d
+- filename: packages/client/src/utils/helpers/transformData.test.ts
+  checksum: 991989b197a9ec9782fd5e1792649c8869f3ef3e3785b2b0838ea056add679b4
 - filename: packages/client/stub-server/co2estimations.json
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
 - filename: packages/core/package.json

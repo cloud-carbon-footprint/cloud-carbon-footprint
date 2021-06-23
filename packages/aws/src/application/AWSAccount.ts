@@ -46,12 +46,12 @@ export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
 
   constructor(
-    public accountId: string,
+    public id: string,
     public name: string,
     private regions: string[],
   ) {
     super()
-    this.credentials = AWSCredentialsProvider.create(accountId)
+    this.credentials = AWSCredentialsProvider.create(id)
   }
 
   async getDataForRegions(

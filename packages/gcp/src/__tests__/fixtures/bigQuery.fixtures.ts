@@ -6,12 +6,15 @@ import { BigQueryDate } from '@google-cloud/bigquery'
 
 const bigQueryDateOne: BigQueryDate = { value: '2020-11-02' }
 const bigQueryDateTwo: BigQueryDate = { value: '2020-10-28' }
+const accountId = 'test-account-id'
+const accountName = 'test-account-name'
 
 export const mockQueryResultsAppEngineSSDStorage: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'App Engine',
       usageType: 'Cloud Datastore Storage',
@@ -23,7 +26,8 @@ export const mockQueryResultsAppEngineSSDStorage: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'App Engine',
       usageType: 'GCS Storage',
@@ -40,7 +44,8 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud SQL',
       usageType: 'Storage PD SSD for DB in Americas',
@@ -52,7 +57,8 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Compute Engine',
       usageType: 'Compute optimized Core running in Americas',
@@ -64,7 +70,8 @@ export const mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Cloud Dataflow',
       usageType: 'Local Disk Time PD Standard Belgium',
@@ -81,7 +88,8 @@ export const mockQueryResultsComputeEngineRam: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Compute engine',
       usageType: 'Flex Instance RAM',
@@ -93,7 +101,8 @@ export const mockQueryResultsComputeEngineRam: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'europe-west1',
       serviceName: 'Compute engine',
       usageType: 'N1 Predefined Instance Ram running in EMEA',
@@ -105,7 +114,8 @@ export const mockQueryResultsComputeEngineRam: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-central1',
       serviceName: 'Compute engine',
       usageType: 'E2 Instance Ram running in Americas',
@@ -122,7 +132,8 @@ export const mockQueryResultsUnknownUsages: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Compute engine',
       usageType: 'Vpn Tunnel',
@@ -134,7 +145,8 @@ export const mockQueryResultsUnknownUsages: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Bitnami Elasticsearch Certified by Bitnami',
       usageType: 'Licensing Fee for Bitnami Elasticsearch',
@@ -146,7 +158,8 @@ export const mockQueryResultsUnknownUsages: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Cloud DNS',
       usageType: 'ManagedZone',
@@ -158,7 +171,8 @@ export const mockQueryResultsUnknownUsages: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Cloud Key Management Service (KMS)',
       usageType: 'Active software symmetric key versions',
@@ -170,7 +184,8 @@ export const mockQueryResultsUnknownUsages: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Cloud Machine Learning Engine',
       usageType: 'Online Prediction Node-Hours (US) for mls1-c1-m2.',
@@ -187,7 +202,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Cloud SQL',
       usageType:
@@ -200,7 +216,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Cloud SQL',
       usageType: 'IP address idling in seconds for DB in Americas',
@@ -212,7 +229,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud SQL',
       usageType:
@@ -225,7 +243,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud SQL',
       usageType: 'Cloud SQL: vCPU in Americas',
@@ -237,7 +256,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud SQL',
       usageType:
@@ -250,7 +270,8 @@ export const mockQueryResultsUnknownAndCloudSQLCompute: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud SQL',
       usageType: 'Cloud SQL: Small instance in Northern Virginia',
@@ -266,7 +287,8 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'App Engine',
       usageType: 'Backend Instances',
@@ -278,7 +300,8 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud Dataflow',
       usageType: 'vCPU Time Batch Iowa',
@@ -290,7 +313,8 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: null,
       serviceName: 'App Engine',
       usageType: 'Cloud Datastore Storage',
@@ -307,7 +331,8 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'App Engine',
       usageType: 'Cloud Firestore Google Egress from APAC to the Americas',
@@ -319,7 +344,8 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Compute Engine',
       usageType: 'Network Ingress via Carrier Peering Network - EMEA Based',
@@ -331,7 +357,8 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Cloud Storage',
       usageType: 'Download Australia',
@@ -343,7 +370,8 @@ export const mockQueryNetworkingIgnoreIngress: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'europe-central2',
       serviceName: 'Cloud Pub/Sub',
       usageType: 'Download Australia',
@@ -360,7 +388,8 @@ export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Compute Engine',
       usageType: 'Small Instance with 1 VCPU running in EMEA',
@@ -372,7 +401,8 @@ export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-west1',
       serviceName: 'Compute Engine',
       usageType: 'N1 Predefined Instance Core running in Americas',
@@ -384,7 +414,8 @@ export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-east1',
       serviceName: 'Compute Engine',
       usageType: 'E2 Instance Core running in Americas',
@@ -401,7 +432,8 @@ export const mockQueryCloudStorageWithReplicationFactors: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'nam4',
       serviceName: 'Cloud Storage',
       usageType: 'Standard Storage Iowa/South Carolina Dual-region',
@@ -413,7 +445,8 @@ export const mockQueryCloudStorageWithReplicationFactors: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-central1',
       serviceName: 'Cloud Storage',
       usageType: 'Standard Storage US Regional',
@@ -425,7 +458,8 @@ export const mockQueryCloudStorageWithReplicationFactors: any[][] = [
     },
     {
       timestamp: bigQueryDateOne,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us',
       serviceName: 'Cloud Storage',
       usageType: 'Standard Storage US Multi-region',
@@ -443,7 +477,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
     [
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'us-east1',
         serviceName: 'Compute Engine',
         usageType: 'Storage PD Capacity',
@@ -455,7 +490,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
       },
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'asia-northeast1',
         serviceName: 'Compute Engine',
         usageType: 'Regional SSD backed PD Capacity in Japan',
@@ -467,7 +503,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
       },
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'asia',
         serviceName: 'Compute Engine',
         usageType: 'Storage PD Snapshot in Asia',
@@ -479,7 +516,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
       },
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'asia-south1',
         serviceName: 'Compute Engine',
         usageType: 'Storage Machine Image in Mumbai',
@@ -491,7 +529,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
       },
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'us-central1',
         serviceName: 'Cloud Filestore',
         usageType:
@@ -504,7 +543,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
       },
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'us-east4',
         serviceName: 'Cloud SQL',
         usageType:
@@ -517,7 +557,8 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
       },
       {
         timestamp: bigQueryDateTwo,
-        accountName: 'test-account',
+        accountId: accountId,
+        accountName: accountName,
         region: 'asia-south1',
         serviceName: 'Cloud SQL',
         usageType: 'Storage PD SSD for HA Postgres DB in Mumbai',
@@ -534,7 +575,8 @@ export const mockQueryMemoryStoreWithReplicationFactors: any[][] = [
   [
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-central1',
       serviceName: 'Cloud Memorystore for Redis',
       usageType: 'Redis Capacity Basic M1 Iowa/South Carolina/Oregon',
@@ -546,7 +588,8 @@ export const mockQueryMemoryStoreWithReplicationFactors: any[][] = [
     },
     {
       timestamp: bigQueryDateTwo,
-      accountName: 'test-account',
+      accountId: accountId,
+      accountName: accountName,
       region: 'us-central2',
       serviceName: 'Cloud Memorystore for Redis',
       usageType: 'Redis Capacity Standard M1 Belgium',
