@@ -18,10 +18,12 @@ const getRandomNumberInRange = (minValue: number, maxValue: number): number => {
 }
 
 const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
+  const accountIds = Array.from(Array(6).keys()).map(() => getRandomInt(5))
   return {
     ebs: {
       cloudProvider: 'AWS',
-      accountName: `aws account ${getRandomInt(5)}`,
+      accountId: `aws account ${accountIds[0]}`,
+      accountName: `aws account ${accountIds[0]}`,
       serviceName: 'ebs',
       kilowattHours: Math.random(),
       co2e: getRandomInt(6),
@@ -31,7 +33,8 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     s3: {
       cloudProvider: 'AWS',
-      accountName: `aws account ${getRandomInt(5)}`,
+      accountId: `aws account ${accountIds[1]}`,
+      accountName: `aws account ${accountIds[1]}`,
       serviceName: 's3',
       kilowattHours: Math.random() / 1000,
       co2e: getRandomInt(6),
@@ -41,7 +44,8 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     ec2: {
       cloudProvider: 'AWS',
-      accountName: `aws account ${getRandomInt(5)}`,
+      accountId: `aws account ${accountIds[2]}`,
+      accountName: `aws account ${accountIds[2]}`,
       serviceName: 'ec2',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -51,7 +55,8 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     rds: {
       cloudProvider: 'AWS',
-      accountName: `aws account ${getRandomInt(5)}`,
+      accountId: `aws account ${accountIds[3]}`,
+      accountName: `aws account ${accountIds[3]}`,
       serviceName: 'rds',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -61,7 +66,8 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     lambda: {
       cloudProvider: 'AWS',
-      accountName: `aws account ${getRandomInt(5)}`,
+      accountId: `aws account ${accountIds[4]}`,
+      accountName: `aws account ${accountIds[4]}`,
       serviceName: 'lambda',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -71,7 +77,8 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     elasticache: {
       cloudProvider: 'AWS',
-      accountName: `gcp account ${getRandomInt(5)}`,
+      accountId: `gcp account ${accountIds[5]}`,
+      accountName: `gcp account ${accountIds[5]}`,
       serviceName: 'elasticache',
       kilowattHours: getRandomNumberInRange(50, 75),
       co2e: getRandomInt(6),
@@ -81,6 +88,7 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     computeEngine: {
       cloudProvider: 'GCP',
+      accountId: `gcp account ${getRandomInt(5)} id`,
       accountName: `gcp account ${getRandomInt(5)}`,
       serviceName: 'computeEngine',
       kilowattHours: getRandomNumberInRange(50, 75),
@@ -91,6 +99,7 @@ const fakeServiceMap: () => { [key: string]: ServiceData } = () => {
     },
     virtualMachines: {
       cloudProvider: 'AZURE',
+      accountId: `azure account ${getRandomInt(5)} id`,
       accountName: `azure account ${getRandomInt(5)}`,
       serviceName: 'virtualMachines',
       kilowattHours: getRandomNumberInRange(50, 75),
