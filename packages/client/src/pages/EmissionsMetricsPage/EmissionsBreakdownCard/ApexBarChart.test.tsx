@@ -34,6 +34,7 @@ describe('ApexBarChart', () => {
       serviceEstimates: [
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 'ebs',
           kilowattHours: 0,
@@ -43,6 +44,7 @@ describe('ApexBarChart', () => {
         },
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 's3',
           kilowattHours: 0,
@@ -52,6 +54,7 @@ describe('ApexBarChart', () => {
         },
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 'ec2',
           kilowattHours: 0,
@@ -61,6 +64,7 @@ describe('ApexBarChart', () => {
         },
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 'eks',
           kilowattHours: 0,
