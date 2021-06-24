@@ -4,17 +4,17 @@
 
 import React from 'react'
 import {
+  act,
   create,
   ReactTestInstance,
   ReactTestRenderer,
 } from 'react-test-renderer'
-import { act, fireEvent, render, RenderResult } from '@testing-library/react'
-import { Select } from '@material-ui/core'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from 'Types'
+import SelectDropdown from 'common/SelectDropdown'
 import { useRemoteEmissionService } from 'utils/hooks'
 import { fakeEmissionFactors, mockDataWithHigherPrecision } from 'utils/data'
-import EmissionsBreakdownContainer from './EmissionsBreakdownContainer'
+import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import { ApexBarChart } from './ApexBarChart'
 
 jest.mock('apexcharts')
@@ -26,8 +26,7 @@ const mockedUseEmissionFactorService =
     typeof useRemoteEmissionService
   >
 
-describe('EmissionsBreakdownContainer', () => {
-  let page: RenderResult
+describe('EmissionsBreakdownCard', () => {
   let testRenderer: ReactTestRenderer, testInstance: ReactTestInstance
   const styleClass = 'test-style-class'
 
@@ -38,60 +37,45 @@ describe('EmissionsBreakdownContainer', () => {
     }
     mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
     testRenderer = create(
-      <EmissionsBreakdownContainer
+      <EmissionsBreakdownCard
         containerClass={styleClass}
         data={mockDataWithHigherPrecision}
       />,
     )
     testInstance = testRenderer.root
-    page = render(
-      <EmissionsBreakdownContainer
-        containerClass={styleClass}
-        data={mockDataWithHigherPrecision}
-      />,
-    )
   })
 
   afterEach(() => {
     testRenderer.unmount()
-    page.unmount()
     mockedUseEmissionFactorService.mockClear()
   })
 
-  it('renders bar chart with dropdown', () => {
-    //emulate click to test
-    const allMenuItemInstancesList = testInstance.findAllByType(Select)
+  it('renders a select dropdown for the bar chart', () => {
+    const selectDropdownInstances = testInstance.findAllByType(SelectDropdown)
 
-    expect(allMenuItemInstancesList).toHaveLength(1)
-
+    expect(selectDropdownInstances).toHaveLength(1)
     expect(testRenderer.toJSON()).toMatchSnapshot()
   })
 
-  it('checks to see if bar chart exists upon loading', () => {
+  it('renders the apex bar chart to display data', () => {
     const isApexBarChartRendered = testInstance.findAllByType(ApexBarChart)
 
     expect(isApexBarChartRendered).toHaveLength(1)
   })
 
-  it('renders emission by region bar chart by default', () => {
+  it('renders emission breakdowns by region on the bar chart by default', () => {
     const isApexBarChartRendered = testInstance.findByType(ApexBarChart)
 
     expect(isApexBarChartRendered.props.dataType).toBe('region')
   })
 
-  it('selects the correct option', () => {
-    act(() => {
-      fireEvent.mouseDown(page.getByRole('button', { name: 'Region' }))
-    })
+  it('updates the chart type when a different one is selected from the dropdown', () => {
+    act(() =>
+      testInstance
+        .findByType(SelectDropdown)
+        .props.handleChange({ target: { value: 'Service' } }),
+    )
 
-    expect(page.getByRole('option', { name: 'Region' })).toHaveClass(
-      'MuiListItem-button',
-    )
-    expect(page.getByRole('option', { name: 'Account' })).toHaveClass(
-      'MuiListItem-button',
-    )
-    expect(page.getByRole('option', { name: 'Service' })).toHaveClass(
-      'MuiListItem-button',
-    )
+    expect(testInstance.findByType(ApexBarChart).props.dataType).toBe('Service')
   })
 })

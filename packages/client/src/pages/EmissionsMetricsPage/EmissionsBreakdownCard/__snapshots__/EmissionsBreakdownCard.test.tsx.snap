@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EmissionsBreakdownContainer renders bar chart with dropdown 1`] = `
+exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] = `
 <div
   className="MuiGrid-root test-style-class MuiGrid-item"
 >

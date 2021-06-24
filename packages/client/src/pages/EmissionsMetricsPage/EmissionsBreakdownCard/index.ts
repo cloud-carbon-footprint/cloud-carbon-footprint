@@ -2,4 +2,4 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-export { default } from './EmissionsBreakdownContainer'
+export { default } from './EmissionsBreakdownCard'
