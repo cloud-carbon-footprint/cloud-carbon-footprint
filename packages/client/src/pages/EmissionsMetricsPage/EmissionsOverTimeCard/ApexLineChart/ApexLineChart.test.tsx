@@ -9,6 +9,7 @@ import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 import { render } from '@testing-library/react'
 import ApexLineChart from './ApexLineChart'
+import { ServiceData } from '@cloud-carbon-footprint/common'
 
 jest.mock('apexcharts')
 jest.mock('utils/themes')
@@ -16,9 +17,10 @@ jest.mock('utils/themes')
 describe('ApexLineChart', () => {
   class EstimationResultBuilder {
     private timestamp = moment('2019-08-10T00:00:00.000Z').toDate()
-    private serviceEstimates = [
+    private serviceEstimates: ServiceData[] = [
       {
         cloudProvider: 'AWS',
+        accountId: 'account-1-id',
         accountName: 'account-1',
         serviceName: 'ebs',
         kilowattHours: 2,
@@ -28,6 +30,7 @@ describe('ApexLineChart', () => {
       },
       {
         cloudProvider: 'AWS',
+        accountId: 'account-1-id',
         accountName: 'account-1',
         serviceName: 's3',
         kilowattHours: 4,
@@ -37,6 +40,7 @@ describe('ApexLineChart', () => {
       },
       {
         cloudProvider: 'AWS',
+        accountId: 'account-1-id',
         accountName: 'account-1',
         serviceName: 'ec2',
         kilowattHours: 6,
