@@ -113,4 +113,54 @@ describe('CloudProviderAccount', () => {
     ]
     expect(result).toEqual(expectedResult)
   })
+
+  it('getRegionData with missing cost data', async () => {
+    const mockEstimates = {
+      [testService.serviceName]: [
+        {
+          timestamp: dayOne,
+          kilowattHours: 1000,
+          co2e: 20,
+          usesAverageCPUConstant: true,
+        },
+      ],
+    }
+
+    const mockCosts = {
+      [testService.serviceName]: [
+        {
+          timestamp: dayOne,
+        },
+      ],
+    }
+
+    mockGetEstimates.mockResolvedValue(mockEstimates)
+    mockGetCosts.mockResolvedValue(mockCosts)
+    // when
+
+    const result = await testCloudProvider.getRegionData(
+      'test-cloud-provider',
+      testRegion,
+      dayOne,
+      dayTwo,
+    )
+
+    // then
+    const expectedResult = [
+      {
+        serviceEstimates: [
+          {
+            cloudProvider: 'test-cloud-provider',
+            co2e: 20,
+            cost: 0,
+            kilowattHours: 1000,
+            serviceName: 'test-service',
+            usesAverageCPUConstant: true,
+          },
+        ],
+        timestamp: dayOne,
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
 })

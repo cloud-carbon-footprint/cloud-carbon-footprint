@@ -1,9 +1,11 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
+import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 
 import ComputeUsage, {
   buildComputeUsages,
+  extractRawComputeUsages,
   RawComputeUsage,
 } from '../ComputeUsage'
 import CloudConstants from '../../CloudConstantsTypes'
@@ -105,5 +107,44 @@ describe('ComputeUsage', () => {
     ]
 
     expect(result).toEqual(expectedResult)
+  })
+
+  it('buildComputeUsages using cloud constant for average CPOU Utilization', () => {
+    const rawComputeUsages: RawComputeUsage[] = [
+      { timestamp: dayOneHourOne, id: 'vCPUs', value: 4.5 },
+    ]
+
+    const cloudConstants: CloudConstants = {
+      avgCpuUtilization: 50,
+    }
+
+    const result = buildComputeUsages(rawComputeUsages, cloudConstants)
+
+    const expectedResults = [
+      {
+        cpuUtilizationAverage: 50,
+        numberOfvCpus: 4.5,
+        timestamp: new Date(dayOneHourOne),
+        usesAverageCPUConstant: true,
+      },
+    ]
+    expect(result).toEqual(expectedResults)
+  })
+
+  it('extractRawComputeUsages', () => {
+    const testMetricId = 'test-metric-id'
+    const metricDataResult: MetricDataResult = {
+      Id: testMetricId,
+      Timestamps: [new Date('2021-01-01'), new Date('2021-01-02')],
+      Values: [10, 20],
+    }
+    const result = extractRawComputeUsages(metricDataResult)
+
+    const expectedResults: RawComputeUsage[] = [
+      { id: testMetricId, timestamp: '2021-01-01T00:00:00.000Z', value: 10 },
+      { id: testMetricId, timestamp: '2021-01-02T00:00:00.000Z', value: 20 },
+    ]
+
+    expect(result).toEqual(expectedResults)
   })
 })

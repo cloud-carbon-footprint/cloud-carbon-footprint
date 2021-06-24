@@ -5,6 +5,7 @@
 import FootprintEstimate, {
   aggregateEstimatesByDay,
   appendOrAccumulateEstimatesByDay,
+  estimateCo2,
   getWattsByAverageOrMedian,
   MutableServiceEstimate,
 } from '../FootprintEstimate'
@@ -254,6 +255,22 @@ describe('FootprintEstimate', () => {
 
       // then
       expect(result).toEqual(8.166666666666666)
+    })
+  })
+
+  describe('estimateCo2', () => {
+    const emissionsFactors = {
+      testRegion: 2,
+      unknown: 3,
+    }
+    it('estimates CO2e for known region', () => {
+      const result = estimateCo2(2, 'testRegion', emissionsFactors)
+      expect(result).toEqual(4)
+    })
+
+    it('estimates CO2e for unknown region', () => {
+      const result = estimateCo2(2, 'someRegion', emissionsFactors)
+      expect(result).toEqual(6)
     })
   })
 })

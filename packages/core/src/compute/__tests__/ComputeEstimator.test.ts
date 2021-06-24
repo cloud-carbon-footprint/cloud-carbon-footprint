@@ -3,14 +3,9 @@
  */
 
 import ComputeEstimator from '../ComputeEstimator'
+import CloudConstants from '../../CloudConstantsTypes'
 
 describe('ComputeEstimator', () => {
-  const awsConstants = {
-    powerUsageEffectiveness: 1.135,
-    minWatts: 0.71,
-    maxWatts: 3.46,
-    replicationFactor: 2,
-  }
   it('do estimates for AWS US East 1 region', () => {
     const input = [
       {
@@ -23,6 +18,12 @@ describe('ComputeEstimator', () => {
     const awsUsEast1Region = 'us-east-1'
     const awsEmissionsFactors = {
       [awsUsEast1Region]: 0.000415755,
+    }
+    const awsConstants: CloudConstants = {
+      powerUsageEffectiveness: 1.135,
+      minWatts: 0.71,
+      maxWatts: 3.46,
+      replicationFactor: 2,
     }
     const result = new ComputeEstimator().estimate(
       input,
@@ -41,7 +42,7 @@ describe('ComputeEstimator', () => {
     ])
   })
 
-  it('do estimates for AWS South Africa', () => {
+  it('do estimates for AWS South Africa with default replication factor', () => {
     const input = [
       {
         timestamp: new Date('2020-01-01'),
@@ -54,7 +55,11 @@ describe('ComputeEstimator', () => {
     const awsEmissionsFactors = {
       [awsAfSouth1Region]: 0.000928,
     }
-    awsConstants.replicationFactor = 1
+    const awsConstants: CloudConstants = {
+      powerUsageEffectiveness: 1.135,
+      minWatts: 0.71,
+      maxWatts: 3.46,
+    }
     const result = new ComputeEstimator().estimate(
       input,
       awsAfSouth1Region,
