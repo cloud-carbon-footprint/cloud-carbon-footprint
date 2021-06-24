@@ -3,9 +3,11 @@
  */
 
 import { renderHook } from '@testing-library/react-hooks'
-
-import { EstimationResult } from '@cloud-carbon-footprint/common'
-
+import {
+  mockData,
+  mockDataWithUnknowns,
+  mockDataWithHigherPrecision,
+} from '../data'
 import {
   sumCO2,
   sumCO2ByServiceOrRegion,
@@ -13,213 +15,26 @@ import {
   useFilterDataFromEstimates,
 } from './transformData'
 
-const date1 = new Date('2020-07-10T00:00:00.000Z')
-const date2 = new Date('2020-07-11T00:00:00.000Z')
 const testAccountA = 'test-a'
 const testAccountB = 'test-b'
 const testAccountC = 'test-c'
 
-const data: EstimationResult[] = [
-  {
-    timestamp: date1,
-    serviceEstimates: [
-      {
-        serviceName: 'ebs',
-        kilowattHours: 12,
-        co2e: 15,
-        cost: 5,
-        region: 'us-east-1',
-        usesAverageCPUConstant: false,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-      {
-        serviceName: 'ec2',
-        kilowattHours: 4,
-        co2e: 5,
-        cost: 4,
-        region: 'us-east-1',
-        usesAverageCPUConstant: false,
-        cloudProvider: 'GCP',
-        accountId: testAccountB,
-        accountName: testAccountB,
-      },
-    ],
-  },
-  {
-    timestamp: date2,
-    serviceEstimates: [
-      {
-        serviceName: 'ebs',
-        kilowattHours: 25,
-        co2e: 3,
-        cost: 6,
-        region: 'us-east-1',
-        usesAverageCPUConstant: false,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-      {
-        serviceName: 'ec2',
-        kilowattHours: 2,
-        co2e: 7,
-        cost: 6,
-        region: 'us-east-1',
-        usesAverageCPUConstant: true,
-        cloudProvider: 'AWS',
-        accountId: testAccountC,
-        accountName: testAccountC,
-      },
-    ],
-  },
-]
-
-const dataWithHigherPrecision: EstimationResult[] = [
-  {
-    timestamp: date1,
-    serviceEstimates: [
-      {
-        serviceName: 'ebs',
-        kilowattHours: 12.2342,
-        co2e: 15.12341,
-        cost: 5.82572,
-        region: 'us-east-1',
-        usesAverageCPUConstant: false,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-      {
-        serviceName: 'ec2',
-        kilowattHours: 4.745634,
-        co2e: 5.234236,
-        cost: 4.732,
-        region: 'us-east-1',
-        usesAverageCPUConstant: false,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-    ],
-  },
-  {
-    timestamp: date2,
-    serviceEstimates: [
-      {
-        serviceName: 'ebs',
-        kilowattHours: 25.73446,
-        co2e: 3.2600234,
-        cost: 6.05931,
-        region: 'us-east-1',
-        usesAverageCPUConstant: false,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-      {
-        serviceName: 'ec2',
-        kilowattHours: 2.4523452,
-        co2e: 7.7536,
-        cost: 6.2323,
-        region: 'us-east-1',
-        usesAverageCPUConstant: true,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-    ],
-  },
-]
-
-interface serviceEstimateWithUnknowns {
-  cloudProvider: string
-  accountId: string | null
-  accountName: string | null
-  serviceName: string | null
-  kilowattHours: number
-  co2e: number
-  cost: number
-  region: string
-  usesAverageCPUConstant?: boolean
-}
-
-interface EstimationResultWithUnknowns {
-  timestamp: Date
-  serviceEstimates: serviceEstimateWithUnknowns[]
-}
-
-const dataWithUnknowns: EstimationResultWithUnknowns[] = [
-  {
-    timestamp: date1,
-    serviceEstimates: [
-      {
-        serviceName: null,
-        kilowattHours: 5,
-        co2e: 6,
-        cost: 7,
-        region: 'unknown',
-        usesAverageCPUConstant: true,
-        cloudProvider: 'AWS',
-        accountId: testAccountA,
-        accountName: testAccountA,
-      },
-      {
-        serviceName: 'ebs',
-        kilowattHours: 7,
-        co2e: 6,
-        cost: 5,
-        region: 'us-east-1',
-        usesAverageCPUConstant: true,
-        cloudProvider: 'GCP',
-        accountId: null,
-        accountName: null,
-      },
-    ],
-  },
-  {
-    timestamp: date2,
-    serviceEstimates: [
-      {
-        serviceName: null,
-        kilowattHours: 5,
-        co2e: 6,
-        cost: 7,
-        region: 'unknown',
-        usesAverageCPUConstant: true,
-        cloudProvider: 'GCP',
-        accountId: testAccountB,
-        accountName: testAccountB,
-      },
-      {
-        serviceName: 'ec2',
-        kilowattHours: 7,
-        co2e: 6,
-        cost: 5,
-        region: 'us-east-1',
-        usesAverageCPUConstant: true,
-        cloudProvider: 'AWS',
-        accountId: null,
-        accountName: null,
-      },
-    ],
-  },
-]
+const date1 = new Date('2020-07-10T00:00:00.000Z')
+const date2 = new Date('2020-07-11T00:00:00.000Z')
 
 describe('transformData', () => {
   it('returns the sum of CO2 per service', () => {
     const expected = { ebs: ['AWS', 18], ec2: ['AWS', 12] }
-    expect(sumCO2ByServiceOrRegion(data, 'service')).toEqual(expected)
+    expect(sumCO2ByServiceOrRegion(mockData, 'service')).toEqual(expected)
   })
 
   it('returns the sum of CO2 metric tons and gallons', () => {
     const expected = 30
-    expect(sumCO2(data)).toEqual(expected)
+    expect(sumCO2(mockData)).toEqual(expected)
   })
 
   it('extract account names from estimates data', async () => {
-    const { result } = renderHook(() => useFilterDataFromEstimates(data))
+    const { result } = renderHook(() => useFilterDataFromEstimates(mockData))
     // then
     const expectedResult = {
       accounts: [
@@ -243,7 +58,7 @@ describe('transformData', () => {
       'Unknown Account - GCP': ['GCP', 6],
       'Unknown Account - AWS': ['AWS', 6],
     }
-    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'account')).toEqual(
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknowns, 'account')).toEqual(
       expected,
     )
   })
@@ -255,7 +70,7 @@ describe('transformData', () => {
       'Unknown Service - GCP': ['GCP', 6],
       'Unknown Service - AWS': ['AWS', 6],
     }
-    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'service')).toEqual(
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknowns, 'service')).toEqual(
       expected,
     )
   })
@@ -266,7 +81,7 @@ describe('transformData', () => {
       'Unknown Region - GCP': ['GCP', 6],
       'Unknown Region - AWS': ['AWS', 6],
     }
-    expect(sumCO2ByServiceOrRegion(dataWithUnknowns, 'region')).toEqual(
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknowns, 'region')).toEqual(
       expected,
     )
   })
@@ -302,19 +117,19 @@ describe('sumServiceTotals', () => {
 
   it('returns the sum of co2e for all services', () => {
     const expectedCo2e = expectedTotals.co2e
-    expect(sumServiceTotals(data).co2Series).toEqual(expectedCo2e)
+    expect(sumServiceTotals(mockData).co2Series).toEqual(expectedCo2e)
   })
 
   it('returns the sum of kilowatt hours for all services', () => {
     const expectedWattHours = expectedTotals.kilowattHours
-    expect(sumServiceTotals(data).kilowattHoursSeries).toEqual(
+    expect(sumServiceTotals(mockData).kilowattHoursSeries).toEqual(
       expectedWattHours,
     )
   })
 
   it('returns the sum of cost for all services', () => {
     const expectedCost = expectedTotals.cost
-    expect(sumServiceTotals(data).costSeries).toEqual(expectedCost)
+    expect(sumServiceTotals(mockData).costSeries).toEqual(expectedCost)
   })
 
   describe('rounding to the hundredths', () => {
@@ -345,19 +160,19 @@ describe('sumServiceTotals', () => {
       ],
     }
     it('returns the sum of co2e rounded to 3 decimal places', () => {
-      expect(sumServiceTotals(dataWithHigherPrecision).co2Series).toEqual(
+      expect(sumServiceTotals(mockDataWithHigherPrecision).co2Series).toEqual(
         expectedTotals.co2e,
       )
     })
 
     it('returns the sum of co2e rounded to the hundredths place', () => {
       expect(
-        sumServiceTotals(dataWithHigherPrecision).kilowattHoursSeries,
+        sumServiceTotals(mockDataWithHigherPrecision).kilowattHoursSeries,
       ).toEqual(expectedTotals.kilowattHours)
     })
 
     it('returns the sum of co2e rounded to the hundredths place', () => {
-      expect(sumServiceTotals(dataWithHigherPrecision).costSeries).toEqual(
+      expect(sumServiceTotals(mockDataWithHigherPrecision).costSeries).toEqual(
         expectedTotals.cost,
       )
     })

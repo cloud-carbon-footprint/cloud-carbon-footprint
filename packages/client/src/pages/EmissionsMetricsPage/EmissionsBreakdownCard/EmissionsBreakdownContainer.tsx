@@ -6,8 +6,8 @@ import React, { ReactElement } from 'react'
 import { Box, Grid, Card, makeStyles, Paper } from '@material-ui/core'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from 'Types'
+import SelectDropdown from 'common/SelectDropdown'
 import { ApexBarChart } from './ApexBarChart'
-import SelectDropdown from '../../../common/SelectDropdown'
 
 const useStyles = makeStyles(() => {
   return {

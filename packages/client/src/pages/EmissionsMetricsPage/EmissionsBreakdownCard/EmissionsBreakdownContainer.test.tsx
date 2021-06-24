@@ -10,21 +10,16 @@ import {
 } from 'react-test-renderer'
 import { act, fireEvent, render, RenderResult } from '@testing-library/react'
 import { Select } from '@material-ui/core'
-
-import {
-  EstimationResult,
-  EmissionRatioResult,
-} from '@cloud-carbon-footprint/common'
-
+import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
+import { ServiceResult } from 'Types'
+import { useRemoteEmissionService } from 'utils/hooks'
+import { fakeEmissionFactors, mockDataWithHigherPrecision } from 'utils/data'
 import EmissionsBreakdownContainer from './EmissionsBreakdownContainer'
 import { ApexBarChart } from './ApexBarChart'
-import { ServiceResult } from '../../../Types'
-import { useRemoteEmissionService } from '../../../utils/hooks'
-import { fakeEmissionFactors } from '../../../utils/data'
 
 jest.mock('apexcharts')
-jest.mock('../../../utils/themes')
-jest.mock('../../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('utils/themes')
+jest.mock('utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<
@@ -32,68 +27,9 @@ const mockedUseEmissionFactorService =
   >
 
 describe('EmissionsBreakdownContainer', () => {
-  const date1 = new Date('2020-07-10T00:00:00.000Z')
-  const date2 = new Date('2020-07-11T00:00:00.000Z')
   let page: RenderResult
   let testRenderer: ReactTestRenderer, testInstance: ReactTestInstance
   const styleClass = 'test-style-class'
-
-  const dataWithHigherPrecision: EstimationResult[] = [
-    {
-      timestamp: date1,
-      serviceEstimates: [
-        {
-          cloudProvider: 'aws',
-          accountId: '1',
-          accountName: 'testacct',
-          serviceName: 'ebs',
-          kilowattHours: 12.2342,
-          co2e: 15.12341,
-          cost: 5.82572,
-          region: 'us-east-1',
-          usesAverageCPUConstant: false,
-        },
-        {
-          cloudProvider: 'aws',
-          accountId: '2',
-          accountName: 'testacct',
-          serviceName: 'ec2',
-          kilowattHours: 4.745634,
-          co2e: 5.234236,
-          cost: 4.732,
-          region: 'us-east-1',
-          usesAverageCPUConstant: false,
-        },
-      ],
-    },
-    {
-      timestamp: date2,
-      serviceEstimates: [
-        {
-          cloudProvider: 'aws',
-          accountId: '3',
-          accountName: 'testacct',
-          serviceName: 'ebs',
-          kilowattHours: 25.73446,
-          co2e: 3.2600234,
-          cost: 6.05931,
-          region: 'us-east-1',
-          usesAverageCPUConstant: false,
-        },
-        {
-          cloudProvider: 'aws',
-          accountId: '4',
-          accountName: 'testacct',
-          serviceName: 'ec2',
-          kilowattHours: 2.4523452,
-          co2e: 7.7536,
-          cost: 6.2323,
-          region: 'us-east-1',
-          usesAverageCPUConstant: true,
-        },
-      ],
-    },
-  ]
 
   beforeEach(() => {
     const mockReturnValue: ServiceResult<EmissionRatioResult> = {
@@ -104,14 +40,14 @@ describe('EmissionsBreakdownContainer', () => {
     testRenderer = create(
       <EmissionsBreakdownContainer
         containerClass={styleClass}
-        data={dataWithHigherPrecision}
+        data={mockDataWithHigherPrecision}
       />,
     )
     testInstance = testRenderer.root
     page = render(
       <EmissionsBreakdownContainer
         containerClass={styleClass}
-        data={dataWithHigherPrecision}
+        data={mockDataWithHigherPrecision}
       />,
     )
   })

@@ -3,3 +3,8 @@
  */
 
 export { fakeEmissionFactors, generateEstimations } from './generateEstimations'
+export {
+  mockData,
+  mockDataWithUnknowns,
+  mockDataWithHigherPrecision,
+} from './mockData'
