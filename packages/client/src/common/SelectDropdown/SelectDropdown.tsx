@@ -3,41 +3,17 @@
  */
 
 import React, { ChangeEvent, FunctionComponent, ReactElement } from 'react'
-import {
-  createStyles,
-  FormControl,
-  InputBase,
-  MenuItem,
-  Select,
-  withStyles,
-} from '@material-ui/core'
+import { FormControl, MenuItem, Select } from '@material-ui/core'
+import BootstrapInput from './selectDropdownStyles'
 
-type SelectProps = {
+type SelectDropdownProps = {
   id?: string
   value: string
   dropdownOptions: string[]
   handleChange: (event: ChangeEvent<{ value: unknown }>) => void
 }
 
-const BootstrapInput = withStyles(() =>
-  createStyles({
-    input: {
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      padding: '10px 26px 10px 12px',
-      width: '65px',
-      '&:hover': {
-        borderColor: 'black',
-      },
-      '&:focus': {
-        backgroundColor: 'white',
-        borderRadius: 4,
-      },
-    },
-  }),
-)(InputBase)
-
-const SelectDropdown: FunctionComponent<SelectProps> = ({
+const SelectDropdown: FunctionComponent<SelectDropdownProps> = ({
   id,
   value,
   dropdownOptions,

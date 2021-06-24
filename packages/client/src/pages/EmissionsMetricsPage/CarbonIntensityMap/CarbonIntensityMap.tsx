@@ -4,11 +4,11 @@
 
 import React, { ReactElement, useState } from 'react'
 import { Card, Box, Typography, Grid } from '@material-ui/core'
+import SelectDropdown from 'common/SelectDropdown'
 import { ReactComponent as AWSMap } from './AWSMap.svg'
 import { ReactComponent as GCPMap } from './GCPMap.svg'
 import { ReactComponent as AzureMap } from './AzureMap.svg'
-import { useStyles } from './carbonIntensityStyles'
-import SelectDropdown from '../../../common/SelectDropdown'
+import useStyles from './carbonIntensityStyles'
 
 type CloudProvider = 'AWS' | 'GCP' | 'Azure'
 

@@ -2,14 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import {
-  createStyles,
-  InputBase,
-  makeStyles,
-  withStyles,
-} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
-export const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
     height: '100%',
@@ -36,20 +31,4 @@ export const useStyles = makeStyles(() => ({
   },
 }))
 
-export const BootstrapInput = withStyles(() =>
-  createStyles({
-    input: {
-      border: '1px solid #ced4da',
-      fontSize: 16,
-      padding: '10px 26px 10px 12px',
-      width: '65px',
-      '&:hover': {
-        borderColor: 'black',
-      },
-      '&:focus': {
-        backgroundColor: 'white',
-        borderRadius: 4,
-      },
-    },
-  }),
-)(InputBase)
+export default useStyles
