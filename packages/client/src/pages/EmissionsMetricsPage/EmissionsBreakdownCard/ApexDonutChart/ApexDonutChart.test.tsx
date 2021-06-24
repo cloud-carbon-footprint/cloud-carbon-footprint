@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { act, create, ReactTestRenderer } from 'react-test-renderer'
+import { create, ReactTestRenderer } from 'react-test-renderer'
 import moment from 'moment'
 import Chart from 'react-apexcharts'
 
@@ -13,11 +13,11 @@ import {
 } from '@cloud-carbon-footprint/common'
 
 import { ServiceResult } from '../../../../Types'
-import { ApexBarChart, Entry } from '../ApexBarChart'
-import Pagination, { Page } from '../Pagination'
+import { ApexDonutChart } from './ApexDonutChart'
 import { useRemoteEmissionService } from '../../../../utils/hooks'
 
 jest.mock('apexcharts')
+jest.mock('utils/themes')
 jest.mock('../../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
@@ -44,7 +44,7 @@ const emissionsFactorData: EmissionRatioResult[] = [
   },
 ]
 
-describe('ApexBarChart', () => {
+describe('ApexDonutChart', () => {
   let fixture: ReactTestRenderer
   const data: EstimationResult[] = [
     {
@@ -52,6 +52,7 @@ describe('ApexBarChart', () => {
       serviceEstimates: [
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 'ebs',
           kilowattHours: 0,
@@ -61,6 +62,7 @@ describe('ApexBarChart', () => {
         },
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 's3',
           kilowattHours: 0,
@@ -70,6 +72,7 @@ describe('ApexBarChart', () => {
         },
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 'ec2',
           kilowattHours: 0,
@@ -79,6 +82,7 @@ describe('ApexBarChart', () => {
         },
         {
           cloudProvider: 'AWS',
+          accountId: 'some account id',
           accountName: 'some account',
           serviceName: 'eks',
           kilowattHours: 0,
@@ -95,7 +99,7 @@ describe('ApexBarChart', () => {
       data: emissionsFactorData,
     }
     mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
-    fixture = create(<ApexBarChart data={data} dataType="service" />)
+    fixture = create(<ApexDonutChart data={data} dataType="service" />)
   })
 
   afterEach(() => {
@@ -106,83 +110,20 @@ describe('ApexBarChart', () => {
     expect(fixture.toJSON()).toMatchSnapshot()
   })
 
-  it('should format tool tip values with proper data instead of scaled down data', () => {
-    act(() => {
-      const handlePage: (page: Page<Entry>) => void =
-        fixture.root.findByType(Pagination).props?.handlePage
-      // make pagination send first page
-      handlePage({
-        data: [
-          { x: ['ebs', '(AWS)'], y: 100 },
-          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
-          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
-          { x: ['eks', '(AWS)'], y: 1 },
-        ],
-        page: 0,
-      })
-    })
+  it('should pass sorted chart options to Chart component', () => {
+    const chartOptionLabels =
+      fixture.root.findByType(Chart).props?.options?.labels
+    const chartOptionSeries =
+      fixture.root.findByType(Chart).props?.options?.series
 
+    expect(chartOptionLabels).toEqual(['ebs', 'ec2', 's3', 'eks'])
+    expect(chartOptionSeries).toEqual([3000.014, 2000.014, 1000.014, 0.000014])
+  })
+
+  it('should format tool tip y values to 3 decimal places', () => {
     const yFormatter =
       fixture.root.findByType(Chart).props?.options?.tooltip?.y?.formatter
     expect(yFormatter).toBeDefined()
-    expect(yFormatter(null, { dataPointIndex: 1 })).toEqual(
-      '2000.014 metric tons',
-    )
-  })
-
-  it('should format data label values with proper data instead of scaled down data', () => {
-    act(() => {
-      const handlePage: (page: Page<Entry>) => void =
-        fixture.root.findByType(Pagination).props?.handlePage
-      // make pagination send first page
-      handlePage({
-        data: [
-          { x: ['ebs', '(AWS)'], y: 100 },
-          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
-          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
-          { x: ['eks', '(AWS)'], y: 1 },
-        ],
-        page: 0,
-      })
-    })
-
-    const dataLabelFormatter =
-      fixture.root.findByType(Chart).props?.options?.dataLabels?.formatter
-    expect(dataLabelFormatter).toBeDefined()
-    expect(dataLabelFormatter(null, { dataPointIndex: 1 })).toEqual('33.33 %')
-  })
-
-  it('should format data label values that are less than 0.01', () => {
-    act(() => {
-      const handlePage: (page: Page<Entry>) => void =
-        fixture.root.findByType(Pagination).props?.handlePage
-      // make pagination send first page
-      handlePage({
-        data: [
-          { x: ['ebs', '(AWS)'], y: 100 },
-          { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
-          { x: ['s3', '(AWS)'], y: 34.00030769056555 },
-          { x: ['eks', '(AWS)'], y: 1 },
-        ],
-        page: 0,
-      })
-    })
-
-    const dataLabelFormatter =
-      fixture.root.findByType(Chart).props?.options?.dataLabels?.formatter
-    expect(dataLabelFormatter).toBeDefined()
-    expect(dataLabelFormatter(null, { dataPointIndex: 3 })).toEqual('< 0.01 %')
-  })
-
-  it('should filter, sort, order, and scale down data before passing it to Pagination component', function () {
-    const paginationComponent = fixture.root.findByType(Pagination)
-    const sortedData = [
-      { x: ['ebs', '(AWS)'], y: 100 },
-      { x: ['ec2', '(AWS)'], y: 67.00015384528277 },
-      { x: ['s3', '(AWS)'], y: 34.00030769056555 },
-      { x: ['eks', '(AWS)'], y: 1 },
-    ]
-
-    expect(paginationComponent.props.data).toEqual(sortedData)
+    expect(yFormatter(2000.0140003)).toEqual('2000.014 metric tons')
   })
 })
