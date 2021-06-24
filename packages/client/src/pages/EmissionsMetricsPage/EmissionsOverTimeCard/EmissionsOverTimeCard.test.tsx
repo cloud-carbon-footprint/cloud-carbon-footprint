@@ -26,6 +26,7 @@ describe('Emissions Over Time Card', () => {
       serviceEstimates: [
         {
           cloudProvider: 'aws',
+          accountId: 'testacctid',
           accountName: 'testacct',
           serviceName: 'ebs',
           kilowattHours: 12.2342,
@@ -36,6 +37,7 @@ describe('Emissions Over Time Card', () => {
         },
         {
           cloudProvider: 'aws',
+          accountId: 'testacctid',
           accountName: 'testacct',
           serviceName: 'ec2',
           kilowattHours: 4.745634,
