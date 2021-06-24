@@ -7,19 +7,19 @@ import { create } from 'react-test-renderer'
 import moment from 'moment'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import CarbonComparisonCard, {
   toTrees,
   toFlights,
 } from './CarbonComparisonCard'
-import { EstimationResult } from '@cloud-carbon-footprint/commmon'
 
-const data = [
+const data: EstimationResult[] = [
   {
     timestamp: moment('2019-08-10T00:00:00.000Z').toDate(),
     serviceEstimates: [
       {
         cloudProvider: 'AWS',
+        accountId: 'testaccountid',
         accountName: 'testaccountname',
         serviceName: 'ebs',
         kilowattHours: 0,
@@ -29,6 +29,7 @@ const data = [
       },
       {
         cloudProvider: 'AWS',
+        accountId: 'testaccountid',
         accountName: 'testaccountname',
         serviceName: 's3',
         kilowattHours: 0,
@@ -38,6 +39,7 @@ const data = [
       },
       {
         cloudProvider: 'AWS',
+        accountId: 'testaccountid',
         accountName: 'testaccountname',
         serviceName: 'ec2',
         kilowattHours: 0,
@@ -50,15 +52,19 @@ const data = [
 ]
 
 describe('CarbonComparisonCard', () => {
+  const testContainerClass = 'test-container-class'
+
   it('renders with correct configuration', () => {
-    const root = create(<CarbonComparisonCard data={data} />)
+    const root = create(
+      <CarbonComparisonCard containerClass={testContainerClass} data={data} />,
+    )
 
     expect(root.toJSON()).toMatchSnapshot()
   })
 
   it('selects carbon comparison correctly', async () => {
     const { getByText, getByTestId } = render(
-      <CarbonComparisonCard data={data} />,
+      <CarbonComparisonCard containerClass={testContainerClass} data={data} />,
     )
 
     const phonesButton = getByText('phones')
@@ -95,7 +101,7 @@ describe('CarbonComparisonCard', () => {
 
   it('should show corresponding sources for each pane', async () => {
     const { getByTestId, getByText } = render(
-      <CarbonComparisonCard data={data} />,
+      <CarbonComparisonCard containerClass={testContainerClass} data={data} />,
     )
     const source = getByTestId('epa-source')
     expect(source).toHaveTextContent(
@@ -124,7 +130,9 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('should open Flight Carbon Calculator page in other tab when clicking flight link', async () => {
-    const { getByText } = render(<CarbonComparisonCard data={data} />)
+    const { getByText } = render(
+      <CarbonComparisonCard containerClass={testContainerClass} data={data} />,
+    )
     const epaLink = getByText('Flight Carbon Footprint Calculator').closest('a')
     expect(epaLink).toHaveAttribute(
       'href',
@@ -136,7 +144,9 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('should open EPA page in other tab when clicking EPA link', async () => {
-    const { getByText } = render(<CarbonComparisonCard data={data} />)
+    const { getByText } = render(
+      <CarbonComparisonCard containerClass={testContainerClass} data={data} />,
+    )
     const phonesButton = getByText('phones')
     act(() => {
       fireEvent.click(phonesButton)
@@ -160,6 +170,7 @@ describe('CarbonComparisonCard', () => {
           serviceEstimates: [
             {
               cloudProvider: 'AWS',
+              accountId: 'testaccountid',
               accountName: 'testaccountname',
               serviceName: 'ebs',
               kilowattHours: 0,
@@ -176,7 +187,12 @@ describe('CarbonComparisonCard', () => {
     it('should format co2e to default locale integer', async () => {
       const co2e = 999999.55555555555
       data[0].serviceEstimates[0].co2e = co2e
-      const { getByTestId } = render(<CarbonComparisonCard data={data} />)
+      const { getByTestId } = render(
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={data}
+        />,
+      )
       const co2 = getByTestId('co2')
       expect(co2).toHaveTextContent(
         co2e.toLocaleString(undefined, { maximumFractionDigits: 1 }),
@@ -184,7 +200,12 @@ describe('CarbonComparisonCard', () => {
     })
 
     it('should format flights', async () => {
-      const { getByTestId } = render(<CarbonComparisonCard data={data} />)
+      const { getByTestId } = render(
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={data}
+        />,
+      )
       const co2 = getByTestId('comparison')
       const expected = toFlights(co2kg).toLocaleString(undefined, {
         maximumFractionDigits: 0,
@@ -195,7 +216,10 @@ describe('CarbonComparisonCard', () => {
     it('should format number of phones that are less than a million', async () => {
       data[0].serviceEstimates[0].co2e = 8
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard data={data} />,
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={data}
+        />,
       )
       act(() => {
         fireEvent.click(getByText('phones'))
@@ -208,7 +232,10 @@ describe('CarbonComparisonCard', () => {
     it('should format number of phones that are over a million', async () => {
       data[0].serviceEstimates[0].co2e = 309
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard data={data} />,
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={data}
+        />,
       )
       act(() => {
         fireEvent.click(getByText('phones'))
@@ -220,7 +247,10 @@ describe('CarbonComparisonCard', () => {
 
     it('should format number of phones that are over a billion', async () => {
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard data={data} />,
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={data}
+        />,
       )
       act(() => {
         fireEvent.click(getByText('phones'))
@@ -232,7 +262,10 @@ describe('CarbonComparisonCard', () => {
 
     it('should format trees', async () => {
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard data={data} />,
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={data}
+        />,
       )
       act(() => {
         fireEvent.click(getByText('trees'))

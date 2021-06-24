@@ -2,7 +2,7 @@
 
 exports[`CarbonComparisonCard renders with correct configuration 1`] = `
 <div
-  className="MuiGrid-root MuiGrid-item"
+  className="MuiGrid-root test-container-class MuiGrid-item"
   data-testid="carbonComparison"
 >
   <div
