@@ -7,7 +7,7 @@ import { Box, Grid, Card, Paper } from '@material-ui/core'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from 'Types'
 import SelectDropdown from 'common/SelectDropdown'
-import { ApexBarChart } from './ApexBarChart'
+import ApexBarChart from './ApexBarChart'
 import useStyles from './emissionsBreakdownStyles'
 
 type EmissionsBreakdownContainerProps = {

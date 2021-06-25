@@ -7,13 +7,13 @@ import { useTheme } from '@material-ui/core/styles'
 import Chart from 'react-apexcharts'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
-import { sumCO2ByServiceOrRegion } from '../../../utils/helpers'
-import { ApexChartProps } from '../../../Types'
-import { chartBarCustomColors } from '../../../Types'
-import Pagination, { Page } from './Pagination'
-import CarbonIntensityRange from './CarbonIntensityRange'
-import NoDataMessage from '../../../common/NoDataMessage'
-import useRemoteEmissionService from '../../../utils/hooks/EmissionFactorServiceHook'
+import { sumCO2ByServiceOrRegion } from '../../../../utils/helpers'
+import { ApexChartProps } from '../../../../Types'
+import { chartBarCustomColors } from '../../../../Types'
+import Pagination, { Page } from '../Pagination'
+import CarbonIntensityRange from '../CarbonIntensityRange/'
+import NoDataMessage from '../../../../common/NoDataMessage'
+import useRemoteEmissionService from '../../../../utils/hooks/EmissionFactorServiceHook'
 
 const mapToRange = (
   value: number,
@@ -30,7 +30,7 @@ export interface Entry {
   y: number
 }
 
-export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
+const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   data,
   dataType,
 }) => {
@@ -270,3 +270,5 @@ export const createCustomBarColors = (
   })
   return regionColorsMap
 }
+
+export default ApexBarChart

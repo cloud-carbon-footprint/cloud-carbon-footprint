@@ -15,7 +15,7 @@ import SelectDropdown from 'common/SelectDropdown'
 import { useRemoteEmissionService } from 'utils/hooks'
 import { fakeEmissionFactors, mockDataWithHigherPrecision } from 'utils/data'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
-import { ApexBarChart } from './ApexBarChart'
+import ApexBarChart from './ApexBarChart'
 
 jest.mock('apexcharts')
 jest.mock('utils/themes')

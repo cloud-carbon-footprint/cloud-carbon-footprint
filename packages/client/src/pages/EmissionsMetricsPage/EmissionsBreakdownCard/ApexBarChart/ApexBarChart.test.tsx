@@ -12,14 +12,14 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import { ServiceResult } from '../../../Types'
-import { ApexBarChart, Entry, createCustomBarColors } from './ApexBarChart'
-import Pagination, { Page } from './Pagination'
-import { useRemoteEmissionService } from '../../../utils/hooks'
-import { fakeEmissionFactors } from '../../../utils/data'
+import { ServiceResult } from '../../../../Types'
+import ApexBarChart, { Entry, createCustomBarColors } from './ApexBarChart'
+import Pagination, { Page } from '../Pagination'
+import { useRemoteEmissionService } from '../../../../utils/hooks'
+import { fakeEmissionFactors } from '../../../../utils/data'
 
 jest.mock('apexcharts')
-jest.mock('../../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('../../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<
