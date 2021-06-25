@@ -23,5 +23,5 @@ export enum AZURE_REGIONS {
   US_WEST = 'US West',
   US_WEST_2 = 'US West 2',
   US_WEST_3 = 'US West 3',
-  UNKNOWN = 'Unknown',
+  UNKNOWN = 'unknown',
 }

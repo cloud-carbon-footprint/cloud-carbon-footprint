@@ -109,18 +109,22 @@ describe('api', () => {
     it('returns data for regional emissions factors', async () => {
       const expectedResponse: EmissionRatioResult[] = [
         {
+          cloudProvider: 'AWS',
           region: 'awsRegion1',
           mtPerKwHour: 1,
         },
         {
+          cloudProvider: 'AWS',
           region: 'awsRegion2',
           mtPerKwHour: 2,
         },
         {
+          cloudProvider: 'GCP',
           region: 'gcpRegion1',
           mtPerKwHour: 3,
         },
         {
+          cloudProvider: 'GCP',
           region: 'gcpRegion2',
           mtPerKwHour: 4,
         },

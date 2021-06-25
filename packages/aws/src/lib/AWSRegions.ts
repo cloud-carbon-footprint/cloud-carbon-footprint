@@ -28,4 +28,5 @@ export enum AWS_REGIONS {
   SA_EAST_1 = 'sa-east-1',
   US_GOV_EAST_1 = 'us-gov-east-1',
   US_GOV_WEST_1 = 'us-gov-west-1',
+  UNKNOWN = 'unknown',
 }

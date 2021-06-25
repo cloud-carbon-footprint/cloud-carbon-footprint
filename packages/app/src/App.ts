@@ -114,17 +114,31 @@ export default class App {
   }
 
   getEmissionsFactors(): EmissionRatioResult[] {
+    const emissionsRatiosByCloudProvider = {
+      AWS: AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      GCP: GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      AZURE: AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+    }
     const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH = Object.assign(
-      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      emissionsRatiosByCloudProvider.AWS,
+      emissionsRatiosByCloudProvider.GCP,
+      emissionsRatiosByCloudProvider.AZURE,
     )
     return Object.keys(
       CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-    ).reduce((emissionDataResult, key) => {
+    ).reduce((emissionDataResult, regionKey) => {
+      let cloudProvider
+      for (const [key, value] of Object.entries(
+        emissionsRatiosByCloudProvider,
+      )) {
+        if (Object.keys(value).includes(regionKey)) cloudProvider = key
+      }
+
       emissionDataResult.push({
-        region: key,
-        mtPerKwHour: CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[key],
+        cloudProvider: cloudProvider,
+        region: regionKey,
+        mtPerKwHour:
+          CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[regionKey],
       })
       return emissionDataResult
     }, [])
