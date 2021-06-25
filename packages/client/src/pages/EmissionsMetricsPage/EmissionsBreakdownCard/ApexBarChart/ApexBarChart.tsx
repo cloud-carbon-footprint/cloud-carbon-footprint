@@ -2,46 +2,34 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import React, { FunctionComponent, useState, Fragment } from 'react'
-import { useTheme } from '@material-ui/core/styles'
+import React, { FunctionComponent, useState } from 'react'
 import Chart from 'react-apexcharts'
-import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
-
-import { sumCO2ByServiceOrRegion } from '../../../../utils/helpers'
-import { ApexChartProps } from '../../../../Types'
-import { chartBarCustomColors } from '../../../../Types'
-import Pagination, { Page } from '../Pagination'
+import { useTheme } from '@material-ui/core/styles'
+import NoDataMessage from 'common/NoDataMessage'
+import { ApexChartProps, PageEntry, Page, barChartCustomColors } from 'Types'
+import { sumCO2ByServiceOrRegion } from 'utils/helpers'
+import useRemoteEmissionService from 'utils/hooks/EmissionFactorServiceHook'
+import useStyles from './apexBarChartStyles'
+import { createCustomBarColors, mapToRange } from './helpers'
+import Pagination from '../Pagination'
 import CarbonIntensityRange from '../CarbonIntensityRange/'
-import NoDataMessage from '../../../../common/NoDataMessage'
-import useRemoteEmissionService from '../../../../utils/hooks/EmissionFactorServiceHook'
-
-const mapToRange = (
-  value: number,
-  in_min: number,
-  in_max: number,
-  out_min: number,
-  out_max: number,
-) => {
-  return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
-}
-
-export interface Entry {
-  x: string[]
-  y: number
-}
 
 const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   data,
   dataType,
 }) => {
-  const [pageData, setPageData] = useState<Page<Entry>>({ data: [], page: 0 })
+  const [pageData, setPageData] = useState<Page<PageEntry>>({
+    data: [],
+    page: 0,
+  })
+
   const theme = useTheme()
+  const classes = useStyles()
+  const mainTheme = theme.palette.primary.main
+  const darkTheme = theme.palette.primary.dark
 
   const { data: emissionsData, loading: emissionsLoading } =
     useRemoteEmissionService()
-
-  const mainTheme = theme.palette.primary.main
-  const darkTheme = theme.palette.primary.dark
 
   let customBarColors = [mainTheme]
   if (dataType === 'region' && !!emissionsData.length) {
@@ -69,7 +57,7 @@ const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   const pageSize = 10
   const minThreshold = 1
   const maxThreshold = 100
-  const mappedDataEntries: Entry[] = dataEntries.map((entry) => {
+  const mappedDataEntries: PageEntry[] = dataEntries.map((entry) => {
     const yEntry = mapToRange(
       entry.y,
       smallestCO2E,
@@ -194,81 +182,40 @@ const ApexBarChart: FunctionComponent<ApexChartProps> = ({
     height: '500px',
   }
 
-  const handlePage = (page: Page<Entry>) => {
+  const handlePage = (page: Page<PageEntry>) => {
     setPageData(page)
   }
 
-  return (
-    <div
-      style={{
-        minHeight: '500px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignContent: 'center',
-      }}
-    >
-      {mappedDataEntries?.length && !emissionsLoading ? (
-        <Fragment>
-          {dataType === 'region' && (
-            <CarbonIntensityRange
-              startLabel="Low carbon intensity"
-              endLabel="High carbon intensity"
-              colorRange={chartBarCustomColors}
-            />
-          )}
-          <Chart
-            options={options}
-            series={options.series}
-            type="bar"
-            height={options.height}
-          />
-          <div style={{ paddingTop: '10px' }}>
-            <Pagination
-              data={mappedDataEntries}
-              pageSize={pageSize}
-              handlePage={handlePage}
-            />
-          </div>
-        </Fragment>
-      ) : (
+  if (!mappedDataEntries?.length || emissionsLoading) {
+    return (
+      <div className={classes.barChartContainer}>
         <NoDataMessage isTop={false} />
+      </div>
+    )
+  }
+
+  return (
+    <div className={classes.barChartContainer}>
+      {dataType === 'region' && (
+        <CarbonIntensityRange
+          startLabel="Low carbon intensity"
+          endLabel="High carbon intensity"
+          colorRange={barChartCustomColors}
+        />
       )}
+      <Chart
+        options={options}
+        series={options.series}
+        type="bar"
+        height={options.height}
+      />
+      <Pagination
+        data={mappedDataEntries}
+        pageSize={pageSize}
+        handlePage={handlePage}
+      />
     </div>
   )
-}
-
-export const createCustomBarColors = (
-  pageData: Page<Entry>,
-  emissionsData: EmissionRatioResult[],
-  mainTheme: string,
-): string[] => {
-  const regionColorsMap: string[] = []
-  pageData.data.forEach((region) => {
-    const currentRegion = region.x[0]
-    let color = chartBarCustomColors[0]
-    const regionEmissionData = emissionsData.find(
-      (item) => item.region === currentRegion,
-    ) as EmissionRatioResult
-    if (!regionEmissionData) {
-      regionColorsMap.push(mainTheme)
-    } else {
-      const { mtPerKwHour } = regionEmissionData
-      if (mtPerKwHour >= 0.00064) {
-        color = chartBarCustomColors[4]
-      } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
-        color = chartBarCustomColors[3]
-      } else if (mtPerKwHour >= 0.00032 && mtPerKwHour < 0.00048) {
-        color = chartBarCustomColors[2]
-      } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
-        color = chartBarCustomColors[1]
-      } else {
-        color = chartBarCustomColors[0]
-      }
-      regionColorsMap.push(color)
-    }
-  })
-  return regionColorsMap
 }
 
 export default ApexBarChart

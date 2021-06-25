@@ -276,7 +276,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
               component="p"
               data-testid="co2"
             >
-              Emissions comparison
+              Emissions Comparison
             </Typography>
           </CardContent>
           <div className={classes.noData}>

@@ -2,16 +2,10 @@
 
 exports[`Pagination renders Pagination with correct configuration 1`] = `
 <div
-  className="makeStyles-paginationContainer-2"
+  className="makeStyles-paginationContainer-3"
 >
   <span
-    style={
-      Object {
-        "color": "#ababab",
-        "fontWeight": 700,
-        "marginRight": "8px",
-      }
-    }
+    className="makeStyles-paginationLabel-4"
   >
     1 - 3
      of 

@@ -12,7 +12,7 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ApexChartProps, DateRange } from 'Types'
 import { getChartColors } from 'utils/themes'
 import { sumServiceTotals, getMaxOfDataSeries } from 'utils/helpers'
-import { filterBy, sortByDate } from './chartHelpers'
+import { filterBy, sortByDate } from './helpers'
 import CustomTooltip from './CustomTooltip'
 import * as _ from 'lodash'
 

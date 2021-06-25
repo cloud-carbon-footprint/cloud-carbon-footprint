@@ -3,44 +3,16 @@
  */
 
 import React, { ReactElement } from 'react'
+import carbonIntensityRangeStyles from './carbonIntensityRangeStyles'
 
-interface TimeLineProps {
+type TimeLineProps = {
   startLabel: string
   endLabel: string
   colorRange: string[]
 }
 
-const { timelineWrapper, timelineStyles, dotStyles, barStyles, labelsStyle } = {
-  timelineWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    padding: '10px 45px',
-    alignSelf: 'center',
-  },
-  labelsStyle: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingBottom: '12px',
-    fontWeight: 500,
-  },
-  timelineStyles: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  dotStyles: {
-    width: '15px',
-    height: '15px',
-    borderRadius: '8px',
-  },
-  barStyles: {
-    flexGrow: 2,
-    height: '1px',
-    backgroundColor: '#ababab',
-  },
-}
+const { timelineWrapper, timelineStyles, dotStyles, barStyles, labelsStyle } =
+  carbonIntensityRangeStyles
 
 const CarbonIntensityRange = (props: TimeLineProps): ReactElement => {
   const { startLabel, endLabel, colorRange = [] } = props
@@ -52,6 +24,7 @@ const CarbonIntensityRange = (props: TimeLineProps): ReactElement => {
       style={{ ...dotStyles, backgroundColor: props.color }}
     />
   )
+
   const Bar = (): ReactElement => <div className="t-bar" style={barStyles} />
 
   const getChartItems = colorRange.reduce(
@@ -66,7 +39,7 @@ const CarbonIntensityRange = (props: TimeLineProps): ReactElement => {
   )
 
   return (
-    <div style={timelineWrapper as React.CSSProperties}>
+    <div style={timelineWrapper}>
       <div style={labelsStyle}>
         <div>{startLabel}</div>
         <div>{endLabel}</div>

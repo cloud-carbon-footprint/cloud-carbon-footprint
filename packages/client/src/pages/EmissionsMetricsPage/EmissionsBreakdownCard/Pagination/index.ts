@@ -3,4 +3,3 @@
  */
 
 export { default } from './Pagination'
-export type { Page } from './Pagination'

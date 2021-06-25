@@ -1,8 +1,8 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { DropdownOption } from './pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { DropdownOption } from './pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -17,10 +17,19 @@ export interface cloudEstPerDay {
   cost?: number
 }
 
-export enum ChartDataTypes {
-  REGION = 'region',
-  SERVICE = 'service',
-  ACCOUNT = 'account',
+export interface FilterResultResponse {
+  accounts: DropdownOption[]
+  services: DropdownOption[]
+}
+
+export interface Page<T> {
+  data: T[]
+  page: number
+}
+
+export interface PageEntry {
+  x: string[]
+  y: number
 }
 
 export type ApexChartProps = {
@@ -33,9 +42,10 @@ export type DateRange = {
   max: Date | null
 }
 
-export interface FilterResultResponse {
-  accounts: DropdownOption[]
-  services: DropdownOption[]
+export enum ChartDataTypes {
+  REGION = 'region',
+  SERVICE = 'service',
+  ACCOUNT = 'account',
 }
 
 export enum UnknownTypes {
@@ -44,7 +54,7 @@ export enum UnknownTypes {
   UNKNOWN_ACCOUNT = 'Unknown Account',
 }
 
-export const chartBarCustomColors: string[] = [
+export const barChartCustomColors: string[] = [
   '#73B500',
   '#00791E',
   '#D99200',

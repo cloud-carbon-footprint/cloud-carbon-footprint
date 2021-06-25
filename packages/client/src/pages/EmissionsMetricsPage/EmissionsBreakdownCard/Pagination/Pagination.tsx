@@ -14,7 +14,9 @@ import {
   FirstPage,
   LastPage,
 } from '@material-ui/icons'
-import { IconButton, makeStyles } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
+import { Page } from 'Types'
+import useStyles from './paginationStyles'
 
 interface UsePaginateData<T> {
   paginatedData: T[][]
@@ -28,11 +30,6 @@ interface PaginateData<T> {
 
 interface PaginationProps<T> extends PaginateData<T> {
   handlePage: (page: Page<T>) => void
-}
-
-export interface Page<T> {
-  data: T[]
-  page: number
 }
 
 const usePaginateData: <T>(data: T[], pageSize: number) => UsePaginateData<T> =
@@ -49,26 +46,16 @@ const usePaginateData: <T>(data: T[], pageSize: number) => UsePaginateData<T> =
     }
   }
 
-const useStyles = makeStyles(() => {
-  return {
-    paginationContainer: {
-      display: 'flex',
-      width: '100%',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-  }
-})
-
 const Pagination: <T>(
   props: PropsWithChildren<PaginationProps<T>>,
 ) => ReactElement = ({ data, pageSize, handlePage }) => {
-  const { paginationContainer } = useStyles()
+  const { paginationContainer, paginationLabel } = useStyles()
   const [page, setPage] = useState(0)
   const { paginatedData, totalPages } = usePaginateData<typeof data[0]>(
     data,
     pageSize,
   )
+  const lastPage = paginatedData.length - 1
   const visibleRows = `${page * pageSize + 1} - ${
     page * pageSize + paginatedData[page]?.length
   }`
@@ -83,12 +70,13 @@ const Pagination: <T>(
     handlePage({ data: paginatedData[newPage], page: newPage })
   }
 
-  const lastPage = paginatedData.length - 1
-  return data.length === 0 ? (
-    <div aria-label="no-pagination-data" />
-  ) : (
+  if (data.length === 0) {
+    return <div aria-label="no-pagination-data" />
+  }
+
+  return (
     <div className={paginationContainer}>
-      <span style={{ color: '#ababab', fontWeight: 700, marginRight: '8px' }}>
+      <span className={paginationLabel}>
         {visibleRows} of {data.length}
       </span>
       <IconButton

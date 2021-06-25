@@ -103,6 +103,10 @@ fileignoreconfig:
   checksum: 239dbd0152befa9cce15d540a4e736ac788a15a8c15562dadb08e93bf386da93
 - filename: packages/client/src/pages/EmissionsMetricsPage/CarbonIntensityMap/CarbonIntensityMap.tsx
   checksum: 95d72d07b8b7882138bd5c88a943f4ee798a1aa4ce9e184d17664d632f633227
+- filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsBreakdownCard/ApexBarChart/__snapshots__/ApexBarChart.test.tsx.snap
+  checksum: 6741d38f47dab811df00dd95efc15cf836a30ce27102f97ad342b211723911e3
+- filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsBreakdownCard/__snapshots__/EmissionsBreakdownCard.test.tsx.snap
+  checksum: 630a3e774c51b071791879024c9bfa2bf0c90ca0fad60880c1b0def82f0728ba
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
   checksum: 907b0cab109a300d64724250d557e0f896029448bacdccb90b4cda3633568226
 - filename: packages/client/src/react-app-env.d.ts

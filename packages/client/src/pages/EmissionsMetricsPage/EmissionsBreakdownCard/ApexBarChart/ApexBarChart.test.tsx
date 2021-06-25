@@ -6,20 +6,20 @@ import React from 'react'
 import { act, create, ReactTestRenderer } from 'react-test-renderer'
 import Chart from 'react-apexcharts'
 import moment from 'moment'
-
 import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
-
-import { ServiceResult } from '../../../../Types'
-import ApexBarChart, { Entry, createCustomBarColors } from './ApexBarChart'
+import NoDataMessage from 'common/NoDataMessage'
+import { useRemoteEmissionService } from 'utils/hooks'
+import { fakeEmissionFactors } from 'utils/data'
+import { PageEntry, ServiceResult } from 'Types'
+import ApexBarChart from './ApexBarChart'
 import Pagination, { Page } from '../Pagination'
-import { useRemoteEmissionService } from '../../../../utils/hooks'
-import { fakeEmissionFactors } from '../../../../utils/data'
+import { createCustomBarColors } from './helpers'
 
 jest.mock('apexcharts')
-jest.mock('../../../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<
@@ -93,7 +93,7 @@ describe('ApexBarChart', () => {
   })
 
   it('should format tool tip values with proper data instead of scaled down data', () => {
-    const handlePage: (page: Page<Entry>) => void =
+    const handlePage: (page: Page<PageEntry>) => void =
       fixture.root.findByType(Pagination).props?.handlePage
     // make pagination send first page
     act(() => {
@@ -117,7 +117,7 @@ describe('ApexBarChart', () => {
   })
 
   it('should format data label values with proper data instead of scaled down data', () => {
-    const handlePage: (page: Page<Entry>) => void =
+    const handlePage: (page: Page<PageEntry>) => void =
       fixture.root.findByType(Pagination).props?.handlePage
     // make pagination send first page
     act(() => {
@@ -139,7 +139,7 @@ describe('ApexBarChart', () => {
   })
 
   it('should format data label values that are less than 0.01', () => {
-    const handlePage: (page: Page<Entry>) => void =
+    const handlePage: (page: Page<PageEntry>) => void =
       fixture.root.findByType(Pagination).props?.handlePage
     // make pagination send first page
     act(() => {
@@ -200,7 +200,7 @@ describe('ApexBarChart', () => {
       { x: ['us-west-4', '(AWS)'], y: 1 },
       { x: ['us-east-1', '(AWS)'], y: 2 },
     ]
-    const pageData: Page<Entry> = { data: firstPagedata, page: 0 }
+    const pageData: Page<PageEntry> = { data: firstPagedata, page: 0 }
     const mainTheme = '#2C82BE'
 
     const emissionsData: EmissionRatioResult[] = fakeEmissionFactors
@@ -224,5 +224,13 @@ describe('ApexBarChart', () => {
     const mainColors = createCustomBarColors(pageData, [], mainTheme)
 
     expect(mainColors).toEqual(defaultColors)
+  })
+
+  it('should show a no data message when there is no data to display', () => {
+    fixture = create(<ApexBarChart data={[]} dataType="region" />)
+    const noDataComponent = fixture.root.findByType(NoDataMessage)
+
+    expect(noDataComponent).toBeDefined()
+    expect(noDataComponent.props.isTop).toBe(false)
   })
 })
