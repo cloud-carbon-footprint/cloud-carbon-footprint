@@ -261,7 +261,7 @@ describe('FootprintEstimate', () => {
   describe('estimateCo2', () => {
     const emissionsFactors = {
       testRegion: 2,
-      unknown: 3,
+      Unknown: 3,
     }
     it('estimates CO2e for known region', () => {
       const result = estimateCo2(2, 'testRegion', emissionsFactors)

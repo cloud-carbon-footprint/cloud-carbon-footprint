@@ -177,6 +177,6 @@ export function estimateCo2(
 ): number {
   return (
     estimatedWattHours *
-    (emissionsFactors[region] || emissionsFactors['unknown'])
+    (emissionsFactors[region] || emissionsFactors['Unknown'])
   )
 }

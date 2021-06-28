@@ -71,6 +71,8 @@ fileignoreconfig:
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
   checksum: 659170eb0cdaa9d06f8aeeddf76b5c2b4fb223642ee192ce6d0863b165838fad
+- filename: packages/api/estimates.cache-uscs.json
+  checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
   checksum: 47701f39ac93d11ebf30ebc3eb7499971094144b82bbd558aebdaa551d8228f3
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
