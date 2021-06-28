@@ -1,0 +1,84 @@
+/*
+ * © 2021 ThoughtWorks, Inc.
+ */
+import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
+import AWSMock from 'aws-sdk-mock'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
+
+import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
+import { RecommendationResult } from '@cloud-carbon-footprint/common'
+
+import Recommendations from '../lib/Recommendations'
+import { rightsizingRecommendationTerminate } from './fixtures/costExplorer.fixtures'
+import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
+
+xdescribe('AWS Recommendations Service', () => {
+  const getServiceWrapper = () =>
+    new ServiceWrapper(
+      new CloudWatch(),
+      new CloudWatchLogs(),
+      new CostExplorer(),
+    )
+
+  beforeAll(() => {
+    AWSMock.setSDKInstance(AWS)
+  })
+
+  afterEach(() => {
+    AWSMock.restore()
+    jest.restoreAllMocks()
+    getRightsizingRecommendationSpy.mockClear()
+  })
+
+  it('Get recommendations from Rightsizing API type: Terminate', async () => {
+    mockGetRightsizingRecommendation(rightsizingRecommendationTerminate)
+
+    const awsRecommendationsServices = new Recommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await awsRecommendationsServices.getRecommendations()
+
+    expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
+      {
+        Service: 'AmazonEC2',
+        Configuration: {
+          BenefitsConsidered: false,
+          RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+        },
+      },
+      expect.anything(),
+    )
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'us-east-2',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance "Test instance"',
+        kilowattHourSavings: 44.32137569,
+        co2eSavings: 0.0195096934,
+        costSavings: 20,
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  const getRightsizingRecommendationSpy = jest.fn()
+
+  function mockGetRightsizingRecommendation(
+    response: GetRightsizingRecommendationResponse,
+  ) {
+    getRightsizingRecommendationSpy.mockResolvedValue(response)
+    AWSMock.mock(
+      'CostExplorer',
+      'getRightsizingRecommendation',
+      getRightsizingRecommendationSpy,
+    )
+  }
+})

@@ -29,5 +29,6 @@ export { default as ICloudService } from './ICloudService'
 export { default as BillingDataRow } from './BillingDataRow'
 
 export { default as IUsageData } from './IUsageData'
+export { default as ICloudRecommendationsService } from './ICloudRecommendationsService'
 export { default as IFootprintEstimator } from './IFootprintEstimator'
 export { default as Region } from './Region'
