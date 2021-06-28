@@ -45,9 +45,19 @@ type Comparison = {
   trees: ComparisonItem
 }
 
-export const toFlights = (co2mt: number): number => co2mt * 1.2345679 // direct one way flight from NYC to London per metric ton per CO2
-export const toPhones = (co2mt: number): number => co2mt * 121643 // phones charged per metric ton of CO2
-export const toTrees = (co2mt: number): number => co2mt * 16.5337915448
+const toFlights = (co2mt: number): number => co2mt * 1.2345679 // direct one way flight from NYC to London per metric ton per CO2
+const toPhones = (co2mt: number): number => co2mt * 121643 // phones charged per metric ton of CO2
+const toTrees = (co2mt: number): number => co2mt * 16.5337915448
+
+const formatNumber = (number: number, decimalPlaces = 0) => {
+  if (number >= 1000000000) return `${(number / 1000000000).toFixed(1)}+ B`
+
+  if (number >= 1000000) return `${(number / 1000000).toFixed(1)}+ M`
+
+  return number.toLocaleString(undefined, {
+    maximumFractionDigits: decimalPlaces,
+  })
+}
 
 type CarbonComparisonCardProps = {
   containerClass: string
@@ -58,23 +68,13 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
   containerClass,
   data,
 }) => {
-  const classes = useStyles()
   const [selection, setSelection] = useState('flights')
-  const totalMetricTons: number = sumCO2(data)
+  const classes = useStyles()
 
+  const totalMetricTons = sumCO2(data)
   const totalFlights = toFlights(totalMetricTons)
   const totalPhones = toPhones(totalMetricTons)
   const totalTrees = toTrees(totalMetricTons)
-
-  const formatNumber = (number: number, decimalPlaces = 0) => {
-    if (number >= 1000000000) return `${(number / 1000000000).toFixed(1)}+ B`
-
-    if (number >= 1000000) return `${(number / 1000000).toFixed(1)}+ M`
-
-    return number.toLocaleString(undefined, {
-      maximumFractionDigits: decimalPlaces,
-    })
-  }
 
   const epaSource = {
     href: 'https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator',
