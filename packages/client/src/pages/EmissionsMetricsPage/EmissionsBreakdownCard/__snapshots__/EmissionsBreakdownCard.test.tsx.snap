@@ -120,7 +120,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               className="t-bar"
               style={
                 Object {
-                  "backgroundColor": "#ababab",
+                  "backgroundColor": "#aaaaaa",
                   "flexGrow": 2,
                   "height": "1px",
                 }
@@ -142,7 +142,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               className="t-bar"
               style={
                 Object {
-                  "backgroundColor": "#ababab",
+                  "backgroundColor": "#aaaaaa",
                   "flexGrow": 2,
                   "height": "1px",
                 }
@@ -164,7 +164,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               className="t-bar"
               style={
                 Object {
-                  "backgroundColor": "#ababab",
+                  "backgroundColor": "#aaaaaa",
                   "flexGrow": 2,
                   "height": "1px",
                 }
@@ -186,7 +186,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               className="t-bar"
               style={
                 Object {
-                  "backgroundColor": "#ababab",
+                  "backgroundColor": "#aaaaaa",
                   "flexGrow": 2,
                   "height": "1px",
                 }

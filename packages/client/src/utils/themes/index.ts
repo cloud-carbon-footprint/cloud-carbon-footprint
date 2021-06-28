@@ -8,10 +8,12 @@ declare module '@material-ui/core/styles/createPalette' {
   /* eslint-disable */
   interface Palette {
     chart: Palette['primary'][]
+    lightTitle: React.CSSProperties['color']
     extLink: React.CSSProperties['color']
   }
   /* eslint-disable */
   interface PaletteOptions {
+    lightTitle: React.CSSProperties['color']
     chart: PaletteOptions['primary'][]
     extLink: React.CSSProperties['color']
   }
@@ -45,6 +47,7 @@ const determineTheme = (): Theme => {
         { main: '#E2EF70' },
         { main: '#70E4EF' },
       ],
+      lightTitle: 'rgba(0, 0, 0, 0.87)',
       // leaving this here in case the color theme changes base on dark mode
       extLink: '#00B7FF',
     },

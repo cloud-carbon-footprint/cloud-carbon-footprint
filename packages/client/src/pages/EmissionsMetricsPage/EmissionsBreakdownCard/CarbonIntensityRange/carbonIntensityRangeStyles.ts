@@ -3,12 +3,13 @@
  */
 
 import React from 'react'
+import { Theme } from '@material-ui/core'
 
 type ReactStyleProperties = {
   [className: string]: React.CSSProperties
 }
 
-const carbonIntensityRangeStyles: ReactStyleProperties = {
+const useStyles = (theme: Theme): ReactStyleProperties => ({
   timelineWrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -36,8 +37,8 @@ const carbonIntensityRangeStyles: ReactStyleProperties = {
   barStyles: {
     flexGrow: 2,
     height: '1px',
-    backgroundColor: '#ababab',
+    backgroundColor: theme.palette.grey.A200,
   },
-}
+})
 
-export default carbonIntensityRangeStyles
+export default useStyles

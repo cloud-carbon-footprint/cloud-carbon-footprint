@@ -3,7 +3,8 @@
  */
 
 import React, { ReactElement } from 'react'
-import carbonIntensityRangeStyles from './carbonIntensityRangeStyles'
+import { useTheme } from '@material-ui/core'
+import useStyles from './carbonIntensityRangeStyles'
 
 type TimeLineProps = {
   startLabel: string
@@ -11,11 +12,11 @@ type TimeLineProps = {
   colorRange: string[]
 }
 
-const { timelineWrapper, timelineStyles, dotStyles, barStyles, labelsStyle } =
-  carbonIntensityRangeStyles
-
 const CarbonIntensityRange = (props: TimeLineProps): ReactElement => {
   const { startLabel, endLabel, colorRange = [] } = props
+
+  const { timelineWrapper, timelineStyles, dotStyles, barStyles, labelsStyle } =
+    useStyles(useTheme())
 
   const Dot = (props: { color: string }): ReactElement => (
     <div

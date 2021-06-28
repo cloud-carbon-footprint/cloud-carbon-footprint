@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Box, Grid, Card, Paper } from '@material-ui/core'
+import { Box, Grid, Card, Paper, useTheme } from '@material-ui/core'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from 'Types'
 import SelectDropdown from 'common/SelectDropdown'
@@ -17,7 +17,7 @@ type EmissionsBreakdownContainerProps = {
 
 const EmissionsBreakdownCard: FunctionComponent<EmissionsBreakdownContainerProps> =
   ({ containerClass, data }): ReactElement => {
-    const classes = useStyles()
+    const classes = useStyles(useTheme())
     const [chartType, setChartType] = React.useState(ChartDataTypes.REGION)
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {

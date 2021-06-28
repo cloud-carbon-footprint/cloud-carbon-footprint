@@ -4,7 +4,7 @@
 
 import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     height: '100%',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
     fontFamily: 'Helvetica, Arial, sans-serif',
     opacity: '1',
     fontWeight: 900,
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: theme.palette.lightTitle,
     padding: '.2em',
   },
 }))

@@ -4,7 +4,7 @@
 
 import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return {
     paginationContainer: {
       paddingTop: '10px',
@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => {
       alignItems: 'center',
     },
     paginationLabel: {
-      color: '#ababab',
+      color: theme.palette.grey.A200,
       fontWeight: 700,
       marginRight: '8px',
     },
