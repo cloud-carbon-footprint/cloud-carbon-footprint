@@ -27,18 +27,22 @@ const mockedUseEmissionFactorService =
 
 const emissionsFactorData: EmissionRatioResult[] = [
   {
+    cloudProvider: 'AWS',
     region: 'us-west-1',
     mtPerKwHour: 0.000645,
   },
   {
+    cloudProvider: 'AWS',
     region: 'us-west-2',
     mtPerKwHour: 0.000635,
   },
   {
+    cloudProvider: 'AWS',
     region: 'us-west-3',
     mtPerKwHour: 0.000475,
   },
   {
+    cloudProvider: 'AWS',
     region: 'us-west-4',
     mtPerKwHour: 0.000315,
   },

@@ -23,6 +23,7 @@ import {
 
 import cache from './Cache'
 import { EstimationRequest } from './CreateValidRequest'
+import { CloudConstantsEmissionsFactors } from '@cloud-carbon-footprint/core'
 
 export default class App {
   @cache()
@@ -114,33 +115,34 @@ export default class App {
   }
 
   getEmissionsFactors(): EmissionRatioResult[] {
-    const emissionsRatiosByCloudProvider = {
-      AWS: AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      GCP: GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      AZURE: AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-    }
-    const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH = Object.assign(
-      emissionsRatiosByCloudProvider.AWS,
-      emissionsRatiosByCloudProvider.GCP,
-      emissionsRatiosByCloudProvider.AZURE,
-    )
-    return Object.keys(
-      CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-    ).reduce((emissionDataResult, regionKey) => {
-      let cloudProvider
-      for (const [key, value] of Object.entries(
-        emissionsRatiosByCloudProvider,
-      )) {
-        if (Object.keys(value).includes(regionKey)) cloudProvider = key
-      }
+    return [
+      ...this.buildEmissionsRatioResult(
+        'AWS',
+        AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      ),
+      ...this.buildEmissionsRatioResult(
+        'GCP',
+        GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      ),
+      ...this.buildEmissionsRatioResult(
+        'AZURE',
+        AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      ),
+    ]
+  }
 
-      emissionDataResult.push({
+  buildEmissionsRatioResult(
+    cloudProvider: string,
+    emissionsRatios: CloudConstantsEmissionsFactors,
+  ): EmissionRatioResult[] {
+    const emissionsRatioResult = []
+    for (const [region, emissionRatio] of Object.entries(emissionsRatios)) {
+      emissionsRatioResult.push({
         cloudProvider: cloudProvider,
-        region: regionKey,
-        mtPerKwHour:
-          CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[regionKey],
+        region: region,
+        mtPerKwHour: emissionRatio,
       })
-      return emissionDataResult
-    }, [])
+    }
+    return emissionsRatioResult
   }
 }
