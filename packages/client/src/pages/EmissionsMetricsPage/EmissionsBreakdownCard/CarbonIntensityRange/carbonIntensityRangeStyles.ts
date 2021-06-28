@@ -3,13 +3,13 @@
  */
 
 import React from 'react'
-import { Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles'
 
 type ReactStyleProperties = {
   [className: string]: React.CSSProperties
 }
 
-const useStyles = (theme: Theme): ReactStyleProperties => ({
+const useStyles = ({ palette }: Theme): ReactStyleProperties => ({
   timelineWrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -37,7 +37,7 @@ const useStyles = (theme: Theme): ReactStyleProperties => ({
   barStyles: {
     flexGrow: 2,
     height: '1px',
-    backgroundColor: theme.palette.grey.A200,
+    backgroundColor: palette.grey.A200,
   },
 })
 

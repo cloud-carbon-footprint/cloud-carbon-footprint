@@ -3,7 +3,6 @@
  */
 
 import React, { FunctionComponent, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import {
   Card,
   CardContent,
@@ -19,9 +18,10 @@ import {
   Eco,
   OpenInNew,
 } from '@material-ui/icons'
-import { sumCO2 } from '../../../utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import NoDataMessage from '../../../common/NoDataMessage'
+import { sumCO2 } from 'utils/helpers'
+import NoDataMessage from 'common/NoDataMessage'
+import useStyles from './carbonComparisonStyles'
 
 type Selection = 'flights' | 'phones' | 'trees'
 
@@ -44,70 +44,6 @@ type Comparison = {
   phones: ComparisonItem
   trees: ComparisonItem
 }
-
-const useStyles = makeStyles(({ palette, spacing, typography }) => {
-  return {
-    root: {
-      width: '100%',
-      height: '100%',
-      minHeight: '755px',
-    },
-    title: {
-      color: palette.primary.contrastText,
-    },
-    posOne: {
-      color: palette.primary.contrastText,
-    },
-    posTwo: {
-      maxWidth: 250,
-    },
-    topContainer: {
-      backgroundColor: palette.primary.main,
-      textAlign: 'center',
-    },
-    bottomContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '55%',
-      paddingTop: '10%',
-    },
-    buttonContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    metricOne: {
-      color: palette.primary.contrastText,
-      fontWeight: typography.fontWeightBold,
-    },
-    metricTwo: {
-      color: palette.primary.light,
-      fontWeight: typography.fontWeightBold,
-    },
-    icon: {
-      height: 240,
-      width: 200,
-      color: palette.primary.light,
-    },
-    source: {
-      padding: spacing(2),
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    sourceLink: {
-      padding: spacing(0, 1),
-      display: 'inline-flex',
-      alignItems: 'center',
-      color: palette.extLink,
-    },
-    openIcon: {
-      marginLeft: '8px',
-    },
-    noData: {
-      marginTop: '75px',
-    },
-  }
-})
 
 export const toFlights = (co2mt: number): number => co2mt * 1.2345679 // direct one way flight from NYC to London per metric ton per CO2
 export const toPhones = (co2mt: number): number => co2mt * 121643 // phones charged per metric ton of CO2
