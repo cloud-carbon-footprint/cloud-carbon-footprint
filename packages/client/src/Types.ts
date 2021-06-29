@@ -3,6 +3,7 @@
  */
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { DropdownOption } from './pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
+import React from 'react'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -40,6 +41,19 @@ export type ApexChartProps = {
 export type DateRange = {
   min: Date | null
   max: Date | null
+}
+
+export type Source = {
+  href: string
+  title: string
+}
+
+export type ComparisonItem = {
+  icon: React.ReactNode
+  total: number
+  textOne: string
+  textTwo: string
+  source: Source
 }
 
 export enum ChartDataTypes {

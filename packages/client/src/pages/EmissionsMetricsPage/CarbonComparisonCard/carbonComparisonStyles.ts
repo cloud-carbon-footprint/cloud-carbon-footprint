@@ -1,3 +1,7 @@
+/*
+ * © 2021 ThoughtWorks, Inc.
+ */
+
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => {

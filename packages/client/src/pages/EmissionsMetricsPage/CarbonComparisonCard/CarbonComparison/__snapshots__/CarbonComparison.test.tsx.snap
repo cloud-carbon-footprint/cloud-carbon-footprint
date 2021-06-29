@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CarbonComparison renders with correct configuration and markup 1`] = `
+<div
+  className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
+  id="carbonComparisonCard"
+>
+  <div>
+    <div
+      className="MuiCardContent-root makeStyles-topContainer-5"
+    >
+      <p
+        className="MuiTypography-root makeStyles-title-2 MuiTypography-body1 MuiTypography-gutterBottom"
+      >
+        Your cumulative emissions are
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-metricOne-8 MuiTypography-h4"
+        data-testid="co2"
+        id="metric-one"
+      >
+         metric tons CO2e
+      </p>
+      <p
+        className="MuiTypography-root makeStyles-posOne-3 MuiTypography-body1"
+      >
+        that is equivalent to
+      </p>
+    </div>
+    <div
+      className="MuiCardContent-root makeStyles-bottomContainer-6"
+    >
+      <div
+        className="MuiCardContent-root"
+      >
+        <div />
+      </div>
+      <div
+        className="MuiCardContent-root"
+      >
+        <p
+          className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
+        >
+          CO2e emissions from
+        </p>
+        <p
+          className="MuiTypography-root makeStyles-metricTwo-9 MuiTypography-h3"
+          data-testid="comparison"
+        />
+        <p
+          className="MuiTypography-root makeStyles-posTwo-4 MuiTypography-h5"
+        >
+          optionOne comparison
+        </p>
+      </div>
+    </div>
+    <div
+      className="MuiCardActions-root makeStyles-buttonContainer-7 MuiCardActions-spacing"
+    >
+      <button
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained"
+        disabled={false}
+        id="optionOne"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiButton-label"
+        >
+          optionOne
+        </span>
+      </button>
+      <button
+        className="MuiButtonBase-root MuiButton-root MuiButton-contained"
+        disabled={false}
+        id="optionTwo"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiButton-label"
+        >
+          optionTwo
+        </span>
+      </button>
+    </div>
+    <p
+      className="MuiTypography-root makeStyles-source-11 MuiTypography-body1"
+      data-testid="epa-source"
+    >
+      Source:
+       
+      <a
+        className="MuiTypography-root MuiLink-root MuiLink-underlineHover makeStyles-sourceLink-12 MuiTypography-colorPrimary"
+        href=""
+        onBlur={[Function]}
+        onFocus={[Function]}
+        rel="noopener"
+        target="_blank"
+      >
+        optionOneSource
+         
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-openIcon-13 MuiSvgIcon-fontSizeSmall"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+          />
+        </svg>
+      </a>
+    </p>
+  </div>
+</div>
+`;

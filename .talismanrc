@@ -101,6 +101,10 @@ fileignoreconfig:
   checksum: dc7ee912de249f81ab641e3371ce9771273b80f141c9d9fa9858e60c8302b0a0
 - filename: packages/client/src/data/generateEstimations.ts
   checksum: 5c2b39dccc594712914041a5285f8604e43ce7b246abef01d695ac7ee9e3e394
+- filename: packages/client/src/pages/EmissionsMetricsPage/CarbonComparisonCard/CarbonComparison/CarbonComparison.tsx
+  checksum: 52b4a5789704864f4377a34fc79c6eb1ff4241e282964942f80cf6a5a2ec599d
+- filename: packages/client/src/pages/EmissionsMetricsPage/CarbonComparisonCard/CarbonComparison/__snapshots__/CarbonComparison.test.tsx.snap
+  checksum: d2626c7761a9b7c5b4e29b811230037e745a0c2affad0caed4f9d3c02cf6ab07
 - filename: packages/client/src/pages/EmissionsMetricsPage/CarbonComparisonCard/CarbonComparisonCard.tsx
   checksum: 239dbd0152befa9cce15d540a4e736ac788a15a8c15562dadb08e93bf386da93
 - filename: packages/client/src/pages/EmissionsMetricsPage/CarbonIntensityMap/CarbonIntensityMap.tsx

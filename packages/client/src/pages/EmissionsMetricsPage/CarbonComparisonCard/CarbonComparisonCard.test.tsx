@@ -3,7 +3,6 @@
  */
 
 import React from 'react'
-import { create } from 'react-test-renderer'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
@@ -13,18 +12,7 @@ import CarbonComparisonCard from './CarbonComparisonCard'
 describe('CarbonComparisonCard', () => {
   const testContainerClass = 'test-container-class'
 
-  it('renders with correct configuration', () => {
-    const root = create(
-      <CarbonComparisonCard
-        containerClass={testContainerClass}
-        data={mockData}
-      />,
-    )
-
-    expect(root.toJSON()).toMatchSnapshot()
-  })
-
-  it('selects carbon comparison correctly', async () => {
+  it('updates the selected carbon comparison option correctly', async () => {
     const { getByText, getByTestId } = render(
       <CarbonComparisonCard
         containerClass={testContainerClass}
@@ -165,7 +153,7 @@ describe('CarbonComparisonCard', () => {
       expect(co2).toHaveTextContent('999,999.6')
     })
 
-    it('should format flights', async () => {
+    it('should convert and format to flights', async () => {
       const testData = dataWithCo2e(10000)
       const { getByTestId } = render(
         <CarbonComparisonCard
@@ -177,7 +165,7 @@ describe('CarbonComparisonCard', () => {
       expect(co2).toHaveTextContent('12,346')
     })
 
-    it('should format number of phones that are less than a million', async () => {
+    it('should convert  and format to number of phones that are less than a million', async () => {
       const testData = dataWithCo2e(8)
       const { getByText, getByTestId } = render(
         <CarbonComparisonCard
@@ -192,7 +180,7 @@ describe('CarbonComparisonCard', () => {
       expect(co2).toHaveTextContent('973,144')
     })
 
-    it('should format number of phones that are over a million', async () => {
+    it('should convert and format to number of phones that are over a million', async () => {
       const testData = dataWithCo2e(309)
       const { getByText, getByTestId } = render(
         <CarbonComparisonCard
@@ -207,7 +195,7 @@ describe('CarbonComparisonCard', () => {
       expect(co2).toHaveTextContent('37.6+ M')
     })
 
-    it('should format number of phones that are over a billion', async () => {
+    it('should convert and format to number of phones that are over a billion', async () => {
       const testData = dataWithCo2e(10000)
       const { getByText, getByTestId } = render(
         <CarbonComparisonCard
@@ -222,7 +210,7 @@ describe('CarbonComparisonCard', () => {
       expect(co2).toHaveTextContent('1.2+ B')
     })
 
-    it('should format trees', async () => {
+    it('should convert and format to trees', async () => {
       const testData = dataWithCo2e(10000)
       const { getByText, getByTestId } = render(
         <CarbonComparisonCard
