@@ -2,6 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import moment from 'moment'
+
 import {
   GetRightsizingRecommendationRequest,
   RightsizingRecommendationList,
@@ -30,7 +32,6 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import moment from 'moment'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
