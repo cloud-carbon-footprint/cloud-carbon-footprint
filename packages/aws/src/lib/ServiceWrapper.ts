@@ -7,6 +7,8 @@ import { path } from 'ramda'
 import {
   GetCostAndUsageRequest,
   GetCostAndUsageResponse,
+  GetRightsizingRecommendationRequest,
+  GetRightsizingRecommendationResponse,
 } from 'aws-sdk/clients/costexplorer'
 import {
   GetMetricDataInput,
@@ -33,6 +35,14 @@ export class ServiceWrapper {
     params: CloudWatch.GetMetricDataInput,
   ): Promise<CloudWatch.GetMetricDataOutput[]> {
     return [await this.cloudWatch.getMetricData(params).promise()]
+  }
+
+  private async getRightsizingRecommendationResponse(
+    params: GetRightsizingRecommendationRequest,
+  ): Promise<CostExplorer.GetRightsizingRecommendationResponse[]> {
+    return [
+      await this.costExplorer.getRightsizingRecommendation(params).promise(),
+    ]
   }
 
   private async getAthenaQueryResults(
@@ -128,6 +138,13 @@ export class ServiceWrapper {
     const response = await this.getMetricDataResponse(params)
     this.checkForPartialData(response[0].MetricDataResults)
     return response
+  }
+
+  @enablePagination('NextPageToken')
+  public async getRightsizingRecommendationsResponses(
+    params: GetRightsizingRecommendationRequest,
+  ): Promise<GetRightsizingRecommendationResponse[]> {
+    return await this.getRightsizingRecommendationResponse(params)
   }
 }
 

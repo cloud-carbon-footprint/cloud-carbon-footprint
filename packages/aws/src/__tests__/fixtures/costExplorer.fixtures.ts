@@ -9,8 +9,9 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
           InstanceName: 'Test instance',
           ResourceDetails: {
             EC2ResourceDetails: {
-              InstanceType: 'm5zn.2xlarge',
+              InstanceType: 'm5dn.24xlarge',
               Region: 'US East (Ohio)',
+              Vcpu: '96',
             },
           },
         },

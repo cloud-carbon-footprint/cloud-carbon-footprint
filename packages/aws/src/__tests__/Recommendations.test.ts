@@ -13,7 +13,11 @@ import { rightsizingRecommendationTerminate } from './fixtures/costExplorer.fixt
 import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 
-xdescribe('AWS Recommendations Service', () => {
+jest.mock('moment', () => {
+  return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
+})
+
+describe('AWS Recommendations Service', () => {
   const getServiceWrapper = () =>
     new ServiceWrapper(
       new CloudWatch(),
@@ -60,8 +64,8 @@ xdescribe('AWS Recommendations Service', () => {
         region: 'us-east-2',
         recommendationType: 'Terminate',
         recommendationDetail: 'Terminate instance "Test instance"',
-        kilowattHourSavings: 44.32137569,
-        co2eSavings: 0.0195096934,
+        kilowattHourSavings: 274.19171644799997,
+        co2eSavings: 0.12069562908809578,
         costSavings: 20,
       },
     ]
