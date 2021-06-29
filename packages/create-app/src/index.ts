@@ -2,11 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import program from 'commander'
-
 import createApp from './createApp'
+import commander from 'commander'
 
 const main = (argv: string[]) => {
+  const program = new commander.Command()
   program.name('ccf-create-app')
 
   program
