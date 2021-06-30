@@ -8,7 +8,7 @@ import {
   MemoryEstimator,
   MemoryUsage,
   FootprintEstimate,
-    FootprintEstimatesDataBuilder,
+  FootprintEstimatesDataBuilder,
   calculateGigabyteHours,
   getPhysicalChips,
 } from '@cloud-carbon-footprint/core'
@@ -17,8 +17,9 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import {
-    EC2_INSTANCE_TYPES,
-    INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING, REDSHIFT_INSTANCE_TYPES,
+  EC2_INSTANCE_TYPES,
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
 import moment from 'moment'
 
@@ -28,7 +29,7 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
 
     this.vCpuHours = rowData.currentInstanceVcpuHours || rowData.vCpuHours
     this.computeProcessors = this.getComputeProcessors(rowData)
-      this.instanceType = rowData.currentInstanceType || rowData.
+    this.instanceType = rowData.currentInstanceType || rowData.instanceType
     this.memoryUsage = this.getMemoryUsage(rowData, this.computeProcessors)
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(rowData.region)
     this.memoryConstants = this.getMemoryConstants(
@@ -43,55 +44,55 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     )
   }
 
-    private getGigabytesFromInstanceTypeAndProcessors(
-        usageType: string,
-        usageAmount: number,
-    ): number {
-        const instanceType = this.parseInstanceTypeFromUsageType(usageType)
-        const [instanceFamily, instanceSize] = instanceType.split('.')
+  private getGigabytesFromInstanceTypeAndProcessors(
+    usageType: string,
+    usageAmount: number,
+  ): number {
+    const instanceType = this.parseInstanceTypeFromUsageType(usageType)
+    const [instanceFamily, instanceSize] = instanceType.split('.')
 
-        // check to see if the instance type is contained in the AWSInstanceTypes lists
-        // or if the instance type is not a burstable instance, otherwise return void
-        const { isValidInstanceType, isBurstableInstance } =
-            this.checkInstanceTypes(instanceFamily, instanceType)
-        if (!isValidInstanceType || isBurstableInstance) return
+    // check to see if the instance type is contained in the AWSInstanceTypes lists
+    // or if the instance type is not a burstable instance, otherwise return void
+    const { isValidInstanceType, isBurstableInstance } =
+      this.checkInstanceTypes(instanceFamily, instanceType)
+    if (!isValidInstanceType || isBurstableInstance) return
 
-        // grab the list of processors per instance type
-        // and then the aws specific memory constant for the processors
-        const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-            instanceType
-            ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-        const processorMemoryGigabytesPerPhysicalChip =
-            AWS_CLOUD_CONSTANTS.getMemory(processors)
+    // grab the list of processors per instance type
+    // and then the aws specific memory constant for the processors
+    const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
+      instanceType
+    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+    const processorMemoryGigabytesPerPhysicalChip =
+      AWS_CLOUD_CONSTANTS.getMemory(processors)
 
-        // grab the instance type vcpu from the AWSInstanceTypes lists
-        const instanceTypeMemory =
-            EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1] ||
-            REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
+    // grab the instance type vcpu from the AWSInstanceTypes lists
+    const instanceTypeMemory =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1] ||
+      REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
 
-        // grab the entire instance family that the instance type is classified within
-        const familyInstanceTypes: number[][] = Object.values(
-            EC2_INSTANCE_TYPES[instanceFamily] ||
-            REDSHIFT_INSTANCE_TYPES[instanceFamily],
-        )
+    // grab the entire instance family that the instance type is classified within
+    const familyInstanceTypes: number[][] = Object.values(
+      EC2_INSTANCE_TYPES[instanceFamily] ||
+        REDSHIFT_INSTANCE_TYPES[instanceFamily],
+    )
 
-        // grab the vcpu and memory (gb) from the largest instance type in the family
-        const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
-            familyInstanceTypes[familyInstanceTypes.length - 1]
+    // grab the vcpu and memory (gb) from the largest instance type in the family
+    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
+      familyInstanceTypes[familyInstanceTypes.length - 1]
 
-        // there are special cases for instance families m5zn and z1d where they are always 2
-        const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
-            ? 2
-            : getPhysicalChips(largestInstanceTypevCpus)
+    // there are special cases for instance families m5zn and z1d where they are always 2
+    const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
+      ? 2
+      : getPhysicalChips(largestInstanceTypevCpus)
 
-        return calculateGigabyteHours(
-            physicalChips,
-            largestInstanceTypeMemory,
-            processorMemoryGigabytesPerPhysicalChip,
-            instanceTypeMemory,
-            usageAmount,
-        )
-    }
+    return calculateGigabyteHours(
+      physicalChips,
+      largestInstanceTypeMemory,
+      processorMemoryGigabytesPerPhysicalChip,
+      instanceTypeMemory,
+      usageAmount,
+    )
+  }
 
   private getMemoryUsage(
     rowData: any,
