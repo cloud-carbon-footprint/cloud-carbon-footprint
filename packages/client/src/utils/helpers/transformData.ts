@@ -2,17 +2,16 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { useEffect, useState } from 'react'
+import { pluck, uniq } from 'ramda'
 import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
-
 import {
   cloudEstPerDay,
   ChartDataTypes,
   FilterResultResponse,
+  DropdownOption,
   UnknownTypes,
-} from '../../Types'
-import { pluck, uniq } from 'ramda'
-import { useEffect, useState } from 'react'
-import { DropdownOption } from '../../pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
+} from 'Types'
 
 const sumServiceTotals = (
   data: EstimationResult[],

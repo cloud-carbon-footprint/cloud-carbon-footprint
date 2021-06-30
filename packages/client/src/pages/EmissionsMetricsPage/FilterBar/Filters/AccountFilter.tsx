@@ -4,11 +4,12 @@
 
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from '../utils/Filters'
-import DropdownFilter, { DropdownOption } from './DropdownFilter'
+import DropdownFilter from './DropdownFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
 } from '../utils/DropdownConstants'
+import { DropdownOption } from 'Types'
 
 const EMPTY_RESPONSE = [{ cloudProvider: '', key: 'string', name: 'string' }]
 

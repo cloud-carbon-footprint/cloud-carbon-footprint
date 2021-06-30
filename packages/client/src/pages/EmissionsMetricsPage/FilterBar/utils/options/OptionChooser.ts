@@ -3,7 +3,7 @@
  */
 
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { DropdownOption } from '../../Filters/DropdownFilter'
+import { DropdownOption } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,

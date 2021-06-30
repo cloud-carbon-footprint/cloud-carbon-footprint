@@ -9,6 +9,7 @@ import React, {
   SetStateAction,
 } from 'react'
 import { Grid } from '@material-ui/core'
+import { FilterResultResponse } from 'Types'
 import CloudProviderFilter from './Filters/CloudProviderFilter'
 import {
   AccountFilter,
@@ -18,7 +19,6 @@ import {
 } from './Filters'
 import useStyles from './filterBarStyles'
 import { Filters } from './utils/Filters'
-import { FilterResultResponse } from '../../../Types'
 
 type FilterBarProps = {
   filters: Filters

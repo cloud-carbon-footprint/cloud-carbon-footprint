@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from '../../Filters/DropdownFilter'
+import { DropdownOption } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'

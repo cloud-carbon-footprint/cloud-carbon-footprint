@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from '../../Filters/DropdownFilter'
+import { DropdownOption } from 'Types'
 
 export function isDropdownOptionInDropdownOptions(
   comparingDropdownOptions: DropdownOption[],

@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from '../Filters/DropdownFilter'
+import { DropdownOption } from 'Types'
 import createOptionChooser from './options'
 
 export enum DropdownFilter {

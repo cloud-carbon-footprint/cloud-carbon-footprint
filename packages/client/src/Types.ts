@@ -1,9 +1,9 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { DropdownOption } from './pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
+
 import React from 'react'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -16,6 +16,12 @@ export interface cloudEstPerDay {
   usesAverageCPUConstant?: boolean
   kilowattHours?: number
   cost?: number
+}
+
+export interface DropdownOption {
+  key: string
+  name: string
+  cloudProvider?: string
 }
 
 export interface FilterResultResponse {

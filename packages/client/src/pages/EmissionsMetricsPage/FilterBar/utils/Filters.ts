@@ -2,14 +2,11 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
-
-import { FilterResultResponse, UnknownTypes } from '../../../../Types'
-import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
+import moment from 'moment'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownFilter } from './FiltersUtil'
-import { DropdownOption } from '../Filters/DropdownFilter'
 import { ACCOUNT_OPTIONS } from '../Filters/AccountFilter'
 import { SERVICE_OPTIONS } from '../Filters/ServiceFilter'
 import {
@@ -17,6 +14,7 @@ import {
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from './DropdownConstants'
+import { FilterResultResponse, UnknownTypes, DropdownOption } from 'Types'
 
 export type FilterProps = {
   filters: Filters

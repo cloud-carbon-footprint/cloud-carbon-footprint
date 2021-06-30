@@ -2,9 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { DropdownOption } from 'Types'
 import { OptionChooser } from './OptionChooser'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { DropdownOption } from '../../Filters/DropdownFilter'
 import { CloudProviderChooser } from './CloudProviderChooser'
 import { AccountChooser } from './AccountChooser'
 import { ServiceChooser } from './ServiceChooser'
