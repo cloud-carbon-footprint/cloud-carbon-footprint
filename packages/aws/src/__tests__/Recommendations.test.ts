@@ -9,7 +9,10 @@ import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 
 import Recommendations from '../lib/Recommendations'
-import { rightsizingRecommendationTerminate } from './fixtures/costExplorer.fixtures'
+import {
+  rightsizingRecommendationModify,
+  rightsizingRecommendationTerminate,
+} from './fixtures/costExplorer.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 
@@ -35,7 +38,7 @@ describe('AWS Recommendations Service', () => {
     getRightsizingRecommendationSpy.mockClear()
   })
 
-  it('Get recommendations from Rightsizing API type: Terminate', async () => {
+  it('Get recommendations from Rightsizing API type: Terminate with pagination', async () => {
     mockGetRightsizingRecommendation(rightsizingRecommendationTerminate)
 
     const awsRecommendationsServices = new Recommendations(
@@ -67,6 +70,66 @@ describe('AWS Recommendations Service', () => {
         kilowattHourSavings: 274.19171644799997,
         co2eSavings: 0.12069562908809578,
         costSavings: 20,
+      },
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account-1',
+        accountName: 'test-account-1',
+        region: 'us-east-2',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance "Test instance"',
+        kilowattHourSavings: 60.66892800000001,
+        co2eSavings: 0.026705673409536,
+        costSavings: 80,
+      },
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account-2',
+        accountName: 'test-account-2',
+        region: 'us-east-2',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance "Test instance"',
+        kilowattHourSavings: 0.37918080000000004,
+        co2eSavings: 0.0001669104588096,
+        costSavings: 20,
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Get recommendations from Rightsizing API type: Modify', async () => {
+    mockGetRightsizingRecommendation(rightsizingRecommendationModify)
+
+    const awsRecommendationsServices = new Recommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await awsRecommendationsServices.getRecommendations()
+
+    expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
+      {
+        Service: 'AmazonEC2',
+        Configuration: {
+          BenefitsConsidered: false,
+          RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+        },
+      },
+      expect.anything(),
+    )
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'us-east-2',
+        recommendationType: 'Modify',
+        recommendationDetail: 'Modify instance "Test instance"',
+        kilowattHourSavings: 0.18959040000000002,
+        co2eSavings: 0.0000834552294048,
+        costSavings: 226,
       },
     ]
 

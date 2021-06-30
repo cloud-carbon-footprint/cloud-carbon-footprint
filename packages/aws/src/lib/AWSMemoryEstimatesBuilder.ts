@@ -22,14 +22,23 @@ import {
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
 import moment from 'moment'
+import RightsizingRecommendation from './RightsizingRecommendation'
+import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
 export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBuilder {
-  constructor(rowData: any, memoryEstimator: MemoryEstimator) {
+  constructor(
+    rowData: RightsizingRecommendation | CostAndUsageReportsRow,
+    memoryEstimator: MemoryEstimator,
+  ) {
     super(rowData)
 
-    this.vCpuHours = rowData.currentInstanceVcpuHours || rowData.vCpuHours
+    this.vCpuHours = rowData.vCpuHours
     this.computeProcessors = this.getComputeProcessors(rowData)
+<<<<<<< HEAD
     this.instanceType = rowData.currentInstanceType || rowData.instanceType
+=======
+    this.instanceType = rowData.instanceType
+>>>>>>> 876c9974 ([359] wip rightsizing recommendations | Arelys, Cam, Arik)
     this.memoryUsage = this.getMemoryUsage(rowData, this.computeProcessors)
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(rowData.region)
     this.memoryConstants = this.getMemoryConstants(

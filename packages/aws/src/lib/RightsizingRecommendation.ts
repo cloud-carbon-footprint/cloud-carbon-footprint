@@ -24,7 +24,7 @@ export default class RightsizingRecommendation {
 
   public getVCpuHours(resourceDetails: EC2ResourceDetails): number {
     // Multiply the number of virtual CPUS by the hours in a month
-    return parseInt(resourceDetails.Vcpu) * moment().utc().daysInMonth() * 24
+    return parseFloat(resourceDetails.Vcpu) * moment().utc().daysInMonth() * 24
   }
 
   public regionMapping: { [region: string]: string } = {

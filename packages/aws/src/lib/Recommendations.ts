@@ -32,6 +32,7 @@ import {
 } from '../domain'
 import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
 import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
+import RightsizingTargetRecommendation from './RightsizingTargetRecommendation'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -64,16 +65,29 @@ export default class Recommendations implements ICloudRecommendationsService {
         const rightsizingCurrentRecommendation =
           new RightsizingCurrentRecommendation(recommendation)
 
-        // if (recommendation.RightsizingType === 'Modify') {
-        //   this.getTargetInstance(recommendation)
-        //   const rightsizingTargetRecommendation =
-        //     new RightsizingTargetRecommendation(recommendation)
-        // }
-
         const currentComputeFootprint = new AWSComputeEstimatesBuilder(
           rightsizingCurrentRecommendation,
           this.computeEstimator,
         ).computeFootprint
+
+        let kilowattHourSavings = currentComputeFootprint.kilowattHours
+        let co2eSavings = currentComputeFootprint.co2e
+        let costSavings = rightsizingCurrentRecommendation.costSavings
+
+        if (recommendation.RightsizingType === 'Modify') {
+          this.getTargetInstance(recommendation)
+          const rightsizingTargetRecommendation =
+            new RightsizingTargetRecommendation(recommendation)
+
+          const targetComputeFootprint = new AWSComputeEstimatesBuilder(
+            rightsizingTargetRecommendation,
+            this.computeEstimator,
+          ).computeFootprint
+
+          kilowattHourSavings -= targetComputeFootprint.kilowattHours
+          co2eSavings -= targetComputeFootprint.co2e
+          costSavings = rightsizingTargetRecommendation.costSavings
+        }
 
         const computeProcessors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
           rightsizingCurrentRecommendation.instanceType
@@ -125,6 +139,13 @@ export default class Recommendations implements ICloudRecommendationsService {
           memoryConstants,
         )[0]
 
+        if (gigabyteHoursForMemoryUsage) {
+          kilowattHourSavings =
+            currentComputeFootprint.kilowattHours +
+            memoryFootprint.kilowattHours
+          co2eSavings = currentComputeFootprint.co2e + memoryFootprint.co2e
+        }
+
         return {
           cloudProvider: 'AWS',
           accountId: rightsizingCurrentRecommendation.accountId,
@@ -132,11 +153,9 @@ export default class Recommendations implements ICloudRecommendationsService {
           region: rightsizingCurrentRecommendation.region,
           recommendationType: rightsizingCurrentRecommendation.type,
           recommendationDetail: `${rightsizingCurrentRecommendation.type} instance "${rightsizingCurrentRecommendation.instanceName}"`,
-          kilowattHourSavings:
-            currentComputeFootprint.kilowattHours +
-            memoryFootprint.kilowattHours,
-          co2eSavings: currentComputeFootprint.co2e + memoryFootprint.co2e,
-          costSavings: rightsizingCurrentRecommendation.costSavings,
+          kilowattHourSavings,
+          co2eSavings,
+          costSavings,
         }
       },
     )
