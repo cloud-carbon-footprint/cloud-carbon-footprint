@@ -8,19 +8,24 @@ import {
   ComputeEstimator,
   ComputeUsage,
   FootprintEstimate,
-  FootprintEstimatesDataRow,
+  FootprintEstimatesDataBuilder,
 } from '@cloud-carbon-footprint/core'
 import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
+import CostAndUsageReportsRow from './CostAndUsageReportsRow'
+import RightsizingRecommendation from './RightsizingTargetRecommendation'
 
-export default class AWSComputeEstimatesRow extends FootprintEstimatesDataRow {
-  constructor(rowData: any, computeEstimator: ComputeEstimator) {
+export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBuilder {
+  constructor(
+    rowData: RightsizingRecommendation | CostAndUsageReportsRow,
+    computeEstimator: ComputeEstimator,
+  ) {
     super(rowData)
 
-    this.vCpuHours = rowData.currentInstanceVcpuHours || rowData.vCpuHours
+    this.vCpuHours = rowData.vCpuHours
     this.computeUsage = this.getComputeUsage()
     this.computeProcessors = this.getComputeProcessors(rowData)
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(rowData.region)
@@ -57,9 +62,9 @@ export default class AWSComputeEstimatesRow extends FootprintEstimatesDataRow {
 
   private getComputeProcessors(rowData: any): string[] {
     return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-        rowData.currentInstanceType || rowData.instanceType
-      ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[rowData.instanceType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
     )
   }
 

@@ -8,7 +8,7 @@ import {
   MemoryEstimator,
   MemoryUsage,
   FootprintEstimate,
-  FootprintEstimatesDataRow,
+    FootprintEstimatesDataBuilder,
   calculateGigabyteHours,
   getPhysicalChips,
 } from '@cloud-carbon-footprint/core'
@@ -22,7 +22,7 @@ import {
 } from './AWSInstanceTypes'
 import moment from 'moment'
 
-export default class AWSMemoryEstimatesRow extends FootprintEstimatesDataRow {
+export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBuilder {
   constructor(rowData: any, memoryEstimator: MemoryEstimator) {
     super(rowData)
 

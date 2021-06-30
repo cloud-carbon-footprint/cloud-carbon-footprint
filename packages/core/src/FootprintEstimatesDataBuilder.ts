@@ -4,7 +4,7 @@
 
 import { CloudConstants, FootprintEstimate, ComputeUsage } from '.'
 
-export default abstract class FootprintEstimatesDataRow {
+export default abstract class FootprintEstimatesDataBuilder {
   public computeProcessors: string[]
   public vCpuHours: number
   public computeUsage: ComputeUsage
@@ -15,7 +15,7 @@ export default abstract class FootprintEstimatesDataRow {
   // public memoryConstants: CloudConstants
   // public memoryFootprint: FootprintEstimate
 
-  protected constructor(init: Partial<FootprintEstimatesDataRow>) {
+  protected constructor(init: Partial<FootprintEstimatesDataBuilder>) {
     Object.assign(this, init)
   }
 }

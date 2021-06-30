@@ -22,7 +22,6 @@ import {
 } from '@cloud-carbon-footprint/core'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from './ServiceWrapper'
-import RightsizingRecommendation from './RightsizingRecommendation'
 import {
   EC2_INSTANCE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
@@ -31,7 +30,8 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import AWSComputeEstimatesRow from './AWSComputeEstimatesRow'
+import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
+import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -61,25 +61,30 @@ export default class Recommendations implements ICloudRecommendationsService {
 
     return rightsizingRecommendations.map(
       (recommendation: AwsRightsizingRecommendation) => {
-        const rightsizingRecommendation = new RightsizingRecommendation(
-          recommendation,
-        )
-        const footprintEstimateRow = new AWSComputeEstimatesRow(
-          rightsizingRecommendation,
+        const rightsizingCurrentRecommendation =
+          new RightsizingCurrentRecommendation(recommendation)
+
+        // if (recommendation.RightsizingType === 'Modify') {
+        //   this.getTargetInstance(recommendation)
+        //   const rightsizingTargetRecommendation =
+        //     new RightsizingTargetRecommendation(recommendation)
+        // }
+
+        const currentComputeFootprint = new AWSComputeEstimatesBuilder(
+          rightsizingCurrentRecommendation,
           this.computeEstimator,
-        )
-        const computeFootprint = footprintEstimateRow.computeFootprint
+        ).computeFootprint
 
         const computeProcessors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-          rightsizingRecommendation.currentInstanceType
+          rightsizingCurrentRecommendation.instanceType
         ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
 
         const powerUsageEffectiveness: number = AWS_CLOUD_CONSTANTS.getPUE(
-          rightsizingRecommendation.region,
+          rightsizingCurrentRecommendation.region,
         )
 
         const [instanceFamily, instanceSize] =
-          rightsizingRecommendation.currentInstanceType.split('.')
+          rightsizingCurrentRecommendation.instanceType.split('.')
 
         const processorMemoryGigabytesPerPhysicalChip =
           AWS_CLOUD_CONSTANTS.getMemory(computeProcessors)
@@ -115,24 +120,45 @@ export default class Recommendations implements ICloudRecommendationsService {
 
         const memoryFootprint = this.memoryEstimator.estimate(
           [memoryUsage],
-          rightsizingRecommendation.region,
+          rightsizingCurrentRecommendation.region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
           memoryConstants,
         )[0]
 
         return {
           cloudProvider: 'AWS',
-          accountId: rightsizingRecommendation.accountId,
-          accountName: rightsizingRecommendation.accountId,
-          region: rightsizingRecommendation.region,
-          recommendationType: rightsizingRecommendation.type,
-          recommendationDetail: `${rightsizingRecommendation.type} instance "${rightsizingRecommendation.currentInstanceName}"`,
+          accountId: rightsizingCurrentRecommendation.accountId,
+          accountName: rightsizingCurrentRecommendation.accountId,
+          region: rightsizingCurrentRecommendation.region,
+          recommendationType: rightsizingCurrentRecommendation.type,
+          recommendationDetail: `${rightsizingCurrentRecommendation.type} instance "${rightsizingCurrentRecommendation.instanceName}"`,
           kilowattHourSavings:
-            computeFootprint.kilowattHours + memoryFootprint.kilowattHours,
-          co2eSavings: computeFootprint.co2e + memoryFootprint.co2e,
-          costSavings: rightsizingRecommendation.costSavings,
+            currentComputeFootprint.kilowattHours +
+            memoryFootprint.kilowattHours,
+          co2eSavings: currentComputeFootprint.co2e + memoryFootprint.co2e,
+          costSavings: rightsizingCurrentRecommendation.costSavings,
         }
       },
     )
+  }
+
+  private getTargetInstance(
+    rightsizingRecommendationData: AwsRightsizingRecommendation,
+  ): void {
+    let targetInstance =
+      rightsizingRecommendationData.ModifyRecommendationDetail
+        ?.TargetInstances[0]
+    let savings = 0
+    rightsizingRecommendationData.ModifyRecommendationDetail?.TargetInstances.map(
+      (instance) => {
+        if (parseFloat(instance.EstimatedMonthlySavings) >= savings) {
+          savings = parseFloat(instance.EstimatedMonthlySavings)
+          targetInstance = instance
+        }
+      },
+    )
+    rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances = [
+      targetInstance,
+    ]
   }
 }
