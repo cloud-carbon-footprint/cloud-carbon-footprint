@@ -60,7 +60,9 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     }
   }
 
-  private getComputeProcessors(rowData: any): string[] {
+  private getComputeProcessors(
+    rowData: Partial<FootprintEstimatesDataBuilder>,
+  ): string[] {
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[rowData.instanceType] || [
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,

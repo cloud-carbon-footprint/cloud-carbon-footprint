@@ -17,11 +17,11 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import {
+  BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
-import moment from 'moment'
 import RightsizingRecommendation from './RightsizingRecommendation'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
@@ -34,12 +34,9 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
 
     this.vCpuHours = rowData.vCpuHours
     this.computeProcessors = this.getComputeProcessors(rowData)
-<<<<<<< HEAD
-    this.instanceType = rowData.currentInstanceType || rowData.instanceType
-=======
     this.instanceType = rowData.instanceType
->>>>>>> 876c9974 ([359] wip rightsizing recommendations | Arelys, Cam, Arik)
-    this.memoryUsage = this.getMemoryUsage(rowData, this.computeProcessors)
+    this.usageAmount = rowData.usageAmount
+    this.memoryUsage = this.getMemoryUsage(rowData)
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(rowData.region)
     this.memoryConstants = this.getMemoryConstants(
       this.computeProcessors,
@@ -54,22 +51,20 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
   }
 
   private getGigabytesFromInstanceTypeAndProcessors(
-    usageType: string,
-    usageAmount: number,
+    rowData: Partial<FootprintEstimatesDataBuilder>,
   ): number {
-    const instanceType = this.parseInstanceTypeFromUsageType(usageType)
-    const [instanceFamily, instanceSize] = instanceType.split('.')
+    const [instanceFamily, instanceSize] = rowData.instanceType.split('.')
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists
     // or if the instance type is not a burstable instance, otherwise return void
     const { isValidInstanceType, isBurstableInstance } =
-      this.checkInstanceTypes(instanceFamily, instanceType)
+      this.checkInstanceTypes(instanceFamily, rowData.instanceType)
     if (!isValidInstanceType || isBurstableInstance) return
 
     // grab the list of processors per instance type
     // and then the aws specific memory constant for the processors
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-      instanceType
+      rowData.instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
     const processorMemoryGigabytesPerPhysicalChip =
       AWS_CLOUD_CONSTANTS.getMemory(processors)
@@ -99,42 +94,31 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
       largestInstanceTypeMemory,
       processorMemoryGigabytesPerPhysicalChip,
       instanceTypeMemory,
-      usageAmount,
+      rowData.usageAmount,
     )
   }
 
+  public checkInstanceTypes(
+    instanceFamily: string,
+    instanceType: string,
+  ): { [key: string]: boolean } {
+    // a valid instance type is one that is mapped in the AWSInstanceTypes lists
+    const isValidInstanceType =
+      Object.keys(EC2_INSTANCE_TYPES).includes(instanceFamily) ||
+      Object.keys(REDSHIFT_INSTANCE_TYPES).includes(instanceFamily)
+    // we are not able to calculate memory usage for burstable (t family) instances
+    // unlike other instance families, the largest t instance is not equal to a full machine
+    const isBurstableInstance = Object.keys(
+      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+    ).includes(instanceType)
+    return { isValidInstanceType, isBurstableInstance }
+  }
+
   private getMemoryUsage(
-    rowData: any,
-    computeProcessors: string[],
+    rowData: Partial<FootprintEstimatesDataBuilder>,
   ): MemoryUsage {
-    const [instanceFamily, instanceSize] =
-      rowData.currentInstanceType.split('.')
-
-    const processorMemoryGigabytesPerPhysicalChip =
-      AWS_CLOUD_CONSTANTS.getMemory(computeProcessors)
-    const instanceTypeMemory =
-      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
-
-    const familyInstanceTypes: number[][] = Object.values(
-      EC2_INSTANCE_TYPES[instanceFamily],
-    )
-
-    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
-      familyInstanceTypes[familyInstanceTypes.length - 1]
-    // there are special cases for instance families m5zn and z1d where they are always 2
-    const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
-      ? 2
-      : getPhysicalChips(largestInstanceTypevCpus)
-
-    const gigabyteHours = calculateGigabyteHours(
-      physicalChips,
-      largestInstanceTypeMemory,
-      processorMemoryGigabytesPerPhysicalChip,
-      instanceTypeMemory,
-      moment().daysInMonth() * 24,
-    )
     return {
-      gigabyteHours,
+      gigabyteHours: this.getGigabytesFromInstanceTypeAndProcessors(rowData),
     }
   }
 
@@ -149,11 +133,13 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     }
   }
 
-  private getComputeProcessors(rowData: any): string[] {
+  private getComputeProcessors(
+    rowData: Partial<FootprintEstimatesDataBuilder>,
+  ): string[] {
     return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-        rowData.currentInstanceType || rowData.instanceType
-      ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[rowData.instanceType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
     )
   }
 

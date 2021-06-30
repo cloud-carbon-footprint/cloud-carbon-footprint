@@ -2,6 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import moment from 'moment'
 import { RightsizingRecommendation as AwsRightsizingRecommendation } from 'aws-sdk/clients/costexplorer'
 import RightsizingRecommendation from './RightsizingRecommendation'
 
@@ -27,5 +28,6 @@ export default class RightsizingCurrentRecommendation extends RightsizingRecomme
       rightsizingRecommendationData.TerminateRecommendationDetail
         ?.EstimatedMonthlySavings || '0',
     )
+    this.usageAmount = moment().utc().daysInMonth() * 24
   }
 }

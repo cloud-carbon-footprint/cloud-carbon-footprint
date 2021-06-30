@@ -79,6 +79,8 @@ fileignoreconfig:
   checksum: 13d9fe76704017b7446776fd717b655740a11d74dc833a1a87def97ad075e33e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
+- filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
+  checksum: b2b280f27a08448078523996b4e9d88560b14bbecce745b5f7eed34c6f8aec63
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template

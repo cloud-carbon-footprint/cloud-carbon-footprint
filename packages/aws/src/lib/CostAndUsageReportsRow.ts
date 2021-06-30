@@ -4,6 +4,7 @@
 
 import { Athena } from 'aws-sdk'
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
+import { containsAny } from '@cloud-carbon-footprint/common'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
@@ -12,6 +13,7 @@ import {
 } from './AWSInstanceTypes'
 import { PRICING_UNITS } from './CostAndUsageTypes'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
+import { concat } from 'ramda'
 
 const GLUE_VCPUS_PER_USAGE = 4
 const SIMPLE_DB_VCPUS__PER_USAGE = 1
@@ -38,6 +40,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.cost = Number(this.cost)
     this.accountId = this.accountName
     this.cloudProvider = 'AWS'
+    this.instanceType = this.parseInstanceTypeFromUsageType()
   }
 
   private getUsageUnit(): string {
@@ -64,10 +67,10 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
       return SIMPLE_DB_VCPUS__PER_USAGE * this.usageAmount
     if (this.usageType.includes('Aurora:ServerlessUsage'))
       return this.usageAmount / 4
-    if (this.includesAny(['Fargate-vCPU-Hours', 'CPUCredits'], this.usageType))
+    if (containsAny(['Fargate-vCPU-Hours', 'CPUCredits'], this.usageType))
       return this.usageAmount
     if (
-      this.includesAny(
+      containsAny(
         Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION),
         this.usageType,
       )
@@ -96,7 +99,13 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     return EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0]
   }
 
-  private includesAny(substrings: string[], usageType: string): boolean {
-    return substrings.some((substring) => usageType.includes(substring))
+  public parseInstanceTypeFromUsageType(): string {
+    const prefixes = ['db', 'cache', 'Kafka']
+    const includesPrefix = prefixes.find((prefix) =>
+      this.usageType.includes(prefix),
+    )
+    return includesPrefix
+      ? this.usageType.split(concat(includesPrefix, '.')).pop()
+      : this.usageType.split(':').pop()
   }
 }

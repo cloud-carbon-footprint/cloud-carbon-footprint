@@ -2,7 +2,6 @@
  * © 2021 ThoughtWorks, Inc.
  */
 import moment from 'moment'
-import { concat } from 'ramda'
 import { Athena } from 'aws-sdk'
 import {
   GetQueryExecutionInput,
@@ -132,10 +131,7 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
         const gigabyteHoursForMemoryUsage =
-          this.getGigabytesFromInstanceTypeAndProcessors(
-            costAndUsageReportRow.usageType,
-            costAndUsageReportRow.usageAmount,
-          )
+          this.getGigabytesFromInstanceTypeAndProcessors(costAndUsageReportRow)
 
         const computeFootprint = this.getComputeFootprintEstimate(
           costAndUsageReportRow,
@@ -270,7 +266,7 @@ export default class CostAndUsageReports {
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeProcessors = this.getComputeProcessorsFromUsageType(
-      costAndUsageReportRow.usageType,
+      costAndUsageReportRow,
     )
 
     const computeUsage: ComputeUsage = {
@@ -324,7 +320,7 @@ export default class CostAndUsageReports {
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
     const computeProcessors = this.getComputeProcessorsFromUsageType(
-      costAndUsageReportRow.usageType,
+      costAndUsageReportRow,
     )
 
     const lambdaComputeUsage: ComputeUsage = {
@@ -347,8 +343,10 @@ export default class CostAndUsageReports {
     )[0]
   }
 
-  private getComputeProcessorsFromUsageType(usageType: string): string[] {
-    const instanceType = this.parseInstanceTypeFromUsageType(usageType)
+  private getComputeProcessorsFromUsageType(
+    rowData: CostAndUsageReportsRow,
+  ): string[] {
+    const instanceType = rowData.parseInstanceTypeFromUsageType()
 
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[instanceType] || [
@@ -358,10 +356,9 @@ export default class CostAndUsageReports {
   }
 
   private getGigabytesFromInstanceTypeAndProcessors(
-    usageType: string,
-    usageAmount: number,
+    rowData: CostAndUsageReportsRow,
   ): number {
-    const instanceType = this.parseInstanceTypeFromUsageType(usageType)
+    const instanceType = rowData.parseInstanceTypeFromUsageType()
     const [instanceFamily, instanceSize] = instanceType.split('.')
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists
@@ -403,7 +400,7 @@ export default class CostAndUsageReports {
       largestInstanceTypeMemory,
       processorMemoryGigabytesPerPhysicalChip,
       instanceTypeMemory,
-      usageAmount,
+      rowData.usageAmount,
     )
   }
 
@@ -418,15 +415,6 @@ export default class CostAndUsageReports {
       BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
     ).includes(instanceType)
     return { isValidInstanceType, isBurstableInstance }
-  }
-
-  private parseInstanceTypeFromUsageType(usageType: string) {
-    const prefixes = ['db', 'cache', 'Kafka']
-    const includesPrefix = prefixes.find((prefix) => usageType.includes(prefix))
-    const instanceType = includesPrefix
-      ? usageType.split(concat(includesPrefix, '.')).pop()
-      : usageType.split(':').pop()
-    return instanceType
   }
 
   private getUsageAmountInTerabyteHours(

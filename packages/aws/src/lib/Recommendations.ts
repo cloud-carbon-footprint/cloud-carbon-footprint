@@ -2,8 +2,6 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import moment from 'moment'
-
 import {
   GetRightsizingRecommendationRequest,
   RightsizingRecommendationList,
@@ -122,7 +120,7 @@ export default class Recommendations implements ICloudRecommendationsService {
           largestInstanceTypeMemory,
           processorMemoryGigabytesPerPhysicalChip,
           instanceTypeMemory,
-          moment().utc().daysInMonth() * 24,
+          rightsizingCurrentRecommendation.usageAmount,
         )
 
         const memoryUsage: MemoryUsage = {

@@ -25,6 +25,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/src/index.ts',
     '<rootDir>/src/BillingDataRow.ts',
+    '<rootDir>/src/FootprintEstimatesDataBuilder.ts',
     '<rootDir>/src/compute/ServiceWithCPUUtilization.ts',
     '<rootDir>/src/.*/index.ts',
   ],

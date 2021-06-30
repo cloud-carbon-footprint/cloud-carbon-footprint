@@ -16,6 +16,7 @@ export default class RightsizingRecommendation {
   public instanceType: string
   public vCpuHours: number
   public costSavings: number
+  public usageAmount: number
   public targetInstance: Partial<AwsRightsizingRecommendation>
 
   protected constructor(init: Partial<AwsRightsizingRecommendation>) {
