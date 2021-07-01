@@ -28,7 +28,7 @@ describe('aws service helper', () => {
       new Athena(),
     )
 
-  it('enablePagination decorator should follow CostExplorer next pages', async () => {
+  it('enablePagination decorator should follow CostExplorer CostAndUsage next pages', async () => {
     const costExplorerGetCostAndUsageSpy = jest.fn()
     const firstPageResponse = buildAwsCostExplorerGetCostAndUsageResponse(
       [
@@ -73,6 +73,65 @@ describe('aws service helper', () => {
     expect(costExplorerGetCostAndUsageSpy).toHaveBeenNthCalledWith(
       2,
       getCostAndUsageRequest,
+      expect.anything(),
+    )
+
+    expect(responses).toEqual([firstPageResponse, secondPageResponse])
+  })
+
+  it('enablePagination decorator should follow CostExplorer Rightsizing Recommendation next pages', async () => {
+    const costExplorerGetRightsizingRecommendationsSpy = jest.fn()
+    const firstPageResponse =
+      buildAwsCostExplorerGetRightsizingRecommendationsResponse(
+        [
+          {
+            type: 'Terminate',
+            instanceType: 't2.nano',
+            savings: '200',
+          },
+        ],
+        'tokenToNextPage',
+      )
+    const secondPageResponse =
+      buildAwsCostExplorerGetRightsizingRecommendationsResponse(
+        [
+          {
+            type: 'Terminate',
+            instanceType: 't2.micro',
+            savings: '300',
+          },
+        ],
+        null,
+      )
+    const getRightsizingRecommendationsRequest =
+      buildAwsCostExplorerGetRightsizingRecommendationsRequest()
+    costExplorerGetRightsizingRecommendationsSpy
+      .mockResolvedValueOnce(firstPageResponse)
+      .mockResolvedValueOnce(secondPageResponse)
+
+    AWSMock.mock(
+      'CostExplorer',
+      'getRightsizingRecommendation',
+      costExplorerGetRightsizingRecommendationsSpy,
+    )
+    const responses =
+      await getServiceWrapper().getRightsizingRecommendationsResponses(
+        getRightsizingRecommendationsRequest,
+      )
+
+    expect(
+      costExplorerGetRightsizingRecommendationsSpy,
+    ).toHaveBeenNthCalledWith(
+      1,
+      getRightsizingRecommendationsRequest,
+      expect.anything(),
+    )
+    getRightsizingRecommendationsRequest.NextPageToken = 'tokenToNextPage'
+    expect(
+      costExplorerGetRightsizingRecommendationsSpy,
+    ).toHaveBeenNthCalledWith(
+      2,
+      getRightsizingRecommendationsRequest,
       expect.anything(),
     )
 
@@ -141,6 +200,93 @@ describe('aws service helper', () => {
     expect(responses).toEqual([firstPageResponse, secondPageResponse])
   })
 })
+
+function buildAwsCostExplorerGetRightsizingRecommendationsRequest(): CostExplorer.Types.GetRightsizingRecommendationRequest {
+  return {
+    Service: 'AmazonEC2',
+    Configuration: {
+      BenefitsConsidered: false,
+      RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+    },
+  }
+}
+
+function buildAwsCostExplorerGetRightsizingRecommendationsResponse(
+  data: { type: string; instanceType: string; savings: string }[],
+  nextPageToken: string,
+) {
+  return {
+    Metadata: {
+      RecommendationId: '',
+      GenerationTimestamp: '',
+      LookbackPeriodInDays: '14',
+    },
+    Summary: {
+      TotalRecommendationCount: '',
+      EstimatedTotalMonthlySavingsAmount: '',
+      SavingsCurrencyCode: 'USD',
+      SavingsPercentage: '',
+    },
+    RightsizingRecommendations: data.map(({ type, instanceType, savings }) => {
+      return {
+        AccountId: '',
+        CurrentInstance: {
+          ResourceId: '',
+          InstanceName: '',
+          Tags: [
+            {
+              Key: 'aws:createdBy',
+              Values: [''],
+            },
+            { Key: 'user:Name', Values: [''] },
+          ],
+          ResourceDetails: {
+            EC2ResourceDetails: {
+              HourlyOnDemandRate: '',
+              InstanceType: instanceType,
+              Platform: 'Red Hat Enterprise Linux',
+              Region: 'Asia Pacific (Mumbai)',
+              Sku: '',
+              Memory: '1 GiB',
+              NetworkPerformance: 'Low to Moderate',
+              Storage: 'EBS only',
+              Vcpu: '1',
+            },
+          },
+          ResourceUtilization: {
+            EC2ResourceUtilization: {
+              MaxCpuUtilizationPercentage: '',
+              MaxMemoryUtilizationPercentage: '',
+              MaxStorageUtilizationPercentage: '',
+              EBSResourceUtilization: {
+                EbsReadOpsPerSecond: '',
+                EbsWriteOpsPerSecond: '',
+                EbsReadBytesPerSecond: '',
+                EbsWriteBytesPerSecond: '',
+              },
+            },
+          },
+          ReservationCoveredHoursInLookbackPeriod: '',
+          SavingsPlansCoveredHoursInLookbackPeriod: '',
+          OnDemandHoursInLookbackPeriod: '',
+          TotalRunningHoursInLookbackPeriod: '',
+          MonthlyCost: '',
+          CurrencyCode: 'USD',
+        },
+        RightsizingType: type,
+        TerminateRecommendationDetail: {
+          EstimatedMonthlySavings: savings,
+          CurrencyCode: 'USD',
+        },
+      }
+    }),
+    Configuration: {
+      RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+      BenefitsConsidered: false,
+    },
+    NextPageToken: nextPageToken,
+  }
+}
 
 function buildAwsCostExplorerGetCostAndUsageRequest(): CostExplorer.Types.GetCostAndUsageRequest {
   return {

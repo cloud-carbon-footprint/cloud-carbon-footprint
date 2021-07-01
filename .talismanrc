@@ -79,8 +79,10 @@ fileignoreconfig:
   checksum: 13d9fe76704017b7446776fd717b655740a11d74dc833a1a87def97ad075e33e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
+- filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
+  checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
-  checksum: b2b280f27a08448078523996b4e9d88560b14bbecce745b5f7eed34c6f8aec63
+  checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template
@@ -129,6 +131,8 @@ fileignoreconfig:
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/CloudConstantsTypes.ts
   checksum: fc77184302e75b36ed681d349abebfeb6e5da8ea8b45ab96096e88e43b892e55
+- filename: packages/core/src/FootprintEstimatesDataBuilder.ts
+  checksum: ff85444731d66f4a7b3ebaca7d2f64c7bfac5772f8ff2dfa9789620ceb8238a3
 - filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts
   checksum: e555cf176c9994abaa53a21136b41c9721a70823dac263e3174395157e816890
 - filename: packages/core/src/domain/FootprintEstimationConstants.ts

@@ -33,38 +33,37 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     super(rowData)
 
     this.vCpuHours = rowData.vCpuHours
-    this.computeProcessors = this.getComputeProcessors(rowData)
     this.instanceType = rowData.instanceType
     this.usageAmount = rowData.usageAmount
-    this.memoryUsage = this.getMemoryUsage(rowData)
-    this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(rowData.region)
-    this.memoryConstants = this.getMemoryConstants(
-      this.computeProcessors,
-      this.powerUsageEffectiveness,
+    this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(this.region)
+    this.region = rowData.region
+    this.computeProcessors = this.getComputeProcessors(
+      rowData.instanceType,
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
     )
+    this.memoryUsage = this.getMemoryUsage()
+    this.memoryConstants = this.getMemoryConstants()
     this.memoryFootprint = this.getMemoryFootprint(
       memoryEstimator,
       this.memoryUsage,
       this.memoryConstants,
-      rowData.region,
+      this.region,
     )
   }
 
-  private getGigabytesFromInstanceTypeAndProcessors(
-    rowData: Partial<FootprintEstimatesDataBuilder>,
-  ): number {
-    const [instanceFamily, instanceSize] = rowData.instanceType.split('.')
+  private getGigabytesFromInstanceTypeAndProcessors(): number {
+    const [instanceFamily, instanceSize] = this.instanceType.split('.')
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists
     // or if the instance type is not a burstable instance, otherwise return void
     const { isValidInstanceType, isBurstableInstance } =
-      this.checkInstanceTypes(instanceFamily, rowData.instanceType)
+      this.checkInstanceTypes(instanceFamily)
     if (!isValidInstanceType || isBurstableInstance) return
 
     // grab the list of processors per instance type
     // and then the aws specific memory constant for the processors
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-      rowData.instanceType
+      this.instanceType
     ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
     const processorMemoryGigabytesPerPhysicalChip =
       AWS_CLOUD_CONSTANTS.getMemory(processors)
@@ -94,14 +93,13 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
       largestInstanceTypeMemory,
       processorMemoryGigabytesPerPhysicalChip,
       instanceTypeMemory,
-      rowData.usageAmount,
+      this.usageAmount,
     )
   }
 
-  public checkInstanceTypes(
-    instanceFamily: string,
-    instanceType: string,
-  ): { [key: string]: boolean } {
+  public checkInstanceTypes(instanceFamily: string): {
+    [key: string]: boolean
+  } {
     // a valid instance type is one that is mapped in the AWSInstanceTypes lists
     const isValidInstanceType =
       Object.keys(EC2_INSTANCE_TYPES).includes(instanceFamily) ||
@@ -110,50 +108,36 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     // unlike other instance families, the largest t instance is not equal to a full machine
     const isBurstableInstance = Object.keys(
       BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
-    ).includes(instanceType)
+    ).includes(this.instanceType)
     return { isValidInstanceType, isBurstableInstance }
   }
 
-  private getMemoryUsage(
-    rowData: Partial<FootprintEstimatesDataBuilder>,
-  ): MemoryUsage {
+  private getMemoryUsage(): MemoryUsage {
     return {
-      gigabyteHours: this.getGigabytesFromInstanceTypeAndProcessors(rowData),
+      gigabyteHours: this.getGigabytesFromInstanceTypeAndProcessors(),
     }
   }
 
-  private getMemoryConstants(
-    computeProcessors: string[],
-    powerUsageEffectiveness: number,
-  ): CloudConstants {
+  private getMemoryConstants(): CloudConstants {
     return {
-      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
-      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
-      powerUsageEffectiveness: powerUsageEffectiveness,
+      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(this.computeProcessors),
+      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(this.computeProcessors),
+      powerUsageEffectiveness: this.powerUsageEffectiveness,
+      replicationFactor: this.replicationFactor,
     }
-  }
-
-  private getComputeProcessors(
-    rowData: Partial<FootprintEstimatesDataBuilder>,
-  ): string[] {
-    return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[rowData.instanceType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
-      ]
-    )
   }
 
   private getMemoryFootprint(
     memoryEstimator: MemoryEstimator,
     memoryUsage: MemoryUsage,
-    computeConstants: CloudConstants,
+    memoryConstants: CloudConstants,
     region: string,
   ): FootprintEstimate {
     return memoryEstimator.estimate(
       [memoryUsage],
       region,
       AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      computeConstants,
+      memoryConstants,
     )[0]
   }
 }

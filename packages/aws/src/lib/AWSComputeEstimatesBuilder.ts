@@ -4,7 +4,6 @@
 
 import {
   CloudConstants,
-  COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,
   ComputeUsage,
   FootprintEstimate,
@@ -26,18 +25,19 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     super(rowData)
 
     this.vCpuHours = rowData.vCpuHours
-    this.computeUsage = this.getComputeUsage()
-    this.computeProcessors = this.getComputeProcessors(rowData)
-    this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(rowData.region)
-    this.computeConstants = this.getComputeConstants(
-      this.computeProcessors,
-      this.powerUsageEffectiveness,
+    this.region = rowData.region
+    this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(this.region)
+    this.computeProcessors = this.getComputeProcessors(
+      rowData.instanceType,
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
     )
+    this.computeUsage = this.getComputeUsage()
+    this.computeConstants = this.getComputeConstants()
     this.computeFootprint = this.getComputeFootprint(
       computeEstimator,
       this.computeUsage,
       this.computeConstants,
-      rowData.region,
+      this.region,
     )
   }
 
@@ -49,25 +49,13 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     }
   }
 
-  private getComputeConstants(
-    computeProcessors: string[],
-    powerUsageEffectiveness: number,
-  ): CloudConstants {
+  private getComputeConstants(): CloudConstants {
     return {
-      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
-      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
-      powerUsageEffectiveness: powerUsageEffectiveness,
+      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(this.computeProcessors),
+      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(this.computeProcessors),
+      powerUsageEffectiveness: this.powerUsageEffectiveness,
+      replicationFactor: this.replicationFactor,
     }
-  }
-
-  private getComputeProcessors(
-    rowData: Partial<FootprintEstimatesDataBuilder>,
-  ): string[] {
-    return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[rowData.instanceType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
-      ]
-    )
   }
 
   private getComputeFootprint(
