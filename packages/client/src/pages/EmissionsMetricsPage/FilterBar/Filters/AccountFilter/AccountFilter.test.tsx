@@ -5,9 +5,9 @@
 import { fireEvent, act, render, RenderResult } from '@testing-library/react'
 import React, { Dispatch, SetStateAction } from 'react'
 import AccountFilter from './AccountFilter'
-import { Filters } from '../utils/Filters'
+import { Filters } from '../../utils/Filters'
 
-jest.mock('../utils/Filters')
+jest.mock('../../utils/Filters')
 
 describe('AccountFilter', () => {
   let page: RenderResult

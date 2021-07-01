@@ -6,10 +6,10 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
-import { Filters, filtersConfigGenerator } from '../utils/Filters'
-import { FilterResultResponse } from '../../../../Types'
+import { Filters, filtersConfigGenerator } from '../../utils/Filters'
+import { FilterResultResponse } from 'Types'
 
-jest.mock('./AccountFilter', () => ({
+jest.mock('../AccountFilter/AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
     { key: 'all', name: 'All Accounts', cloudProvider: '' },
     { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
@@ -17,7 +17,7 @@ jest.mock('./AccountFilter', () => ({
   ],
 }))
 
-jest.mock('../../../../ConfigLoader', () => {
+jest.mock('ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

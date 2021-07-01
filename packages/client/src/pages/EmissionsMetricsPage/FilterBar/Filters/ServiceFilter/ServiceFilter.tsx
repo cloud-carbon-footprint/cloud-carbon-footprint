@@ -3,12 +3,12 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { FilterProps } from '../utils/Filters'
-import DropdownFilter from './DropdownFilter'
+import { FilterProps } from '../../utils/Filters'
+import DropdownFilter from '../DropdownFilter'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
-} from '../utils/DropdownConstants'
+} from '../../utils/DropdownConstants'
 import { DropdownOption } from 'Types'
 
 const EMPTY_RESPONSE = [{ key: '', name: '' }]

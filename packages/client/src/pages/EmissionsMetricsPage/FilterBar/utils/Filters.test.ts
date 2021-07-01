@@ -3,14 +3,12 @@
  */
 
 import moment from 'moment'
-
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-
-import { generateEstimations } from '../../../../utils/data'
-import { FilterResultResponse } from '../../../../Types'
+import { generateEstimations } from 'utils/data'
+import { FilterResultResponse } from 'Types'
 import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 
-jest.mock('../Filters/AccountFilter', () => ({
+jest.mock('../Filters/AccountFilter/AccountFilter', () => ({
   ACCOUNT_OPTIONS: [
     { key: 'all', name: 'All Accounts', cloudProvider: '' },
     { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
@@ -18,7 +16,7 @@ jest.mock('../Filters/AccountFilter', () => ({
   ],
 }))
 
-jest.mock('../Filters/ServiceFilter', () => ({
+jest.mock('../Filters/ServiceFilter/ServiceFilter', () => ({
   SERVICE_OPTIONS: [
     { key: 'all', name: 'All Services' },
     { key: 'ebs', name: 'EBS', cloudProvider: 'aws' },
@@ -79,7 +77,7 @@ declare global {
   }
 }
 
-jest.mock('../../../../ConfigLoader', () => {
+jest.mock('ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

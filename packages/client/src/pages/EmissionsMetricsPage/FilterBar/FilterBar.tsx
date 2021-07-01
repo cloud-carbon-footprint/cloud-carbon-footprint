@@ -10,9 +10,9 @@ import React, {
 } from 'react'
 import { Grid } from '@material-ui/core'
 import { FilterResultResponse } from 'Types'
-import CloudProviderFilter from './Filters/CloudProviderFilter'
 import {
   AccountFilter,
+  CloudProviderFilter,
   DateFilter,
   MonthFilter,
   ServiceFilter,

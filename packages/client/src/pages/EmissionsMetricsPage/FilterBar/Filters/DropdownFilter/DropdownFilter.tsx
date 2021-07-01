@@ -69,27 +69,25 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
     </>
   )
 
-  const renderInput = (params: AutocompleteRenderInputParams) => {
-    return (
-      <TextField
-        className={classes.textField}
-        variant="outlined"
-        {...params}
-        InputProps={{
-          ...params.InputProps,
-          startAdornment: (
-            <Typography
-              variant={'button'}
-              align={'center'}
-              className={classes.inputLabel}
-            >
-              {props.displayValue}
-            </Typography>
-          ),
-        }}
-      />
-    )
-  }
+  const renderInput = (params: AutocompleteRenderInputParams) => (
+    <TextField
+      className={classes.textField}
+      variant="outlined"
+      {...params}
+      InputProps={{
+        ...params.InputProps,
+        startAdornment: (
+          <Typography
+            variant={'button'}
+            align={'center'}
+            className={classes.inputLabel}
+          >
+            {props.displayValue}
+          </Typography>
+        ),
+      }}
+    />
+  )
 
   return (
     <Autocomplete
