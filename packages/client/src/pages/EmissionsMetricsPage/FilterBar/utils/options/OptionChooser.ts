@@ -11,8 +11,7 @@ import {
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter/AccountFilter'
-import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter/ServiceFilter'
+import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilter
@@ -38,7 +37,7 @@ export abstract class OptionChooser {
 
   protected abstract chooseServices(): Set<DropdownOption>
 
-  choose(): DropdownSelections {
+  choose(accountOptions: DropdownOption[]): DropdownSelections {
     const selectionKeys: string[] = this.selections.map(
       (selection) => selection.key,
     )
@@ -69,26 +68,30 @@ export abstract class OptionChooser {
       }
 
       return {
-        [DropdownFilter.CLOUD_PROVIDERS]: addAllDropDownOption(
+        [DropdownFilter.CLOUD_PROVIDERS]: addAllDropDownOptions(
           this.chooseProviders(),
           DropdownFilter.CLOUD_PROVIDERS,
+          accountOptions,
         ),
-        [DropdownFilter.SERVICES]: addAllDropDownOption(
+        [DropdownFilter.SERVICES]: addAllDropDownOptions(
           this.chooseServices(),
           DropdownFilter.SERVICES,
+          accountOptions,
         ),
-        [DropdownFilter.ACCOUNTS]: addAllDropDownOption(
+        [DropdownFilter.ACCOUNTS]: addAllDropDownOptions(
           this.chooseAccounts(),
           DropdownFilter.ACCOUNTS,
+          accountOptions,
         ),
       }
     }
   }
 }
 
-function addAllDropDownOption(
+function addAllDropDownOptions(
   currentSelections: Set<DropdownOption>,
   filterType: DropdownFilter,
+  accountOptions: DropdownOption[],
 ): DropdownOption[] {
   const revisedSelections: DropdownOption[] = Array.from(currentSelections)
   if (
@@ -99,7 +102,7 @@ function addAllDropDownOption(
   }
   if (
     filterType === DropdownFilter.ACCOUNTS &&
-    currentSelections.size === ACCOUNT_OPTIONS.length - 1
+    currentSelections.size === accountOptions.length - 1
   ) {
     revisedSelections.unshift(ALL_ACCOUNTS_DROPDOWN_OPTION)
   }

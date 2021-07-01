@@ -13,8 +13,8 @@ import { DropdownOption } from 'Types'
 
 const EMPTY_RESPONSE = [{ cloudProvider: '', key: 'string', name: 'string' }]
 
-// TODO remove mutable global variable
-export let ACCOUNT_OPTIONS: DropdownOption[]
+// // TODO remove mutable global variable
+// export let ACCOUNT_OPTIONS: DropdownOption[]
 
 const AccountFilter: FunctionComponent<FilterProps> = ({
   filters,
@@ -25,12 +25,15 @@ const AccountFilter: FunctionComponent<FilterProps> = ({
     options?.accounts,
     EMPTY_RESPONSE,
   )
-  ACCOUNT_OPTIONS = [ALL_ACCOUNTS_DROPDOWN_OPTION, ...allDropdownAccountOptions]
+  const ACCOUNT_OPTIONS: DropdownOption[] = [
+    ALL_ACCOUNTS_DROPDOWN_OPTION,
+    ...allDropdownAccountOptions,
+  ]
 
   return (
     <DropdownFilter
       id="accounts-filter"
-      displayValue={filters.accountLabel()}
+      displayValue={filters.accountLabel(ACCOUNT_OPTIONS)}
       options={ACCOUNT_OPTIONS}
       selections={filters.accounts}
       selectionToOption={(account) => account}

@@ -8,14 +8,6 @@ import { generateEstimations } from 'utils/data'
 import { FilterResultResponse } from 'Types'
 import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 
-jest.mock('../Filters/AccountFilter/AccountFilter', () => ({
-  ACCOUNT_OPTIONS: [
-    { key: 'all', name: 'All Accounts', cloudProvider: '' },
-    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
-    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
-  ],
-}))
-
 jest.mock('../Filters/ServiceFilter/ServiceFilter', () => ({
   SERVICE_OPTIONS: [
     { key: 'all', name: 'All Services' },

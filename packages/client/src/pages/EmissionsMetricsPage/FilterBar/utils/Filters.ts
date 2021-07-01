@@ -7,7 +7,6 @@ import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownFilter } from './FiltersUtil'
-import { ACCOUNT_OPTIONS } from '../Filters/AccountFilter'
 import { SERVICE_OPTIONS } from '../Filters/ServiceFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
@@ -61,9 +60,9 @@ export class Filters {
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
     this.timeframe = config.timeframe
+    this.dateRange = config.dateRange
     this.services = config.services
     this.cloudProviders = config.cloudProviders
-    this.dateRange = config.dateRange
     this.accounts = config.accounts
   }
 
@@ -148,10 +147,10 @@ export class Filters {
     )
   }
 
-  accountLabel(): string {
+  accountLabel(accountOptions: DropdownOption[]): string {
     return FiltersUtil.numSelectedLabel(
       this.accounts.length,
-      ACCOUNT_OPTIONS.length,
+      accountOptions.length,
       'Accounts',
     )
   }

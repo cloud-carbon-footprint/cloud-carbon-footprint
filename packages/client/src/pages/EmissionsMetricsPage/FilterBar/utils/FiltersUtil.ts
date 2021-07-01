@@ -19,6 +19,7 @@ export function handleDropdownSelections(
   filterType: DropdownFilter,
   selections: DropdownOption[],
   oldSelections: DropdownSelections,
+  accountOptions: DropdownOption[],
 ): DropdownSelections {
   return createOptionChooser(filterType, selections, oldSelections).choose()
 }
