@@ -148,7 +148,7 @@ describe('MonthFilter', () => {
     )
   })
 
-  test('clicking All button should filter up at least or beyond 12 months prior', () => {
+  test('clicking All button should filter up to at least 12 months prior or beyond', () => {
     const page = render(
       <MonthFilter filters={filters} setFilters={mockSetFilters} />,
     )
