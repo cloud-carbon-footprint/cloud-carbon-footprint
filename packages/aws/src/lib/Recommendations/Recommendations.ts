@@ -15,7 +15,6 @@ import {
 } from '@cloud-carbon-footprint/core'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from '../ServiceWrapper'
-
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
