@@ -111,7 +111,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
       : this.usageType.split(':').pop()
   }
 
-  public getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
+  private getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
     return (
       AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
       AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
