@@ -16,7 +16,7 @@ import {
 } from '../domain'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
-import RightsizingRecommendation from './RightsizingTargetRecommendation'
+import RightsizingRecommendation from './Recommendations/RightsizingTargetRecommendation'
 
 export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBuilder {
   constructor(

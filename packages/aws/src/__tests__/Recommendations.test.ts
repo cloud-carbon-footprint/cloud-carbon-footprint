@@ -8,7 +8,7 @@ import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 
-import Recommendations from '../lib/Recommendations'
+import { Recommendations } from '../lib/Recommendations'
 import {
   rightsizingRecommendationModify,
   rightsizingRecommendationTerminate,

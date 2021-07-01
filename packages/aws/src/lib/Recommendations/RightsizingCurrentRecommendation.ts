@@ -12,10 +12,10 @@ export default class RightsizingCurrentRecommendation extends RightsizingRecomme
 
     this.accountId = rightsizingRecommendationData.AccountId
     this.type = rightsizingRecommendationData.RightsizingType
-    this.region =
-      this.regionMapping[
-        rightsizingRecommendationData.CurrentInstance.ResourceDetails.EC2ResourceDetails.Region
-      ]
+    this.region = this.getMappedRegion(
+      rightsizingRecommendationData.CurrentInstance.ResourceDetails
+        .EC2ResourceDetails.Region,
+    )
     this.instanceName =
       rightsizingRecommendationData.CurrentInstance.InstanceName
     this.instanceType =

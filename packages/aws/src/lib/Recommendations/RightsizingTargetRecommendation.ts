@@ -2,6 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import moment from 'moment'
 import { RightsizingRecommendation as AwsRightsizingRecommendation } from 'aws-sdk/clients/costexplorer'
 import RightsizingRecommendation from './RightsizingRecommendation'
 
@@ -11,10 +12,10 @@ export default class RightsizingTargetRecommendation extends RightsizingRecommen
 
     this.accountId = rightsizingRecommendationData.AccountId
     this.type = rightsizingRecommendationData.RightsizingType
-    this.region =
-      this.regionMapping[
-        rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances[0].ResourceDetails.EC2ResourceDetails.Region
-      ]
+    this.region = this.getMappedRegion(
+      rightsizingRecommendationData.ModifyRecommendationDetail
+        .TargetInstances[0].ResourceDetails.EC2ResourceDetails.Region,
+    )
     this.instanceName = 'Recommend new instance'
     this.instanceType =
       rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances[0].ResourceDetails.EC2ResourceDetails.InstanceType
@@ -26,5 +27,6 @@ export default class RightsizingTargetRecommendation extends RightsizingRecommen
       rightsizingRecommendationData.ModifyRecommendationDetail
         .TargetInstances[0].EstimatedMonthlySavings,
     )
+    this.usageAmount = moment().utc().daysInMonth() * 24
   }
 }

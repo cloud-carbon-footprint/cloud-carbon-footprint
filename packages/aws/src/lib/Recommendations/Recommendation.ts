@@ -12,23 +12,12 @@ import {
   ICloudRecommendationsService,
   ComputeEstimator,
   MemoryEstimator,
-  CloudConstants,
-  getPhysicalChips,
-  calculateGigabyteHours,
-  MemoryUsage,
-  COMPUTE_PROCESSOR_TYPES,
 } from '@cloud-carbon-footprint/core'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import { ServiceWrapper } from './ServiceWrapper'
-import {
-  EC2_INSTANCE_TYPES,
-  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
-} from './AWSInstanceTypes'
-import {
-  AWS_CLOUD_CONSTANTS,
-  AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
-import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
+import { ServiceWrapper } from '../ServiceWrapper'
+
+import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
+import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
 import RightsizingTargetRecommendation from './RightsizingTargetRecommendation'
 
@@ -68,9 +57,19 @@ export default class Recommendations implements ICloudRecommendationsService {
           this.computeEstimator,
         ).computeFootprint
 
+        const currentMemoryFootprint = new AWSMemoryEstimatesBuilder(
+          rightsizingCurrentRecommendation,
+          this.memoryEstimator,
+        ).memoryFootprint
+
         let kilowattHourSavings = currentComputeFootprint.kilowattHours
         let co2eSavings = currentComputeFootprint.co2e
         let costSavings = rightsizingCurrentRecommendation.costSavings
+
+        if (currentMemoryFootprint.co2e) {
+          kilowattHourSavings += currentMemoryFootprint.kilowattHours
+          co2eSavings += currentMemoryFootprint.co2e
+        }
 
         if (recommendation.RightsizingType === 'Modify') {
           this.getTargetInstance(recommendation)
@@ -82,66 +81,19 @@ export default class Recommendations implements ICloudRecommendationsService {
             this.computeEstimator,
           ).computeFootprint
 
+          const targetMemoryFootprint = new AWSMemoryEstimatesBuilder(
+            rightsizingTargetRecommendation,
+            this.memoryEstimator,
+          ).memoryFootprint
+
           kilowattHourSavings -= targetComputeFootprint.kilowattHours
           co2eSavings -= targetComputeFootprint.co2e
           costSavings = rightsizingTargetRecommendation.costSavings
-        }
 
-        const computeProcessors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-          rightsizingCurrentRecommendation.instanceType
-        ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-
-        const powerUsageEffectiveness: number = AWS_CLOUD_CONSTANTS.getPUE(
-          rightsizingCurrentRecommendation.region,
-        )
-
-        const [instanceFamily, instanceSize] =
-          rightsizingCurrentRecommendation.instanceType.split('.')
-
-        const processorMemoryGigabytesPerPhysicalChip =
-          AWS_CLOUD_CONSTANTS.getMemory(computeProcessors)
-        const instanceTypeMemory =
-          EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
-
-        const familyInstanceTypes: number[][] = Object.values(
-          EC2_INSTANCE_TYPES[instanceFamily],
-        )
-
-        const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
-          familyInstanceTypes[familyInstanceTypes.length - 1]
-
-        // there are special cases for instance families m5zn and z1d where they are always 2
-        const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
-          ? 2
-          : getPhysicalChips(largestInstanceTypevCpus)
-
-        const gigabyteHoursForMemoryUsage = calculateGigabyteHours(
-          physicalChips,
-          largestInstanceTypeMemory,
-          processorMemoryGigabytesPerPhysicalChip,
-          instanceTypeMemory,
-          rightsizingCurrentRecommendation.usageAmount,
-        )
-
-        const memoryUsage: MemoryUsage = {
-          gigabyteHours: gigabyteHoursForMemoryUsage,
-        }
-        const memoryConstants: CloudConstants = {
-          powerUsageEffectiveness: powerUsageEffectiveness,
-        }
-
-        const memoryFootprint = this.memoryEstimator.estimate(
-          [memoryUsage],
-          rightsizingCurrentRecommendation.region,
-          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-          memoryConstants,
-        )[0]
-
-        if (gigabyteHoursForMemoryUsage) {
-          kilowattHourSavings =
-            currentComputeFootprint.kilowattHours +
-            memoryFootprint.kilowattHours
-          co2eSavings = currentComputeFootprint.co2e + memoryFootprint.co2e
+          if (targetMemoryFootprint.co2e) {
+            kilowattHourSavings -= targetMemoryFootprint.kilowattHours
+            co2eSavings -= targetMemoryFootprint.co2e
+          }
         }
 
         return {
@@ -164,9 +116,9 @@ export default class Recommendations implements ICloudRecommendationsService {
   ): void {
     let targetInstance =
       rightsizingRecommendationData.ModifyRecommendationDetail
-        ?.TargetInstances[0]
+        .TargetInstances[0]
     let savings = 0
-    rightsizingRecommendationData.ModifyRecommendationDetail?.TargetInstances.map(
+    rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances.map(
       (instance) => {
         if (parseFloat(instance.EstimatedMonthlySavings) >= savings) {
           savings = parseFloat(instance.EstimatedMonthlySavings)

@@ -22,7 +22,7 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
-import RightsizingRecommendation from './RightsizingRecommendation'
+import RightsizingRecommendation from './Recommendations/RightsizingRecommendation'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
 export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBuilder {
