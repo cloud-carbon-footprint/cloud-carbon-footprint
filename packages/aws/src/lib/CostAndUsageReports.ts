@@ -30,16 +30,11 @@ import {
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
-  ComputeUsage,
   StorageUsage,
   NetworkingUsage,
-  MemoryUsage,
-  COMPUTE_PROCESSOR_TYPES,
   appendOrAccumulateEstimatesByDay,
   CloudConstantsEmissionsFactors,
   CloudConstants,
-  calculateGigabyteHours,
-  getPhysicalChips,
 } from '@cloud-carbon-footprint/core'
 
 import { ServiceWrapper } from './ServiceWrapper'
@@ -57,16 +52,11 @@ import {
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
 import {
-  BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
-  EC2_INSTANCE_TYPES,
-  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
-  REDSHIFT_INSTANCE_TYPES,
-} from './AWSInstanceTypes'
-import { AWS_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
-import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
+import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
+import AWSMemoryEstimatesBuilder from './AWSMemoryEstimatesBuilder'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -130,25 +120,20 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.DPU_HOUR:
       case PRICING_UNITS.ACU_HOUR:
         // Compute / Memory
-        const gigabyteHoursForMemoryUsage =
-          this.getGigabytesFromInstanceTypeAndProcessors(costAndUsageReportRow)
 
-        const computeFootprint = this.getComputeFootprintEstimate(
+        const computeFootprint = new AWSComputeEstimatesBuilder(
           costAndUsageReportRow,
-          powerUsageEffectiveness,
-          emissionsFactors,
-        )
+          this.computeEstimator,
+        ).computeFootprint
 
-        const memoryFootprint = this.getMemoryFootprintEstimate(
+        const memoryFootprint = new AWSMemoryEstimatesBuilder(
           costAndUsageReportRow,
-          gigabyteHoursForMemoryUsage,
-          powerUsageEffectiveness,
-          emissionsFactors,
-        )
+          this.memoryEstimator,
+        ).memoryFootprint
 
-        // if there exist any gigabytes to calculate memory usage,
+        // if there exist any memory footprint,
         // add the kwh and co2e for both compute and memory
-        if (gigabyteHoursForMemoryUsage) {
+        if (memoryFootprint.co2e) {
           return {
             timestamp: computeFootprint.timestamp,
             kilowattHours:
@@ -173,11 +158,12 @@ export default class CostAndUsageReports {
       case PRICING_UNITS.SECONDS_1:
       case PRICING_UNITS.SECONDS_2:
         // Lambda
-        return this.getLambdaComputeFootprintEstimate(
+        costAndUsageReportRow.vCpuHours =
+          costAndUsageReportRow.usageAmount / 3600
+        return new AWSComputeEstimatesBuilder(
           costAndUsageReportRow,
-          powerUsageEffectiveness,
-          emissionsFactors,
-        )
+          this.computeEstimator,
+        ).computeFootprint
       case PRICING_UNITS.GB_1:
       case PRICING_UNITS.GB_2:
         // Networking
@@ -234,7 +220,7 @@ export default class CostAndUsageReports {
 
     const storageConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
+      replicationFactor: costAndUsageReportRow.replicationFactor,
     }
 
     let estimate: FootprintEstimate
@@ -258,163 +244,6 @@ export default class CostAndUsageReports {
       )
     if (estimate) estimate.usesAverageCPUConstant = false
     return estimate
-  }
-
-  private getComputeFootprintEstimate(
-    costAndUsageReportRow: CostAndUsageReportsRow,
-    powerUsageEffectiveness: number,
-    emissionsFactors: CloudConstantsEmissionsFactors,
-  ): FootprintEstimate {
-    const computeProcessors = this.getComputeProcessorsFromUsageType(
-      costAndUsageReportRow,
-    )
-
-    const computeUsage: ComputeUsage = {
-      timestamp: costAndUsageReportRow.timestamp,
-      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      numberOfvCpus: costAndUsageReportRow.vCpuHours,
-      usesAverageCPUConstant: true,
-    }
-
-    const computeConstants: CloudConstants = {
-      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
-      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
-      powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
-    }
-
-    return this.computeEstimator.estimate(
-      [computeUsage],
-      costAndUsageReportRow.region,
-      emissionsFactors,
-      computeConstants,
-    )[0]
-  }
-
-  private getMemoryFootprintEstimate(
-    costAndUsageReportRow: CostAndUsageReportsRow,
-    gigabyteHoursForMemoryUsage: number,
-    powerUsageEffectiveness: number,
-    emissionsFactors: CloudConstantsEmissionsFactors,
-  ): FootprintEstimate {
-    const memoryUsage: MemoryUsage = {
-      timestamp: costAndUsageReportRow.timestamp,
-      gigabyteHours: gigabyteHoursForMemoryUsage,
-    }
-    const memoryConstants: CloudConstants = {
-      powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(costAndUsageReportRow),
-    }
-
-    return this.memoryEstimator.estimate(
-      [memoryUsage],
-      costAndUsageReportRow.region,
-      emissionsFactors,
-      memoryConstants,
-    )[0]
-  }
-
-  private getLambdaComputeFootprintEstimate(
-    costAndUsageReportRow: CostAndUsageReportsRow,
-    powerUsageEffectiveness: number,
-    emissionsFactors: CloudConstantsEmissionsFactors,
-  ): FootprintEstimate {
-    const computeProcessors = this.getComputeProcessorsFromUsageType(
-      costAndUsageReportRow,
-    )
-
-    const lambdaComputeUsage: ComputeUsage = {
-      timestamp: costAndUsageReportRow.timestamp,
-      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      numberOfvCpus: costAndUsageReportRow.usageAmount / 3600,
-      usesAverageCPUConstant: true,
-    }
-
-    const lambdaComputeConstants: CloudConstants = {
-      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
-      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
-      powerUsageEffectiveness: powerUsageEffectiveness,
-    }
-    return this.computeEstimator.estimate(
-      [lambdaComputeUsage],
-      costAndUsageReportRow.region,
-      emissionsFactors,
-      lambdaComputeConstants,
-    )[0]
-  }
-
-  private getComputeProcessorsFromUsageType(
-    rowData: CostAndUsageReportsRow,
-  ): string[] {
-    const instanceType = rowData.parseInstanceTypeFromUsageType()
-
-    return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[instanceType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
-      ]
-    )
-  }
-
-  private getGigabytesFromInstanceTypeAndProcessors(
-    rowData: CostAndUsageReportsRow,
-  ): number {
-    const instanceType = rowData.parseInstanceTypeFromUsageType()
-    const [instanceFamily, instanceSize] = instanceType.split('.')
-
-    // check to see if the instance type is contained in the AWSInstanceTypes lists
-    // or if the instance type is not a burstable instance, otherwise return void
-    const { isValidInstanceType, isBurstableInstance } =
-      this.checkInstanceTypes(instanceFamily, instanceType)
-    if (!isValidInstanceType || isBurstableInstance) return
-
-    // grab the list of processors per instance type
-    // and then the aws specific memory constant for the processors
-    const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
-      instanceType
-    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
-    const processorMemoryGigabytesPerPhysicalChip =
-      AWS_CLOUD_CONSTANTS.getMemory(processors)
-
-    // grab the instance type vcpu from the AWSInstanceTypes lists
-    const instanceTypeMemory =
-      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1] ||
-      REDSHIFT_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[1]
-
-    // grab the entire instance family that the instance type is classified within
-    const familyInstanceTypes: number[][] = Object.values(
-      EC2_INSTANCE_TYPES[instanceFamily] ||
-        REDSHIFT_INSTANCE_TYPES[instanceFamily],
-    )
-
-    // grab the vcpu and memory (gb) from the largest instance type in the family
-    const [largestInstanceTypevCpus, largestInstanceTypeMemory] =
-      familyInstanceTypes[familyInstanceTypes.length - 1]
-
-    // there are special cases for instance families m5zn and z1d where they are always 2
-    const physicalChips = ['m5zn', 'z1d'].includes(instanceFamily)
-      ? 2
-      : getPhysicalChips(largestInstanceTypevCpus)
-
-    return calculateGigabyteHours(
-      physicalChips,
-      largestInstanceTypeMemory,
-      processorMemoryGigabytesPerPhysicalChip,
-      instanceTypeMemory,
-      rowData.usageAmount,
-    )
-  }
-
-  private checkInstanceTypes(instanceFamily: string, instanceType: string) {
-    // a valid instance type is one that is mapped in the AWSInstanceTypes lists
-    const isValidInstanceType =
-      Object.keys(EC2_INSTANCE_TYPES).includes(instanceFamily) ||
-      Object.keys(REDSHIFT_INSTANCE_TYPES).includes(instanceFamily)
-    // we are not able to calculate memory usage for burstable (t family) instances
-    // unlike other instance families, the largest t instance is not equal to a full machine
-    const isBurstableInstance = Object.keys(
-      BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
-    ).includes(instanceType)
-    return { isValidInstanceType, isBurstableInstance }
   }
 
   private getUsageAmountInTerabyteHours(
@@ -472,16 +301,6 @@ export default class CostAndUsageReports {
       endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
       UNKNOWN_USAGE_TYPES.some((unknownUsageType) =>
         usageType.includes(unknownUsageType),
-      )
-    )
-  }
-
-  private getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
-    return (
-      AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
-      AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
-        usageRow.usageType,
-        usageRow.region,
       )
     )
   }

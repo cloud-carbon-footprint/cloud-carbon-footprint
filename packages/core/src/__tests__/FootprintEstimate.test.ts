@@ -108,6 +108,7 @@ describe('FootprintEstimate', () => {
       cloudProvider: 'GCP',
       vCpuHours: 105566920704,
       instanceType: 'test',
+      replicationFactor: 1,
     }
 
     const footPrintEstimateOne: FootprintEstimate = {
@@ -161,6 +162,7 @@ describe('FootprintEstimate', () => {
       cloudProvider: 'GCP',
       vCpuHours: 105566920704,
       instanceType: 'test',
+      replicationFactor: 1,
     }
 
     const footPrintEstimateTwo: FootprintEstimate = {

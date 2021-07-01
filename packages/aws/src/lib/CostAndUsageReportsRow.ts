@@ -14,6 +14,7 @@ import {
 import { PRICING_UNITS } from './CostAndUsageTypes'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import { concat } from 'ramda'
+import { AWS_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 const GLUE_VCPUS_PER_USAGE = 4
 const SIMPLE_DB_VCPUS__PER_USAGE = 1
@@ -41,6 +42,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.accountId = this.accountName
     this.cloudProvider = 'AWS'
     this.instanceType = this.parseInstanceTypeFromUsageType()
+    this.replicationFactor = this.getReplicationFactor(billingDataRow)
   }
 
   private getUsageUnit(): string {
@@ -107,5 +109,15 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     return includesPrefix
       ? this.usageType.split(concat(includesPrefix, '.')).pop()
       : this.usageType.split(':').pop()
+  }
+
+  public getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
+    return (
+      AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
+      AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
+        usageRow.usageType,
+        usageRow.region,
+      )
+    )
   }
 }
