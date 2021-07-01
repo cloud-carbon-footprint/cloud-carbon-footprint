@@ -5,15 +5,24 @@
 import { pluck } from 'ramda'
 import { DropdownOption } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter/AccountFilter'
 import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter/ServiceFilter'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'
 
 export class AccountChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
-    super(DropdownFilter.ACCOUNTS, ACCOUNT_OPTIONS, selections, oldSelections)
+  constructor(
+    selections: DropdownOption[],
+    oldSelections: DropdownSelections,
+    accountOptions: DropdownOption[],
+  ) {
+    super(
+      DropdownFilter.ACCOUNTS,
+      accountOptions,
+      selections,
+      oldSelections,
+      accountOptions,
+    )
   }
 
   protected chooseProviders(): Set<DropdownOption> {

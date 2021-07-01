@@ -21,7 +21,12 @@ export function handleDropdownSelections(
   oldSelections: DropdownSelections,
   accountOptions: DropdownOption[],
 ): DropdownSelections {
-  return createOptionChooser(filterType, selections, oldSelections).choose()
+  return createOptionChooser(
+    filterType,
+    selections,
+    oldSelections,
+    accountOptions,
+  ).choose()
 }
 
 export function numSelectedLabel(

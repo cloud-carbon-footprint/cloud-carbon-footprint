@@ -5,17 +5,21 @@
 import { DropdownOption } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
 import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 import { OptionChooser } from './OptionChooser'
 
 export class CloudProviderChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
+  constructor(
+    selections: DropdownOption[],
+    oldSelections: DropdownSelections,
+    accountOptions: DropdownOption[],
+  ) {
     super(
       DropdownFilter.CLOUD_PROVIDERS,
       CLOUD_PROVIDER_OPTIONS,
       selections,
       oldSelections,
+      accountOptions,
     )
   }
 
@@ -27,7 +31,7 @@ export class CloudProviderChooser extends OptionChooser {
     const desiredSelections: Set<DropdownOption> = new Set()
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
-        ACCOUNT_OPTIONS.forEach((accountOption) => {
+        this.accountOptions.forEach((accountOption) => {
           accountOption.cloudProvider === selection.key &&
             desiredSelections.add(accountOption)
         })

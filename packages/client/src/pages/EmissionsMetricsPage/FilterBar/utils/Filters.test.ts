@@ -218,7 +218,7 @@ describe('Filters', () => {
       expect(newFilters.services).toEqual([])
     })
 
-    it('should unselect one service when all services is already selected', () => {
+    it('should unselect one service when all services are already selected', () => {
       const filters = new Filters()
 
       const newFilters = filters.withServices([

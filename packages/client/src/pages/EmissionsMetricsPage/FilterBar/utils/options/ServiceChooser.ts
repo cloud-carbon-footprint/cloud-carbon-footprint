@@ -5,15 +5,24 @@
 import { DropdownOption } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
 import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'
 
 export class ServiceChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
-    super(DropdownFilter.SERVICES, SERVICE_OPTIONS, selections, oldSelections)
+  constructor(
+    selections: DropdownOption[],
+    oldSelections: DropdownSelections,
+    accountOptions: DropdownOption[],
+  ) {
+    super(
+      DropdownFilter.SERVICES,
+      SERVICE_OPTIONS,
+      selections,
+      oldSelections,
+      accountOptions,
+    )
   }
 
   protected chooseProviders(): Set<DropdownOption> {
@@ -43,7 +52,7 @@ export class ServiceChooser extends OptionChooser {
         })
       } else {
         //if current Cloud provider doesnt have an option that oldCP has, add all the accounts from that CP
-        ACCOUNT_OPTIONS.forEach((accountOption) => {
+        this.accountOptions.forEach((accountOption) => {
           accountOption.cloudProvider === currentCloudProvider.key &&
             desiredSelections.add(accountOption)
         })
