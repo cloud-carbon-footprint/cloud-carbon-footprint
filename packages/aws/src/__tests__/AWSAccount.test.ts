@@ -4,9 +4,13 @@
 
 import { Credentials } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
-import { Config as mockConfig } from '@cloud-carbon-footprint/common'
+import {
+  Config as mockConfig,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 import { EBS, S3, EC2, ElastiCache, RDS, Lambda } from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
+import { Recommendations } from '../lib/Recommendations'
 
 jest.mock('../application/AWSCredentialsProvider')
 
@@ -120,6 +124,37 @@ describe('AWSAccount', () => {
         CloudWatchLogs.mock.calls[0][0]
       expect(options.credentials).toEqual(expectedCredentials)
     })
+  })
+
+  it('should get data for recommendations', async () => {
+    const AWSAccount = require('../application/AWSAccount').default
+    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      'some-region',
+    ])
+
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'account-id',
+        accountName: 'account-name',
+        region: 'us-east-1',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance: instance-name',
+        kilowattHourSavings: 5,
+        co2eSavings: 4,
+        costSavings: 3,
+      },
+    ]
+
+    const getRecommendations = jest.spyOn(
+      Recommendations.prototype,
+      'getRecommendations',
+    )
+
+    getRecommendations.mockResolvedValue(expectedRecommendations)
+    const result = await testAwsAccount.getDataForRecommendations()
+
+    expect(result).toEqual(expectedRecommendations)
   })
 })
 

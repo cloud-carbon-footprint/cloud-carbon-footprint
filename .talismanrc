@@ -75,6 +75,8 @@ fileignoreconfig:
   checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
   checksum: 47701f39ac93d11ebf30ebc3eb7499971094144b82bbd558aebdaa551d8228f3
+- filename: packages/app/src/__tests__/App.test.ts
+  checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
   checksum: 13d9fe76704017b7446776fd717b655740a11d74dc833a1a87def97ad075e33e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts

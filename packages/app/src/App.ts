@@ -7,6 +7,7 @@ import {
   EstimationResult,
   reduceByTimestamp,
   EmissionRatioResult,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import {
   AzureAccount,
@@ -128,5 +129,32 @@ export default class App {
       })
       return emissionDataResult
     }, [])
+  }
+
+  async getRecommendations(): Promise<RecommendationResult[]> {
+    const config = configLoader()
+    const AWS = config.AWS
+    const AWSRecommendations: RecommendationResult[][] = []
+    if (AWS.USE_BILLING_DATA) {
+      const recommendations = await new AWSAccount(
+        AWS.BILLING_ACCOUNT_ID,
+        AWS.BILLING_ACCOUNT_NAME,
+        [AWS.ATHENA_REGION],
+      ).getDataForRecommendations()
+      AWSRecommendations.push(recommendations)
+    } else {
+      // Resolve AWS Estimates synchronously in order to avoid hitting API limits
+      for (const account of AWS.accounts) {
+        const recommendations: RecommendationResult[] = await Promise.all(
+          await new AWSAccount(
+            account.id,
+            account.name,
+            AWS.CURRENT_REGIONS,
+          ).getDataForRecommendations(),
+        )
+        AWSRecommendations.push(recommendations)
+      }
+    }
+    return AWSRecommendations.flat().flat()
   }
 }

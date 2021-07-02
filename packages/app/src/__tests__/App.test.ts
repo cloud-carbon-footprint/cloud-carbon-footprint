@@ -10,8 +10,10 @@ import {
   Cost,
 } from '@cloud-carbon-footprint/core'
 import {
+  configLoader,
   EmissionRatioResult,
   EstimationResult,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import { AWSAccount } from '@cloud-carbon-footprint/aws'
 import { GCPAccount } from '@cloud-carbon-footprint/gcp'
@@ -19,6 +21,10 @@ import App from '../App'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 
+const getDataForRecommendations = jest.spyOn(
+  AWSAccount.prototype,
+  'getDataForRecommendations',
+)
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
 
@@ -450,9 +456,6 @@ describe('App', () => {
       },
     ]
 
-    // expect(AWSAccount).toHaveBeenCalledWith('12345678', 'us-east-1')
-    // expect(AWSAccount).toHaveBeenCalledWith('12345678', 'us-east-2')
-
     expect(mockGetEstimates).toHaveBeenNthCalledWith(
       1,
       new Date(start),
@@ -847,6 +850,68 @@ describe('App', () => {
 
     // then
     expect(response).toEqual(expectedResponse)
+  })
+
+  it('returns recommendations for aws', async () => {
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'account-id',
+        accountName: 'account-name',
+        region: 'us-east-1',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance: instance-name',
+        kilowattHourSavings: 5,
+        co2eSavings: 4,
+        costSavings: 3,
+      },
+    ]
+
+    getDataForRecommendations.mockResolvedValue(expectedRecommendations)
+    const result = await app.getRecommendations()
+
+    expect(result).toEqual(expectedRecommendations)
+  })
+
+  it('returns recommendations for aws with billing data', async () => {
+    ;(configLoader as jest.Mock).mockReturnValue({
+      AWS: {
+        accounts: [{ id: '12345678', name: 'test AWS account' }],
+        NAME: 'AWS',
+        BILLING_ACCOUNT_ID: 'billing-account-id',
+        BILLING_ACCOUNT_NAME: 'billing-account-name',
+        ATHENA_REGION: 'us-east-1',
+        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
+        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        USE_BILLING_DATA: true,
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleName: 'test-target',
+            proxyAccountId: 'test-account-id',
+            proxyRoleName: 'test-role-name',
+          },
+        },
+      },
+    })
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'account-id',
+        accountName: 'account-name',
+        region: 'us-east-1',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance: instance-name',
+        kilowattHourSavings: 5,
+        co2eSavings: 4,
+        costSavings: 3,
+      },
+    ]
+
+    getDataForRecommendations.mockResolvedValue(expectedRecommendations)
+    const result = await app.getRecommendations()
+
+    expect(result).toEqual(expectedRecommendations)
   })
 })
 

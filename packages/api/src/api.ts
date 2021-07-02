@@ -75,9 +75,25 @@ const EmissionsApiMiddleware = async function (
   }
 }
 
+const RecommendationsApiMiddleware = async function (
+  req: express.Request,
+  res: express.Response,
+): Promise<void> {
+  apiLogger.info(`Recommendations API request started`)
+  const footprintApp = new App()
+  try {
+    const recommendations = await footprintApp.getRecommendations()
+    res.json(recommendations)
+  } catch (e) {
+    apiLogger.error(`Unable to process recommendations request.`, e)
+    res.status(500).send('Internal Server Error')
+  }
+}
+
 const router = express.Router()
 
 router.get('/footprint', FootprintApiMiddleware)
 router.get('/regions/emissions-factors', EmissionsApiMiddleware)
+router.get('/recommendations', RecommendationsApiMiddleware)
 
 export default router

@@ -20,7 +20,11 @@ import {
   MemoryEstimator,
   CloudProviderAccount,
 } from '@cloud-carbon-footprint/core'
-import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  configLoader,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 
 import {
   EBS,
@@ -41,6 +45,7 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
+import { Recommendations } from '../lib/Recommendations'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -98,6 +103,21 @@ export default class AWSAccount extends CloudProviderAccount {
     return configLoader().AWS.CURRENT_SERVICES.map(({ key }) => {
       return this.getService(key, regionId, this.credentials)
     })
+  }
+
+  async getDataForRecommendations(): Promise<RecommendationResult[]> {
+    const recommendations = new Recommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      this.createServiceWrapper(
+        this.getServiceConfigurationOptions(
+          configLoader().AWS.ATHENA_REGION,
+          this.credentials,
+        ),
+      ),
+    )
+
+    return await recommendations.getRecommendations()
   }
 
   getDataFromCostAndUsageReports(

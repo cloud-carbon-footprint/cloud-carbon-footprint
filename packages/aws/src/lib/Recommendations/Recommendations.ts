@@ -45,8 +45,8 @@ export default class Recommendations implements ICloudRecommendationsService {
       results.flatMap(
         ({ RightsizingRecommendations }) => RightsizingRecommendations,
       )
-
-    return rightsizingRecommendations.map(
+    const recommendationsResult: RecommendationResult[] = []
+    rightsizingRecommendations.forEach(
       (recommendation: AwsRightsizingRecommendation) => {
         const rightsizingCurrentRecommendation =
           new RightsizingCurrentRecommendation(recommendation)
@@ -64,6 +64,7 @@ export default class Recommendations implements ICloudRecommendationsService {
         let kilowattHourSavings = currentComputeFootprint.kilowattHours
         let co2eSavings = currentComputeFootprint.co2e
         let costSavings = rightsizingCurrentRecommendation.costSavings
+        let recommendationDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}`
 
         if (currentMemoryFootprint.co2e) {
           kilowattHourSavings += currentMemoryFootprint.kilowattHours
@@ -88,6 +89,7 @@ export default class Recommendations implements ICloudRecommendationsService {
           kilowattHourSavings -= targetComputeFootprint.kilowattHours
           co2eSavings -= targetComputeFootprint.co2e
           costSavings = rightsizingTargetRecommendation.costSavings
+          recommendationDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}. Update instance type ${rightsizingCurrentRecommendation.instanceType} to ${rightsizingTargetRecommendation.instanceType}`
 
           if (targetMemoryFootprint.co2e) {
             kilowattHourSavings -= targetMemoryFootprint.kilowattHours
@@ -95,19 +97,22 @@ export default class Recommendations implements ICloudRecommendationsService {
           }
         }
 
-        return {
-          cloudProvider: 'AWS',
-          accountId: rightsizingCurrentRecommendation.accountId,
-          accountName: rightsizingCurrentRecommendation.accountId,
-          region: rightsizingCurrentRecommendation.region,
-          recommendationType: rightsizingCurrentRecommendation.type,
-          recommendationDetail: `${rightsizingCurrentRecommendation.type} instance "${rightsizingCurrentRecommendation.instanceName}"`,
-          kilowattHourSavings,
-          co2eSavings,
-          costSavings,
-        }
+        // if there are no potential savings, do not include recommendation object
+        co2eSavings !== 0 &&
+          recommendationsResult.push({
+            cloudProvider: 'AWS',
+            accountId: rightsizingCurrentRecommendation.accountId,
+            accountName: rightsizingCurrentRecommendation.accountId,
+            region: rightsizingCurrentRecommendation.region,
+            recommendationType: rightsizingCurrentRecommendation.type,
+            recommendationDetail,
+            kilowattHourSavings,
+            co2eSavings,
+            costSavings,
+          })
       },
     )
+    return recommendationsResult
   }
 
   private getTargetInstance(

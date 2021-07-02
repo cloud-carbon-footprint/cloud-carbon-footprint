@@ -8,13 +8,14 @@ import request from 'supertest'
 import {
   EstimationResult,
   EmissionRatioResult,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
 import api from './api'
 
 const mockGetCostAndEstimates = jest.fn()
-const mockGetFilterData = jest.fn()
 const mockGetEmissionsFactors = jest.fn()
+const mockGetRecommendations = jest.fn()
 
 jest.mock('@cloud-carbon-footprint/app', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/app') as Record<
@@ -25,13 +26,14 @@ jest.mock('@cloud-carbon-footprint/app', () => ({
     return {
       getCostAndEstimates: mockGetCostAndEstimates,
       getEmissionsFactors: mockGetEmissionsFactors,
-      getFilterData: mockGetFilterData,
+      getRecommendations: mockGetRecommendations,
     }
   }),
 }))
 
 describe('api', () => {
   let server: express.Express
+  const originalConsoleError = console.error
 
   beforeEach(() => {
     server = express()
@@ -58,7 +60,6 @@ describe('api', () => {
     })
 
     describe('error handling', () => {
-      const originalConsoleError = console.error
       beforeEach(() => (console.error = jest.fn()))
       afterEach(() => (console.error = originalConsoleError))
 
@@ -133,6 +134,46 @@ describe('api', () => {
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual(expectedResponse)
+    })
+
+    describe('error handling', () => {
+      beforeEach(() => (console.error = jest.fn()))
+      afterEach(() => (console.error = originalConsoleError))
+
+      it('returns server error if unexpected error happens', async () => {
+        mockGetEmissionsFactors.mockRejectedValueOnce(new Error('error'))
+        const response = await request(server).get(
+          encodeURI(`/regions/emissions-factors`),
+        )
+
+        expect(response.status).toBe(500)
+      })
+    })
+  })
+
+  describe('/recommendations', () => {
+    it('returns data for regional emissions factors', async () => {
+      const expectedResponse: RecommendationResult[] = []
+
+      mockGetRecommendations.mockResolvedValueOnce(expectedResponse)
+      const response = await request(server).get(encodeURI('/recommendations'))
+
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(expectedResponse)
+    })
+
+    describe('error handling', () => {
+      beforeEach(() => (console.error = jest.fn()))
+      afterEach(() => (console.error = originalConsoleError))
+
+      it('returns server error if unexpected error happens', async () => {
+        mockGetRecommendations.mockRejectedValueOnce(new Error('error'))
+        const response = await request(server).get(
+          encodeURI('/recommendations'),
+        )
+
+        expect(response.status).toBe(500)
+      })
     })
   })
 })
