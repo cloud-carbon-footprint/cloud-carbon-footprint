@@ -5,18 +5,11 @@
 import config from 'ConfigLoader'
 import { DropdownOption } from 'Types'
 
-export const ALL_KEY = 'all'
-export const ALL_ACCOUNTS_VALUE = 'All Accounts'
-export const ALL_ACCOUNTS_DROPDOWN_OPTION: DropdownOption = {
-  key: ALL_KEY,
-  name: ALL_ACCOUNTS_VALUE,
-  cloudProvider: '',
-}
-
-export const ALL_SERVICES_VALUE = 'All Services'
-export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = {
-  key: ALL_KEY,
-  name: ALL_SERVICES_VALUE,
+function sortByCloudProvider(
+  { cloudProvider: cloudProvider1 = '' }: DropdownOption,
+  { cloudProvider: cloudProvider2 = '' }: DropdownOption,
+) {
+  return cloudProvider1.localeCompare(cloudProvider2)
 }
 
 export function alphabetizeDropdownOptions(
@@ -30,11 +23,18 @@ export function alphabetizeDropdownOptions(
   return dropdownOptions
 }
 
-function sortByCloudProvider(
-  { cloudProvider: cloudProvider1 = '' }: DropdownOption,
-  { cloudProvider: cloudProvider2 = '' }: DropdownOption,
-) {
-  return cloudProvider1.localeCompare(cloudProvider2)
+export const ALL_KEY = 'all'
+export const ALL_ACCOUNTS_VALUE = 'All Accounts'
+export const ALL_ACCOUNTS_DROPDOWN_OPTION: DropdownOption = {
+  key: ALL_KEY,
+  name: ALL_ACCOUNTS_VALUE,
+  cloudProvider: '',
+}
+
+export const ALL_SERVICES_VALUE = 'All Services'
+export const ALL_SERVICES_DROPDOWN_OPTION: DropdownOption = {
+  key: ALL_KEY,
+  name: ALL_SERVICES_VALUE,
 }
 
 export const ALL_CLOUD_PROVIDERS_VALUE = 'All Providers'

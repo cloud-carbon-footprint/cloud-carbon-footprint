@@ -5,7 +5,6 @@
 import { DropdownOption, FilterOptions } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'
 

@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { DropdownOption, FilterOptions } from 'Types'
+import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
