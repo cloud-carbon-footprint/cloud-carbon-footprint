@@ -11,6 +11,7 @@ import { DropdownOption } from 'Types'
 const CloudProviderFilter: FunctionComponent<FilterProps> = ({
   filters,
   setFilters,
+  options,
 }) => {
   return (
     <DropdownFilter
@@ -20,7 +21,7 @@ const CloudProviderFilter: FunctionComponent<FilterProps> = ({
       selections={filters.cloudProviders}
       selectionToOption={(cloudProvider: DropdownOption) => cloudProvider}
       updateSelections={(selections: DropdownOption[]) =>
-        setFilters(filters.withCloudProviders(selections))
+        setFilters(filters.withCloudProviders(selections, options.accounts))
       }
     />
   )

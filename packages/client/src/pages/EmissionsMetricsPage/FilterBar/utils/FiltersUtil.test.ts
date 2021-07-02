@@ -8,16 +8,6 @@ import {
   ALL_SERVICES_VALUE,
 } from './DropdownConstants'
 
-jest.mock('../Filters/AccountFilter/AccountFilter', () => ({
-  ACCOUNT_OPTIONS: [
-    { key: 'all', name: 'All Accounts', cloudProvider: '' },
-    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
-    { key: '321321322', name: 'testaccount1', cloudProvider: 'aws' },
-    { key: '123123123', name: 'testaccount2', cloudProvider: 'gcp' },
-    { key: '123412341', name: 'testaccount3', cloudProvider: 'gcp' },
-  ],
-}))
-
 jest.mock('../Filters/ServiceFilter/ServiceFilter', () => ({
   SERVICE_OPTIONS: [
     { key: 'all', name: 'All Services' },
@@ -120,6 +110,13 @@ describe('filterUtil', () => {
     ...awsAccountOptions,
     ...gcpAccountOptions,
   ]
+  const accountOptions = [
+    { key: 'all', name: 'All Accounts', cloudProvider: '' },
+    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
+    { key: '321321322', name: 'testaccount1', cloudProvider: 'aws' },
+    { key: '123123123', name: 'testaccount2', cloudProvider: 'gcp' },
+    { key: '123412341', name: 'testaccount3', cloudProvider: 'gcp' },
+  ]
 
   describe('handleSelections', () => {
     it('should return all cloudProviders, accounts and services when all providers was selected', () => {
@@ -131,6 +128,7 @@ describe('filterUtil', () => {
           accounts: awsAccountOptions,
           cloudProviders: [awsProviderOption],
         },
+        accountOptions,
       )
       expect(result.cloudProviders).toEqual(allProviderOptions)
       expect(result.accounts).toEqual(allAccountOptions)
@@ -145,6 +143,7 @@ describe('filterUtil', () => {
           accounts: [...awsAccountOptions, gcpAccountOptions[0]],
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(result.cloudProviders).toEqual(allProviderOptions)
       expect(result.accounts).toEqual(allAccountOptions)
@@ -160,6 +159,7 @@ describe('filterUtil', () => {
             accounts: awsAccountOptions,
             cloudProviders: [awsProviderOption],
           },
+          accountOptions,
         ),
       ).toEqual({
         cloudProviders: allProviderOptions,
@@ -176,6 +176,7 @@ describe('filterUtil', () => {
           accounts: allAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual([])
       expect(handleSelectionResult.accounts).toEqual([])
@@ -190,6 +191,7 @@ describe('filterUtil', () => {
           accounts: allAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual([])
       expect(handleSelectionResult.accounts).toEqual([])
@@ -204,6 +206,7 @@ describe('filterUtil', () => {
           accounts: allAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual([])
       expect(handleSelectionResult.accounts).toEqual([])
@@ -218,6 +221,7 @@ describe('filterUtil', () => {
           accounts: allAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual([awsProviderOption])
       expect(handleSelectionResult.accounts).toEqual(awsAccountOptions)
@@ -232,6 +236,7 @@ describe('filterUtil', () => {
           accounts: [...awsAccountOptions, gcpAccountOptions[0]],
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual([awsProviderOption])
       expect(handleSelectionResult.accounts).toEqual(awsAccountOptions)
@@ -246,6 +251,7 @@ describe('filterUtil', () => {
           accounts: allAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual([awsProviderOption])
       expect(handleSelectionResult.accounts).toEqual(awsAccountOptions)
@@ -260,6 +266,7 @@ describe('filterUtil', () => {
           accounts: awsAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual(allProviderOptions)
       expect(handleSelectionResult.accounts).toEqual([
@@ -277,6 +284,7 @@ describe('filterUtil', () => {
           accounts: allAccountOptions,
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual(allProviderOptions)
       expect(handleSelectionResult.accounts).toEqual([
@@ -301,6 +309,7 @@ describe('filterUtil', () => {
           accounts: [awsAccountOptions[0], ...gcpAccountOptions],
           cloudProviders: allProviderOptions,
         },
+        accountOptions,
       )
       expect(handleSelectionResult.cloudProviders).toEqual(allProviderOptions)
       expect(handleSelectionResult.accounts).toEqual([

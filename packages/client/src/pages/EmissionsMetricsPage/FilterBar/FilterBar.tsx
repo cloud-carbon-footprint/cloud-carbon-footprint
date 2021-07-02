@@ -9,7 +9,7 @@ import React, {
   SetStateAction,
 } from 'react'
 import { Grid } from '@material-ui/core'
-import { FilterResultResponse } from 'Types'
+import { DropdownOption, FilterResultResponse } from 'Types'
 import {
   AccountFilter,
   CloudProviderFilter,
@@ -19,6 +19,10 @@ import {
 } from './Filters'
 import useStyles from './filterBarStyles'
 import { Filters } from './utils/Filters'
+import {
+  ALL_ACCOUNTS_DROPDOWN_OPTION,
+  buildAndOrderDropdownOptions,
+} from './utils/DropdownConstants'
 
 type FilterBarProps = {
   filters: Filters
@@ -31,6 +35,20 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
   setFilters,
   filteredDataResults,
 }): ReactElement => {
+  const allAccountDropdownOptions = buildAndOrderDropdownOptions(
+    filteredDataResults?.accounts,
+    [{ cloudProvider: '', key: 'string', name: 'string' }],
+  )
+  const accountOptions: DropdownOption[] = [
+    ALL_ACCOUNTS_DROPDOWN_OPTION,
+    ...allAccountDropdownOptions,
+  ]
+
+  const filterOptions = {
+    accounts: accountOptions,
+    services: filteredDataResults.services,
+  }
+
   const classes = useStyles()
 
   return (
@@ -44,7 +62,7 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
                   <FilterComponent
                     filters={filters}
                     setFilters={setFilters}
-                    options={filteredDataResults}
+                    options={filterOptions}
                   />
                 </div>
               ),
@@ -53,11 +71,7 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
           <div className={classes.filterContainerSection}>
             {[DateFilter, MonthFilter].map((FilterComponent, i) => (
               <div key={i} className={classes.filter}>
-                <FilterComponent
-                  filters={filters}
-                  setFilters={setFilters}
-                  options={filteredDataResults}
-                />
+                <FilterComponent filters={filters} setFilters={setFilters} />
               </div>
             ))}
           </div>

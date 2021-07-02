@@ -5,13 +5,8 @@
 import React, { FunctionComponent } from 'react'
 import { FilterProps } from '../../utils/Filters'
 import DropdownFilter from '../DropdownFilter'
-import {
-  ALL_ACCOUNTS_DROPDOWN_OPTION,
-  buildAndOrderDropdownOptions,
-} from '../../utils/DropdownConstants'
-import { DropdownOption } from 'Types'
 
-const EMPTY_RESPONSE = [{ cloudProvider: '', key: 'string', name: 'string' }]
+import { DropdownOption } from 'Types'
 
 // // TODO remove mutable global variable
 // export let ACCOUNT_OPTIONS: DropdownOption[]
@@ -21,24 +16,16 @@ const AccountFilter: FunctionComponent<FilterProps> = ({
   setFilters,
   options,
 }) => {
-  const allDropdownAccountOptions = buildAndOrderDropdownOptions(
-    options?.accounts,
-    EMPTY_RESPONSE,
-  )
-  const ACCOUNT_OPTIONS: DropdownOption[] = [
-    ALL_ACCOUNTS_DROPDOWN_OPTION,
-    ...allDropdownAccountOptions,
-  ]
-
+  const accountOptions = options.accounts
   return (
     <DropdownFilter
       id="accounts-filter"
-      displayValue={filters.accountLabel(ACCOUNT_OPTIONS)}
-      options={ACCOUNT_OPTIONS}
+      displayValue={filters.accountLabel(accountOptions)}
+      options={accountOptions}
       selections={filters.accounts}
       selectionToOption={(account) => account}
       updateSelections={(selections: DropdownOption[]) => {
-        setFilters(filters.withAccounts(selections))
+        setFilters(filters.withAccounts(selections, accountOptions))
       }}
     />
   )

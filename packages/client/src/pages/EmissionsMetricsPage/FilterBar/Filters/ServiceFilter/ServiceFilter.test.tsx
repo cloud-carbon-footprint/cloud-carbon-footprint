@@ -9,14 +9,6 @@ import ServiceFilter from './ServiceFilter'
 import { Filters, filtersConfigGenerator } from '../../utils/Filters'
 import { FilterResultResponse } from 'Types'
 
-jest.mock('../AccountFilter/AccountFilter', () => ({
-  ACCOUNT_OPTIONS: [
-    { key: 'all', name: 'All Accounts', cloudProvider: '' },
-    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
-    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
-  ],
-}))
-
 jest.mock('ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
@@ -63,6 +55,11 @@ describe('ServiceFilter', () => {
     computeEngineServiceOption,
   ]
   const options: FilterResultResponse = { accounts: [], services }
+  const accountOptions = [
+    { key: 'all', name: 'All Accounts', cloudProvider: '' },
+    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
+    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+  ]
 
   beforeEach(() => {
     mockSetFilters = jest.fn()
@@ -103,7 +100,7 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-all'))
     })
 
-    const newFilters = filters.withServices([])
+    const newFilters = filters.withServices([], accountOptions)
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(
@@ -133,15 +130,18 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-ebs'))
     })
 
-    const newFilters = filters.withServices([
-      allServiceOption,
-      ec2ServiceOption,
-      elastiCacheServiceOption,
-      lambdaServiceOption,
-      rdsServiceOption,
-      S3ServiceOption,
-      computeEngineServiceOption,
-    ])
+    const newFilters = filters.withServices(
+      [
+        allServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        lambdaServiceOption,
+        rdsServiceOption,
+        S3ServiceOption,
+        computeEngineServiceOption,
+      ],
+      accountOptions,
+    )
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(
@@ -172,14 +172,17 @@ describe('ServiceFilter', () => {
     expect(allAwsGroupByElement).toBeInTheDocument()
     expect(allGcpGroupByElement).toBeInTheDocument()
 
-    const someAwsFilters = filters.withServices([
-      allServiceOption,
-      ec2ServiceOption,
-      elastiCacheServiceOption,
-      lambdaServiceOption,
-      rdsServiceOption,
-      S3ServiceOption,
-    ])
+    const someAwsFilters = filters.withServices(
+      [
+        allServiceOption,
+        ec2ServiceOption,
+        elastiCacheServiceOption,
+        lambdaServiceOption,
+        rdsServiceOption,
+        S3ServiceOption,
+      ],
+      accountOptions,
+    )
 
     page.rerender(
       <ServiceFilter

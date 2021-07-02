@@ -5,7 +5,7 @@
 import { pluck } from 'ramda'
 import { DropdownOption } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter/ServiceFilter'
+import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'

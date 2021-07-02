@@ -18,7 +18,7 @@ import { FilterResultResponse, UnknownTypes, DropdownOption } from 'Types'
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
-  options?: FilterResultResponse
+  options?: { [filterOption: string]: DropdownOption[] }
 }
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
@@ -72,47 +72,62 @@ export class Filters {
       : new Filters({ ...this, dateRange: null, timeframe })
   }
 
-  withServices(services: DropdownOption[]): Filters {
+  withServices(
+    services: DropdownOption[],
+    accountOptions: DropdownOption[],
+  ): Filters {
+    const oldSelections = {
+      services: this.services,
+      accounts: this.accounts,
+      cloudProviders: this.cloudProviders,
+    }
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.SERVICES,
         services,
-        {
-          services: this.services,
-          accounts: this.accounts,
-          cloudProviders: this.cloudProviders,
-        },
+        oldSelections,
+        accountOptions,
       ),
     })
   }
 
-  withAccounts(accounts: DropdownOption[]): Filters {
+  withAccounts(
+    accounts: DropdownOption[],
+    accountOptions: DropdownOption[],
+  ): Filters {
+    const oldSelections = {
+      services: this.services,
+      accounts: this.accounts,
+      cloudProviders: this.cloudProviders,
+    }
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.ACCOUNTS,
         accounts,
-        {
-          services: this.services,
-          accounts: this.accounts,
-          cloudProviders: this.cloudProviders,
-        },
+        oldSelections,
+        accountOptions,
       ),
     })
   }
 
-  withCloudProviders(cloudProviders: DropdownOption[]): Filters {
+  withCloudProviders(
+    cloudProviders: DropdownOption[],
+    accountOptions: DropdownOption[],
+  ): Filters {
+    const oldSelections = {
+      services: this.services,
+      accounts: this.accounts,
+      cloudProviders: this.cloudProviders,
+    }
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
         cloudProviders,
-        {
-          services: this.services,
-          accounts: this.accounts,
-          cloudProviders: this.cloudProviders,
-        },
+        oldSelections,
+        accountOptions,
       ),
     })
   }

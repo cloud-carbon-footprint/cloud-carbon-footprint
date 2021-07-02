@@ -118,7 +118,13 @@ fileignoreconfig:
 - filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsBreakdownCard/__snapshots__/EmissionsBreakdownCard.test.tsx.snap
   checksum: 630a3e774c51b071791879024c9bfa2bf0c90ca0fad60880c1b0def82f0728ba
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
-  checksum: 907b0cab109a300d64724250d557e0f896029448bacdccb90b4cda3633568226
+  checksum: b84030c50367b07733f77c5eb15271dbf47c6d2ae2dcca8e3b5f4fcbc4c75821
+- filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/Filters/ServiceFilter/ServiceFilter.test.tsx
+  checksum: daf9bf48ea0160a691a76fccff803bc42f7ba2581173f7d9466304e63368af56
+- filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/Filters.test.ts
+  checksum: 9059d4f41d5a8194747f1adf76f0a6126de819acd3ff0194f51ed4201efbd37d
+- filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/FiltersUtil.test.ts
+  checksum: db7cc8fef58f3688c153687d7b48152c04f699d4f28a9e8b7fa602a7b14a72ce
 - filename: packages/client/src/react-app-env.d.ts
   checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
 - filename: packages/client/src/utils/data/generateEstimations.ts

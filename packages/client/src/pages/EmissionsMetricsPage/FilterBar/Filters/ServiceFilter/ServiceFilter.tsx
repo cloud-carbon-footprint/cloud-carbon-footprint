@@ -3,8 +3,8 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { FilterProps } from '../../utils/Filters'
 import DropdownFilter from '../DropdownFilter'
+import { FilterProps } from '../../utils/Filters'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
@@ -36,7 +36,7 @@ const ServiceFilter: FunctionComponent<FilterProps> = ({
       selections={filters.services}
       selectionToOption={(service: DropdownOption) => service}
       updateSelections={(selections: DropdownOption[]) =>
-        setFilters(filters.withServices(selections))
+        setFilters(filters.withServices(selections, options.accounts))
       }
     />
   )

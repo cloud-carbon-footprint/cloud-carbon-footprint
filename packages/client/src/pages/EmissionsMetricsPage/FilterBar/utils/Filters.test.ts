@@ -111,11 +111,19 @@ describe('Filters', () => {
     computeEngineServiceOption,
   ]
   const options: FilterResultResponse = { accounts: [], services }
+  const accountOptions = [
+    { key: 'all', name: 'All Accounts', cloudProvider: '' },
+    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
+    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+  ]
 
   describe('filter', () => {
     it('should filter just ebs', () => {
       const estimationResults = generateEstimations(moment.utc(), 1)
-      const filters = new Filters().withServices([ebsServiceOption])
+      const filters = new Filters().withServices(
+        [ebsServiceOption],
+        accountOptions,
+      )
 
       const filteredData = filters.filter(estimationResults)
 
@@ -124,10 +132,10 @@ describe('Filters', () => {
 
     it('should ignore services not present in the estimationResults', () => {
       const estimationResults = generateEstimations(moment.utc(), 1, ['s3'])
-      const filters = new Filters().withServices([
-        ebsServiceOption,
-        ec2ServiceOption,
-      ])
+      const filters = new Filters().withServices(
+        [ebsServiceOption, ec2ServiceOption],
+        accountOptions,
+      )
 
       const filteredData = filters.filter(estimationResults)
 
@@ -147,7 +155,7 @@ describe('Filters', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
       const filters = new Filters()
         .withTimeFrame(3)
-        .withServices([ebsServiceOption])
+        .withServices([ebsServiceOption], accountOptions)
 
       const filteredData = filters.filter(estimationResults)
 
@@ -213,7 +221,7 @@ describe('Filters', () => {
     it('should unselect All Services', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([])
+      const newFilters = filters.withServices([], accountOptions)
 
       expect(newFilters.services).toEqual([])
     })
@@ -221,15 +229,18 @@ describe('Filters', () => {
     it('should unselect one service when all services are already selected', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([
-        allServiceOption,
-        S3ServiceOption,
-        ec2ServiceOption,
-        elastiCacheServiceOption,
-        rdsServiceOption,
-        lambdaServiceOption,
-        computeEngineServiceOption,
-      ])
+      const newFilters = filters.withServices(
+        [
+          allServiceOption,
+          S3ServiceOption,
+          ec2ServiceOption,
+          elastiCacheServiceOption,
+          rdsServiceOption,
+          lambdaServiceOption,
+          computeEngineServiceOption,
+        ],
+        accountOptions,
+      )
 
       expect(newFilters.services).toEqual([
         S3ServiceOption,
@@ -245,9 +256,9 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([])
-        .withServices([ebsServiceOption])
-        .withServices([ebsServiceOption, rdsServiceOption])
+        .withServices([], accountOptions)
+        .withServices([ebsServiceOption], accountOptions)
+        .withServices([ebsServiceOption, rdsServiceOption], accountOptions)
 
       expect(newFilters.services).toEqual([ebsServiceOption, rdsServiceOption])
     })
@@ -256,10 +267,10 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([])
-        .withServices([ebsServiceOption])
-        .withServices([ebsServiceOption, rdsServiceOption])
-        .withServices([rdsServiceOption])
+        .withServices([], accountOptions)
+        .withServices([ebsServiceOption], accountOptions)
+        .withServices([ebsServiceOption, rdsServiceOption], accountOptions)
+        .withServices([rdsServiceOption], accountOptions)
 
       expect(newFilters.services).toEqual([rdsServiceOption])
     })
@@ -268,9 +279,9 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([])
-        .withServices([ebsServiceOption])
-        .withServices([ebsServiceOption, allServiceOption])
+        .withServices([], accountOptions)
+        .withServices([ebsServiceOption], accountOptions)
+        .withServices([ebsServiceOption, allServiceOption], accountOptions)
 
       expect(newFilters.services).toEqual([
         allServiceOption,
@@ -288,16 +299,19 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([])
-        .withServices([
-          ebsServiceOption,
-          S3ServiceOption,
-          ec2ServiceOption,
-          elastiCacheServiceOption,
-          rdsServiceOption,
-          lambdaServiceOption,
-          computeEngineServiceOption,
-        ])
+        .withServices([], accountOptions)
+        .withServices(
+          [
+            ebsServiceOption,
+            S3ServiceOption,
+            ec2ServiceOption,
+            elastiCacheServiceOption,
+            rdsServiceOption,
+            lambdaServiceOption,
+            computeEngineServiceOption,
+          ],
+          accountOptions,
+        )
 
       expect(newFilters.services).toEqual([
         allServiceOption,
@@ -382,7 +396,7 @@ describe('Filters', () => {
       })
       expect(filters.accounts).toEqual([mockAccount1])
 
-      const newFilters = filters.withAccounts([])
+      const newFilters = filters.withAccounts([], accountOptions)
       expect(newFilters.accounts).toEqual([])
     })
   })
