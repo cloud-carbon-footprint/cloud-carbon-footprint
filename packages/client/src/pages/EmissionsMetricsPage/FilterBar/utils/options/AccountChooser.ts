@@ -3,9 +3,8 @@
  */
 
 import { pluck } from 'ramda'
-import { DropdownOption } from 'Types'
+import { DropdownOption, FilterOptions } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'
@@ -14,14 +13,14 @@ export class AccountChooser extends OptionChooser {
   constructor(
     selections: DropdownOption[],
     oldSelections: DropdownSelections,
-    accountOptions: DropdownOption[],
+    filterOptions: FilterOptions,
   ) {
     super(
       DropdownFilter.ACCOUNTS,
-      accountOptions,
+      filterOptions.accounts,
       selections,
       oldSelections,
-      accountOptions,
+      filterOptions,
     )
   }
 
@@ -46,7 +45,7 @@ export class AccountChooser extends OptionChooser {
       if (!currentCloudProvider) return
       const cloudProviderKeys = pluck(
         'key',
-        SERVICE_OPTIONS.filter(
+        this.filterOptions.services.filter(
           (service) => service.cloudProvider === currentCloudProvider.key,
         ),
       )
@@ -66,7 +65,9 @@ export class AccountChooser extends OptionChooser {
         cloudProviderKeys.forEach((service) =>
           desiredSelections.add(
             <DropdownOption>(
-              SERVICE_OPTIONS.find((option) => option.key === service)
+              this.filterOptions.services.find(
+                (option) => option.key === service,
+              )
             ),
           ),
         )

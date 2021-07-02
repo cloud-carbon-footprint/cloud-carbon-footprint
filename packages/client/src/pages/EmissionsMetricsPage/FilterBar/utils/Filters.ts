@@ -7,18 +7,22 @@ import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownFilter } from './FiltersUtil'
-import { SERVICE_OPTIONS } from '../Filters/ServiceFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from './DropdownConstants'
-import { FilterResultResponse, UnknownTypes, DropdownOption } from 'Types'
+import {
+  FilterResultResponse,
+  UnknownTypes,
+  DropdownOption,
+  FilterOptions,
+} from 'Types'
 
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
-  options?: { [filterOption: string]: DropdownOption[] }
+  options?: FilterOptions
 }
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
@@ -74,7 +78,7 @@ export class Filters {
 
   withServices(
     services: DropdownOption[],
-    accountOptions: DropdownOption[],
+    filterOptions: FilterOptions,
   ): Filters {
     const oldSelections = {
       services: this.services,
@@ -87,14 +91,14 @@ export class Filters {
         FiltersUtil.DropdownFilter.SERVICES,
         services,
         oldSelections,
-        accountOptions,
+        filterOptions,
       ),
     })
   }
 
   withAccounts(
     accounts: DropdownOption[],
-    accountOptions: DropdownOption[],
+    filterOptions: FilterOptions,
   ): Filters {
     const oldSelections = {
       services: this.services,
@@ -107,14 +111,14 @@ export class Filters {
         FiltersUtil.DropdownFilter.ACCOUNTS,
         accounts,
         oldSelections,
-        accountOptions,
+        filterOptions,
       ),
     })
   }
 
   withCloudProviders(
     cloudProviders: DropdownOption[],
-    accountOptions: DropdownOption[],
+    filterOptions: FilterOptions,
   ): Filters {
     const oldSelections = {
       services: this.services,
@@ -127,7 +131,7 @@ export class Filters {
         FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
         cloudProviders,
         oldSelections,
-        accountOptions,
+        filterOptions,
       ),
     })
   }
@@ -147,10 +151,10 @@ export class Filters {
     }
   }
 
-  serviceLabel(): string {
+  serviceLabel(serviceOptions: DropdownOption[]): string {
     return FiltersUtil.numSelectedLabel(
       this.services.length,
-      SERVICE_OPTIONS.length,
+      serviceOptions.length,
     )
   }
 

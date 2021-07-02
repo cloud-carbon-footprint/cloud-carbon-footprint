@@ -3,7 +3,7 @@
  */
 
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { DropdownOption } from 'Types'
+import { DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
@@ -11,27 +11,26 @@ import {
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from '../DropdownConstants'
-import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilter
   protected readonly allOptions: DropdownOption[]
   protected selections: DropdownOption[]
   protected readonly oldSelections: DropdownSelections
-  protected readonly accountOptions: DropdownOption[]
+  protected readonly filterOptions: FilterOptions
 
   protected constructor(
     filterType: DropdownFilter,
     allOptions: DropdownOption[],
     selections: DropdownOption[],
     oldSelections: DropdownSelections,
-    accountOptions: DropdownOption[],
+    filterOptions: FilterOptions,
   ) {
     this.allOptions = allOptions
     this.filterType = filterType
     this.selections = selections
     this.oldSelections = oldSelections
-    this.accountOptions = accountOptions
+    this.filterOptions = filterOptions
   }
 
   protected abstract chooseProviders(): Set<DropdownOption>
@@ -92,6 +91,7 @@ export abstract class OptionChooser {
     filterType: DropdownFilter,
   ): DropdownOption[] {
     const revisedSelections: DropdownOption[] = Array.from(currentSelections)
+    const { accounts, services } = this.filterOptions
     if (
       filterType === DropdownFilter.CLOUD_PROVIDERS &&
       currentSelections.size === CLOUD_PROVIDER_OPTIONS.length - 1
@@ -100,13 +100,13 @@ export abstract class OptionChooser {
     }
     if (
       filterType === DropdownFilter.ACCOUNTS &&
-      currentSelections.size === this.accountOptions.length - 1
+      currentSelections.size === accounts.length - 1
     ) {
       revisedSelections.unshift(ALL_ACCOUNTS_DROPDOWN_OPTION)
     }
     if (
       filterType === DropdownFilter.SERVICES &&
-      currentSelections.size === SERVICE_OPTIONS.length - 1
+      currentSelections.size === services.length - 1
     ) {
       revisedSelections.unshift(ALL_SERVICES_DROPDOWN_OPTION)
     }

@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from 'Types'
+import { DropdownOption, FilterOptions } from 'Types'
 import createOptionChooser from './options'
 
 export enum DropdownFilter {
@@ -19,13 +19,13 @@ export function handleDropdownSelections(
   filterType: DropdownFilter,
   selections: DropdownOption[],
   oldSelections: DropdownSelections,
-  accountOptions: DropdownOption[],
+  filterOptions: FilterOptions,
 ): DropdownSelections {
   return createOptionChooser(
     filterType,
     selections,
     oldSelections,
-    accountOptions,
+    filterOptions,
   ).choose()
 }
 

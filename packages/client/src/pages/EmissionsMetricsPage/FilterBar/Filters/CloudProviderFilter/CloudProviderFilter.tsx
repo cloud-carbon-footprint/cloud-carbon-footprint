@@ -21,7 +21,7 @@ const CloudProviderFilter: FunctionComponent<FilterProps> = ({
       selections={filters.cloudProviders}
       selectionToOption={(cloudProvider: DropdownOption) => cloudProvider}
       updateSelections={(selections: DropdownOption[]) =>
-        setFilters(filters.withCloudProviders(selections, options.accounts))
+        setFilters(filters.withCloudProviders(selections, options))
       }
     />
   )

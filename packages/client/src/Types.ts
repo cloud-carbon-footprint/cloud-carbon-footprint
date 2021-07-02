@@ -24,6 +24,10 @@ export interface DropdownOption {
   cloudProvider?: string
 }
 
+export interface FilterOptions {
+  [filterOption: string]: DropdownOption[]
+}
+
 export interface FilterResultResponse {
   accounts: DropdownOption[]
   services: DropdownOption[]

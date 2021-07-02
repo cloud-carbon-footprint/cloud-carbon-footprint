@@ -9,7 +9,7 @@ import React, {
   SetStateAction,
 } from 'react'
 import { Grid } from '@material-ui/core'
-import { DropdownOption, FilterResultResponse } from 'Types'
+import { DropdownOption, FilterOptions, FilterResultResponse } from 'Types'
 import {
   AccountFilter,
   CloudProviderFilter,
@@ -21,6 +21,7 @@ import useStyles from './filterBarStyles'
 import { Filters } from './utils/Filters'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
+  ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
 } from './utils/DropdownConstants'
 
@@ -35,19 +36,29 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
   setFilters,
   filteredDataResults,
 }): ReactElement => {
-  const allAccountDropdownOptions = buildAndOrderDropdownOptions(
-    filteredDataResults?.accounts,
-    [{ cloudProvider: '', key: 'string', name: 'string' }],
-  )
-  const accountOptions: DropdownOption[] = [
-    ALL_ACCOUNTS_DROPDOWN_OPTION,
-    ...allAccountDropdownOptions,
-  ]
+  const getFilterOptions = (): FilterOptions => {
+    const allAccountDropdownOptions = buildAndOrderDropdownOptions(
+      filteredDataResults?.accounts,
+      [{ cloudProvider: '', key: 'string', name: 'string' }],
+    )
+    const accountOptions: DropdownOption[] = [
+      ALL_ACCOUNTS_DROPDOWN_OPTION,
+      ...allAccountDropdownOptions,
+    ]
 
-  const filterOptions = {
-    accounts: accountOptions,
-    services: filteredDataResults.services,
+    const allServiceDropdownOptions = buildAndOrderDropdownOptions(
+      filteredDataResults?.services,
+      [{ key: '', name: '' }],
+    )
+    const serviceOptions: DropdownOption[] = [
+      ALL_SERVICES_DROPDOWN_OPTION,
+      ...allServiceDropdownOptions,
+    ]
+
+    return { accounts: accountOptions, services: serviceOptions }
   }
+
+  const filterOptions = getFilterOptions()
 
   const classes = useStyles()
 

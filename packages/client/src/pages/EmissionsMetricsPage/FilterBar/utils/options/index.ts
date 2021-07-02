@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from 'Types'
+import { DropdownOption, FilterOptions } from 'Types'
 import { OptionChooser } from './OptionChooser'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { CloudProviderChooser } from './CloudProviderChooser'
@@ -13,14 +13,14 @@ export default function createOptionChooser(
   filterType: DropdownFilter,
   selections: DropdownOption[],
   oldSelections: DropdownSelections,
-  accountOptions: DropdownOption[],
+  filterOptions: FilterOptions,
 ): OptionChooser {
   switch (filterType) {
     case DropdownFilter.CLOUD_PROVIDERS:
-      return new CloudProviderChooser(selections, oldSelections, accountOptions)
+      return new CloudProviderChooser(selections, oldSelections, filterOptions)
     case DropdownFilter.ACCOUNTS:
-      return new AccountChooser(selections, oldSelections, accountOptions)
+      return new AccountChooser(selections, oldSelections, filterOptions)
     case DropdownFilter.SERVICES:
-      return new ServiceChooser(selections, oldSelections, accountOptions)
+      return new ServiceChooser(selections, oldSelections, filterOptions)
   }
 }

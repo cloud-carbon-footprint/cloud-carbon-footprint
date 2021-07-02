@@ -7,7 +7,11 @@ import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
 import { Filters, filtersConfigGenerator } from '../../utils/Filters'
-import { FilterResultResponse } from 'Types'
+import { DropdownOption, FilterOptions } from 'Types'
+import {
+  ALL_SERVICES_DROPDOWN_OPTION,
+  buildAndOrderDropdownOptions,
+} from '../../utils/DropdownConstants'
 
 jest.mock('ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
@@ -54,21 +58,32 @@ describe('ServiceFilter', () => {
     lambdaServiceOption,
     computeEngineServiceOption,
   ]
-  const options: FilterResultResponse = { accounts: [], services }
-  const accountOptions = [
-    { key: 'all', name: 'All Accounts', cloudProvider: '' },
-    { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
-    { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+  const filteredDataResults = { accounts: [], services }
+  // Builds the service options the same way as FilterBar
+  const allServiceDropdownOptions = buildAndOrderDropdownOptions(services, [
+    { key: '', name: '' },
+  ])
+  const serviceOptions: DropdownOption[] = [
+    ALL_SERVICES_DROPDOWN_OPTION,
+    ...allServiceDropdownOptions,
   ]
+  const filterOptions: FilterOptions = {
+    accounts: [
+      { key: 'all', name: 'All Accounts', cloudProvider: '' },
+      { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
+      { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+    ],
+    services: serviceOptions,
+  }
 
   beforeEach(() => {
     mockSetFilters = jest.fn()
-    filters = new Filters(filtersConfigGenerator(options))
+    filters = new Filters(filtersConfigGenerator(filteredDataResults))
     page = render(
       <ServiceFilter
         filters={filters}
         setFilters={mockSetFilters}
-        options={options}
+        options={filterOptions}
       />,
     )
   })
@@ -100,14 +115,14 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-all'))
     })
 
-    const newFilters = filters.withServices([], accountOptions)
+    const newFilters = filters.withServices([], filterOptions)
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(
       <ServiceFilter
         filters={newFilters}
         setFilters={mockSetFilters}
-        options={options}
+        options={filterOptions}
       />,
     )
 
@@ -140,7 +155,7 @@ describe('ServiceFilter', () => {
         S3ServiceOption,
         computeEngineServiceOption,
       ],
-      accountOptions,
+      filterOptions,
     )
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
@@ -148,7 +163,7 @@ describe('ServiceFilter', () => {
       <ServiceFilter
         filters={newFilters}
         setFilters={mockSetFilters}
-        options={options}
+        options={filterOptions}
       />,
     )
 
@@ -181,14 +196,14 @@ describe('ServiceFilter', () => {
         rdsServiceOption,
         S3ServiceOption,
       ],
-      accountOptions,
+      filterOptions,
     )
 
     page.rerender(
       <ServiceFilter
         filters={someAwsFilters}
         setFilters={mockSetFilters}
-        options={options}
+        options={filterOptions}
       />,
     )
 
