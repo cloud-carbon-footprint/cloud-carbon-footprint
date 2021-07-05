@@ -83,7 +83,7 @@
     "@testing-library/user-event": "^13.1.9",
     "@types/jest": "^26.0.23",
     "@types/mockdate": "^3.0.0",
-    "@types/node": "^15.12.4",
+    "@types/node": "^16.0.0",
     "@types/ramda": "^0.27.40",
     "@types/react": "^17.0.6",
     "@types/react-dates": "^21.8.2",

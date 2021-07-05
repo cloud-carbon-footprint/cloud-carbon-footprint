@@ -53,7 +53,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",
-    "@types/node": "^15.12.4",
+    "@types/node": "^16.0.0",
     "@types/source-map-support": "^0.5.3",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
