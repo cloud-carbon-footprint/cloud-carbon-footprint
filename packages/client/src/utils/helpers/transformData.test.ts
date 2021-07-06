@@ -5,8 +5,9 @@
 import { renderHook } from '@testing-library/react-hooks'
 import {
   mockData,
-  mockDataWithUnknowns,
+  mockDataWithUnknownsAWS,
   mockDataWithHigherPrecision,
+  mockDataWithUnknownsGCP,
 } from '../data'
 import {
   sumCO2,
@@ -52,37 +53,53 @@ describe('transformData', () => {
   })
 
   it('handles data with null account names', () => {
-    const expected = {
+    const expectedAWS = {
       [testAccountA]: ['AWS', 6],
-      [testAccountB]: ['GCP', 6],
-      'Unknown Account - GCP': ['GCP', 6],
-      'Unknown Account - AWS': ['AWS', 6],
+      'Unknown Account': ['AWS', 6],
     }
-    expect(sumCO2ByServiceOrRegion(mockDataWithUnknowns, 'account')).toEqual(
-      expected,
+    const expectedGCP = {
+      [testAccountB]: ['GCP', 6],
+      'Unknown Account': ['GCP', 6],
+    }
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknownsAWS, 'account')).toEqual(
+      expectedAWS,
+    )
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknownsGCP, 'account')).toEqual(
+      expectedGCP,
     )
   })
 
   it('handles data with null service names', () => {
-    const expected = {
-      ebs: ['GCP', 6],
+    const expectedAWS = {
       ec2: ['AWS', 6],
-      'Unknown Service - GCP': ['GCP', 6],
-      'Unknown Service - AWS': ['AWS', 6],
+      'Unknown Service': ['AWS', 6],
     }
-    expect(sumCO2ByServiceOrRegion(mockDataWithUnknowns, 'service')).toEqual(
-      expected,
+    const expectedGCP = {
+      ebs: ['GCP', 6],
+      'Unknown Service': ['GCP', 6],
+    }
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknownsAWS, 'service')).toEqual(
+      expectedAWS,
+    )
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknownsGCP, 'service')).toEqual(
+      expectedGCP,
     )
   })
 
   it('handles data with unknown regions', () => {
-    const expected = {
-      'us-east-1': ['AWS', 12],
-      'Unknown Region - GCP': ['GCP', 6],
-      'Unknown Region - AWS': ['AWS', 6],
+    const expectedAWS = {
+      'us-east-1': ['AWS', 6],
+      'Unknown Region': ['AWS', 6],
     }
-    expect(sumCO2ByServiceOrRegion(mockDataWithUnknowns, 'region')).toEqual(
-      expected,
+    const expectedGCP = {
+      'us-east-1': ['GCP', 6],
+      'Unknown Region': ['GCP', 6],
+    }
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknownsAWS, 'region')).toEqual(
+      expectedAWS,
+    )
+    expect(sumCO2ByServiceOrRegion(mockDataWithUnknownsGCP, 'region')).toEqual(
+      expectedGCP,
     )
   })
 })

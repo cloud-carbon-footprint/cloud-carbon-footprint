@@ -85,7 +85,7 @@ const mockData: EstimationResult[] = [
   },
 ]
 
-const mockDataWithUnknowns: EstimationResultWithUnknowns[] = [
+const mockDataWithUnknownsAWS: EstimationResultWithUnknowns[] = [
   {
     timestamp: date1,
     serviceEstimates: [
@@ -101,18 +101,21 @@ const mockDataWithUnknowns: EstimationResultWithUnknowns[] = [
         accountName: testAccountA,
       },
       {
-        serviceName: 'ebs',
+        serviceName: 'ec2',
         kilowattHours: 7,
         co2e: 6,
         cost: 5,
         region: 'us-east-1',
         usesAverageCPUConstant: true,
-        cloudProvider: 'GCP',
+        cloudProvider: 'AWS',
         accountId: null,
         accountName: null,
       },
     ],
   },
+]
+
+const mockDataWithUnknownsGCP: EstimationResultWithUnknowns[] = [
   {
     timestamp: date2,
     serviceEstimates: [
@@ -128,13 +131,13 @@ const mockDataWithUnknowns: EstimationResultWithUnknowns[] = [
         accountName: testAccountB,
       },
       {
-        serviceName: 'ec2',
+        serviceName: 'ebs',
         kilowattHours: 7,
         co2e: 6,
         cost: 5,
         region: 'us-east-1',
         usesAverageCPUConstant: true,
-        cloudProvider: 'AWS',
+        cloudProvider: 'GCP',
         accountId: null,
         accountName: null,
       },
@@ -199,4 +202,9 @@ const mockDataWithHigherPrecision: EstimationResult[] = [
   },
 ]
 
-export { mockData, mockDataWithUnknowns, mockDataWithHigherPrecision }
+export {
+  mockData,
+  mockDataWithUnknownsAWS,
+  mockDataWithUnknownsGCP,
+  mockDataWithHigherPrecision,
+}

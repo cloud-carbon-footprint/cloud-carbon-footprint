@@ -5,6 +5,7 @@
 export { fakeEmissionFactors, generateEstimations } from './generateEstimations'
 export {
   mockData,
-  mockDataWithUnknowns,
+  mockDataWithUnknownsAWS,
+  mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
 } from './mockData'

@@ -86,16 +86,16 @@ const getPropertyFromDataType = (
 
 const checkUnknownTypes = (dataType: string, value: ServiceData) => {
   if (dataType === ChartDataTypes.ACCOUNT && value.accountName === null)
-    value.accountName = `${UnknownTypes.UNKNOWN_ACCOUNT} - ${value.cloudProvider}`
+    value.accountName = `${UnknownTypes.UNKNOWN_ACCOUNT}`
 
   if (dataType === ChartDataTypes.SERVICE && value.serviceName === null)
-    value.serviceName = `${UnknownTypes.UNKNOWN_SERVICE} - ${value.cloudProvider}`
+    value.serviceName = `${UnknownTypes.UNKNOWN_SERVICE}`
 
   if (
     dataType === ChartDataTypes.REGION &&
     value.region.toLowerCase() === 'unknown'
   )
-    value.region = `${UnknownTypes.UNKNOWN_REGION} - ${value.cloudProvider}`
+    value.region = `${UnknownTypes.UNKNOWN_REGION}`
 }
 
 const sumCO2ByServiceOrRegion = (
