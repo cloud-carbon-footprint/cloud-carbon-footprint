@@ -2,17 +2,16 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { useEffect, useState } from 'react'
+import { pluck, uniq } from 'ramda'
 import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
-
 import {
   cloudEstPerDay,
   ChartDataTypes,
   FilterResultResponse,
+  DropdownOption,
   UnknownTypes,
 } from '../../Types'
-import { pluck, uniq } from 'ramda'
-import { useEffect, useState } from 'react'
-import { DropdownOption } from '../../pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
 
 const sumServiceTotals = (
   data: EstimationResult[],
@@ -87,16 +86,16 @@ const getPropertyFromDataType = (
 
 const checkUnknownTypes = (dataType: string, value: ServiceData) => {
   if (dataType === ChartDataTypes.ACCOUNT && value.accountName === null)
-    value.accountName = `${UnknownTypes.UNKNOWN_ACCOUNT} - ${value.cloudProvider}`
+    value.accountName = `${UnknownTypes.UNKNOWN_ACCOUNT}`
 
   if (dataType === ChartDataTypes.SERVICE && value.serviceName === null)
-    value.serviceName = `${UnknownTypes.UNKNOWN_SERVICE} - ${value.cloudProvider}`
+    value.serviceName = `${UnknownTypes.UNKNOWN_SERVICE}`
 
   if (
     dataType === ChartDataTypes.REGION &&
     value.region.toLowerCase() === 'unknown'
   )
-    value.region = `${UnknownTypes.UNKNOWN_REGION} - ${value.cloudProvider}`
+    value.region = `${UnknownTypes.UNKNOWN_REGION}`
 }
 
 const sumCO2ByServiceOrRegion = (
@@ -151,22 +150,14 @@ const useFilterDataFromEstimates = (
       const { cloudProvider, accountName, serviceName } = estimate
       accountNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: accountName
-          ? accountName
-          : `${UnknownTypes.UNKNOWN_ACCOUNT} - ${cloudProvider}`,
-        name: accountName
-          ? accountName
-          : `${UnknownTypes.UNKNOWN_ACCOUNT} - ${cloudProvider}`,
+        key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+        name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
       })
 
       serviceNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: serviceName
-          ? serviceName
-          : `${UnknownTypes.UNKNOWN_SERVICE} - ${cloudProvider}`,
-        name: serviceName
-          ? serviceName
-          : `${UnknownTypes.UNKNOWN_SERVICE} - ${cloudProvider}`,
+        key: serviceName ? serviceName : `${UnknownTypes.UNKNOWN_SERVICE}`,
+        name: serviceName ? serviceName : `${UnknownTypes.UNKNOWN_SERVICE}`,
       })
     })
     setFilterResultResponse({

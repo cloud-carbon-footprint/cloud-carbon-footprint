@@ -1,7 +1,8 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import { DropdownOption } from './pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter'
+
+import React from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {
@@ -17,10 +18,29 @@ export interface cloudEstPerDay {
   cost?: number
 }
 
-export enum ChartDataTypes {
-  REGION = 'region',
-  SERVICE = 'service',
-  ACCOUNT = 'account',
+export interface DropdownOption {
+  key: string
+  name: string
+  cloudProvider?: string
+}
+
+export interface FilterOptions {
+  [filterOption: string]: DropdownOption[]
+}
+
+export interface FilterResultResponse {
+  accounts: DropdownOption[]
+  services: DropdownOption[]
+}
+
+export interface Page<T> {
+  data: T[]
+  page: number
+}
+
+export interface PageEntry {
+  x: string[]
+  y: number
 }
 
 export type ApexChartProps = {
@@ -28,9 +48,28 @@ export type ApexChartProps = {
   dataType?: string
 }
 
-export interface FilterResultResponse {
-  accounts: DropdownOption[]
-  services: DropdownOption[]
+export type DateRange = {
+  min: Date | null
+  max: Date | null
+}
+
+export type Source = {
+  href: string
+  title: string
+}
+
+export type ComparisonItem = {
+  icon: React.ReactNode
+  total: number
+  textOne: string
+  textTwo: string
+  source: Source
+}
+
+export enum ChartDataTypes {
+  REGION = 'region',
+  SERVICE = 'service',
+  ACCOUNT = 'account',
 }
 
 export enum UnknownTypes {
@@ -39,7 +78,7 @@ export enum UnknownTypes {
   UNKNOWN_ACCOUNT = 'Unknown Account',
 }
 
-export const chartBarCustomColors: string[] = [
+export const barChartCustomColors: string[] = [
   '#73B500',
   '#00791E',
   '#D99200',

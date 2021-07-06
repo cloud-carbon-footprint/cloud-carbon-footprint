@@ -179,6 +179,8 @@ fileignoreconfig:
   checksum: b4619da2416bd6931676e6d2cdda49ea1ee3f71e867ffe3c879f25689c1c72cf
 - filename: packages/create-app/templates/default-app/packages/client/src/react-app-env.d.ts
   checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6
+- filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
+  checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
   checksum: 9e02b7704ea5ec465151f5691cf1f9ed25a489a22dd9d2923d334bb45125e470
 - filename: packages/gcp/src/lib/ReplicationFactors.ts
