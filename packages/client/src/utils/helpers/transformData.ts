@@ -150,22 +150,14 @@ const useFilterDataFromEstimates = (
       const { cloudProvider, accountName, serviceName } = estimate
       accountNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: accountName
-          ? accountName
-          : `${UnknownTypes.UNKNOWN_ACCOUNT} - ${cloudProvider}`,
-        name: accountName
-          ? accountName
-          : `${UnknownTypes.UNKNOWN_ACCOUNT} - ${cloudProvider}`,
+        key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+        name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
       })
 
       serviceNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
-        key: serviceName
-          ? serviceName
-          : `${UnknownTypes.UNKNOWN_SERVICE} - ${cloudProvider}`,
-        name: serviceName
-          ? serviceName
-          : `${UnknownTypes.UNKNOWN_SERVICE} - ${cloudProvider}`,
+        key: serviceName ? serviceName : `${UnknownTypes.UNKNOWN_SERVICE}`,
+        name: serviceName ? serviceName : `${UnknownTypes.UNKNOWN_SERVICE}`,
       })
     })
     setFilterResultResponse({
