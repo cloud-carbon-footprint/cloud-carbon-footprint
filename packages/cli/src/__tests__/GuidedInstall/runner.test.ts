@@ -78,8 +78,8 @@ describe('GuidedInstall', () => {
       await GuidedInstall()
 
       const expectedEnv = {
-        GCP_BILLING_ACCOUNT_ID: 'account id',
-        GCP_BILLING_ACCOUNT_NAME: 'account name',
+        GCP_BILLING_PROJECT_ID: 'account id',
+        GCP_BILLING_PROJECT_NAME: 'account name',
         GCP_BIG_QUERY_TABLE: 'BIG table',
         GCP_USE_BILLING_DATA: 'true',
         GOOGLE_APPLICATION_CREDENTIALS: 'private key file path',

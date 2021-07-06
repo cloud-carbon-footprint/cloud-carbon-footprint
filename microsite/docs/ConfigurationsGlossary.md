@@ -52,8 +52,8 @@ title: Configurations Glossary
 | GCP_USE_BILLING_DATA           | true                           | boolean | Use this to configure the application to query Billing Export Data via Google BigQuery. Unset to make this false. Defaults to true.                                                                     |
 | GOOGLE_APPLICATION_CREDENTIALS | /path/to/your/credentials.json | string  | The absolute path to your service account private key file. This service account needs to have permission to query Billing Data using BigQuery.                                                         |
 | GCP_BIG_QUERY_TABLE            | project.dataset.BQ_table_name  | string  | The name of your BigQuery table configured to consume Billing Export data. See [here](https://cloud.google.com/billing/docs/how-to/bq-examples) for details on how to specify your BigQuery Table Name. |
-| GCP_BILLING_ACCOUNT_ID         | your-project-id                | string  | The GCP Project ID that your service account exists in that has permission to query Billing Data using BigQuery.                                                                                        |
-| GCP_BILLING_ACCOUNT_NAME       | your-project-name              | string  | The name for the GCP Project specified in the previous variable.                                                                                                                                        |
+| GCP_BILLING_PROJECT_ID         | your-project-id                | string  | The GCP Project ID that your service account exists in that has permission to query Billing Data using BigQuery.                                                                                        |
+| GCP_BILLING_PROJECT_NAME       | your-project-name              | string  | The name for the GCP Project specified in the previous variable.                                                                                                                                        |
 
 <br/>
 
@@ -80,7 +80,7 @@ title: Configurations Glossary
 
 | Variable        | Example Value | Type   | Notes                                                                                                                                                                                                                                                 |
 | --------------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AZURE_AUTH_MODE | default       | string | The authentication mode for Azure. Options are: 'GCP' that gets the secrets from Google Secrets Manager, 'default' which using the client id/secret and tent id from your .env file. Requires GCP_BILLING_ACCOUNT_NAME to be set if using 'GCP' Mode. |
+| AZURE_AUTH_MODE | default       | string | The authentication mode for Azure. Options are: 'GCP' that gets the secrets from Google Secrets Manager, 'default' which using the client id/secret and tent id from your .env file. Requires GCP_BILLING_PROJECT_NAME to be set if using 'GCP' Mode. |
 
 <br/>
 

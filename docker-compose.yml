@@ -1,10 +1,10 @@
-version: "3.9"
+version: '3.9'
 
 services:
   client:
     image: cloudcarbonfootprint/client:latest
     ports:
-      - "80:80"
+      - '80:80'
     volumes:
       - ./docker/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
@@ -12,7 +12,7 @@ services:
   api:
     image: docker.io/cloudcarbonfootprint/api:latest
     ports:
-      - "4000:4000"
+      - '4000:4000'
     volumes:
       - $HOME/.aws/credentials:/root/.aws/credentials
       - $HOME/.config/gcloud/service-account-keys.json:/root/.config/gcloud/service-account-keys.json
@@ -25,8 +25,8 @@ services:
       - AWS_BILLING_ACCOUNT_ID
       - AWS_BILLING_ACCOUNT_NAME
       - GCP_BIG_QUERY_TABLE
-      - GCP_BILLING_ACCOUNT_ID
-      - GCP_BILLING_ACCOUNT_NAME
+      - GCP_BILLING_PROJECT_ID
+      - GCP_BILLING_PROJECT_NAME
       - AZURE_CLIENT_ID
       - AZURE_CLIENT_SECRET
       - AZURE_TENANT_ID
@@ -42,8 +42,8 @@ services:
       - GCP_USE_BILLING_DATA=true
       - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/service-account-keys.json
       - GCP_BIG_QUERY_TABLE=/run/secrets/GOOGLE_APPLICATION_CREDENTIALS
-      - GCP_BILLING_ACCOUNT_ID=/run/secrets/GCP_BIG_QUERY_TABLE
-      - GCP_BILLING_ACCOUNT_NAME=/run/secrets/GCP_BILLING_ACCOUNT_ID
+      - GCP_BILLING_PROJECT_ID=/run/secrets/GCP_BIG_QUERY_TABLE
+      - GCP_BILLING_PROJECT_NAME=/run/secrets/GCP_BILLING_PROJECT_ID
       - AZURE_USE_BILLING_DATA=true
       - AZURE_CLIENT_ID=/run/secrets/AZURE_CLIENT_ID
       - AZURE_CLIENT_SECRET=/run/secrets/AZURE_CLIENT_SECRET
@@ -66,10 +66,10 @@ secrets:
     file: ~/.docker/secrets/AWS_BILLING_ACCOUNT_NAME
   GCP_BIG_QUERY_TABLE:
     file: ~/.docker/secrets/GCP_BIG_QUERY_TABLE
-  GCP_BILLING_ACCOUNT_ID:
-    file: ~/.docker/secrets/GCP_BILLING_ACCOUNT_ID
-  GCP_BILLING_ACCOUNT_NAME:
-    file: ~/.docker/secrets/GCP_BILLING_ACCOUNT_NAME
+  GCP_BILLING_PROJECT_ID:
+    file: ~/.docker/secrets/GCP_BILLING_PROJECT_ID
+  GCP_BILLING_PROJECT_NAME:
+    file: ~/.docker/secrets/GCP_BILLING_PROJECT_NAME
   AZURE_CLIENT_ID:
     file: ~/.docker/secrets/AZURE_CLIENT_ID
   AZURE_CLIENT_SECRET:

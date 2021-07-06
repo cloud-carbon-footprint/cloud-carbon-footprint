@@ -25,8 +25,8 @@ export async function GCPSetup(): Promise<EnvConfig> {
     'Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here](https://cloud.google.com/billing/docs/how-to/export-data-bigquery).',
   )
 
-  env.GCP_BILLING_ACCOUNT_ID = await inputPrompt('Enter GCP Project ID:')
-  env.GCP_BILLING_ACCOUNT_NAME = await inputPrompt('Enter GCP Project Name:')
+  env.GCP_BILLING_PROJECT_ID = await inputPrompt('Enter GCP Project ID:')
+  env.GCP_BILLING_PROJECT_NAME = await inputPrompt('Enter GCP Project Name:')
   env.GCP_BIG_QUERY_TABLE = await inputPrompt('Enter BigQuery table name:')
 
   return env

@@ -66,11 +66,11 @@ fileignoreconfig:
 - filename: package.json
   checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
 - filename: packages/api/.env.template
-  checksum: 2a03efd7fb6bc41198140df6cc1632fcb6b713d0b24a5abb14158286b420bdba
+  checksum: 3a380b3fb5f198b9886b6b1b208025b8c3981fb92e5b3d65491c90268b84d92e
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
-  checksum: 659170eb0cdaa9d06f8aeeddf76b5c2b4fb223642ee192ce6d0863b165838fad
+  checksum: 5a22dd027d74487e0ea89b67e4a7bfdac69db9c0533eaaac6349716cf974852b
 - filename: packages/api/estimates.cache-uscs.json
   checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
@@ -88,7 +88,7 @@ fileignoreconfig:
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template
-  checksum: 0f4239a7fcc646ee10374b1b69ddc413178663ea050610b95c91f15a677d41d9
+  checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
 - filename: packages/client/create_client_env_file.sh
   checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
 - filename: packages/client/src/common/SelectDropdown/SelectDropdown.tsx
@@ -165,6 +165,10 @@ fileignoreconfig:
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
 - filename: packages/core/src/services/gcp/BillingExportTable.ts
   checksum: 39e68fa8eeb0706e881d900f8cf69d9859131b087b1555a51015faded40f6504
+- filename: packages/create-app/templates/default-app/packages/api/.env.template
+  checksum: 8e43d5762bac88981cadb25efc990af9869b3a0a9532968f9eb4da4865ee5936
+- filename: packages/create-app/templates/default-app/packages/cli/.env.template
+  checksum: e2b528c1b774302df3a351d3836fe632a8cb12f89706d9a8c24ace558b5191a7
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/aws.ts
   checksum: 402853f10d9ee56006cea9b63d6ec8d34d6eed506addf89d048d3072069d9f7b
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/azure.ts

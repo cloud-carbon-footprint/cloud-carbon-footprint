@@ -156,8 +156,8 @@ const appConfig: CCFConfig = {
       !!process.env.GCP_USE_BILLING_DATA &&
       process.env.GCP_USE_BILLING_DATA !== 'false',
     BIG_QUERY_TABLE: getEnvVar('GCP_BIG_QUERY_TABLE') || '',
-    BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_ACCOUNT_ID') || '',
-    BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_ACCOUNT_NAME') || '',
+    BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_PROJECT_ID') || '',
+    BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_PROJECT_NAME') || '',
     CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
   },
   AZURE: {
