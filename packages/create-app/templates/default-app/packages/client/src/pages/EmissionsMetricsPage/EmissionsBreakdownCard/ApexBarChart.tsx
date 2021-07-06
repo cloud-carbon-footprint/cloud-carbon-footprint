@@ -8,8 +8,7 @@ import Chart from 'react-apexcharts'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
 import { sumCO2ByServiceOrRegion } from '../../../utils/helpers'
-import { ApexChartProps } from '../../../Types'
-import { chartBarCustomColors } from '../../../Types'
+import { ApexChartProps, barChartCustomColors } from '../../../Types'
 import Pagination, { Page } from './Pagination'
 import CarbonIntensityRange from './CarbonIntensityRange'
 import NoDataMessage from '../../../common/NoDataMessage'
@@ -214,7 +213,7 @@ export const ApexBarChart: FunctionComponent<ApexChartProps> = ({
             <CarbonIntensityRange
               startLabel="Low carbon intensity"
               endLabel="High carbon intensity"
-              colorRange={chartBarCustomColors}
+              colorRange={barChartCustomColors}
             />
           )}
           <Chart
@@ -246,7 +245,7 @@ export const createCustomBarColors = (
   const regionColorsMap: string[] = []
   pageData.data.forEach((region) => {
     const currentRegion = region.x[0]
-    let color = chartBarCustomColors[0]
+    let color = barChartCustomColors[0]
     const regionEmissionData = emissionsData.find(
       (item) => item.region === currentRegion,
     ) as EmissionRatioResult
@@ -255,15 +254,15 @@ export const createCustomBarColors = (
     } else {
       const { mtPerKwHour } = regionEmissionData
       if (mtPerKwHour >= 0.00064) {
-        color = chartBarCustomColors[4]
+        color = barChartCustomColors[4]
       } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
-        color = chartBarCustomColors[3]
+        color = barChartCustomColors[3]
       } else if (mtPerKwHour >= 0.00032 && mtPerKwHour < 0.00048) {
-        color = chartBarCustomColors[2]
+        color = barChartCustomColors[2]
       } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
-        color = chartBarCustomColors[1]
+        color = barChartCustomColors[1]
       } else {
-        color = chartBarCustomColors[0]
+        color = barChartCustomColors[0]
       }
       regionColorsMap.push(color)
     }
