@@ -1,6 +1,8 @@
 fileignoreconfig:
 - filename: .changeset/nice-timers-repair.md
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
+- filename: .changeset/poor-keys-double.md
+  checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
 - filename: .circleci/config.yml
