@@ -1,12 +1,14 @@
 /*
  * © 2021 ThoughtWorks, Inc.
  */
-import moment from 'moment'
 import {
   EC2ResourceDetails,
   RightsizingRecommendation as AwsRightsizingRecommendation,
 } from 'aws-sdk/clients/costexplorer'
+import { containsAny, getHoursInMonth } from '@cloud-carbon-footprint/common'
 import { AWS_REGIONS } from '../AWSRegions'
+import { BURSTABLE_INSTANCE_BASELINE_UTILIZATION } from '../AWSInstanceTypes'
+import { AWS_CLOUD_CONSTANTS } from '../../domain'
 
 export default class RightsizingRecommendation {
   public accountId: string
@@ -23,8 +25,23 @@ export default class RightsizingRecommendation {
   }
 
   public getVCpuHours(resourceDetails: EC2ResourceDetails): number {
+    if (
+      containsAny(
+        Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION),
+        resourceDetails.InstanceType,
+      )
+    ) {
+      return (
+        ((parseFloat(resourceDetails.Vcpu) *
+          BURSTABLE_INSTANCE_BASELINE_UTILIZATION[
+            resourceDetails.InstanceType
+          ]) /
+          AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020) *
+        getHoursInMonth()
+      )
+    }
     // Multiply the number of virtual CPUS by the hours in a month
-    return parseFloat(resourceDetails.Vcpu) * moment().utc().daysInMonth() * 24
+    return parseFloat(resourceDetails.Vcpu) * getHoursInMonth()
   }
 
   public getMappedRegion(region: string): string {

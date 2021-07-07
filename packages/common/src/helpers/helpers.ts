@@ -2,6 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import moment from 'moment'
+
 export const containsAny = (
   substrings: string[],
   stringToSearch: string,
@@ -19,4 +21,8 @@ export const wait = async (ms: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
   })
+}
+
+export const getHoursInMonth = (): number => {
+  return moment().utc().daysInMonth() * 24
 }

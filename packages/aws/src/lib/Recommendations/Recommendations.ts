@@ -19,6 +19,7 @@ import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
 import RightsizingTargetRecommendation from './RightsizingTargetRecommendation'
+import RightsizingRecommendation from './RightsizingRecommendation'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -51,15 +52,8 @@ export default class Recommendations implements ICloudRecommendationsService {
         const rightsizingCurrentRecommendation =
           new RightsizingCurrentRecommendation(recommendation)
 
-        const currentComputeFootprint = new AWSComputeEstimatesBuilder(
-          rightsizingCurrentRecommendation,
-          this.computeEstimator,
-        ).computeFootprint
-
-        const currentMemoryFootprint = new AWSMemoryEstimatesBuilder(
-          rightsizingCurrentRecommendation,
-          this.memoryEstimator,
-        ).memoryFootprint
+        const [currentComputeFootprint, currentMemoryFootprint] =
+          this.getFootprintEstimates(rightsizingCurrentRecommendation)
 
         let kilowattHourSavings = currentComputeFootprint.kilowattHours
         let co2eSavings = currentComputeFootprint.co2e
@@ -76,15 +70,8 @@ export default class Recommendations implements ICloudRecommendationsService {
           const rightsizingTargetRecommendation =
             new RightsizingTargetRecommendation(recommendation)
 
-          const targetComputeFootprint = new AWSComputeEstimatesBuilder(
-            rightsizingTargetRecommendation,
-            this.computeEstimator,
-          ).computeFootprint
-
-          const targetMemoryFootprint = new AWSMemoryEstimatesBuilder(
-            rightsizingTargetRecommendation,
-            this.memoryEstimator,
-          ).memoryFootprint
+          const [targetComputeFootprint, targetMemoryFootprint] =
+            this.getFootprintEstimates(rightsizingTargetRecommendation)
 
           kilowattHourSavings -= targetComputeFootprint.kilowattHours
           co2eSavings -= targetComputeFootprint.co2e
@@ -98,21 +85,36 @@ export default class Recommendations implements ICloudRecommendationsService {
         }
 
         // if there are no potential savings, do not include recommendation object
-        co2eSavings !== 0 &&
-          recommendationsResult.push({
-            cloudProvider: 'AWS',
-            accountId: rightsizingCurrentRecommendation.accountId,
-            accountName: rightsizingCurrentRecommendation.accountId,
-            region: rightsizingCurrentRecommendation.region,
-            recommendationType: rightsizingCurrentRecommendation.type,
-            recommendationDetail,
-            kilowattHourSavings,
-            co2eSavings,
-            costSavings,
-          })
+        recommendationsResult.push({
+          cloudProvider: 'AWS',
+          accountId: rightsizingCurrentRecommendation.accountId,
+          accountName: rightsizingCurrentRecommendation.accountId,
+          region: rightsizingCurrentRecommendation.region,
+          recommendationType: rightsizingCurrentRecommendation.type,
+          recommendationDetail,
+          kilowattHourSavings,
+          co2eSavings,
+          costSavings,
+        })
       },
     )
     return recommendationsResult
+  }
+
+  private getFootprintEstimates(
+    rightsizingRecommendation: RightsizingRecommendation,
+  ) {
+    const computeFootprint = new AWSComputeEstimatesBuilder(
+      rightsizingRecommendation,
+      this.computeEstimator,
+    ).computeFootprint
+
+    const memoryFootprint = new AWSMemoryEstimatesBuilder(
+      rightsizingRecommendation,
+      this.memoryEstimator,
+    ).memoryFootprint
+
+    return [computeFootprint, memoryFootprint]
   }
 
   private getTargetInstance(

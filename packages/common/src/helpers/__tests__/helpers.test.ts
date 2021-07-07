@@ -2,9 +2,12 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { containsAny, endsWithAny, wait } from '../helpers'
+import { containsAny, endsWithAny, getHoursInMonth, wait } from '../helpers'
 
 jest.useFakeTimers()
+jest.mock('moment', () => {
+  return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
+})
 
 describe('Helpers', () => {
   it('contains any', () => {
@@ -39,5 +42,11 @@ describe('Helpers', () => {
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), waitTime)
+  })
+
+  it('converts days in a month to hours in a month', () => {
+    const expected = 720
+
+    expect(getHoursInMonth()).toEqual(expected)
   })
 })

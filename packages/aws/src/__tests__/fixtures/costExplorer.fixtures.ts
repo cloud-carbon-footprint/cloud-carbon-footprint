@@ -1,3 +1,6 @@
+/*
+ * © 2021 ThoughtWorks, Inc.
+ */
 import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
 
 export const rightsizingRecommendationTerminate: GetRightsizingRecommendationResponse =
@@ -45,7 +48,7 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
             EC2ResourceDetails: {
               InstanceType: 't2.micro',
               Region: 'US East (Ohio)',
-              Vcpu: '0.2',
+              Vcpu: '1',
             },
           },
         },
@@ -68,7 +71,7 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
             EC2ResourceDetails: {
               InstanceType: 't2.micro',
               Region: 'US East (Ohio)',
-              Vcpu: '0.2',
+              Vcpu: '1',
             },
           },
         },
@@ -81,7 +84,7 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
                 EC2ResourceDetails: {
                   InstanceType: 't2.nano',
                   Region: 'US East (Ohio)',
-                  Vcpu: '0.1',
+                  Vcpu: '1',
                 },
               },
             },
@@ -91,7 +94,7 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
                 EC2ResourceDetails: {
                   InstanceType: 't2.large',
                   Region: 'US East (Ohio)',
-                  Vcpu: '0.3',
+                  Vcpu: '2',
                 },
               },
             },

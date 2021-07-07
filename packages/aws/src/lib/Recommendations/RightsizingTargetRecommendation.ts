@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import moment from 'moment'
 import { RightsizingRecommendation as AwsRightsizingRecommendation } from 'aws-sdk/clients/costexplorer'
+import { getHoursInMonth } from '@cloud-carbon-footprint/common'
 import RightsizingRecommendation from './RightsizingRecommendation'
 
 export default class RightsizingTargetRecommendation extends RightsizingRecommendation {
@@ -24,6 +24,6 @@ export default class RightsizingTargetRecommendation extends RightsizingRecommen
       targetInstance.ResourceDetails.EC2ResourceDetails,
     )
     this.costSavings = parseFloat(targetInstance.EstimatedMonthlySavings)
-    this.usageAmount = moment().utc().daysInMonth() * 24
+    this.usageAmount = getHoursInMonth()
   }
 }
