@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .changeset/ten-spiders-press.md
+  checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
 - filename: .circleci/config.yml
   checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
 - filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
