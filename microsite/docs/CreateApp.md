@@ -81,7 +81,10 @@ Now you're free to start your own Cloud Carbon Footprint application! Happy Hack
 
 ### Linking in local Cloud Carbon Footprint packages
 
-Since the `@cloud-carbon-footprint/core` package is used as a dependency for packages in your Cloud Carbon Footprint App, the package will not be accessible for any modifications. Since this package contains the core logic to get cloud usage data and estimate energy and carbon emissions, you may find yourself wanting to update any of the emissions factors, coefficients, or any other calculation. Fortunately, by linking `@cloud-carbon-footprint/core` as an external package, you will be able to make modificatinos and test out the changes locally!
+Since the `@cloud-carbon-footprint/app` and  `@cloud-carbon-footprint/common` packages are used as a dependencies for packages in your Cloud Carbon Footprint App, the packages will not be accessible for any modifications. Since these packages contain the core logic to get cloud usage data and estimate energy and carbon emissions, you may find yourself wanting to update the emissions factors, coefficients, or any other calculations. Fortunately, by linking them as external packages, you will be able to make modifications and test out the changes locally!
+
+You will notice that in the create-app template files, the app and common packages are the only external dependencies used. The app package in turn depends on the aws, gcp and azure packages.
+Each of the cloud provider packages also depend on the core package. In these packages is where most of the core logic of our application is specifically located and these can all be externally linked for modification as well.
 
 To do this, you will first need to clone the [Cloud Carbon Footprint App](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint). Then you will need to modify your package.json and lerna.json workspace paths. You can either add relative or absolute paths with or without globs. For example:
 
@@ -92,6 +95,11 @@ In the package.json file in the root of your Cloud Carbon Footprint App:
   "packages": [
     "packages/*",
     "../cloud-carbon-footprint/packages/core"
+    "../cloud-carbon-footprint/packages/app",
+    "../cloud-carbon-footprint/packages/common",
+    "../cloud-carbon-footprint/packages/aws",
+    "../cloud-carbon-footprint/packages/gcp",
+    "../cloud-carbon-footprint/packages/azure"
   ]
 }
 ```
@@ -101,13 +109,18 @@ And in the lerna.json file in same directory:
 ```
 "packages": [
   "packages/*",
-  "../cloud-carbon-footprint/packages/core"
+  "../cloud-carbon-footprint/packages/core",
+  "../cloud-carbon-footprint/packages/app",
+  "../cloud-carbon-footprint/packages/common",
+  "../cloud-carbon-footprint/packages/aws",
+  "../cloud-carbon-footprint/packages/gcp",
+  "../cloud-carbon-footprint/packages/azure"
 ]
 ```
 
 Then reinstall packages to make yarn set up symlinks by running `yarn install` in the root directory.
 
-Now you should be able to modify the @cloud-carbon-footprint/core package within the main repository that you cloned, and have those changes be reflected in your app!
+Now you should be able to modify any of the external packages within the main repository that you cloned, and have those changes be reflected in your app!
 
 ### Keeping Cloud Carbon Footprint Updated
 
@@ -115,14 +128,18 @@ Cloud Carbon Footprint has constant improvements being made each day, so we reco
 
 #### Updating Cloud Carbon Footprint versions
 
-Currently, when you create a Cloud Carbon Footprint app using the create-app package, there is only one package dependency which is `@cloud-carbon-footprint/core`
-The command to used to bump the core package dependency to the latest version is:
+Currently, when you create a Cloud Carbon Footprint app using the create-app package, there are a couple package dependencies which are `@cloud-carbon-footprint/app` and `@cloud-carbon-footprint/common`.
+The command used to bump the package dependencies to the latest version is:
 
 ```
-yarn up @cloud-carbon-footprint/core
+yarn up @cloud-carbon-footprint/app
+```
+and / or
+```
+yarn up @cloud-carbon-footprint/common
 ```
 
-Please note that depending on the current version of the core package, the update command may only update it to the next highest minor version as referenced [here](https://classic.yarnpkg.com/en/docs/dependency-versions/#toc-caret-ranges). Beware that once the core package is `>= v1.0.0`, running the command will update to the latest core package with breaking changes.
+Please note that depending on the current version of the app or common package, the update command may only update it to the next highest minor version as referenced [here](https://classic.yarnpkg.com/en/docs/dependency-versions/#toc-caret-ranges). Beware that once the app or common package is `>= v1.0.0`, running the command will update to the latest package with breaking changes.
 
 #### Following create-app template changes
 
