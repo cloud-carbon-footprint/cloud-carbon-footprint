@@ -24,10 +24,11 @@ export default class RightsizingCurrentRecommendation extends RightsizingRecomme
       rightsizingRecommendationData.CurrentInstance.ResourceDetails
         .EC2ResourceDetails,
     )
-    this.costSavings = parseFloat(
-      rightsizingRecommendationData.TerminateRecommendationDetail
-        ?.EstimatedMonthlySavings || '0',
-    )
+    this.costSavings =
+      parseFloat(
+        rightsizingRecommendationData.TerminateRecommendationDetail
+          ?.EstimatedMonthlySavings,
+      ) || 0
     this.usageAmount = moment().utc().daysInMonth() * 24
   }
 }

@@ -876,22 +876,8 @@ describe('App', () => {
   it('returns recommendations for aws with billing data', async () => {
     ;(configLoader as jest.Mock).mockReturnValue({
       AWS: {
-        accounts: [{ id: '12345678', name: 'test AWS account' }],
-        NAME: 'AWS',
-        BILLING_ACCOUNT_ID: 'billing-account-id',
-        BILLING_ACCOUNT_NAME: 'billing-account-name',
-        ATHENA_REGION: 'us-east-1',
-        CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
-        CURRENT_REGIONS: ['us-east-1', 'us-east-2'],
+        ...configLoader().AWS,
         USE_BILLING_DATA: true,
-        authentication: {
-          mode: 'GCP',
-          options: {
-            targetRoleName: 'test-target',
-            proxyAccountId: 'test-account-id',
-            proxyRoleName: 'test-role-name',
-          },
-        },
       },
     })
     const expectedRecommendations: RecommendationResult[] = [

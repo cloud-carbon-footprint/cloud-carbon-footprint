@@ -119,8 +119,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     rightsizingRecommendationData: AwsRightsizingRecommendation,
   ): void {
     let targetInstance =
-      rightsizingRecommendationData.ModifyRecommendationDetail
-        .TargetInstances[0]
+      rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances.pop()
     let savings = 0
     rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances.map(
       (instance) => {
