@@ -75,8 +75,8 @@ export default class App {
       let GCPEstimatesByRegion: EstimationResult[][] = []
       if (GCP.USE_BILLING_DATA) {
         const estimates = await new GCPAccount(
-          GCP.BILLING_ACCOUNT_ID,
-          GCP.BILLING_ACCOUNT_NAME,
+          GCP.BILLING_PROJECT_ID,
+          GCP.BILLING_PROJECT_NAME,
           [],
         ).getDataFromBillingExportTable(startDate, endDate)
         GCPEstimatesByRegion.push(estimates)

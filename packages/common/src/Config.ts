@@ -36,8 +36,8 @@ export interface CCFConfig {
     }[]
     USE_BILLING_DATA?: boolean
     BIG_QUERY_TABLE?: string
-    BILLING_ACCOUNT_ID?: string
-    BILLING_ACCOUNT_NAME?: string
+    BILLING_PROJECT_ID?: string
+    BILLING_PROJECT_NAME?: string
     CACHE_BUCKET_NAME?: string
   }
   AZURE?: {
@@ -156,8 +156,8 @@ const appConfig: CCFConfig = {
       !!process.env.GCP_USE_BILLING_DATA &&
       process.env.GCP_USE_BILLING_DATA !== 'false',
     BIG_QUERY_TABLE: getEnvVar('GCP_BIG_QUERY_TABLE') || '',
-    BILLING_ACCOUNT_ID: getEnvVar('GCP_BILLING_PROJECT_ID') || '',
-    BILLING_ACCOUNT_NAME: getEnvVar('GCP_BILLING_PROJECT_NAME') || '',
+    BILLING_PROJECT_ID: getEnvVar('GCP_BILLING_PROJECT_ID') || '',
+    BILLING_PROJECT_NAME: getEnvVar('GCP_BILLING_PROJECT_NAME') || '',
     CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
   },
   AZURE: {

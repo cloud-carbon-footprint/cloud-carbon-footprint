@@ -35,7 +35,7 @@ describe('Azure Credentials Provider', () => {
         },
       },
       GCP: {
-        BILLING_ACCOUNT_NAME: 'test-account',
+        BILLING_PROJECT_NAME: 'test-account',
       },
     })
   })

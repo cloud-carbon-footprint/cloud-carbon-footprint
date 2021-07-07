@@ -38,7 +38,7 @@ export default class AzureCredentialsProvider {
   static async getGoogleSecret(secretName: string): Promise<string> {
     const client = new SecretManagerServiceClient()
     const name = `projects/${
-      configLoader().GCP.BILLING_ACCOUNT_NAME
+      configLoader().GCP.BILLING_PROJECT_NAME
     }/secrets/${secretName}/versions/latest`
 
     const [version] = await client.accessSecretVersion({
