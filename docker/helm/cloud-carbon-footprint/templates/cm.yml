@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carbon-nginx-conf
+  namespace: {{ .Release.Namespace }}
+data:
+  nginx.conf: |
+    events {
+    }
+
+    http {
+        server {
+            listen 80;
+{{- if .Values.client.resolver }}
+            resolver {{ .Values.client.resolver }};
+{{- end }}
+            include /etc/nginx/mime.types;
+            root /var/www;
+            index index.html index.htm;
+            location /api {
+                proxy_read_timeout 3600;
+                proxy_set_header X-Forwarded-Host $host;
+                proxy_set_header X-Forwarded-Server $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://localhost:4000$request_uri;
+            }
+            location / {
+                try_files $uri $uri/ =404;
+            }
+        }
+    }
+

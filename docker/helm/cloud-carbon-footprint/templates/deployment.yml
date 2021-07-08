@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+{{- if .Values.istio }}
+      annotations:
+        sidecar.istio.io/inject: "false"
+{{- end }}
+    spec:
+      containers:
+        - name: client
+          image: "{{ default "docker.io/cloudcarbonfootprint" .Values.registry }}/{{ default "client" .Values.client.imageName }}:{{ default "latest" .Values.tag }}"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: {{ default "50m" .Values.client.resources.requests.cpu }}
+              memory: {{ default "100mi" .Values.client.resources.requests.memory }}
+            limits:
+              cpu: {{ default "100m" .Values.api.resources.limits.cpu }}
+              memory: {{ default "200mi" .Values.api.resources.limits.memory }}
+          volumeMounts:
+            - name: carbon-nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+        - name: api
+          image: "{{ default "docker.io/cloudcarbonfootprint" .Values.registry }}/{{ default "api" .Values.api.imageName }}:{{ default "latest" .Values.tag }}"
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              cpu: {{ default "100m" .Values.api.resources.requests.cpu }}
+              memory: {{ default "100mi" .Values.api.resources.requests.memory }}
+            limits:
+              cpu: {{ default "200m" .Values.api.resources.limits.cpu }}
+              memory: {{ default "200mi" .Values.api.resources.limits.memory }}
+{{- if .Values.api.env  }}
+          env:
+{{ .Values.api.env | toYaml | indent 12 }}
+{{- end }}
+          volumeMounts:
+            - name: {{ default "carbon-aws-credentials" .Values.api.secret.name }}
+              mountPath: /root/.aws/credentials
+              subPath: credentials
+              readOnly: true
+{{- if .Values.nodeSelector  }}
+      nodeSelector:
+{{ .Values.nodeSelector | toYaml | indent 8 }}
+{{- end }}
+{{- if .Values.tolerations  }}
+      tolerations:
+{{ .Values.tolerations | toYaml | indent 8 }}
+{{- end }}
+      volumes:
+        - name: carbon-nginx-conf
+          configMap:
+            name: carbon-nginx-conf
+        - name: {{ default "carbon-aws-credentials" .Values.api.secret.name }}
+          secret:
+            secretName: {{ default "carbon-aws-credentials" .Values.api.secret.name }}
+            items:
+            - key:  {{ default "carbon-creds" .Values.api.secret.key }}
+              path: credentials

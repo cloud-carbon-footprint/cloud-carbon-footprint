@@ -1,0 +1,38 @@
+#istio:
+#  host: sub.domain.tld
+registry: docker.io/cloudcarbonfootprint
+tag: latest
+client:
+  imageName: client
+#  resolver: 10.100.0.10
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 100m
+      memory: 200Mi
+api:
+  imageName: api
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 200m
+      memory: 200Mi
+  secret:
+    name: carbon-aws-credentials
+    key: carbon-creds
+#  env:
+#  - name: AWS_AUTH_MODE
+#    value: "AWS"
+#  - name: AWS_USE_BILLING_DATA
+#    value: "true"
+#nodeSelector:
+#  node-type: app
+#tolerations:
+#  - key: "node-type"
+#    operator: "Equal"
+#    value: "app"
+#    effect: "NoSchedule"
