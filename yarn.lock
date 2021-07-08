@@ -2034,7 +2034,7 @@ __metadata:
     "@types/express": ^4.17.12
     "@types/jest": ^26.0.23
     "@types/jest-when": ^2.7.2
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^4.24.0
@@ -2057,7 +2057,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2072,7 +2072,7 @@ __metadata:
     "@google-cloud/monitoring": ^2.3.1
     "@google-cloud/storage": ^5.8.5
     "@types/jest": ^26.0.23
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
     eslint: ^7.26.0
@@ -2088,7 +2088,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2101,7 +2101,7 @@ __metadata:
     "@google-cloud/iam-credentials": ^1.0.3
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^4.15.1
     "@typescript-eslint/parser": ^4.15.1
@@ -2123,7 +2123,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2140,7 +2140,7 @@ __metadata:
     "@google-cloud/secret-manager": ^3.7.1
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^4.15.1
     "@typescript-eslint/parser": ^4.15.1
@@ -2159,7 +2159,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2172,7 +2172,7 @@ __metadata:
     "@types/cli-table": ^0.3.0
     "@types/jest": ^26.0.23
     "@types/jest-when": ^2.7.2
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/prompts": ^2.0.12
     "@types/ramda": ^0.27.40
     "@types/source-map-support": ^0.5.3
@@ -2201,7 +2201,7 @@ __metadata:
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
     typed-prompts: ^1.5.0
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2222,7 +2222,7 @@ __metadata:
     "@types/jest": ^26.0.23
     "@types/lodash": ^4.14.169
     "@types/mockdate": ^3.0.0
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/ramda": ^0.27.40
     "@types/react": ^17.0.6
     "@types/react-dates": ^21.8.2
@@ -2260,7 +2260,7 @@ __metadata:
     react-scripts: ^4.0.3
     react-test-renderer: ^17.0.2
     styled-components: ^5.3.0
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2270,7 +2270,7 @@ __metadata:
   dependencies:
     "@google-cloud/logging-winston": ^4.0.5
     "@types/jest": ^26.0.23
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
     dotenv: ^10.0.0
@@ -2286,7 +2286,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.4
+    typescript: ^4.3.5
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -2298,7 +2298,7 @@ __metadata:
     "@cloud-carbon-footprint/common": ^0.0.3
     "@types/jest": ^26.0.23
     "@types/jest-when": ^2.7.2
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/ramda": ^0.27.40
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^4.24.0
@@ -2320,7 +2320,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -2328,7 +2328,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/create-app@workspace:packages/create-app"
   dependencies:
-    "@types/fs-extra": ^9.0.11
+    "@types/fs-extra": ^9.0.12
     "@types/inquirer": ^7.3.1
     "@types/recursive-readdir": ^2.2.0
     "@typescript-eslint/eslint-plugin": ^4.26.1
@@ -2348,7 +2348,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^9.1.1
     typed-prompts: ^1.5.0
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   bin:
     ccf-create-app: bin/ccf-create-app
   languageName: unknown
@@ -2364,7 +2364,7 @@ __metadata:
     "@google-cloud/monitoring": ^2.3.1
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
-    "@types/node": ^15.12.4
+    "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^4.15.1
     "@typescript-eslint/parser": ^4.15.1
@@ -2384,7 +2384,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^9.1.1
     ts-node-dev: ^1.1.1
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -4864,12 +4864,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.11":
-  version: 9.0.11
-  resolution: "@types/fs-extra@npm:9.0.11"
+"@types/fs-extra@npm:^9.0.12":
+  version: 9.0.12
+  resolution: "@types/fs-extra@npm:9.0.12"
   dependencies:
     "@types/node": "*"
-  checksum: e7a4df27880c525cf12c2d16a4fafb0b68b27c74e24cd4d0d637c56e9be27795efdd89cfc85de751ad1edfdcf1b3eb0bf97231eba90c91086825659de4ab8c72
+  checksum: bb3cd95b9748301127e35a64cde9621d4bb7cd6edb1f1155a00e07eeafd92740e2cacca6f9e3e26ec7bedd76cafa8d9a6b3751478311b4294bb4127768489f47
   languageName: node
   linkType: hard
 
@@ -5061,10 +5061,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^15.12.4":
-  version: 15.12.4
-  resolution: "@types/node@npm:15.12.4"
-  checksum: 64b121a7e805379382aeb3eefed56c4c34f1ebf5e818ba2c732e43beebc4fbde20be438f3eaaffd8dba5062f0e0c9ae085127b7239906d170eda816885a6c508
+"@types/node@npm:^16.0.1":
+  version: 16.0.1
+  resolution: "@types/node@npm:16.0.1"
+  checksum: 0f3d559689763cef9c2cf593a9190ead7adc8b71aeaef5c446bda96a781c22e39806780ee240c7272dddf01b82008d84e49a4298fba88b6d7726af76f00fc3ad
   languageName: node
   linkType: hard
 
@@ -13439,12 +13439,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "husky@npm:6.0.0"
+"husky@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "husky@npm:7.0.1"
   bin:
     husky: lib/bin.js
-  checksum: 61e1f7f53f3c969d361c2a1d4ed8018b9447406ea6cd644a2526d18b76877d135001d8cbd48a1d201fc1614d96995e691ecd2b82a8d8513a6b4a313da1188ccd
+  checksum: 1f6d87cab4339551615080664347b60168d81f3c3b84b9dc1f888068d3fe946d8b5513db5ea53bc086f235e6cc617b0aba903552e959596a49f2153ffac33cb4
   languageName: node
   linkType: hard
 
@@ -21443,14 +21443,14 @@ resolve@^2.0.0-next.3:
   resolution: "root@workspace:."
   dependencies:
     "@changesets/cli": ^2.16.0
-    "@types/fs-extra": ^9.0.11
+    "@types/fs-extra": ^9.0.12
     concurrently: ^6.2.0
     fs-extra: ^10.0.0
-    husky: ^6.0.0
+    husky: ^7.0.1
     lerna: ^4.0.0
     sonar-scanner: ^3.1.0
     ts-node: ^9.1.1
-    typescript: ^4.3.4
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 
@@ -24199,13 +24199,13 @@ typescript@^3.3.3:
   languageName: node
   linkType: hard
 
-typescript@^4.3.4:
-  version: 4.3.4
-  resolution: "typescript@npm:4.3.4"
+typescript@^4.3.5:
+  version: 4.3.5
+  resolution: "typescript@npm:4.3.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 9791c5fe98db6cb70ec0efad8d3d2eb957b9643ee600b90bff49267de69768d0d5f59c41a8fd731cfd63df1ccfb2cb25505a2015d7b39ac10ea51f605a058e16
+  checksum: d9a8e78d72dd19896e6bfa73ab2a0fcea6eca2700d1d6e7c33f67a970af54a3e0fed8f715a8c4e6a0ff7fc0995067b394b2003518ab0aa84cd396377e54b760c
   languageName: node
   linkType: hard
 
@@ -24219,13 +24219,13 @@ typescript@^4.3.4:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.3.4#builtin<compat/typescript>":
-  version: 4.3.4
-  resolution: "typescript@patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"
+"typescript@patch:typescript@^4.3.5#builtin<compat/typescript>":
+  version: 4.3.5
+  resolution: "typescript@patch:typescript@npm%3A4.3.5#builtin<compat/typescript>::version=4.3.5&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: c8766e84a4f71e925cc059af8286cc7f41819fe821d433b90c83e9b36729cbda7a8e4be3292d8a1433cd717d529c93217d58d173418f43862290b206bd88b284
+  checksum: 7f0b8343f71ecac18095be1476b398aca420ab60dc207cc1efe078f381eef5527b80a518297720257114cdbda65612f8839e4b63e85dc95e67ac5cbbade8bdf0
   languageName: node
   linkType: hard
 
