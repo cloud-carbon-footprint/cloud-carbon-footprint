@@ -36,6 +36,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     super(billingDataRow)
 
     this.vCpuHours = this.getVCpuHours(Number(this.vCpus))
+    this.usageAmount = this.getUsageAmount()
     this.usageUnit = this.getUsageUnit()
     this.timestamp = new Date(this.timestamp)
     this.cost = Number(this.cost)
@@ -45,15 +46,23 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.replicationFactor = this.getReplicationFactor(billingDataRow)
   }
 
+  private getUsageAmount(): number {
+    if (this.isRedshiftComputeUsage()) return this.usageAmount / 3600
+    return this.usageAmount
+  }
+
   private getUsageUnit(): string {
     if (this.usageType.includes('Fargate-GB-Hours'))
       return PRICING_UNITS.GB_HOURS
-    if (
+    if (this.isRedshiftComputeUsage()) return PRICING_UNITS.HOURS_1
+    return this.usageUnit
+  }
+
+  private isRedshiftComputeUsage(): boolean {
+    return (
       this.serviceName === 'AmazonRedshift' &&
       this.usageUnit === PRICING_UNITS.SECONDS_1
     )
-      return PRICING_UNITS.HOURS_1
-    return this.usageUnit
   }
 
   private getVCpuHours(vCpuFromReport: number): number {
