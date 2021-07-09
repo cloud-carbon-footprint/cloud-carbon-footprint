@@ -136,6 +136,31 @@ describe('AWS Recommendations Service', () => {
 
     expect(result).toEqual(expectedResult)
   })
+  it('Logs the error response if there is a problem getting recommendations', async () => {
+    jest.mock('../lib/ServiceWrapper', () => ({
+      ...(jest.requireActual('../lib/ServiceWrapper') as Record<
+        string,
+        unknown
+      >),
+      getRightsizingRecommendationsResponses: jest.fn().mockRejectedValue(null),
+    }))
+
+    const consoleWarning = console.error
+    console.warn = jest.fn()
+    console.warn('Test console warning')
+
+    const awsRecommendationsServices = new Recommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    await awsRecommendationsServices.getRecommendations()
+
+    expect(console.warn).toHaveBeenCalled()
+    expect(console.warn).toHaveBeenCalledWith('Test console warning')
+    console.warn = consoleWarning
+  })
 
   const getRightsizingRecommendationSpy = jest.fn()
 

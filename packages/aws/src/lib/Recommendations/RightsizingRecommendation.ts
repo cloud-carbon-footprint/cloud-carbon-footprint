@@ -6,7 +6,7 @@ import {
   RightsizingRecommendation as AwsRightsizingRecommendation,
 } from 'aws-sdk/clients/costexplorer'
 import { containsAny, getHoursInMonth } from '@cloud-carbon-footprint/common'
-import { AWS_REGIONS } from '../AWSRegions'
+import { AWS_MAPPED_REGION_NAMES_TO_CODES } from '../AWSRegions'
 import { BURSTABLE_INSTANCE_BASELINE_UTILIZATION } from '../AWSInstanceTypes'
 import { AWS_CLOUD_CONSTANTS } from '../../domain'
 
@@ -45,18 +45,6 @@ export default class RightsizingRecommendation {
   }
 
   public getMappedRegion(region: string): string {
-    const regionMapping: { [region: string]: string } = {
-      'EU (Frankfurt)': AWS_REGIONS.EU_CENTRAL_1,
-      'South America (Sao Paulo)': AWS_REGIONS.SA_EAST_1,
-      'Asia Pacific (Singapore)': AWS_REGIONS.AP_SOUTHEAST_1,
-      'Asia Pacific (Mumbai)': AWS_REGIONS.AP_SOUTH_1,
-      'US East (Ohio)': AWS_REGIONS.US_EAST_2,
-      'US East (N. Virginia)': AWS_REGIONS.US_EAST_1,
-      'US West (N. California)': AWS_REGIONS.US_WEST_1,
-      'EU (Ireland)': AWS_REGIONS.EU_WEST_1,
-      'US West (Oregon)': AWS_REGIONS.US_WEST_2,
-      'Asia Pacific (Sydney)': AWS_REGIONS.AP_SOUTHEAST_2,
-    }
-    return regionMapping[region]
+    return AWS_MAPPED_REGION_NAMES_TO_CODES[region]
   }
 }
