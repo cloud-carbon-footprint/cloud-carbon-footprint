@@ -145,7 +145,7 @@ describe('AWS Recommendations Service', () => {
       getRightsizingRecommendationsResponses: jest.fn().mockRejectedValue(null),
     }))
 
-    const consoleWarning = console.error
+    const consoleWarning = console.warn
     console.warn = jest.fn()
     console.warn('Test console warning')
 
