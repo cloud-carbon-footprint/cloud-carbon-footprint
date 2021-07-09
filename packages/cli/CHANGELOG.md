@@ -1,5 +1,24 @@
 # @cloud-carbon-footprint/cli
 
+## 1.0.0
+
+### Major Changes
+
+- 91ed3d75: Update variables GCP_BILLING_ACCOUNT_ID/GCP_BILLING_ACCOUNT_NAME to be GCP_BILLING_PROJECT_ID/GCP_BILLING_PROJECT_NAME
+
+  This is a major update for packages: api, cli, common. Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aab00ea5a395d94ba5ce1424ffa33abbafd7ed58) for create-app template updates as they are breaking changes.
+
+### Patch Changes
+
+- bbceed8b: Updates dependencies: @types/fs-extra, typescript, husky and @types/node
+- Updated dependencies [13f39ac7]
+- Updated dependencies [91ed3d75]
+- Updated dependencies [72fc2752]
+- Updated dependencies [e76d5fdd]
+- Updated dependencies [bbceed8b]
+  - @cloud-carbon-footprint/app@0.1.0
+  - @cloud-carbon-footprint/common@1.0.0
+
 ## 0.4.2
 
 ### Patch Changes

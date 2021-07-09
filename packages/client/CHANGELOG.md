@@ -1,5 +1,35 @@
 # @cloud-carbon-footprint/client
 
+## 1.0.0
+
+### Major Changes
+
+- c7ce1dbd: Refactors the client package to use presentation/container style and updates the create-app templates
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5c1e9b6c68d270c0005f63ac77d8c258bf23db4b) to update the create-app templates.
+
+### Minor Changes
+
+- e76d5fdd: Adds accountId to the Estimation Results returned from the Cloud Carbon Footprint API
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/cd2d5b988544246d87abbc441895d76003fed72b) to update create app templates.
+
+### Patch Changes
+
+- bbceed8b: Updates dependencies: @types/fs-extra, typescript, husky and @types/node
+- 40869725: Removes cloud provider from Unknown accounts from frontend
+
+  Please refer to these commits for create-app template updates:
+  [1](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dfb467a5aac500f91b170f1c1af1f452ceb01ca4)
+  [2](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/0e573e7d2921bc353fa1f9de11d53b13b4f6c91a)
+
+- Updated dependencies [13f39ac7]
+- Updated dependencies [91ed3d75]
+- Updated dependencies [72fc2752]
+- Updated dependencies [e76d5fdd]
+- Updated dependencies [bbceed8b]
+  - @cloud-carbon-footprint/common@1.0.0
+
 ## 0.10.0
 
 ### Minor Changes

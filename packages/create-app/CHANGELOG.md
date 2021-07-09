@@ -1,5 +1,28 @@
 # @cloud-carbon-footprint/create-app
 
+## 0.4.16
+
+### Patch Changes
+
+- 13f39ac7: implements recommendations for aws rightsizing recommendations api
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b2181a1942b0910613c8b15f97d074a7be6100b8) to update create app templates.
+
+- 91ed3d75: Update variables GCP_BILLING_ACCOUNT_ID/GCP_BILLING_ACCOUNT_NAME to be GCP_BILLING_PROJECT_ID/GCP_BILLING_PROJECT_NAME
+
+  This is a major update for packages: api, cli, common. Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aab00ea5a395d94ba5ce1424ffa33abbafd7ed58) for create-app template updates as they are breaking changes.
+
+- bbceed8b: Updates dependencies: @types/fs-extra, typescript, husky and @types/node
+- 40869725: Removes cloud provider from Unknown accounts from frontend
+
+  Please refer to these commits for create-app template updates:
+  [1](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dfb467a5aac500f91b170f1c1af1f452ceb01ca4)
+  [2](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/0e573e7d2921bc353fa1f9de11d53b13b4f6c91a)
+
+- c7ce1dbd: Refactors the client package to use presentation/container style and updates the create-app templates
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5c1e9b6c68d270c0005f63ac77d8c258bf23db4b) to update the create-app templates.
+
 ## 0.4.15
 
 ### Patch Changes
