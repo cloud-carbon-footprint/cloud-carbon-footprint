@@ -32,7 +32,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     const resource = new Resource()
 
     const [projects] = await resource.getProjects()
-    console.log(projects[0])
+    // console.log(projects[0])
 
     const activeProjectsAndZones = await this.getActiveProjectsAndZones(
       projects,

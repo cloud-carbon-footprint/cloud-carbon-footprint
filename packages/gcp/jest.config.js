@@ -19,4 +19,5 @@ module.exports = {
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],
   modulePathIgnorePatterns: ['index.ts'],
+  coveragePathIgnorePatterns: ['Recommendations.ts'],
 }
