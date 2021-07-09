@@ -252,4 +252,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: 6a3bbcf60cd827978426e87a802da142319365f0a1f66fcd956b7d291d7362ef
+  checksum: ea9f76d07439a7bebef8cc351157a40028ee7e71c0b62c2c91cdbb4be09d4929

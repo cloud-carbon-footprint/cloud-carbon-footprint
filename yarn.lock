@@ -2362,6 +2362,8 @@ __metadata:
     "@cloud-carbon-footprint/core": ^0.8.2
     "@google-cloud/bigquery": ^5.6.0
     "@google-cloud/monitoring": ^2.3.1
+    "@google-cloud/recommender": ^4.2.2
+    "@google-cloud/resource-manager": ^2.0.0
     "@types/jest": ^26.0.20
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
@@ -2373,6 +2375,7 @@ __metadata:
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
     google-gax: ^2.15.0
+    googleapis: ^81.0.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^10.5.4
@@ -2515,7 +2518,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-cloud/common@npm:^3.1.0, @google-cloud/common@npm:^3.4.1, @google-cloud/common@npm:^3.6.0":
+"@google-cloud/common@npm:^3.0.0, @google-cloud/common@npm:^3.1.0, @google-cloud/common@npm:^3.4.1, @google-cloud/common@npm:^3.6.0":
   version: 3.6.0
   resolution: "@google-cloud/common@npm:3.6.0"
   dependencies:
@@ -2608,6 +2611,26 @@ __metadata:
   version: 2.0.3
   resolution: "@google-cloud/promisify@npm:2.0.3"
   checksum: bd0c5f1c9361e4bfb91541a58be9fc7af04a233d40ebaefbd034ebb7c1baf4a57cd7d50244e39867a196e063a008c25b9ff7e5e1b8e9d0774521c6046b4a8b80
+  languageName: node
+  linkType: hard
+
+"@google-cloud/recommender@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "@google-cloud/recommender@npm:4.2.2"
+  dependencies:
+    google-gax: ^2.17.0
+  checksum: 1e86767ffa29f8722dffd1dd5200d3dd82d1b73db9b876785b51a9df885300a7931d1fe91b9cd4ffbdfb05a2e13f17b2029ebd63befaf53b346cb576324698c4
+  languageName: node
+  linkType: hard
+
+"@google-cloud/resource-manager@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@google-cloud/resource-manager@npm:2.0.0"
+  dependencies:
+    "@google-cloud/common": ^3.0.0
+    "@google-cloud/paginator": ^3.0.0
+    "@google-cloud/promisify": ^2.0.0
+  checksum: 0e2f517e057c56baf2a16b974fd00d5919407d787abcdfa67609a7d439f33b8c03567f4b3dab1bccbf9268462d303c5baf284b45777bf31c1529d7142ee38cbb
   languageName: node
   linkType: hard
 
@@ -12820,6 +12843,28 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"google-gax@npm:^2.17.0":
+  version: 2.17.0
+  resolution: "google-gax@npm:2.17.0"
+  dependencies:
+    "@grpc/grpc-js": ~1.3.0
+    "@grpc/proto-loader": ^0.6.1
+    "@types/long": ^4.0.0
+    abort-controller: ^3.0.0
+    duplexify: ^4.0.0
+    fast-text-encoding: ^1.0.3
+    google-auth-library: ^7.0.2
+    is-stream-ended: ^0.1.4
+    node-fetch: ^2.6.1
+    object-hash: ^2.1.1
+    protobufjs: ^6.10.2
+    retry-request: ^4.0.0
+  bin:
+    compileProtos: build/tools/compileProtos.js
+  checksum: b9ed4ee8531f65bae7627b636898e3b3fba796551c716e50f1e12f2b0c0fc8201bfe968179cfadf03286b4e10132a7dee5e03fd2708e63f09e4a8dd6f5f1211a
+  languageName: node
+  linkType: hard
+
 "google-p12-pem@npm:^3.0.3":
   version: 3.0.3
   resolution: "google-p12-pem@npm:3.0.3"
@@ -12828,6 +12873,30 @@ fsevents@^1.2.7:
   bin:
     gp12-pem: build/src/bin/gp12-pem.js
   checksum: f03565af5fb2e8415277a76f970908fe4338fb304767fad1f453c624e5b93d3e87aeb3f8e8c10e2b48a7d73825845c17b43cc10f9bf1b3843454ddc177168701
+  languageName: node
+  linkType: hard
+
+"googleapis-common@npm:^5.0.2":
+  version: 5.0.3
+  resolution: "googleapis-common@npm:5.0.3"
+  dependencies:
+    extend: ^3.0.2
+    gaxios: ^4.0.0
+    google-auth-library: ^7.0.2
+    qs: ^6.7.0
+    url-template: ^2.0.8
+    uuid: ^8.0.0
+  checksum: 6c7e761c0c5bb5e90da73ca35ad777b15d0299874528a5509856df90a1e2b0dbba1cbaa01aa3cfeee3da47c6830f6593424ce5c3c02e275924eeca6bcfa983b5
+  languageName: node
+  linkType: hard
+
+"googleapis@npm:^81.0.0":
+  version: 81.0.0
+  resolution: "googleapis@npm:81.0.0"
+  dependencies:
+    google-auth-library: ^7.0.2
+    googleapis-common: ^5.0.2
+  checksum: 96b8085854695f9ac41831d665f556adb6f40fe4a03978da041bbd78b4add15ca98e809f34bdd21f5a6bd3ec1ee71fac3f25eceb870337c54d99f356d103b669
   languageName: node
   linkType: hard
 
@@ -20019,7 +20088,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.9.4":
+"qs@npm:^6.7.0, qs@npm:^6.9.4":
   version: 6.10.1
   resolution: "qs@npm:6.10.1"
   dependencies:
@@ -24501,6 +24570,13 @@ typescript@^4.3.5:
     querystringify: ^2.1.1
     requires-port: ^1.0.0
   checksum: d8342b597bf1760c4b9e3c78458524d783fa1c901658f3db8b576fc73451c89e6686d218ddca4845b082a63b23971b4a8b916cccc91f4156cc9f97ffdabe0079
+  languageName: node
+  linkType: hard
+
+"url-template@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "url-template@npm:2.0.8"
+  checksum: 55f59a311a794830d6fac190c86bd1800b31da37e2ea9f1aa54a2bec2fcd098f916b0d0c62936c92a873c16e858e98165e4f58caba6c7b9dbd5d22a61bcbf0ae
   languageName: node
   linkType: hard
 
