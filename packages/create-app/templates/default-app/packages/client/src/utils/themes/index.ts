@@ -2,18 +2,23 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { CSSProperties } from 'react'
 import { createMuiTheme, Theme } from '@material-ui/core/styles'
 
 declare module '@material-ui/core/styles/createPalette' {
   /* eslint-disable */
   interface Palette {
     chart: Palette['primary'][]
-    extLink: React.CSSProperties['color']
+    lightTitle: CSSProperties['color']
+    lightMessage: CSSProperties['color']
+    extLink: CSSProperties['color']
   }
   /* eslint-disable */
   interface PaletteOptions {
     chart: PaletteOptions['primary'][]
-    extLink: React.CSSProperties['color']
+    lightTitle: CSSProperties['color']
+    lightMessage: CSSProperties['color']
+    extLink: CSSProperties['color']
   }
 }
 
@@ -45,6 +50,8 @@ const determineTheme = (): Theme => {
         { main: '#E2EF70' },
         { main: '#70E4EF' },
       ],
+      lightTitle: 'rgba(0, 0, 0, 0.87)',
+      lightMessage: '#b0bec5',
       // leaving this here in case the color theme changes base on dark mode
       extLink: '#00B7FF',
     },

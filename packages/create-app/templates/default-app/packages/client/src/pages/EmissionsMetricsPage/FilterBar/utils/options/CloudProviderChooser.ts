@@ -2,20 +2,23 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { DropdownOption } from '../../Filters/DropdownFilter'
+import { DropdownOption, FilterOptions } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
-import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 import { OptionChooser } from './OptionChooser'
 
 export class CloudProviderChooser extends OptionChooser {
-  constructor(selections: DropdownOption[], oldSelections: DropdownSelections) {
+  constructor(
+    selections: DropdownOption[],
+    oldSelections: DropdownSelections,
+    filterOptions: FilterOptions,
+  ) {
     super(
       DropdownFilter.CLOUD_PROVIDERS,
       CLOUD_PROVIDER_OPTIONS,
       selections,
       oldSelections,
+      filterOptions,
     )
   }
 
@@ -27,7 +30,7 @@ export class CloudProviderChooser extends OptionChooser {
     const desiredSelections: Set<DropdownOption> = new Set()
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
-        ACCOUNT_OPTIONS.forEach((accountOption) => {
+        this.filterOptions.accounts.forEach((accountOption) => {
           accountOption.cloudProvider === selection.key &&
             desiredSelections.add(accountOption)
         })
@@ -40,7 +43,7 @@ export class CloudProviderChooser extends OptionChooser {
     const desiredSelections: Set<DropdownOption> = new Set()
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
-        SERVICE_OPTIONS.forEach((serviceOption) => {
+        this.filterOptions.services.forEach((serviceOption) => {
           serviceOption.cloudProvider === selection.key &&
             desiredSelections.add(serviceOption)
         })

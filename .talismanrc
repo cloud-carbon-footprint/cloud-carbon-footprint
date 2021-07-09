@@ -187,8 +187,22 @@ fileignoreconfig:
   checksum: 8cbcdd56c389772ba6086966824c015f000d273f6d05e7a75befb24d40c64019
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/runner.ts
   checksum: ae3644fd8001fc1545fb3b365f24b2be657750bcbad705cd3da249b705aad74f
+- filename: packages/create-app/templates/default-app/packages/client/src/common/SelectDropdown/SelectDropdown.tsx
+  checksum: 507878a88bedbb206f820069c94cccb1e482ab6ad12f7d7acb48723333494096
 - filename: packages/create-app/templates/default-app/packages/client/src/dashboard/charts/CarbonIntensityRange.tsx
   checksum: b4619da2416bd6931676e6d2cdda49ea1ee3f71e867ffe3c879f25689c1c72cf
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/CarbonComparisonCard/CarbonComparison/CarbonComparison.tsx
+  checksum: 620bd61bf8eaf781ffa1bd2595090fca78d51003d9de65c84cbdd7f1e1bb9698
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
+  checksum: 7438bbcaf3c9c16ac00eea3efbfe0959c79e53db51cf24bb172a764bed68e500
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/Filters/DropdownFilter/DropdownFilter.tsx
+  checksum: 76346f41c415bc3fbe31a879ff169652a4ddcd621c138bb17d83421189244eb6
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/DropdownConstants.ts
+  checksum: dde247a476c63ba3dd6f6892d6676a43a28654ca05f33a6ee2617c01d3563d42
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/AccountChooser.ts
+  checksum: b5724ad65b6c12f343fbcfe7453bff610a69b2249c3ce05e89fd988454e3bdef
+- filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
+  checksum: 5ec0df7b78c985920e08baf0f91d18b20903e8e87d007b9d1aa3b33ea94c8cd3
 - filename: packages/create-app/templates/default-app/packages/client/src/react-app-env.d.ts
   checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts

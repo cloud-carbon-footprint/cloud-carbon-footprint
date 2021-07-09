@@ -2,8 +2,8 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import { DropdownOption, FilterOptions } from 'Types'
 import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
-import { DropdownOption } from '../../Filters/DropdownFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
@@ -11,25 +11,26 @@ import {
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from '../DropdownConstants'
-import { ACCOUNT_OPTIONS } from '../../Filters/AccountFilter'
-import { SERVICE_OPTIONS } from '../../Filters/ServiceFilter'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilter
   protected readonly allOptions: DropdownOption[]
   protected selections: DropdownOption[]
   protected readonly oldSelections: DropdownSelections
+  protected readonly filterOptions: FilterOptions
 
   protected constructor(
     filterType: DropdownFilter,
     allOptions: DropdownOption[],
     selections: DropdownOption[],
     oldSelections: DropdownSelections,
+    filterOptions: FilterOptions,
   ) {
     this.allOptions = allOptions
     this.filterType = filterType
     this.selections = selections
     this.oldSelections = oldSelections
+    this.filterOptions = filterOptions
   }
 
   protected abstract chooseProviders(): Set<DropdownOption>
@@ -69,45 +70,46 @@ export abstract class OptionChooser {
       }
 
       return {
-        [DropdownFilter.CLOUD_PROVIDERS]: addAllDropDownOption(
+        [DropdownFilter.CLOUD_PROVIDERS]: this.addAllDropDownOptions(
           this.chooseProviders(),
           DropdownFilter.CLOUD_PROVIDERS,
         ),
-        [DropdownFilter.SERVICES]: addAllDropDownOption(
+        [DropdownFilter.SERVICES]: this.addAllDropDownOptions(
           this.chooseServices(),
           DropdownFilter.SERVICES,
         ),
-        [DropdownFilter.ACCOUNTS]: addAllDropDownOption(
+        [DropdownFilter.ACCOUNTS]: this.addAllDropDownOptions(
           this.chooseAccounts(),
           DropdownFilter.ACCOUNTS,
         ),
       }
     }
   }
-}
 
-function addAllDropDownOption(
-  currentSelections: Set<DropdownOption>,
-  filterType: DropdownFilter,
-): DropdownOption[] {
-  const revisedSelections: DropdownOption[] = Array.from(currentSelections)
-  if (
-    filterType === DropdownFilter.CLOUD_PROVIDERS &&
-    currentSelections.size === CLOUD_PROVIDER_OPTIONS.length - 1
-  ) {
-    revisedSelections.unshift(ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION)
+  private addAllDropDownOptions(
+    currentSelections: Set<DropdownOption>,
+    filterType: DropdownFilter,
+  ): DropdownOption[] {
+    const revisedSelections: DropdownOption[] = Array.from(currentSelections)
+    const { accounts, services } = this.filterOptions
+    if (
+      filterType === DropdownFilter.CLOUD_PROVIDERS &&
+      currentSelections.size === CLOUD_PROVIDER_OPTIONS.length - 1
+    ) {
+      revisedSelections.unshift(ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION)
+    }
+    if (
+      filterType === DropdownFilter.ACCOUNTS &&
+      currentSelections.size === accounts.length - 1
+    ) {
+      revisedSelections.unshift(ALL_ACCOUNTS_DROPDOWN_OPTION)
+    }
+    if (
+      filterType === DropdownFilter.SERVICES &&
+      currentSelections.size === services.length - 1
+    ) {
+      revisedSelections.unshift(ALL_SERVICES_DROPDOWN_OPTION)
+    }
+    return revisedSelections
   }
-  if (
-    filterType === DropdownFilter.ACCOUNTS &&
-    currentSelections.size === ACCOUNT_OPTIONS.length - 1
-  ) {
-    revisedSelections.unshift(ALL_ACCOUNTS_DROPDOWN_OPTION)
-  }
-  if (
-    filterType === DropdownFilter.SERVICES &&
-    currentSelections.size === SERVICE_OPTIONS.length - 1
-  ) {
-    revisedSelections.unshift(ALL_SERVICES_DROPDOWN_OPTION)
-  }
-  return revisedSelections
 }

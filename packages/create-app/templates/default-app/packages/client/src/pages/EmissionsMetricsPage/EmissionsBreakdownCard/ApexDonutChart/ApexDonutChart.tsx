@@ -76,7 +76,7 @@ export const ApexDonutChart: FunctionComponent<ApexChartProps> = ({
       fillSeriesColor: false,
       y: {
         formatter: function (value: number) {
-          return `${value.toFixed(3)} metric tons CO2e`
+          return `${value.toFixed(3)} metric tons`
         },
       },
     },

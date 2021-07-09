@@ -2,26 +2,27 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
-
-import { FilterResultResponse, UnknownTypes } from '../../../../Types'
-import moment from 'moment'
 import { Dispatch, SetStateAction } from 'react'
+import moment from 'moment'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownFilter } from './FiltersUtil'
-import { DropdownOption } from '../Filters/DropdownFilter'
-import { ACCOUNT_OPTIONS } from '../Filters/AccountFilter'
-import { SERVICE_OPTIONS } from '../Filters/ServiceFilter'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from './DropdownConstants'
+import {
+  FilterResultResponse,
+  UnknownTypes,
+  DropdownOption,
+  FilterOptions,
+} from 'Types'
 
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
-  options?: FilterResultResponse
+  options?: FilterOptions
 }
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
@@ -63,9 +64,9 @@ export class Filters {
 
   constructor(config: FiltersConfig = defaultFiltersConfig) {
     this.timeframe = config.timeframe
+    this.dateRange = config.dateRange
     this.services = config.services
     this.cloudProviders = config.cloudProviders
-    this.dateRange = config.dateRange
     this.accounts = config.accounts
   }
 
@@ -75,47 +76,62 @@ export class Filters {
       : new Filters({ ...this, dateRange: null, timeframe })
   }
 
-  withServices(services: DropdownOption[]): Filters {
+  withServices(
+    services: DropdownOption[],
+    filterOptions: FilterOptions,
+  ): Filters {
+    const oldSelections = {
+      services: this.services,
+      accounts: this.accounts,
+      cloudProviders: this.cloudProviders,
+    }
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.SERVICES,
         services,
-        {
-          services: this.services,
-          accounts: this.accounts,
-          cloudProviders: this.cloudProviders,
-        },
+        oldSelections,
+        filterOptions,
       ),
     })
   }
 
-  withAccounts(accounts: DropdownOption[]): Filters {
+  withAccounts(
+    accounts: DropdownOption[],
+    filterOptions: FilterOptions,
+  ): Filters {
+    const oldSelections = {
+      services: this.services,
+      accounts: this.accounts,
+      cloudProviders: this.cloudProviders,
+    }
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.ACCOUNTS,
         accounts,
-        {
-          services: this.services,
-          accounts: this.accounts,
-          cloudProviders: this.cloudProviders,
-        },
+        oldSelections,
+        filterOptions,
       ),
     })
   }
 
-  withCloudProviders(cloudProviders: DropdownOption[]): Filters {
+  withCloudProviders(
+    cloudProviders: DropdownOption[],
+    filterOptions: FilterOptions,
+  ): Filters {
+    const oldSelections = {
+      services: this.services,
+      accounts: this.accounts,
+      cloudProviders: this.cloudProviders,
+    }
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
         FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
         cloudProviders,
-        {
-          services: this.services,
-          accounts: this.accounts,
-          cloudProviders: this.cloudProviders,
-        },
+        oldSelections,
+        filterOptions,
       ),
     })
   }
@@ -135,10 +151,10 @@ export class Filters {
     }
   }
 
-  serviceLabel(): string {
+  serviceLabel(serviceOptions: DropdownOption[]): string {
     return FiltersUtil.numSelectedLabel(
       this.services.length,
-      SERVICE_OPTIONS.length,
+      serviceOptions.length,
     )
   }
 
@@ -150,10 +166,10 @@ export class Filters {
     )
   }
 
-  accountLabel(): string {
+  accountLabel(accountOptions: DropdownOption[]): string {
     return FiltersUtil.numSelectedLabel(
       this.accounts.length,
-      ACCOUNT_OPTIONS.length,
+      accountOptions.length,
       'Accounts',
     )
   }
