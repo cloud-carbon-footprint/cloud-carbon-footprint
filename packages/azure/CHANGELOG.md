@@ -1,5 +1,28 @@
 # @cloud-carbon-footprint/azure
 
+## 0.2.0
+
+### Minor Changes
+
+- e76d5fdd: Adds accountId to the Estimation Results returned from the Cloud Carbon Footprint API
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/cd2d5b988544246d87abbc441895d76003fed72b) to update create app templates.
+
+### Patch Changes
+
+- 91ed3d75: Update variables GCP_BILLING_ACCOUNT_ID/GCP_BILLING_ACCOUNT_NAME to be GCP_BILLING_PROJECT_ID/GCP_BILLING_PROJECT_NAME
+
+  This is a major update for packages: api, cli, common. Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aab00ea5a395d94ba5ce1424ffa33abbafd7ed58) for create-app template updates as they are breaking changes.
+
+- bbceed8b: Updates dependencies: @types/fs-extra, typescript, husky and @types/node
+- Updated dependencies [13f39ac7]
+- Updated dependencies [91ed3d75]
+- Updated dependencies [72fc2752]
+- Updated dependencies [e76d5fdd]
+- Updated dependencies [bbceed8b]
+  - @cloud-carbon-footprint/common@1.0.0
+  - @cloud-carbon-footprint/core@0.9.0
+
 ## 0.1.0
 
 ### Minor Changes
