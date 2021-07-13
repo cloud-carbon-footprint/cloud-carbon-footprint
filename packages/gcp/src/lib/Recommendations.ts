@@ -3,8 +3,8 @@
  */
 
 import {
-  ComputeEstimator,
   COMPUTE_PROCESSOR_TYPES,
+  ComputeEstimator,
   FootprintEstimate,
   ICloudRecommendationsService,
   StorageEstimator,
@@ -17,37 +17,21 @@ import {
 } from '@cloud-carbon-footprint/common'
 import R from 'ramda'
 import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
-import IMoney = recommenderPrototypes.type.IMoney
-import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
 import { compute_v1 } from 'googleapis'
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
 import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './MachineTypes'
-
-type ActiveProject = {
-  id: string
-  name: string
-  zones: string[]
-}
-
-type RecommenderRecommendations = {
-  id: string
-  zone: string
-  recommendations: IRecommendation[]
-}
-
-enum RECOMMENDATION_TYPES {
-  STOP_VM = 'STOP_VM',
-  SNAPSHOT_AND_DELETE_DISK = 'SNAPSHOT_AND_DELETE_DISK',
-  CHANGE_MACHINE_TYPE = 'CHANGE_MACHINE_TYPE',
-  DELETE_DISK = 'DELETE_DISK',
-  DELETE_ADDRESS = 'DELETE_ADDRESS',
-  DELETE_IMAGE = 'DELETE_IMAGE',
-}
+import {
+  ActiveProject,
+  RECOMMENDATION_TYPES,
+  RecommenderRecommendations,
+} from './RecommendationsTypes'
+import IMoney = recommenderPrototypes.type.IMoney
+import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
+import Schema$Instance = compute_v1.Schema$Instance
+import Schema$MachineType = compute_v1.Schema$MachineType
 
 const RECOMMENDER_IDS: string[] = [
   // 'google.accounts.security.SecurityKeyRecommender',
@@ -65,6 +49,7 @@ const RECOMMENDER_IDS: string[] = [
 ]
 
 const RETRY_AFTER = 10
+
 export default class Recommendations implements ICloudRecommendationsService {
   constructor(
     private readonly computeEstimator: ComputeEstimator,
