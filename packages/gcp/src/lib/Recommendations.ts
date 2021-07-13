@@ -2,6 +2,14 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
+import R from 'ramda'
+import { Project, Resource } from '@google-cloud/resource-manager'
+import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
+import { compute_v1 } from 'googleapis'
+import IMoney = recommenderPrototypes.type.IMoney
+import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
+import Schema$Instance = compute_v1.Schema$Instance
+import Schema$MachineType = compute_v1.Schema$MachineType
 import {
   COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,
@@ -9,15 +17,11 @@ import {
   ICloudRecommendationsService,
   StorageEstimator,
 } from '@cloud-carbon-footprint/core'
-import { Project, Resource } from '@google-cloud/resource-manager'
 import {
   getHoursInMonth,
   RecommendationResult,
   wait,
 } from '@cloud-carbon-footprint/common'
-import R from 'ramda'
-import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
-import { compute_v1 } from 'googleapis'
 import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
@@ -28,10 +32,7 @@ import {
   RECOMMENDATION_TYPES,
   RecommenderRecommendations,
 } from './RecommendationsTypes'
-import IMoney = recommenderPrototypes.type.IMoney
-import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
+import ServiceWrapper from './ServiceWrapper'
 
 const RECOMMENDER_IDS: string[] = [
   // 'google.accounts.security.SecurityKeyRecommender',
@@ -61,9 +62,9 @@ export default class Recommendations implements ICloudRecommendationsService {
   ) {}
 
   async getRecommendations(): Promise<RecommendationResult[]> {
-    const resource = new Resource()
+    const serviceWrapper = new ServiceWrapper(new Resource())
 
-    const [projects] = await resource.getProjects()
+    const projects = await serviceWrapper.getProjects()
 
     const activeProjectsAndZones = await this.getActiveProjectsAndZones(
       projects,

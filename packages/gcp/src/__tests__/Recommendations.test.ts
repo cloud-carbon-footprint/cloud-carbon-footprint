@@ -6,30 +6,18 @@ import {
   ComputeEstimator,
   StorageEstimator,
 } from '@cloud-carbon-footprint/core'
-import { Project } from '@google-cloud/resource-manager'
 import { GCP_CLOUD_CONSTANTS } from '../domain'
 import Recommendations from '../lib/Recommendations'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import { mockedProjects } from './fixtures/resourceManager.fixtures'
 
 jest.mock('moment', () => {
   return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
 })
 
-const projects: Partial<Project>[][] = [
-  [
-    {
-      id: 'project',
-      metadata: {
-        name: 'project-name',
-        lifecycleState: 'ACTIVE',
-      },
-    },
-  ],
-]
-
 jest.mock('@google-cloud/resource-manager', () => ({
   Resource: jest.fn().mockImplementation(() => ({
-    getProjects: jest.fn().mockResolvedValue(projects),
+    getProjects: jest.fn().mockResolvedValue(mockedProjects),
   })),
 }))
 
