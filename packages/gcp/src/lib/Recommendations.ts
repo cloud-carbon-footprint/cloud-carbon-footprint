@@ -3,7 +3,6 @@
  */
 
 import R from 'ramda'
-import { Project, Resource } from '@google-cloud/resource-manager'
 import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
 import { compute_v1 } from 'googleapis'
 import IMoney = recommenderPrototypes.type.IMoney
@@ -20,36 +19,14 @@ import {
 import {
   getHoursInMonth,
   RecommendationResult,
-  wait,
 } from '@cloud-carbon-footprint/common'
 import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './MachineTypes'
-import {
-  ActiveProject,
-  RECOMMENDATION_TYPES,
-  RecommenderRecommendations,
-} from './RecommendationsTypes'
+import { ActiveProject, RECOMMENDATION_TYPES } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
-
-const RECOMMENDER_IDS: string[] = [
-  // 'google.accounts.security.SecurityKeyRecommender',
-  // 'google.compute.commitment.UsageCommitmentRecommender',
-  // 'google.iam.policy.Recommender',
-  // 'google.cloudsql.instance.OutOfDiskRecommender'
-  'google.compute.image.IdleResourceRecommender',
-  'google.compute.address.IdleResourceRecommender',
-  'google.compute.disk.IdleResourceRecommender',
-  'google.compute.instance.IdleResourceRecommender',
-  'google.compute.instance.MachineTypeRecommender',
-  'google.compute.instanceGroupManager.MachineTypeRecommender',
-  'google.logging.productSuggestion.ContainerRecommender',
-  'google.monitoring.productSuggestion.ComputeRecommender',
-]
-
-const RETRY_AFTER = 10
 
 export default class Recommendations implements ICloudRecommendationsService {
   constructor(
@@ -59,95 +36,14 @@ export default class Recommendations implements ICloudRecommendationsService {
     private readonly googleAuthClient: any,
     private readonly googleComputeClient: any,
     private readonly googleRecommenderClient: any,
+    private readonly googleServiceWrapper: ServiceWrapper,
   ) {}
 
   async getRecommendations(): Promise<RecommendationResult[]> {
-    const serviceWrapper = new ServiceWrapper(new Resource())
+    const activeProjectsAndZones =
+      await this.googleServiceWrapper.getActiveProjectsAndZones()
 
-    const projects = await serviceWrapper.getProjects()
-
-    const activeProjectsAndZones = await this.getActiveProjectsAndZones(
-      projects,
-    )
-
-    const projectRecommendations = await this.getRecommendationsForProjects(
-      activeProjectsAndZones,
-    )
-
-    return projectRecommendations
-  }
-
-  private async getActiveProjectsAndZones(
-    projects: Project[],
-  ): Promise<ActiveProject[]> {
-    const activeProjects = projects.filter(
-      (project) => project.metadata.lifecycleState === 'ACTIVE',
-    )
-    const activeProjectsAndZones = []
-    const projectChunks = R.splitEvery(150, activeProjects)
-    for (const projectChunk of projectChunks) {
-      const projectZonesForChunk = await Promise.all(
-        projectChunk.map(async (project) => {
-          return await this.getZonesForProject(project)
-        }),
-      )
-      activeProjectsAndZones.push(projectZonesForChunk)
-    }
-    return R.flatten(activeProjectsAndZones)
-  }
-
-  private async getZonesForProject(
-    project: Project,
-  ): Promise<ActiveProject | []> {
-    try {
-      const computeEngineRequest = {
-        project: project.id,
-        auth: this.googleAuthClient,
-      }
-      const instancesResult =
-        await this.googleComputeClient.instances.aggregatedList(
-          computeEngineRequest,
-        )
-      const disksResult = await this.googleComputeClient.disks.aggregatedList(
-        computeEngineRequest,
-      )
-      const addressesResult =
-        await this.googleComputeClient.addresses.aggregatedList(
-          computeEngineRequest,
-        )
-
-      const instanceZones = this.extractZones(instancesResult.data.items)
-      const diskZones = this.extractZones(disksResult.data.items)
-      const addressesZones = this.extractZones(addressesResult.data.items)
-
-      return {
-        id: project.id,
-        name: project.metadata.name,
-        zones: R.uniq([
-          ...instanceZones,
-          ...addressesZones,
-          ...diskZones,
-          'global',
-        ]),
-      }
-    } catch (e) {
-      console.log(e.message)
-      return []
-    }
-  }
-
-  private extractZones(items: any) {
-    if (!items) return []
-    try {
-      return Object.entries(items)
-        .filter((zone: any) => {
-          return zone[1]?.warning?.code !== 'NO_RESULTS_ON_PAGE'
-        })
-        .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
-    } catch (e) {
-      console.log(e.message)
-      return []
-    }
+    return await this.getRecommendationsForProjects(activeProjectsAndZones)
   }
 
   private async getRecommendationsForProjects(
@@ -167,7 +63,10 @@ export default class Recommendations implements ICloudRecommendationsService {
   ): Promise<RecommendationResult[]> {
     const recommendationsByIds = await Promise.all(
       project.zones.map(async (zone) => {
-        return await this.getRecommendationsByRecommenderIds(project, zone)
+        return await this.googleServiceWrapper.getRecommendationsByRecommenderIds(
+          project,
+          zone,
+        )
       }),
     )
     const nonEmptyRecommendations = recommendationsByIds
@@ -202,43 +101,6 @@ export default class Recommendations implements ICloudRecommendationsService {
       )
     }
     return []
-  }
-
-  private async getRecommendationsByRecommenderIds(
-    project: ActiveProject,
-    zone: string,
-  ): Promise<RecommenderRecommendations[]> {
-    const recommendationByRecommenderIds = []
-    for (const recommenderId of RECOMMENDER_IDS) {
-      let inProcess = true
-      while (inProcess) {
-        try {
-          const [recommendations] =
-            await this.googleRecommenderClient.listRecommendations({
-              parent:
-                this.googleRecommenderClient.projectLocationRecommenderPath(
-                  project.id,
-                  zone,
-                  recommenderId,
-                ),
-            })
-          inProcess = false
-          recommendationByRecommenderIds.push({
-            id: recommenderId,
-            zone: zone,
-            recommendations,
-          })
-        } catch (err) {
-          if (err.details?.includes('Quota exceeded')) {
-            console.log(
-              `Rate limit hit. Retrying after ${RETRY_AFTER} seconds.`,
-            )
-            await wait(RETRY_AFTER * 1000)
-          }
-        }
-      }
-    }
-    return recommendationByRecommenderIds
   }
 
   private async getEstimatedCO2eSavings(

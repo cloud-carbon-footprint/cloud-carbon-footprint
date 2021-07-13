@@ -13,5 +13,12 @@ export const mockedProjects: Partial<Project>[][] = [
         lifecycleState: 'ACTIVE',
       },
     },
+    {
+      id: 'project-1',
+      metadata: {
+        name: 'project-name-1',
+        lifecycleState: 'DELETE REQUESTED',
+      },
+    },
   ],
 ]
