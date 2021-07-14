@@ -2,7 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-const mockedInstanceResultItems: any = {
+export const mockedInstanceResultItems: any = {
   data: {
     items: {
       'zones/us-west1-a': {
@@ -12,19 +12,19 @@ const mockedInstanceResultItems: any = {
     },
   },
 }
-const mockedDisksResultItems: any = {
+export const mockedDisksResultItems: any = {
   data: { items: {} },
 }
-const mockedAddressesResultItems: any = {
+export const mockedAddressesResultItems: any = {
   data: { items: {} },
 }
-const mockedInstanceGetItems: any = {
+export const mockedInstanceGetItems: any = {
   data: {
     machineType:
       'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
   },
 }
-const mockedMachineTypesGetItems: any = {
+export const mockedMachineTypesGetItems: any = {
   data: {
     guestCpus: 32,
   },

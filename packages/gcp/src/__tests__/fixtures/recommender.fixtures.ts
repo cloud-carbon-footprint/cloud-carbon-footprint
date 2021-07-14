@@ -23,10 +23,3 @@ export const mockRecommendationsResults: any = [
     },
   ],
 ]
-export const mockRecommenderClient = {
-  listRecommendations: jest
-    .fn()
-    .mockResolvedValueOnce(mockRecommendationsResults)
-    .mockResolvedValue([[]]),
-  projectLocationRecommenderPath: jest.fn(),
-}

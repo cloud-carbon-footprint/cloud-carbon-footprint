@@ -12,18 +12,26 @@ import {
   mockGoogleAuthClient,
   mockGoogleComputeClient,
 } from './fixtures/googleapis.fixtures'
-import {
-  mockRecommendationsResults,
-  mockRecommenderClient,
-} from './fixtures/recommender.fixtures'
+import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
+import { RecommenderClient } from '@google-cloud/recommender'
 
 jest.mock('@google-cloud/resource-manager', () => ({
   Resource: jest.fn().mockImplementation(() => ({
     getProjects: jest.fn().mockResolvedValue(mockedProjects),
+  })),
+}))
+
+jest.mock('@google-cloud/recommender', () => ({
+  RecommenderClient: jest.fn().mockImplementation(() => ({
+    listRecommendations: jest
+      .fn()
+      .mockResolvedValueOnce(mockRecommendationsResults)
+      .mockResolvedValue([[]]),
+    projectLocationRecommenderPath: jest.fn(),
   })),
 }))
 
@@ -32,7 +40,7 @@ describe('GCP Service Wrapper', () => {
     new Resource(),
     mockGoogleAuthClient,
     mockGoogleComputeClient,
-    mockRecommenderClient,
+    new RecommenderClient(),
   )
 
   it('gets active projects', async () => {
