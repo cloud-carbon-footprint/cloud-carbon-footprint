@@ -17,6 +17,9 @@ import {
   mockRecommenderClient,
 } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
+import { compute_v1 } from 'googleapis'
+import Schema$Instance = compute_v1.Schema$Instance
+import Schema$MachineType = compute_v1.Schema$MachineType
 
 jest.mock('@google-cloud/resource-manager', () => ({
   Resource: jest.fn().mockImplementation(() => ({
@@ -101,5 +104,36 @@ describe('GCP Service Wrapper', () => {
     ]
 
     expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('gets instance details', async () => {
+    const instanceDetails: Schema$Instance =
+      await serviceWrapper.getInstanceDetails(
+        'project',
+        'us-west1-b',
+        'test-instance',
+      )
+
+    const expectedResult = {
+      machineType:
+        'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
+    }
+
+    expect(instanceDetails).toEqual(expectedResult)
+  })
+
+  it('gets machine type details', async () => {
+    const machineTypeDetails: Schema$MachineType =
+      await serviceWrapper.getMachineTypeDetails(
+        'project',
+        'us-west1-b',
+        'test-instance',
+      )
+
+    const expectedResult = {
+      guestCpus: 32,
+    }
+
+    expect(machineTypeDetails).toEqual(expectedResult)
   })
 })

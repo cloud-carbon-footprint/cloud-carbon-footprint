@@ -4,11 +4,8 @@
 
 import R from 'ramda'
 import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
-import { compute_v1 } from 'googleapis'
 import IMoney = recommenderPrototypes.type.IMoney
 import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
 import {
   COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,
@@ -33,9 +30,6 @@ export default class Recommendations implements ICloudRecommendationsService {
     private readonly computeEstimator: ComputeEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
-    private readonly googleAuthClient: any,
-    private readonly googleComputeClient: any,
-    private readonly googleRecommenderClient: any,
     private readonly googleServiceWrapper: ServiceWrapper,
   ) {}
 
@@ -112,17 +106,19 @@ export default class Recommendations implements ICloudRecommendationsService {
       switch (recommendation.recommenderSubtype) {
         case RECOMMENDATION_TYPES.STOP_VM:
           const instanceId = recommendation.description.split("'")[1]
-          const instanceDetails = await this.getInstanceDetails(
-            projectId,
-            zone,
-            instanceId,
-          )
+          const instanceDetails =
+            await this.googleServiceWrapper.getInstanceDetails(
+              projectId,
+              zone,
+              instanceId,
+            )
           const machineType = instanceDetails.machineType.split('/').pop()
-          const machineTypeDetails = await this.getMachineTypeDetails(
-            projectId,
-            zone,
-            machineType,
-          )
+          const machineTypeDetails =
+            await this.googleServiceWrapper.getMachineTypeDetails(
+              projectId,
+              zone,
+              machineType,
+            )
           const computeCO2eEstimatedSavings = this.estimateComputeCO2eSavings(
             machineType.split('-')[0],
             machineTypeDetails.guestCpus,
@@ -141,40 +137,6 @@ export default class Recommendations implements ICloudRecommendationsService {
       console.log(`Error: ${err}`)
       return { timestamp: undefined, kilowattHours: 0, co2e: 0 }
     }
-  }
-
-  private async getInstanceDetails(
-    projectId: string,
-    zone: string,
-    instanceId: string,
-  ): Promise<Schema$Instance> {
-    const computeEngineRequest = {
-      project: projectId,
-      zone: zone,
-      instance: instanceId,
-      auth: this.googleAuthClient,
-    }
-    const result = await this.googleComputeClient.instances.get(
-      computeEngineRequest,
-    )
-    return result.data
-  }
-
-  private async getMachineTypeDetails(
-    projectId: string,
-    zone: string,
-    machineType: string,
-  ): Promise<Schema$MachineType> {
-    const machineTypeRequest = {
-      project: projectId,
-      zone: zone,
-      machineType: machineType,
-      auth: this.googleAuthClient,
-    }
-    const result = await this.googleComputeClient.machineTypes.get(
-      machineTypeRequest,
-    )
-    return result.data
   }
 
   private estimateComputeCO2eSavings(

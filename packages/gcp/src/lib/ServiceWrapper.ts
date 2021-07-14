@@ -8,6 +8,9 @@ import {
   ActiveProject,
   RecommenderRecommendations,
 } from './RecommendationsTypes'
+import { compute_v1 } from 'googleapis'
+import Schema$Instance = compute_v1.Schema$Instance
+import Schema$MachineType = compute_v1.Schema$MachineType
 
 const RECOMMENDER_IDS: string[] = [
   // 'google.accounts.security.SecurityKeyRecommender',
@@ -146,5 +149,39 @@ export default class ServiceWrapper {
       }
     }
     return recommendationByRecommenderIds
+  }
+
+  async getInstanceDetails(
+    projectId: string,
+    zone: string,
+    instanceId: string,
+  ): Promise<Schema$Instance> {
+    const computeEngineRequest = {
+      project: projectId,
+      zone: zone,
+      instance: instanceId,
+      auth: this.googleAuthClient,
+    }
+    const result = await this.googleComputeClient.instances.get(
+      computeEngineRequest,
+    )
+    return result.data
+  }
+
+  async getMachineTypeDetails(
+    projectId: string,
+    zone: string,
+    machineType: string,
+  ): Promise<Schema$MachineType> {
+    const machineTypeRequest = {
+      project: projectId,
+      zone: zone,
+      machineType: machineType,
+      auth: this.googleAuthClient,
+    }
+    const result = await this.googleComputeClient.machineTypes.get(
+      machineTypeRequest,
+    )
+    return result.data
   }
 }

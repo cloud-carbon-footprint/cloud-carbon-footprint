@@ -43,9 +43,6 @@ describe('GCP Recommendations Service', () => {
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      mockGoogleAuthClient,
-      mockGoogleComputeClient,
-      mockRecommenderClient,
       new ServiceWrapper(
         new Resource(),
         mockGoogleAuthClient,
