@@ -37,7 +37,7 @@ export const convertGigabyteMonthsToTerabyteHours = (
   usageAmount: number,
   timestamp: Date,
 ): number => {
-  const daysInMonth = moment(timestamp).daysInMonth()
+  const daysInMonth = moment(timestamp).utc().daysInMonth()
   return (usageAmount / 1000) * (24 * daysInMonth)
 }
 

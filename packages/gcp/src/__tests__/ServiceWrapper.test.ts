@@ -122,9 +122,10 @@ describe('GCP Service Wrapper', () => {
         'test-instance',
       )
 
-    const expectedResult = {
+    const expectedResult: any = {
       machineType:
         'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
+      disks: [],
     }
 
     expect(instanceDetails).toEqual(expectedResult)
@@ -143,5 +144,13 @@ describe('GCP Service Wrapper', () => {
     }
 
     expect(machineTypeDetails).toEqual(expectedResult)
+  })
+
+  it('gets the storage type from a disk name', () => {
+    const ssdStorageType = serviceWrapper.getStorageTypeFromDiskName('ssd-test')
+    const hddStorageType = serviceWrapper.getStorageTypeFromDiskName('hdd-test')
+
+    expect(ssdStorageType).toBe('SSD')
+    expect(hddStorageType).toBe('HDD')
   })
 })

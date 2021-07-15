@@ -2,6 +2,7 @@
  * © 2021 ThoughtWorks, Inc.
  */
 import { google } from 'googleapis'
+import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { Resource } from '@google-cloud/resource-manager'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
@@ -13,13 +14,18 @@ import { GCP_CLOUD_CONSTANTS } from '../domain'
 import Recommendations from '../lib/Recommendations'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
+
+import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
 import {
   mockedAddressesResultItems,
   mockedDisksResultItems,
+  mockedInstanceGetItems,
+  mockedInstanceGetItemsWithBothDisks,
+  mockedInstanceGetItemsWithHDDDisks,
+  mockedInstanceGetItemsWithSSDDisks,
   mockedInstanceResultItems,
   mockedMachineTypesGetItems,
 } from './fixtures/googleapis.fixtures'
-import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
 
 jest.mock('moment', () => {
   return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
@@ -43,7 +49,7 @@ jest.mock('@google-cloud/recommender', () => ({
 
 describe('GCP Recommendations Service', () => {
   let googleAuthClient: any
-  let googleComputeClient: any
+  let googleComputeClient: APIEndpoint
 
   beforeAll(async () => {
     const getClientSpy = jest.spyOn(google.auth, 'getClient')
@@ -54,29 +60,32 @@ describe('GCP Recommendations Service', () => {
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     })
     googleComputeClient = google.compute('v1')
-  })
 
-  it('return recommendations for stop VM', async () => {
-    setupAggregatedListSpy(
+    setupSpy(
       googleComputeClient.instances,
+      'aggregatedList',
       mockedInstanceResultItems,
     )
-    setupAggregatedListSpy(googleComputeClient.disks, mockedDisksResultItems)
-    setupAggregatedListSpy(
+    setupSpy(
+      googleComputeClient.disks,
+      'aggregatedList',
+      mockedDisksResultItems,
+    )
+    setupSpy(
       googleComputeClient.addresses,
+      'aggregatedList',
       mockedAddressesResultItems,
     )
 
-    setupGetSpy(googleComputeClient.machineTypes, mockedMachineTypesGetItems)
+    setupSpy(
+      googleComputeClient.machineTypes,
+      'get',
+      mockedMachineTypesGetItems,
+    )
+  })
 
-    const mockedInstanceGetItems: any = {
-      data: {
-        machineType:
-          'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
-      },
-    }
-
-    setupGetSpy(googleComputeClient.instances, mockedInstanceGetItems)
+  it('returns recommendations for stop VM', async () => {
+    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
@@ -108,13 +117,127 @@ describe('GCP Recommendations Service', () => {
 
     expect(recommendations).toEqual(expectedResult)
   })
-  function setupAggregatedListSpy(spyMethod: any, result: any): void {
-    const aggregatedListSpy = jest.spyOn(spyMethod, 'aggregatedList')
-    ;(aggregatedListSpy as jest.Mock).mockResolvedValue(result)
-  }
 
-  function setupGetSpy(spyMethod: any, result: any): void {
-    const getSpy = jest.spyOn(spyMethod, 'get')
-    ;(getSpy as jest.Mock).mockResolvedValue(result)
+  it('returns recommendations for stop VM with an SSD disk for storage', async () => {
+    setupSpy(
+      googleComputeClient.instances,
+      'get',
+      mockedInstanceGetItemsWithSSDDisks,
+    )
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 77.452416,
+        co2eSavings: 0.009061932671999999,
+        costSavings: 15,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns recommendations for stop VM with an HDD disk for storage', async () => {
+    setupSpy(
+      googleComputeClient.instances,
+      'get',
+      mockedInstanceGetItemsWithHDDDisks,
+    )
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 68.780016,
+        co2eSavings: 0.008047261872,
+        costSavings: 15,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns recommendations for stop VM with an HDD and SSD disks for storage', async () => {
+    setupSpy(
+      googleComputeClient.instances,
+      'get',
+      mockedInstanceGetItemsWithBothDisks,
+    )
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 87.701616,
+        co2eSavings: 0.010261089072,
+        costSavings: 15,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  function setupSpy(
+    spyMethod: any,
+    targetFunction: string,
+    returnValue: any,
+  ): void {
+    const targetFunctionSpy = jest.spyOn(spyMethod, targetFunction)
+    ;(targetFunctionSpy as jest.Mock).mockResolvedValue(returnValue)
   }
 })

@@ -184,4 +184,9 @@ export default class ServiceWrapper {
     )
     return result.data
   }
+
+  getStorageTypeFromDiskName(diskName: string): string {
+    // TODO: Need to validate whether this is always true
+    return diskName.includes('ssd') ? 'SSD' : 'HDD'
+  }
 }

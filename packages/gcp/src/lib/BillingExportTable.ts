@@ -215,20 +215,13 @@ export default class BillingExportTable {
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: this.getReplicationFactor(usageRow),
     }
-    if (usageRow.usageType.includes('SSD')) {
-      return {
-        usesAverageCPUConstant: false,
-        ...this.ssdStorageEstimator.estimate(
-          [storageUsage],
-          usageRow.region,
-          emissionsFactors,
-          storageConstants,
-        )[0],
-      }
-    }
+
+    const storageEstimator = usageRow.usageType.includes('SSD')
+      ? this.ssdStorageEstimator
+      : this.hddStorageEstimator
     return {
       usesAverageCPUConstant: false,
-      ...this.hddStorageEstimator.estimate(
+      ...storageEstimator.estimate(
         [storageUsage],
         usageRow.region,
         emissionsFactors,

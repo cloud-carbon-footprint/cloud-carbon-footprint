@@ -12,6 +12,7 @@ import {
   FootprintEstimate,
   ICloudRecommendationsService,
   StorageEstimator,
+  StorageUsage,
 } from '@cloud-carbon-footprint/core'
 import {
   getHoursInMonth,
@@ -119,12 +120,43 @@ export default class Recommendations implements ICloudRecommendationsService {
               zone,
               machineType,
             )
+
+          const region = zone.slice(0, -2)
           const computeCO2eEstimatedSavings = this.estimateComputeCO2eSavings(
             machineType.split('-')[0],
             machineTypeDetails.guestCpus,
-            zone.slice(0, -2),
+            region,
           )
-          return computeCO2eEstimatedSavings
+          const storageCO2eEstimatedSavings = instanceDetails.disks.map(
+            (disk) => {
+              const storageType =
+                this.googleServiceWrapper.getStorageTypeFromDiskName(
+                  disk.deviceName,
+                )
+              return this.estimateStorageCO2eSavings(
+                storageType,
+                parseFloat(disk.diskSizeGb),
+                region,
+              )
+            },
+          )
+          const storageKilowattHoursSavings = R.sum(
+            storageCO2eEstimatedSavings.map(
+              (estimate) => estimate.kilowattHours,
+            ),
+          )
+          const storageCo2eSavings = R.sum(
+            storageCO2eEstimatedSavings.map((estimate) => estimate.co2e),
+          )
+
+          return {
+            co2e: computeCO2eEstimatedSavings.co2e + storageCo2eSavings,
+            kilowattHours:
+              computeCO2eEstimatedSavings.kilowattHours +
+              storageKilowattHoursSavings,
+            timestamp: undefined,
+          }
+
         default:
           console.log(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,
@@ -168,6 +200,34 @@ export default class Recommendations implements ICloudRecommendationsService {
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       computeConstants,
     )[0]
+  }
+
+  private estimateStorageCO2eSavings(
+    storageType: string,
+    storageGigabytes: number,
+    region: string,
+  ): FootprintEstimate {
+    const storageUsage: StorageUsage = {
+      terabyteHours: getHoursInMonth() * storageGigabytes,
+    }
+    const storageConstants = {
+      powerUsageEffectiveness: GCP_CLOUD_CONSTANTS.getPUE(region),
+    }
+
+    const storageEstimator =
+      storageType === 'SSD'
+        ? this.ssdStorageEstimator
+        : this.hddStorageEstimator
+
+    return {
+      usesAverageCPUConstant: false,
+      ...storageEstimator.estimate(
+        [storageUsage],
+        region,
+        GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        storageConstants,
+      )[0],
+    }
   }
 
   /* Refer to GCP Documentation for explanation of Money object:
