@@ -103,8 +103,9 @@ export default class Recommendations implements ICloudRecommendationsService {
       )
       return recommendationsResult
     } catch (e) {
-      this.recommendationsLogger.warn(
-        'Failed to grab AWS Rightsizing recommendations',
+      this.recommendationsLogger.error(
+        'Failed to grab AWS Rightsizing recommendations.',
+        e,
       )
     }
   }
