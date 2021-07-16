@@ -137,17 +137,12 @@ describe('AWS Recommendations Service', () => {
     expect(result).toEqual(expectedResult)
   })
   it('Logs the error response if there is a problem getting recommendations', async () => {
-    jest.mock('../lib/ServiceWrapper', () => ({
-      ...(jest.requireActual('../lib/ServiceWrapper') as Record<
-        string,
-        unknown
-      >),
-      getRightsizingRecommendationsResponses: jest.fn().mockRejectedValue(null),
-    }))
-
-    const consoleWarning = console.warn
-    console.warn = jest.fn()
-    console.warn('Test console warning')
+    getRightsizingRecommendationSpy.mockRejectedValue({ message: 'error-test' })
+    AWSMock.mock(
+      'CostExplorer',
+      'getRightsizingRecommendation',
+      getRightsizingRecommendationSpy,
+    )
 
     const awsRecommendationsServices = new Recommendations(
       new ComputeEstimator(),
@@ -155,11 +150,11 @@ describe('AWS Recommendations Service', () => {
       getServiceWrapper(),
     )
 
-    await awsRecommendationsServices.getRecommendations()
-
-    expect(console.warn).toHaveBeenCalled()
-    expect(console.warn).toHaveBeenCalledWith('Test console warning')
-    console.warn = consoleWarning
+    await expect(() =>
+      awsRecommendationsServices.getRecommendations(),
+    ).rejects.toThrow(
+      `Failed to grab AWS Rightsizing recommendations. Reason: error-test`,
+    )
   })
 
   const getRightsizingRecommendationSpy = jest.fn()

@@ -3,7 +3,7 @@
  */
 import R from 'ramda'
 import { Project, Resource } from '@google-cloud/resource-manager'
-import { wait } from '@cloud-carbon-footprint/common'
+import { Logger, wait } from '@cloud-carbon-footprint/common'
 import {
   ActiveProject,
   RecommenderRecommendations,
@@ -11,16 +11,34 @@ import {
 import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
+import { APIEndpoint } from 'googleapis-common'
+import { RecommenderClient } from '@google-cloud/recommender'
+import {
+  Compute,
+  JWT,
+  UserRefreshClient,
+  BaseExternalAccountClient,
+} from 'google-auth-library'
 
 const RETRY_AFTER = 10
 
+//TODO: move this to the common package to be used by multiple packages
+export type GoogleAuthClient =
+  | Compute
+  | JWT
+  | UserRefreshClient
+  | BaseExternalAccountClient
+
 export default class ServiceWrapper {
+  private readonly serviceWrapperLogger: Logger
   constructor(
     private readonly resourceManagerClient: Resource,
-    private readonly googleAuthClient: any,
-    private readonly googleComputeClient: any,
-    private readonly googleRecommenderClient: any,
-  ) {}
+    private readonly googleAuthClient: GoogleAuthClient,
+    private readonly googleComputeClient: APIEndpoint,
+    private readonly googleRecommenderClient: RecommenderClient,
+  ) {
+    this.serviceWrapperLogger = new Logger('GCP Service Wrapper')
+  }
 
   async getActiveProjectsAndZones(): Promise<ActiveProject[]> {
     const projects = await this.getProjects()
@@ -80,7 +98,9 @@ export default class ServiceWrapper {
         ]),
       }
     } catch (e) {
-      console.log(e.message)
+      this.serviceWrapperLogger.warn(
+        `Failed to get active zones for project: ${project.id}. Error: ${e.message} `,
+      )
       return []
     }
   }
@@ -94,7 +114,6 @@ export default class ServiceWrapper {
         })
         .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
     } catch (e) {
-      console.log(e.message)
       return []
     }
   }
@@ -126,8 +145,8 @@ export default class ServiceWrapper {
           })
         } catch (err) {
           if (err.details?.includes('Quota exceeded')) {
-            console.log(
-              `Rate limit hit. Retrying after ${RETRY_AFTER} seconds.`,
+            this.serviceWrapperLogger.warn(
+              `GCP Recommendations API quota exceeded. Retrying after ${RETRY_AFTER} seconds.`,
             )
             await wait(RETRY_AFTER * 1000)
           }

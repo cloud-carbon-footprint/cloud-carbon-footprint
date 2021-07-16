@@ -147,8 +147,8 @@ describe('GCP Recommendations Service', () => {
         region: 'us-west1',
         recommendationType: 'STOP_VM',
         recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 77.452416,
-        co2eSavings: 0.009061932671999999,
+        kilowattHourSavings: 58.5497376,
+        co2eSavings: 0.0068503192992,
         costSavings: 15,
       },
     ]
@@ -185,8 +185,8 @@ describe('GCP Recommendations Service', () => {
         region: 'us-west1',
         recommendationType: 'STOP_VM',
         recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 68.780016,
-        co2eSavings: 0.008047261872,
+        kilowattHourSavings: 58.5410652,
+        co2eSavings: 0.0068493046284,
         costSavings: 15,
       },
     ]
@@ -223,8 +223,8 @@ describe('GCP Recommendations Service', () => {
         region: 'us-west1',
         recommendationType: 'STOP_VM',
         recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 87.701616,
-        co2eSavings: 0.010261089072,
+        kilowattHourSavings: 58.559986800000004,
+        co2eSavings: 0.0068515184556,
         costSavings: 15,
       },
     ]

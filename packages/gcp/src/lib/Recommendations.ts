@@ -16,6 +16,7 @@ import {
 } from '@cloud-carbon-footprint/core'
 import {
   getHoursInMonth,
+  Logger,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import {
@@ -41,13 +42,15 @@ export default class Recommendations implements ICloudRecommendationsService {
     'google.logging.productSuggestion.ContainerRecommender',
     'google.monitoring.productSuggestion.ComputeRecommender',
   ]
-
+  private readonly recommendationsLogger: Logger
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly ssdStorageEstimator: StorageEstimator,
     private readonly googleServiceWrapper: ServiceWrapper,
-  ) {}
+  ) {
+    this.recommendationsLogger = new Logger('GCPRecommendations')
+  }
 
   async getRecommendations(): Promise<RecommendationResult[]> {
     const activeProjectsAndZones =
@@ -136,7 +139,6 @@ export default class Recommendations implements ICloudRecommendationsService {
               zone,
               machineType,
             )
-
           const region = zone.slice(0, -2)
           const computeCO2eEstimatedSavings = this.estimateComputeCO2eSavings(
             machineType.split('-')[0],
@@ -172,15 +174,14 @@ export default class Recommendations implements ICloudRecommendationsService {
           }
 
         default:
-          console.log(
+          this.recommendationsLogger.warn(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,
           )
       }
     } catch (err) {
-      console.log(
-        `Unable to Estimate C02e Savings for Recommendations: ${recommendation.name}. Returning 0`,
+      this.recommendationsLogger.warn(
+        `Unable to Estimate C02e Savings for Recommendations: ${recommendation.name}. Error: ${err}. Returning 0`,
       )
-      console.log(`Error: ${err}`)
       return { timestamp: undefined, kilowattHours: 0, co2e: 0 }
     }
   }
@@ -222,7 +223,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     region: string,
   ): FootprintEstimate {
     const storageUsage: StorageUsage = {
-      terabyteHours: getHoursInMonth() * storageGigabytes,
+      terabyteHours: (getHoursInMonth() * storageGigabytes) / 1000,
     }
     const storageConstants = {
       powerUsageEffectiveness: GCP_CLOUD_CONSTANTS.getPUE(region),

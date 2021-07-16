@@ -15,7 +15,7 @@ import {
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
 
-import ServiceWrapper from '../lib/ServiceWrapper'
+import ServiceWrapper, { GoogleAuthClient } from '../lib/ServiceWrapper'
 import {
   ActiveProject,
   RecommenderRecommendations,
@@ -24,6 +24,7 @@ import {
 import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy } from './helpers'
+import { GoogleAuth } from 'google-auth-library'
 
 jest.mock('@google-cloud/resource-manager', () => ({
   Resource: jest.fn().mockImplementation(() => ({
@@ -45,13 +46,15 @@ describe('GCP Service Wrapper', () => {
   let serviceWrapper: ServiceWrapper
 
   beforeAll(async () => {
-    const getClientSpy = jest.spyOn(google.auth, 'getClient')
+    const auth = new GoogleAuth({
+      scopes: 'https://www.googleapis.com/auth/cloud-platform',
+    })
+
+    const getClientSpy = jest.spyOn(auth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 
-    const googleAuthClient = await google.auth.getClient({
-      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-    })
+    const googleAuthClient: GoogleAuthClient = await auth.getClient()
     const googleComputeClient = google.compute('v1')
 
     serviceWrapper = new ServiceWrapper(
