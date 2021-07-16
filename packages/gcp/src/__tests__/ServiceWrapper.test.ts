@@ -21,7 +21,7 @@ import {
   RecommenderRecommendations,
 } from '../lib/RecommendationsTypes'
 
-import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
+import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy } from './helpers'
 import { GoogleAuth } from 'google-auth-library'
@@ -36,7 +36,7 @@ jest.mock('@google-cloud/recommender', () => ({
   RecommenderClient: jest.fn().mockImplementation(() => ({
     listRecommendations: jest
       .fn()
-      .mockResolvedValueOnce(mockRecommendationsResults)
+      .mockResolvedValueOnce(mockStopVMRecommendationsResults)
       .mockResolvedValue([[]]),
     projectLocationRecommenderPath: jest.fn(),
   })),
@@ -116,7 +116,7 @@ describe('GCP Service Wrapper', () => {
       {
         id: 'test-id-1',
         zone: 'us-west1-a',
-        recommendations: mockRecommendationsResults[0],
+        recommendations: mockStopVMRecommendationsResults[0],
       },
       {
         id: 'test-id-2',

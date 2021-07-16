@@ -23,7 +23,10 @@ import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './MachineTypes'
+import {
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  SHARED_CORE_PROCESSORS_VCPU_MAPPING,
+} from './MachineTypes'
 import { ActiveProject, RECOMMENDATION_TYPES } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
 
@@ -164,7 +167,6 @@ export default class Recommendations implements ICloudRecommendationsService {
           const storageCo2eSavings = R.sum(
             storageFootprintEstimates.map((estimate) => estimate.co2e),
           )
-
           return {
             co2e: computeCO2eEstimatedSavings.co2e + storageCo2eSavings,
             kilowattHours:
@@ -172,7 +174,53 @@ export default class Recommendations implements ICloudRecommendationsService {
               storageKilowattHoursSavings,
             timestamp: undefined,
           }
+        case RECOMMENDATION_TYPES.CHANGE_MACHINE_TYPE:
+          const currentMachineType = recommendation.description
+            .replace('.', '')
+            .split(' ')[7]
+          const newMachineType = recommendation.description
+            .replace('.', '')
+            .split(' ')[9]
+          const currentMachineTypeDetails =
+            await this.googleServiceWrapper.getMachineTypeDetails(
+              projectId,
+              zone,
+              currentMachineType,
+            )
+          const newMachineTypeDetails =
+            await this.googleServiceWrapper.getMachineTypeDetails(
+              projectId,
+              zone,
+              newMachineType,
+            )
 
+          const currentMachineTypeVCPus = Object.keys(
+            SHARED_CORE_PROCESSORS_VCPU_MAPPING,
+          ).includes(currentMachineType)
+            ? SHARED_CORE_PROCESSORS_VCPU_MAPPING[currentMachineType]
+            : currentMachineTypeDetails.guestCpus
+          const newMachineTypeVCPus = Object.keys(
+            SHARED_CORE_PROCESSORS_VCPU_MAPPING,
+          ).includes(newMachineType)
+            ? SHARED_CORE_PROCESSORS_VCPU_MAPPING[newMachineType]
+            : newMachineTypeDetails.guestCpus
+
+          const currentComputeCO2e = this.estimateComputeCO2eSavings(
+            currentMachineType.split('-')[0],
+            currentMachineTypeVCPus,
+            zone.slice(0, -2),
+          )
+          const newComputeCO2e = this.estimateComputeCO2eSavings(
+            newMachineType.split('-')[0],
+            newMachineTypeVCPus,
+            zone.slice(0, -2),
+          )
+          return {
+            co2e: currentComputeCO2e.co2e - newComputeCO2e.co2e,
+            kilowattHours:
+              currentComputeCO2e.kilowattHours - newComputeCO2e.kilowattHours,
+            timestamp: undefined,
+          }
         default:
           this.recommendationsLogger.warn(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,

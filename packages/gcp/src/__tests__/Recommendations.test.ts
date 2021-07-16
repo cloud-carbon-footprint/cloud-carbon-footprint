@@ -14,17 +14,24 @@ import { GCP_CLOUD_CONSTANTS } from '../domain'
 import Recommendations from '../lib/Recommendations'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
-import { setupSpy } from './helpers'
-import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
+import { setupSpy, setupSpyWithMultipleValues } from './helpers'
+import {
+  mockChangeMachineTypeRecommendationsResults,
+  mockStopVMRecommendationsResults,
+} from './fixtures/recommender.fixtures'
 import {
   mockedAddressesResultItems,
   mockedDisksResultItems,
   mockedInstanceGetItems,
+  mockedInstanceGetItemsNew,
+  mockedInstanceGetItemsCurrent,
   mockedInstanceGetItemsWithBothDisks,
   mockedInstanceGetItemsWithHDDDisks,
   mockedInstanceGetItemsWithSSDDisks,
   mockedInstanceResultItems,
   mockedMachineTypesGetItems,
+  mockedMachineTypesGetItemsNew,
+  mockedMachineTypesGetItemsCurrent,
 } from './fixtures/googleapis.fixtures'
 
 jest.mock('moment', () => {
@@ -37,12 +44,11 @@ jest.mock('@google-cloud/resource-manager', () => ({
   })),
 }))
 
+const mockListRecommendations = jest.fn()
+
 jest.mock('@google-cloud/recommender', () => ({
   RecommenderClient: jest.fn().mockImplementation(() => ({
-    listRecommendations: jest
-      .fn()
-      .mockResolvedValueOnce(mockRecommendationsResults)
-      .mockResolvedValue([[]]),
+    listRecommendations: mockListRecommendations,
     projectLocationRecommenderPath: jest.fn(),
   })),
 }))
@@ -76,53 +82,199 @@ describe('GCP Recommendations Service', () => {
       'aggregatedList',
       mockedAddressesResultItems,
     )
+  })
 
-    setupSpy(
+  describe('Stop VM Recommendations', () => {
+    beforeAll(() => {
+      setupSpy(
+        googleComputeClient.machineTypes,
+        'get',
+        mockedMachineTypesGetItems,
+      )
+    })
+
+    it('returns recommendations for stop VM with no storage', async () => {
+      mockListRecommendations
+        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValue([[]])
+      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+
+      const recommendationsService = new Recommendations(
+        new ComputeEstimator(),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new ServiceWrapper(
+          new Resource(),
+          googleAuthClient,
+          googleComputeClient,
+          new RecommenderClient(),
+        ),
+      )
+
+      const recommendations = await recommendationsService.getRecommendations()
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'GCP',
+          accountId: 'project',
+          accountName: 'project-name',
+          region: 'us-west1',
+          recommendationType: 'STOP_VM',
+          recommendationDetail:
+            "Save cost by stopping Idle VM 'test-instance'.",
+          kilowattHourSavings: 58.530816,
+          co2eSavings: 0.006848105472,
+          costSavings: 15,
+        },
+      ]
+
+      expect(recommendations).toEqual(expectedResult)
+    })
+
+    it('returns recommendations for stop VM with an SSD disk for storage', async () => {
+      mockListRecommendations
+        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValue([[]])
+      setupSpy(
+        googleComputeClient.instances,
+        'get',
+        mockedInstanceGetItemsWithSSDDisks,
+      )
+
+      const recommendationsService = new Recommendations(
+        new ComputeEstimator(),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new ServiceWrapper(
+          new Resource(),
+          googleAuthClient,
+          googleComputeClient,
+          new RecommenderClient(),
+        ),
+      )
+
+      const recommendations = await recommendationsService.getRecommendations()
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'GCP',
+          accountId: 'project',
+          accountName: 'project-name',
+          region: 'us-west1',
+          recommendationType: 'STOP_VM',
+          recommendationDetail:
+            "Save cost by stopping Idle VM 'test-instance'.",
+          kilowattHourSavings: 58.5497376,
+          co2eSavings: 0.0068503192992,
+          costSavings: 15,
+        },
+      ]
+
+      expect(recommendations).toEqual(expectedResult)
+    })
+
+    it('returns recommendations for stop VM with an HDD disk for storage', async () => {
+      mockListRecommendations
+        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValue([[]])
+      setupSpy(
+        googleComputeClient.instances,
+        'get',
+        mockedInstanceGetItemsWithHDDDisks,
+      )
+
+      const recommendationsService = new Recommendations(
+        new ComputeEstimator(),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new ServiceWrapper(
+          new Resource(),
+          googleAuthClient,
+          googleComputeClient,
+          new RecommenderClient(),
+        ),
+      )
+
+      const recommendations = await recommendationsService.getRecommendations()
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'GCP',
+          accountId: 'project',
+          accountName: 'project-name',
+          region: 'us-west1',
+          recommendationType: 'STOP_VM',
+          recommendationDetail:
+            "Save cost by stopping Idle VM 'test-instance'.",
+          kilowattHourSavings: 58.5410652,
+          co2eSavings: 0.0068493046284,
+          costSavings: 15,
+        },
+      ]
+
+      expect(recommendations).toEqual(expectedResult)
+    })
+
+    it('returns recommendations for stop VM with an HDD and SSD disks for storage', async () => {
+      mockListRecommendations
+        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValue([[]])
+      setupSpy(
+        googleComputeClient.instances,
+        'get',
+        mockedInstanceGetItemsWithBothDisks,
+      )
+
+      const recommendationsService = new Recommendations(
+        new ComputeEstimator(),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new ServiceWrapper(
+          new Resource(),
+          googleAuthClient,
+          googleComputeClient,
+          new RecommenderClient(),
+        ),
+      )
+
+      const recommendations = await recommendationsService.getRecommendations()
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'GCP',
+          accountId: 'project',
+          accountName: 'project-name',
+          region: 'us-west1',
+          recommendationType: 'STOP_VM',
+          recommendationDetail:
+            "Save cost by stopping Idle VM 'test-instance'.",
+          kilowattHourSavings: 58.559986800000004,
+          co2eSavings: 0.0068515184556,
+          costSavings: 15,
+        },
+      ]
+
+      expect(recommendations).toEqual(expectedResult)
+    })
+  })
+
+  it('returns recommendations for change machine type', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockChangeMachineTypeRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    setupSpyWithMultipleValues(
+      googleComputeClient.instances,
+      'get',
+      mockedInstanceGetItemsCurrent,
+      mockedInstanceGetItemsNew,
+    )
+
+    setupSpyWithMultipleValues(
       googleComputeClient.machineTypes,
       'get',
-      mockedMachineTypesGetItems,
-    )
-  })
-
-  it('returns recommendations for stop VM', async () => {
-    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
-
-    const recommendationsService = new Recommendations(
-      new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new Resource(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
-    )
-
-    const recommendations = await recommendationsService.getRecommendations()
-
-    const expectedResult: RecommendationResult[] = [
-      {
-        cloudProvider: 'GCP',
-        accountId: 'project',
-        accountName: 'project-name',
-        region: 'us-west1',
-        recommendationType: 'STOP_VM',
-        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 58.530816,
-        co2eSavings: 0.006848105472,
-        costSavings: 15,
-      },
-    ]
-
-    expect(recommendations).toEqual(expectedResult)
-  })
-
-  it('returns recommendations for stop VM with an SSD disk for storage', async () => {
-    setupSpy(
-      googleComputeClient.instances,
-      'get',
-      mockedInstanceGetItemsWithSSDDisks,
+      mockedMachineTypesGetItemsCurrent,
+      mockedMachineTypesGetItemsNew,
     )
 
     const recommendationsService = new Recommendations(
@@ -145,87 +297,12 @@ describe('GCP Recommendations Service', () => {
         accountId: 'project',
         accountName: 'project-name',
         region: 'us-west1',
-        recommendationType: 'STOP_VM',
-        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 58.5497376,
-        co2eSavings: 0.0068503192992,
-        costSavings: 15,
-      },
-    ]
-
-    expect(recommendations).toEqual(expectedResult)
-  })
-
-  it('returns recommendations for stop VM with an HDD disk for storage', async () => {
-    setupSpy(
-      googleComputeClient.instances,
-      'get',
-      mockedInstanceGetItemsWithHDDDisks,
-    )
-
-    const recommendationsService = new Recommendations(
-      new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new Resource(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
-    )
-
-    const recommendations = await recommendationsService.getRecommendations()
-
-    const expectedResult: RecommendationResult[] = [
-      {
-        cloudProvider: 'GCP',
-        accountId: 'project',
-        accountName: 'project-name',
-        region: 'us-west1',
-        recommendationType: 'STOP_VM',
-        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 58.5410652,
-        co2eSavings: 0.0068493046284,
-        costSavings: 15,
-      },
-    ]
-
-    expect(recommendations).toEqual(expectedResult)
-  })
-
-  it('returns recommendations for stop VM with an HDD and SSD disks for storage', async () => {
-    setupSpy(
-      googleComputeClient.instances,
-      'get',
-      mockedInstanceGetItemsWithBothDisks,
-    )
-
-    const recommendationsService = new Recommendations(
-      new ComputeEstimator(),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new Resource(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
-    )
-
-    const recommendations = await recommendationsService.getRecommendations()
-
-    const expectedResult: RecommendationResult[] = [
-      {
-        cloudProvider: 'GCP',
-        accountId: 'project',
-        accountName: 'project-name',
-        region: 'us-west1',
-        recommendationType: 'STOP_VM',
-        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
-        kilowattHourSavings: 58.559986800000004,
-        co2eSavings: 0.0068515184556,
-        costSavings: 15,
+        recommendationType: 'CHANGE_MACHINE_TYPE',
+        recommendationDetail:
+          'Save cost by changing machine type from e2-medium to e2-small.',
+        kilowattHourSavings: 1.6832339999999997,
+        co2eSavings: 0.00019693837799999997,
+        costSavings: 20,
       },
     ]
 

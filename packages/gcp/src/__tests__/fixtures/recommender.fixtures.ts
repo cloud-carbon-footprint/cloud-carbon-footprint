@@ -2,11 +2,9 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-export const mockRecommendationsResults: any = [
+export const mockStopVMRecommendationsResults: any = [
   [
     {
-      additionalImpact: [],
-      associatedInsights: [[Object]],
       name: 'project-name',
       description: "Save cost by stopping Idle VM 'test-instance'.",
       primaryImpact: {
@@ -20,6 +18,27 @@ export const mockRecommendationsResults: any = [
         projection: 'costProjection',
       },
       recommenderSubtype: 'STOP_VM',
+    },
+  ],
+]
+
+export const mockChangeMachineTypeRecommendationsResults: any = [
+  [
+    {
+      name: 'project-name',
+      description:
+        'Save cost by changing machine type from e2-medium to e2-small.',
+      primaryImpact: {
+        category: 'COST',
+        costProjection: {
+          cost: {
+            units: -20,
+            nanos: 0,
+          },
+        },
+        projection: 'costProjection',
+      },
+      recommenderSubtype: 'CHANGE_MACHINE_TYPE',
     },
   ],
 ]

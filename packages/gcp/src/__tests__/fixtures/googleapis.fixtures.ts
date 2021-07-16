@@ -25,6 +25,20 @@ export const mockedInstanceGetItems: any = {
     disks: [],
   },
 }
+export const mockedInstanceGetItemsCurrent: any = {
+  data: {
+    machineType:
+      'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/e2-medium',
+    disks: [],
+  },
+}
+export const mockedInstanceGetItemsNew: any = {
+  data: {
+    machineType:
+      'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/e2-small',
+    disks: [],
+  },
+}
 export const mockedInstanceGetItemsWithSSDDisks: any = {
   data: {
     machineType:
@@ -68,5 +82,15 @@ export const mockedInstanceGetItemsWithBothDisks: any = {
 export const mockedMachineTypesGetItems: any = {
   data: {
     guestCpus: 32,
+  },
+}
+export const mockedMachineTypesGetItemsCurrent: any = {
+  data: {
+    guestCpus: 2,
+  },
+}
+export const mockedMachineTypesGetItemsNew: any = {
+  data: {
+    guestCpus: 1,
   },
 }
