@@ -3,21 +3,27 @@
  */
 
 import { Resource } from '@google-cloud/resource-manager'
+import { compute_v1, google } from 'googleapis'
+import { RecommenderClient } from '@google-cloud/recommender'
+import {
+  mockedAddressesResultItems,
+  mockedDisksResultItems,
+  mockedInstanceGetItems,
+  mockedInstanceResultItems,
+  mockedMachineTypesGetItems,
+} from './fixtures/googleapis.fixtures'
+import Schema$Instance = compute_v1.Schema$Instance
+import Schema$MachineType = compute_v1.Schema$MachineType
+
 import ServiceWrapper from '../lib/ServiceWrapper'
 import {
   ActiveProject,
   RecommenderRecommendations,
 } from '../lib/RecommendationsTypes'
-import {
-  mockGoogleAuthClient,
-  mockGoogleComputeClient,
-} from './fixtures/googleapis.fixtures'
+
 import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
-import { compute_v1 } from 'googleapis'
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
-import { RecommenderClient } from '@google-cloud/recommender'
+import { setupSpy } from './helpers'
 
 jest.mock('@google-cloud/resource-manager', () => ({
   Resource: jest.fn().mockImplementation(() => ({
@@ -36,12 +42,47 @@ jest.mock('@google-cloud/recommender', () => ({
 }))
 
 describe('GCP Service Wrapper', () => {
-  const serviceWrapper = new ServiceWrapper(
-    new Resource(),
-    mockGoogleAuthClient,
-    mockGoogleComputeClient,
-    new RecommenderClient(),
-  )
+  let serviceWrapper: ServiceWrapper
+
+  beforeAll(async () => {
+    const getClientSpy = jest.spyOn(google.auth, 'getClient')
+
+    ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
+
+    const googleAuthClient = await google.auth.getClient({
+      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    })
+    const googleComputeClient = google.compute('v1')
+
+    serviceWrapper = new ServiceWrapper(
+      new Resource(),
+      googleAuthClient,
+      googleComputeClient,
+      new RecommenderClient(),
+    )
+
+    setupSpy(
+      googleComputeClient.instances,
+      'aggregatedList',
+      mockedInstanceResultItems,
+    )
+    setupSpy(
+      googleComputeClient.disks,
+      'aggregatedList',
+      mockedDisksResultItems,
+    )
+    setupSpy(
+      googleComputeClient.addresses,
+      'aggregatedList',
+      mockedAddressesResultItems,
+    )
+    setupSpy(
+      googleComputeClient.machineTypes,
+      'get',
+      mockedMachineTypesGetItems,
+    )
+    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+  })
 
   it('gets active projects', async () => {
     const activeProjectsAndZones: ActiveProject[] =
@@ -59,53 +100,23 @@ describe('GCP Service Wrapper', () => {
   })
 
   it('gets recommendations by recommender ids', async () => {
-    const activeProjectsAndZones: ActiveProject[] =
-      await serviceWrapper.getActiveProjectsAndZones()
+    const recommenderIds = ['test-id-1', 'test-id-2']
 
     const recommendations: RecommenderRecommendations[] =
-      await serviceWrapper.getRecommendationsByRecommenderIds(
-        activeProjectsAndZones[0],
+      await serviceWrapper.getRecommendationsForRecommenderIds(
+        'test-project-id',
         'us-west1-a',
+        recommenderIds,
       )
 
     const expectedResult: RecommenderRecommendations[] = [
       {
-        id: 'google.compute.image.IdleResourceRecommender',
+        id: 'test-id-1',
         zone: 'us-west1-a',
         recommendations: mockRecommendationsResults[0],
       },
       {
-        id: 'google.compute.address.IdleResourceRecommender',
-        zone: 'us-west1-a',
-        recommendations: [],
-      },
-      {
-        id: 'google.compute.disk.IdleResourceRecommender',
-        zone: 'us-west1-a',
-        recommendations: [],
-      },
-      {
-        id: 'google.compute.instance.IdleResourceRecommender',
-        zone: 'us-west1-a',
-        recommendations: [],
-      },
-      {
-        id: 'google.compute.instance.MachineTypeRecommender',
-        zone: 'us-west1-a',
-        recommendations: [],
-      },
-      {
-        id: 'google.compute.instanceGroupManager.MachineTypeRecommender',
-        zone: 'us-west1-a',
-        recommendations: [],
-      },
-      {
-        id: 'google.logging.productSuggestion.ContainerRecommender',
-        zone: 'us-west1-a',
-        recommendations: [],
-      },
-      {
-        id: 'google.monitoring.productSuggestion.ComputeRecommender',
+        id: 'test-id-2',
         zone: 'us-west1-a',
         recommendations: [],
       },

@@ -27,6 +27,21 @@ import { ActiveProject, RECOMMENDATION_TYPES } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
 
 export default class Recommendations implements ICloudRecommendationsService {
+  readonly RECOMMENDER_IDS: string[] = [
+    // 'google.accounts.security.SecurityKeyRecommender',
+    // 'google.compute.commitment.UsageCommitmentRecommender',
+    // 'google.iam.policy.Recommender',
+    // 'google.cloudsql.instance.OutOfDiskRecommender'
+    'google.compute.image.IdleResourceRecommender',
+    'google.compute.address.IdleResourceRecommender',
+    'google.compute.disk.IdleResourceRecommender',
+    'google.compute.instance.IdleResourceRecommender',
+    'google.compute.instance.MachineTypeRecommender',
+    'google.compute.instanceGroupManager.MachineTypeRecommender',
+    'google.logging.productSuggestion.ContainerRecommender',
+    'google.monitoring.productSuggestion.ComputeRecommender',
+  ]
+
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
@@ -58,9 +73,10 @@ export default class Recommendations implements ICloudRecommendationsService {
   ): Promise<RecommendationResult[]> {
     const recommendationsByIds = await Promise.all(
       project.zones.map(async (zone) => {
-        return await this.googleServiceWrapper.getRecommendationsByRecommenderIds(
-          project,
+        return await this.googleServiceWrapper.getRecommendationsForRecommenderIds(
+          project.id,
           zone,
+          this.RECOMMENDER_IDS,
         )
       }),
     )
@@ -127,7 +143,7 @@ export default class Recommendations implements ICloudRecommendationsService {
             machineTypeDetails.guestCpus,
             region,
           )
-          const storageCO2eEstimatedSavings = instanceDetails.disks.map(
+          const storageFootprintEstimates = instanceDetails.disks.map(
             (disk) => {
               const storageType =
                 this.googleServiceWrapper.getStorageTypeFromDiskName(
@@ -141,12 +157,10 @@ export default class Recommendations implements ICloudRecommendationsService {
             },
           )
           const storageKilowattHoursSavings = R.sum(
-            storageCO2eEstimatedSavings.map(
-              (estimate) => estimate.kilowattHours,
-            ),
+            storageFootprintEstimates.map((estimate) => estimate.kilowattHours),
           )
           const storageCo2eSavings = R.sum(
-            storageCO2eEstimatedSavings.map((estimate) => estimate.co2e),
+            storageFootprintEstimates.map((estimate) => estimate.co2e),
           )
 
           return {

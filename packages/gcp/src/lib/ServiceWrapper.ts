@@ -12,21 +12,6 @@ import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
 
-const RECOMMENDER_IDS: string[] = [
-  // 'google.accounts.security.SecurityKeyRecommender',
-  // 'google.compute.commitment.UsageCommitmentRecommender',
-  // 'google.iam.policy.Recommender',
-  // 'google.cloudsql.instance.OutOfDiskRecommender'
-  'google.compute.image.IdleResourceRecommender',
-  'google.compute.address.IdleResourceRecommender',
-  'google.compute.disk.IdleResourceRecommender',
-  'google.compute.instance.IdleResourceRecommender',
-  'google.compute.instance.MachineTypeRecommender',
-  'google.compute.instanceGroupManager.MachineTypeRecommender',
-  'google.logging.productSuggestion.ContainerRecommender',
-  'google.monitoring.productSuggestion.ComputeRecommender',
-]
-
 const RETRY_AFTER = 10
 
 export default class ServiceWrapper {
@@ -114,12 +99,13 @@ export default class ServiceWrapper {
     }
   }
 
-  async getRecommendationsByRecommenderIds(
-    project: ActiveProject,
+  async getRecommendationsForRecommenderIds(
+    projectId: string,
     zone: string,
+    recommenderIds: string[],
   ): Promise<RecommenderRecommendations[]> {
     const recommendationByRecommenderIds = []
-    for (const recommenderId of RECOMMENDER_IDS) {
+    for (const recommenderId of recommenderIds) {
       let inProcess = true
       while (inProcess) {
         try {
@@ -127,7 +113,7 @@ export default class ServiceWrapper {
             await this.googleRecommenderClient.listRecommendations({
               parent:
                 this.googleRecommenderClient.projectLocationRecommenderPath(
-                  project.id,
+                  projectId,
                   zone,
                   recommenderId,
                 ),

@@ -14,7 +14,7 @@ import { GCP_CLOUD_CONSTANTS } from '../domain'
 import Recommendations from '../lib/Recommendations'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
-
+import { setupSpy } from './helpers'
 import { mockRecommendationsResults } from './fixtures/recommender.fixtures'
 import {
   mockedAddressesResultItems,
@@ -231,13 +231,4 @@ describe('GCP Recommendations Service', () => {
 
     expect(recommendations).toEqual(expectedResult)
   })
-
-  function setupSpy(
-    spyMethod: any,
-    targetFunction: string,
-    returnValue: any,
-  ): void {
-    const targetFunctionSpy = jest.spyOn(spyMethod, targetFunction)
-    ;(targetFunctionSpy as jest.Mock).mockResolvedValue(returnValue)
-  }
 })

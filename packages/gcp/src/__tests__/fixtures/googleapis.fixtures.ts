@@ -70,20 +70,3 @@ export const mockedMachineTypesGetItems: any = {
     guestCpus: 32,
   },
 }
-
-export const mockGoogleAuthClient = jest.fn()
-export const mockGoogleComputeClient = {
-  instances: {
-    aggregatedList: jest.fn().mockResolvedValue(mockedInstanceResultItems),
-    get: jest.fn().mockResolvedValue(mockedInstanceGetItems),
-  },
-  disks: {
-    aggregatedList: jest.fn().mockResolvedValue(mockedDisksResultItems),
-  },
-  addresses: {
-    aggregatedList: jest.fn().mockResolvedValue(mockedAddressesResultItems),
-  },
-  machineTypes: {
-    get: jest.fn().mockResolvedValue(mockedMachineTypesGetItems),
-  },
-}
