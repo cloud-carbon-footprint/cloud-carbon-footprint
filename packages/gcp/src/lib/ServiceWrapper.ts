@@ -21,6 +21,10 @@ import {
   UserRefreshClient,
   BaseExternalAccountClient,
 } from 'google-auth-library'
+import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
+import Schema$InstancesScopedList = compute_v1.Schema$InstancesScopedList
+import Schema$DisksScopedList = compute_v1.Schema$DisksScopedList
+import Schema$AddressesScopedList = compute_v1.Schema$AddressesScopedList
 
 const RETRY_AFTER = 10
 
@@ -30,6 +34,15 @@ export type GoogleAuthClient =
   | JWT
   | UserRefreshClient
   | BaseExternalAccountClient
+
+type Zone = [
+  string,
+  (
+    | Schema$InstancesScopedList
+    | Schema$DisksScopedList
+    | Schema$AddressesScopedList
+  ),
+]
 
 export default class ServiceWrapper {
   private readonly serviceWrapperLogger: Logger
@@ -107,11 +120,11 @@ export default class ServiceWrapper {
     }
   }
 
-  private extractZones(items: any) {
+  private extractZones(items: InstanceData): string[] {
     if (!items) return []
     try {
       return Object.entries(items)
-        .filter((zone: any) => {
+        .filter((zone: Zone) => {
           return zone[1]?.warning?.code !== 'NO_RESULTS_ON_PAGE'
         })
         .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
