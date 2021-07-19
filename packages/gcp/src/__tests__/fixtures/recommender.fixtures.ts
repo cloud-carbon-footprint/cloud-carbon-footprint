@@ -42,3 +42,43 @@ export const mockChangeMachineTypeRecommendationsResults: any = [
     },
   ],
 ]
+
+export const mockDeleteDiskRecommendationsResults: any = [
+  [
+    {
+      name: 'project-name',
+      description: "Save cost by deleting idle persistent disk 'test-disk'.",
+      primaryImpact: {
+        category: 'COST',
+        costProjection: {
+          cost: {
+            units: -50,
+            nanos: 0,
+          },
+        },
+        projection: 'costProjection',
+      },
+      recommenderSubtype: 'DELETE_DISK',
+    },
+  ],
+]
+
+export const mockSnapshotAndDeleteDiskRecommendationsResults: any = [
+  [
+    {
+      name: 'project-name',
+      description: "Save cost by deleting idle persistent disk 'test-disk'.",
+      primaryImpact: {
+        category: 'COST',
+        costProjection: {
+          cost: {
+            units: -50,
+            nanos: 0,
+          },
+        },
+        projection: 'costProjection',
+      },
+      recommenderSubtype: 'SNAPSHOT_AND_DELETE_DISK',
+    },
+  ],
+]

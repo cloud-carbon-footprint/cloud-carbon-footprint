@@ -15,6 +15,18 @@ export const mockedInstanceResultItems: any = {
 export const mockedDisksResultItems: any = {
   data: { items: {} },
 }
+export const mockedDisksGetSSDDetails: any = {
+  data: {
+    sizeGb: '200',
+    type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
+  },
+}
+export const mockedDisksGetHDDDetails: any = {
+  data: {
+    sizeGb: '300',
+    type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard',
+  },
+}
 export const mockedAddressesResultItems: any = {
   data: { items: {} },
 }

@@ -7,6 +7,7 @@ import { compute_v1, google } from 'googleapis'
 import { RecommenderClient } from '@google-cloud/recommender'
 import {
   mockedAddressesResultItems,
+  mockedDisksGetSSDDetails,
   mockedDisksResultItems,
   mockedInstanceGetItems,
   mockedInstanceResultItems,
@@ -74,6 +75,7 @@ describe('GCP Service Wrapper', () => {
       'aggregatedList',
       mockedDisksResultItems,
     )
+    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetSSDDetails)
     setupSpy(
       googleComputeClient.addresses,
       'aggregatedList',
@@ -166,5 +168,20 @@ describe('GCP Service Wrapper', () => {
 
     expect(ssdStorageType).toBe('SSD')
     expect(hddStorageType).toBe('HDD')
+  })
+
+  it('gets disks details', async () => {
+    const diskDetails = await serviceWrapper.getDiskDetails(
+      'project',
+      'us-west1-b',
+      'test-disk',
+    )
+
+    const expectedResult = {
+      sizeGb: '200',
+      type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
+    }
+
+    expect(diskDetails).toEqual(expectedResult)
   })
 })

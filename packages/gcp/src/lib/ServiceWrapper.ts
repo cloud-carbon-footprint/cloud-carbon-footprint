@@ -11,6 +11,7 @@ import {
 import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
+import Schema$Disk = compute_v1.Schema$Disk
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
 import {
@@ -193,5 +194,20 @@ export default class ServiceWrapper {
   getStorageTypeFromDiskName(diskName: string): string {
     // TODO: Need to validate whether this is always true
     return diskName.includes('ssd') ? 'SSD' : 'HDD'
+  }
+
+  async getDiskDetails(
+    projectId: string,
+    zone: string,
+    diskId: string,
+  ): Promise<Schema$Disk> {
+    const diskDetailsRequest = {
+      project: projectId,
+      zone: zone,
+      disk: diskId,
+      auth: this.googleAuthClient,
+    }
+    const result = await this.googleComputeClient.disks.get(diskDetailsRequest)
+    return result.data
   }
 }

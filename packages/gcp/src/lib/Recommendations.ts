@@ -223,6 +223,23 @@ export default class Recommendations implements ICloudRecommendationsService {
               currentComputeCO2e.kilowattHours - newComputeCO2e.kilowattHours,
             timestamp: undefined,
           }
+        case RECOMMENDATION_TYPES.SNAPSHOT_AND_DELETE_DISK:
+        case RECOMMENDATION_TYPES.DELETE_DISK:
+          const diskId = recommendation.description.split("'")[1]
+          const diskDetails = await this.googleServiceWrapper.getDiskDetails(
+            projectId,
+            zone,
+            diskId,
+          )
+          const storageType =
+            this.googleServiceWrapper.getStorageTypeFromDiskName(
+              diskDetails.type.split('/').pop(),
+            )
+          return this.estimateStorageCO2eSavings(
+            storageType,
+            parseFloat(diskDetails.sizeGb),
+            zone.slice(0, -2),
+          )
         default:
           this.recommendationsLogger.warn(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,

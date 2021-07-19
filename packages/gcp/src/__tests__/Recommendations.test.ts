@@ -17,6 +17,8 @@ import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy, setupSpyWithMultipleValues } from './helpers'
 import {
   mockChangeMachineTypeRecommendationsResults,
+  mockDeleteDiskRecommendationsResults,
+  mockSnapshotAndDeleteDiskRecommendationsResults,
   mockStopVMRecommendationsResults,
 } from './fixtures/recommender.fixtures'
 import {
@@ -32,6 +34,8 @@ import {
   mockedMachineTypesGetItems,
   mockedMachineTypesGetItemsNew,
   mockedMachineTypesGetItemsCurrent,
+  mockedDisksGetSSDDetails,
+  mockedDisksGetHDDDetails,
 } from './fixtures/googleapis.fixtures'
 
 jest.mock('moment', () => {
@@ -303,6 +307,84 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 1.6832339999999997,
         co2eSavings: 0.00019693837799999997,
         costSavings: 20,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns recommendations for delete SSD disk', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockDeleteDiskRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetSSDDetails)
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'DELETE_DISK',
+        recommendationDetail:
+          "Save cost by deleting idle persistent disk 'test-disk'.",
+        kilowattHourSavings: 0.18921599999999997,
+        co2eSavings: 0.000022138271999999994,
+        costSavings: 50,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns recommendations for delete HDD disk', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockSnapshotAndDeleteDiskRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetHDDDetails)
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'SNAPSHOT_AND_DELETE_DISK',
+        recommendationDetail:
+          "Save cost by deleting idle persistent disk 'test-disk'.",
+        kilowattHourSavings: 0.15373799999999999,
+        co2eSavings: 0.000017987346,
+        costSavings: 50,
       },
     ]
 
