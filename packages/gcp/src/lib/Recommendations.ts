@@ -25,7 +25,7 @@ import {
 } from '../domain'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
-  SHARED_CORE_PROCESSORS_VCPU_MAPPING,
+  SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
 } from './MachineTypes'
 import { ActiveProject, RECOMMENDATION_TYPES } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
@@ -195,14 +195,16 @@ export default class Recommendations implements ICloudRecommendationsService {
             )
 
           const currentMachineTypeVCPus = Object.keys(
-            SHARED_CORE_PROCESSORS_VCPU_MAPPING,
+            SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
           ).includes(currentMachineType)
-            ? SHARED_CORE_PROCESSORS_VCPU_MAPPING[currentMachineType]
+            ? SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION[currentMachineType] /
+              GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
             : currentMachineTypeDetails.guestCpus
           const newMachineTypeVCPus = Object.keys(
-            SHARED_CORE_PROCESSORS_VCPU_MAPPING,
+            SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
           ).includes(newMachineType)
-            ? SHARED_CORE_PROCESSORS_VCPU_MAPPING[newMachineType]
+            ? SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION[newMachineType] /
+              GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
             : newMachineTypeDetails.guestCpus
 
           const currentComputeCO2e = this.estimateComputeCO2eSavings(

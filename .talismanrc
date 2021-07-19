@@ -212,7 +212,7 @@ fileignoreconfig:
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
   checksum: 9e02b7704ea5ec465151f5691cf1f9ed25a489a22dd9d2923d334bb45125e470
 - filename: packages/gcp/src/lib/MachineTypes.ts
-  checksum: d06f0694f5280ab1b93f7703fc61d12b5c36178111bd74382f46eebc11773514
+  checksum: fe6c335581e146315ca8feff01aae6ad4821e3935276f4d8fbefe3f84c1a1f8f
 - filename: packages/gcp/src/lib/ReplicationFactors.ts
   checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
 - filename: server/.env.template
