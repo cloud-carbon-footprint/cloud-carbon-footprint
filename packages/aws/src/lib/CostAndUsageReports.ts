@@ -16,7 +16,7 @@ import {
   configLoader,
   Logger,
   EstimationResult,
-  convertByteHoursToTerabyteHours,
+  convertBytesToTerabytes,
   convertGigabyteHoursToTerabyteHours,
   convertGigabyteMonthsToTerabyteHours,
   endsWithAny,
@@ -251,7 +251,7 @@ export default class CostAndUsageReports {
   ): number {
     if (this.usageTypeisByteHours(costAndUsageReportRow.usageType)) {
       // Convert from Byte-Hours to Terabyte Hours
-      return convertByteHoursToTerabyteHours(costAndUsageReportRow.usageAmount)
+      return convertBytesToTerabytes(costAndUsageReportRow.usageAmount)
     }
     // Convert from GB-Hours to Terabyte Hours
     if (costAndUsageReportRow.usageUnit === PRICING_UNITS.GB_HOURS) {

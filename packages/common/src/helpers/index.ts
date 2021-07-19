@@ -6,7 +6,7 @@ export {
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
   convertByteSecondsToGigabyteHours,
-  convertByteHoursToTerabyteHours,
+  convertBytesToTerabytes,
   convertGigabyteHoursToTerabyteHours,
   convertGigabyteMonthsToTerabyteHours,
   convertTerabytesToGigabytes,

@@ -3,7 +3,7 @@
  */
 
 import {
-  convertByteHoursToTerabyteHours,
+  convertBytesToTerabytes,
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
   convertGigabyteHoursToTerabyteHours,
@@ -24,7 +24,7 @@ describe('Calculations helpers', () => {
     expect(result).toEqual(4.6566128730773926e-9)
   })
   it('convert convert byteHours to terabyteHours', () => {
-    const result = convertByteHoursToTerabyteHours(usageAmount)
+    const result = convertBytesToTerabytes(usageAmount)
     expect(result).toEqual(4.547473508864641e-12)
   })
   it('convert convert gigabyteHours to terabyteHours', () => {

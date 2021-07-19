@@ -106,3 +106,8 @@ export const mockedMachineTypesGetItemsNew: any = {
     guestCpus: 1,
   },
 }
+export const mockedImageGetDetails: any = {
+  data: {
+    archiveSizeBytes: '580709696',
+  },
+}

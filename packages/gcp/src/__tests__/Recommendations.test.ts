@@ -18,6 +18,7 @@ import { setupSpy, setupSpyWithMultipleValues } from './helpers'
 import {
   mockChangeMachineTypeRecommendationsResults,
   mockDeleteDiskRecommendationsResults,
+  mockDeleteImageRecommendationsResults,
   mockSnapshotAndDeleteDiskRecommendationsResults,
   mockStopVMRecommendationsResults,
 } from './fixtures/recommender.fixtures'
@@ -36,6 +37,7 @@ import {
   mockedMachineTypesGetItemsCurrent,
   mockedDisksGetSSDDetails,
   mockedDisksGetHDDDetails,
+  mockedImageGetDetails,
 } from './fixtures/googleapis.fixtures'
 
 jest.mock('moment', () => {
@@ -385,6 +387,44 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.15373799999999999,
         co2eSavings: 0.000017987346,
         costSavings: 50,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns recommendations for delete image', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockDeleteImageRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    setupSpy(googleComputeClient.images, 'get', mockedImageGetDetails)
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'DELETE_IMAGE',
+        recommendationDetail: "Save cost by deleting idle image 'test-image'.",
+        kilowattHourSavings: 0.0002771527420842647,
+        co2eSavings: 3.2426870823858974e-8,
+        costSavings: 30,
       },
     ]
 

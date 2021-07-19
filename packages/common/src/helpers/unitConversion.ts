@@ -21,9 +21,7 @@ export const convertByteSecondsToGigabyteHours = (
   return usageAmount / 1073741824 / 3600
 }
 
-export const convertByteHoursToTerabyteHours = (
-  usageAmount: number,
-): number => {
+export const convertBytesToTerabytes = (usageAmount: number): number => {
   return usageAmount / 1099511627776
 }
 

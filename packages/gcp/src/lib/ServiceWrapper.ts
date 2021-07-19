@@ -12,6 +12,7 @@ import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
 import Schema$Disk = compute_v1.Schema$Disk
+import Schema$Image = compute_v1.Schema$Image
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
 import {
@@ -208,6 +209,21 @@ export default class ServiceWrapper {
       auth: this.googleAuthClient,
     }
     const result = await this.googleComputeClient.disks.get(diskDetailsRequest)
+    return result.data
+  }
+
+  async getImageDetails(
+    projectId: string,
+    imageId: string,
+  ): Promise<Schema$Image> {
+    const ImageDetailsRequest = {
+      project: projectId,
+      image: imageId,
+      auth: this.googleAuthClient,
+    }
+    const result = await this.googleComputeClient.images.get(
+      ImageDetailsRequest,
+    )
     return result.data
   }
 }

@@ -15,6 +15,7 @@ import {
   StorageUsage,
 } from '@cloud-carbon-footprint/core'
 import {
+  convertBytesToGigabytes,
   getHoursInMonth,
   Logger,
   RecommendationResult,
@@ -155,9 +156,9 @@ export default class Recommendations implements ICloudRecommendationsService {
                   disk.deviceName,
                 )
               return this.estimateStorageCO2eSavings(
-                storageType,
                 parseFloat(disk.diskSizeGb),
                 region,
+                storageType,
               )
             },
           )
@@ -236,8 +237,21 @@ export default class Recommendations implements ICloudRecommendationsService {
               diskDetails.type.split('/').pop(),
             )
           return this.estimateStorageCO2eSavings(
-            storageType,
             parseFloat(diskDetails.sizeGb),
+            zone.slice(0, -2),
+            storageType,
+          )
+        case RECOMMENDATION_TYPES.DELETE_IMAGE:
+          const imageId = recommendation.description.split("'")[1]
+          const imageDetails = await this.googleServiceWrapper.getImageDetails(
+            projectId,
+            imageId,
+          )
+          const imageArchiveSizeGigabytes = convertBytesToGigabytes(
+            parseFloat(imageDetails.archiveSizeBytes),
+          )
+          return this.estimateStorageCO2eSavings(
+            imageArchiveSizeGigabytes,
             zone.slice(0, -2),
           )
         default:
@@ -285,9 +299,9 @@ export default class Recommendations implements ICloudRecommendationsService {
   }
 
   private estimateStorageCO2eSavings(
-    storageType: string,
     storageGigabytes: number,
     region: string,
+    storageType?: string,
   ): FootprintEstimate {
     const storageUsage: StorageUsage = {
       terabyteHours: (getHoursInMonth() * storageGigabytes) / 1000,

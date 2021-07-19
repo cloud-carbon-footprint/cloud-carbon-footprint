@@ -9,6 +9,7 @@ import {
   mockedAddressesResultItems,
   mockedDisksGetSSDDetails,
   mockedDisksResultItems,
+  mockedImageGetDetails,
   mockedInstanceGetItems,
   mockedInstanceResultItems,
   mockedMachineTypesGetItems,
@@ -87,6 +88,7 @@ describe('GCP Service Wrapper', () => {
       mockedMachineTypesGetItems,
     )
     setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+    setupSpy(googleComputeClient.images, 'get', mockedImageGetDetails)
   })
 
   it('gets active projects', async () => {
@@ -183,5 +185,18 @@ describe('GCP Service Wrapper', () => {
     }
 
     expect(diskDetails).toEqual(expectedResult)
+  })
+
+  it('gets image details', async () => {
+    const imageDetails = await serviceWrapper.getImageDetails(
+      'project',
+      'test-image',
+    )
+
+    const expectedResult = {
+      archiveSizeBytes: '580709696',
+    }
+
+    expect(imageDetails).toEqual(expectedResult)
   })
 })

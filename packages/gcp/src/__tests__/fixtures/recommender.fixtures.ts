@@ -82,3 +82,23 @@ export const mockSnapshotAndDeleteDiskRecommendationsResults: any = [
     },
   ],
 ]
+
+export const mockDeleteImageRecommendationsResults: any = [
+  [
+    {
+      name: 'project-name',
+      description: "Save cost by deleting idle image 'test-image'.",
+      primaryImpact: {
+        category: 'COST',
+        costProjection: {
+          cost: {
+            units: -30,
+            nanos: 0,
+          },
+        },
+        projection: 'costProjection',
+      },
+      recommenderSubtype: 'DELETE_IMAGE',
+    },
+  ],
+]
