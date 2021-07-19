@@ -223,7 +223,7 @@ Here is the estimated HDD energy usage:
 - HDD average capacity in 2020 = **10** Terabytes per disk
 - Average wattage per disk for 2020 = **6.5** Watts per disk
 
-`Watts per Terabyte = Watts per disk / Terabytes per disk: 6.65 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
+`Watts per Terabyte = Watts per disk / Terabytes per disk: 6.5 W / 10 TB = 0.65 Watt-Hours per Terabyte-Hour for HDD`
 
 Here is the estimated SSD energy usage:
 
