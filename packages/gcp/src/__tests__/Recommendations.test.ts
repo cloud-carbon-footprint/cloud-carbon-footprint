@@ -12,7 +12,7 @@ import {
 } from '@cloud-carbon-footprint/core'
 import { GCP_CLOUD_CONSTANTS } from '../domain'
 import Recommendations from '../lib/Recommendations'
-import ServiceWrapper from '../lib/ServiceWrapper'
+import ServiceWrapper, { GoogleAuthClient } from '../lib/ServiceWrapper'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy, setupSpyWithMultipleValues } from './helpers'
 import {
@@ -60,7 +60,7 @@ jest.mock('@google-cloud/recommender', () => ({
 }))
 
 describe('GCP Recommendations Service', () => {
-  let googleAuthClient: any
+  let googleAuthClient: GoogleAuthClient
   let googleComputeClient: APIEndpoint
 
   beforeAll(async () => {

@@ -21,8 +21,12 @@ import App from '../App'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 
-const getDataForRecommendations = jest.spyOn(
+const getDataForAWSRecommendations = jest.spyOn(
   AWSAccount.prototype,
+  'getDataForRecommendations',
+)
+const getDataForGCPRecommendations = jest.spyOn(
+  GCPAccount.prototype,
   'getDataForRecommendations',
 )
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
@@ -867,7 +871,8 @@ describe('App', () => {
       },
     ]
 
-    getDataForRecommendations.mockResolvedValue(expectedRecommendations)
+    getDataForGCPRecommendations.mockResolvedValue([])
+    getDataForAWSRecommendations.mockResolvedValue(expectedRecommendations)
     const result = await app.getRecommendations()
 
     expect(result).toEqual(expectedRecommendations)
@@ -875,6 +880,7 @@ describe('App', () => {
 
   it('returns recommendations for aws with billing data', async () => {
     ;(configLoader as jest.Mock).mockReturnValue({
+      ...configLoader(),
       AWS: {
         ...configLoader().AWS,
         USE_BILLING_DATA: true,
@@ -894,7 +900,72 @@ describe('App', () => {
       },
     ]
 
-    getDataForRecommendations.mockResolvedValue(expectedRecommendations)
+    getDataForGCPRecommendations.mockResolvedValue([])
+    getDataForAWSRecommendations.mockResolvedValue(expectedRecommendations)
+    const result = await app.getRecommendations()
+
+    expect(result).toEqual(expectedRecommendations)
+  })
+
+  it('returns recommendations for gcp', async () => {
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'account-id',
+        accountName: 'account-name',
+        region: 'us-east1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 5,
+        co2eSavings: 20,
+        costSavings: 3,
+      },
+      {
+        cloudProvider: 'GCP',
+        accountId: 'account-id-5',
+        accountName: 'account-name-5',
+        region: 'us-east1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 5,
+        co2eSavings: 20,
+        costSavings: 13,
+      },
+    ]
+
+    getDataForAWSRecommendations.mockResolvedValue([])
+    getDataForGCPRecommendations
+      .mockResolvedValueOnce([expectedRecommendations[0]])
+      .mockResolvedValue([expectedRecommendations[1]])
+    const result = await app.getRecommendations()
+
+    expect(result).toEqual(expectedRecommendations)
+  })
+
+  it('returns recommendations for gcp with billing data', async () => {
+    ;(configLoader as jest.Mock).mockReturnValue({
+      ...configLoader(),
+      GCP: {
+        ...configLoader().GCP,
+        USE_BILLING_DATA: true,
+      },
+    })
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'account-id',
+        accountName: 'account-name',
+        region: 'us-east-1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 5,
+        co2eSavings: 20,
+        costSavings: 3,
+      },
+    ]
+
+    getDataForAWSRecommendations.mockResolvedValue([])
+    getDataForGCPRecommendations.mockResolvedValue(expectedRecommendations)
     const result = await app.getRecommendations()
 
     expect(result).toEqual(expectedRecommendations)

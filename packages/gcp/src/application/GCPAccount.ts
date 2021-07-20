@@ -5,6 +5,10 @@
 import { v3 } from '@google-cloud/monitoring'
 import { ClientOptions } from 'google-gax'
 import { BigQuery } from '@google-cloud/bigquery'
+import { Resource } from '@google-cloud/resource-manager'
+import { RecommenderClient } from '@google-cloud/recommender'
+import { APIEndpoint } from 'googleapis-common'
+import { google } from 'googleapis'
 import {
   ICloudService,
   Region,
@@ -14,8 +18,13 @@ import {
   MemoryEstimator,
   CloudProviderAccount,
 } from '@cloud-carbon-footprint/core'
-import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
-import { BillingExportTable, ComputeEngine } from '../lib'
+import {
+  configLoader,
+  EstimationResult,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
+import ServiceWrapper, { GoogleAuthClient } from '../lib/ServiceWrapper'
+import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
 import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
@@ -75,6 +84,27 @@ export default class GCPAccount extends CloudProviderAccount {
     return configLoader().GCP.CURRENT_SERVICES.map(({ key }) => {
       return this.getService(key)
     })
+  }
+
+  async getDataForRecommendations(): Promise<RecommendationResult[]> {
+    const googleAuthClient: GoogleAuthClient = await google.auth.getClient({
+      scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+    })
+    const googleComputeClient: APIEndpoint = google.compute('v1')
+
+    const recommendations = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    return await recommendations.getRecommendations()
   }
 
   private getService(key: string): ICloudService {
