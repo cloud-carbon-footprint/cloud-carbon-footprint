@@ -1,5 +1,0 @@
-{
-  "/api/regions/emissions-factors": "/emissions",
-  "/api/*": "/$1",
-  "/api": "/footprint"
-}
