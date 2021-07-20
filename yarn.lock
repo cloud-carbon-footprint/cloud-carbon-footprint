@@ -2375,7 +2375,7 @@ __metadata:
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
     google-gax: ^2.15.0
-    googleapis: ^81.0.0
+    googleapis: ^82.0.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^11.0.1
@@ -12883,13 +12883,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^81.0.0":
-  version: 81.0.0
-  resolution: "googleapis@npm:81.0.0"
+"googleapis@npm:^82.0.0":
+  version: 82.0.0
+  resolution: "googleapis@npm:82.0.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.2
-  checksum: 96b8085854695f9ac41831d665f556adb6f40fe4a03978da041bbd78b4add15ca98e809f34bdd21f5a6bd3ec1ee71fac3f25eceb870337c54d99f356d103b669
+  checksum: 70c3fc5894f11e43ba150fa31793445975c9ce132f802df84986ab29172c8fe24b8d9c3989d1113b442e627853a1c06e2be44efc958ab7ed48941759a7c4915b
   languageName: node
   linkType: hard
 
