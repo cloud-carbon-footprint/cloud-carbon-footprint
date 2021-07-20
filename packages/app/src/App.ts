@@ -135,6 +135,7 @@ export default class App {
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
+    const recommendations: RecommendationResult[][] = []
 
     const AWSRecommendations: RecommendationResult[][] = []
     if (AWS.USE_BILLING_DATA) {
@@ -157,7 +158,9 @@ export default class App {
         AWSRecommendations.push(recommendations)
       }
     }
-    const GCPRecommendations: RecommendationResult[][] = []
+    recommendations.push(AWSRecommendations.flat())
+
+    let GCPRecommendations: RecommendationResult[][] = []
     if (GCP.USE_BILLING_DATA) {
       const recommendations = await new GCPAccount(
         GCP.BILLING_PROJECT_ID,
@@ -166,19 +169,18 @@ export default class App {
       ).getDataForRecommendations()
       GCPRecommendations.push(recommendations)
     } else {
-      for (const project of GCP.projects) {
-        const recommendations: RecommendationResult[] = await Promise.all(
-          await new GCPAccount(
+      GCPRecommendations = await Promise.all(
+        GCP.projects.map((project) =>
+          new GCPAccount(
             project.id,
             project.name,
             GCP.CURRENT_REGIONS,
           ).getDataForRecommendations(),
-        )
-        GCPRecommendations.push(recommendations)
-      }
+        ),
+      )
     }
-    return AWSRecommendations.flat()
-      .flat()
-      .concat(GCPRecommendations.flat().flat())
+    recommendations.push(GCPRecommendations.flat())
+
+    return recommendations.flat()
   }
 }
