@@ -108,7 +108,7 @@ export default class Recommendations implements ICloudRecommendationsService {
                 recommendationType: rec.recommenderSubtype,
                 recommendationDetail: rec.description,
                 costSavings: this.getEstimatedCostSavings(
-                  rec.primaryImpact?.costProjection?.cost,
+                  rec.primaryImpact.costProjection.cost,
                 ),
                 co2eSavings: estimatedCO2eSavings.co2e,
                 kilowattHourSavings: estimatedCO2eSavings.kilowattHours,
@@ -331,6 +331,6 @@ export default class Recommendations implements ICloudRecommendationsService {
    * https://cloud.google.com/recommender/docs/reference/rest/Shared.Types/Money
    */
   private getEstimatedCostSavings(money: IMoney): number {
-    return (parseInt(<string>money?.units) + money?.nanos / 1000000000) * -1
+    return (parseInt(<string>money.units) + money.nanos / 1000000000) * -1
   }
 }

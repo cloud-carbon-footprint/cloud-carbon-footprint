@@ -22,6 +22,24 @@ export const mockStopVMRecommendationsResults: any = [
   ],
 ]
 
+export const mockStopVMWithAdditionalImpactRecommendationsResults: any = [
+  [
+    {
+      name: 'project-name',
+      description: "Save cost by stopping Idle VM 'test-instance'.",
+      additionalImpact: [
+        {
+          category: 'COST',
+          costProjection: [Object],
+          projection: 'costProjection',
+        },
+      ],
+      primaryImpact: { category: 'PERFORMANCE' },
+      recommenderSubtype: 'STOP_VM',
+    },
+  ],
+]
+
 export const mockChangeMachineTypeRecommendationsResults: any = [
   [
     {
@@ -102,3 +120,25 @@ export const mockDeleteImageRecommendationsResults: any = [
     },
   ],
 ]
+
+export const mockDeleteSnapshotRecommendationsResults: any = [
+  [
+    {
+      name: 'project-name',
+      description: "Save cost by deleting idle snapshot 'test-snapshot'.",
+      primaryImpact: {
+        category: 'COST',
+        costProjection: {
+          cost: {
+            units: -40,
+            nanos: 0,
+          },
+        },
+        projection: 'costProjection',
+      },
+      recommenderSubtype: 'DELETE_SNAPSHOT',
+    },
+  ],
+]
+
+export const mockEmptyRecommendationsResults: any = [[]]

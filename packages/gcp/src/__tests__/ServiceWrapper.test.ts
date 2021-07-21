@@ -25,7 +25,7 @@ import {
 
 import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
-import { setupSpy } from './helpers'
+import { setupSpy, setupSpyWithRejectedValue } from './helpers'
 import { GoogleAuth } from 'google-auth-library'
 
 jest.mock('@google-cloud/resource-manager', () => ({
@@ -198,5 +198,46 @@ describe('GCP Service Wrapper', () => {
     }
 
     expect(imageDetails).toEqual(expectedResult)
+  })
+
+  describe('error handling', () => {
+    let serviceWrapper: ServiceWrapper
+    const googleComputeClient = google.compute('v1')
+
+    beforeEach(async () => {
+      const auth = new GoogleAuth({
+        scopes: 'https://www.googleapis.com/auth/cloud-platform',
+      })
+
+      const getClientSpy = jest.spyOn(auth, 'getClient')
+
+      ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
+
+      const googleAuthClient: GoogleAuthClient = await auth.getClient()
+
+      serviceWrapper = new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      )
+    })
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('fails to get active zones for project', async () => {
+      setupSpyWithRejectedValue(
+        googleComputeClient.instances,
+        'aggregatedList',
+        'error',
+      )
+      const activeProjectsAndZones: ActiveProject[] =
+        await serviceWrapper.getActiveProjectsAndZones()
+
+      const expectedResult: ActiveProject[] = []
+
+      expect(activeProjectsAndZones).toEqual(expectedResult)
+    })
   })
 })

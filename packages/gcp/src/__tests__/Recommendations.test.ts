@@ -19,6 +19,8 @@ import {
   mockChangeMachineTypeRecommendationsResults,
   mockDeleteDiskRecommendationsResults,
   mockDeleteImageRecommendationsResults,
+  mockDeleteSnapshotRecommendationsResults,
+  mockEmptyRecommendationsResults,
   mockSnapshotAndDeleteDiskRecommendationsResults,
   mockStopVMRecommendationsResults,
 } from './fixtures/recommender.fixtures'
@@ -30,7 +32,6 @@ import {
   mockedInstanceGetItemsCurrent,
   mockedInstanceGetItemsWithBothDisks,
   mockedInstanceGetItemsWithHDDDisks,
-  mockedInstanceGetItemsWithSSDDisks,
   mockedInstanceResultItems,
   mockedMachineTypesGetItems,
   mockedMachineTypesGetItemsNew,
@@ -137,15 +138,11 @@ describe('GCP Recommendations Service', () => {
       expect(recommendations).toEqual(expectedResult)
     })
 
-    it('returns recommendations for stop VM with an SSD disk for storage', async () => {
+    it('returns recommendations for stop VM with no storage', async () => {
       mockListRecommendations
         .mockResolvedValueOnce(mockStopVMRecommendationsResults)
         .mockResolvedValue([[]])
-      setupSpy(
-        googleComputeClient.instances,
-        'get',
-        mockedInstanceGetItemsWithSSDDisks,
-      )
+      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
@@ -170,8 +167,48 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.5497376,
-          co2eSavings: 0.0068503192992,
+          kilowattHourSavings: 58.530816,
+          co2eSavings: 0.006848105472,
+          costSavings: 15,
+        },
+      ]
+
+      expect(recommendations).toEqual(expectedResult)
+    })
+
+    it('does not return recommendations for stop VM with an error', async () => {
+      mockListRecommendations
+        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValue([[]])
+
+      const targetFunctionSpy = jest.spyOn(googleComputeClient.instances, 'get')
+      ;(targetFunctionSpy as jest.Mock).mockRejectedValue('Error')
+
+      const recommendationsService = new Recommendations(
+        new ComputeEstimator(),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new ServiceWrapper(
+          new Resource(),
+          googleAuthClient,
+          googleComputeClient,
+          new RecommenderClient(),
+        ),
+      )
+
+      const recommendations = await recommendationsService.getRecommendations()
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'GCP',
+          accountId: 'project',
+          accountName: 'project-name',
+          region: 'us-west1',
+          recommendationType: 'STOP_VM',
+          recommendationDetail:
+            "Save cost by stopping Idle VM 'test-instance'.",
+          kilowattHourSavings: 0,
+          co2eSavings: 0,
           costSavings: 15,
         },
       ]
@@ -427,6 +464,66 @@ describe('GCP Recommendations Service', () => {
         costSavings: 30,
       },
     ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+  it('does not return recommendations for delete snapshot', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockDeleteSnapshotRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'DELETE_SNAPSHOT',
+        recommendationDetail:
+          "Save cost by deleting idle snapshot 'test-snapshot'.",
+        kilowattHourSavings: 0,
+        co2eSavings: 0,
+        costSavings: 40,
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('does not return recommendations with an error getting recommender ids ', async () => {
+    mockListRecommendations
+      .mockRejectedValue(mockEmptyRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = []
 
     expect(recommendations).toEqual(expectedResult)
   })

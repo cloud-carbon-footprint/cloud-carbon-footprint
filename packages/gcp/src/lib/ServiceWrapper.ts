@@ -46,6 +46,7 @@ type Zone = [
 
 export default class ServiceWrapper {
   private readonly serviceWrapperLogger: Logger
+  private readonly noResultsOnPageMessage = 'NO_RESULTS_ON_PAGE'
   constructor(
     private readonly resourceManagerClient: Resource,
     private readonly googleAuthClient: GoogleAuthClient,
@@ -122,15 +123,11 @@ export default class ServiceWrapper {
 
   private extractZones(items: InstanceData): string[] {
     if (!items) return []
-    try {
-      return Object.entries(items)
-        .filter((zone: Zone) => {
-          return zone[1]?.warning?.code !== 'NO_RESULTS_ON_PAGE'
-        })
-        .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
-    } catch (e) {
-      return []
-    }
+    return Object.entries(items)
+      .filter((zone: Zone) => {
+        return zone[1]?.warning?.code !== this.noResultsOnPageMessage
+      })
+      .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
   }
 
   async getRecommendationsForRecommenderIds(

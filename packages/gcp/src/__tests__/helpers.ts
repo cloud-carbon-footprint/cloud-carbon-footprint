@@ -20,3 +20,12 @@ export function setupSpyWithMultipleValues(
   ;(targetFunctionSpy as jest.Mock).mockResolvedValueOnce(defaultReturnValue)
   ;(targetFunctionSpy as jest.Mock).mockResolvedValueOnce(secondaryReturnValue)
 }
+
+export function setupSpyWithRejectedValue(
+  spyMethod: any,
+  targetFunction: string,
+  defaultRejectedValue: any,
+): void {
+  const targetFunctionSpy = jest.spyOn(spyMethod, targetFunction)
+  ;(targetFunctionSpy as jest.Mock).mockRejectedValueOnce(defaultRejectedValue)
+}

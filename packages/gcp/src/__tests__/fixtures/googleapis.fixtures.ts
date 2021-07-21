@@ -48,18 +48,22 @@ export const mockedInstanceResultItems: InstanceAggregatedList = {
     },
   },
 }
+
 export const mockedAddressesResultItems: AddressAggregatedList = {
   data: { items: {} },
 }
+
 export const mockedDisksResultItems: DiskAggregatedList = {
   data: { items: {} },
 }
+
 export const mockedDisksGetSSDDetails: DiskData = {
   data: {
     sizeGb: '200',
     type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
   },
 }
+
 export const mockedDisksGetHDDDetails: DiskData = {
   data: {
     sizeGb: '300',
@@ -74,6 +78,7 @@ export const mockedInstanceGetItems: InstanceData = {
     disks: [],
   },
 }
+
 export const mockedInstanceGetItemsCurrent: InstanceData = {
   data: {
     machineType:
@@ -81,6 +86,7 @@ export const mockedInstanceGetItemsCurrent: InstanceData = {
     disks: [],
   },
 }
+
 export const mockedInstanceGetItemsNew: InstanceData = {
   data: {
     machineType:
@@ -88,6 +94,7 @@ export const mockedInstanceGetItemsNew: InstanceData = {
     disks: [],
   },
 }
+
 export const mockedInstanceGetItemsWithSSDDisks: InstanceData = {
   data: {
     machineType:
@@ -100,6 +107,7 @@ export const mockedInstanceGetItemsWithSSDDisks: InstanceData = {
     ],
   },
 }
+
 export const mockedInstanceGetItemsWithHDDDisks: InstanceData = {
   data: {
     machineType:
@@ -112,6 +120,7 @@ export const mockedInstanceGetItemsWithHDDDisks: InstanceData = {
     ],
   },
 }
+
 export const mockedInstanceGetItemsWithBothDisks: InstanceData = {
   data: {
     machineType:
@@ -128,21 +137,25 @@ export const mockedInstanceGetItemsWithBothDisks: InstanceData = {
     ],
   },
 }
+
 export const mockedMachineTypesGetItems: MachineTypeData = {
   data: {
     guestCpus: 32,
   },
 }
+
 export const mockedMachineTypesGetItemsCurrent: MachineTypeData = {
   data: {
     guestCpus: 2,
   },
 }
+
 export const mockedMachineTypesGetItemsNew: MachineTypeData = {
   data: {
     guestCpus: 1,
   },
 }
+
 export const mockedImageGetDetails: ImageDetails = {
   data: {
     archiveSizeBytes: '580709696',
