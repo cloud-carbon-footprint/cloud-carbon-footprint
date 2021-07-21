@@ -27,6 +27,15 @@ import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixture
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy, setupSpyWithRejectedValue } from './helpers'
 import { GoogleAuth } from 'google-auth-library'
+import { wait } from '@cloud-carbon-footprint/common'
+
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  wait: jest.fn(),
+}))
 
 jest.mock('@google-cloud/resource-manager', () => ({
   Resource: jest.fn().mockImplementation(() => ({
@@ -34,12 +43,10 @@ jest.mock('@google-cloud/resource-manager', () => ({
   })),
 }))
 
+const mockRecommenderClientListRecommendations = jest.fn()
 jest.mock('@google-cloud/recommender', () => ({
   RecommenderClient: jest.fn().mockImplementation(() => ({
-    listRecommendations: jest
-      .fn()
-      .mockResolvedValueOnce(mockStopVMRecommendationsResults)
-      .mockResolvedValue([[]]),
+    listRecommendations: mockRecommenderClientListRecommendations,
     projectLocationRecommenderPath: jest.fn(),
   })),
 }))
@@ -47,7 +54,7 @@ jest.mock('@google-cloud/recommender', () => ({
 describe('GCP Service Wrapper', () => {
   let serviceWrapper: ServiceWrapper
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const auth = new GoogleAuth({
       scopes: 'https://www.googleapis.com/auth/cloud-platform',
     })
@@ -107,6 +114,10 @@ describe('GCP Service Wrapper', () => {
   })
 
   it('gets recommendations by recommender ids', async () => {
+    mockRecommenderClientListRecommendations
+      .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+      .mockResolvedValue([[]])
+
     const recommenderIds = ['test-id-1', 'test-id-2']
 
     const recommendations: RecommenderRecommendations[] =
@@ -222,9 +233,6 @@ describe('GCP Service Wrapper', () => {
         new RecommenderClient(),
       )
     })
-    afterEach(() => {
-      jest.restoreAllMocks()
-    })
 
     it('fails to get active zones for project', async () => {
       setupSpyWithRejectedValue(
@@ -238,6 +246,26 @@ describe('GCP Service Wrapper', () => {
       const expectedResult: ActiveProject[] = []
 
       expect(activeProjectsAndZones).toEqual(expectedResult)
+    })
+
+    it('exceeds the quota for recommender client api calls', async () => {
+      mockRecommenderClientListRecommendations
+        .mockRejectedValueOnce({
+          details: 'Quota exceeded',
+        })
+        .mockRejectedValueOnce({})
+        .mockResolvedValue([[]])
+
+      console.warn = jest.fn().mockResolvedValue('Warn')
+
+      const recommenderIds = ['test-id-1']
+      await serviceWrapper.getRecommendationsForRecommenderIds(
+        'test-project-id',
+        'us-west1-a',
+        recommenderIds,
+      )
+
+      expect(wait).toHaveBeenCalled()
     })
   })
 })

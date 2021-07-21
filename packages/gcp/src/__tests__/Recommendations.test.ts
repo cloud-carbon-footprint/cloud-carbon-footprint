@@ -23,6 +23,7 @@ import {
   mockEmptyRecommendationsResults,
   mockSnapshotAndDeleteDiskRecommendationsResults,
   mockStopVMRecommendationsResults,
+  mockStopVMWithAdditionalImpactRecommendationsResults,
 } from './fixtures/recommender.fixtures'
 import {
   mockedAddressesResultItems,
@@ -39,6 +40,7 @@ import {
   mockedDisksGetSSDDetails,
   mockedDisksGetHDDDetails,
   mockedImageGetDetails,
+  mockedInstanceGlobalResultItems,
 } from './fixtures/googleapis.fixtures'
 
 jest.mock('moment', () => {
@@ -64,7 +66,7 @@ describe('GCP Recommendations Service', () => {
   let googleAuthClient: GoogleAuthClient
   let googleComputeClient: APIEndpoint
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const getClientSpy = jest.spyOn(google.auth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
@@ -92,7 +94,7 @@ describe('GCP Recommendations Service', () => {
   })
 
   describe('Stop VM Recommendations', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       setupSpy(
         googleComputeClient.machineTypes,
         'get',
@@ -138,11 +140,20 @@ describe('GCP Recommendations Service', () => {
       expect(recommendations).toEqual(expectedResult)
     })
 
-    it('returns recommendations for stop VM with no storage', async () => {
+    it('returns recommendations for stop VM with additional impact', async () => {
       mockListRecommendations
-        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValueOnce(
+          mockStopVMWithAdditionalImpactRecommendationsResults,
+        )
         .mockResolvedValue([[]])
+
       setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+
+      setupSpy(
+        googleComputeClient.instances,
+        'aggregatedList',
+        mockedInstanceGlobalResultItems,
+      )
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
@@ -163,13 +174,13 @@ describe('GCP Recommendations Service', () => {
           cloudProvider: 'GCP',
           accountId: 'project',
           accountName: 'project-name',
-          region: 'us-west1',
+          region: 'global',
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.530816,
-          co2eSavings: 0.006848105472,
-          costSavings: 15,
+          kilowattHourSavings: 58.798080000000006,
+          co2eSavings: 0.024159584249856002,
+          costSavings: 55,
         },
       ]
 

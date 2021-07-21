@@ -10,7 +10,7 @@ module.exports = {
   coverageThreshold: {
     global: {
       statements: 95,
-      branches: 97,
+      branches: 95,
       functions: 91,
       lines: 96,
     },
@@ -22,5 +22,4 @@ module.exports = {
     '<rootDir>/src/__tests__/helpers.ts',
   ],
   modulePathIgnorePatterns: ['index.ts'],
-  coveragePathIgnorePatterns: ['Recommendations.ts', 'ServiceWrapper.ts'],
 }

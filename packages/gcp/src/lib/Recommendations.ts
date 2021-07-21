@@ -3,10 +3,10 @@
  */
 
 import R from 'ramda'
-import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
-import IMoney = recommenderPrototypes.type.IMoney
-import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
 import { compute_v1 } from 'googleapis'
+import { google } from '@google-cloud/recommender/build/protos/protos'
+import IRecommendation = google.cloud.recommender.v1.IRecommendation
+import IImpact = google.cloud.recommender.v1.IImpact
 import Schema$Instance = compute_v1.Schema$Instance
 import {
   COMPUTE_PROCESSOR_TYPES,
@@ -48,6 +48,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     'google.logging.productSuggestion.ContainerRecommender',
     'google.monitoring.productSuggestion.ComputeRecommender',
   ]
+  private readonly primaryImpactPerformance = 'PERFORMANCE'
   private readonly recommendationsLogger: Logger
   constructor(
     private readonly computeEstimator: ComputeEstimator,
@@ -96,7 +97,7 @@ export default class Recommendations implements ICloudRecommendationsService {
       return Promise.all(
         R.flatten(
           nonEmptyRecommendations.map(({ zone, recommendations }) =>
-            recommendations.map(async (rec) => {
+            recommendations.map(async (rec: IRecommendation) => {
               const estimatedCO2eSavings = await this.getEstimatedCO2eSavings(
                 project.id,
                 zone,
@@ -109,9 +110,7 @@ export default class Recommendations implements ICloudRecommendationsService {
                 region: zone === 'global' ? zone : zone.slice(0, -2),
                 recommendationType: rec.recommenderSubtype,
                 recommendationDetail: rec.description,
-                costSavings: this.getEstimatedCostSavings(
-                  rec.primaryImpact.costProjection.cost,
-                ),
+                costSavings: this.getEstimatedCostSavings(rec),
                 co2eSavings: estimatedCO2eSavings.co2e,
                 kilowattHourSavings: estimatedCO2eSavings.kilowattHours,
               }
@@ -364,7 +363,15 @@ export default class Recommendations implements ICloudRecommendationsService {
   /* Refer to GCP Documentation for explanation of Money object:
    * https://cloud.google.com/recommender/docs/reference/rest/Shared.Types/Money
    */
-  private getEstimatedCostSavings(money: IMoney): number {
-    return (parseInt(<string>money.units) + money.nanos / 1000000000) * -1
+  private getEstimatedCostSavings(rec: IRecommendation): number {
+    let impact: IImpact = rec.primaryImpact
+    if (rec.primaryImpact.category === this.primaryImpactPerformance) {
+      impact = rec.additionalImpact[0]
+    }
+    return (
+      (parseInt(<string>impact.costProjection.cost.units) +
+        impact.costProjection.cost.nanos / 1000000000) *
+      -1
+    )
   }
 }

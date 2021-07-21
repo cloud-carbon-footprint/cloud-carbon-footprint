@@ -125,7 +125,7 @@ export default class ServiceWrapper {
     if (!items) return []
     return Object.entries(items)
       .filter((zone: Zone) => {
-        return zone[1]?.warning?.code !== this.noResultsOnPageMessage
+        return zone[1].warning?.code !== this.noResultsOnPageMessage
       })
       .map((zone) => zone[0].replace('zones/', '').replace('regions/', ''))
   }

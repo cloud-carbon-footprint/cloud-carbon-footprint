@@ -30,7 +30,12 @@ export const mockStopVMWithAdditionalImpactRecommendationsResults: any = [
       additionalImpact: [
         {
           category: 'COST',
-          costProjection: [Object],
+          costProjection: {
+            cost: {
+              units: -55,
+              nanos: 0,
+            },
+          },
           projection: 'costProjection',
         },
       ],
