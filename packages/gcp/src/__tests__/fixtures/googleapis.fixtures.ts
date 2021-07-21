@@ -59,14 +59,14 @@ export const mockedDisksResultItems: DiskAggregatedList = {
 
 export const mockedDisksGetSSDDetails: DiskData = {
   data: {
-    sizeGb: '200',
+    sizeGb: '20',
     type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
   },
 }
 
 export const mockedDisksGetHDDDetails: DiskData = {
   data: {
-    sizeGb: '300',
+    sizeGb: '20',
     type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard',
   },
 }

@@ -390,8 +390,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_DISK',
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
-        kilowattHourSavings: 0.18921599999999997,
-        co2eSavings: 0.000022138271999999994,
+        kilowattHourSavings: 0.0189216,
+        co2eSavings: 0.0000022138272,
         costSavings: 50,
       },
     ]
@@ -429,8 +429,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'SNAPSHOT_AND_DELETE_DISK',
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
-        kilowattHourSavings: 0.15373799999999999,
-        co2eSavings: 0.000017987346,
+        kilowattHourSavings: 0.010249200000000002,
+        co2eSavings: 0.0000011991564000000001,
         costSavings: 50,
       },
     ]

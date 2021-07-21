@@ -6,6 +6,8 @@ import R from 'ramda'
 import { google as recommenderPrototypes } from '@google-cloud/recommender/build/protos/protos'
 import IMoney = recommenderPrototypes.type.IMoney
 import IRecommendation = recommenderPrototypes.cloud.recommender.v1.IRecommendation
+import { compute_v1 } from 'googleapis'
+import Schema$Instance = compute_v1.Schema$Instance
 import {
   COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,
@@ -129,43 +131,23 @@ export default class Recommendations implements ICloudRecommendationsService {
     try {
       switch (recommendation.recommenderSubtype) {
         case RECOMMENDATION_TYPES.STOP_VM:
-          const instanceId = recommendation.description.split("'")[1]
-          const instanceDetails =
-            await this.googleServiceWrapper.getInstanceDetails(
-              projectId,
-              zone,
-              instanceId,
-            )
-          const machineType = instanceDetails.machineType.split('/').pop()
-          const machineTypeDetails =
-            await this.googleServiceWrapper.getMachineTypeDetails(
-              projectId,
-              zone,
-              machineType,
-            )
-          const region = zone.slice(0, -2)
-          const computeCO2eEstimatedSavings = this.estimateComputeCO2eSavings(
-            machineType.split('-')[0],
-            machineTypeDetails.guestCpus,
-            region,
+          const instanceDetails = await this.getInstanceDetails(
+            recommendation,
+            projectId,
+            zone,
           )
+          const computeCO2eEstimatedSavings =
+            await this.getCO2EstimatedSavingsForInstance(
+              instanceDetails,
+              projectId,
+              zone,
+            )
           const storageFootprintEstimates = await Promise.all(
             instanceDetails.disks.map(async (disk) => {
-              const diskId = disk.source.split('disks/').pop()
-              const diskDetails =
-                await this.googleServiceWrapper.getDiskDetails(
-                  projectId,
-                  zone,
-                  diskId,
-                )
-              const storageType =
-                this.googleServiceWrapper.getStorageTypeFromDiskName(
-                  diskDetails.type.split('/').pop(),
-                )
-              return this.estimateStorageCO2eSavings(
-                parseFloat(disk.diskSizeGb),
-                region,
-                storageType,
+              return await this.getCO2EstimatesSavingsForDisk(
+                disk.source.split('disks/').pop(),
+                projectId,
+                zone,
               )
             }),
           )
@@ -186,45 +168,23 @@ export default class Recommendations implements ICloudRecommendationsService {
           const currentMachineType = recommendation.description
             .replace('.', '')
             .split(' ')[7]
-          const newMachineType = recommendation.description
-            .replace('.', '')
-            .split(' ')[9]
-          const currentMachineTypeDetails =
-            await this.googleServiceWrapper.getMachineTypeDetails(
+          const currentComputeCO2e =
+            await this.getCO2EstimatedSavingsForMachineType(
               projectId,
               zone,
               currentMachineType,
             )
-          const newMachineTypeDetails =
-            await this.googleServiceWrapper.getMachineTypeDetails(
+
+          const newMachineType = recommendation.description
+            .replace('.', '')
+            .split(' ')[9]
+          const newComputeCO2e =
+            await this.getCO2EstimatedSavingsForMachineType(
               projectId,
               zone,
               newMachineType,
             )
 
-          const currentMachineTypeVCPus = Object.keys(
-            SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
-          ).includes(currentMachineType)
-            ? SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION[currentMachineType] /
-              GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
-            : currentMachineTypeDetails.guestCpus
-          const newMachineTypeVCPus = Object.keys(
-            SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
-          ).includes(newMachineType)
-            ? SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION[newMachineType] /
-              GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
-            : newMachineTypeDetails.guestCpus
-
-          const currentComputeCO2e = this.estimateComputeCO2eSavings(
-            currentMachineType.split('-')[0],
-            currentMachineTypeVCPus,
-            zone.slice(0, -2),
-          )
-          const newComputeCO2e = this.estimateComputeCO2eSavings(
-            newMachineType.split('-')[0],
-            newMachineTypeVCPus,
-            zone.slice(0, -2),
-          )
           return {
             co2e: currentComputeCO2e.co2e - newComputeCO2e.co2e,
             kilowattHours:
@@ -233,20 +193,10 @@ export default class Recommendations implements ICloudRecommendationsService {
           }
         case RECOMMENDATION_TYPES.SNAPSHOT_AND_DELETE_DISK:
         case RECOMMENDATION_TYPES.DELETE_DISK:
-          const diskId = recommendation.description.split("'")[1]
-          const diskDetails = await this.googleServiceWrapper.getDiskDetails(
+          return await this.getCO2EstimatesSavingsForDisk(
+            recommendation.description.split("'")[1],
             projectId,
             zone,
-            diskId,
-          )
-          const storageType =
-            this.googleServiceWrapper.getStorageTypeFromDiskName(
-              diskDetails.type.split('/').pop(),
-            )
-          return this.estimateStorageCO2eSavings(
-            parseFloat(diskDetails.sizeGb),
-            zone.slice(0, -2),
-            storageType,
           )
         case RECOMMENDATION_TYPES.DELETE_IMAGE:
           const imageId = recommendation.description.split("'")[1]
@@ -273,6 +223,83 @@ export default class Recommendations implements ICloudRecommendationsService {
       )
       return { timestamp: undefined, kilowattHours: 0, co2e: 0 }
     }
+  }
+
+  private async getCO2EstimatedSavingsForMachineType(
+    projectId: string,
+    zone: string,
+    currentMachineType: string,
+  ) {
+    const currentMachineTypeDetails =
+      await this.googleServiceWrapper.getMachineTypeDetails(
+        projectId,
+        zone,
+        currentMachineType,
+      )
+    const currentMachineTypeVCPus = Object.keys(
+      SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
+    ).includes(currentMachineType)
+      ? SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION[currentMachineType] /
+        GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
+      : currentMachineTypeDetails.guestCpus
+    return this.estimateComputeCO2eSavings(
+      currentMachineType.split('-')[0],
+      currentMachineTypeVCPus,
+      zone.slice(0, -2),
+    )
+  }
+
+  private async getCO2EstimatesSavingsForDisk(
+    diskId: string,
+    projectId: string,
+    zone: string,
+  ) {
+    const diskDetails = await this.googleServiceWrapper.getDiskDetails(
+      projectId,
+      zone,
+      diskId,
+    )
+    const storageType = this.googleServiceWrapper.getStorageTypeFromDiskName(
+      diskDetails.type.split('/').pop(),
+    )
+    return this.estimateStorageCO2eSavings(
+      parseFloat(diskDetails.sizeGb),
+      zone.slice(0, -2),
+      storageType,
+    )
+  }
+
+  private async getCO2EstimatedSavingsForInstance(
+    instanceDetails: Schema$Instance,
+    projectId: string,
+    zone: string,
+  ) {
+    const machineType = instanceDetails.machineType.split('/').pop()
+    const machineTypeDetails =
+      await this.googleServiceWrapper.getMachineTypeDetails(
+        projectId,
+        zone,
+        machineType,
+      )
+
+    return this.estimateComputeCO2eSavings(
+      machineType.split('-')[0],
+      machineTypeDetails.guestCpus,
+      zone.slice(0, -2),
+    )
+  }
+
+  private async getInstanceDetails(
+    recommendation: IRecommendation,
+    projectId: string,
+    zone: string,
+  ) {
+    const instanceId = recommendation.description.split("'")[1]
+    return await this.googleServiceWrapper.getInstanceDetails(
+      projectId,
+      zone,
+      instanceId,
+    )
   }
 
   private estimateComputeCO2eSavings(

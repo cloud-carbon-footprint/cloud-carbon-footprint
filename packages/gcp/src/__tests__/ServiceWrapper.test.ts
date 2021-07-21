@@ -180,7 +180,7 @@ describe('GCP Service Wrapper', () => {
     )
 
     const expectedResult = {
-      sizeGb: '200',
+      sizeGb: '20',
       type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
     }
 
