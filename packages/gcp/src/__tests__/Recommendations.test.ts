@@ -225,6 +225,7 @@ describe('GCP Recommendations Service', () => {
         'get',
         mockedInstanceGetItemsWithHDDDisks,
       )
+      setupSpy(googleComputeClient.disks, 'get', mockedDisksGetHDDDetails)
 
       const recommendationsService = new Recommendations(
         new ComputeEstimator(),
@@ -266,6 +267,13 @@ describe('GCP Recommendations Service', () => {
         googleComputeClient.instances,
         'get',
         mockedInstanceGetItemsWithBothDisks,
+      )
+
+      setupSpyWithMultipleValues(
+        googleComputeClient.disks,
+        'get',
+        mockedDisksGetSSDDetails,
+        mockedDisksGetHDDDetails,
       )
 
       const recommendationsService = new Recommendations(

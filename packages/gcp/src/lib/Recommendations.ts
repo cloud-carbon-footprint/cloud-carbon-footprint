@@ -149,18 +149,25 @@ export default class Recommendations implements ICloudRecommendationsService {
             machineTypeDetails.guestCpus,
             region,
           )
-          const storageFootprintEstimates = instanceDetails.disks.map(
-            (disk) => {
+          const storageFootprintEstimates = await Promise.all(
+            instanceDetails.disks.map(async (disk) => {
+              const diskId = disk.source.split('disks/').pop()
+              const diskDetails =
+                await this.googleServiceWrapper.getDiskDetails(
+                  projectId,
+                  zone,
+                  diskId,
+                )
               const storageType =
                 this.googleServiceWrapper.getStorageTypeFromDiskName(
-                  disk.deviceName,
+                  diskDetails.type.split('/').pop(),
                 )
               return this.estimateStorageCO2eSavings(
                 parseFloat(disk.diskSizeGb),
                 region,
                 storageType,
               )
-            },
+            }),
           )
           const storageKilowattHoursSavings = R.sum(
             storageFootprintEstimates.map((estimate) => estimate.kilowattHours),

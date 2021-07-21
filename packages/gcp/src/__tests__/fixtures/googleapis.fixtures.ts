@@ -95,26 +95,14 @@ export const mockedInstanceGetItemsNew: InstanceData = {
   },
 }
 
-export const mockedInstanceGetItemsWithSSDDisks: InstanceData = {
-  data: {
-    machineType:
-      'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
-    disks: [
-      {
-        deviceName: 'ssd-test',
-        diskSizeGb: '20',
-      },
-    ],
-  },
-}
-
 export const mockedInstanceGetItemsWithHDDDisks: InstanceData = {
   data: {
     machineType:
       'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
     disks: [
       {
-        deviceName: 'hdd-test',
+        source:
+          'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/disks/test-disk-id',
         diskSizeGb: '20',
       },
     ],
@@ -127,11 +115,13 @@ export const mockedInstanceGetItemsWithBothDisks: InstanceData = {
       'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
     disks: [
       {
-        deviceName: 'ssd-test',
+        source:
+          'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/disks/test-disk-1',
         diskSizeGb: '20',
       },
       {
-        deviceName: 'hdd-test',
+        source:
+          'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/disks/test-disk-2',
         diskSizeGb: '20',
       },
     ],
