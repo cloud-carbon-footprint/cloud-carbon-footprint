@@ -369,10 +369,10 @@ export default class Recommendations implements ICloudRecommendationsService {
     if (rec.primaryImpact.category === this.primaryImpactPerformance) {
       impact = rec.additionalImpact[0]
     }
-    return (
+    return Math.abs(
       (parseInt(<string>impact.costProjection.cost.units) +
         impact.costProjection.cost.nanos / 1000000000) *
-      -1
+        -1,
     )
   }
 
