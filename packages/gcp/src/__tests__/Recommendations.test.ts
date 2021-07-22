@@ -22,7 +22,7 @@ import {
   mockChangeMachineTypeRecommendationsResults,
   mockDeleteDiskRecommendationsResults,
   mockDeleteImageRecommendationsResults,
-  mockDeleteSnapshotRecommendationsResults,
+  mockDeleteAddressRecommendationsResults,
   mockEmptyRecommendationsResults,
   mockSnapshotAndDeleteDiskRecommendationsResults,
   mockStopVMRecommendationsResults,
@@ -489,9 +489,9 @@ describe('GCP Recommendations Service', () => {
 
     expect(recommendations).toEqual(expectedResult)
   })
-  it('does not return recommendations for delete snapshot', async () => {
+  it('returns estimates of zero for recommendation type DELETE_ADDRESS', async () => {
     mockListRecommendations
-      .mockResolvedValueOnce(mockDeleteSnapshotRecommendationsResults)
+      .mockResolvedValueOnce(mockDeleteAddressRecommendationsResults)
       .mockResolvedValue([[]])
 
     const recommendationsService = new Recommendations(
@@ -514,9 +514,9 @@ describe('GCP Recommendations Service', () => {
         accountId: 'project',
         accountName: 'project-name',
         region: 'us-west1',
-        recommendationType: 'DELETE_SNAPSHOT',
+        recommendationType: 'DELETE_ADDRESS',
         recommendationDetail:
-          "Save cost by deleting idle snapshot 'test-snapshot'.",
+          "Save cost by deleting idle address 'test-address'.",
         kilowattHourSavings: 0,
         co2eSavings: 0,
         costSavings: 40,

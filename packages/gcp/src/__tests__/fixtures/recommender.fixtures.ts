@@ -126,11 +126,11 @@ export const mockDeleteImageRecommendationsResults: IRecommendation[][] = [
   ],
 ]
 
-export const mockDeleteSnapshotRecommendationsResults: IRecommendation[][] = [
+export const mockDeleteAddressRecommendationsResults: IRecommendation[][] = [
   [
     {
       name: 'project-name',
-      description: "Save cost by deleting idle snapshot 'test-snapshot'.",
+      description: "Save cost by deleting idle address 'test-address'.",
       primaryImpact: {
         category: 'COST',
         costProjection: {
@@ -140,7 +140,7 @@ export const mockDeleteSnapshotRecommendationsResults: IRecommendation[][] = [
           },
         },
       },
-      recommenderSubtype: 'DELETE_SNAPSHOT',
+      recommenderSubtype: 'DELETE_ADDRESS',
     },
   ],
 ]
