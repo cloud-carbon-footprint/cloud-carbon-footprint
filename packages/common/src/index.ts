@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 
 export { default as Logger } from './Logger'
@@ -12,4 +12,4 @@ export type { EstimationResult, ServiceData } from './EstimationResult'
 export type { EmissionRatioResult } from './EmissionRatioResult'
 export type { RecommendationResult } from './RecommendationResult'
 export * from './helpers'
-export { GoogleAuthClient } from './Types'
+export type { GoogleAuthClient } from './Types'

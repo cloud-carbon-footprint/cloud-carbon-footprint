@@ -65,7 +65,7 @@ See the [main repository README](https://github.com/cloud-carbon-footprint/cloud
 
 ### Branch
 
-The ThoughtWorks Cloud Carbon Footprint team uses [Trunk-Based Development](https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines).
+The Thoughtworks Cloud Carbon Footprint team uses [Trunk-Based Development](https://www.thoughtworks.com/insights/blog/enabling-trunk-based-development-deployment-pipelines).
 You're welcome to keep your local development environment organized as you like, however when submitting pull requests to the base repository, be sure to submit them against the `trunk` branch. In order to avoid merge conflicts in your pull request, you'll need to successfully rebase ahead of your pull request:
 
 ```
@@ -302,4 +302,4 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
 
 ---
 
-© 2021 ThoughtWorks, Inc.
+© 2021 Thoughtworks, Inc.

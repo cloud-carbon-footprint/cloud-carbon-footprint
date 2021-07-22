@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance

@@ -52,4 +52,4 @@ yarn sonar:scan
 1. If all goes well, You should be able to see the log trace while scanner is analyzing each file. **Ensure that you see “EXECUTION SUCCESS” at the end of scanning** for each project (i.e. client, server)
 1. Verify the vulnerabilities on the Admin UI http://localhost:9000
 
-© 2021 ThoughtWorks, Inc.
+© 2021 Thoughtworks, Inc.

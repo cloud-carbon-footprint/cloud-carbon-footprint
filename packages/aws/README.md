@@ -23,4 +23,4 @@ $ yarn add @cloud-carbon-footprint/aws
 
 ## License
 
-© 2021 ThoughtWorks, Inc.
+© 2021 Thoughtworks, Inc.

@@ -33,4 +33,4 @@ Please refer to the [documentation](https://www.cloudcarbonfootprint.org/docs/ru
 
 ## License
 
-© 2021 ThoughtWorks, Inc.
+© 2021 Thoughtworks, Inc.

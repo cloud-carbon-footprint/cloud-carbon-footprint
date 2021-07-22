@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 import moment, { unitOfTime } from 'moment'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'

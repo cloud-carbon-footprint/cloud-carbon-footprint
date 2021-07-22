@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 #
-# © 2021 ThoughtWorks, Inc.
+# © 2021 Thoughtworks, Inc.
 #
 
 echo AWS_PROXY_ACCOUNT_ID=$AWS_PROXY_ACCOUNT_ID >> .env

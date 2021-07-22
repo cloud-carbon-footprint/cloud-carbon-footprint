@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const express = require('express')

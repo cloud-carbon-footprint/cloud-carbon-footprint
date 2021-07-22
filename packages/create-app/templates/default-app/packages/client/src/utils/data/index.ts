@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 
 export { fakeEmissionFactors, generateEstimations } from './generateEstimations'

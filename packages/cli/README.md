@@ -43,4 +43,4 @@ If you have any problems with the guided install, you can instead [configure you
 
 ## License
 
-© 2021 ThoughtWorks, Inc.
+© 2021 Thoughtworks, Inc.

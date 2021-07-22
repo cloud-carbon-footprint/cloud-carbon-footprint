@@ -21,4 +21,4 @@ Once this task is completed, you can now navigate to the `packages/integration-t
 
 ## License
 
-© 2021 ThoughtWorks, Inc.
+© 2021 Thoughtworks, Inc.

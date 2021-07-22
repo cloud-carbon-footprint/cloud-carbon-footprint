@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# © 2021 ThoughtWorks, Inc.
+# © 2021 Thoughtworks, Inc.
 #
 
 branch="$(git rev-parse --abbrev-ref HEAD)"

@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 import R from 'ramda'
 import { Project, Resource } from '@google-cloud/resource-manager'

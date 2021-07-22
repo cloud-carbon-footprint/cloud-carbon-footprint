@@ -80,7 +80,7 @@ fileignoreconfig:
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
-  checksum: 5a22dd027d74487e0ea89b67e4a7bfdac69db9c0533eaaac6349716cf974852b
+  checksum: 192968478bb96ed73fd0b22cedaf01c4083725e7f5384820018a26c9bd3a741d
 - filename: packages/api/estimates.cache-uscs.json
   checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
@@ -100,7 +100,7 @@ fileignoreconfig:
 - filename: packages/cli/.env.template
   checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
 - filename: packages/client/create_client_env_file.sh
-  checksum: 9886c5da5fa2966237457bdf7583057ad11f379d71beb5fc3916ab56965e0a21
+  checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/SelectDropdown/SelectDropdown.tsx
   checksum: e30283b83d2ccfa4e72c58d243c11c8251019cf5d7f6da5b8c9649a94984c147
 - filename: packages/client/src/dashboard/CarbonComparisonCard.tsx
@@ -142,7 +142,7 @@ fileignoreconfig:
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
 - filename: packages/client/src/react-app-env.d.ts
-  checksum: 06dc5b098c7f55774c01811070ea114160f446684969423722c80c7adaa75a79
+  checksum: bc982f7de408c4fd412b6e26717b045875493f2562af97d791a8ee5202a40661
 - filename: packages/client/src/utils/data/generateEstimations.ts
   checksum: c40c051a28ed21afeef16a0c835403d6a72fe565bf95ce37ab72e3757243031d
 - filename: packages/client/src/utils/helpers/transformData.test.ts
@@ -206,7 +206,7 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 5ec0df7b78c985920e08baf0f91d18b20903e8e87d007b9d1aa3b33ea94c8cd3
 - filename: packages/create-app/templates/default-app/packages/client/src/react-app-env.d.ts
-  checksum: 9c7a94e55b4b9570a7908b183dd0f66c52c25b71a12d01f851e8a9eb523fb9d6
+  checksum: 99c4532676af436031037ef8794891a85cc7a6bb306491f7d96339f91c5fccf5
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts

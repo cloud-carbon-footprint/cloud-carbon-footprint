@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 import moment from 'moment'
 import { AWS_REGIONS } from '@cloud-carbon-footprint/aws'

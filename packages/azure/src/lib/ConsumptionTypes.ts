@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'

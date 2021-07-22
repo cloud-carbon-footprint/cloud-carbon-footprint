@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 import * as FiltersUtil from './FiltersUtil'
 import { DropdownOption, FilterOptions } from 'Types'

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 #
-# © 2021 ThoughtWorks, Inc.
+# © 2021 Thoughtworks, Inc.
 #
 
 echo REACT_APP_PREVIOUS_YEAR_OF_USAGE=$REACT_APP_PREVIOUS_YEAR_OF_USAGE >> .env

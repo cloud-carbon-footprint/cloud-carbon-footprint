@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
 import AWSMock from 'aws-sdk-mock'
