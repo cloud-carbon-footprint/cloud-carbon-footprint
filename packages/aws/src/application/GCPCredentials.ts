@@ -49,13 +49,11 @@ export default class GCPCredentials extends Credentials {
     }
   }
 
-  // TODO -- add tests for this function and mock the AWS SDK responses.
   async getTokenId() {
     const auth = new GoogleAuth({
       scopes: 'https://www.googleapis.com/auth/cloud-platform',
     })
 
-    // TODO -- replace any with proper types
     const authClient: GoogleAuthClient = await auth.getClient()
     const iamCredentials = new IAMCredentialsClient({ auth: auth })
 
