@@ -11,4 +11,4 @@ To do so, run the following command:
 
 This will run the webapp in development mode, using a mocked server. Open http://localhost:3000 to view it in a browser.
 
-<!-- © 2021 ThoughtWorks, Inc. -->
+<!-- © 2021 Thoughtworks, Inc. -->

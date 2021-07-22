@@ -18,7 +18,7 @@ function Footer() {
       <div className={styles.footerLicenseContainer}>
         <p>
           Cloud Carbon Footprint is an open-source project, sponsored by
-          ThoughtWorks Inc. under the&nbsp;
+          Thoughtworks Inc. under the&nbsp;
           <FooterLink
             link="http://www.apache.org/licenses/LICENSE-2.0"
             text="Apache License, Version 2.0"

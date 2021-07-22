@@ -496,7 +496,7 @@ The same is true for the GB / physical chip used to estimate energy for memory u
 
 #### Azure
 
-**Note**: The application currently only supports a subset of Azure regions that are used by ThoughtWorks.
+**Note**: The application currently only supports a subset of Azure regions that are used by Thoughtworks.
 This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies).
 For example, the website says "Central US", but the API provides the region as "US Central". In the case of "UK South",
 it is the same on both the website and the API. For any Azure customers using other regions, we would love to know what
@@ -525,4 +525,4 @@ or submit an issue or pull request.
 | UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
 | UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
 
-<!-- © 2021 ThoughtWorks, Inc. -->
+<!-- © 2021 Thoughtworks, Inc. -->

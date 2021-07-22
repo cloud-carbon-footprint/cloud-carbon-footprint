@@ -1,5 +1,5 @@
 /*
- * © 2021 ThoughtWorks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 
 import React from 'react'
@@ -10,7 +10,7 @@ import styles from './innovationPartnersStyles.module.css'
 const logosArray = [
   {
     path: 'img/logos/TWLogo-small.webp',
-    alt: 'ThoughtWorks logo',
+    alt: 'Thoughtworks logo',
     url: 'https://www.thoughtworks.com',
   },
   {
