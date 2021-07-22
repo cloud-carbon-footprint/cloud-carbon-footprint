@@ -32,6 +32,7 @@ import {
 } from './MachineTypes'
 import { ActiveProject, RECOMMENDATION_TYPES } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
+import { GCP_REGIONS } from './GCPRegions'
 
 export default class Recommendations implements ICloudRecommendationsService {
   readonly RECOMMENDER_IDS: string[] = [
@@ -107,7 +108,7 @@ export default class Recommendations implements ICloudRecommendationsService {
                 cloudProvider: 'GCP',
                 accountId: project.id,
                 accountName: project.name,
-                region: zone === 'global' ? zone : zone.slice(0, -2),
+                region: this.parseRegionFromZone(zone),
                 recommendationType: rec.recommenderSubtype,
                 recommendationDetail: rec.description,
                 costSavings: this.getEstimatedCostSavings(rec),
@@ -208,7 +209,7 @@ export default class Recommendations implements ICloudRecommendationsService {
           )
           return this.estimateStorageCO2eSavings(
             imageArchiveSizeGigabytes,
-            zone.slice(0, -2),
+            this.parseRegionFromZone(zone),
           )
         default:
           this.recommendationsLogger.warn(
@@ -244,7 +245,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     return this.estimateComputeCO2eSavings(
       currentMachineType.split('-')[0],
       currentMachineTypeVCPus,
-      zone.slice(0, -2),
+      this.parseRegionFromZone(zone),
     )
   }
 
@@ -263,7 +264,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     )
     return this.estimateStorageCO2eSavings(
       parseFloat(diskDetails.sizeGb),
-      zone.slice(0, -2),
+      this.parseRegionFromZone(zone),
       storageType,
     )
   }
@@ -284,7 +285,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     return this.estimateComputeCO2eSavings(
       machineType.split('-')[0],
       machineTypeDetails.guestCpus,
-      zone.slice(0, -2),
+      this.parseRegionFromZone(zone),
     )
   }
 
@@ -373,5 +374,12 @@ export default class Recommendations implements ICloudRecommendationsService {
         impact.costProjection.cost.nanos / 1000000000) *
       -1
     )
+  }
+
+  private parseRegionFromZone(zone: string): string {
+    const zoneArray = zone.split('-')
+    return zone === 'global'
+      ? GCP_REGIONS.UNKNOWN
+      : `${zoneArray[0]}-${zoneArray[1]}`
   }
 }

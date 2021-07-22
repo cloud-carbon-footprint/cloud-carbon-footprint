@@ -44,6 +44,7 @@ import {
   mockedDisksGetHDDDetails,
   mockedImageGetDetails,
   mockedInstanceGlobalResultItems,
+  mockedInstanceRegionsResultItems,
 } from './fixtures/googleapis.fixtures'
 
 jest.mock('moment', () => {
@@ -177,13 +178,58 @@ describe('GCP Recommendations Service', () => {
           cloudProvider: 'GCP',
           accountId: 'project',
           accountName: 'project-name',
-          region: 'global',
+          region: 'Unknown',
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.798080000000006,
           co2eSavings: 0.024159584249856002,
           costSavings: 55,
+        },
+      ]
+
+      expect(recommendations).toEqual(expectedResult)
+    })
+
+    it('returns recommendations for stop VM with active regions', async () => {
+      mockListRecommendations
+        .mockResolvedValueOnce(mockStopVMRecommendationsResults)
+        .mockResolvedValue([[]])
+
+      setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+
+      setupSpy(
+        googleComputeClient.instances,
+        'aggregatedList',
+        mockedInstanceRegionsResultItems,
+      )
+
+      const recommendationsService = new Recommendations(
+        new ComputeEstimator(),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new ServiceWrapper(
+          new Resource(),
+          googleAuthClient,
+          googleComputeClient,
+          new RecommenderClient(),
+        ),
+      )
+
+      const recommendations = await recommendationsService.getRecommendations()
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'GCP',
+          accountId: 'project',
+          accountName: 'project-name',
+          region: 'us-west1',
+          recommendationType: 'STOP_VM',
+          recommendationDetail:
+            "Save cost by stopping Idle VM 'test-instance'.",
+          kilowattHourSavings: 58.530816,
+          co2eSavings: 0.006848105472,
+          costSavings: 15,
         },
       ]
 

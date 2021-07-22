@@ -49,6 +49,16 @@ export const mockedInstanceResultItems: InstanceAggregatedList = {
   },
 }
 
+export const mockedInstanceRegionsResultItems: InstanceAggregatedList = {
+  data: {
+    items: {
+      'regions/us-west1': {
+        instances: [{ id: 'test-instance' }],
+      },
+    },
+  },
+}
+
 export const mockedInstanceGlobalResultItems: InstanceAggregatedList = {
   data: {
     items: {
