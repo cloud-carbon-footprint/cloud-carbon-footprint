@@ -22,8 +22,9 @@ import {
   configLoader,
   EstimationResult,
   RecommendationResult,
+  GoogleAuthClient,
 } from '@cloud-carbon-footprint/common'
-import ServiceWrapper, { GoogleAuthClient } from '../lib/ServiceWrapper'
+import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
 import {
   GCP_CLOUD_CONSTANTS,

@@ -3,7 +3,7 @@
  */
 import R from 'ramda'
 import { Project, Resource } from '@google-cloud/resource-manager'
-import { Logger, wait } from '@cloud-carbon-footprint/common'
+import { GoogleAuthClient, Logger, wait } from '@cloud-carbon-footprint/common'
 import {
   ActiveProject,
   RecommenderRecommendations,
@@ -15,25 +15,12 @@ import Schema$Disk = compute_v1.Schema$Disk
 import Schema$Image = compute_v1.Schema$Image
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
-import {
-  Compute,
-  JWT,
-  UserRefreshClient,
-  BaseExternalAccountClient,
-} from 'google-auth-library'
 import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
 import Schema$InstancesScopedList = compute_v1.Schema$InstancesScopedList
 import Schema$DisksScopedList = compute_v1.Schema$DisksScopedList
 import Schema$AddressesScopedList = compute_v1.Schema$AddressesScopedList
 
 const RETRY_AFTER = 10
-
-//TODO: move this to the common package to be used by multiple packages
-export type GoogleAuthClient =
-  | Compute
-  | JWT
-  | UserRefreshClient
-  | BaseExternalAccountClient
 
 type Zone = [
   string,
@@ -203,7 +190,6 @@ export default class ServiceWrapper {
   }
 
   getStorageTypeFromDiskName(diskName: string): string {
-    // TODO: Need to validate whether this is always true
     return diskName.includes('ssd') ? 'SSD' : 'HDD'
   }
 

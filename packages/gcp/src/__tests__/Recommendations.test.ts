@@ -5,14 +5,17 @@ import { google } from 'googleapis'
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { Resource } from '@google-cloud/resource-manager'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import {
+  RecommendationResult,
+  GoogleAuthClient,
+} from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
   StorageEstimator,
 } from '@cloud-carbon-footprint/core'
 import { GCP_CLOUD_CONSTANTS } from '../domain'
 import Recommendations from '../lib/Recommendations'
-import ServiceWrapper, { GoogleAuthClient } from '../lib/ServiceWrapper'
+import ServiceWrapper from '../lib/ServiceWrapper'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy, setupSpyWithMultipleValues } from './helpers'
 import {

@@ -5,7 +5,9 @@
 import { Resource } from '@google-cloud/resource-manager'
 import { compute_v1, google } from 'googleapis'
 import { RecommenderClient } from '@google-cloud/recommender'
+import { GoogleAuthClient } from '@cloud-carbon-footprint/common'
 import {
+  InstanceData,
   mockedAddressesResultItems,
   mockedDisksGetSSDDetails,
   mockedDisksResultItems,
@@ -17,7 +19,7 @@ import {
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
 
-import ServiceWrapper, { GoogleAuthClient } from '../lib/ServiceWrapper'
+import ServiceWrapper from '../lib/ServiceWrapper'
 import {
   ActiveProject,
   RecommenderRecommendations,
@@ -151,13 +153,15 @@ describe('GCP Service Wrapper', () => {
         'test-instance',
       )
 
-    const expectedResult: any = {
-      machineType:
-        'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
-      disks: [],
+    const expectedResult: InstanceData = {
+      data: {
+        machineType:
+          'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
+        disks: [],
+      },
     }
 
-    expect(instanceDetails).toEqual(expectedResult)
+    expect(instanceDetails).toEqual(expectedResult.data)
   })
 
   it('gets machine type details', async () => {

@@ -2,7 +2,10 @@
  * © 2021 ThoughtWorks, Inc.
  */
 
-export const mockStopVMRecommendationsResults: any = [
+import { google } from '@google-cloud/recommender/build/protos/protos'
+import IRecommendation = google.cloud.recommender.v1.IRecommendation
+
+export const mockStopVMRecommendationsResults: IRecommendation[][] = [
   [
     {
       name: 'project-name',
@@ -15,58 +18,57 @@ export const mockStopVMRecommendationsResults: any = [
             nanos: 0,
           },
         },
-        projection: 'costProjection',
       },
       recommenderSubtype: 'STOP_VM',
     },
   ],
 ]
 
-export const mockStopVMWithAdditionalImpactRecommendationsResults: any = [
+export const mockStopVMWithAdditionalImpactRecommendationsResults: IRecommendation[][] =
   [
-    {
-      name: 'project-name',
-      description: "Save cost by stopping Idle VM 'test-instance'.",
-      additionalImpact: [
-        {
+    [
+      {
+        name: 'project-name',
+        description: "Save cost by stopping Idle VM 'test-instance'.",
+        additionalImpact: [
+          {
+            category: 'COST',
+            costProjection: {
+              cost: {
+                units: -55,
+                nanos: 0,
+              },
+            },
+          },
+        ],
+        primaryImpact: { category: 'PERFORMANCE' },
+        recommenderSubtype: 'STOP_VM',
+      },
+    ],
+  ]
+
+export const mockChangeMachineTypeRecommendationsResults: IRecommendation[][] =
+  [
+    [
+      {
+        name: 'project-name',
+        description:
+          'Save cost by changing machine type from e2-medium to e2-small.',
+        primaryImpact: {
           category: 'COST',
           costProjection: {
             cost: {
-              units: -55,
+              units: -20,
               nanos: 0,
             },
           },
-          projection: 'costProjection',
         },
-      ],
-      primaryImpact: { category: 'PERFORMANCE' },
-      recommenderSubtype: 'STOP_VM',
-    },
-  ],
-]
-
-export const mockChangeMachineTypeRecommendationsResults: any = [
-  [
-    {
-      name: 'project-name',
-      description:
-        'Save cost by changing machine type from e2-medium to e2-small.',
-      primaryImpact: {
-        category: 'COST',
-        costProjection: {
-          cost: {
-            units: -20,
-            nanos: 0,
-          },
-        },
-        projection: 'costProjection',
+        recommenderSubtype: 'CHANGE_MACHINE_TYPE',
       },
-      recommenderSubtype: 'CHANGE_MACHINE_TYPE',
-    },
-  ],
-]
+    ],
+  ]
 
-export const mockDeleteDiskRecommendationsResults: any = [
+export const mockDeleteDiskRecommendationsResults: IRecommendation[][] = [
   [
     {
       name: 'project-name',
@@ -79,34 +81,33 @@ export const mockDeleteDiskRecommendationsResults: any = [
             nanos: 0,
           },
         },
-        projection: 'costProjection',
       },
       recommenderSubtype: 'DELETE_DISK',
     },
   ],
 ]
 
-export const mockSnapshotAndDeleteDiskRecommendationsResults: any = [
+export const mockSnapshotAndDeleteDiskRecommendationsResults: IRecommendation[][] =
   [
-    {
-      name: 'project-name',
-      description: "Save cost by deleting idle persistent disk 'test-disk'.",
-      primaryImpact: {
-        category: 'COST',
-        costProjection: {
-          cost: {
-            units: -50,
-            nanos: 0,
+    [
+      {
+        name: 'project-name',
+        description: "Save cost by deleting idle persistent disk 'test-disk'.",
+        primaryImpact: {
+          category: 'COST',
+          costProjection: {
+            cost: {
+              units: -50,
+              nanos: 0,
+            },
           },
         },
-        projection: 'costProjection',
+        recommenderSubtype: 'SNAPSHOT_AND_DELETE_DISK',
       },
-      recommenderSubtype: 'SNAPSHOT_AND_DELETE_DISK',
-    },
-  ],
-]
+    ],
+  ]
 
-export const mockDeleteImageRecommendationsResults: any = [
+export const mockDeleteImageRecommendationsResults: IRecommendation[][] = [
   [
     {
       name: 'project-name',
@@ -119,14 +120,13 @@ export const mockDeleteImageRecommendationsResults: any = [
             nanos: 0,
           },
         },
-        projection: 'costProjection',
       },
       recommenderSubtype: 'DELETE_IMAGE',
     },
   ],
 ]
 
-export const mockDeleteSnapshotRecommendationsResults: any = [
+export const mockDeleteSnapshotRecommendationsResults: IRecommendation[][] = [
   [
     {
       name: 'project-name',
@@ -139,11 +139,10 @@ export const mockDeleteSnapshotRecommendationsResults: any = [
             nanos: 0,
           },
         },
-        projection: 'costProjection',
       },
       recommenderSubtype: 'DELETE_SNAPSHOT',
     },
   ],
 ]
 
-export const mockEmptyRecommendationsResults: any = [[]]
+export const mockEmptyRecommendationsResults: IRecommendation[][] = [[]]

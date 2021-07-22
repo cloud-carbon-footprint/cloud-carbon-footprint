@@ -10,6 +10,7 @@ import {
 } from 'aws-sdk'
 import { IAMCredentialsClient } from '@google-cloud/iam-credentials'
 import { GoogleAuth, JWT } from 'google-auth-library'
+import { GoogleAuthClient } from '@cloud-carbon-footprint/common'
 
 export default class GCPCredentials extends Credentials {
   constructor(
@@ -55,7 +56,7 @@ export default class GCPCredentials extends Credentials {
     })
 
     // TODO -- replace any with proper types
-    const authClient: any = await auth.getClient()
+    const authClient: GoogleAuthClient = await auth.getClient()
     const iamCredentials = new IAMCredentialsClient({ auth: auth })
 
     const projectId = await auth.getProjectId()
