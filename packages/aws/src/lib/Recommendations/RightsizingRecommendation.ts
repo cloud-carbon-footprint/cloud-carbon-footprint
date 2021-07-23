@@ -15,6 +15,7 @@ export default class RightsizingRecommendation {
   public region: string
   public type: string
   public instanceName: string
+  public resourceId: string
   public instanceType: string
   public vCpuHours: number
   public costSavings: number

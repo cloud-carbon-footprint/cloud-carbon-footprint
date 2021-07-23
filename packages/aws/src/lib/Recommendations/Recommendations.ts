@@ -61,7 +61,9 @@ export default class Recommendations implements ICloudRecommendationsService {
           let kilowattHourSavings = currentComputeFootprint.kilowattHours
           let co2eSavings = currentComputeFootprint.co2e
           let costSavings = rightsizingCurrentRecommendation.costSavings
-          let recommendationDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}`
+          let recommendationDetail = this.getRecommendationDetail(
+            rightsizingCurrentRecommendation,
+          )
 
           if (currentMemoryFootprint.co2e) {
             kilowattHourSavings += currentMemoryFootprint.kilowattHours
@@ -79,7 +81,10 @@ export default class Recommendations implements ICloudRecommendationsService {
             kilowattHourSavings -= targetComputeFootprint.kilowattHours
             co2eSavings -= targetComputeFootprint.co2e
             costSavings = rightsizingTargetRecommendation.costSavings
-            recommendationDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}. Update instance type ${rightsizingCurrentRecommendation.instanceType} to ${rightsizingTargetRecommendation.instanceType}`
+            recommendationDetail = this.getRecommendationDetail(
+              rightsizingCurrentRecommendation,
+              rightsizingTargetRecommendation,
+            )
 
             if (targetMemoryFootprint.co2e) {
               kilowattHourSavings -= targetMemoryFootprint.kilowattHours
@@ -106,6 +111,23 @@ export default class Recommendations implements ICloudRecommendationsService {
       throw new Error(
         `Failed to grab AWS Rightsizing recommendations. Reason: ${e.message}`,
       )
+    }
+  }
+
+  private getRecommendationDetail(
+    rightsizingCurrentRecommendation: RightsizingCurrentRecommendation,
+    rightsizingTargetRecommendation?: RightsizingTargetRecommendation,
+  ): string {
+    const modifyDetail = `Update instance type ${rightsizingCurrentRecommendation.instanceType} to ${rightsizingTargetRecommendation?.instanceType}`
+    let defaultDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}.`
+    if (!rightsizingCurrentRecommendation.instanceName) {
+      defaultDetail = `${rightsizingCurrentRecommendation.type} instance with Resource ID: ${rightsizingCurrentRecommendation.resourceId}.`
+    }
+    switch (rightsizingCurrentRecommendation.type) {
+      case 'Terminate':
+        return defaultDetail
+      case 'Modify':
+        return `${defaultDetail} ${modifyDetail}`
     }
   }
 

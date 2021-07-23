@@ -24,6 +24,7 @@ export default class RightsizingCurrentRecommendation extends RightsizingRecomme
       rightsizingRecommendationData.CurrentInstance.ResourceDetails
         .EC2ResourceDetails,
     )
+    this.resourceId = rightsizingRecommendationData.CurrentInstance.ResourceId
     this.costSavings =
       parseFloat(
         rightsizingRecommendationData.TerminateRecommendationDetail

@@ -57,6 +57,24 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
           EstimatedMonthlySavings: '20',
         },
       },
+      {
+        AccountId: 'test-account-3',
+        CurrentInstance: {
+          InstanceName: '',
+          ResourceId: 'Test-resource-id',
+          ResourceDetails: {
+            EC2ResourceDetails: {
+              InstanceType: 't2.micro',
+              Region: 'US East (Ohio)',
+              Vcpu: '1',
+            },
+          },
+        },
+        RightsizingType: 'Terminate',
+        TerminateRecommendationDetail: {
+          EstimatedMonthlySavings: '30',
+        },
+      },
     ],
   }
 
