@@ -123,12 +123,11 @@ export default class Recommendations implements ICloudRecommendationsService {
     if (!rightsizingCurrentRecommendation.instanceName) {
       defaultDetail = `${rightsizingCurrentRecommendation.type} instance with Resource ID: ${rightsizingCurrentRecommendation.resourceId}.`
     }
-    switch (rightsizingCurrentRecommendation.type) {
-      case 'Terminate':
-        return defaultDetail
-      case 'Modify':
-        return `${defaultDetail} ${modifyDetail}`
+    const recommendationTypes: { [key: string]: string } = {
+      Terminate: defaultDetail,
+      Modify: `${defaultDetail} ${modifyDetail}`,
     }
+    return recommendationTypes[rightsizingCurrentRecommendation.type]
   }
 
   private getFootprintEstimates(
