@@ -13,7 +13,11 @@ import {
   ComputeEstimator,
   MemoryEstimator,
 } from '@cloud-carbon-footprint/core'
-import { RecommendationResult, Logger } from '@cloud-carbon-footprint/common'
+import {
+  RecommendationResult,
+  Logger,
+  AWS_RECOMMENDATIONS_TARGETS,
+} from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from '../ServiceWrapper'
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
@@ -34,7 +38,7 @@ export default class Recommendations implements ICloudRecommendationsService {
   }
 
   async getRecommendations(
-    recommendationTarget = 'SAME_INSTANCE_FAMILY',
+    recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
     const params: GetRightsizingRecommendationRequest = {
       Service: this.rightsizingRecommendationsService,

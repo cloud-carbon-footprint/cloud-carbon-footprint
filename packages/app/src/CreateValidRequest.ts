@@ -5,6 +5,7 @@
 import moment from 'moment'
 import { values, contains } from 'ramda'
 import {
+  AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   EstimationRequestValidationError,
 } from '@cloud-carbon-footprint/common'
@@ -15,6 +16,10 @@ export interface EstimationRequest {
   endDate: Date
   region?: string
   //cloudProvider?:CloudProviderEnum
+}
+
+export interface RecommendationRequest {
+  awsRecommendationTarget?: AWS_RECOMMENDATIONS_TARGETS
 }
 
 // eslint-disable-next-line

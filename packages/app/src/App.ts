@@ -8,6 +8,7 @@ import {
   reduceByTimestamp,
   EmissionRatioResult,
   RecommendationResult,
+  AWS_DEFAULT_RECOMMENDATION_TARGET,
 } from '@cloud-carbon-footprint/common'
 import {
   AzureAccount,
@@ -23,7 +24,7 @@ import {
 } from '@cloud-carbon-footprint/gcp'
 
 import cache from './Cache'
-import { EstimationRequest } from './CreateValidRequest'
+import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
 
 export default class App {
   @cache()
@@ -131,19 +132,23 @@ export default class App {
     }, [])
   }
 
-  async getRecommendations(): Promise<RecommendationResult[]> {
+  async getRecommendations(
+    request: RecommendationRequest,
+  ): Promise<RecommendationResult[]> {
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
     const recommendations: RecommendationResult[][] = []
 
     const AWSRecommendations: RecommendationResult[][] = []
+    const recommendationTarget =
+      request.awsRecommendationTarget || AWS_DEFAULT_RECOMMENDATION_TARGET
     if (AWS.USE_BILLING_DATA) {
       const recommendations = await new AWSAccount(
         AWS.BILLING_ACCOUNT_ID,
         AWS.BILLING_ACCOUNT_NAME,
         [AWS.ATHENA_REGION],
-      ).getDataForRecommendations()
+      ).getDataForRecommendations(recommendationTarget)
       AWSRecommendations.push(recommendations)
     } else {
       // Resolve AWS Estimates synchronously in order to avoid hitting API limits
@@ -153,7 +158,7 @@ export default class App {
             account.id,
             account.name,
             AWS.CURRENT_REGIONS,
-          ).getDataForRecommendations(),
+          ).getDataForRecommendations(recommendationTarget),
         )
         AWSRecommendations.push(recommendations)
       }

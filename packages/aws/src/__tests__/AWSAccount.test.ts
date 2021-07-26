@@ -7,6 +7,8 @@ import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 import {
   Config as mockConfig,
   RecommendationResult,
+  AWS_RECOMMENDATIONS_TARGETS,
+  AWS_DEFAULT_RECOMMENDATION_TARGET,
 } from '@cloud-carbon-footprint/common'
 import { EBS, S3, EC2, ElastiCache, RDS, Lambda } from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
@@ -152,9 +154,47 @@ describe('AWSAccount', () => {
     )
 
     getRecommendations.mockResolvedValue(expectedRecommendations)
-    const result = await testAwsAccount.getDataForRecommendations()
+    const result = await testAwsAccount.getDataForRecommendations(
+      AWS_DEFAULT_RECOMMENDATION_TARGET,
+    )
 
     expect(result).toEqual(expectedRecommendations)
+  })
+
+  it('should get data for Cross Instance Family recommendations', async () => {
+    const AWSAccount = require('../application/AWSAccount').default
+    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      'some-region',
+    ])
+
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'account-id',
+        accountName: 'account-name',
+        region: 'us-east-1',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance: instance-name',
+        kilowattHourSavings: 5,
+        co2eSavings: 4,
+        costSavings: 3,
+      },
+    ]
+
+    const getRecommendations = jest.spyOn(
+      Recommendations.prototype,
+      'getRecommendations',
+    )
+
+    getRecommendations.mockResolvedValue(expectedRecommendations)
+    const result = await testAwsAccount.getDataForRecommendations(
+      AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
+    )
+
+    expect(result).toEqual(expectedRecommendations)
+    expect(getRecommendations).toHaveBeenCalledWith(
+      AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
+    )
   })
 })
 

@@ -24,6 +24,7 @@ import {
   EstimationResult,
   configLoader,
   RecommendationResult,
+  AWS_RECOMMENDATIONS_TARGETS,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -105,7 +106,9 @@ export default class AWSAccount extends CloudProviderAccount {
     })
   }
 
-  async getDataForRecommendations(): Promise<RecommendationResult[]> {
+  async getDataForRecommendations(
+    recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
+  ): Promise<RecommendationResult[]> {
     const recommendations = new Recommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
@@ -117,7 +120,7 @@ export default class AWSAccount extends CloudProviderAccount {
       ),
     )
 
-    return await recommendations.getRecommendations()
+    return await recommendations.getRecommendations(recommendationTarget)
   }
 
   getDataFromCostAndUsageReports(

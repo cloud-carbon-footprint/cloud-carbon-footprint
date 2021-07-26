@@ -6,7 +6,11 @@ import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
 
 import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import {
+  AWS_DEFAULT_RECOMMENDATION_TARGET,
+  AWS_RECOMMENDATIONS_TARGETS,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 
 import { Recommendations } from '../lib/Recommendations'
 import {
@@ -30,8 +34,6 @@ describe('AWS Recommendations Service', () => {
       new CostExplorer(),
     )
 
-  const crossInstanceFamily = 'CROSS_INSTANCE_FAMILY'
-
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
   })
@@ -51,7 +53,9 @@ describe('AWS Recommendations Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await awsRecommendationsServices.getRecommendations()
+    const result = await awsRecommendationsServices.getRecommendations(
+      AWS_DEFAULT_RECOMMENDATION_TARGET,
+    )
 
     expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
       {
@@ -123,7 +127,9 @@ describe('AWS Recommendations Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await awsRecommendationsServices.getRecommendations()
+    const result = await awsRecommendationsServices.getRecommendations(
+      AWS_DEFAULT_RECOMMENDATION_TARGET,
+    )
 
     expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
       {
@@ -165,7 +171,7 @@ describe('AWS Recommendations Service', () => {
     )
 
     const result = await awsRecommendationsServices.getRecommendations(
-      crossInstanceFamily,
+      AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
     )
 
     expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
@@ -173,7 +179,8 @@ describe('AWS Recommendations Service', () => {
         Service: 'AmazonEC2',
         Configuration: {
           BenefitsConsidered: false,
-          RecommendationTarget: crossInstanceFamily,
+          RecommendationTarget:
+            AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
         },
       },
       expect.anything(),
@@ -205,7 +212,7 @@ describe('AWS Recommendations Service', () => {
     )
 
     const result = await awsRecommendationsServices.getRecommendations(
-      crossInstanceFamily,
+      AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
     )
 
     const expectedResult: RecommendationResult[] = [
@@ -241,7 +248,9 @@ describe('AWS Recommendations Service', () => {
     )
 
     await expect(() =>
-      awsRecommendationsServices.getRecommendations(),
+      awsRecommendationsServices.getRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      ),
     ).rejects.toThrow(
       `Failed to grab AWS Rightsizing recommendations. Reason: error-test`,
     )

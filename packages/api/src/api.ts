@@ -82,7 +82,7 @@ const RecommendationsApiMiddleware = async function (
   apiLogger.info(`Recommendations API request started`)
   const footprintApp = new App()
   try {
-    const recommendations = await footprintApp.getRecommendations()
+    const recommendations = await footprintApp.getRecommendations({})
     res.json(recommendations)
   } catch (e) {
     apiLogger.error(`Unable to process recommendations request.`, e)
