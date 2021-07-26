@@ -33,12 +33,14 @@ export default class Recommendations implements ICloudRecommendationsService {
     this.recommendationsLogger = new Logger('AWSRecommendations')
   }
 
-  async getRecommendations(): Promise<RecommendationResult[]> {
+  async getRecommendations(
+    recommendationTarget = 'SAME_INSTANCE_FAMILY',
+  ): Promise<RecommendationResult[]> {
     const params: GetRightsizingRecommendationRequest = {
       Service: this.rightsizingRecommendationsService,
       Configuration: {
         BenefitsConsidered: false,
-        RecommendationTarget: 'SAME_INSTANCE_FAMILY',
+        RecommendationTarget: recommendationTarget,
       },
     }
 

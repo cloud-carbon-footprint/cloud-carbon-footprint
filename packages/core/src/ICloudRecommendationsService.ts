@@ -5,5 +5,7 @@
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 
 export default interface ICloudRecommendationsService {
-  getRecommendations(): Promise<RecommendationResult[]>
+  getRecommendations(
+    recommendationTarget?: string,
+  ): Promise<RecommendationResult[]>
 }

@@ -10,6 +10,8 @@ import { RecommendationResult } from '@cloud-carbon-footprint/common'
 
 import { Recommendations } from '../lib/Recommendations'
 import {
+  rightsizingCrossFamilyRecommendationModify,
+  rightsizingCrossFamilyRecommendationTerminate,
   rightsizingRecommendationModify,
   rightsizingRecommendationTerminate,
 } from './fixtures/costExplorer.fixtures'
@@ -27,6 +29,8 @@ describe('AWS Recommendations Service', () => {
       new CloudWatchLogs(),
       new CostExplorer(),
     )
+
+  const crossInstanceFamily = 'CROSS_INSTANCE_FAMILY'
 
   beforeAll(() => {
     AWSMock.setSDKInstance(AWS)
@@ -148,6 +152,80 @@ describe('AWS Recommendations Service', () => {
 
     expect(result).toEqual(expectedResult)
   })
+
+  it('Get recommendations from Rightsizing API type: Terminate with Cross Family parameter', async () => {
+    mockGetRightsizingRecommendation(
+      rightsizingCrossFamilyRecommendationTerminate,
+    )
+
+    const awsRecommendationsServices = new Recommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await awsRecommendationsServices.getRecommendations(
+      crossInstanceFamily,
+    )
+
+    expect(getRightsizingRecommendationSpy).toHaveBeenCalledWith(
+      {
+        Service: 'AmazonEC2',
+        Configuration: {
+          BenefitsConsidered: false,
+          RecommendationTarget: crossInstanceFamily,
+        },
+      },
+      expect.anything(),
+    )
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'us-east-2',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Terminate instance: Test instance.',
+        kilowattHourSavings: 0.37918080000000004,
+        co2eSavings: 0.0001669104588096,
+        costSavings: 20,
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Get recommendations from Rightsizing API type: Modify with Cross Family parameter', async () => {
+    mockGetRightsizingRecommendation(rightsizingCrossFamilyRecommendationModify)
+
+    const awsRecommendationsServices = new Recommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await awsRecommendationsServices.getRecommendations(
+      crossInstanceFamily,
+    )
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'us-east-2',
+        recommendationType: 'Modify',
+        recommendationDetail:
+          'Modify instance: Test instance. Update instance type t2.micro to t3.micro',
+        kilowattHourSavings: -0.37918080000000004,
+        co2eSavings: -0.0001669104588096,
+        costSavings: 20,
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
   it('Logs the error response if there is a problem getting recommendations', async () => {
     getRightsizingRecommendationSpy.mockRejectedValue({ message: 'error-test' })
     AWSMock.mock(

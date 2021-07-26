@@ -121,3 +121,60 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
       },
     ],
   }
+
+export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecommendationResponse =
+  {
+    RightsizingRecommendations: [
+      {
+        AccountId: 'test-account',
+        CurrentInstance: {
+          InstanceName: 'Test instance',
+          ResourceDetails: {
+            EC2ResourceDetails: {
+              InstanceType: 't2.micro',
+              Region: 'US East (Ohio)',
+              Vcpu: '1',
+            },
+          },
+        },
+        RightsizingType: 'Terminate',
+        TerminateRecommendationDetail: {
+          EstimatedMonthlySavings: '20',
+        },
+      },
+    ],
+  }
+
+export const rightsizingCrossFamilyRecommendationModify: GetRightsizingRecommendationResponse =
+  {
+    RightsizingRecommendations: [
+      {
+        AccountId: 'test-account',
+        CurrentInstance: {
+          InstanceName: 'Test instance',
+          ResourceDetails: {
+            EC2ResourceDetails: {
+              InstanceType: 't2.micro',
+              Region: 'US East (Ohio)',
+              Vcpu: '1',
+            },
+          },
+        },
+        RightsizingType: 'Modify',
+        ModifyRecommendationDetail: {
+          TargetInstances: [
+            {
+              EstimatedMonthlySavings: '20',
+              ResourceDetails: {
+                EC2ResourceDetails: {
+                  InstanceType: 't3.micro',
+                  Region: 'US East (Ohio)',
+                  Vcpu: '2',
+                },
+              },
+            },
+          ],
+        },
+      },
+    ],
+  }
