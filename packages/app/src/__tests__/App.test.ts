@@ -10,6 +10,7 @@ import {
   Cost,
 } from '@cloud-carbon-footprint/core'
 import {
+  AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   EmissionRatioResult,
@@ -858,7 +859,9 @@ describe('App', () => {
   })
 
   describe('recommendations', () => {
-    const defaultRequest: RecommendationRequest = {}
+    const defaultRequest: RecommendationRequest = {
+      awsRecommendationTarget: AWS_DEFAULT_RECOMMENDATION_TARGET,
+    }
 
     it('returns recommendations for aws', async () => {
       const expectedRecommendations: RecommendationResult[] = [

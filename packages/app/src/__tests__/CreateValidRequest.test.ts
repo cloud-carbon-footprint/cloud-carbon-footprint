@@ -4,7 +4,11 @@
 import moment from 'moment'
 import { AWS_REGIONS } from '@cloud-carbon-footprint/aws'
 
-import CreateValidRequest from '../CreateValidRequest'
+import {
+  CreateValidFootprintRequest,
+  CreateValidRecommendationsRequest,
+} from '../CreateValidRequest'
+import { AWS_RECOMMENDATIONS_TARGETS } from '@cloud-carbon-footprint/common'
 
 describe('CreateValidRequest', () => {
   it('parses the start and end dates in utc', () => {
@@ -14,7 +18,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    const result = CreateValidRequest(input)
+    const result = CreateValidFootprintRequest(input)
 
     expect(result).toEqual({
       startDate: moment.utc('2020-07-01').toDate(),
@@ -30,7 +34,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow(
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
       'Start date is not before end date',
     )
   })
@@ -42,7 +46,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow(
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
       'Start date is not before end date',
     )
   })
@@ -54,7 +58,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow(
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
       'Start date is in the future',
     )
   })
@@ -66,7 +70,9 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('End date is in the future')
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
+      'End date is in the future',
+    )
   })
 
   it('ensures the raw start date is a parseable date', () => {
@@ -76,7 +82,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow(
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
       'Start date is not in a recognized RFC2822 or ISO format',
     )
   })
@@ -88,7 +94,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow(
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
       'End date is not in a recognized RFC2822 or ISO format',
     )
   })
@@ -101,7 +107,7 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow(
+      expect(() => CreateValidFootprintRequest(input)).toThrow(
         'Start date must be provided',
       )
     })
@@ -113,7 +119,7 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow(
+      expect(() => CreateValidFootprintRequest(input)).toThrow(
         'End date must be provided',
       )
     })
@@ -127,7 +133,7 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow(
+      expect(() => CreateValidFootprintRequest(input)).toThrow(
         'Start date must be provided',
       )
     })
@@ -139,7 +145,7 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow(
+      expect(() => CreateValidFootprintRequest(input)).toThrow(
         'End date must be provided',
       )
     })
@@ -153,7 +159,7 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow(
+      expect(() => CreateValidFootprintRequest(input)).toThrow(
         'Start date must be provided',
       )
     })
@@ -165,7 +171,7 @@ describe('CreateValidRequest', () => {
         region: AWS_REGIONS.US_EAST_1,
       }
 
-      expect(() => CreateValidRequest(input)).toThrow(
+      expect(() => CreateValidFootprintRequest(input)).toThrow(
         'End date must be provided',
       )
     })
@@ -178,7 +184,7 @@ describe('CreateValidRequest', () => {
       region: AWS_REGIONS.US_EAST_1,
     }
 
-    expect(() => CreateValidRequest(input)).toThrow(
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
       'Start date is not before end date, Start date is in the future',
     )
   })
@@ -190,6 +196,57 @@ describe('CreateValidRequest', () => {
       region: 'us-east-800',
     }
 
-    expect(() => CreateValidRequest(input)).toThrow('Not a valid region')
+    expect(() => CreateValidFootprintRequest(input)).toThrow(
+      'Not a valid region',
+    )
+  })
+
+  describe('recommendations request', () => {
+    it('parses the AWS recommendation target for a Single Instance Family', () => {
+      const input = {
+        awsRecommendationTarget: 'SAME_INSTANCE_FAMILY',
+      }
+
+      const result = CreateValidRecommendationsRequest(input)
+
+      expect(result).toEqual({
+        awsRecommendationTarget:
+          AWS_RECOMMENDATIONS_TARGETS.SAME_INSTANCE_FAMILY,
+      })
+    })
+
+    it('parses the AWS recommendation target for a Cross Instance Family', () => {
+      const input = {
+        awsRecommendationTarget: 'CROSS_INSTANCE_FAMILY',
+      }
+
+      const result = CreateValidRecommendationsRequest(input)
+
+      expect(result).toEqual({
+        awsRecommendationTarget:
+          AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
+      })
+    })
+
+    it('returns default recommendation target if none provided', () => {
+      const input = {}
+
+      const result = CreateValidRecommendationsRequest(input)
+
+      expect(result).toEqual({
+        awsRecommendationTarget:
+          AWS_RECOMMENDATIONS_TARGETS.SAME_INSTANCE_FAMILY,
+      })
+    })
+
+    it('throws an error if provided an invalid recommendation target', () => {
+      const input = {
+        awsRecommendationTarget: 'NO_INSTANCE_FAMILY',
+      }
+
+      expect(() => CreateValidRecommendationsRequest(input)).toThrow(
+        'AWS Recommendation Target is not valid',
+      )
+    })
   })
 })

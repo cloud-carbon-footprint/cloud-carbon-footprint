@@ -7,7 +7,7 @@ import express from 'express'
 import {
   App,
   CreateValidRequest,
-  RawRequest,
+  FootprintEstimatesRawRequest,
 } from '@cloud-carbon-footprint/app'
 
 import {
@@ -31,7 +31,7 @@ const FootprintApiMiddleware = async function (
 ): Promise<void> {
   // Set the request time out to 10 minutes to allow the request enough time to complete.
   req.socket.setTimeout(1000 * 60 * 10)
-  const rawRequest: RawRequest = {
+  const rawRequest: FootprintEstimatesRawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
   }

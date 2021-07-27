@@ -5,11 +5,16 @@
 import moment from 'moment'
 import { values, contains } from 'ramda'
 import {
+  AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   EstimationRequestValidationError,
+  RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
-import { RawRequest } from './RawRequest'
+import {
+  FootprintEstimatesRawRequest,
+  RecommendationsRawRequest,
+} from './RawRequest'
 
 export interface EstimationRequest {
   startDate: Date
@@ -62,11 +67,25 @@ function validate(
   }
 }
 
-function rawRequestToEstimationRequest(request: RawRequest): EstimationRequest {
+function rawRequestToEstimationRequest(
+  request: FootprintEstimatesRawRequest,
+): EstimationRequest {
   return {
     startDate: moment.utc(request.startDate).toDate(),
     endDate: moment.utc(request.endDate).toDate(),
     region: request.region,
+  }
+}
+
+function rawRequestToRecommendationsRequest(
+  request: RecommendationsRawRequest,
+): RecommendationRequest {
+  const awsRecommendationTarget =
+    (request.awsRecommendationTarget as AWS_RECOMMENDATIONS_TARGETS) ||
+    AWS_DEFAULT_RECOMMENDATION_TARGET
+
+  return {
+    awsRecommendationTarget,
   }
 }
 
@@ -88,9 +107,24 @@ function validateDatesPresent(
   }
 }
 
+function validateRecommendationTarget(
+  awsRecommendationTarget: string,
+): void | RecommendationsRequestValidationError {
+  if (
+    awsRecommendationTarget &&
+    !Object.values(AWS_RECOMMENDATIONS_TARGETS).includes(
+      awsRecommendationTarget as AWS_RECOMMENDATIONS_TARGETS,
+    )
+  ) {
+    throw new RecommendationsRequestValidationError(
+      'AWS Recommendation Target is not valid',
+    )
+  }
+}
+
 // throws EstimationRequestValidationError if either validation fails
-export default function CreateValidRequest(
-  request: RawRequest,
+export function CreateValidFootprintRequest(
+  request: FootprintEstimatesRawRequest,
 ): EstimationRequest {
   validateDatesPresent(request.startDate, request.endDate)
 
@@ -99,4 +133,11 @@ export default function CreateValidRequest(
 
   validate(startDate, endDate, request.region)
   return rawRequestToEstimationRequest(request)
+}
+
+export function CreateValidRecommendationsRequest(
+  request: RecommendationsRawRequest,
+): RecommendationRequest {
+  validateRecommendationTarget(request.awsRecommendationTarget)
+  return rawRequestToRecommendationsRequest(request)
 }

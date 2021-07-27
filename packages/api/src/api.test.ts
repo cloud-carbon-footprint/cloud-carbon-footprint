@@ -152,7 +152,10 @@ describe('api', () => {
   })
 
   describe('/recommendations', () => {
-    it('returns data for regional emissions factors', async () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+    it('returns data for recommendations', async () => {
       const expectedResponse: RecommendationResult[] = []
 
       mockGetRecommendations.mockResolvedValueOnce(expectedResponse)
@@ -160,6 +163,40 @@ describe('api', () => {
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual(expectedResponse)
+    })
+
+    it('returns data when a Cross Instance Family AWS recommendation target is given', async () => {
+      const expectedResponse: RecommendationResult[] = []
+
+      mockGetRecommendations.mockResolvedValue(expectedResponse)
+      const response = await request(server).get(
+        encodeURI(
+          '/recommendations?awsRecommendationTarget=CROSS_INSTANCE_FAMILY',
+        ),
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(expectedResponse)
+      expect(mockGetRecommendations).toHaveBeenCalledWith({
+        awsRecommendationTarget: 'CROSS_INSTANCE_FAMILY',
+      })
+    })
+
+    it('returns data when a Same Instance Family AWS recommendation target is given', async () => {
+      const expectedResponse: RecommendationResult[] = []
+
+      mockGetRecommendations.mockResolvedValue(expectedResponse)
+      const response = await request(server).get(
+        encodeURI(
+          '/recommendations?awsRecommendationTarget=SAME_INSTANCE_FAMILY',
+        ),
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(expectedResponse)
+      expect(mockGetRecommendations).toHaveBeenCalledWith({
+        awsRecommendationTarget: 'SAME_INSTANCE_FAMILY',
+      })
     })
 
     describe('error handling', () => {
@@ -173,6 +210,17 @@ describe('api', () => {
         )
 
         expect(response.status).toBe(500)
+      })
+
+      it('returns bad request if an invalid recommendation target is given', async () => {
+        mockGetRecommendations.mockRejectedValueOnce(new Error('error'))
+        const response = await request(server).get(
+          encodeURI(
+            '/recommendations?awsRecommendationTarget=ULTRA_INSTANCE_FAMILY',
+          ),
+        )
+
+        expect(response.status).toBe(400)
       })
     })
   })

@@ -6,14 +6,17 @@ import express from 'express'
 
 import {
   App,
-  CreateValidRequest,
-  RawRequest,
+  CreateValidFootprintRequest,
+  CreateValidRecommendationsRequest,
+  FootprintEstimatesRawRequest,
+  RecommendationsRawRequest,
 } from '@cloud-carbon-footprint/app'
 
 import {
   EstimationRequestValidationError,
   PartialDataError,
   Logger,
+  RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
 
 const apiLogger = new Logger('api')
@@ -31,7 +34,7 @@ const FootprintApiMiddleware = async function (
 ): Promise<void> {
   // Set the request time out to 10 minutes to allow the request enough time to complete.
   req.socket.setTimeout(1000 * 60 * 10)
-  const rawRequest: RawRequest = {
+  const rawRequest: FootprintEstimatesRawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
   }
@@ -40,7 +43,7 @@ const FootprintApiMiddleware = async function (
   )
   const footprintApp = new App()
   try {
-    const estimationRequest = CreateValidRequest(rawRequest)
+    const estimationRequest = CreateValidFootprintRequest(rawRequest)
     const estimationResults = await footprintApp.getCostAndEstimates(
       estimationRequest,
     )
@@ -79,14 +82,27 @@ const RecommendationsApiMiddleware = async function (
   req: express.Request,
   res: express.Response,
 ): Promise<void> {
+  const rawRequest: RecommendationsRawRequest = {
+    awsRecommendationTarget: req.query.awsRecommendationTarget?.toString(),
+  }
   apiLogger.info(`Recommendations API request started`)
   const footprintApp = new App()
   try {
-    const recommendations = await footprintApp.getRecommendations({})
+    const estimationRequest = CreateValidRecommendationsRequest(rawRequest)
+    const recommendations = await footprintApp.getRecommendations(
+      estimationRequest,
+    )
     res.json(recommendations)
   } catch (e) {
     apiLogger.error(`Unable to process recommendations request.`, e)
-    res.status(500).send('Internal Server Error')
+    if (
+      e.constructor.name ===
+      RecommendationsRequestValidationError.prototype.constructor.name
+    ) {
+      res.status(400).send(e.message)
+    } else {
+      res.status(500).send('Internal Server Error')
+    }
   }
 }
 

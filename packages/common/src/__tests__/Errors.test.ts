@@ -6,6 +6,7 @@ import {
   ErrorTypes,
   EstimationRequestValidationError,
   PartialDataError,
+  RecommendationsRequestValidationError,
 } from '../Errors'
 
 describe('Errors', () => {
@@ -15,13 +16,22 @@ describe('Errors', () => {
     expect(partialDataError.name).toEqual(ErrorTypes.PARTIAL_DATA_ERROR)
   })
 
-  it('is an estimation request validation errors ', () => {
-    const partialDataError = new EstimationRequestValidationError(
+  it('is an estimation request validation error ', () => {
+    const estimationRequestError = new EstimationRequestValidationError(
       'estimation error message',
     )
 
-    expect(partialDataError.name).toEqual(
+    expect(estimationRequestError.name).toEqual(
       ErrorTypes.ESTIMATION_REQUEST_VALIDATION_ERROR,
+    )
+  })
+
+  it('is a recommendations request validation error ', () => {
+    const recommendationRequestError =
+      new RecommendationsRequestValidationError('recommendation serror message')
+
+    expect(recommendationRequestError.name).toEqual(
+      ErrorTypes.RECOMMENDATIONS_REQUEST_VALIDATION_ERROR,
     )
   })
 })
