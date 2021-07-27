@@ -7,7 +7,7 @@ import moment from 'moment'
 import path from 'path'
 import * as process from 'process'
 
-import { App, CreateValidRequest } from '@cloud-carbon-footprint/app'
+import { App, CreateValidFootprintRequest } from '@cloud-carbon-footprint/app'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 import EmissionsByDayAndServiceTable from './EmissionsByDayAndServiceTable'
@@ -42,7 +42,7 @@ export default async function cli(argv: string[] = process.argv) {
   let format: string
 
   if (program.opts().interactive) {
-    [startDate, endDate, region, groupBy, format] = await CliPrompts()
+    ;[startDate, endDate, region, groupBy, format] = await CliPrompts()
   } else {
     const programOptions = program.opts()
     startDate = programOptions.startDate
@@ -51,7 +51,11 @@ export default async function cli(argv: string[] = process.argv) {
     groupBy = programOptions.groupBy
     format = programOptions.format
   }
-  const estimationRequest = CreateValidRequest({ startDate, endDate, region })
+  const estimationRequest = CreateValidFootprintRequest({
+    startDate,
+    endDate,
+    region,
+  })
   const { table, colWidths } = await new App()
     .getCostAndEstimates(estimationRequest)
     .then((estimations: EstimationResult[]) => {
