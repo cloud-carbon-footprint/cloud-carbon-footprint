@@ -37,6 +37,9 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         },
       },
       "height": "500px",
+      "markers": Object {
+        "size": 5,
+      },
       "series": Array [
         Object {
           "data": Array [],
