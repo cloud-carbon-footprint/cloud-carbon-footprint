@@ -111,6 +111,11 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
   }
 
   public parseInstanceTypeFromUsageType(): string {
+    // Sometimes the CUR usage type for xlarge instances returns only as 'xl', so append 'arge'
+    // to make it consistent with other responce data.
+    if (this.usageType.endsWith('xl'))
+      this.usageType = this.usageType.concat('arge')
+
     const prefixes = ['db', 'cache', 'Kafka']
     const includesPrefix = prefixes.find((prefix) =>
       this.usageType.includes(prefix),
