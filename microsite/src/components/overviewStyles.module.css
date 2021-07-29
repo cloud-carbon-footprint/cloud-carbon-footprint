@@ -15,6 +15,7 @@
 
 .overviewItem {
   padding: 3rem;
+  text-align: center;
 }
 
 .overviewItemText {
@@ -52,8 +53,12 @@
   font-size: 28pt;
   line-height: 1.4;
   font-weight: 400;
+  margin-bottom: 55px;
+
 }
 
 .overviewText {
   font-size: 15pt;
+  margin-bottom: 55px;
+  text-align: justify;
 }
