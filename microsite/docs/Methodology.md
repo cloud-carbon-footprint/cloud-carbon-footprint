@@ -303,7 +303,7 @@ Our approach to estimating memory for AWS is as follows:
 1. For each AWS instance family, we calculate the difference between the GB / physical CPU from the associated microarchitectures in the SPECPower Database, and the GB / physical CPUs for the comparable instance size, referred to in step 2.
 1. If this difference (in GB) is greater than zero, we know an additional memory estimation should be added for this usage row. The amount of kilo-watt hours added for memory is directly proportional to the size of the instance - this is because memory allocated scales linearly within a family. We multiply this proportional amount of additional memory by the chosen coefficient to get kilo-watts hours.
 1. If the GB / physical CPU difference is less than or equal to zero, we ignore the usage. We also ignore the usage for any burstable instances, because there is no instance size comparable (large enough) to the SPECPower Database rows.   
-1. You can see a full list of these instance types and calculations for memory [here](https://docs.google.com/spreadsheets/d/1O7Ug_eUZvbZA4dTaA-8DNhJhoZikKD2IdD8OeNQipe4/edit#gid=1756293863).
+1. You can see a full list of these instance types and calculations for memory [here](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients/blob/main/data/aws-instances.csv).
 
 Here is that formula summarized:
 
@@ -328,7 +328,7 @@ We welcome any and all feedback/suggestions on how to improve this.
 #### Azure
 
 Our approach to estimating memory for Azure is very similar to AWS. When it comes to compute instances, it is exactly 
-the same approach, and [here](https://docs.google.com/spreadsheets/d/1O7Ug_eUZvbZA4dTaA-8DNhJhoZikKD2IdD8OeNQipe4/edit#gid=1789644751) 
+the same approach, and [here](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients/blob/main/data/azure-instances.csv) 
 is a spreadsheet with the full list of instance types and calculations for memory.
 
 In addition to compute instance usage rows, we have found that Azure also has some usage rows that correspond directly 
@@ -413,7 +413,9 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 ### Appendix II: Cloud provider compute processors and micro-architectures:
 
-You can see the full list of AWS, GCP and Azure microarchitectures and min/max coefficients used for Compute in [this spreadsheet](https://docs.google.com/spreadsheets/d/1O7Ug_eUZvbZA4dTaA-8DNhJhoZikKD2IdD8OeNQipe4/edit#gid=381149164).
+You can see the full list of AWS, GCP and Azure microarchitectures and min/max coefficients used for Compute [here](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients/tree/main/data).
+
+We want to thank [@davidmytton](https://github.com/davidmytton) for collaborating with us on the creation of [this repository](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients) that calculates coefficients used in the CCF application.
 
 **Note on AWS Graviton 2 Processor:**
 
