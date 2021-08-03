@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route } from 'react-router-dom'
 import ErrorPage from './layout/ErrorPage'
 import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
+import RecommendationsPage from './pages/RecommendationsPage/'
 import InfoSidebar from './layout/InfoSidebar'
 import HeaderBar from './layout/HeaderBar'
 
@@ -28,6 +29,9 @@ function App(): ReactElement {
         <Switch>
           <Route path="/error" exact>
             <ErrorPage />
+          </Route>
+          <Route path="/recommendations" exact>
+            <RecommendationsPage />
           </Route>
           <Route path="/">
             <InfoSidebar />

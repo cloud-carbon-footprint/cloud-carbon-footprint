@@ -2212,6 +2212,7 @@ __metadata:
     "@babel/runtime": ^7.14.0
     "@cloud-carbon-footprint/common": ^1.0.0
     "@material-ui/core": ^4.11.4
+    "@material-ui/data-grid": ^4.0.0-alpha.35
     "@material-ui/icons": ^4.11.2
     "@material-ui/lab": ^4.0.0-alpha.57
     "@testing-library/dom": ^8.0.0
@@ -3867,6 +3868,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@material-ui/data-grid@npm:^4.0.0-alpha.35":
+  version: 4.0.0-alpha.35
+  resolution: "@material-ui/data-grid@npm:4.0.0-alpha.35"
+  dependencies:
+    "@material-ui/utils": ^5.0.0-alpha.14
+    clsx: ^1.0.4
+    prop-types: ^15.7.2
+    reselect: ^4.0.0
+  peerDependencies:
+    "@material-ui/core": ^4.9.12 || ^5.0.0-beta.0
+    react: ^17.0.0
+  checksum: d6aa64a2a4235669abb45e17434322e62bf8071510ff70cdb6920f45cc5a745c7c2aa20430e10e57383a488c969f738a79bbf9e406b6bdbd9f0564b7660ea751
+  languageName: node
+  linkType: hard
+
 "@material-ui/icons@npm:^4.11.2":
   version: 4.11.2
   resolution: "@material-ui/icons@npm:4.11.2"
@@ -3978,6 +3994,21 @@ __metadata:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   checksum: 5bb7e1a27cd0a09ff9d2d2f1b8b5c9004519b635a4cbe546810172f7d32870c26cc1e846f4bcd9e8cb40202721871b55f6355ba7a6b3e9897d1553d8deac734c
+  languageName: node
+  linkType: hard
+
+"@material-ui/utils@npm:^5.0.0-alpha.14":
+  version: 5.0.0-beta.1
+  resolution: "@material-ui/utils@npm:5.0.0-beta.1"
+  dependencies:
+    "@babel/runtime": ^7.4.4
+    "@types/prop-types": ^15.7.3
+    "@types/react-is": ^16.7.1 || ^17.0.0
+    prop-types: ^15.7.2
+    react-is: ^17.0.0
+  peerDependencies:
+    react: ^17.0.0
+  checksum: c312b3f6a1cc506a03d8bd08927895585ec1e331a1264fdfe2c25e981224aea46e5499036c94fc07b815c0dfccb036c8942c9cc2d39ffbd55cc5f6972a6e1ab4
   languageName: node
   linkType: hard
 
@@ -5133,6 +5164,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prop-types@npm:^15.7.3":
+  version: 15.7.4
+  resolution: "@types/prop-types@npm:15.7.4"
+  checksum: ef15c425a944f6b13824a87854cccf238e1b4cd0350b3124f4938406fe758fbdd6fadb2480d1388a00daeab61ce9888be5ca2b73da275f5dbc977143ff98e1eb
+  languageName: node
+  linkType: hard
+
 "@types/q@npm:^1.5.1":
   version: 1.5.4
   resolution: "@types/q@npm:1.5.4"
@@ -5189,6 +5227,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: b3e23acb7be9405050abb4bcd443d14b16b2f3ded2d1853528199e4307b17b25186f905ddd236c27b6ef0297e6779b7fedd11fd24ee9170771be45a7e8e70f4b
+  languageName: node
+  linkType: hard
+
+"@types/react-is@npm:^16.7.1 || ^17.0.0":
+  version: 17.0.2
+  resolution: "@types/react-is@npm:17.0.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 0144ba967566b8ac2178ac4dea30b5d48f943d3b2cc5360e30822b6f6158522f332f19b584cc2352283668a2bd7441c55d7c666f180bea2af90ae2158380917c
   languageName: node
   linkType: hard
 
@@ -20303,7 +20350,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0, react-is@npm:^16.8.0 || ^17.0.0, react-is@npm:^17.0.1, react-is@npm:^17.0.2":
+"react-is@npm:^16.12.0 || ^17.0.0, react-is@npm:^16.8.0 || ^17.0.0, react-is@npm:^17.0.0, react-is@npm:^17.0.1, react-is@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 3eff23f410d40ab9bc5177f147a92c7f42c356a21ecea340e0554566956d67e5e1ba56f26cc7fa22339ac3c7151744177bd6305eaa26d3cbf15f354358c9d9b6

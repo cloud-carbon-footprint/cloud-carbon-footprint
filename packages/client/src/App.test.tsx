@@ -3,18 +3,18 @@
  */
 
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
+import moment from 'moment'
+import { MemoryRouter, Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import { render } from '@testing-library/react'
 import { generateEstimations, fakeEmissionFactors } from './utils/data'
-import moment from 'moment'
-
-import App from './App'
 import { useRemoteService, useRemoteEmissionService } from './utils/hooks'
 import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from './Types'
+import App from './App'
 
 jest.mock('apexcharts')
 jest.mock('./utils/hooks/RemoteServiceHook')
@@ -48,10 +48,6 @@ describe('App', () => {
     mockedUseRemoteService.mockClear()
   })
 
-  it('renders with correct configuration', () => {
-    expect(true).toEqual(true)
-  })
-
   it('renders the page title', () => {
     const { getByText } = render(
       <MemoryRouter>
@@ -60,5 +56,33 @@ describe('App', () => {
     )
     const linkElement = getByText(/Cloud Carbon Footprint/i)
     expect(linkElement).toBeInTheDocument()
+  })
+
+  describe('page routing', () => {
+    it('navigates to the home page', () => {
+      const history = createMemoryHistory()
+      history.push('/')
+
+      const { getByTestId } = render(
+        <Router history={history}>
+          <App />
+        </Router>,
+      )
+
+      expect(getByTestId('infoIcon')).toBeInTheDocument()
+    })
+
+    it('navigates to the Recommendations Page', () => {
+      const history = createMemoryHistory()
+      history.push('/recommendations')
+
+      const { getByText } = render(
+        <Router history={history}>
+          <App />
+        </Router>,
+      )
+
+      expect(getByText('Recommendations Page')).toBeInTheDocument()
+    })
   })
 })
