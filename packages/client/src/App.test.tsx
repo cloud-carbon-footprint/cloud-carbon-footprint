@@ -8,10 +8,15 @@ import { MemoryRouter, Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render } from '@testing-library/react'
 import { generateEstimations, fakeEmissionFactors } from './utils/data'
-import { useRemoteService, useRemoteEmissionService } from './utils/hooks'
+import {
+  useRemoteService,
+  useRemoteEmissionService,
+  useRemoteRecommendationsService,
+} from './utils/hooks'
 import {
   EstimationResult,
   EmissionRatioResult,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from './Types'
 import App from './App'
@@ -19,6 +24,7 @@ import App from './App'
 jest.mock('apexcharts')
 jest.mock('./utils/hooks/RemoteServiceHook')
 jest.mock('./utils/hooks/EmissionFactorServiceHook')
+jest.mock('./utils/hooks/RecommendationsServiceHook')
 jest.mock('./utils/themes')
 
 const mockedUseRemoteService = useRemoteService as jest.MockedFunction<
@@ -27,6 +33,10 @@ const mockedUseRemoteService = useRemoteService as jest.MockedFunction<
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<
     typeof useRemoteEmissionService
+  >
+const mockedUseRecommendationsService =
+  useRemoteRecommendationsService as jest.MockedFunction<
+    typeof useRemoteRecommendationsService
   >
 
 describe('App', () => {
@@ -39,8 +49,16 @@ describe('App', () => {
       loading: false,
       data: fakeEmissionFactors,
     }
+    const mockRecommendationsReturnValue: ServiceResult<RecommendationResult> =
+      {
+        loading: false,
+        data: [],
+      }
     mockedUseEmissionFactorService.mockReturnValue(mockEmissionsReturnValue)
     mockedUseRemoteService.mockReturnValue(mockReturnValue)
+    mockedUseRecommendationsService.mockReturnValue(
+      mockRecommendationsReturnValue,
+    )
   })
 
   afterEach(() => {

@@ -45,16 +45,19 @@ type RecommendationsTableProps = {
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   recommendations,
 }): ReactElement => {
-  const rows = recommendations.map((recommendation, index) => ({
-    id: index,
-    ...recommendation,
-  }))
+  let rows = []
+  if (recommendations) {
+    rows = recommendations.map((recommendation, index) => ({
+      id: index,
+      ...recommendation,
+    }))
+  }
 
   return (
     <Container>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 600, width: '100%' }}>
         <div>Recommendations</div>
-        <DataGrid rows={rows} columns={columns} pageSize={5} columnBuffer={6} />
+        <DataGrid rows={rows} columns={columns} columnBuffer={6} />
       </div>
     </Container>
   )

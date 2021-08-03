@@ -11,16 +11,16 @@ import {
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
 
-import { useRemoteService, useRemoteEmissionService } from '../../utils/hooks'
-import { generateEstimations, fakeEmissionFactors } from '../../utils/data'
-import { ServiceResult } from '../../Types'
+import { useRemoteService, useRemoteEmissionService } from 'utils/hooks'
+import { generateEstimations, fakeEmissionFactors } from 'utils/data'
+import { ServiceResult } from 'Types'
 import EmissionsMetricsPage from './EmissionsMetricsPage'
 
 jest.mock('apexcharts')
-jest.mock('../../utils/hooks/RemoteServiceHook')
-jest.mock('../../utils/hooks/EmissionFactorServiceHook')
-jest.mock('../../utils/themes')
-jest.mock('../../ConfigLoader', () => ({
+jest.mock('utils/hooks/RemoteServiceHook')
+jest.mock('utils/hooks/EmissionFactorServiceHook')
+jest.mock('utils/themes')
+jest.mock('ConfigLoader', () => ({
   __esModule: true,
   default: () => ({
     CURRENT_PROVIDERS: [
