@@ -31,6 +31,7 @@ module.exports = {
           collapsed: false,
           items: ['aws', 'gcp', 'azure', 'alternative-data-approaches'],
         },
+        'get-recommendations',
         'run-with-docker',
         'running-the-cli',
         {
