@@ -4,8 +4,8 @@
 
 import { FunctionComponent, ReactElement } from 'react'
 import { DataGrid, GridColDef } from '@material-ui/data-grid'
-import { Container } from '@material-ui/core'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import CarbonCard from 'layout/CarbonCard'
 
 const columns: GridColDef[] = [
   { field: 'cloudProvider', headerName: 'Cloud Provider', width: 150 },
@@ -54,12 +54,11 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   }
 
   return (
-    <Container>
+    <CarbonCard title="Recommendations">
       <div style={{ height: 600, width: '100%' }}>
-        <div>Recommendations</div>
         <DataGrid rows={rows} columns={columns} columnBuffer={6} />
       </div>
-    </Container>
+    </CarbonCard>
   )
 }
 
