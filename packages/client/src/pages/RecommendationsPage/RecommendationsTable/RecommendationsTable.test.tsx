@@ -47,8 +47,8 @@ describe('Recommendations Table', () => {
       'Account Name',
       'Region',
       'Recommendation Type',
-      'Potential Cost Savings',
-      'Potential Carbon Savings',
+      'Potential Cost Savings ($)',
+      'Potential Carbon Savings (metric tons)',
     ]
 
     expectedHeaders.forEach((header) => {
