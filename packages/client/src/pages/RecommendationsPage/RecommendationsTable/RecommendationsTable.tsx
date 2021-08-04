@@ -7,34 +7,35 @@ import { DataGrid, GridColDef } from '@material-ui/data-grid'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import CarbonCard from 'layout/CarbonCard'
 
+//  TODO: Increase width
 const columns: GridColDef[] = [
-  { field: 'cloudProvider', headerName: 'Cloud Provider', width: 150 },
+  { field: 'cloudProvider', headerName: 'Cloud Provider', width: 175 },
   {
     field: 'accountName',
     headerName: 'Account Name',
-    flex: 1,
+    flex: 0.75,
   },
   {
     field: 'region',
     headerName: 'Region',
-    flex: 1,
+    flex: 0.5,
   },
   {
     field: 'recommendationType',
     headerName: 'Recommendation Type',
-    flex: 1,
+    flex: 0.75,
   },
   {
     field: 'costSavings',
-    headerName: 'Potential Cost Savings',
+    headerName: 'Potential Cost Savings ($)',
     type: 'number',
-    flex: 1,
+    flex: 0.75,
   },
   {
     field: 'co2eSavings',
-    headerName: 'Potential Carbon Savings',
+    headerName: 'Potential Carbon Savings (metric tons)',
     type: 'number',
-    flex: 1,
+    flex: 0.75,
   },
 ]
 
@@ -55,8 +56,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   return (
     <CarbonCard title="Recommendations">
-      <div style={{ height: 600, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} columnBuffer={6} />
+      <div style={{ width: '100%' }}>
+        <DataGrid autoHeight rows={rows} columns={columns} columnBuffer={6} />
       </div>
     </CarbonCard>
   )

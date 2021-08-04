@@ -3,7 +3,7 @@
  */
 
 import { ReactElement } from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { useRemoteRecommendationsService } from 'utils/hooks'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
@@ -21,9 +21,6 @@ const RecommendationsPage = (): ReactElement => {
 
   return (
     <div className={classes.boxContainer}>
-      <Typography component="h2" variant="h2" className={classes.pageTitle}>
-        Recommendations Page
-      </Typography>
       <Grid container spacing={3}>
         <RecommendationsTable recommendations={data} />
       </Grid>

@@ -100,7 +100,7 @@ describe('App', () => {
         </Router>,
       )
 
-      expect(getByText('Recommendations Page')).toBeInTheDocument()
+      expect(getByText('Recommendations')).toBeInTheDocument()
     })
   })
 })

@@ -57,12 +57,6 @@ describe('Recommendations Page', () => {
     )
   })
 
-  it('renders the title', () => {
-    const { getByText } = render(<RecommendationsPage />)
-
-    expect(getByText('Recommendations Page')).toBeInTheDocument()
-  })
-
   it('renders a table with recommendations', () => {
     const { getByRole } = render(<RecommendationsPage />)
 
