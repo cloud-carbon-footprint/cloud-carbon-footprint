@@ -6,6 +6,7 @@ import { FunctionComponent, ReactElement } from 'react'
 import { DataGrid, GridColDef } from '@material-ui/data-grid'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import CarbonCard from 'layout/CarbonCard'
+import useStyles from './recommendationsTableStyles'
 
 //  TODO: Increase width
 const columns: GridColDef[] = [
@@ -46,6 +47,7 @@ type RecommendationsTableProps = {
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   recommendations,
 }): ReactElement => {
+  const classes = useStyles()
   let rows = []
   if (recommendations) {
     rows = recommendations.map((recommendation, index) => ({
@@ -57,7 +59,13 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   return (
     <CarbonCard title="Recommendations">
       <div style={{ width: '100%' }}>
-        <DataGrid autoHeight rows={rows} columns={columns} columnBuffer={6} />
+        <DataGrid
+          autoHeight
+          rows={rows}
+          columns={columns}
+          columnBuffer={6}
+          classes={{ cell: classes.cell, row: classes.row }}
+        />
       </div>
     </CarbonCard>
   )
