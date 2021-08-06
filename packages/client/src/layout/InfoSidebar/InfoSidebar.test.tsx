@@ -10,14 +10,18 @@ import InfoSidebar from './InfoSidebar'
 
 describe('CarbonFormulaDrawer', () => {
   it('renders', () => {
-    const root = create(<InfoSidebar />)
+    const root = create(
+      <InfoSidebar drawerWidth={1} title={''} children={''} />,
+    )
     expect(root.toJSON()).toMatchSnapshot()
   })
 
   it('opens and closes drawer correctly', async () => {
-    const { getByText, getByTestId } = render(<InfoSidebar />)
+    const { getByTestId } = render(
+      <InfoSidebar drawerWidth={1} title={''} children={''} />,
+    )
     const infoIcon = getByTestId('infoIcon')
-    const carbonFormulaTitle = getByText('How do we get our carbon estimates?')
+    const carbonFormulaTitle = getByTestId('sideBarTitle')
 
     expect(carbonFormulaTitle).not.toBeVisible()
     expect(infoIcon).toBeInstanceOf(SVGSVGElement)

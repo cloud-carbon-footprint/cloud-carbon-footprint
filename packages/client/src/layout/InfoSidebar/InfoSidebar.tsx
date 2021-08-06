@@ -2,19 +2,19 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, ReactNode, useState } from 'react'
 import clsx from 'clsx'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import { Close, Info, OpenInNew } from '@material-ui/icons'
-import {
-  Typography,
-  Drawer,
-  Divider,
-  IconButton,
-  Link,
-} from '@material-ui/core'
+import { Close, Info } from '@material-ui/icons'
+import { Typography, Drawer, Divider, IconButton } from '@material-ui/core'
 
 const drawerWidth = 340
+
+interface InfoSideBarProps {
+  drawerWidth: number
+  title: string
+  children: ReactNode
+}
 
 const useStyles = makeStyles(
   ({ palette, transitions, spacing, typography, breakpoints, mixins }) => {
@@ -45,7 +45,7 @@ const useStyles = makeStyles(
           duration: transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
-        width: spacing(4) + 1,
+        width: 0, //spacing(4) + 1,
         [breakpoints.up('sm')]: {
           width: spacing(6) + 1,
         },
@@ -62,32 +62,12 @@ const useStyles = makeStyles(
         padding: spacing(2),
         fontWeight: typography.fontWeightBold,
       },
-      contentBold: {
-        padding: spacing(2, 2, 0, 2),
-        fontWeight: typography.fontWeightBold,
-      },
-      content: {
-        padding: spacing(2),
-        whiteSpace: 'pre-line',
-        fontSize: typography.body2.fontSize,
-      },
-      formula: {
-        fontFamily: 'monospace',
-      },
-      methodology: {
-        padding: spacing(2),
-        display: 'flex',
-        color: palette.extLink,
-      },
-      openIcon: {
-        marginLeft: '8px',
-      },
     })
   },
 )
 
-const InfoSidebar: FunctionComponent = () => {
-  const classes = useStyles()
+const InfoSidebar: FunctionComponent<InfoSideBarProps> = (props) => {
+  const classes = useStyles(props.drawerWidth)
   const [open, setOpen] = useState(false)
 
   const handleDrawerOpen = () => {
@@ -140,47 +120,15 @@ const InfoSidebar: FunctionComponent = () => {
             <Close data-testid="closeIcon" />
           </IconButton>
         </div>
-        <Typography className={classes.contentTitle} component="p">
-          How do we get our carbon estimates?
-        </Typography>
-        <Divider />
-        <Typography className={classes.content} component="p">
-          Our CO2e Estimate Formula:
-        </Typography>
         <Typography
-          className={clsx(classes.content, classes.formula)}
+          className={classes.contentTitle}
           component="p"
+          data-testid="sideBarTitle"
         >
-          (Cloud provider service usage) x (Cloud energy conversion factors
-          [kWh]) x (Cloud provider Power Usage Effectiveness (PUE)) x (grid
-          emissions factors [metric tons CO2e])
+          {props.title}
         </Typography>
         <Divider />
-        <Typography className={classes.content} component="p">
-          Currently we estimate CO2e emissions for cloud compute, storage and
-          networking. Memory usage is not estimated yet due to their arguably
-          comparatively small footprint and current lack of available energy
-          conversion factors.
-          <br />
-          <br />
-          Emissions data points marked with an * have been estimated with
-          average CPU Utilization because the actual CPU Utilization is not
-          available.
-          <br />
-          <br />
-          Cloud Provider regions on map are an approximation based on public
-          information given by each cloud provider. Regional grid emissions
-          factor sources vary based on country.
-        </Typography>
-        <Link
-          href="https://www.cloudcarbonfootprint.org/docs/methodology"
-          target="_blank"
-          rel="noopener"
-          className={classes.methodology}
-        >
-          Read more in our full methodology here{' '}
-          <OpenInNew fontSize={'small'} className={classes.openIcon} />
-        </Link>
+        {props.children}
       </div>
     </Drawer>
   )
