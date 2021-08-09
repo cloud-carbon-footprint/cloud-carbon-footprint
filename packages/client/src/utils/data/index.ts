@@ -8,4 +8,5 @@ export {
   mockDataWithUnknownsAWS,
   mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
+  mockRecommendationData,
 } from './mockData'

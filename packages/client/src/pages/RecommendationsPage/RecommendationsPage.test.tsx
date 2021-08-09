@@ -2,11 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import RecommendationsPage from './RecommendationsPage'
+import { mockRecommendationData } from 'utils/data'
 import { useRemoteRecommendationsService } from 'utils/hooks'
 import { ServiceResult } from 'Types'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
 
 jest.mock('utils/hooks/RecommendationsServiceHook')
 
@@ -15,42 +16,12 @@ const mockedUseRecommendationsService =
     typeof useRemoteRecommendationsService
   >
 
-//TODO: Extract this into utils/data so it can be reused as fakeRecommendationData
-const mockRecommendations: RecommendationResult[] = [
-  {
-    cloudProvider: 'AWS',
-    accountId: 'test-acc-1',
-    accountName: 'test-acc-1',
-    region: 'us-west-1',
-    recommendationType: 'Modify',
-    recommendationDetail: 'Test recommendation detail',
-    costSavings: 200,
-    co2eSavings: 2.539,
-    kilowattHourSavings: 3.2,
-  },
-  {
-    cloudProvider: 'AWS',
-    accountId: 'test-acc-1',
-    accountName: 'test-acc-2',
-    region: 'us-west-2',
-    recommendationType: 'Terminate',
-    recommendationDetail: 'Test recommendation detail',
-    costSavings: 100,
-    co2eSavings: 1.24,
-    kilowattHourSavings: 6.2,
-  },
-]
-
 describe('Recommendations Page', () => {
-  let data: RecommendationResult[] = []
-
   beforeEach(() => {
-    data = mockRecommendations
-
     const mockRecommendationsReturnValue: ServiceResult<RecommendationResult> =
       {
         loading: false,
-        data: data,
+        data: mockRecommendationData,
       }
     mockedUseRecommendationsService.mockReturnValue(
       mockRecommendationsReturnValue,
@@ -67,5 +38,19 @@ describe('Recommendations Page', () => {
     render(<RecommendationsPage />)
 
     expect(mockedUseRecommendationsService).toHaveBeenCalledTimes(1)
+  })
+
+  it('displays a selected recommendation in a side panel when its row is clicked', () => {
+    const { getByText, queryByTestId } = render(<RecommendationsPage />)
+
+    expect(queryByTestId('sideBarTitle')).toBeFalsy()
+
+    fireEvent.click(screen.getByText('test-acc-1'))
+    const recommendationDetail = getByText(
+      mockRecommendationData[0].recommendationDetail,
+    )
+
+    expect(queryByTestId('sideBarTitle')).toBeInTheDocument()
+    expect(recommendationDetail).toBeInTheDocument()
   })
 })

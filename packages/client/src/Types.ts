@@ -3,7 +3,10 @@
  */
 
 import React, { ReactNode } from 'react'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -52,6 +55,7 @@ export type SidePanelProps = {
   drawerWidth: number
   title: string
   children: ReactNode
+  defaultIsOpen?: boolean
 }
 
 export type DateRange = {
@@ -70,6 +74,10 @@ export type ComparisonItem = {
   textOne: string
   textTwo: string
   source: Source
+}
+
+export type RecommendationRow = RecommendationResult & {
+  id: number
 }
 
 export enum ChartDataTypes {

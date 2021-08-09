@@ -2,7 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 
 interface serviceEstimateWithUnknowns {
   cloudProvider: string
@@ -202,9 +205,35 @@ const mockDataWithHigherPrecision: EstimationResult[] = [
   },
 ]
 
+const mockRecommendationData: RecommendationResult[] = [
+  {
+    cloudProvider: 'AWS',
+    accountId: 'test-acc-1',
+    accountName: 'test-acc-1',
+    region: 'us-west-1',
+    recommendationType: 'Modify',
+    recommendationDetail: 'Test recommendation detail 1',
+    costSavings: 200,
+    co2eSavings: 2.539,
+    kilowattHourSavings: 3.2,
+  },
+  {
+    cloudProvider: 'AWS',
+    accountId: 'test-acc-1',
+    accountName: 'test-acc-2',
+    region: 'us-west-2',
+    recommendationType: 'Terminate',
+    recommendationDetail: 'Test recommendation detail 2',
+    costSavings: 100,
+    co2eSavings: 1.24,
+    kilowattHourSavings: 6.2,
+  },
+]
+
 export {
   mockData,
   mockDataWithUnknownsAWS,
   mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
+  mockRecommendationData,
 }

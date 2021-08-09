@@ -2,13 +2,17 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { FunctionComponent, ReactElement } from 'react'
-import { DataGrid, GridColDef } from '@material-ui/data-grid'
+import { FunctionComponent, ReactElement, SyntheticEvent } from 'react'
+import {
+  DataGrid,
+  GridColDef,
+  GridRowParams,
+  MuiEvent,
+} from '@material-ui/data-grid'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import CarbonCard from 'layout/CarbonCard'
 import useStyles from './recommendationsTableStyles'
 
-//  TODO: Increase width
 const columns: GridColDef[] = [
   { field: 'cloudProvider', headerName: 'Cloud Provider', width: 175 },
   {
@@ -41,11 +45,16 @@ const columns: GridColDef[] = [
 ]
 
 type RecommendationsTableProps = {
-  recommendations?: RecommendationResult[]
+  recommendations: RecommendationResult[]
+  handleRowClick: (
+    params: GridRowParams,
+    event: MuiEvent<SyntheticEvent>,
+  ) => void
 }
 
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   recommendations,
+  handleRowClick,
 }): ReactElement => {
   const classes = useStyles()
   let rows = []
@@ -65,6 +74,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           columns={columns}
           columnBuffer={6}
           classes={{ cell: classes.cell, row: classes.row }}
+          onRowClick={handleRowClick}
         />
       </div>
     </CarbonCard>

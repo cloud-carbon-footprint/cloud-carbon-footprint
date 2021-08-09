@@ -11,7 +11,7 @@ import useStyles from './sidebarStyles'
 
 const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
   const classes = useStyles(props)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(props.defaultIsOpen)
 
   const handleDrawerOpen = () => {
     setOpen(true)
