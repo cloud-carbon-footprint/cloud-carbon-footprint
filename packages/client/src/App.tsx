@@ -9,9 +9,7 @@ import { Switch, Route } from 'react-router-dom'
 import ErrorPage from './layout/ErrorPage'
 import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
 import RecommendationsPage from './pages/RecommendationsPage/'
-import InfoSidebar from './layout/InfoSidebar'
 import HeaderBar from './layout/HeaderBar'
-import EmissionsSideBarDetails from './pages/EmissionsMetricsPage/EmissionsSideBarDetails/EmissionsSideBarDetails'
 
 function App(): ReactElement {
   const useStyles = makeStyles(() => ({
@@ -35,12 +33,6 @@ function App(): ReactElement {
             <RecommendationsPage />
           </Route>
           <Route path="/">
-            <InfoSidebar
-              title={'How do we get our carbon estimates?'}
-              drawerWidth={340}
-            >
-              <EmissionsSideBarDetails />
-            </InfoSidebar>
             <EmissionsMetricsPage />
           </Route>
         </Switch>

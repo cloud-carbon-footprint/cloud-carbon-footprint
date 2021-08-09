@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CarbonFormulaDrawer renders 1`] = `
+exports[`Side Bar renders 1`] = `
 <div
-  className="MuiDrawer-root MuiDrawer-docked makeStyles-drawer-3 makeStyles-drawerClose-5"
+  className="MuiDrawer-root MuiDrawer-docked makeStyles-drawer-3 makeStyles-drawer-9 makeStyles-drawerClose-5"
   id="drawer-closed"
 >
   <div

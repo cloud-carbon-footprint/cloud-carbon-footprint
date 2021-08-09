@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export interface ServiceResult<T> {
@@ -46,6 +46,12 @@ export interface PageEntry {
 export type ApexChartProps = {
   data: EstimationResult[]
   dataType?: string
+}
+
+export type SidePanelProps = {
+  drawerWidth: number
+  title: string
+  children: ReactNode
 }
 
 export type DateRange = {

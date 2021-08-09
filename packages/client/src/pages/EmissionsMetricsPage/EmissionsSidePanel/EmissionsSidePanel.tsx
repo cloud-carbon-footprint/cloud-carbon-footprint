@@ -6,37 +6,13 @@ import { Divider, Link, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import { OpenInNew } from '@material-ui/icons'
 import React, { FunctionComponent } from 'react'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import SidePanel from 'common/SidePanel'
+import useStyles from './emissionsSidePanelStyles'
 
-const useStyles = makeStyles(({ palette, spacing, typography }) => {
-  return createStyles({
-    contentBold: {
-      padding: spacing(2, 2, 0, 2),
-      fontWeight: typography.fontWeightBold,
-    },
-    content: {
-      padding: spacing(2),
-      whiteSpace: 'pre-line',
-      fontSize: typography.body2.fontSize,
-    },
-    formula: {
-      fontFamily: 'monospace',
-    },
-    methodology: {
-      padding: spacing(2),
-      display: 'flex',
-      color: palette.extLink,
-    },
-    openIcon: {
-      marginLeft: '8px',
-    },
-  })
-})
-
-const EmissionsSideBarDetails: FunctionComponent = () => {
+const EmissionsSidePanel: FunctionComponent = () => {
   const classes = useStyles()
   return (
-    <div>
+    <SidePanel title="How do we get our carbon estimates?" drawerWidth={340}>
       <Typography className={classes.content} component="p">
         Our CO2e Estimate Formula:
       </Typography>
@@ -71,10 +47,10 @@ const EmissionsSideBarDetails: FunctionComponent = () => {
         className={classes.methodology}
       >
         Read more in our full methodology here{' '}
-        <OpenInNew fontSize={'small'} className={classes.openIcon} />
+        <OpenInNew fontSize="small" className={classes.openIcon} />
       </Link>
-    </div>
+    </SidePanel>
   )
 }
 
-export default EmissionsSideBarDetails
+export default EmissionsSidePanel

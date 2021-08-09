@@ -6,19 +6,17 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 import { fireEvent, render } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import InfoSidebar from './InfoSidebar'
+import SidePanel from './SidePanel'
 
-describe('CarbonFormulaDrawer', () => {
+describe('Side Bar', () => {
   it('renders', () => {
-    const root = create(
-      <InfoSidebar drawerWidth={1} title={''} children={''} />,
-    )
+    const root = create(<SidePanel drawerWidth={1} title={''} children="" />)
     expect(root.toJSON()).toMatchSnapshot()
   })
 
   it('opens and closes drawer correctly', async () => {
     const { getByTestId } = render(
-      <InfoSidebar drawerWidth={1} title={''} children={''} />,
+      <SidePanel drawerWidth={1} title={''} children="" />,
     )
     const infoIcon = getByTestId('infoIcon')
     const carbonFormulaTitle = getByTestId('sideBarTitle')

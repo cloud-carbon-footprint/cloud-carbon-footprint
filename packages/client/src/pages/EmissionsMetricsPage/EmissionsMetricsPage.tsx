@@ -16,6 +16,7 @@ import CarbonComparisonCard from './CarbonComparisonCard'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
+import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 
 export default function EmissionsMetricsPage(): ReactElement {
   const classes = useStyles()
@@ -55,6 +56,7 @@ export default function EmissionsMetricsPage(): ReactElement {
 
   return (
     <>
+      <EmissionsSidePanel />
       <FilterBar
         filters={filters}
         setFilters={setFilters}
