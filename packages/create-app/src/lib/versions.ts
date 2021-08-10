@@ -21,16 +21,6 @@ const exec = promisify(execCb)
 export const grabPackageVersion = async (
   packageName: string,
 ): Promise<string> => {
-  const runCmd = async (cmd: string) => {
-    try {
-      const version = await exec(cmd)
-      return version.stdout.substr(0, version.stdout.indexOf('\n'))
-    } catch (error) {
-      process.stdout.write(error.stderr)
-      process.stdout.write(error.stdout)
-      throw new Error(`Could not execute command ${chalk.cyan(cmd)}`)
-    }
-  }
   return await runCmd(`npm show @cloud-carbon-footprint/${packageName} version`)
 }
 
@@ -38,5 +28,16 @@ export const packageVersions = async () => {
   return {
     '@cloud-carbon-footprint/app': await grabPackageVersion('app'),
     '@cloud-carbon-footprint/common': await grabPackageVersion('common'),
+  }
+}
+
+export const runCmd = async (cmd: string) => {
+  try {
+    const version = await exec(cmd)
+    return version.stdout.substr(0, version.stdout.indexOf('\n'))
+  } catch (error) {
+    process.stdout.write(error.stderr)
+    process.stdout.write(error.stdout)
+    throw new Error(`Could not execute command ${chalk.cyan(cmd)}`)
   }
 }
