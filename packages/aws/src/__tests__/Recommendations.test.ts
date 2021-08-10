@@ -75,8 +75,8 @@ describe('AWS Recommendations Service', () => {
         region: 'us-east-2',
         recommendationType: 'Terminate',
         recommendationDetail: 'Terminate instance: Test instance.',
-        kilowattHourSavings: 274.19171644799997,
-        co2eSavings: 0.12069562908809578,
+        kilowattHourSavings: 272.409501312,
+        co2eSavings: 0.11991112115402533,
         costSavings: 20,
       },
       {
@@ -86,8 +86,8 @@ describe('AWS Recommendations Service', () => {
         region: 'us-east-2',
         recommendationType: 'Terminate',
         recommendationDetail: 'Terminate instance: Test instance.',
-        kilowattHourSavings: 60.66892800000001,
-        co2eSavings: 0.026705673409536,
+        kilowattHourSavings: 60.276672000000005,
+        co2eSavings: 0.026533007417664,
         costSavings: 80,
       },
       {
@@ -97,17 +97,17 @@ describe('AWS Recommendations Service', () => {
         region: 'us-east-2',
         recommendationType: 'Terminate',
         recommendationDetail: 'Terminate instance: Test instance.',
-        kilowattHourSavings: 0.37918080000000004,
-        co2eSavings: 0.0001669104588096,
+        kilowattHourSavings: 0.37672920000000004,
+        co2eSavings: 0.0001658312963604,
         costSavings: 20,
       },
       {
         accountId: 'test-account-3',
         accountName: 'test-account-3',
         cloudProvider: 'AWS',
-        co2eSavings: 0.0001669104588096,
+        co2eSavings: 0.0001658312963604,
         costSavings: 30,
-        kilowattHourSavings: 0.37918080000000004,
+        kilowattHourSavings: 0.37672920000000004,
         recommendationDetail:
           'Terminate instance with Resource ID: Test-resource-id.',
         recommendationType: 'Terminate',
@@ -150,8 +150,8 @@ describe('AWS Recommendations Service', () => {
         recommendationType: 'Modify',
         recommendationDetail:
           'Modify instance: Test instance. Update instance type t2.micro to t2.nano',
-        kilowattHourSavings: 0.18959040000000002,
-        co2eSavings: 0.0000834552294048,
+        kilowattHourSavings: 0.18836460000000002,
+        co2eSavings: 0.0000829156481802,
         costSavings: 226,
       },
     ]
@@ -193,8 +193,8 @@ describe('AWS Recommendations Service', () => {
         region: 'us-east-2',
         recommendationType: 'Terminate',
         recommendationDetail: 'Terminate instance: Test instance.',
-        kilowattHourSavings: 0.37918080000000004,
-        co2eSavings: 0.0001669104588096,
+        kilowattHourSavings: 0.37672920000000004,
+        co2eSavings: 0.0001658312963604,
         costSavings: 20,
       },
     ]
@@ -224,8 +224,8 @@ describe('AWS Recommendations Service', () => {
         recommendationType: 'Modify',
         recommendationDetail:
           'Modify instance: Test instance. Update instance type t2.micro to t3.micro',
-        kilowattHourSavings: -0.37918080000000004,
-        co2eSavings: -0.0001669104588096,
+        kilowattHourSavings: -0.37672920000000004,
+        co2eSavings: -0.0001658312963604,
         costSavings: 20,
       },
     ]
