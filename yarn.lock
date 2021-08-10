@@ -2235,7 +2235,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.24.0
     apexcharts: ^3.26.3
     axios: ^0.21.1
-    concurrently: ^6.2.0
+    concurrently: ^6.2.1
     dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
@@ -2376,7 +2376,7 @@ __metadata:
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
     google-gax: ^2.15.0
-    googleapis: ^82.0.0
+    googleapis: ^84.0.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^11.0.1
@@ -2397,7 +2397,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/integration-tests@workspace:packages/integration-tests"
   dependencies:
     "@testing-library/testcafe": ^4.4.0
-    concurrently: ^6.2.0
+    concurrently: ^6.2.1
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -8863,9 +8863,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "concurrently@npm:6.2.0"
+"concurrently@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "concurrently@npm:6.2.1"
   dependencies:
     chalk: ^4.1.0
     date-fns: ^2.16.1
@@ -8878,7 +8878,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     concurrently: bin/concurrently.js
-  checksum: e75f311dc77ee1b486ebb65d513e1e719cc2b7589f08f2f6263b93d7d71c72609ce8c57ed3a0f791484be7e5b4435621c7d5e6d190d076c76d593bdcdb9aaf08
+  checksum: 673bf80f5acf136c0fb7725df362d4b03486204ca6d1898b69226cb60b6b1a7061c05db567d883860080162a2e0053fb133079f4ae8bf31c3ecad0818323e947
   languageName: node
   linkType: hard
 
@@ -12930,13 +12930,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^82.0.0":
-  version: 82.0.0
-  resolution: "googleapis@npm:82.0.0"
+"googleapis@npm:^84.0.0":
+  version: 84.0.0
+  resolution: "googleapis@npm:84.0.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.2
-  checksum: 70c3fc5894f11e43ba150fa31793445975c9ce132f802df84986ab29172c8fe24b8d9c3989d1113b442e627853a1c06e2be44efc958ab7ed48941759a7c4915b
+  checksum: 81a4f35a7b336b52bb1733fed875219c9a964ec2627bef049c952a350d4f525c493d1677b247c85efe0f9899d0bb1152bf078b78c24fe0c027976647c058da3e
   languageName: node
   linkType: hard
 
@@ -21509,7 +21509,7 @@ resolve@^2.0.0-next.3:
   dependencies:
     "@changesets/cli": ^2.16.0
     "@types/fs-extra": ^9.0.12
-    concurrently: ^6.2.0
+    concurrently: ^6.2.1
     fs-extra: ^10.0.0
     husky: ^7.0.1
     lerna: ^4.0.0
