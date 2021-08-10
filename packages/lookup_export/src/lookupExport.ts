@@ -103,7 +103,7 @@ export default async function lookupExport(argv: string[] = process.argv) {
           ]
         },
         [
-          { VarCharValue: Date.now().toString() },
+          { VarCharValue: "2021-08-10T00:00:00Z" },
           { VarCharValue: "1234567890" },
           { VarCharValue: row.serviceName },
           { VarCharValue: row.region },
