@@ -388,6 +388,19 @@ const queryResultsDataFive = [
     Data: [
       { VarCharValue: '2020-10-30' },
       { VarCharValue: '123456789' },
+      { VarCharValue: 'ap-south-1' },
+      { VarCharValue: 'AmazonMSK' },
+      { VarCharValue: 'APS3-Kafka.t3.small' },
+      { VarCharValue: 'hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '7' },
+      { VarCharValue: '4' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRoute53' },
       { VarCharValue: 'APS1-ResolverNetworkInterface' },
@@ -953,5 +966,54 @@ export const athenaMockGetQueryResultsDatabasesWithReplicationFactors: Athena.Ge
   {
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataTwelve],
+    },
+  }
+
+const queryResultsDataThirteen = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-3' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'EUW3-SpotUsage:i3.8xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '370.0' },
+      { VarCharValue: '866.096' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'SpotUsage:d2.8xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '3962.0' },
+      { VarCharValue: '75' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'EU-EBSOptimized:g4dn.xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '4.734722' },
+      { VarCharValue: '0.0' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsAdditionalInstanceTypes: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataThirteen],
     },
   }

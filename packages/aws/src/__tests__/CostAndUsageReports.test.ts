@@ -35,6 +35,7 @@ import {
   athenaMockGetQueryResultsS3WithReplicationFactors,
   athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors,
   athenaMockGetQueryResultsDatabasesWithReplicationFactors,
+  athenaMockGetQueryResultsAdditionalInstanceTypes,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 
@@ -479,6 +480,17 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonMSK',
             usesAverageCPUConstant: true,
             kilowattHours: 0.057574356175,
+          },
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 0.00001044011136,
+            cost: 4,
+            region: 'ap-south-1',
+            serviceName: 'AmazonMSK',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.014745920000000003,
           },
         ],
       },
@@ -1049,6 +1061,54 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AmazonSimpleDB',
             usesAverageCPUConstant: false,
             kilowattHours: 3.05859696924017e-7,
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for additional instances, and ignoring GPU instance families', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsAdditionalInstanceTypes)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2021-01-01'),
+        serviceEstimates: [
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 0.0033713088296257496,
+            cost: 866.096,
+            region: 'eu-west-3',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+            kilowattHours: 64.8328621081875,
+          },
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 0.3521653639782881,
+            cost: 75,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+            kilowattHours: 847.050219428,
           },
         ],
       },

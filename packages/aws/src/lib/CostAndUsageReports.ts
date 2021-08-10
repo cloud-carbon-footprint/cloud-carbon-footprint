@@ -21,6 +21,7 @@ import {
   convertGigabyteMonthsToTerabyteHours,
   endsWithAny,
   wait,
+  containsAny,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -57,6 +58,7 @@ import {
 } from '../domain'
 import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from './AWSMemoryEstimatesBuilder'
+import { GPU_INSTANCES_TYPES } from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -89,7 +91,11 @@ export default class CostAndUsageReports {
         rowData.Data,
       )
 
-      if (this.usageTypeIsUnknown(costAndUsageReportRow.usageType)) return []
+      if (
+        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
+        this.usageTypeisGpu(costAndUsageReportRow.usageType)
+      )
+        return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         costAndUsageReportRow,
@@ -130,6 +136,12 @@ export default class CostAndUsageReports {
           costAndUsageReportRow,
           this.memoryEstimator,
         ).memoryFootprint
+
+        if (isNaN(computeFootprint.kilowattHours)) {
+          this.costAndUsageReportsLogger.warn(
+            `Could not estimate compute usage for usage type: ${costAndUsageReportRow.usageType}`,
+          )
+        }
 
         // if there exist any memory footprint,
         // add the kwh and co2e for both compute and memory
@@ -303,6 +315,10 @@ export default class CostAndUsageReports {
         usageType.includes(unknownUsageType),
       )
     )
+  }
+
+  private usageTypeisGpu(usageType: string): boolean {
+    return containsAny(GPU_INSTANCES_TYPES, usageType)
   }
 
   private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {

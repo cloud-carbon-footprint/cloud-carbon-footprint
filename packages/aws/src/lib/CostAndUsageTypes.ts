@@ -140,6 +140,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'AdditionalAddress',
   'ResolverNetworkInterface',
   'DataScanned',
+  'FastSnapshotRestore',
 ]
 
 export const LINE_ITEM_TYPES: string[] = [
