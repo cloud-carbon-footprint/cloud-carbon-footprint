@@ -18,7 +18,6 @@ const useStyles = makeStyles(
     drawer: {
       width: ({ drawerWidth }: SidePanelProps) => drawerWidth,
       flexShrink: 0,
-      whiteSpace: 'nowrap',
     },
     drawerOpen: {
       width: ({ drawerWidth }: SidePanelProps) => drawerWidth,
@@ -48,7 +47,9 @@ const useStyles = makeStyles(
     },
     contentTitle: {
       padding: spacing(2),
+      textAlign: 'center',
       fontWeight: typography.fontWeightBold,
+      fontSize: 18,
     },
   }),
 )

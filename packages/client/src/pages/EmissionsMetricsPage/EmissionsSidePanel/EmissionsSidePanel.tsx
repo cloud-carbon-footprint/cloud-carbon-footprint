@@ -12,7 +12,7 @@ import useStyles from './emissionsSidePanelStyles'
 const EmissionsSidePanel: FunctionComponent = () => {
   const classes = useStyles()
   return (
-    <SidePanel title="How do we get our carbon estimates?" drawerWidth={340}>
+    <SidePanel title="How do we get our carbon estimates?" drawerWidth={360}>
       <Typography className={classes.content} component="p">
         Our CO2e Estimate Formula:
       </Typography>
