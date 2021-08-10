@@ -215,6 +215,8 @@ fileignoreconfig:
   checksum: fe6c335581e146315ca8feff01aae6ad4821e3935276f4d8fbefe3f84c1a1f8f
 - filename: packages/gcp/src/lib/ReplicationFactors.ts
   checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
+- filename: packages/lookup_export/sonar-project.properties
+  checksum: 9b735f1a735a5276dc8706f646cecdbb255077ca1f1c448e595ef4010d818708
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh
@@ -254,5 +256,5 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: d7cc488e19956c418f2a4d69446021983c1967e0dc5368136c482605722182cc
+  checksum: b59f6daf28f802f911cbf53eb78847269288e2b283199d77921232fa5e69dbef
 version: "1.0"

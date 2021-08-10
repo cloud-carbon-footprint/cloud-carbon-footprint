@@ -1,3 +1,7 @@
 export * from './application'
 export * from './domain'
 export * from './lib'
+export { default as CostAndUsageReportsRow } from './lib/CostAndUsageReportsRow'
+export { default as CostAndUsageReports } from './lib/CostAndUsageReports'
+export { ServiceWrapper } from './lib/ServiceWrapper'
+export { AWS_CLOUD_CONSTANTS } from './domain'

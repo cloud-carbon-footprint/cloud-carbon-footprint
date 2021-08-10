@@ -91,11 +91,7 @@ export default class CostAndUsageReports {
         rowData.Data,
       )
 
-      if (
-        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
-        this.usageTypeisGpu(costAndUsageReportRow.usageType)
-      )
-        return []
+      if (this.isUnknownUsageType(costAndUsageReportRow.usageType)) return []
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         costAndUsageReportRow,
@@ -110,9 +106,10 @@ export default class CostAndUsageReports {
     return results
   }
 
-  private getEstimateByPricingUnit(
+  public getEstimateByPricingUnit(
     costAndUsageReportRow: CostAndUsageReportsRow,
   ): FootprintEstimate {
+    if (this.isUnknownUsageType(costAndUsageReportRow.usageType)) return
     const emissionsFactors: CloudConstantsEmissionsFactors =
       AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
     const powerUsageEffectiveness: number = AWS_CLOUD_CONSTANTS.getPUE(
@@ -234,7 +231,9 @@ export default class CostAndUsageReports {
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: costAndUsageReportRow.replicationFactor,
     }
-
+    console.log('==========')
+    console.log(storageUsage)
+    console.log('=================')
     let estimate: FootprintEstimate
     if (this.usageTypeIsSSD(costAndUsageReportRow))
       estimate = this.ssdStorageEstimator.estimate(
@@ -315,6 +314,10 @@ export default class CostAndUsageReports {
         usageType.includes(unknownUsageType),
       )
     )
+  }
+
+  private isUnknownUsageType(usageType: string) {
+    return this.usageTypeIsUnknown(usageType) || this.usageTypeisGpu(usageType)
   }
 
   private usageTypeisGpu(usageType: string): boolean {
