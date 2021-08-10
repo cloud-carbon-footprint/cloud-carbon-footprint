@@ -231,9 +231,6 @@ export default class CostAndUsageReports {
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: costAndUsageReportRow.replicationFactor,
     }
-    console.log('==========')
-    console.log(storageUsage)
-    console.log('=================')
     let estimate: FootprintEstimate
     if (this.usageTypeIsSSD(costAndUsageReportRow))
       estimate = this.ssdStorageEstimator.estimate(
