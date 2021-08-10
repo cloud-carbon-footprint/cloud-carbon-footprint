@@ -48,6 +48,11 @@ const logosArray = [
     alt: 'US Coalition on Sustainability logo',
     url: 'https://www.uscoalitiononsustainability.org',
   },
+  {
+    path: 'img/logos/VirtasantLogo-small.webp',
+    alt: 'Virtasant logo',
+    url: 'https://www.virtasant.com/',
+  },
 ]
 
 function InnovationPartners() {
