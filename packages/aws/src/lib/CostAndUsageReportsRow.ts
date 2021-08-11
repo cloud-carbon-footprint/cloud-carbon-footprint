@@ -69,7 +69,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     const instanceType = this.usageType
       .split(':')
       .pop()
-      .replace(/^((db|cache|dms|ml|mq|KernelGateway-ml|.+Kafka)\.)/, '')
+      .replace(/^((db|cache|dax|dms|ml|mq|KernelGateway-ml|.+Kafka)\.)/, '')
 
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
     if (this.serviceName === 'AWSGlue')
