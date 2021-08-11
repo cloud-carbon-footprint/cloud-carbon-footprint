@@ -9,11 +9,12 @@ import useStyles from '../recommendationsSidePanelStyles'
 type RecommendationsPanelColumnProps = {
   label: string
   content: string | number
+  subLabel?: string
   hasLeftAlignedContent?: boolean
 }
 
 const RecommendationsPanelColumn: FunctionComponent<RecommendationsPanelColumnProps> =
-  ({ label, content, hasLeftAlignedContent }) => {
+  ({ label, content, subLabel, hasLeftAlignedContent }) => {
     const classes = useStyles()
     return (
       <Grid
@@ -28,6 +29,13 @@ const RecommendationsPanelColumn: FunctionComponent<RecommendationsPanelColumnPr
             {label}
           </Typography>
         </Grid>
+        {subLabel && (
+          <Grid item>
+            <Typography className={classes.subLabel} component="p">
+              {subLabel}
+            </Typography>
+          </Grid>
+        )}
         <Grid item>
           <Typography
             component="p"

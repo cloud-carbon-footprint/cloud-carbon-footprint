@@ -22,12 +22,14 @@ const RecommendationsPanelRow: FunctionComponent<RecommendationsPanelRowProps> =
         className={classes.content}
       >
         <Grid item>
-          <Typography component="p" className={classes.contentLabel}>
+          <Typography className={classes.smallLabel} component="p">
             {label}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography component="p">{content}</Typography>
+          <Typography className={classes.smallText} component="p">
+            {content}
+          </Typography>
         </Grid>
       </Grid>
     )

@@ -6,12 +6,20 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(({ spacing, typography }) => ({
   content: {
-    padding: spacing(2),
-    whiteSpace: 'pre-line',
-    fontSize: typography.body2.fontSize,
+    padding: spacing(0.25),
+  },
+  smallText: {
+    fontSize: 14,
+  },
+  smallLabel: {
+    fontWeight: typography.fontWeightBold,
+    fontSize: 14,
   },
   contentLabel: {
     fontWeight: typography.fontWeightBold,
+  },
+  subLabel: {
+    fontSize: 12,
   },
   detailsContainer: {
     textAlign: 'center',
