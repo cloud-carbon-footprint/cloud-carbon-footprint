@@ -56,6 +56,7 @@ export type SidePanelProps = {
   title: string
   children: ReactNode
   defaultIsOpen?: boolean
+  triggerOpenOnChange?: boolean
 }
 
 export type DateRange = {

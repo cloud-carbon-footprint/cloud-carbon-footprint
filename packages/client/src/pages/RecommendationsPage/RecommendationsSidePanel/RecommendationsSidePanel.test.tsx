@@ -36,4 +36,18 @@ describe('Recommendations Side Panel', () => {
       getByText(mockRecommendationRow.recommendationDetail),
     ).toBeInTheDocument()
   })
+
+  it('displays the potential savings for the given recommendation', () => {
+    const { getByText } = render(
+      <RecommendationsSidePanel recommendation={mockRecommendationRow} />,
+    )
+
+    expect(getByText(mockRecommendationRow.costSavings)).toBeInTheDocument()
+    expect(
+      getByText(mockRecommendationRow.co2eSavings.toFixed(3)),
+    ).toBeInTheDocument()
+    expect(
+      getByText(mockRecommendationRow.kilowattHourSavings.toFixed(3)),
+    ).toBeInTheDocument()
+  })
 })

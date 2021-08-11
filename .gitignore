@@ -274,4 +274,7 @@ terraform/.terraform/
 #TestCafe
 screenshots
 
+#Create App
+packages/create-app/ccf-app
+
 

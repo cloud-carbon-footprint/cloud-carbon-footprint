@@ -2,16 +2,22 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { Close, Info } from '@material-ui/icons'
 import { Typography, Drawer, Divider, IconButton } from '@material-ui/core'
 import { SidePanelProps } from 'Types'
-import useStyles from './sidebarStyles'
+import useStyles from './sidePanelStyles'
 
 const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
   const classes = useStyles(props)
   const [open, setOpen] = useState(props.defaultIsOpen)
+
+  useEffect(() => {
+    if (props.triggerOpenOnChange && !open) {
+      setOpen(true)
+    }
+  }, [props.children])
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -65,7 +71,7 @@ const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
         </div>
         <Typography
           className={classes.contentTitle}
-          component="p"
+          component="h3"
           data-testid="sideBarTitle"
         >
           {props.title}

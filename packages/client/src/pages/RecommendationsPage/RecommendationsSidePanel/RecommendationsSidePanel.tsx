@@ -3,49 +3,76 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Typography } from '@material-ui/core'
+import { Container, Divider, Grid } from '@material-ui/core'
 import SidePanel from 'common/SidePanel'
 import { RecommendationRow } from 'Types'
+import { RecommendationsPanelRow, RecommendationsPanelColumn } from './layout'
+import useStyles from './recommendationsSidePanelStyles'
 
 type RecommendationsSidePanelProps = {
   recommendation: RecommendationRow
 }
 
 const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps> =
-  ({ recommendation }): ReactElement => (
-    <SidePanel drawerWidth={340} title="Recommendation Details" defaultIsOpen>
-      <div>
-        Cloud Provider
-        <Typography component="p">{recommendation.cloudProvider}</Typography>
-      </div>
-      <div>
-        Account Name
-        <Typography component="p">{recommendation.accountName}</Typography>
-      </div>
-      <div>
-        Account ID
-        <Typography component="p">{recommendation.accountId}</Typography>
-      </div>
+  ({ recommendation }): ReactElement => {
+    const classes = useStyles()
 
-      <div>
-        Region
-        <Typography component="p">{recommendation.region}</Typography>
-      </div>
-
-      <div>
-        Recommendation Type
-        <Typography component="p">
-          {recommendation.recommendationType}
-        </Typography>
-      </div>
-
-      <div>
-        Recommendation Details
-        <Typography component="p">
-          {recommendation.recommendationDetail}
-        </Typography>
-      </div>
-    </SidePanel>
-  )
+    return (
+      <SidePanel
+        drawerWidth={475}
+        title="Recommendation Details"
+        defaultIsOpen
+        triggerOpenOnChange
+      >
+        <Container className={classes.detailsContainer}>
+          <RecommendationsPanelRow
+            label="Cloud Provider"
+            content={recommendation.cloudProvider}
+          />
+          <RecommendationsPanelRow
+            label="Account Name"
+            content={recommendation.accountName}
+          />
+          <RecommendationsPanelRow
+            label="Account ID"
+            content={recommendation.accountId}
+          />
+          <RecommendationsPanelRow
+            label="Region"
+            content={recommendation.region}
+          />
+        </Container>
+        <Divider />
+        <Container className={classes.detailsContainer}>
+          <RecommendationsPanelColumn
+            label="Recommendation Type"
+            content={recommendation.recommendationType}
+          />
+          <RecommendationsPanelColumn
+            label="Recommendation Detail"
+            content={recommendation.recommendationDetail}
+            hasLeftAlignedContent
+          />
+        </Container>
+        <Grid className={classes.savingsContainer} container wrap="nowrap">
+          <RecommendationsPanelColumn
+            label="Cost Savings"
+            subLabel="(USD)"
+            content={recommendation.costSavings}
+          />
+          <RecommendationsPanelColumn
+            label="CO2e Savings"
+            subLabel="(metric tons)"
+            content={recommendation.co2eSavings.toFixed(3)}
+          />
+          <RecommendationsPanelColumn
+            label="Energy Savings"
+            subLabel="(kilowatt hours)"
+            content={recommendation.kilowattHourSavings.toFixed(3)}
+          />
+        </Grid>
+      </SidePanel>
+    )
+  }
 
 export default RecommendationsSidePanel

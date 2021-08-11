@@ -10,6 +10,7 @@ const useStyles = makeStyles(() => ({
   },
   //TODO: make this work
   row: {
+    cursor: 'pointer',
     '&.MuiDataGrid-root .MuiDataGrid-row.Mui-selected:hover': {
       backgroundColor: 'red !important',
       border: 'solid 2px #3F51B5',
