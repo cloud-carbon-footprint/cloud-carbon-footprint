@@ -49,7 +49,7 @@
     "docker:stop": "docker stop ccf_base"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^27.0.0",
     "@types/jest-when": "^2.7.2",
     "@types/node": "^16.0.1",
     "@types/source-map-support": "^0.5.3",
