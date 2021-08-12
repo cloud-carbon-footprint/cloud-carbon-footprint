@@ -68,4 +68,39 @@ describe('Recommendations Table', () => {
     fireEvent.click(screen.getByText('test-acc-1'))
     expect(handleRowClick).toHaveBeenCalledTimes(1)
   })
+
+  it('shows undefined cell values as "-" within the table', () => {
+    const mockUndefinedRecommendations = [
+      {
+        cloudProvider: undefined,
+        accountId: undefined,
+        accountName: undefined,
+        region: undefined,
+        recommendationType: undefined,
+        recommendationDetail: 'Test recommendation detail 1',
+        costSavings: undefined,
+        co2eSavings: undefined,
+        kilowattHourSavings: undefined,
+      },
+    ]
+    const { getAllByRole } = render(
+      <RecommendationsTable
+        recommendations={mockUndefinedRecommendations}
+        handleRowClick={jest.fn()}
+      />,
+    )
+
+    const dataRows = getAllByRole('row')
+    dataRows.shift() // Removes row with table headers
+
+    const actualRowData = dataRows.map((row) =>
+      within(row).getAllByRole('cell'),
+    )
+
+    const textCells = actualRowData[0].slice(0, 4)
+    const numberCells = actualRowData[0].slice(4)
+
+    textCells.forEach((cell) => expect(cell.innerHTML).toBe('-'))
+    numberCells.forEach((cell) => expect(cell.innerHTML).toBe('0'))
+  })
 })
