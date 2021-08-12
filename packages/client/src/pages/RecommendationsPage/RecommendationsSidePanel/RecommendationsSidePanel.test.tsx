@@ -42,7 +42,9 @@ describe('Recommendations Side Panel', () => {
       <RecommendationsSidePanel recommendation={mockRecommendationRow} />,
     )
 
-    expect(getByText(mockRecommendationRow.costSavings)).toBeInTheDocument()
+    expect(
+      getByText(mockRecommendationRow.costSavings.toFixed(3)),
+    ).toBeInTheDocument()
     expect(
       getByText(mockRecommendationRow.co2eSavings.toFixed(3)),
     ).toBeInTheDocument()

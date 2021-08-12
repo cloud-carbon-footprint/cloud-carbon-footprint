@@ -58,7 +58,7 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
           <RecommendationsPanelColumn
             label="Cost Savings"
             subLabel="(USD)"
-            content={recommendation.costSavings}
+            content={recommendation.costSavings.toFixed(3)}
           />
           <RecommendationsPanelColumn
             label="CO2e Savings"
