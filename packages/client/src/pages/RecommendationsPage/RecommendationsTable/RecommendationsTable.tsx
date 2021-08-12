@@ -65,11 +65,15 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   let rows = []
   if (recommendations) {
     rows = recommendations.map((recommendation, index) => {
-      const recommendationRow = { id: index, ...recommendation }
-      // Replace any undefined values
+      const recommendationRow = {
+        id: index,
+        ...recommendation,
+      }
+      // Replace any undefined values and cuts numbers to thousandth decimal
       Object.keys(recommendationRow).forEach((key) => {
-        if (!recommendationRow[key])
-          recommendationRow[key] = key.includes('Savings') ? 0 : '-'
+        if (key.includes('Savings') && recommendationRow[key])
+          recommendationRow[key] = recommendationRow[key].toFixed(3)
+        if (!recommendationRow[key]) recommendationRow[key] = '-'
       })
       return recommendationRow
     })

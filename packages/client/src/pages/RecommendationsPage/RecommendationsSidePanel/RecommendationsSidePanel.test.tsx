@@ -42,38 +42,10 @@ describe('Recommendations Side Panel', () => {
       <RecommendationsSidePanel recommendation={mockRecommendationRow} />,
     )
 
+    expect(getByText(mockRecommendationRow.costSavings)).toBeInTheDocument()
+    expect(getByText(mockRecommendationRow.co2eSavings)).toBeInTheDocument()
     expect(
-      getByText(mockRecommendationRow.costSavings.toFixed(3)),
+      getByText(mockRecommendationRow.kilowattHourSavings),
     ).toBeInTheDocument()
-    expect(
-      getByText(mockRecommendationRow.co2eSavings.toFixed(3)),
-    ).toBeInTheDocument()
-    expect(
-      getByText(mockRecommendationRow.kilowattHourSavings.toFixed(3)),
-    ).toBeInTheDocument()
-  })
-
-  it('displays a "-" for recommendations with undefined data', () => {
-    const mockUndefinedRecommendation = {
-      id: 0,
-      cloudProvider: '-',
-      accountId: '-',
-      accountName: '-',
-      region: '-',
-      recommendationType: '-',
-      recommendationDetail: '-',
-      costSavings: 0,
-      co2eSavings: 0,
-      kilowattHourSavings: 0,
-    }
-    const { getAllByText } = render(
-      <RecommendationsSidePanel recommendation={mockUndefinedRecommendation} />,
-    )
-
-    const undefinedDetails = getAllByText('-')
-    const undefinedNumbers = getAllByText('0')
-
-    expect(undefinedDetails).toHaveLength(6)
-    expect(undefinedNumbers).toHaveLength(3)
   })
 })

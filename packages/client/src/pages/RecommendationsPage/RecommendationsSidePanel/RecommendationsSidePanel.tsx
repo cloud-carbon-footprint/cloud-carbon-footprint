@@ -58,17 +58,17 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
           <RecommendationsPanelColumn
             label="Cost Savings"
             subLabel="(USD)"
-            content={recommendation.costSavings.toFixed(3)}
+            content={recommendation.costSavings}
           />
           <RecommendationsPanelColumn
             label="CO2e Savings"
             subLabel="(metric tons)"
-            content={recommendation.co2eSavings.toFixed(3)}
+            content={recommendation.co2eSavings}
           />
           <RecommendationsPanelColumn
             label="Energy Savings"
             subLabel="(kilowatt hours)"
-            content={recommendation.kilowattHourSavings.toFixed(3)}
+            content={recommendation.kilowattHourSavings}
           />
         </Grid>
       </SidePanel>

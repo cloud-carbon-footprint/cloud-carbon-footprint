@@ -97,10 +97,6 @@ describe('Recommendations Table', () => {
       within(row).getAllByRole('cell'),
     )
 
-    const textCells = actualRowData[0].slice(0, 4)
-    const numberCells = actualRowData[0].slice(4)
-
-    textCells.forEach((cell) => expect(cell.innerHTML).toBe('-'))
-    numberCells.forEach((cell) => expect(cell.innerHTML).toBe('0'))
+    actualRowData[0].forEach((cell) => expect(cell.innerHTML).toBe('-'))
   })
 })

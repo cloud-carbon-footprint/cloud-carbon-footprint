@@ -141,6 +141,8 @@ fileignoreconfig:
   checksum: c57d6e00062fb19ac80689510822dc06e2a85b18a309f96443f6e5f6de6b08c9
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
+  checksum: 9a2fcd2d0403cc62db6fb6b995e58508f2cf5e5278a9653016d2528724889530
 - filename: packages/client/src/react-app-env.d.ts
   checksum: bc982f7de408c4fd412b6e26717b045875493f2562af97d791a8ee5202a40661
 - filename: packages/client/src/utils/data/generateEstimations.ts
@@ -255,4 +257,3 @@ fileignoreconfig:
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
   checksum: d7cc488e19956c418f2a4d69446021983c1967e0dc5368136c482605722182cc
-version: "1.0"
