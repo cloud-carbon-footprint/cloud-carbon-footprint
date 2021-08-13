@@ -135,8 +135,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.006803828928,
+          kilowattHourSavings: 58.530816,
+          co2eSavings: 0.006848105472,
           costSavings: 15,
         },
       ]
@@ -182,8 +182,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.41792000000001,
-          co2eSavings: 0.024003380041344002,
+          kilowattHourSavings: 58.798080000000006,
+          co2eSavings: 0.024159584249856002,
           costSavings: 55,
         },
       ]
@@ -227,8 +227,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.006803828928,
+          kilowattHourSavings: 58.530816,
+          co2eSavings: 0.006848105472,
           costSavings: 15,
         },
       ]
@@ -310,8 +310,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.1626332,
-          co2eSavings: 0.0068050280844,
+          kilowattHourSavings: 58.5410652,
+          co2eSavings: 0.0068493046284,
           costSavings: 15,
         },
       ]
@@ -359,8 +359,8 @@ describe('GCP Recommendations Service', () => {
           recommendationType: 'STOP_VM',
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
-          kilowattHourSavings: 58.18155480000001,
-          co2eSavings: 0.0068072419116,
+          kilowattHourSavings: 58.559986800000004,
+          co2eSavings: 0.0068515184556,
           costSavings: 15,
         },
       ]
@@ -411,8 +411,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'CHANGE_MACHINE_TYPE',
         recommendationDetail:
           'Save cost by changing machine type from e2-medium to e2-small.',
-        kilowattHourSavings: 1.6960454999999999,
-        co2eSavings: 0.0001984373235,
+        kilowattHourSavings: 1.6832339999999997,
+        co2eSavings: 0.00019693837799999997,
         costSavings: 20,
       },
     ]
