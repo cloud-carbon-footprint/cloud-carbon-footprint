@@ -17,7 +17,7 @@ const HeaderBar = (): ReactElement => {
       className={classes.appBar}
       id="app-bar-header"
     >
-      <Toolbar>
+      <Toolbar className={classes.navContainer}>
         <NavLink to="/" className={classes.title}>
           <Typography component="h1" variant="h5">
             Cloud Carbon Footprint

@@ -10,14 +10,17 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
       flexGrow: 1,
     },
+    navContainer: {
+      justifyContent: 'space-between',
+    },
     title: {
       color: 'inherit',
       textDecoration: 'inherit',
-      flexGrow: 0.8,
     },
     navLink: {
       fontSize: theme.typography.fontSize,
       marginTop: '6px',
+      marginRight: theme.spacing(5),
       position: 'relative',
       overflow: 'hidden',
       color: 'inherit',
