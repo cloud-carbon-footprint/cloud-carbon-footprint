@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { ReactElement, SyntheticEvent, useState } from 'react'
+import React, { ReactElement, SyntheticEvent, useState } from 'react'
 import { Grid } from '@material-ui/core'
 import { GridRowParams, MuiEvent } from '@material-ui/data-grid'
 import { useRemoteRecommendationsService } from 'utils/hooks'
@@ -10,6 +10,7 @@ import { RecommendationRow } from 'Types'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
+import LoadingMessage from '../../common/LoadingMessage'
 
 const RecommendationsPage = (): ReactElement => {
   const classes = useStyles()
@@ -26,9 +27,9 @@ const RecommendationsPage = (): ReactElement => {
 
   if (loading)
     return (
-      <Grid container className={classes.loadingContainer}>
-        <div>Loading Recommendations...</div>
-      </Grid>
+      <LoadingMessage
+        message={'Loading recommendations. This may take a while...'}
+      />
     )
 
   return (

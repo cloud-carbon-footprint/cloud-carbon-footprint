@@ -8,6 +8,8 @@ import RecommendationsPage from './RecommendationsPage'
 import { mockRecommendationData } from 'utils/data'
 import { useRemoteRecommendationsService } from 'utils/hooks'
 import { ServiceResult } from 'Types'
+import EmissionsMetricsPage from '../EmissionsMetricsPage'
+import React from 'react'
 
 jest.mock('utils/hooks/RecommendationsServiceHook')
 
@@ -38,6 +40,18 @@ describe('Recommendations Page', () => {
     render(<RecommendationsPage />)
 
     expect(mockedUseRecommendationsService).toHaveBeenCalledTimes(1)
+  })
+
+  it('should show loading icon if data has not been returned', () => {
+    const mockLoading: ServiceResult<RecommendationResult> = {
+      loading: true,
+      data: mockRecommendationData,
+    }
+    mockedUseRecommendationsService.mockReturnValue(mockLoading)
+
+    const { getByRole } = render(<EmissionsMetricsPage />)
+
+    expect(getByRole('progressbar')).toBeInTheDocument()
   })
 
   it('displays a selected recommendation in a side panel when its row is clicked', () => {
