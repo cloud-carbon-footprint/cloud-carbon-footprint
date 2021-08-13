@@ -63,12 +63,12 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
           <RecommendationsPanelColumn
             label="CO2e Savings"
             subLabel="(metric tons)"
-            content={recommendation.co2eSavings.toFixed(3)}
+            content={recommendation.co2eSavings}
           />
           <RecommendationsPanelColumn
             label="Energy Savings"
             subLabel="(kilowatt hours)"
-            content={recommendation.kilowattHourSavings.toFixed(3)}
+            content={recommendation.kilowattHourSavings}
           />
         </Grid>
       </SidePanel>

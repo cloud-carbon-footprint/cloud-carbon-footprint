@@ -43,11 +43,9 @@ describe('Recommendations Side Panel', () => {
     )
 
     expect(getByText(mockRecommendationRow.costSavings)).toBeInTheDocument()
+    expect(getByText(mockRecommendationRow.co2eSavings)).toBeInTheDocument()
     expect(
-      getByText(mockRecommendationRow.co2eSavings.toFixed(3)),
-    ).toBeInTheDocument()
-    expect(
-      getByText(mockRecommendationRow.kilowattHourSavings.toFixed(3)),
+      getByText(mockRecommendationRow.kilowattHourSavings),
     ).toBeInTheDocument()
   })
 })

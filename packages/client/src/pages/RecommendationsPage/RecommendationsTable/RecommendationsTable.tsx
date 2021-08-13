@@ -13,8 +13,20 @@ import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import CarbonCard from 'layout/CarbonCard'
 import useStyles from './recommendationsTableStyles'
 
+type RecommendationsTableProps = {
+  recommendations: RecommendationResult[]
+  handleRowClick: (
+    params: GridRowParams,
+    event: MuiEvent<SyntheticEvent>,
+  ) => void
+}
+
 const columns: GridColDef[] = [
-  { field: 'cloudProvider', headerName: 'Cloud Provider', width: 175 },
+  {
+    field: 'cloudProvider',
+    headerName: 'Cloud Provider',
+    width: 175,
+  },
   {
     field: 'accountName',
     headerName: 'Account Name',
@@ -44,39 +56,39 @@ const columns: GridColDef[] = [
   },
 ]
 
-type RecommendationsTableProps = {
-  recommendations: RecommendationResult[]
-  handleRowClick: (
-    params: GridRowParams,
-    event: MuiEvent<SyntheticEvent>,
-  ) => void
-}
-
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   recommendations,
   handleRowClick,
 }): ReactElement => {
   const classes = useStyles()
+
   let rows = []
   if (recommendations) {
-    rows = recommendations.map((recommendation, index) => ({
-      id: index,
-      ...recommendation,
-    }))
+    rows = recommendations.map((recommendation, index) => {
+      const recommendationRow = {
+        id: index,
+        ...recommendation,
+      }
+      // Replace any undefined values and cuts numbers to thousandth decimal
+      Object.keys(recommendationRow).forEach((key) => {
+        if (key.includes('Savings') && recommendationRow[key])
+          recommendationRow[key] = recommendationRow[key].toFixed(3)
+        if (!recommendationRow[key]) recommendationRow[key] = '-'
+      })
+      return recommendationRow
+    })
   }
 
   return (
     <CarbonCard title="Recommendations">
-      <div style={{ width: '100%' }}>
-        <DataGrid
-          autoHeight
-          rows={rows}
-          columns={columns}
-          columnBuffer={6}
-          classes={{ cell: classes.cell, row: classes.row }}
-          onRowClick={handleRowClick}
-        />
-      </div>
+      <DataGrid
+        autoHeight
+        rows={rows}
+        columns={columns}
+        columnBuffer={6}
+        classes={{ cell: classes.cell, row: classes.row }}
+        onRowClick={handleRowClick}
+      />
     </CarbonCard>
   )
 }

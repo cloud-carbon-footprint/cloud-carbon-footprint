@@ -11,6 +11,8 @@ fileignoreconfig:
   checksum: c624ef29d606e6a22b36a031f12be832fd7dcd953457295e76ca9472dc4111e7
 - filename: .circleci/config.yml
   checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
+- filename: .github/ISSUE_TEMPLATE/story-card.md
+  checksum: 70eddfb7d8b79ba2c4ac997c630d5faafee7a428fd0427e3972e4040defec96d
 - filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
   checksum: 3bfb33cac24525b03528d71814b90abc6e0bf7cdcd9e95f6aae8d342d3666268
 - filename: CONTRIBUTING.md
@@ -88,9 +90,11 @@ fileignoreconfig:
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 4c8d9c606ecbf7dab20579fd5a3ef7607e19338b15d4bda18566a375870c2324
+  checksum: 4dfc94caa9c6ea518f134ceabbe5f8fd2580e11aba2b49f365710689b81646ff
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
+- filename: packages/aws/src/__tests__/Recommendations.test.ts
+  checksum: 882473df680508d6168bcb4b4cde7d44bc1d6d28f7566488b32a7c9e5073c22d
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
@@ -141,6 +145,8 @@ fileignoreconfig:
   checksum: c57d6e00062fb19ac80689510822dc06e2a85b18a309f96443f6e5f6de6b08c9
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
+  checksum: 9a2fcd2d0403cc62db6fb6b995e58508f2cf5e5278a9653016d2528724889530
 - filename: packages/client/src/react-app-env.d.ts
   checksum: bc982f7de408c4fd412b6e26717b045875493f2562af97d791a8ee5202a40661
 - filename: packages/client/src/utils/data/generateEstimations.ts
@@ -210,13 +216,13 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: 9e02b7704ea5ec465151f5691cf1f9ed25a489a22dd9d2923d334bb45125e470
+  checksum: 83454d9a3a7c0cb5ff39a552ace865a4fdcc62cb397745d59569158da527eea0
+- filename: packages/gcp/src/__tests__/Recommendations.test.ts
+  checksum: a1d428d9460e2ef236ac97be4641801d88fe4299a5d1e28de6a4eb5a606e018e
 - filename: packages/gcp/src/lib/MachineTypes.ts
   checksum: fe6c335581e146315ca8feff01aae6ad4821e3935276f4d8fbefe3f84c1a1f8f
 - filename: packages/gcp/src/lib/ReplicationFactors.ts
   checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
-- filename: packages/lookup_export/sonar-project.properties
-  checksum: 9b735f1a735a5276dc8706f646cecdbb255077ca1f1c448e595ef4010d818708
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh
@@ -256,5 +262,4 @@ fileignoreconfig:
 - filename: server/test/unit/view/EmissionsTableUtils.test.ts
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: yarn.lock
-  checksum: b59f6daf28f802f911cbf53eb78847269288e2b283199d77921232fa5e69dbef
-version: "1.0"
+  checksum: d7cc488e19956c418f2a4d69446021983c1967e0dc5368136c482605722182cc
