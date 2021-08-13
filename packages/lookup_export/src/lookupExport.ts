@@ -116,9 +116,9 @@ export default async function lookupExport(argv: string[] = process.argv) {
         const footprintEstimate = cur.getEstimateByPricingUnit(costAndUsageReportRow);
         if(footprintEstimate) {
           data.push({
+            usageType: row.usageType,
             serviceName: row.serviceName,
             region: row.region,
-            usageType: row.usageType,
             usageUnit: row.usageUnit,
             vCpus: row.vCpus,
             kilowattHours: footprintEstimate.kilowattHours,
@@ -133,9 +133,9 @@ export default async function lookupExport(argv: string[] = process.argv) {
         const csvWriter = createCsvWriter({
           path: awsOutputFile,
           header: [
+            {id: 'usageType', title: 'usageType'},
             {id: 'serviceName', title: 'serviceName'},
             {id: 'region', title: 'region'},
-            {id: 'usageType', title: 'usageType'},
             {id: 'vCpus', title: 'vCpus'},
             {id: 'kilowattHours', title: 'kilowattHours'},
             {id: 'usesAverageCPUConstant', title: 'usesAverageCPUConstant'},
