@@ -3,34 +3,9 @@
  */
 
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      flexGrow: 1,
-    },
-    navLink: {
-      fontSize: theme.typography.fontSize,
-      marginTop: '6px',
-      borderBottom: 'solid 2px transparent',
-      '&:hover': {
-        borderColor: 'white',
-      },
-    },
-    activeNavLink: {
-      borderBottom: 'solid 2px white',
-    },
-    title: {
-      color: 'inherit',
-      textDecoration: 'inherit',
-      flexGrow: 0.8,
-    },
-  }),
-)
+import useStyles from './headerBarStyles'
 
 const HeaderBar = (): ReactElement => {
   const classes = useStyles()
@@ -50,9 +25,8 @@ const HeaderBar = (): ReactElement => {
         </NavLink>
         <NavLink
           to="/recommendations"
-          activeClassName={classes.activeNavLink}
           className={classes.navLink}
-          style={{ color: 'inherit', textDecoration: 'inherit' }}
+          activeClassName={classes.activeNavLink}
         >
           <Typography component="h2">RECOMMENDATIONS</Typography>
         </NavLink>
