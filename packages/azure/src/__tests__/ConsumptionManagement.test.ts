@@ -81,7 +81,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -95,8 +95,8 @@ describe('Azure Consumption Management Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 0.09850905000000001,
-            co2e: 0.000022460063400000004,
+            kilowattHours: 0.09901267500000002,
+            co2e: 0.000022574889900000007,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -117,8 +117,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'EU West',
           },
           {
-            kilowattHours: 0.020281275000000005,
-            co2e: 0.000009577426493250003,
+            kilowattHours: 0.0203849625,
+            co2e: 0.000009626390841375,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -133,8 +133,8 @@ describe('Azure Consumption Management Service', () => {
         timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
-            kilowattHours: 0.02684025,
-            co2e: 0.00001063660319325,
+            kilowattHours: 0.026899499999999996,
+            co2e: 0.000010660083553499998,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -144,8 +144,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'US South Central',
           },
           {
-            kilowattHours: 0.19324979999999997,
-            co2e: 0.00007872996851999998,
+            kilowattHours: 0.19367639999999997,
+            co2e: 0.00007890376535999999,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -172,7 +172,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -279,7 +279,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -332,7 +332,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -349,12 +349,12 @@ describe('Azure Consumption Management Service', () => {
             accountId: subscriptionId,
             accountName: subscriptionName,
             cloudProvider: 'AZURE',
-            co2e: 0.000053775320619,
+            co2e: 0.000053946954360000005,
             cost: 20,
             region: 'EU North',
             serviceName: 'Virtual Machines',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.17017506525,
+            kilowattHours: 0.17071821,
           },
           {
             accountId: subscriptionId,
@@ -412,7 +412,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -514,7 +514,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -542,12 +542,12 @@ describe('Azure Consumption Management Service', () => {
             accountId: subscriptionId,
             accountName: subscriptionName,
             cloudProvider: 'AZURE',
-            co2e: 0.0000036717462,
+            co2e: 0.0000036798515999999995,
             cost: 45,
             region: 'UK South',
             serviceName: 'SQL Database',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.016104149999999998,
+            kilowattHours: 0.016139699999999996,
           },
         ],
       },
@@ -558,12 +558,12 @@ describe('Azure Consumption Management Service', () => {
             accountId: subscriptionId,
             accountName: subscriptionName,
             cloudProvider: 'AZURE',
-            co2e: 0.0000440609544,
+            co2e: 0.000044158219199999995,
             cost: 30,
             region: 'UK South',
             serviceName: 'Azure Database for MySQL',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.19324979999999997,
+            kilowattHours: 0.19367639999999997,
           },
           {
             accountId: subscriptionId,
@@ -605,7 +605,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -631,7 +631,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -696,7 +696,7 @@ describe('Azure Consumption Management Service', () => {
         new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
         new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
         // eslint-disable-next-line
-        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+          // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
         new ConsumptionManagementClient(mockCredentials, subscriptionId),
       )
 
@@ -710,8 +710,8 @@ describe('Azure Consumption Management Service', () => {
           timestamp: new Date('2020-11-02'),
           serviceEstimates: [
             {
-              kilowattHours: 0.09850905000000001,
-              co2e: 0.000022460063400000004,
+              kilowattHours: 0.09901267500000002,
+              co2e: 0.000022574889900000007,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountId: subscriptionId,
@@ -732,8 +732,8 @@ describe('Azure Consumption Management Service', () => {
               region: 'EU West',
             },
             {
-              kilowattHours: 0.020281275000000005,
-              co2e: 0.000009577426493250003,
+              kilowattHours: 0.0203849625,
+              co2e: 0.000009626390841375,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountId: subscriptionId,
@@ -743,8 +743,8 @@ describe('Azure Consumption Management Service', () => {
               region: 'US Central',
             },
             {
-              kilowattHours: 0.02684025,
-              co2e: 0.00001063660319325,
+              kilowattHours: 0.026899499999999996,
+              co2e: 0.000010660083553499998,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountId: subscriptionId,
@@ -754,8 +754,8 @@ describe('Azure Consumption Management Service', () => {
               region: 'US South Central',
             },
             {
-              kilowattHours: 0.19324979999999997,
-              co2e: 0.00007872996851999998,
+              kilowattHours: 0.19367639999999997,
+              co2e: 0.00007890376535999999,
               usesAverageCPUConstant: true,
               cloudProvider: 'AZURE',
               accountId: subscriptionId,
@@ -783,7 +783,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
     await expect(() =>
@@ -823,7 +823,7 @@ describe('Azure Consumption Management Service', () => {
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
