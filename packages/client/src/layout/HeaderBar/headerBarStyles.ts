@@ -11,14 +11,14 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     logo: {
-      height: 24,
+      height: 32,
     },
     navContainer: {
       justifyContent: 'space-between',
     },
     title: {
       display: 'flex',
-      gap: 10,
+      gap: 15,
       color: 'inherit',
       textDecoration: 'inherit',
     },
