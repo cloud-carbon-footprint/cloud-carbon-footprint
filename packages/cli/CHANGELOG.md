@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/cli
 
+## 1.0.1
+
+### Patch Changes
+
+- 52a8b3c1: Adds support for specifying recommendation target for AWS via API parameter
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/404c77796ae838766dc8007e18daee2c7526f6ed) to update create app templates.
+
+- Updated dependencies [f75cf08f]
+- Updated dependencies [52a8b3c1]
+  - @cloud-carbon-footprint/app@0.2.0
+  - @cloud-carbon-footprint/common@1.1.0
+
 ## 1.0.0
 
 ### Major Changes

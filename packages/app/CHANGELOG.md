@@ -1,5 +1,28 @@
 # @cloud-carbon-footprint/app
 
+## 0.2.0
+
+### Minor Changes
+
+- f75cf08f: Adds support for getting GCP recommendations from the API
+- 52a8b3c1: Adds support for specifying recommendation target for AWS via API parameter
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/404c77796ae838766dc8007e18daee2c7526f6ed) to update create app templates.
+
+### Patch Changes
+
+- Updated dependencies [d7fd8fda]
+- Updated dependencies [af761e75]
+- Updated dependencies [f75cf08f]
+- Updated dependencies [52a8b3c1]
+- Updated dependencies [ae7d8e19]
+- Updated dependencies [22636b35]
+- Updated dependencies [5407c95b]
+  - @cloud-carbon-footprint/gcp@0.3.0
+  - @cloud-carbon-footprint/aws@0.3.0
+  - @cloud-carbon-footprint/common@1.1.0
+  - @cloud-carbon-footprint/azure@0.3.0
+
 ## 0.1.0
 
 ### Minor Changes
