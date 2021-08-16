@@ -6,6 +6,7 @@ import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
 import useStyles from './headerBarStyles'
+import logo from './ccf_logo.png'
 
 const HeaderBar = (): ReactElement => {
   const classes = useStyles()
@@ -19,6 +20,11 @@ const HeaderBar = (): ReactElement => {
     >
       <Toolbar className={classes.navContainer}>
         <NavLink to="/" className={classes.title}>
+          <img
+            src={logo}
+            alt={'Cloud Carbon Footprint Logo'}
+            className={classes.logo}
+          />
           <Typography component="h1" variant="h5">
             Cloud Carbon Footprint
           </Typography>

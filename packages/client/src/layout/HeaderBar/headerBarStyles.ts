@@ -10,16 +10,20 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
       flexGrow: 1,
     },
+    logo: {
+      height: 24,
+    },
     navContainer: {
       justifyContent: 'space-between',
     },
     title: {
+      display: 'flex',
+      gap: 10,
       color: 'inherit',
       textDecoration: 'inherit',
     },
     navLink: {
       fontSize: theme.typography.fontSize,
-      marginTop: '6px',
       marginRight: theme.spacing(5),
       position: 'relative',
       overflow: 'hidden',
