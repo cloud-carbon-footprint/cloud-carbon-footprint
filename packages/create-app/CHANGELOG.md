@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/create-app
 
+## 0.5.0
+
+### Minor Changes
+
+- d7fd8fda: adds a script to test create app before publishing
+
+### Patch Changes
+
+- 62491735: [365] remove gcp accounts in aws from mock data
+- 11f59f1f: updates client template to fix create-app
+
+  To update your created-app, please refer to the changes in [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d519971a538400fd9358eb98d1e60c5ef4c7de20)
+
+- 52a8b3c1: Adds support for specifying recommendation target for AWS via API parameter
+
+  Please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/404c77796ae838766dc8007e18daee2c7526f6ed) to update create app templates.
+
 ## 0.4.16
 
 ### Patch Changes

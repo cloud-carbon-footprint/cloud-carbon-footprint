@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 1.1.1
+
+### Patch Changes
+
+- 5407c95b: Bumps concurrently and googleapis packages to latest versions
+
 ## 1.1.0
 
 ### Minor Changes
