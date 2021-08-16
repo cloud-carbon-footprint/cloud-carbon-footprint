@@ -136,7 +136,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.006803828928,
+          co2eSavings: 0.0045358859520000004,
           costSavings: 15,
         },
       ]
@@ -183,7 +183,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.41792000000001,
-          co2eSavings: 0.024003380041344002,
+          co2eSavings: 0.024046546771602437,
           costSavings: 55,
         },
       ]
@@ -228,7 +228,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.152384000000005,
-          co2eSavings: 0.006803828928,
+          co2eSavings: 0.0045358859520000004,
           costSavings: 15,
         },
       ]
@@ -311,7 +311,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.1626332,
-          co2eSavings: 0.0068050280844,
+          co2eSavings: 0.0045366853896,
           costSavings: 15,
         },
       ]
@@ -360,7 +360,7 @@ describe('GCP Recommendations Service', () => {
           recommendationDetail:
             "Save cost by stopping Idle VM 'test-instance'.",
           kilowattHourSavings: 58.18155480000001,
-          co2eSavings: 0.0068072419116,
+          co2eSavings: 0.004538161274400001,
           costSavings: 15,
         },
       ]
@@ -412,7 +412,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           'Save cost by changing machine type from e2-medium to e2-small.',
         kilowattHourSavings: 1.6960454999999999,
-        co2eSavings: 0.0001984373235,
+        co2eSavings: 0.00013229154899999999,
         costSavings: 20,
       },
     ]
@@ -451,7 +451,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
         kilowattHourSavings: 0.0189216,
-        co2eSavings: 0.0000022138272,
+        co2eSavings: 0.0000014758848,
         costSavings: 50,
       },
     ]
@@ -490,7 +490,7 @@ describe('GCP Recommendations Service', () => {
         recommendationDetail:
           "Save cost by deleting idle persistent disk 'test-disk'.",
         kilowattHourSavings: 0.010249200000000002,
-        co2eSavings: 0.0000011991564000000001,
+        co2eSavings: 7.994376000000002e-7,
         costSavings: 50,
       },
     ]
@@ -528,7 +528,7 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_IMAGE',
         recommendationDetail: "Save cost by deleting idle image 'test-image'.",
         kilowattHourSavings: 0.0002771527420842647,
-        co2eSavings: 3.2426870823858974e-8,
+        co2eSavings: 2.1617913882572647e-8,
         costSavings: 30,
       },
     ]

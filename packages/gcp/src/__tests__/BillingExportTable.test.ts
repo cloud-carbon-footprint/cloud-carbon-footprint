@@ -74,7 +74,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 0.005190060141275502,
-            co2e: 0.000002595030070637751,
+            co2e: 0.0000024912288678122412,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -116,7 +116,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 1.4232136891223488,
-            co2e: 0.0007116068445611744,
+            co2e: 0.0006831425707787274,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -127,7 +127,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 0.06085488888888889,
-            co2e: 0.000030427444444444445,
+            co2e: 0.000029210346666666666,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -143,7 +143,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 0.1402554516971577,
-            co2e: 0.00001640988784856745,
+            co2e: 0.0000109399252323783,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -185,7 +185,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 3.551443417867025e-13,
-            co2e: 1.7384315530459089e-16,
+            co2e: 1.6585240761439007e-16,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -198,7 +198,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 2.0489133847375458e-8,
+            co2e: 1.9419763604819328e-8,
             cost: 120,
             kilowattHours: 0.000042774809702245215,
             region: 'us-central1',
@@ -214,7 +214,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 2.274785001820419e-13,
+            co2e: 2.0858679274940342e-13,
             cost: 220,
             kilowattHours: 5.585721305881937e-10,
             region: 'us',
@@ -254,7 +254,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 0.00028446168676757815,
-            co2e: 1.4223084338378908e-7,
+            co2e: 1.3654160964843751e-7,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -265,7 +265,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 8.234108336182544e-11,
-            co2e: 4.3146727681596535e-14,
+            co2e: 4.5616960182451294e-14,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -276,7 +276,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 1.3380426046296634e-10,
-            co2e: 8.129946865729836e-14,
+            co2e: 7.380048322129852e-14,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -287,7 +287,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 4.4601420154322116e-11,
-            co2e: 3.224682677157489e-14,
+            co2e: 3.2157623931266244e-14,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -298,7 +298,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 0.034632,
-            co2e: 0.000016588728000000003,
+            co2e: 0.000015722928,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -309,7 +309,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 0.00023740234375,
-            co2e: 9.092509765625e-8,
+            co2e: 8.570224609375e-8,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -320,7 +320,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 6.587286728972686e-10,
-            co2e: 4.762608305047252e-13,
+            co2e: 4.749433731589306e-13,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -362,7 +362,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 0.00001691015625,
-            co2e: 8.099964843750001e-9,
+            co2e: 7.6772109375e-9,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -373,7 +373,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 0.00003412500000000001,
-            co2e: 1.6345875000000003e-8,
+            co2e: 1.4046861110100005e-8,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -415,7 +415,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 13.321366426355555,
-            co2e: 0.006660683213177777,
+            co2e: 0.006394255884650667,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -426,7 +426,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 0.06983666666666666,
-            co2e: 0.00000817089,
+            co2e: 0.000005447259999999999,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -442,7 +442,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 7.024924825819445,
-            co2e: 0.0035124624129097225,
+            co2e: 0.003371963916393334,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -507,7 +507,7 @@ describe('GCP BillingExportTable Service', () => {
         serviceEstimates: [
           {
             kilowattHours: 91.83476412574723,
-            co2e: 0.045917382062873616,
+            co2e: 0.04408068678035867,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -548,7 +548,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 0.00043433693606527787,
+            co2e: 0.00041696345862266677,
             cost: 190,
             region: 'us-east1',
             serviceName: 'Cloud Dataflow',
@@ -559,7 +559,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 0.000002100469896289623,
+            co2e: 0.0000021042472983585367,
             cost: 5,
             region: 'Unknown',
             serviceName: 'App Engine',
@@ -597,7 +597,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 1.9688080284730532e-8,
+            co2e: 1.3125386856487022e-8,
             cost: 10,
             region: 'us-west1',
             serviceName: 'App Engine',
@@ -608,7 +608,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 0.0000013329019970018418,
+            co2e: 0.0000012795859171217682,
             cost: 10,
             region: 'us-east1',
             serviceName: 'Cloud Storage',
@@ -619,7 +619,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 0.0000010933661307394432,
+            co2e: 0.0000016551207737725232,
             cost: 10,
             kilowattHours: 0.0026609658742323523,
             region: 'europe-central2',
@@ -657,7 +657,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 1.5590675175189971e-18,
+            co2e: 1.0393783450126647e-18,
             cost: 10,
             region: 'us-west1',
             serviceName: 'Compute engine',
@@ -668,7 +668,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 5.581319332122802e-18,
+            co2e: 6.0369372367858886e-18,
             cost: 8,
             region: 'europe-west1',
             serviceName: 'Compute engine',
@@ -679,7 +679,7 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 2.0489236960808437e-17,
+            co2e: 1.9419861336549123e-17,
             cost: 5,
             region: 'us-central1',
             serviceName: 'Compute engine',
