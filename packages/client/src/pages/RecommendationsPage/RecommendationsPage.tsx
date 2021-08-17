@@ -10,7 +10,8 @@ import { RecommendationRow } from 'Types'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
-import LoadingMessage from '../../common/LoadingMessage'
+import LoadingMessage from 'common/LoadingMessage'
+import Toggle from 'common/Toggle'
 
 const RecommendationsPage = (): ReactElement => {
   const classes = useStyles()
@@ -34,6 +35,7 @@ const RecommendationsPage = (): ReactElement => {
 
   return (
     <div className={classes.boxContainer}>
+      <Toggle label="CO2e Units" />
       <Grid container spacing={3}>
         {selectedRecommendation && (
           <RecommendationsSidePanel recommendation={selectedRecommendation} />
