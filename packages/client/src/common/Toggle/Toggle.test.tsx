@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import Toggle from './Toggle'
 
 describe('Toggle', () => {
@@ -16,5 +16,17 @@ describe('Toggle', () => {
     const { getByText } = render(<Toggle label="My Favorite Toggle" />)
 
     expect(getByText('My Favorite Toggle')).toBeInTheDocument()
+  })
+
+  it('calls the given handleToggle function when toggled', () => {
+    const handleToggle = jest.fn()
+    const { getByRole } = render(<Toggle handleToggle={handleToggle} />)
+
+    const checkbox = getByRole('checkbox')
+
+    fireEvent.click(checkbox)
+    expect(handleToggle).toHaveBeenCalledWith(true)
+    fireEvent.click(checkbox)
+    expect(handleToggle).toHaveBeenCalledWith(false)
   })
 })
