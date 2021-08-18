@@ -75,12 +75,13 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
       const recommendationRow = {
         ...recommendation,
         id: index,
+        useKilograms,
         co2eSavings: useKilograms
           ? recommendation.co2eSavings * 1000
           : recommendation.co2eSavings,
       }
       // Replace any undefined values and cuts numbers to thousandth decimal
-      Object.keys(recommendationRow).forEach((key) => {
+      Object.keys(recommendation).forEach((key) => {
         if (key.includes('Savings') && recommendationRow[key])
           recommendationRow[key] = recommendationRow[key].toFixed(3)
         if (!recommendationRow[key]) recommendationRow[key] = '-'

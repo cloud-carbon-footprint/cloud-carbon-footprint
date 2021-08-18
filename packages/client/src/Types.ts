@@ -79,6 +79,7 @@ export type ComparisonItem = {
 
 export type RecommendationRow = RecommendationResult & {
   id: number
+  useKilograms: boolean
 }
 
 export enum ChartDataTypes {
