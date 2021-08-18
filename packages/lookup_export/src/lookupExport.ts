@@ -79,9 +79,7 @@ export default async function lookupExport(argv: string[] = process.argv) {
   awsInputFile = programOptions.awsInput
   awsOutputFile = programOptions.awsOutput
   gcpInputFile = programOptions.gcpInput
-  gcpOutputFile = programOptions.gcpOutput
   azureInputFile = programOptions.azureInput
-  azureOutputFile = programOptions.azureOutput
   if (awsInputFile) {
     console.log('Processing AWS data from ' + awsInputFile)
     let data: Array<object> = [];
@@ -142,7 +140,7 @@ export default async function lookupExport(argv: string[] = process.argv) {
             {id: 'co2e', title: 'co2e'},
           ]
         });
-        
+
         csvWriter.writeRecords(data)
                  .then(()=> console.log('The CSV file was written successfully'));
     });
