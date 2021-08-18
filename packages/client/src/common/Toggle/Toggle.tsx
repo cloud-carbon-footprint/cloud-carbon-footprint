@@ -8,7 +8,7 @@ import { Typography } from '@material-ui/core'
 
 type ToggleProps = {
   label?: string
-  handleToggle?: (boolean) => void
+  handleToggle: (boolean) => void
 }
 
 const Toggle: FunctionComponent<ToggleProps> = ({

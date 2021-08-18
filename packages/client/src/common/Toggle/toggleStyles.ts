@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   toggleWrapper: {
     position: 'relative',
-    margin: spacing(5),
+    marginBottom: spacing(1),
     overflow: 'hidden',
     fontFamily: 'Helvetica, Arial, sans-serif',
     fontWeight: typography.fontWeightBold,

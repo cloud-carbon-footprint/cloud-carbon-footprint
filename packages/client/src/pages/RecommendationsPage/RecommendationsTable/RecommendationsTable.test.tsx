@@ -27,7 +27,7 @@ describe('Recommendations Table', () => {
       'Region',
       'Recommendation Type',
       'Potential Cost Savings ($)',
-      'Potential Carbon Savings (metric tons)',
+      'Potential Carbon Savings (t)',
     ]
 
     expectedHeaders.forEach((header) => {
@@ -98,5 +98,49 @@ describe('Recommendations Table', () => {
     )
 
     actualRowData[0].forEach((cell) => expect(cell.innerHTML).toBe('-'))
+  })
+
+  it('toggles CO2 units between metric tons and kilograms', () => {
+    const mockRecommendations = [
+      {
+        cloudProvider: undefined,
+        accountId: undefined,
+        accountName: undefined,
+        region: undefined,
+        recommendationType: undefined,
+        recommendationDetail: 'Test recommendation detail 1',
+        costSavings: undefined,
+        co2eSavings: 2.56,
+        kilowattHourSavings: undefined,
+      },
+    ]
+    const { getAllByRole, getByRole } = render(
+      <RecommendationsTable
+        recommendations={mockRecommendations}
+        handleRowClick={jest.fn()}
+      />,
+    )
+
+    const dataRows = getAllByRole('row')
+    dataRows.shift() // Removes row with table headers
+
+    const toggle = getByRole('checkbox')
+
+    const actualRowData = dataRows.map((row) =>
+      within(row).getAllByRole('cell'),
+    )
+
+    const firstRow = actualRowData[0]
+
+    // get last cell for CO2 data
+    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2.560')
+
+    fireEvent.click(toggle)
+
+    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2560.000')
+
+    const table = within(getByRole('grid'))
+
+    expect(table.getByText('Potential Carbon Savings (kg)')).toBeTruthy()
   })
 })
