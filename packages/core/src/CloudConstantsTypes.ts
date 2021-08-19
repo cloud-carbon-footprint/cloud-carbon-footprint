@@ -2,12 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { Co2ePerCost } from './FootprintEstimate'
+
 export default interface CloudConstants {
   readonly minWatts?: number
   readonly maxWatts?: number
   readonly powerUsageEffectiveness?: number
   readonly avgCpuUtilization?: number
   readonly replicationFactor?: number
+  readonly co2ePerCost?: Co2ePerCost
 }
 
 export type CloudConstantsByProvider = {
@@ -31,6 +34,7 @@ export type CloudConstantsByProvider = {
   getPUE: (region?: string) => number
   AVG_CPU_UTILIZATION_2020: number
   REPLICATION_FACTORS?: { [key: string]: number }
+  CO2E_PER_COST?: Co2ePerCost
 }
 
 export type CloudConstantsEmissionsFactors = {

@@ -1017,3 +1017,39 @@ export const athenaMockGetQueryResultsAdditionalInstanceTypes: Athena.GetQueryRe
       Rows: [queryResultsHeaders, ...queryResultsDataThirteen],
     },
   }
+
+const queryResultsDataFourteen = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '8' },
+      { VarCharValue: '88' },
+      { VarCharValue: '552' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'NatGateway-Hours' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '233705' },
+      { VarCharValue: '10516.725' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataFourteen],
+    },
+  }
