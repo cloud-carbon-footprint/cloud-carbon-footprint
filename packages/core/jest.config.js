@@ -28,5 +28,8 @@ module.exports = {
     '<rootDir>/src/FootprintEstimatesDataBuilder.ts',
     '<rootDir>/src/compute/ServiceWithCPUUtilization.ts',
     '<rootDir>/src/.*/index.ts',
+    // TODO: Remove this when done with UnknownUsageTypes Ticket
+    '<rootDir>/src/FootprintEstimate.ts',
+    '<rootDir>/src/unknown/UnknownEstimator.ts',
   ],
 }

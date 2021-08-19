@@ -42,6 +42,7 @@ describe('UnknownEstimator', () => {
         co2e: 0.01975308642,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
         kilowattHours: 47.511362268643786,
+        usesAverageCPUConstant: true,
       },
     ])
   })

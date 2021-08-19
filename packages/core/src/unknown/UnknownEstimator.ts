@@ -57,7 +57,10 @@ export default class UnknownEstimator implements IFootprintEstimator {
     classification: string,
   ): number {
     // This creates a coefficient based on the co2e per cost ratio of a given usage classification,
-    // then multiplies the coefficient by the reclassified unknown usage costnto get estimated co2e.
+    // then multiplies the coefficient by the reclassified unknown usage cost to get estimated co2e.
+    if (classification === EstimateClassification.UNKNOWN)
+      return (co2ePerCost.total.co2e / co2ePerCost.total.cost) * cost
+
     return (
       (co2ePerCost[classification].co2e / co2ePerCost[classification].cost) *
       cost

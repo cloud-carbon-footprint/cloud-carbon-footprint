@@ -1045,6 +1045,32 @@ const queryResultsDataFourteen = [
       { VarCharValue: '10516.725' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2021-01-02' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'TimedStorage-ByteHrs' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '500' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-02' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonCloudWatch' },
+      { VarCharValue: 'CW:GMD-Metrics' },
+      { VarCharValue: 'Metrics' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '600' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryResultsOutput =

@@ -133,8 +133,6 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'VpcEndpoint-Hours',
   'VPN-Usage-Hours',
   'NatGateway-Hours',
-  'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
-  'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'LoadBalancerUsage',
   'IdleAddress',
   'UnusedStaticIP',
@@ -142,10 +140,18 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'ResolverNetworkInterface',
   'DataScanned',
   'FastSnapshotRestore',
+  'GMD-Metrics',
 ]
 
-export const UNKNOWN_USAGE_TYPES_MAPPING: { [key: string]: string } = {
+export const EXCLUDED_UNKNOWN_USAGE_TYPES: string[] = [
+  'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
+  'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
+]
+
+export const UNKNOWN_USAGE_TYPE_UNITS: { [key: string]: string } = {
   Hrs: EstimateClassification.COMPUTE,
+  Metrics: EstimateClassification.STORAGE,
+  'GB-Hours': EstimateClassification.STORAGE,
 }
 
 export const LINE_ITEM_TYPES: string[] = [
