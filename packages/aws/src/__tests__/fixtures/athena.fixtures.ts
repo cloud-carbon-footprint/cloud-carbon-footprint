@@ -1071,6 +1071,45 @@ const queryResultsDataFourteen = [
       { VarCharValue: '600' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2021-01-03' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-USE1-AWS-Out-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '1574' },
+      { VarCharValue: '786' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-03' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'NatGateway-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '601143.3831' },
+      { VarCharValue: '27051.45224' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-04' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AWSDeveloperSupport' },
+      { VarCharValue: 'Dollar' },
+      { VarCharValue: 'Dollar' },
+      { VarCharValue: '' },
+      { VarCharValue: '1019479.081' },
+      { VarCharValue: '30584.37244' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryResultsOutput =

@@ -7,7 +7,9 @@ import FootprintEstimate, {
   appendOrAccumulateEstimatesByDay,
   estimateCo2,
   getWattsByAverageOrMedian,
+  accumulateCo2PerCost,
   MutableServiceEstimate,
+  EstimateClassification,
 } from '../FootprintEstimate'
 import BillingDataRow from '../BillingDataRow'
 import { COMPUTE_PROCESSOR_TYPES } from '../compute'
@@ -201,6 +203,39 @@ describe('FootprintEstimate', () => {
       },
     ]
     expect(results).toEqual(newResultTwo)
+  })
+
+  it('accumulates co2e and cost totals per usage classification', () => {
+    const cost = 654
+    const co2e = 0.000987654321
+    const constants = {
+      co2ePerCost: {
+        [EstimateClassification.COMPUTE]: {
+          cost: 0,
+          co2e: 0,
+        },
+        total: {
+          cost: 0,
+          co2e: 0,
+        },
+      },
+    }
+
+    accumulateCo2PerCost(
+      EstimateClassification.COMPUTE,
+      co2e,
+      cost,
+      constants.co2ePerCost,
+    )
+
+    expect(constants.co2ePerCost[EstimateClassification.COMPUTE].cost).toEqual(
+      654,
+    )
+    expect(constants.co2ePerCost[EstimateClassification.COMPUTE].co2e).toEqual(
+      0.000987654321,
+    )
+    expect(constants.co2ePerCost.total.cost).toEqual(654)
+    expect(constants.co2ePerCost.total.co2e).toEqual(0.000987654321)
   })
 
   describe('getWattsByAverageOrMedian', () => {
