@@ -46,7 +46,7 @@ import { ServiceWrapper } from './ServiceWrapper'
 import {
   AWS_QUERY_GROUP_BY,
   BYTE_HOURS_USAGE_TYPES,
-  EXCLUDED_UNKNOWN_USAGE_TYPES,
+  UNSUPPORTED_USAGE_TYPES,
   HDD_USAGE_TYPES,
   LINE_ITEM_TYPES,
   NETWORKING_USAGE_TYPES,
@@ -120,7 +120,7 @@ export default class CostAndUsageReports {
     if (results.length > 0) {
       const filteredUnknownRows = unknownRows.filter(
         (rowData) =>
-          !EXCLUDED_UNKNOWN_USAGE_TYPES.some((usageType) =>
+          !UNSUPPORTED_USAGE_TYPES.some((usageType) =>
             rowData.usageType.includes(usageType),
           ),
       )
@@ -370,7 +370,7 @@ export default class CostAndUsageReports {
 
   private usageTypeIsUnknown(usageType: string): boolean {
     const allUnknownUsageTypes = UNKNOWN_USAGE_TYPES.concat(
-      EXCLUDED_UNKNOWN_USAGE_TYPES,
+      UNSUPPORTED_USAGE_TYPES,
     )
     return (
       endsWithAny(allUnknownUsageTypes, usageType) ||
