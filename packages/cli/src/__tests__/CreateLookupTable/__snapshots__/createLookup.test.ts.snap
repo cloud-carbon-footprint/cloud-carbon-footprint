@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createLookupTable creates AWS lookup table CSV file, with default output file path 1`] = `
+"usageType,serviceName,region,vCpus,kilowattHours,usesAverageCPUConstant,co2e
+USE1-EBSOptimized:m4.xlarge,AmazonEC2,us-east-1,4,0.0172739509,true,0.0000071817314564295
+APS3-EUW3-AWS-Out-Bytes,AmazonEC2,ap-south-1,,0.001135,false,8.035799999999999e-7
+APS2-TimedStorage-ByteHrs,AmazonS3,ap-southeast-2,,2.0129391486989334e-15,false,1.5902219274721573e-18
+"
+`;
