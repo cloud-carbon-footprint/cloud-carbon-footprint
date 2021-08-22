@@ -185,4 +185,12 @@ export default class App {
 
     return recommendations.flat()
   }
+
+  getEstimatesFromInputData(inputData: any[]): EstimationResult[] {
+    const config = configLoader()
+    const AWS = config.AWS
+    return new AWSAccount(AWS.BILLING_ACCOUNT_ID, AWS.BILLING_ACCOUNT_NAME, [
+      AWS.ATHENA_REGION,
+    ]).getCostAndUsageReportsDataFromInputData(inputData)
+  }
 }

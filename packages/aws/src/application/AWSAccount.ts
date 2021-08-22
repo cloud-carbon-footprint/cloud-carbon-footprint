@@ -143,6 +143,19 @@ export default class AWSAccount extends CloudProviderAccount {
     return costAndUsageReportsService.getEstimates(startDate, endDate)
   }
 
+  getCostAndUsageReportsDataFromInputData(
+    inputData: any[],
+  ): EstimationResult[] {
+    const costAndUsageReportsService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+    )
+    return costAndUsageReportsService.getEstimatesFromInputData(inputData)
+  }
+
   private getService(
     key: string,
     region: string,

@@ -72,7 +72,7 @@ export default class CostAndUsageReports {
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
-    private readonly serviceWrapper: ServiceWrapper,
+    private readonly serviceWrapper?: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
     this.tableName = configLoader().AWS.ATHENA_DB_TABLE
@@ -106,10 +106,62 @@ export default class CostAndUsageReports {
     return results
   }
 
-  public getEstimateByPricingUnit(
+  getEstimatesFromInputData(inputData: any[]): EstimationResult[] {
+    const result: any[] = []
+
+    inputData.map((rowData: any) => {
+      const costAndUsageReportRow = new CostAndUsageReportsRow(
+        {
+          Data: [
+            { VarCharValue: 'timestamp' },
+            { VarCharValue: 'accountName' },
+            { VarCharValue: 'serviceName' },
+            { VarCharValue: 'region' },
+            { VarCharValue: 'usageType' },
+            { VarCharValue: 'usageUnit' },
+            { VarCharValue: 'vCpus' },
+            { VarCharValue: 'cost' },
+            { VarCharValue: 'usageAmount' },
+          ],
+        },
+        [
+          { VarCharValue: '2021-08-10T00:00:00Z' },
+          { VarCharValue: '1234567890' },
+          { VarCharValue: rowData.serviceName },
+          { VarCharValue: rowData.region },
+          { VarCharValue: rowData.usageType },
+          { VarCharValue: rowData.usageUnit },
+          { VarCharValue: rowData.vCpus },
+          { VarCharValue: '1' },
+          { VarCharValue: '1' },
+        ],
+      )
+
+      if (this.isUnknownUsageType(costAndUsageReportRow.usageType)) return []
+
+      const footprintEstimate = this.getEstimateByPricingUnit(
+        costAndUsageReportRow,
+      )
+
+      if (footprintEstimate) {
+        result.push({
+          usageType: rowData.usageType,
+          serviceName: rowData.serviceName,
+          region: rowData.region,
+          usageUnit: rowData.usageUnit,
+          vCpus: rowData.vCpus,
+          kilowattHours: footprintEstimate.kilowattHours,
+          co2e: footprintEstimate.co2e,
+          usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
+        })
+      }
+    })
+    return result
+  }
+
+  private getEstimateByPricingUnit(
     costAndUsageReportRow: CostAndUsageReportsRow,
   ): FootprintEstimate {
-    if (this.isUnknownUsageType(costAndUsageReportRow.usageType)) return
     const emissionsFactors: CloudConstantsEmissionsFactors =
       AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
     const powerUsageEffectiveness: number = AWS_CLOUD_CONSTANTS.getPUE(
