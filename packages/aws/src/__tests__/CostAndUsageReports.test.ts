@@ -19,6 +19,8 @@ import {
   NetworkingEstimator,
   MemoryEstimator,
   StorageEstimator,
+  UnknownEstimator,
+  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 import CostAndUsageReports from '../lib/CostAndUsageReports'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
@@ -35,9 +37,10 @@ import {
   athenaMockGetQueryResultsS3WithReplicationFactors,
   athenaMockGetQueryResultsEC2EFSRDSWithReplicationFactors,
   athenaMockGetQueryResultsDatabasesWithReplicationFactors,
-  athenaMockGetQueryResultsAdditionalInstanceTypes,
+  athenaMockGetQueryResultsWithReclassifiedUnknowns,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
+import { UNKNOWN_USAGE_TYPE_UNITS } from '../lib/CostAndUsageTypes'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
@@ -80,6 +83,27 @@ describe('CostAndUsageReports Service', () => {
     AWSMock.setSDKInstance(AWS)
   })
 
+  beforeEach(() => {
+    AWS_CLOUD_CONSTANTS.CO2E_PER_COST = {
+      [EstimateClassification.COMPUTE]: {
+        cost: 0,
+        co2e: 0,
+      },
+      [EstimateClassification.STORAGE]: {
+        cost: 0,
+        co2e: 0,
+      },
+      [EstimateClassification.NETWORKING]: {
+        cost: 0,
+        co2e: 0,
+      },
+      total: {
+        cost: 0,
+        co2e: 0,
+      },
+    }
+  })
+
   afterEach(() => {
     AWSMock.restore()
     jest.restoreAllMocks()
@@ -101,6 +125,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -237,6 +262,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -306,7 +332,7 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Gets Estimates for Amazon Glue, ECS and DynamoDB Storage and Ignores Nat-Gateway', async () => {
+  it('Gets Estimates for Amazon Glue, ECS and DynamoDB Storage and excluded usage types', async () => {
     // given
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
@@ -319,6 +345,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -337,6 +364,17 @@ describe('CostAndUsageReports Service', () => {
             serviceName: 'AWSGlue',
             cost: 5,
             region: 'us-east-1',
+          },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000016006234896000002,
+            cost: 10,
+            kilowattHours: 0.038499200000000004,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
           },
         ],
       },
@@ -373,6 +411,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -440,6 +479,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -482,15 +522,48 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.058649089566666666,
           },
           {
-            accountId: testAccountId,
-            accountName: testAccountName,
+            accountId: '123456789',
+            accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00001044011136,
+            co2e: 0.000010372610640000001,
             cost: 4,
+            kilowattHours: 0.014650580000000002,
             region: 'ap-south-1',
             serviceName: 'AmazonMSK',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.014745920000000003,
+          },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0000036501035531585007,
+            cost: 2,
+            kilowattHours: 0.010403275237653945,
+            region: 'us-west-1',
+            serviceName: 'AmazonEKS',
+            usesAverageCPUConstant: false,
+          },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000009729212887333334,
+            cost: 4,
+            kilowattHours: 0.02772953644700703,
+            region: 'us-west-1',
+            serviceName: 'AmazonRoute53',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000009729212887333334,
+            cost: 4,
+            kilowattHours: 0.02772953644700703,
+            region: 'us-west-1',
+            serviceName: '8icvdraalzbfrdevgamoddblf',
+            usesAverageCPUConstant: true,
           },
         ],
       },
@@ -513,6 +586,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -608,6 +682,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -679,6 +754,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -698,6 +774,17 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: false,
             kilowattHours: 1.7864900000000001,
           },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.00033761006815909096,
+            cost: 10,
+            kilowattHours: 0.8120409090909092,
+            region: 'us-east-1',
+            serviceName: 'AmazonCloudWatch',
+            usesAverageCPUConstant: false,
+          },
         ],
       },
     ]
@@ -715,6 +802,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
 
@@ -763,6 +851,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
 
@@ -882,6 +971,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
 
@@ -987,6 +1077,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
 
@@ -1068,10 +1159,10 @@ describe('CostAndUsageReports Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('estimation for additional instances, and ignoring GPU instance families', async () => {
+  it('estimation for reclassified unknowns', async () => {
     mockStartQueryExecution(startQueryExecutionResponse)
     mockGetQueryExecution(getQueryExecutionResponse)
-    mockGetQueryResults(athenaMockGetQueryResultsAdditionalInstanceTypes)
+    mockGetQueryResults(athenaMockGetQueryResultsWithReclassifiedUnknowns)
 
     const athenaService = new CostAndUsageReports(
       new ComputeEstimator(),
@@ -1079,6 +1170,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
 
@@ -1092,23 +1184,93 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.0033713088296257496,
-            cost: 866.096,
-            region: 'eu-west-3',
+            co2e: 0.00051696903902336,
+            cost: 552,
+            region: 'us-west-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            kilowattHours: 64.8328621081875,
+            kilowattHours: 1.4734297600000001,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.3521653639782881,
-            cost: 75,
+            co2e: 0.009849313798773454,
+            cost: 10516.725,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            kilowattHours: 847.050219428,
+            kilowattHours: 23.69018724675218,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-02'),
+        serviceEstimates: [
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 1.7721392900966748e-18,
+            cost: 500,
+            region: 'us-east-2',
+            serviceName: 'AmazonS3',
+            usesAverageCPUConstant: false,
+            kilowattHours: 4.025878297397867e-15,
+          },
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 2.1265671481160096e-18,
+            cost: 600,
+            region: 'us-east-2',
+            serviceName: 'AmazonCloudWatch',
+            usesAverageCPUConstant: false,
+            kilowattHours: 4.83105395687744e-15,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-03'),
+        serviceEstimates: [
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 0.0007427421499500001,
+            cost: 786,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: false,
+            kilowattHours: 1.7864900000000001,
+          },
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 0.025562663862604765,
+            cost: 27051.45224,
+            region: 'us-east-2',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: false,
+            kilowattHours: 58.07228260399504,
+          },
+        ],
+      },
+      {
+        timestamp: new Date('2021-01-04'),
+        serviceEstimates: [
+          {
+            accountId: testAccountId,
+            accountName: testAccountName,
+            cloudProvider: 'AWS',
+            co2e: 0.020961630125351752,
+            cost: 30584.37244,
+            region: 'us-east-2',
+            serviceName: 'AWSDeveloperSupport',
+            usesAverageCPUConstant: false,
+            kilowattHours: 47.61983003894198,
           },
         ],
       },
@@ -1125,6 +1287,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     await expect(() =>
@@ -1142,6 +1305,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
       getServiceWrapper(),
     )
     await expect(() =>

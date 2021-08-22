@@ -11,11 +11,17 @@ const useStyles = makeStyles(() => ({
   //TODO: make this work
   row: {
     cursor: 'pointer',
-    '&.MuiDataGrid-root .MuiDataGrid-row.Mui-selected:hover': {
-      backgroundColor: 'red !important',
+    '&$selected': {
       border: 'solid 2px #3F51B5',
       borderRadius: '7px',
     },
+  },
+  tableContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  toggleContainer: {
+    alignSelf: 'flex-end',
   },
 }))
 

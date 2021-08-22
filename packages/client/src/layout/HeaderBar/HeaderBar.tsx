@@ -3,17 +3,10 @@
  */
 
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
 import React, { ReactElement } from 'react'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
-  }),
-)
+import { NavLink } from 'react-router-dom'
+import useStyles from './headerBarStyles'
+import logo from './ccf_logo.png'
 
 const HeaderBar = (): ReactElement => {
   const classes = useStyles()
@@ -25,12 +18,24 @@ const HeaderBar = (): ReactElement => {
       className={classes.appBar}
       id="app-bar-header"
     >
-      <Toolbar>
-        <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+      <Toolbar className={classes.navContainer}>
+        <NavLink to="/" className={classes.title}>
+          <img
+            src={logo}
+            alt={'Cloud Carbon Footprint Logo'}
+            className={classes.logo}
+          />
           <Typography component="h1" variant="h5">
             Cloud Carbon Footprint
           </Typography>
-        </Link>
+        </NavLink>
+        <NavLink
+          to="/recommendations"
+          className={classes.navLink}
+          activeClassName={classes.activeNavLink}
+        >
+          <Typography component="h2">RECOMMENDATIONS</Typography>
+        </NavLink>
       </Toolbar>
     </AppBar>
   )

@@ -1017,3 +1017,104 @@ export const athenaMockGetQueryResultsAdditionalInstanceTypes: Athena.GetQueryRe
       Rows: [queryResultsHeaders, ...queryResultsDataThirteen],
     },
   }
+
+const queryResultsDataFourteen = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '8' },
+      { VarCharValue: '88' },
+      { VarCharValue: '552' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'NatGateway-Hours' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '233705' },
+      { VarCharValue: '10516.725' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-02' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonS3' },
+      { VarCharValue: 'TimedStorage-ByteHrs' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '500' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-02' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonCloudWatch' },
+      { VarCharValue: 'CW:GMD-Metrics' },
+      { VarCharValue: 'Metrics' },
+      { VarCharValue: '' },
+      { VarCharValue: '2' },
+      { VarCharValue: '600' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-03' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-USE1-AWS-Out-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '1574' },
+      { VarCharValue: '786' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-03' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'NatGateway-Bytes' },
+      { VarCharValue: 'GB' },
+      { VarCharValue: '' },
+      { VarCharValue: '601143.3831' },
+      { VarCharValue: '27051.45224' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-04' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AWSDeveloperSupport' },
+      { VarCharValue: 'Dollar' },
+      { VarCharValue: 'Dollar' },
+      { VarCharValue: '' },
+      { VarCharValue: '1019479.081' },
+      { VarCharValue: '30584.37244' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataFourteen],
+    },
+  }

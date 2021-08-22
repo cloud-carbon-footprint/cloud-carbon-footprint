@@ -3,6 +3,7 @@
  */
 
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
+import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 // This are the services we are over estimating to be SSD because we don't know what the underlying storage type is (SSD or HDD).
 export const SSD_SERVICES: string[] = [
@@ -132,8 +133,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'VpcEndpoint-Hours',
   'VPN-Usage-Hours',
   'NatGateway-Hours',
-  'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
-  'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
+  'NatGateway-Bytes',
   'LoadBalancerUsage',
   'IdleAddress',
   'UnusedStaticIP',
@@ -141,7 +141,66 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'ResolverNetworkInterface',
   'DataScanned',
   'FastSnapshotRestore',
+  'GMD-Metrics',
+  'Dollar',
 ]
+
+export const UNSUPPORTED_USAGE_TYPES: string[] = [
+  'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
+  'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
+]
+
+export const UNKNOWN_USAGE_TYPE_UNITS: { [key: string]: string } = {
+  Hrs: EstimateClassification.COMPUTE,
+  Metrics: EstimateClassification.STORAGE,
+  'GB-Hours': EstimateClassification.STORAGE,
+  GB: EstimateClassification.NETWORKING,
+  Dollar: EstimateClassification.UNKNOWN,
+  IOs: EstimateClassification.COMPUTE,
+  ShardHour: EstimateClassification.COMPUTE,
+  'LCU-Hrs': EstimateClassification.COMPUTE,
+  Hours: EstimateClassification.COMPUTE,
+  Hour: EstimateClassification.COMPUTE,
+  hour: EstimateClassification.COMPUTE,
+  'DPU-Hour': EstimateClassification.COMPUTE,
+  'WriteCapacityUnit-Hrs': EstimateClassification.COMPUTE,
+  'ReadCapacityUnit-Hrs': EstimateClassification.COMPUTE,
+  'Lambda-GB-Second': EstimateClassification.COMPUTE,
+  'vCPU-Hours': EstimateClassification.COMPUTE,
+  Terabytes: EstimateClassification.NETWORKING,
+  Requests: EstimateClassification.NETWORKING,
+  Request: EstimateClassification.NETWORKING,
+  'API Requests': EstimateClassification.NETWORKING,
+  'API Calls': EstimateClassification.NETWORKING,
+  Events: EstimateClassification.STORAGE,
+  ConfigurationItemRecorded: EstimateClassification.STORAGE,
+  Keys: EstimateClassification.STORAGE,
+  Objects: EstimateClassification.STORAGE,
+  Count: EstimateClassification.STORAGE,
+  'Obj-Month': EstimateClassification.STORAGE,
+  Secrets: EstimateClassification.STORAGE,
+  Queries: EstimateClassification.UNKNOWN,
+  Mo: EstimateClassification.UNKNOWN,
+  PutRequest: EstimateClassification.UNKNOWN,
+  HostedZone: EstimateClassification.UNKNOWN,
+  User: EstimateClassification.UNKNOWN,
+  'UsageRecord-month': EstimateClassification.UNKNOWN,
+  Activities: EstimateClassification.UNKNOWN,
+  StateTransitions: EstimateClassification.UNKNOWN,
+  ConfigRuleEvaluations: EstimateClassification.UNKNOWN,
+  '64K-Chunks': EstimateClassification.UNKNOWN,
+  Notifications: EstimateClassification.UNKNOWN,
+  Alarms: EstimateClassification.UNKNOWN,
+  URL: EstimateClassification.UNKNOWN,
+  'GB-Mo': EstimateClassification.STORAGE,
+  GigaBytes: EstimateClassification.NETWORKING,
+  'GB-Month': EstimateClassification.STORAGE,
+  'GB-Mp': EstimateClassification.STORAGE,
+  'GB-month': EstimateClassification.STORAGE,
+  seconds: EstimateClassification.COMPUTE,
+  Second: EstimateClassification.COMPUTE,
+  'ACU-Hr': EstimateClassification.COMPUTE,
+}
 
 export const LINE_ITEM_TYPES: string[] = [
   'Usage',

@@ -1,5 +1,17 @@
 # @cloud-carbon-footprint/azure
 
+## 0.3.0
+
+### Minor Changes
+
+- 22636b35: updates processor coefficients
+
+### Patch Changes
+
+- Updated dependencies [f75cf08f]
+- Updated dependencies [52a8b3c1]
+  - @cloud-carbon-footprint/common@1.1.0
+
 ## 0.2.0
 
 ### Minor Changes

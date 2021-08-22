@@ -14,6 +14,15 @@ export default interface FootprintEstimate {
   usesAverageCPUConstant?: boolean
 }
 
+export type Co2ePerCost = { [key: string]: { [key: string]: number } }
+
+export enum EstimateClassification {
+  COMPUTE = 'compute',
+  STORAGE = 'storage',
+  NETWORKING = 'networking',
+  UNKNOWN = 'unknown',
+}
+
 export const aggregateEstimatesByDay = (
   estimates: FootprintEstimate[],
 ): { [date: string]: FootprintEstimate } => {
@@ -59,6 +68,20 @@ export interface MutableServiceEstimate {
   cost: number
   region: string
   usesAverageCPUConstant: boolean
+}
+
+export const accumulateCo2PerCost = (
+  classification: EstimateClassification,
+  co2e: number,
+  cost: number,
+  costPerCo2e: Co2ePerCost,
+): void => {
+  costPerCo2e[classification].cost += cost
+  costPerCo2e.total.cost += cost
+  if (co2e > 0) {
+    costPerCo2e[classification].co2e += co2e
+    costPerCo2e.total.co2e += co2e
+  }
 }
 
 export const appendOrAccumulateEstimatesByDay = (
@@ -178,5 +201,15 @@ export function estimateCo2(
   return (
     estimatedWattHours *
     (emissionsFactors[region] || emissionsFactors['Unknown'])
+  )
+}
+
+export function estimateKwh(
+  estimatedCo2e: number,
+  region: string,
+  emissionsFactors?: CloudConstantsEmissionsFactors,
+): number {
+  return (
+    estimatedCo2e / (emissionsFactors[region] || emissionsFactors['Unknown'])
   )
 }

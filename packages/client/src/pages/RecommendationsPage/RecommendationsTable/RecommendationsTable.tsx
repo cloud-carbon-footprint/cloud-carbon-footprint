@@ -2,7 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { FunctionComponent, ReactElement, SyntheticEvent } from 'react'
+import {
+  FunctionComponent,
+  ReactElement,
+  SyntheticEvent,
+  useState,
+} from 'react'
 import {
   DataGrid,
   GridColDef,
@@ -12,6 +17,7 @@ import {
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import CarbonCard from 'layout/CarbonCard'
 import useStyles from './recommendationsTableStyles'
+import Toggle from '../../../common/Toggle'
 
 type RecommendationsTableProps = {
   recommendations: RecommendationResult[]
@@ -21,7 +27,7 @@ type RecommendationsTableProps = {
   ) => void
 }
 
-const columns: GridColDef[] = [
+const getColumns = (useKilograms: boolean): GridColDef[] => [
   {
     field: 'cloudProvider',
     headerName: 'Cloud Provider',
@@ -45,13 +51,13 @@ const columns: GridColDef[] = [
   {
     field: 'costSavings',
     headerName: 'Potential Cost Savings ($)',
-    type: 'number',
     flex: 0.75,
   },
   {
     field: 'co2eSavings',
-    headerName: 'Potential Carbon Savings (metric tons)',
-    type: 'number',
+    headerName: useKilograms
+      ? 'Potential Carbon Savings (kg)'
+      : 'Potential Carbon Savings (t)',
     flex: 0.75,
   },
 ]
@@ -60,17 +66,22 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   recommendations,
   handleRowClick,
 }): ReactElement => {
+  const [useKilograms, setUseKilograms] = useState(false)
   const classes = useStyles()
 
   let rows = []
   if (recommendations) {
     rows = recommendations.map((recommendation, index) => {
       const recommendationRow = {
-        id: index,
         ...recommendation,
+        id: index,
+        useKilograms,
+        co2eSavings: useKilograms
+          ? recommendation.co2eSavings * 1000
+          : recommendation.co2eSavings,
       }
       // Replace any undefined values and cuts numbers to thousandth decimal
-      Object.keys(recommendationRow).forEach((key) => {
+      Object.keys(recommendation).forEach((key) => {
         if (key.includes('Savings') && recommendationRow[key])
           recommendationRow[key] = recommendationRow[key].toFixed(3)
         if (!recommendationRow[key]) recommendationRow[key] = '-'
@@ -81,14 +92,20 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   return (
     <CarbonCard title="Recommendations">
-      <DataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        columnBuffer={6}
-        classes={{ cell: classes.cell, row: classes.row }}
-        onRowClick={handleRowClick}
-      />
+      <div className={classes.tableContainer}>
+        <div className={classes.toggleContainer}>
+          <Toggle label={'CO2e Units'} handleToggle={setUseKilograms} />
+        </div>
+        <DataGrid
+          autoHeight
+          rows={rows}
+          columns={getColumns(useKilograms)}
+          columnBuffer={6}
+          hideFooterSelectedRowCount={true}
+          classes={{ cell: classes.cell, row: classes.row }}
+          onRowClick={handleRowClick}
+        />
+      </div>
     </CarbonCard>
   )
 }

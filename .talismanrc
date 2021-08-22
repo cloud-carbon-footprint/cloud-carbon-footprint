@@ -11,8 +11,6 @@ fileignoreconfig:
   checksum: c624ef29d606e6a22b36a031f12be832fd7dcd953457295e76ca9472dc4111e7
 - filename: .circleci/config.yml
   checksum: 8e5e1a8c983333021f1ea610858a316f84936bdf0a9bd66d5ada9b9c664d22d9
-- filename: .github/ISSUE_TEMPLATE/story-card.md
-  checksum: 70eddfb7d8b79ba2c4ac997c630d5faafee7a428fd0427e3972e4040defec96d
 - filename: .yarn/plugins/@yarnpkg/plugin-outdated.cjs
   checksum: 3bfb33cac24525b03528d71814b90abc6e0bf7cdcd9e95f6aae8d342d3666268
 - filename: CONTRIBUTING.md
@@ -90,7 +88,7 @@ fileignoreconfig:
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 4dfc94caa9c6ea518f134ceabbe5f8fd2580e11aba2b49f365710689b81646ff
+  checksum: 7eea2bf3c0358caa5e834734e1d1ba01d4d2069f2bb93504d810600781ae2f96
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
@@ -99,6 +97,8 @@ fileignoreconfig:
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
   checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
+- filename: packages/aws/src/lib/CostAndUsageTypes.ts
+  checksum: 5959eb437ed1e335702c12cc039f8c0c05a4f90688273ff31188cc1c8c4ca4ff
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template
@@ -216,9 +216,7 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: 83454d9a3a7c0cb5ff39a552ace865a4fdcc62cb397745d59569158da527eea0
-- filename: packages/gcp/src/__tests__/Recommendations.test.ts
-  checksum: a1d428d9460e2ef236ac97be4641801d88fe4299a5d1e28de6a4eb5a606e018e
+  checksum: 9e02b7704ea5ec465151f5691cf1f9ed25a489a22dd9d2923d334bb45125e470
 - filename: packages/gcp/src/lib/MachineTypes.ts
   checksum: fe6c335581e146315ca8feff01aae6ad4821e3935276f4d8fbefe3f84c1a1f8f
 - filename: packages/gcp/src/lib/ReplicationFactors.ts

@@ -7,48 +7,53 @@ import {
   GetQueryExecutionInput,
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
+  Row,
   StartQueryExecutionInput,
   StartQueryExecutionOutput,
-  Row,
 } from 'aws-sdk/clients/athena'
 
 import {
   configLoader,
-  Logger,
-  EstimationResult,
+  containsAny,
   convertBytesToTerabytes,
   convertGigabyteHoursToTerabyteHours,
   convertGigabyteMonthsToTerabyteHours,
   endsWithAny,
+  EstimationResult,
+  Logger,
   wait,
-  containsAny,
 } from '@cloud-carbon-footprint/common'
 
 import {
-  FootprintEstimate,
-  MutableEstimationResult,
-  ComputeEstimator,
-  StorageEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  StorageUsage,
-  NetworkingUsage,
+  accumulateCo2PerCost,
   appendOrAccumulateEstimatesByDay,
-  CloudConstantsEmissionsFactors,
   CloudConstants,
+  CloudConstantsEmissionsFactors,
+  ComputeEstimator,
+  EstimateClassification,
+  FootprintEstimate,
+  MemoryEstimator,
+  MutableEstimationResult,
+  NetworkingEstimator,
+  NetworkingUsage,
+  StorageEstimator,
+  StorageUsage,
+  UnknownEstimator,
+  UnknownUsage,
 } from '@cloud-carbon-footprint/core'
 
 import { ServiceWrapper } from './ServiceWrapper'
 import {
-  SSD_USAGE_TYPES,
-  HDD_USAGE_TYPES,
-  NETWORKING_USAGE_TYPES,
-  BYTE_HOURS_USAGE_TYPES,
-  SSD_SERVICES,
-  PRICING_UNITS,
-  UNKNOWN_USAGE_TYPES,
-  LINE_ITEM_TYPES,
   AWS_QUERY_GROUP_BY,
+  BYTE_HOURS_USAGE_TYPES,
+  UNSUPPORTED_USAGE_TYPES,
+  HDD_USAGE_TYPES,
+  LINE_ITEM_TYPES,
+  NETWORKING_USAGE_TYPES,
+  PRICING_UNITS,
+  SSD_SERVICES,
+  SSD_USAGE_TYPES,
+  UNKNOWN_USAGE_TYPES,
 } from './CostAndUsageTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
@@ -72,6 +77,7 @@ export default class CostAndUsageReports {
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
+    private readonly unknownEstimator: UnknownEstimator,
     private readonly serviceWrapper?: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
@@ -84,6 +90,7 @@ export default class CostAndUsageReports {
     const usageRowsHeader: Row = usageRows.shift()
 
     const results: MutableEstimationResult[] = []
+    const unknownRows: CostAndUsageReportsRow[] = []
 
     usageRows.map((rowData: Row) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(
@@ -91,7 +98,13 @@ export default class CostAndUsageReports {
         rowData.Data,
       )
 
-      if (this.isUnknownUsageType(costAndUsageReportRow.usageType)) return []
+      if (
+        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
+        this.usageTypeisGpu(costAndUsageReportRow.usageType)
+      ) {
+        unknownRows.push(costAndUsageReportRow)
+        return []
+      }
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         costAndUsageReportRow,
@@ -103,6 +116,33 @@ export default class CostAndUsageReports {
           footprintEstimate,
         )
     })
+
+    if (results.length > 0) {
+      const filteredUnknownRows = unknownRows.filter(
+        (rowData) =>
+          !UNSUPPORTED_USAGE_TYPES.some((usageType) =>
+            rowData.usageType.includes(usageType),
+          ),
+      )
+      filteredUnknownRows.map((rowData: CostAndUsageReportsRow) => {
+        const unknownUsage: UnknownUsage = {
+          timestamp: rowData.timestamp,
+          cost: rowData.cost,
+          usageUnit: rowData.usageUnit,
+        }
+        const unknownConstants: CloudConstants = {
+          co2ePerCost: AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
+        }
+        const footprintEstimate = this.unknownEstimator.estimate(
+          [unknownUsage],
+          rowData.region,
+          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+          unknownConstants,
+        )[0]
+        if (footprintEstimate)
+          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+      })
+    }
     return results
   }
 
@@ -204,6 +244,14 @@ export default class CostAndUsageReports {
           }
         }
 
+        if (computeFootprint)
+          accumulateCo2PerCost(
+            EstimateClassification.COMPUTE,
+            computeFootprint.co2e,
+            costAndUsageReportRow.cost,
+            AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
+          )
+
         return computeFootprint
       case PRICING_UNITS.GB_MONTH_1:
       case PRICING_UNITS.GB_MONTH_2:
@@ -261,7 +309,15 @@ export default class CostAndUsageReports {
         networkingConstants,
       )[0]
     }
-    if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+    if (networkingEstimate) {
+      networkingEstimate.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.NETWORKING,
+        networkingEstimate.co2e,
+        costAndUsageReportRow.cost,
+        AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
+    }
     return networkingEstimate
   }
 
@@ -283,6 +339,7 @@ export default class CostAndUsageReports {
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: costAndUsageReportRow.replicationFactor,
     }
+
     let estimate: FootprintEstimate
     if (this.usageTypeIsSSD(costAndUsageReportRow))
       estimate = this.ssdStorageEstimator.estimate(
@@ -302,7 +359,15 @@ export default class CostAndUsageReports {
       this.costAndUsageReportsLogger.warn(
         `Unexpected usage type for storage service: ${costAndUsageReportRow.usageType}`,
       )
-    if (estimate) estimate.usesAverageCPUConstant = false
+    if (estimate) {
+      estimate.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.STORAGE,
+        estimate.co2e,
+        costAndUsageReportRow.cost,
+        AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
+    }
     return estimate
   }
 
@@ -357,16 +422,15 @@ export default class CostAndUsageReports {
   }
 
   private usageTypeIsUnknown(usageType: string): boolean {
+    const allUnknownUsageTypes = UNKNOWN_USAGE_TYPES.concat(
+      UNSUPPORTED_USAGE_TYPES,
+    )
     return (
-      endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
-      UNKNOWN_USAGE_TYPES.some((unknownUsageType) =>
+      endsWithAny(allUnknownUsageTypes, usageType) ||
+      allUnknownUsageTypes.some((unknownUsageType) =>
         usageType.includes(unknownUsageType),
       )
     )
-  }
-
-  private isUnknownUsageType(usageType: string) {
-    return this.usageTypeIsUnknown(usageType) || this.usageTypeisGpu(usageType)
   }
 
   private usageTypeisGpu(usageType: string): boolean {

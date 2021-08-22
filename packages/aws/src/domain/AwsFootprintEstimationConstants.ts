@@ -8,6 +8,7 @@ import {
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
+  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import { AWS_REGIONS } from '../lib/AWSRegions'
@@ -67,7 +68,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       ? averageWattsForProcessors
       : AWS_CLOUD_CONSTANTS.MIN_WATTS_AVG
   },
-  MAX_WATTS_AVG: 3.50,
+  MAX_WATTS_AVG: 3.5,
   MAX_WATTS_BY_COMPUTE_PROCESSOR: {
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.97,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.26,
@@ -117,6 +118,25 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     ECR_STORAGE: 3,
     DOCUMENT_ELASTICACHE_BACKUP: 3,
     SIMPLE_DB: 2,
+  },
+  // these constants accumulate as the usage rows are mapped over
+  CO2E_PER_COST: {
+    [EstimateClassification.COMPUTE]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.STORAGE]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.NETWORKING]: {
+      cost: 0,
+      co2e: 0,
+    },
+    total: {
+      cost: 0,
+      co2e: 0,
+    },
   },
 }
 

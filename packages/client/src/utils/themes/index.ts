@@ -9,6 +9,8 @@ declare module '@material-ui/core/styles/createPalette' {
   /* eslint-disable */
   interface Palette {
     chart: Palette['primary'][]
+    primaryBlue: CSSProperties['color']
+    lightBlue: CSSProperties['color']
     lightTitle: CSSProperties['color']
     lightMessage: CSSProperties['color']
     extLink: CSSProperties['color']
@@ -16,6 +18,8 @@ declare module '@material-ui/core/styles/createPalette' {
   /* eslint-disable */
   interface PaletteOptions {
     chart: PaletteOptions['primary'][]
+    primaryBlue: CSSProperties['color']
+    lightBlue: CSSProperties['color']
     lightTitle: CSSProperties['color']
     lightMessage: CSSProperties['color']
     extLink: CSSProperties['color']
@@ -50,6 +54,8 @@ const determineTheme = (): Theme => {
         { main: '#E2EF70' },
         { main: '#70E4EF' },
       ],
+      primaryBlue: '#3F51B5',
+      lightBlue: 'rgba(63, 81, 181, 0.08)',
       lightTitle: 'rgba(0, 0, 0, 0.87)',
       lightMessage: '#b0bec5',
       // leaving this here in case the color theme changes base on dark mode

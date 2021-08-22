@@ -62,7 +62,9 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
           />
           <RecommendationsPanelColumn
             label="CO2e Savings"
-            subLabel="(metric tons)"
+            subLabel={
+              recommendation.useKilograms ? '(kilograms)' : '(metric tons)'
+            }
             content={recommendation.co2eSavings}
           />
           <RecommendationsPanelColumn

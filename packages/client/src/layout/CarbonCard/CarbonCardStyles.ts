@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     boxShadow: 'none',
-    display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',

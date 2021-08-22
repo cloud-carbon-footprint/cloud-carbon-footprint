@@ -7,6 +7,7 @@ export * from './networking'
 export * from './storage'
 export * from './compute'
 export * from './cost'
+export * from './unknown'
 export { default as CloudProviderAccount } from './CloudProviderAccount'
 export {
   default as CloudConstants,
@@ -19,11 +20,15 @@ export { default as UsageData } from './IUsageData'
 export {
   default as FootprintEstimate,
   appendOrAccumulateEstimatesByDay,
+  accumulateCo2PerCost,
   MutableEstimationResult,
   aggregateEstimatesByDay,
   getWattsByAverageOrMedian,
   getAverage,
   estimateCo2,
+  estimateKwh,
+  Co2ePerCost,
+  EstimateClassification,
 } from './FootprintEstimate'
 export { default as ICloudService } from './ICloudService'
 export { default as BillingDataRow } from './BillingDataRow'

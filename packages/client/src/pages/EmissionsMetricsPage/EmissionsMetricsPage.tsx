@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement } from 'react'
-import { CircularProgress, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import moment, { unitOfTime } from 'moment'
 import { useRemoteService } from 'utils/hooks'
 import { useFilterDataFromEstimates } from 'utils/helpers'
@@ -17,6 +17,7 @@ import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
+import LoadingMessage from '../../common/LoadingMessage'
 
 export default function EmissionsMetricsPage(): ReactElement {
   const classes = useStyles()
@@ -45,12 +46,9 @@ export default function EmissionsMetricsPage(): ReactElement {
 
   if (loading) {
     return (
-      <Grid container className={classes.loadingContainer}>
-        <CircularProgress size={100} />
-        <div className={classes.loadingMessage} id="loading-screen">
-          Loading cloud data. This may take a while...
-        </div>
-      </Grid>
+      <LoadingMessage
+        message={'Loading cloud data. This may take a while...'}
+      />
     )
   }
 
