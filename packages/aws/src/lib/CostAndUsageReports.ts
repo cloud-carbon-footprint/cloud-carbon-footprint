@@ -177,7 +177,12 @@ export default class CostAndUsageReports {
         ],
       )
 
-      if (this.isUnknownUsageType(costAndUsageReportRow.usageType)) return []
+      if (
+        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
+        this.usageTypeisGpu(costAndUsageReportRow.usageType)
+      ) {
+        return []
+      }
 
       const footprintEstimate = this.getEstimateByPricingUnit(
         costAndUsageReportRow,

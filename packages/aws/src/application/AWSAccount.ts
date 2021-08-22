@@ -155,6 +155,7 @@ export default class AWSAccount extends CloudProviderAccount {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
     )
     return costAndUsageReportsService.getEstimatesFromInputData(inputData)
   }
