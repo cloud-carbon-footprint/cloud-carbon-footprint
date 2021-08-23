@@ -11,6 +11,7 @@ describe('Recommendations Side Panel', () => {
     ...mockRecommendationData[0],
     id: 0,
     accountId: 'test-account-1-id',
+    useKilograms: false,
   }
   it('Renders a side panel titled "Recommendation Details"', () => {
     const { getByTestId } = render(
@@ -29,6 +30,8 @@ describe('Recommendations Side Panel', () => {
     expect(getByText(mockRecommendationRow.accountName)).toBeInTheDocument()
     expect(getByText(mockRecommendationRow.accountId)).toBeInTheDocument()
     expect(getByText(mockRecommendationRow.region)).toBeInTheDocument()
+    expect(getByText(mockRecommendationRow.instanceName)).toBeInTheDocument()
+    expect(getByText(mockRecommendationRow.resourceId)).toBeInTheDocument()
     expect(
       getByText(mockRecommendationRow.recommendationType),
     ).toBeInTheDocument()

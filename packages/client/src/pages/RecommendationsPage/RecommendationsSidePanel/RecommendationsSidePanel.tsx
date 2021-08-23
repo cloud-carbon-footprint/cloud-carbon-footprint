@@ -41,6 +41,14 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
             label="Region"
             content={recommendation.region}
           />
+          <RecommendationsPanelRow
+            label="Instance Name"
+            content={recommendation.instanceName}
+          />
+          <RecommendationsPanelRow
+            label="Resource ID"
+            content={recommendation.resourceId}
+          />
         </Container>
         <Divider />
         <Container className={classes.detailsContainer}>

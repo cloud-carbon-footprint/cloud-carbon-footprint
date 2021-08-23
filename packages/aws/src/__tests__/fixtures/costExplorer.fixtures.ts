@@ -9,7 +9,8 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
       {
         AccountId: 'test-account',
         CurrentInstance: {
-          InstanceName: 'Test instance',
+          ResourceId: 'test-id',
+          InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 'm5dn.24xlarge',
@@ -26,7 +27,8 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
       {
         AccountId: 'test-account-1',
         CurrentInstance: {
-          InstanceName: 'Test instance',
+          ResourceId: 'test-id',
+          InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 'm5zn.2xlarge',
@@ -43,7 +45,8 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
       {
         AccountId: 'test-account-2',
         CurrentInstance: {
-          InstanceName: 'Test instance',
+          ResourceId: 'test-id',
+          InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 't2.micro',
@@ -60,8 +63,8 @@ export const rightsizingRecommendationTerminate: GetRightsizingRecommendationRes
       {
         AccountId: 'test-account-3',
         CurrentInstance: {
+          ResourceId: 'test-id',
           InstanceName: '',
-          ResourceId: 'Test-resource-id',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 't2.micro',
@@ -84,7 +87,8 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
       {
         AccountId: 'test-account',
         CurrentInstance: {
-          InstanceName: 'Test instance',
+          ResourceId: 'Test-resource-id',
+          InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 't2.micro',
@@ -128,7 +132,8 @@ export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecomm
       {
         AccountId: 'test-account',
         CurrentInstance: {
-          InstanceName: 'Test instance',
+          ResourceId: 'Test-resource-id',
+          InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 't2.micro',
@@ -151,7 +156,8 @@ export const rightsizingCrossFamilyRecommendationModify: GetRightsizingRecommend
       {
         AccountId: 'test-account',
         CurrentInstance: {
-          InstanceName: 'Test instance',
+          ResourceId: 'Test-resource-id',
+          InstanceName: 'test-instance-name',
           ResourceDetails: {
             EC2ResourceDetails: {
               InstanceType: 't2.micro',

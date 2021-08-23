@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
   //TODO: make this work
   row: {
     cursor: 'pointer',
-    '&$selected': {
+    '&:hover': {
       border: 'solid 2px #3F51B5',
       borderRadius: '7px',
     },

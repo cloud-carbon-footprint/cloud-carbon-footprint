@@ -107,6 +107,8 @@ export default class Recommendations implements ICloudRecommendationsService {
             recommendationType: rightsizingCurrentRecommendation.type,
             recommendationDetail,
             kilowattHourSavings,
+            resourceId: rightsizingCurrentRecommendation.resourceId,
+            instanceName: rightsizingCurrentRecommendation.instanceName,
             co2eSavings,
             costSavings,
           })

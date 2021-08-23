@@ -102,7 +102,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           columns={getColumns(useKilograms)}
           columnBuffer={6}
           hideFooterSelectedRowCount={true}
-          classes={{ cell: classes.cell, row: classes.row }}
+          classes={{
+            cell: classes.cell,
+            row: classes.row,
+          }}
           onRowClick={handleRowClick}
         />
       </div>
