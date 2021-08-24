@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [5a0aab5b]
+  - @cloud-carbon-footprint/core@0.10.0
+
 ## 0.3.0
 
 ### Minor Changes

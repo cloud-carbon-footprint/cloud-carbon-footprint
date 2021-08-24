@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/core
 
+## 0.10.0
+
+### Minor Changes
+
+- 5a0aab5b: implements classifying unknown usage types for aws
+
 ## 0.9.0
 
 ### Minor Changes
