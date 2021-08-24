@@ -138,6 +138,8 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 58.152384000000005,
           co2eSavings: 0.0045358859520000004,
           costSavings: 15,
+          instanceName: 'test-instance-name',
+          resourceId: '123456789012',
         },
       ]
 
@@ -185,6 +187,8 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 58.41792000000001,
           co2eSavings: 0.024046546771602437,
           costSavings: 55,
+          instanceName: 'test-instance-name',
+          resourceId: '123456789012',
         },
       ]
 
@@ -230,6 +234,8 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 58.152384000000005,
           co2eSavings: 0.0045358859520000004,
           costSavings: 15,
+          instanceName: 'test-instance-name',
+          resourceId: '123456789012',
         },
       ]
 
@@ -270,6 +276,8 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 0,
           co2eSavings: 0,
           costSavings: 15,
+          instanceName: 'test-instance-name',
+          resourceId: '123456789012',
         },
       ]
 
@@ -313,6 +321,8 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 58.1626332,
           co2eSavings: 0.0045366853896,
           costSavings: 15,
+          instanceName: 'test-instance-name',
+          resourceId: '123456789012',
         },
       ]
 
@@ -362,6 +372,8 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 58.18155480000001,
           co2eSavings: 0.004538161274400001,
           costSavings: 15,
+          instanceName: 'test-instance-name',
+          resourceId: '123456789012',
         },
       ]
 
@@ -414,6 +426,8 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 1.6960454999999999,
         co2eSavings: 0.00013229154899999999,
         costSavings: 20,
+        instanceName: 'test-instance-name',
+        resourceId: '123456789012',
       },
     ]
 
@@ -453,6 +467,8 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.0189216,
         co2eSavings: 0.0000014758848,
         costSavings: 50,
+        instanceName: 'test-instance-name',
+        resourceId: '123456789012',
       },
     ]
 
@@ -492,6 +508,8 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.010249200000000002,
         co2eSavings: 7.994376000000002e-7,
         costSavings: 50,
+        instanceName: 'test-instance-name',
+        resourceId: '123456789012',
       },
     ]
 
@@ -530,6 +548,8 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.0002771527420842647,
         co2eSavings: 2.1617913882572647e-8,
         costSavings: 30,
+        instanceName: 'test-instance-name',
+        resourceId: '123456789012',
       },
     ]
 
@@ -566,6 +586,8 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0,
         co2eSavings: 0,
         costSavings: 40,
+        instanceName: 'test-instance-name',
+        resourceId: '123456789012',
       },
     ]
 

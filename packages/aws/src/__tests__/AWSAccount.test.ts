@@ -145,6 +145,8 @@ describe('AWSAccount', () => {
         kilowattHourSavings: 5,
         co2eSavings: 4,
         costSavings: 3,
+        instanceName: 'test-instance-name',
+        resourceId: 'test-id',
       },
     ]
 
@@ -178,6 +180,8 @@ describe('AWSAccount', () => {
         kilowattHourSavings: 5,
         co2eSavings: 4,
         costSavings: 3,
+        instanceName: 'test-instance-name',
+        resourceId: 'test-id',
       },
     ]
 
