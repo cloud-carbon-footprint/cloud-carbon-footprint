@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { UnknownEstimator } from '../.'
+import UnknownEstimator from '../UnknownEstimator'
 import { EstimateClassification } from '../../FootprintEstimate'
 
 describe('UnknownEstimator', () => {

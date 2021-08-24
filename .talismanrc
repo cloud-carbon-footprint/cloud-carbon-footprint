@@ -88,7 +88,7 @@ fileignoreconfig:
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 7eea2bf3c0358caa5e834734e1d1ba01d4d2069f2bb93504d810600781ae2f96
+  checksum: ae4d3c68639b3cad55fd80dc12d0af52628a1c8680bf51b06fd0fdb8e4dcd466
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
@@ -96,7 +96,7 @@ fileignoreconfig:
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
   checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
-  checksum: 5959eb437ed1e335702c12cc039f8c0c05a4f90688273ff31188cc1c8c4ca4ff
+  checksum: 794e8e8250391d192f920a7dca942b490f810c0bb171f3e4ceb30d586fbf867f
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template
@@ -179,6 +179,8 @@ fileignoreconfig:
   checksum: b3c4f46e5aef0a2e9aac4a8f1de574b79525c6a275492459d7d9334df2830150
 - filename: packages/core/src/services/gcp/BillingExportTable.ts
   checksum: 39e68fa8eeb0706e881d900f8cf69d9859131b087b1555a51015faded40f6504
+- filename: packages/core/src/unknown/UnknownEstimator.ts
+  checksum: 9eafdd552dbbee7f60620963fa97eba98f39dd5b0bed002b0bccabd3bdf839b6
 - filename: packages/create-app/templates/default-app/packages/api/.env.template
   checksum: 8e43d5762bac88981cadb25efc990af9869b3a0a9532968f9eb4da4865ee5936
 - filename: packages/create-app/templates/default-app/packages/cli/.env.template

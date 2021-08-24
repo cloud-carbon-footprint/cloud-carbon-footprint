@@ -2,23 +2,19 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {
+import CloudConstants, {
   CloudConstantsEmissionsFactors,
-  CloudConstants,
-  FootprintEstimate,
-  IFootprintEstimator,
+} from '../CloudConstantsTypes'
+import FootprintEstimate, {
   Co2ePerCost,
   estimateKwh,
   EstimateClassification,
-} from '../.'
-import { UnknownUsage } from '.'
+} from '../FootprintEstimate'
+import IFootprintEstimator from '../IFootprintEstimator'
+import UnknownUsage from './UnknownUsage'
 
 export default class UnknownEstimator implements IFootprintEstimator {
-  unknownUsageTypes: { [key: string]: string }
-
-  constructor(unknownUsageTypes: { [key: string]: string }) {
-    this.unknownUsageTypes = unknownUsageTypes
-  }
+  constructor(private unknownUsageTypesMapping: { [key: string]: string }) {}
 
   estimate(
     data: UnknownUsage[],
@@ -28,8 +24,8 @@ export default class UnknownEstimator implements IFootprintEstimator {
   ): FootprintEstimate[] {
     return data.map((data: UnknownUsage) => {
       // consider adding a console error to add unknown usageUnit to map
-      const classification = this.unknownUsageTypes[data.usageUnit]
-        ? this.unknownUsageTypes[data.usageUnit]
+      const classification = this.unknownUsageTypesMapping[data.usageUnit]
+        ? this.unknownUsageTypesMapping[data.usageUnit]
         : EstimateClassification.UNKNOWN
       const usesAverageCPUConstant =
         classification === EstimateClassification.COMPUTE
