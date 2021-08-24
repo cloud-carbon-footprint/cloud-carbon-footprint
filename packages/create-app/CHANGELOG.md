@@ -1,11 +1,5 @@
 # @cloud-carbon-footprint/create-app
 
-## 0.5.1
-
-### Patch Changes
-
-- d9349803: update contributing md
-
 ## 0.5.0
 
 ### Minor Changes
