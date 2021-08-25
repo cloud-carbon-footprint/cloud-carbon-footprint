@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 0.5.1
+
+### Patch Changes
+
+- a9ae393: updates contributing.md with instructions to use create-app test script
+
 ## 0.5.0
 
 ### Minor Changes
