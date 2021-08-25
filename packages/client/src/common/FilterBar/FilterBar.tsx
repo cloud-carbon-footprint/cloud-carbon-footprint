@@ -3,12 +3,17 @@
  */
 
 import { Grid } from '@material-ui/core'
-import React, { FunctionComponent } from 'react'
+import React, { Dispatch, FunctionComponent, SetStateAction } from 'react'
 import useStyles from './filterBarStyles'
-import { FilterProps } from 'Types'
+import { FilterOptions, FilterProps } from 'Types'
+import { Filters } from '../../pages/EmissionsMetricsPage/EmissionsFilterBar/utils/Filters'
 
 type FilterBarProps = {
-  config: any
+  config: {
+    filters: Filters
+    setFilters: Dispatch<SetStateAction<Filters>>
+    filterOptions: FilterOptions
+  }
   primaryComponents: FunctionComponent<FilterProps>[]
   optionalComponents?: FunctionComponent<FilterProps>[]
 }
