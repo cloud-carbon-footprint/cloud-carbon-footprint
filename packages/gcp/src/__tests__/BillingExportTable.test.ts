@@ -407,7 +407,7 @@ describe('GCP BillingExportTable Service', () => {
           },
           {
             kilowattHours: 0.00003412500000000001,
-            co2e: 1.4046861110100005e-8,
+            co2e: 1.5492750000000005e-8,
             usesAverageCPUConstant: false,
             cloudProvider: 'GCP',
             accountId: accountId,
