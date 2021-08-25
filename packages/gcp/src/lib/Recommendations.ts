@@ -99,11 +99,8 @@ export default class Recommendations implements ICloudRecommendationsService {
         R.flatten(
           nonEmptyRecommendations.map(({ zone, recommendations }) =>
             recommendations.map(async (rec: IRecommendation) => {
-              const estimatedCO2eSavings = await this.getEstimatedCO2eSavings(
-                project.id,
-                zone,
-                rec,
-              )
+              const [estimatedCO2eSavings, resourceId] =
+                await this.getEstimatedCO2eSavings(project.id, zone, rec)
               return {
                 cloudProvider: 'GCP',
                 accountId: project.id,
@@ -114,6 +111,7 @@ export default class Recommendations implements ICloudRecommendationsService {
                 costSavings: this.getEstimatedCostSavings(rec),
                 co2eSavings: estimatedCO2eSavings.co2e,
                 kilowattHourSavings: estimatedCO2eSavings.kilowattHours,
+                resourceId,
               }
             }),
           ),
@@ -127,8 +125,9 @@ export default class Recommendations implements ICloudRecommendationsService {
     projectId: string,
     zone: string,
     recommendation: IRecommendation,
-  ): Promise<FootprintEstimate> {
+  ): Promise<[FootprintEstimate, string]> {
     try {
+      let footprintEstimate: FootprintEstimate
       switch (recommendation.recommenderSubtype) {
         case RECOMMENDATION_TYPES.STOP_VM:
           const instanceDetails = await this.getInstanceDetails(
@@ -157,13 +156,14 @@ export default class Recommendations implements ICloudRecommendationsService {
           const storageCo2eSavings = R.sum(
             storageFootprintEstimates.map((estimate) => estimate.co2e),
           )
-          return {
+          footprintEstimate = {
             co2e: computeCO2eEstimatedSavings.co2e + storageCo2eSavings,
             kilowattHours:
               computeCO2eEstimatedSavings.kilowattHours +
               storageKilowattHoursSavings,
             timestamp: undefined,
           }
+          return [footprintEstimate, instanceDetails.id]
         case RECOMMENDATION_TYPES.CHANGE_MACHINE_TYPE:
           const currentMachineType = recommendation.description
             .replace('.', '')
@@ -185,19 +185,21 @@ export default class Recommendations implements ICloudRecommendationsService {
               newMachineType,
             )
 
-          return {
+          footprintEstimate = {
             co2e: currentComputeCO2e.co2e - newComputeCO2e.co2e,
             kilowattHours:
               currentComputeCO2e.kilowattHours - newComputeCO2e.kilowattHours,
             timestamp: undefined,
           }
+          return [footprintEstimate, '']
         case RECOMMENDATION_TYPES.SNAPSHOT_AND_DELETE_DISK:
         case RECOMMENDATION_TYPES.DELETE_DISK:
-          return await this.getCO2EstimatesSavingsForDisk(
+          footprintEstimate = await this.getCO2EstimatesSavingsForDisk(
             recommendation.description.split("'")[1],
             projectId,
             zone,
           )
+          return [footprintEstimate, '']
         case RECOMMENDATION_TYPES.DELETE_IMAGE:
           const imageId = recommendation.description.split("'")[1]
           const imageDetails = await this.googleServiceWrapper.getImageDetails(
@@ -207,21 +209,22 @@ export default class Recommendations implements ICloudRecommendationsService {
           const imageArchiveSizeGigabytes = convertBytesToGigabytes(
             parseFloat(imageDetails.archiveSizeBytes),
           )
-          return this.estimateStorageCO2eSavings(
+          footprintEstimate = this.estimateStorageCO2eSavings(
             imageArchiveSizeGigabytes,
             this.parseRegionFromZone(zone),
           )
+          return [footprintEstimate, '']
         default:
           this.recommendationsLogger.warn(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,
           )
-          return { timestamp: undefined, kilowattHours: 0, co2e: 0 }
+          return [{ timestamp: undefined, kilowattHours: 0, co2e: 0 }, '']
       }
     } catch (err) {
       this.recommendationsLogger.warn(
         `Unable to Estimate C02e Savings for Recommendations: ${recommendation.name}. Error: ${err}. Returning 0`,
       )
-      return { timestamp: undefined, kilowattHours: 0, co2e: 0 }
+      return [{ timestamp: undefined, kilowattHours: 0, co2e: 0 }, '']
     }
   }
 
