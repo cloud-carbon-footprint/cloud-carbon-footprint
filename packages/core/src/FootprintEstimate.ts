@@ -20,6 +20,7 @@ export enum EstimateClassification {
   COMPUTE = 'compute',
   STORAGE = 'storage',
   NETWORKING = 'networking',
+  MEMORY = 'memory',
   UNKNOWN = 'unknown',
 }
 

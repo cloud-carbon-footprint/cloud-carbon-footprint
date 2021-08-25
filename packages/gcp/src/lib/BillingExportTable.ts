@@ -20,6 +20,7 @@ import {
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
+  UnknownEstimator,
   ComputeUsage,
   StorageUsage,
   NetworkingUsage,
@@ -30,6 +31,9 @@ import {
   COMPUTE_PROCESSOR_TYPES,
   CloudConstantsEmissionsFactors,
   CloudConstants,
+  UnknownUsage,
+  accumulateCo2PerCost,
+  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import {
@@ -62,6 +66,7 @@ export default class BillingExportTable {
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
+    private readonly unknownEstimator: UnknownEstimator,
     private readonly bigQuery: BigQuery,
   ) {
     this.tableName = configLoader().GCP.BIG_QUERY_TABLE
@@ -72,16 +77,18 @@ export default class BillingExportTable {
     const usageRows = await this.getUsage(start, end)
 
     const results: MutableEstimationResult[] = []
+    const unknownRows: BillingExportRow[] = []
 
     usageRows.map((usageRow) => {
       const billingExportRow = new BillingExportRow(usageRow)
       billingExportRow.setTimestamp(usageRow.timestamp)
 
-      if (
-        this.isUnknownUsage(billingExportRow) ||
-        this.isUnsupportedUsage(billingExportRow.usageType)
-      )
+      if (this.isUnsupportedUsage(billingExportRow.usageType)) return []
+
+      if (this.isUnknownUsage(billingExportRow)) {
+        unknownRows.push(billingExportRow)
         return []
+      }
 
       let footprintEstimate: FootprintEstimate
       const emissionsFactors: CloudConstantsEmissionsFactors =
@@ -143,6 +150,28 @@ export default class BillingExportTable {
         footprintEstimate,
       )
     })
+
+    if (results.length > 0) {
+      unknownRows.map((rowData: BillingExportRow) => {
+        const unknownUsage: UnknownUsage = {
+          timestamp: rowData.timestamp,
+          cost: rowData.cost,
+          usageUnit: rowData.usageUnit,
+          usageType: rowData.usageType,
+        }
+        const unknownConstants: CloudConstants = {
+          co2ePerCost: GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+        }
+        const footprintEstimate = this.unknownEstimator.estimate(
+          [unknownUsage],
+          rowData.region,
+          GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+          unknownConstants,
+        )[0]
+        if (footprintEstimate)
+          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+      })
+    }
     return results
   }
 
@@ -170,12 +199,22 @@ export default class BillingExportTable {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
-    return this.computeEstimator.estimate(
+    const computeFootprint = this.computeEstimator.estimate(
       [computeUsage],
       usageRow.region,
       emissionsFactors,
       computeConstants,
     )[0]
+
+    if (computeFootprint)
+      accumulateCo2PerCost(
+        EstimateClassification.COMPUTE,
+        computeFootprint.co2e,
+        usageRow.cost,
+        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
+
+    return computeFootprint
   }
 
   private getComputeProcessorsFromUsageType(
@@ -219,15 +258,25 @@ export default class BillingExportTable {
     const storageEstimator = usageRow.usageType.includes('SSD')
       ? this.ssdStorageEstimator
       : this.hddStorageEstimator
-    return {
-      usesAverageCPUConstant: false,
-      ...storageEstimator.estimate(
-        [storageUsage],
-        usageRow.region,
-        emissionsFactors,
-        storageConstants,
-      )[0],
+
+    const storageFootprint = storageEstimator.estimate(
+      [storageUsage],
+      usageRow.region,
+      emissionsFactors,
+      storageConstants,
+    )[0]
+
+    if (storageFootprint) {
+      storageFootprint.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.STORAGE,
+        storageFootprint.co2e,
+        usageRow.cost,
+        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
     }
+
+    return storageFootprint
   }
 
   private getMemoryFootprintEstimate(
@@ -243,15 +292,25 @@ export default class BillingExportTable {
     const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
-    return {
-      usesAverageCPUConstant: false,
-      ...this.memoryEstimator.estimate(
-        [memoryUsage],
-        usageRow.region,
-        emissionsFactors,
-        memoryConstants,
-      )[0],
+
+    const memoryFootprint = this.memoryEstimator.estimate(
+      [memoryUsage],
+      usageRow.region,
+      emissionsFactors,
+      memoryConstants,
+    )[0]
+
+    if (memoryFootprint) {
+      memoryFootprint.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.MEMORY,
+        memoryFootprint.co2e,
+        usageRow.cost,
+        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
     }
+
+    return memoryFootprint
   }
 
   private getNetworkingFootprintEstimate(
@@ -268,15 +327,24 @@ export default class BillingExportTable {
       powerUsageEffectiveness: powerUsageEffectiveness,
     }
 
-    return {
-      usesAverageCPUConstant: false,
-      ...this.networkingEstimator.estimate(
-        [networkingUsage],
-        usageRow.region,
-        emissionsFactors,
-        networkingConstants,
-      )[0],
+    const networkingFootprint = this.networkingEstimator.estimate(
+      [networkingUsage],
+      usageRow.region,
+      emissionsFactors,
+      networkingConstants,
+    )[0]
+
+    if (networkingFootprint) {
+      networkingFootprint.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.NETWORKING,
+        networkingFootprint.co2e,
+        usageRow.cost,
+        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
     }
+
+    return networkingFootprint
   }
 
   private isUnknownUsage(usageRow: BillingExportRow): boolean {

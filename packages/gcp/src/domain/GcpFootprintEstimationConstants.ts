@@ -6,6 +6,7 @@ import {
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
+  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import {
@@ -99,6 +100,29 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     CLOUD_FILESTORE: 2,
     CLOUD_SQL_HIGH_AVAILABILITY: 2,
     CLOUD_MEMORY_STORE_REDIS: 2,
+  },
+  // these constants accumulate as the usage rows are mapped over
+  CO2E_PER_COST: {
+    [EstimateClassification.COMPUTE]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.STORAGE]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.NETWORKING]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.MEMORY]: {
+      cost: 0,
+      co2e: 0,
+    },
+    total: {
+      cost: 0,
+      co2e: 0,
+    },
   },
 }
 
