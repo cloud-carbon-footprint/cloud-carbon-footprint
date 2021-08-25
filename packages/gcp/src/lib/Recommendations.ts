@@ -104,8 +104,6 @@ export default class Recommendations implements ICloudRecommendationsService {
                 zone,
                 rec,
               )
-              const resource =
-                rec.content.operationGroups[0].operations[0].resource.split('/')
               return {
                 cloudProvider: 'GCP',
                 accountId: project.id,
@@ -116,8 +114,6 @@ export default class Recommendations implements ICloudRecommendationsService {
                 costSavings: this.getEstimatedCostSavings(rec),
                 co2eSavings: estimatedCO2eSavings.co2e,
                 kilowattHourSavings: estimatedCO2eSavings.kilowattHours,
-                resourceId: rec.name.split('/')[1],
-                instanceName: resource[resource.length - 1],
               }
             }),
           ),

@@ -875,8 +875,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 4,
           costSavings: 3,
-          instanceName: 'test-instance-name',
-          resourceId: 'test-id',
         },
       ]
 
@@ -909,8 +907,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 4,
           costSavings: 3,
-          instanceName: 'test-instance-name',
-          resourceId: 'test-id',
         },
       ]
 
@@ -946,8 +942,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 4,
           costSavings: 3,
-          instanceName: 'test-instance-name',
-          resourceId: 'test-id',
         },
       ]
 
@@ -986,8 +980,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 4,
           costSavings: 3,
-          instanceName: 'test-instance-name',
-          resourceId: 'test-id',
         },
       ]
 
@@ -1014,8 +1006,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 20,
           costSavings: 3,
-          instanceName: 'test-instance-name',
-          resourceId: '123456789012',
         },
         {
           cloudProvider: 'GCP',
@@ -1028,8 +1018,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 20,
           costSavings: 13,
-          instanceName: 'test-instance-name',
-          resourceId: '123456789012',
         },
       ]
 
@@ -1062,8 +1050,6 @@ describe('App', () => {
           kilowattHourSavings: 5,
           co2eSavings: 20,
           costSavings: 3,
-          instanceName: 'test-instance-name',
-          resourceId: '123456789012',
         },
       ]
 

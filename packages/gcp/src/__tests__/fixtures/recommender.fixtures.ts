@@ -8,7 +8,7 @@ import IRecommendation = google.cloud.recommender.v1.IRecommendation
 export const mockStopVMRecommendationsResults: IRecommendation[][] = [
   [
     {
-      name: 'project-name/123456789012',
+      name: 'project-name',
       description: "Save cost by stopping Idle VM 'test-instance'.",
       primaryImpact: {
         category: 'COST',
@@ -20,18 +20,6 @@ export const mockStopVMRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'STOP_VM',
-      content: {
-        operationGroups: [
-          {
-            operations: [
-              {
-                resource:
-                  '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-              },
-            ],
-          },
-        ],
-      },
     },
   ],
 ]
@@ -40,7 +28,7 @@ export const mockStopVMWithAdditionalImpactRecommendationsResults: IRecommendati
   [
     [
       {
-        name: 'project-name/123456789012',
+        name: 'project-name',
         description: "Save cost by stopping Idle VM 'test-instance'.",
         additionalImpact: [
           {
@@ -55,18 +43,6 @@ export const mockStopVMWithAdditionalImpactRecommendationsResults: IRecommendati
         ],
         primaryImpact: { category: 'PERFORMANCE' },
         recommenderSubtype: 'STOP_VM',
-        content: {
-          operationGroups: [
-            {
-              operations: [
-                {
-                  resource:
-                    '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-                },
-              ],
-            },
-          ],
-        },
       },
     ],
   ]
@@ -75,7 +51,7 @@ export const mockChangeMachineTypeRecommendationsResults: IRecommendation[][] =
   [
     [
       {
-        name: 'project-name/123456789012',
+        name: 'project-name',
         description:
           'Save cost by changing machine type from e2-medium to e2-small.',
         primaryImpact: {
@@ -88,18 +64,6 @@ export const mockChangeMachineTypeRecommendationsResults: IRecommendation[][] =
           },
         },
         recommenderSubtype: 'CHANGE_MACHINE_TYPE',
-        content: {
-          operationGroups: [
-            {
-              operations: [
-                {
-                  resource:
-                    '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-                },
-              ],
-            },
-          ],
-        },
       },
     ],
   ]
@@ -107,7 +71,7 @@ export const mockChangeMachineTypeRecommendationsResults: IRecommendation[][] =
 export const mockDeleteDiskRecommendationsResults: IRecommendation[][] = [
   [
     {
-      name: 'project-name/123456789012',
+      name: 'project-name',
       description: "Save cost by deleting idle persistent disk 'test-disk'.",
       primaryImpact: {
         category: 'COST',
@@ -119,18 +83,6 @@ export const mockDeleteDiskRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'DELETE_DISK',
-      content: {
-        operationGroups: [
-          {
-            operations: [
-              {
-                resource:
-                  '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-              },
-            ],
-          },
-        ],
-      },
     },
   ],
 ]
@@ -139,7 +91,7 @@ export const mockSnapshotAndDeleteDiskRecommendationsResults: IRecommendation[][
   [
     [
       {
-        name: 'project-name/123456789012',
+        name: 'project-name',
         description: "Save cost by deleting idle persistent disk 'test-disk'.",
         primaryImpact: {
           category: 'COST',
@@ -151,18 +103,6 @@ export const mockSnapshotAndDeleteDiskRecommendationsResults: IRecommendation[][
           },
         },
         recommenderSubtype: 'SNAPSHOT_AND_DELETE_DISK',
-        content: {
-          operationGroups: [
-            {
-              operations: [
-                {
-                  resource:
-                    '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-                },
-              ],
-            },
-          ],
-        },
       },
     ],
   ]
@@ -170,7 +110,7 @@ export const mockSnapshotAndDeleteDiskRecommendationsResults: IRecommendation[][
 export const mockDeleteImageRecommendationsResults: IRecommendation[][] = [
   [
     {
-      name: 'project-name/123456789012',
+      name: 'project-name',
       description: "Save cost by deleting idle image 'test-image'.",
       primaryImpact: {
         category: 'COST',
@@ -182,18 +122,6 @@ export const mockDeleteImageRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'DELETE_IMAGE',
-      content: {
-        operationGroups: [
-          {
-            operations: [
-              {
-                resource:
-                  '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-              },
-            ],
-          },
-        ],
-      },
     },
   ],
 ]
@@ -201,7 +129,7 @@ export const mockDeleteImageRecommendationsResults: IRecommendation[][] = [
 export const mockDeleteAddressRecommendationsResults: IRecommendation[][] = [
   [
     {
-      name: 'project-name/123456789012',
+      name: 'project-name',
       description: "Save cost by deleting idle address 'test-address'.",
       primaryImpact: {
         category: 'COST',
@@ -213,18 +141,6 @@ export const mockDeleteAddressRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'DELETE_ADDRESS',
-      content: {
-        operationGroups: [
-          {
-            operations: [
-              {
-                resource:
-                  '//compute.googleapis.com/projects/project-name/zones/us-central1-a/instances/test-instance-name',
-              },
-            ],
-          },
-        ],
-      },
     },
   ],
 ]

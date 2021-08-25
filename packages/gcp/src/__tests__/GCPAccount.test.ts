@@ -68,8 +68,6 @@ describe('GCPAccount', () => {
         kilowattHourSavings: 5,
         co2eSavings: 4,
         costSavings: 3,
-        instanceName: 'test-instance-name',
-        resourceId: '123456789012',
       },
     ]
 
