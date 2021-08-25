@@ -216,6 +216,8 @@ const mockRecommendationData: RecommendationResult[] = [
     costSavings: 200,
     co2eSavings: 2.539,
     kilowattHourSavings: 3.2,
+    instanceName: 'test-instance',
+    resourceId: 'test-resource-id',
   },
   {
     cloudProvider: 'AWS',
@@ -227,6 +229,8 @@ const mockRecommendationData: RecommendationResult[] = [
     costSavings: 100,
     co2eSavings: 1.24,
     kilowattHourSavings: 6.2,
+    instanceName: 'test-instance',
+    resourceId: 'test-resource-id',
   },
 ]
 

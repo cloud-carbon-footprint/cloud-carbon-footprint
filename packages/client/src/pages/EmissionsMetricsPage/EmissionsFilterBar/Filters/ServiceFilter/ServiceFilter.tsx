@@ -4,8 +4,7 @@
 
 import React, { FunctionComponent } from 'react'
 import DropdownFilter from '../DropdownFilter'
-import { FilterProps } from '../../utils/Filters'
-import { DropdownOption } from 'Types'
+import { DropdownOption, FilterProps } from 'Types'
 
 const ServiceFilter: FunctionComponent<FilterProps> = ({
   filters,

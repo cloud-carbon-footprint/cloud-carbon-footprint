@@ -48,7 +48,7 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import { Recommendations } from '../lib/Recommendations'
-import { UNKNOWN_USAGE_TYPE_UNITS } from '../lib/CostAndUsageTypes'
+import { UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING } from '../lib/CostAndUsageTypes'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -135,7 +135,7 @@ export default class AWSAccount extends CloudProviderAccount {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TYPE_UNITS),
+      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
       this.createServiceWrapper(
         this.getServiceConfigurationOptions(
           configLoader().AWS.ATHENA_REGION,

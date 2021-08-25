@@ -2,12 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { UnknownEstimator } from '../.'
+import UnknownEstimator from '../UnknownEstimator'
 import { EstimateClassification } from '../../FootprintEstimate'
 
 describe('UnknownEstimator', () => {
-  const unknownUsageTypesList = {
-    Hrs: 'compute',
+  const awsUnknownUsageTypesList = {
+    Hrs: ['compute'],
   }
 
   it('does estimates for unknown usage type', () => {
@@ -30,7 +30,7 @@ describe('UnknownEstimator', () => {
         },
       },
     }
-    const result = new UnknownEstimator(unknownUsageTypesList).estimate(
+    const result = new UnknownEstimator(awsUnknownUsageTypesList).estimate(
       input,
       awsUsEast1Region,
       awsEmissionsFactors,
@@ -46,6 +46,7 @@ describe('UnknownEstimator', () => {
       },
     ])
   })
+
   it('does estimates for unknown usage types that stay classified as unknown', () => {
     const input = [
       {
@@ -66,7 +67,7 @@ describe('UnknownEstimator', () => {
         },
       },
     }
-    const result = new UnknownEstimator(unknownUsageTypesList).estimate(
+    const result = new UnknownEstimator(awsUnknownUsageTypesList).estimate(
       input,
       awsUsEast1Region,
       awsEmissionsFactors,
@@ -81,5 +82,77 @@ describe('UnknownEstimator', () => {
         usesAverageCPUConstant: false,
       },
     ])
+  })
+
+  describe('gets the correct usage type classification', () => {
+    const gcpUnknownUsageTypesList = {
+      'byte-seconds': ['storage', 'memory'],
+    }
+    const input = [
+      {
+        timestamp: new Date('2021-01-01'),
+        cost: 1000,
+        usageUnit: 'byte-seconds',
+        usageType: 'Storage',
+      },
+    ]
+    const gcpUsEast1Region = 'us-east1'
+    const gcpEmissionsFactors = {
+      [gcpUsEast1Region]: 0.00048,
+    }
+    const gcpConstants = {
+      co2ePerCost: {
+        [EstimateClassification.STORAGE]: {
+          cost: 50,
+          co2e: 0.000987654321,
+        },
+        [EstimateClassification.MEMORY]: {
+          cost: 75,
+          co2e: 0.00987654321,
+        },
+      },
+    }
+    it('for storage', () => {
+      const result = new UnknownEstimator(gcpUnknownUsageTypesList).estimate(
+        input,
+        gcpUsEast1Region,
+        gcpEmissionsFactors,
+        gcpConstants,
+      )
+
+      expect(result).toEqual([
+        {
+          co2e: 0.01975308642,
+          timestamp: new Date('2021-01-01T00:00:00.000Z'),
+          kilowattHours: 41.152263375,
+          usesAverageCPUConstant: false,
+        },
+      ])
+    })
+
+    it('for memory', () => {
+      const newInput = [
+        {
+          ...input[0],
+          usageType: 'Memory',
+        },
+      ]
+
+      const result = new UnknownEstimator(gcpUnknownUsageTypesList).estimate(
+        newInput,
+        gcpUsEast1Region,
+        gcpEmissionsFactors,
+        gcpConstants,
+      )
+
+      expect(result).toEqual([
+        {
+          co2e: 0.13168724280000002,
+          timestamp: new Date('2021-01-01T00:00:00.000Z'),
+          kilowattHours: 274.3484225,
+          usesAverageCPUConstant: false,
+        },
+      ])
+    })
   })
 })

@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
+import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory']
 
@@ -79,6 +80,17 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
   'Security Command Center',
   'Stackdriver',
 ]
+
+export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
+  [key: string]: string[]
+} = {
+  seconds: [EstimateClassification.COMPUTE],
+  bytes: [EstimateClassification.NETWORKING],
+  'byte-seconds': [
+    EstimateClassification.STORAGE,
+    EstimateClassification.MEMORY,
+  ],
+}
 
 export const COMPUTE_STRING_FORMATS: string[] = [
   'Core',

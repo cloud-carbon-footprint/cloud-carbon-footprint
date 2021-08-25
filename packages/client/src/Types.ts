@@ -2,11 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactNode } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import {
   EstimationResult,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
+import { Filters } from './pages/EmissionsMetricsPage/EmissionsFilterBar/utils/Filters'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -57,6 +58,12 @@ export type SidePanelProps = {
   children: ReactNode
   defaultIsOpen?: boolean
   triggerOpenOnChange?: boolean
+}
+
+export type FilterProps = {
+  filters: Filters
+  setFilters: Dispatch<SetStateAction<Filters>>
+  options?: FilterOptions
 }
 
 export type DateRange = {

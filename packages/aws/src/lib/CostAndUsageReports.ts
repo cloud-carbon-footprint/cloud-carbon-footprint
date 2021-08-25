@@ -98,6 +98,9 @@ export default class CostAndUsageReports {
         rowData.Data,
       )
 
+      if (this.usageTypeIsUnsupported(costAndUsageReportRow.usageType))
+        return []
+
       if (
         this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
         this.usageTypeisGpu(costAndUsageReportRow.usageType)
@@ -118,27 +121,8 @@ export default class CostAndUsageReports {
     })
 
     if (results.length > 0) {
-      const filteredUnknownRows = unknownRows.filter(
-        (rowData) =>
-          !UNSUPPORTED_USAGE_TYPES.some((usageType) =>
-            rowData.usageType.includes(usageType),
-          ),
-      )
-      filteredUnknownRows.map((rowData: CostAndUsageReportsRow) => {
-        const unknownUsage: UnknownUsage = {
-          timestamp: rowData.timestamp,
-          cost: rowData.cost,
-          usageUnit: rowData.usageUnit,
-        }
-        const unknownConstants: CloudConstants = {
-          co2ePerCost: AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
-        }
-        const footprintEstimate = this.unknownEstimator.estimate(
-          [unknownUsage],
-          rowData.region,
-          AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-          unknownConstants,
-        )[0]
+      unknownRows.map((rowData: CostAndUsageReportsRow) => {
+        const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
           appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
       })
@@ -240,6 +224,12 @@ export default class CostAndUsageReports {
         // if there exist any memory footprint,
         // add the kwh and co2e for both compute and memory
         if (memoryFootprint.co2e) {
+          accumulateCo2PerCost(
+            EstimateClassification.COMPUTE,
+            computeFootprint.co2e + memoryFootprint.co2e,
+            costAndUsageReportRow.cost,
+            AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
+          )
           return {
             timestamp: computeFootprint.timestamp,
             kilowattHours:
@@ -291,6 +281,25 @@ export default class CostAndUsageReports {
           `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
         )
     }
+  }
+
+  private getEstimateForUnknownUsage(
+    rowData: CostAndUsageReportsRow,
+  ): FootprintEstimate {
+    const unknownUsage: UnknownUsage = {
+      timestamp: rowData.timestamp,
+      cost: rowData.cost,
+      usageUnit: rowData.usageUnit,
+    }
+    const unknownConstants: CloudConstants = {
+      co2ePerCost: AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
+    }
+    return this.unknownEstimator.estimate(
+      [unknownUsage],
+      rowData.region,
+      AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      unknownConstants,
+    )[0]
   }
 
   private getNetworkingFootprintEstimate(
@@ -426,13 +435,14 @@ export default class CostAndUsageReports {
     )
   }
 
+  private usageTypeIsUnsupported(usageType: string): boolean {
+    return endsWithAny(UNSUPPORTED_USAGE_TYPES, usageType)
+  }
+
   private usageTypeIsUnknown(usageType: string): boolean {
-    const allUnknownUsageTypes = UNKNOWN_USAGE_TYPES.concat(
-      UNSUPPORTED_USAGE_TYPES,
-    )
     return (
-      endsWithAny(allUnknownUsageTypes, usageType) ||
-      allUnknownUsageTypes.some((unknownUsageType) =>
+      endsWithAny(UNKNOWN_USAGE_TYPES, usageType) ||
+      UNKNOWN_USAGE_TYPES.some((unknownUsageType) =>
         usageType.includes(unknownUsageType),
       )
     )

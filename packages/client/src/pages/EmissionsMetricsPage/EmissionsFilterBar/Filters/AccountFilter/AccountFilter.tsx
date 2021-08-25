@@ -3,9 +3,8 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import { FilterProps } from '../../utils/Filters'
 import DropdownFilter from '../DropdownFilter'
-import { DropdownOption } from 'Types'
+import { DropdownOption, FilterProps } from 'Types'
 
 const AccountFilter: FunctionComponent<FilterProps> = ({
   filters,

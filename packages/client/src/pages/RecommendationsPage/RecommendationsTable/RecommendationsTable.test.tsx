@@ -53,8 +53,8 @@ describe('Recommendations Table', () => {
     )
 
     // Subtracts 3 from the row data length to ignore unused properties
-    expect(actualRowData[0].length).toBe(expectedRowData[0].length - 3)
-    expect(actualRowData[1].length).toBe(expectedRowData[1].length - 3)
+    expect(actualRowData[0].length).toBe(expectedRowData[0].length - 5)
+    expect(actualRowData[1].length).toBe(expectedRowData[1].length - 5)
   })
 
   it('calls handle row click with the recommendations details when a row is clicked', () => {

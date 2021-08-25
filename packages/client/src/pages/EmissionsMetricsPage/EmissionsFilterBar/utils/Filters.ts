@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Dispatch, SetStateAction } from 'react'
 import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
@@ -19,11 +18,6 @@ import {
   FilterOptions,
 } from 'Types'
 
-export type FilterProps = {
-  filters: Filters
-  setFilters: Dispatch<SetStateAction<Filters>>
-  options?: FilterOptions
-}
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
 

@@ -270,6 +270,7 @@ describe('GCP Recommendations Service', () => {
           kilowattHourSavings: 0,
           co2eSavings: 0,
           costSavings: 15,
+          resourceId: '',
         },
       ]
 
@@ -414,6 +415,7 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 1.6960454999999999,
         co2eSavings: 0.00013229154899999999,
         costSavings: 20,
+        resourceId: '',
       },
     ]
 
@@ -453,6 +455,7 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.0189216,
         co2eSavings: 0.0000014758848,
         costSavings: 50,
+        resourceId: '',
       },
     ]
 
@@ -492,6 +495,7 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.010249200000000002,
         co2eSavings: 7.994376000000002e-7,
         costSavings: 50,
+        resourceId: '',
       },
     ]
 
@@ -530,6 +534,7 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0.0002771527420842647,
         co2eSavings: 2.1617913882572647e-8,
         costSavings: 30,
+        resourceId: '',
       },
     ]
 
@@ -566,6 +571,7 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0,
         co2eSavings: 0,
         costSavings: 40,
+        resourceId: '',
       },
     ]
 
