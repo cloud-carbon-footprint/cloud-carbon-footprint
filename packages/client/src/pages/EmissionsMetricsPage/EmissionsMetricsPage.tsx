@@ -9,8 +9,8 @@ import { useRemoteService } from 'utils/hooks'
 import { useFilterDataFromEstimates } from 'utils/helpers'
 import { FilterResultResponse } from 'Types'
 import config from 'ConfigLoader'
-import useFilters from './FilterBar/utils/FilterHook'
-import FilterBar from './FilterBar'
+import useFilters from './EmissionsFilterBar/utils/FilterHook'
+import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
@@ -55,7 +55,7 @@ export default function EmissionsMetricsPage(): ReactElement {
   return (
     <>
       <EmissionsSidePanel />
-      <FilterBar
+      <EmissionsFilterBar
         filters={filters}
         setFilters={setFilters}
         filteredDataResults={filteredDataResults}

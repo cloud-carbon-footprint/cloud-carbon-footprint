@@ -23,16 +23,16 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
+  filterContainerSection: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
   filter: {
     resize: 'none',
     padding: '2px 4px 0 4px',
     marginRight: theme.spacing(PADDING_FILTER),
     minWidth: '240px',
-  },
-  filterContainerSection: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
   },
 }))
 

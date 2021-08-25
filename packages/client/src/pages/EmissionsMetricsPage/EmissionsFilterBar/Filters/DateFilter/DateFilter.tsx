@@ -7,8 +7,9 @@ import moment from 'moment'
 import { DateRangePicker } from 'react-dates'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
-import { DateRange, FilterProps } from '../../utils/Filters'
+import { DateRange } from '../../utils/Filters'
 import StyleWrapper from './dateFilterstyles'
+import { FilterProps } from 'Types'
 
 const DateFilter: FunctionComponent<FilterProps> = ({
   filters,
