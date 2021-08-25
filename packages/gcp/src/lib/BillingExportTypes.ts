@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
-import { EstimateClassification } from '../../../core'
+import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory']
 
