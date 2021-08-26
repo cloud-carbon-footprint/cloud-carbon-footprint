@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent } from 'react'
 import DropdownFilter from '../DropdownFilter'
-import { DropdownOption, FilterProps } from 'Types'
+import { DropdownFilterOptions, DropdownOption, FilterProps } from 'Types'
 
 const ServiceFilter: FunctionComponent<FilterProps> = ({
   filters,
@@ -20,7 +20,13 @@ const ServiceFilter: FunctionComponent<FilterProps> = ({
       selections={filters.services}
       selectionToOption={(service: DropdownOption) => service}
       updateSelections={(selections: DropdownOption[]) =>
-        setFilters(filters.withServices(selections, options))
+        setFilters(
+          filters.withDropdownOption(
+            selections,
+            options,
+            DropdownFilterOptions.SERVICES,
+          ),
+        )
       }
     />
   )

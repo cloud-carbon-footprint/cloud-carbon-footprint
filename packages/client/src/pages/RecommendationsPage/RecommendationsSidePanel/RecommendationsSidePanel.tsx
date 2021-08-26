@@ -42,7 +42,7 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
             content={recommendation.region}
           />
           <RecommendationsPanelRow
-            label="Instance Name"
+            label="Resource Name"
             content={recommendation.instanceName}
           />
           <RecommendationsPanelRow

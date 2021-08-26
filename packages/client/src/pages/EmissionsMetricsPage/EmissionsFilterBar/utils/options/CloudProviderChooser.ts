@@ -2,8 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownOption, FilterOptions } from 'Types'
-import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
+import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
+import { DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
 
@@ -14,7 +14,7 @@ export class CloudProviderChooser extends OptionChooser {
     filterOptions: FilterOptions,
   ) {
     super(
-      DropdownFilter.CLOUD_PROVIDERS,
+      DropdownFilterOptions.CLOUD_PROVIDERS,
       CLOUD_PROVIDER_OPTIONS,
       selections,
       oldSelections,

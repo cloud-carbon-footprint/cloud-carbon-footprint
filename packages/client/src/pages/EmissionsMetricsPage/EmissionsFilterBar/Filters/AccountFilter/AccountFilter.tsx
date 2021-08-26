@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent } from 'react'
 import DropdownFilter from '../DropdownFilter'
-import { DropdownOption, FilterProps } from 'Types'
+import { DropdownFilterOptions, DropdownOption, FilterProps } from 'Types'
 
 const AccountFilter: FunctionComponent<FilterProps> = ({
   filters,
@@ -20,7 +20,13 @@ const AccountFilter: FunctionComponent<FilterProps> = ({
       selections={filters.accounts}
       selectionToOption={(account) => account}
       updateSelections={(selections: DropdownOption[]) => {
-        setFilters(filters.withAccounts(selections, options))
+        setFilters(
+          filters.withDropdownOption(
+            selections,
+            options,
+            DropdownFilterOptions.ACCOUNTS,
+          ),
+        )
       }}
     />
   )

@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import * as FiltersUtil from './FiltersUtil'
-import { DropdownOption, FilterOptions } from 'Types'
+import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_CLOUD_PROVIDERS_VALUE,
   ALL_SERVICES_VALUE,
@@ -120,7 +120,7 @@ describe('filterUtil', () => {
   describe('handleSelections', () => {
     it('should return all cloudProviders, accounts and services when all providers was selected', () => {
       const result = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
+        DropdownFilterOptions.CLOUD_PROVIDERS,
         allProviderOptions,
         {
           services: awsServiceOptions,
@@ -135,7 +135,7 @@ describe('filterUtil', () => {
     })
     it('should return all cloudProviders, accounts and services when all accounts was selected', () => {
       const result = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.ACCOUNTS,
+        DropdownFilterOptions.ACCOUNTS,
         allAccountOptions,
         {
           services: allServiceOptions,
@@ -151,7 +151,7 @@ describe('filterUtil', () => {
     it('should return all cloudProviders, accounts and services when all services was selected', () => {
       expect(
         FiltersUtil.handleDropdownSelections(
-          FiltersUtil.DropdownFilter.SERVICES,
+          DropdownFilterOptions.SERVICES,
           allServiceOptions,
           {
             services: awsServiceOptions,
@@ -168,7 +168,7 @@ describe('filterUtil', () => {
     })
     it('should return empty cloudProviders, accounts and services when all providers was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
+        DropdownFilterOptions.CLOUD_PROVIDERS,
         [awsProviderOption, gcpProviderOption],
         {
           services: allServiceOptions,
@@ -183,7 +183,7 @@ describe('filterUtil', () => {
     })
     it('should return empty cloudProviders, accounts and services when all accounts was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.ACCOUNTS,
+        DropdownFilterOptions.ACCOUNTS,
         [...awsAccountOptions, ...gcpAccountOptions],
         {
           services: allServiceOptions,
@@ -198,7 +198,7 @@ describe('filterUtil', () => {
     })
     it('should return empty cloudProviders, accounts and services when all services was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.SERVICES,
+        DropdownFilterOptions.SERVICES,
         [...awsServiceOptions, computeEngineServiceOption],
         {
           services: allServiceOptions,
@@ -213,7 +213,7 @@ describe('filterUtil', () => {
     })
     it('should return aws cloudProviders, accounts and services when gcp provider was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
+        DropdownFilterOptions.CLOUD_PROVIDERS,
         [allProviderOption, awsProviderOption],
         {
           services: allServiceOptions,
@@ -228,7 +228,7 @@ describe('filterUtil', () => {
     })
     it('should return aws cloudProviders, accounts and services when gcpAccount was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.ACCOUNTS,
+        DropdownFilterOptions.ACCOUNTS,
         awsAccountOptions,
         {
           services: allServiceOptions,
@@ -243,7 +243,7 @@ describe('filterUtil', () => {
     })
     it('should return aws cloudProviders, accounts and services when computeEngine was unselected', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.SERVICES,
+        DropdownFilterOptions.SERVICES,
         [allServiceOption, ...awsServiceOptions],
         {
           services: allServiceOptions,
@@ -258,7 +258,7 @@ describe('filterUtil', () => {
     })
     it('should return all cloudProviders and services, but only selected accounts when a GCP account is selected but other GCP accounts are unselected ', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.ACCOUNTS,
+        DropdownFilterOptions.ACCOUNTS,
         [...awsAccountOptions, gcpAccountOptions[0]],
         {
           services: allServiceOptions,
@@ -276,7 +276,7 @@ describe('filterUtil', () => {
     })
     it('should return non changed services when all AWS accounts were selected and an AWS account is unselected ', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.ACCOUNTS,
+        DropdownFilterOptions.ACCOUNTS,
         [allAccountOption, awsAccountOptions[0], ...gcpAccountOptions],
         {
           services: [ebsServiceOption, computeEngineServiceOption],
@@ -297,7 +297,7 @@ describe('filterUtil', () => {
     })
     it('should return non changed accounts when all AWS services were selected and an AWS service is unselected ', () => {
       const handleSelectionResult = FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.SERVICES,
+        DropdownFilterOptions.SERVICES,
         [awsServiceOptions[0], computeEngineServiceOption],
         {
           services: [

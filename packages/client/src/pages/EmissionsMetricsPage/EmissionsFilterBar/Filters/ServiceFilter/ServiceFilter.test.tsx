@@ -7,7 +7,7 @@ import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
 import { Filters, filtersConfigGenerator } from '../../utils/Filters'
-import { DropdownOption, FilterOptions } from 'Types'
+import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
@@ -115,7 +115,11 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-all'))
     })
 
-    const newFilters = filters.withServices([], filterOptions)
+    const newFilters = filters.withDropdownOption(
+      [],
+      filterOptions,
+      DropdownFilterOptions.SERVICES,
+    )
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
     page.rerender(
@@ -145,7 +149,7 @@ describe('ServiceFilter', () => {
       fireEvent.click(page.getByRole('checkbox-ebs'))
     })
 
-    const newFilters = filters.withServices(
+    const newFilters = filters.withDropdownOption(
       [
         allServiceOption,
         ec2ServiceOption,
@@ -156,6 +160,7 @@ describe('ServiceFilter', () => {
         computeEngineServiceOption,
       ],
       filterOptions,
+      DropdownFilterOptions.SERVICES,
     )
     expect(mockSetFilters).toHaveBeenCalledWith(newFilters)
 
@@ -187,7 +192,7 @@ describe('ServiceFilter', () => {
     expect(allAwsGroupByElement).toBeInTheDocument()
     expect(allGcpGroupByElement).toBeInTheDocument()
 
-    const someAwsFilters = filters.withServices(
+    const someAwsFilters = filters.withDropdownOption(
       [
         allServiceOption,
         ec2ServiceOption,
@@ -197,6 +202,7 @@ describe('ServiceFilter', () => {
         S3ServiceOption,
       ],
       filterOptions,
+      DropdownFilterOptions.SERVICES,
     )
 
     page.rerender(

@@ -2,21 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownOption, FilterOptions } from 'Types'
+import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import createOptionChooser from './options'
 
-export enum DropdownFilter {
-  SERVICES = 'services',
-  CLOUD_PROVIDERS = 'cloudProviders',
-  ACCOUNTS = 'accounts',
-}
-
 export type DropdownSelections = {
-  [key in DropdownFilter]: DropdownOption[]
+  [key in DropdownFilterOptions]: DropdownOption[]
 }
 
 export function handleDropdownSelections(
-  filterType: DropdownFilter,
+  filterType: DropdownFilterOptions,
   selections: DropdownOption[],
   oldSelections: DropdownSelections,
   filterOptions: FilterOptions,
