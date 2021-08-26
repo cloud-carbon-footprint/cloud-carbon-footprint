@@ -8,6 +8,11 @@ import { createObjectCsvWriter } from 'csv-writer'
 import path from 'path'
 
 import { App } from '@cloud-carbon-footprint/app'
+import {
+  LookupTableInput,
+  LookupTableOutput,
+} from '@cloud-carbon-footprint/common'
+import { validateInputData } from './validateInputData'
 
 export default async function createLookupTable(
   argv: string[] = process.argv,
@@ -28,23 +33,24 @@ export default async function createLookupTable(
   const programOptions = program.opts()
   const awsInputFile = programOptions.awsInput
   const awsOutputFile = path.join(process.cwd(), programOptions.awsOutput)
-  const inputData = await csv().fromFile(awsInputFile)
+  const inputData: LookupTableInput[] = await csv().fromFile(awsInputFile)
 
-  const estimatesData = await new App().getEstimatesFromInputData(inputData)
+  validateInputData(inputData)
+
+  const estimatesData: LookupTableOutput[] =
+    await new App().getEstimatesFromInputData(inputData)
 
   const csvWriter = createObjectCsvWriter({
     path: awsOutputFile,
     header: [
-      { id: 'usageType', title: 'usageType' },
       { id: 'serviceName', title: 'serviceName' },
       { id: 'region', title: 'region' },
+      { id: 'usageType', title: 'usageType' },
+      { id: 'usageUnit', title: 'usageUnit' },
       { id: 'vCpus', title: 'vCpus' },
       { id: 'kilowattHours', title: 'kilowattHours' },
-      { id: 'usesAverageCPUConstant', title: 'usesAverageCPUConstant' },
       { id: 'co2e', title: 'co2e' },
     ],
   })
-  await csvWriter
-    .writeRecords(estimatesData)
-    .then(() => console.log('The CSV file was written successfully'))
+  await csvWriter.writeRecords(estimatesData)
 }

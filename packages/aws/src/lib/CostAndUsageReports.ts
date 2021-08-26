@@ -20,6 +20,8 @@ import {
   convertGigabyteMonthsToTerabyteHours,
   endsWithAny,
   EstimationResult,
+  LookupTableInput,
+  LookupTableOutput,
   Logger,
   wait,
 } from '@cloud-carbon-footprint/common'
@@ -130,10 +132,12 @@ export default class CostAndUsageReports {
     return results
   }
 
-  getEstimatesFromInputData(inputData: any[]): EstimationResult[] {
-    const result: any[] = []
+  getEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const result: LookupTableOutput[] = []
 
-    inputData.map((rowData: any) => {
+    inputData.map((inputDataRow: LookupTableInput) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(
         {
           Data: [
@@ -151,11 +155,11 @@ export default class CostAndUsageReports {
         [
           { VarCharValue: '2021-08-10T00:00:00Z' },
           { VarCharValue: '1234567890' },
-          { VarCharValue: rowData.serviceName },
-          { VarCharValue: rowData.region },
-          { VarCharValue: rowData.usageType },
-          { VarCharValue: rowData.usageUnit },
-          { VarCharValue: rowData.vCpus },
+          { VarCharValue: inputDataRow.serviceName },
+          { VarCharValue: inputDataRow.region },
+          { VarCharValue: inputDataRow.usageType },
+          { VarCharValue: inputDataRow.usageUnit },
+          { VarCharValue: inputDataRow.vCpus },
           { VarCharValue: '1' },
           { VarCharValue: '1' },
         ],
@@ -174,14 +178,13 @@ export default class CostAndUsageReports {
 
       if (footprintEstimate) {
         result.push({
-          usageType: rowData.usageType,
-          serviceName: rowData.serviceName,
-          region: rowData.region,
-          usageUnit: rowData.usageUnit,
-          vCpus: rowData.vCpus,
+          serviceName: inputDataRow.serviceName,
+          region: inputDataRow.region,
+          usageType: inputDataRow.usageType,
+          usageUnit: inputDataRow.usageUnit,
+          vCpus: inputDataRow.vCpus,
           kilowattHours: footprintEstimate.kilowattHours,
           co2e: footprintEstimate.co2e,
-          usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
         })
       }
     })

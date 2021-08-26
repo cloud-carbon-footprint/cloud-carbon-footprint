@@ -1,0 +1,4 @@
+incorrectServiceName,region,usageType,usageUnit,vCpus
+AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4
+AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,

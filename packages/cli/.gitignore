@@ -3,3 +3,5 @@ dist
 *.cache.json
 .env
 .env.production
+!aws_input.test.csv
+!incorrect_input.test.csv
