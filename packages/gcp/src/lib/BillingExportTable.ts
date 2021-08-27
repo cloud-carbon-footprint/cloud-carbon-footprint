@@ -153,25 +153,12 @@ export default class BillingExportTable {
 
     if (results.length > 0) {
       unknownRows.map((rowData: BillingExportRow) => {
-        const unknownUsage: UnknownUsage = {
-          timestamp: rowData.timestamp,
-          cost: rowData.cost,
-          usageUnit: rowData.usageUnit,
-          usageType: rowData.usageType,
-        }
-        const unknownConstants: CloudConstants = {
-          co2ePerCost: GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
-        }
-        const footprintEstimate = this.unknownEstimator.estimate(
-          [unknownUsage],
-          rowData.region,
-          GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-          unknownConstants,
-        )[0]
+        const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
           appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
       })
     }
+
     return results
   }
 
@@ -383,6 +370,26 @@ export default class BillingExportTable {
         usageRow.region,
       )
     )
+  }
+
+  private getEstimateForUnknownUsage(
+    rowData: BillingExportRow,
+  ): FootprintEstimate {
+    const unknownUsage: UnknownUsage = {
+      timestamp: rowData.timestamp,
+      cost: rowData.cost,
+      usageUnit: rowData.usageUnit,
+      usageType: rowData.usageType,
+    }
+    const unknownConstants: CloudConstants = {
+      co2ePerCost: GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+    }
+    return this.unknownEstimator.estimate(
+      [unknownUsage],
+      rowData.region,
+      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      unknownConstants,
+    )[0]
   }
 
   private async getUsage(start: Date, end: Date): Promise<RowMetadata[]> {
