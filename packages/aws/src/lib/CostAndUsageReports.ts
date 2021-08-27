@@ -153,8 +153,8 @@ export default class CostAndUsageReports {
           ],
         },
         [
-          { VarCharValue: '2021-08-10T00:00:00Z' },
-          { VarCharValue: '1234567890' },
+          { VarCharValue: '' },
+          { VarCharValue: '' },
           { VarCharValue: inputDataRow.serviceName },
           { VarCharValue: inputDataRow.region },
           { VarCharValue: inputDataRow.usageType },
