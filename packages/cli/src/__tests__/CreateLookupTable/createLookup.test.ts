@@ -8,6 +8,32 @@ import path from 'path'
 import createLookupTable from '../../CreateLookupTable/createLookupTable'
 import process from 'process'
 
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  configLoader: jest.fn().mockImplementation(() => {
+    return {
+      AWS: {
+        accounts: [{ id: '12345678', name: 'test account' }],
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleName: 'test-target',
+            proxyAccountId: 'test-account-id',
+            proxyRoleName: 'test-role-name',
+          },
+        },
+      },
+      GCP: {
+        CACHE_BUCKET_NAME: 'test-bucket-name',
+      },
+      LOGGING_MODE: 'test',
+    }
+  }),
+}))
+
 describe('createLookupTable', () => {
   let inputFilePath: string
   let outputFilePath: string
