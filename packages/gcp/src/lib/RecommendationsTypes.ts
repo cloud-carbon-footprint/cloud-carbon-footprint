@@ -16,6 +16,11 @@ export type RecommenderRecommendations = {
   recommendations: IRecommendation[]
 }
 
+export type ResourceDetails = {
+  resourceId: string
+  resourceName: string
+}
+
 export enum RECOMMENDATION_TYPES {
   STOP_VM = 'STOP_VM',
   SNAPSHOT_AND_DELETE_DISK = 'SNAPSHOT_AND_DELETE_DISK',

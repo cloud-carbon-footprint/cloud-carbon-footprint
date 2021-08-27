@@ -20,6 +20,18 @@ export const mockStopVMRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'STOP_VM',
+      content: {
+        operationGroups: [
+          {
+            operations: [
+              {
+                resource:
+                  '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+              },
+            ],
+          },
+        ],
+      },
     },
   ],
 ]
@@ -43,6 +55,18 @@ export const mockStopVMWithAdditionalImpactRecommendationsResults: IRecommendati
         ],
         primaryImpact: { category: 'PERFORMANCE' },
         recommenderSubtype: 'STOP_VM',
+        content: {
+          operationGroups: [
+            {
+              operations: [
+                {
+                  resource:
+                    '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   ]
@@ -64,6 +88,18 @@ export const mockChangeMachineTypeRecommendationsResults: IRecommendation[][] =
           },
         },
         recommenderSubtype: 'CHANGE_MACHINE_TYPE',
+        content: {
+          operationGroups: [
+            {
+              operations: [
+                {
+                  resource:
+                    '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   ]

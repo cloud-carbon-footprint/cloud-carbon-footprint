@@ -149,8 +149,8 @@ describe('GCP Service Wrapper', () => {
     const instanceDetails: Schema$Instance =
       await serviceWrapper.getInstanceDetails(
         'project',
-        'us-west1-b',
         'test-instance',
+        'us-west1-b',
       )
 
     const expectedResult: InstanceData = {
@@ -158,6 +158,8 @@ describe('GCP Service Wrapper', () => {
         machineType:
           'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
         disks: [],
+        id: '12456789012',
+        name: 'test-resource-name',
       },
     }
 
@@ -168,8 +170,8 @@ describe('GCP Service Wrapper', () => {
     const machineTypeDetails: Schema$MachineType =
       await serviceWrapper.getMachineTypeDetails(
         'project',
-        'us-west1-b',
         'test-instance',
+        'us-west1-b',
       )
 
     const expectedResult = {
@@ -190,13 +192,15 @@ describe('GCP Service Wrapper', () => {
   it('gets disks details', async () => {
     const diskDetails = await serviceWrapper.getDiskDetails(
       'project',
-      'us-west1-b',
       'test-disk',
+      'us-west1-b',
     )
 
     const expectedResult = {
       sizeGb: '20',
       type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
+      id: '12456789012',
+      name: 'test-resource-name',
     }
 
     expect(diskDetails).toEqual(expectedResult)
@@ -210,6 +214,8 @@ describe('GCP Service Wrapper', () => {
 
     const expectedResult = {
       archiveSizeBytes: '580709696',
+      id: '12456789012',
+      name: 'test-resource-name',
     }
 
     expect(imageDetails).toEqual(expectedResult)

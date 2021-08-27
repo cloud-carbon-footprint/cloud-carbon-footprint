@@ -81,6 +81,8 @@ export const mockedDisksGetSSDDetails: DiskData = {
   data: {
     sizeGb: '20',
     type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard-ssd',
+    id: '12456789012',
+    name: 'test-resource-name',
   },
 }
 
@@ -88,6 +90,8 @@ export const mockedDisksGetHDDDetails: DiskData = {
   data: {
     sizeGb: '20',
     type: 'https://www.googleapis.com/compute/v1/projects/techops-events/zones/us-central1-b/diskTypes/pd-standard',
+    id: '12456789012',
+    name: 'test-resource-name',
   },
 }
 
@@ -96,6 +100,8 @@ export const mockedInstanceGetItems: InstanceData = {
     machineType:
       'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
     disks: [],
+    id: '12456789012',
+    name: 'test-resource-name',
   },
 }
 
@@ -104,6 +110,8 @@ export const mockedInstanceGetItemsCurrent: InstanceData = {
     machineType:
       'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/e2-medium',
     disks: [],
+    id: '12456789012',
+    name: 'test-resource-name',
   },
 }
 
@@ -126,6 +134,8 @@ export const mockedInstanceGetItemsWithHDDDisks: InstanceData = {
         diskSizeGb: '20',
       },
     ],
+    id: '12456789012',
+    name: 'test-instance-name',
   },
 }
 
@@ -145,6 +155,8 @@ export const mockedInstanceGetItemsWithBothDisks: InstanceData = {
         diskSizeGb: '20',
       },
     ],
+    id: '12456789012',
+    name: 'test-instance-name',
   },
 }
 
@@ -169,5 +181,7 @@ export const mockedMachineTypesGetItemsNew: MachineTypeData = {
 export const mockedImageGetDetails: ImageDetails = {
   data: {
     archiveSizeBytes: '580709696',
+    id: '12456789012',
+    name: 'test-resource-name',
   },
 }

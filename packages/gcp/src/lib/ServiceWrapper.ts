@@ -157,8 +157,8 @@ export default class ServiceWrapper {
 
   async getInstanceDetails(
     projectId: string,
-    zone: string,
     instanceId: string,
+    zone: string,
   ): Promise<Schema$Instance> {
     const computeEngineRequest = {
       project: projectId,
@@ -174,8 +174,8 @@ export default class ServiceWrapper {
 
   async getMachineTypeDetails(
     projectId: string,
-    zone: string,
     machineType: string,
+    zone: string,
   ): Promise<Schema$MachineType> {
     const machineTypeRequest = {
       project: projectId,
@@ -195,8 +195,8 @@ export default class ServiceWrapper {
 
   async getDiskDetails(
     projectId: string,
-    zone: string,
     diskId: string,
+    zone: string,
   ): Promise<Schema$Disk> {
     const diskDetailsRequest = {
       project: projectId,
