@@ -3,7 +3,7 @@
  */
 
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
-import { EstimateClassification } from '../../../core'
+import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 export type TenantHeaders = {
   [key: string]: string
