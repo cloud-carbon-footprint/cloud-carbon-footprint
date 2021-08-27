@@ -3,6 +3,7 @@
  */
 
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
+import { EstimateClassification } from '../../../core'
 
 export type TenantHeaders = {
   [key: string]: string
@@ -60,6 +61,30 @@ export enum NETWORKING_USAGE_UNITS {
 export enum MEMORY_USAGE_UNITS {
   GB_SECONDS_50000 = '50000 GB Seconds',
   GB_HOURS_1000 = '1000 GB Hours',
+}
+
+export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
+  [key: string]: string[]
+} = {
+  [COMPUTE_USAGE_UNITS.HOUR_1]: [EstimateClassification.COMPUTE],
+  [COMPUTE_USAGE_UNITS.HOURS_10]: [EstimateClassification.COMPUTE],
+  [COMPUTE_USAGE_UNITS.HOURS_100]: [EstimateClassification.COMPUTE],
+  [COMPUTE_USAGE_UNITS.HOURS_1000]: [EstimateClassification.COMPUTE],
+  [STORAGE_USAGE_UNITS.MONTH_1]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.MONTH_100]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.GB_MONTH_1]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.GB_MONTH_10]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.GB_MONTH_100]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.DAY_10]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.DAY_30]: [EstimateClassification.STORAGE],
+  [STORAGE_USAGE_UNITS.TB_MONTH_1]: [EstimateClassification.STORAGE],
+  [NETWORKING_USAGE_UNITS.GB_1]: [EstimateClassification.NETWORKING],
+  [NETWORKING_USAGE_UNITS.TB_1]: [EstimateClassification.NETWORKING],
+  [NETWORKING_USAGE_UNITS.GB_10]: [EstimateClassification.NETWORKING],
+  [NETWORKING_USAGE_UNITS.GB_100]: [EstimateClassification.NETWORKING],
+  [NETWORKING_USAGE_UNITS.GB_200]: [EstimateClassification.NETWORKING],
+  [MEMORY_USAGE_UNITS.GB_SECONDS_50000]: [EstimateClassification.MEMORY],
+  [MEMORY_USAGE_UNITS.GB_HOURS_1000]: [EstimateClassification.MEMORY],
 }
 
 export const STORAGE_USAGE_TYPES: string[] = [

@@ -8,6 +8,7 @@ import {
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
+  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import { AZURE_REGIONS } from '../lib/AzureRegions'
@@ -108,6 +109,29 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     COSMOS_DB: 4,
     SQL_DB: 3,
     REDIS_CACHE: 2,
+  },
+  // these constants accumulate as the usage rows are mapped over
+  CO2E_PER_COST: {
+    [EstimateClassification.COMPUTE]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.STORAGE]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.NETWORKING]: {
+      cost: 0,
+      co2e: 0,
+    },
+    [EstimateClassification.MEMORY]: {
+      cost: 0,
+      co2e: 0,
+    },
+    total: {
+      cost: 0,
+      co2e: 0,
+    },
   },
 }
 

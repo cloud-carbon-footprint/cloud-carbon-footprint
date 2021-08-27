@@ -22,10 +22,12 @@ import {
   StorageEstimator,
   NetworkingEstimator,
   MemoryEstimator,
+  UnknownEstimator,
   ComputeUsage,
   StorageUsage,
   NetworkingUsage,
   MemoryUsage,
+  UnknownUsage,
   FootprintEstimate,
   appendOrAccumulateEstimatesByDay,
   MutableEstimationResult,
@@ -34,6 +36,8 @@ import {
   CloudConstantsEmissionsFactors,
   calculateGigabyteHours,
   getPhysicalChips,
+  accumulateCo2PerCost,
+  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
@@ -76,6 +80,7 @@ export default class ConsumptionManagementService {
     private readonly hddStorageEstimator: StorageEstimator,
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
+    private readonly unknownEstimator: UnknownEstimator,
     private readonly consumptionManagementClient: ConsumptionManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
@@ -92,6 +97,7 @@ export default class ConsumptionManagementService {
     const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
     const allUsageRows = await this.pageThroughUsageRows(usageRows)
     const results: MutableEstimationResult[] = []
+    const unknownRows: ConsumptionDetailRow[] = []
 
     allUsageRows.map((consumptionRow: UsageDetail) => {
       const consumptionDetailRow: ConsumptionDetailRow =
@@ -99,7 +105,10 @@ export default class ConsumptionManagementService {
 
       this.updateTimestampByWeek(consumptionDetailRow)
 
-      if (this.isUnsupportedUsage(consumptionDetailRow)) return []
+      if (this.isUnsupportedUsage(consumptionDetailRow)) {
+        unknownRows.push(consumptionDetailRow)
+        return []
+      }
 
       const footprintEstimate =
         this.getEstimateByPricingUnit(consumptionDetailRow)
@@ -112,6 +121,15 @@ export default class ConsumptionManagementService {
         )
       }
     })
+
+    if (results.length > 0) {
+      unknownRows.map((rowData: ConsumptionDetailRow) => {
+        const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
+        if (footprintEstimate)
+          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+      })
+    }
+
     return results
   }
 
@@ -213,6 +231,7 @@ export default class ConsumptionManagementService {
           consumptionDetailRow,
           powerUsageEffectiveness,
           emissionsFactors,
+          true,
         )
 
         // if memory usage, only return the memory footprint
@@ -223,6 +242,13 @@ export default class ConsumptionManagementService {
         // if there exist any kilowatt hours from a memory footprint,
         // add the kwh and co2e for both compute and memory
         if (memoryFootprint.kilowattHours) {
+          accumulateCo2PerCost(
+            EstimateClassification.COMPUTE,
+            computeFootprint.co2e + memoryFootprint.co2e,
+            consumptionDetailRow.cost,
+            AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+          )
+
           return {
             timestamp: memoryFootprint.timestamp,
             kilowattHours:
@@ -231,6 +257,15 @@ export default class ConsumptionManagementService {
             usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
           }
         }
+
+        if (computeFootprint)
+          accumulateCo2PerCost(
+            EstimateClassification.COMPUTE,
+            computeFootprint.co2e,
+            consumptionDetailRow.cost,
+            AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+          )
+
         return computeFootprint
       case STORAGE_USAGE_UNITS.MONTH_1:
       case STORAGE_USAGE_UNITS.MONTH_100:
@@ -261,6 +296,7 @@ export default class ConsumptionManagementService {
           consumptionDetailRow,
           powerUsageEffectiveness,
           emissionsFactors,
+          false,
         )
       default:
         this.consumptionManagementLogger.warn(
@@ -292,7 +328,16 @@ export default class ConsumptionManagementService {
         networkingConstants,
       )[0]
     }
-    if (networkingEstimate) networkingEstimate.usesAverageCPUConstant = false
+
+    if (networkingEstimate) {
+      networkingEstimate.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.NETWORKING,
+        networkingEstimate.co2e,
+        consumptionDetailRow.cost,
+        AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
+    }
     return networkingEstimate
   }
 
@@ -333,7 +378,15 @@ export default class ConsumptionManagementService {
       this.consumptionManagementLogger.warn(
         `Unexpected usage type for storage service: ${consumptionDetailRow.usageType}`,
       )
-    if (estimate) estimate.usesAverageCPUConstant = false
+    if (estimate) {
+      estimate.usesAverageCPUConstant = false
+      accumulateCo2PerCost(
+        EstimateClassification.STORAGE,
+        estimate.co2e,
+        consumptionDetailRow.cost,
+        AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+      )
+    }
     return estimate
   }
 
@@ -372,6 +425,7 @@ export default class ConsumptionManagementService {
     consumptionDetailRow: ConsumptionDetailRow,
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
+    withCompute: boolean,
   ): FootprintEstimate {
     const memoryUsage: MemoryUsage = {
       timestamp: consumptionDetailRow.timestamp,
@@ -389,7 +443,17 @@ export default class ConsumptionManagementService {
       emissionsFactors,
       memoryConstants,
     )[0]
-    memoryEstimate.usesAverageCPUConstant = false
+
+    if (memoryEstimate) {
+      memoryEstimate.usesAverageCPUConstant = false
+      !withCompute &&
+        accumulateCo2PerCost(
+          EstimateClassification.MEMORY,
+          memoryEstimate.co2e,
+          consumptionDetailRow.cost,
+          AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+        )
+    }
     return memoryEstimate
   }
 
@@ -601,5 +665,24 @@ export default class ConsumptionManagementService {
         usageRow.region,
       )
     )
+  }
+
+  private getEstimateForUnknownUsage(
+    rowData: ConsumptionDetailRow,
+  ): FootprintEstimate {
+    const unknownUsage: UnknownUsage = {
+      timestamp: rowData.timestamp,
+      cost: rowData.cost,
+      usageUnit: rowData.usageUnit,
+    }
+    const unknownConstants: CloudConstants = {
+      co2ePerCost: AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+    }
+    return this.unknownEstimator.estimate(
+      [unknownUsage],
+      rowData.region,
+      AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      unknownConstants,
+    )[0]
   }
 }
