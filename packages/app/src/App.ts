@@ -8,6 +8,8 @@ import {
   reduceByTimestamp,
   EmissionRatioResult,
   RecommendationResult,
+  LookupTableInput,
+  LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 import {
   AzureAccount,
@@ -184,5 +186,15 @@ export default class App {
     recommendations.push(GCPRecommendations.flat())
 
     return recommendations.flat()
+  }
+
+  getEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const config = configLoader()
+    const AWS = config.AWS
+    return new AWSAccount(AWS.BILLING_ACCOUNT_ID, AWS.BILLING_ACCOUNT_NAME, [
+      AWS.ATHENA_REGION,
+    ]).getCostAndUsageReportsDataFromInputData(inputData)
   }
 }

@@ -20,6 +20,8 @@ import {
   convertGigabyteMonthsToTerabyteHours,
   endsWithAny,
   EstimationResult,
+  LookupTableInput,
+  LookupTableOutput,
   Logger,
   wait,
 } from '@cloud-carbon-footprint/common'
@@ -78,7 +80,7 @@ export default class CostAndUsageReports {
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
-    private readonly serviceWrapper: ServiceWrapper,
+    private readonly serviceWrapper?: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
     this.tableName = configLoader().AWS.ATHENA_DB_TABLE
@@ -128,6 +130,65 @@ export default class CostAndUsageReports {
       })
     }
     return results
+  }
+
+  getEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const result: LookupTableOutput[] = []
+
+    inputData.map((inputDataRow: LookupTableInput) => {
+      const costAndUsageReportRow = new CostAndUsageReportsRow(
+        {
+          Data: [
+            { VarCharValue: 'timestamp' },
+            { VarCharValue: 'accountName' },
+            { VarCharValue: 'serviceName' },
+            { VarCharValue: 'region' },
+            { VarCharValue: 'usageType' },
+            { VarCharValue: 'usageUnit' },
+            { VarCharValue: 'vCpus' },
+            { VarCharValue: 'cost' },
+            { VarCharValue: 'usageAmount' },
+          ],
+        },
+        [
+          { VarCharValue: '' },
+          { VarCharValue: '' },
+          { VarCharValue: inputDataRow.serviceName },
+          { VarCharValue: inputDataRow.region },
+          { VarCharValue: inputDataRow.usageType },
+          { VarCharValue: inputDataRow.usageUnit },
+          { VarCharValue: inputDataRow.vCpus },
+          { VarCharValue: '1' },
+          { VarCharValue: '1' },
+        ],
+      )
+
+      if (
+        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
+        this.usageTypeisGpu(costAndUsageReportRow.usageType)
+      ) {
+        return []
+      }
+
+      const footprintEstimate = this.getEstimateByPricingUnit(
+        costAndUsageReportRow,
+      )
+
+      if (footprintEstimate) {
+        result.push({
+          serviceName: inputDataRow.serviceName,
+          region: inputDataRow.region,
+          usageType: inputDataRow.usageType,
+          usageUnit: inputDataRow.usageUnit,
+          vCpus: inputDataRow.vCpus,
+          kilowattHours: footprintEstimate.kilowattHours,
+          co2e: footprintEstimate.co2e,
+        })
+      }
+    })
+    return result
   }
 
   private getEstimateByPricingUnit(

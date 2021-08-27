@@ -31,6 +31,7 @@
     "start-api": "yarn workspace @cloud-carbon-footprint/api start",
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
     "guided-install": "yarn install && yarn workspace @cloud-carbon-footprint/cli guided-install",
+    "create-lookup-table": "yarn workspace @cloud-carbon-footprint/cli create-lookup-table",
     "create-app": "yarn workspace @cloud-carbon-footprint/create-app start",
     "test-create-app": "yarn workspace @cloud-carbon-footprint/create-app test-create-app",
     "sonar:scan": "lerna run sonar:scan --stream",

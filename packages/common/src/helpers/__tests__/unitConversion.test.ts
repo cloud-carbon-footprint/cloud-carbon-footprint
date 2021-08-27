@@ -35,6 +35,13 @@ describe('Calculations helpers', () => {
     const result = convertGigabyteMonthsToTerabyteHours(usageAmount, timestamp)
     expect(result).toEqual(3.6)
   })
+  it('convert convert gigabyte months to terabyteHours with invalid timestamp', () => {
+    const result = convertGigabyteMonthsToTerabyteHours(
+      usageAmount,
+      new Date(''),
+    )
+    expect(result).toEqual(3.6504000000000003)
+  })
   it('convert convert terabytes to gigabytes', () => {
     const result = convertTerabytesToGigabytes(usageAmount)
     expect(result).toEqual(5000)

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createLookupTable creates lookup table CSV creates AWS lookup table CSV file, with default output file path 1`] = `
+"serviceName,region,usageType,usageUnit,vCpus,kilowattHours,co2e
+AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4,0.0172739509,0.0000071817314564295
+AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,,0.001135,8.035799999999999e-7
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,2.0129391486989334e-15,1.5902219274721573e-18
+AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,GB-Mo,,0.00099436896,2.2671612288000005e-7
+"
+`;
+
+exports[`createLookupTable creates lookup table CSV creates AWS lookup table CSV file, with provided output file name 1`] = `
+"serviceName,region,usageType,usageUnit,vCpus,kilowattHours,co2e
+AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4,0.0172739509,0.0000071817314564295
+AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,,0.001135,8.035799999999999e-7
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,2.0129391486989334e-15,1.5902219274721573e-18
+AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,GB-Mo,,0.00099436896,2.2671612288000005e-7
+"
+`;

@@ -91,6 +91,8 @@ fileignoreconfig:
   checksum: ae4d3c68639b3cad55fd80dc12d0af52628a1c8680bf51b06fd0fdb8e4dcd466
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
+- filename: packages/aws/src/__tests__/Recommendations.test.ts
+  checksum: 882473df680508d6168bcb4b4cde7d44bc1d6d28f7566488b32a7c9e5073c22d
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts

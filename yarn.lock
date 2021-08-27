@@ -2182,6 +2182,8 @@ __metadata:
     aws-sdk-mock: ^5.1.0
     cli-table: ^0.3.6
     commander: ^8.0.0
+    csv-writer: ^1.6.0
+    csvtojson: ^2.0.10
     dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
@@ -7519,7 +7521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.5.0, bluebird@npm:^3.5.5":
+"bluebird@npm:^3.5.0, bluebird@npm:^3.5.1, bluebird@npm:^3.5.5":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 4f2288662f3d4eadbb82d4daa4a7d7976a28fa3c7eb4102c9b4033b03e5be4574ba123ac52a7c103cde4cb7b2d2afc1dbe41817ca15a29ff21ecd258d0286047
@@ -9743,6 +9745,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csv-writer@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "csv-writer@npm:1.6.0"
+  checksum: c91c1386f680e702f68903d015c9ad275e69878c9d22f085a31c95ad7b675f964fff5850ab0de33ac6f293bf0d6c4e1b2bc640cbac6cd1235aaeb027eaeef783
+  languageName: node
+  linkType: hard
+
 "csv@npm:^5.3.1":
   version: 5.5.0
   resolution: "csv@npm:5.5.0"
@@ -9752,6 +9761,19 @@ __metadata:
     csv-stringify: ^5.6.2
     stream-transform: ^2.1.0
   checksum: 1e3728386e84a48a37f82659e225a6fd0c359ff61fde66c7b57a5f9b80ac973a28361e48726f14bf4fa1c5db0c9051acf3472bf104edbd8715ed655875ec346a
+  languageName: node
+  linkType: hard
+
+"csvtojson@npm:^2.0.10":
+  version: 2.0.10
+  resolution: "csvtojson@npm:2.0.10"
+  dependencies:
+    bluebird: ^3.5.1
+    lodash: ^4.17.3
+    strip-bom: ^2.0.0
+  bin:
+    csvtojson: ./bin/csvtojson
+  checksum: 44c83d3a0b2171905c1edb616c97945f9135c996e5a0c1250fb16030a6ceae60be0074419e5658d29ce901c8657759cb48fad8114cbe87b2144e2c3490f9ab7f
   languageName: node
   linkType: hard
 
@@ -16311,7 +16333,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash@npm:4, lodash@npm:4.6.1 || ^4.16.1, lodash@npm:4.x, lodash@npm:>=3.5 <5, lodash@npm:^4.1.1, lodash@npm:^4.14.0, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.5, lodash@npm:^4.3.0, lodash@npm:^4.7.0":
+"lodash@npm:4, lodash@npm:4.6.1 || ^4.16.1, lodash@npm:4.x, lodash@npm:>=3.5 <5, lodash@npm:^4.1.1, lodash@npm:^4.14.0, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.3, lodash@npm:^4.17.5, lodash@npm:^4.3.0, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 4983720b9abca930a4a46f18db163d7dad8dd00dbed6db0cc7b499b33b717cce69f80928b27bbb1ff2cbd3b19d251ee90669a8b5ea466072ca81c2ebe91e7468
