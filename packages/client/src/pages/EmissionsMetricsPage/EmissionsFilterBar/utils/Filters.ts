@@ -29,7 +29,7 @@ interface FiltersConfig {
   [DropdownFilterOptions.ACCOUNTS]: DropdownOption[]
 }
 
-const defaultFiltersConfig = {
+const defaultFiltersConfig: FiltersConfig = {
   timeframe: 36,
   dateRange: null,
   [DropdownFilterOptions.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
@@ -49,14 +49,29 @@ export const filtersConfigGenerator = ({
   return Object.assign(defaultFiltersConfig, configValues)
 }
 
+export class DateRange {
+  readonly startDate: MaybeMoment
+  readonly endDate: MaybeMoment
+
+  constructor(startDate: MaybeMoment, endDate: MaybeMoment) {
+    this.startDate = startDate
+    this.endDate = endDate
+  }
+
+  isComplete(): boolean {
+    return this.startDate !== null && this.endDate !== null
+  }
+}
+
 export class Filters {
   readonly timeframe: number
   readonly dateRange: MaybeDateRange
+  // TODO: Make this a generic options object
   readonly services: DropdownOption[]
   readonly cloudProviders: DropdownOption[]
   readonly accounts: DropdownOption[]
 
-  constructor(config: FiltersConfig = defaultFiltersConfig) {
+  constructor(config = defaultFiltersConfig) {
     this.timeframe = config.timeframe
     this.dateRange = config.dateRange
     this.services = config.services
@@ -91,66 +106,6 @@ export class Filters {
     })
   }
 
-  // withServices(
-  //   services: DropdownOption[],
-  //   filterOptions: FilterOptions,
-  // ): Filters {
-  //   const oldSelections = {
-  //     services: this.services,
-  //     accounts: this.accounts,
-  //     cloudProviders: this.cloudProviders,
-  //   }
-  //   return new Filters({
-  //     ...this,
-  //     ...FiltersUtil.handleDropdownSelections(
-  //       FiltersUtil.DropdownFilter.SERVICES,
-  //       services,
-  //       oldSelections,
-  //       filterOptions,
-  //     ),
-  //   })
-  // }
-  //
-  // withAccounts(
-  //   accounts: DropdownOption[],
-  //   filterOptions: FilterOptions,
-  // ): Filters {
-  //   const oldSelections = {
-  //     services: this.services,
-  //     accounts: this.accounts,
-  //     cloudProviders: this.cloudProviders,
-  //   }
-  //   return new Filters({
-  //     ...this,
-  //     ...FiltersUtil.handleDropdownSelections(
-  //       FiltersUtil.DropdownFilter.ACCOUNTS,
-  //       accounts,
-  //       oldSelections,
-  //       filterOptions,
-  //     ),
-  //   })
-  // }
-  //
-  // withCloudProviders(
-  //   cloudProviders: DropdownOption[],
-  //   filterOptions: FilterOptions,
-  // ): Filters {
-  //   const oldSelections = {
-  //     services: this.services,
-  //     accounts: this.accounts,
-  //     cloudProviders: this.cloudProviders,
-  //   }
-  //   return new Filters({
-  //     ...this,
-  //     ...FiltersUtil.handleDropdownSelections(
-  //       FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
-  //       cloudProviders,
-  //       oldSelections,
-  //       filterOptions,
-  //     ),
-  //   })
-  // }
-
   withDateRange(dateRange: DateRange): Filters {
     if (dateRange.isComplete()) {
       return new Filters({
@@ -166,26 +121,15 @@ export class Filters {
     }
   }
 
-  serviceLabel(serviceOptions: DropdownOption[]): string {
+  label(
+    currentOptions: DropdownOption[],
+    allOptions: DropdownOption[],
+    optionType: string,
+  ): string {
     return FiltersUtil.numSelectedLabel(
-      this.services.length,
-      serviceOptions.length,
-    )
-  }
-
-  cloudProviderLabel(): string {
-    return FiltersUtil.numSelectedLabel(
-      this.cloudProviders.length,
-      CLOUD_PROVIDER_OPTIONS.length,
-      'Cloud Providers',
-    )
-  }
-
-  accountLabel(accountOptions: DropdownOption[]): string {
-    return FiltersUtil.numSelectedLabel(
-      this.accounts.length,
-      accountOptions.length,
-      'Accounts',
+      currentOptions.length,
+      allOptions.length,
+      optionType,
     )
   }
 
@@ -269,19 +213,5 @@ export class Filters {
     return rawResults.filter((estimationResult: EstimationResult) =>
       moment.utc(estimationResult.timestamp).isBetween(start, end, 'day', '[]'),
     )
-  }
-}
-
-export class DateRange {
-  readonly startDate: MaybeMoment
-  readonly endDate: MaybeMoment
-
-  constructor(startDate: MaybeMoment, endDate: MaybeMoment) {
-    this.startDate = startDate
-    this.endDate = endDate
-  }
-
-  isComplete(): boolean {
-    return this.startDate !== null && this.endDate !== null
   }
 }

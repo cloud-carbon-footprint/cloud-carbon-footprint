@@ -15,7 +15,7 @@ const ServiceFilter: FunctionComponent<FilterProps> = ({
   return (
     <DropdownFilter
       id="services-filter"
-      displayValue={filters.serviceLabel(serviceOptions)}
+      displayValue={filters.label(filters.services, serviceOptions, 'Services')}
       options={serviceOptions}
       selections={filters.services}
       selectionToOption={(service: DropdownOption) => service}

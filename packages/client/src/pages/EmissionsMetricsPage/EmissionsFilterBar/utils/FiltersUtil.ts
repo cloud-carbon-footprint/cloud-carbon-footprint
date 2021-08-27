@@ -26,7 +26,7 @@ export function handleDropdownSelections(
 export function numSelectedLabel(
   length: number,
   totalLength: number,
-  type = 'Services',
+  type: string,
 ): string {
   const lengthWithoutAllOption = totalLength - 1
   if (length === totalLength) {

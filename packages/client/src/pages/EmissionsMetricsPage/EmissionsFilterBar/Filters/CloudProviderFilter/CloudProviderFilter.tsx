@@ -15,7 +15,11 @@ const CloudProviderFilter: FunctionComponent<FilterProps> = ({
   return (
     <DropdownFilter
       id="cloud-provider-filter"
-      displayValue={filters.cloudProviderLabel()}
+      displayValue={filters.label(
+        filters.cloudProviders,
+        CLOUD_PROVIDER_OPTIONS,
+        'Cloud Providers',
+      )}
       options={CLOUD_PROVIDER_OPTIONS}
       selections={filters.cloudProviders}
       selectionToOption={(cloudProvider: DropdownOption) => cloudProvider}

@@ -15,7 +15,7 @@ const AccountFilter: FunctionComponent<FilterProps> = ({
   return (
     <DropdownFilter
       id="accounts-filter"
-      displayValue={filters.accountLabel(accountOptions)}
+      displayValue={filters.label(filters.accounts, accountOptions, 'Accounts')}
       options={accountOptions}
       selections={filters.accounts}
       selectionToOption={(account) => account}
