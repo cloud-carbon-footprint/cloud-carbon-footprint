@@ -34,6 +34,7 @@ module.exports = {
         'get-recommendations',
         'run-with-docker',
         'running-the-cli',
+        'creating-a-lookup-table',
         {
           type: 'category',
           label: 'Configuration Options',
