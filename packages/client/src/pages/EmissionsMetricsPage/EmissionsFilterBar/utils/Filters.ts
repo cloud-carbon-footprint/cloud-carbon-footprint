@@ -5,7 +5,6 @@
 import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
-import { DropdownFilter } from './FiltersUtil'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
@@ -16,6 +15,7 @@ import {
   UnknownTypes,
   DropdownOption,
   FilterOptions,
+  DropdownFilterOptions,
 } from 'Types'
 
 type MaybeDateRange = DateRange | null
@@ -24,17 +24,17 @@ type MaybeMoment = moment.Moment | null
 interface FiltersConfig {
   timeframe: number
   dateRange: MaybeDateRange
-  [DropdownFilter.SERVICES]: DropdownOption[]
-  [DropdownFilter.CLOUD_PROVIDERS]: DropdownOption[]
-  [DropdownFilter.ACCOUNTS]: DropdownOption[]
+  [DropdownFilterOptions.SERVICES]: DropdownOption[]
+  [DropdownFilterOptions.CLOUD_PROVIDERS]: DropdownOption[]
+  [DropdownFilterOptions.ACCOUNTS]: DropdownOption[]
 }
 
 const defaultFiltersConfig = {
   timeframe: 36,
   dateRange: null,
-  [DropdownFilter.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
-  [DropdownFilter.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
-  [DropdownFilter.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
+  [DropdownFilterOptions.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
+  [DropdownFilterOptions.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
+  [DropdownFilterOptions.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
 }
 
 export const filtersConfigGenerator = ({
@@ -70,9 +70,10 @@ export class Filters {
       : new Filters({ ...this, dateRange: null, timeframe })
   }
 
-  withServices(
-    services: DropdownOption[],
+  withDropdownOption(
+    dropdownOption: DropdownOption[],
     filterOptions: FilterOptions,
+    dropdownFilter: DropdownFilterOptions,
   ): Filters {
     const oldSelections = {
       services: this.services,
@@ -82,53 +83,73 @@ export class Filters {
     return new Filters({
       ...this,
       ...FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.SERVICES,
-        services,
+        dropdownFilter,
+        dropdownOption,
         oldSelections,
         filterOptions,
       ),
     })
   }
 
-  withAccounts(
-    accounts: DropdownOption[],
-    filterOptions: FilterOptions,
-  ): Filters {
-    const oldSelections = {
-      services: this.services,
-      accounts: this.accounts,
-      cloudProviders: this.cloudProviders,
-    }
-    return new Filters({
-      ...this,
-      ...FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.ACCOUNTS,
-        accounts,
-        oldSelections,
-        filterOptions,
-      ),
-    })
-  }
-
-  withCloudProviders(
-    cloudProviders: DropdownOption[],
-    filterOptions: FilterOptions,
-  ): Filters {
-    const oldSelections = {
-      services: this.services,
-      accounts: this.accounts,
-      cloudProviders: this.cloudProviders,
-    }
-    return new Filters({
-      ...this,
-      ...FiltersUtil.handleDropdownSelections(
-        FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
-        cloudProviders,
-        oldSelections,
-        filterOptions,
-      ),
-    })
-  }
+  // withServices(
+  //   services: DropdownOption[],
+  //   filterOptions: FilterOptions,
+  // ): Filters {
+  //   const oldSelections = {
+  //     services: this.services,
+  //     accounts: this.accounts,
+  //     cloudProviders: this.cloudProviders,
+  //   }
+  //   return new Filters({
+  //     ...this,
+  //     ...FiltersUtil.handleDropdownSelections(
+  //       FiltersUtil.DropdownFilter.SERVICES,
+  //       services,
+  //       oldSelections,
+  //       filterOptions,
+  //     ),
+  //   })
+  // }
+  //
+  // withAccounts(
+  //   accounts: DropdownOption[],
+  //   filterOptions: FilterOptions,
+  // ): Filters {
+  //   const oldSelections = {
+  //     services: this.services,
+  //     accounts: this.accounts,
+  //     cloudProviders: this.cloudProviders,
+  //   }
+  //   return new Filters({
+  //     ...this,
+  //     ...FiltersUtil.handleDropdownSelections(
+  //       FiltersUtil.DropdownFilter.ACCOUNTS,
+  //       accounts,
+  //       oldSelections,
+  //       filterOptions,
+  //     ),
+  //   })
+  // }
+  //
+  // withCloudProviders(
+  //   cloudProviders: DropdownOption[],
+  //   filterOptions: FilterOptions,
+  // ): Filters {
+  //   const oldSelections = {
+  //     services: this.services,
+  //     accounts: this.accounts,
+  //     cloudProviders: this.cloudProviders,
+  //   }
+  //   return new Filters({
+  //     ...this,
+  //     ...FiltersUtil.handleDropdownSelections(
+  //       FiltersUtil.DropdownFilter.CLOUD_PROVIDERS,
+  //       cloudProviders,
+  //       oldSelections,
+  //       filterOptions,
+  //     ),
+  //   })
+  // }
 
   withDateRange(dateRange: DateRange): Filters {
     if (dateRange.isComplete()) {

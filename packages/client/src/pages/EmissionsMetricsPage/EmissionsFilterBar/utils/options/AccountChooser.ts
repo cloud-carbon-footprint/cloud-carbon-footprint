@@ -3,8 +3,8 @@
  */
 
 import { pluck } from 'ramda'
-import { DropdownOption, FilterOptions } from 'Types'
-import { DropdownFilter, DropdownSelections } from '../FiltersUtil'
+import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
+import { DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
 import { isDropdownOptionInDropdownOptions } from './common'
@@ -16,7 +16,7 @@ export class AccountChooser extends OptionChooser {
     filterOptions: FilterOptions,
   ) {
     super(
-      DropdownFilter.ACCOUNTS,
+      DropdownFilterOptions.ACCOUNTS,
       filterOptions.accounts,
       selections,
       oldSelections,

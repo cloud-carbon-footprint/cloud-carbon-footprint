@@ -101,6 +101,12 @@ export enum UnknownTypes {
   UNKNOWN_ACCOUNT = 'Unknown Account',
 }
 
+export enum DropdownFilterOptions {
+  SERVICES = 'services',
+  CLOUD_PROVIDERS = 'cloudProviders',
+  ACCOUNTS = 'accounts',
+}
+
 export const barChartCustomColors: string[] = [
   '#73B500',
   '#00791E',

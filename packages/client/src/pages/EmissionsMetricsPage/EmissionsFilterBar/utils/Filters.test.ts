@@ -5,7 +5,11 @@
 import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { generateEstimations } from 'utils/data'
-import { FilterOptions, FilterResultResponse } from 'Types'
+import {
+  DropdownFilterOptions,
+  FilterOptions,
+  FilterResultResponse,
+} from 'Types'
 import { DateRange, Filters, filtersConfigGenerator } from './Filters'
 
 expect.extend({
@@ -119,9 +123,10 @@ describe('Filters', () => {
   describe('filter', () => {
     it('should filter just ebs', () => {
       const estimationResults = generateEstimations(moment.utc(), 1)
-      const filters = new Filters().withServices(
+      const filters = new Filters().withDropdownOption(
         [ebsServiceOption],
         filterOptions,
+        DropdownFilterOptions.SERVICES,
       )
 
       const filteredData = filters.filter(estimationResults)
@@ -131,9 +136,10 @@ describe('Filters', () => {
 
     it('should ignore services not present in the estimationResults', () => {
       const estimationResults = generateEstimations(moment.utc(), 1, ['s3'])
-      const filters = new Filters().withServices(
+      const filters = new Filters().withDropdownOption(
         [ebsServiceOption, ec2ServiceOption],
         filterOptions,
+        DropdownFilterOptions.SERVICES,
       )
 
       const filteredData = filters.filter(estimationResults)
@@ -154,7 +160,11 @@ describe('Filters', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
       const filters = new Filters()
         .withTimeFrame(3)
-        .withServices([ebsServiceOption], filterOptions)
+        .withDropdownOption(
+          [ebsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
 
       const filteredData = filters.filter(estimationResults)
 
@@ -220,7 +230,11 @@ describe('Filters', () => {
     it('should unselect All Services', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices([], filterOptions)
+      const newFilters = filters.withDropdownOption(
+        [],
+        filterOptions,
+        DropdownFilterOptions.SERVICES,
+      )
 
       expect(newFilters.services).toEqual([])
     })
@@ -228,7 +242,7 @@ describe('Filters', () => {
     it('should unselect one service when all services are already selected', () => {
       const filters = new Filters()
 
-      const newFilters = filters.withServices(
+      const newFilters = filters.withDropdownOption(
         [
           allServiceOption,
           S3ServiceOption,
@@ -239,6 +253,7 @@ describe('Filters', () => {
           computeEngineServiceOption,
         ],
         filterOptions,
+        DropdownFilterOptions.SERVICES,
       )
 
       expect(newFilters.services).toEqual([
@@ -255,9 +270,17 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([], filterOptions)
-        .withServices([ebsServiceOption], filterOptions)
-        .withServices([ebsServiceOption, rdsServiceOption], filterOptions)
+        .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
+        .withDropdownOption(
+          [ebsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
+        .withDropdownOption(
+          [ebsServiceOption, rdsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
 
       expect(newFilters.services).toEqual([ebsServiceOption, rdsServiceOption])
     })
@@ -266,10 +289,22 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([], filterOptions)
-        .withServices([ebsServiceOption], filterOptions)
-        .withServices([ebsServiceOption, rdsServiceOption], filterOptions)
-        .withServices([rdsServiceOption], filterOptions)
+        .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
+        .withDropdownOption(
+          [ebsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
+        .withDropdownOption(
+          [ebsServiceOption, rdsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
+        .withDropdownOption(
+          [rdsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
 
       expect(newFilters.services).toEqual([rdsServiceOption])
     })
@@ -278,9 +313,17 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([], filterOptions)
-        .withServices([ebsServiceOption], filterOptions)
-        .withServices([ebsServiceOption, allServiceOption], filterOptions)
+        .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
+        .withDropdownOption(
+          [ebsServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
+        .withDropdownOption(
+          [ebsServiceOption, allServiceOption],
+          filterOptions,
+          DropdownFilterOptions.SERVICES,
+        )
 
       expect(newFilters.services).toEqual([
         allServiceOption,
@@ -298,8 +341,8 @@ describe('Filters', () => {
       const filters = new Filters()
 
       const newFilters = filters
-        .withServices([], filterOptions)
-        .withServices(
+        .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
+        .withDropdownOption(
           [
             ebsServiceOption,
             S3ServiceOption,
@@ -310,6 +353,7 @@ describe('Filters', () => {
             computeEngineServiceOption,
           ],
           filterOptions,
+          DropdownFilterOptions.SERVICES,
         )
 
       expect(newFilters.services).toEqual([
@@ -395,7 +439,11 @@ describe('Filters', () => {
       })
       expect(filters.accounts).toEqual([mockAccount1])
 
-      const newFilters = filters.withAccounts([], filterOptions)
+      const newFilters = filters.withDropdownOption(
+        [],
+        filterOptions,
+        DropdownFilterOptions.ACCOUNTS,
+      )
       expect(newFilters.accounts).toEqual([])
     })
   })
