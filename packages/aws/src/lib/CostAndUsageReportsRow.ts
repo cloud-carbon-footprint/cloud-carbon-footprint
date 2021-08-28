@@ -11,7 +11,7 @@ import {
   MSK_INSTANCE_TYPES,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
-import { PRICING_UNITS } from './CostAndUsageTypes'
+import { KNOWN_USAGE_UNITS } from './CostAndUsageTypes'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import { concat } from 'ramda'
 import { AWS_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -53,15 +53,15 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
 
   private getUsageUnit(): string {
     if (this.usageType.includes('Fargate-GB-Hours'))
-      return PRICING_UNITS.GB_HOURS
-    if (this.isRedshiftComputeUsage()) return PRICING_UNITS.HOURS_1
+      return KNOWN_USAGE_UNITS.GB_HOURS
+    if (this.isRedshiftComputeUsage()) return KNOWN_USAGE_UNITS.HOURS_1
     return this.usageUnit
   }
 
   private isRedshiftComputeUsage(): boolean {
     return (
       this.serviceName === 'AmazonRedshift' &&
-      this.usageUnit === PRICING_UNITS.SECONDS_1
+      this.usageUnit === KNOWN_USAGE_UNITS.SECONDS_1
     )
   }
 

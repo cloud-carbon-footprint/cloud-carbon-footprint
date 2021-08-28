@@ -42,6 +42,8 @@ export const SSD_USAGE_TYPES: string[] = [
   'ra3.xlplus', // Redshift SSD
   'ra3.4xlarge', // Redshift SSD
   'ra3.16xlarge', // Redshift SSD
+  'Storage.SSD.50', // Fsx
+  'Storage.MultiAZ:SSD', // Fsx
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -88,6 +90,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'BytesDeleted-GDA', // S3 GLACIER DEEP ARCHIVE storage
   'OverwriteBytes-Put-GLACIER', // S3 GLACIER storage
   'OverwriteBytes-Put-RRS', // S3 Reduced Redundancy storage
+  'BackupUsage.MultiAZ', // Fsx
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -143,6 +146,14 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'FastSnapshotRestore',
   'GMD-Metrics',
   'Dollar',
+  'Airflow-SmallEnvironment',
+  'MemoryStore-ByteHrs',
+  'Output-SD-Hours',
+  'Output-HD-Hours',
+  'Output-FullHD-Hours',
+  'Input-Standard-Hours',
+  'Airflow-SmallWorker',
+  'AppRunner-Provisioned-GB-hours',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
@@ -210,7 +221,7 @@ export const LINE_ITEM_TYPES: string[] = [
   'SavingsPlanCoveredUsage',
 ]
 
-export enum PRICING_UNITS {
+export enum KNOWN_USAGE_UNITS {
   HOURS_1 = 'Hrs',
   HOURS_2 = 'Hours',
   HOURS_3 = 'hours',
