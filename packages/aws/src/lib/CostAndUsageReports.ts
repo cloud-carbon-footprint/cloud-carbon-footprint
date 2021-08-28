@@ -100,20 +100,9 @@ export default class CostAndUsageReports {
         rowData.Data,
       )
 
-      if (this.usageTypeIsUnsupported(costAndUsageReportRow.usageType))
-        return []
-
-      if (
-        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
-        this.usageUnitIsUnknown(costAndUsageReportRow.usageUnit) ||
-        this.usageTypeisGpu(costAndUsageReportRow.usageType)
-      ) {
-        unknownRows.push(costAndUsageReportRow)
-        return []
-      }
-
-      const footprintEstimate = this.getEstimateByUsageUnit(
+      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
+        unknownRows,
       )
       if (footprintEstimate)
         appendOrAccumulateEstimatesByDay(
@@ -137,45 +126,41 @@ export default class CostAndUsageReports {
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     const result: LookupTableOutput[] = []
+    const unknownRows: CostAndUsageReportsRow[] = []
 
     inputData.map((inputDataRow: LookupTableInput) => {
-      const costAndUsageReportRow = new CostAndUsageReportsRow(
-        {
-          Data: [
-            { VarCharValue: 'timestamp' },
-            { VarCharValue: 'accountName' },
-            { VarCharValue: 'serviceName' },
-            { VarCharValue: 'region' },
-            { VarCharValue: 'usageType' },
-            { VarCharValue: 'usageUnit' },
-            { VarCharValue: 'vCpus' },
-            { VarCharValue: 'cost' },
-            { VarCharValue: 'usageAmount' },
-          ],
-        },
-        [
-          { VarCharValue: '' },
-          { VarCharValue: '' },
-          { VarCharValue: inputDataRow.serviceName },
-          { VarCharValue: inputDataRow.region },
-          { VarCharValue: inputDataRow.usageType },
-          { VarCharValue: inputDataRow.usageUnit },
-          { VarCharValue: inputDataRow.vCpus },
-          { VarCharValue: '1' },
-          { VarCharValue: '1' },
+      const usageRowsHeader = {
+        Data: [
+          { VarCharValue: 'timestamp' },
+          { VarCharValue: 'accountName' },
+          { VarCharValue: 'serviceName' },
+          { VarCharValue: 'region' },
+          { VarCharValue: 'usageType' },
+          { VarCharValue: 'usageUnit' },
+          { VarCharValue: 'vCpus' },
+          { VarCharValue: 'cost' },
+          { VarCharValue: 'usageAmount' },
         ],
+      }
+      const usageRowData = [
+        { VarCharValue: '' },
+        { VarCharValue: '' },
+        { VarCharValue: inputDataRow.serviceName },
+        { VarCharValue: inputDataRow.region },
+        { VarCharValue: inputDataRow.usageType },
+        { VarCharValue: inputDataRow.usageUnit },
+        { VarCharValue: inputDataRow.vCpus },
+        { VarCharValue: '1' },
+        { VarCharValue: '1' },
+      ]
+      const costAndUsageReportRow = new CostAndUsageReportsRow(
+        usageRowsHeader,
+        usageRowData,
       )
 
-      if (
-        this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
-        this.usageUnitIsUnknown(costAndUsageReportRow.usageUnit) ||
-        this.usageTypeisGpu(costAndUsageReportRow.usageType)
-      ) {
-        return []
-      }
-
-      const footprintEstimate = this.getEstimateByUsageUnit(
+      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
+        unknownRows,
       )
 
       if (footprintEstimate) {
@@ -190,7 +175,42 @@ export default class CostAndUsageReports {
         })
       }
     })
+
+    if (result.length > 0) {
+      unknownRows.map((inputDataRow: CostAndUsageReportsRow) => {
+        const footprintEstimate = this.getEstimateForUnknownUsage(inputDataRow)
+        if (footprintEstimate)
+          result.push({
+            serviceName: inputDataRow.serviceName,
+            region: inputDataRow.region,
+            usageType: inputDataRow.usageType,
+            usageUnit: inputDataRow.usageUnit,
+            vCpus: inputDataRow.vCpus,
+            kilowattHours: footprintEstimate.kilowattHours,
+            co2e: footprintEstimate.co2e,
+          })
+      })
+    }
+
     return result
+  }
+
+  private getFootprintEstimateFromUsageRow(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+    unknownRows: CostAndUsageReportsRow[],
+  ): FootprintEstimate | void {
+    if (this.usageTypeIsUnsupported(costAndUsageReportRow.usageType)) return
+
+    if (
+      this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
+      this.usageUnitIsUnknown(costAndUsageReportRow.usageUnit) ||
+      this.usageTypeisGpu(costAndUsageReportRow.usageType)
+    ) {
+      unknownRows.push(costAndUsageReportRow)
+      return
+    }
+
+    return this.getEstimateByUsageUnit(costAndUsageReportRow)
   }
 
   private getEstimateByUsageUnit(

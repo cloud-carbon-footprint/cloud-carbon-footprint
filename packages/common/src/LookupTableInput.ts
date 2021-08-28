@@ -15,7 +15,7 @@ export type LookupTableOutput = {
   region: string
   usageType: string
   usageUnit: string
-  vCpus: string
+  vCpus: string | number
   kilowattHours: number
   co2e: number
 }
