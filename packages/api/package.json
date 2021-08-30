@@ -42,11 +42,7 @@
     "start:prod": "yarn start:webprod",
     "start:web": "ts-node-dev src/server.ts",
     "start:webprod": "NODE_ENV=production node dist/server.js",
-    "docker:start": "docker run --name ccf_base -dt --rm -v $(pwd):/cloud-carbon-footprint/packages/api -v $HOME/.aws/credentials:/home/circleci/.aws/credentials -e AWS_PROFILE circleci/node:current bash",
-    "docker:setup": "docker exec -w /cloud-carbon-footprint/packages/api -it ccf_base yarn install --immutable",
-    "docker:test": "docker exec -w /cloud-carbon-footprint/packages/api -it ccf_base yarn test",
-    "docker:cli": "docker exec -w /cloud-carbon-footprint/packages/api -e AWS_PROFILE -it ccf_base yarn start:cli -- ",
-    "docker:stop": "docker stop ccf_base"
+    "create-docker-secrets": "./create_docker_secrets.sh"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",

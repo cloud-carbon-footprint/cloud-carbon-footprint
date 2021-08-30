@@ -69,12 +69,14 @@ fileignoreconfig:
   checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
 - filename: docker/nginx.conf
   checksum: a4632d785a11f199217d4229a40eba5a38180d9945d96799dc9b5efc6a3bc06e
+- filename: microsite/docs/RunWithDocker.md
+  checksum: 9a603a0351717c055caf3529fe8aecb8a4ffb509ac598d089ed2a28ebd2d83ae
 - filename: microsite/src/components/differentiator.js
   checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
 - filename: microsite/src/components/innovationPartners.js
   checksum: cf5de9e82c90a564f09e2adf21e003004675c0f74673fae6c0b5faad7818d498
 - filename: package.json
-  checksum: 7ea0da854c744d6207564f40116ed80c33735bb8cb475ed91ffa700690035ba7
+  checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
   checksum: 3a380b3fb5f198b9886b6b1b208025b8c3981fb92e5b3d65491c90268b84d92e
 - filename: packages/api/create_docker_secrets.sh
@@ -85,6 +87,8 @@ fileignoreconfig:
   checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
   checksum: 47701f39ac93d11ebf30ebc3eb7499971094144b82bbd558aebdaa551d8228f3
+- filename: packages/api/package.json
+  checksum: 3fd7ec81bfa309f1d01ae0eadb695a418850e671d148715ae4259e14706491f5
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts

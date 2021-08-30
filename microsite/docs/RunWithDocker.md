@@ -14,9 +14,9 @@ If you would like to run with Docker, you'll need install docker and docker-comp
 2.  Ensure you have cloud provider credentials files in the following locations on your filesystem:
     - AWS: `$HOME/.aws/credentials`
     - GCP: `$HOME/.config/gcloud/service-account-keys.json`
-3.  Ensure you have saved your environment variables as files on your local file system. Docker compose will use these securely as [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/) at run time, in the ~/.docker/secrets directory. To aid with this, we have a script you can run that does this:
+3.  Ensure you have saved your environment variables as files on your local file system. Docker compose will use these securely as [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/) at run time, in the ~/.docker/secrets directory. To aid with this, we have a command you can run that does this:
 
-        cd packages/api && ./create_docker_secrets.sh && cd ../..
+        yarn create-docker-secrets
 
 4.  Remove any secrets in `docker-compose.yml` that you aren’t not using.
 5.  Run the application with docker compose:

@@ -34,6 +34,7 @@
     "create-lookup-table": "yarn workspace @cloud-carbon-footprint/cli create-lookup-table",
     "create-app": "yarn workspace @cloud-carbon-footprint/create-app start",
     "test-create-app": "yarn workspace @cloud-carbon-footprint/create-app test-create-app",
+    "create-docker-secrets": "yarn workspace @cloud-carbon-footprint/api create-docker-secrets",
     "sonar:scan": "lerna run sonar:scan --stream",
     "test": "lerna run test -- --coverage --runInBand",
     "deploy": "cd terraform && ./run.sh apply",
