@@ -9,12 +9,12 @@ import React, {
   SetStateAction,
 } from 'react'
 import { DropdownOption, FilterOptions, FilterResultResponse } from 'Types'
-import { Filters } from './utils/Filters'
+import { Filters } from '../../../common/FilterBar/utils/Filters'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
-} from './utils/DropdownConstants'
+} from '../../../common/FilterBar/utils/DropdownConstants'
 import FilterBar from 'common/FilterBar'
 import {
   AccountFilter,

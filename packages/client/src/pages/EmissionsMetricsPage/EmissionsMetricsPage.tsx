@@ -9,7 +9,7 @@ import { useRemoteService } from 'utils/hooks'
 import { useFilterDataFromEstimates } from 'utils/helpers'
 import { FilterResultResponse } from 'Types'
 import config from 'ConfigLoader'
-import useFilters from './EmissionsFilterBar/utils/FilterHook'
+import useFilters from '../../common/FilterBar/utils/FilterHook'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
@@ -18,6 +18,8 @@ import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import LoadingMessage from '../../common/LoadingMessage'
+import { filtersConfigGenerator } from '../../common/FilterBar/utils/Filters'
+import { EmissionsFilters } from './EmissionsFilterBar/utils/EmissionsFilters'
 
 export default function EmissionsMetricsPage(): ReactElement {
   const classes = useStyles()
@@ -39,8 +41,12 @@ export default function EmissionsMetricsPage(): ReactElement {
   const filteredDataResults: FilterResultResponse =
     useFilterDataFromEstimates(data)
 
+  const buildFilters = (filteredResponse: FilterResultResponse) =>
+    new EmissionsFilters(filtersConfigGenerator(filteredResponse))
+
   const { filteredData, filters, setFilters } = useFilters(
     data,
+    buildFilters,
     filteredDataResults,
   )
 

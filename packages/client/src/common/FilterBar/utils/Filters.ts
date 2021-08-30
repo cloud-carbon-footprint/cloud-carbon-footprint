@@ -18,17 +18,12 @@ import {
   DropdownFilterOptions,
   filterLabels,
   unknownOptionTypes,
+  FiltersConfig,
+  MaybeFiltersDateRange,
 } from 'Types'
 import { DropdownSelections } from './FiltersUtil'
 
-type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
-
-interface FiltersConfig {
-  timeframe: number
-  dateRange: MaybeDateRange
-  options: DropdownSelections
-}
 
 const defaultFiltersConfig: FiltersConfig = {
   timeframe: 36,
@@ -59,7 +54,7 @@ export const filtersConfigGenerator = (
   return Object.assign(defaultFiltersConfig, configUpdates)
 }
 
-export class DateRange {
+export class FiltersDateRange {
   readonly startDate: MaybeMoment
   readonly endDate: MaybeMoment
 
@@ -75,7 +70,7 @@ export class DateRange {
 
 export class Filters {
   readonly timeframe: number
-  readonly dateRange: MaybeDateRange
+  readonly dateRange: MaybeFiltersDateRange
   readonly options: DropdownSelections
 
   constructor(config = defaultFiltersConfig) {
@@ -110,7 +105,7 @@ export class Filters {
     })
   }
 
-  withDateRange(dateRange: DateRange): Filters {
+  withDateRange(dateRange: FiltersDateRange): Filters {
     if (dateRange.isComplete()) {
       return new Filters({
         ...this,

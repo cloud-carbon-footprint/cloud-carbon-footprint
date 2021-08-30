@@ -7,7 +7,7 @@ import moment from 'moment'
 import { DateRangePicker } from 'react-dates'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
-import { DateRange } from '../../utils/Filters'
+import { FiltersDateRange } from '../../../../../common/FilterBar/utils/Filters'
 import StyleWrapper from './dateFilterstyles'
 import { FilterProps } from 'Types'
 
@@ -39,7 +39,7 @@ const DateFilter: FunctionComponent<FilterProps> = ({
   }
 
   const handleDatesChange = ({ startDate, endDate }) => {
-    setFilters(filters.withDateRange(new DateRange(startDate, endDate)))
+    setFilters(filters.withDateRange(new FiltersDateRange(startDate, endDate)))
   }
 
   const handleFocusChange = (focusedInput) => {

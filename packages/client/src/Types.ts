@@ -7,7 +7,8 @@ import {
   EstimationResult,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
-import { Filters } from './pages/EmissionsMetricsPage/EmissionsFilterBar/utils/Filters'
+import { Filters, FiltersDateRange } from './common/FilterBar/utils/Filters'
+import { DropdownSelections } from './common/FilterBar/utils/FiltersUtil'
 
 export interface ServiceResult<T> {
   data: T[]
@@ -41,6 +42,12 @@ export interface FilterResultResponse {
   services: DropdownOption[]
 }
 
+export interface FiltersConfig {
+  timeframe: number
+  dateRange: MaybeFiltersDateRange
+  options: DropdownSelections
+}
+
 export interface Page<T> {
   data: T[]
   page: number
@@ -50,6 +57,8 @@ export interface PageEntry {
   x: string[]
   y: number
 }
+
+export type MaybeFiltersDateRange = FiltersDateRange | null
 
 export type ApexChartProps = {
   data: EstimationResult[]

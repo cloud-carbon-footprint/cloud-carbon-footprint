@@ -6,12 +6,15 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
-import { Filters, filtersConfigGenerator } from '../../utils/Filters'
+import {
+  Filters,
+  filtersConfigGenerator,
+} from '../../../../../common/FilterBar/utils/Filters'
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
-} from '../../utils/DropdownConstants'
+} from '../../../../../common/FilterBar/utils/DropdownConstants'
 
 jest.mock('ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {

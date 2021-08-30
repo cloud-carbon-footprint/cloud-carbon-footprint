@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core'
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react'
 import useStyles from './filterBarStyles'
 import { FilterOptions, FilterProps } from 'Types'
-import { Filters } from '../../pages/EmissionsMetricsPage/EmissionsFilterBar/utils/Filters'
+import { Filters } from './utils/Filters'
 
 type FilterBarProps = {
   config: {

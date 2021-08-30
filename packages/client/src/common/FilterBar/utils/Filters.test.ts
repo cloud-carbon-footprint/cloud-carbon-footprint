@@ -10,7 +10,7 @@ import {
   FilterOptions,
   FilterResultResponse,
 } from 'Types'
-import { DateRange, Filters, filtersConfigGenerator } from './Filters'
+import { FiltersDateRange, Filters, filtersConfigGenerator } from './Filters'
 
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
@@ -187,7 +187,7 @@ describe('Filters', () => {
       const startDate = moment.utc().subtract(4, 'M')
       const endDate = moment.utc().subtract(2, 'M')
       const filters = new Filters().withDateRange(
-        new DateRange(startDate, endDate),
+        new FiltersDateRange(startDate, endDate),
       )
 
       const filteredData = filters.filter(estimationResults)
@@ -201,8 +201,8 @@ describe('Filters', () => {
       const endDate = moment.utc().subtract(4, 'M')
       const newStartDate = moment.utc().subtract(3, 'M')
       const filters = new Filters()
-        .withDateRange(new DateRange(startDate, endDate))
-        .withDateRange(new DateRange(newStartDate, null))
+        .withDateRange(new FiltersDateRange(startDate, endDate))
+        .withDateRange(new FiltersDateRange(newStartDate, null))
 
       const filteredData = filters.filter(estimationResults)
       expect(filteredData).toEqual(estimationResults.slice(0, 4))
@@ -282,7 +282,10 @@ describe('Filters', () => {
           DropdownFilterOptions.SERVICES,
         )
 
-      expect(newFilters.options.services).toEqual([ebsServiceOption, rdsServiceOption])
+      expect(newFilters.options.services).toEqual([
+        ebsServiceOption,
+        rdsServiceOption,
+      ])
     })
 
     it('should unselect an selected service', () => {
@@ -380,7 +383,7 @@ describe('Filters', () => {
     it('keeps timeframe filter when the dateRange filter is incomplete', () => {
       const startDate = moment.utc()
       const filters = new Filters().withDateRange(
-        new DateRange(startDate, null),
+        new FiltersDateRange(startDate, null),
       )
 
       expect(filters.timeframe).toEqual(36)
@@ -392,7 +395,7 @@ describe('Filters', () => {
     it('unselects the timeframe filter when the dateRange filter is complete', () => {
       const startDate = moment.utc()
       const filters = new Filters().withDateRange(
-        new DateRange(startDate, startDate),
+        new FiltersDateRange(startDate, startDate),
       )
 
       expect(filters.timeframe).toEqual(-1)
@@ -404,7 +407,7 @@ describe('Filters', () => {
     it('unselects the dateRange filter when the timeframe filter is set', () => {
       const startDate = moment.utc()
       const filters = new Filters()
-        .withDateRange(new DateRange(startDate, null))
+        .withDateRange(new FiltersDateRange(startDate, null))
         .withTimeFrame(3)
 
       expect(filters.timeframe).toEqual(3)
@@ -414,8 +417,8 @@ describe('Filters', () => {
     it('unsets end date without selecting timeframe filter when selecting a new start date after the current end date', () => {
       const startDate = moment.utc()
       const filters = new Filters()
-        .withDateRange(new DateRange(startDate, startDate))
-        .withDateRange(new DateRange(startDate, null))
+        .withDateRange(new FiltersDateRange(startDate, startDate))
+        .withDateRange(new FiltersDateRange(startDate, null))
 
       expect(filters.timeframe).toEqual(-1)
       expect(filters.dateRange?.startDate).toEqual(startDate)

@@ -5,7 +5,10 @@
 import { fireEvent, act, render } from '@testing-library/react'
 import React from 'react'
 import AccountFilter from './AccountFilter'
-import { Filters, filtersConfigGenerator } from '../../utils/Filters'
+import {
+  Filters,
+  filtersConfigGenerator,
+} from '../../../../../common/FilterBar/utils/Filters'
 import { FilterOptions } from 'Types'
 
 describe('AccountFilter', () => {

@@ -3,7 +3,10 @@
  */
 
 import React, { Dispatch, SetStateAction } from 'react'
-import { DateRange, Filters } from '../../utils/Filters'
+import {
+  FiltersDateRange,
+  Filters,
+} from '../../../../../common/FilterBar/utils/Filters'
 import { render, RenderResult, act, fireEvent } from '@testing-library/react'
 import moment from 'moment'
 import MockDate from 'mockdate'
@@ -121,7 +124,7 @@ describe('DatePicker', () => {
   it('shows the selected start date when opening the dropdown via start date', () => {
     act(() => {
       const newFilters = filters.withDateRange(
-        new DateRange(
+        new FiltersDateRange(
           moment('2020-03-01T12:00:00Z'),
           moment('2020-09-01T12:00:00Z'),
         ),
@@ -149,7 +152,7 @@ describe('DatePicker', () => {
   it('shows the selected end date when opening the dropdown via end date', () => {
     act(() => {
       const newFilters = filters.withDateRange(
-        new DateRange(
+        new FiltersDateRange(
           moment('2020-03-01T12:00:00Z'),
           moment('2020-07-01T12:00:00Z'),
         ),
