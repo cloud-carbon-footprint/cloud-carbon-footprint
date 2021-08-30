@@ -51,14 +51,13 @@ We would like to thank [@mfulleratlassian](https://github.com/mfulleratlassian) 
     ifnull(location.region, location.location) as region,
     sku.description as usageType,
     usage.unit as usageUnit,
-    system_labels.value AS machineType,
+    system_labels.value AS machineType
     FROM <your-billing-export-table>
     LEFT JOIN
     UNNEST(system_labels) AS system_labels
     ON system_labels.key = "compute.googleapis.com/machine_spec"
-    WHERE
-    cost_type != 'rounding_error'
+    WHERE cost_type != 'rounding_error'
     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
     AND usage_start_time >= TIMESTAMP('YYYY-MM-DD')
-    AND usage_end_time <= TIMESTAMP(''YYYY-MM-DD')
+    AND usage_end_time <= TIMESTAMP('YYYY-MM-DD')
     GROUP BY serviceName, region, usageType, usageUnit, machineType
