@@ -827,26 +827,32 @@ describe('App', () => {
     // given
     const expectedResponse: EmissionRatioResult[] = [
       {
+        cloudProvider: 'AWS',
         region: 'awsRegion1',
         mtPerKwHour: 1,
       },
       {
+        cloudProvider: 'AWS',
         region: 'awsRegion2',
         mtPerKwHour: 2,
       },
       {
+        cloudProvider: 'GCP',
         region: 'gcpRegion1',
         mtPerKwHour: 3,
       },
       {
+        cloudProvider: 'GCP',
         region: 'gcpRegion2',
         mtPerKwHour: 4,
       },
       {
+        cloudProvider: 'AZURE',
         region: 'azureRegion1',
         mtPerKwHour: 5,
       },
       {
+        cloudProvider: 'AZURE',
         region: 'azureRegion2',
         mtPerKwHour: 6,
       },

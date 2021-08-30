@@ -3,6 +3,7 @@
  */
 
 export type EmissionRatioResult = {
+  cloudProvider: string
   region: string
   mtPerKwHour: number
 }
