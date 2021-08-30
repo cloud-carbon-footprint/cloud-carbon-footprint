@@ -224,7 +224,7 @@ describe('Filters', () => {
     it('should default to All Services', () => {
       const filters = new Filters(filtersConfigGenerator(options))
 
-      expect(filters.services).toEqual([allServiceOption, ...services])
+      expect(filters.options.services).toEqual([allServiceOption, ...services])
     })
 
     it('should unselect All Services', () => {
@@ -236,7 +236,7 @@ describe('Filters', () => {
         DropdownFilterOptions.SERVICES,
       )
 
-      expect(newFilters.services).toEqual([])
+      expect(newFilters.options.services).toEqual([])
     })
 
     it('should unselect one service when all services are already selected', () => {
@@ -256,7 +256,7 @@ describe('Filters', () => {
         DropdownFilterOptions.SERVICES,
       )
 
-      expect(newFilters.services).toEqual([
+      expect(newFilters.options.services).toEqual([
         S3ServiceOption,
         ec2ServiceOption,
         elastiCacheServiceOption,
@@ -282,7 +282,7 @@ describe('Filters', () => {
           DropdownFilterOptions.SERVICES,
         )
 
-      expect(newFilters.services).toEqual([ebsServiceOption, rdsServiceOption])
+      expect(newFilters.options.services).toEqual([ebsServiceOption, rdsServiceOption])
     })
 
     it('should unselect an selected service', () => {
@@ -306,7 +306,7 @@ describe('Filters', () => {
           DropdownFilterOptions.SERVICES,
         )
 
-      expect(newFilters.services).toEqual([rdsServiceOption])
+      expect(newFilters.options.services).toEqual([rdsServiceOption])
     })
 
     it('should select all services when a service has already been selected', () => {
@@ -325,7 +325,7 @@ describe('Filters', () => {
           DropdownFilterOptions.SERVICES,
         )
 
-      expect(newFilters.services).toEqual([
+      expect(newFilters.options.services).toEqual([
         allServiceOption,
         ebsServiceOption,
         ec2ServiceOption,
@@ -356,7 +356,7 @@ describe('Filters', () => {
           DropdownFilterOptions.SERVICES,
         )
 
-      expect(newFilters.services).toEqual([
+      expect(newFilters.options.services).toEqual([
         allServiceOption,
         ebsServiceOption,
         ec2ServiceOption,
@@ -432,19 +432,21 @@ describe('Filters', () => {
     it('should unselect a selected account', () => {
       const filters = new Filters({
         timeframe: 12,
-        services: [],
-        cloudProviders: [],
+        options: {
+          services: [],
+          cloudProviders: [],
+          accounts: [mockAccount1],
+        },
         dateRange: null,
-        accounts: [mockAccount1],
       })
-      expect(filters.accounts).toEqual([mockAccount1])
+      expect(filters.options.accounts).toEqual([mockAccount1])
 
       const newFilters = filters.withDropdownOption(
         [],
         filterOptions,
         DropdownFilterOptions.ACCOUNTS,
       )
-      expect(newFilters.accounts).toEqual([])
+      expect(newFilters.options.accounts).toEqual([])
     })
   })
 })

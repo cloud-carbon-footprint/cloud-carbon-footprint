@@ -3,7 +3,7 @@
  */
 
 import config from 'ConfigLoader'
-import { DropdownOption } from 'Types'
+import { AllFilterOptionMap, DropdownOption } from 'Types'
 
 function sortByCloudProvider(
   { cloudProvider: cloudProvider1 = '' }: DropdownOption,
@@ -46,6 +46,12 @@ export const CLOUD_PROVIDER_OPTIONS: DropdownOption[] = [
   ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
   ...alphabetizeDropdownOptions(config().CURRENT_PROVIDERS),
 ]
+
+export const ALL_DROPDOWN_FILTER_OPTIONS: AllFilterOptionMap = {
+  accounts: ALL_ACCOUNTS_DROPDOWN_OPTION,
+  services: ALL_SERVICES_DROPDOWN_OPTION,
+  cloudProviders: ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
+}
 
 export const buildAndOrderDropdownOptions = (
   dropdownOptions: DropdownOption[] | undefined,

@@ -7,6 +7,7 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
+  ALL_DROPDOWN_FILTER_OPTIONS,
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
 } from './DropdownConstants'
@@ -16,7 +17,9 @@ import {
   DropdownOption,
   FilterOptions,
   DropdownFilterOptions,
+  filterLabels,
 } from 'Types'
+import { DropdownSelections } from './FiltersUtil'
 
 type MaybeDateRange = DateRange | null
 type MaybeMoment = moment.Moment | null
@@ -24,29 +27,36 @@ type MaybeMoment = moment.Moment | null
 interface FiltersConfig {
   timeframe: number
   dateRange: MaybeDateRange
-  [DropdownFilterOptions.SERVICES]: DropdownOption[]
-  [DropdownFilterOptions.CLOUD_PROVIDERS]: DropdownOption[]
-  [DropdownFilterOptions.ACCOUNTS]: DropdownOption[]
+  options: DropdownSelections
 }
 
 const defaultFiltersConfig: FiltersConfig = {
   timeframe: 36,
   dateRange: null,
-  [DropdownFilterOptions.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
-  [DropdownFilterOptions.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
-  [DropdownFilterOptions.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
+  options: {
+    [DropdownFilterOptions.SERVICES]: [ALL_SERVICES_DROPDOWN_OPTION],
+    [DropdownFilterOptions.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
+    [DropdownFilterOptions.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
+  },
 }
 
-export const filtersConfigGenerator = ({
-  accounts,
-  services,
-}: FilterResultResponse): FiltersConfig => {
-  const configValues = {
-    accounts: [ALL_ACCOUNTS_DROPDOWN_OPTION, ...accounts],
-    services: [ALL_SERVICES_DROPDOWN_OPTION, ...services],
+export const filtersConfigGenerator = (
+  newOptions: FilterResultResponse,
+): FiltersConfig => {
+  const updatedOptions = { ...defaultFiltersConfig.options }
+  Object.keys(newOptions).map(
+    (option) =>
+      (updatedOptions[option] = [
+        ALL_DROPDOWN_FILTER_OPTIONS[option],
+        ...newOptions[option],
+      ]),
+  )
+
+  const configUpdates = {
+    options: { ...updatedOptions },
   }
 
-  return Object.assign(defaultFiltersConfig, configValues)
+  return Object.assign(defaultFiltersConfig, configUpdates)
 }
 
 export class DateRange {
@@ -66,17 +76,12 @@ export class DateRange {
 export class Filters {
   readonly timeframe: number
   readonly dateRange: MaybeDateRange
-  // TODO: Make this a generic options object
-  readonly services: DropdownOption[]
-  readonly cloudProviders: DropdownOption[]
-  readonly accounts: DropdownOption[]
+  readonly options: DropdownSelections
 
   constructor(config = defaultFiltersConfig) {
     this.timeframe = config.timeframe
     this.dateRange = config.dateRange
-    this.services = config.services
-    this.cloudProviders = config.cloudProviders
-    this.accounts = config.accounts
+    this.options = { ...config.options }
   }
 
   withTimeFrame(timeframe: number): Filters {
@@ -90,19 +95,18 @@ export class Filters {
     filterOptions: FilterOptions,
     dropdownFilter: DropdownFilterOptions,
   ): Filters {
-    const oldSelections = {
-      services: this.services,
-      accounts: this.accounts,
-      cloudProviders: this.cloudProviders,
-    }
+    const oldSelections = { ...this.options }
+
     return new Filters({
       ...this,
-      ...FiltersUtil.handleDropdownSelections(
-        dropdownFilter,
-        dropdownOption,
-        oldSelections,
-        filterOptions,
-      ),
+      options: {
+        ...FiltersUtil.handleDropdownSelections(
+          dropdownFilter,
+          dropdownOption,
+          oldSelections,
+          filterOptions,
+        ),
+      },
     })
   }
 
@@ -121,15 +125,11 @@ export class Filters {
     }
   }
 
-  label(
-    currentOptions: DropdownOption[],
-    allOptions: DropdownOption[],
-    optionType: string,
-  ): string {
+  label(allOptions: DropdownOption[], optionType: string): string {
     return FiltersUtil.numSelectedLabel(
-      currentOptions.length,
+      this.options[optionType].length,
       allOptions.length,
-      optionType,
+      filterLabels[optionType],
     )
   }
 
@@ -144,7 +144,7 @@ export class Filters {
   private getResultsFilteredByAccount(
     resultsFilteredByService: EstimationResult[],
   ): EstimationResult[] {
-    const allAccountsSelected = this.accounts.includes(
+    const hasAllAccountsSelected = this.options.accounts.includes(
       ALL_ACCOUNTS_DROPDOWN_OPTION,
     )
     return resultsFilteredByService
@@ -152,12 +152,12 @@ export class Filters {
         const filteredServiceEstimates =
           estimationResult.serviceEstimates.filter((serviceEstimate) => {
             return (
-              this.accounts.some(
+              this.options.accounts.some(
                 (account) =>
                   (account.name.includes(UnknownTypes.UNKNOWN_ACCOUNT) &&
                     serviceEstimate.accountName === null) ||
                   account.name === serviceEstimate.accountName,
-              ) || allAccountsSelected
+              ) || hasAllAccountsSelected
             )
           })
         return {
@@ -173,19 +173,19 @@ export class Filters {
   private getResultsFilteredByService(
     resultsFilteredByTime: EstimationResult[],
   ): EstimationResult[] {
-    const allServicesSelected = this.services.includes(
+    const hasAllServicesSelected = this.options.services.includes(
       ALL_SERVICES_DROPDOWN_OPTION,
     )
     return resultsFilteredByTime.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter(
         (serviceEstimate) => {
           return (
-            this.services.some(
+            this.options.services.some(
               (service) =>
                 (service.key.includes(UnknownTypes.UNKNOWN_SERVICE) &&
                   serviceEstimate.serviceName === null) ||
                 service.key === serviceEstimate.serviceName,
-            ) || allServicesSelected
+            ) || hasAllServicesSelected
           )
         },
       )

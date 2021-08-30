@@ -28,6 +28,10 @@ export interface DropdownOption {
   cloudProvider?: string
 }
 
+export interface AllFilterOptionMap {
+  [type: string]: DropdownOption
+}
+
 export interface FilterOptions {
   [filterOption: string]: DropdownOption[]
 }
@@ -65,6 +69,8 @@ export type FilterProps = {
   setFilters: Dispatch<SetStateAction<Filters>>
   options?: FilterOptions
 }
+
+export type FilterLabelMapping = { [type in DropdownFilterOptions]: string }
 
 export type DateRange = {
   min: Date | null
@@ -114,3 +120,9 @@ export const barChartCustomColors: string[] = [
   '#DF5200',
   '#790000',
 ]
+
+export const filterLabels: FilterLabelMapping = {
+  accounts: 'Accounts',
+  services: 'Services',
+  cloudProviders: 'Cloud Providers',
+}

@@ -6,7 +6,7 @@ import { fireEvent, act, render } from '@testing-library/react'
 import React from 'react'
 import AccountFilter from './AccountFilter'
 import { Filters, filtersConfigGenerator } from '../../utils/Filters'
-import { FilterOptions } from '../../../../../Types'
+import { FilterOptions } from 'Types'
 
 describe('AccountFilter', () => {
   it('displays the account filter dropdown', async () => {

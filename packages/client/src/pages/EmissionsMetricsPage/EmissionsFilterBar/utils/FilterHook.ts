@@ -6,6 +6,13 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { FilterResultResponse } from '../../../../Types'
 import { Filters, filtersConfigGenerator } from './Filters'
+
+export interface UseFiltersResults {
+  filteredData: EstimationResult[]
+  filters: Filters
+  setFilters: Dispatch<SetStateAction<Filters>>
+}
+
 const useFilters = (
   data: EstimationResult[],
   filteredResponse: FilterResultResponse,
@@ -24,12 +31,6 @@ const useFilters = (
   }, [filteredResponse])
 
   return { filteredData, filters, setFilters }
-}
-
-export interface UseFiltersResults {
-  filteredData: EstimationResult[]
-  filters: Filters
-  setFilters: Dispatch<SetStateAction<Filters>>
 }
 
 export default useFilters
