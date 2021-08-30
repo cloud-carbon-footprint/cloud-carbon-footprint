@@ -72,6 +72,10 @@ export type FilterProps = {
 
 export type FilterLabelMapping = { [type in DropdownFilterOptions]: string }
 
+export type UnknownTypesMapping = {
+  [type in DropdownFilterOptions]?: UnknownTypes
+}
+
 export type DateRange = {
   min: Date | null
   max: Date | null
@@ -122,7 +126,12 @@ export const barChartCustomColors: string[] = [
 ]
 
 export const filterLabels: FilterLabelMapping = {
-  accounts: 'Accounts',
-  services: 'Services',
-  cloudProviders: 'Cloud Providers',
+  [DropdownFilterOptions.ACCOUNTS]: 'Accounts',
+  [DropdownFilterOptions.SERVICES]: 'Services',
+  [DropdownFilterOptions.CLOUD_PROVIDERS]: 'Cloud Providers',
+}
+
+export const unknownOptionTypes: UnknownTypesMapping = {
+  [DropdownFilterOptions.ACCOUNTS]: UnknownTypes.UNKNOWN_ACCOUNT,
+  [DropdownFilterOptions.SERVICES]: UnknownTypes.UNKNOWN_SERVICE,
 }

@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
 import * as FiltersUtil from './FiltersUtil'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
@@ -13,11 +13,11 @@ import {
 } from './DropdownConstants'
 import {
   FilterResultResponse,
-  UnknownTypes,
   DropdownOption,
   FilterOptions,
   DropdownFilterOptions,
   filterLabels,
+  unknownOptionTypes,
 } from 'Types'
 import { DropdownSelections } from './FiltersUtil'
 
@@ -135,65 +135,49 @@ export class Filters {
 
   filter(rawResults: EstimationResult[]): EstimationResult[] {
     const resultsFilteredByTime = this.getResultsFilteredByTime(rawResults)
-    const resultsFilteredByService = this.getResultsFilteredByService(
+    const resultsFilteredByService = this.getResultsFilteredBy(
+      DropdownFilterOptions.SERVICES,
       resultsFilteredByTime,
     )
-    return this.getResultsFilteredByAccount(resultsFilteredByService)
+    return this.getResultsFilteredBy(
+      DropdownFilterOptions.ACCOUNTS,
+      resultsFilteredByService,
+    ).filter((estimationResult) => !!estimationResult?.serviceEstimates?.length)
   }
 
-  private getResultsFilteredByAccount(
-    resultsFilteredByService: EstimationResult[],
+  private getResultsFilteredBy(
+    type: string,
+    previousFilterResults: EstimationResult[],
   ): EstimationResult[] {
-    const hasAllAccountsSelected = this.options.accounts.includes(
-      ALL_ACCOUNTS_DROPDOWN_OPTION,
+    const hasAllOptionsSelected = this.options[type].includes(
+      ALL_DROPDOWN_FILTER_OPTIONS[type],
     )
-    return resultsFilteredByService
-      .map((estimationResult) => {
-        const filteredServiceEstimates =
-          estimationResult.serviceEstimates.filter((serviceEstimate) => {
-            return (
-              this.options.accounts.some(
-                (account) =>
-                  (account.name.includes(UnknownTypes.UNKNOWN_ACCOUNT) &&
-                    serviceEstimate.accountName === null) ||
-                  account.name === serviceEstimate.accountName,
-              ) || hasAllAccountsSelected
-            )
-          })
-        return {
-          timestamp: estimationResult.timestamp,
-          serviceEstimates: filteredServiceEstimates,
-        }
-      })
-      .filter(
-        (estimationResult) => !!estimationResult?.serviceEstimates?.length,
-      )
-  }
-
-  private getResultsFilteredByService(
-    resultsFilteredByTime: EstimationResult[],
-  ): EstimationResult[] {
-    const hasAllServicesSelected = this.options.services.includes(
-      ALL_SERVICES_DROPDOWN_OPTION,
-    )
-    return resultsFilteredByTime.map((estimationResult) => {
+    return previousFilterResults.map((estimationResult) => {
       const filteredServiceEstimates = estimationResult.serviceEstimates.filter(
-        (serviceEstimate) => {
-          return (
-            this.options.services.some(
-              (service) =>
-                (service.key.includes(UnknownTypes.UNKNOWN_SERVICE) &&
-                  serviceEstimate.serviceName === null) ||
-                service.key === serviceEstimate.serviceName,
-            ) || hasAllServicesSelected
-          )
-        },
+        (serviceEstimate) =>
+          this.options[type].some((dropdownOption) =>
+            this.isUnknownOrSameName(dropdownOption, type, serviceEstimate),
+          ) || hasAllOptionsSelected,
       )
       return {
         timestamp: estimationResult.timestamp,
         serviceEstimates: filteredServiceEstimates,
       }
     })
+  }
+
+  private isUnknownOrSameName(
+    dropdownOption: DropdownOption,
+    type: string,
+    serviceEstimate: ServiceData,
+  ) {
+    const name =
+      type === DropdownFilterOptions.ACCOUNTS ? 'accountName' : 'serviceName'
+    return (
+      (dropdownOption.name.includes(unknownOptionTypes[type]) &&
+        serviceEstimate[name] === null) ||
+      dropdownOption.name === serviceEstimate[name]
+    )
   }
 
   private getResultsFilteredByTime(
