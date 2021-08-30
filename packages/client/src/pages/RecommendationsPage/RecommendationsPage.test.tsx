@@ -2,14 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import RecommendationsPage from './RecommendationsPage'
 import { mockRecommendationData } from 'utils/data'
 import { useRemoteRecommendationsService } from 'utils/hooks'
 import { ServiceResult } from 'Types'
-import EmissionsMetricsPage from '../EmissionsMetricsPage'
-import React from 'react'
 
 jest.mock('utils/hooks/RecommendationsServiceHook')
 
@@ -49,7 +48,7 @@ describe('Recommendations Page', () => {
     }
     mockedUseRecommendationsService.mockReturnValue(mockLoading)
 
-    const { getByRole } = render(<EmissionsMetricsPage />)
+    const { getByRole } = render(<RecommendationsPage />)
 
     expect(getByRole('progressbar')).toBeInTheDocument()
   })
