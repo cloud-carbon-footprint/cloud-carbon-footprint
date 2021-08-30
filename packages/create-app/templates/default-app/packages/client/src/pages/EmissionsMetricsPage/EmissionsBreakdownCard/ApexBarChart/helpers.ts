@@ -13,14 +13,22 @@ const createCustomBarColors = (
   const regionColorsMap: string[] = []
   pageData.data.forEach((region) => {
     const currentRegion = region.x[0]
-    let color = barChartCustomColors[0]
+    const cloudProvider = region.x[1]
+    const parsedCloudProvider = cloudProvider.substring(
+      cloudProvider.indexOf('(') + 1,
+      cloudProvider.lastIndexOf(')'),
+    )
     const regionEmissionData = emissionsData.find(
-      (item) => item.region === currentRegion,
+      (item) =>
+        item.region === currentRegion ||
+        (item.cloudProvider === parsedCloudProvider &&
+          item.region === 'Unknown'),
     ) as EmissionRatioResult
     if (!regionEmissionData) {
       regionColorsMap.push(mainTheme)
     } else {
       const { mtPerKwHour } = regionEmissionData
+      let color = barChartCustomColors[0]
       if (mtPerKwHour >= 0.00064) {
         color = barChartCustomColors[4]
       } else if (mtPerKwHour >= 0.00048 && mtPerKwHour < 0.00064) {
@@ -29,8 +37,6 @@ const createCustomBarColors = (
         color = barChartCustomColors[2]
       } else if (mtPerKwHour >= 0.00016 && mtPerKwHour < 0.00032) {
         color = barChartCustomColors[1]
-      } else {
-        color = barChartCustomColors[0]
       }
       regionColorsMap.push(color)
     }
