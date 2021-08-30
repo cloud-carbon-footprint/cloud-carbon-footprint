@@ -1,6 +1,8 @@
 fileignoreconfig:
 - filename: .changeset/brave-lies-sing.md
   checksum: 767abedd8956b7d4b7a7a680125af79d12039e06c5fcdbaf9d45cf1b82c32ee6
+- filename: .changeset/brown-parrots-hug.md
+  checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
 - filename: .changeset/nice-timers-repair.md
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
