@@ -12,9 +12,6 @@ export default class BillingExportRow extends BillingDataRow {
     this.cloudProvider = 'GCP'
     if (!this.region) this.region = GCP_REGIONS.UNKNOWN
     this.vCpuHours = this.usageAmount / 3600
-  }
-
-  setTimestamp(date: BigQueryDate): void {
-    this.timestamp = new Date(date.value)
+    this.timestamp = new Date((init.timestamp as unknown as BigQueryDate).value)
   }
 }

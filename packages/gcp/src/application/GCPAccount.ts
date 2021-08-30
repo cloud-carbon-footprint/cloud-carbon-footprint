@@ -24,6 +24,8 @@ import {
   EstimationResult,
   RecommendationResult,
   GoogleAuthClient,
+  LookupTableInput,
+  LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
@@ -82,6 +84,20 @@ export default class GCPAccount extends CloudProviderAccount {
       new BigQuery({ projectId: this.id }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)
+  }
+
+  getBillingExportDataFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+    )
+    return billingExportTableService.getEstimatesFromInputData(inputData)
   }
 
   getServices(): ICloudService[] {

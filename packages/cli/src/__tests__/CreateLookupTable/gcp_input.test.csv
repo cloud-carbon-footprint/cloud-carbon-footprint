@@ -1,0 +1,7 @@
+serviceName,region,usageType,usageUnit,machineType
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,n1-standard-4
+Compute Engine,europe-west1,Storage PD Capacity,byte-seconds,
+Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,bytes,
+Compute Engine,us-central1,SSD backed PD Capacity,byte-seconds,
+App Engine,us-east4,Backend Instances,seconds,
+Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,bytes,

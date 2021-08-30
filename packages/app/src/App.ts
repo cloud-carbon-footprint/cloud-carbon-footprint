@@ -193,7 +193,7 @@ export default class App {
     return recommendations.flat()
   }
 
-  getEstimatesFromInputData(
+  getAwsEstimatesFromInputData(
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     const config = configLoader()
@@ -201,5 +201,17 @@ export default class App {
     return new AWSAccount(AWS.BILLING_ACCOUNT_ID, AWS.BILLING_ACCOUNT_NAME, [
       AWS.ATHENA_REGION,
     ]).getCostAndUsageReportsDataFromInputData(inputData)
+  }
+
+  getGcpEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const config = configLoader()
+    const GCP = config.GCP
+    return new GCPAccount(
+      GCP.BILLING_PROJECT_ID,
+      GCP.BILLING_PROJECT_NAME,
+      [],
+    ).getBillingExportDataFromInputData(inputData)
   }
 }

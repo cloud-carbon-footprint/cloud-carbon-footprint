@@ -9,8 +9,7 @@ export const validateInputData = (inputData: LookupTableInput[]) => {
       !inputRow.serviceName ||
       !inputRow.region ||
       !inputRow.usageType ||
-      !inputRow.usageUnit ||
-      typeof inputRow.vCpus !== 'string'
+      !inputRow.usageUnit
     ) {
       throw new Error(
         'Input data is incorrect. Please check your input data file and try again.',

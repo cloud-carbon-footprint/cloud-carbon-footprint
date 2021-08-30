@@ -4,4 +4,5 @@ dist
 .env
 .env.production
 !aws_input.test.csv
+!gcp_input.test.csv
 !incorrect_input.test.csv

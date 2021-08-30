@@ -13,6 +13,8 @@ import {
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
   convertByteSecondsToGigabyteHours,
+  LookupTableInput,
+  LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -67,7 +69,7 @@ export default class BillingExportTable {
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
-    private readonly bigQuery: BigQuery,
+    private readonly bigQuery?: BigQuery,
   ) {
     this.tableName = configLoader().GCP.BIG_QUERY_TABLE
     this.billingExportTableLogger = new Logger('BillingExportTable')
@@ -81,74 +83,16 @@ export default class BillingExportTable {
 
     usageRows.map((usageRow) => {
       const billingExportRow = new BillingExportRow(usageRow)
-      billingExportRow.setTimestamp(usageRow.timestamp)
-
-      if (this.isUnsupportedUsage(billingExportRow.usageType)) return []
-
-      if (this.isUnknownUsage(billingExportRow)) {
-        unknownRows.push(billingExportRow)
-        return []
-      }
-
-      let footprintEstimate: FootprintEstimate
-      const emissionsFactors: CloudConstantsEmissionsFactors =
-        GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
-      const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
-        billingExportRow.region,
-      )
-      switch (usageRow.usageUnit) {
-        case 'seconds':
-          if (this.isComputeUsage(billingExportRow.usageType))
-            footprintEstimate = this.getComputeFootprintEstimate(
-              billingExportRow,
-              billingExportRow.timestamp,
-              powerUsageEffectiveness,
-              emissionsFactors,
-            )
-          else {
-            return []
-          }
-          break
-        case 'byte-seconds':
-          if (this.isMemoryUsage(billingExportRow.usageType)) {
-            footprintEstimate = this.getMemoryFootprintEstimate(
-              billingExportRow,
-              billingExportRow.timestamp,
-              powerUsageEffectiveness,
-              emissionsFactors,
-            )
-          } else {
-            footprintEstimate = this.getStorageFootprintEstimate(
-              billingExportRow,
-              billingExportRow.timestamp,
-              powerUsageEffectiveness,
-              emissionsFactors,
-            )
-          }
-          break
-        case 'bytes':
-          if (this.isNetworkingUsage(billingExportRow.usageType))
-            footprintEstimate = this.getNetworkingFootprintEstimate(
-              billingExportRow,
-              billingExportRow.timestamp,
-              powerUsageEffectiveness,
-              emissionsFactors,
-            )
-          else {
-            return []
-          }
-          break
-        default:
-          this.billingExportTableLogger.warn(
-            `Unsupported Usage unit: ${usageRow.usageUnit}`,
-          )
-          return []
-      }
-      appendOrAccumulateEstimatesByDay(
-        results,
+      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         billingExportRow,
-        footprintEstimate,
+        unknownRows,
       )
+      if (footprintEstimate)
+        appendOrAccumulateEstimatesByDay(
+          results,
+          billingExportRow,
+          footprintEstimate,
+        )
     })
 
     if (results.length > 0) {
@@ -158,8 +102,126 @@ export default class BillingExportTable {
           appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
       })
     }
-
     return results
+  }
+
+  getEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const results: LookupTableOutput[] = []
+    const unknownRows: BillingExportRow[] = []
+
+    inputData.map((inputDataRow: LookupTableInput) => {
+      const usageRow = {
+        serviceName: inputDataRow.serviceName,
+        usageAmount: 1,
+        usageType: inputDataRow.usageType,
+        usageUnit: inputDataRow.usageUnit,
+        cost: 1,
+        region: inputDataRow.region,
+        machineType: inputDataRow.machineType,
+        timestamp: new Date(''),
+      }
+
+      const billingExportRow = new BillingExportRow(usageRow)
+      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
+        billingExportRow,
+        unknownRows,
+      )
+      if (footprintEstimate)
+        results.push({
+          serviceName: billingExportRow.serviceName,
+          region: billingExportRow.region,
+          usageType: billingExportRow.usageType,
+          usageUnit: billingExportRow.usageUnit,
+          machineType: billingExportRow.machineType,
+          kilowattHours: footprintEstimate.kilowattHours,
+          co2e: footprintEstimate.co2e,
+        })
+    })
+
+    if (results.length > 0) {
+      unknownRows.map((billingExportRow: BillingExportRow) => {
+        const footprintEstimate =
+          this.getEstimateForUnknownUsage(billingExportRow)
+        if (footprintEstimate)
+          results.push({
+            serviceName: billingExportRow.serviceName,
+            region: billingExportRow.region,
+            usageType: billingExportRow.usageType,
+            usageUnit: billingExportRow.usageUnit,
+            machineType: billingExportRow.machineType,
+            kilowattHours: footprintEstimate.kilowattHours,
+            co2e: footprintEstimate.co2e,
+          })
+      })
+    }
+    return results
+  }
+
+  private getFootprintEstimateFromUsageRow(
+    billingExportRow: BillingExportRow,
+    unknownRows: BillingExportRow[],
+  ): FootprintEstimate | void {
+    if (this.isUnsupportedUsage(billingExportRow.usageType)) return
+
+    if (this.isUnknownUsage(billingExportRow)) {
+      unknownRows.push(billingExportRow)
+      return
+    }
+
+    return this.getEstimateByUsageUnit(billingExportRow)
+  }
+
+  private getEstimateByUsageUnit(
+    billingExportRow: BillingExportRow,
+  ): FootprintEstimate {
+    const emissionsFactors: CloudConstantsEmissionsFactors =
+      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+    const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
+      billingExportRow.region,
+    )
+    switch (billingExportRow.usageUnit) {
+      case 'seconds':
+        if (this.isComputeUsage(billingExportRow.usageType))
+          return this.getComputeFootprintEstimate(
+            billingExportRow,
+            billingExportRow.timestamp,
+            powerUsageEffectiveness,
+            emissionsFactors,
+          )
+        break
+      case 'byte-seconds':
+        if (this.isMemoryUsage(billingExportRow.usageType)) {
+          return this.getMemoryFootprintEstimate(
+            billingExportRow,
+            billingExportRow.timestamp,
+            powerUsageEffectiveness,
+            emissionsFactors,
+          )
+        } else {
+          return this.getStorageFootprintEstimate(
+            billingExportRow,
+            billingExportRow.timestamp,
+            powerUsageEffectiveness,
+            emissionsFactors,
+          )
+        }
+      case 'bytes':
+        if (this.isNetworkingUsage(billingExportRow.usageType))
+          return this.getNetworkingFootprintEstimate(
+            billingExportRow,
+            billingExportRow.timestamp,
+            powerUsageEffectiveness,
+            emissionsFactors,
+          )
+        break
+      default:
+        this.billingExportTableLogger.warn(
+          `Unsupported Usage unit: ${billingExportRow.usageUnit}`,
+        )
+        break
+    }
   }
 
   private getComputeFootprintEstimate(

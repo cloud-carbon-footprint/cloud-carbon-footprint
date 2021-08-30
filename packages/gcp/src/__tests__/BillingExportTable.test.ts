@@ -3,7 +3,10 @@
  */
 
 import { BigQuery } from '@google-cloud/bigquery'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  LookupTableOutput,
+} from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
   StorageEstimator,
@@ -30,6 +33,7 @@ import {
   mockQueryReclassifiedUnknowns,
 } from './fixtures/bigQuery.fixtures'
 import { UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING } from '../lib/BillingExportTypes'
+import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
 const mockCreateQueryJob = jest.fn().mockResolvedValue([mockJob, 'test-job-id'])
@@ -880,6 +884,69 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 2.7575440083940826e-13,
           },
         ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for lookup table input data', async () => {
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+    )
+
+    const result =
+      billingExportTableService.getEstimatesFromInputData(lookupTableInputData)
+
+    const expectedResult: LookupTableOutput[] = [
+      {
+        co2e: 3.165769444444445e-10,
+        kilowattHours: 8.769444444444446e-7,
+        machineType: 'n1-standard-4',
+        region: 'us-east4',
+        serviceName: 'Compute Engine',
+        usageType: 'N1 Predefined Instance Core running in Virginia',
+        usageUnit: 'seconds',
+      },
+      {
+        co2e: 3.7598510971292856e-23,
+        kilowattHours: 1.7735146684572102e-19,
+        machineType: '',
+        region: 'europe-west1',
+        serviceName: 'Compute Engine',
+        usageType: 'Storage PD Capacity',
+        usageUnit: 'byte-seconds',
+      },
+      {
+        co2e: 2.1323561668395997e-16,
+        kilowattHours: 1.0058283805847168e-12,
+        machineType: '',
+        region: 'europe-west1',
+        serviceName: 'Compute Engine',
+        usageType: 'Network Internet Egress from EMEA to Americas',
+        usageUnit: 'bytes',
+      },
+      {
+        co2e: 1.5277692000381648e-22,
+        kilowattHours: 3.3651303965598345e-19,
+        machineType: '',
+        region: 'us-central1',
+        serviceName: 'Compute Engine',
+        usageType: 'SSD backed PD Capacity',
+        usageUnit: 'byte-seconds',
+      },
+      {
+        co2e: 3.165769444444445e-10,
+        kilowattHours: 8.769444444444446e-7,
+        machineType: '',
+        region: 'us-east4',
+        serviceName: 'App Engine',
+        usageType: 'Backend Instances',
+        usageUnit: 'seconds',
       },
     ]
     expect(result).toEqual(expectedResult)

@@ -43,7 +43,7 @@ describe('createLookupTable', () => {
       try {
         fs.unlinkSync(outputFilePath)
       } catch (err) {
-        console.error(err)
+        console.log(err)
       }
     })
     it('creates AWS lookup table CSV file, with default output file path', async () => {
@@ -72,6 +72,38 @@ describe('createLookupTable', () => {
         inputFilePath,
         '--awsOutput',
         'aws_lookup_data.csv',
+      ])
+
+      expect(fs.existsSync(outputFilePath)).toBe(true)
+      expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
+    })
+
+    it('creates GCP lookup table CSV file, with default output file path', async () => {
+      inputFilePath = path.join(__dirname, 'gcp_input.test.csv')
+      outputFilePath = path.join(process.cwd(), 'gcp_lookup_data.csv')
+
+      await createLookupTable([
+        'executable',
+        'file',
+        '--gcpInput',
+        inputFilePath,
+      ])
+
+      expect(fs.existsSync(outputFilePath)).toBe(true)
+      expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
+    })
+
+    it('creates GCP lookup table CSV file, with provided output file name', async () => {
+      inputFilePath = path.join(__dirname, 'gcp_input.test.csv')
+      outputFilePath = path.join(process.cwd(), 'gcp_lookup_data.csv')
+
+      await createLookupTable([
+        'executable',
+        'file',
+        '--gcpInput',
+        inputFilePath,
+        '--gcpOutput',
+        'gcp_lookup_data.csv',
       ])
 
       expect(fs.existsSync(outputFilePath)).toBe(true)
