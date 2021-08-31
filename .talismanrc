@@ -115,6 +115,8 @@ fileignoreconfig:
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
   checksum: 0005b5abc9cba50b821c955aa1cc28e9860d4c8748f52c3bf6927eef620500fc
+- filename: packages/client/src/common/FilterBar/utils/FiltersUtil.ts
+  checksum: 4023aca308afc058ea67013d0a5a3f8a513eb7e47d4b87b9ee0daebe3e030fc1
 - filename: packages/client/src/common/SelectDropdown/SelectDropdown.tsx
   checksum: e30283b83d2ccfa4e72c58d243c11c8251019cf5d7f6da5b8c9649a94984c147
 - filename: packages/client/src/dashboard/CarbonComparisonCard.tsx

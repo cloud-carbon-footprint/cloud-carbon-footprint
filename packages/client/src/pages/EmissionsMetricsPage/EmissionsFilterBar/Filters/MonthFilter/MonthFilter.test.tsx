@@ -5,14 +5,15 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render } from '@testing-library/react'
 import MonthFilter from './MonthFilter'
-import { Filters } from '../../../../../common/FilterBar/utils/Filters'
+import { EmissionsFilters } from '../../utils/EmissionsFilters'
+import { Filters } from 'common/FilterBar/utils/Filters'
 
 describe('MonthFilter', () => {
   let filters: Filters
   let mockSetFilters: jest.Mocked<Dispatch<SetStateAction<Filters>>>
 
   beforeEach(() => {
-    filters = new Filters()
+    filters = new EmissionsFilters()
     mockSetFilters = jest.fn()
   })
 

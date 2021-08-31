@@ -10,7 +10,8 @@ import {
   FilterOptions,
   FilterResultResponse,
 } from 'Types'
-import { FiltersDateRange, Filters, filtersConfigGenerator } from './Filters'
+import { FiltersDateRange, Filters } from 'common/FilterBar/utils/Filters'
+import { EmissionsFilters } from './EmissionsFilters'
 
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
@@ -123,7 +124,7 @@ describe('Filters', () => {
   describe('filter', () => {
     it('should filter just ebs', () => {
       const estimationResults = generateEstimations(moment.utc(), 1)
-      const filters = new Filters().withDropdownOption(
+      const filters = new EmissionsFilters().withDropdownOption(
         [ebsServiceOption],
         filterOptions,
         DropdownFilterOptions.SERVICES,
@@ -136,7 +137,7 @@ describe('Filters', () => {
 
     it('should ignore services not present in the estimationResults', () => {
       const estimationResults = generateEstimations(moment.utc(), 1, ['s3'])
-      const filters = new Filters().withDropdownOption(
+      const filters = new EmissionsFilters().withDropdownOption(
         [ebsServiceOption, ec2ServiceOption],
         filterOptions,
         DropdownFilterOptions.SERVICES,
@@ -149,7 +150,7 @@ describe('Filters', () => {
 
     it('should filter by timeframe', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
-      const filters = new Filters().withTimeFrame(3)
+      const filters = new EmissionsFilters().withTimeFrame(3)
 
       const filteredData = filters.filter(estimationResults)
 
@@ -158,7 +159,7 @@ describe('Filters', () => {
 
     it('should filter by timeframe and service', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
         .withTimeFrame(3)
         .withDropdownOption(
           [ebsServiceOption],
@@ -174,7 +175,7 @@ describe('Filters', () => {
 
     it('should filter by timeframe = 36 by default', () => {
       const estimationResults = generateEstimations(moment.utc(), 13)
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const filteredData = filters.filter(estimationResults)
 
@@ -186,7 +187,7 @@ describe('Filters', () => {
 
       const startDate = moment.utc().subtract(4, 'M')
       const endDate = moment.utc().subtract(2, 'M')
-      const filters = new Filters().withDateRange(
+      const filters = new EmissionsFilters().withDateRange(
         new FiltersDateRange(startDate, endDate),
       )
 
@@ -200,7 +201,7 @@ describe('Filters', () => {
       const startDate = moment.utc().subtract(6, 'M')
       const endDate = moment.utc().subtract(4, 'M')
       const newStartDate = moment.utc().subtract(3, 'M')
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
         .withDateRange(new FiltersDateRange(startDate, endDate))
         .withDateRange(new FiltersDateRange(newStartDate, null))
 
@@ -210,7 +211,7 @@ describe('Filters', () => {
 
     it('should return an empty array for data when all service estimates are empty', () => {
       const estimationResults = generateEstimations(moment.utc(), 1)
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
       estimationResults.forEach((estimate) => {
         estimate.serviceEstimates = []
       })
@@ -222,13 +223,14 @@ describe('Filters', () => {
 
   describe('withServices', () => {
     it('should default to All Services', () => {
-      const filters = new Filters(filtersConfigGenerator(options))
+      const filterConfig = EmissionsFilters.generateConfig(options)
+      const filters = new Filters(filterConfig)
 
       expect(filters.options.services).toEqual([allServiceOption, ...services])
     })
 
     it('should unselect All Services', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const newFilters = filters.withDropdownOption(
         [],
@@ -240,7 +242,7 @@ describe('Filters', () => {
     })
 
     it('should unselect one service when all services are already selected', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const newFilters = filters.withDropdownOption(
         [
@@ -267,7 +269,7 @@ describe('Filters', () => {
     })
 
     it('should select an unselected service', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const newFilters = filters
         .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
@@ -289,7 +291,7 @@ describe('Filters', () => {
     })
 
     it('should unselect an selected service', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const newFilters = filters
         .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
@@ -313,7 +315,7 @@ describe('Filters', () => {
     })
 
     it('should select all services when a service has already been selected', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const newFilters = filters
         .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
@@ -341,7 +343,7 @@ describe('Filters', () => {
     })
 
     it('should add ALL_SERVICES when all services are selected', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       const newFilters = filters
         .withDropdownOption([], filterOptions, DropdownFilterOptions.SERVICES)
@@ -374,7 +376,7 @@ describe('Filters', () => {
 
   describe('timeframe vs dateRange', () => {
     it('selects the timeframe filter by default', () => {
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
 
       expect(filters.timeframe).toEqual(36)
       expect(filters.dateRange).toBeNull()
@@ -382,7 +384,7 @@ describe('Filters', () => {
 
     it('keeps timeframe filter when the dateRange filter is incomplete', () => {
       const startDate = moment.utc()
-      const filters = new Filters().withDateRange(
+      const filters = new EmissionsFilters().withDateRange(
         new FiltersDateRange(startDate, null),
       )
 
@@ -394,7 +396,7 @@ describe('Filters', () => {
 
     it('unselects the timeframe filter when the dateRange filter is complete', () => {
       const startDate = moment.utc()
-      const filters = new Filters().withDateRange(
+      const filters = new EmissionsFilters().withDateRange(
         new FiltersDateRange(startDate, startDate),
       )
 
@@ -406,7 +408,7 @@ describe('Filters', () => {
 
     it('unselects the dateRange filter when the timeframe filter is set', () => {
       const startDate = moment.utc()
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
         .withDateRange(new FiltersDateRange(startDate, null))
         .withTimeFrame(3)
 
@@ -416,7 +418,7 @@ describe('Filters', () => {
 
     it('unsets end date without selecting timeframe filter when selecting a new start date after the current end date', () => {
       const startDate = moment.utc()
-      const filters = new Filters()
+      const filters = new EmissionsFilters()
         .withDateRange(new FiltersDateRange(startDate, startDate))
         .withDateRange(new FiltersDateRange(startDate, null))
 

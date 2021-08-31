@@ -3,7 +3,11 @@
  */
 
 import { Filters } from 'common/FilterBar/utils/Filters'
-import { DropdownFilterOptions, FiltersConfig } from 'Types'
+import {
+  DropdownFilterOptions,
+  FilterResultResponse,
+  FiltersConfig,
+} from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
@@ -23,5 +27,9 @@ const defaultConfig: FiltersConfig = {
 export class EmissionsFilters extends Filters {
   constructor(config = defaultConfig) {
     super(config)
+  }
+
+  static generateConfig(newOptions: FilterResultResponse): FiltersConfig {
+    return super.generateConfig(newOptions, defaultConfig)
   }
 }

@@ -5,11 +5,9 @@
 import { fireEvent, act, render } from '@testing-library/react'
 import React from 'react'
 import AccountFilter from './AccountFilter'
-import {
-  Filters,
-  filtersConfigGenerator,
-} from '../../../../../common/FilterBar/utils/Filters'
+import { Filters } from 'common/FilterBar/utils/Filters'
 import { FilterOptions } from 'Types'
+import { EmissionsFilters } from '../../utils/EmissionsFilters'
 
 describe('AccountFilter', () => {
   it('displays the account filter dropdown', async () => {
@@ -17,7 +15,8 @@ describe('AccountFilter', () => {
       { cloudProvider: 'aws', key: '1212121222121', name: 'test account' },
     ]
     const filteredDataResults = { accounts: account, services: [] }
-    const mockFilters = new Filters(filtersConfigGenerator(filteredDataResults))
+    const filtersConfig = EmissionsFilters.generateConfig(filteredDataResults)
+    const mockFilters = new Filters(filtersConfig)
     const filterOptions: FilterOptions = {
       accounts: [
         { key: 'all', name: 'All Accounts', cloudProvider: '' },

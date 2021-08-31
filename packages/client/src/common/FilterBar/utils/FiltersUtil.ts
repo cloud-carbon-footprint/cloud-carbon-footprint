@@ -6,7 +6,7 @@ import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import createOptionChooser from './options'
 
 export type DropdownSelections = {
-  [key in DropdownFilterOptions]: DropdownOption[]
+  [key in DropdownFilterOptions]?: DropdownOption[]
 }
 
 export function handleDropdownSelections(

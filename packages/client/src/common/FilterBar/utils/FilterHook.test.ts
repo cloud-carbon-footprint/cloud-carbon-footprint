@@ -5,9 +5,9 @@
 import { renderHook, act, HookResult } from '@testing-library/react-hooks'
 import useFilters, { UseFiltersResults } from './FilterHook'
 import moment from 'moment'
-import { generateEstimations } from '../../../utils/data'
-import { FilterResultResponse } from '../../../Types'
-import { Filters, filtersConfigGenerator } from './Filters'
+import { generateEstimations } from 'utils/data'
+import { FilterResultResponse, FiltersConfig } from 'Types'
+import { Filters } from './Filters'
 
 describe('useFilters', () => {
   describe('changing timeframe', () => {
@@ -15,9 +15,20 @@ describe('useFilters', () => {
     const filteredResult: FilterResultResponse = { accounts: [], services: [] }
     let result: HookResult<UseFiltersResults>
 
+    const defaultConfig: FiltersConfig = {
+      timeframe: 36,
+      dateRange: null,
+      options: {},
+    }
+
     beforeEach(() => {
-      const buildFilter = (filteredResponse: FilterResultResponse) =>
-        new Filters(filtersConfigGenerator(filteredResponse))
+      const buildFilter = (filteredResponse: FilterResultResponse) => {
+        const updatedConfig = Filters.generateConfig(
+          filteredResponse,
+          defaultConfig,
+        )
+        return new Filters(updatedConfig)
+      }
       result = renderHook(() =>
         useFilters(estimationResults, buildFilter, filteredResult),
       ).result

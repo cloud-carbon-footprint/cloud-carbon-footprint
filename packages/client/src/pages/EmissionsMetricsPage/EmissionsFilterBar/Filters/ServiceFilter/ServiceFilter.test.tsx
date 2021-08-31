@@ -6,15 +6,13 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
-import {
-  Filters,
-  filtersConfigGenerator,
-} from '../../../../../common/FilterBar/utils/Filters'
+import { Filters } from 'common/FilterBar/utils/Filters'
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
-} from '../../../../../common/FilterBar/utils/DropdownConstants'
+} from 'common/FilterBar/utils/DropdownConstants'
+import { EmissionsFilters } from '../../utils/EmissionsFilters'
 
 jest.mock('ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
@@ -81,7 +79,8 @@ describe('ServiceFilter', () => {
 
   beforeEach(() => {
     mockSetFilters = jest.fn()
-    filters = new Filters(filtersConfigGenerator(filteredDataResults))
+    const filterConfig = EmissionsFilters.generateConfig(filteredDataResults)
+    filters = new Filters(filterConfig)
     page = render(
       <ServiceFilter
         filters={filters}
