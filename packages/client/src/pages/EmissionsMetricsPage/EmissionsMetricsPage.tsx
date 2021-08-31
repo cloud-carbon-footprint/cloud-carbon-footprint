@@ -19,6 +19,7 @@ import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { EmissionsFilters } from './EmissionsFilterBar/utils/EmissionsFilters'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export default function EmissionsMetricsPage(): ReactElement {
   const classes = useStyles()
@@ -48,8 +49,10 @@ export default function EmissionsMetricsPage(): ReactElement {
   const { filteredData, filters, setFilters } = useFilters(
     data,
     buildFilters,
+    EmissionsFilters.generateConfig,
     filteredDataResults,
   )
+  const filteredEstimationData = filteredData as EstimationResult[]
 
   if (loading) {
     return (
@@ -71,17 +74,17 @@ export default function EmissionsMetricsPage(): ReactElement {
         <Grid container spacing={3}>
           <EmissionsOverTimeCard
             classes={classes}
-            filteredData={filteredData}
+            filteredData={filteredEstimationData}
           />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
               <CarbonComparisonCard
                 containerClass={classes.gridCardHalf}
-                data={filteredData}
+                data={filteredEstimationData}
               />
               <EmissionsBreakdownCard
                 containerClass={classes.gridCardHalf}
-                data={filteredData}
+                data={filteredEstimationData}
               />
             </Grid>
           </Grid>

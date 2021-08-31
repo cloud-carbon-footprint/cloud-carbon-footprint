@@ -6,31 +6,28 @@ import { renderHook, act, HookResult } from '@testing-library/react-hooks'
 import useFilters, { UseFiltersResults } from './FilterHook'
 import moment from 'moment'
 import { generateEstimations } from 'utils/data'
-import { FilterResultResponse, FiltersConfig } from 'Types'
-import { Filters } from './Filters'
+import { FilterResultResponse } from 'Types'
+import { EmissionsFilters } from '../../../pages/EmissionsMetricsPage/EmissionsFilterBar/utils/EmissionsFilters'
 
+//TODO: Make this test not be dependent on EmissionsFilters
 describe('useFilters', () => {
   describe('changing timeframe', () => {
     const estimationResults = generateEstimations(moment.utc(), 14)
     const filteredResult: FilterResultResponse = { accounts: [], services: [] }
     let result: HookResult<UseFiltersResults>
 
-    const defaultConfig: FiltersConfig = {
-      timeframe: 36,
-      dateRange: null,
-      options: {},
-    }
-
     beforeEach(() => {
       const buildFilter = (filteredResponse: FilterResultResponse) => {
-        const updatedConfig = Filters.generateConfig(
-          filteredResponse,
-          defaultConfig,
-        )
-        return new Filters(updatedConfig)
+        const updatedConfig = EmissionsFilters.generateConfig(filteredResponse)
+        return new EmissionsFilters(updatedConfig)
       }
       result = renderHook(() =>
-        useFilters(estimationResults, buildFilter, filteredResult),
+        useFilters(
+          estimationResults,
+          buildFilter,
+          EmissionsFilters.generateConfig,
+          filteredResult,
+        ),
       ).result
     })
 

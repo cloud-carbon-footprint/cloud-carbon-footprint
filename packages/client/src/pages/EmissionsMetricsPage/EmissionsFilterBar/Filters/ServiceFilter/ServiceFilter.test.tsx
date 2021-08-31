@@ -80,7 +80,7 @@ describe('ServiceFilter', () => {
   beforeEach(() => {
     mockSetFilters = jest.fn()
     const filterConfig = EmissionsFilters.generateConfig(filteredDataResults)
-    filters = new Filters(filterConfig)
+    filters = new EmissionsFilters(filterConfig)
     page = render(
       <ServiceFilter
         filters={filters}

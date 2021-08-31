@@ -85,6 +85,8 @@ export type UnknownTypesMapping = {
   [type in DropdownFilterOptions]?: UnknownTypes
 }
 
+export type FilterResults = EstimationResult[] | RecommendationResult[]
+
 export type DateRange = {
   min: Date | null
   max: Date | null

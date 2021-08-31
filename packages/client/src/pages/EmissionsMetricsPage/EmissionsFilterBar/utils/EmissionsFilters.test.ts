@@ -435,7 +435,7 @@ describe('Filters', () => {
       name: 'testAccount1',
     }
     it('should unselect a selected account', () => {
-      const filters = new Filters({
+      const filters = new EmissionsFilters({
         timeframe: 12,
         options: {
           services: [],
