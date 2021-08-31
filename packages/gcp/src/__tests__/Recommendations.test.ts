@@ -278,7 +278,7 @@ describe('GCP Recommendations Service', () => {
           co2eSavings: 0,
           costSavings: 15,
           resourceId: '',
-          instanceName: '',
+          instanceName: 'instance-name',
         },
       ]
 

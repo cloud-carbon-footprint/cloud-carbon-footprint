@@ -4,8 +4,9 @@
 
 import { Resource } from '@google-cloud/resource-manager'
 import { compute_v1, google } from 'googleapis'
+import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
-import { GoogleAuthClient } from '@cloud-carbon-footprint/common'
+import { GoogleAuthClient, wait } from '@cloud-carbon-footprint/common'
 import {
   InstanceData,
   mockedAddressesResultItems,
@@ -29,8 +30,6 @@ import {
 import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy, setupSpyWithRejectedValue } from './helpers'
-import { GoogleAuth } from 'google-auth-library'
-import { wait } from '@cloud-carbon-footprint/common'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<

@@ -3,23 +3,23 @@
  */
 import R from 'ramda'
 import { Project, Resource } from '@google-cloud/resource-manager'
-import { GoogleAuthClient, Logger, wait } from '@cloud-carbon-footprint/common'
-import {
-  ActiveProject,
-  RecommenderRecommendations,
-} from './RecommendationsTypes'
+import { APIEndpoint } from 'googleapis-common'
+import { RecommenderClient } from '@google-cloud/recommender'
 import { compute_v1 } from 'googleapis'
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
 import Schema$Disk = compute_v1.Schema$Disk
 import Schema$Image = compute_v1.Schema$Image
-import { APIEndpoint } from 'googleapis-common'
-import { RecommenderClient } from '@google-cloud/recommender'
-import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
+import Schema$Address = compute_v1.Schema$Address
 import Schema$InstancesScopedList = compute_v1.Schema$InstancesScopedList
 import Schema$DisksScopedList = compute_v1.Schema$DisksScopedList
 import Schema$AddressesScopedList = compute_v1.Schema$AddressesScopedList
-import Schema$Address = compute_v1.Schema$Address
+import { GoogleAuthClient, Logger, wait } from '@cloud-carbon-footprint/common'
+import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
+import {
+  ActiveProject,
+  RecommenderRecommendations,
+} from './RecommendationsTypes'
 
 const RETRY_AFTER = 10
 

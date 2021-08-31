@@ -8,6 +8,7 @@ import { google } from '@google-cloud/recommender/build/protos/protos'
 import IRecommendation = google.cloud.recommender.v1.IRecommendation
 import IImpact = google.cloud.recommender.v1.IImpact
 import Schema$Instance = compute_v1.Schema$Instance
+import Schema$Disk = compute_v1.Schema$Disk
 import {
   COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,
@@ -37,7 +38,6 @@ import {
 } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
 import { GCP_REGIONS } from './GCPRegions'
-import Schema$Disk = compute_v1.Schema$Disk
 
 export default class Recommendations implements ICloudRecommendationsService {
   readonly RECOMMENDER_IDS: string[] = [
