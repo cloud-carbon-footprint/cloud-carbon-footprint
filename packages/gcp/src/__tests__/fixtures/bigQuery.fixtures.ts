@@ -8,6 +8,7 @@ const bigQueryDateOne: BigQueryDate = { value: '2020-11-02' }
 const bigQueryDateTwo: BigQueryDate = { value: '2020-10-28' }
 const bigQueryDateThree: BigQueryDate = { value: '2020-11-03' }
 const bigQueryDateFour: BigQueryDate = { value: '2020-11-04' }
+const bigQueryDateFive: BigQueryDate = { value: '2020-11-05' }
 const accountId = 'test-account-id'
 const accountName = 'test-account-name'
 
@@ -329,7 +330,7 @@ export const mockQueryAppEngineComputeUnknownRegion: any[][] = [
   ],
 ]
 
-export const mockQueryNetworkingIgnoreIngress: any[][] = [
+export const mockQueryNetworkingWithIngress: any[][] = [
   [
     {
       timestamp: bigQueryDateOne,
@@ -709,6 +710,19 @@ export const mockQueryReclassifiedUnknowns: any[][] = [
       vCpus: null,
       usageAmount: 4817102712,
       cost: 25,
+      machineType: null,
+    },
+    {
+      timestamp: bigQueryDateFive,
+      accountId: accountId,
+      accountName: accountName,
+      region: 'asia-south1',
+      serviceName: 'Cloud Storage',
+      usageType: 'Nearline Class B Operations',
+      usageUnit: 'requests',
+      vCpus: null,
+      usageAmount: 4,
+      cost: 4.0e-6,
       machineType: null,
     },
   ],

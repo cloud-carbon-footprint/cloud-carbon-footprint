@@ -6,6 +6,8 @@ import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory']
 
+export const UNKNOWN_USAGE_UNITS: string[] = ['requests']
+
 export const UNKNOWN_USAGE_TYPES: string[] = [
   'Dedicated Memcache',
   'BigQuery BI Engine',

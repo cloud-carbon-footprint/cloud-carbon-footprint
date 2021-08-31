@@ -46,6 +46,7 @@ import {
   UNSUPPORTED_USAGE_TYPES,
   NETWORKING_STRING_FORMATS,
   GCP_QUERY_GROUP_BY,
+  UNKNOWN_USAGE_UNITS,
 } from './BillingExportTypes'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
@@ -170,11 +171,12 @@ export default class BillingExportTable {
       return
     }
 
-    return this.getEstimateByUsageUnit(billingExportRow)
+    return this.getEstimateByUsageUnit(billingExportRow, unknownRows)
   }
 
   private getEstimateByUsageUnit(
     billingExportRow: BillingExportRow,
+    unknownRows: BillingExportRow[],
   ): FootprintEstimate {
     const emissionsFactors: CloudConstantsEmissionsFactors =
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
@@ -183,13 +185,16 @@ export default class BillingExportTable {
     )
     switch (billingExportRow.usageUnit) {
       case 'seconds':
-        if (this.isComputeUsage(billingExportRow.usageType))
+        if (this.isComputeUsage(billingExportRow.usageType)) {
           return this.getComputeFootprintEstimate(
             billingExportRow,
             billingExportRow.timestamp,
             powerUsageEffectiveness,
             emissionsFactors,
           )
+        } else {
+          unknownRows.push(billingExportRow)
+        }
         break
       case 'byte-seconds':
         if (this.isMemoryUsage(billingExportRow.usageType)) {
@@ -208,13 +213,16 @@ export default class BillingExportTable {
           )
         }
       case 'bytes':
-        if (this.isNetworkingUsage(billingExportRow.usageType))
+        if (this.isNetworkingUsage(billingExportRow.usageType)) {
           return this.getNetworkingFootprintEstimate(
             billingExportRow,
             billingExportRow.timestamp,
             powerUsageEffectiveness,
             emissionsFactors,
           )
+        } else {
+          unknownRows.push(billingExportRow)
+        }
         break
       default:
         this.billingExportTableLogger.warn(
@@ -400,6 +408,7 @@ export default class BillingExportTable {
     return (
       containsAny(UNKNOWN_USAGE_TYPES, usageRow.usageType) ||
       containsAny(UNKNOWN_SERVICE_TYPES, usageRow.serviceName) ||
+      containsAny(UNKNOWN_USAGE_UNITS, usageRow.usageUnit) ||
       !usageRow.usageType
     )
   }
