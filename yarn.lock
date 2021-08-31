@@ -2032,7 +2032,7 @@ __metadata:
     "@cloud-carbon-footprint/app": ^0.2.0
     "@cloud-carbon-footprint/common": ^1.1.0
     "@types/express": ^4.17.12
-    "@types/jest": ^26.0.23
+    "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
@@ -2071,7 +2071,7 @@ __metadata:
     "@cloud-carbon-footprint/gcp": ^0.3.1
     "@google-cloud/monitoring": ^2.3.1
     "@google-cloud/storage": ^5.8.5
-    "@types/jest": ^26.0.23
+    "@types/jest": ^27.0.1
     "@types/node": ^16.0.1
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
@@ -2099,7 +2099,7 @@ __metadata:
     "@cloud-carbon-footprint/common": ^1.1.0
     "@cloud-carbon-footprint/core": ^0.10.0
     "@google-cloud/iam-credentials": ^1.0.3
-    "@types/jest": ^26.0.20
+    "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
@@ -2138,7 +2138,7 @@ __metadata:
     "@cloud-carbon-footprint/common": ^1.1.0
     "@cloud-carbon-footprint/core": ^0.10.0
     "@google-cloud/secret-manager": ^3.7.1
-    "@types/jest": ^26.0.20
+    "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
@@ -2170,7 +2170,7 @@ __metadata:
     "@cloud-carbon-footprint/app": 0.2.1
     "@cloud-carbon-footprint/common": ^1.1.0
     "@types/cli-table": ^0.3.0
-    "@types/jest": ^26.0.23
+    "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
     "@types/prompts": ^2.0.12
@@ -2222,7 +2222,7 @@ __metadata:
     "@testing-library/react": ^12.0.0
     "@testing-library/react-hooks": ^7.0.0
     "@testing-library/user-event": ^13.1.9
-    "@types/jest": ^26.0.23
+    "@types/jest": ^27.0.1
     "@types/lodash": ^4.14.169
     "@types/mockdate": ^3.0.0
     "@types/node": ^16.0.1
@@ -2272,7 +2272,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/common@workspace:packages/common"
   dependencies:
     "@google-cloud/logging-winston": ^4.0.5
-    "@types/jest": ^26.0.23
+    "@types/jest": ^27.0.1
     "@types/node": ^16.0.1
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
@@ -2299,7 +2299,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/core@workspace:packages/core"
   dependencies:
     "@cloud-carbon-footprint/common": ^1.0.0
-    "@types/jest": ^26.0.23
+    "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
     "@types/ramda": ^0.27.40
@@ -2367,7 +2367,7 @@ __metadata:
     "@google-cloud/monitoring": ^2.3.1
     "@google-cloud/recommender": ^4.2.2
     "@google-cloud/resource-manager": ^2.0.0
-    "@types/jest": ^26.0.20
+    "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
     "@types/source-map-support": ^0.5.3
@@ -3026,6 +3026,19 @@ __metadata:
     "@types/yargs": ^16.0.0
     chalk: ^4.0.0
   checksum: 86c1d8707ffcf8fb3574fa6865e1768d771c83494df5bfdc81199cac81fdbe947c69a7c113d03b7bf21c926bbfefffcfe7253138d6e52bb61a1386e05aff2a6b
+  languageName: node
+  linkType: hard
+
+"@jest/types@npm:^27.1.0":
+  version: 27.1.0
+  resolution: "@jest/types@npm:27.1.0"
+  dependencies:
+    "@types/istanbul-lib-coverage": ^2.0.0
+    "@types/istanbul-reports": ^3.0.0
+    "@types/node": "*"
+    "@types/yargs": ^16.0.0
+    chalk: ^4.0.0
+  checksum: cec6428a5cf03f92d7cb500f9512badbe17f6f366d06b0026ab0ec97e805a214e712afb37dd4f625989f47b16f0fb7e0da305224e1c25a9d375db67a444426ae
   languageName: node
   linkType: hard
 
@@ -5026,13 +5039,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:*, @types/jest@npm:^26.0.20, @types/jest@npm:^26.0.23":
+"@types/jest@npm:*":
   version: 26.0.23
   resolution: "@types/jest@npm:26.0.23"
   dependencies:
     jest-diff: ^26.0.0
     pretty-format: ^26.0.0
   checksum: a015676b78bdc51be6f6315acef10d9106ea8064e3e49143bca3c75b834b61285b45c5f5ccfd049a80107f1e2869a9183cdb5be85816c073ea8dd05852fafdc6
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:^27.0.1":
+  version: 27.0.1
+  resolution: "@types/jest@npm:27.0.1"
+  dependencies:
+    jest-diff: ^27.0.0
+    pretty-format: ^27.0.0
+  checksum: 5f2382b5800e736a1fb805b5ce35dc9276b978ab24225f3d3da0c5f74789a528cd8e2b085e3a157a12b1395038f137f7e1babd18c4b55c54c25f5db1d4ea3153
   languageName: node
   linkType: hard
 
@@ -10293,6 +10316,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"diff-sequences@npm:^27.0.6":
+  version: 27.0.6
+  resolution: "diff-sequences@npm:27.0.6"
+  checksum: c2a10ecdf2d66a319e3f18f2d0b9cab6282631084c84825bdf65152743d515b6ea07ce2920b6fe7a1a5c6b9148708b23d53178d1f215b8f6d195dc44d1ed770f
+  languageName: node
+  linkType: hard
+
 "diff@npm:^4.0.1, diff@npm:^4.0.2":
   version: 4.0.2
   resolution: "diff@npm:4.0.2"
@@ -14913,6 +14943,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jest-diff@npm:^27.0.0":
+  version: 27.1.0
+  resolution: "jest-diff@npm:27.1.0"
+  dependencies:
+    chalk: ^4.0.0
+    diff-sequences: ^27.0.6
+    jest-get-type: ^27.0.6
+    pretty-format: ^27.1.0
+  checksum: bc965022e8ee07711608cf84a13b26bd7cf631954a62f11ec1cf07301c064938bf99ccc211ddce88a4f5fd22152634fd4246bcc93ecc449af238e2b5f51c7336
+  languageName: node
+  linkType: hard
+
 "jest-docblock@npm:^26.0.0":
   version: 26.0.0
   resolution: "jest-docblock@npm:26.0.0"
@@ -14975,6 +15017,13 @@ fsevents@^1.2.7:
   version: 26.3.0
   resolution: "jest-get-type@npm:26.3.0"
   checksum: fc3e2d2b90cca74597c4ad6234c2fcc2ccb62894d0f7afe22fc55b5d93a2f02d3080ccef50f09c979d4b5a060bc76c4343911556d75ed9e892e0ebda6d54c44b
+  languageName: node
+  linkType: hard
+
+"jest-get-type@npm:^27.0.6":
+  version: 27.0.6
+  resolution: "jest-get-type@npm:27.0.6"
+  checksum: ec2669ab967ae86b079052532596b27b367b7b665047aff2bb9f98c888076902e1e3c8a5626b0e6ae73eda50a502a87033bc4142154070d77fa9058fb15ba505
   languageName: node
   linkType: hard
 
@@ -19842,6 +19891,18 @@ fsevents@^1.2.7:
     ansi-styles: ^4.0.0
     react-is: ^17.0.1
   checksum: 5ad34fc128218485732cf0271d396158a00584708fc97bf063c1c3c000fe14da572e9a1d3d7b92d95c5e24965434656c56ed0e45804dea2435ca59a1f86f1b07
+  languageName: node
+  linkType: hard
+
+"pretty-format@npm:^27.0.0, pretty-format@npm:^27.1.0":
+  version: 27.1.0
+  resolution: "pretty-format@npm:27.1.0"
+  dependencies:
+    "@jest/types": ^27.1.0
+    ansi-regex: ^5.0.0
+    ansi-styles: ^5.0.0
+    react-is: ^17.0.1
+  checksum: d90fdea1b36ba6e9c25ff51ac40c2b3592c9b8b30db3f3097dfe1c5b90417aafa5c7aa96b7dc620182ecf0b494a1cef6774dbb648c3f704a34e58a93cf2c5b1e
   languageName: node
   linkType: hard
 

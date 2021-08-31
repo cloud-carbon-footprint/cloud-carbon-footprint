@@ -51,7 +51,7 @@
     "moment": "^2.29.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^27.0.1",
     "@types/jest-when": "^2.7.2",
     "@types/node": "^16.0.1",
     "@types/source-map-support": "^0.5.3",
