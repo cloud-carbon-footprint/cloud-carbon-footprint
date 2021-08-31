@@ -15,6 +15,7 @@ export default function createOptionChooser(
   oldSelections: DropdownSelections,
   filterOptions: FilterOptions,
 ): OptionChooser {
+  //TODO: Convert this to returning a chooser based on a map instead of a switch statement
   switch (filterType) {
     case DropdownFilterOptions.CLOUD_PROVIDERS:
       return new CloudProviderChooser(selections, oldSelections, filterOptions)

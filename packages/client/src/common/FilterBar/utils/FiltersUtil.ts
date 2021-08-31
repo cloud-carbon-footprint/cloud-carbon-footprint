@@ -35,3 +35,16 @@ export function numSelectedLabel(
     return `${type}: ${length} of ${lengthWithoutAllOption}`
   }
 }
+
+export function isOptionInDropdownOptions(
+  comparingDropdownOptions: DropdownOption[],
+  dropdownOption: DropdownOption,
+): boolean {
+  let isWithinComparingDropdownOption = false
+  comparingDropdownOptions.forEach((comparingDropdownOption) => {
+    if (comparingDropdownOption.key === dropdownOption.key) {
+      isWithinComparingDropdownOption = true
+    }
+  })
+  return isWithinComparingDropdownOption
+}

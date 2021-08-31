@@ -7,7 +7,7 @@ import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import { DropdownSelections } from '../FiltersUtil'
 import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
 import { OptionChooser } from './OptionChooser'
-import { isDropdownOptionInDropdownOptions } from './common'
+import { isOptionInDropdownOptions } from '../FiltersUtil'
 
 export class AccountChooser extends OptionChooser {
   constructor(
@@ -51,7 +51,7 @@ export class AccountChooser extends OptionChooser {
       )
       //if current Cloudprovider has an option that oldCP has, keep the services from old that are under that CP
       if (
-        isDropdownOptionInDropdownOptions(
+        isOptionInDropdownOptions(
           this.oldSelections.cloudProviders,
           currentCloudProvider,
         )
