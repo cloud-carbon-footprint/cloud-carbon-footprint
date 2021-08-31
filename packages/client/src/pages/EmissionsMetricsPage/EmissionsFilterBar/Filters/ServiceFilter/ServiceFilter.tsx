@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import DropdownFilter from '../DropdownFilter'
+import FilterDropdown from 'common/FilterDropdown'
 import { DropdownFilterOptions, DropdownOption, FilterProps } from 'Types'
 
 const ServiceFilter: FunctionComponent<FilterProps> = ({
@@ -13,7 +13,7 @@ const ServiceFilter: FunctionComponent<FilterProps> = ({
 }) => {
   const serviceOptions = options.services
   return (
-    <DropdownFilter
+    <FilterDropdown
       id="services-filter"
       displayValue={filters.label(
         serviceOptions,

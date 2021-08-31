@@ -3,7 +3,7 @@
  */
 
 import React, { FunctionComponent } from 'react'
-import DropdownFilter from '../DropdownFilter'
+import FilterDropdown from 'common/FilterDropdown'
 import { DropdownFilterOptions, DropdownOption, FilterProps } from 'Types'
 
 const AccountFilter: FunctionComponent<FilterProps> = ({
@@ -13,7 +13,7 @@ const AccountFilter: FunctionComponent<FilterProps> = ({
 }) => {
   const accountOptions = options.accounts
   return (
-    <DropdownFilter
+    <FilterDropdown
       id="accounts-filter"
       displayValue={filters.label(
         accountOptions,

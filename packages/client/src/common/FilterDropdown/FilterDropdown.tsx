@@ -13,9 +13,9 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import { TextField, Typography } from '@material-ui/core'
 import { DropdownOption } from 'Types'
-import useStyles from './dropdownFilterStyles'
+import useStyles from './filterDropdownStyles'
 
-interface DropdownFilterProps {
+interface FilterDropdownProps {
   id: string
   displayValue: string
   options: DropdownOption[]
@@ -24,7 +24,7 @@ interface DropdownFilterProps {
   updateSelections: (selections: (string | DropdownOption)[]) => void
 }
 
-const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
+const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
   const classes = useStyles()
 
   const getLabelOfGroupByCloudProviders = (
@@ -114,4 +114,4 @@ const DropdownFilter: FunctionComponent<DropdownFilterProps> = (props) => {
   )
 }
 
-export default DropdownFilter
+export default FilterDropdown

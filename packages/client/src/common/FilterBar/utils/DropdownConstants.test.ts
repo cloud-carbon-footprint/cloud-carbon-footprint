@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownOption } from '../../../pages/EmissionsMetricsPage/EmissionsFilterBar/Filters/DropdownFilter/DropdownFilter'
+import { DropdownOption } from 'Types'
 import {
   alphabetizeDropdownOptions,
   buildAndOrderDropdownOptions,
