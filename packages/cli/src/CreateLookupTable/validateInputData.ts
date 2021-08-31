@@ -7,6 +7,7 @@ export const validateInputData = (inputData: LookupTableInput[]) => {
   inputData.map((inputRow: LookupTableInput) => {
     if (
       !inputRow.serviceName ||
+      typeof inputRow.region !== 'string' ||
       !inputRow.region ||
       !inputRow.usageType ||
       !inputRow.usageUnit
