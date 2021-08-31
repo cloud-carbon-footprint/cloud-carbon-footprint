@@ -9,6 +9,7 @@ import { GoogleAuthClient } from '@cloud-carbon-footprint/common'
 import {
   InstanceData,
   mockedAddressesResultItems,
+  mockedAddressGetDetails,
   mockedDisksGetSSDDetails,
   mockedDisksResultItems,
   mockedImageGetDetails,
@@ -98,6 +99,7 @@ describe('GCP Service Wrapper', () => {
     )
     setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
     setupSpy(googleComputeClient.images, 'get', mockedImageGetDetails)
+    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
   })
 
   it('gets active projects', async () => {
@@ -219,6 +221,22 @@ describe('GCP Service Wrapper', () => {
     }
 
     expect(imageDetails).toEqual(expectedResult)
+  })
+
+  it('gets address details', async () => {
+    const addressDetails = await serviceWrapper.getAddressDetails(
+      'project',
+      'test-address',
+      'us-west1',
+    )
+
+    const expectedResult = {
+      id: '123456789012345',
+      name: 'test-address',
+      address: '38.141.210.105',
+    }
+
+    expect(addressDetails).toEqual(expectedResult)
   })
 
   describe('error handling', () => {

@@ -45,6 +45,7 @@ import {
   mockedImageGetDetails,
   mockedInstanceGlobalResultItems,
   mockedInstanceRegionsResultItems,
+  mockedAddressGetDetails,
 } from './fixtures/googleapis.fixtures'
 
 jest.mock('moment', () => {
@@ -555,10 +556,13 @@ describe('GCP Recommendations Service', () => {
 
     expect(recommendations).toEqual(expectedResult)
   })
+
   it('returns estimates of zero for recommendation type DELETE_ADDRESS', async () => {
     mockListRecommendations
       .mockResolvedValueOnce(mockDeleteAddressRecommendationsResults)
       .mockResolvedValue([[]])
+
+    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
 
     const recommendationsService = new Recommendations(
       new ComputeEstimator(),
@@ -586,8 +590,8 @@ describe('GCP Recommendations Service', () => {
         kilowattHourSavings: 0,
         co2eSavings: 0,
         costSavings: 40,
-        resourceId: '',
-        instanceName: '',
+        resourceId: '123456789012345',
+        instanceName: 'test-address',
       },
     ]
 

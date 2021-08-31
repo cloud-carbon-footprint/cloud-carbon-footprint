@@ -252,13 +252,36 @@ export default class Recommendations implements ICloudRecommendationsService {
             resourceName: imageDetails.name,
           }
           return [footprintEstimate, resourceDetails]
+        case RECOMMENDATION_TYPES.DELETE_ADDRESS:
+          const addressId = recommendation.description.split("'")[1]
+          // const instanceId2 = recommendation.content.operationGroups[0].operations[0].resource.split('/').pop()
+          const addressDetails =
+            await this.googleServiceWrapper.getAddressDetails(
+              projectId,
+              addressId,
+              zone,
+            )
+          resourceDetails = {
+            resourceId: addressDetails.id,
+            resourceName: addressDetails.name,
+          }
+          return [
+            { timestamp: undefined, kilowattHours: 0, co2e: 0 },
+            resourceDetails,
+          ]
         default:
           this.recommendationsLogger.warn(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,
           )
           return [
             { timestamp: undefined, kilowattHours: 0, co2e: 0 },
-            { resourceId: '', resourceName: '' },
+            {
+              resourceId: '',
+              resourceName:
+                recommendation.content.operationGroups[0].operations[0].resource
+                  .split('/')
+                  .pop(),
+            },
           ]
       }
     } catch (err) {
@@ -267,7 +290,13 @@ export default class Recommendations implements ICloudRecommendationsService {
       )
       return [
         { timestamp: undefined, kilowattHours: 0, co2e: 0 },
-        { resourceId: '', resourceName: '' },
+        {
+          resourceId: '',
+          resourceName:
+            recommendation.content.operationGroups[0].operations[0].resource
+              .split('/')
+              .pop(),
+        },
       ]
     }
   }

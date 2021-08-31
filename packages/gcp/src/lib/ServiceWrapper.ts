@@ -19,6 +19,7 @@ import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
 import Schema$InstancesScopedList = compute_v1.Schema$InstancesScopedList
 import Schema$DisksScopedList = compute_v1.Schema$DisksScopedList
 import Schema$AddressesScopedList = compute_v1.Schema$AddressesScopedList
+import Schema$Address = compute_v1.Schema$Address
 
 const RETRY_AFTER = 10
 
@@ -219,6 +220,23 @@ export default class ServiceWrapper {
     }
     const result = await this.googleComputeClient.images.get(
       ImageDetailsRequest,
+    )
+    return result.data
+  }
+
+  async getAddressDetails(
+    projectId: string,
+    addressId: string,
+    zone: string,
+  ): Promise<Schema$Address> {
+    const AddressDetailsRequest = {
+      project: projectId,
+      region: zone,
+      address: addressId,
+      auth: this.googleAuthClient,
+    }
+    const result = await this.googleComputeClient.addresses.get(
+      AddressDetailsRequest,
     )
     return result.data
   }

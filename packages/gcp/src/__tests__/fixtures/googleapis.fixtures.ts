@@ -9,6 +9,7 @@ import Schema$InstanceAggregatedList = compute_v1.Schema$InstanceAggregatedList
 import Schema$Disk = compute_v1.Schema$Disk
 import Schema$DiskAggregatedList = compute_v1.Schema$DiskAggregatedList
 import Schema$AddressAggregatedList = compute_v1.Schema$AddressAggregatedList
+import Schema$Address = compute_v1.Schema$Address
 
 export type InstanceData = {
   data: Schema$Instance
@@ -24,6 +25,10 @@ type ImageDetails = {
 
 type DiskData = {
   data: Schema$Disk
+}
+
+type AddressDetails = {
+  data: Schema$Address
 }
 
 type InstanceAggregatedList = {
@@ -183,5 +188,13 @@ export const mockedImageGetDetails: ImageDetails = {
     archiveSizeBytes: '580709696',
     id: '12456789012',
     name: 'test-resource-name',
+  },
+}
+
+export const mockedAddressGetDetails: AddressDetails = {
+  data: {
+    id: '123456789012345',
+    name: 'test-address',
+    address: '38.141.210.105',
   },
 }
