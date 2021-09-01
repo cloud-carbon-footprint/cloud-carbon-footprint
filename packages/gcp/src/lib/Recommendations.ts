@@ -254,7 +254,6 @@ export default class Recommendations implements ICloudRecommendationsService {
           return [footprintEstimate, resourceDetails]
         case RECOMMENDATION_TYPES.DELETE_ADDRESS:
           const addressId = recommendation.description.split("'")[1]
-          // const instanceId2 = recommendation.content.operationGroups[0].operations[0].resource.split('/').pop()
           const addressDetails =
             await this.googleServiceWrapper.getAddressDetails(
               projectId,
