@@ -1258,22 +1258,6 @@ describe('CostAndUsageReports Service', () => {
           },
         ],
       },
-      {
-        timestamp: new Date('2021-01-04'),
-        serviceEstimates: [
-          {
-            accountId: testAccountId,
-            accountName: testAccountName,
-            cloudProvider: 'AWS',
-            co2e: 0.020961630125351752,
-            cost: 30584.37244,
-            region: 'us-east-2',
-            serviceName: 'AWSDeveloperSupport',
-            usesAverageCPUConstant: false,
-            kilowattHours: 47.61983003894198,
-          },
-        ],
-      },
     ]
     expect(result).toEqual(expectedResult)
   })

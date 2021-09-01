@@ -159,6 +159,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
+  'Dollar', // AWSDeveloperSupport - no energy associated with support cost
 ]
 
 export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
@@ -168,7 +169,6 @@ export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
   Metrics: [EstimateClassification.STORAGE],
   'GB-Hours': [EstimateClassification.STORAGE],
   GB: [EstimateClassification.NETWORKING],
-  Dollar: [EstimateClassification.UNKNOWN],
   IOs: [EstimateClassification.COMPUTE],
   ShardHour: [EstimateClassification.COMPUTE],
   'LCU-Hrs': [EstimateClassification.COMPUTE],
@@ -197,13 +197,13 @@ export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
   PutRequest: [EstimateClassification.UNKNOWN],
   HostedZone: [EstimateClassification.UNKNOWN],
   User: [EstimateClassification.UNKNOWN],
-  'UsageRecord-month': [EstimateClassification.UNKNOWN],
+  'UsageRecord-month': [EstimateClassification.STORAGE],
   Activities: [EstimateClassification.UNKNOWN],
   StateTransitions: [EstimateClassification.UNKNOWN],
   ConfigRuleEvaluations: [EstimateClassification.UNKNOWN],
   '64K-Chunks': [EstimateClassification.UNKNOWN],
-  Notifications: [EstimateClassification.UNKNOWN],
-  Alarms: [EstimateClassification.UNKNOWN],
+  Notifications: [EstimateClassification.NETWORKING],
+  Alarms: [EstimateClassification.COMPUTE],
   URL: [EstimateClassification.UNKNOWN],
   'GB-Mo': [EstimateClassification.STORAGE],
   GigaBytes: [EstimateClassification.NETWORKING],
