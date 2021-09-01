@@ -40,7 +40,7 @@ import {
   athenaMockGetQueryResultsWithReclassifiedUnknowns,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
-import { UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING } from '../lib/CostAndUsageTypes'
+import {} from '../lib/CostAndUsageTypes'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
@@ -125,7 +125,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -262,7 +262,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -345,7 +345,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -411,7 +411,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -479,7 +479,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -586,7 +586,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -682,7 +682,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -754,7 +754,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     const result = await athenaService.getEstimates(startDate, endDate)
@@ -802,7 +802,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
 
@@ -851,7 +851,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
 
@@ -971,7 +971,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
 
@@ -1077,7 +1077,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
 
@@ -1170,7 +1170,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
 
@@ -1271,7 +1271,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     await expect(() =>
@@ -1289,7 +1289,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       getServiceWrapper(),
     )
     await expect(() =>

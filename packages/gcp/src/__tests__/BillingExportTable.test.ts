@@ -32,7 +32,6 @@ import {
   mockQueryMemoryStoreWithReplicationFactors,
   mockQueryReclassifiedUnknowns,
 } from './fixtures/bigQuery.fixtures'
-import { UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING } from '../lib/BillingExportTypes'
 import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
@@ -92,7 +91,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -135,7 +134,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -205,7 +204,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -275,7 +274,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -384,7 +383,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -438,7 +437,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -506,7 +505,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -532,7 +531,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -584,7 +583,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -645,7 +644,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -717,7 +716,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -778,7 +777,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -923,7 +922,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
     )
 
     const result =
@@ -1005,7 +1004,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 
@@ -1033,7 +1032,7 @@ describe('GCP BillingExportTable Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery(),
     )
 

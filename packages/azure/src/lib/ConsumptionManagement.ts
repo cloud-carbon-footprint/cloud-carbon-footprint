@@ -62,6 +62,7 @@ import {
   TenantHeaders,
   UNKNOWN_SERVICES,
   UNKNOWN_USAGE_TYPES,
+  UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -683,6 +684,7 @@ export default class ConsumptionManagementService {
       timestamp: rowData.timestamp,
       cost: rowData.cost,
       usageUnit: rowData.usageUnit,
+      reclassificationType: this.getClassification(rowData.usageUnit),
     }
     const unknownConstants: CloudConstants = {
       co2ePerCost: AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
@@ -693,5 +695,11 @@ export default class ConsumptionManagementService {
       AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       unknownConstants,
     )[0]
+  }
+
+  private getClassification(usageUnit: string) {
+    return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
+      ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
+      : EstimateClassification.UNKNOWN
   }
 }

@@ -47,6 +47,7 @@ import {
   NETWORKING_STRING_FORMATS,
   GCP_QUERY_GROUP_BY,
   UNKNOWN_USAGE_UNITS,
+  UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING,
 } from './BillingExportTypes'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
@@ -443,6 +444,22 @@ export default class BillingExportTable {
     )
   }
 
+  private getClassification(usageUnit: string, usageType: string) {
+    if (
+      UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[1] ===
+      EstimateClassification.MEMORY
+    ) {
+      if (containsAny(['Memory'], usageType)) {
+        return EstimateClassification.MEMORY
+      }
+      return EstimateClassification.STORAGE
+    }
+
+    return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
+      ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
+      : EstimateClassification.UNKNOWN
+  }
+
   private getEstimateForUnknownUsage(
     rowData: BillingExportRow,
   ): FootprintEstimate {
@@ -451,6 +468,10 @@ export default class BillingExportTable {
       cost: rowData.cost,
       usageUnit: rowData.usageUnit,
       usageType: rowData.usageType,
+      reclassificationType: this.getClassification(
+        rowData.usageUnit,
+        rowData.usageType,
+      ),
     }
     const unknownConstants: CloudConstants = {
       co2ePerCost: GCP_CLOUD_CONSTANTS.CO2E_PER_COST,

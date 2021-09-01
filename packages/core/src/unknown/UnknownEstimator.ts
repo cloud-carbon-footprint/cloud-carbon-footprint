@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { containsAny } from '@cloud-carbon-footprint/common'
 import CloudConstants, {
   CloudConstantsEmissionsFactors,
 } from '../CloudConstantsTypes'
@@ -15,8 +14,6 @@ import IFootprintEstimator from '../IFootprintEstimator'
 import UnknownUsage from './UnknownUsage'
 
 export default class UnknownEstimator implements IFootprintEstimator {
-  constructor(private unknownUsageTypesMapping: { [key: string]: string[] }) {}
-
   estimate(
     data: UnknownUsage[],
     region: string,
@@ -24,14 +21,12 @@ export default class UnknownEstimator implements IFootprintEstimator {
     constants: CloudConstants,
   ): FootprintEstimate[] {
     return data.map((data: UnknownUsage) => {
-      // consider adding a console error to add unknown usageUnit to map
-      const classification = this.getClassification(data)
       const usesAverageCPUConstant =
-        classification === EstimateClassification.COMPUTE
+        data.reclassificationType === EstimateClassification.COMPUTE
       const estimatedCO2Emissions = this.estimateCo2(
         data.cost,
         constants.co2ePerCost,
-        classification,
+        data.reclassificationType,
       )
       const estimatedKilowattHours = estimateKwh(
         estimatedCO2Emissions,
@@ -45,22 +40,6 @@ export default class UnknownEstimator implements IFootprintEstimator {
         usesAverageCPUConstant,
       }
     })
-  }
-
-  private getClassification(data: UnknownUsage) {
-    if (
-      this.unknownUsageTypesMapping[data.usageUnit]?.[1] ===
-      EstimateClassification.MEMORY
-    ) {
-      if (containsAny(['Memory'], data.usageType)) {
-        return EstimateClassification.MEMORY
-      }
-      return EstimateClassification.STORAGE
-    }
-
-    return this.unknownUsageTypesMapping[data.usageUnit]?.[0]
-      ? this.unknownUsageTypesMapping[data.usageUnit][0]
-      : EstimateClassification.UNKNOWN
   }
 
   private estimateCo2(

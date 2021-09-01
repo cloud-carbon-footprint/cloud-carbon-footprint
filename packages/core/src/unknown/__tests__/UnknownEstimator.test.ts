@@ -6,16 +6,13 @@ import UnknownEstimator from '../UnknownEstimator'
 import { EstimateClassification } from '../../FootprintEstimate'
 
 describe('UnknownEstimator', () => {
-  const awsUnknownUsageTypesList = {
-    Hrs: ['compute'],
-  }
-
   it('does estimates for unknown usage type', () => {
     const input = [
       {
         timestamp: new Date('2021-01-01'),
         cost: 1000,
         usageUnit: 'Hrs',
+        reclassificationType: EstimateClassification.COMPUTE,
       },
     ]
     const awsUsEast1Region = 'us-east-1'
@@ -30,7 +27,7 @@ describe('UnknownEstimator', () => {
         },
       },
     }
-    const result = new UnknownEstimator(awsUnknownUsageTypesList).estimate(
+    const result = new UnknownEstimator().estimate(
       input,
       awsUsEast1Region,
       awsEmissionsFactors,
@@ -52,7 +49,8 @@ describe('UnknownEstimator', () => {
       {
         timestamp: new Date('2021-01-01'),
         cost: 1000,
-        usageUnit: 'Dollar',
+        usageUnit: 'ConfigRuleEvaluations',
+        reclassificationType: EstimateClassification.UNKNOWN,
       },
     ]
     const awsUsEast1Region = 'us-east-1'
@@ -67,7 +65,7 @@ describe('UnknownEstimator', () => {
         },
       },
     }
-    const result = new UnknownEstimator(awsUnknownUsageTypesList).estimate(
+    const result = new UnknownEstimator().estimate(
       input,
       awsUsEast1Region,
       awsEmissionsFactors,
@@ -85,15 +83,13 @@ describe('UnknownEstimator', () => {
   })
 
   describe('gets the correct usage type classification', () => {
-    const gcpUnknownUsageTypesList = {
-      'byte-seconds': ['storage', 'memory'],
-    }
     const input = [
       {
         timestamp: new Date('2021-01-01'),
         cost: 1000,
         usageUnit: 'byte-seconds',
         usageType: 'Storage',
+        reclassificationType: EstimateClassification.STORAGE,
       },
     ]
     const gcpUsEast1Region = 'us-east1'
@@ -113,7 +109,7 @@ describe('UnknownEstimator', () => {
       },
     }
     it('for storage', () => {
-      const result = new UnknownEstimator(gcpUnknownUsageTypesList).estimate(
+      const result = new UnknownEstimator().estimate(
         input,
         gcpUsEast1Region,
         gcpEmissionsFactors,
@@ -135,10 +131,11 @@ describe('UnknownEstimator', () => {
         {
           ...input[0],
           usageType: 'Memory',
+          reclassificationType: EstimateClassification.MEMORY,
         },
       ]
 
-      const result = new UnknownEstimator(gcpUnknownUsageTypesList).estimate(
+      const result = new UnknownEstimator().estimate(
         newInput,
         gcpUsEast1Region,
         gcpEmissionsFactors,
