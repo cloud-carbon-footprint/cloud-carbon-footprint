@@ -32,7 +32,6 @@ import {
   mockedAddressesResultItems,
   mockedDisksResultItems,
   mockedInstanceGetItems,
-  mockedInstanceGetItemsNew,
   mockedInstanceGetItemsCurrent,
   mockedInstanceGetItemsWithBothDisks,
   mockedInstanceGetItemsWithHDDDisks,
@@ -388,17 +387,16 @@ describe('GCP Recommendations Service', () => {
       .mockResolvedValue([[]])
 
     setupSpyWithMultipleValues(
-      googleComputeClient.instances,
-      'get',
-      mockedInstanceGetItemsCurrent,
-      mockedInstanceGetItemsNew,
-    )
-
-    setupSpyWithMultipleValues(
       googleComputeClient.machineTypes,
       'get',
       mockedMachineTypesGetItemsCurrent,
       mockedMachineTypesGetItemsNew,
+    )
+
+    setupSpy(
+      googleComputeClient.instances,
+      'get',
+      mockedInstanceGetItemsCurrent,
     )
 
     const recommendationsService = new Recommendations(
@@ -429,6 +427,55 @@ describe('GCP Recommendations Service', () => {
         costSavings: 20,
         resourceId: '12456789012',
         instanceName: 'test-resource-name',
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns recommendations for change machine type with failed getInstance call', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockChangeMachineTypeRecommendationsResults)
+      .mockResolvedValue([[]])
+
+    setupSpyWithMultipleValues(
+      googleComputeClient.machineTypes,
+      'get',
+      mockedMachineTypesGetItemsCurrent,
+      mockedMachineTypesGetItemsNew,
+    )
+
+    const targetFunctionSpy = jest.spyOn(googleComputeClient.instances, 'get')
+    ;(targetFunctionSpy as jest.Mock).mockRejectedValue('Error')
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'CHANGE_MACHINE_TYPE',
+        recommendationDetail:
+          'Save cost by changing machine type from e2-medium to e2-small.',
+        kilowattHourSavings: 1.6960454999999999,
+        co2eSavings: 0.00013229154899999999,
+        costSavings: 20,
+        resourceId: '',
+        instanceName: 'instance-name',
       },
     ]
 

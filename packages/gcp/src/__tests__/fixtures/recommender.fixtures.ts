@@ -119,6 +119,18 @@ export const mockDeleteDiskRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'DELETE_DISK',
+      content: {
+        operationGroups: [
+          {
+            operations: [
+              {
+                resource:
+                  '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+              },
+            ],
+          },
+        ],
+      },
     },
   ],
 ]
@@ -139,6 +151,18 @@ export const mockSnapshotAndDeleteDiskRecommendationsResults: IRecommendation[][
           },
         },
         recommenderSubtype: 'SNAPSHOT_AND_DELETE_DISK',
+        content: {
+          operationGroups: [
+            {
+              operations: [
+                {
+                  resource:
+                    '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   ]
@@ -158,6 +182,18 @@ export const mockDeleteImageRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'DELETE_IMAGE',
+      content: {
+        operationGroups: [
+          {
+            operations: [
+              {
+                resource:
+                  '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+              },
+            ],
+          },
+        ],
+      },
     },
   ],
 ]
@@ -177,6 +213,18 @@ export const mockDeleteAddressRecommendationsResults: IRecommendation[][] = [
         },
       },
       recommenderSubtype: 'DELETE_ADDRESS',
+      content: {
+        operationGroups: [
+          {
+            operations: [
+              {
+                resource:
+                  '//compute.googleapis.com/projects/project-name/zones/us-west1-b/instances/instance-name',
+              },
+            ],
+          },
+        ],
+      },
     },
   ],
 ]

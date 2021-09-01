@@ -132,10 +132,20 @@ export default class Recommendations implements ICloudRecommendationsService {
     zone: string,
     recommendation: IRecommendation,
   ): Promise<[FootprintEstimate, ResourceDetails]> {
+    let footprintEstimate: FootprintEstimate = {
+      timestamp: undefined,
+      kilowattHours: 0,
+      co2e: 0,
+    }
+    let resourceDetails: ResourceDetails = {
+      resourceId: '',
+      resourceName:
+        recommendation.content.operationGroups[0].operations[0].resource
+          .split('/')
+          .pop(),
+    }
+    let diskDetails: Schema$Disk
     try {
-      let footprintEstimate: FootprintEstimate
-      let resourceDetails: ResourceDetails
-      let diskDetails: Schema$Disk
       switch (recommendation.recommenderSubtype) {
         case RECOMMENDATION_TYPES.STOP_VM:
           const instanceDetails = await this.getInstanceDetails(
@@ -264,39 +274,18 @@ export default class Recommendations implements ICloudRecommendationsService {
             resourceId: addressDetails.id,
             resourceName: addressDetails.name,
           }
-          return [
-            { timestamp: undefined, kilowattHours: 0, co2e: 0 },
-            resourceDetails,
-          ]
+          return [footprintEstimate, resourceDetails]
         default:
           this.recommendationsLogger.warn(
             `Unknown/unsupported Recommender Type: ${recommendation.recommenderSubtype}`,
           )
-          return [
-            { timestamp: undefined, kilowattHours: 0, co2e: 0 },
-            {
-              resourceId: '',
-              resourceName:
-                recommendation.content.operationGroups[0].operations[0].resource
-                  .split('/')
-                  .pop(),
-            },
-          ]
+          return [footprintEstimate, resourceDetails]
       }
     } catch (err) {
       this.recommendationsLogger.warn(
-        `Unable to Estimate C02e Savings for Recommendations: ${recommendation.name}. Error: ${err}. Returning 0`,
+        `There was an error in estimating CO2e Savings and getting Resource ID/Name: ${recommendation.name}. Error: ${err.message}.`,
       )
-      return [
-        { timestamp: undefined, kilowattHours: 0, co2e: 0 },
-        {
-          resourceId: '',
-          resourceName:
-            recommendation.content.operationGroups[0].operations[0].resource
-              .split('/')
-              .pop(),
-        },
-      ]
+      return [footprintEstimate, resourceDetails]
     }
   }
 

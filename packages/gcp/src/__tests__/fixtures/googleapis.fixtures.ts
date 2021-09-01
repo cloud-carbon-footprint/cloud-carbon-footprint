@@ -120,14 +120,6 @@ export const mockedInstanceGetItemsCurrent: InstanceData = {
   },
 }
 
-export const mockedInstanceGetItemsNew: InstanceData = {
-  data: {
-    machineType:
-      'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/e2-small',
-    disks: [],
-  },
-}
-
 export const mockedInstanceGetItemsWithHDDDisks: InstanceData = {
   data: {
     machineType:
