@@ -9,8 +9,7 @@ export type TenantHeaders = {
   [key: string]: string
 }
 
-export const UNSUPPORTED_SERVICES = [
-  'Virtual Machines Licenses',
+export const UNKNOWN_SERVICES: string[] = [
   'Azure Bastion',
   'Load Balancer',
   'VPN Gateway',
@@ -19,15 +18,19 @@ export const UNSUPPORTED_SERVICES = [
   'Azure Data Factory v2',
   'API Management',
   'Advanced Data Security',
+  'Virtual Machines Licenses',
 ]
 
-export const UNSUPPORTED_USAGE_TYPES = [
+export const UNKNOWN_USAGE_TYPES: string[] = [
   'Server - Free',
+  'Requests',
+  'Custom Domain',
+]
+
+export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'Rulesets',
   'Rules',
   'Policies',
-  'Requests',
-  'Custom Domain',
   'Kafka Surcharge',
   'License',
 ]
@@ -63,6 +66,19 @@ export enum MEMORY_USAGE_UNITS {
   GB_HOURS_1000 = '1000 GB Hours',
 }
 
+enum UNKNOWN_USAGE_UNITS {
+  UNIT_2 = '2',
+  UNIT_100000 = '100000',
+  UNIT_1000000 = '1000000',
+  UNIT_10000000 = '10000000',
+  UNIT_100000000 = '100000000',
+  GB_1000 = '1000 GB',
+  HOUR_100 = '100 /Hour',
+  HOUR_1000 = '1000 /Hour',
+  MONTH_10 = '10 /Month',
+  HOURS_200 = '200 Hours',
+}
+
 export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
   [key: string]: string[]
 } = {
@@ -85,6 +101,16 @@ export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
   [NETWORKING_USAGE_UNITS.GB_200]: [EstimateClassification.NETWORKING],
   [MEMORY_USAGE_UNITS.GB_SECONDS_50000]: [EstimateClassification.MEMORY],
   [MEMORY_USAGE_UNITS.GB_HOURS_1000]: [EstimateClassification.MEMORY],
+  [UNKNOWN_USAGE_UNITS.UNIT_2]: [EstimateClassification.UNKNOWN],
+  [UNKNOWN_USAGE_UNITS.UNIT_100000]: [EstimateClassification.COMPUTE],
+  [UNKNOWN_USAGE_UNITS.UNIT_1000000]: [EstimateClassification.COMPUTE],
+  [UNKNOWN_USAGE_UNITS.UNIT_10000000]: [EstimateClassification.COMPUTE],
+  [UNKNOWN_USAGE_UNITS.UNIT_100000000]: [EstimateClassification.COMPUTE],
+  [UNKNOWN_USAGE_UNITS.GB_1000]: [EstimateClassification.NETWORKING],
+  [UNKNOWN_USAGE_UNITS.HOUR_100]: [EstimateClassification.COMPUTE],
+  [UNKNOWN_USAGE_UNITS.HOUR_1000]: [EstimateClassification.COMPUTE],
+  [UNKNOWN_USAGE_UNITS.MONTH_10]: [EstimateClassification.STORAGE],
+  [UNKNOWN_USAGE_UNITS.HOURS_200]: [EstimateClassification.COMPUTE],
 }
 
 export const STORAGE_USAGE_TYPES: string[] = [

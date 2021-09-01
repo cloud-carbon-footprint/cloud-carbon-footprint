@@ -658,9 +658,9 @@ export const mockConsumptionManagementResponseEight: AzureUsageDetailsResponse[]
       usageQuantity: 20,
       pretaxCost: 0.003168316832,
       meterDetails: {
-        meterName: 'Alerts Metrics Monitored',
+        meterName: 'Private Zones',
         unit: '2',
-        serviceName: 'Azure Monitor',
+        serviceName: 'Azure DNS',
       },
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',

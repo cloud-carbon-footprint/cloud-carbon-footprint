@@ -56,11 +56,12 @@ import {
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
   STORAGE_USAGE_UNITS,
-  UNSUPPORTED_SERVICES,
   UNSUPPORTED_USAGE_TYPES,
   AZURE_QUERY_GROUP_BY,
   CACHE_MEMORY_GB,
   TenantHeaders,
+  UNKNOWN_SERVICES,
+  UNKNOWN_USAGE_TYPES,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -106,6 +107,10 @@ export default class ConsumptionManagementService {
       this.updateTimestampByWeek(consumptionDetailRow)
 
       if (this.isUnsupportedUsage(consumptionDetailRow)) {
+        return []
+      }
+
+      if (this.isUnknownUsage(consumptionDetailRow)) {
         unknownRows.push(consumptionDetailRow)
         return []
       }
@@ -464,9 +469,13 @@ export default class ConsumptionManagementService {
   private isUnsupportedUsage(
     consumptionDetailRow: ConsumptionDetailRow,
   ): boolean {
+    return containsAny(UNSUPPORTED_USAGE_TYPES, consumptionDetailRow.usageType)
+  }
+
+  private isUnknownUsage(consumptionDetailRow: ConsumptionDetailRow): boolean {
     return (
-      containsAny(UNSUPPORTED_SERVICES, consumptionDetailRow.serviceName) ||
-      containsAny(UNSUPPORTED_USAGE_TYPES, consumptionDetailRow.usageType) ||
+      containsAny(UNKNOWN_SERVICES, consumptionDetailRow.serviceName) ||
+      containsAny(UNKNOWN_USAGE_TYPES, consumptionDetailRow.usageType) ||
       !containsAny(
         [
           ...Object.values(COMPUTE_USAGE_UNITS),
