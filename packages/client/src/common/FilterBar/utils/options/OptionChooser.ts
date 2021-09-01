@@ -19,6 +19,12 @@ export abstract class OptionChooser {
   protected readonly oldSelections: DropdownSelections
   protected readonly filterOptions: FilterOptions
 
+  private readonly choosers = {
+    [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
+    [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+    [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
+  }
+
   protected constructor(
     filterType: DropdownFilterOptions,
     allOptions: DropdownOption[],
@@ -55,12 +61,10 @@ export abstract class OptionChooser {
       this.selections = this.allOptions
     }
 
+    const selectionOptions: string[] = Object.keys(this.oldSelections)
+
     if (!selectionKeys.includes(ALL_KEY) && allOptionsWereSelected) {
-      return {
-        [DropdownFilterOptions.CLOUD_PROVIDERS]: [],
-        [DropdownFilterOptions.SERVICES]: [],
-        [DropdownFilterOptions.ACCOUNTS]: [],
-      }
+      return Object.fromEntries(selectionOptions.map((option) => [option, []]))
     } else {
       if (
         this.selections.length === this.allOptions.length - 1 &&
@@ -69,20 +73,15 @@ export abstract class OptionChooser {
         this.selections = this.selections.filter((k) => k.key !== ALL_KEY)
       }
 
-      return {
-        [DropdownFilterOptions.CLOUD_PROVIDERS]: this.addAllDropDownOptions(
-          this.chooseProviders(),
-          DropdownFilterOptions.CLOUD_PROVIDERS,
-        ),
-        [DropdownFilterOptions.SERVICES]: this.addAllDropDownOptions(
-          this.chooseServices(),
-          DropdownFilterOptions.SERVICES,
-        ),
-        [DropdownFilterOptions.ACCOUNTS]: this.addAllDropDownOptions(
-          this.chooseAccounts(),
-          DropdownFilterOptions.ACCOUNTS,
-        ),
-      }
+      return Object.fromEntries(
+        selectionOptions.map((option) => [
+          option,
+          this.addAllDropDownOptions(
+            this.choosers[option](),
+            option as DropdownFilterOptions,
+          ),
+        ]),
+      )
     }
   }
 
