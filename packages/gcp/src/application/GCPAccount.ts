@@ -33,7 +33,6 @@ import {
   GCP_CLOUD_CONSTANTS,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import { UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING } from '../lib/BillingExportTypes'
 
 export default class GCPAccount extends CloudProviderAccount {
   constructor(
@@ -80,7 +79,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
       new BigQuery({ projectId: this.id }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)
@@ -95,7 +94,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING),
+      new UnknownEstimator(),
     )
     return billingExportTableService.getEstimatesFromInputData(inputData)
   }
