@@ -12,6 +12,7 @@ import {
 } from 'Types'
 import { FiltersDateRange, Filters } from 'common/FilterBar/utils/Filters'
 import { EmissionsFilters } from './EmissionsFilters'
+import { CLOUD_PROVIDER_OPTIONS } from '../../../../common/FilterBar/utils/DropdownConstants'
 
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
@@ -119,6 +120,7 @@ describe('Filters', () => {
       { key: 's3', name: 'S3', cloudProvider: 'aws' },
       { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' },
     ],
+    cloudProviders: CLOUD_PROVIDER_OPTIONS,
   }
 
   describe('filter', () => {

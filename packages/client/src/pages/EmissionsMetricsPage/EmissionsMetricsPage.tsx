@@ -49,7 +49,6 @@ export default function EmissionsMetricsPage(): ReactElement {
   const { filteredData, filters, setFilters } = useFilters(
     data,
     buildFilters,
-    EmissionsFilters.generateConfig,
     filteredDataResults,
   )
   const filteredEstimationData = filteredData as EstimationResult[]

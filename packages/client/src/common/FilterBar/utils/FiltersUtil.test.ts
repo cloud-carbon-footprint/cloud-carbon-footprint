@@ -6,6 +6,7 @@ import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_CLOUD_PROVIDERS_VALUE,
   ALL_SERVICES_VALUE,
+  CLOUD_PROVIDER_OPTIONS,
 } from './DropdownConstants'
 
 jest.mock('ConfigLoader', () => {
@@ -115,6 +116,7 @@ describe('filterUtil', () => {
       { key: 's3', name: 'S3', cloudProvider: 'aws' },
       { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' },
     ],
+    cloudProviders: CLOUD_PROVIDER_OPTIONS,
   }
 
   describe('handleSelections', () => {

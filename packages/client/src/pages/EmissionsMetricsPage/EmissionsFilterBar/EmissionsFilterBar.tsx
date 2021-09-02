@@ -9,12 +9,13 @@ import React, {
   SetStateAction,
 } from 'react'
 import { DropdownOption, FilterOptions, FilterResultResponse } from 'Types'
-import { Filters } from '../../../common/FilterBar/utils/Filters'
+import { Filters } from 'common/FilterBar/utils/Filters'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
-} from '../../../common/FilterBar/utils/DropdownConstants'
+  CLOUD_PROVIDER_OPTIONS,
+} from 'common/FilterBar/utils/DropdownConstants'
 import FilterBar from 'common/FilterBar'
 import {
   AccountFilter,
@@ -54,7 +55,11 @@ const EmissionsFilterBar: FunctionComponent<EmissionsFilterBarProps> = ({
       ...allServiceDropdownOptions,
     ]
 
-    return { accounts: accountOptions, services: serviceOptions }
+    return {
+      accounts: accountOptions,
+      services: serviceOptions,
+      cloudProviders: CLOUD_PROVIDER_OPTIONS,
+    }
   }
 
   const primaryComponents = [CloudProviderFilter, AccountFilter, ServiceFilter]

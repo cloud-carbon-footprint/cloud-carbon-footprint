@@ -3,7 +3,7 @@
  */
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { FilterResultResponse, FilterResults, FiltersConfig } from 'Types'
+import { FilterResultResponse, FilterResults } from 'Types'
 import { Filters } from './Filters'
 
 export interface UseFiltersResults {
@@ -15,7 +15,6 @@ export interface UseFiltersResults {
 const useFilters = (
   data: FilterResults,
   buildFilters: (FilterResultResponse) => Filters,
-  generateConfig: (FilterResultResponse) => FiltersConfig,
   filteredResponse: FilterResultResponse,
 ): UseFiltersResults => {
   const [filteredData, setFilteredData] = useState(data)

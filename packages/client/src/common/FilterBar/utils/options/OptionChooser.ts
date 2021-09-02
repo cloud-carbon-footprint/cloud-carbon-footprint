@@ -4,13 +4,7 @@
 
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import { DropdownSelections } from '../FiltersUtil'
-import {
-  ALL_ACCOUNTS_DROPDOWN_OPTION,
-  ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
-  ALL_KEY,
-  ALL_SERVICES_DROPDOWN_OPTION,
-  CLOUD_PROVIDER_OPTIONS,
-} from '../DropdownConstants'
+import { ALL_DROPDOWN_FILTER_OPTIONS, ALL_KEY } from '../DropdownConstants'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilterOptions
@@ -90,25 +84,10 @@ export abstract class OptionChooser {
     filterType: DropdownFilterOptions,
   ): DropdownOption[] {
     const revisedSelections: DropdownOption[] = Array.from(currentSelections)
-    const { accounts, services } = this.filterOptions
-    if (
-      filterType === DropdownFilterOptions.CLOUD_PROVIDERS &&
-      currentSelections.size === CLOUD_PROVIDER_OPTIONS.length - 1
-    ) {
-      revisedSelections.unshift(ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION)
+    if (currentSelections.size === this.filterOptions[filterType].length - 1) {
+      revisedSelections.unshift(ALL_DROPDOWN_FILTER_OPTIONS[filterType])
     }
-    if (
-      filterType === DropdownFilterOptions.ACCOUNTS &&
-      currentSelections.size === accounts.length - 1
-    ) {
-      revisedSelections.unshift(ALL_ACCOUNTS_DROPDOWN_OPTION)
-    }
-    if (
-      filterType === DropdownFilterOptions.SERVICES &&
-      currentSelections.size === services.length - 1
-    ) {
-      revisedSelections.unshift(ALL_SERVICES_DROPDOWN_OPTION)
-    }
+
     return revisedSelections
   }
 }

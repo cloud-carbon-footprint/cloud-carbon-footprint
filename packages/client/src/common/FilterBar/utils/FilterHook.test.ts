@@ -22,12 +22,7 @@ describe('useFilters', () => {
         return new EmissionsFilters(updatedConfig)
       }
       result = renderHook(() =>
-        useFilters(
-          estimationResults,
-          buildFilter,
-          EmissionsFilters.generateConfig,
-          filteredResult,
-        ),
+        useFilters(estimationResults, buildFilter, filteredResult),
       ).result
     })
 

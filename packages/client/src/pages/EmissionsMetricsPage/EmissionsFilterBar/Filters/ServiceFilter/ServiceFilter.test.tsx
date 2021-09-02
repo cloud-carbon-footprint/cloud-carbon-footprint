@@ -11,6 +11,7 @@ import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
+  CLOUD_PROVIDER_OPTIONS,
 } from 'common/FilterBar/utils/DropdownConstants'
 import { EmissionsFilters } from '../../utils/EmissionsFilters'
 
@@ -75,6 +76,7 @@ describe('ServiceFilter', () => {
       { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
     ],
     services: serviceOptions,
+    cloudProviders: CLOUD_PROVIDER_OPTIONS,
   }
 
   beforeEach(() => {
