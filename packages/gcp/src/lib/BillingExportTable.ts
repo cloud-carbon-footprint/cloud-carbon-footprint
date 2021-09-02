@@ -47,7 +47,8 @@ import {
   NETWORKING_STRING_FORMATS,
   GCP_QUERY_GROUP_BY,
   UNKNOWN_USAGE_UNITS,
-  UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING,
+  UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING,
+  UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING,
 } from './BillingExportTypes'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
@@ -444,22 +445,6 @@ export default class BillingExportTable {
     )
   }
 
-  private getClassification(usageUnit: string, usageType: string) {
-    if (
-      UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[1] ===
-      EstimateClassification.MEMORY
-    ) {
-      if (containsAny(['Memory'], usageType)) {
-        return EstimateClassification.MEMORY
-      }
-      return EstimateClassification.STORAGE
-    }
-
-    return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
-      ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
-      : EstimateClassification.UNKNOWN
-  }
-
   private getEstimateForUnknownUsage(
     rowData: BillingExportRow,
   ): FootprintEstimate {
@@ -468,9 +453,9 @@ export default class BillingExportTable {
       cost: rowData.cost,
       usageUnit: rowData.usageUnit,
       usageType: rowData.usageType,
-      reclassificationType: this.getClassification(
-        rowData.usageUnit,
+      reclassificationType: this.getUnknownReclassification(
         rowData.usageType,
+        rowData.usageUnit,
       ),
     }
     const unknownConstants: CloudConstants = {
@@ -482,6 +467,25 @@ export default class BillingExportTable {
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       unknownConstants,
     )[0]
+  }
+
+  getUnknownReclassification(usageType: string, usageUnit: string): string {
+    if (usageUnit === 'byte-seconds') {
+      if (containsAny(['Memory'], usageType)) {
+        return EstimateClassification.MEMORY
+      }
+      return EstimateClassification.STORAGE
+    }
+
+    for (const key in UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING) {
+      if (usageType.includes(key)) {
+        return UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING[key]
+      }
+    }
+
+    return UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
+      ? UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
+      : EstimateClassification.UNKNOWN
   }
 
   private async getUsage(start: Date, end: Date): Promise<RowMetadata[]> {

@@ -3,6 +3,7 @@
  */
 
 import { BigQuery } from '@google-cloud/bigquery'
+import each from 'jest-each'
 import {
   EstimationResult,
   LookupTableOutput,
@@ -33,6 +34,7 @@ import {
   mockQueryReclassifiedUnknowns,
 } from './fixtures/bigQuery.fixtures'
 import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
+import { unknownsReclassification } from './fixtures/unknownsReclassification.fixtures'
 
 const mockJob = { getQueryResults: jest.fn() }
 const mockCreateQueryJob = jest.fn().mockResolvedValue([mockJob, 'test-job-id'])
@@ -572,6 +574,7 @@ describe('GCP BillingExportTable Service', () => {
     ]
     expect(result).toEqual(expectedResult)
   })
+
   it('estimation for unknown App Engine Compute and Cloud DataFlow Compute', async () => {
     mockJob.getQueryResults.mockResolvedValue(
       mockQueryAppEngineComputeUnknownRegion,
@@ -766,6 +769,30 @@ describe('GCP BillingExportTable Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
+  })
+
+  describe('Unknowns usage classification', () => {
+    each(unknownsReclassification).it(
+      'returns correct reclassification for %s',
+      (usageType, usageUnit, reclassification) => {
+        const billingExportTableService = new BillingExportTable(
+          new ComputeEstimator(),
+          new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+          new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+          new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+          new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+          new UnknownEstimator(),
+          new BigQuery(),
+        )
+
+        expect(
+          billingExportTableService.getUnknownReclassification(
+            usageType,
+            usageUnit,
+          ),
+        ).toBe(reclassification.toLowerCase())
+      },
+    )
   })
 
   it('estimation for reclassified unknowns', async () => {
