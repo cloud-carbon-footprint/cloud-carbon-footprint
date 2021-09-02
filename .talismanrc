@@ -71,6 +71,8 @@ fileignoreconfig:
   checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
 - filename: docker/nginx.conf
   checksum: a4632d785a11f199217d4229a40eba5a38180d9945d96799dc9b5efc6a3bc06e
+- filename: microsite/docs/ClassifyingUsageTypes.md
+  checksum: f4b232851337efec90c4a88271cdf4cde2a9d732f0f69824223f1dcf7c6b8aaa
 - filename: microsite/docs/CreatingALookupTable.md
   checksum: 71905a04532ef57e9eab56fefd1c1e43dfd48fabb928a044bbb7c5100640fe5c
 - filename: microsite/docs/RunWithDocker.md
