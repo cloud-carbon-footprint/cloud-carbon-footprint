@@ -3,10 +3,10 @@
  */
 
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from '../FiltersUtil'
-import { CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { OptionChooser } from './OptionChooser'
-import { isOptionInDropdownOptions } from '../FiltersUtil'
+import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
+import { CLOUD_PROVIDER_OPTIONS } from 'common/FilterBar/utils/DropdownConstants'
+import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
+import { optionIsInDropdownOptions } from 'common/FilterBar/utils/FiltersUtil'
 
 export class ServiceChooser extends OptionChooser {
   constructor(
@@ -21,6 +21,12 @@ export class ServiceChooser extends OptionChooser {
       oldSelections,
       filterOptions,
     )
+
+    this.choosers = {
+      [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
+      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+      [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
+    }
   }
 
   protected chooseProviders(): Set<DropdownOption> {
@@ -39,7 +45,7 @@ export class ServiceChooser extends OptionChooser {
     currentCloudProviders.forEach((currentCloudProvider) => {
       //if current Cloud provider has an option that oldCP has, keep the accounts from old that are under that CP
       if (
-        isOptionInDropdownOptions(
+        optionIsInDropdownOptions(
           this.oldSelections.cloudProviders,
           currentCloudProvider,
         )

@@ -17,6 +17,7 @@ import {
   FilterResults,
 } from 'Types'
 import { DropdownSelections } from './FiltersUtil'
+import { OptionChooser } from './OptionChooser'
 
 type MaybeMoment = moment.Moment | null
 
@@ -46,6 +47,13 @@ export abstract class Filters {
   }
 
   protected abstract create(config: FiltersConfig): Filters
+
+  abstract createOptionChooser(
+    filterType: DropdownFilterOptions,
+    selections: DropdownOption[],
+    oldSelections: DropdownSelections,
+    filterOptions: FilterOptions,
+  ): OptionChooser
 
   abstract filter(rawResults: FilterResults): FilterResults
 
@@ -80,16 +88,17 @@ export abstract class Filters {
     dropdownFilter: DropdownFilterOptions,
   ): Filters {
     const oldSelections = { ...this.options }
+    const optionChooser = this.createOptionChooser(
+      dropdownFilter,
+      dropdownOption,
+      oldSelections,
+      filterOptions,
+    )
 
     return this.create({
       ...this,
       options: {
-        ...FiltersUtil.handleDropdownSelections(
-          dropdownFilter,
-          dropdownOption,
-          oldSelections,
-          filterOptions,
-        ),
+        ...FiltersUtil.handleDropdownSelections(optionChooser),
       },
     })
   }

@@ -2,25 +2,17 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import createOptionChooser from './options'
+import { DropdownFilterOptions, DropdownOption } from 'Types'
+import { OptionChooser } from './OptionChooser'
 
 export type DropdownSelections = {
   [key in DropdownFilterOptions]?: DropdownOption[]
 }
 
 export function handleDropdownSelections(
-  filterType: DropdownFilterOptions,
-  selections: DropdownOption[],
-  oldSelections: DropdownSelections,
-  filterOptions: FilterOptions,
+  chooser: OptionChooser,
 ): DropdownSelections {
-  return createOptionChooser(
-    filterType,
-    selections,
-    oldSelections,
-    filterOptions,
-  ).choose()
+  return chooser.choose()
 }
 
 export function numSelectedLabel(
@@ -36,7 +28,7 @@ export function numSelectedLabel(
   }
 }
 
-export function isOptionInDropdownOptions(
+export function optionIsInDropdownOptions(
   comparingDropdownOptions: DropdownOption[],
   dropdownOption: DropdownOption,
 ): boolean {

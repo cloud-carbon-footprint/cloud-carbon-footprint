@@ -3,9 +3,12 @@
  */
 
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from '../FiltersUtil'
-import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { OptionChooser } from './OptionChooser'
+import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
+import {
+  ALL_KEY,
+  CLOUD_PROVIDER_OPTIONS,
+} from 'common/FilterBar/utils/DropdownConstants'
+import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 
 export class CloudProviderChooser extends OptionChooser {
   constructor(
@@ -20,6 +23,12 @@ export class CloudProviderChooser extends OptionChooser {
       oldSelections,
       filterOptions,
     )
+
+    this.choosers = {
+      [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
+      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+      [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
+    }
   }
 
   protected chooseProviders(): Set<DropdownOption> {

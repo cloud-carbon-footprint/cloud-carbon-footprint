@@ -7,6 +7,7 @@ import { Filters } from 'common/FilterBar/utils/Filters'
 import {
   DropdownFilterOptions,
   DropdownOption,
+  FilterOptions,
   FilterResultResponse,
   FiltersConfig,
   unknownOptionTypes,
@@ -18,6 +19,11 @@ import {
   CLOUD_PROVIDER_OPTIONS,
 } from 'common/FilterBar/utils/DropdownConstants'
 import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
+import { AccountChooser } from './options/AccountChooser'
+import { DropdownSelections } from '../../../../common/FilterBar/utils/FiltersUtil'
+import { OptionChooser } from '../../../../common/FilterBar/utils/OptionChooser'
+import { CloudProviderChooser } from './options/CloudProviderChooser'
+import { ServiceChooser } from './options/ServiceChooser'
 
 const defaultConfig: FiltersConfig = {
   timeframe: 36,
@@ -34,12 +40,32 @@ export class EmissionsFilters extends Filters {
     super(config)
   }
 
+  static generateConfig(newOptions: FilterResultResponse): FiltersConfig {
+    return super.generateConfig(newOptions, defaultConfig)
+  }
+
   create(config: FiltersConfig): Filters {
     return new EmissionsFilters(config)
   }
 
-  static generateConfig(newOptions: FilterResultResponse): FiltersConfig {
-    return super.generateConfig(newOptions, defaultConfig)
+  createOptionChooser(
+    filterType: DropdownFilterOptions,
+    selections: DropdownOption[],
+    oldSelections: DropdownSelections,
+    filterOptions: FilterOptions,
+  ): OptionChooser {
+    switch (filterType) {
+      case DropdownFilterOptions.CLOUD_PROVIDERS:
+        return new CloudProviderChooser(
+          selections,
+          oldSelections,
+          filterOptions,
+        )
+      case DropdownFilterOptions.ACCOUNTS:
+        return new AccountChooser(selections, oldSelections, filterOptions)
+      case DropdownFilterOptions.SERVICES:
+        return new ServiceChooser(selections, oldSelections, filterOptions)
+    }
   }
 
   filter(rawResults: EstimationResult[]): EstimationResult[] {

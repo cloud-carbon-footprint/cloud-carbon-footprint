@@ -4,10 +4,13 @@
 
 import { pluck } from 'ramda'
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from '../FiltersUtil'
-import { ALL_KEY, CLOUD_PROVIDER_OPTIONS } from '../DropdownConstants'
-import { OptionChooser } from './OptionChooser'
-import { isOptionInDropdownOptions } from '../FiltersUtil'
+import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
+import {
+  ALL_KEY,
+  CLOUD_PROVIDER_OPTIONS,
+} from 'common/FilterBar/utils/DropdownConstants'
+import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
+import { optionIsInDropdownOptions } from 'common/FilterBar/utils/FiltersUtil'
 
 export class AccountChooser extends OptionChooser {
   constructor(
@@ -22,6 +25,12 @@ export class AccountChooser extends OptionChooser {
       oldSelections,
       filterOptions,
     )
+
+    this.choosers = {
+      [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
+      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+      [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
+    }
   }
 
   protected chooseProviders(): Set<DropdownOption> {
@@ -51,7 +60,7 @@ export class AccountChooser extends OptionChooser {
       )
       //if current Cloudprovider has an option that oldCP has, keep the services from old that are under that CP
       if (
-        isOptionInDropdownOptions(
+        optionIsInDropdownOptions(
           this.oldSelections.cloudProviders,
           currentCloudProvider,
         )

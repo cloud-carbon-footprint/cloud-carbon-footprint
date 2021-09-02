@@ -3,8 +3,8 @@
  */
 
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from '../FiltersUtil'
-import { ALL_DROPDOWN_FILTER_OPTIONS, ALL_KEY } from '../DropdownConstants'
+import { DropdownSelections } from './FiltersUtil'
+import { ALL_DROPDOWN_FILTER_OPTIONS, ALL_KEY } from './DropdownConstants'
 
 export abstract class OptionChooser {
   protected readonly filterType: DropdownFilterOptions
@@ -13,10 +13,8 @@ export abstract class OptionChooser {
   protected readonly oldSelections: DropdownSelections
   protected readonly filterOptions: FilterOptions
 
-  private readonly choosers = {
-    [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
-    [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
-    [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
+  protected choosers: {
+    [option in DropdownFilterOptions]: () => Set<DropdownOption>
   }
 
   protected constructor(
@@ -32,12 +30,6 @@ export abstract class OptionChooser {
     this.oldSelections = oldSelections
     this.filterOptions = filterOptions
   }
-
-  protected abstract chooseProviders(): Set<DropdownOption>
-
-  protected abstract chooseAccounts(): Set<DropdownOption>
-
-  protected abstract chooseServices(): Set<DropdownOption>
 
   choose(): DropdownSelections {
     const selectionKeys: string[] = this.selections.map(
