@@ -29,7 +29,7 @@
     "build": "rimraf dist && yarn build:tsc",
     "build:tsc": "tsc --build tsconfig.json",
     "lint": "eslint '*/**/*.ts' --quiet",
-    "clean": "rm -rf coverage src/**/*.js src/**/*.map",
+    "clean": "rimraf dist && rimraf coverage && rimraf logs",
     "start": "nodemon --",
     "test-create-app": "sh scripts/update-create-app.sh"
   },

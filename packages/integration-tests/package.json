@@ -11,7 +11,8 @@
     "headed": "testcafe 'chrome'",
     "precommit": "lint-staged --no-stash && yarn headless",
     "lint": "eslint '*/*.js' --quiet",
-    "lint:fix": "eslint '*/*.js' --quiet --fix"
+    "lint:fix": "eslint '*/*.js' --quiet --fix",
+    "clean": "rimraf screenshots"
   },
   "devDependencies": {
     "@testing-library/testcafe": "^4.4.0",
