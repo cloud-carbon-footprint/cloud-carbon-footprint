@@ -27,6 +27,8 @@ import {
   mockSnapshotAndDeleteDiskRecommendationsResults,
   mockStopVMRecommendationsResults,
   mockStopVMWithAdditionalImpactRecommendationsResults,
+  mockStopVmAndDeleteAddressRecommendations,
+  mockDeleteAddressRecommendationsEast,
 } from './fixtures/recommender.fixtures'
 import {
   mockedAddressesResultItems,
@@ -636,6 +638,81 @@ describe('GCP Recommendations Service', () => {
           "Save cost by deleting idle address 'test-address'.",
         kilowattHourSavings: 0,
         co2eSavings: 0,
+        costSavings: 40,
+        resourceId: '123456789012345',
+        instanceName: 'test-address',
+      },
+    ]
+
+    expect(recommendations).toEqual(expectedResult)
+  })
+
+  it('returns estimates for recommendation type DELETE_ADDRESS', async () => {
+    mockListRecommendations
+      .mockResolvedValueOnce(mockStopVmAndDeleteAddressRecommendations)
+      .mockResolvedValueOnce(mockDeleteAddressRecommendationsEast)
+      .mockResolvedValue([[]])
+
+    setupSpy(
+      googleComputeClient.machineTypes,
+      'get',
+      mockedMachineTypesGetItems,
+    )
+    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
+    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
+
+    const recommendationsService = new Recommendations(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new ServiceWrapper(
+        new Resource(),
+        googleAuthClient,
+        googleComputeClient,
+        new RecommenderClient(),
+      ),
+    )
+
+    const recommendations = await recommendationsService.getRecommendations()
+
+    const expectedResult: RecommendationResult[] = [
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'STOP_VM',
+        recommendationDetail: "Save cost by stopping Idle VM 'test-instance'.",
+        kilowattHourSavings: 58.152384000000005,
+        co2eSavings: 0.0045358859520000004,
+        costSavings: 15,
+        instanceName: 'test-resource-name',
+        resourceId: '12456789012',
+      },
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-west1',
+        recommendationType: 'DELETE_ADDRESS',
+        recommendationDetail:
+          "Save cost by deleting idle address 'test-address'.",
+        kilowattHourSavings: 155.07302400000003,
+        co2eSavings: 0.012095695872000002,
+        costSavings: 40,
+        resourceId: '123456789012345',
+        instanceName: 'test-address',
+      },
+      {
+        cloudProvider: 'GCP',
+        accountId: 'project',
+        accountName: 'project-name',
+        region: 'us-east1',
+        recommendationType: 'DELETE_ADDRESS',
+        recommendationDetail:
+          "Save cost by deleting idle address 'test-address'.",
+        kilowattHourSavings: 25.199366400000002,
+        co2eSavings: 0.012095695872000002,
         costSavings: 40,
         resourceId: '123456789012345',
         instanceName: 'test-address',

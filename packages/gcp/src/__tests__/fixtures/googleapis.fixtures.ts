@@ -49,6 +49,9 @@ export const mockedInstanceResultItems: InstanceAggregatedList = {
       'zones/us-west1-a': {
         instances: [{ id: 'test-instance' }],
       },
+      'zones/us-east1-a': {
+        instances: [{ id: 'test-instance-1' }],
+      },
       'zones/us-west1-b': { warning: { code: 'NO_RESULTS_ON_PAGE' } },
     },
   },

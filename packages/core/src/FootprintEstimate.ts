@@ -14,7 +14,12 @@ export default interface FootprintEstimate {
   usesAverageCPUConstant?: boolean
 }
 
-export type Co2ePerCost = { [key: string]: { [key: string]: number } }
+export type CostAndCo2eTotals = {
+  cost: number
+  co2e: number
+}
+
+export type Co2ePerCost = { [key: string]: CostAndCo2eTotals }
 
 export enum EstimateClassification {
   COMPUTE = 'compute',

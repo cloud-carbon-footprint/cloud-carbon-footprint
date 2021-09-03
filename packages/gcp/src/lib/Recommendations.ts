@@ -35,9 +35,11 @@ import {
   ActiveProject,
   RECOMMENDATION_TYPES,
   ResourceDetails,
+  UnknownRecommendationDetails,
 } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
 import { GCP_REGIONS } from './GCPRegions'
+import { CostAndCo2eTotals } from '@cloud-carbon-footprint/core'
 
 export default class Recommendations implements ICloudRecommendationsService {
   readonly RECOMMENDER_IDS: string[] = [
@@ -56,6 +58,7 @@ export default class Recommendations implements ICloudRecommendationsService {
   ]
   private readonly primaryImpactPerformance = 'PERFORMANCE'
   private readonly recommendationsLogger: Logger
+  private readonly costAndCo2eTotals: CostAndCo2eTotals
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
@@ -63,12 +66,15 @@ export default class Recommendations implements ICloudRecommendationsService {
     private readonly googleServiceWrapper: ServiceWrapper,
   ) {
     this.recommendationsLogger = new Logger('GCPRecommendations')
+    this.costAndCo2eTotals = {
+      cost: 0,
+      co2e: 0,
+    }
   }
 
   async getRecommendations(): Promise<RecommendationResult[]> {
     const activeProjectsAndZones =
       await this.googleServiceWrapper.getActiveProjectsAndZones()
-
     return await this.getRecommendationsForProjects(activeProjectsAndZones)
   }
 
@@ -99,32 +105,96 @@ export default class Recommendations implements ICloudRecommendationsService {
     const nonEmptyRecommendations = recommendationsByIds
       .flat()
       .filter((recommendationId) => recommendationId.recommendations.length > 0)
+    const unknownRecommendations: UnknownRecommendationDetails[] = []
     if (nonEmptyRecommendations.length > 0) {
-      return Promise.all(
+      const recommendationsResult: RecommendationResult[] = []
+      await Promise.all(
         R.flatten(
           nonEmptyRecommendations.map(({ zone, recommendations }) =>
             recommendations.map(async (rec: IRecommendation) => {
               const [estimatedCO2eSavings, resourceDetails] =
                 await this.getEstimatedCO2eSavings(project.id, zone, rec)
-              return {
-                cloudProvider: 'GCP',
-                accountId: project.id,
-                accountName: project.name,
-                region: this.parseRegionFromZone(zone),
-                recommendationType: rec.recommenderSubtype,
-                recommendationDetail: rec.description,
-                costSavings: this.getEstimatedCostSavings(rec),
-                co2eSavings: estimatedCO2eSavings.co2e,
-                kilowattHourSavings: estimatedCO2eSavings.kilowattHours,
-                resourceId: resourceDetails.resourceId,
-                instanceName: resourceDetails.resourceName,
+
+              const cost = this.getEstimatedCostSavings(rec)
+              if (
+                rec.recommenderSubtype === RECOMMENDATION_TYPES.DELETE_ADDRESS
+              ) {
+                unknownRecommendations.push({
+                  rec,
+                  zone,
+                  cost,
+                  resourceDetails,
+                })
+                return
+              } else {
+                this.accumulateCostAndCo2e(cost, estimatedCO2eSavings.co2e)
+                recommendationsResult.push({
+                  cloudProvider: 'GCP',
+                  accountId: project.id,
+                  accountName: project.name,
+                  region: this.parseRegionFromZone(zone),
+                  recommendationType: rec.recommenderSubtype,
+                  recommendationDetail: rec.description,
+                  costSavings: cost,
+                  co2eSavings: estimatedCO2eSavings.co2e,
+                  kilowattHourSavings: estimatedCO2eSavings.kilowattHours,
+                  resourceId: resourceDetails.resourceId,
+                  instanceName: resourceDetails.resourceName,
+                })
               }
             }),
           ),
         ),
       )
+
+      unknownRecommendations.map(({ rec, zone, cost, resourceDetails }) => {
+        const { co2e, kilowattHours } = this.getCo2eEstimationsForUnknowns(
+          zone,
+          cost,
+        )
+
+        recommendationsResult.push({
+          cloudProvider: 'GCP',
+          accountId: project.id,
+          accountName: project.name,
+          region: this.parseRegionFromZone(zone),
+          recommendationType: rec.recommenderSubtype,
+          recommendationDetail: rec.description,
+          costSavings: cost,
+          co2eSavings: co2e,
+          kilowattHourSavings: kilowattHours,
+          resourceId: resourceDetails.resourceId,
+          instanceName: resourceDetails.resourceName,
+        })
+      })
+      return recommendationsResult
     }
     return []
+  }
+
+  private getCo2eEstimationsForUnknowns(
+    zone: string,
+    cost: number,
+  ): {
+    [key: string]: number
+  } {
+    if (this.costAndCo2eTotals.cost === 0)
+      return {
+        co2e: 0,
+        kilowattHours: 0,
+      }
+    const co2ePerCost =
+      this.costAndCo2eTotals.co2e / this.costAndCo2eTotals.cost
+    const co2e = cost * co2ePerCost
+    const kilowattHours =
+      co2e /
+      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[this.parseRegionFromZone(zone)]
+    return { co2e, kilowattHours }
+  }
+
+  private accumulateCostAndCo2e(cost: number, co2e: number) {
+    this.costAndCo2eTotals.cost += cost
+    this.costAndCo2eTotals.co2e += co2e
   }
 
   private async getEstimatedCO2eSavings(
@@ -274,6 +344,7 @@ export default class Recommendations implements ICloudRecommendationsService {
             resourceId: addressDetails.id,
             resourceName: addressDetails.name,
           }
+
           return [footprintEstimate, resourceDetails]
         default:
           this.recommendationsLogger.warn(

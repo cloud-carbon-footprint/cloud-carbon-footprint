@@ -21,6 +21,13 @@ export type ResourceDetails = {
   resourceName: string
 }
 
+export type UnknownRecommendationDetails = {
+  rec: IRecommendation
+  zone: string
+  cost: number
+  resourceDetails: ResourceDetails
+}
+
 export enum RECOMMENDATION_TYPES {
   STOP_VM = 'STOP_VM',
   SNAPSHOT_AND_DELETE_DISK = 'SNAPSHOT_AND_DELETE_DISK',

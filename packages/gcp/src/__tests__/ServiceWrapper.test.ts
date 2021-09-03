@@ -109,7 +109,7 @@ describe('GCP Service Wrapper', () => {
       {
         id: 'project',
         name: 'project-name',
-        zones: ['us-west1-a', 'global'],
+        zones: ['us-west1-a', 'us-east1-a', 'global'],
       },
     ]
 

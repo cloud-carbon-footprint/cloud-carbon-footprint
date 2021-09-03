@@ -177,6 +177,8 @@ fileignoreconfig:
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/CloudConstantsTypes.ts
   checksum: fc77184302e75b36ed681d349abebfeb6e5da8ea8b45ab96096e88e43b892e55
+- filename: packages/core/src/FootprintEstimate.ts
+  checksum: 32425cda8ef4abd41dc94b65e7ad32a53b57a80e11a8422e864c2354f2c8426a
 - filename: packages/core/src/FootprintEstimatesDataBuilder.ts
   checksum: ff85444731d66f4a7b3ebaca7d2f64c7bfac5772f8ff2dfa9789620ceb8238a3
 - filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts
@@ -239,6 +241,8 @@ fileignoreconfig:
   checksum: 27e7319ef9204e0c6e575ddf8bf288d2627fb8542f468ddde86439420be8c93d
 - filename: packages/gcp/src/lib/MachineTypes.ts
   checksum: fe6c335581e146315ca8feff01aae6ad4821e3935276f4d8fbefe3f84c1a1f8f
+- filename: packages/gcp/src/lib/Recommendations.ts
+  checksum: 03ccb62c70e3436a4bc8f186ace884b6f3ace1a94823b31d9f236b8abf29d3c7
 - filename: packages/gcp/src/lib/ReplicationFactors.ts
   checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
 - filename: server/.env.template

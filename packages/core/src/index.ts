@@ -28,6 +28,7 @@ export {
   estimateCo2,
   estimateKwh,
   Co2ePerCost,
+  CostAndCo2eTotals,
   EstimateClassification,
 } from './FootprintEstimate'
 export { default as ICloudService } from './ICloudService'

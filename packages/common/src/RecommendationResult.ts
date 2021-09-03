@@ -9,9 +9,9 @@ export interface RecommendationResult {
   readonly region: string | null
   readonly recommendationType: string
   readonly recommendationDetail: string
-  readonly kilowattHourSavings: number
   readonly resourceId?: string
   readonly instanceName?: string
+  readonly kilowattHourSavings: number
   costSavings: number
   co2eSavings: number
 }
