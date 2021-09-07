@@ -65,12 +65,12 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
       <div
         className="MuiBox-root MuiBox-root-8"
       >
-        <svg
+        <img
+          alt="AWS Map"
           className="makeStyles-map-4"
           data-testid="awsIntensityMap"
-        >
-          AWSMap.svg
-        </svg>
+          src="AWSMap.png"
+        />
       </div>
     </div>
   </div>

@@ -13,11 +13,11 @@ describe('Carbon Intensity Map', () => {
     expect(root.toJSON()).toMatchSnapshot()
   })
 
-  it('should show an svg image with the AWS map as default', () => {
+  it('should show a png image with the AWS map as default', () => {
     const { getByTestId } = render(<CarbonIntensityMap />)
 
     const mapImage = getByTestId('awsIntensityMap')
-    expect(mapImage).toBeInstanceOf(SVGSVGElement)
+    expect(mapImage).toBeInstanceOf(HTMLImageElement)
   })
 
   it('should show a dropdown for the cloud providers to choose from', () => {
