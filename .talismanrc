@@ -162,7 +162,7 @@ fileignoreconfig:
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
-  checksum: 9a2fcd2d0403cc62db6fb6b995e58508f2cf5e5278a9653016d2528724889530
+  checksum: e2e869e439235c2ba11e55e35766dc50f24565972db2cc7d30d6fa466c30b865
 - filename: packages/client/src/react-app-env.d.ts
   checksum: bc982f7de408c4fd412b6e26717b045875493f2562af97d791a8ee5202a40661
 - filename: packages/client/src/utils/data/generateEstimations.ts

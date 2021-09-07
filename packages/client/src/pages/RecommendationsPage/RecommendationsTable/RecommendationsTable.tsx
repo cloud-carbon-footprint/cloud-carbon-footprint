@@ -80,11 +80,12 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           ? recommendation.co2eSavings * 1000
           : recommendation.co2eSavings,
       }
-      // Replace any undefined values and cuts numbers to thousandth decimal
+      // Replace any undefined values and round numbers to thousandth decimal
       Object.keys(recommendation).forEach((key) => {
-        if (key.includes('Savings') && recommendationRow[key])
-          recommendationRow[key] = recommendationRow[key].toFixed(3)
-        if (!recommendationRow[key]) recommendationRow[key] = '-'
+        recommendationRow[key] = recommendationRow[key] ?? '-'
+        if (key.includes('Savings') && recommendationRow[key] != '-')
+          recommendationRow[key] =
+            Math.round(recommendationRow[key] * 1000) / 1000
       })
       return recommendationRow
     })

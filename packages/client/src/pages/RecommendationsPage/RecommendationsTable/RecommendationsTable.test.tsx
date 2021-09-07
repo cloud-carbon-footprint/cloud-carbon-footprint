@@ -133,11 +133,11 @@ describe('Recommendations Table', () => {
     const firstRow = actualRowData[0]
 
     // get last cell for CO2 data
-    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2.560')
+    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2.56')
 
     fireEvent.click(toggle)
 
-    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2560.000')
+    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2560')
 
     const table = within(getByRole('grid'))
 
