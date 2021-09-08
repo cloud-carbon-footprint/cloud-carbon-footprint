@@ -173,6 +173,10 @@ fileignoreconfig:
   checksum: 906af95ecf779a12ba70cf4b66a00ebe5098fcebf82298c482efd40f985b578b
 - filename: packages/client/stub-server/co2estimations.json
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
+- filename: packages/client/stub-server/footprint.json
+  checksum: 2a1551ebe105d866d121c17029d53c7466b67e2cfc1c71b13b5894ae5bc06b50
+- filename: packages/client/stub-server/recommendations.json
+  checksum: fd9afa539a5991cb21416293ae9d17a57005b5bcacdd148fe9f4ce0fd3de145e
 - filename: packages/core/package.json
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/CloudConstantsTypes.ts
