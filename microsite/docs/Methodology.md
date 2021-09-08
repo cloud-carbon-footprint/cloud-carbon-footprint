@@ -500,7 +500,7 @@ The same is true for the GB / physical chip used to estimate energy for memory u
 
 **Note**: The application currently only supports a subset of Azure regions that are used by Thoughtworks.
 This is because the syntax in which they are returned from the Azure Consumption API doesn't always match what is listed in the [Azure website](https://azure.microsoft.com/en-us/global-infrastructure/geographies).
-For example, the website says "Central US", but the API provides the region as "US Central". In the case of "UK South",
+For example, the website says "West US 2", but the API provides the region as "uswest2". In the case of "UK South",
 it is the same on both the website and the API. For any Azure customers using other regions, we would love to know what
 syntax is returned by the API for your region(s) so that we can add support for them. You can email [green-cloud@thoughtworks.com](mailto:green-cloud@thoughtworks.com),
 or submit an issue or pull request.

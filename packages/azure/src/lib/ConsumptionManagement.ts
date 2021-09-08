@@ -4,7 +4,7 @@
 import moment, { unitOfTime } from 'moment'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import {
-  UsageDetail,
+  LegacyUsageDetail,
   UsageDetailsListResult,
 } from '@azure/arm-consumption/esm/models'
 
@@ -101,7 +101,7 @@ export default class ConsumptionManagementService {
     const results: MutableEstimationResult[] = []
     const unknownRows: ConsumptionDetailRow[] = []
 
-    allUsageRows.map((consumptionRow: UsageDetail) => {
+    allUsageRows.map((consumptionRow: LegacyUsageDetail) => {
       const consumptionDetailRow: ConsumptionDetailRow =
         new ConsumptionDetailRow(consumptionRow)
 
@@ -206,7 +206,10 @@ export default class ConsumptionManagementService {
         expand: 'properties/meterDetails',
         filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
       }
-      return await this.consumptionManagementClient.usageDetails.list(options)
+      return await this.consumptionManagementClient.usageDetails.list(
+        `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
+        options,
+      )
     } catch (e) {
       throw new Error(
         `Azure ConsumptionManagementClient.usageDetails.list failed. Reason: ${e.message}`,

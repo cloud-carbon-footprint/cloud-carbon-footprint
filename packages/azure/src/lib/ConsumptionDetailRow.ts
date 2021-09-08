@@ -3,31 +3,34 @@
  */
 
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
-import { UsageDetail } from '@azure/arm-consumption/esm/models'
 
 import {
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
   VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
 } from './VirtualMachineTypes'
+import { LegacyUsageDetail } from '@azure/arm-consumption/esm/models'
+import { AZURE_REGIONS } from './AzureRegions'
 
 export default class ConsumptionDetailRow extends BillingDataRow {
-  constructor(usageDetail: UsageDetail) {
+  constructor(usageDetail: LegacyUsageDetail) {
     const consumptionDetails = {
       cloudProvider: 'AZURE',
-      accountId: usageDetail.subscriptionGuid,
+      accountId: usageDetail.subscriptionId,
       accountName: usageDetail.subscriptionName,
-      timestamp: new Date(usageDetail.usageStart),
+      timestamp: new Date(usageDetail.date),
       usageType: usageDetail.meterDetails.meterName,
-      usageUnit: usageDetail.meterDetails.unit,
-      usageAmount: usageDetail.usageQuantity,
-      serviceName: usageDetail.meterDetails.serviceName,
-      cost: usageDetail.pretaxCost,
-      region: usageDetail.location,
+      usageUnit: usageDetail.meterDetails.unitOfMeasure,
+      usageAmount: usageDetail.quantity,
+      serviceName: usageDetail.meterDetails.meterCategory,
+      cost: usageDetail.cost,
+      region: usageDetail.resourceLocation,
     }
+
     super(consumptionDetails)
     this.usageType = this.parseUsageType()
     this.vCpuHours = this.usageAmount * this.getVCpus()
     this.seriesName = this.getSeriesFromInstanceType()
+    this.region = this.getRegionFromResourceLocation()
   }
 
   public getVCpus(): number {
@@ -37,6 +40,15 @@ export default class ConsumptionDetailRow extends BillingDataRow {
       VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[this.usageType]?.[0] ||
       1
     )
+  }
+
+  private getRegionFromResourceLocation(): string {
+    for (const region of Object.values(AZURE_REGIONS)) {
+      if (region.name === this.region || region.options.includes(this.region)) {
+        return region.name
+      }
+    }
+    return AZURE_REGIONS.UNKNOWN.name
   }
 
   private parseUsageType(): string {

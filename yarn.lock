@@ -14,15 +14,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-consumption@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "@azure/arm-consumption@npm:7.1.0"
+"@azure/arm-consumption@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@azure/arm-consumption@npm:8.0.0"
   dependencies:
     "@azure/core-auth": ^1.1.4
     "@azure/ms-rest-azure-js": ^2.1.0
     "@azure/ms-rest-js": ^2.2.0
     tslib: ^1.10.0
-  checksum: cc00437a2593de172274c29994ec5dd0760fb0ffee81ded500f3e193cc496b1ee282fe0f3837039e4e509596ff1ec28c75b08856705027b6ca04e1a7a46c6efa
+  checksum: 86813e94d73ddc6f4fea27172c37c05f10b5e5542b494c80bca1cc9ac8817fcbb5252f60ac9dc0ff7d6b80b9d6c2ad2e5538277bf09d972bcc4c89c7a68abf1f
   languageName: node
   linkType: hard
 
@@ -2131,7 +2131,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
-    "@azure/arm-consumption": ^7.1.0
+    "@azure/arm-consumption": ^8.0.0
     "@azure/arm-subscriptions": ^3.0.0
     "@azure/ms-rest-js": ^2.2.3
     "@azure/ms-rest-nodeauth": ^3.0.7
