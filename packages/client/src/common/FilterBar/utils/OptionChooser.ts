@@ -7,29 +7,17 @@ import { DropdownSelections } from './FiltersUtil'
 import { ALL_DROPDOWN_FILTER_OPTIONS, ALL_KEY } from './DropdownConstants'
 
 export abstract class OptionChooser {
-  protected readonly filterType: DropdownFilterOptions
-  protected readonly allOptions: DropdownOption[]
-  protected selections: DropdownOption[]
-  protected readonly oldSelections: DropdownSelections
-  protected readonly filterOptions: FilterOptions
-
   protected choosers: {
     [option in DropdownFilterOptions]: () => Set<DropdownOption>
   }
 
   protected constructor(
-    filterType: DropdownFilterOptions,
-    allOptions: DropdownOption[],
-    selections: DropdownOption[],
-    oldSelections: DropdownSelections,
-    filterOptions: FilterOptions,
-  ) {
-    this.allOptions = allOptions
-    this.filterType = filterType
-    this.selections = selections
-    this.oldSelections = oldSelections
-    this.filterOptions = filterOptions
-  }
+    protected readonly filterType: DropdownFilterOptions,
+    protected readonly allOptions: DropdownOption[],
+    protected selections: DropdownOption[],
+    protected readonly oldSelections: DropdownSelections,
+    protected readonly filterOptions: FilterOptions,
+  ) {}
 
   choose(): DropdownSelections {
     const selectionKeys: string[] = this.selections.map(
