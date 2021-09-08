@@ -2,11 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const baseConfig = require('../../jest.base.config')
+
 module.exports = {
-  roots: ['<rootDir>/src'],
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-  },
+  ...baseConfig,
   coverageThreshold: {
     global: {
       statements: 90,
@@ -15,8 +15,6 @@ module.exports = {
       lines: 89,
     },
   },
-  coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   modulePathIgnorePatterns: [
     '<rootDir>/src/server.ts',
     '<rootDir>/src/auth.ts',

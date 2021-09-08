@@ -210,12 +210,6 @@ pushed into production, click on "Review deployments", select production, then a
 
 ---
 
-## Module Aliasing 🎛️️
-
-We've set up module aliasing within the server package, so modules within the sub directories can be accessed with the @ prefix, e.g. @application/Module/. We implemented this by configuring tsconfig.json, jest.config.js and installing the `tsconfig-paths` package.
-
----
-
 ## Lightweight ADR's (Architectural Decision Records) 📄
 
 We record any significant architectural choices we make with lightweight adr files, located in the .adr folder. There is a template included as well. For more information about Lightweight ADR's, see [ThoughtWork's Technology Radar](https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records).
