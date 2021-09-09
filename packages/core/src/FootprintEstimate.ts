@@ -114,7 +114,7 @@ export const appendOrAccumulateEstimatesByDay = (
     )
 
     if (
-      estimateExistsForRegionAndService(
+      estimateExistsForRegionAndServiceAndAccount(
         results,
         rowData.timestamp,
         serviceEstimate,
@@ -122,7 +122,10 @@ export const appendOrAccumulateEstimatesByDay = (
     ) {
       const estimateToAcc = estimatesForDay.serviceEstimates.find(
         (estimateForDay) => {
-          return hasSameRegionAndService(estimateForDay, serviceEstimate)
+          return hasSameRegionAndServiceAndAccount(
+            estimateForDay,
+            serviceEstimate,
+          )
         },
       )
       estimateToAcc.kilowattHours += serviceEstimate.kilowattHours
@@ -153,7 +156,7 @@ function dayExistsInEstimates(
   )
 }
 
-function estimateExistsForRegionAndService(
+function estimateExistsForRegionAndServiceAndAccount(
   results: MutableEstimationResult[],
   timestamp: Date,
   serviceEstimate: MutableServiceEstimate,
@@ -162,17 +165,18 @@ function estimateExistsForRegionAndService(
     (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
   )
   return estimatesForDay.serviceEstimates.some((estimateForDay) => {
-    return hasSameRegionAndService(estimateForDay, serviceEstimate)
+    return hasSameRegionAndServiceAndAccount(estimateForDay, serviceEstimate)
   })
 }
 
-function hasSameRegionAndService(
+function hasSameRegionAndServiceAndAccount(
   estimateOne: MutableServiceEstimate,
   estimateTwo: MutableServiceEstimate,
 ): boolean {
   return (
     estimateOne.region === estimateTwo.region &&
-    estimateOne.serviceName === estimateTwo.serviceName
+    estimateOne.serviceName === estimateTwo.serviceName &&
+    estimateOne.accountId === estimateTwo.accountId
   )
 }
 

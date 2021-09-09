@@ -203,6 +203,74 @@ describe('FootprintEstimate', () => {
       },
     ]
     expect(results).toEqual(newResultTwo)
+
+    // given - append
+    const billingDataRowThree: BillingDataRow = {
+      timestamp: dayTwo,
+      accountId: 'test account id 2',
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'App Engine',
+      usageType: 'test',
+      usageUnit: 'test',
+      vCpus: undefined,
+      machineType: 'test',
+      seriesName: 'test',
+      usageAmount: 380040914534400,
+      cost: 10,
+      cloudProvider: 'GCP',
+      vCpuHours: 105566920704,
+      instanceType: 'test',
+      replicationFactor: 1,
+    }
+
+    const footPrintEstimateThree: FootprintEstimate = {
+      usesAverageCPUConstant: false,
+      timestamp: dayTwo,
+      kilowattHours: 0.00006877379319146276,
+      co2e: 3.438689659573138e-8,
+    }
+    // when - accumulate
+    appendOrAccumulateEstimatesByDay(
+      results,
+      billingDataRowThree,
+      footPrintEstimateThree,
+    )
+    // then - append
+    const newResultThree = [
+      {
+        timestamp: dayOne,
+        serviceEstimates: [accumulatedServicesEstimate],
+      },
+      {
+        timestamp: dayTwo,
+        serviceEstimates: [
+          {
+            cloudProvider: 'GCP',
+            usesAverageCPUConstant: false,
+            serviceName: 'App Engine',
+            accountId: 'test account id',
+            accountName: 'test-account',
+            region: 'us-east1',
+            co2e: 3.438689659573138e-8,
+            cost: 10,
+            kilowattHours: 0.00006877379319146276,
+          },
+          {
+            cloudProvider: 'GCP',
+            usesAverageCPUConstant: false,
+            serviceName: 'App Engine',
+            accountId: 'test account id 2',
+            accountName: 'test-account',
+            region: 'us-east1',
+            co2e: 3.438689659573138e-8,
+            cost: 10,
+            kilowattHours: 0.00006877379319146276,
+          },
+        ],
+      },
+    ]
+    expect(results).toEqual(newResultThree)
   })
 
   it('accumulates co2e and cost totals per usage classification', () => {
