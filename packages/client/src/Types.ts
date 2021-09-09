@@ -87,7 +87,7 @@ export type FilterProps = {
   options?: FilterOptions
 }
 
-export type FilterLabelMapping = { [type in DropdownFilterOptions]: string }
+export type FilterLabelMapping = { [type in DropdownFilterOptions]?: string }
 
 export type UnknownTypesMapping = {
   [type in DropdownFilterOptions]?: UnknownTypes
