@@ -20,8 +20,8 @@ import {
 } from 'common/FilterBar/utils/DropdownConstants'
 import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
 import { AccountChooser } from './options/AccountChooser'
-import { DropdownSelections } from '../../../../common/FilterBar/utils/FiltersUtil'
-import { OptionChooser } from '../../../../common/FilterBar/utils/OptionChooser'
+import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
+import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { ServiceChooser } from './options/ServiceChooser'
 

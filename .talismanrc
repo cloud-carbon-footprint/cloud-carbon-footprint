@@ -117,6 +117,8 @@ fileignoreconfig:
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
   checksum: 0005b5abc9cba50b821c955aa1cc28e9860d4c8748f52c3bf6927eef620500fc
+- filename: packages/client/src/common/FilterBar/utils/DropdownConstants.ts
+  checksum: 03deb9260bd7bd7106da1eb4d70130284530ac15381ce52a0554f2f48de9d484
 - filename: packages/client/src/common/FilterBar/utils/FiltersUtil.ts
   checksum: 4023aca308afc058ea67013d0a5a3f8a513eb7e47d4b87b9ee0daebe3e030fc1
 - filename: packages/client/src/common/SelectDropdown/SelectDropdown.tsx
@@ -161,6 +163,10 @@ fileignoreconfig:
   checksum: c57d6e00062fb19ac80689510822dc06e2a85b18a309f96443f6e5f6de6b08c9
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.tsx
+  checksum: d0798970c48d47cd8db40478bcd8362f9e30123571edd33addfd6e2ebd1b5af2
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters.test.ts
+  checksum: c9224ba7f1899046ba10cddf1b3172a46de2ef20cc1f448c2f49f7dd35a4afec
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
   checksum: e2e869e439235c2ba11e55e35766dc50f24565972db2cc7d30d6fa466c30b865
 - filename: packages/client/src/react-app-env.d.ts

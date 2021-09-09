@@ -8,7 +8,7 @@ import { ALL_DROPDOWN_FILTER_OPTIONS, ALL_KEY } from './DropdownConstants'
 
 export abstract class OptionChooser {
   protected choosers: {
-    [option in DropdownFilterOptions]: () => Set<DropdownOption>
+    [option in DropdownFilterOptions]?: () => Set<DropdownOption>
   }
 
   protected constructor(

@@ -47,10 +47,24 @@ export const CLOUD_PROVIDER_OPTIONS: DropdownOption[] = [
   ...alphabetizeDropdownOptions(config().CURRENT_PROVIDERS),
 ]
 
+export const ALL_RECOMMENDATION_TYPES_VALUE = 'All Recommendation Types'
+export const ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION: DropdownOption = {
+  key: ALL_KEY,
+  name: ALL_RECOMMENDATION_TYPES_VALUE,
+}
+
+export const ALL_REGIONS_VALUE = 'All Regions'
+export const ALL_REGIONS_DROPDOWN_OPTION: DropdownOption = {
+  key: ALL_KEY,
+  name: ALL_REGIONS_VALUE,
+}
+
 export const ALL_DROPDOWN_FILTER_OPTIONS: AllFilterOptionMap = {
   accounts: ALL_ACCOUNTS_DROPDOWN_OPTION,
   services: ALL_SERVICES_DROPDOWN_OPTION,
   cloudProviders: ALL_CLOUD_PROVIDERS_DROPDOWN_OPTION,
+  recommendationTypes: ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION,
+  regions: ALL_REGIONS_DROPDOWN_OPTION,
 }
 
 export const buildAndOrderDropdownOptions = (

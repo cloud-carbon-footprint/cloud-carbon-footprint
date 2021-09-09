@@ -39,13 +39,21 @@ export interface FilterOptions {
 
 export interface FilterResultResponse {
   accounts: DropdownOption[]
-  services: DropdownOption[]
+  services?: DropdownOption[]
+  recommendationTypes?: DropdownOption[]
+  regions?: DropdownOption[]
 }
 
 export interface FiltersConfig {
-  timeframe: number
-  dateRange: MaybeFiltersDateRange
+  timeframe?: number
+  dateRange?: MaybeFiltersDateRange
   options: DropdownSelections
+}
+
+export type FilterBarProps = {
+  filters: Filters
+  setFilters: Dispatch<SetStateAction<Filters>>
+  filteredDataResults: FilterResultResponse
 }
 
 export interface Page<T> {
@@ -126,6 +134,8 @@ export enum DropdownFilterOptions {
   SERVICES = 'services',
   CLOUD_PROVIDERS = 'cloudProviders',
   ACCOUNTS = 'accounts',
+  RECOMMENDATION_TYPES = 'recommendationTypes',
+  REGIONS = 'regions',
 }
 
 export const barChartCustomColors: string[] = [

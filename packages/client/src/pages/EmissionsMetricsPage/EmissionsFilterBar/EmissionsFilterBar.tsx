@@ -2,14 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, {
-  Dispatch,
-  FunctionComponent,
-  ReactElement,
-  SetStateAction,
-} from 'react'
-import { DropdownOption, FilterOptions, FilterResultResponse } from 'Types'
-import { Filters } from 'common/FilterBar/utils/Filters'
+import React, { FunctionComponent, ReactElement } from 'react'
+import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
@@ -25,13 +19,7 @@ import {
   ServiceFilter,
 } from './Filters'
 
-type EmissionsFilterBarProps = {
-  filters: Filters
-  setFilters: Dispatch<SetStateAction<Filters>>
-  filteredDataResults: FilterResultResponse
-}
-
-const EmissionsFilterBar: FunctionComponent<EmissionsFilterBarProps> = ({
+const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
   filteredDataResults,
