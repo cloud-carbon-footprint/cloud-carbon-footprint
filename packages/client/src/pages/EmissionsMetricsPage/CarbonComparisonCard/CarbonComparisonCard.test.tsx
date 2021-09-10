@@ -141,7 +141,7 @@ describe('CarbonComparisonCard', () => {
       },
     ]
 
-    it('should format co2e to default locale integer', async () => {
+    it('should format co2e to default locale integer with large number', async () => {
       const testData = dataWithCo2e(999999.55555555555)
       const { getByTestId } = render(
         <CarbonComparisonCard
@@ -151,6 +151,18 @@ describe('CarbonComparisonCard', () => {
       )
       const co2 = getByTestId('co2')
       expect(co2).toHaveTextContent('999,999.6')
+    })
+
+    it('should format co2e to default locale integer with small number', async () => {
+      const testData = dataWithCo2e(0.00012345)
+      const { getByTestId } = render(
+        <CarbonComparisonCard
+          containerClass={testContainerClass}
+          data={testData}
+        />,
+      )
+      const co2 = getByTestId('co2')
+      expect(co2).toHaveTextContent('0.00012')
     })
 
     it('should convert and format to flights', async () => {

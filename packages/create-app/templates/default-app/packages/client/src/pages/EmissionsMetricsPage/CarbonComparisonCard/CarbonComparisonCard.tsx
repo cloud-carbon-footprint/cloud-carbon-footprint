@@ -42,9 +42,11 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
 
     if (number >= 1000000) return `${(number / 1000000).toFixed(1)}+ M`
 
-    return number.toLocaleString(undefined, {
-      maximumFractionDigits: decimalPlaces,
-    })
+    return number >= 1
+      ? number.toLocaleString(undefined, {
+          maximumFractionDigits: decimalPlaces,
+        })
+      : Number(number.toExponential(decimalPlaces)).toString()
   }
 
   const totalMetricTons = sumCO2(data)

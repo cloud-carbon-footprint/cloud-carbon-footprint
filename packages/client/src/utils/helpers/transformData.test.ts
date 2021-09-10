@@ -15,6 +15,7 @@ import {
   sumServiceTotals,
   useFilterDataFromEstimates,
 } from './transformData'
+import { mockDataWithSmallNumbers } from '../data/mockData'
 
 const testAccountA = 'test-a'
 const testAccountB = 'test-b'
@@ -176,7 +177,7 @@ describe('sumServiceTotals', () => {
         { x: date2, y: 12.29 },
       ],
     }
-    it('returns the sum of co2e rounded to 3 decimal places', () => {
+    it('returns the sum of co2e rounded to 4 decimal places', () => {
       expect(sumServiceTotals(mockDataWithHigherPrecision).co2Series).toEqual(
         expectedTotals.co2e,
       )
@@ -190,6 +191,51 @@ describe('sumServiceTotals', () => {
 
     it('returns the sum of co2e rounded to the hundredths place', () => {
       expect(sumServiceTotals(mockDataWithHigherPrecision).costSeries).toEqual(
+        expectedTotals.cost,
+      )
+    })
+  })
+  describe('rounding with small numbers', () => {
+    const expectedTotals = {
+      co2e: [
+        {
+          x: date1,
+          y: 0.000002469,
+          usesAverageCPUConstant: false,
+          kilowattHours: 0.0025,
+          cost: 0.0025,
+        },
+        {
+          x: date2,
+          y: 0.000002469,
+          usesAverageCPUConstant: true,
+          kilowattHours: 0.0025,
+          cost: 0.0025,
+        },
+      ],
+      kilowattHours: [
+        { x: date1, y: 0.0025 },
+        { x: date2, y: 0.0025 },
+      ],
+      cost: [
+        { x: date1, y: 0.0025 },
+        { x: date2, y: 0.0025 },
+      ],
+    }
+    it('returns the sum of co2e rounded to 4 digits showing', () => {
+      expect(sumServiceTotals(mockDataWithSmallNumbers).co2Series).toEqual(
+        expectedTotals.co2e,
+      )
+    })
+
+    it('returns the sum of co2e rounded to the hundredths place', () => {
+      expect(
+        sumServiceTotals(mockDataWithSmallNumbers).kilowattHoursSeries,
+      ).toEqual(expectedTotals.kilowattHours)
+    })
+
+    it('returns the sum of co2e rounded to the hundredths place', () => {
+      expect(sumServiceTotals(mockDataWithSmallNumbers).costSeries).toEqual(
         expectedTotals.cost,
       )
     })

@@ -205,6 +205,63 @@ const mockDataWithHigherPrecision: EstimationResult[] = [
   },
 ]
 
+const mockDataWithSmallNumbers: EstimationResult[] = [
+  {
+    timestamp: date1,
+    serviceEstimates: [
+      {
+        cloudProvider: 'aws',
+        accountId: '1',
+        accountName: 'testacct',
+        serviceName: 'ebs',
+        kilowattHours: 0.0012345,
+        co2e: 0.0000012345,
+        cost: 0.0012345,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+      {
+        cloudProvider: 'aws',
+        accountId: '2',
+        accountName: 'testacct',
+        serviceName: 'ec2',
+        kilowattHours: 0.0012345,
+        co2e: 0.0000012345,
+        cost: 0.0012345,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+    ],
+  },
+  {
+    timestamp: date2,
+    serviceEstimates: [
+      {
+        cloudProvider: 'aws',
+        accountId: '3',
+        accountName: 'testacct',
+        serviceName: 'ebs',
+        kilowattHours: 0.0012345,
+        co2e: 0.0000012345,
+        cost: 0.0012345,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+      {
+        cloudProvider: 'aws',
+        accountId: '4',
+        accountName: 'testacct',
+        serviceName: 'ec2',
+        kilowattHours: 0.0012345,
+        co2e: 0.0000012345,
+        cost: 0.0012345,
+        region: 'us-east-1',
+        usesAverageCPUConstant: true,
+      },
+    ],
+  },
+]
+
 const mockRecommendationData: RecommendationResult[] = [
   {
     cloudProvider: 'AWS',
@@ -239,5 +296,6 @@ export {
   mockDataWithUnknownsAWS,
   mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
+  mockDataWithSmallNumbers,
   mockRecommendationData,
 }

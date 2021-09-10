@@ -38,20 +38,20 @@ const sumServiceTotals = (
 
     co2Series.push({
       x: estimatationResult.timestamp,
-      y: Number(total.toFixed(4)),
+      y: roundNumberBasedOnSize(total, 4),
       usesAverageCPUConstant: usesAverageCPUConstant,
-      cost: Number(totalCost.toFixed(2)),
-      kilowattHours: Number(totalWattHours.toFixed(2)),
+      cost: roundNumberBasedOnSize(totalCost, 2),
+      kilowattHours: roundNumberBasedOnSize(totalWattHours, 2),
     })
 
     kilowattHoursSeries.push({
       x: estimatationResult.timestamp,
-      y: Number(totalWattHours.toFixed(2)),
+      y: roundNumberBasedOnSize(totalWattHours, 2),
     })
 
     costSeries.push({
       x: estimatationResult.timestamp,
-      y: Number(totalCost.toFixed(2)),
+      y: roundNumberBasedOnSize(totalCost, 2),
     })
   })
 
@@ -69,6 +69,12 @@ export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
       return dataPair.y
     }),
   )
+}
+
+const roundNumberBasedOnSize = (number: number, digits: number): number => {
+  return number >= 1
+    ? Number(number.toFixed(digits))
+    : Number(number.toExponential(digits - 1))
 }
 
 const getPropertyFromDataType = (
