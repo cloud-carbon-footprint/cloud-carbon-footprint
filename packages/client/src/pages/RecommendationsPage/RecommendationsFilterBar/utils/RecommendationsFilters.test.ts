@@ -60,8 +60,6 @@ describe('Recommendations Filters', () => {
       filterOptions,
     )
 
-    console.log(expectedChooser)
-
     expect(
       JSON.stringify(
         testFilter.createOptionChooser(
