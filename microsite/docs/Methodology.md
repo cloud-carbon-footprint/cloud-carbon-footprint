@@ -176,7 +176,7 @@ When we don’t know the underlying processor micro-architecture, we use the ave
 - Min Watts: 0.77
 - Max Matts: 3.74
 
-#### A note on AWS Lambda Compute Estimates
+##### A note on AWS Lambda Compute Estimates
 
 In the case of AWS Lambda, AWS does not provide metrics for CPU Utilization and number of vCPU hours, so we need
 to take an alternative approach.
@@ -201,7 +201,7 @@ where:
 
 The execution time and memory allocated are both pulled from the Cost and Usage Reports or CloudWatch Lambda Logs.
 
-#### A note on AWS Aurora Serverless Compute Estimates
+##### A note on AWS Aurora Serverless Compute Estimates
 
 In the case of AWS Aurora Serverless using the Cost and Usage Reports, the pricing unit is `ACU-Hrs`. 1 ACU has
 approximately 2 GB of memory with corresponding CPU and networking, similar to what is used in Aurora user-provisioned
@@ -238,7 +238,7 @@ organization may have a 20 Gigabyte AWS EBS Volume allocated, but is only utiliz
 device. In this case we would use 20 GBs in the energy estimation formula for EBS storage.
 
 
-#### Storage Services Replication Factors
+##### Storage Services Replication Factors
 
 In order to achieve adequate durability and availability for data stores and to ensure better redundancy in the case 
 of service outages, most cloud provider storage and database services automatically replicate your data as well as any 
@@ -254,19 +254,19 @@ These replication factors are applied to the total energy and CO2e estimate for 
 
 #### Networking
 
-#### Scope
+##### Scope
 
 Currently, our application takes into account only the data exchanged between different geographical data centers.
 
 For networking, it is safe to assume that the electricity used to power the internal network is close to 0, or at least negligible compared to the electricity required to power servers. We also have chosen to ignore traffic that leaves a data center to provide end-users with services, because this traffic is usually handled by CDN providers (Content delivery network) which are not necessarily the same provider as for cloud computing. This traffic is also dependent on the behavior of end-users. That said, we would welcome contributions to be able to include this in our approach.
 
-#### Studies to date
+##### Studies to date
 
 There have not been many studies that deal specifically with estimating the electricity impact of exchanging data across data-centers. Most studies focus on estimating the impact of end-user traffic from the data center to the mobile phone; integrating the scope of the core network (what we are interested in), the local access to internet (optical fiber, copper, or 3G/4G/5G) and eventually the connection to the phone (WiFi or 4G).
 
 On top of that, these studies use different methodologies and end up with results with orders of magnitude in differences. See appendix III below for a summary of the most recent studies. Note that it is very hard to find recent studies that provide an estimation for optical fiber networks, the scope we are interested in.
 
-#### Chosen coefficient
+##### Chosen coefficient
 
 It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: **0.001 kWh/Gb**. Again, we welcome feedback or contributions to improve this coefficient.
 
@@ -274,7 +274,7 @@ We want to thank [@martin-laurent](https://github.com/martin-laurent) for provid
 
 #### Memory
 
-#### Chosen Coefficient
+##### Chosen Coefficient
 
 For the purpose of estimating energy consumption for memory, we are assuming hyper-scale cloud providers are utilizing
 the more efficient memory systems on the market: DDR4 or potentially DDR5. Two memory manufacturers have provided some information
@@ -285,7 +285,7 @@ provides a power model that states “... each DRAM will consume approximately 4
 power consumption of ~0.4083 W/GB. Given this information, we have decided to take the average of both these figures, 
 and go with 0.392 W/GB, or **0.000392 kWh/GB**. We want to acknowledge that this is a complex subject with limited available data, and welcome additional research or studies to improve this coefficient.
 
-#### Applying the coefficient
+##### Applying the coefficient
 
 When we utilize the SPECPower Database for estimating compute (above), this also includes some level of energy estimation 
 for memory, because the rows in that database represent the min and max watts for entire servers, which includes memory 
