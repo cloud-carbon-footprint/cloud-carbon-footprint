@@ -39,7 +39,7 @@ We would like to thank [@mfulleratlassian](https://github.com/mfulleratlassian) 
     pricing_unit as usageUnit,
     product_vcpu as vCpus
     FROM <your-cost-and-usage-reports-table>
-    WHERE line_item_line_item_type NOT IN ('Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage')
+    WHERE line_item_line_item_type IN ('Usage', 'DiscountedUsage', 'SavingsPlanCoveredUsage')
     AND line_item_usage_start_date >= DATE('YYYY-MM-DD')
     AND line_item_usage_start_date <= DATE('YYYY-MM-DD')
     GROUP BY 1, 2, 3, 4, 5
