@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApexLineChart renders with correct configuration 1`] = `
+<div
+  aria-label="apex-line-chart"
+  height="500px"
+  options={
+    Object {
+      "chart": Object {
+        "background": "#fff",
+        "events": Object {
+          "beforeResetZoom": [Function],
+          "beforeZoom": [Function],
+          "legendClick": [Function],
+        },
+        "id": "lineChart",
+        "toolbar": Object {
+          "tools": Object {
+            "download": "<svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\"><path d=\\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\\"></path></svg>",
+            "pan": "<svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\"><path d=\\"M23 5.5V20c0 2.2-1.8 4-4 4h-7.3c-1.08 0-2.1-.43-2.85-1.19L1 14.83s1.26-1.23 1.3-1.25c.22-.19.49-.29.79-.29.22 0 .42.06.6.16.04.01 4.31 2.46 4.31 2.46V4c0-.83.67-1.5 1.5-1.5S11 3.17 11 4v7h1V1.5c0-.83.67-1.5 1.5-1.5S15 .67 15 1.5V11h1V2.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5V11h1V5.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5z\\"></path></svg>",
+            "reset": "<svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\"><path d=\\"M7.11 8.53L5.7 7.11C4.8 8.27 4.24 9.61 4.07 11h2.02c.14-.87.49-1.72 1.02-2.47zM6.09 13H4.07c.17 1.39.72 2.73 1.62 3.89l1.41-1.42c-.52-.75-.87-1.59-1.01-2.47zm1.01 5.32c1.16.9 2.51 1.44 3.9 1.61V17.9c-.87-.15-1.71-.49-2.46-1.03L7.1 18.32zM13 4.07V1L8.45 5.55 13 10V6.09c2.84.48 5 2.94 5 5.91s-2.16 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93s-3.05-7.44-7-7.93z\\"></path></svg>",
+            "zoom": "<svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\"><path d=\\"M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\\"></path><path d=\\"M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z\\"></path></svg>",
+            "zoomin": false,
+            "zoomout": false,
+          },
+        },
+      },
+      "colors": Array [
+        "#000000",
+        undefined,
+        undefined,
+      ],
+      "grid": Object {
+        "padding": Object {
+          "bottom": 15,
+          "right": 20,
+        },
+      },
+      "height": "500px",
+      "markers": Object {
+        "size": 5,
+      },
+      "series": Array [
+        Object {
+          "data": Array [],
+          "name": "CO2e",
+        },
+        Object {
+          "data": Array [],
+          "name": "Kilowatt Hours",
+        },
+        Object {
+          "data": Array [],
+          "name": "Cost",
+        },
+      ],
+      "stroke": Object {
+        "width": 1,
+      },
+      "theme": Object {
+        "mode": "light",
+      },
+      "title": Object {
+        "offsetY": -8,
+        "style": Object {
+          "fontSize": "24px",
+        },
+        "text": "Cloud Usage",
+      },
+      "tooltip": Object {
+        "custom": [Function],
+        "shared": true,
+      },
+      "xaxis": Object {
+        "title": Object {
+          "offsetY": 18,
+          "style": Object {
+            "fontSize": "15px",
+          },
+          "text": "",
+        },
+        "type": "datetime",
+      },
+      "yaxis": Array [
+        Object {
+          "decimalsInFloat": 3,
+          "max": 1.1,
+          "tickAmount": 10,
+          "title": Object {
+            "offsetX": -8,
+            "style": Object {
+              "fontSize": "15px",
+            },
+            "text": "CO2e (metric tons)",
+          },
+        },
+        Object {
+          "axisBorder": Object {
+            "color": undefined,
+            "show": true,
+          },
+          "axisTicks": Object {
+            "show": false,
+          },
+          "decimalsInFloat": 2,
+          "max": 1.1,
+          "opposite": true,
+          "showAlways": false,
+          "tickAmount": 10,
+          "title": Object {
+            "opposite": -8,
+            "style": Object {
+              "color": undefined,
+              "fontSize": "15px",
+            },
+            "text": "Kilowatt Hours (kWh)",
+          },
+        },
+        Object {
+          "axisBorder": Object {
+            "color": undefined,
+            "offsetX": -5,
+            "show": true,
+          },
+          "axisTicks": Object {
+            "show": false,
+          },
+          "decimalsInFloat": 2,
+          "max": 1.1,
+          "opposite": true,
+          "showAlways": false,
+          "tickAmount": 10,
+          "title": Object {
+            "offsetX": 6,
+            "style": Object {
+              "color": undefined,
+              "fontSize": "15px",
+            },
+            "text": "Cost ($)",
+          },
+        },
+      ],
+    }
+  }
+  series={
+    Array [
+      Object {
+        "data": Array [],
+        "name": "CO2e",
+      },
+      Object {
+        "data": Array [],
+        "name": "Kilowatt Hours",
+      },
+      Object {
+        "data": Array [],
+        "name": "Cost",
+      },
+    ]
+  }
+  type="line"
+  width="100%"
+/>
+`;

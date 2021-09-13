@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApexDonutChart renders with correct configuration 1`] = `
+<div
+  height="500px"
+  options={
+    Object {
+      "chart": Object {
+        "background": "#fff",
+      },
+      "colors": Array [
+        "#000000",
+        "#FFFFFF",
+      ],
+      "dataLabels": Object {
+        "dropShadow": Object {
+          "blur": 3,
+          "color": "#424242",
+          "enabled": true,
+          "left": 0,
+          "opacity": 0.5,
+          "top": 0,
+        },
+        "style": Object {
+          "fontSize": "1rem",
+        },
+      },
+      "height": "500px",
+      "labels": Array [
+        "ebs",
+        "ec2",
+        "s3",
+        "eks",
+      ],
+      "legend": Object {
+        "offsetY": -8,
+        "position": "bottom",
+      },
+      "series": Array [
+        3000.014,
+        2000.014,
+        1000.014,
+        0.000014,
+      ],
+      "stroke": Object {
+        "colors": Array [
+          "#fafafa",
+        ],
+      },
+      "theme": Object {
+        "mode": "light",
+      },
+      "title": Object {
+        "offsetY": -8,
+        "style": Object {
+          "fontSize": "24px",
+        },
+      },
+      "tooltip": Object {
+        "fillSeriesColor": false,
+        "y": Object {
+          "formatter": [Function],
+        },
+      },
+    }
+  }
+  series={
+    Array [
+      3000.014,
+      2000.014,
+      1000.014,
+      0.000014,
+    ]
+  }
+  type="donut"
+  width="100%"
+/>
+`;

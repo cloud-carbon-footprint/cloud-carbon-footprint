@@ -21,6 +21,7 @@
     "@cloud-carbon-footprint/common": "^{{version '@cloud-carbon-footprint/common'}}",
     "@babel/runtime": "^7.14.0",
     "@material-ui/core": "^4.11.4",
+    "@material-ui/data-grid": "^4.0.0-alpha.35",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@types/lodash": "^4.14.169",
@@ -57,8 +58,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix ./src/",
-    "start-stub-server": "json-server stub-server/co2estimations.json --port 4000 --routes stub-server/routes.json",
-    "start:webprod": "node index.js"
+    "start-stub-server": "json-server stub-server/mockData.json --port 4000 --routes stub-server/routes.json",
+    "start:webprod": "node index.js",
+    "clean": "rimraf build && rimraf coverage && rimraf logs"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -81,7 +83,7 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.0",
     "@testing-library/user-event": "^13.1.9",
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^27.0.1",
     "@types/mockdate": "^3.0.0",
     "@types/node": "^16.0.1",
     "@types/ramda": "^0.27.40",
@@ -93,7 +95,7 @@
     "@types/styled-components": "^5.1.9",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
-    "concurrently": "^6.2.0",
+    "concurrently": "^6.2.1",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

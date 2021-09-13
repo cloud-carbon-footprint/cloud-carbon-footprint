@@ -26,7 +26,6 @@ const useStyles = makeStyles(() => ({
     marginBottom: '24px',
   },
   map: {
-    width: '100%',
     maxHeight: 700,
   },
 }))

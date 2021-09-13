@@ -106,6 +106,9 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const options: any = {
+    markers: {
+      size: 5,
+    },
     chart: {
       events: {
         beforeZoom: (chart: unknown, { xaxis }: { xaxis: DateRange }) => {

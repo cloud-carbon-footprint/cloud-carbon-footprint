@@ -1,0 +1,3981 @@
+{
+  "emissions": [
+    {
+      "region": "us-east-1",
+      "mtPerKwHour": 0.0004545
+    },
+    {
+      "region": "us-east-2",
+      "mtPerKwHour": 0.000475105
+    },
+    {
+      "region": "us-west-1",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "us-west-2",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "us-gov-east-1",
+      "mtPerKwHour": 0.0004545
+    },
+    {
+      "region": "us-gov-west-1",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "af-south-1",
+      "mtPerKwHour": 0.000928
+    },
+    {
+      "region": "ap-east-1",
+      "mtPerKwHour": 0.00081
+    },
+    {
+      "region": "ap-south-1",
+      "mtPerKwHour": 0.000708
+    },
+    {
+      "region": "ap-northeast-3",
+      "mtPerKwHour": 0.000506
+    },
+    {
+      "region": "ap-northeast-2",
+      "mtPerKwHour": 0.0005
+    },
+    {
+      "region": "ap-southeast-1",
+      "mtPerKwHour": 0.0004085
+    },
+    {
+      "region": "ap-southeast-2",
+      "mtPerKwHour": 0.00079
+    },
+    {
+      "region": "ap-northeast-1",
+      "mtPerKwHour": 0.000506
+    },
+    {
+      "region": "ca-central-1",
+      "mtPerKwHour": 0.00013
+    },
+    {
+      "region": "cn-north-1",
+      "mtPerKwHour": 0.000555
+    },
+    {
+      "region": "cn-northwest-1",
+      "mtPerKwHour": 0.000555
+    },
+    {
+      "region": "eu-central-1",
+      "mtPerKwHour": 0.000338
+    },
+    {
+      "region": "eu-west-1",
+      "mtPerKwHour": 0.000316
+    },
+    {
+      "region": "eu-west-2",
+      "mtPerKwHour": 0.000228
+    },
+    {
+      "region": "eu-south-1",
+      "mtPerKwHour": 0.000233
+    },
+    {
+      "region": "eu-west-3",
+      "mtPerKwHour": 0.000052
+    },
+    {
+      "region": "eu-north-1",
+      "mtPerKwHour": 0.000008
+    },
+    {
+      "region": "me-south-1",
+      "mtPerKwHour": 0.000732
+    },
+    {
+      "region": "sa-east-1",
+      "mtPerKwHour": 0.000074
+    },
+    {
+      "region": "us-central1",
+      "mtPerKwHour": 0.000540461
+    },
+    {
+      "region": "us-central2",
+      "mtPerKwHour": 0.000540461
+    },
+    {
+      "region": "us-east1",
+      "mtPerKwHour": 0.0004545
+    },
+    {
+      "region": "us-east4",
+      "mtPerKwHour": 0.0004545
+    },
+    {
+      "region": "us-west1",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "us-west2",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "us-west3",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "us-west4",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "asia-east1",
+      "mtPerKwHour": 0.000509
+    },
+    {
+      "region": "asia-east2",
+      "mtPerKwHour": 0.00081
+    },
+    {
+      "region": "asia-northeast1",
+      "mtPerKwHour": 0.000506
+    },
+    {
+      "region": "asia-northeast2",
+      "mtPerKwHour": 0.000506
+    },
+    {
+      "region": "asia-northeast3",
+      "mtPerKwHour": 0.0005
+    },
+    {
+      "region": "asia-south1",
+      "mtPerKwHour": 0.000708
+    },
+    {
+      "region": "asia-southeast1",
+      "mtPerKwHour": 0.0004085
+    },
+    {
+      "region": "asia-southeast2",
+      "mtPerKwHour": 0.000761
+    },
+    {
+      "region": "australia-southeast1",
+      "mtPerKwHour": 0.00079
+    },
+    {
+      "region": "europe-north1",
+      "mtPerKwHour": 0.000086
+    },
+    {
+      "region": "europe-west1",
+      "mtPerKwHour": 0.000167
+    },
+    {
+      "region": "europe-west2",
+      "mtPerKwHour": 0.000228
+    },
+    {
+      "region": "europe-west3",
+      "mtPerKwHour": 0.000338
+    },
+    {
+      "region": "europe-west4",
+      "mtPerKwHour": 0.00039
+    },
+    {
+      "region": "europe-west6",
+      "mtPerKwHour": 0.00001182
+    },
+    {
+      "region": "northamerica-northeast1",
+      "mtPerKwHour": 0.00013
+    },
+    {
+      "region": "southamerica-east1",
+      "mtPerKwHour": 0.000074
+    },
+    {
+      "region": "unknown",
+      "mtPerKwHour": 0.0004108907
+    },
+    {
+      "region": "AP East",
+      "mtPerKwHour": 0.00081
+    },
+    {
+      "region": "EU West",
+      "mtPerKwHour": 0.00039
+    },
+    {
+      "region": "IN Central",
+      "mtPerKwHour": 0.000708
+    },
+    {
+      "region": "UK South",
+      "mtPerKwHour": 0.000228
+    },
+    {
+      "region": "UK West",
+      "mtPerKwHour": 0.000228
+    },
+    {
+      "region": "US Central",
+      "mtPerKwHour": 0.000540461
+    },
+    {
+      "region": "US East",
+      "mtPerKwHour": 0.0004545
+    },
+    {
+      "region": "US South Central",
+      "mtPerKwHour": 0.000424877
+    },
+    {
+      "region": "US West",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "US West 2",
+      "mtPerKwHour": 0.000351533
+    },
+    {
+      "region": "Unknown",
+      "mtPerKwHour": 0.0004074
+    }
+  ],
+  "footprint": [
+    {
+      "timestamp": "2021-03-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.9099318685999922,
+          "co2e": 2,
+          "cost": 2.0611247334106126,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "s3",
+          "kilowattHours": 0.000986946262424086,
+          "co2e": 1,
+          "cost": 2.341122015683861,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.176579830111365,
+          "co2e": 3,
+          "cost": 2.4154850519158613,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.15554852182787,
+          "co2e": 4,
+          "cost": 1.8825350541114,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "lambda",
+          "kilowattHours": 72.26453941514701,
+          "co2e": 2,
+          "cost": 2.0084835420769656,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 68.54797801901817,
+          "co2e": 4,
+          "cost": 1.8688785461442674,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 4",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.02721869884774,
+          "co2e": 2,
+          "cost": 2.2910467204304323,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2021-02-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.9281382786569483,
+          "co2e": 2,
+          "cost": 2.225771432143803,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "s3",
+          "kilowattHours": 0.00003270772530525257,
+          "co2e": 4,
+          "cost": 1.5028221506352941,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.558103056454314,
+          "co2e": 0,
+          "cost": 2.440745140900739,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 62.615457571422965,
+          "co2e": 0,
+          "cost": 1.5955486508938537,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "lambda",
+          "kilowattHours": 50.903421738830794,
+          "co2e": 1,
+          "cost": 2.238206567880293,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 1",
+          "serviceName": "computeEngine",
+          "kilowattHours": 65.28200479098749,
+          "co2e": 3,
+          "cost": 1.6177172869839958,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 61.90994721222564,
+          "co2e": 2,
+          "cost": 2.2081554041299234,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2021-01-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ebs",
+          "kilowattHours": 0.9290466782034781,
+          "co2e": 0,
+          "cost": 1.9170203054445436,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.00007414638904524828,
+          "co2e": 0,
+          "cost": 2.3496108515083787,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.74719344234976,
+          "co2e": 4,
+          "cost": 1.8854738557659787,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "rds",
+          "kilowattHours": 62.70792733734538,
+          "co2e": 2,
+          "cost": 1.9619661070136278,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "lambda",
+          "kilowattHours": 50.18018466997432,
+          "co2e": 2,
+          "cost": 1.7366812626585235,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.642678514609926,
+          "co2e": 4,
+          "cost": 2.112304415112801,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.39790599515025,
+          "co2e": 5,
+          "cost": 1.844015443986478,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-12-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.7903104123827822,
+          "co2e": 0,
+          "cost": 1.5941517912292598,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "s3",
+          "kilowattHours": 0.0008485340026475967,
+          "co2e": 5,
+          "cost": 2.422188298668747,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "ec2",
+          "kilowattHours": 50.571988266018494,
+          "co2e": 0,
+          "cost": 1.813087747561918,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.54507810450079,
+          "co2e": 0,
+          "cost": 2.3595674179586856,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 50.31390279587026,
+          "co2e": 2,
+          "cost": 1.6209696239449094,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 2",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.995343212272175,
+          "co2e": 5,
+          "cost": 2.291652099168084,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 64.71563943290937,
+          "co2e": 4,
+          "cost": 2.1519820863003964,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-11-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.616242116061845,
+          "co2e": 3,
+          "cost": 1.7611637388166252,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.00009916949627876193,
+          "co2e": 0,
+          "cost": 2.4426180887131026,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "ec2",
+          "kilowattHours": 50.149667680040125,
+          "co2e": 5,
+          "cost": 2.2645178139778706,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "rds",
+          "kilowattHours": 50.15605062459718,
+          "co2e": 1,
+          "cost": 2.345203244211236,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "lambda",
+          "kilowattHours": 55.97282211541847,
+          "co2e": 2,
+          "cost": 1.6084626580032653,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 0",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.58370656686491,
+          "co2e": 2,
+          "cost": 2.002632458514051,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.91095442793027,
+          "co2e": 4,
+          "cost": 1.9447149842967881,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-10-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "ebs",
+          "kilowattHours": 0.8445236465308483,
+          "co2e": 3,
+          "cost": 1.8371062169192403,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.0002648754924918617,
+          "co2e": 0,
+          "cost": 2.236483110571217,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.37629287099671,
+          "co2e": 0,
+          "cost": 2.449362850757937,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.52526081119707,
+          "co2e": 2,
+          "cost": 2.302982452488826,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "lambda",
+          "kilowattHours": 50.357072062609866,
+          "co2e": 4,
+          "cost": 2.3300950152526614,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 0",
+          "serviceName": "computeEngine",
+          "kilowattHours": 53.70289639150512,
+          "co2e": 0,
+          "cost": 1.8981217535028845,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 4",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.82389577797691,
+          "co2e": 3,
+          "cost": 1.5108425566125716,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-09-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.33278898489743725,
+          "co2e": 3,
+          "cost": 2.201012388385645,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.00098701927251199,
+          "co2e": 4,
+          "cost": 1.645103657701107,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ec2",
+          "kilowattHours": 50.904310297531644,
+          "co2e": 5,
+          "cost": 2.235818514499144,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.12852654254913,
+          "co2e": 2,
+          "cost": 1.5786907055484218,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "lambda",
+          "kilowattHours": 59.54349975897656,
+          "co2e": 1,
+          "cost": 2.324453671310117,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 63.69530490695243,
+          "co2e": 4,
+          "cost": 2.4104193295098923,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 0",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 65.60925208439582,
+          "co2e": 3,
+          "cost": 2.4070137425368685,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-08-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ebs",
+          "kilowattHours": 0.7421818551593697,
+          "co2e": 3,
+          "cost": 2.498136748374863,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.0002180651158962681,
+          "co2e": 5,
+          "cost": 1.7632736153406632,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ec2",
+          "kilowattHours": 54.239336047864754,
+          "co2e": 3,
+          "cost": 1.9661288302344184,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "rds",
+          "kilowattHours": 50.23120235816861,
+          "co2e": 2,
+          "cost": 2.0142111162898986,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "lambda",
+          "kilowattHours": 50.86615400739505,
+          "co2e": 0,
+          "cost": 2.164622206937599,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 59.19683162717123,
+          "co2e": 5,
+          "cost": 1.6906306697783389,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.27713613081028,
+          "co2e": 0,
+          "cost": 1.7863670364270168,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-07-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.5648293345133781,
+          "co2e": 5,
+          "cost": 2.3304265345916653,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "s3",
+          "kilowattHours": 0.00005263625919629122,
+          "co2e": 2,
+          "cost": 1.6038362843689178,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ec2",
+          "kilowattHours": 64.1169430041115,
+          "co2e": 2,
+          "cost": 1.8957903016901754,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "rds",
+          "kilowattHours": 50.69439982629539,
+          "co2e": 2,
+          "cost": 2.3649041975938676,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 50.69873776324742,
+          "co2e": 4,
+          "cost": 2.1212012771669846,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 2",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.71620115791394,
+          "co2e": 5,
+          "cost": 2.0052165772682793,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 0",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.146548832423804,
+          "co2e": 5,
+          "cost": 2.4727258099898037,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-06-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "ebs",
+          "kilowattHours": 0.35269028620932774,
+          "co2e": 2,
+          "cost": 2.426536030208615,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.00007772936246220752,
+          "co2e": 2,
+          "cost": 1.9926068310477163,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ec2",
+          "kilowattHours": 50.00593572462313,
+          "co2e": 3,
+          "cost": 1.9838511921282318,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 50.803461347266776,
+          "co2e": 3,
+          "cost": 2.229003808663734,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "lambda",
+          "kilowattHours": 52.62976125953012,
+          "co2e": 5,
+          "cost": 1.6972395592555778,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 64.63052755166217,
+          "co2e": 0,
+          "cost": 2.30459191166866,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 53.31425378242701,
+          "co2e": 1,
+          "cost": 1.6930870858502807,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-05-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.3793961762889928,
+          "co2e": 5,
+          "cost": 1.5660349090236223,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "s3",
+          "kilowattHours": 0.0007881261941471649,
+          "co2e": 1,
+          "cost": 2.107104300712024,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.4099085739953,
+          "co2e": 2,
+          "cost": 1.7912671435326524,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "rds",
+          "kilowattHours": 56.61135475563019,
+          "co2e": 3,
+          "cost": 2.0547082075494254,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 50.16319007556745,
+          "co2e": 1,
+          "cost": 2.3442440999125886,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 1",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.2235650164992,
+          "co2e": 0,
+          "cost": 1.6300863324887378,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 3",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.27485053251475,
+          "co2e": 3,
+          "cost": 1.7666414199697307,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-04-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.0025963667867079376,
+          "co2e": 4,
+          "cost": 2.110850189120251,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "s3",
+          "kilowattHours": 0.00038988295545011175,
+          "co2e": 5,
+          "cost": 1.750590801038299,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "ec2",
+          "kilowattHours": 50.58419719553395,
+          "co2e": 3,
+          "cost": 2.331961666410219,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "rds",
+          "kilowattHours": 50.09219672002729,
+          "co2e": 1,
+          "cost": 2.171231385841728,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 0",
+          "serviceName": "lambda",
+          "kilowattHours": 50.34788323768369,
+          "co2e": 2,
+          "cost": 2.178860527900543,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 2",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.876621782936894,
+          "co2e": 5,
+          "cost": 2.008009566294815,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 69.14280006058016,
+          "co2e": 1,
+          "cost": 2.159049075087805,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-03-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ebs",
+          "kilowattHours": 0.847821319053617,
+          "co2e": 3,
+          "cost": 1.8756121359502171,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "s3",
+          "kilowattHours": 0.000630093974723783,
+          "co2e": 3,
+          "cost": 2.3698572941873914,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "ec2",
+          "kilowattHours": 50.10307382046631,
+          "co2e": 4,
+          "cost": 2.351022985532233,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "rds",
+          "kilowattHours": 50.22293041559674,
+          "co2e": 3,
+          "cost": 1.5327957463127884,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "lambda",
+          "kilowattHours": 68.18586584927158,
+          "co2e": 2,
+          "cost": 2.205957045144824,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 68.47759811709409,
+          "co2e": 2,
+          "cost": 2.026647361534485,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 1",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.5125618456214,
+          "co2e": 2,
+          "cost": 1.9833785822656285,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-02-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ebs",
+          "kilowattHours": 0.9119831149849784,
+          "co2e": 3,
+          "cost": 1.7466850895849164,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.00010168764085273696,
+          "co2e": 2,
+          "cost": 2.0929755865584747,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "ec2",
+          "kilowattHours": 50.13033413155082,
+          "co2e": 3,
+          "cost": 2.030781896188273,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 3",
+          "serviceName": "rds",
+          "kilowattHours": 53.81264913939785,
+          "co2e": 5,
+          "cost": 1.7863504430322306,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 4",
+          "serviceName": "lambda",
+          "kilowattHours": 63.45075892152083,
+          "co2e": 4,
+          "cost": 1.8740007850011755,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 4",
+          "serviceName": "computeEngine",
+          "kilowattHours": 50.77403726191187,
+          "co2e": 4,
+          "cost": 1.7839515021969587,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 4",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.373127573933836,
+          "co2e": 2,
+          "cost": 1.8199290662411896,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    },
+    {
+      "timestamp": "2020-01-25T00:00:00.000Z",
+      "serviceEstimates": [
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ebs",
+          "kilowattHours": 0.8148394263939371,
+          "co2e": 3,
+          "cost": 1.9952062784974551,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "s3",
+          "kilowattHours": 0.00010100550904187954,
+          "co2e": 5,
+          "cost": 2.479801470978538,
+          "region": "us-east-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 1",
+          "serviceName": "ec2",
+          "kilowattHours": 50.933103987612505,
+          "co2e": 3,
+          "cost": 2.014818576889102,
+          "region": "us-west-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "rds",
+          "kilowattHours": 50.92736661108625,
+          "co2e": 2,
+          "cost": 2.0552869714092585,
+          "region": "us-west-2",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AWS",
+          "accountName": "aws account 2",
+          "serviceName": "lambda",
+          "kilowattHours": 70.47173348463286,
+          "co2e": 5,
+          "cost": 1.8418849726705238,
+          "region": "us-east-1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "GCP",
+          "accountName": "gcp account 3",
+          "serviceName": "computeEngine",
+          "kilowattHours": 57.666701915218034,
+          "co2e": 1,
+          "cost": 1.611910606014586,
+          "region": "us-east1",
+          "usesAverageCPUConstant": false
+        },
+        {
+          "cloudProvider": "AZURE",
+          "accountName": "azure account 2",
+          "serviceName": "virtualMachines",
+          "kilowattHours": 50.773157853289746,
+          "co2e": 5,
+          "cost": 2.2728625664822433,
+          "region": "UK South",
+          "usesAverageCPUConstant": false
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 1",
+      "accountName": "aws account 1",
+      "region": "ap-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.978,
+      "costSavings": 43.506,
+      "co2eSavings": 0.984
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 2",
+      "accountName": "aws account 2",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-2",
+      "recommendationDetail": "Modify instance: example-instance-2.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.419,
+      "costSavings": 5.667,
+      "co2eSavings": 0.288
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 3",
+      "accountName": "aws account 3",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.195,
+      "costSavings": 34.442,
+      "co2eSavings": 0.892
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 4",
+      "accountName": "aws account 4",
+      "region": "ap-southeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.717,
+      "costSavings": 25.788,
+      "co2eSavings": 0.972
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 5",
+      "accountName": "aws account 5",
+      "region": "ap-northeast-3",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-5",
+      "recommendationDetail": "Modify instance: example-instance-5.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.513,
+      "costSavings": 33.611,
+      "co2eSavings": 0.492
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 6",
+      "accountName": "aws account 6",
+      "region": "us-east-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.22,
+      "costSavings": 41.879,
+      "co2eSavings": 0.131
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 7",
+      "accountName": "aws account 7",
+      "region": "us-west-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.687,
+      "costSavings": 36.027,
+      "co2eSavings": 0.884
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 8",
+      "accountName": "aws account 8",
+      "region": "us-west-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-8",
+      "recommendationDetail": "Modify instance: example-instance-8.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.508,
+      "costSavings": 40.167,
+      "co2eSavings": 0.759
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 9",
+      "accountName": "aws account 9",
+      "region": "us-east-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-9",
+      "recommendationDetail": "Modify instance: example-instance-9.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.673,
+      "costSavings": 13.778,
+      "co2eSavings": 0.52
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 10",
+      "accountName": "aws account 10",
+      "region": "us-west-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.626,
+      "costSavings": 14.518,
+      "co2eSavings": 0.298
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 11",
+      "accountName": "aws account 11",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-11",
+      "recommendationDetail": "Modify instance: example-instance-11.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.775,
+      "costSavings": 18.868,
+      "co2eSavings": 0.907
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 12",
+      "accountName": "aws account 12",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-12",
+      "recommendationDetail": "Modify instance: example-instance-12.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.164,
+      "costSavings": 15.439,
+      "co2eSavings": 0.863
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 13",
+      "accountName": "aws account 13",
+      "region": "ap-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 0.182,
+      "costSavings": 9.11,
+      "co2eSavings": 0.595
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 14",
+      "accountName": "aws account 14",
+      "region": "ap-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.634,
+      "costSavings": 23.336,
+      "co2eSavings": 0.454
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 15",
+      "accountName": "aws account 15",
+      "region": "af-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-15",
+      "recommendationDetail": "Delete instance: example-instance-15.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.159,
+      "costSavings": 0.34,
+      "co2eSavings": 0.542
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 16",
+      "accountName": "aws account 16",
+      "region": "af-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-16",
+      "recommendationDetail": "Delete instance: example-instance-16.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.558,
+      "costSavings": 11.102,
+      "co2eSavings": 0.195
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 17",
+      "accountName": "aws account 17",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 0.387,
+      "costSavings": 3.648,
+      "co2eSavings": 0.09
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 18",
+      "accountName": "aws account 18",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.307,
+      "costSavings": 49.05,
+      "co2eSavings": 0.182
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 19",
+      "accountName": "aws account 19",
+      "region": "us-west-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.475,
+      "costSavings": 33.431,
+      "co2eSavings": 0.785
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 20",
+      "accountName": "aws account 20",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-20",
+      "recommendationDetail": "Delete instance: example-instance-20.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.326,
+      "costSavings": 6.359,
+      "co2eSavings": 0.597
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 21",
+      "accountName": "aws account 21",
+      "region": "ap-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-21",
+      "recommendationDetail": "Delete instance: example-instance-21.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.353,
+      "costSavings": 28.923,
+      "co2eSavings": 0.313
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 22",
+      "accountName": "aws account 22",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.107,
+      "costSavings": 33.817,
+      "co2eSavings": 0.351
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 23",
+      "accountName": "aws account 23",
+      "region": "us-west-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-23",
+      "recommendationDetail": "Delete instance: example-instance-23.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.178,
+      "costSavings": 48.031,
+      "co2eSavings": 0.425
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 24",
+      "accountName": "aws account 24",
+      "region": "us-east-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-24",
+      "recommendationDetail": "Delete instance: example-instance-24.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.137,
+      "costSavings": 2.249,
+      "co2eSavings": 0.673
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 25",
+      "accountName": "aws account 25",
+      "region": "us-east-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.474,
+      "costSavings": 2.023,
+      "co2eSavings": 0.046
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 26",
+      "accountName": "aws account 26",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-26",
+      "recommendationDetail": "Modify instance: example-instance-26.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.128,
+      "costSavings": 13.404,
+      "co2eSavings": 0.296
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 27",
+      "accountName": "aws account 27",
+      "region": "af-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.148,
+      "costSavings": 25.461,
+      "co2eSavings": 0.192
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 28",
+      "accountName": "aws account 28",
+      "region": "us-west-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-28",
+      "recommendationDetail": "Delete instance: example-instance-28.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.262,
+      "costSavings": 36.789,
+      "co2eSavings": 0.447
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 29",
+      "accountName": "aws account 29",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.404,
+      "costSavings": 35.126,
+      "co2eSavings": 0.866
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 30",
+      "accountName": "aws account 30",
+      "region": "us-east-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-30",
+      "recommendationDetail": "Modify instance: example-instance-30.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.924,
+      "costSavings": 45.47,
+      "co2eSavings": 0.256
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 31",
+      "accountName": "aws account 31",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.087,
+      "costSavings": 41.433,
+      "co2eSavings": 0.517
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 32",
+      "accountName": "aws account 32",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.708,
+      "costSavings": 30.072,
+      "co2eSavings": 0.942
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 33",
+      "accountName": "aws account 33",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-33",
+      "recommendationDetail": "Delete instance: example-instance-33.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.737,
+      "costSavings": 37.256,
+      "co2eSavings": 0.019
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 34",
+      "accountName": "aws account 34",
+      "region": "ap-southeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 0.016,
+      "costSavings": 42.792,
+      "co2eSavings": 0.126
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 35",
+      "accountName": "aws account 35",
+      "region": "ap-southeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-35",
+      "recommendationDetail": "Modify instance: example-instance-35.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.63,
+      "costSavings": 24.168,
+      "co2eSavings": 0.67
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 36",
+      "accountName": "aws account 36",
+      "region": "af-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-36",
+      "recommendationDetail": "Modify instance: example-instance-36.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.213,
+      "costSavings": 44.639,
+      "co2eSavings": 0.83
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 37",
+      "accountName": "aws account 37",
+      "region": "ap-southeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-37",
+      "recommendationDetail": "Modify instance: example-instance-37.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.958,
+      "costSavings": 13.761,
+      "co2eSavings": 0.262
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 38",
+      "accountName": "aws account 38",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-38",
+      "recommendationDetail": "Modify instance: example-instance-38.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 9.871,
+      "costSavings": 32.833,
+      "co2eSavings": 0.757
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 39",
+      "accountName": "aws account 39",
+      "region": "ap-southeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.858,
+      "costSavings": 18.147,
+      "co2eSavings": 0.739
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 40",
+      "accountName": "aws account 40",
+      "region": "ap-northeast-3",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-40",
+      "recommendationDetail": "Delete instance: example-instance-40.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.184,
+      "costSavings": 46.418,
+      "co2eSavings": 0.025
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 41",
+      "accountName": "aws account 41",
+      "region": "ap-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-41",
+      "recommendationDetail": "Delete instance: example-instance-41.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.096,
+      "costSavings": 15.584,
+      "co2eSavings": 0.163
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 42",
+      "accountName": "aws account 42",
+      "region": "ap-southeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.671,
+      "costSavings": 23.477,
+      "co2eSavings": 0.269
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 43",
+      "accountName": "aws account 43",
+      "region": "ap-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-43",
+      "recommendationDetail": "Modify instance: example-instance-43.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 0.414,
+      "costSavings": 49.423,
+      "co2eSavings": 0.36
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 44",
+      "accountName": "aws account 44",
+      "region": "ap-northeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.217,
+      "costSavings": 35.023,
+      "co2eSavings": 0.305
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 45",
+      "accountName": "aws account 45",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-45",
+      "recommendationDetail": "Modify instance: example-instance-45.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.669,
+      "costSavings": 29.683,
+      "co2eSavings": 0.317
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 46",
+      "accountName": "aws account 46",
+      "region": "ap-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.728,
+      "costSavings": 44.774,
+      "co2eSavings": 0.639
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 47",
+      "accountName": "aws account 47",
+      "region": "ap-east-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.85,
+      "costSavings": 18.475,
+      "co2eSavings": 0.099
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 48",
+      "accountName": "aws account 48",
+      "region": "af-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-48",
+      "recommendationDetail": "Delete instance: example-instance-48.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.481,
+      "costSavings": 44.341,
+      "co2eSavings": 0.234
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 49",
+      "accountName": "aws account 49",
+      "region": "af-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-49",
+      "recommendationDetail": "Modify instance: example-instance-49.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.938,
+      "costSavings": 14.141,
+      "co2eSavings": 0.526
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 50",
+      "accountName": "aws account 50",
+      "region": "us-east-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-50",
+      "recommendationDetail": "Delete instance: example-instance-50.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.155,
+      "costSavings": 29.027,
+      "co2eSavings": 0.71
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 51",
+      "accountName": "aws account 51",
+      "region": "af-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.401,
+      "costSavings": 46.735,
+      "co2eSavings": 0.676
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 52",
+      "accountName": "aws account 52",
+      "region": "ap-southeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.95,
+      "costSavings": 39.615,
+      "co2eSavings": 0.417
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 53",
+      "accountName": "aws account 53",
+      "region": "us-west-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.376,
+      "costSavings": 34.927,
+      "co2eSavings": 0.715
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 54",
+      "accountName": "aws account 54",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-54",
+      "recommendationDetail": "Modify instance: example-instance-54.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.426,
+      "costSavings": 5.522,
+      "co2eSavings": 0.021
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 55",
+      "accountName": "aws account 55",
+      "region": "ap-northeast-3",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.42,
+      "costSavings": 25.847,
+      "co2eSavings": 0.512
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 56",
+      "accountName": "aws account 56",
+      "region": "us-east-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 9.535,
+      "costSavings": 39.05,
+      "co2eSavings": 0.293
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 57",
+      "accountName": "aws account 57",
+      "region": "ap-northeast-3",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.793,
+      "costSavings": 8.33,
+      "co2eSavings": 0.672
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 58",
+      "accountName": "aws account 58",
+      "region": "ap-southeast-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-58",
+      "recommendationDetail": "Modify instance: example-instance-58.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.933,
+      "costSavings": 2.753,
+      "co2eSavings": 0.805
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 59",
+      "accountName": "aws account 59",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.582,
+      "costSavings": 39.713,
+      "co2eSavings": 0.706
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 60",
+      "accountName": "aws account 60",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-60",
+      "recommendationDetail": "Modify instance: example-instance-60.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.405,
+      "costSavings": 4.846,
+      "co2eSavings": 0.361
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 61",
+      "accountName": "aws account 61",
+      "region": "ap-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-61",
+      "recommendationDetail": "Delete instance: example-instance-61.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 9.484,
+      "costSavings": 22.179,
+      "co2eSavings": 0.718
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 62",
+      "accountName": "aws account 62",
+      "region": "us-east-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-62",
+      "recommendationDetail": "Delete instance: example-instance-62.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.854,
+      "costSavings": 15.515,
+      "co2eSavings": 0.046
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 63",
+      "accountName": "aws account 63",
+      "region": "ap-northeast-3",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-63",
+      "recommendationDetail": "Modify instance: example-instance-63.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.405,
+      "costSavings": 38.875,
+      "co2eSavings": 0.873
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 64",
+      "accountName": "aws account 64",
+      "region": "ap-southeast-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-64",
+      "recommendationDetail": "Modify instance: example-instance-64.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.5,
+      "costSavings": 33.498,
+      "co2eSavings": 0.057
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 65",
+      "accountName": "aws account 65",
+      "region": "us-east-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.019,
+      "costSavings": 6.212,
+      "co2eSavings": 0.546
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 66",
+      "accountName": "aws account 66",
+      "region": "us-east-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-66",
+      "recommendationDetail": "Delete instance: example-instance-66.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.671,
+      "costSavings": 39.606,
+      "co2eSavings": 0.303
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 67",
+      "accountName": "aws account 67",
+      "region": "ap-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-67",
+      "recommendationDetail": "Modify instance: example-instance-67.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.147,
+      "costSavings": 30.64,
+      "co2eSavings": 0.993
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 68",
+      "accountName": "aws account 68",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-68",
+      "recommendationDetail": "Delete instance: example-instance-68.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.086,
+      "costSavings": 43.286,
+      "co2eSavings": 0.997
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 69",
+      "accountName": "aws account 69",
+      "region": "ap-northeast-3",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.468,
+      "costSavings": 14.515,
+      "co2eSavings": 0.496
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 70",
+      "accountName": "aws account 70",
+      "region": "ap-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-70",
+      "recommendationDetail": "Modify instance: example-instance-70.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.607,
+      "costSavings": 10.078,
+      "co2eSavings": 0.807
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 71",
+      "accountName": "aws account 71",
+      "region": "us-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.568,
+      "costSavings": 37.229,
+      "co2eSavings": 0.93
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 72",
+      "accountName": "aws account 72",
+      "region": "ap-southeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-72",
+      "recommendationDetail": "Delete instance: example-instance-72.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.768,
+      "costSavings": 25.699,
+      "co2eSavings": 0.013
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 73",
+      "accountName": "aws account 73",
+      "region": "ap-northeast-3",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.651,
+      "costSavings": 46.819,
+      "co2eSavings": 0.703
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 74",
+      "accountName": "aws account 74",
+      "region": "ap-northeast-3",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.648,
+      "costSavings": 46.392,
+      "co2eSavings": 0.664
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 75",
+      "accountName": "aws account 75",
+      "region": "ap-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-75",
+      "recommendationDetail": "Modify instance: example-instance-75.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.941,
+      "costSavings": 5.691,
+      "co2eSavings": 0.275
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 76",
+      "accountName": "aws account 76",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-76",
+      "recommendationDetail": "Delete instance: example-instance-76.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.324,
+      "costSavings": 0.598,
+      "co2eSavings": 0.658
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 77",
+      "accountName": "aws account 77",
+      "region": "ap-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-77",
+      "recommendationDetail": "Modify instance: example-instance-77.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.597,
+      "costSavings": 28.147,
+      "co2eSavings": 0.052
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 78",
+      "accountName": "aws account 78",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-78",
+      "recommendationDetail": "Modify instance: example-instance-78.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 0.882,
+      "costSavings": 11.089,
+      "co2eSavings": 0.006
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 79",
+      "accountName": "aws account 79",
+      "region": "us-east-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-79",
+      "recommendationDetail": "Modify instance: example-instance-79.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.901,
+      "costSavings": 47.392,
+      "co2eSavings": 0.696
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 80",
+      "accountName": "aws account 80",
+      "region": "ap-east-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.519,
+      "costSavings": 26.459,
+      "co2eSavings": 0.896
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 81",
+      "accountName": "aws account 81",
+      "region": "us-west-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.002,
+      "costSavings": 6.321,
+      "co2eSavings": 0.094
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 82",
+      "accountName": "aws account 82",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.162,
+      "costSavings": 5.84,
+      "co2eSavings": 0.046
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 83",
+      "accountName": "aws account 83",
+      "region": "ap-northeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 9.006,
+      "costSavings": 28.381,
+      "co2eSavings": 0.267
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 84",
+      "accountName": "aws account 84",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 7.832,
+      "costSavings": 29.214,
+      "co2eSavings": 0.167
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 85",
+      "accountName": "aws account 85",
+      "region": "us-west-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.266,
+      "costSavings": 25.95,
+      "co2eSavings": 0.05
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 86",
+      "accountName": "aws account 86",
+      "region": "ap-southeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.326,
+      "costSavings": 32.523,
+      "co2eSavings": 0.642
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 87",
+      "accountName": "aws account 87",
+      "region": "us-west-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-87",
+      "recommendationDetail": "Delete instance: example-instance-87.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.146,
+      "costSavings": 16.945,
+      "co2eSavings": 0.068
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 88",
+      "accountName": "aws account 88",
+      "region": "us-east-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-88",
+      "recommendationDetail": "Delete instance: example-instance-88.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.68,
+      "costSavings": 14.851,
+      "co2eSavings": 0.432
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 89",
+      "accountName": "aws account 89",
+      "region": "us-east-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.4,
+      "costSavings": 24.232,
+      "co2eSavings": 0.443
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 90",
+      "accountName": "aws account 90",
+      "region": "af-south-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.208,
+      "costSavings": 38.421,
+      "co2eSavings": 0.546
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 91",
+      "accountName": "aws account 91",
+      "region": "ap-northeast-3",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-91",
+      "recommendationDetail": "Delete instance: example-instance-91.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 1.357,
+      "costSavings": 32.125,
+      "co2eSavings": 0.383
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 92",
+      "accountName": "aws account 92",
+      "region": "af-south-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 2.099,
+      "costSavings": 25.702,
+      "co2eSavings": 0.809
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 93",
+      "accountName": "aws account 93",
+      "region": "ap-northeast-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-93",
+      "recommendationDetail": "Modify instance: example-instance-93.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.386,
+      "costSavings": 14.822,
+      "co2eSavings": 0.354
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 94",
+      "accountName": "aws account 94",
+      "region": "us-west-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-94",
+      "recommendationDetail": "Delete instance: example-instance-94.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 9.174,
+      "costSavings": 33.656,
+      "co2eSavings": 0.347
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 95",
+      "accountName": "aws account 95",
+      "region": "ap-northeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 8.282,
+      "costSavings": 45.131,
+      "co2eSavings": 0.368
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 96",
+      "accountName": "aws account 96",
+      "region": "ap-southeast-1",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Delete instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 5.753,
+      "costSavings": 43.293,
+      "co2eSavings": 0.319
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 97",
+      "accountName": "aws account 97",
+      "region": "ap-southeast-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance-97",
+      "recommendationDetail": "Modify instance: example-instance-97.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 6.977,
+      "costSavings": 11.654,
+      "co2eSavings": 0.214
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 98",
+      "accountName": "aws account 98",
+      "region": "ap-southeast-2",
+      "recommendationType": "Delete",
+      "instanceName": "example-instance-98",
+      "recommendationDetail": "Delete instance: example-instance-98.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.233,
+      "costSavings": 22.743,
+      "co2eSavings": 0.545
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 99",
+      "accountName": "aws account 99",
+      "region": "ap-east-1",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 3.517,
+      "costSavings": 43.118,
+      "co2eSavings": 0.364
+    },
+    {
+      "cloudProvider": "AWS",
+      "accountId": "aws account 100",
+      "accountName": "aws account 100",
+      "region": "us-west-2",
+      "recommendationType": "Modify",
+      "instanceName": "example-instance",
+      "recommendationDetail": "Modify instance: example-instance.",
+      "resourceId": "i-0f12345678912b12I",
+      "kilowattHourSavings": 4.773,
+      "costSavings": 14.858,
+      "co2eSavings": 0.479
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 1",
+      "accountName": "gcp account 1",
+      "region": "europe-west6",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-1",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-1.",
+      "resourceId": 6906976106869123607,
+      "kilowattHourSavings": 2.081,
+      "costSavings": 1.314,
+      "co2eSavings": 0.466
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 2",
+      "accountName": "gcp account 2",
+      "region": "europe-central2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-2",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-2.",
+      "resourceId": 8667336416139797749,
+      "kilowattHourSavings": 2.803,
+      "costSavings": 26.667,
+      "co2eSavings": 0.757
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 3",
+      "accountName": "gcp account 3",
+      "region": "asia-southeast1",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-3",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-3.",
+      "resourceId": 4256745502855943014,
+      "kilowattHourSavings": 8.742,
+      "costSavings": 24.549,
+      "co2eSavings": 0.803
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 4",
+      "accountName": "gcp account 4",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-4",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-4.",
+      "resourceId": 9529746770208249432,
+      "kilowattHourSavings": 8.444,
+      "costSavings": 26.921,
+      "co2eSavings": 0.064
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 5",
+      "accountName": "gcp account 5",
+      "region": "asia-northeast2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-5",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-5.",
+      "resourceId": 6744717229620703199,
+      "kilowattHourSavings": 1.122,
+      "costSavings": 5.277,
+      "co2eSavings": 0.399
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 6",
+      "accountName": "gcp account 6",
+      "region": "australia-southeast2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-6",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-6.",
+      "resourceId": 5362686291815928669,
+      "kilowattHourSavings": -0.007,
+      "costSavings": 23.619,
+      "co2eSavings": 0.645
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 7",
+      "accountName": "gcp account 7",
+      "region": "asia-south1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-7",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-7.",
+      "resourceId": 7975060822446534402,
+      "kilowattHourSavings": 0.684,
+      "costSavings": 27.622,
+      "co2eSavings": 0.829
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 8",
+      "accountName": "gcp account 8",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-8",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-8.",
+      "resourceId": 9351508929180876947,
+      "kilowattHourSavings": 9.946,
+      "costSavings": 35.2,
+      "co2eSavings": 0.068
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 9",
+      "accountName": "gcp account 9",
+      "region": "us-west1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-9",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
+      "resourceId": 8928403120086347428,
+      "kilowattHourSavings": 6.483,
+      "costSavings": 18.409,
+      "co2eSavings": 0.929
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 10",
+      "accountName": "gcp account 10",
+      "region": "asia-east1",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-10",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-10.",
+      "resourceId": 9625521363699054071,
+      "kilowattHourSavings": 6.989,
+      "costSavings": 48.165,
+      "co2eSavings": 0.855
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 11",
+      "accountName": "gcp account 11",
+      "region": "asia-south1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-11",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-11.",
+      "resourceId": 3376611771467788271,
+      "kilowattHourSavings": 4.627,
+      "costSavings": 45.203,
+      "co2eSavings": 0.656
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 12",
+      "accountName": "gcp account 12",
+      "region": "australia-southeast2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-12",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-12.",
+      "resourceId": 2983184966409510003,
+      "kilowattHourSavings": 9.568,
+      "costSavings": 46.112,
+      "co2eSavings": 0.644
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 13",
+      "accountName": "gcp account 13",
+      "region": "us-west1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-13",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-13.",
+      "resourceId": 3272793937190920908,
+      "kilowattHourSavings": 9.03,
+      "costSavings": 33.29,
+      "co2eSavings": 0.062
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 14",
+      "accountName": "gcp account 14",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-14",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-14.",
+      "resourceId": 7840914330904416378,
+      "kilowattHourSavings": 8.782,
+      "costSavings": 18.359,
+      "co2eSavings": 0.875
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 15",
+      "accountName": "gcp account 15",
+      "region": "asia-northeast2",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-15",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-15.",
+      "resourceId": 3832548987965146478,
+      "kilowattHourSavings": 6.217,
+      "costSavings": 49.835,
+      "co2eSavings": 0.263
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 16",
+      "accountName": "gcp account 16",
+      "region": "us-central1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-16",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-16.",
+      "resourceId": 8610005126178689012,
+      "kilowattHourSavings": 8.294,
+      "costSavings": 3.674,
+      "co2eSavings": 0.242
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 17",
+      "accountName": "gcp account 17",
+      "region": "us-west1",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-17",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-17.",
+      "resourceId": 9647420223871635714,
+      "kilowattHourSavings": 0.947,
+      "costSavings": 24.702,
+      "co2eSavings": 0.632
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 18",
+      "accountName": "gcp account 18",
+      "region": "us-central1",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-18",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-18.",
+      "resourceId": 3640239400946366972,
+      "kilowattHourSavings": 9.099,
+      "costSavings": 5.289,
+      "co2eSavings": 0.642
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 19",
+      "accountName": "gcp account 19",
+      "region": "australia-southeast2",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-19",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-19.",
+      "resourceId": 4706539033283992662,
+      "kilowattHourSavings": 2.006,
+      "costSavings": 4.497,
+      "co2eSavings": 0.241
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 20",
+      "accountName": "gcp account 20",
+      "region": "europe-west6",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-20",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-20.",
+      "resourceId": 3228903380915534092,
+      "kilowattHourSavings": 4.231,
+      "costSavings": 40.853,
+      "co2eSavings": 0.151
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 21",
+      "accountName": "gcp account 21",
+      "region": "asia-southeast1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-21",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-21.",
+      "resourceId": 2932580863177448917,
+      "kilowattHourSavings": -0.766,
+      "costSavings": 3.33,
+      "co2eSavings": 0.043
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 22",
+      "accountName": "gcp account 22",
+      "region": "europe-central2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-22",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-22.",
+      "resourceId": 5447338023523348863,
+      "kilowattHourSavings": 3.904,
+      "costSavings": 24.588,
+      "co2eSavings": 0.907
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 23",
+      "accountName": "gcp account 23",
+      "region": "europe-west1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-23",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-23.",
+      "resourceId": 9195441123317704588,
+      "kilowattHourSavings": 6.661,
+      "costSavings": 47.442,
+      "co2eSavings": 0.548
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 24",
+      "accountName": "gcp account 24",
+      "region": "asia-east2",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-24",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-24.",
+      "resourceId": 8409368085171769775,
+      "kilowattHourSavings": 6.277,
+      "costSavings": 46.559,
+      "co2eSavings": 0.795
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 25",
+      "accountName": "gcp account 25",
+      "region": "australia-southeast2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-25",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-25.",
+      "resourceId": 7271536970054114082,
+      "kilowattHourSavings": 8.109,
+      "costSavings": 39.576,
+      "co2eSavings": 0.336
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 26",
+      "accountName": "gcp account 26",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-26",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-26.",
+      "resourceId": 4233718184095525380,
+      "kilowattHourSavings": 2.637,
+      "costSavings": 13.28,
+      "co2eSavings": 0.697
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 27",
+      "accountName": "gcp account 27",
+      "region": "us-central1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-27",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-27.",
+      "resourceId": 6863161289988588093,
+      "kilowattHourSavings": 1.772,
+      "costSavings": 13.621,
+      "co2eSavings": 0.011
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 28",
+      "accountName": "gcp account 28",
+      "region": "asia-south1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-28",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-28.",
+      "resourceId": 6612898507728988763,
+      "kilowattHourSavings": 2.112,
+      "costSavings": 38.156,
+      "co2eSavings": 0.026
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 29",
+      "accountName": "gcp account 29",
+      "region": "europe-west6",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-29",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-29.",
+      "resourceId": 2551307582967934441,
+      "kilowattHourSavings": 1.665,
+      "costSavings": 1.219,
+      "co2eSavings": 0.921
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 30",
+      "accountName": "gcp account 30",
+      "region": "asia-northeast2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-30",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-30.",
+      "resourceId": 1256689110322163683,
+      "kilowattHourSavings": -0.391,
+      "costSavings": 22.057,
+      "co2eSavings": 0.382
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 31",
+      "accountName": "gcp account 31",
+      "region": "us-central1",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-31",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-31.",
+      "resourceId": 6976038333403210135,
+      "kilowattHourSavings": 8.837,
+      "costSavings": 22.029,
+      "co2eSavings": 0.226
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 32",
+      "accountName": "gcp account 32",
+      "region": "asia-southeast1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-32",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-32.",
+      "resourceId": 9884220954472036682,
+      "kilowattHourSavings": 6.89,
+      "costSavings": 26.958,
+      "co2eSavings": 0.651
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 33",
+      "accountName": "gcp account 33",
+      "region": "asia-east2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-33",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-33.",
+      "resourceId": 8018163296601415524,
+      "kilowattHourSavings": 5.202,
+      "costSavings": 10.552,
+      "co2eSavings": 0.942
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 34",
+      "accountName": "gcp account 34",
+      "region": "us-central1",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-34",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-34.",
+      "resourceId": 1094450566299972205,
+      "kilowattHourSavings": 6.727,
+      "costSavings": 0.525,
+      "co2eSavings": 0.752
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 35",
+      "accountName": "gcp account 35",
+      "region": "europe-west1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-35",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-35.",
+      "resourceId": 2085308458064568436,
+      "kilowattHourSavings": 6.826,
+      "costSavings": 48.954,
+      "co2eSavings": 0.233
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 36",
+      "accountName": "gcp account 36",
+      "region": "europe-central2",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-36",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-36.",
+      "resourceId": 9719480760136669535,
+      "kilowattHourSavings": 2.15,
+      "costSavings": 27.654,
+      "co2eSavings": 0.011
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 37",
+      "accountName": "gcp account 37",
+      "region": "europe-central2",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-37",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-37.",
+      "resourceId": 7755310673642446828,
+      "kilowattHourSavings": 7.643,
+      "costSavings": 4.105,
+      "co2eSavings": 0.029
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 38",
+      "accountName": "gcp account 38",
+      "region": "us-central1",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-38",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-38.",
+      "resourceId": 5386000019426648631,
+      "kilowattHourSavings": -0.134,
+      "costSavings": 48.364,
+      "co2eSavings": 0.664
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 39",
+      "accountName": "gcp account 39",
+      "region": "us-central1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-39",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-39.",
+      "resourceId": 4017242238192294684,
+      "kilowattHourSavings": 1.351,
+      "costSavings": 31.375,
+      "co2eSavings": 0.079
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 40",
+      "accountName": "gcp account 40",
+      "region": "europe-central2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-40",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-40.",
+      "resourceId": 5522517640173203658,
+      "kilowattHourSavings": 5.488,
+      "costSavings": 38.497,
+      "co2eSavings": 0.619
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 41",
+      "accountName": "gcp account 41",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-41",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-41.",
+      "resourceId": 1085413918920218769,
+      "kilowattHourSavings": 6.585,
+      "costSavings": 38.683,
+      "co2eSavings": 0.726
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 42",
+      "accountName": "gcp account 42",
+      "region": "europe-west3",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-42",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-42.",
+      "resourceId": 1575903482363800795,
+      "kilowattHourSavings": 5.013,
+      "costSavings": 46.128,
+      "co2eSavings": 0.543
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 43",
+      "accountName": "gcp account 43",
+      "region": "europe-west6",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-43",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-43.",
+      "resourceId": 9453828621246525292,
+      "kilowattHourSavings": -0.35,
+      "costSavings": 0.026,
+      "co2eSavings": 0.125
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 44",
+      "accountName": "gcp account 44",
+      "region": "europe-west3",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-44",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-44.",
+      "resourceId": 5205519691971398026,
+      "kilowattHourSavings": 0.295,
+      "costSavings": 37.11,
+      "co2eSavings": 0.753
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 45",
+      "accountName": "gcp account 45",
+      "region": "europe-west3",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-45",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-45.",
+      "resourceId": 1223570634550659015,
+      "kilowattHourSavings": 4.172,
+      "costSavings": 29.29,
+      "co2eSavings": 0.606
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 46",
+      "accountName": "gcp account 46",
+      "region": "australia-southeast2",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-46",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-46.",
+      "resourceId": 3559225262358256559,
+      "kilowattHourSavings": 2.2,
+      "costSavings": 7.901,
+      "co2eSavings": 0.226
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 47",
+      "accountName": "gcp account 47",
+      "region": "australia-southeast2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-47",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-47.",
+      "resourceId": 1966462366395373312,
+      "kilowattHourSavings": 2.233,
+      "costSavings": 35.037,
+      "co2eSavings": 0.08
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 48",
+      "accountName": "gcp account 48",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-48",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-48.",
+      "resourceId": 7371203174440313354,
+      "kilowattHourSavings": 7.423,
+      "costSavings": 37.375,
+      "co2eSavings": 0.065
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 49",
+      "accountName": "gcp account 49",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-49",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-49.",
+      "resourceId": 9597653236625199357,
+      "kilowattHourSavings": 0.273,
+      "costSavings": 7.869,
+      "co2eSavings": 0.183
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 50",
+      "accountName": "gcp account 50",
+      "region": "us-west1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-50",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-50.",
+      "resourceId": 2934691532603008738,
+      "kilowattHourSavings": 7.232,
+      "costSavings": 24.157,
+      "co2eSavings": 0.524
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 51",
+      "accountName": "gcp account 51",
+      "region": "asia-south1",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-51",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-51.",
+      "resourceId": 9456668671569790355,
+      "kilowattHourSavings": 5.817,
+      "costSavings": 49.866,
+      "co2eSavings": 0.707
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 52",
+      "accountName": "gcp account 52",
+      "region": "asia-southeast1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-52",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-52.",
+      "resourceId": 1951882099682525256,
+      "kilowattHourSavings": 3.245,
+      "costSavings": 3.614,
+      "co2eSavings": 0.989
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 53",
+      "accountName": "gcp account 53",
+      "region": "europe-west1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-53",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-53.",
+      "resourceId": 2499192777083970884,
+      "kilowattHourSavings": 6.779,
+      "costSavings": 33.436,
+      "co2eSavings": 0.641
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 54",
+      "accountName": "gcp account 54",
+      "region": "us-west1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-54",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-54.",
+      "resourceId": 8579542856735041869,
+      "kilowattHourSavings": 7.043,
+      "costSavings": 9.352,
+      "co2eSavings": 0.269
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 55",
+      "accountName": "gcp account 55",
+      "region": "australia-southeast2",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-55",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-55.",
+      "resourceId": 3799094664258921542,
+      "kilowattHourSavings": 2.103,
+      "costSavings": 39.177,
+      "co2eSavings": 0.191
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 56",
+      "accountName": "gcp account 56",
+      "region": "europe-west6",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-56",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-56.",
+      "resourceId": 5142565892941019082,
+      "kilowattHourSavings": 3.941,
+      "costSavings": 29.232,
+      "co2eSavings": 0.369
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 57",
+      "accountName": "gcp account 57",
+      "region": "europe-central2",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-57",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-57.",
+      "resourceId": 2063484937267798401,
+      "kilowattHourSavings": -0.099,
+      "costSavings": 49.959,
+      "co2eSavings": 0.554
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 58",
+      "accountName": "gcp account 58",
+      "region": "asia-southeast1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-58",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-58.",
+      "resourceId": 7220393346306226662,
+      "kilowattHourSavings": 5.77,
+      "costSavings": 17.423,
+      "co2eSavings": 0.989
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 59",
+      "accountName": "gcp account 59",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-59",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-59.",
+      "resourceId": 5943798376856683632,
+      "kilowattHourSavings": 1.329,
+      "costSavings": 15.435,
+      "co2eSavings": 0.597
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 60",
+      "accountName": "gcp account 60",
+      "region": "europe-west6",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-60",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-60.",
+      "resourceId": 3299410532166645128,
+      "kilowattHourSavings": 0.029,
+      "costSavings": 5.141,
+      "co2eSavings": 0.956
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 61",
+      "accountName": "gcp account 61",
+      "region": "europe-central2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-61",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-61.",
+      "resourceId": 6538588813798954503,
+      "kilowattHourSavings": 9.609,
+      "costSavings": 21.639,
+      "co2eSavings": 0.462
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 62",
+      "accountName": "gcp account 62",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-62",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-62.",
+      "resourceId": 4853588571514078717,
+      "kilowattHourSavings": 5.289,
+      "costSavings": 17.51,
+      "co2eSavings": 0.67
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 63",
+      "accountName": "gcp account 63",
+      "region": "asia-south1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-63",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-63.",
+      "resourceId": 1926245807961363847,
+      "kilowattHourSavings": 5.245,
+      "costSavings": 18.334,
+      "co2eSavings": 0.647
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 64",
+      "accountName": "gcp account 64",
+      "region": "europe-west3",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-64",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-64.",
+      "resourceId": 8289220380334151696,
+      "kilowattHourSavings": 8.07,
+      "costSavings": 18.15,
+      "co2eSavings": 0.537
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 65",
+      "accountName": "gcp account 65",
+      "region": "us-central1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-65",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-65.",
+      "resourceId": 1492692613358518310,
+      "kilowattHourSavings": 3.574,
+      "costSavings": 31.879,
+      "co2eSavings": 0.044
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 66",
+      "accountName": "gcp account 66",
+      "region": "europe-west3",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-66",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-66.",
+      "resourceId": 2315555034929039344,
+      "kilowattHourSavings": 3.761,
+      "costSavings": 14.521,
+      "co2eSavings": 0.291
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 67",
+      "accountName": "gcp account 67",
+      "region": "europe-west1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-67",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-67.",
+      "resourceId": 1856591150618302533,
+      "kilowattHourSavings": 3.302,
+      "costSavings": 38.815,
+      "co2eSavings": 0.752
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 68",
+      "accountName": "gcp account 68",
+      "region": "asia-northeast2",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-68",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-68.",
+      "resourceId": 9427769441022867189,
+      "kilowattHourSavings": 8.642,
+      "costSavings": 34.626,
+      "co2eSavings": 0.448
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 69",
+      "accountName": "gcp account 69",
+      "region": "asia-southeast1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-69",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-69.",
+      "resourceId": 8493078227002901091,
+      "kilowattHourSavings": 1.425,
+      "costSavings": 27.365,
+      "co2eSavings": 0.132
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 70",
+      "accountName": "gcp account 70",
+      "region": "asia-east1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-70",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-70.",
+      "resourceId": 3793074887536877203,
+      "kilowattHourSavings": 8.962,
+      "costSavings": 44.292,
+      "co2eSavings": 0.108
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 71",
+      "accountName": "gcp account 71",
+      "region": "asia-northeast2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-71",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-71.",
+      "resourceId": 9149779792936623775,
+      "kilowattHourSavings": 6.773,
+      "costSavings": 17.821,
+      "co2eSavings": 0.317
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 72",
+      "accountName": "gcp account 72",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-72",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-72.",
+      "resourceId": 4676445198002975762,
+      "kilowattHourSavings": 3.581,
+      "costSavings": 42.388,
+      "co2eSavings": 0.961
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 73",
+      "accountName": "gcp account 73",
+      "region": "asia-east2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-73",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-73.",
+      "resourceId": 9255157247960023160,
+      "kilowattHourSavings": 5.558,
+      "costSavings": 15.195,
+      "co2eSavings": 0.949
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 74",
+      "accountName": "gcp account 74",
+      "region": "us-west1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-74",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-74.",
+      "resourceId": 2161594914615717764,
+      "kilowattHourSavings": 7.481,
+      "costSavings": 33.809,
+      "co2eSavings": 0.48
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 75",
+      "accountName": "gcp account 75",
+      "region": "europe-west3",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-75",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-75.",
+      "resourceId": 8786015023895462430,
+      "kilowattHourSavings": 0.931,
+      "costSavings": 2.928,
+      "co2eSavings": 0.109
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 76",
+      "accountName": "gcp account 76",
+      "region": "europe-central2",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-76",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-76.",
+      "resourceId": 4077317505583379965,
+      "kilowattHourSavings": 3.095,
+      "costSavings": 37.741,
+      "co2eSavings": 0.433
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 77",
+      "accountName": "gcp account 77",
+      "region": "europe-central2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-77",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-77.",
+      "resourceId": 2025125467136854451,
+      "kilowattHourSavings": 0.9,
+      "costSavings": 33.8,
+      "co2eSavings": 0.635
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 78",
+      "accountName": "gcp account 78",
+      "region": "asia-southeast1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-78",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-78.",
+      "resourceId": 7552791777793793406,
+      "kilowattHourSavings": 8.369,
+      "costSavings": 25.307,
+      "co2eSavings": 0.634
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 79",
+      "accountName": "gcp account 79",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-79",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-79.",
+      "resourceId": 6367584152373071060,
+      "kilowattHourSavings": 2.29,
+      "costSavings": 48.057,
+      "co2eSavings": 0.721
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 80",
+      "accountName": "gcp account 80",
+      "region": "europe-west3",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-80",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-80.",
+      "resourceId": 7351169905332964814,
+      "kilowattHourSavings": 9.551,
+      "costSavings": 30.535,
+      "co2eSavings": 0.228
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 81",
+      "accountName": "gcp account 81",
+      "region": "asia-south1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-81",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-81.",
+      "resourceId": 8033557632750858057,
+      "kilowattHourSavings": 2.975,
+      "costSavings": 8.83,
+      "co2eSavings": 0.6
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 82",
+      "accountName": "gcp account 82",
+      "region": "asia-south1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-82",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-82.",
+      "resourceId": 9724978437873442741,
+      "kilowattHourSavings": 1.526,
+      "costSavings": 16.123,
+      "co2eSavings": 0.571
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 83",
+      "accountName": "gcp account 83",
+      "region": "asia-south1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-83",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-83.",
+      "resourceId": 7184432709536682604,
+      "kilowattHourSavings": 5.471,
+      "costSavings": 8.282,
+      "co2eSavings": 0.807
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 84",
+      "accountName": "gcp account 84",
+      "region": "us-central1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-84",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-84.",
+      "resourceId": 9284174665244678675,
+      "kilowattHourSavings": 3.941,
+      "costSavings": 27.317,
+      "co2eSavings": 0.534
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 85",
+      "accountName": "gcp account 85",
+      "region": "europe-central2",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-85",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-85.",
+      "resourceId": 4968727683560186147,
+      "kilowattHourSavings": 6.516,
+      "costSavings": 14.403,
+      "co2eSavings": 0.427
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 86",
+      "accountName": "gcp account 86",
+      "region": "us-central1",
+      "recommendationType": "DELETE_DISK",
+      "instanceName": "test-instance-86",
+      "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-86.",
+      "resourceId": 2630405705457554597,
+      "kilowattHourSavings": 8.737,
+      "costSavings": 43.525,
+      "co2eSavings": 0.172
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 87",
+      "accountName": "gcp account 87",
+      "region": "asia-south1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-87",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-87.",
+      "resourceId": 2554314093211004357,
+      "kilowattHourSavings": 9.959,
+      "costSavings": 27.256,
+      "co2eSavings": 0.017
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 88",
+      "accountName": "gcp account 88",
+      "region": "europe-west6",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-88",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-88.",
+      "resourceId": 4940836965647294777,
+      "kilowattHourSavings": 4.15,
+      "costSavings": 15.477,
+      "co2eSavings": 0.192
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 89",
+      "accountName": "gcp account 89",
+      "region": "australia-southeast2",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-89",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-89.",
+      "resourceId": 3748538269634091295,
+      "kilowattHourSavings": 1.443,
+      "costSavings": 41.101,
+      "co2eSavings": 0.105
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 90",
+      "accountName": "gcp account 90",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-90",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-90.",
+      "resourceId": 3884897188007678519,
+      "kilowattHourSavings": 8.267,
+      "costSavings": 32.955,
+      "co2eSavings": 0.665
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 91",
+      "accountName": "gcp account 91",
+      "region": "australia-southeast2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-91",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-91.",
+      "resourceId": 5909104602509202878,
+      "kilowattHourSavings": 8.329,
+      "costSavings": 19.493,
+      "co2eSavings": 0.544
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 92",
+      "accountName": "gcp account 92",
+      "region": "europe-central2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-92",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-92.",
+      "resourceId": 5728096485790154039,
+      "kilowattHourSavings": 3.448,
+      "costSavings": 40.445,
+      "co2eSavings": 0.468
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 93",
+      "accountName": "gcp account 93",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_IMAGE",
+      "instanceName": "test-instance-93",
+      "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-93.",
+      "resourceId": 3423473793940968058,
+      "kilowattHourSavings": -0.439,
+      "costSavings": 28.917,
+      "co2eSavings": 0.926
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 94",
+      "accountName": "gcp account 94",
+      "region": "asia-east2",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-94",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-94.",
+      "resourceId": 7242643195487303289,
+      "kilowattHourSavings": 5.447,
+      "costSavings": 36.226,
+      "co2eSavings": 0.798
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 95",
+      "accountName": "gcp account 95",
+      "region": "europe-west1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-95",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-95.",
+      "resourceId": 1257835547280749965,
+      "kilowattHourSavings": 5.086,
+      "costSavings": 38.397,
+      "co2eSavings": 0.604
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 96",
+      "accountName": "gcp account 96",
+      "region": "asia-east2",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-96",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-96.",
+      "resourceId": 5239556659038569442,
+      "kilowattHourSavings": 9.996,
+      "costSavings": 1.025,
+      "co2eSavings": 0.922
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 97",
+      "accountName": "gcp account 97",
+      "region": "asia-northeast2",
+      "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
+      "instanceName": "test-instance-97",
+      "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-97.",
+      "resourceId": 4135316247348281989,
+      "kilowattHourSavings": 0.433,
+      "costSavings": 1.446,
+      "co2eSavings": 0.988
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 98",
+      "accountName": "gcp account 98",
+      "region": "asia-east1",
+      "recommendationType": "DELETE_ADDRESS",
+      "instanceName": "test-instance-98",
+      "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-98.",
+      "resourceId": 9715294668715765906,
+      "kilowattHourSavings": 1.24,
+      "costSavings": 24.916,
+      "co2eSavings": 0.865
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 99",
+      "accountName": "gcp account 99",
+      "region": "europe-central2",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-99",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-99.",
+      "resourceId": 2929295027767211896,
+      "kilowattHourSavings": 3.593,
+      "costSavings": 24.834,
+      "co2eSavings": 0.857
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account 100",
+      "accountName": "gcp account 100",
+      "region": "us-west1",
+      "recommendationType": "CHANGE_MACHINE_TYPE",
+      "instanceName": "test-instance-100",
+      "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-100.",
+      "resourceId": 7802923624993504283,
+      "kilowattHourSavings": 6.032,
+      "costSavings": 43.087,
+      "co2eSavings": 0.261
+    }
+  ]
+}
