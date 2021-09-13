@@ -9,10 +9,20 @@ import {
   RecommendationResult,
   AWS_RECOMMENDATIONS_TARGETS,
   AWS_DEFAULT_RECOMMENDATION_TARGET,
+  EstimationResult,
 } from '@cloud-carbon-footprint/common'
-import { EBS, S3, EC2, ElastiCache, RDS, Lambda } from '../lib'
+import {
+  EBS,
+  S3,
+  EC2,
+  ElastiCache,
+  RDS,
+  Lambda,
+  CostAndUsageReports,
+} from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 import { Recommendations } from '../lib/Recommendations'
+import { CloudProviderAccount } from '@cloud-carbon-footprint/core'
 
 jest.mock('../application/AWSCredentialsProvider')
 
@@ -128,6 +138,55 @@ describe('AWSAccount', () => {
     })
   })
 
+  it('should get data for regions', async () => {
+    const startDate = new Date('2021-01-01')
+    const endDate = new Date('2021-02-01')
+    const AWSAccount = require('../application/AWSAccount').default
+    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      'region-a',
+    ])
+    const expectedEstimatesResult: EstimationResult[] =
+      getExpectedEstimationResult(startDate)
+
+    const getRegionDataSpy = jest.spyOn(
+      CloudProviderAccount.prototype,
+      'getRegionData',
+    )
+
+    getRegionDataSpy.mockResolvedValue(expectedEstimatesResult)
+
+    const result = await testAwsAccount.getDataForRegions(startDate, endDate)
+
+    expect(result).toEqual(expectedEstimatesResult)
+  })
+
+  it('should getDataFromCostAndUsageReports', async () => {
+    const startDate = new Date('2021-01-01')
+    const endDate = new Date('2021-02-01')
+    const AWSAccount = require('../application/AWSAccount').default
+    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      'region-a',
+    ])
+    const expectedEstimatesResult: EstimationResult[] =
+      getExpectedEstimationResult(startDate)
+
+    const costAndUsageReportsGetEstimatesSpy = jest.spyOn(
+      CostAndUsageReports.prototype,
+      'getEstimates',
+    )
+
+    costAndUsageReportsGetEstimatesSpy.mockResolvedValue(
+      expectedEstimatesResult,
+    )
+
+    const result = await testAwsAccount.getDataFromCostAndUsageReports(
+      startDate,
+      endDate,
+    )
+
+    expect(result).toEqual(expectedEstimatesResult)
+  })
+
   it('should get data for recommendations', async () => {
     const AWSAccount = require('../application/AWSAccount').default
     const testAwsAccount = new AWSAccount('12345678', 'test account', [
@@ -211,4 +270,38 @@ function expectAWSService(key: string) {
     testRegion,
   ]).getServices(testRegion)
   return expect(services[0])
+}
+
+function getExpectedEstimationResult(startDate: Date = new Date()) {
+  const testAccountId = 'test account'
+  const region = 'region-a'
+  return [
+    {
+      timestamp: new Date(startDate),
+      serviceEstimates: [
+        {
+          cloudProvider: 'AWS',
+          accountId: testAccountId,
+          accountName: testAccountId,
+          serviceName: 'serviceOne',
+          kilowattHours: 2,
+          co2e: 2,
+          cost: 3,
+          region: region,
+          usesAverageCPUConstant: false,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: testAccountId,
+          accountName: testAccountId,
+          serviceName: 'serviceTwo',
+          kilowattHours: 1,
+          co2e: 1,
+          cost: 4,
+          region: region,
+          usesAverageCPUConstant: false,
+        },
+      ],
+    },
+  ]
 }
