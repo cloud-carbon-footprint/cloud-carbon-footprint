@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/core
 
+## 0.11.0
+
+### Minor Changes
+
+- c439b0ba: implements reclassification and estimations for unknown usage rows
+- 52237bc6: Adds additional dashboard for viewing cloud provider recommendations including refactoring filters for reusability
+
+  For updating the create-app templates, please refer to the following [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d1f9a94ea88e6f9210a781e16df18b9f64a0b03d).
+
+### Patch Changes
+
+- Updated dependencies [f3569daa]
+- Updated dependencies [61332214]
+- Updated dependencies [52237bc6]
+  - @cloud-carbon-footprint/common@1.2.0
+
 ## 0.10.0
 
 ### Minor Changes

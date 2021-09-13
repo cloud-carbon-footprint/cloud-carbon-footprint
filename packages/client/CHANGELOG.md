@@ -1,5 +1,25 @@
 # @cloud-carbon-footprint/client
 
+## 2.0.0
+
+### Major Changes
+
+- 52237bc6: Adds additional dashboard for viewing cloud provider recommendations including refactoring filters for reusability
+
+  For updating the create-app templates, please refer to the following [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d1f9a94ea88e6f9210a781e16df18b9f64a0b03d).
+
+### Patch Changes
+
+- f3569daa: Updates emissions factor api response to include cloud provider
+
+  For create-app template updates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c19cca55d4c095d81f0bb80745580741d73405b5)
+
+- c973b85f: Fixes rendering of client when very small numbers return for co2e/energy/cost
+- Updated dependencies [f3569daa]
+- Updated dependencies [61332214]
+- Updated dependencies [52237bc6]
+  - @cloud-carbon-footprint/common@1.2.0
+
 ## 1.0.1
 
 ### Patch Changes

@@ -1,5 +1,32 @@
 # @cloud-carbon-footprint/app
 
+## 0.3.0
+
+### Minor Changes
+
+- f3569daa: Updates emissions factor api response to include cloud provider
+
+  For create-app template updates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c19cca55d4c095d81f0bb80745580741d73405b5)
+
+- 61332214: Adds CLI command for creating a lookup table to be used in ETL pipelines
+- 52237bc6: Adds additional dashboard for viewing cloud provider recommendations including refactoring filters for reusability
+
+  For updating the create-app templates, please refer to the following [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d1f9a94ea88e6f9210a781e16df18b9f64a0b03d).
+
+### Patch Changes
+
+- Updated dependencies [f3569daa]
+- Updated dependencies [cee42a42]
+- Updated dependencies [f2bda27a]
+- Updated dependencies [61332214]
+- Updated dependencies [c439b0ba]
+- Updated dependencies [52237bc6]
+- Updated dependencies [c81cf4bd]
+  - @cloud-carbon-footprint/common@1.2.0
+  - @cloud-carbon-footprint/azure@0.4.0
+  - @cloud-carbon-footprint/aws@0.5.0
+  - @cloud-carbon-footprint/gcp@0.4.0
+
 ## 0.2.1
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/azure
 
+## 0.4.0
+
+### Minor Changes
+
+- cee42a42: Bumps @azure/arm-consumption dependency and updates code to support new major version
+- f2bda27a: Updates implementation of Azure unknowns to seperate unsupported from unknown, and adds additional unknown usage units
+- c439b0ba: implements reclassification and estimations for unknown usage rows
+
+### Patch Changes
+
+- Updated dependencies [f3569daa]
+- Updated dependencies [61332214]
+- Updated dependencies [c439b0ba]
+- Updated dependencies [52237bc6]
+  - @cloud-carbon-footprint/common@1.2.0
+  - @cloud-carbon-footprint/core@0.11.0
+
 ## 0.3.1
 
 ### Patch Changes
