@@ -2025,6 +2025,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cloud-carbon-footprint/api-template@workspace:packages/create-app/ccf-app/packages/api":
+  version: 0.0.0-use.local
+  resolution: "@cloud-carbon-footprint/api-template@workspace:packages/create-app/ccf-app/packages/api"
+  dependencies:
+    "@cloud-carbon-footprint/app": ^0.2.1
+    "@cloud-carbon-footprint/common": ^1.1.0
+    "@types/express": ^4.17.11
+    "@types/jest": ^26.0.23
+    "@types/jest-when": ^2.7.2
+    "@types/node": ^16.0.1
+    "@types/prompts": ^2.0.12
+    "@types/ramda": ^0.27.40
+    "@types/source-map-support": ^0.5.3
+    "@types/supertest": ^2.0.11
+    "@typescript-eslint/eslint-plugin": ^4.24.0
+    "@typescript-eslint/parser": ^4.24.0
+    aws-sdk-mock: ^5.1.0
+    dotenv: ^10.0.0
+    eslint: ^7.26.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.0
+    eslint-plugin-unused-imports: ^1.1.1
+    express: ^4.17.1
+    helmet: ^4.6.0
+    jest: 26.6.0
+    jest-when: ^3.3.1
+    lint-staged: ^11.0.1
+    module-alias: ^2.2.2
+    onchange: ^7.1.0
+    prettier: ^2.3.0
+    rimraf: ^3.0.2
+    source-map-support: ^0.5.19
+    supertest: ^6.1.3
+    ts-jest: ^26.5.6
+    ts-node: ^9.1.1
+    ts-node-dev: ^1.1.6
+    tsconfig-paths: ^3.9.0
+    typescript: ^4.3.5
+    winston: ^3.3.3
+  languageName: unknown
+  linkType: soft
+
 "@cloud-carbon-footprint/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/api@workspace:packages/api"
@@ -2061,7 +2103,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/app@0.2.1, @cloud-carbon-footprint/app@^0.2.0, @cloud-carbon-footprint/app@workspace:packages/app":
+"@cloud-carbon-footprint/app@0.2.1, @cloud-carbon-footprint/app@^0.2.0, @cloud-carbon-footprint/app@^0.2.1, @cloud-carbon-footprint/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
   dependencies:
@@ -2163,6 +2205,48 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@cloud-carbon-footprint/cli-template@workspace:packages/create-app/ccf-app/packages/cli":
+  version: 0.0.0-use.local
+  resolution: "@cloud-carbon-footprint/cli-template@workspace:packages/create-app/ccf-app/packages/cli"
+  dependencies:
+    "@cloud-carbon-footprint/app": ^0.2.1
+    "@cloud-carbon-footprint/common": ^1.1.0
+    "@types/cli-table": ^0.3.0
+    "@types/jest": ^26.0.23
+    "@types/jest-when": ^2.7.2
+    "@types/node": ^16.0.1
+    "@types/prompts": ^2.0.12
+    "@types/ramda": ^0.27.40
+    "@types/source-map-support": ^0.5.3
+    "@typescript-eslint/eslint-plugin": ^4.24.0
+    "@typescript-eslint/parser": ^4.24.0
+    aws-sdk: ^2.910.0
+    aws-sdk-mock: ^5.1.0
+    cli-table: ^0.3.6
+    commander: ^8.0.0
+    dotenv: ^10.0.0
+    eslint: ^7.26.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.0
+    eslint-plugin-unused-imports: ^1.1.1
+    jest: 26.6.0
+    jest-when: ^3.3.1
+    lint-staged: ^11.0.1
+    moment: ^2.29.1
+    onchange: ^7.1.0
+    prettier: ^2.3.0
+    ramda: ^0.27.1
+    rimraf: ^3.0.2
+    source-map-support: ^0.5.19
+    ts-jest: ^26.5.6
+    ts-node: ^9.1.1
+    ts-node-dev: ^1.1.6
+    tsconfig-paths: ^3.9.0
+    typed-prompts: ^1.5.0
+    typescript: ^4.3.5
+  languageName: unknown
+  linkType: soft
+
 "@cloud-carbon-footprint/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
@@ -2203,6 +2287,65 @@ __metadata:
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.6
     typed-prompts: ^1.5.0
+    typescript: ^4.3.5
+  languageName: unknown
+  linkType: soft
+
+"@cloud-carbon-footprint/client-template@workspace:packages/create-app/ccf-app/packages/client":
+  version: 0.0.0-use.local
+  resolution: "@cloud-carbon-footprint/client-template@workspace:packages/create-app/ccf-app/packages/client"
+  dependencies:
+    "@babel/runtime": ^7.14.0
+    "@cloud-carbon-footprint/common": ^1.1.0
+    "@material-ui/core": ^4.11.4
+    "@material-ui/icons": ^4.11.2
+    "@material-ui/lab": ^4.0.0-alpha.57
+    "@testing-library/dom": ^8.0.0
+    "@testing-library/jest-dom": ^5.12.0
+    "@testing-library/react": ^12.0.0
+    "@testing-library/react-hooks": ^7.0.0
+    "@testing-library/user-event": ^13.1.9
+    "@types/jest": ^26.0.23
+    "@types/lodash": ^4.14.169
+    "@types/mockdate": ^3.0.0
+    "@types/node": ^16.0.1
+    "@types/ramda": ^0.27.40
+    "@types/react": ^17.0.6
+    "@types/react-dates": ^21.8.2
+    "@types/react-dom": ^17.0.5
+    "@types/react-router": ^5.1.14
+    "@types/react-router-dom": ^5.1.7
+    "@types/styled-components": ^5.1.9
+    "@typescript-eslint/eslint-plugin": ^4.24.0
+    "@typescript-eslint/parser": ^4.24.0
+    apexcharts: ^3.26.3
+    axios: ^0.21.1
+    concurrently: ^6.2.0
+    dotenv: ^10.0.0
+    eslint: ^7.26.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.0
+    eslint-plugin-unused-imports: ^1.1.1
+    express: ^4.17.1
+    helmet: ^4.6.0
+    immer: ^9.0.2
+    jest: 26.6.0
+    json-server: ^0.16.3
+    lint-staged: ^11.0.1
+    lodash: ^4.17.21
+    mockdate: ^3.0.5
+    moment: ^2.29.1
+    prettier: ^2.3.0
+    ramda: ^0.27.1
+    react: ^17.0.2
+    react-apexcharts: ^1.3.9
+    react-dates: ^21.8.0
+    react-dom: ^17.0.2
+    react-is: ^17.0.2
+    react-router-dom: ^5.2.0
+    react-scripts: ^4.0.3
+    react-test-renderer: ^17.0.2
+    styled-components: ^5.3.0
     typescript: ^4.3.5
   languageName: unknown
   linkType: soft
@@ -4965,6 +5108,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/express@npm:^4.17.11":
+  version: 4.17.13
+  resolution: "@types/express@npm:4.17.13"
+  dependencies:
+    "@types/body-parser": "*"
+    "@types/express-serve-static-core": ^4.17.18
+    "@types/qs": "*"
+    "@types/serve-static": "*"
+  checksum: 9f17da703df21e3f1cee2fe1864b9fcac2ab07c37382b972a194a3a484b41c1fbe4022b6cfe546f0171fd2d93b324dd3839512494f4cba639c2afa021e6dbb12
+  languageName: node
+  linkType: hard
+
 "@types/express@npm:^4.17.12":
   version: 4.17.12
   resolution: "@types/express@npm:4.17.12"
@@ -4977,7 +5132,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.12":
+"@types/fs-extra@npm:^9.0.11, @types/fs-extra@npm:^9.0.12":
   version: 9.0.12
   resolution: "@types/fs-extra@npm:9.0.12"
   dependencies:
@@ -5090,6 +5245,16 @@ __metadata:
     jest-diff: ^26.0.0
     pretty-format: ^26.0.0
   checksum: a015676b78bdc51be6f6315acef10d9106ea8064e3e49143bca3c75b834b61285b45c5f5ccfd049a80107f1e2869a9183cdb5be85816c073ea8dd05852fafdc6
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:^26.0.23":
+  version: 26.0.24
+  resolution: "@types/jest@npm:26.0.24"
+  dependencies:
+    jest-diff: ^26.0.0
+    pretty-format: ^26.0.0
+  checksum: e5d3651c1edf197011d19ee8f4bacd52667fa673d1b2ffbfbce624208d643fd4372ebb31fa8a1d89843a7705f142e38076e25e1e7b67f3aacafd6ae8bc77cbcf
   languageName: node
   linkType: hard
 
@@ -8948,7 +9113,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^6.2.1":
+"concurrently@npm:^6.2.0, concurrently@npm:^6.2.1":
   version: 6.2.1
   resolution: "concurrently@npm:6.2.1"
   dependencies:
@@ -16682,6 +16847,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"marked@npm:>=2.0.5":
+  version: 3.0.3
+  resolution: "marked@npm:3.0.3"
+  bin:
+    marked: bin/marked
+  checksum: b1889fa3e4e59712b5e59a956c2edab79cd69aa8dd02c22d6f46a8b9663d287ff123ef42f84ec4f4f018b84789e78b116e697d541e3a6ea95a5331ccc5e4ae86
+  languageName: node
+  linkType: hard
+
 "match-url-wildcard@npm:0.0.4":
   version: 0.0.4
   resolution: "match-url-wildcard@npm:0.0.4"
@@ -21646,6 +21820,20 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"root-template@workspace:packages/create-app/ccf-app":
+  version: 0.0.0-use.local
+  resolution: "root-template@workspace:packages/create-app/ccf-app"
+  dependencies:
+    "@types/fs-extra": ^9.0.11
+    concurrently: ^6.2.0
+    fs-extra: ^10.0.0
+    lerna: ^4.0.0
+    marked: ">=2.0.5"
+    ts-node: ^9.1.1
+    typescript: 4.3.4
+  languageName: unknown
+  linkType: soft
+
 "root@workspace:.":
   version: 0.0.0-use.local
   resolution: "root@workspace:."
@@ -24164,7 +24352,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^9.0.0":
+"ts-node@npm:^9.0.0, ts-node@npm:^9.1.1":
   version: 9.1.1
   resolution: "ts-node@npm:9.1.1"
   dependencies:
@@ -24434,6 +24622,16 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+typescript@4.3.4:
+  version: 4.3.4
+  resolution: "typescript@npm:4.3.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 9791c5fe98db6cb70ec0efad8d3d2eb957b9643ee600b90bff49267de69768d0d5f59c41a8fd731cfd63df1ccfb2cb25505a2015d7b39ac10ea51f605a058e16
+  languageName: node
+  linkType: hard
+
 typescript@^3.3.3:
   version: 3.9.9
   resolution: "typescript@npm:3.9.9"
@@ -24451,6 +24649,16 @@ typescript@^4.3.5:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: d9a8e78d72dd19896e6bfa73ab2a0fcea6eca2700d1d6e7c33f67a970af54a3e0fed8f715a8c4e6a0ff7fc0995067b394b2003518ab0aa84cd396377e54b760c
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@4.3.4#builtin<compat/typescript>":
+  version: 4.3.4
+  resolution: "typescript@patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: c8766e84a4f71e925cc059af8286cc7f41819fe821d433b90c83e9b36729cbda7a8e4be3292d8a1433cd717d529c93217d58d173418f43862290b206bd88b284
   languageName: node
   linkType: hard
 

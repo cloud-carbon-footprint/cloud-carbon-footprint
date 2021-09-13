@@ -14,14 +14,12 @@ type FilterBarProps = {
     setFilters: Dispatch<SetStateAction<Filters>>
     filterOptions: FilterOptions
   }
-  primaryComponents: FunctionComponent<FilterProps>[]
-  optionalComponents?: FunctionComponent<FilterProps>[]
+  components: FunctionComponent<FilterProps>[]
 }
 
 const FilterBar: FunctionComponent<FilterBarProps> = ({
   config,
-  primaryComponents,
-  optionalComponents,
+  components,
 }) => {
   const classes = useStyles()
   return (
@@ -29,7 +27,7 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
       <Grid item xs={12}>
         <div className={classes.filterContainer}>
           <div className={classes.filterContainerSection}>
-            {primaryComponents.map((FilterComponent, i) => (
+            {components.map((FilterComponent, i) => (
               <div key={i} className={classes.filter}>
                 <FilterComponent
                   filters={config.filters}
@@ -39,18 +37,6 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
               </div>
             ))}
           </div>
-          {optionalComponents && (
-            <div className={classes.filterContainerSection}>
-              {optionalComponents.map((FilterComponent, i) => (
-                <div key={i} className={classes.filter}>
-                  <FilterComponent
-                    filters={config.filters}
-                    setFilters={config.setFilters}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </Grid>
     </div>

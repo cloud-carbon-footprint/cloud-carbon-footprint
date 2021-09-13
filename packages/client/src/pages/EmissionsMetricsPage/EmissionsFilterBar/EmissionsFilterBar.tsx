@@ -50,21 +50,20 @@ const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
     }
   }
 
-  const primaryComponents = [CloudProviderFilter, AccountFilter, ServiceFilter]
-  const optionalComponents = [DateFilter, MonthFilter]
+  const filterComponents = [
+    CloudProviderFilter,
+    AccountFilter,
+    ServiceFilter,
+    DateFilter,
+    MonthFilter,
+  ]
   const filterConfig = {
     filters,
     setFilters,
     filterOptions: getFilterOptions(),
   }
 
-  return (
-    <FilterBar
-      config={filterConfig}
-      primaryComponents={primaryComponents}
-      optionalComponents={optionalComponents}
-    />
-  )
+  return <FilterBar config={filterConfig} components={filterComponents} />
 }
 
 export default EmissionsFilterBar

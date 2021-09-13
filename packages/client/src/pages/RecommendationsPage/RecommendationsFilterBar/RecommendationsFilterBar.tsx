@@ -35,7 +35,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     filterOptions: getFilterOptions(),
   }
 
-  return <FilterBar primaryComponents={[]} config={filterConfig} />
+  return <FilterBar components={[]} config={filterConfig} />
 }
 
 export default RecommendationsFilterBar
