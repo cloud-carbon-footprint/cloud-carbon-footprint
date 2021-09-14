@@ -149,6 +149,8 @@ fileignoreconfig:
   checksum: 6741d38f47dab811df00dd95efc15cf836a30ce27102f97ad342b211723911e3
 - filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsBreakdownCard/__snapshots__/EmissionsBreakdownCard.test.tsx.snap
   checksum: 630a3e774c51b071791879024c9bfa2bf0c90ca0fad60880c1b0def82f0728ba
+- filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsFilterBar/utils/EmissionsFilters.test.ts
+  checksum: 7a6fee67c4d98c6d43e79fe5131389ff4691a8525725a865356c817959a076e9
 - filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsFilterBar/utils/FiltersUtil.ts
   checksum: 4a9658d657df170c27f66189a68561fb1699216c09b4513c2701508a6c06630e
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx

@@ -12,11 +12,22 @@ import {
 } from 'Types'
 import { FiltersDateRange, Filters } from 'common/FilterBar/utils/Filters'
 import { EmissionsFilters } from './EmissionsFilters'
-import { CLOUD_PROVIDER_OPTIONS } from '../../../../common/FilterBar/utils/DropdownConstants'
+import {
+  alphabetizeDropdownOptions,
+  CLOUD_PROVIDER_OPTIONS,
+} from 'common/FilterBar/utils/DropdownConstants'
+import config from 'ConfigLoader'
 
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
+    if (!actual.length)
+      return {
+        pass: false,
+        message: () => `EstimationResult is empty`,
+      }
+
     let error: { pass: boolean; message: () => string } | null = null
+
     actual.forEach((estimationResult, index) => {
       estimationResult.serviceEstimates.forEach((serviceEstimate) => {
         if (!error && !expected.includes(serviceEstimate.serviceName)) {
@@ -32,6 +43,12 @@ expect.extend({
   },
 
   toBeWithinTimeframe(actual: EstimationResult[], expected: number) {
+    if (!actual.length)
+      return {
+        pass: false,
+        message: () => `EstimationResult is empty`,
+      }
+
     let error: { pass: boolean; message: () => string } | null = null
     actual.forEach((estimationResult, index) => {
       const today: moment.Moment = moment.utc()
@@ -75,23 +92,23 @@ jest.mock('ConfigLoader', () => {
 
 describe('Filters', () => {
   const allServiceOption = { key: 'all', name: 'All Services' }
-  const ebsServiceOption = { key: 'ebs', name: 'EBS', cloudProvider: 'aws' }
-  const S3ServiceOption = { key: 's3', name: 'S3', cloudProvider: 'aws' }
-  const ec2ServiceOption = { key: 'ec2', name: 'EC2', cloudProvider: 'aws' }
+  const ebsServiceOption = { key: 'ebs', name: 'ebs', cloudProvider: 'aws' }
+  const S3ServiceOption = { key: 's3', name: 's3', cloudProvider: 'aws' }
+  const ec2ServiceOption = { key: 'ec2', name: 'ec2', cloudProvider: 'aws' }
   const elastiCacheServiceOption = {
     key: 'elasticache',
-    name: 'ElastiCache',
+    name: 'elastiCache',
     cloudProvider: 'aws',
   }
-  const rdsServiceOption = { key: 'rds', name: 'RDS', cloudProvider: 'aws' }
+  const rdsServiceOption = { key: 'rds', name: 'rds', cloudProvider: 'aws' }
   const lambdaServiceOption = {
     key: 'lambda',
-    name: 'Lambda',
+    name: 'lambda',
     cloudProvider: 'aws',
   }
   const computeEngineServiceOption = {
     key: 'computeEngine',
-    name: 'Compute Engine',
+    name: 'computeEngine',
     cloudProvider: 'gcp',
   }
   const services = [
@@ -104,29 +121,47 @@ describe('Filters', () => {
     computeEngineServiceOption,
   ]
   const options: FilterResultResponse = { accounts: [], services }
+  const servicesToTest = [
+    { key: 'ebs', name: 'ebs', cloudProvider: 'aws' },
+    { key: 'ec2', name: 'ec2', cloudProvider: 'aws' },
+    { key: 'elasticache', name: 'elastiCache', cloudProvider: 'aws' },
+    { key: 'lambda', name: 'lambda', cloudProvider: 'aws' },
+    { key: 'rds', name: 'rds', cloudProvider: 'aws' },
+    { key: 's3', name: 's3', cloudProvider: 'aws' },
+    { key: 'computeEngine', name: 'computeEngine', cloudProvider: 'gcp' },
+  ]
   const filterOptions: FilterOptions = {
     accounts: [
       { key: 'all', name: 'All Accounts', cloudProvider: '' },
       { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
       { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
     ],
-    services: [
-      { key: 'all', name: 'All Services' },
-      { key: 'ebs', name: 'EBS', cloudProvider: 'aws' },
-      { key: 'ec2', name: 'EC2', cloudProvider: 'aws' },
-      { key: 'elasticache', name: 'ElastiCache', cloudProvider: 'aws' },
-      { key: 'lambda', name: 'Lambda', cloudProvider: 'aws' },
-      { key: 'rds', name: 'RDS', cloudProvider: 'aws' },
-      { key: 's3', name: 'S3', cloudProvider: 'aws' },
-      { key: 'computeEngine', name: 'Compute Engine', cloudProvider: 'gcp' },
-    ],
+    services: [{ key: 'all', name: 'All Services' }, ...servicesToTest],
     cloudProviders: CLOUD_PROVIDER_OPTIONS,
+  }
+
+  const defaultConfig = {
+    options: {
+      services: servicesToTest,
+      accounts: [
+        { key: 'aws account 0', name: 'aws account 0', cloudProvider: 'aws' },
+        { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
+        { key: 'aws account 2', name: 'aws account 2', cloudProvider: 'aws' },
+        { key: 'aws account 3', name: 'aws account 3', cloudProvider: 'aws' },
+        { key: 'aws account 4', name: 'aws account 4', cloudProvider: 'aws' },
+        { key: 'aws account 5', name: 'aws account 5', cloudProvider: 'aws' },
+      ],
+      cloudProviders: [
+        ...alphabetizeDropdownOptions(config().CURRENT_PROVIDERS),
+      ],
+    },
   }
 
   describe('filter', () => {
     it('should filter just ebs', () => {
       const estimationResults = generateEstimations(moment.utc(), 1)
-      const filters = new EmissionsFilters().withDropdownOption(
+
+      const filters = new EmissionsFilters(defaultConfig).withDropdownOption(
         [ebsServiceOption],
         filterOptions,
         DropdownFilterOptions.SERVICES,
@@ -138,8 +173,11 @@ describe('Filters', () => {
     })
 
     it('should ignore services not present in the estimationResults', () => {
-      const estimationResults = generateEstimations(moment.utc(), 1, ['s3'])
-      const filters = new EmissionsFilters().withDropdownOption(
+      const estimationResults = generateEstimations(moment.utc(), 1, [
+        's3',
+        'ebs',
+      ])
+      const filters = new EmissionsFilters(defaultConfig).withDropdownOption(
         [ebsServiceOption, ec2ServiceOption],
         filterOptions,
         DropdownFilterOptions.SERVICES,
@@ -161,7 +199,7 @@ describe('Filters', () => {
 
     it('should filter by timeframe and service', () => {
       const estimationResults = generateEstimations(moment.utc(), 12)
-      const filters = new EmissionsFilters()
+      const filters = new EmissionsFilters(defaultConfig)
         .withTimeFrame(3)
         .withDropdownOption(
           [ebsServiceOption],
@@ -241,33 +279,6 @@ describe('Filters', () => {
       )
 
       expect(newFilters.options.services).toEqual([])
-    })
-
-    it('should unselect one service when all services are already selected', () => {
-      const filters = new EmissionsFilters()
-
-      const newFilters = filters.withDropdownOption(
-        [
-          allServiceOption,
-          S3ServiceOption,
-          ec2ServiceOption,
-          elastiCacheServiceOption,
-          rdsServiceOption,
-          lambdaServiceOption,
-          computeEngineServiceOption,
-        ],
-        filterOptions,
-        DropdownFilterOptions.SERVICES,
-      )
-
-      expect(newFilters.options.services).toEqual([
-        S3ServiceOption,
-        ec2ServiceOption,
-        elastiCacheServiceOption,
-        rdsServiceOption,
-        lambdaServiceOption,
-        computeEngineServiceOption,
-      ])
     })
 
     it('should select an unselected service', () => {
