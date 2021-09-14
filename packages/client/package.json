@@ -119,11 +119,15 @@
   "jest": {
     "coverageThreshold": {
       "global": {
-        "statements": 94,
-        "branches": 90,
-        "functions": 91,
-        "lines": 94
+        "statements": 98,
+        "branches": 91,
+        "functions": 97,
+        "lines": 99
       }
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.ts",
+      "<rootDir>/src/.*/index.ts"
+    ]
   }
 }
