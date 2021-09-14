@@ -65,7 +65,7 @@ describe('Recommendations Table', () => {
         handleRowClick={handleRowClick}
       />,
     )
-    fireEvent.click(screen.getByText('test-acc-1'))
+    fireEvent.click(screen.getByText('test-a'))
     expect(handleRowClick).toHaveBeenCalledTimes(1)
   })
 

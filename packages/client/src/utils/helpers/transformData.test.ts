@@ -8,12 +8,14 @@ import {
   mockDataWithUnknownsAWS,
   mockDataWithHigherPrecision,
   mockDataWithUnknownsGCP,
+  mockRecommendationData,
 } from '../data'
 import {
   sumCO2,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,
+  useFilterDataFromRecommendations,
 } from './transformData'
 import { mockDataWithSmallNumbers } from '../data/mockData'
 
@@ -50,6 +52,21 @@ describe('transformData', () => {
         { cloudProvider: 'aws', key: 'ec2', name: 'ec2' },
       ],
     }
+    expect(result.current).toEqual(expectedResult)
+  })
+
+  it('extracts account names from recommendation data', () => {
+    const { result } = renderHook(() =>
+      useFilterDataFromRecommendations(mockRecommendationData),
+    )
+
+    const expectedResult = {
+      accounts: [
+        { cloudProvider: 'aws', key: testAccountA, name: testAccountA },
+        { cloudProvider: 'aws', key: testAccountB, name: testAccountB },
+      ],
+    }
+
     expect(result.current).toEqual(expectedResult)
   })
 

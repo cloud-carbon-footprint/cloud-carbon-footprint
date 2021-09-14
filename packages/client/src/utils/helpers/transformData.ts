@@ -4,7 +4,11 @@
 
 import { useEffect, useState } from 'react'
 import { pluck, uniq } from 'ramda'
-import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  RecommendationResult,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
 import {
   cloudEstPerDay,
   ChartDataTypes,
@@ -175,9 +179,36 @@ const useFilterDataFromEstimates = (
   return filterResultResponse
 }
 
+const useFilterDataFromRecommendations = (
+  data: RecommendationResult[],
+): FilterResultResponse => {
+  const [filteredData] = useState(data)
+  const [filterResultResponse, setFilterResultResponse] =
+    useState<FilterResultResponse>({ accounts: [] })
+
+  useEffect(() => {
+    const accountNames: DropdownOption[] = []
+
+    data.forEach((recommendation) => {
+      const { cloudProvider, accountName } = recommendation
+      accountNames.push({
+        cloudProvider: cloudProvider?.toLowerCase(),
+        key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+        name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+      })
+    })
+    setFilterResultResponse({
+      accounts: uniq(accountNames),
+    })
+  }, [data, filteredData])
+
+  return filterResultResponse
+}
+
 export {
   sumCO2,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,
+  useFilterDataFromRecommendations,
 }

@@ -3,12 +3,13 @@
  */
 
 import { FunctionComponent, ReactElement } from 'react'
-import FilterBar from '../../../common/FilterBar'
 import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
-} from '../../../common/FilterBar/utils/DropdownConstants'
+} from 'common/FilterBar/utils/DropdownConstants'
+import FilterBar from 'common/FilterBar'
+import AccountFilter from 'common/AccountFilter'
 
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
@@ -29,13 +30,15 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     return { accounts: accountOptions }
   }
 
+  const filterComponents = [AccountFilter]
+
   const filterConfig = {
     filters,
     setFilters,
     filterOptions: getFilterOptions(),
   }
 
-  return <FilterBar components={[]} config={filterConfig} />
+  return <FilterBar config={filterConfig} components={filterComponents} />
 }
 
 export default RecommendationsFilterBar

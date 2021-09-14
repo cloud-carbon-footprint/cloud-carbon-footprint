@@ -265,8 +265,8 @@ const mockDataWithSmallNumbers: EstimationResult[] = [
 const mockRecommendationData: RecommendationResult[] = [
   {
     cloudProvider: 'AWS',
-    accountId: 'test-acc-1',
-    accountName: 'test-acc-1',
+    accountId: testAccountA,
+    accountName: testAccountA,
     region: 'us-west-1',
     recommendationType: 'Modify',
     recommendationDetail: 'Test recommendation detail 1',
@@ -278,8 +278,8 @@ const mockRecommendationData: RecommendationResult[] = [
   },
   {
     cloudProvider: 'AWS',
-    accountId: 'test-acc-1',
-    accountName: 'test-acc-2',
+    accountId: testAccountB,
+    accountName: testAccountB,
     region: 'us-west-2',
     recommendationType: 'Terminate',
     recommendationDetail: 'Test recommendation detail 2',

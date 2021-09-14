@@ -38,7 +38,7 @@ describe('Recommendations Page', () => {
   it('retrieves data from the remote Recommendations hook', () => {
     render(<RecommendationsPage />)
 
-    expect(mockedUseRecommendationsService).toHaveBeenCalledTimes(1)
+    expect(mockedUseRecommendationsService).toHaveBeenCalled()
   })
 
   it('should show loading icon if data has not been returned', () => {
@@ -58,12 +58,18 @@ describe('Recommendations Page', () => {
 
     expect(queryByTestId('sideBarTitle')).toBeFalsy()
 
-    fireEvent.click(screen.getByText('test-acc-1'))
+    fireEvent.click(screen.getByText('test-a'))
     const recommendationDetail = getByText(
       mockRecommendationData[0].recommendationDetail,
     )
 
     expect(queryByTestId('sideBarTitle')).toBeInTheDocument()
     expect(recommendationDetail).toBeInTheDocument()
+  })
+
+  it('should render a filter bar on the page', () => {
+    const { getByTestId } = render(<RecommendationsPage />)
+
+    expect(getByTestId('filterBar')).toBeInTheDocument()
   })
 })
