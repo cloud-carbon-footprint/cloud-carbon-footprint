@@ -9,13 +9,16 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      statements: 97,
+      statements: 99,
       branches: 90,
-      functions: 91,
-      lines: 97,
+      functions: 100,
+      lines: 99,
     },
   },
-  coveragePathIgnorePatterns: ['<rootDir>/src/CliPrompts.ts'],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/src/CliPrompts.ts',
+    '<rootDir>/src/__tests__/fixtures',
+  ],
   testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],
   modulePathIgnorePatterns: ['index.ts'],
 }
