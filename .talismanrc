@@ -166,7 +166,11 @@ fileignoreconfig:
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.tsx
   checksum: d0798970c48d47cd8db40478bcd8362f9e30123571edd33addfd6e2ebd1b5af2
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters.test.ts
-  checksum: 7025d4f29778828b48c26650f3da8e05984094282ceebaf02c15cc665a062f0b
+  checksum: e73677683e74c534d612fbfc2728dfc5a79a2d831e64db73a9ec4776ac5fabc9
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/AccountChooser.ts
+  checksum: 7c6463ba91f399848f5b4021a1b6c2d14df1e3168e8e6e6f4280bfe22ac18138
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/CloudProviderChooser.ts
+  checksum: 5751e9174cfa6d4d685d40b8d74cf9451da991a5c5905bc99fb34d358921b0a4
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
   checksum: e2e869e439235c2ba11e55e35766dc50f24565972db2cc7d30d6fa466c30b865
 - filename: packages/client/src/react-app-env.d.ts

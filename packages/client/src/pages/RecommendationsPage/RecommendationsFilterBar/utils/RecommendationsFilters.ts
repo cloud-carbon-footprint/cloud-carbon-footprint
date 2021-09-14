@@ -11,19 +11,20 @@ import {
   FiltersConfig,
   unknownOptionTypes,
 } from 'Types'
-import {
-  ALL_ACCOUNTS_DROPDOWN_OPTION,
-  ALL_DROPDOWN_FILTER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
+import { ALL_DROPDOWN_FILTER_OPTIONS } from 'common/FilterBar/utils/DropdownConstants'
 import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
 import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { AccountChooser } from './options/AccountChooser'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import { CloudProviderChooser } from './options/CloudProviderChooser'
 
 const defaultConfig: FiltersConfig = {
   //TODO: add chooser for cloud providers, recommendation types and regions
   options: {
-    [DropdownFilterOptions.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
+    [DropdownFilterOptions.ACCOUNTS]: [ALL_DROPDOWN_FILTER_OPTIONS.accounts],
+    [DropdownFilterOptions.CLOUD_PROVIDERS]: [
+      ALL_DROPDOWN_FILTER_OPTIONS.cloudProviders,
+    ],
   },
 }
 
@@ -46,10 +47,16 @@ export class RecommendationsFilters extends Filters {
     oldSelections: DropdownSelections,
     filterOptions: FilterOptions,
   ): OptionChooser {
-    //TODO: implement for cloud providers, recommendation types and regions
+    //TODO: implement for recommendation types and regions
     switch (filterType) {
       case DropdownFilterOptions.ACCOUNTS:
         return new AccountChooser(selections, oldSelections, filterOptions)
+      case DropdownFilterOptions.CLOUD_PROVIDERS:
+        return new CloudProviderChooser(
+          selections,
+          oldSelections,
+          filterOptions,
+        )
     }
   }
 

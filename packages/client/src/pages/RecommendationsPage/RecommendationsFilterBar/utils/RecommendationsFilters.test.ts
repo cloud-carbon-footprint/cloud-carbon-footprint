@@ -10,12 +10,68 @@ import {
 
 import { DropdownFilterOptions, FilterOptions } from '../../../../Types'
 import { AccountChooser } from './options/AccountChooser'
+import { CloudProviderChooser } from './options/CloudProviderChooser'
 
 describe('Recommendations Filters', () => {
+  const defaultConfig = {
+    options: {
+      accounts: [
+        { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
+        { key: 'gcp account 1', name: 'gcp account 1', cloudProvider: 'gcp' },
+      ],
+      cloudProviders: [
+        { key: 'aws', name: 'AWS' },
+        { key: 'gcp', name: 'GCP' },
+      ],
+    },
+  }
+
+  const rawResults = [
+    {
+      cloudProvider: 'AWS',
+      accountId: 'aws account 1',
+      accountName: 'aws account 1',
+      region: 'ap-east-1',
+      recommendationType: 'Modify',
+      instanceName: 'example-instance',
+      recommendationDetail: 'Modify instance: example-instance.',
+      resourceId: 'i-0f12345678912b12I',
+      kilowattHourSavings: 4.978,
+      costSavings: 43.506,
+      co2eSavings: 0.984,
+    },
+    {
+      cloudProvider: 'GCP',
+      accountId: 'gcp account 1',
+      accountName: 'gcp account 1',
+      region: 'ap-northeast-2',
+      recommendationType: 'CHANGE_MACHINE_TYPE',
+      instanceName: 'example-instance-2',
+      recommendationDetail: 'Modify instance: example-instance-2.',
+      resourceId: 'i-0f12345678912b12I',
+      kilowattHourSavings: 8.419,
+      costSavings: 5.667,
+      co2eSavings: 0.288,
+    },
+  ]
+
+  const filterOptions: FilterOptions = {
+    accounts: [
+      { key: 'all', name: 'All Accounts', cloudProvider: '' },
+      { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
+      { key: 'gcp account 1', name: 'gcp account 1', cloudProvider: 'gcp' },
+    ],
+    cloudProviders: CLOUD_PROVIDER_OPTIONS,
+  }
+
   const filteredResultResponse = {
     accounts: [
       { key: '321321321', name: 'testaccount0', cloudProvider: 'aws' },
       { key: '123123123', name: 'testaccount1', cloudProvider: 'gcp' },
+    ],
+    cloudProviders: [
+      { key: 'aws', name: 'AWS' },
+      { key: 'gcp', name: 'GCP' },
     ],
   }
 
@@ -24,6 +80,10 @@ describe('Recommendations Filters', () => {
       accounts: [
         ALL_DROPDOWN_FILTER_OPTIONS.accounts,
         ...filteredResultResponse.accounts,
+      ],
+      cloudProviders: [
+        ALL_DROPDOWN_FILTER_OPTIONS.cloudProviders,
+        ...filteredResultResponse.cloudProviders,
       ],
     },
   }
@@ -76,53 +136,6 @@ describe('Recommendations Filters', () => {
   })
 
   it('should filter recommendations by accounts', () => {
-    const rawResults = [
-      {
-        cloudProvider: 'AWS',
-        accountId: 'aws account 1',
-        accountName: 'aws account 1',
-        region: 'ap-east-1',
-        recommendationType: 'Modify',
-        instanceName: 'example-instance',
-        recommendationDetail: 'Modify instance: example-instance.',
-        resourceId: 'i-0f12345678912b12I',
-        kilowattHourSavings: 4.978,
-        costSavings: 43.506,
-        co2eSavings: 0.984,
-      },
-      {
-        cloudProvider: 'AWS',
-        accountId: 'aws account 2',
-        accountName: 'aws account 2',
-        region: 'ap-northeast-2',
-        recommendationType: 'Modify',
-        instanceName: 'example-instance-2',
-        recommendationDetail: 'Modify instance: example-instance-2.',
-        resourceId: 'i-0f12345678912b12I',
-        kilowattHourSavings: 8.419,
-        costSavings: 5.667,
-        co2eSavings: 0.288,
-      },
-    ]
-
-    const defaultConfig = {
-      options: {
-        accounts: [
-          { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
-          { key: 'aws account 2', name: 'aws account 2', cloudProvider: 'aws' },
-        ],
-      },
-    }
-
-    const filterOptions: FilterOptions = {
-      accounts: [
-        { key: 'all', name: 'All Accounts', cloudProvider: '' },
-        { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
-        { key: 'aws account 2', name: 'aws account 2', cloudProvider: 'aws' },
-      ],
-      cloudProviders: CLOUD_PROVIDER_OPTIONS,
-    }
-
     const accountOption = {
       key: 'aws account 1',
       name: 'aws account 1',
@@ -135,6 +148,56 @@ describe('Recommendations Filters', () => {
       [accountOption],
       filterOptions,
       DropdownFilterOptions.ACCOUNTS,
+    )
+
+    const expectedAccountFiltered = [rawResults[0]]
+
+    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+  })
+
+  it('should create cloud provider chooser', () => {
+    const filterType = DropdownFilterOptions.CLOUD_PROVIDERS
+    const selections = [filteredResultResponse.cloudProviders[0]]
+    const oldSelections = {}
+    const filterOptions = {
+      cloudProviders: [
+        ALL_DROPDOWN_FILTER_OPTIONS.cloudProviders,
+        ...filteredResultResponse.cloudProviders,
+      ],
+    }
+
+    const testFilter = new RecommendationsFilters()
+
+    const expectedChooser = new CloudProviderChooser(
+      selections,
+      oldSelections,
+      filterOptions,
+    )
+
+    expect(
+      JSON.stringify(
+        testFilter.createOptionChooser(
+          filterType,
+          selections,
+          oldSelections,
+          filterOptions,
+        ),
+      ),
+    ).toEqual(JSON.stringify(expectedChooser))
+  })
+
+  it('should filter recommendations by cloud providers', () => {
+    const cloudProviderOption = {
+      key: 'aws',
+      name: 'AWS',
+    }
+
+    const filters = new RecommendationsFilters(
+      defaultConfig,
+    ).withDropdownOption(
+      [cloudProviderOption],
+      filterOptions,
+      DropdownFilterOptions.CLOUD_PROVIDERS,
     )
 
     const expectedAccountFiltered = [rawResults[0]]
