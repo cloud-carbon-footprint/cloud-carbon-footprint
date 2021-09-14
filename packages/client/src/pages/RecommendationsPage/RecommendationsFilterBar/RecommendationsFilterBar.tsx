@@ -7,9 +7,11 @@ import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
+  CLOUD_PROVIDER_OPTIONS,
 } from 'common/FilterBar/utils/DropdownConstants'
 import FilterBar from 'common/FilterBar'
 import AccountFilter from 'common/AccountFilter'
+import CloudProviderFilter from 'common/CloudProviderFilter'
 
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
@@ -27,10 +29,10 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
       ...allAccountDropdownOptions,
     ]
 
-    return { accounts: accountOptions }
+    return { accounts: accountOptions, cloudProviders: CLOUD_PROVIDER_OPTIONS }
   }
 
-  const filterComponents = [AccountFilter]
+  const filterComponents = [CloudProviderFilter, AccountFilter]
 
   const filterConfig = {
     filters,
