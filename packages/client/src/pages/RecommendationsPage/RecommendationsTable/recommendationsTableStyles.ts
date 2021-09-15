@@ -20,8 +20,15 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  toggleAndDateRangeContainers: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   toggleContainer: {
     alignSelf: 'flex-end',
+  },
+  dateRangeContainer: {
+    display: 'flex',
   },
 }))
 

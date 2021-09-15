@@ -17,7 +17,9 @@ import {
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import CarbonCard from 'layout/CarbonCard'
 import useStyles from './recommendationsTableStyles'
-import Toggle from '../../../common/Toggle'
+import Toggle from 'common/Toggle'
+import DateRange from 'common/DateRange'
+import Tooltip from '../../../common/Tooltip'
 
 type RecommendationsTableProps = {
   recommendations: RecommendationResult[]
@@ -91,11 +93,20 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     })
   }
 
+  const tooltipMessage =
+    'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
+
   return (
     <CarbonCard title="Recommendations">
       <div className={classes.tableContainer}>
-        <div className={classes.toggleContainer}>
-          <Toggle label={'CO2e Units'} handleToggle={setUseKilograms} />
+        <div className={classes.toggleAndDateRangeContainers}>
+          <div className={classes.dateRangeContainer}>
+            <DateRange lookBackPeriodDays={13} />
+            <Tooltip message={tooltipMessage} />
+          </div>
+          <div className={classes.toggleContainer}>
+            <Toggle label={'CO2e Units'} handleToggle={setUseKilograms} />
+          </div>
         </div>
         <DataGrid
           autoHeight

@@ -3,7 +3,9 @@
  */
 
 import { FunctionComponent, ReactElement } from 'react'
-import { Button, Tooltip as MaterialTooltip } from '@material-ui/core'
+import { IconButton, Tooltip as MaterialTooltip } from '@material-ui/core'
+import HelpIcon from '@material-ui/icons/Help'
+import useStyles from './tooltipStyles'
 
 type TooltipProps = {
   message: string
@@ -12,9 +14,16 @@ type TooltipProps = {
 const Tooltip: FunctionComponent<TooltipProps> = ({
   message,
 }): ReactElement => {
+  const classes = useStyles()
   return (
-    <MaterialTooltip title={message} data-testid="tooltip">
-      <Button>?</Button>
+    <MaterialTooltip
+      title={message}
+      data-testid="tooltip"
+      className={classes.tooltip}
+    >
+      <IconButton className={classes.helpIcon}>
+        <HelpIcon />
+      </IconButton>
     </MaterialTooltip>
   )
 }
