@@ -25,16 +25,8 @@ export class ServiceChooser extends OptionChooser {
     this.choosers = {
       [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
       [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
-      [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
+      [DropdownFilterOptions.SERVICES]: () => this.chooseCurrentFilterOption(),
     }
-  }
-
-  protected chooseProviders(): Set<DropdownOption> {
-    const desiredSelections: Set<DropdownOption> = new Set()
-    this.getCloudProvidersFromServices(this.selections).forEach(
-      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
-    )
-    return desiredSelections
   }
 
   protected chooseAccounts(): Set<DropdownOption> {
@@ -86,9 +78,5 @@ export class ServiceChooser extends OptionChooser {
       }
     }
     return cloudProviderSelections
-  }
-
-  protected chooseServices(): Set<DropdownOption> {
-    return new Set(this.selections)
   }
 }

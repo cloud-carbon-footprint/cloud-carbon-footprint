@@ -4,7 +4,11 @@
 
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import { DropdownSelections } from './FiltersUtil'
-import { ALL_DROPDOWN_FILTER_OPTIONS, ALL_KEY } from './DropdownConstants'
+import {
+  ALL_DROPDOWN_FILTER_OPTIONS,
+  ALL_KEY,
+  CLOUD_PROVIDER_OPTIONS,
+} from './DropdownConstants'
 
 export abstract class OptionChooser {
   protected choosers: {
@@ -57,6 +61,50 @@ export abstract class OptionChooser {
         ]),
       )
     }
+  }
+
+  chooseCurrentFilterOption(): Set<DropdownOption> {
+    return new Set(this.selections)
+  }
+
+  chooseDropdownFilterOption(filterOption: string): Set<DropdownOption> {
+    const desiredSelections: Set<DropdownOption> = new Set()
+    this.selections.forEach((selection) => {
+      if (selection.key !== ALL_KEY) {
+        this.filterOptions[filterOption].forEach((option) => {
+          option.cloudProvider === (selection.cloudProvider || selection.key) &&
+            desiredSelections.add(option)
+        })
+      }
+    })
+    return desiredSelections
+  }
+
+  chooseProviders(): Set<DropdownOption> {
+    const desiredSelections: Set<DropdownOption> = new Set()
+    this.getCloudProvidersFromSelections(this.selections).forEach(
+      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
+    )
+    return desiredSelections
+  }
+
+  getCloudProvidersFromSelections(
+    selections: DropdownOption[],
+  ): Set<DropdownOption> {
+    const cloudProviderSelections: Set<DropdownOption> =
+      new Set<DropdownOption>()
+    selections.forEach((selection) => {
+      if (selection.key !== ALL_KEY) {
+        cloudProviderSelections.add(
+          <DropdownOption>(
+            CLOUD_PROVIDER_OPTIONS.find(
+              (option) => option.key === selection.cloudProvider,
+            )
+          ),
+        )
+      }
+    })
+    return cloudProviderSelections
   }
 
   private addAllDropDownOptions(

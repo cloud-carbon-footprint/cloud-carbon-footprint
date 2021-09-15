@@ -291,6 +291,22 @@ const mockRecommendationData: RecommendationResult[] = [
   },
 ]
 
+const mockRecommendationDataWithUnknowns: RecommendationResult[] = [
+  {
+    cloudProvider: 'AWS',
+    accountId: testAccountA,
+    accountName: null,
+    region: null,
+    recommendationType: null,
+    recommendationDetail: 'Test recommendation detail 1',
+    costSavings: 200,
+    co2eSavings: 2.539,
+    kilowattHourSavings: 3.2,
+    instanceName: 'test-instance',
+    resourceId: 'test-resource-id',
+  },
+]
+
 export {
   mockData,
   mockDataWithUnknownsAWS,
@@ -298,4 +314,5 @@ export {
   mockDataWithHigherPrecision,
   mockDataWithSmallNumbers,
   mockRecommendationData,
+  mockRecommendationDataWithUnknowns,
 }

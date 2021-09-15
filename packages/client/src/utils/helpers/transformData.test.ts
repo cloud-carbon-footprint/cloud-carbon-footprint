@@ -9,6 +9,7 @@ import {
   mockDataWithHigherPrecision,
   mockDataWithUnknownsGCP,
   mockRecommendationData,
+  mockRecommendationDataWithUnknowns,
 } from '../data'
 import {
   sumCO2,
@@ -18,6 +19,7 @@ import {
   useFilterDataFromRecommendations,
 } from './transformData'
 import { mockDataWithSmallNumbers } from '../data/mockData'
+import { UnknownTypes } from '../../Types'
 
 const testAccountA = 'test-a'
 const testAccountB = 'test-b'
@@ -87,6 +89,38 @@ describe('transformData', () => {
           cloudProvider: 'aws',
           key: 'Terminate',
           name: 'Terminate',
+        },
+      ],
+    }
+
+    expect(result.current).toEqual(expectedResult)
+  })
+
+  it('extracts account names, regions, and recommendation types from recommendation data when unknown', () => {
+    const { result } = renderHook(() =>
+      useFilterDataFromRecommendations(mockRecommendationDataWithUnknowns),
+    )
+
+    const expectedResult = {
+      accounts: [
+        {
+          cloudProvider: 'aws',
+          key: UnknownTypes.UNKNOWN_ACCOUNT,
+          name: UnknownTypes.UNKNOWN_ACCOUNT,
+        },
+      ],
+      regions: [
+        {
+          cloudProvider: 'aws',
+          key: UnknownTypes.UNKNOWN_REGION,
+          name: UnknownTypes.UNKNOWN_REGION,
+        },
+      ],
+      recommendationTypes: [
+        {
+          cloudProvider: 'aws',
+          key: UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE,
+          name: UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE,
         },
       ],
     }
