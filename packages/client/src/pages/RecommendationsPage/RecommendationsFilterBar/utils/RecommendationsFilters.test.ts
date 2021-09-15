@@ -8,10 +8,11 @@ import {
   CLOUD_PROVIDER_OPTIONS,
 } from 'common/FilterBar/utils/DropdownConstants'
 
-import { DropdownFilterOptions, FilterOptions } from '../../../../Types'
+import { DropdownFilterOptions, FilterOptions } from 'Types'
 import { AccountChooser } from './options/AccountChooser'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { RegionChooser } from './options/RegionChooser'
+import { RecommendationTypeChooser } from './options/RecommendationTypeChooser'
 
 describe('Recommendations Filters', () => {
   const defaultConfig = {
@@ -19,6 +20,7 @@ describe('Recommendations Filters', () => {
       accounts: [
         { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
         { key: 'gcp account 1', name: 'gcp account 1', cloudProvider: 'gcp' },
+        { key: 'gcp account 2', name: 'gcp account 2', cloudProvider: 'gcp' },
       ],
       cloudProviders: [
         { key: 'aws', name: 'AWS' },
@@ -34,6 +36,18 @@ describe('Recommendations Filters', () => {
           key: 'gcp region 1',
           name: 'gcp region 1',
           cloudProvider: 'gcp',
+        },
+      ],
+      recommendationTypes: [
+        {
+          key: 'delete-image',
+          name: 'DELETE_IMAGE',
+          cloudProvider: 'gcp',
+        },
+        {
+          key: 'modify',
+          name: 'Modify',
+          cloudProvider: 'aws',
         },
       ],
     },
@@ -58,13 +72,26 @@ describe('Recommendations Filters', () => {
       accountId: 'gcp account 1',
       accountName: 'gcp account 1',
       region: 'gcp region 1',
-      recommendationType: 'CHANGE_MACHINE_TYPE',
-      instanceName: 'example-instance-2',
-      recommendationDetail: 'Modify instance: example-instance-2.',
+      recommendationType: 'DELETE_IMAGE',
+      instanceName: 'example-image-1',
+      recommendationDetail: 'Delete image: example-image-1.',
       resourceId: 'i-0f12345678912b12I',
       kilowattHourSavings: 8.419,
       costSavings: 5.667,
       co2eSavings: 0.288,
+    },
+    {
+      cloudProvider: 'GCP',
+      accountId: 'gcp account 2',
+      accountName: 'gcp account 2',
+      region: 'gcp region 1',
+      recommendationType: 'SNAPSHOT_AND_DELETE_DISK',
+      instanceName: 'example-image-2',
+      recommendationDetail: 'Delete instance: example-image-2.',
+      resourceId: 'i-0f12345678912b12I',
+      kilowattHourSavings: 8.828,
+      costSavings: 5.627,
+      co2eSavings: 0.372,
     },
   ]
 
@@ -73,6 +100,7 @@ describe('Recommendations Filters', () => {
       { key: 'all', name: 'All Accounts', cloudProvider: '' },
       { key: 'aws account 1', name: 'aws account 1', cloudProvider: 'aws' },
       { key: 'gcp account 1', name: 'gcp account 1', cloudProvider: 'gcp' },
+      { key: 'gcp account 2', name: 'gcp account 2', cloudProvider: 'gcp' },
     ],
     cloudProviders: CLOUD_PROVIDER_OPTIONS,
     regions: [
@@ -86,6 +114,19 @@ describe('Recommendations Filters', () => {
         key: 'gcp region 1',
         name: 'gcp region 1',
         cloudProvider: 'gcp',
+      },
+    ],
+    recommendationTypes: [
+      { key: 'all', name: 'All Recommendation Types', cloudProvider: '' },
+      {
+        key: 'delete-image',
+        name: 'DELETE_IMAGE',
+        cloudProvider: 'gcp',
+      },
+      {
+        key: 'modify',
+        name: 'Modify',
+        cloudProvider: 'aws',
       },
     ],
   }
@@ -111,6 +152,18 @@ describe('Recommendations Filters', () => {
         cloudProvider: 'gcp',
       },
     ],
+    recommendationTypes: [
+      {
+        key: 'delete-image',
+        name: 'DELETE_IMAGE',
+        cloudProvider: 'gcp',
+      },
+      {
+        key: 'modify',
+        name: 'Modify',
+        cloudProvider: 'aws',
+      },
+    ],
   }
 
   const expectedConfig = {
@@ -126,6 +179,10 @@ describe('Recommendations Filters', () => {
       regions: [
         ALL_DROPDOWN_FILTER_OPTIONS.regions,
         ...filteredResultResponse.regions,
+      ],
+      recommendationTypes: [
+        ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+        ...filteredResultResponse.recommendationTypes,
       ],
     },
   }
@@ -294,6 +351,57 @@ describe('Recommendations Filters', () => {
     )
 
     const expectedAccountFiltered = [rawResults[0]]
+
+    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+  })
+
+  it('should create RecommendationType chooser', () => {
+    const filterType = DropdownFilterOptions.RECOMMENDATION_TYPES
+    const selections = [filteredResultResponse.recommendationTypes[0]]
+    const oldSelections = {}
+    const filterOptions = {
+      recommendationTypes: [
+        ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+        ...filteredResultResponse.recommendationTypes,
+      ],
+    }
+
+    const testFilter = new RecommendationsFilters()
+
+    const expectedChooser = new RecommendationTypeChooser(
+      selections,
+      oldSelections,
+      filterOptions,
+    )
+
+    expect(
+      JSON.stringify(
+        testFilter.createOptionChooser(
+          filterType,
+          selections,
+          oldSelections,
+          filterOptions,
+        ),
+      ),
+    ).toEqual(JSON.stringify(expectedChooser))
+  })
+
+  it('should filter recommendations by recommendation type', () => {
+    const recommendationTypeOption = {
+      key: 'delete-image',
+      name: 'DELETE_IMAGE',
+      cloudProvider: 'gcp',
+    }
+
+    const filters = new RecommendationsFilters(
+      defaultConfig,
+    ).withDropdownOption(
+      [recommendationTypeOption],
+      filterOptions,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+    )
+
+    const expectedAccountFiltered = [rawResults[1]]
 
     expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
   })

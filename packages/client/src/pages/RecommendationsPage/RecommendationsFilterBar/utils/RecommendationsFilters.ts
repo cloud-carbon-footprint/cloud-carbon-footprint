@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { Filters } from 'common/FilterBar/utils/Filters'
 import {
   DropdownFilterOptions,
@@ -15,18 +16,20 @@ import { ALL_DROPDOWN_FILTER_OPTIONS } from 'common/FilterBar/utils/DropdownCons
 import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
 import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { AccountChooser } from './options/AccountChooser'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { RegionChooser } from './options/RegionChooser'
+import { RecommendationTypeChooser } from './options/RecommendationTypeChooser'
 
 const defaultConfig: FiltersConfig = {
-  //TODO: add chooser for cloud providers, recommendation types and regions
   options: {
     [DropdownFilterOptions.ACCOUNTS]: [ALL_DROPDOWN_FILTER_OPTIONS.accounts],
     [DropdownFilterOptions.CLOUD_PROVIDERS]: [
       ALL_DROPDOWN_FILTER_OPTIONS.cloudProviders,
     ],
     [DropdownFilterOptions.REGIONS]: [ALL_DROPDOWN_FILTER_OPTIONS.regions],
+    [DropdownFilterOptions.RECOMMENDATION_TYPES]: [
+      ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+    ],
   },
 }
 
@@ -49,7 +52,6 @@ export class RecommendationsFilters extends Filters {
     oldSelections: DropdownSelections,
     filterOptions: FilterOptions,
   ): OptionChooser {
-    //TODO: implement for recommendation types and regions
     switch (filterType) {
       case DropdownFilterOptions.ACCOUNTS:
         return new AccountChooser(selections, oldSelections, filterOptions)
@@ -61,19 +63,29 @@ export class RecommendationsFilters extends Filters {
         )
       case DropdownFilterOptions.REGIONS:
         return new RegionChooser(selections, oldSelections, filterOptions)
+      case DropdownFilterOptions.RECOMMENDATION_TYPES:
+        return new RecommendationTypeChooser(
+          selections,
+          oldSelections,
+          filterOptions,
+        )
     }
   }
 
   filter(rawResults: RecommendationResult[]): RecommendationResult[] {
-    //TODO: implement for cloud providers, recommendation types and regions
     const resultsFilteredByAccount = this.getResultsFilteredBy(
       DropdownFilterOptions.ACCOUNTS,
       rawResults,
     )
 
+    const resultsFilteredByRecommendationType = this.getResultsFilteredBy(
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+      resultsFilteredByAccount,
+    )
+
     return this.getResultsFilteredBy(
       DropdownFilterOptions.REGIONS,
-      resultsFilteredByAccount,
+      resultsFilteredByRecommendationType,
     )
   }
 

@@ -166,15 +166,17 @@ fileignoreconfig:
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/utils/options/ServiceChooser.ts
   checksum: 6c37255b9a268e94354f0bba0150268f2f23fb7d95866d2259fc3df0dd40c388
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/RecommendationsFilterBar.tsx
-  checksum: a2b8bc138715f19e50de33eb185bc44a6c6450a3a10e8c1ffc71a29223745b82
+  checksum: 2b82491331fdf97d40600b5bc0ffae48fafc0b9cde278d529f2d37d8e9393007
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters.test.ts
-  checksum: 965c1ba2f14b804d169db099b0f897a0d79fb04f3b3841724bc558bffe0a5848
+  checksum: 84bbf5b703296ad639893936b325d099930e737efa8074a203fd8e9f676bebd2
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/AccountChooser.ts
-  checksum: 1ac441baf1e8ccc60f491151b721cf722ce507b998038ef2fa55cf3e0836d824
+  checksum: d855e1996bab653563d051378916f01f0be4ccf3db37b4862847854d013f1b0a
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/CloudProviderChooser.ts
-  checksum: 1523fbbacdfe644753f1e17b9aea195b7726c41304a23a400e9043d558608740
+  checksum: b010201a7582ae1e95c52e457bbe8a476e1cb5c1a0ab42c1057f4517493fd381
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/RecommendationTypeChooser.ts
+  checksum: c01e24418a7aa64dc973ab3cf363c854d61607929895c308f7d85ed80f30730f
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/RegionChooser.ts
-  checksum: 1edfde872ae4f4727ad76a7fc36886f5858df1c525af0a036d453945bf742c53
+  checksum: 91ca68321f34f8c2f5297c15ad09221351df27e31575d06052c5982396e06d21
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
   checksum: e2e869e439235c2ba11e55e35766dc50f24565972db2cc7d30d6fa466c30b865
 - filename: packages/client/src/react-app-env.d.ts
@@ -182,9 +184,9 @@ fileignoreconfig:
 - filename: packages/client/src/utils/data/generateEstimations.ts
   checksum: c40c051a28ed21afeef16a0c835403d6a72fe565bf95ce37ab72e3757243031d
 - filename: packages/client/src/utils/helpers/transformData.test.ts
-  checksum: c36ce092ff76047155997d3b3d480a9535c0d3bce132bf47bc03fa68aa071b5a
+  checksum: 14d1f2ad6ce5d73864f1b4a90e4332923a3a6deb864c6b0bcd9a7040e203b578
 - filename: packages/client/src/utils/helpers/transformData.ts
-  checksum: 5c1293e758a99f31ba42d0b7b9443904e0d66775c0a9332eab6bb8af03f5e6e4
+  checksum: f08fba5bdfc311641a87b26f4d65f21f9d80f889c54b00baa2275634f3994a6a
 - filename: packages/client/stub-server/co2estimations.json
   checksum: 6c6198c36a6276699d141dd125eb8d8f247f7dc41cc27078332791d50d9a1074
 - filename: packages/client/stub-server/footprint.json

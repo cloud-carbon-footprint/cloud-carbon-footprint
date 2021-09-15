@@ -28,6 +28,8 @@ export class CloudProviderChooser extends OptionChooser {
       [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
       [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
       [DropdownFilterOptions.REGIONS]: () => this.chooseRegions(),
+      [DropdownFilterOptions.RECOMMENDATION_TYPES]: () =>
+        this.chooseRecommendationTypes(),
     }
   }
 
@@ -56,6 +58,21 @@ export class CloudProviderChooser extends OptionChooser {
           regionOption.cloudProvider === selection.key &&
             desiredSelections.add(regionOption)
         })
+      }
+    })
+    return desiredSelections
+  }
+
+  protected chooseRecommendationTypes(): Set<DropdownOption> {
+    const desiredSelections: Set<DropdownOption> = new Set()
+    this.selections.forEach((selection) => {
+      if (selection.key !== ALL_KEY) {
+        this.filterOptions.recommendationTypes.forEach(
+          (recommendationTypes) => {
+            recommendationTypes.cloudProvider === selection.key &&
+              desiredSelections.add(recommendationTypes)
+          },
+        )
       }
     })
     return desiredSelections

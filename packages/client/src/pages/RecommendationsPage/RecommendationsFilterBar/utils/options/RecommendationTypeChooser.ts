@@ -10,15 +10,15 @@ import {
   CLOUD_PROVIDER_OPTIONS,
 } from '../../../../../common/FilterBar/utils/DropdownConstants'
 
-export class AccountChooser extends OptionChooser {
+export class RecommendationTypeChooser extends OptionChooser {
   constructor(
     selections: DropdownOption[],
     oldSelections: DropdownSelections,
     filterOptions: FilterOptions,
   ) {
     super(
-      DropdownFilterOptions.ACCOUNTS,
-      filterOptions.accounts,
+      DropdownFilterOptions.RECOMMENDATION_TYPES,
+      filterOptions.recommendationTypes,
       selections,
       oldSelections,
       filterOptions,
@@ -33,16 +33,8 @@ export class AccountChooser extends OptionChooser {
     }
   }
 
-  protected chooseAccounts(): Set<DropdownOption> {
+  protected chooseRecommendationTypes(): Set<DropdownOption> {
     return new Set(this.selections)
-  }
-
-  protected chooseProviders(): Set<DropdownOption> {
-    const desiredSelections: Set<DropdownOption> = new Set()
-    getCloudProvidersFromAccounts(this.selections).forEach(
-      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
-    )
-    return desiredSelections
   }
 
   protected chooseRegions(): Set<DropdownOption> {
@@ -58,27 +50,33 @@ export class AccountChooser extends OptionChooser {
     return desiredSelections
   }
 
-  protected chooseRecommendationTypes(): Set<DropdownOption> {
+  protected chooseAccounts(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
-        this.filterOptions.recommendationTypes.forEach(
-          (recommendationTypes) => {
-            recommendationTypes.cloudProvider === selection.cloudProvider &&
-              desiredSelections.add(recommendationTypes)
-          },
-        )
+        this.filterOptions.accounts.forEach((accountOption) => {
+          accountOption.cloudProvider === selection.cloudProvider &&
+            desiredSelections.add(accountOption)
+        })
       }
     })
     return desiredSelections
   }
+
+  protected chooseProviders(): Set<DropdownOption> {
+    const desiredSelections: Set<DropdownOption> = new Set()
+    getCloudProvidersFromRecommendationTypes(this.selections).forEach(
+      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
+    )
+    return desiredSelections
+  }
 }
 
-function getCloudProvidersFromAccounts(
-  accountSelections: DropdownOption[],
+function getCloudProvidersFromRecommendationTypes(
+  recommendationTypeSelections: DropdownOption[],
 ): Set<DropdownOption> {
   const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
-  accountSelections.forEach((selection) => {
+  recommendationTypeSelections.forEach((selection) => {
     if (selection.key !== ALL_KEY) {
       cloudProviderSelections.add(
         <DropdownOption>(

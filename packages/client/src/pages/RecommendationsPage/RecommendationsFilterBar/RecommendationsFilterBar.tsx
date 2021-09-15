@@ -6,6 +6,7 @@ import { FunctionComponent, ReactElement } from 'react'
 import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
+  ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION,
   ALL_REGIONS_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
@@ -13,7 +14,8 @@ import {
 import FilterBar from 'common/FilterBar'
 import AccountFilter from 'common/AccountFilter'
 import CloudProviderFilter from 'common/CloudProviderFilter'
-import RegionFilter from 'common/RegionFilter'
+import RegionFilter from './Filters/RegionFilter'
+import RecommendationTypeFilter from './Filters/RecommendationType'
 
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
@@ -41,14 +43,30 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
       ...allRegionDropdownOptions,
     ]
 
+    const allRecommendationTypeOptions = buildAndOrderDropdownOptions(
+      filteredDataResults?.recommendationTypes,
+      [{ cloudProvider: '', key: 'string', name: 'string' }],
+    )
+
+    const recommendationTypeOptions: DropdownOption[] = [
+      ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION,
+      ...allRecommendationTypeOptions,
+    ]
+
     return {
       accounts: accountOptions,
       cloudProviders: CLOUD_PROVIDER_OPTIONS,
       regions: regionOptions,
+      recommendationTypes: recommendationTypeOptions,
     }
   }
 
-  const filterComponents = [CloudProviderFilter, AccountFilter, RegionFilter]
+  const filterComponents = [
+    CloudProviderFilter,
+    AccountFilter,
+    RegionFilter,
+    RecommendationTypeFilter,
+  ]
 
   const filterConfig = {
     filters,

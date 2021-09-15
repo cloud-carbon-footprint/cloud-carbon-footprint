@@ -55,7 +55,7 @@ describe('transformData', () => {
     expect(result.current).toEqual(expectedResult)
   })
 
-  it('extracts account names and regions from recommendation data', () => {
+  it('extracts account names, regions, and recommendation types from recommendation data', () => {
     const { result } = renderHook(() =>
       useFilterDataFromRecommendations(mockRecommendationData),
     )
@@ -75,6 +75,18 @@ describe('transformData', () => {
           cloudProvider: 'aws',
           key: 'us-west-2',
           name: 'us-west-2',
+        },
+      ],
+      recommendationTypes: [
+        {
+          cloudProvider: 'aws',
+          key: 'Modify',
+          name: 'Modify',
+        },
+        {
+          cloudProvider: 'aws',
+          key: 'Terminate',
+          name: 'Terminate',
         },
       ],
     }

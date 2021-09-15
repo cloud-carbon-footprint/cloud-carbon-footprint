@@ -128,6 +128,7 @@ export enum UnknownTypes {
   UNKNOWN_REGION = 'Unknown Region',
   UNKNOWN_SERVICE = 'Unknown Service',
   UNKNOWN_ACCOUNT = 'Unknown Account',
+  UNKNOWN_RECOMMENDATION_TYPE = 'Unknown Recommendation Type',
 }
 
 export enum DropdownFilterOptions {
@@ -151,6 +152,7 @@ export const filterLabels: FilterLabelMapping = {
   [DropdownFilterOptions.SERVICES]: 'Services',
   [DropdownFilterOptions.CLOUD_PROVIDERS]: 'Cloud Providers',
   [DropdownFilterOptions.REGIONS]: 'Regions',
+  [DropdownFilterOptions.RECOMMENDATION_TYPES]: 'Recommendation Types',
 }
 
 export const unknownOptionTypes: UnknownTypesMapping = {
