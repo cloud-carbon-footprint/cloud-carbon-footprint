@@ -51,12 +51,14 @@ export const ALL_RECOMMENDATION_TYPES_VALUE = 'All Recommendation Types'
 export const ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION: DropdownOption = {
   key: ALL_KEY,
   name: ALL_RECOMMENDATION_TYPES_VALUE,
+  cloudProvider: '',
 }
 
 export const ALL_REGIONS_VALUE = 'All Regions'
 export const ALL_REGIONS_DROPDOWN_OPTION: DropdownOption = {
   key: ALL_KEY,
   name: ALL_REGIONS_VALUE,
+  cloudProvider: '',
 }
 
 export const ALL_DROPDOWN_FILTER_OPTIONS: AllFilterOptionMap = {

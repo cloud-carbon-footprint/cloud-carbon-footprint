@@ -188,17 +188,24 @@ const useFilterDataFromRecommendations = (
 
   useEffect(() => {
     const accountNames: DropdownOption[] = []
+    const regions: DropdownOption[] = []
 
     data.forEach((recommendation) => {
-      const { cloudProvider, accountName } = recommendation
+      const { cloudProvider, accountName, region } = recommendation
       accountNames.push({
         cloudProvider: cloudProvider?.toLowerCase(),
         key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
         name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
       })
+      regions.push({
+        cloudProvider: cloudProvider?.toLowerCase(),
+        key: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
+        name: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
+      })
     })
     setFilterResultResponse({
       accounts: uniq(accountNames),
+      regions: uniq(regions),
     })
   }, [data, filteredData])
 

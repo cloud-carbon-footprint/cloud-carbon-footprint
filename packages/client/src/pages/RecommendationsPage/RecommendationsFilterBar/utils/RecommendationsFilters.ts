@@ -17,6 +17,7 @@ import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { AccountChooser } from './options/AccountChooser'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
+import { RegionChooser } from './options/RegionChooser'
 
 const defaultConfig: FiltersConfig = {
   //TODO: add chooser for cloud providers, recommendation types and regions
@@ -25,6 +26,7 @@ const defaultConfig: FiltersConfig = {
     [DropdownFilterOptions.CLOUD_PROVIDERS]: [
       ALL_DROPDOWN_FILTER_OPTIONS.cloudProviders,
     ],
+    [DropdownFilterOptions.REGIONS]: [ALL_DROPDOWN_FILTER_OPTIONS.regions],
   },
 }
 
@@ -57,12 +59,22 @@ export class RecommendationsFilters extends Filters {
           oldSelections,
           filterOptions,
         )
+      case DropdownFilterOptions.REGIONS:
+        return new RegionChooser(selections, oldSelections, filterOptions)
     }
   }
 
   filter(rawResults: RecommendationResult[]): RecommendationResult[] {
     //TODO: implement for cloud providers, recommendation types and regions
-    return this.getResultsFilteredBy(DropdownFilterOptions.ACCOUNTS, rawResults)
+    const resultsFilteredByAccount = this.getResultsFilteredBy(
+      DropdownFilterOptions.ACCOUNTS,
+      rawResults,
+    )
+
+    return this.getResultsFilteredBy(
+      DropdownFilterOptions.REGIONS,
+      resultsFilteredByAccount,
+    )
   }
 
   private getResultsFilteredBy(

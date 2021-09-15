@@ -150,9 +150,11 @@ export const filterLabels: FilterLabelMapping = {
   [DropdownFilterOptions.ACCOUNTS]: 'Accounts',
   [DropdownFilterOptions.SERVICES]: 'Services',
   [DropdownFilterOptions.CLOUD_PROVIDERS]: 'Cloud Providers',
+  [DropdownFilterOptions.REGIONS]: 'Regions',
 }
 
 export const unknownOptionTypes: UnknownTypesMapping = {
   [DropdownFilterOptions.ACCOUNTS]: UnknownTypes.UNKNOWN_ACCOUNT,
   [DropdownFilterOptions.SERVICES]: UnknownTypes.UNKNOWN_SERVICE,
+  [DropdownFilterOptions.REGIONS]: UnknownTypes.UNKNOWN_REGION,
 }

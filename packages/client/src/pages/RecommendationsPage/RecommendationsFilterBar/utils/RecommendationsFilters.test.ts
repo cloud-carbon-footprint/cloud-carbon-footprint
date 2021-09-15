@@ -11,6 +11,7 @@ import {
 import { DropdownFilterOptions, FilterOptions } from '../../../../Types'
 import { AccountChooser } from './options/AccountChooser'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
+import { RegionChooser } from './options/RegionChooser'
 
 describe('Recommendations Filters', () => {
   const defaultConfig = {
@@ -23,6 +24,18 @@ describe('Recommendations Filters', () => {
         { key: 'aws', name: 'AWS' },
         { key: 'gcp', name: 'GCP' },
       ],
+      regions: [
+        {
+          key: 'aws region 1',
+          name: 'aws region 1',
+          cloudProvider: 'aws',
+        },
+        {
+          key: 'gcp region 1',
+          name: 'gcp region 1',
+          cloudProvider: 'gcp',
+        },
+      ],
     },
   }
 
@@ -31,7 +44,7 @@ describe('Recommendations Filters', () => {
       cloudProvider: 'AWS',
       accountId: 'aws account 1',
       accountName: 'aws account 1',
-      region: 'ap-east-1',
+      region: 'aws region 1',
       recommendationType: 'Modify',
       instanceName: 'example-instance',
       recommendationDetail: 'Modify instance: example-instance.',
@@ -44,7 +57,7 @@ describe('Recommendations Filters', () => {
       cloudProvider: 'GCP',
       accountId: 'gcp account 1',
       accountName: 'gcp account 1',
-      region: 'ap-northeast-2',
+      region: 'gcp region 1',
       recommendationType: 'CHANGE_MACHINE_TYPE',
       instanceName: 'example-instance-2',
       recommendationDetail: 'Modify instance: example-instance-2.',
@@ -62,6 +75,19 @@ describe('Recommendations Filters', () => {
       { key: 'gcp account 1', name: 'gcp account 1', cloudProvider: 'gcp' },
     ],
     cloudProviders: CLOUD_PROVIDER_OPTIONS,
+    regions: [
+      { key: 'all', name: 'All Regions', cloudProvider: '' },
+      {
+        key: 'aws region 1',
+        name: 'aws region 1',
+        cloudProvider: 'aws',
+      },
+      {
+        key: 'gcp region 1',
+        name: 'gcp region 1',
+        cloudProvider: 'gcp',
+      },
+    ],
   }
 
   const filteredResultResponse = {
@@ -72,6 +98,18 @@ describe('Recommendations Filters', () => {
     cloudProviders: [
       { key: 'aws', name: 'AWS' },
       { key: 'gcp', name: 'GCP' },
+    ],
+    regions: [
+      {
+        key: 'us-east-1',
+        name: 'US East 1',
+        cloudProvider: 'aws',
+      },
+      {
+        key: 'us-west1',
+        name: 'US West 1',
+        cloudProvider: 'gcp',
+      },
     ],
   }
 
@@ -84,6 +122,10 @@ describe('Recommendations Filters', () => {
       cloudProviders: [
         ALL_DROPDOWN_FILTER_OPTIONS.cloudProviders,
         ...filteredResultResponse.cloudProviders,
+      ],
+      regions: [
+        ALL_DROPDOWN_FILTER_OPTIONS.regions,
+        ...filteredResultResponse.regions,
       ],
     },
   }
@@ -198,6 +240,57 @@ describe('Recommendations Filters', () => {
       [cloudProviderOption],
       filterOptions,
       DropdownFilterOptions.CLOUD_PROVIDERS,
+    )
+
+    const expectedAccountFiltered = [rawResults[0]]
+
+    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+  })
+
+  it('should create region chooser', () => {
+    const filterType = DropdownFilterOptions.REGIONS
+    const selections = [filteredResultResponse.regions[0]]
+    const oldSelections = {}
+    const filterOptions = {
+      regions: [
+        ALL_DROPDOWN_FILTER_OPTIONS.regions,
+        ...filteredResultResponse.regions,
+      ],
+    }
+
+    const testFilter = new RecommendationsFilters()
+
+    const expectedChooser = new RegionChooser(
+      selections,
+      oldSelections,
+      filterOptions,
+    )
+
+    expect(
+      JSON.stringify(
+        testFilter.createOptionChooser(
+          filterType,
+          selections,
+          oldSelections,
+          filterOptions,
+        ),
+      ),
+    ).toEqual(JSON.stringify(expectedChooser))
+  })
+
+  it('should filter recommendations by regions', () => {
+    const regionOption = {
+      key: 'aws region 1',
+      name: 'aws region 1',
+      cloudProvider: 'aws',
+    }
+
+    const filters = new RecommendationsFilters(
+      defaultConfig,
+    ).withDropdownOption(
+      [regionOption],
+      filterOptions,
+      DropdownFilterOptions.REGIONS,
     )
 
     const expectedAccountFiltered = [rawResults[0]]

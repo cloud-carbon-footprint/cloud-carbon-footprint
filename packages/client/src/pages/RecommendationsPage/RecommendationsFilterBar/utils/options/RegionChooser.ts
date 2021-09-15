@@ -2,23 +2,23 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
 import {
   ALL_KEY,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
+} from '../../../../../common/FilterBar/utils/DropdownConstants'
 
-export class CloudProviderChooser extends OptionChooser {
+export class RegionChooser extends OptionChooser {
   constructor(
     selections: DropdownOption[],
     oldSelections: DropdownSelections,
     filterOptions: FilterOptions,
   ) {
     super(
-      DropdownFilterOptions.CLOUD_PROVIDERS,
-      CLOUD_PROVIDER_OPTIONS,
+      DropdownFilterOptions.REGIONS,
+      filterOptions.regions,
       selections,
       oldSelections,
       filterOptions,
@@ -31,7 +31,7 @@ export class CloudProviderChooser extends OptionChooser {
     }
   }
 
-  protected chooseProviders(): Set<DropdownOption> {
+  protected chooseRegions(): Set<DropdownOption> {
     return new Set(this.selections)
   }
 
@@ -40,7 +40,7 @@ export class CloudProviderChooser extends OptionChooser {
     this.selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
         this.filterOptions.accounts.forEach((accountOption) => {
-          accountOption.cloudProvider === selection.key &&
+          accountOption.cloudProvider === selection.cloudProvider &&
             desiredSelections.add(accountOption)
         })
       }
@@ -48,16 +48,29 @@ export class CloudProviderChooser extends OptionChooser {
     return desiredSelections
   }
 
-  protected chooseRegions(): Set<DropdownOption> {
+  protected chooseProviders(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
-    this.selections.forEach((selection) => {
-      if (selection.key !== ALL_KEY) {
-        this.filterOptions.regions.forEach((regionOption) => {
-          regionOption.cloudProvider === selection.key &&
-            desiredSelections.add(regionOption)
-        })
-      }
-    })
+    getCloudProvidersFromRegions(this.selections).forEach(
+      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
+    )
     return desiredSelections
   }
+}
+
+function getCloudProvidersFromRegions(
+  regionSelections: DropdownOption[],
+): Set<DropdownOption> {
+  const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
+  regionSelections.forEach((selection) => {
+    if (selection.key !== ALL_KEY) {
+      cloudProviderSelections.add(
+        <DropdownOption>(
+          CLOUD_PROVIDER_OPTIONS.find(
+            (option) => option.key === selection.cloudProvider,
+          )
+        ),
+      )
+    }
+  })
+  return cloudProviderSelections
 }

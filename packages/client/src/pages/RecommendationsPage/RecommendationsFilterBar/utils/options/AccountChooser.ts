@@ -27,6 +27,7 @@ export class AccountChooser extends OptionChooser {
     this.choosers = {
       [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
       [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+      [DropdownFilterOptions.REGIONS]: () => this.chooseRegions(),
     }
   }
 
@@ -39,6 +40,19 @@ export class AccountChooser extends OptionChooser {
     getCloudProvidersFromAccounts(this.selections).forEach(
       (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
     )
+    return desiredSelections
+  }
+
+  protected chooseRegions(): Set<DropdownOption> {
+    const desiredSelections: Set<DropdownOption> = new Set()
+    this.selections.forEach((selection) => {
+      if (selection.key !== ALL_KEY) {
+        this.filterOptions.regions.forEach((regionOption) => {
+          regionOption.cloudProvider === selection.cloudProvider &&
+            desiredSelections.add(regionOption)
+        })
+      }
+    })
     return desiredSelections
   }
 }
