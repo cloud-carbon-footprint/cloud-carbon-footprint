@@ -4,13 +4,13 @@
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({ palette }) => ({
   tooltip: {
-    color: theme.palette.primaryBlue,
+    color: palette.primaryBlue,
     fontSize: 13,
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: palette.common.white,
     '&:hover': {
-      backgroundColor: theme.palette.common.white,
+      backgroundColor: palette.common.white,
     },
   },
   helpIcon: {
