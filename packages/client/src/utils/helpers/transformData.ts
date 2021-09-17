@@ -184,7 +184,11 @@ const useFilterDataFromRecommendations = (
 ): FilterResultResponse => {
   const [filteredData] = useState(data)
   const [filterResultResponse, setFilterResultResponse] =
-    useState<FilterResultResponse>({ accounts: [] })
+    useState<FilterResultResponse>({
+      accounts: [],
+      regions: [],
+      recommendationTypes: [],
+    })
 
   useEffect(() => {
     const accountNames: DropdownOption[] = []
