@@ -8,6 +8,13 @@ Issues will be closed if they have been inactive and the latest affected version
 
 _If an issue has been closed and you still feel it's relevant, feel free to ping a maintainer or add a comment!_
 
+## Picking Up an Issue
+We aim to be transparent in the work we are doing and have it posted on the [project board](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/projects/1).
+If a particular card interests you, feel free to comment on it to inform us you'd like to collaborate so we can begin conversations about it.
+Cards in the `Ready to Do` are properly prepared to be worked on.
+If a card has the marker `Good First Issue`, it is a great option to start with. Please indicate via a comment in the card that you are working on it, and we will assign it to you and move it into the `In Progress` column. When you have finished, please submit a PR and we will review and merge it.
+Cards without the `Good First Issue` marker are generally on our team's roadmap, but if you'd like to contribute that work, please comment on the ticket for alignment.
+
 ### How to Contribute in Issues
 
 There are fundamentally three ways an individual can contribute:
