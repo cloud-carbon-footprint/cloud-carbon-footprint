@@ -67,12 +67,12 @@ describe('App', () => {
   })
 
   it('renders the page title', () => {
-    const { getByText } = render(
+    const { getAllByText } = render(
       <MemoryRouter>
         <App />
       </MemoryRouter>,
     )
-    const linkElement = getByText(/Cloud Carbon Footprint/i)
+    const linkElement = getAllByText(/Cloud Carbon Footprint/i)[0]
     expect(linkElement).toBeInTheDocument()
   })
 

@@ -26,10 +26,8 @@ const EmissionsSidePanel: FunctionComponent = () => {
       </Typography>
       <Divider />
       <Typography className={classes.content} component="p">
-        Currently we estimate CO2e emissions for cloud compute, storage and
-        networking. Memory usage is not estimated yet due to their arguably
-        comparatively small footprint and current lack of available energy
-        conversion factors.
+        Cloud Carbon Footprint includes CO2e emissions estimates for cloud
+        compute, storage, networking and memory.
         <br />
         <br />
         Emissions data points marked with an * have been estimated with average
