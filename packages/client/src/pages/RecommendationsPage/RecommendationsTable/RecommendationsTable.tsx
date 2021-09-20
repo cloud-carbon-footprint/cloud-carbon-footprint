@@ -73,6 +73,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   const [useKilograms, setUseKilograms] = useState(false)
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
+  const [tableRecommendations, setTableRecommendations] =
+    useState(recommendations)
   const classes = useStyles()
 
   const createRecommendationRows = (
@@ -100,10 +102,9 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
         },
       )
       setRows(recommendationRows)
+      setTableRecommendations(recommendations)
     }
   }
-
-  // createRecommendationRows(recommendations)
 
   const handleSearchBarChange = (value: string) => {
     setSearchBarValue(value)
@@ -126,8 +127,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   }
 
   useEffect(() => {
-    createRecommendationRows(recommendations)
-  }, [recommendations])
+    createRecommendationRows(tableRecommendations)
+  }, [tableRecommendations, useKilograms])
 
   const escapeRegExp = (value: string): string => {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
