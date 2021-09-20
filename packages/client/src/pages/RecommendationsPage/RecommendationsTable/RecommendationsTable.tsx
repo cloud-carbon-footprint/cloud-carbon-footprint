@@ -119,6 +119,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             row: classes.row,
           }}
           onRowClick={handleRowClick}
+          disableColumnFilter
         />
       </div>
     </CarbonCard>
