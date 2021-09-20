@@ -3,6 +3,7 @@
  */
 
 import { fireEvent, render, within, screen } from '@testing-library/react'
+import each from 'jest-each'
 import { mockRecommendationData } from 'utils/data'
 import RecommendationsTable from './RecommendationsTable'
 
@@ -142,5 +143,73 @@ describe('Recommendations Table', () => {
     const table = within(getByRole('grid'))
 
     expect(table.getByText('Potential Carbon Savings (kg)')).toBeTruthy()
+  })
+
+  describe('Search Bar', () => {
+    it('should render search bar', () => {
+      const { getByTestId } = render(
+        <RecommendationsTable
+          recommendations={[]}
+          handleRowClick={jest.fn()}
+        />,
+      )
+
+      expect(getByTestId('search-input')).toBeInTheDocument()
+    })
+
+    it('should update the search bar', () => {
+      const { getByRole } = render(
+        <RecommendationsTable
+          recommendations={[]}
+          handleRowClick={jest.fn()}
+        />,
+      )
+
+      const searchBar = getByRole('textbox')
+
+      fireEvent.change(searchBar, { target: { value: 'account 1' } })
+
+      expect(searchBar.value).toBe('account 1')
+    })
+
+    const searchedRecommendationsRows = [
+      ['test-b', true, 1],
+      ['AWS', true, 2],
+      ['us-west-1', true, 1],
+      ['Modify', true, 1],
+      [2.539, false, 1],
+      ['pizza', undefined, 0],
+    ]
+
+    each(searchedRecommendationsRows).it(
+      'should filter according to search bar value %s',
+      (searchValue, expectedResult, rowsLength) => {
+        const { getByRole, getAllByRole } = render(
+          <RecommendationsTable
+            recommendations={mockRecommendationData}
+            handleRowClick={jest.fn()}
+          />,
+        )
+
+        const searchBar = getByRole('textbox')
+
+        fireEvent.change(searchBar, { target: { value: searchValue } })
+
+        const dataRows = getAllByRole('row')
+        dataRows.shift() // Removes row with table headers
+
+        const actualRowData = dataRows.map((row) =>
+          within(row).getAllByRole('cell'),
+        )
+
+        expect(
+          actualRowData[0]?.some((cell) =>
+            cell.innerHTML.includes(searchValue),
+          ),
+        ).toBe(expectedResult)
+
+        expect(actualRowData.length).toEqual(rowsLength)
+      },
+    )
   })
 })

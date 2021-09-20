@@ -6,6 +6,7 @@ import {
   FunctionComponent,
   ReactElement,
   SyntheticEvent,
+  useEffect,
   useState,
 } from 'react'
 import {
@@ -20,6 +21,7 @@ import useStyles from './recommendationsTableStyles'
 import Toggle from 'common/Toggle'
 import DateRange from 'common/DateRange'
 import Tooltip from '../../../common/Tooltip'
+import SearchBar from '../SearchBar'
 
 type RecommendationsTableProps = {
   recommendations: RecommendationResult[]
@@ -69,28 +71,66 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   handleRowClick,
 }): ReactElement => {
   const [useKilograms, setUseKilograms] = useState(false)
+  const [searchBarValue, setSearchBarValue] = useState('')
+  const [rows, setRows] = useState([])
   const classes = useStyles()
 
-  let rows = []
-  if (recommendations) {
-    rows = recommendations.map((recommendation, index) => {
-      const recommendationRow = {
-        ...recommendation,
-        id: index,
-        useKilograms,
-        co2eSavings: useKilograms
-          ? recommendation.co2eSavings * 1000
-          : recommendation.co2eSavings,
-      }
-      // Replace any undefined values and round numbers to thousandth decimal
-      Object.keys(recommendation).forEach((key) => {
-        recommendationRow[key] = recommendationRow[key] ?? '-'
-        if (key.includes('Savings') && recommendationRow[key] != '-')
-          recommendationRow[key] =
-            Math.round(recommendationRow[key] * 1000) / 1000
+  const createRecommendationRows = (
+    recommendations: RecommendationResult[],
+  ) => {
+    if (recommendations) {
+      const recommendationRows = recommendations.map(
+        (recommendation, index) => {
+          const recommendationRow = {
+            ...recommendation,
+            id: index,
+            useKilograms,
+            co2eSavings: useKilograms
+              ? recommendation.co2eSavings * 1000
+              : recommendation.co2eSavings,
+          }
+          // Replace any undefined values and round numbers to thousandth decimal
+          Object.keys(recommendation).forEach((key) => {
+            recommendationRow[key] = recommendationRow[key] ?? '-'
+            if (key.includes('Savings') && recommendationRow[key] != '-')
+              recommendationRow[key] =
+                Math.round(recommendationRow[key] * 1000) / 1000
+          })
+          return recommendationRow
+        },
+      )
+      setRows(recommendationRows)
+    }
+  }
+
+  // createRecommendationRows(recommendations)
+
+  const handleSearchBarChange = (value: string) => {
+    setSearchBarValue(value)
+    requestSearch(value)
+  }
+
+  const handleToggle = (value: boolean) => {
+    setUseKilograms(value)
+    requestSearch(searchBarValue)
+  }
+
+  const requestSearch = (searchValue: string) => {
+    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
+    const filteredRecommendations = recommendations.filter((row: any) => {
+      return Object.keys(row).some((field: any) => {
+        return searchRegex.test(row[field].toString())
       })
-      return recommendationRow
     })
+    createRecommendationRows(filteredRecommendations)
+  }
+
+  useEffect(() => {
+    createRecommendationRows(recommendations)
+  }, [recommendations])
+
+  const escapeRegExp = (value: string): string => {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
   }
 
   const tooltipMessage =
@@ -98,30 +138,37 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   return (
     <CarbonCard title="Recommendations">
-      <div className={classes.tableContainer}>
-        <div className={classes.toggleAndDateRangeContainers}>
-          <div className={classes.dateRangeContainer}>
-            <DateRange lookBackPeriodDays={13} />
-            <Tooltip message={tooltipMessage} />
-          </div>
-          <div className={classes.toggleContainer}>
-            <Toggle label={'CO2e Units'} handleToggle={setUseKilograms} />
-          </div>
+      <>
+        <div className={classes.dateRangeContainer}>
+          <DateRange lookBackPeriodDays={13} />
+          <Tooltip message={tooltipMessage} />
         </div>
-        <DataGrid
-          autoHeight
-          rows={rows}
-          columns={getColumns(useKilograms)}
-          columnBuffer={6}
-          hideFooterSelectedRowCount={true}
-          classes={{
-            cell: classes.cell,
-            row: classes.row,
-          }}
-          onRowClick={handleRowClick}
-          disableColumnFilter
-        />
-      </div>
+        <div className={classes.tableContainer}>
+          <div className={classes.toggleAndDateRangeContainers}>
+            <SearchBar
+              value={searchBarValue}
+              onChange={handleSearchBarChange}
+              clearSearch={() => console.log('hello')}
+            />
+            <div className={classes.toggleContainer}>
+              <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
+            </div>
+          </div>
+          <DataGrid
+            autoHeight
+            rows={rows}
+            columns={getColumns(useKilograms)}
+            columnBuffer={6}
+            hideFooterSelectedRowCount={true}
+            classes={{
+              cell: classes.cell,
+              row: classes.row,
+            }}
+            onRowClick={handleRowClick}
+            disableColumnFilter
+          />
+        </div>
+      </>
     </CarbonCard>
   )
 }
