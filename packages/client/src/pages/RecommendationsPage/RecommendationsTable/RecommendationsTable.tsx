@@ -151,15 +151,13 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           <Tooltip message={tooltipMessage} />
         </div>
         <div className={classes.tableContainer}>
-          <div className={classes.toggleAndDateRangeContainers}>
+          <div className={classes.toolbarContainer}>
             <SearchBar
               value={searchBarValue}
               onChange={handleSearchBarChange}
               clearSearch={() => handleSearchBarChange('')}
             />
-            <div className={classes.toggleContainer}>
-              <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
-            </div>
+            <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
           </div>
           <DataGrid
             autoHeight

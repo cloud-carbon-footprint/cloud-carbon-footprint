@@ -6,6 +6,7 @@ import { FunctionComponent } from 'react'
 import { IconButton, TextField } from '@material-ui/core'
 import ClearIcon from '@material-ui/icons/Clear'
 import SearchIcon from '@material-ui/icons/Search'
+import useStyles from './searchBarStyles'
 
 type SearchBarProps = {
   value: string
@@ -18,10 +19,13 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({
   onChange,
   clearSearch,
 }) => {
+  const classes = useStyles()
   return (
     <TextField
       data-testid="search-input"
       aria-label="search input"
+      variant="outlined"
+      className={classes.searchBar}
       placeholder="Search..."
       value={value}
       onChange={(event) => onChange(event.target.value)}
