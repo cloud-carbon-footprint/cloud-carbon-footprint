@@ -177,14 +177,15 @@ describe('Recommendations Table', () => {
       ['AWS', true, 2],
       ['us-west-1', true, 1],
       ['Modify', true, 1],
-      [2.539, false, 1],
+      [2.539, true, 1],
       ['pizza', undefined, 0],
+      [6.2, undefined, 0],
     ]
 
     each(searchedRecommendationsRows).it(
       'should filter according to search bar value %s',
       (searchValue, expectedResult, rowsLength) => {
-        const { getByRole, getAllByRole } = render(
+        const { getByRole, getAllByRole, getByLabelText } = render(
           <RecommendationsTable
             recommendations={mockRecommendationData}
             handleRowClick={jest.fn()}
@@ -195,7 +196,7 @@ describe('Recommendations Table', () => {
 
         fireEvent.change(searchBar, { target: { value: searchValue } })
 
-        const dataRows = getAllByRole('row')
+        let dataRows = getAllByRole('row')
         dataRows.shift() // Removes row with table headers
 
         const actualRowData = dataRows.map((row) =>
@@ -209,6 +210,17 @@ describe('Recommendations Table', () => {
         ).toBe(expectedResult)
 
         expect(actualRowData.length).toEqual(rowsLength)
+
+        const clearButton = getByLabelText('clear search')
+
+        fireEvent.click(clearButton)
+
+        expect(searchBar.value).toBe('')
+
+        dataRows = getAllByRole('row')
+        dataRows.shift() // Removes row with table headers
+
+        expect(dataRows.length).toEqual(2)
       },
     )
   })

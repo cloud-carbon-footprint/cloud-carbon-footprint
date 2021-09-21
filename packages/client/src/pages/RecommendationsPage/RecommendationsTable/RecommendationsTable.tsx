@@ -73,8 +73,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   const [useKilograms, setUseKilograms] = useState(false)
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
-  const [tableRecommendations, setTableRecommendations] =
-    useState(recommendations)
   const classes = useStyles()
 
   const createRecommendationRows = (
@@ -102,7 +100,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
         },
       )
       setRows(recommendationRows)
-      setTableRecommendations(recommendations)
     }
   }
 
@@ -113,22 +110,31 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   const handleToggle = (value: boolean) => {
     setUseKilograms(value)
-    requestSearch(searchBarValue)
   }
 
   const requestSearch = (searchValue: string) => {
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
-    const filteredRecommendations = recommendations.filter((row: any) => {
-      return Object.keys(row).some((field: any) => {
-        return searchRegex.test(row[field].toString())
-      })
-    })
+    const fieldsToNotFilter = [
+      'resourceId',
+      'kilowattHourSavings',
+      'instanceName',
+      'accountId',
+      'recommendationDetail',
+    ]
+    const filteredRecommendations = recommendations.filter(
+      (row: RecommendationResult) => {
+        return Object.keys(row).some((field: string) => {
+          if (!fieldsToNotFilter.includes(field))
+            return searchRegex.test(row[field]?.toString())
+        })
+      },
+    )
     createRecommendationRows(filteredRecommendations)
   }
 
   useEffect(() => {
-    createRecommendationRows(tableRecommendations)
-  }, [tableRecommendations, useKilograms])
+    requestSearch(searchBarValue)
+  }, [recommendations, useKilograms])
 
   const escapeRegExp = (value: string): string => {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
@@ -149,7 +155,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             <SearchBar
               value={searchBarValue}
               onChange={handleSearchBarChange}
-              clearSearch={() => console.log('hello')}
+              clearSearch={() => handleSearchBarChange('')}
             />
             <div className={classes.toggleContainer}>
               <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
