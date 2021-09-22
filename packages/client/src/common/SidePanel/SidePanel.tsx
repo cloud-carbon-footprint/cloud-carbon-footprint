@@ -20,10 +20,10 @@ const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
   }, [])
 
   useEffect(() => {
-    if (props.triggerOpenOnChange && !open) {
+    if (props.openOnChange && !open) {
       setOpen(true)
     }
-  }, [props.children])
+  }, [props.openOnChange])
 
   const handleDrawerOpen = () => {
     setOpen(true)

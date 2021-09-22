@@ -5,15 +5,21 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
-  gridCardHalf: {
+  card: {
+    width: '100%',
+    height: '100%',
+    boxShadow: '0px 16px 30px 0px rgba(151, 151, 151, .25)',
+    borderRadius: 12,
+  },
+  cardHalf: {
     width: '50%',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
-  gridCardFull: {
-    width: '100%',
-    height: '100%',
+  minHeight: {
+    minHeight: '765px',
+    overflow: 'unset',
   },
   title: {
     margin: '0',
@@ -30,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    padding: 0,
+    padding: '0 !important',
   },
 }))
 

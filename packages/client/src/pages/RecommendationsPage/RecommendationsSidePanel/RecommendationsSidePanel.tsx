@@ -22,7 +22,7 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
         drawerWidth={475}
         title="Recommendation Details"
         defaultIsOpen
-        triggerOpenOnChange
+        openOnChange={recommendation}
       >
         <Container className={classes.detailsContainer}>
           <RecommendationsPanelRow
