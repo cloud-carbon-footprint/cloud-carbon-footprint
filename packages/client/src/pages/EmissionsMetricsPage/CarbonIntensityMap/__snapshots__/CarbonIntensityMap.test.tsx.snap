@@ -5,72 +5,76 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
   className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
 >
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-root-1 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiCard-root makeStyles-card-4 MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      className="MuiBox-root MuiBox-root-5"
+      className="MuiBox-root MuiBox-root-9"
     >
       <div
-        className="MuiBox-root MuiBox-root-6 makeStyles-topContainer-3"
+        className="MuiCardContent-root makeStyles-cardContent-8"
       >
-        <p
-          className="MuiTypography-root makeStyles-title-2 MuiTypography-body1"
-        >
-          Carbon Intensity Map
-        </p>
         <div
-          className="MuiFormControl-root"
+          className="MuiBox-root MuiBox-root-10 makeStyles-topContainer-2"
         >
+          <p
+            className="MuiTypography-root makeStyles-title-1 MuiTypography-body1"
+          >
+            Carbon Intensity Map
+          </p>
           <div
-            className="MuiInputBase-root MuiInputBase-formControl"
-            data-testid="select"
-            onClick={[Function]}
+            className="MuiFormControl-root"
           >
             <div
-              aria-haspopup="listbox"
-              aria-labelledby="map-selector"
-              className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-7"
-              id="map-selector"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onMouseDown={[Function]}
-              role="button"
-              tabIndex={0}
+              className="MuiInputBase-root MuiInputBase-formControl"
+              data-testid="select"
+              onClick={[Function]}
             >
-              AWS
-            </div>
-            <input
-              aria-hidden={true}
-              className="MuiSelect-nativeInput"
-              onAnimationStart={[Function]}
-              onChange={[Function]}
-              required={false}
-              tabIndex={-1}
-              value="AWS"
-            />
-            <svg
-              aria-hidden={true}
-              className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M7 10l5 5 5-5z"
+              <div
+                aria-haspopup="listbox"
+                aria-labelledby="map-selector"
+                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-11"
+                id="map-selector"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                AWS
+              </div>
+              <input
+                aria-hidden={true}
+                className="MuiSelect-nativeInput"
+                onAnimationStart={[Function]}
+                onChange={[Function]}
+                required={false}
+                tabIndex={-1}
+                value="AWS"
               />
-            </svg>
+              <svg
+                aria-hidden={true}
+                className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M7 10l5 5 5-5z"
+                />
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        className="MuiBox-root MuiBox-root-8"
-      >
-        <img
-          alt="AWS Map"
-          className="makeStyles-map-4"
-          data-testid="awsIntensityMap"
-          src="AWSMap.png"
-        />
+        <div
+          className="MuiBox-root MuiBox-root-12"
+        >
+          <img
+            alt="AWS Map"
+            className="makeStyles-map-3"
+            data-testid="awsIntensityMap"
+            src="AWSMap.png"
+          />
+        </div>
       </div>
     </div>
   </div>

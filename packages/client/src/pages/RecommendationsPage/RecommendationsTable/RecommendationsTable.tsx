@@ -16,11 +16,11 @@ import {
   MuiEvent,
 } from '@material-ui/data-grid'
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import CarbonCard from 'layout/CarbonCard'
+import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
 import Toggle from 'common/Toggle'
 import DateRange from 'common/DateRange'
-import Tooltip from '../../../common/Tooltip'
+import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
 
 type RecommendationsTableProps = {
@@ -144,7 +144,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
 
   return (
-    <CarbonCard title="Recommendations">
+    <DashboardCard title="Recommendations">
       <>
         <div className={classes.dateRangeContainer}>
           <DateRange lookBackPeriodDays={13} />
@@ -174,7 +174,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           />
         </div>
       </>
-    </CarbonCard>
+    </DashboardCard>
   )
 }
 

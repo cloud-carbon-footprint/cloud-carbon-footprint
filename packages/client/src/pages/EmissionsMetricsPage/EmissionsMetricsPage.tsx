@@ -77,14 +77,8 @@ export default function EmissionsMetricsPage(): ReactElement {
           />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
-              <CarbonComparisonCard
-                containerClass={classes.gridCardHalf}
-                data={filteredEstimationData}
-              />
-              <EmissionsBreakdownCard
-                containerClass={classes.gridCardHalf}
-                data={filteredEstimationData}
-              />
+              <CarbonComparisonCard data={filteredEstimationData} />
+              <EmissionsBreakdownCard data={filteredEstimationData} />
             </Grid>
           </Grid>
           <CarbonIntensityMap />

@@ -23,6 +23,11 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   addSpacing: {
     marginTop: '50px',
   },
+  largeMessage: {
+    height: 587,
+    fontWeight: 900,
+    fontSize: 24,
+  },
 }))
 
 export default useStyles

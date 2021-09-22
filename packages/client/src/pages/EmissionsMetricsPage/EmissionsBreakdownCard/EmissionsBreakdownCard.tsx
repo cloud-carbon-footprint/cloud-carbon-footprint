@@ -3,20 +3,20 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Box, Grid, Card, Paper } from '@material-ui/core'
+import { Paper } from '@material-ui/core'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from 'Types'
 import SelectDropdown from 'common/SelectDropdown'
+import DashboardCard from 'layout/DashboardCard'
 import ApexBarChart from './ApexBarChart'
 import useStyles from './emissionsBreakdownStyles'
 
 type EmissionsBreakdownContainerProps = {
-  containerClass: string
   data: EstimationResult[]
 }
 
 const EmissionsBreakdownCard: FunctionComponent<EmissionsBreakdownContainerProps> =
-  ({ containerClass, data }): ReactElement => {
+  ({ data }): ReactElement => {
     const classes = useStyles()
     const [chartType, setChartType] = React.useState(ChartDataTypes.REGION)
 
@@ -25,22 +25,23 @@ const EmissionsBreakdownCard: FunctionComponent<EmissionsBreakdownContainerProps
     }
 
     return (
-      <Grid item className={containerClass}>
-        <Card className={classes.root} id="emissionsBreakdownContainer">
-          <Box padding={3}>
-            <Paper className={classes.topContainer}>
-              <p className={classes.title}>Emissions Breakdown</p>
-              <SelectDropdown
-                id="breakdown"
-                value={chartType}
-                dropdownOptions={Object.values(ChartDataTypes)}
-                handleChange={handleChange}
-              />
-            </Paper>
-            <ApexBarChart data={data} dataType={chartType} />
-          </Box>
-        </Card>
-      </Grid>
+      <DashboardCard isHalf>
+        <>
+          <Paper
+            className={classes.topContainer}
+            id="emissionsBreakdownContainer"
+          >
+            <p className={classes.title}>Emissions Breakdown</p>
+            <SelectDropdown
+              id="breakdown"
+              value={chartType}
+              dropdownOptions={Object.values(ChartDataTypes)}
+              handleChange={handleChange}
+            />
+          </Paper>
+          <ApexBarChart data={data} dataType={chartType} />
+        </>
+      </DashboardCard>
     )
   }
 

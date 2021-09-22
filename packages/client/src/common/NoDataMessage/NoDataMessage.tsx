@@ -3,22 +3,33 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Box, Card, Grid } from '@material-ui/core'
+import clsx from 'clsx'
+import { Card, Grid } from '@material-ui/core'
+import DashboardCard from 'layout/DashboardCard'
 import useStyles from './noDataMessageStyles'
 import shruggingCloud from './V1Shrugging-cloud-icon.svg'
 import emptyStateIcon from './V1Empty-state-generic-icon.svg'
 
 type NoDataMessageProps = {
   isTop?: boolean
+  isBold?: boolean
+  title?: string
 }
 
 const NoDataMessage: FunctionComponent<NoDataMessageProps> = ({
   isTop,
+  isBold,
+  title,
 }): ReactElement => {
   const classes = useStyles()
+  const containerClass = clsx({ [classes.largeMessage]: isBold })
   return (
-    <Card className={classes.root}>
-      <Box data-testid="no-data-message">
+    <DashboardCard
+      title={title}
+      testId="no-data-message"
+      containerClass={containerClass}
+    >
+      <Card className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
             <img
@@ -36,8 +47,8 @@ const NoDataMessage: FunctionComponent<NoDataMessageProps> = ({
             )}
           </Grid>
         </Grid>
-      </Box>
-    </Card>
+      </Card>
+    </DashboardCard>
   )
 }
 

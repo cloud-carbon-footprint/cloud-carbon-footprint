@@ -6,11 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => {
   return {
-    root: {
-      width: '100%',
-      height: '100%',
-      minHeight: '755px',
-    },
     title: {
       color: palette.primary.contrastText,
     },
@@ -23,6 +18,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
     topContainer: {
       backgroundColor: palette.primary.main,
       textAlign: 'center',
+      borderRadius: '12px 12px 0 0',
     },
     bottomContainer: {
       display: 'flex',

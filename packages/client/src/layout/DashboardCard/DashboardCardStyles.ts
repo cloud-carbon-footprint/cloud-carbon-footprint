@@ -31,11 +31,15 @@ const useStyles = makeStyles((theme) => ({
     padding: '.2em',
     paddingLeft: 0,
   },
+  contentContainer: {
+    height: '100%',
+  },
   cardContent: {
+    height: '100%',
+    width: '100%',
     boxShadow: 'none',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
     padding: '0 !important',
   },
 }))

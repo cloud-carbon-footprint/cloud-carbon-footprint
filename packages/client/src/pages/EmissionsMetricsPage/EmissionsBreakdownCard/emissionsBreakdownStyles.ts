@@ -5,12 +5,6 @@
 import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(({ palette }) => ({
-  root: {
-    width: '100%',
-    height: '100%',
-    overflow: 'unset',
-    minHeight: '755px',
-  },
   topContainer: {
     boxShadow: 'none',
     display: 'flex',

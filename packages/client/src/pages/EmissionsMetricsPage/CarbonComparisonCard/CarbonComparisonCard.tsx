@@ -3,11 +3,12 @@
  */
 
 import React, { FunctionComponent, useState } from 'react'
-import { Card, CardContent, Typography, Grid } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { FlightTakeoff, PhonelinkRing, Eco } from '@material-ui/icons'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { sumCO2 } from 'utils/helpers'
 import NoDataMessage from 'common/NoDataMessage'
+import DashboardCard from 'layout/DashboardCard'
 import { Source, ComparisonItem } from 'Types'
 import CarbonComparison from './CarbonComparison'
 import useStyles from './carbonComparisonStyles'
@@ -22,12 +23,10 @@ type Comparisons = {
 }
 
 type CarbonComparisonCardProps = {
-  containerClass: string
   data: EstimationResult[]
 }
 
 const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
-  containerClass,
   data,
 }) => {
   const [selection, setSelection] = useState('flights')
@@ -100,7 +99,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
 
   if (totalMetricTons) {
     return (
-      <Grid item className={containerClass} data-testid="carbonComparison">
+      <DashboardCard isHalf noPadding testId="carbonComparison">
         <CarbonComparison
           formatNumber={formatNumber}
           totalMetricTons={totalMetricTons}
@@ -109,23 +108,21 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
           updateSelection={updateSelection}
           updateButtonColor={updateButtonColor}
         />
-      </Grid>
+      </DashboardCard>
     )
   }
 
   return (
-    <Grid item className={containerClass}>
-      <Card className={classes.root} id="carbonComparisonCard">
-        <CardContent className={classes.topContainer}>
-          <Typography className={classes.metricOne} variant="h4" component="p">
-            Emissions Comparison
-          </Typography>
-        </CardContent>
+    <DashboardCard isHalf>
+      <>
+        <Typography className={classes.metricOne} variant="h4" component="p">
+          Emissions Comparison
+        </Typography>
         <div className={classes.noData}>
           <NoDataMessage isTop={false} />
         </div>
-      </Card>
-    </Grid>
+      </>
+    </DashboardCard>
   )
 }
 

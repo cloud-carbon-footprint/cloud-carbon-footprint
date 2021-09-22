@@ -3,10 +3,10 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { Box, Card, Grid } from '@material-ui/core'
 import { ClassNameMap } from '@material-ui/styles'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import NoDataMessage from 'common/NoDataMessage'
+import DashboardCard from 'layout/DashboardCard'
 import ApexLineChart from './ApexLineChart/ApexLineChart'
 
 type EmissionsOverTimeProps = {
@@ -15,23 +15,14 @@ type EmissionsOverTimeProps = {
 }
 
 const EmissionsOverTimeCard: FunctionComponent<EmissionsOverTimeProps> = ({
-  classes,
   filteredData,
-}): ReactElement => (
-  <Grid data-testid="cloudUsage" item xs={12}>
-    <Card className={classes.gridCardFull}>
-      <Box padding={3} paddingRight={4}>
-        {filteredData.length ? (
-          <ApexLineChart data={filteredData} />
-        ) : (
-          <div className={classes.noData}>
-            <p>Cloud Usage</p>
-            <NoDataMessage isTop={true} />
-          </div>
-        )}
-      </Box>
-    </Card>
-  </Grid>
-)
+}): ReactElement =>
+  filteredData.length ? (
+    <DashboardCard testId="cloudUsage">
+      <ApexLineChart data={filteredData} />
+    </DashboardCard>
+  ) : (
+    <NoDataMessage isTop isBold title="Cloud Usage" />
+  )
 
 export default EmissionsOverTimeCard

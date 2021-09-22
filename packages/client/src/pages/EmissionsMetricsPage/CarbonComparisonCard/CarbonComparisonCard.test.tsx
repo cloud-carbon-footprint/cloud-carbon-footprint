@@ -10,14 +10,9 @@ import { mockData } from 'utils/data'
 import CarbonComparisonCard from './CarbonComparisonCard'
 
 describe('CarbonComparisonCard', () => {
-  const testContainerClass = 'test-container-class'
-
   it('updates the selected carbon comparison option correctly', async () => {
     const { getByText, getByTestId } = render(
-      <CarbonComparisonCard
-        containerClass={testContainerClass}
-        data={mockData}
-      />,
+      <CarbonComparisonCard data={mockData} />,
     )
 
     const phonesButton = getByText('phones')
@@ -54,10 +49,7 @@ describe('CarbonComparisonCard', () => {
 
   it('should show corresponding sources for each pane', async () => {
     const { getByTestId, getByText } = render(
-      <CarbonComparisonCard
-        containerClass={testContainerClass}
-        data={mockData}
-      />,
+      <CarbonComparisonCard data={mockData} />,
     )
     const source = getByTestId('epa-source')
     expect(source).toHaveTextContent(
@@ -86,12 +78,7 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('should open Flight Carbon Calculator page in other tab when clicking flight link', async () => {
-    const { getByText } = render(
-      <CarbonComparisonCard
-        containerClass={testContainerClass}
-        data={mockData}
-      />,
-    )
+    const { getByText } = render(<CarbonComparisonCard data={mockData} />)
     const epaLink = getByText('Flight Carbon Footprint Calculator').closest('a')
     expect(epaLink).toHaveAttribute(
       'href',
@@ -103,12 +90,7 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('should open EPA page in other tab when clicking EPA link', async () => {
-    const { getByText } = render(
-      <CarbonComparisonCard
-        containerClass={testContainerClass}
-        data={mockData}
-      />,
-    )
+    const { getByText } = render(<CarbonComparisonCard data={mockData} />)
     const phonesButton = getByText('phones')
     act(() => {
       fireEvent.click(phonesButton)
@@ -123,9 +105,7 @@ describe('CarbonComparisonCard', () => {
   })
 
   it('should show a no data message if there if there is no data to compare', () => {
-    const { getByText } = render(
-      <CarbonComparisonCard containerClass={testContainerClass} data={[]} />,
-    )
+    const { getByText } = render(<CarbonComparisonCard data={[]} />)
 
     expect(getByText("There's no data to display!")).toBeInTheDocument()
   })
@@ -143,36 +123,21 @@ describe('CarbonComparisonCard', () => {
 
     it('should format co2e to default locale integer with large number', async () => {
       const testData = dataWithCo2e(999999.55555555555)
-      const { getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
-      )
+      const { getByTestId } = render(<CarbonComparisonCard data={testData} />)
       const co2 = getByTestId('co2')
       expect(co2).toHaveTextContent('999,999.6')
     })
 
     it('should format co2e to default locale integer with small number', async () => {
       const testData = dataWithCo2e(0.00012345)
-      const { getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
-      )
+      const { getByTestId } = render(<CarbonComparisonCard data={testData} />)
       const co2 = getByTestId('co2')
       expect(co2).toHaveTextContent('0.00012')
     })
 
     it('should convert and format to flights', async () => {
       const testData = dataWithCo2e(10000)
-      const { getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
-      )
+      const { getByTestId } = render(<CarbonComparisonCard data={testData} />)
       const co2 = getByTestId('comparison')
       expect(co2).toHaveTextContent('12,346')
     })
@@ -180,10 +145,7 @@ describe('CarbonComparisonCard', () => {
     it('should convert  and format to number of phones that are less than a million', async () => {
       const testData = dataWithCo2e(8)
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
+        <CarbonComparisonCard data={testData} />,
       )
       act(() => {
         fireEvent.click(getByText('phones'))
@@ -195,10 +157,7 @@ describe('CarbonComparisonCard', () => {
     it('should convert and format to number of phones that are over a million', async () => {
       const testData = dataWithCo2e(309)
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
+        <CarbonComparisonCard data={testData} />,
       )
       act(() => {
         fireEvent.click(getByText('phones'))
@@ -210,10 +169,7 @@ describe('CarbonComparisonCard', () => {
     it('should convert and format to number of phones that are over a billion', async () => {
       const testData = dataWithCo2e(10000)
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
+        <CarbonComparisonCard data={testData} />,
       )
       act(() => {
         fireEvent.click(getByText('phones'))
@@ -225,10 +181,7 @@ describe('CarbonComparisonCard', () => {
     it('should convert and format to trees', async () => {
       const testData = dataWithCo2e(10000)
       const { getByText, getByTestId } = render(
-        <CarbonComparisonCard
-          containerClass={testContainerClass}
-          data={testData}
-        />,
+        <CarbonComparisonCard data={testData} />,
       )
       act(() => {
         fireEvent.click(getByText('trees'))
