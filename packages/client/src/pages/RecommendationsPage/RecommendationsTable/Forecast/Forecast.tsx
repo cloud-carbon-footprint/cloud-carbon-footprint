@@ -24,9 +24,12 @@ const Forecast = () => {
 
   if (loading) {
     return (
-      <LoadingMessage
-        message={'Loading cloud data. This may take a while...'}
-      />
+      <div>
+        <Typography className={classes.title}>Forecast</Typography>
+        <LoadingMessage
+          message={'Loading cloud data. This may take a while...'}
+        />
+      </div>
     )
   }
 
