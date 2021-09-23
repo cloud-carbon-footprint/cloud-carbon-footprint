@@ -10,7 +10,7 @@ import clsx from 'clsx'
 type ForecastCardProps = {
   title: string
   co2eSavings: number
-  costSavings: number
+  costSavings: string
 }
 
 const ForecastCard: FunctionComponent<ForecastCardProps> = ({

@@ -3,7 +3,7 @@
  */
 
 export {
-  sumCO2,
+  sumEstimate,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,

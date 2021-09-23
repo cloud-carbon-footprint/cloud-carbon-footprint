@@ -12,7 +12,7 @@ import {
   mockRecommendationDataWithUnknowns,
 } from '../data'
 import {
-  sumCO2,
+  sumEstimate,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,
@@ -36,7 +36,7 @@ describe('transformData', () => {
 
   it('returns the sum of CO2 metric tons and gallons', () => {
     const expected = 30
-    expect(sumCO2(mockData)).toEqual(expected)
+    expect(sumEstimate(mockData, 'co2e')).toEqual(expected)
   })
 
   it('extract account names from estimates data', async () => {

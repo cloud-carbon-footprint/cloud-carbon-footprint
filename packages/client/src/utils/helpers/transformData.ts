@@ -133,12 +133,12 @@ const sumCO2ByServiceOrRegion = (
   }, Object.create({}))
 }
 
-const sumCO2 = (data: EstimationResult[]): number => {
+const sumEstimate = (data: EstimationResult[], key: string): number => {
   const serviceEstimates = data.flatMap(
     (estimationResult) => estimationResult.serviceEstimates,
   )
   return serviceEstimates.reduce(
-    (acc, currentValue) => acc + currentValue.co2e,
+    (acc, currentValue) => acc + currentValue[key],
     0,
   )
 }
@@ -229,7 +229,7 @@ const useFilterDataFromRecommendations = (
 }
 
 export {
-  sumCO2,
+  sumEstimate,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,

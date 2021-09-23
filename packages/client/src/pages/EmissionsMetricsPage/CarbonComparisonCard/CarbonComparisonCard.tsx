@@ -5,7 +5,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import { FlightTakeoff, PhonelinkRing, Eco } from '@material-ui/icons'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { sumCO2 } from 'utils/helpers'
+import { sumEstimate } from 'utils/helpers'
 import NoDataMessage from 'common/NoDataMessage'
 import DashboardCard from 'layout/DashboardCard'
 import { Source, ComparisonItem } from 'Types'
@@ -47,7 +47,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
       : Number(number.toExponential(decimalPlaces)).toString()
   }
 
-  const totalMetricTons = sumCO2(data)
+  const totalMetricTons = sumEstimate(data, 'co2e')
   const totalFlights = toFlights(totalMetricTons)
   const totalPhones = toPhones(totalMetricTons)
   const totalTrees = toTrees(totalMetricTons)
