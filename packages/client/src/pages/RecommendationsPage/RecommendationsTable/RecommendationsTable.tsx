@@ -146,7 +146,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
 
   return (
-    <DashboardCard title="Recommendations">
+    <DashboardCard title="">
       <>
         <Forecast />
         <div className={classes.recommendationsContainer}>

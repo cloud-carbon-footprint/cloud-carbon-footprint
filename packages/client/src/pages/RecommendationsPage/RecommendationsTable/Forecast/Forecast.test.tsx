@@ -17,6 +17,4 @@ describe('Forecast', () => {
 
     expect(getByText('Current')).toBeInTheDocument()
   })
-
-  it('should display the co2e sums ')
 })
