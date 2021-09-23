@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {
+import React, {
   FunctionComponent,
   ReactElement,
   SyntheticEvent,
@@ -22,6 +22,8 @@ import Toggle from 'common/Toggle'
 import DateRange from 'common/DateRange'
 import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
+import Forecast from './Forecast/Forecast'
+import { Typography } from '@material-ui/core'
 
 type RecommendationsTableProps = {
   recommendations: RecommendationResult[]
@@ -146,32 +148,36 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   return (
     <DashboardCard title="Recommendations">
       <>
-        <div className={classes.dateRangeContainer}>
-          <DateRange lookBackPeriodDays={13} />
-          <Tooltip message={tooltipMessage} />
-        </div>
-        <div className={classes.tableContainer}>
-          <div className={classes.toolbarContainer}>
-            <SearchBar
-              value={searchBarValue}
-              onChange={handleSearchBarChange}
-              clearSearch={() => handleSearchBarChange('')}
-            />
-            <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
+        <Forecast />
+        <div className={classes.recommendationsContainer}>
+          <Typography className={classes.title}>Recommendations</Typography>
+          <div className={classes.dateRangeContainer}>
+            <DateRange lookBackPeriodDays={13} />
+            <Tooltip message={tooltipMessage} />
           </div>
-          <DataGrid
-            autoHeight
-            rows={rows}
-            columns={getColumns(useKilograms)}
-            columnBuffer={6}
-            hideFooterSelectedRowCount={true}
-            classes={{
-              cell: classes.cell,
-              row: classes.row,
-            }}
-            onRowClick={handleRowClick}
-            disableColumnFilter
-          />
+          <div className={classes.tableContainer}>
+            <div className={classes.toolbarContainer}>
+              <SearchBar
+                value={searchBarValue}
+                onChange={handleSearchBarChange}
+                clearSearch={() => handleSearchBarChange('')}
+              />
+              <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
+            </div>
+            <DataGrid
+              autoHeight
+              rows={rows}
+              columns={getColumns(useKilograms)}
+              columnBuffer={6}
+              hideFooterSelectedRowCount={true}
+              classes={{
+                cell: classes.cell,
+                row: classes.row,
+              }}
+              onRowClick={handleRowClick}
+              disableColumnFilter
+            />
+          </div>
         </div>
       </>
     </DashboardCard>

@@ -28,6 +28,19 @@ const useStyles = makeStyles(() => ({
   dateRangeContainer: {
     display: 'flex',
   },
+  title: {
+    margin: '0',
+    fontSize: '24px',
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    opacity: '1',
+    fontWeight: 900,
+    color: 'rgba(0, 0, 0, 0.87)',
+    padding: '.2em',
+    paddingLeft: 0,
+  },
+  recommendationsContainer: {
+    marginTop: 65,
+  },
 }))
 
 export default useStyles

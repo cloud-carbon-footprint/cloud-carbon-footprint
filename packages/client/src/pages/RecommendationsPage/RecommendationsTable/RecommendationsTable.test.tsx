@@ -224,4 +224,17 @@ describe('Recommendations Table', () => {
       },
     )
   })
+
+  describe('Forecast', () => {
+    it('should render the forecast component', () => {
+      const { getByText } = render(
+        <RecommendationsTable
+          recommendations={mockRecommendationData}
+          handleRowClick={jest.fn()}
+        />,
+      )
+
+      expect(getByText('Forecast')).toBeInTheDocument()
+    })
+  })
 })
