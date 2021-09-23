@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     opacity: '1',
     fontWeight: 900,
     color: 'rgba(0, 0, 0, 0.87)',
-    padding: '.2em',
     paddingLeft: 0,
   },
   contentContainer: {

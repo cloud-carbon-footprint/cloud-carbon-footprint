@@ -8,13 +8,13 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
     className="MuiPaper-root MuiCard-root makeStyles-card-4 MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      className="MuiBox-root MuiBox-root-9"
+      className="MuiBox-root MuiBox-root-10 makeStyles-contentContainer-8"
     >
       <div
-        className="MuiCardContent-root makeStyles-cardContent-8"
+        className="MuiCardContent-root makeStyles-cardContent-9"
       >
         <div
-          className="MuiBox-root MuiBox-root-10 makeStyles-topContainer-2"
+          className="MuiBox-root MuiBox-root-11 makeStyles-topContainer-2"
         >
           <p
             className="MuiTypography-root makeStyles-title-1 MuiTypography-body1"
@@ -32,7 +32,7 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
               <div
                 aria-haspopup="listbox"
                 aria-labelledby="map-selector"
-                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-11"
+                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-12"
                 id="map-selector"
                 onBlur={[Function]}
                 onFocus={[Function]}
@@ -66,7 +66,7 @@ exports[`Carbon Intensity Map should render with correct configuration 1`] = `
           </div>
         </div>
         <div
-          className="MuiBox-root MuiBox-root-12"
+          className="MuiBox-root MuiBox-root-13"
         >
           <img
             alt="AWS Map"

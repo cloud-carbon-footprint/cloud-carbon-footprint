@@ -10,24 +10,18 @@ import {
   EstimationResult,
   EmissionRatioResult,
 } from '@cloud-carbon-footprint/common'
-import NoDataMessage from 'common/NoDataMessage'
-import { useRemoteEmissionService } from 'utils/hooks'
 import { fakeEmissionFactors } from 'utils/data'
-import { PageEntry, ServiceResult } from 'Types'
+import { sumCO2ByServiceOrRegion } from 'utils/helpers'
+import { PageEntry } from 'Types'
 import ApexBarChart from './ApexBarChart'
 import Pagination, { Page } from '../Pagination'
 import { createCustomBarColors } from './helpers'
 
 jest.mock('apexcharts')
-jest.mock('utils/hooks/EmissionFactorServiceHook')
-
-const mockedUseEmissionFactorService =
-  useRemoteEmissionService as jest.MockedFunction<
-    typeof useRemoteEmissionService
-  >
 
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
+  let barChartData: { string: [string, number] }
   const data: EstimationResult[] = [
     {
       timestamp: moment('2019-08-10T00:00:00.000Z').toDate(),
@@ -76,20 +70,25 @@ describe('ApexBarChart', () => {
     },
   ]
   beforeEach(() => {
-    const mockReturnValue: ServiceResult<EmissionRatioResult> = {
-      loading: false,
-      data: fakeEmissionFactors,
-    }
-    mockedUseEmissionFactorService.mockReturnValue(mockReturnValue)
-    fixture = create(<ApexBarChart data={data} dataType="service" />)
-  })
-  it('renders with correct configuration', () => {
-    expect(fixture.toJSON()).toMatchSnapshot()
+    barChartData = sumCO2ByServiceOrRegion(
+      data as EstimationResult[],
+      'service',
+    )
+    fixture = create(
+      <ApexBarChart
+        data={barChartData}
+        dataType="service"
+        emissionsData={fakeEmissionFactors}
+      />,
+    )
   })
 
   afterEach(() => {
     fixture.unmount()
-    mockedUseEmissionFactorService.mockClear()
+  })
+
+  it('renders with correct configuration', () => {
+    expect(fixture.toJSON()).toMatchSnapshot()
   })
 
   it('should format tool tip values with proper data instead of scaled down data', () => {
@@ -173,7 +172,14 @@ describe('ApexBarChart', () => {
   })
 
   it('should set colors to each bar based on region emissions', () => {
-    fixture = create(<ApexBarChart data={data} dataType="region" />)
+    barChartData = sumCO2ByServiceOrRegion(data as EstimationResult[], 'region')
+    fixture = create(
+      <ApexBarChart
+        data={barChartData}
+        dataType="region"
+        emissionsData={fakeEmissionFactors}
+      />,
+    )
     expect(fixture.toJSON()).toMatchSnapshot()
     const paginationComponent = fixture.root.findByType(Pagination)
     const sortedData = [
@@ -224,13 +230,5 @@ describe('ApexBarChart', () => {
     const mainColors = createCustomBarColors(pageData, [], mainTheme)
 
     expect(mainColors).toEqual(defaultColors)
-  })
-
-  it('should show a no data message when there is no data to display', () => {
-    fixture = create(<ApexBarChart data={[]} dataType="region" />)
-    const noDataComponent = fixture.root.findByType(NoDataMessage)
-
-    expect(noDataComponent).toBeDefined()
-    expect(noDataComponent.props.isTop).toBe(false)
   })
 })

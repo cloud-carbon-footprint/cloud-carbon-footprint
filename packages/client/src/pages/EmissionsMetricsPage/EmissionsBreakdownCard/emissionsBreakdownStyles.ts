@@ -20,7 +20,6 @@ const useStyles = makeStyles(({ palette }) => ({
     opacity: '1',
     fontWeight: 900,
     color: palette.lightTitle,
-    padding: '.2em',
   },
 }))
 

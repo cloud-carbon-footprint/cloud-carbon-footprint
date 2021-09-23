@@ -8,13 +8,13 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
     className="MuiPaper-root MuiCard-root makeStyles-card-3 makeStyles-minHeight-5 MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      className="MuiBox-root MuiBox-root-8"
+      className="MuiBox-root MuiBox-root-9 makeStyles-contentContainer-7"
     >
       <div
-        className="MuiCardContent-root makeStyles-cardContent-7"
+        className="MuiCardContent-root makeStyles-cardContent-8"
       >
         <div
-          className="MuiPaper-root makeStyles-topContainer-1 MuiPaper-elevation1 MuiPaper-rounded"
+          className="makeStyles-topContainer-1"
           id="emissionsBreakdownContainer"
         >
           <p
@@ -33,7 +33,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               <div
                 aria-haspopup="listbox"
                 aria-labelledby="breakdown-selector"
-                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-9"
+                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-10"
                 id="breakdown-selector"
                 onBlur={[Function]}
                 onFocus={[Function]}
@@ -67,7 +67,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
           </div>
         </div>
         <div
-          className="makeStyles-barChartContainer-10"
+          className="makeStyles-barChartContainer-11"
         >
           <div
             style={
@@ -320,10 +320,10 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
             width="100%"
           />
           <div
-            className="makeStyles-paginationContainer-11"
+            className="makeStyles-paginationContainer-12"
           >
             <span
-              className="makeStyles-paginationLabel-12"
+              className="makeStyles-paginationLabel-13"
             >
               1 - 1
                of 

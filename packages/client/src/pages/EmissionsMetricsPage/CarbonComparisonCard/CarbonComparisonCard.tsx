@@ -3,7 +3,6 @@
  */
 
 import React, { FunctionComponent, useState } from 'react'
-import { Typography } from '@material-ui/core'
 import { FlightTakeoff, PhonelinkRing, Eco } from '@material-ui/icons'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { sumCO2 } from 'utils/helpers'
@@ -112,18 +111,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
     )
   }
 
-  return (
-    <DashboardCard isHalf>
-      <>
-        <Typography className={classes.metricOne} variant="h4" component="p">
-          Emissions Comparison
-        </Typography>
-        <div className={classes.noData}>
-          <NoDataMessage isTop={false} />
-        </div>
-      </>
-    </DashboardCard>
-  )
+  return <NoDataMessage isHalf boldTitle="Emissions Comparison" />
 }
 
 export default CarbonComparisonCard

@@ -12,6 +12,7 @@ import {
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from 'Types'
 import SelectDropdown from 'common/SelectDropdown'
+import NoDataMessage from 'common/NoDataMessage'
 import { useRemoteEmissionService } from 'utils/hooks'
 import { fakeEmissionFactors, mockDataWithHigherPrecision } from 'utils/data'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
@@ -77,5 +78,14 @@ describe('EmissionsBreakdownCard', () => {
     )
 
     expect(testInstance.findByType(ApexBarChart).props.dataType).toBe('Service')
+  })
+
+  it('should show a no data message when there is no data to display', () => {
+    testRenderer.unmount()
+    const fixture = create(<EmissionsBreakdownCard data={[]} />)
+    const noDataComponent = fixture.root.findByType(NoDataMessage)
+
+    expect(noDataComponent).toBeDefined()
+    expect(noDataComponent.props.title).toBe('Emissions Breakdown')
   })
 })

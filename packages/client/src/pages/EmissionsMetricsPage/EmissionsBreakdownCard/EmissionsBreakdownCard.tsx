@@ -2,12 +2,14 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, ReactElement } from 'react'
-import { Paper } from '@material-ui/core'
+import React, { FunctionComponent, ReactElement, useState } from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { ChartDataTypes } from 'Types'
 import SelectDropdown from 'common/SelectDropdown'
+import NoDataMessage from 'common/NoDataMessage'
 import DashboardCard from 'layout/DashboardCard'
+import { useRemoteEmissionService } from 'utils/hooks'
+import { sumCO2ByServiceOrRegion } from 'utils/helpers'
 import ApexBarChart from './ApexBarChart'
 import useStyles from './emissionsBreakdownStyles'
 
@@ -18,16 +20,27 @@ type EmissionsBreakdownContainerProps = {
 const EmissionsBreakdownCard: FunctionComponent<EmissionsBreakdownContainerProps> =
   ({ data }): ReactElement => {
     const classes = useStyles()
-    const [chartType, setChartType] = React.useState(ChartDataTypes.REGION)
+    const [chartType, setChartType] = useState(ChartDataTypes.REGION)
+
+    const { data: emissionsData, loading: emissionsLoading } =
+      useRemoteEmissionService()
+    const barChartData = sumCO2ByServiceOrRegion(
+      data as EstimationResult[],
+      chartType,
+    )
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
       setChartType(event.target.value as ChartDataTypes)
     }
 
+    if (!data?.length || emissionsLoading) {
+      return <NoDataMessage isHalf title="Emissions Breakdown" />
+    }
+
     return (
       <DashboardCard isHalf>
         <>
-          <Paper
+          <div
             className={classes.topContainer}
             id="emissionsBreakdownContainer"
           >
@@ -38,8 +51,12 @@ const EmissionsBreakdownCard: FunctionComponent<EmissionsBreakdownContainerProps
               dropdownOptions={Object.values(ChartDataTypes)}
               handleChange={handleChange}
             />
-          </Paper>
-          <ApexBarChart data={data} dataType={chartType} />
+          </div>
+          <ApexBarChart
+            data={barChartData}
+            dataType={chartType}
+            emissionsData={emissionsData}
+          />
         </>
       </DashboardCard>
     )
