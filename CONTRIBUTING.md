@@ -13,7 +13,7 @@ We aim to be transparent in the work we are doing and have it posted on the [pro
 If a particular card interests you, feel free to comment on it to inform us you'd like to collaborate so we can begin conversations about it.
 Cards in the `Ready to Do` are properly prepared to be worked on.
 If a card has the marker `Good First Issue`, it is a great option to start with. Please indicate via a comment in the card that you are working on it, and we will assign it to you and move it into the `In Progress` column. When you have finished, please submit a PR and we will review and merge it.
-Cards without the `Good First Issue` marker are generally on our team's roadmap, but if you'd like to contribute that work, please comment on the ticket for alignment.
+Cards without the `Good First Issue` marker are generally on our team's roadmap, but if you'd like to contribute that work, please comment on the ticket for alignment. Once you get to the point of working on the issue, please [submit a PR with your changes and link it to the issue.](#pull_requests)
 
 ### How to Contribute in Issues
 
@@ -49,7 +49,7 @@ Most issues are resolved by opening a pull request. The process for opening and 
 
 ---
 
-## Pull Requests 📥
+## <a id="pull_requests"></a>Pull Requests 📥
 
 Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `cloud-carbon-footprint/cloud-carbon-footprint` repository. Please [link your PR](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) to an issue so we can more easily track the work being done
 
