@@ -11,7 +11,7 @@ import { sumEstimate } from 'utils/helpers'
 import ForecastCard from '../ForecastCard/ForecastCard'
 import useStyles from './forecastStyles'
 
-const Forecast = () => {
+const Forecast = (): JSX.Element => {
   const endDate: moment.Moment = moment.utc()
   const startDate = moment.utc().subtract('1', 'year')
   const { data, loading } = useRemoteService([], startDate, endDate)
