@@ -4,10 +4,34 @@
 
 import { fireEvent, render, within, screen } from '@testing-library/react'
 import each from 'jest-each'
-import { mockRecommendationData } from 'utils/data'
+import { generateEstimations, mockRecommendationData } from 'utils/data'
 import RecommendationsTable from './RecommendationsTable'
+import { useRemoteService } from 'utils/hooks'
+import { ServiceResult } from '../../../Types'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+import moment from 'moment'
+
+jest.mock('utils/hooks/RemoteServiceHook')
+
+const mockUseRemoteService = useRemoteService as jest.MockedFunction<
+  typeof useRemoteService
+>
 
 describe('Recommendations Table', () => {
+  let data: EstimationResult[]
+  beforeEach(() => {
+    data = generateEstimations(moment.utc(), 12)
+    const mockReturnValue: ServiceResult<EstimationResult> = {
+      loading: false,
+      data: data,
+    }
+    mockUseRemoteService.mockReturnValue(mockReturnValue)
+  })
+
+  afterEach(() => {
+    mockUseRemoteService.mockClear()
+  })
+
   it('renders a Material UI Table', () => {
     const { getByRole } = render(
       <RecommendationsTable recommendations={[]} handleRowClick={jest.fn()} />,
@@ -79,9 +103,9 @@ describe('Recommendations Table', () => {
         region: undefined,
         recommendationType: undefined,
         recommendationDetail: 'Test recommendation detail 1',
-        costSavings: undefined,
-        co2eSavings: undefined,
-        kilowattHourSavings: undefined,
+        costSavings: null,
+        co2eSavings: null,
+        kilowattHourSavings: null,
       },
     ]
     const { getAllByRole } = render(

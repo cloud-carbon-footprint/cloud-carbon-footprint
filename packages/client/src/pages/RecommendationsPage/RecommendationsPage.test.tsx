@@ -4,20 +4,30 @@
 
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 import RecommendationsPage from './RecommendationsPage'
-import { mockRecommendationData } from 'utils/data'
-import { useRemoteRecommendationsService } from 'utils/hooks'
+import { generateEstimations, mockRecommendationData } from 'utils/data'
+import { useRemoteRecommendationsService, useRemoteService } from 'utils/hooks'
 import { ServiceResult } from 'Types'
+import moment from 'moment'
 
 jest.mock('utils/hooks/RecommendationsServiceHook')
+jest.mock('utils/hooks/RemoteServiceHook')
 
 const mockedUseRecommendationsService =
   useRemoteRecommendationsService as jest.MockedFunction<
     typeof useRemoteRecommendationsService
   >
 
+const mockUseRemoteService = useRemoteService as jest.MockedFunction<
+  typeof useRemoteService
+>
+
 describe('Recommendations Page', () => {
+  let data: EstimationResult[]
   beforeEach(() => {
     const mockRecommendationsReturnValue: ServiceResult<RecommendationResult> =
       {
@@ -27,6 +37,18 @@ describe('Recommendations Page', () => {
     mockedUseRecommendationsService.mockReturnValue(
       mockRecommendationsReturnValue,
     )
+
+    data = generateEstimations(moment.utc(), 12)
+    const mockReturnValue: ServiceResult<EstimationResult> = {
+      loading: false,
+      data: data,
+    }
+    mockUseRemoteService.mockReturnValue(mockReturnValue)
+  })
+
+  afterEach(() => {
+    mockUseRemoteService.mockClear()
+    mockedUseRecommendationsService.mockClear()
   })
 
   it('renders a table with recommendations', () => {
