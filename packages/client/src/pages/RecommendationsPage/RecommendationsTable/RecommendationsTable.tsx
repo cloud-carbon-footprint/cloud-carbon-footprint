@@ -148,7 +148,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   return (
     <DashboardCard title="">
       <>
-        <Forecast />
+        <Forecast recommendations={recommendations} />
         <div className={classes.recommendationsContainer}>
           <Typography className={classes.title}>Recommendations</Typography>
           <div className={classes.dateRangeContainer}>

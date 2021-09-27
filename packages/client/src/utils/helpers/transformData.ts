@@ -143,6 +143,13 @@ const sumEstimate = (data: EstimationResult[], key: string): number => {
   )
 }
 
+const sumRecommendations = (
+  data: RecommendationResult[],
+  key: string,
+): number => {
+  return data.reduce((acc, currentValue) => acc + currentValue[key], 0)
+}
+
 const useFilterDataFromEstimates = (
   data: EstimationResult[],
 ): FilterResultResponse => {
@@ -230,6 +237,7 @@ const useFilterDataFromRecommendations = (
 
 export {
   sumEstimate,
+  sumRecommendations,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,

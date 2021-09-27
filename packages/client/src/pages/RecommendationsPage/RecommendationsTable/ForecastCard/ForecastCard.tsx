@@ -9,7 +9,7 @@ import clsx from 'clsx'
 
 type ForecastCardProps = {
   title: string
-  co2eSavings: number
+  co2eSavings: number | string
   costSavings: string
 }
 

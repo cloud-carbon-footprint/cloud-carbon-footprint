@@ -7,7 +7,7 @@ import moment from 'moment'
 import { render } from '@testing-library/react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { useRemoteService } from 'utils/hooks'
-import { generateEstimations } from 'utils/data'
+import { generateEstimations, mockRecommendationData } from 'utils/data'
 import { ServiceResult } from 'Types'
 import Forecast from './Forecast'
 
@@ -33,20 +33,26 @@ describe('Forecast', () => {
     mockUseRemoteService.mockClear()
   })
 
-  it('should render the title', () => {
-    const { getByText } = render(<Forecast />)
+  it('should render the title', async () => {
+    const { findByText } = render(
+      <Forecast recommendations={mockRecommendationData} />,
+    )
+    const forecast = await findByText('Forecast')
 
-    expect(getByText('Forecast')).toBeInTheDocument()
+    expect(forecast).toBeInTheDocument()
   })
 
-  it('should render the current forecast card', () => {
-    const { getByText } = render(<Forecast />)
+  it('should render the current forecast card', async () => {
+    const { findByText } = render(
+      <Forecast recommendations={mockRecommendationData} />,
+    )
+    const current = await findByText('Current')
 
-    expect(getByText('Current')).toBeInTheDocument()
+    expect(current).toBeInTheDocument()
   })
 
   it('should passed in to remote service hook today and january first of the last year', () => {
-    render(<Forecast />)
+    render(<Forecast recommendations={mockRecommendationData} />)
 
     const parameters = mockUseRemoteService.mock.calls[0]
 
@@ -60,17 +66,5 @@ describe('Forecast', () => {
     expect(startDate.year()).toEqual(endDate.year() - 1)
 
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
-  })
-
-  it('should show loading icon if data has not been returned', () => {
-    const mockLoading: ServiceResult<EstimationResult> = {
-      loading: true,
-      data: data,
-    }
-    mockUseRemoteService.mockReturnValue(mockLoading)
-
-    const { getByRole } = render(<Forecast />)
-
-    expect(getByRole('progressbar')).toBeInTheDocument()
   })
 })

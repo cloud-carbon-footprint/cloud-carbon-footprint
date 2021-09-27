@@ -17,6 +17,7 @@ import {
   sumServiceTotals,
   useFilterDataFromEstimates,
   useFilterDataFromRecommendations,
+  sumRecommendations,
 } from './transformData'
 import { mockDataWithSmallNumbers } from '../data/mockData'
 import { UnknownTypes } from '../../Types'
@@ -37,6 +38,13 @@ describe('transformData', () => {
   it('returns the sum of CO2 metric tons and gallons', () => {
     const expected = 30
     expect(sumEstimate(mockData, 'co2e')).toEqual(expected)
+  })
+
+  it('returns the sum of CO2 metric tons and gallons', () => {
+    const expected = 3.779
+    expect(sumRecommendations(mockRecommendationData, 'co2eSavings')).toEqual(
+      expected,
+    )
   })
 
   it('extract account names from estimates data', async () => {

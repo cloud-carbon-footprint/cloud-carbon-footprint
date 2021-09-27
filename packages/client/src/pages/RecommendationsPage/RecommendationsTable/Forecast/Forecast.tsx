@@ -2,36 +2,39 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React from 'react'
+import React, { FunctionComponent, ReactElement } from 'react'
 import moment from 'moment'
 import { Typography } from '@material-ui/core'
-import LoadingMessage from 'common/LoadingMessage'
 import { useRemoteService } from 'utils/hooks'
-import { sumEstimate } from 'utils/helpers'
+import { sumEstimate, sumRecommendations } from 'utils/helpers'
 import ForecastCard from '../ForecastCard/ForecastCard'
 import useStyles from './forecastStyles'
+import { RecommendationResult } from '@cloud-carbon-footprint/common'
 
-const Forecast = (): JSX.Element => {
+type ForecastProps = {
+  recommendations: RecommendationResult[]
+}
+
+const Forecast: FunctionComponent<ForecastProps> = ({
+  recommendations,
+}): ReactElement => {
+  const classes = useStyles()
   const endDate: moment.Moment = moment.utc()
   const startDate = moment.utc().subtract('1', 'year')
   const { data, loading } = useRemoteService([], startDate, endDate)
 
-  const sumCo2e = sumEstimate(data, 'co2e')
-  const sumCost = sumEstimate(data, 'cost')
-  const costFormatted = `$${parseFloat(sumCost.toFixed(2))}`
+  const sumCurrentCo2e = sumEstimate(data, 'co2e')
+  const sumCurrentCost = sumEstimate(data, 'cost')
+  const currentCostFormatted = `$${parseFloat(sumCurrentCost.toFixed(2))}`
 
-  const classes = useStyles()
+  const sumSavingsCo2e = sumRecommendations(recommendations, 'co2eSavings')
+  const sumSavingsCost = sumRecommendations(recommendations, 'costSavings')
 
-  if (loading) {
-    return (
-      <div>
-        <Typography className={classes.title}>Forecast</Typography>
-        <LoadingMessage
-          message={'Loading cloud data. This may take a while...'}
-        />
-      </div>
-    )
-  }
+  const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
+  const projectedSavingsCost = sumCurrentCost - sumSavingsCost
+  const projectedCostFormatted = `$${parseFloat(
+    projectedSavingsCost.toFixed(2),
+  )}`
 
   return (
     <div>
@@ -39,8 +42,14 @@ const Forecast = (): JSX.Element => {
 
       <ForecastCard
         title={'Current'}
-        co2eSavings={sumCo2e}
-        costSavings={costFormatted}
+        co2eSavings={loading ? '-' : sumCurrentCo2e}
+        costSavings={loading ? '-' : currentCostFormatted}
+      />
+
+      <ForecastCard
+        title={'Projected'}
+        co2eSavings={projectedSavingsCo2e}
+        costSavings={projectedCostFormatted}
       />
     </div>
   )

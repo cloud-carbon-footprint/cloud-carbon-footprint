@@ -4,6 +4,7 @@
 
 export {
   sumEstimate,
+  sumRecommendations,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,
