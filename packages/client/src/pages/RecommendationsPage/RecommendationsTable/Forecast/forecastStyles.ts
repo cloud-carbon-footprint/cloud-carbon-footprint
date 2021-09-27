@@ -16,6 +16,17 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 0,
     marginBottom: 25,
   },
+  forecastContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 30,
+  },
+  forwardIcon: {
+    width: 100,
+    height: 100,
+    color: '#EDEDED',
+  },
 }))
 
 export default useStyles

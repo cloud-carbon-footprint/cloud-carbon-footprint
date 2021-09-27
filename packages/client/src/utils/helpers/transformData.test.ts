@@ -18,6 +18,7 @@ import {
   useFilterDataFromEstimates,
   useFilterDataFromRecommendations,
   sumRecommendations,
+  calculatePercentChange,
 } from './transformData'
 import { mockDataWithSmallNumbers } from '../data/mockData'
 import { UnknownTypes } from '../../Types'
@@ -321,6 +322,14 @@ describe('sumServiceTotals', () => {
       expect(sumServiceTotals(mockDataWithSmallNumbers).costSeries).toEqual(
         expectedTotals.cost,
       )
+    })
+
+    it('calculates the percent change between two numbers', () => {
+      expect(calculatePercentChange(100, 100)).toBe(0)
+      expect(calculatePercentChange(100, 110)).toBe(-10)
+      expect(calculatePercentChange(200, 275)).toBe(-37)
+      expect(calculatePercentChange(100, 50)).toBe(50)
+      expect(calculatePercentChange(200, 135)).toBe(33)
     })
   })
 })

@@ -150,6 +150,14 @@ const sumRecommendations = (
   return data.reduce((acc, currentValue) => acc + currentValue[key], 0)
 }
 
+const calculatePercentChange = (
+  oldAmount: number,
+  newAmount: number,
+): number => {
+  const result = ((oldAmount - newAmount) / Math.abs(oldAmount)) * 100
+  return Math.ceil(result)
+}
+
 const useFilterDataFromEstimates = (
   data: EstimationResult[],
 ): FilterResultResponse => {
@@ -238,6 +246,7 @@ const useFilterDataFromRecommendations = (
 export {
   sumEstimate,
   sumRecommendations,
+  calculatePercentChange,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,

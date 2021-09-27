@@ -26,4 +26,19 @@ describe('Forecast Card', () => {
       expect(getByText(props[key])).toBeInTheDocument()
     },
   )
+
+  it('should render percents badge if percentChange is passed to it', () => {
+    const { getByText } = render(
+      <ForecastCard
+        title="Title"
+        co2eSavings="0"
+        costSavings="0"
+        co2ePercentChange={25}
+        costPercentChange={10}
+      />,
+    )
+
+    expect(getByText('25%')).toBeInTheDocument()
+    expect(getByText('10%')).toBeInTheDocument()
+  })
 })

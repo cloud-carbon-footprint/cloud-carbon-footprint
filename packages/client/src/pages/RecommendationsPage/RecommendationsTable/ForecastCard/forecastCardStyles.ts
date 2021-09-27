@@ -3,6 +3,7 @@
  */
 
 import { makeStyles } from '@material-ui/core/styles'
+import { ForecastCardProps } from './ForecastCard'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() => ({
     color: '#FFFFFF',
   },
   textContent: {
-    fontSize: 50,
+    fontSize: 36,
     textAlign: 'center',
   },
   co2eSavings: {
@@ -56,9 +57,24 @@ const useStyles = makeStyles(() => ({
   contentContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 40,
+    alignItems: 'center',
     alignSelf: 'center',
-    marginTop: 50,
+    gap: ({
+      co2ePercentChange,
+      costPercentChange,
+    }: Partial<ForecastCardProps>) =>
+      co2ePercentChange && costPercentChange ? 25 : 40,
+    marginTop: ({
+      co2ePercentChange,
+      costPercentChange,
+    }: Partial<ForecastCardProps>) =>
+      co2ePercentChange && costPercentChange ? 60 : 50,
+  },
+
+  numberContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 }))
 
