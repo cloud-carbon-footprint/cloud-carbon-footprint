@@ -50,8 +50,14 @@ const Forecast: FunctionComponent<ForecastProps> = ({
     projectedCo2eFormatted = projectedSavingsCo2e.toFixed(2)
     projectedCostFormatted = `$${projectedSavingsCost.toFixed(2)}`
 
-    co2ePercentChange = calculatePercentChange(sumCurrentCo2e, sumSavingsCo2e)
-    costPercentChange = calculatePercentChange(sumCurrentCost, sumSavingsCost)
+    co2ePercentChange = calculatePercentChange(
+      sumCurrentCo2e,
+      projectedSavingsCo2e,
+    )
+    costPercentChange = calculatePercentChange(
+      sumCurrentCost,
+      projectedSavingsCost,
+    )
   }
 
   return (
