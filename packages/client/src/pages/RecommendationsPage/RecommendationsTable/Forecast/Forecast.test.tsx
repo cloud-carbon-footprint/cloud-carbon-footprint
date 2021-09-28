@@ -46,7 +46,7 @@ describe('Forecast', () => {
     const { findByText } = render(
       <Forecast recommendations={mockRecommendationData} />,
     )
-    const current = await findByText('Current')
+    const current = await findByText('Current Total')
 
     expect(current).toBeInTheDocument()
   })
