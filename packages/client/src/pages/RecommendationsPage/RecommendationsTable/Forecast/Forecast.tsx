@@ -65,13 +65,15 @@ const Forecast: FunctionComponent<ForecastProps> = ({
       <Typography className={classes.title}>Forecast</Typography>
       <div className={classes.forecastContainer}>
         <ForecastCard
-          title={'Current'}
+          title={'Current Total'}
+          isLoading={loading}
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
         />
         <ForwardIcon className={classes.forwardIcon} />
         <ForecastCard
-          title={'Projected'}
+          title={'Projected Total'}
+          isLoading={loading}
           co2eSavings={projectedCo2eFormatted}
           costSavings={projectedCostFormatted}
           co2ePercentChange={co2ePercentChange}

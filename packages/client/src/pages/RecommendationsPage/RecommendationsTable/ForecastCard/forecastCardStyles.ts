@@ -63,18 +63,29 @@ const useStyles = makeStyles(() => ({
       co2ePercentChange,
       costPercentChange,
     }: Partial<ForecastCardProps>) =>
-      co2ePercentChange && costPercentChange ? 25 : 40,
+      (co2ePercentChange || co2ePercentChange === 0) &&
+      (costPercentChange || costPercentChange === 0)
+        ? 25
+        : 40,
     marginTop: ({
       co2ePercentChange,
       costPercentChange,
     }: Partial<ForecastCardProps>) =>
-      co2ePercentChange && costPercentChange ? 60 : 50,
+      (co2ePercentChange || co2ePercentChange === 0) &&
+      (costPercentChange || costPercentChange === 0)
+        ? 60
+        : 50,
   },
-
   numberContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  loadingNumber: {
+    animation: '$blinker 2s linear infinite',
+  },
+  '@keyframes blinker': {
+    '50%': { opacity: 0 },
   },
 }))
 

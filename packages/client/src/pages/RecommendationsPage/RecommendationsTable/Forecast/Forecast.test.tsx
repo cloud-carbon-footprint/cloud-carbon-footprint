@@ -67,4 +67,13 @@ describe('Forecast', () => {
 
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
+
+  xit('should render the equivalency card', () => {
+    const { getByText } = render(
+      <Forecast recommendations={mockRecommendationData} />,
+    )
+    const current = getByText('Savings equal to')
+
+    expect(current).toBeInTheDocument()
+  })
 })

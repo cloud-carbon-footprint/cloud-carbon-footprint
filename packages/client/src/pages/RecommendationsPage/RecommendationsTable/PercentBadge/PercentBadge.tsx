@@ -5,7 +5,7 @@
 import { FunctionComponent } from 'react'
 import clsx from 'clsx'
 import { Typography } from '@material-ui/core'
-import { TrendingDown, TrendingUp } from '@material-ui/icons'
+import { TrendingDown, TrendingUp, TrendingFlat } from '@material-ui/icons'
 import useStyles from './percentBadgeStyles'
 
 type PercentBadgeProps = {
@@ -14,20 +14,23 @@ type PercentBadgeProps = {
 
 const PercentBadge: FunctionComponent<PercentBadgeProps> = ({ amount }) => {
   const classes = useStyles()
-  const arrowIcon =
-    amount >= 0 ? (
-      <TrendingDown data-testid="decrease-arrow" aria-label="decrease" />
-    ) : (
-      <TrendingUp data-testid="increase-arrow" aria-label="increase" />
-    )
+
+  const getArrowIcon = () => {
+    if (amount > 0)
+      return <TrendingDown data-testid="decrease-arrow" aria-label="decrease" />
+    else if (amount === 0)
+      return <TrendingFlat data-testid="flat-arrow" aria-label="no change" />
+    return <TrendingUp data-testid="increase-arrow" aria-label="increase" />
+  }
 
   return (
     <div
       className={clsx(classes.badgeContainer, {
         [classes.increasingBadge]: amount < 0,
+        [classes.noChangeBadge]: amount === 0,
       })}
     >
-      {arrowIcon}
+      {getArrowIcon()}
       <Typography>{Math.abs(amount)}%</Typography>
     </div>
   )

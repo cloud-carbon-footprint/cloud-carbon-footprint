@@ -30,6 +30,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: lightNegative,
     color: darkNegative,
   },
+  noChangeBadge: {
+    backgroundColor: '#EDEDED',
+    color: 'black',
+  },
 }))
 
 export default useStyles
