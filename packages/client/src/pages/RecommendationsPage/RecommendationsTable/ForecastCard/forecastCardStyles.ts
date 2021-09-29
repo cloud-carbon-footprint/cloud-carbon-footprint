@@ -3,10 +3,10 @@
  */
 
 import { makeStyles } from '@material-ui/core/styles'
-import { ForecastCardProps } from './ForecastCard'
 
 const useStyles = makeStyles(() => ({
   card: {
+    backgroundColor: '#3F51B5',
     width: 300,
     height: 350,
     border: '5px solid #3F51B5',
@@ -52,29 +52,22 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#3F51B5',
     width: 212,
     height: 4,
-    margin: 'auto',
   },
   contentContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    alignSelf: 'center',
-    gap: ({
-      co2ePercentChange,
-      costPercentChange,
-    }: Partial<ForecastCardProps>) =>
-      (co2ePercentChange || co2ePercentChange === 0) &&
-      (costPercentChange || costPercentChange === 0)
-        ? 25
-        : 40,
-    marginTop: ({
-      co2ePercentChange,
-      costPercentChange,
-    }: Partial<ForecastCardProps>) =>
-      (co2ePercentChange || co2ePercentChange === 0) &&
-      (costPercentChange || costPercentChange === 0)
-        ? 60
-        : 50,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+    height: '100%',
+    padding: 30,
+    gap: 30,
+    marginTop: 50,
+  },
+  contentWithBadge: {
+    gap: 25,
+    marginTop: 60,
   },
   numberContainer: {
     display: 'flex',
