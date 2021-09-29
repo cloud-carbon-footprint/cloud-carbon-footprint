@@ -242,7 +242,7 @@ export default class BillingExportTable {
   ): FootprintEstimate {
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      numberOfvCpus: usageRow.vCpuHours,
+      vCpuHours: usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
     }

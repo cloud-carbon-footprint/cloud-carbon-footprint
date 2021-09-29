@@ -7,20 +7,20 @@ import { IUsageData, CloudConstants } from '../.'
 
 export default interface ComputeUsage extends IUsageData {
   cpuUtilizationAverage: number
-  numberOfvCpus: number
+  vCpuHours: number
   usesAverageCPUConstant: boolean
 }
 
 export class ComputeUsageBuilder {
   private timestamp: string
   private cpuUtilizations: number[]
-  private numberOfvCpus: number
+  private vCpuHours: number
   private constants: CloudConstants
 
   constructor(timestamp: string, constants: CloudConstants) {
     this.timestamp = timestamp
     this.cpuUtilizations = []
-    this.numberOfvCpus = 0
+    this.vCpuHours = 0
     this.constants = constants
   }
 
@@ -31,8 +31,8 @@ export class ComputeUsageBuilder {
     return this
   }
 
-  setNumberOfvCpus(numberOfvCpus: number): ComputeUsageBuilder {
-    this.numberOfvCpus = numberOfvCpus
+  setVCpuHours(vCpuHours: number): ComputeUsageBuilder {
+    this.vCpuHours = vCpuHours
     return this
   }
 
@@ -45,7 +45,7 @@ export class ComputeUsageBuilder {
     return {
       timestamp: new Date(this.timestamp),
       cpuUtilizationAverage,
-      numberOfvCpus: this.numberOfvCpus,
+      vCpuHours: this.vCpuHours,
       usesAverageCPUConstant: !hasMeasurements,
     }
   }
@@ -78,7 +78,7 @@ const mergeUsageByTimestamp = (
   if (data.id === 'cpuUtilization') {
     acc[data.timestamp] = usageToUpdate.addCpuUtilization(data.value)
   } else if (data.id === 'vCPUs') {
-    acc[data.timestamp] = usageToUpdate.setNumberOfvCpus(data.value)
+    acc[data.timestamp] = usageToUpdate.setVCpuHours(data.value)
   }
   return acc
 }
@@ -93,5 +93,5 @@ export function buildComputeUsages(
   )
   return Object.values(groupedComputeUsages)
     .map((builder: ComputeUsageBuilder) => builder.build())
-    .filter((usage: ComputeUsage) => usage.numberOfvCpus > 0)
+    .filter((usage: ComputeUsage) => usage.vCpuHours > 0)
 }

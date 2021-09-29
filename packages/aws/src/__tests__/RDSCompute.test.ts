@@ -103,13 +103,13 @@ describe('RDS Compute', function () {
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 32.34,
-        numberOfvCpus: 2,
+        vCpuHours: 2,
         timestamp: new Date('2020-01-25T00:00:00.000Z'),
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: 12.65,
-        numberOfvCpus: 96,
+        vCpuHours: 96,
         timestamp: new Date('2020-01-26T00:00:00.000Z'),
         usesAverageCPUConstant: false,
       },
@@ -175,13 +175,13 @@ describe('RDS Compute', function () {
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 32.34,
-        numberOfvCpus: 2,
+        vCpuHours: 2,
         timestamp: new Date('2020-01-25T00:00:00.000Z'),
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-        numberOfvCpus: 96,
+        vCpuHours: 96,
         timestamp: new Date('2020-01-26T00:00:00.000Z'),
         usesAverageCPUConstant: true,
       },

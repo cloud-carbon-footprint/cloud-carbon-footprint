@@ -88,19 +88,19 @@ describe('ComputeUsage', () => {
     const expectedResult: ComputeUsage[] = [
       {
         cpuUtilizationAverage: 19.22386839351125,
-        numberOfvCpus: 4.5,
+        vCpuHours: 4.5,
         timestamp: new Date(dayOneHourOne),
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: 11.4,
-        numberOfvCpus: 4,
+        vCpuHours: 4,
         timestamp: new Date(dayTwoHourOne),
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: 18.231303418803417,
-        numberOfvCpus: 4.333333333333333,
+        vCpuHours: 4.333333333333333,
         timestamp: new Date(dayTwoHourTwo),
         usesAverageCPUConstant: false,
       },
@@ -123,7 +123,7 @@ describe('ComputeUsage', () => {
     const expectedResults = [
       {
         cpuUtilizationAverage: 50,
-        numberOfvCpus: 4.5,
+        vCpuHours: 4.5,
         timestamp: new Date(dayOneHourOne),
         usesAverageCPUConstant: true,
       },

@@ -175,13 +175,13 @@ describe('ComputeEngine', () => {
     expect(result).toEqual([
       {
         cpuUtilizationAverage: 0.25,
-        numberOfvCpus: 4,
+        vCpuHours: 4,
         timestamp: dayOneHourOne,
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: 0.75,
-        numberOfvCpus: 2,
+        vCpuHours: 2,
         timestamp: dayOneHourTwo,
         usesAverageCPUConstant: false,
       },
@@ -241,14 +241,14 @@ describe('ComputeEngine', () => {
     expect(result).toEqual([
       {
         cpuUtilizationAverage: 0.25,
-        numberOfvCpus: 4,
+        vCpuHours: 4,
         timestamp: dayOneHourOne,
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage:
           GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020 / 100,
-        numberOfvCpus: 2,
+        vCpuHours: 2,
         timestamp: dayOneHourTwo,
         usesAverageCPUConstant: true,
       },

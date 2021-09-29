@@ -444,7 +444,7 @@ export default class Recommendations implements ICloudRecommendationsService {
 
     const computeUsage = {
       cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      numberOfvCpus: vCpuHours,
+      vCpuHours: vCpuHours,
       usesAverageCPUConstant: true,
     }
 

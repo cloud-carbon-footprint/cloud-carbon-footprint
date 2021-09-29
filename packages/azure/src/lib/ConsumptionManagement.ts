@@ -411,7 +411,7 @@ export default class ConsumptionManagementService {
     const computeUsage: ComputeUsage = {
       timestamp: consumptionDetailRow.timestamp,
       cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      numberOfvCpus: consumptionDetailRow.vCpuHours,
+      vCpuHours: consumptionDetailRow.vCpuHours,
       usesAverageCPUConstant: true,
     }
 
