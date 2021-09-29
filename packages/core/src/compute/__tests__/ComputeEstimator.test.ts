@@ -11,7 +11,7 @@ describe('ComputeEstimator', () => {
       {
         timestamp: new Date('2020-01-01'),
         cpuUtilizationAverage: 1.0,
-        numberOfvCpus: 1.0,
+        vCpuHours: 1.0,
         usesAverageCPUConstant: false,
       },
     ]
@@ -47,7 +47,7 @@ describe('ComputeEstimator', () => {
       {
         timestamp: new Date('2020-01-01'),
         cpuUtilizationAverage: 1.0,
-        numberOfvCpus: 1.0,
+        vCpuHours: 1.0,
         usesAverageCPUConstant: false,
       },
     ]

@@ -44,7 +44,7 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
   private getComputeUsage(): ComputeUsage {
     return {
       cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      numberOfvCpus: this.vCpuHours,
+      vCpuHours: this.vCpuHours,
       usesAverageCPUConstant: true,
     }
   }

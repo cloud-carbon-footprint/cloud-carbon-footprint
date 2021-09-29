@@ -120,13 +120,13 @@ describe('ElastiCache', () => {
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 1.0456,
-        numberOfvCpus: 4,
+        vCpuHours: 4,
         timestamp: new Date(startDate),
         usesAverageCPUConstant: false,
       },
       {
         cpuUtilizationAverage: 2.03242,
-        numberOfvCpus: 4,
+        vCpuHours: 4,
         timestamp: new Date(dayTwo),
         usesAverageCPUConstant: false,
       },
@@ -242,7 +242,7 @@ describe('ElastiCache', () => {
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 50,
-        numberOfvCpus: 2,
+        vCpuHours: 2,
         timestamp: new Date(startDate),
         usesAverageCPUConstant: true,
       },
@@ -318,7 +318,7 @@ describe('ElastiCache', () => {
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 50,
-        numberOfvCpus: 8,
+        vCpuHours: 8,
         timestamp: new Date(startDate),
         usesAverageCPUConstant: false,
       },
@@ -396,7 +396,7 @@ describe('ElastiCache', () => {
     expect(usageByHour).toEqual([
       {
         cpuUtilizationAverage: 60,
-        numberOfvCpus: 6,
+        vCpuHours: 6,
         timestamp: new Date(startDate),
         usesAverageCPUConstant: false,
       },

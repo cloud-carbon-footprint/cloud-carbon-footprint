@@ -39,7 +39,7 @@ export default class ComputeEstimator implements IFootprintEstimator {
     return data.map((usage) => {
       const estimatedKilowattHours = ENERGY_ESTIMATION_FORMULA(
         usage.cpuUtilizationAverage,
-        usage.numberOfvCpus,
+        usage.vCpuHours,
         constants.minWatts,
         constants.maxWatts,
         constants.powerUsageEffectiveness,

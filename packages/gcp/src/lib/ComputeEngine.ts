@@ -74,7 +74,7 @@ export default class ComputeEngine extends ServiceWithCPUUtilization {
       )
       result.push({
         cpuUtilizationAverage: cpuUtilizationAverage,
-        numberOfvCpus: point.value.doubleValue,
+        vCpuHours: point.value.doubleValue,
         timestamp: new Date(+point.interval.startTime.seconds * 1000),
         usesAverageCPUConstant: !measuredCpuUtilization,
       })
