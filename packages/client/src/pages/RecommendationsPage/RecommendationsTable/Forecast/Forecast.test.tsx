@@ -68,7 +68,7 @@ describe('Forecast', () => {
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })
 
-  xit('should render the equivalency card', () => {
+  it('should render the equivalency card', () => {
     const { getByText } = render(
       <Forecast recommendations={mockRecommendationData} />,
     )

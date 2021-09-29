@@ -15,6 +15,8 @@ import {
   calculatePercentChange,
   formattedNumberWithCommas,
 } from 'utils/helpers/transformData'
+import ForecastEquivalencyCard from '../ForecastEquivalencyCard/ForecastEquivalencyCard'
+import clsx from 'clsx'
 
 type ForecastProps = {
   recommendations: RecommendationResult[]
@@ -36,6 +38,9 @@ const Forecast: FunctionComponent<ForecastProps> = ({
 
   let co2ePercentChange
   let costPercentChange
+
+  let yearlyCostSavings = '-'
+  let treeSeedlings = '-'
 
   if (!loading) {
     const sumCurrentCo2e = sumEstimate(data, 'co2e')
@@ -63,6 +68,10 @@ const Forecast: FunctionComponent<ForecastProps> = ({
       sumCurrentCost,
       projectedSavingsCost,
     )
+
+    yearlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost * 12)}`
+
+    treeSeedlings = formattedNumberWithCommas(sumSavingsCo2e * 16.5337915448, 0)
   }
 
   return (
@@ -75,7 +84,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
         />
-        <ForwardIcon className={classes.forwardIcon} />
+        <ForwardIcon className={classes.icon} />
         <ForecastCard
           title={'Projected Total'}
           isLoading={loading}
@@ -83,6 +92,13 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           costSavings={projectedCostFormatted}
           co2ePercentChange={co2ePercentChange}
           costPercentChange={costPercentChange}
+        />
+        <div className={clsx(classes.icon, classes.equalSign)}>=</div>
+        <ForecastEquivalencyCard
+          title={'Savings equal to'}
+          treeSeedlings={treeSeedlings}
+          yearCostSavings={yearlyCostSavings}
+          isLoading={loading}
         />
       </div>
     </>

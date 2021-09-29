@@ -22,10 +22,16 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     gap: 30,
   },
-  forwardIcon: {
+  icon: {
     width: 100,
     height: 100,
     color: '#EDEDED',
+  },
+  equalSign: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 155,
   },
 }))
 
