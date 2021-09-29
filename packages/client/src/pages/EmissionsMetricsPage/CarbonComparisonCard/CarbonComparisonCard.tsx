@@ -97,7 +97,12 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
 
   if (totalMetricTons) {
     return (
-      <DashboardCard isHalf noPadding testId="carbonComparison">
+      <DashboardCard
+        isHalf
+        noPadding
+        testId="carbonComparison"
+        id="carbonComparisonCard"
+      >
         <CarbonComparison
           formatNumber={formatNumber}
           totalMetricTons={totalMetricTons}

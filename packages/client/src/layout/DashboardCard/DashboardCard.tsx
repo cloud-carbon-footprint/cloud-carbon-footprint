@@ -11,6 +11,7 @@ type DashboardCardProps = {
   title?: string
   isHalf?: boolean
   noPadding?: boolean
+  id?: string
   testId?: string
   containerClass?: string
   children: ReactElement
@@ -20,6 +21,7 @@ const DashboardCard: FunctionComponent<DashboardCardProps> = ({
   title,
   isHalf,
   noPadding,
+  id,
   testId,
   containerClass,
   children,
@@ -37,6 +39,7 @@ const DashboardCard: FunctionComponent<DashboardCardProps> = ({
       data-testid={testId}
     >
       <Card
+        id={id}
         className={clsx(classes.card, {
           [classes.minHeight]: isHalf,
         })}
