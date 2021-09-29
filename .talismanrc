@@ -1,3 +1,6 @@
+scopeconfig:
+  - scope: node
+
 fileignoreconfig:
 - filename: .changeset/brave-lies-sing.md
   checksum: 767abedd8956b7d4b7a7a680125af79d12039e06c5fcdbaf9d45cf1b82c32ee6
@@ -305,5 +308,3 @@ fileignoreconfig:
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: setupTests.ts
   checksum: 70858864e1b6d2e91547f823d455acd4bfd8457a4b9df6d493607e95333de753
-- filename: yarn.lock
-  checksum: c351bdac02e96a5bfed86d007fe3dc531102bc6c9decdc83a4686295552daedf
