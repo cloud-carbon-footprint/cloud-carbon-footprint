@@ -11,7 +11,10 @@ import { useRemoteService } from 'utils/hooks'
 import { sumEstimate, sumRecommendations } from 'utils/helpers'
 import ForecastCard from '../ForecastCard/ForecastCard'
 import useStyles from './forecastStyles'
-import { calculatePercentChange } from '../../../../utils/helpers/transformData'
+import {
+  calculatePercentChange,
+  formattedNumberWithCommas,
+} from 'utils/helpers/transformData'
 
 type ForecastProps = {
   recommendations: RecommendationResult[]
@@ -47,8 +50,10 @@ const Forecast: FunctionComponent<ForecastProps> = ({
     const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
     const projectedSavingsCost = sumCurrentCost - sumSavingsCost
 
-    projectedCo2eFormatted = projectedSavingsCo2e.toFixed(2)
-    projectedCostFormatted = `$${projectedSavingsCost.toFixed(2)}`
+    projectedCo2eFormatted = formattedNumberWithCommas(projectedSavingsCo2e)
+    projectedCostFormatted = `$${formattedNumberWithCommas(
+      projectedSavingsCost,
+    )}`
 
     co2ePercentChange = calculatePercentChange(
       sumCurrentCo2e,

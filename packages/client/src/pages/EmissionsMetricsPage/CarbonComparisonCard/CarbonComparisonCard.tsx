@@ -11,6 +11,7 @@ import DashboardCard from 'layout/DashboardCard'
 import { Source, ComparisonItem } from 'Types'
 import CarbonComparison from './CarbonComparison'
 import useStyles from './carbonComparisonStyles'
+import { formattedNumberWithCommas } from 'utils/helpers/transformData'
 
 type Selection = 'flights' | 'phones' | 'trees'
 
@@ -41,9 +42,7 @@ const CarbonComparisonCard: FunctionComponent<CarbonComparisonCardProps> = ({
     if (number >= 1000000) return `${(number / 1000000).toFixed(1)}+ M`
 
     return number >= 1
-      ? number.toLocaleString(undefined, {
-          maximumFractionDigits: decimalPlaces,
-        })
+      ? formattedNumberWithCommas(number, decimalPlaces)
       : Number(number.toExponential(decimalPlaces)).toString()
   }
 

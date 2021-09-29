@@ -6,6 +6,7 @@ import { FunctionComponent } from 'react'
 import clsx from 'clsx'
 import { Typography } from '@material-ui/core'
 import { TrendingDown, TrendingUp, TrendingFlat } from '@material-ui/icons'
+import { formattedNumberWithCommas } from 'utils/helpers/transformData'
 import useStyles from './percentBadgeStyles'
 
 type PercentBadgeProps = {
@@ -15,7 +16,7 @@ type PercentBadgeProps = {
 const PercentBadge: FunctionComponent<PercentBadgeProps> = ({ amount }) => {
   const classes = useStyles()
 
-  const getArrowIcon = () => {
+  const trendingArrowIcon = () => {
     if (amount > 0)
       return <TrendingDown data-testid="decrease-arrow" aria-label="decrease" />
     else if (amount === 0)
@@ -30,8 +31,8 @@ const PercentBadge: FunctionComponent<PercentBadgeProps> = ({ amount }) => {
         [classes.noChangeBadge]: amount === 0,
       })}
     >
-      {getArrowIcon()}
-      <Typography>{Math.abs(amount)}%</Typography>
+      {trendingArrowIcon()}
+      <Typography>{formattedNumberWithCommas(Math.abs(amount))}%</Typography>
     </div>
   )
 }

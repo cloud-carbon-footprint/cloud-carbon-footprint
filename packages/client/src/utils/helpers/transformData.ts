@@ -158,6 +158,11 @@ const calculatePercentChange = (
   return Math.ceil(result)
 }
 
+const formattedNumberWithCommas = (num: number, decimalPlaces = 2): string =>
+  num.toLocaleString(undefined, {
+    maximumFractionDigits: decimalPlaces,
+  })
+
 const useFilterDataFromEstimates = (
   data: EstimationResult[],
 ): FilterResultResponse => {
@@ -247,6 +252,7 @@ export {
   sumEstimate,
   sumRecommendations,
   calculatePercentChange,
+  formattedNumberWithCommas,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,

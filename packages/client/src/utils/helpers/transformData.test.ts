@@ -19,9 +19,10 @@ import {
   useFilterDataFromRecommendations,
   sumRecommendations,
   calculatePercentChange,
+  formattedNumberWithCommas,
 } from './transformData'
 import { mockDataWithSmallNumbers } from '../data/mockData'
-import { UnknownTypes } from '../../Types'
+import { UnknownTypes } from 'Types'
 
 const testAccountA = 'test-a'
 const testAccountB = 'test-b'
@@ -330,6 +331,18 @@ describe('sumServiceTotals', () => {
       expect(calculatePercentChange(200, 275)).toBe(-37)
       expect(calculatePercentChange(100, 50)).toBe(50)
       expect(calculatePercentChange(200, 135)).toBe(33)
+    })
+
+    it('formats number to a string with commas and with a default decimal place of 2', () => {
+      expect(formattedNumberWithCommas(1000000)).toBe('1,000,000')
+      expect(formattedNumberWithCommas(100)).toBe('100')
+      expect(formattedNumberWithCommas(1000000.20567)).toBe('1,000,000.21')
+    })
+
+    it('formats number to a string with commas and with provided decimal place', () => {
+      expect(formattedNumberWithCommas(1000000.123456, 4)).toBe(
+        '1,000,000.1235',
+      )
     })
   })
 })
