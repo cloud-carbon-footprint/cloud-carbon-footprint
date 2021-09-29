@@ -126,8 +126,13 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     const filteredRecommendations = recommendations.filter(
       (row: RecommendationResult) => {
         return Object.keys(row).some((field: string) => {
-          if (!fieldsToNotFilter.includes(field))
-            return searchRegex.test(row[field]?.toString())
+          if (!fieldsToNotFilter.includes(field)) {
+            let value = row[field]
+            if (field.includes('Savings')) {
+              value = Math.round(value * 1000) / 1000
+            }
+            return searchRegex.test(value?.toString())
+          }
         })
       },
     )
