@@ -47,7 +47,8 @@ const Forecast: FunctionComponent<ForecastProps> = ({
     const sumCurrentCost = sumEstimate(data, 'cost')
 
     currentCo2eFormatted = sumCurrentCo2e.toFixed(2)
-    currentCostFormatted = `$${sumCurrentCost.toFixed(2)}`
+    // currentCostFormatted = `$${sumCurrentCost.toFixed(2)}`
+    currentCostFormatted = `$${formattedNumberWithCommas(sumCurrentCost)}`
 
     const sumSavingsCo2e = sumRecommendations(recommendations, 'co2eSavings')
     const sumSavingsCost = sumRecommendations(recommendations, 'costSavings')
