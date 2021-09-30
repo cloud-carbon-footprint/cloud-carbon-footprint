@@ -159,22 +159,22 @@ queries an AWS Account.
 
 When we know what underlying processor micro-architecture or group of micro-architectures are used for a given cloud provider virtual machine, we use the min and max watts for that micro-architecture or the average of a group of micro-architectures. When a group of micro-architectures includes either Ivy Bridge or Sandy Bridge, we use the median of that group. This is because we treat those micro-architectures as outliers due to their comparatively high min/max watts in order to not overestimate. See Appendix II for this list of processors and micro-architectures with the min and max watts.
 
-When we don’t know the underlying processor micro-architecture, we use the average of all micro-architectures used by that cloud provider. Here are those averages per cloud provider:
+When we don’t know the underlying processor micro-architecture, we use the average or median of all micro-architectures used by that cloud provider. Here are those averages per cloud provider:
 
 **AWS:**
 
-- Min Watts: 0.71
-- Max Matts: 3.46
+- Average Min Watts: 0.74
+- Average Max Matts: 3.5
 
 **GCP:**
 
-- Min Watts: 1.34
-- Max Watts: 4.98
+- Median Min Watts: 0.71
+- Median Max Watts: 4.26
 
 **Azure:**
 
-- Min Watts: 0.77
-- Max Matts: 3.74
+- Average Min Watts: 0.78
+- Average Max Matts: 3.76
 
 ##### A note on AWS Lambda Compute Estimates
 
@@ -340,7 +340,7 @@ equivalent to the SPEC Power database rows.
 
 ### Power Usage Effectiveness
 
-After estimating the kilowatt hours for compute, storage and networking, we need to multiply this by the cloud provider Power Usage Effectiveness (PUE). PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on publicly available information provided by the cloud providers. In the case of GCP, they [publish their PUE](https://cloud.google.com/sustainability). In the case of AWS, we have made a conservative guess [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/). Microsoft's Sustainability team have provided a statement<sup>1</sup> as to the PUE for the Azure datacenters.
+After estimating the kilowatt hours for compute, storage and networking, we need to multiply this by the cloud provider Power Usage Effectiveness (PUE). PUE is a score of how energy efficient a data center is, with the lowest possible score of 1 meaning all energy consumed goes directly to powering the servers and none is being wasted on cooling. This is based on publicly available information provided by the cloud providers. In the case of GCP, they [publish their PUE](https://www.google.com/about/datacenters/efficiency/). In the case of AWS, we have made a conservative guess [based on public information](https://aws.amazon.com/blogs/aws/cloud-computing-server-utilization-the-environment/). Microsoft's Sustainability team have provided a statement<sup>1</sup> as to the PUE for the Azure datacenters.
 
 Here are the cloud provider PUEs being used:
 
@@ -380,8 +380,8 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 #### AWS
 
-- Average Minimum Watts (0% Cpu Utilization): 0.71
-- Average Maximum Watts (100% Cpu Utilization): 3.46
+- Average Minimum Watts (0% Cpu Utilization): 0.74
+- Average Maximum Watts (100% Cpu Utilization): 3.5
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
@@ -391,8 +391,8 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 #### GCP
 
-- Average Minimum Watts (0% Cpu Utilization): 1.34
-- Average Maximum Watts (100% Cpu Utilization): 4.98
+- Median Minimum Watts (0% Cpu Utilization): 0.71
+- Median Maximum Watts (100% Cpu Utilization): 4.26
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
@@ -402,8 +402,8 @@ API](https://api.electricitymap.org/) provides hourly historical and forecasted 
 
 #### Azure
 
-- Average Minimum Watts (0% Cpu Utilization): 0.77
-- Average Maximum Watts (100% Cpu Utilization): 3.74
+- Average Minimum Watts (0% Cpu Utilization): 0.78
+- Average Maximum Watts (100% Cpu Utilization): 3.76
 - Average CPU Utilization for hyperscale data centers: 50%
 - HDD Storage Watt Hours / Terabyte: 0.65
 - SSD Storage Watt Hours / Terabyte: 1.2
