@@ -3,76 +3,66 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import moment from 'moment'
+import clsx from 'clsx'
 import { Typography } from '@material-ui/core'
 import ForwardIcon from '@material-ui/icons/Forward'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import { useRemoteService } from 'utils/hooks'
-import { sumEstimate, sumRecommendations } from 'utils/helpers'
-import ForecastCard from '../ForecastCard/ForecastCard'
+import {
+  EstimationResult,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 import useStyles from './forecastStyles'
 import {
+  sumEstimate,
+  sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,
-} from 'utils/helpers/transformData'
-import ForecastEquivalencyCard from '../ForecastEquivalencyCard/ForecastEquivalencyCard'
-import clsx from 'clsx'
+} from 'utils/helpers'
+import ForecastCard from '../ForecastCard'
+import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
 
 type ForecastProps = {
+  emissionsData: EstimationResult[]
   recommendations: RecommendationResult[]
 }
 
 const Forecast: FunctionComponent<ForecastProps> = ({
+  emissionsData,
   recommendations,
 }): ReactElement => {
   const classes = useStyles()
-  const endDate: moment.Moment = moment.utc()
-  const startDate = moment.utc().subtract('1', 'year')
-  const { data, loading } = useRemoteService([], startDate, endDate)
 
-  let currentCo2eFormatted = '-'
-  let currentCostFormatted = '-'
+  const sumCurrentCo2e = sumEstimate(emissionsData, 'co2e')
+  const sumCurrentCost = sumEstimate(emissionsData, 'cost')
 
-  let projectedCo2eFormatted = '-'
-  let projectedCostFormatted = '-'
+  const currentCo2eFormatted = formattedNumberWithCommas(sumCurrentCo2e)
+  const currentCostFormatted = `$${formattedNumberWithCommas(sumCurrentCost)}`
 
-  let co2ePercentChange
-  let costPercentChange
+  const sumSavingsCo2e = sumRecommendations(recommendations, 'co2eSavings')
+  const sumSavingsCost = sumRecommendations(recommendations, 'costSavings')
 
-  let yearlyCostSavings = '-'
-  let treeSeedlings = '-'
+  const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
+  const projectedSavingsCost = sumCurrentCost - sumSavingsCost
 
-  if (!loading) {
-    const sumCurrentCo2e = sumEstimate(data, 'co2e')
-    const sumCurrentCost = sumEstimate(data, 'cost')
+  const projectedCo2eFormatted = formattedNumberWithCommas(projectedSavingsCo2e)
+  const projectedCostFormatted = `$${formattedNumberWithCommas(
+    projectedSavingsCost,
+  )}`
 
-    currentCo2eFormatted = formattedNumberWithCommas(sumCurrentCo2e)
-    currentCostFormatted = `$${formattedNumberWithCommas(sumCurrentCost)}`
+  const co2ePercentChange = calculatePercentChange(
+    sumCurrentCo2e,
+    projectedSavingsCo2e,
+  )
+  const costPercentChange = calculatePercentChange(
+    sumCurrentCost,
+    projectedSavingsCost,
+  )
 
-    const sumSavingsCo2e = sumRecommendations(recommendations, 'co2eSavings')
-    const sumSavingsCost = sumRecommendations(recommendations, 'costSavings')
+  const yearlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost * 12)}`
 
-    const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
-    const projectedSavingsCost = sumCurrentCost - sumSavingsCost
-
-    projectedCo2eFormatted = formattedNumberWithCommas(projectedSavingsCo2e)
-    projectedCostFormatted = `$${formattedNumberWithCommas(
-      projectedSavingsCost,
-    )}`
-
-    co2ePercentChange = calculatePercentChange(
-      sumCurrentCo2e,
-      projectedSavingsCo2e,
-    )
-    costPercentChange = calculatePercentChange(
-      sumCurrentCost,
-      projectedSavingsCost,
-    )
-
-    yearlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost * 12)}`
-
-    treeSeedlings = formattedNumberWithCommas(sumSavingsCo2e * 16.5337915448, 0)
-  }
+  const treeSeedlings = formattedNumberWithCommas(
+    sumSavingsCo2e * 16.5337915448,
+    0,
+  )
 
   return (
     <>
@@ -80,14 +70,12 @@ const Forecast: FunctionComponent<ForecastProps> = ({
       <div className={classes.forecastContainer}>
         <ForecastCard
           title={'Current Total'}
-          isLoading={loading}
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
         />
         <ForwardIcon className={classes.icon} />
         <ForecastCard
           title={'Projected Total'}
-          isLoading={loading}
           co2eSavings={projectedCo2eFormatted}
           costSavings={projectedCostFormatted}
           co2ePercentChange={co2ePercentChange}
@@ -98,7 +86,6 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           title={'Savings equal to'}
           treeSeedlings={treeSeedlings}
           yearCostSavings={yearlyCostSavings}
-          isLoading={loading}
         />
       </div>
     </>

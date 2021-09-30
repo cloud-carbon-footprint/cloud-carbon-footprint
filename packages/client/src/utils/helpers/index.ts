@@ -5,6 +5,8 @@
 export {
   sumEstimate,
   sumRecommendations,
+  calculatePercentChange,
+  formattedNumberWithCommas,
   sumCO2ByServiceOrRegion,
   sumServiceTotals,
   useFilterDataFromEstimates,

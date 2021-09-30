@@ -15,7 +15,10 @@ import {
   GridRowParams,
   MuiEvent,
 } from '@material-ui/data-grid'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
 import Toggle from 'common/Toggle'
@@ -26,6 +29,7 @@ import Forecast from './Forecast/Forecast'
 import { Typography } from '@material-ui/core'
 
 type RecommendationsTableProps = {
+  emissionsData: EstimationResult[]
   recommendations: RecommendationResult[]
   handleRowClick: (
     params: GridRowParams,
@@ -69,6 +73,7 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
 ]
 
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
+  emissionsData,
   recommendations,
   handleRowClick,
 }): ReactElement => {
@@ -153,7 +158,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   return (
     <DashboardCard title="">
       <>
-        <Forecast recommendations={recommendations} />
+        <Forecast
+          emissionsData={emissionsData}
+          recommendations={recommendations}
+        />
         <div className={classes.recommendationsContainer}>
           <Typography className={classes.title}>Recommendations</Typography>
           <div className={classes.dateRangeContainer}>

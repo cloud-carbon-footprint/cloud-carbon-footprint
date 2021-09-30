@@ -63,12 +63,6 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     minWidth: 180,
   },
-  loadingNumber: {
-    animation: '$blinker 2s linear infinite',
-  },
-  '@keyframes blinker': {
-    '50%': { opacity: 0 },
-  },
 }))
 
 export default useStyles

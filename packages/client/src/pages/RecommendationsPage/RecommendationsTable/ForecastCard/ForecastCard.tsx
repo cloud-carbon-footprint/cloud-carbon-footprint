@@ -3,10 +3,10 @@
  */
 
 import { FunctionComponent } from 'react'
+import clsx from 'clsx'
 import { Card, Divider, Typography } from '@material-ui/core'
 import useStyles from './forecastCardStyles'
-import clsx from 'clsx'
-import PercentBadge from '../PercentBadge/PercentBadge'
+import PercentBadge from '../PercentBadge'
 
 export type ForecastCardProps = {
   title: string
@@ -14,7 +14,6 @@ export type ForecastCardProps = {
   costSavings: string
   co2ePercentChange?: number
   costPercentChange?: number
-  isLoading?: boolean
 }
 
 const ForecastCard: FunctionComponent<ForecastCardProps> = ({
@@ -23,7 +22,6 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   costSavings,
   co2ePercentChange,
   costPercentChange,
-  isLoading,
 }) => {
   const classes = useStyles({ co2ePercentChange, costPercentChange })
   const hasCo2ePercentChange = co2ePercentChange || co2ePercentChange === 0
@@ -42,9 +40,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
       >
         <div className={classes.numberContainer}>
           <Typography
-            className={clsx(classes.textContent, classes.co2eSavings, {
-              [classes.loadingNumber]: isLoading,
-            })}
+            className={clsx(classes.textContent, classes.co2eSavings)}
           >
             {co2eSavings}
           </Typography>
@@ -56,9 +52,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
         <Divider variant="middle" className={classes.divider} />
         <div className={classes.numberContainer}>
           <Typography
-            className={clsx(classes.textContent, classes.costSavings, {
-              [classes.loadingNumber]: isLoading,
-            })}
+            className={clsx(classes.textContent, classes.costSavings)}
           >
             {costSavings}
           </Typography>

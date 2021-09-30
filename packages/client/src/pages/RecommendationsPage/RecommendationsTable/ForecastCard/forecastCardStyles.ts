@@ -74,12 +74,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  loadingNumber: {
-    animation: '$blinker 2s linear infinite',
-  },
-  '@keyframes blinker': {
-    '50%': { opacity: 0 },
-  },
 }))
 
 export default useStyles

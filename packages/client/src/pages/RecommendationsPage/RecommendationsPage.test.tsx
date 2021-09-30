@@ -63,12 +63,36 @@ describe('Recommendations Page', () => {
     expect(mockedUseRecommendationsService).toHaveBeenCalled()
   })
 
+  it('should passed in to remote service hook today and january first of the last year', () => {
+    render(<RecommendationsPage />)
+
+    const parameters = mockUseRemoteService.mock.calls[0]
+
+    expect(parameters.length).toEqual(3)
+
+    const initial = parameters[0]
+    const startDate = parameters[1]
+    const endDate = parameters[2]
+
+    expect(initial).toEqual([])
+    expect(startDate.year()).toEqual(endDate.year() - 1)
+
+    expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+  })
+
   it('should show loading icon if data has not been returned', () => {
-    const mockLoading: ServiceResult<RecommendationResult> = {
+    const mockRecommendationsLoading: ServiceResult<RecommendationResult> = {
       loading: true,
       data: mockRecommendationData,
     }
-    mockedUseRecommendationsService.mockReturnValue(mockLoading)
+
+    const mockEmissionsLoading: ServiceResult<EstimationResult> = {
+      loading: true,
+      data,
+    }
+
+    mockedUseRecommendationsService.mockReturnValue(mockRecommendationsLoading)
+    mockUseRemoteService.mockReturnValue(mockEmissionsLoading)
 
     const { getByRole } = render(<RecommendationsPage />)
 

@@ -4,18 +4,28 @@
 
 import { fireEvent, render, within, screen } from '@testing-library/react'
 import each from 'jest-each'
-import { generateEstimations, mockRecommendationData } from 'utils/data'
+import moment from 'moment'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { ServiceResult } from 'Types'
+import {
+  generateEstimations,
+  mockData,
+  mockRecommendationData,
+} from 'utils/data'
 import RecommendationsTable from './RecommendationsTable'
 import { useRemoteService } from 'utils/hooks'
-import { ServiceResult } from '../../../Types'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
-import moment from 'moment'
 
 jest.mock('utils/hooks/RemoteServiceHook')
 
 const mockUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
 >
+
+const testProps = {
+  emissionsData: mockData,
+  recommendations: [],
+  handleRowClick: jest.fn(),
+}
 
 describe('Recommendations Table', () => {
   let data: EstimationResult[]
@@ -33,16 +43,12 @@ describe('Recommendations Table', () => {
   })
 
   it('renders a Material UI Table', () => {
-    const { getByRole } = render(
-      <RecommendationsTable recommendations={[]} handleRowClick={jest.fn()} />,
-    )
+    const { getByRole } = render(<RecommendationsTable {...testProps} />)
     expect(getByRole('grid')).toBeInTheDocument()
   })
 
   it('configures the table with appropriate headers', () => {
-    const { getByRole } = render(
-      <RecommendationsTable recommendations={[]} handleRowClick={jest.fn()} />,
-    )
+    const { getByRole } = render(<RecommendationsTable {...testProps} />)
 
     const table = within(getByRole('grid'))
 
@@ -63,8 +69,8 @@ describe('Recommendations Table', () => {
   it('displays the passed data as the rows for the table', () => {
     const { getAllByRole } = render(
       <RecommendationsTable
+        {...testProps}
         recommendations={mockRecommendationData}
-        handleRowClick={jest.fn()}
       />,
     )
     const dataRows = getAllByRole('row')
@@ -86,6 +92,7 @@ describe('Recommendations Table', () => {
     const handleRowClick = jest.fn()
     render(
       <RecommendationsTable
+        {...testProps}
         recommendations={mockRecommendationData}
         handleRowClick={handleRowClick}
       />,
@@ -110,8 +117,8 @@ describe('Recommendations Table', () => {
     ]
     const { getAllByRole } = render(
       <RecommendationsTable
+        {...testProps}
         recommendations={mockUndefinedRecommendations}
-        handleRowClick={jest.fn()}
       />,
     )
 
@@ -141,8 +148,8 @@ describe('Recommendations Table', () => {
     ]
     const { getAllByRole, getByRole } = render(
       <RecommendationsTable
+        {...testProps}
         recommendations={mockRecommendations}
-        handleRowClick={jest.fn()}
       />,
     )
 
@@ -171,23 +178,13 @@ describe('Recommendations Table', () => {
 
   describe('Search Bar', () => {
     it('should render search bar', () => {
-      const { getByTestId } = render(
-        <RecommendationsTable
-          recommendations={[]}
-          handleRowClick={jest.fn()}
-        />,
-      )
+      const { getByTestId } = render(<RecommendationsTable {...testProps} />)
 
       expect(getByTestId('search-input')).toBeInTheDocument()
     })
 
     it('should update the search bar', () => {
-      const { getByRole } = render(
-        <RecommendationsTable
-          recommendations={[]}
-          handleRowClick={jest.fn()}
-        />,
-      )
+      const { getByRole } = render(<RecommendationsTable {...testProps} />)
 
       const searchBar = getByRole('textbox')
 
@@ -211,8 +208,8 @@ describe('Recommendations Table', () => {
       (searchValue, expectedResult, rowsLength) => {
         const { getByRole, getAllByRole, getByLabelText } = render(
           <RecommendationsTable
+            {...testProps}
             recommendations={mockRecommendationData}
-            handleRowClick={jest.fn()}
           />,
         )
 
@@ -253,8 +250,8 @@ describe('Recommendations Table', () => {
     it('should render the forecast component', () => {
       const { getByText } = render(
         <RecommendationsTable
+          {...testProps}
           recommendations={mockRecommendationData}
-          handleRowClick={jest.fn()}
         />,
       )
 
