@@ -50,3 +50,11 @@ Resources:
                 Resource:
                   - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>
                   - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>/*
+        - PolicyName: ce
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ce:GetRightsizingRecommendation
+                Resource: '*'
