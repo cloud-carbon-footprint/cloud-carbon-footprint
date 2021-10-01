@@ -16,8 +16,8 @@ import {
   MuiEvent,
 } from '@material-ui/data-grid'
 import {
-  EstimationResult,
   RecommendationResult,
+  ServiceData,
 } from '@cloud-carbon-footprint/common'
 import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
@@ -29,7 +29,7 @@ import Forecast from './Forecast/Forecast'
 import { Typography } from '@material-ui/core'
 
 type RecommendationsTableProps = {
-  emissionsData: EstimationResult[]
+  emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
   handleRowClick: (
     params: GridRowParams,

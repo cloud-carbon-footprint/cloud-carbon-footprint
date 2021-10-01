@@ -7,8 +7,8 @@ import clsx from 'clsx'
 import { Typography } from '@material-ui/core'
 import ForwardIcon from '@material-ui/icons/Forward'
 import {
-  EstimationResult,
   RecommendationResult,
+  ServiceData,
 } from '@cloud-carbon-footprint/common'
 import useStyles from './forecastStyles'
 import {
@@ -21,7 +21,7 @@ import ForecastCard from '../ForecastCard'
 import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
 
 type ForecastProps = {
-  emissionsData: EstimationResult[]
+  emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
 }
 

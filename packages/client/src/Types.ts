@@ -6,6 +6,7 @@ import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import {
   EstimationResult,
   RecommendationResult,
+  ServiceData,
 } from '@cloud-carbon-footprint/common'
 import { Filters, FiltersDateRange } from './common/FilterBar/utils/Filters'
 import { DropdownSelections } from './common/FilterBar/utils/FiltersUtil'
@@ -93,7 +94,10 @@ export type UnknownTypesMapping = {
   [type in DropdownFilterOptions]?: UnknownTypes
 }
 
-export type FilterResults = EstimationResult[] | RecommendationResult[]
+export type FilterResults =
+  | EstimationResult[]
+  | RecommendationResult[]
+  | EmissionsAndRecommendationResults
 
 export type DateRange = {
   min: Date | null
@@ -116,6 +120,11 @@ export type ComparisonItem = {
 export type RecommendationRow = RecommendationResult & {
   id: number
   useKilograms: boolean
+}
+
+export type EmissionsAndRecommendationResults = {
+  recommendations: RecommendationResult[]
+  emissions: ServiceData[]
 }
 
 export enum ChartDataTypes {
