@@ -2236,8 +2236,8 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^4.24.0
     "@typescript-eslint/parser": ^4.24.0
     apexcharts: ^3.26.3
-    axios: ^0.21.1
-    concurrently: ^6.2.1
+    axios: ^0.22.0
+    concurrently: ^6.3.0
     dotenv: ^10.0.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
@@ -2378,7 +2378,7 @@ __metadata:
     eslint-plugin-prettier: ^3.3.1
     eslint-plugin-unused-imports: ^1.1.0
     google-gax: ^2.15.0
-    googleapis: ^85.0.0
+    googleapis: ^88.2.0
     jest: 26.6.0
     jest-when: ^3.2.0
     lint-staged: ^11.0.1
@@ -2399,7 +2399,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/integration-tests@workspace:packages/integration-tests"
   dependencies:
     "@testing-library/testcafe": ^4.4.0
-    concurrently: ^6.2.1
+    concurrently: ^6.3.0
     eslint: ^7.26.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
@@ -7156,6 +7156,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "axios@npm:0.22.0"
+  dependencies:
+    follow-redirects: ^1.14.4
+  checksum: 8238c34fe3cec0ac3a09b00c1c6b355f99d37f9d3950dc570803ef4b4a6dd4971462ec94ecd2b3a89f4b13cda2568d8ac6d96abffb71ae2f0e9962bf5806b2e0
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:^2.2.0":
   version: 2.2.0
   resolution: "axobject-query@npm:2.2.0"
@@ -8948,14 +8957,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "concurrently@npm:6.2.1"
+"concurrently@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "concurrently@npm:6.3.0"
   dependencies:
     chalk: ^4.1.0
     date-fns: ^2.16.1
     lodash: ^4.17.21
-    read-pkg: ^5.2.0
     rxjs: ^6.6.3
     spawn-command: ^0.0.2-1
     supports-color: ^8.1.0
@@ -8963,7 +8971,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     concurrently: bin/concurrently.js
-  checksum: 673bf80f5acf136c0fb7725df362d4b03486204ca6d1898b69226cb60b6b1a7061c05db567d883860080162a2e0053fb133079f4ae8bf31c3ecad0818323e947
+  checksum: b9c4470fa5f3161ec5f030a0e4163f65fb68894ba1376ad36d08c8d313a5d3392771eec39893cb6d704db9121e7199efc6188f50e9cfa64d9e91bc309795ebac
   languageName: node
   linkType: hard
 
@@ -12235,6 +12243,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.14.4":
+  version: 1.14.4
+  resolution: "follow-redirects@npm:1.14.4"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 93def3c22eba16caa4ff6f6956ccfda5a50e889545b1ba0046194dd8e368ff79ba6ef681b06e6dc7032b50bc93ca59e9441aa8143cb26f43f40a20bbd6374639
+  languageName: node
+  linkType: hard
+
 "for-in@npm:^1.0.2":
   version: 1.0.2
   resolution: "for-in@npm:1.0.2"
@@ -13042,13 +13060,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^85.0.0":
-  version: 85.0.0
-  resolution: "googleapis@npm:85.0.0"
+"googleapis@npm:^88.2.0":
+  version: 88.2.0
+  resolution: "googleapis@npm:88.2.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.2
-  checksum: 6ee8df97d563ee778f273607a6ced5c1390be813ee9443b7088ee1ea34eae9f725d292a08c4ce4fcf6c0e5a821f3516767b5563ec16b0a87cbc8b0252137d7e3
+  checksum: f22bd52d3abc120c8254e8f62b8381470dd4626863a54709b39bf73724999e9d55fb4f9bf5b8566afdfd76e5ee430f573cc64833d625a4715b11055fe73f3c98
   languageName: node
   linkType: hard
 
@@ -21652,7 +21670,7 @@ resolve@^2.0.0-next.3:
   dependencies:
     "@changesets/cli": ^2.17.0
     "@types/fs-extra": ^9.0.12
-    concurrently: ^6.2.1
+    concurrently: ^6.3.0
     fs-extra: ^10.0.0
     husky: ^7.0.2
     lerna: ^4.0.0
