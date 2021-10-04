@@ -3,7 +3,7 @@
   "private": true,
   "devDependencies": {
     "@changesets/cli": "^2.17.0",
-    "@types/fs-extra": "^9.0.12",
+    "@types/fs-extra": "^9.0.13",
     "concurrently": "^6.3.0",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.2",

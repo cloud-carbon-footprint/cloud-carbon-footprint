@@ -2331,7 +2331,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/create-app@workspace:packages/create-app"
   dependencies:
-    "@types/fs-extra": ^9.0.12
+    "@types/fs-extra": ^9.0.13
     "@types/inquirer": ^7.3.1
     "@types/recursive-readdir": ^2.2.0
     "@typescript-eslint/eslint-plugin": ^4.26.1
@@ -4977,12 +4977,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.12":
-  version: 9.0.12
-  resolution: "@types/fs-extra@npm:9.0.12"
+"@types/fs-extra@npm:^9.0.13":
+  version: 9.0.13
+  resolution: "@types/fs-extra@npm:9.0.13"
   dependencies:
     "@types/node": "*"
-  checksum: bb3cd95b9748301127e35a64cde9621d4bb7cd6edb1f1155a00e07eeafd92740e2cacca6f9e3e26ec7bedd76cafa8d9a6b3751478311b4294bb4127768489f47
+  checksum: ca4dc68663870775b20abe26a1cc3228c5790113b2c984395ea9cd448443abb4433420821030813bd7cdf1718144afafaa9efa6cd8419dcc4a49c9117a577ad1
   languageName: node
   linkType: hard
 
@@ -21669,7 +21669,7 @@ resolve@^2.0.0-next.3:
   resolution: "root@workspace:."
   dependencies:
     "@changesets/cli": ^2.17.0
-    "@types/fs-extra": ^9.0.12
+    "@types/fs-extra": ^9.0.13
     concurrently: ^6.3.0
     fs-extra: ^10.0.0
     husky: ^7.0.2
