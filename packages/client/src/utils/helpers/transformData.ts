@@ -224,29 +224,37 @@ const useFilterDataFromRecommendations = (
     const regions: DropdownOption[] = []
     const recommendationTypes: DropdownOption[] = []
 
-    data.recommendations.forEach((recommendation) => {
-      const { cloudProvider, accountName, region, recommendationType } =
-        recommendation
-      accountNames.push({
-        cloudProvider: cloudProvider?.toLowerCase(),
-        key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
-        name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
-      })
-      regions.push({
-        cloudProvider: cloudProvider?.toLowerCase(),
-        key: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
-        name: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
-      })
-      recommendationTypes.push({
-        cloudProvider: cloudProvider?.toLowerCase(),
-        key: recommendationType
-          ? recommendationType
-          : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
-        name: recommendationType
-          ? recommendationType
-          : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
+    const dataTypes = Object.keys(data)
+    dataTypes.forEach((dataType) => {
+      const incomingDataResults = data[dataType]
+      incomingDataResults.forEach((result) => {
+        const { cloudProvider, accountName, region } = result
+
+        accountNames.push({
+          cloudProvider: cloudProvider?.toLowerCase(),
+          key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+          name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+        })
+        regions.push({
+          cloudProvider: cloudProvider?.toLowerCase(),
+          key: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
+          name: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
+        })
+        if (dataType === 'recommendations') {
+          const { recommendationType } = result
+          recommendationTypes.push({
+            cloudProvider: cloudProvider?.toLowerCase(),
+            key: recommendationType
+              ? recommendationType
+              : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
+            name: recommendationType
+              ? recommendationType
+              : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
+          })
+        }
       })
     })
+
     setFilterResultResponse({
       accounts: uniq(accountNames),
       regions: uniq(regions),

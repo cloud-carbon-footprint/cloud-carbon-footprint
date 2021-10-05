@@ -83,7 +83,7 @@ export class RecommendationsFilters extends Filters {
     rawResults: EmissionsAndRecommendationResults,
   ): EmissionsAndRecommendationResults {
     const finalFilterResults = { ...rawResults }
-    console.log(rawResults)
+    // console.log(rawResults)
 
     const resultTypes = Object.keys(rawResults)
     resultTypes.forEach((resultType) => {
