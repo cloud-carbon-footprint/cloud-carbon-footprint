@@ -9,7 +9,6 @@ import {
   mockDataWithHigherPrecision,
   mockDataWithUnknownsGCP,
   mockRecommendationData,
-  mockRecommendationDataWithUnknowns,
 } from '../data'
 import {
   sumEstimate,
@@ -21,7 +20,11 @@ import {
   calculatePercentChange,
   formattedNumberWithCommas,
 } from './transformData'
-import { mockDataWithSmallNumbers } from '../data/mockData'
+import {
+  mockDataWithSmallNumbers,
+  mockEmissionsAndRecommendations,
+  mockEmissionsAndRecommendationsWithUnknowns,
+} from '../data/mockData'
 import { UnknownTypes } from 'Types'
 
 const testAccountA = 'test-a'
@@ -69,15 +72,18 @@ describe('transformData', () => {
 
   it('extracts account names, regions, and recommendation types from recommendation data', () => {
     const { result } = renderHook(() =>
-      useFilterDataFromRecommendations(mockRecommendationData),
+      useFilterDataFromRecommendations(mockEmissionsAndRecommendations),
     )
 
     const expectedResult = {
       accounts: [
         { cloudProvider: 'aws', key: testAccountA, name: testAccountA },
+        { cloudProvider: 'gcp', key: testAccountB, name: testAccountB },
         { cloudProvider: 'aws', key: testAccountB, name: testAccountB },
       ],
       regions: [
+        { cloudProvider: 'aws', key: 'us-east-1', name: 'us-east-1' },
+        { cloudProvider: 'gcp', key: 'us-east-1', name: 'us-east-1' },
         {
           cloudProvider: 'aws',
           key: 'us-west-1',
@@ -108,18 +114,55 @@ describe('transformData', () => {
 
   it('extracts account names, regions, and recommendation types from recommendation data when unknown', () => {
     const { result } = renderHook(() =>
-      useFilterDataFromRecommendations(mockRecommendationDataWithUnknowns),
+      useFilterDataFromRecommendations(
+        mockEmissionsAndRecommendationsWithUnknowns,
+      ),
     )
 
     const expectedResult = {
       accounts: [
         {
           cloudProvider: 'aws',
+          key: 'test-a',
+          name: 'test-a',
+        },
+        {
+          cloudProvider: 'aws',
           key: UnknownTypes.UNKNOWN_ACCOUNT,
           name: UnknownTypes.UNKNOWN_ACCOUNT,
         },
+        {
+          cloudProvider: 'gcp',
+          key: 'test-b',
+          name: 'test-b',
+        },
+        {
+          cloudProvider: 'gcp',
+          key: 'Unknown Account',
+          name: 'Unknown Account',
+        },
       ],
       regions: [
+        {
+          cloudProvider: 'aws',
+          key: 'unknown',
+          name: 'unknown',
+        },
+        {
+          cloudProvider: 'aws',
+          key: 'us-east-1',
+          name: 'us-east-1',
+        },
+        {
+          cloudProvider: 'gcp',
+          key: 'unknown',
+          name: 'unknown',
+        },
+        {
+          cloudProvider: 'gcp',
+          key: 'us-east-1',
+          name: 'us-east-1',
+        },
         {
           cloudProvider: 'aws',
           key: UnknownTypes.UNKNOWN_REGION,

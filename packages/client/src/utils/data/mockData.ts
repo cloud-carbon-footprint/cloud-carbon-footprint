@@ -291,6 +291,11 @@ const mockRecommendationData: RecommendationResult[] = [
   },
 ]
 
+const mockEmissionsAndRecommendations = {
+  emissions: mockData[0].serviceEstimates,
+  recommendations: mockRecommendationData,
+}
+
 const mockRecommendationDataWithUnknowns: RecommendationResult[] = [
   {
     cloudProvider: 'AWS',
@@ -307,6 +312,13 @@ const mockRecommendationDataWithUnknowns: RecommendationResult[] = [
   },
 ]
 
+const mockEmissionsAndRecommendationsWithUnknowns = {
+  emissions: mockDataWithUnknownsAWS[0].serviceEstimates.concat(
+    mockDataWithUnknownsGCP[0].serviceEstimates,
+  ),
+  recommendations: mockRecommendationDataWithUnknowns,
+}
+
 export {
   mockData,
   mockDataWithUnknownsAWS,
@@ -315,4 +327,6 @@ export {
   mockDataWithSmallNumbers,
   mockRecommendationData,
   mockRecommendationDataWithUnknowns,
+  mockEmissionsAndRecommendations,
+  mockEmissionsAndRecommendationsWithUnknowns,
 }

@@ -6,9 +6,12 @@ import React, { ReactElement, SyntheticEvent, useState } from 'react'
 import moment from 'moment'
 import { Grid } from '@material-ui/core'
 import { GridRowParams, MuiEvent } from '@material-ui/data-grid'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
 import { useRemoteRecommendationsService, useRemoteService } from 'utils/hooks'
-import { FilterResultResponse, RecommendationRow } from 'Types'
+import {
+  EmissionsAndRecommendationResults,
+  FilterResultResponse,
+  RecommendationRow,
+} from 'Types'
 import LoadingMessage from 'common/LoadingMessage'
 import { useFilterDataFromRecommendations } from 'utils/helpers/transformData'
 import useFilters from 'common/FilterBar/utils/FilterHook'
@@ -36,8 +39,15 @@ const RecommendationsPage = (): ReactElement => {
     endDate,
   )
 
+  const combinedData: EmissionsAndRecommendationResults = {
+    recommendations,
+    emissions: emissions.flatMap(
+      (estimationResult) => estimationResult.serviceEstimates,
+    ),
+  }
+
   const filteredDataResults: FilterResultResponse =
-    useFilterDataFromRecommendations(recommendations)
+    useFilterDataFromRecommendations(combinedData)
 
   const buildFilters = (filteredResponse: FilterResultResponse) => {
     const updatedConfig =
@@ -46,10 +56,15 @@ const RecommendationsPage = (): ReactElement => {
   }
 
   const { filteredData, filters, setFilters } = useFilters(
-    recommendations,
+    combinedData,
     buildFilters,
     filteredDataResults,
   )
+
+  const {
+    recommendations: filteredRecommendationData,
+    emissions: filteredEmissionsData,
+  } = filteredData as EmissionsAndRecommendationResults
 
   const handleRowClick = (
     params: GridRowParams,
@@ -57,8 +72,6 @@ const RecommendationsPage = (): ReactElement => {
   ) => {
     setSelectedRecommendation(params.row as RecommendationRow)
   }
-
-  const filteredRecommendationData = filteredData as RecommendationResult[]
 
   if (recommendationsLoading || emissionsLoading)
     return (
@@ -78,7 +91,7 @@ const RecommendationsPage = (): ReactElement => {
             <RecommendationsSidePanel recommendation={selectedRecommendation} />
           )}
           <RecommendationsTable
-            emissionsData={emissions}
+            emissionsData={filteredEmissionsData}
             recommendations={filteredRecommendationData}
             handleRowClick={handleRowClick}
           />

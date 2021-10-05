@@ -15,6 +15,7 @@ import {
   FilterResultResponse,
   DropdownOption,
   UnknownTypes,
+  EmissionsAndRecommendationResults,
 } from 'Types'
 
 const sumServiceTotals = (
@@ -133,10 +134,18 @@ const sumCO2ByServiceOrRegion = (
   }, Object.create({}))
 }
 
-const sumEstimate = (data: EstimationResult[], key: string): number => {
-  const serviceEstimates = data.flatMap(
-    (estimationResult) => estimationResult.serviceEstimates,
-  )
+const sumEstimate = (
+  data: (EstimationResult | ServiceData)[],
+  key: string,
+): number => {
+  let serviceEstimates = data
+  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult
+  if (data[0] && 'serviceEstimates' in data[0]) {
+    const estimationData = data as EstimationResult[]
+    serviceEstimates = estimationData.flatMap(
+      (estimationResult) => estimationResult.serviceEstimates,
+    )
+  }
   return serviceEstimates.reduce(
     (acc, currentValue) => acc + currentValue[key],
     0,
@@ -200,7 +209,7 @@ const useFilterDataFromEstimates = (
 }
 
 const useFilterDataFromRecommendations = (
-  data: RecommendationResult[],
+  data: EmissionsAndRecommendationResults,
 ): FilterResultResponse => {
   const [filteredData] = useState(data)
   const [filterResultResponse, setFilterResultResponse] =
@@ -215,35 +224,43 @@ const useFilterDataFromRecommendations = (
     const regions: DropdownOption[] = []
     const recommendationTypes: DropdownOption[] = []
 
-    data.forEach((recommendation) => {
-      const { cloudProvider, accountName, region, recommendationType } =
-        recommendation
-      accountNames.push({
-        cloudProvider: cloudProvider?.toLowerCase(),
-        key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
-        name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
-      })
-      regions.push({
-        cloudProvider: cloudProvider?.toLowerCase(),
-        key: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
-        name: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
-      })
-      recommendationTypes.push({
-        cloudProvider: cloudProvider?.toLowerCase(),
-        key: recommendationType
-          ? recommendationType
-          : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
-        name: recommendationType
-          ? recommendationType
-          : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
+    const dataTypes = Object.keys(data)
+    dataTypes.forEach((dataType) => {
+      const incomingDataResults = data[dataType]
+      incomingDataResults.forEach((result) => {
+        const { cloudProvider, accountName, region } = result
+
+        accountNames.push({
+          cloudProvider: cloudProvider?.toLowerCase(),
+          key: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+          name: accountName ? accountName : `${UnknownTypes.UNKNOWN_ACCOUNT}`,
+        })
+        regions.push({
+          cloudProvider: cloudProvider?.toLowerCase(),
+          key: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
+          name: region ? region : `${UnknownTypes.UNKNOWN_REGION}`,
+        })
+        if (dataType === 'recommendations') {
+          const { recommendationType } = result
+          recommendationTypes.push({
+            cloudProvider: cloudProvider?.toLowerCase(),
+            key: recommendationType
+              ? recommendationType
+              : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
+            name: recommendationType
+              ? recommendationType
+              : `${UnknownTypes.UNKNOWN_RECOMMENDATION_TYPE}`,
+          })
+        }
       })
     })
+
     setFilterResultResponse({
       accounts: uniq(accountNames),
       regions: uniq(regions),
       recommendationTypes: uniq(recommendationTypes),
     })
-  }, [data, filteredData])
+  }, [data.recommendations, filteredData])
 
   return filterResultResponse
 }
