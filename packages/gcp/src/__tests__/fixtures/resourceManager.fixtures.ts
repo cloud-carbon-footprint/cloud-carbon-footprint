@@ -2,23 +2,20 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Project } from '@google-cloud/resource-manager'
+import { protos } from '@google-cloud/resource-manager'
+import Project = protos.google.cloud.resourcemanager.v3.IProject
 
 export const mockedProjects: Partial<Project>[][] = [
   [
     {
-      id: 'project',
-      metadata: {
-        name: 'project-name',
-        lifecycleState: 'ACTIVE',
-      },
+      projectId: 'project',
+      displayName: 'project-name',
+      state: 'ACTIVE',
     },
     {
-      id: 'project-1',
-      metadata: {
-        name: 'project-name-1',
-        lifecycleState: 'DELETE REQUESTED',
-      },
+      projectId: 'project-1',
+      displayName: 'project-name-1',
+      state: 'DELETE_REQUESTED',
     },
   ],
 ]

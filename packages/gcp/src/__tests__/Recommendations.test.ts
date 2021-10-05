@@ -4,7 +4,7 @@
 import { google } from 'googleapis'
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
-import { Resource } from '@google-cloud/resource-manager'
+import { ProjectsClient } from '@google-cloud/resource-manager'
 import {
   RecommendationResult,
   GoogleAuthClient,
@@ -54,8 +54,8 @@ jest.mock('moment', () => {
 })
 
 jest.mock('@google-cloud/resource-manager', () => ({
-  Resource: jest.fn().mockImplementation(() => ({
-    getProjects: jest.fn().mockResolvedValue(mockedProjects),
+  ProjectsClient: jest.fn().mockImplementation(() => ({
+    searchProjects: jest.fn().mockResolvedValue(mockedProjects),
   })),
 }))
 
@@ -119,7 +119,7 @@ describe('GCP Recommendations Service', () => {
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new ServiceWrapper(
-          new Resource(),
+          new ProjectsClient(),
           googleAuthClient,
           googleComputeClient,
           new RecommenderClient(),
@@ -168,7 +168,7 @@ describe('GCP Recommendations Service', () => {
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new ServiceWrapper(
-          new Resource(),
+          new ProjectsClient(),
           googleAuthClient,
           googleComputeClient,
           new RecommenderClient(),
@@ -215,7 +215,7 @@ describe('GCP Recommendations Service', () => {
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new ServiceWrapper(
-          new Resource(),
+          new ProjectsClient(),
           googleAuthClient,
           googleComputeClient,
           new RecommenderClient(),
@@ -257,7 +257,7 @@ describe('GCP Recommendations Service', () => {
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new ServiceWrapper(
-          new Resource(),
+          new ProjectsClient(),
           googleAuthClient,
           googleComputeClient,
           new RecommenderClient(),
@@ -302,7 +302,7 @@ describe('GCP Recommendations Service', () => {
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new ServiceWrapper(
-          new Resource(),
+          new ProjectsClient(),
           googleAuthClient,
           googleComputeClient,
           new RecommenderClient(),
@@ -353,7 +353,7 @@ describe('GCP Recommendations Service', () => {
         new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new ServiceWrapper(
-          new Resource(),
+          new ProjectsClient(),
           googleAuthClient,
           googleComputeClient,
           new RecommenderClient(),
@@ -406,7 +406,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -455,7 +455,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -496,7 +496,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -537,7 +537,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -578,7 +578,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -618,7 +618,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -666,7 +666,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),
@@ -732,7 +732,7 @@ describe('GCP Recommendations Service', () => {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),

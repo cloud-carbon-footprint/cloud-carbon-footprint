@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Resource } from '@google-cloud/resource-manager'
+import { ProjectsClient } from '@google-cloud/resource-manager'
 import { compute_v1, google } from 'googleapis'
 import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
@@ -40,8 +40,8 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 }))
 
 jest.mock('@google-cloud/resource-manager', () => ({
-  Resource: jest.fn().mockImplementation(() => ({
-    getProjects: jest.fn().mockResolvedValue(mockedProjects),
+  ProjectsClient: jest.fn().mockImplementation(() => ({
+    searchProjects: jest.fn().mockResolvedValue(mockedProjects),
   })),
 }))
 
@@ -69,7 +69,7 @@ describe('GCP Service Wrapper', () => {
     const googleComputeClient = google.compute('v1')
 
     serviceWrapper = new ServiceWrapper(
-      new Resource(),
+      new ProjectsClient(),
       googleAuthClient,
       googleComputeClient,
       new RecommenderClient(),
@@ -254,7 +254,7 @@ describe('GCP Service Wrapper', () => {
       const googleAuthClient: GoogleAuthClient = await auth.getClient()
 
       serviceWrapper = new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),

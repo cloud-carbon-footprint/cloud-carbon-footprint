@@ -2366,7 +2366,7 @@ __metadata:
     "@google-cloud/bigquery": ^5.6.0
     "@google-cloud/monitoring": ^2.3.1
     "@google-cloud/recommender": ^4.2.2
-    "@google-cloud/resource-manager": ^2.0.0
+    "@google-cloud/resource-manager": ^3.0.0
     "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
     "@types/node": ^16.0.1
@@ -2537,7 +2537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-cloud/common@npm:^3.0.0, @google-cloud/common@npm:^3.1.0, @google-cloud/common@npm:^3.4.1, @google-cloud/common@npm:^3.6.0":
+"@google-cloud/common@npm:^3.1.0, @google-cloud/common@npm:^3.4.1, @google-cloud/common@npm:^3.6.0":
   version: 3.6.0
   resolution: "@google-cloud/common@npm:3.6.0"
   dependencies:
@@ -2642,14 +2642,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google-cloud/resource-manager@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@google-cloud/resource-manager@npm:2.0.0"
+"@google-cloud/resource-manager@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@google-cloud/resource-manager@npm:3.0.0"
   dependencies:
-    "@google-cloud/common": ^3.0.0
-    "@google-cloud/paginator": ^3.0.0
-    "@google-cloud/promisify": ^2.0.0
-  checksum: 0e2f517e057c56baf2a16b974fd00d5919407d787abcdfa67609a7d439f33b8c03567f4b3dab1bccbf9268462d303c5baf284b45777bf31c1529d7142ee38cbb
+    google-gax: ^2.24.1
+  checksum: 43e4cc1a7e01c7d1127ccca7b640b768722222aa03707ac44c121cbe6bc701fc81c505c4f278637f794f045e1f6c8f603aed9ccfc0fa5f2c6bad1db2697cbcf2
   languageName: node
   linkType: hard
 
@@ -12969,6 +12967,23 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"google-auth-library@npm:^7.6.1":
+  version: 7.10.0
+  resolution: "google-auth-library@npm:7.10.0"
+  dependencies:
+    arrify: ^2.0.0
+    base64-js: ^1.3.0
+    ecdsa-sig-formatter: ^1.0.11
+    fast-text-encoding: ^1.0.0
+    gaxios: ^4.0.0
+    gcp-metadata: ^4.2.0
+    gtoken: ^5.0.4
+    jws: ^4.0.0
+    lru-cache: ^6.0.0
+  checksum: 8917cc56de3bee942724e6936a2c53179da788ce9cdac0b137e758d39986e25840b9c7bf661630b5e92b46fcd1a7116587d08f0a045de3bd4c607466335e2221
+  languageName: node
+  linkType: hard
+
 "google-gax@npm:^2.12.0":
   version: 2.12.0
   resolution: "google-gax@npm:2.12.0"
@@ -13032,6 +13047,29 @@ fsevents@^1.2.7:
   bin:
     compileProtos: build/tools/compileProtos.js
   checksum: b9ed4ee8531f65bae7627b636898e3b3fba796551c716e50f1e12f2b0c0fc8201bfe968179cfadf03286b4e10132a7dee5e03fd2708e63f09e4a8dd6f5f1211a
+  languageName: node
+  linkType: hard
+
+"google-gax@npm:^2.24.1":
+  version: 2.27.0
+  resolution: "google-gax@npm:2.27.0"
+  dependencies:
+    "@grpc/grpc-js": ~1.3.0
+    "@grpc/proto-loader": ^0.6.1
+    "@types/long": ^4.0.0
+    abort-controller: ^3.0.0
+    duplexify: ^4.0.0
+    fast-text-encoding: ^1.0.3
+    google-auth-library: ^7.6.1
+    is-stream-ended: ^0.1.4
+    node-fetch: ^2.6.1
+    object-hash: ^2.1.1
+    proto3-json-serializer: ^0.1.1
+    protobufjs: 6.11.2
+    retry-request: ^4.0.0
+  bin:
+    compileProtos: build/tools/compileProtos.js
+  checksum: f559ce164cba799e24c6d55454cb5eeee926784f8eb125b68fe0550315413c768e4ec460a4780dfb5e497d8c1103c12862608b4bef88846ede83ed3e5264907b
   languageName: node
   linkType: hard
 
@@ -20074,7 +20112,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"protobufjs@npm:^6.10.0, protobufjs@npm:^6.10.2":
+"proto3-json-serializer@npm:^0.1.1":
+  version: 0.1.4
+  resolution: "proto3-json-serializer@npm:0.1.4"
+  checksum: 436c14b511595e9abc02e23892c2052cc5f8af05452536d4d24ed913b0d8c267bc043e09efbd6a2271d41c39109c7fa269f4e5f261779645645e7ee8abde648d
+  languageName: node
+  linkType: hard
+
+"protobufjs@npm:6.11.2, protobufjs@npm:^6.10.0, protobufjs@npm:^6.10.2":
   version: 6.11.2
   resolution: "protobufjs@npm:6.11.2"
   dependencies:

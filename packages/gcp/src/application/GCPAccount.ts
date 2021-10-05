@@ -5,7 +5,7 @@
 import { v3 } from '@google-cloud/monitoring'
 import { ClientOptions } from 'google-gax'
 import { BigQuery } from '@google-cloud/bigquery'
-import { Resource } from '@google-cloud/resource-manager'
+import { ProjectsClient } from '@google-cloud/resource-manager'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { APIEndpoint } from 'googleapis-common'
 import { google } from 'googleapis'
@@ -116,7 +116,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new ServiceWrapper(
-        new Resource(),
+        new ProjectsClient(),
         googleAuthClient,
         googleComputeClient,
         new RecommenderClient(),

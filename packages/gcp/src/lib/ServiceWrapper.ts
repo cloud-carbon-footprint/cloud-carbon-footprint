@@ -2,10 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 import R from 'ramda'
-import { Project, Resource } from '@google-cloud/resource-manager'
+import { ProjectsClient, protos } from '@google-cloud/resource-manager'
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { compute_v1 } from 'googleapis'
+import Project = protos.google.cloud.resourcemanager.v3.IProject
 import Schema$Instance = compute_v1.Schema$Instance
 import Schema$MachineType = compute_v1.Schema$MachineType
 import Schema$Disk = compute_v1.Schema$Disk
@@ -36,7 +37,7 @@ export default class ServiceWrapper {
   private readonly serviceWrapperLogger: Logger
   private readonly noResultsOnPageMessage = 'NO_RESULTS_ON_PAGE'
   constructor(
-    private readonly resourceManagerClient: Resource,
+    private readonly googleProjectsClient: ProjectsClient,
     private readonly googleAuthClient: GoogleAuthClient,
     private readonly googleComputeClient: APIEndpoint,
     private readonly googleRecommenderClient: RecommenderClient,
@@ -47,7 +48,7 @@ export default class ServiceWrapper {
   async getActiveProjectsAndZones(): Promise<ActiveProject[]> {
     const projects = await this.getProjects()
     const activeProjects = projects.filter(
-      (project) => project.metadata.lifecycleState === 'ACTIVE',
+      (project) => project.state === 'ACTIVE',
     )
     const activeProjectsAndZones = []
     const projectChunks = R.splitEvery(150, activeProjects)
@@ -63,7 +64,7 @@ export default class ServiceWrapper {
   }
 
   private async getProjects(): Promise<Project[]> {
-    const [projects] = await this.resourceManagerClient.getProjects()
+    const [projects] = await this.googleProjectsClient.searchProjects()
     return projects
   }
 
@@ -72,7 +73,7 @@ export default class ServiceWrapper {
   ): Promise<ActiveProject | []> {
     try {
       const computeEngineRequest = {
-        project: project.id,
+        project: project.projectId,
         auth: this.googleAuthClient,
       }
       const instancesResult =
@@ -92,8 +93,8 @@ export default class ServiceWrapper {
       const addressesZones = this.extractZones(addressesResult.data.items)
 
       return {
-        id: project.id,
-        name: project.metadata.name,
+        id: project.projectId,
+        name: project.displayName,
         zones: R.uniq([
           ...instanceZones,
           ...addressesZones,
@@ -103,7 +104,7 @@ export default class ServiceWrapper {
       }
     } catch (e) {
       this.serviceWrapperLogger.warn(
-        `Failed to get active zones for project: ${project.id}. Error: ${e.message} `,
+        `Failed to get active zones for project: ${project.projectId}. Error: ${e.message} `,
       )
       return []
     }
