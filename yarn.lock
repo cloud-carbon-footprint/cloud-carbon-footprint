@@ -2332,7 +2332,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/create-app@workspace:packages/create-app"
   dependencies:
     "@types/fs-extra": ^9.0.13
-    "@types/inquirer": ^7.3.1
+    "@types/inquirer": ^8.1.3
     "@types/recursive-readdir": ^2.2.0
     "@typescript-eslint/eslint-plugin": ^4.26.1
     "@typescript-eslint/parser": ^4.26.1
@@ -5029,13 +5029,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/inquirer@npm:^7.3.1":
-  version: 7.3.1
-  resolution: "@types/inquirer@npm:7.3.1"
+"@types/inquirer@npm:^8.1.3":
+  version: 8.1.3
+  resolution: "@types/inquirer@npm:8.1.3"
   dependencies:
     "@types/through": "*"
-    rxjs: ^6.4.0
-  checksum: 2db996acf8d9073a215c5f87797d08a50a86dd1921f4f7b45040aa225b62c522d7d67a37529329395c6e24f6f5e877ddf463f20686aad819d70c0afea6297a4a
+    rxjs: ^7.2.0
+  checksum: 95d3eb12cc06850a471e70ee12df42e67e8aee4ac3385bef3c0996322fce9f9f1984513134941fdfbfa179cff46a4f4652692670fc9364ba6ec703e490971270
   languageName: node
   linkType: hard
 
@@ -21720,7 +21720,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^6.4.0, rxjs@npm:^6.6.0, rxjs@npm:^6.6.3, rxjs@npm:^6.6.6, rxjs@npm:^6.6.7":
+"rxjs@npm:^6.6.0, rxjs@npm:^6.6.3, rxjs@npm:^6.6.6, rxjs@npm:^6.6.7":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
   dependencies:
@@ -21735,6 +21735,15 @@ resolve@^2.0.0-next.3:
   dependencies:
     tslib: ~2.1.0
   checksum: e4d71512e71278002f8399e0741b6a51b383b74476b687074961bc3a66ed48d657fa7b77a6d6dc07535fe265abd9d510afbcab598f86dba3218e76470f0ec3e7
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.2.0":
+  version: 7.3.1
+  resolution: "rxjs@npm:7.3.1"
+  dependencies:
+    tslib: ~2.1.0
+  checksum: 4bbd0485cb994bdd8a6406b1ea70a5bbdf5941f461b705f5f2c77b82b098a1a093c5fa95f136e5421fff10ed057986d5382e6695df5bdee68b25af6a393e1555
   languageName: node
   linkType: hard
 
