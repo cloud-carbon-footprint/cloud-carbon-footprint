@@ -95,6 +95,11 @@ describe('Recommendations Filters', () => {
     },
   ]
 
+  const emissionsAndRecommendationsData = {
+    emissions: [],
+    recommendations: rawResults,
+  }
+
   const filterOptions: FilterOptions = {
     accounts: [
       { key: 'all', name: 'All Accounts', cloudProvider: '' },
@@ -249,9 +254,14 @@ describe('Recommendations Filters', () => {
       DropdownFilterOptions.ACCOUNTS,
     )
 
-    const expectedAccountFiltered = [rawResults[0]]
+    const expectedAccountFiltered = {
+      emissions: [],
+      recommendations: [rawResults[0]],
+    }
 
-    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedAccountFiltered,
+    )
   })
 
   it('should create cloud provider chooser', () => {
@@ -299,9 +309,14 @@ describe('Recommendations Filters', () => {
       DropdownFilterOptions.CLOUD_PROVIDERS,
     )
 
-    const expectedAccountFiltered = [rawResults[0]]
+    const expectedAccountFiltered = {
+      emissions: [],
+      recommendations: [rawResults[0]],
+    }
 
-    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedAccountFiltered,
+    )
   })
 
   it('should create region chooser', () => {
@@ -350,9 +365,14 @@ describe('Recommendations Filters', () => {
       DropdownFilterOptions.REGIONS,
     )
 
-    const expectedAccountFiltered = [rawResults[0]]
+    const expectedAccountFiltered = {
+      emissions: [],
+      recommendations: [rawResults[0]],
+    }
 
-    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedAccountFiltered,
+    )
   })
 
   it('should create RecommendationType chooser', () => {
@@ -401,8 +421,13 @@ describe('Recommendations Filters', () => {
       DropdownFilterOptions.RECOMMENDATION_TYPES,
     )
 
-    const expectedAccountFiltered = [rawResults[1]]
+    const expectedAccountFiltered = {
+      emissions: [],
+      recommendations: [rawResults[1]],
+    }
 
-    expect(filters.filter(rawResults)).toEqual(expectedAccountFiltered)
+    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
+      expectedAccountFiltered,
+    )
   })
 })
