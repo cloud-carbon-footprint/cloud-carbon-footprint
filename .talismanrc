@@ -1,7 +1,7 @@
 fileignoreconfig:
 - filename: packages/client/src/utils/helpers/transformData.test.ts
   checksum: 4e6deca71b0e71a9a0847979234467d9e5b9c4b22c99156a069332c10e490eb2
-wn-parrots-hug.md
+- filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
 - filename: .changeset/nice-timers-repair.md
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
@@ -307,4 +307,3 @@ wn-parrots-hug.md
   checksum: 70858864e1b6d2e91547f823d455acd4bfd8457a4b9df6d493607e95333de753
 scopeconfig:
 - scope: node
-53
