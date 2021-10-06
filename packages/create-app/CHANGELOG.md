@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.0.1
+
+### Patch Changes
+
+- 8a380bd3: Adds to the recommendations page and implements filtering and sorting
+  To update create-app templates, refer to [this link](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1640acda32e22a9777ff5360a278d2dfc6971889)
+
 ## 1.0.0
 
 ### Major Changes

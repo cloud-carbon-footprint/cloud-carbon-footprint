@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.4.1
+
+### Patch Changes
+
+- 8b200348: Renames numberOfvCpus in ComputeUsage to match its use in ComputeEstimator
+- b0867e10: Bumps dependency: @google-cloud/resource-manager
+- Updated dependencies [8b200348]
+  - @cloud-carbon-footprint/core@0.11.1
+
 ## 0.4.0
 
 ### Minor Changes
