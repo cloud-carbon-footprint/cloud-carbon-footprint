@@ -578,6 +578,12 @@ export const EC2_INSTANCE_TYPES: {
     '4xlarge': [16, 122],
     '8xlarge': [36, 244],
   },
+  h1: {
+    '2xlarge': [8, 32],
+    '4xlarge': [16, 64],
+    '8xlarge': [32, 128],
+    '16xlarge': [64, 256],
+  },
   hs1: {
     '8xlarge': [16, 117],
   },
@@ -950,6 +956,10 @@ export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
   'i3en.12xlarge': cascadeLakeSkylake,
   'i3en.24xlarge': cascadeLakeSkylake,
   'i3en.metal': cascadeLakeSkylake,
+  'h1.2xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'h1.4xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'h1.8xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'h1.16xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
   'hs1.8xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
   't1.micro': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
   'dc2.large': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],

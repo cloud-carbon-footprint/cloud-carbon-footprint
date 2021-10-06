@@ -245,6 +245,7 @@ export default class CostAndUsageReports {
           this.costAndUsageReportsLogger.warn(
             `Could not estimate compute usage for usage type: ${costAndUsageReportRow.usageType}`,
           )
+          return
         }
 
         // if there exist any memory footprint,

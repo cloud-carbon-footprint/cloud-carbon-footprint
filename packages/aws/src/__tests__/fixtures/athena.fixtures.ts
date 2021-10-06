@@ -324,7 +324,7 @@ const queryResultsDataFour = [
   },
 ]
 
-export const athenaMockGetQueryResultsWithKenesisESAndEc2Spot: Athena.GetQueryResultsOutput =
+export const athenaMockGetQueryResultsWithKinesisESAndEc2Spot: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataFour],
@@ -1116,5 +1116,117 @@ export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryR
   {
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataFourteen],
+    },
+  }
+const queryResultsDataFifteen = [
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'EU-SpotUsage:h1.16xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AmazonFSx' },
+      { VarCharValue: 'EUC1-Storage' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '1000' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AmazonKinesis' },
+      { VarCharValue: 'EU-LongTermRetention-ByteHrs' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AWSBackup' },
+      { VarCharValue: 'EU-ColdStorage-ByteHrs-EFS' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AWSBackup' },
+      { VarCharValue: 'EU-WarmStorage-ByteHrs-EFS' },
+      { VarCharValue: 'GB-Mo' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AmazonApiGateway' },
+      { VarCharValue: 'EU-ApiGatewayCacheUsage:0.5GB' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AWSDirectConnect' },
+      { VarCharValue: 'EUC1-EQMU1-PortUsage:10G' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2021-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'eu-west-1' },
+      { VarCharValue: 'AWSDirectoryService' },
+      { VarCharValue: 'EUC1-Std-SharedMsftAD-Usage' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '' },
+      { VarCharValue: '200' },
+      { VarCharValue: '10' },
+    ],
+  },
+]
+export const athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataFifteen],
     },
   }
