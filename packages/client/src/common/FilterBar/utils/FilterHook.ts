@@ -16,6 +16,7 @@ const useFilters = (
   data: FilterResults,
   buildFilters: (FilterResultResponse) => Filters,
   filteredResponse: FilterResultResponse,
+  isDataLoaded?: boolean,
 ): UseFiltersResults => {
   const [filteredData, setFilteredData] = useState(data)
   const [filters, setFilters] = useState(buildFilters(filteredResponse))
@@ -27,7 +28,7 @@ const useFilters = (
    */
   useEffect(() => {
     setFilteredData(filters.filter(data))
-  }, [setFilteredData, filters])
+  }, [setFilteredData, filters, isDataLoaded])
 
   useEffect(() => {
     setFilters(buildFilters(filteredResponse))

@@ -46,6 +46,7 @@ const RecommendationsPage = (): ReactElement => {
     ),
   }
 
+  const isEmissionsDataLoaded = combinedData.emissions.length > 0
   const filteredDataResults: FilterResultResponse =
     useFilterDataFromRecommendations(combinedData)
 
@@ -59,6 +60,7 @@ const RecommendationsPage = (): ReactElement => {
     combinedData,
     buildFilters,
     filteredDataResults,
+    isEmissionsDataLoaded,
   )
 
   const {
