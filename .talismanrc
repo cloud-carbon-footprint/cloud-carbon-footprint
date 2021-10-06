@@ -1,5 +1,5 @@
 scopeconfig:
-- scope: node
+  - scope: node
 fileignoreconfig:
 - filename: packages/client/src/utils/helpers/transformData.test.ts
   checksum: 4e6deca71b0e71a9a0847979234467d9e5b9c4b22c99156a069332c10e490eb2
