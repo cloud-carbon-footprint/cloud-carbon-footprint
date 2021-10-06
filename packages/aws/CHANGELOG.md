@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/aws
 
+## 0.5.1
+
+### Patch Changes
+
+- 8b200348: Renames numberOfvCpus in ComputeUsage to match its use in ComputeEstimator
+- Updated dependencies [8b200348]
+  - @cloud-carbon-footprint/core@0.11.1
+
 ## 0.5.0
 
 ### Minor Changes

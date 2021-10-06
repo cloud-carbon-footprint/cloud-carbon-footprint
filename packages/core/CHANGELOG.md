@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/core
 
+## 0.11.1
+
+### Patch Changes
+
+- 8b200348: Renames numberOfvCpus in ComputeUsage to match its use in ComputeEstimator
+
 ## 0.11.0
 
 ### Minor Changes
