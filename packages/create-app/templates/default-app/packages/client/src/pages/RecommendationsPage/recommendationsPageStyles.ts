@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(({ spacing }) => ({
   boxContainer: {
     padding: spacing(3, 10),
+    marginTop: 62,
   },
   loadingContainer: {
     padding: spacing(3, 10),

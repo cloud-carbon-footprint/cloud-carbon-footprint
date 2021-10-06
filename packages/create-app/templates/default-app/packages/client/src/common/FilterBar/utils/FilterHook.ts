@@ -16,13 +16,19 @@ const useFilters = (
   data: FilterResults,
   buildFilters: (FilterResultResponse) => Filters,
   filteredResponse: FilterResultResponse,
+  isDataLoaded?: boolean,
 ): UseFiltersResults => {
   const [filteredData, setFilteredData] = useState(data)
   const [filters, setFilters] = useState(buildFilters(filteredResponse))
 
+  /*
+    TODO: Clean up Recommendations dependency check.
+    UseEffect should only have data.recommendations as dependency if used by Recs Page.
+    Otherwise, it will throw errors.
+   */
   useEffect(() => {
     setFilteredData(filters.filter(data))
-  }, [data, setFilteredData, filters])
+  }, [setFilteredData, filters, isDataLoaded])
 
   useEffect(() => {
     setFilters(buildFilters(filteredResponse))

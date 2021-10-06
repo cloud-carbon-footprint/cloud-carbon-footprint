@@ -2,10 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {
+import React, {
   FunctionComponent,
   ReactElement,
   SyntheticEvent,
+  useEffect,
   useState,
 } from 'react'
 import {
@@ -14,12 +15,21 @@ import {
   GridRowParams,
   MuiEvent,
 } from '@material-ui/data-grid'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import CarbonCard from 'layout/CarbonCard'
+import {
+  RecommendationResult,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
+import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
-import Toggle from '../../../common/Toggle'
+import Toggle from 'common/Toggle'
+import DateRange from 'common/DateRange'
+import Tooltip from 'common/Tooltip'
+import SearchBar from '../SearchBar'
+import Forecast from './Forecast/Forecast'
+import { Typography } from '@material-ui/core'
 
 type RecommendationsTableProps = {
+  emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
   handleRowClick: (
     params: GridRowParams,
@@ -63,54 +73,127 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
 ]
 
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
+  emissionsData,
   recommendations,
   handleRowClick,
 }): ReactElement => {
   const [useKilograms, setUseKilograms] = useState(false)
+  const [searchBarValue, setSearchBarValue] = useState('')
+  const [rows, setRows] = useState([])
   const classes = useStyles()
 
-  let rows = []
-  if (recommendations) {
-    rows = recommendations.map((recommendation, index) => {
-      const recommendationRow = {
-        ...recommendation,
-        id: index,
-        useKilograms,
-        co2eSavings: useKilograms
-          ? recommendation.co2eSavings * 1000
-          : recommendation.co2eSavings,
-      }
-      // Replace any undefined values and round numbers to thousandth decimal
-      Object.keys(recommendation).forEach((key) => {
-        recommendationRow[key] = recommendationRow[key] ?? '-'
-        if (key.includes('Savings') && recommendationRow[key] != '-')
-          recommendationRow[key] =
-            Math.round(recommendationRow[key] * 1000) / 1000
-      })
-      return recommendationRow
-    })
+  const createRecommendationRows = (
+    recommendations: RecommendationResult[],
+  ) => {
+    if (recommendations) {
+      const recommendationRows = recommendations.map(
+        (recommendation, index) => {
+          const recommendationRow = {
+            ...recommendation,
+            id: index,
+            useKilograms,
+            co2eSavings: useKilograms
+              ? recommendation.co2eSavings * 1000
+              : recommendation.co2eSavings,
+          }
+          // Replace any undefined values and round numbers to thousandth decimal
+          Object.keys(recommendation).forEach((key) => {
+            recommendationRow[key] = recommendationRow[key] ?? '-'
+            if (key.includes('Savings') && recommendationRow[key] != '-')
+              recommendationRow[key] =
+                Math.round(recommendationRow[key] * 1000) / 1000
+          })
+          return recommendationRow
+        },
+      )
+      setRows(recommendationRows)
+    }
   }
 
+  const handleSearchBarChange = (value: string) => {
+    setSearchBarValue(value)
+    requestSearch(value)
+  }
+
+  const handleToggle = (value: boolean) => {
+    setUseKilograms(value)
+  }
+
+  const requestSearch = (searchValue: string) => {
+    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
+    const fieldsToNotFilter = [
+      'resourceId',
+      'kilowattHourSavings',
+      'instanceName',
+      'accountId',
+      'recommendationDetail',
+    ]
+    const filteredRecommendations = recommendations.filter(
+      (row: RecommendationResult) => {
+        return Object.keys(row).some((field: string) => {
+          if (!fieldsToNotFilter.includes(field)) {
+            let value = row[field]
+            if (field.includes('Savings')) {
+              value = Math.round(value * 1000) / 1000
+            }
+            return searchRegex.test(value?.toString())
+          }
+        })
+      },
+    )
+    createRecommendationRows(filteredRecommendations)
+  }
+
+  useEffect(() => {
+    requestSearch(searchBarValue)
+  }, [recommendations, useKilograms])
+
+  const escapeRegExp = (value: string): string => {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+  }
+
+  const tooltipMessage =
+    'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
+
   return (
-    <CarbonCard title="Recommendations">
-      <div className={classes.tableContainer}>
-        <div className={classes.toggleContainer}>
-          <Toggle label={'CO2e Units'} handleToggle={setUseKilograms} />
-        </div>
-        <DataGrid
-          autoHeight
-          rows={rows}
-          columns={getColumns(useKilograms)}
-          columnBuffer={6}
-          hideFooterSelectedRowCount={true}
-          classes={{
-            cell: classes.cell,
-            row: classes.row,
-          }}
-          onRowClick={handleRowClick}
+    <DashboardCard title="">
+      <>
+        <Forecast
+          emissionsData={emissionsData}
+          recommendations={recommendations}
         />
-      </div>
-    </CarbonCard>
+        <div className={classes.recommendationsContainer}>
+          <Typography className={classes.title}>Recommendations</Typography>
+          <div className={classes.dateRangeContainer}>
+            <DateRange lookBackPeriodDays={13} />
+            <Tooltip message={tooltipMessage} />
+          </div>
+          <div className={classes.tableContainer}>
+            <div className={classes.toolbarContainer}>
+              <SearchBar
+                value={searchBarValue}
+                onChange={handleSearchBarChange}
+                clearSearch={() => handleSearchBarChange('')}
+              />
+              <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
+            </div>
+            <DataGrid
+              autoHeight
+              rows={rows}
+              columns={getColumns(useKilograms)}
+              columnBuffer={6}
+              hideFooterSelectedRowCount={true}
+              classes={{
+                cell: classes.cell,
+                row: classes.row,
+              }}
+              onRowClick={handleRowClick}
+              disableColumnFilter
+            />
+          </div>
+        </div>
+      </>
+    </DashboardCard>
   )
 }
 

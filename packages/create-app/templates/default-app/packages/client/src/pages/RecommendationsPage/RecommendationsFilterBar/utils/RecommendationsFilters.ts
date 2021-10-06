@@ -2,27 +2,41 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import {
+  RecommendationResult,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
 import { Filters } from 'common/FilterBar/utils/Filters'
 import {
   DropdownFilterOptions,
   DropdownOption,
+  EmissionsAndRecommendationResults,
   FilterOptions,
   FilterResultResponse,
   FiltersConfig,
   unknownOptionTypes,
 } from 'Types'
 import {
-  ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_DROPDOWN_FILTER_OPTIONS,
+  CLOUD_PROVIDER_OPTIONS,
 } from 'common/FilterBar/utils/DropdownConstants'
 import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
 import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { AccountChooser } from './options/AccountChooser'
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import { CloudProviderChooser } from './options/CloudProviderChooser'
+import { RegionChooser } from './options/RegionChooser'
+import { RecommendationTypeChooser } from './options/RecommendationTypeChooser'
+
+type ServiceDataOrRecommendationResult = (ServiceData | RecommendationResult)[]
 
 const defaultConfig: FiltersConfig = {
   options: {
-    [DropdownFilterOptions.ACCOUNTS]: [ALL_ACCOUNTS_DROPDOWN_OPTION],
+    [DropdownFilterOptions.ACCOUNTS]: [ALL_DROPDOWN_FILTER_OPTIONS.accounts],
+    [DropdownFilterOptions.CLOUD_PROVIDERS]: CLOUD_PROVIDER_OPTIONS,
+    [DropdownFilterOptions.REGIONS]: [ALL_DROPDOWN_FILTER_OPTIONS.regions],
+    [DropdownFilterOptions.RECOMMENDATION_TYPES]: [
+      ALL_DROPDOWN_FILTER_OPTIONS.recommendationTypes,
+    ],
   },
 }
 
@@ -48,37 +62,65 @@ export class RecommendationsFilters extends Filters {
     switch (filterType) {
       case DropdownFilterOptions.ACCOUNTS:
         return new AccountChooser(selections, oldSelections, filterOptions)
+      case DropdownFilterOptions.CLOUD_PROVIDERS:
+        return new CloudProviderChooser(
+          selections,
+          oldSelections,
+          filterOptions,
+        )
+      case DropdownFilterOptions.REGIONS:
+        return new RegionChooser(selections, oldSelections, filterOptions)
+      case DropdownFilterOptions.RECOMMENDATION_TYPES:
+        return new RecommendationTypeChooser(
+          selections,
+          oldSelections,
+          filterOptions,
+        )
     }
   }
 
-  filter(rawResults: RecommendationResult[]): RecommendationResult[] {
-    const resultsFilteredByRecommendationType = this.getResultsFilteredBy(
-      DropdownFilterOptions.RECOMMENDATION_TYPES,
-      rawResults,
-    )
-    const resultsFilteredByRegion = this.getResultsFilteredBy(
-      DropdownFilterOptions.REGIONS,
-      resultsFilteredByRecommendationType,
-    )
+  filter(
+    rawResults: EmissionsAndRecommendationResults,
+  ): EmissionsAndRecommendationResults {
+    const finalFilterResults = { ...rawResults }
 
-    return this.getResultsFilteredBy(
-      DropdownFilterOptions.ACCOUNTS,
-      resultsFilteredByRegion,
-    )
+    const resultTypes = Object.keys(rawResults)
+    resultTypes.forEach((resultType) => {
+      let filteredResult = rawResults[resultType]
+
+      filteredResult = this.getResultsFilteredBy(
+        DropdownFilterOptions.ACCOUNTS,
+        filteredResult,
+      )
+
+      if (resultType === 'recommendations') {
+        filteredResult = this.getResultsFilteredBy(
+          DropdownFilterOptions.RECOMMENDATION_TYPES,
+          filteredResult,
+        )
+      }
+
+      finalFilterResults[resultType] = this.getResultsFilteredBy(
+        DropdownFilterOptions.REGIONS,
+        filteredResult,
+      )
+    })
+
+    return finalFilterResults
   }
 
   private getResultsFilteredBy(
     type: string,
-    previousResults: RecommendationResult[],
-  ): RecommendationResult[] {
+    previousResults: ServiceDataOrRecommendationResult,
+  ): ServiceDataOrRecommendationResult {
     const hasAllOptionsSelected = this.options[type].includes(
       ALL_DROPDOWN_FILTER_OPTIONS[type],
     )
 
     return previousResults.filter(
-      (recommendationResult) =>
+      (result) =>
         this.options[type].some((dropdownOption) =>
-          this.isUnknownOrSameName(dropdownOption, type, recommendationResult),
+          this.isUnknownOrSameName(dropdownOption, type, result),
         ) || hasAllOptionsSelected,
     )
   }
@@ -86,7 +128,7 @@ export class RecommendationsFilters extends Filters {
   private isUnknownOrSameName(
     dropdownOption: DropdownOption,
     type: string,
-    recommendationResult: RecommendationResult,
+    result: ServiceData | RecommendationResult,
   ) {
     const typeFilterOptionMap = {
       [DropdownFilterOptions.ACCOUNTS]: 'accountName',
@@ -98,8 +140,8 @@ export class RecommendationsFilters extends Filters {
 
     return (
       (dropdownOption.name.includes(unknownOptionTypes[type]) &&
-        recommendationResult[name] === null) ||
-      dropdownOption.name === recommendationResult[name]
+        result[name] === null) ||
+      dropdownOption.name === result[name]
     )
   }
 }

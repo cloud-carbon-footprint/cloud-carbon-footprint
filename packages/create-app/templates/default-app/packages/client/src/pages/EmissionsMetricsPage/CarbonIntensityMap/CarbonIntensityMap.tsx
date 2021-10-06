@@ -3,8 +3,9 @@
  */
 
 import React, { ReactElement, useState } from 'react'
-import { Card, Box, Typography, Grid } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import SelectDropdown from 'common/SelectDropdown'
+import DashboardCard from 'layout/DashboardCard'
 import AWSMap from './AWSMap.png'
 import GCPMap from './GCPMap.png'
 import AzureMap from './AzureMap.png'
@@ -31,31 +32,29 @@ const CarbonIntensityMap = (): ReactElement => {
   }
 
   return (
-    <Grid item xs={12}>
-      <Card className={classes.root}>
-        <Box padding={3}>
-          <Box className={classes.topContainer}>
-            <Typography className={classes.title}>
-              Carbon Intensity Map
-            </Typography>
-            <SelectDropdown
-              id="map"
-              value={cloudProvider}
-              dropdownOptions={Object.keys(intensityMaps)}
-              handleChange={handleChange}
-            />
-          </Box>
-          <Box paddingX={3} textAlign="center">
-            <img
-              src={intensityMaps[cloudProvider]}
-              className={classes.map}
-              alt={`${cloudProvider} Map`}
-              data-testid={`${cloudProvider.toLowerCase()}IntensityMap`}
-            />
-          </Box>
+    <DashboardCard>
+      <>
+        <Box className={classes.topContainer}>
+          <Typography className={classes.title}>
+            Carbon Intensity Map
+          </Typography>
+          <SelectDropdown
+            id="map"
+            value={cloudProvider}
+            dropdownOptions={Object.keys(intensityMaps)}
+            handleChange={handleChange}
+          />
         </Box>
-      </Card>
-    </Grid>
+        <Box paddingX={3} textAlign="center">
+          <img
+            src={intensityMaps[cloudProvider]}
+            className={classes.map}
+            alt={`${cloudProvider} Map`}
+            data-testid={`${cloudProvider.toLowerCase()}IntensityMap`}
+          />
+        </Box>
+      </>
+    </DashboardCard>
   )
 }
 

@@ -11,7 +11,7 @@ import { useErrorHandling } from 'layout/ErrorPage'
 const useRemoteRecommendationsService = (
   awsRecommendationTarget?: string,
 ): ServiceResult<RecommendationResult> => {
-  const [data, setData] = useState()
+  const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
 
   const { handleApiError, error, setError } = useErrorHandling()

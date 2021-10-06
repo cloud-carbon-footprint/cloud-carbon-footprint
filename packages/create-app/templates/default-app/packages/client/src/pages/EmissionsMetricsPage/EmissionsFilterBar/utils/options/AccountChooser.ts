@@ -5,10 +5,7 @@
 import { pluck } from 'ramda'
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
 import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
-import {
-  ALL_KEY,
-  CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
+
 import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
 import { optionIsInDropdownOptions } from 'common/FilterBar/utils/FiltersUtil'
 
@@ -28,27 +25,15 @@ export class AccountChooser extends OptionChooser {
 
     this.choosers = {
       [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
-      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseCurrentFilterOption(),
       [DropdownFilterOptions.SERVICES]: () => this.chooseServices(),
     }
-  }
-
-  protected chooseProviders(): Set<DropdownOption> {
-    const desiredSelections: Set<DropdownOption> = new Set()
-    getCloudProvidersFromAccounts(this.selections).forEach(
-      (cloudProviderOption) => desiredSelections.add(cloudProviderOption),
-    )
-    return desiredSelections
-  }
-
-  protected chooseAccounts(): Set<DropdownOption> {
-    return new Set(this.selections)
   }
 
   protected chooseServices(): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
     const currentCloudProviders = Array.from(
-      getCloudProvidersFromAccounts(this.selections),
+      this.getCloudProvidersFromSelections(this.selections),
     )
     currentCloudProviders.forEach((currentCloudProvider) => {
       if (!currentCloudProvider) return
@@ -84,22 +69,4 @@ export class AccountChooser extends OptionChooser {
     })
     return desiredSelections
   }
-}
-
-function getCloudProvidersFromAccounts(
-  accountSelections: DropdownOption[],
-): Set<DropdownOption> {
-  const cloudProviderSelections: Set<DropdownOption> = new Set<DropdownOption>()
-  accountSelections.forEach((selection) => {
-    if (selection.key !== ALL_KEY) {
-      cloudProviderSelections.add(
-        <DropdownOption>(
-          CLOUD_PROVIDER_OPTIONS.find(
-            (option) => option.key === selection.cloudProvider,
-          )
-        ),
-      )
-    }
-  })
-  return cloudProviderSelections
 }

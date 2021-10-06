@@ -9,4 +9,5 @@ export {
   mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
   mockRecommendationData,
+  mockRecommendationDataWithUnknowns,
 } from './mockData'

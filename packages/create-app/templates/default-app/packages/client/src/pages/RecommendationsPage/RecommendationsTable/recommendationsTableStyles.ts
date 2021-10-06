@@ -20,8 +20,26 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  toggleContainer: {
-    alignSelf: 'flex-end',
+  toolbarContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dateRangeContainer: {
+    display: 'flex',
+  },
+  title: {
+    margin: '0',
+    fontSize: '24px',
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    opacity: '1',
+    fontWeight: 900,
+    color: 'rgba(0, 0, 0, 0.87)',
+    padding: '.2em',
+    paddingLeft: 0,
+  },
+  recommendationsContainer: {
+    marginTop: 65,
   },
 }))
 

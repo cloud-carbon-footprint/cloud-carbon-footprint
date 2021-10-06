@@ -6,6 +6,7 @@ import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import {
   EstimationResult,
   RecommendationResult,
+  ServiceData,
 } from '@cloud-carbon-footprint/common'
 import { Filters, FiltersDateRange } from './common/FilterBar/utils/Filters'
 import { DropdownSelections } from './common/FilterBar/utils/FiltersUtil'
@@ -78,7 +79,7 @@ export type SidePanelProps = {
   title: string
   children: ReactNode
   defaultIsOpen?: boolean
-  triggerOpenOnChange?: boolean
+  openOnChange?: RecommendationRow
 }
 
 export type FilterProps = {
@@ -93,7 +94,10 @@ export type UnknownTypesMapping = {
   [type in DropdownFilterOptions]?: UnknownTypes
 }
 
-export type FilterResults = EstimationResult[] | RecommendationResult[]
+export type FilterResults =
+  | EstimationResult[]
+  | RecommendationResult[]
+  | EmissionsAndRecommendationResults
 
 export type DateRange = {
   min: Date | null
@@ -118,6 +122,11 @@ export type RecommendationRow = RecommendationResult & {
   useKilograms: boolean
 }
 
+export type EmissionsAndRecommendationResults = {
+  recommendations: RecommendationResult[]
+  emissions: ServiceData[]
+}
+
 export enum ChartDataTypes {
   REGION = 'region',
   SERVICE = 'service',
@@ -128,6 +137,7 @@ export enum UnknownTypes {
   UNKNOWN_REGION = 'Unknown Region',
   UNKNOWN_SERVICE = 'Unknown Service',
   UNKNOWN_ACCOUNT = 'Unknown Account',
+  UNKNOWN_RECOMMENDATION_TYPE = 'Unknown Recommendation Type',
 }
 
 export enum DropdownFilterOptions {
@@ -150,9 +160,12 @@ export const filterLabels: FilterLabelMapping = {
   [DropdownFilterOptions.ACCOUNTS]: 'Accounts',
   [DropdownFilterOptions.SERVICES]: 'Services',
   [DropdownFilterOptions.CLOUD_PROVIDERS]: 'Cloud Providers',
+  [DropdownFilterOptions.REGIONS]: 'Regions',
+  [DropdownFilterOptions.RECOMMENDATION_TYPES]: 'Recommendation Types',
 }
 
 export const unknownOptionTypes: UnknownTypesMapping = {
   [DropdownFilterOptions.ACCOUNTS]: UnknownTypes.UNKNOWN_ACCOUNT,
   [DropdownFilterOptions.SERVICES]: UnknownTypes.UNKNOWN_SERVICE,
+  [DropdownFilterOptions.REGIONS]: UnknownTypes.UNKNOWN_REGION,
 }

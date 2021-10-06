@@ -5,18 +5,23 @@
 import React, { FunctionComponent, useState } from 'react'
 import Chart from 'react-apexcharts'
 import { useTheme } from '@material-ui/core/styles'
-import NoDataMessage from 'common/NoDataMessage'
-import { ApexChartProps, PageEntry, Page, barChartCustomColors } from 'Types'
-import { sumCO2ByServiceOrRegion } from 'utils/helpers'
-import useRemoteEmissionService from 'utils/hooks/EmissionFactorServiceHook'
+import { PageEntry, Page, barChartCustomColors } from 'Types'
 import useStyles from './apexBarChartStyles'
 import { createCustomBarColors, mapToRange } from './helpers'
 import Pagination from '../Pagination'
 import CarbonIntensityRange from '../CarbonIntensityRange/'
+import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
 
-const ApexBarChart: FunctionComponent<ApexChartProps> = ({
+type ApexBarChartProps = {
+  data: { string: [string, number] }
+  dataType?: string
+  emissionsData: EmissionRatioResult[]
+}
+
+const ApexBarChart: FunctionComponent<ApexBarChartProps> = ({
   data,
   dataType,
+  emissionsData,
 }) => {
   const [pageData, setPageData] = useState<Page<PageEntry>>({
     data: [],
@@ -28,17 +33,12 @@ const ApexBarChart: FunctionComponent<ApexChartProps> = ({
   const mainTheme = theme.palette.primary.main
   const darkTheme = theme.palette.primary.dark
 
-  const { data: emissionsData, loading: emissionsLoading } =
-    useRemoteEmissionService()
-
   let customBarColors = [mainTheme]
   if (dataType === 'region' && !!emissionsData.length) {
     customBarColors = createCustomBarColors(pageData, emissionsData, mainTheme)
   }
 
-  const barChartData = sumCO2ByServiceOrRegion(data, dataType)
-
-  const dataEntries: { x: string[]; y: number }[] = Object.entries(barChartData)
+  const dataEntries: { x: string[]; y: number }[] = Object.entries(data)
     .filter((item: [string, [string, number]]) => item[1][1] > 0)
     .map((item) => {
       return {
@@ -184,14 +184,6 @@ const ApexBarChart: FunctionComponent<ApexChartProps> = ({
 
   const handlePage = (page: Page<PageEntry>) => {
     setPageData(page)
-  }
-
-  if (!mappedDataEntries?.length || emissionsLoading) {
-    return (
-      <div className={classes.barChartContainer}>
-        <NoDataMessage isTop={false} />
-      </div>
-    )
   }
 
   return (

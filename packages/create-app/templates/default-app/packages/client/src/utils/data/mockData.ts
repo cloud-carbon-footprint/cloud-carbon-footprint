@@ -265,8 +265,8 @@ const mockDataWithSmallNumbers: EstimationResult[] = [
 const mockRecommendationData: RecommendationResult[] = [
   {
     cloudProvider: 'AWS',
-    accountId: 'test-acc-1',
-    accountName: 'test-acc-1',
+    accountId: testAccountA,
+    accountName: testAccountA,
     region: 'us-west-1',
     recommendationType: 'Modify',
     recommendationDetail: 'Test recommendation detail 1',
@@ -278,8 +278,8 @@ const mockRecommendationData: RecommendationResult[] = [
   },
   {
     cloudProvider: 'AWS',
-    accountId: 'test-acc-1',
-    accountName: 'test-acc-2',
+    accountId: testAccountB,
+    accountName: testAccountB,
     region: 'us-west-2',
     recommendationType: 'Terminate',
     recommendationDetail: 'Test recommendation detail 2',
@@ -291,6 +291,34 @@ const mockRecommendationData: RecommendationResult[] = [
   },
 ]
 
+const mockEmissionsAndRecommendations = {
+  emissions: mockData[0].serviceEstimates,
+  recommendations: mockRecommendationData,
+}
+
+const mockRecommendationDataWithUnknowns: RecommendationResult[] = [
+  {
+    cloudProvider: 'AWS',
+    accountId: testAccountA,
+    accountName: null,
+    region: null,
+    recommendationType: null,
+    recommendationDetail: 'Test recommendation detail 1',
+    costSavings: 200,
+    co2eSavings: 2.539,
+    kilowattHourSavings: 3.2,
+    instanceName: 'test-instance',
+    resourceId: 'test-resource-id',
+  },
+]
+
+const mockEmissionsAndRecommendationsWithUnknowns = {
+  emissions: mockDataWithUnknownsAWS[0].serviceEstimates.concat(
+    mockDataWithUnknownsGCP[0].serviceEstimates,
+  ),
+  recommendations: mockRecommendationDataWithUnknowns,
+}
+
 export {
   mockData,
   mockDataWithUnknownsAWS,
@@ -298,4 +326,7 @@ export {
   mockDataWithHigherPrecision,
   mockDataWithSmallNumbers,
   mockRecommendationData,
+  mockRecommendationDataWithUnknowns,
+  mockEmissionsAndRecommendations,
+  mockEmissionsAndRecommendationsWithUnknowns,
 }

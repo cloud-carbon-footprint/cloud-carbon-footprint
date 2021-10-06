@@ -21,12 +21,14 @@ export class AccountChooser extends OptionChooser {
     )
 
     this.choosers = {
-      // [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
-      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseAccounts(),
+      [DropdownFilterOptions.ACCOUNTS]: () => this.chooseCurrentFilterOption(),
+      [DropdownFilterOptions.CLOUD_PROVIDERS]: () => this.chooseProviders(),
+      [DropdownFilterOptions.REGIONS]: () =>
+        this.chooseDropdownFilterOption(DropdownFilterOptions.REGIONS),
+      [DropdownFilterOptions.RECOMMENDATION_TYPES]: () =>
+        this.chooseDropdownFilterOption(
+          DropdownFilterOptions.RECOMMENDATION_TYPES,
+        ),
     }
-  }
-
-  protected chooseAccounts(): Set<DropdownOption> {
-    return new Set(this.selections)
   }
 }
