@@ -14,4 +14,3 @@ ports:
   # set this to open-preview, if you want to be able to browse to API endpoints
   - port: 4000
     onOpen: ignore
-git
