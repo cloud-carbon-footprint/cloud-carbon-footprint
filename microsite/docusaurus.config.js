@@ -10,7 +10,7 @@ module.exports = {
   onBrokenLinks: 'log',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
-  organizationName: 'Tcloud-carbon-footprint', // Usually your GitHub org/user name.
+  organizationName: 'cloud-carbon-footprint', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   themeConfig: {
     sidebarCollapsible: true,
@@ -22,10 +22,16 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/getting-started',
-          label: 'Try Now',
-          position: 'right',
-          className: 'navbar__link',
+          "to": "https://demo.cloudcarbonfootprint.org/",
+          "label": "Demo",
+          "position": "right",
+          "className": "navbar__link"
+        },
+        {
+          "to": "docs/getting-started",
+          "label": "Get Started",
+          "position": "right",
+          "className": "navbar__link"
         },
         {
           to: 'docs/overview',
