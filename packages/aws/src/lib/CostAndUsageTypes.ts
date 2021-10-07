@@ -19,6 +19,8 @@ export const SSD_SERVICES: string[] = [
   'AmazonECS',
   'AmazonLightsail',
   'AmazonNeptune',
+  'AmazonFSx',
+  'AmazonKinesis',
 ]
 
 export const SSD_USAGE_TYPES: string[] = [
@@ -91,6 +93,8 @@ export const HDD_USAGE_TYPES: string[] = [
   'OverwriteBytes-Put-GLACIER', // S3 GLACIER storage
   'OverwriteBytes-Put-RRS', // S3 Reduced Redundancy storage
   'BackupUsage.MultiAZ', // Fsx
+  'ColdStorage-ByteHrs-EFS', // AWSBackup
+  'WarmStorage-ByteHrs-EFS', //AWSBackup
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -117,6 +121,7 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'EarlyDelete-SIA',
   'EarlyDelete-ZIA',
   'GlacierByteHrs',
+  'ByteHrs-EFS',
 ]
 
 export const UNKNOWN_USAGE_TYPES: string[] = [
@@ -154,6 +159,9 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Input-Standard-Hours',
   'Airflow-SmallWorker',
   'AppRunner-Provisioned-GB-hours',
+  'ApiGatewayCacheUsage',
+  'PortUsage',
+  'SharedMsftAD-Usage',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
