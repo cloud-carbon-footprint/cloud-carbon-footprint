@@ -1387,7 +1387,7 @@
       "recommendationDetail": "Modify instance: example-instance-5.",
       "resourceId": "i-0f12345678912b12I",
       "kilowattHourSavings": 6.513,
-      "costSavings": 33.611,
+      "costSavings": 3.611,
       "co2eSavings": 0.492
     },
     {
@@ -1400,7 +1400,7 @@
       "recommendationDetail": "Modify instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
       "kilowattHourSavings": 4.978,
-      "costSavings": 43.506,
+      "costSavings": 6.506,
       "co2eSavings": 0.984
     },
     {
@@ -1426,7 +1426,7 @@
       "recommendationDetail": "Delete instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
       "kilowattHourSavings": 1.195,
-      "costSavings": 34.442,
+      "costSavings": 4.442,
       "co2eSavings": 0.892
     },
     {
@@ -1439,7 +1439,7 @@
       "recommendationDetail": "Delete instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
       "kilowattHourSavings": 1.717,
-      "costSavings": 25.788,
+      "costSavings": 5.788,
       "co2eSavings": 0.972
     },
     {
@@ -1450,7 +1450,7 @@
       "recommendationType": "DELETE_IMAGE",
       "instanceName": "test-instance-1",
       "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-1.",
-      "resourceId": 6906976106869123607,
+      "resourceId": 6906976106869124000,
       "kilowattHourSavings": 2.081,
       "costSavings": 1.314,
       "co2eSavings": 0.466
@@ -1463,9 +1463,9 @@
       "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
       "instanceName": "test-instance-3",
       "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-3.",
-      "resourceId": 4256745502855943014,
+      "resourceId": 4256745502855943000,
       "kilowattHourSavings": 8.742,
-      "costSavings": 24.549,
+      "costSavings": 4.549,
       "co2eSavings": 0.803
     },
     {
@@ -1476,9 +1476,9 @@
       "recommendationType": "CHANGE_MACHINE_TYPE",
       "instanceName": "test-instance-10",
       "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-10.",
-      "resourceId": 9625521363699054071,
+      "resourceId": 9625521363699055000,
       "kilowattHourSavings": 6.989,
-      "costSavings": 48.165,
+      "costSavings": 7.165,
       "co2eSavings": 0.855
     },
     {
@@ -1489,9 +1489,9 @@
       "recommendationType": "DELETE_ADDRESS",
       "instanceName": "test-instance-8",
       "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-8.",
-      "resourceId": 9351508929180876947,
+      "resourceId": 9351508929180877000,
       "kilowattHourSavings": 9.946,
-      "costSavings": 35.2,
+      "costSavings": 5.2,
       "co2eSavings": 0.068
     },
     {
@@ -1502,9 +1502,9 @@
       "recommendationType": "DELETE_DISK",
       "instanceName": "test-instance-14",
       "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-14.",
-      "resourceId": 7840914330904416378,
+      "resourceId": 7840914330904416000,
       "kilowattHourSavings": 8.782,
-      "costSavings": 18.359,
+      "costSavings": 8.359,
       "co2eSavings": 0.875
     },
     {
@@ -1515,9 +1515,9 @@
       "recommendationType": "STOP_VM",
       "instanceName": "test-instance-9",
       "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
-      "resourceId": 8928403120086347428,
+      "resourceId": 8928403120086348000,
       "kilowattHourSavings": 6.483,
-      "costSavings": 18.409,
+      "costSavings": 8.409,
       "co2eSavings": 0.929
     }
   ]
