@@ -2247,7 +2247,7 @@ __metadata:
     helmet: ^4.6.0
     immer: ^9.0.2
     jest: 26.6.0
-    json-server: ^0.16.3
+    json-server: ^0.17.0
     lint-staged: ^11.0.1
     lodash: ^4.17.21
     mockdate: ^3.0.5
@@ -8344,6 +8344,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "chalk@npm:4.1.2"
+  dependencies:
+    ansi-styles: ^4.1.0
+    supports-color: ^7.1.0
+  checksum: e3901b97d953991712bf0b941d586175be7ca5da56a97d25187e07453c6b26cae0ac8d9c7aa9e87e7c5c986fff870771b3a8e2705b3becda868829e2e12c2a65
+  languageName: node
+  linkType: hard
+
 "char-regex@npm:^1.0.2":
   version: 1.0.2
   resolution: "char-regex@npm:1.0.2"
@@ -11750,7 +11760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-urlrewrite@npm:^1.3.0":
+"express-urlrewrite@npm:^1.4.0":
   version: 1.4.0
   resolution: "express-urlrewrite@npm:1.4.0"
   dependencies:
@@ -15700,33 +15710,33 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"json-server@npm:^0.16.3":
-  version: 0.16.3
-  resolution: "json-server@npm:0.16.3"
+"json-server@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "json-server@npm:0.17.0"
   dependencies:
     body-parser: ^1.19.0
-    chalk: ^4.1.0
+    chalk: ^4.1.2
     compression: ^1.7.4
     connect-pause: ^0.1.1
     cors: ^2.8.5
     errorhandler: ^1.5.1
     express: ^4.17.1
-    express-urlrewrite: ^1.3.0
+    express-urlrewrite: ^1.4.0
     json-parse-helpfulerror: ^1.0.3
-    lodash: ^4.17.20
-    lodash-id: ^0.14.0
+    lodash: ^4.17.21
+    lodash-id: ^0.14.1
     lowdb: ^1.0.0
     method-override: ^3.0.0
     morgan: ^1.10.0
-    nanoid: ^3.1.16
+    nanoid: ^3.1.23
     please-upgrade-node: ^3.2.0
     pluralize: ^8.0.0
     server-destroy: ^1.0.1
-    update-notifier: ^5.0.1
-    yargs: ^16.1.1
+    update-notifier: ^5.1.0
+    yargs: ^17.0.1
   bin:
     json-server: lib/cli/bin.js
-  checksum: fe3e966b4bc1a15ae1420e220842fe06e89210cafb21c687ae4b95b927c77fc4d953c409546022eacc212907eeccd1db31c765bac5bd1fcc3935a59938f36582
+  checksum: e6e575f5f678d227edfb1f0607e40d8e7430538d8833786501422ddc6ce229ac8a73d72c2ec7add29a27f94587461d053ac9169324d3fd97d97cdfcdb46e8652
   languageName: node
   linkType: hard
 
@@ -16355,10 +16365,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash-id@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "lodash-id@npm:0.14.0"
-  checksum: 00845a886fe6730be8f09839ccbfd142891d1fc65962cc436547e26e8388be64a9f93eae26b853efe036825b3d3fb7e733e8fc6d8b87b768de9f1be663dad45a
+"lodash-id@npm:^0.14.1":
+  version: 0.14.1
+  resolution: "lodash-id@npm:0.14.1"
+  checksum: 103f4b6bf1cdd86ecafd4a18635b98cb031f04508a9afeeb0aaf04031746b958e09763b36d726803e38ac8c52dc61baaf06ae381bfb4cb1d209c9c24bbb051bd
   languageName: node
   linkType: hard
 
@@ -17437,7 +17447,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.12, nanoid@npm:^3.1.16, nanoid@npm:^3.1.23":
+"nanoid@npm:^3.1.12, nanoid@npm:^3.1.23":
   version: 3.1.23
   resolution: "nanoid@npm:3.1.23"
   bin:
@@ -24747,7 +24757,7 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
-"update-notifier@npm:^5.0.1":
+"update-notifier@npm:^5.1.0":
   version: 5.1.0
   resolution: "update-notifier@npm:5.1.0"
   dependencies:
@@ -26013,6 +26023,21 @@ typescript@^4.3.5:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: a79ce1f043021cd645de1ffebb6149541d382ba68f4a6b5eca5d2ad65af51893371bbd78e240dc3b6cf0cbb419511ba5bda715dec992e4266e6863ea49f14feb
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^17.0.1":
+  version: 17.2.1
+  resolution: "yargs@npm:17.2.1"
+  dependencies:
+    cliui: ^7.0.2
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.0
+    y18n: ^5.0.5
+    yargs-parser: ^20.2.2
+  checksum: b0fafd66d1b095c36d6cc9798b160ebd348f5356ca6f3c1d23e266229341905f1686e3255b3a108534b48d74e371eb65a91d89a93d6c59e2780bff42d40b370c
   languageName: node
   linkType: hard
 
