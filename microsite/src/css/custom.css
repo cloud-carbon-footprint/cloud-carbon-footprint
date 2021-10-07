@@ -90,7 +90,12 @@ a {
 }
 
 .menu__link,
+.button__link,
 .table-of-contents__link {
+  text-decoration: none;
+}
+
+.button__link:hover {
   text-decoration: none;
 }
 

@@ -38,9 +38,9 @@ function Overview() {
           emissions, producing metrics that can be shared with employees,
           investors, and other stakeholders.
         </p>
-        <Link to="docs/getting-started">
+        <Link className="button__link" to="docs/getting-started">
           <Button variant="contained" classes={{ root: classes.paddingLow }}>
-            TRY NOW
+            GET STARTED
           </Button>
         </Link>
       </div>

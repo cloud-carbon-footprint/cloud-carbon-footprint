@@ -16,7 +16,7 @@ function CallToActionBanner() {
           can do about it
         </p>
       </div>
-      <Link to="docs/getting-started">
+      <Link className="button__link" to="https://demo.cloudcarbonfootprint.org/">
         <Button
           variant="outlined"
           classes={{ root: classes.paddingLow }}
@@ -24,7 +24,7 @@ function CallToActionBanner() {
             borderColor: '#ffffff',
           }}
         >
-          TRY NOW
+          TRY DEMO NOW
         </Button>
       </Link>
     </div>
