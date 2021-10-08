@@ -1,3 +1,16 @@
+Parameters:
+  AuthorizedRole:
+    Description: The trusted entity's ARN that can assume the CCF role
+    Type: String
+    Default: arn:aws:iam::<ACCOUNT ID>:<NAME>
+  BillingDataBucket:
+    Description: The S3 bucket where the CUR data lives
+    Type: String
+    Default: arn:aws:s3:::<YOUR BUCKET NAME>
+  QueryResultsBucket:
+    Description: The S3 bucket where Athena query results will be stored
+    Type: String
+    Default: arn:aws:s3:::<YOUR BUCKET NAME>
 Resources:
   CCFAthenaRole:
     Type: 'AWS::IAM::Role'
@@ -9,7 +22,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: 'arn:aws:iam::<REPLACE-WITH-YOUR-AWS-ACCOUNT-ID>:<role OR user>/<REPLACE-WITH-YOUR-ROLE-OR-USER-NAME>'
+              AWS: !Ref AuthorizedRole
             Action: sts:AssumeRole
       Policies:
         - PolicyName: athena
@@ -45,11 +58,12 @@ Resources:
                   - s3:ListBucketMultipartUploads
                   - s3:ListMultipartUploadParts
                   - s3:AbortMultipartUpload
-                  - s3:CreateBucket
                   - s3:PutObject
                 Resource:
-                  - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>
-                  - arn:aws:s3:::<REPLACE-WITH-YOUR-ATHENA-DAILY-BUCKET-NAME>/*
+                  - !Ref BillingDataBucket
+                  - !Join [ "", [ !Ref BillingDataBucket, "/*"] ]
+                  - !Ref QueryResultsBucket
+                  - !Join [ "", [ !Ref QueryResultsBucket, "/*"] ]
         - PolicyName: ce
           PolicyDocument:
             Version: 2012-10-17
