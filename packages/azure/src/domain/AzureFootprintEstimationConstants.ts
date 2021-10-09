@@ -28,7 +28,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 9.67,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 89.6,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 129.78,
-    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 128.00,
+    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 128.0,
   },
   getMemory: (computeProcessors: string[]): number => {
     const memoryForProcessors: number[] = computeProcessors.map(
