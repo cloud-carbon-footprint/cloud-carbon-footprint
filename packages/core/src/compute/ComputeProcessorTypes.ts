@@ -12,6 +12,7 @@ export enum COMPUTE_PROCESSOR_TYPES {
   IVY_BRIDGE = 'Ivy Bridge',
   AMD_EPYC_1ST_GEN = 'AMD EPYC 1st Gen',
   AMD_EPYC_2ND_GEN = 'AMD EPYC 2nd Gen',
+  AMD_EPYC_3RD_GEN = 'AMD EPYC 3rd Gen',
   GPU = 'GPU',
   AWS_GRAVITON = 'AWS Graviton',
   AWS_GRAVITON_2 = 'AWS Graviton2',
