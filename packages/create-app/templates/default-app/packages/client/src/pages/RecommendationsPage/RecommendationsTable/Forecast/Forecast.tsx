@@ -57,7 +57,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
     projectedSavingsCost,
   )
 
-  const yearlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost * 12)}`
+  const monthlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost)}`
 
   const treeSeedlings = formattedNumberWithCommas(
     sumSavingsCo2e * 16.5337915448,
@@ -69,13 +69,13 @@ const Forecast: FunctionComponent<ForecastProps> = ({
       <Typography className={classes.title}>Forecast</Typography>
       <div className={classes.forecastContainer}>
         <ForecastCard
-          title={'Current Total'}
+          title="Last 30 Day Total"
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
         />
         <ForwardIcon className={classes.icon} />
         <ForecastCard
-          title={'Projected Total'}
+          title="Projected 30 Day Total"
           co2eSavings={projectedCo2eFormatted}
           costSavings={projectedCostFormatted}
           co2ePercentChange={co2ePercentChange}
@@ -83,9 +83,9 @@ const Forecast: FunctionComponent<ForecastProps> = ({
         />
         <div className={clsx(classes.icon, classes.equalSign)}>=</div>
         <ForecastEquivalencyCard
-          title={'Savings equal to'}
+          title="Monthly Savings Equal To"
           treeSeedlings={treeSeedlings}
-          yearCostSavings={yearlyCostSavings}
+          yearCostSavings={monthlyCostSavings}
         />
       </div>
     </>

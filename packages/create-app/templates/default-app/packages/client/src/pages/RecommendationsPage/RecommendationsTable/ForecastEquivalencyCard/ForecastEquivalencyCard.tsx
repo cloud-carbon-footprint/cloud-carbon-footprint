@@ -37,7 +37,7 @@ const ForecastEquivalencyCard: FunctionComponent<ForecastEquivalencyProps> = ({
           <Typography className={classes.textContent}>
             {yearCostSavings}
           </Typography>
-          <Typography>Per year</Typography>
+          <Typography>Dollars per month</Typography>
         </div>
       </div>
     </Card>
