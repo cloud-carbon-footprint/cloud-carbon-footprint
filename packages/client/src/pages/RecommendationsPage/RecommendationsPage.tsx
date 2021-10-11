@@ -32,7 +32,7 @@ const RecommendationsPage = (): ReactElement => {
 
   // Emissions Estimation Data
   const endDate: moment.Moment = moment.utc()
-  const startDate = moment.utc().subtract('1', 'year')
+  const startDate = moment.utc().subtract('1', 'month')
   const { data: emissions, loading: emissionsLoading } = useRemoteService(
     [],
     startDate,

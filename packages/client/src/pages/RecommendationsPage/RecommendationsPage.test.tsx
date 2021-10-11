@@ -63,7 +63,7 @@ describe('Recommendations Page', () => {
     expect(mockedUseRecommendationsService).toHaveBeenCalled()
   })
 
-  it('should passed in to remote service hook today and january first of the last year', () => {
+  it('should pass in to remote service hook today and one month prior', () => {
     render(<RecommendationsPage />)
 
     const parameters = mockUseRemoteService.mock.calls[0]
@@ -75,7 +75,7 @@ describe('Recommendations Page', () => {
     const endDate = parameters[2]
 
     expect(initial).toEqual([])
-    expect(startDate.year()).toEqual(endDate.year() - 1)
+    expect(startDate.month()).toEqual(endDate.month() - 1)
 
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
   })

@@ -16,7 +16,7 @@ describe('Forecast Equivalency Card', () => {
   const testProps = [
     ['title', { title: 'test-title' }, 'test-title'],
     ['treeSeedlings', { treeSeedlings: 255 }, 'Tree seedlings grown'],
-    ['yearCostSavings', { yearCostSavings: 16500 }, 'Per year'],
+    ['yearCostSavings', { yearCostSavings: 16500 }, 'Dollars per month'],
   ]
   each(testProps).it(
     'should display the %s that we pass through',

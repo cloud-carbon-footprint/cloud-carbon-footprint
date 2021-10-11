@@ -15,23 +15,30 @@ describe('Forecast', () => {
     recommendations: mockRecommendationData,
   }
 
-  it('should render the title', async () => {
-    const { findByText } = render(<Forecast {...testProps} />)
-    const forecast = await findByText('Forecast')
+  it('should render the title', () => {
+    const { getByText } = render(<Forecast {...testProps} />)
+    const forecast = getByText('Forecast')
 
     expect(forecast).toBeInTheDocument()
   })
 
-  it('should render the current forecast card', async () => {
-    const { findByText } = render(<Forecast {...testProps} />)
-    const current = await findByText('Current Total')
+  it('should render the current forecast card', () => {
+    const { getByText } = render(<Forecast {...testProps} />)
+    const current = getByText('Last 30 Day Total')
+
+    expect(current).toBeInTheDocument()
+  })
+
+  it('should render the projected forecast card', () => {
+    const { getByText } = render(<Forecast {...testProps} />)
+    const current = getByText('Projected 30 Day Total')
 
     expect(current).toBeInTheDocument()
   })
 
   it('should render the equivalency card', () => {
     const { getByText } = render(<Forecast {...testProps} />)
-    const current = getByText('Savings equal to')
+    const current = getByText('Monthly savings equal to')
 
     expect(current).toBeInTheDocument()
   })
