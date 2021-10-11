@@ -4,13 +4,16 @@
 
 import moment, { Moment } from 'moment'
 import R from 'ramda'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
 import { Logger } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import EstimatorCache from './EstimatorCache'
 import { EstimationRequest } from './CreateValidRequest'
+import DurationConstructor = moment.unitOfTime.DurationConstructor
 
 const cacheManager: EstimatorCache = new CacheManager()
+const groupCacheResultsBy = configLoader()
+  .GROUP_QUERY_RESULTS_BY as DurationConstructor
 
 function getMissingDates(
   cachedEstimates: EstimationResult[],
@@ -28,14 +31,14 @@ function getMissingDates(
   for (let i = 0; i < cachedDates.length; i++) {
     while (dateIndex.isBefore(cachedDates[i])) {
       missingDates.push(moment.utc(dateIndex.toDate()))
-      dateIndex.add(1, 'day')
+      dateIndex.add(1, groupCacheResultsBy)
     }
-    dateIndex.add(1, 'day')
+    dateIndex.add(1, groupCacheResultsBy)
   }
 
   while (dateIndex.isBefore(moment.utc(request.endDate))) {
     missingDates.push(moment.utc(dateIndex.toDate()))
-    dateIndex.add(1, 'day')
+    dateIndex.add(1, groupCacheResultsBy)
   }
   return missingDates
 }
@@ -48,7 +51,7 @@ function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
       !lastSubArray ||
       !moment
         .utc(date)
-        .subtract(1, 'day')
+        .subtract(1, groupCacheResultsBy)
         .isSame(lastSubArray[lastSubArray.length - 1])
     ) {
       acc.push([])
@@ -62,7 +65,7 @@ function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
   const requestDates = groupMissingDates.map((group) => {
     return {
       start: group[0],
-      end: moment(group[group.length - 1]).add('1', 'day'),
+      end: moment(group[group.length - 1]).add('1', groupCacheResultsBy),
     }
   })
 

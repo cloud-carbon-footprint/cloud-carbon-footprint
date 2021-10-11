@@ -2,9 +2,14 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import cache from '../Cache'
-import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
 import moment from 'moment'
+import DurationConstructor = moment.unitOfTime.DurationConstructor
+import {
+  configLoader,
+  EstimationResult,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
+import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 import CacheManager from '../CacheManager'
 
@@ -22,6 +27,18 @@ jest.mock('../CacheManager', () => {
   })
 })
 
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  configLoader: jest.fn().mockImplementation(() => {
+    return {
+      GROUP_QUERY_RESULTS_BY: 'day',
+    }
+  }),
+}))
+
 const dummyServiceEstimate: ServiceData[] = [
   {
     cloudProvider: '',
@@ -38,12 +55,13 @@ const dummyServiceEstimate: ServiceData[] = [
 
 function buildFootprintEstimates(
   startDate: string,
-  consecutiveDays: number,
+  consecutiveTimestamps: number,
   serviceEstimates: ServiceData[] = [],
+  timestampUnit: DurationConstructor = 'days',
 ) {
-  return [...Array(consecutiveDays)].map((v, i) => {
+  return [...Array(consecutiveTimestamps)].map((v, i) => {
     return {
-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+      timestamp: moment.utc(startDate).add(i, timestampUnit).toDate(),
       serviceEstimates: [...serviceEstimates],
     }
   })
@@ -65,7 +83,15 @@ describe('Cache', () => {
     propertyDescriptor = { value: originalFunction }
   })
 
-  describe('cache-returned function', () => {
+  describe('cache-returned function per day', () => {
+    beforeEach(() => {
+      ;(configLoader as jest.Mock).mockReturnValue({
+        GROUP_QUERY_RESULTS_BY: 'day',
+      })
+    })
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
     it('returns cached data from cache service instead of calling the real method', async () => {
       //setup
       const rawRequest: EstimationRequest = {
@@ -317,6 +343,65 @@ describe('Cache', () => {
 
       //assert
       expect(results).toEqual(computedEstimates)
+    })
+  })
+
+  describe('cache-returned function per week', () => {
+    beforeEach(() => {
+      ;(configLoader as jest.Mock).mockReturnValue({
+        GROUP_QUERY_RESULTS_BY: 'week',
+      })
+    })
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+    it('fetches dates not stored in cache', async () => {
+      //given
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2021-01-01').toDate(),
+        endDate: moment.utc('2021-02-01').toDate(),
+      }
+
+      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2021-01-01',
+        2,
+        dummyServiceEstimate,
+        'weeks',
+      )
+
+      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+
+      const computedEstimates1 = buildFootprintEstimates(
+        '2021-01-15',
+        2,
+        dummyServiceEstimate,
+        'weeks',
+      )
+
+      const computedEstimates2 = buildFootprintEstimates(
+        '2021-01-29',
+        2,
+        dummyServiceEstimate,
+        'weeks',
+      )
+
+      originalFunction
+        .mockResolvedValueOnce(computedEstimates1)
+        .mockResolvedValueOnce(computedEstimates2)
+
+      //when
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+      const estimationResult: EstimationResult[] =
+        await propertyDescriptor.value(rawRequest)
+
+      //then
+      const expectedEstimationResults: EstimationResult[] = [
+        ...cachedEstimates,
+        ...computedEstimates1,
+        ...computedEstimates2,
+      ]
+
+      expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
 })
