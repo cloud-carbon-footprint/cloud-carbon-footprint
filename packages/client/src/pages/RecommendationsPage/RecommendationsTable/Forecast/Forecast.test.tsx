@@ -38,7 +38,7 @@ describe('Forecast', () => {
 
   it('should render the equivalency card', () => {
     const { getByText } = render(<Forecast {...testProps} />)
-    const current = getByText('Monthly savings equal to')
+    const current = getByText('Monthly Savings Equal To')
 
     expect(current).toBeInTheDocument()
   })
