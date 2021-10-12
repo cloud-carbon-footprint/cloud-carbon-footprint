@@ -42,7 +42,7 @@ export default class CacheManager implements EstimatorCache {
         break
     }
 
-    return estimates ? this.formatEstimates(request, estimates) : []
+    return estimates ? this.filterEstimatesForRequest(request, estimates) : []
   }
 
   async setEstimates(estimates: EstimationResult[]): Promise<void> {
@@ -60,26 +60,12 @@ export default class CacheManager implements EstimatorCache {
     }
   }
 
-  private formatEstimates(
+  private filterEstimatesForRequest(
     request: EstimationRequest,
     estimates: EstimationResult[],
   ) {
-    const formatDateToTime = (timestamp: string | Date) =>
-      timestamp instanceof Date
-        ? timestamp.getTime()
-        : new Date(timestamp).getTime()
-
+    const startDate = moment.utc(request.startDate)
     const endDate = moment.utc(request.endDate)
-
-    const startDate = estimates.length
-      ? moment.utc(
-          estimates.sort(
-            (a, b) =>
-              formatDateToTime(new Date(a.timestamp)) -
-              formatDateToTime(new Date(b.timestamp)),
-          )[0].timestamp,
-        )
-      : moment.utc(request.startDate)
 
     return estimates.filter(({ timestamp }) => {
       return moment

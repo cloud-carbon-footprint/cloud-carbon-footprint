@@ -5,7 +5,7 @@
   "description": "Test repository to run integration tests",
   "scripts": {
     "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
-    "start-client": "BROWSER=none yarn workspace @cloud-carbon-footprint/client start",
+    "start-client": "BROWSER=none REACT_APP_PREVIOUS_YEAR_OF_USAGE=true yarn workspace @cloud-carbon-footprint/client start",
     "start-api": "USE_TEST_CACHE=true yarn workspace @cloud-carbon-footprint/api start",
     "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
     "headed": "testcafe 'chrome'",
