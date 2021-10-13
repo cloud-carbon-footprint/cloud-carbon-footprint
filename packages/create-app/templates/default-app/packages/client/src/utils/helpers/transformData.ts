@@ -139,7 +139,7 @@ const sumEstimate = (
   key: string,
 ): number => {
   let serviceEstimates = data
-  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult
+  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult)
   if (data[0] && 'serviceEstimates' in data[0]) {
     const estimationData = data as EstimationResult[]
     serviceEstimates = estimationData.flatMap(
