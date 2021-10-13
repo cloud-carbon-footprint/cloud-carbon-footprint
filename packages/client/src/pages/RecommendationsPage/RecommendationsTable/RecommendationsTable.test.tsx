@@ -258,4 +258,45 @@ describe('Recommendations Table', () => {
       expect(getByText('Forecast')).toBeInTheDocument()
     })
   })
+
+  xdescribe('Pagination', () => {
+    it('should reset to page 1 after search, filters, and sorting are applied', () => {
+      const mockRecommendationsFor2Pages = [...mockRecommendationData]
+
+      for (let i = 0; i < 27; i++) {
+        mockRecommendationsFor2Pages.push({
+          cloudProvider: 'AWS',
+          accountId: '123456' + i,
+          accountName: i + '123456',
+          region: 'us-west-2',
+          recommendationType: 'Terminate',
+          recommendationDetail: 'Test recommendation detail 2',
+          costSavings: 100,
+          co2eSavings: 1.24,
+          kilowattHourSavings: 6.2,
+          instanceName: 'test-instance',
+          resourceId: 'test-resource-id',
+        })
+      }
+
+      const { getByRole, getByLabelText, getByTestId } = render(
+        <RecommendationsTable
+          {...testProps}
+          recommendations={mockRecommendationsFor2Pages}
+        />,
+      )
+
+      const nextPageButton = getByLabelText('Next page')
+
+      fireEvent.click(nextPageButton)
+
+      const searchBar = getByRole('textbox')
+
+      fireEvent.change(searchBar, { target: { value: 'account 1' } })
+
+      const dataGrid = getByTestId('data-grid')
+
+      expect(within(dataGrid).getByText('1-25 of 28')).toBeInTheDocument()
+    })
+  })
 })
