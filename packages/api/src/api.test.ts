@@ -228,4 +228,15 @@ describe('api', () => {
       })
     })
   })
+
+  describe('/healthz', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+    it('return 200', async () => {
+      const response = await request(server).get(encodeURI('/healthz'))
+
+      expect(response.status).toBe(200)
+    })
+  })
 })

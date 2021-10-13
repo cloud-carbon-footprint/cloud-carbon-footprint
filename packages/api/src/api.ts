@@ -111,5 +111,7 @@ const router = express.Router()
 router.get('/footprint', FootprintApiMiddleware)
 router.get('/regions/emissions-factors', EmissionsApiMiddleware)
 router.get('/recommendations', RecommendationsApiMiddleware)
-
+router.get('/healthz', (req: express.Request, res: express.Response) => {
+  res.status(200).send('OK')
+})
 export default router
