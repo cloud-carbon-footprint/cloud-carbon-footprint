@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(() => ({
   card: {
     width: 600,
-    height: 350,
+    minHeight: 350,
     border: '5px solid #3F51B5',
     borderRadius: 15,
     display: 'flex',
@@ -39,11 +39,13 @@ const useStyles = makeStyles(() => ({
   },
   contentContainer: {
     display: 'flex',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 75,
     width: '100%',
     alignItems: 'center',
-    marginTop: 64,
+    marginTop: 75,
+    marginBottom: 20,
   },
   treeSeedlingsIcon: {
     width: 104,
