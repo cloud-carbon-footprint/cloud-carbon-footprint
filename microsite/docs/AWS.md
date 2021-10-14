@@ -23,7 +23,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
     - After [installing awscli](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint#optional-prerequisites), run `aws configure` and provide your access key and secret access key. Also make sure you select the same region as the one you created your cost and usage reports in.
 
-    - We optionally support alternative methods of authenticating with AWS, which you can read about [here.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint#options-for-aws-authentication)
+    - We optionally support alternative methods of authenticating with AWS, which you can read about [here.](https://www.cloudcarbonfootprint.org/docs/aws#options-for-aws-authentication)
 
 5.  Configure environmental variables for the api and client.
 
