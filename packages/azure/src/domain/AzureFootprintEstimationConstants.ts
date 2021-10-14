@@ -16,7 +16,7 @@ import { AZURE_REGIONS } from '../lib/AzureRegions'
 export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
   HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-  MEMORY_AVG: 73.68,
+  MEMORY_AVG: 80.47,
   MEMORY_BY_COMPUTE_PROCESSOR: {
     // gigaBytes / physical chip
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 98.12,
@@ -28,6 +28,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 9.67,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 89.6,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 129.78,
+    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 128.0,
   },
   getMemory: (computeProcessors: string[]): number => {
     const memoryForProcessors: number[] = computeProcessors.map(
@@ -40,7 +41,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       ? averageMemoryForProcessors
       : AZURE_CLOUD_CONSTANTS.MEMORY_AVG
   },
-  MIN_WATTS_AVG: 0.78,
+  MIN_WATTS_AVG: 0.74,
   MIN_WATTS_BY_COMPUTE_PROCESSOR: {
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.64,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.65,
@@ -51,6 +52,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 3.04,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
+    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 0.45,
   },
   getMinWatts: (computeProcessors: string[]): number => {
     const minWattsForProcessors: number[] = computeProcessors.map(
@@ -66,7 +68,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       ? averageWattsForProcessors
       : AZURE_CLOUD_CONSTANTS.MIN_WATTS_AVG
   },
-  MAX_WATTS_AVG: 3.76,
+  MAX_WATTS_AVG: 3.54,
   MAX_WATTS_BY_COMPUTE_PROCESSOR: {
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.97,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.26,
@@ -77,6 +79,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 8.25,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
+    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 2.02,
   },
   getMaxWatts: (computeProcessors: string[]): number => {
     const maxWattsForProcessors: number[] = computeProcessors.map(
