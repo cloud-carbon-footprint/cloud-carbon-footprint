@@ -24,7 +24,7 @@ function App(): ReactElement {
     <>
       <HeaderBar />
 
-      <Container maxWidth={'xl'} className={classes.appContainer}>
+      <Container maxWidth={false} className={classes.appContainer}>
         <Switch>
           <Route path="/error" exact>
             <ErrorPage />
