@@ -198,7 +198,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
             </div>
             <DataGrid
-              data-testid="data-grid"
               autoHeight
               rows={rows}
               columns={getColumns(useKilograms)}
