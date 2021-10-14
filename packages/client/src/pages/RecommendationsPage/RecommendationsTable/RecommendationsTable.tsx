@@ -35,6 +35,9 @@ type RecommendationsTableProps = {
     params: GridRowParams,
     event: MuiEvent<SyntheticEvent>,
   ) => void
+  // page: number
+  // onPageChange: (page: number) => void
+  // resetToInitialPage: () => void
 }
 
 const getColumns = (useKilograms: boolean): GridColDef[] => [
@@ -76,10 +79,21 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   emissionsData,
   recommendations,
   handleRowClick,
+  // page,
+  // onPageChange,
+  // resetToInitialPage,
 }): ReactElement => {
   const [useKilograms, setUseKilograms] = useState(false)
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
+
+  const initialPageState = {
+    page: 0,
+    pageSize: 25,
+    sortOrder: null,
+  }
+  const [pageState, setPageState] = useState(initialPageState)
+
   const classes = useStyles()
 
   const createRecommendationRows = (
@@ -110,9 +124,14 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     }
   }
 
+  const resetToInitialPage = (initialPage = 0) => {
+    setPageState({ ...pageState, page: initialPage })
+  }
+
   const handleSearchBarChange = (value: string) => {
     setSearchBarValue(value)
     requestSearch(value)
+    resetToInitialPage()
   }
 
   const handleToggle = (value: boolean) => {
@@ -146,6 +165,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   useEffect(() => {
     requestSearch(searchBarValue)
+    resetToInitialPage()
   }, [recommendations, useKilograms])
 
   const escapeRegExp = (value: string): string => {
@@ -189,6 +209,27 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               }}
               onRowClick={handleRowClick}
               disableColumnFilter
+              pagination
+              pageSize={pageState.pageSize}
+              rowsPerPageOptions={[25, 50, 100]}
+              onPageSizeChange={(newPageSize) =>
+                setPageState({ ...pageState, pageSize: newPageSize })
+              }
+              page={pageState.page}
+              onPageChange={(newPage) =>
+                setPageState({ ...pageState, page: newPage })
+              }
+              onSortModelChange={(model) => {
+                let page = pageState.page
+                if (pageState.sortOrder !== model[0]?.sort) {
+                  page = 0
+                  setPageState({
+                    ...pageState,
+                    sortOrder: model[0]?.sort,
+                    page,
+                  })
+                }
+              }}
             />
           </div>
         </div>

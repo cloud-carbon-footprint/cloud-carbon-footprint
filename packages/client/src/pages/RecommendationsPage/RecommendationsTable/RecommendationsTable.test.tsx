@@ -22,7 +22,9 @@ const mockUseRemoteService = useRemoteService as jest.MockedFunction<
 >
 
 const testProps = {
-  emissionsData: mockData,
+  emissionsData: mockData.flatMap(
+    (estimationResult) => estimationResult.serviceEstimates,
+  ),
   recommendations: [],
   handleRowClick: jest.fn(),
 }
@@ -256,6 +258,75 @@ describe('Recommendations Table', () => {
       )
 
       expect(getByText('Forecast')).toBeInTheDocument()
+    })
+  })
+
+  describe('Pagination', () => {
+    const mockRecommendationsFor2Pages = [...mockRecommendationData]
+
+    // Build duplicate recommendations for multiple pages
+    for (let i = 0; i < 27; i++) {
+      mockRecommendationsFor2Pages.push({
+        cloudProvider: 'AWS',
+        accountId: 'account ' + i,
+        accountName: 'account ' + i,
+        region: 'us-west-2',
+        recommendationType: 'Terminate',
+        recommendationDetail: 'Test recommendation detail 2',
+        costSavings: 100,
+        co2eSavings: 1.24,
+        kilowattHourSavings: 6.2,
+        instanceName: 'test-instance',
+        resourceId: 'test-resource-id',
+      })
+    }
+
+    it('should reset to first page when table data is changed', () => {
+      const { getByRole, getByLabelText, getAllByLabelText } = render(
+        <RecommendationsTable
+          {...testProps}
+          recommendations={mockRecommendationsFor2Pages}
+        />,
+      )
+
+      const dataGrid = within(getByRole('grid'))
+      expect(dataGrid.getByText('1-25 of 29')).toBeInTheDocument()
+
+      const nextPageButton = getByLabelText('Next page')
+      fireEvent.click(nextPageButton)
+
+      expect(dataGrid.getByText('26-29 of 29')).toBeInTheDocument()
+      expect(dataGrid.queryByText('1-25 of 29')).toBeFalsy()
+
+      // Get first sort button
+      const sortButton = getAllByLabelText('Sort')[0]
+      fireEvent.click(sortButton)
+
+      expect(dataGrid.getByText('1-25 of 29')).toBeInTheDocument()
+      expect(dataGrid.queryByText('26-29 of 29')).toBeFalsy()
+    })
+
+    it('should reset to page 1 after search, filters, and sorting are applied', () => {
+      const { getByRole, getByLabelText } = render(
+        <RecommendationsTable
+          {...testProps}
+          recommendations={mockRecommendationsFor2Pages}
+        />,
+      )
+
+      const dataGrid = within(getByRole('grid'))
+      const nextPageButton = getByLabelText('Next page')
+      fireEvent.click(nextPageButton)
+
+      expect(dataGrid.getByText('26-29 of 29')).toBeInTheDocument()
+      expect(dataGrid.queryByText('1-25 of 29')).toBeFalsy()
+
+      //change value of the search bar
+      const searchBar = getByRole('textbox')
+      fireEvent.change(searchBar, { target: { value: 'account 1' } })
+
+      expect(dataGrid.getByText('1-11 of 11')).toBeInTheDocument()
+      expect(dataGrid.queryByText('26-29 of 29')).toBeFalsy()
     })
   })
 })
