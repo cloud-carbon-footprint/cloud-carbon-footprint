@@ -22,7 +22,9 @@ const mockUseRemoteService = useRemoteService as jest.MockedFunction<
 >
 
 const testProps = {
-  emissionsData: mockData,
+  emissionsData: mockData.flatMap(
+    (estimationResult) => estimationResult.serviceEstimates,
+  ),
   recommendations: [],
   handleRowClick: jest.fn(),
 }
@@ -259,10 +261,11 @@ describe('Recommendations Table', () => {
     })
   })
 
-  xdescribe('Pagination', () => {
-    it('should reset to page 1 after search, filters, and sorting are applied', () => {
+  describe('Pagination', () => {
+    it('should reset to first page when table data is changed', () => {
       const mockRecommendationsFor2Pages = [...mockRecommendationData]
 
+      // Build duplicate recommendations for multiple pages
       for (let i = 0; i < 27; i++) {
         mockRecommendationsFor2Pages.push({
           cloudProvider: 'AWS',
@@ -279,24 +282,28 @@ describe('Recommendations Table', () => {
         })
       }
 
-      const { getByRole, getByLabelText, getByTestId } = render(
+      const { getByRole, getByLabelText, getAllByLabelText } = render(
         <RecommendationsTable
           {...testProps}
           recommendations={mockRecommendationsFor2Pages}
         />,
       )
 
-      const nextPageButton = getByLabelText('Next page')
+      const dataGrid = within(getByRole('grid'))
+      expect(dataGrid.getByText('1-25 of 29')).toBeInTheDocument()
 
+      const nextPageButton = getByLabelText('Next page')
       fireEvent.click(nextPageButton)
 
-      const searchBar = getByRole('textbox')
+      expect(dataGrid.getByText('26-29 of 29')).toBeInTheDocument()
+      expect(dataGrid.queryByText('1-25 of 29')).toBeFalsy()
 
-      fireEvent.change(searchBar, { target: { value: 'account 1' } })
+      // Get first sort button
+      const sortButton = getAllByLabelText('Sort')[0]
+      fireEvent.click(sortButton)
 
-      const dataGrid = getByTestId('data-grid')
-
-      expect(within(dataGrid).getByText('1-25 of 28')).toBeInTheDocument()
+      expect(dataGrid.getByText('1-25 of 29')).toBeInTheDocument()
+      expect(dataGrid.queryByText('26-29 of 29')).toBeFalsy()
     })
   })
 })

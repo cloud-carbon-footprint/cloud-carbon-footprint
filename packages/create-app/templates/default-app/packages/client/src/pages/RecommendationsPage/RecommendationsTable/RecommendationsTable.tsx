@@ -156,7 +156,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
 
   return (
-    <DashboardCard title="">
+    <DashboardCard>
       <>
         <Forecast
           emissionsData={emissionsData}
@@ -175,7 +175,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
                 onChange={handleSearchBarChange}
                 clearSearch={() => handleSearchBarChange('')}
               />
-              <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
+              <Toggle label="CO2e Units" handleToggle={handleToggle} />
             </div>
             <DataGrid
               autoHeight
