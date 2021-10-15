@@ -40,7 +40,10 @@ type RecommendationsTableProps = {
   // resetToInitialPage: () => void
 }
 
-const getColumns = (useKilograms: boolean): GridColDef[] => [
+const getColumns = (
+  useKilograms: boolean,
+  recommendations: RecommendationResult[],
+): GridColDef[] => [
   {
     field: 'cloudProvider',
     headerName: 'Cloud Provider',
@@ -71,6 +74,19 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
     headerName: useKilograms
       ? 'Potential Carbon Savings (kg)'
       : 'Potential Carbon Savings (t)',
+    sortComparator: (v1, v2, param1, param2) => {
+      const rowParam1 = param1.api.getRowParams(param1.id)
+      const rowParam2 = param2.api.getRowParams(param2.id)
+
+      const recommendation1: RecommendationResult = recommendations.find(
+        (element) => element.accountName == rowParam1.row.accountName,
+      )
+      const recommendation2: RecommendationResult = recommendations.find(
+        (element) => element.accountName == rowParam2.row.accountName,
+      )
+
+      return recommendation1.co2eSavings - recommendation2.co2eSavings
+    },
     flex: 0.75,
   },
 ]
@@ -200,7 +216,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             <DataGrid
               autoHeight
               rows={rows}
-              columns={getColumns(useKilograms)}
+              columns={getColumns(useKilograms, recommendations)}
               columnBuffer={6}
               hideFooterSelectedRowCount={true}
               classes={{
