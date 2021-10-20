@@ -6,7 +6,7 @@ import React from 'react'
 import moment from 'moment'
 import { MemoryRouter, Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { generateEstimations, fakeEmissionFactors } from './utils/data'
 import {
   useRemoteService,
@@ -64,6 +64,7 @@ describe('App', () => {
   afterEach(() => {
     mockedUseEmissionFactorService.mockClear()
     mockedUseRemoteService.mockClear()
+    mockedUseRecommendationsService.mockClear()
   })
 
   it('renders the page title', () => {
@@ -74,6 +75,25 @@ describe('App', () => {
     )
     const linkElement = getAllByText(/Cloud Carbon Footprint/i)[0]
     expect(linkElement).toBeInTheDocument()
+  })
+
+  it('renders the mobile compatability warning if the window is too small and loads the page when closed', () => {
+    global.innerWidth = 700 // Set page width below threshold
+    const { getByTestId, queryByTestId, getByRole } = render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(getByTestId('warning-modal')).toBeInTheDocument()
+
+    const closeButton = getByRole('button')
+    fireEvent.click(closeButton)
+
+    expect(getByTestId('infoIcon')).toBeInTheDocument()
+    expect(queryByTestId('warning-modal')).toBeFalsy()
+
+    global.innerWidth = 1024 // Reset page width back to default size
   })
 
   describe('page routing', () => {
