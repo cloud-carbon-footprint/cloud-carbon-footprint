@@ -4,7 +4,10 @@
 
 import { Athena } from 'aws-sdk'
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
-import { containsAny } from '@cloud-carbon-footprint/common'
+import {
+  configLoader,
+  containsAny
+} from '@cloud-carbon-footprint/common'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
@@ -44,6 +47,15 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.cloudProvider = 'AWS'
     this.instanceType = this.parseInstanceTypeFromUsageType()
     this.replicationFactor = this.getReplicationFactor(billingDataRow)
+
+    const config = configLoader()
+    const AWS = config.AWS
+    for (const account of AWS.accounts) {
+      if (account.id === this.accountId) {
+        this.accountName = account.name
+        break
+      }
+    }
   }
 
   private getUsageAmount(): number {
