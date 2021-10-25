@@ -35,9 +35,6 @@ type RecommendationsTableProps = {
     params: GridRowParams,
     event: MuiEvent<SyntheticEvent>,
   ) => void
-  // page: number
-  // onPageChange: (page: number) => void
-  // resetToInitialPage: () => void
 }
 
 const getColumns = (
@@ -95,9 +92,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   emissionsData,
   recommendations,
   handleRowClick,
-  // page,
-  // onPageChange,
-  // resetToInitialPage,
 }): ReactElement => {
   const [useKilograms, setUseKilograms] = useState(false)
   const [searchBarValue, setSearchBarValue] = useState('')
@@ -181,8 +175,12 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   useEffect(() => {
     requestSearch(searchBarValue)
+  }, [useKilograms])
+
+  useEffect(() => {
+    requestSearch(searchBarValue)
     resetToInitialPage()
-  }, [recommendations, useKilograms])
+  }, [recommendations])
 
   const escapeRegExp = (value: string): string => {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
