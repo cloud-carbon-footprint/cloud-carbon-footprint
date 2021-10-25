@@ -27,6 +27,7 @@ const testProps = {
   ),
   recommendations: [],
   handleRowClick: jest.fn(),
+  useKilograms: false,
 }
 
 describe('Recommendations Table', () => {
@@ -152,24 +153,18 @@ describe('Recommendations Table', () => {
       <RecommendationsTable
         {...testProps}
         recommendations={mockRecommendations}
+        useKilograms={true}
       />,
     )
 
     const dataRows = getAllByRole('row')
     dataRows.shift() // Removes row with table headers
 
-    const toggle = getByRole('checkbox')
-
     const actualRowData = dataRows.map((row) =>
       within(row).getAllByRole('cell'),
     )
 
     const firstRow = actualRowData[0]
-
-    // get last cell for CO2 data
-    expect(firstRow[firstRow.length - 1].innerHTML).toBe('2.56')
-
-    fireEvent.click(toggle)
 
     expect(firstRow[firstRow.length - 1].innerHTML).toBe('2560')
 

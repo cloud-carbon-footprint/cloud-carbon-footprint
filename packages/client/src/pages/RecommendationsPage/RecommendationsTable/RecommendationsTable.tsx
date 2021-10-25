@@ -21,7 +21,6 @@ import {
 } from '@cloud-carbon-footprint/common'
 import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
-import Toggle from 'common/Toggle'
 import DateRange from 'common/DateRange'
 import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
@@ -35,6 +34,7 @@ type RecommendationsTableProps = {
     params: GridRowParams,
     event: MuiEvent<SyntheticEvent>,
   ) => void
+  useKilograms: boolean
 }
 
 const getColumns = (
@@ -92,8 +92,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   emissionsData,
   recommendations,
   handleRowClick,
+  useKilograms,
 }): ReactElement => {
-  const [useKilograms, setUseKilograms] = useState(false)
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
 
@@ -142,10 +142,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     setSearchBarValue(value)
     requestSearch(value)
     resetToInitialPage()
-  }
-
-  const handleToggle = (value: boolean) => {
-    setUseKilograms(value)
   }
 
   const requestSearch = (searchValue: string) => {
@@ -209,7 +205,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
                 onChange={handleSearchBarChange}
                 clearSearch={() => handleSearchBarChange('')}
               />
-              <Toggle label={'CO2e Units'} handleToggle={handleToggle} />
             </div>
             <DataGrid
               autoHeight

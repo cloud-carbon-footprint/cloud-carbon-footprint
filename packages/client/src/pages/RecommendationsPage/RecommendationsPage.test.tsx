@@ -118,4 +118,10 @@ describe('Recommendations Page', () => {
 
     expect(getByTestId('filterBar')).toBeInTheDocument()
   })
+
+  it('should render a toggle bar on the page', () => {
+    const { getByTestId } = render(<RecommendationsPage />)
+
+    expect(getByTestId('toggle')).toBeInTheDocument()
+  })
 })

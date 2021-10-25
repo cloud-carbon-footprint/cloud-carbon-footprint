@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { FunctionComponent, ReactElement } from 'react'
+import React, { FunctionComponent, ReactElement } from 'react'
 import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
@@ -16,11 +16,13 @@ import AccountFilter from 'common/AccountFilter'
 import CloudProviderFilter from 'common/CloudProviderFilter'
 import RegionFilter from './Filters/RegionFilter'
 import RecommendationTypeFilter from './Filters/RecommendationType'
+import Toggle from '../../../common/Toggle'
 
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
   filteredDataResults,
+  setUseKilograms,
 }): ReactElement => {
   const getFilterOptions = (): FilterOptions => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
@@ -74,7 +76,17 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     filterOptions: getFilterOptions(),
   }
 
-  return <FilterBar config={filterConfig} components={filterComponents} />
+  const suffixComponents = (
+    <Toggle label="CO2e Units" handleToggle={setUseKilograms} />
+  )
+
+  return (
+    <FilterBar
+      config={filterConfig}
+      components={filterComponents}
+      suffixComponent={suffixComponents}
+    />
+  )
 }
 
 export default RecommendationsFilterBar

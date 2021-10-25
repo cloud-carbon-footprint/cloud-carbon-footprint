@@ -24,6 +24,7 @@ const Toggle: FunctionComponent<ToggleProps> = ({
         className={classes.toggleInput}
         type="checkbox"
         id="toggle"
+        data-testid="toggle"
       />
       <label className={classes.toggle} htmlFor="toggle">
         <span className={classes.toggleHandler} />
