@@ -27,6 +27,7 @@ import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
 import Forecast from './Forecast/Forecast'
 import { Typography } from '@material-ui/core'
+import CustomPagination from './CustomPaginaton'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
@@ -106,6 +107,12 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   const [pageState, setPageState] = useState(initialPageState)
 
   const classes = useStyles()
+
+  const handlePageSizeChange = (
+    event: React.ChangeEvent<{ value: unknown }>,
+  ) => {
+    setPageState({ ...pageState, pageSize: event.target.value as number })
+  }
 
   const createRecommendationRows = (
     recommendations: RecommendationResult[],
@@ -229,9 +236,11 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               }}
               onRowClick={handleRowClick}
               disableColumnFilter
-              pagination
               pageSize={pageState.pageSize}
-              rowsPerPageOptions={[25, 50, 100]}
+              components={{
+                Toolbar: () => CustomPagination(handlePageSizeChange),
+                Pagination: () => CustomPagination(handlePageSizeChange),
+              }}
               onPageSizeChange={(newPageSize) =>
                 setPageState({ ...pageState, pageSize: newPageSize })
               }
