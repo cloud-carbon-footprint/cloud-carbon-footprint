@@ -4,7 +4,7 @@
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ spacing }) => ({
   cell: {
     outline: 'none !important',
   },
@@ -24,6 +24,8 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: spacing(3),
+    paddingBottom: spacing(3),
   },
   dateRangeContainer: {
     display: 'flex',

@@ -51,7 +51,7 @@ describe('Forecast Card', () => {
         useKilograms={true}
       />,
     )
-    expect(getByText('Kilograms')).toBeInTheDocument()
+    expect(getByText('Kilograms CO2e')).toBeInTheDocument()
     expect(queryByText('Metric Tons CO2e')).not.toBeInTheDocument()
   })
 
@@ -65,6 +65,6 @@ describe('Forecast Card', () => {
       />,
     )
     expect(getByText('Metric Tons CO2e')).toBeInTheDocument()
-    expect(queryByText('Kilograms')).not.toBeInTheDocument()
+    expect(queryByText('Kilograms CO2e')).not.toBeInTheDocument()
   })
 })

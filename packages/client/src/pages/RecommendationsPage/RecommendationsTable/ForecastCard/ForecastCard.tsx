@@ -47,7 +47,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
             {co2eSavings}
           </Typography>
           <Typography className={classes.unitsText}>
-            {useKilograms ? 'Kilograms' : 'Metric Tons CO2e'}
+            {useKilograms ? 'Kilograms CO2e' : 'Metric Tons CO2e'}
           </Typography>
           {hasCo2ePercentChange && <PercentBadge amount={co2ePercentChange} />}
         </div>
