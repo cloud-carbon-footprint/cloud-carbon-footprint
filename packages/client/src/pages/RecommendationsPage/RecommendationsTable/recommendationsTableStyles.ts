@@ -41,6 +41,9 @@ const useStyles = makeStyles(() => ({
   recommendationsContainer: {
     marginTop: 65,
   },
+  rowsPerPage: {
+    paddingRight: '.5em',
+  },
 }))
 
 export default useStyles
