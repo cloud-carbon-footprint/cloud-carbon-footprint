@@ -21,7 +21,7 @@ There are fundamentally three ways an individual can contribute:
 
 1. **Open an issue:** If you believe that you have found a new bug or have a feature addition or request, you should report it by creating a new issue in the `cloud-carbon-footprint/cloud-carbon-footprint` issue tracker.
 1. **Help triage an open issue:** You can do this either by providing assistive details (a reproducible test case that demonstrates a bug) or by providing suggestions to address the issue.
-1. **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `cloud-carbon-footprint/cloud-carbon-footprint` in a concrete and reviewable manner.
+1. **Resolve an open issue:** This can be done by demonstrating that the issue is not a bug or is fixed; but more often, by opening a pull request that changes the source in `cloud-carbon-footprint/cloud-carbon-footprint` in a concrete and reviewable manner. We ask that as you do so, you consider tests you can write at various levels to help us ensure quality.
 
 ### Asking for General Help
 
@@ -97,6 +97,7 @@ Most pull requests opened against the `cloud-carbon-footprint/cloud-carbon-footp
 - Following the above rules is a pre-requisite for committing any code.
 
 #### Testing
+We strongly encourage you to cover any code added with the appropriate tests.
 
 ##### Unit Testing
 
