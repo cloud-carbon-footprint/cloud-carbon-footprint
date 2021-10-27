@@ -33,7 +33,7 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
     <div data-testid="filterBar" className={classes.filterHeader}>
       <Grid
         container
-        spacing={2}
+        spacing={3}
         direction={'row'}
         justify={'center'}
         alignItems={'center'}
