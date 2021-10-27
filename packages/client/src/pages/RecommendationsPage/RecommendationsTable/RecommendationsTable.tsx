@@ -191,6 +191,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
         <Forecast
           emissionsData={emissionsData}
           recommendations={recommendations}
+          useKilograms={useKilograms}
         />
         <div className={classes.recommendationsContainer}>
           <Typography className={classes.title}>Recommendations</Typography>

@@ -41,4 +41,30 @@ describe('Forecast Card', () => {
     expect(getByText('25%')).toBeInTheDocument()
     expect(getByText('10%')).toBeInTheDocument()
   })
+
+  it('should render kilograms if toggle is set to kilograms', () => {
+    const { getByText, queryByText } = render(
+      <ForecastCard
+        title="Title"
+        co2eSavings="1"
+        costSavings="1"
+        useKilograms={true}
+      />,
+    )
+    expect(getByText('Kilograms')).toBeInTheDocument()
+    expect(queryByText('Metric Tons CO2e')).not.toBeInTheDocument()
+  })
+
+  it('should render metric tons if toggle is not set to kilograms', () => {
+    const { getByText, queryByText } = render(
+      <ForecastCard
+        title="Title"
+        co2eSavings="9"
+        costSavings="1"
+        useKilograms={false}
+      />,
+    )
+    expect(getByText('Metric Tons CO2e')).toBeInTheDocument()
+    expect(queryByText('Kilograms')).not.toBeInTheDocument()
+  })
 })

@@ -23,18 +23,24 @@ import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
 type ForecastProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
+  useKilograms: boolean
 }
 
 const Forecast: FunctionComponent<ForecastProps> = ({
   emissionsData,
   recommendations,
+  useKilograms,
 }): ReactElement => {
   const classes = useStyles()
+
+  const forecastMultiplier = useKilograms ? 1000 : 1
 
   const sumCurrentCo2e = sumEstimate(emissionsData, 'co2e')
   const sumCurrentCost = sumEstimate(emissionsData, 'cost')
 
-  const currentCo2eFormatted = formattedNumberWithCommas(sumCurrentCo2e)
+  const currentCo2eFormatted = formattedNumberWithCommas(
+    sumCurrentCo2e * forecastMultiplier,
+  )
   const currentCostFormatted = `$${formattedNumberWithCommas(sumCurrentCost)}`
 
   const sumSavingsCo2e = sumRecommendations(recommendations, 'co2eSavings')
@@ -43,7 +49,9 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
   const projectedSavingsCost = sumCurrentCost - sumSavingsCost
 
-  const projectedCo2eFormatted = formattedNumberWithCommas(projectedSavingsCo2e)
+  const projectedCo2eFormatted = formattedNumberWithCommas(
+    projectedSavingsCo2e * forecastMultiplier,
+  )
   const projectedCostFormatted = `$${formattedNumberWithCommas(
     projectedSavingsCost,
   )}`
@@ -72,6 +80,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           title="Last 30 Day Total"
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
+          useKilograms={useKilograms}
         />
         <ForwardIcon className={classes.icon} />
         <ForecastCard
@@ -80,6 +89,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           costSavings={projectedCostFormatted}
           co2ePercentChange={co2ePercentChange}
           costPercentChange={costPercentChange}
+          useKilograms={useKilograms}
         />
         <div className={clsx(classes.icon, classes.equalSign)}>=</div>
         <ForecastEquivalencyCard
