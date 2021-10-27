@@ -323,5 +323,25 @@ describe('Recommendations Table', () => {
       expect(dataGrid.getByText('1-11 of 11')).toBeInTheDocument()
       expect(dataGrid.queryByText('26-29 of 29')).toBeFalsy()
     })
+
+    it('should display message when table is empty', () => {
+      const { getByRole } = render(
+        <RecommendationsTable
+          {...testProps}
+          recommendations={mockRecommendationsFor2Pages}
+        />,
+      )
+      const dataGrid = within(getByRole('grid'))
+      const searchBar = getByRole('textbox')
+
+      const emptyGridMessage =
+        "There's no data to display! Expand your search parameters to get started. (Try adding accounts, regions or recommendation types)"
+      expect(dataGrid.queryByText(emptyGridMessage)).not.toBeInTheDocument()
+
+      fireEvent.change(searchBar, {
+        target: { value: 'should filter everything out' },
+      })
+      expect(dataGrid.queryByText(emptyGridMessage)).toBeInTheDocument()
+    })
   })
 })
