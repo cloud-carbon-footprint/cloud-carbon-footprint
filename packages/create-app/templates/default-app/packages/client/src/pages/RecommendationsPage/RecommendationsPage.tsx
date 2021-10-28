@@ -29,6 +29,7 @@ const RecommendationsPage = (): ReactElement => {
     useRemoteRecommendationsService()
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<RecommendationRow>()
+  const [useKilograms, setUseKilograms] = useState(false)
 
   // Emissions Estimation Data
   const endDate: moment.Moment = moment.utc()
@@ -86,6 +87,7 @@ const RecommendationsPage = (): ReactElement => {
         filters={filters}
         setFilters={setFilters}
         filteredDataResults={filteredDataResults}
+        setUseKilograms={setUseKilograms}
       />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
@@ -96,6 +98,7 @@ const RecommendationsPage = (): ReactElement => {
             emissionsData={filteredEmissionsData}
             recommendations={filteredRecommendationData}
             handleRowClick={handleRowClick}
+            useKilograms={useKilograms}
           />
         </Grid>
       </div>

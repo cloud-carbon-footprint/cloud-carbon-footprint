@@ -4,14 +4,17 @@
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(({ palette, spacing, typography }) => ({
+const useStyles = makeStyles(({ palette, typography }) => ({
   toggleWrapper: {
     position: 'relative',
-    marginBottom: spacing(1),
     overflow: 'hidden',
     fontFamily: 'Helvetica, Arial, sans-serif',
     fontWeight: typography.fontWeightBold,
-    width: 220,
+    width: 310,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   label: {
     fontWeight: typography.fontWeightBold,

@@ -55,6 +55,7 @@ export type FilterBarProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
   filteredDataResults: FilterResultResponse
+  setUseKilograms?: (boolean) => void
 }
 
 export interface Page<T> {

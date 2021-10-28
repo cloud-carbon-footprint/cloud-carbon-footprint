@@ -14,6 +14,7 @@ export type ForecastCardProps = {
   costSavings: string
   co2ePercentChange?: number
   costPercentChange?: number
+  useKilograms?: boolean
 }
 
 const ForecastCard: FunctionComponent<ForecastCardProps> = ({
@@ -22,6 +23,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   costSavings,
   co2ePercentChange,
   costPercentChange,
+  useKilograms,
 }) => {
   const classes = useStyles({ co2ePercentChange, costPercentChange })
   const hasCo2ePercentChange = co2ePercentChange || co2ePercentChange === 0
@@ -45,7 +47,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
             {co2eSavings}
           </Typography>
           <Typography className={classes.unitsText}>
-            Metric Tons CO2e
+            {useKilograms ? 'Kilograms CO2e' : 'Metric Tons CO2e'}
           </Typography>
           {hasCo2ePercentChange && <PercentBadge amount={co2ePercentChange} />}
         </div>
