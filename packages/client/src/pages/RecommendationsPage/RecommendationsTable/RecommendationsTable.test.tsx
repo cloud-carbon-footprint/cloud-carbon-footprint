@@ -146,7 +146,7 @@ describe('Recommendations Table', () => {
   ]
 
   each(co2eSavingsToBeRounded).it(
-    'rounds the co2e savings to the nearest 0.001',
+    'rounds savings to nearest 0.001 - val %s',
     (savings, roundedSavings) => {
       const { getAllByRole } = render(
         <RecommendationsTable
@@ -193,7 +193,7 @@ describe('Recommendations Table', () => {
   ]
 
   each(co2eSavingsToBeRoundedInKilograms).it(
-    'rounds the co2e savings to the nearest 0.001',
+    'rounds savings in kg to nearest 0.001 - val %s',
     (savings, roundedSavingsInKilograms) => {
       const { getAllByRole } = render(
         <RecommendationsTable
