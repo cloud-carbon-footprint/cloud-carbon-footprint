@@ -136,13 +136,13 @@ describe('Recommendations Table', () => {
   })
 
   const co2eSavingsToBeRounded = [
-    [0.01, 0.01],
-    [0.001, 0.001],
-    [0.0005, 0.001],
-    [0.0001, 0],
-    [0.00001, 0],
-    [0.000001, 0],
-    [0.0000001, 0],
+    [0.01, '0.01'],
+    [0.001, '0.001'],
+    [0.0005, '0.001'],
+    [0.0001, '< 0.001'],
+    [0.00001, '< 0.001'],
+    [0.000001, '< 0.001'],
+    [0.0000001, '< 0.001'],
   ]
 
   each(co2eSavingsToBeRounded).it(
@@ -178,18 +178,18 @@ describe('Recommendations Table', () => {
       const firstRow = actualRowData[0]
 
       // get last cell for CO2 data
-      expect(firstRow[firstRow.length - 1].innerHTML).toBe(`${roundedSavings}`)
+      expect(firstRow[firstRow.length - 1].textContent).toBe(roundedSavings)
     },
   )
 
   const co2eSavingsToBeRoundedInKilograms = [
-    [0.01, 10],
-    [0.001, 1],
-    [0.0005, 0.5],
-    [0.0001, 0.1],
-    [0.00001, 0.01],
-    [0.000001, 0.001],
-    [0.0000001, 0],
+    [0.01, '10'],
+    [0.001, '1'],
+    [0.0005, '0.5'],
+    [0.0001, '0.1'],
+    [0.00001, '0.01'],
+    [0.000001, '0.001'],
+    [0.0000001, '< 0.001'],
   ]
 
   each(co2eSavingsToBeRoundedInKilograms).it(
@@ -225,8 +225,8 @@ describe('Recommendations Table', () => {
       const firstRow = actualRowData[0]
 
       // get last cell for CO2 data
-      expect(firstRow[firstRow.length - 1].innerHTML).toBe(
-        `${roundedSavingsInKilograms}`,
+      expect(firstRow[firstRow.length - 1].textContent).toBe(
+        roundedSavingsInKilograms,
       )
     },
   )
