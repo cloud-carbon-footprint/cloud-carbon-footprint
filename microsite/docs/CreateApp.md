@@ -67,7 +67,7 @@ yarn guided-install
 
 Note: If you used the `--skip-install` flag, you will need to run `yarn install` before running `yarn guided-install`.
 
-The `yarn guided-install` command will lead you through a guided installation as referenced [here](gettingstarted#standard-install). You can also choose to configure your app manually as referenced [here](aws).
+The `yarn guided-install` command will lead you through a guided installation as referenced [here](getting-started#standard-install). You can also choose to configure your app manually as referenced [here](aws).
 
 Once you are finished with the installation you are ready to start the application!
 
