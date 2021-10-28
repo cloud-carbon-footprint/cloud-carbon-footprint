@@ -307,22 +307,24 @@ describe('Recommendations Table', () => {
     })
 
     const searchedRecommendationsRows = [
-      ['test-b', true, 1],
-      ['AWS', true, 2],
-      ['us-west-1', true, 1],
-      ['Modify', true, 1],
-      [2.539, true, 1],
-      ['pizza', undefined, 0],
-      [6.2, undefined, 0],
+      ['test-b', true, 1, false],
+      ['AWS', true, 2, false],
+      ['us-west-1', true, 1, false],
+      ['Modify', true, 1, false],
+      [2.539, true, 1, false],
+      [2539, true, 1, true],
+      ['pizza', undefined, 0, false],
+      [6.2, undefined, 0, false],
     ]
 
     each(searchedRecommendationsRows).it(
       'should filter according to search bar value %s',
-      (searchValue, expectedResult, rowsLength) => {
+      (searchValue, expectedResult, rowsLength, useKilograms) => {
         const { getByRole, getAllByRole, getByLabelText } = render(
           <RecommendationsTable
             {...testProps}
             recommendations={mockRecommendationData}
+            useKilograms={useKilograms}
           />,
         )
 
