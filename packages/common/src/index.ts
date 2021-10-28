@@ -4,7 +4,7 @@
 
 export { default as Logger } from './Logger'
 export { default as configLoader } from './ConfigLoader'
-export { default as Config } from './Config'
+export { default as Config, CCFConfig } from './Config'
 export type { QUERY_DATE_TYPES } from './Config'
 export {
   PartialDataError,

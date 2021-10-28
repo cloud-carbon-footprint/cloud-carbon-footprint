@@ -6,7 +6,8 @@ import { Athena } from 'aws-sdk'
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import {
   configLoader,
-  containsAny
+  containsAny,
+  CCFConfig,
 } from '@cloud-carbon-footprint/common'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
@@ -49,7 +50,8 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.replicationFactor = this.getReplicationFactor(billingDataRow)
 
     const config = configLoader()
-    const AWS = config.AWS
+    const AWS: CCFConfig['AWS'] = config.AWS
+    if (!AWS.accounts) AWS.accounts = []
     for (const account of AWS.accounts) {
       if (account.id === this.accountId) {
         this.accountName = account.name

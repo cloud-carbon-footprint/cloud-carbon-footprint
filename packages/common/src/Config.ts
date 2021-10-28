@@ -75,7 +75,7 @@ const getEnvVar = (envVar: string): string => {
   }
 }
 
-const appConfig: CCFConfig = {
+export const appConfig: CCFConfig = {
   AWS: {
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
