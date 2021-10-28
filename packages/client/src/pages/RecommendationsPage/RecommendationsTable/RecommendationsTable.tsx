@@ -98,7 +98,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 }): ReactElement => {
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
-
   const initialPageState = {
     page: 0,
     pageSize: 25,
@@ -194,7 +193,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
 
   return (
-    <DashboardCard title="">
+    <DashboardCard>
       <>
         <Forecast
           emissionsData={emissionsData}
@@ -216,15 +215,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               />
             </div>
             <DataGrid
-              components={{
-                NoRowsOverlay: () => (
-                  <GridOverlay>
-                    There's no data to display! Expand your search parameters to
-                    get started. (Try adding accounts, regions or recommendation
-                    types)
-                  </GridOverlay>
-                ),
-              }}
               autoHeight
               rows={rows}
               columns={getColumns(useKilograms, recommendations)}
@@ -240,6 +230,13 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               components={{
                 Toolbar: () => CustomPagination(handlePageSizeChange),
                 Pagination: () => CustomPagination(handlePageSizeChange),
+                NoRowsOverlay: () => (
+                  <GridOverlay>
+                    There's no data to display! Expand your search parameters to
+                    get started. (Try adding accounts, regions or recommendation
+                    types)
+                  </GridOverlay>
+                ),
               }}
               onPageSizeChange={(newPageSize) =>
                 setPageState({ ...pageState, pageSize: newPageSize })

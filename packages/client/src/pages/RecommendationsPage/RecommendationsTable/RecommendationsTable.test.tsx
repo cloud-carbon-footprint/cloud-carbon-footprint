@@ -173,6 +173,26 @@ describe('Recommendations Table', () => {
     expect(table.getByText('Potential Carbon Savings (kg)')).toBeTruthy()
   })
 
+  it('should display message when table is empty', () => {
+    const { getByRole } = render(
+      <RecommendationsTable
+        {...testProps}
+        recommendations={mockRecommendationData}
+      />,
+    )
+    const dataGrid = within(getByRole('grid'))
+    const searchBar = getByRole('textbox')
+
+    const emptyGridMessage =
+      "There's no data to display! Expand your search parameters to get started. (Try adding accounts, regions or recommendation types)"
+    expect(dataGrid.queryByText(emptyGridMessage)).not.toBeInTheDocument()
+
+    fireEvent.change(searchBar, {
+      target: { value: 'should filter everything out' },
+    })
+    expect(dataGrid.queryByText(emptyGridMessage)).toBeInTheDocument()
+  })
+
   describe('Search Bar', () => {
     it('should render search bar', () => {
       const { getByTestId } = render(<RecommendationsTable {...testProps} />)
@@ -277,71 +297,64 @@ describe('Recommendations Table', () => {
     }
 
     it('should reset to first page when table data is changed', () => {
-      const { getByRole, getByLabelText, getAllByLabelText } = render(
+      const { getAllByLabelText } = render(
         <RecommendationsTable
           {...testProps}
           recommendations={mockRecommendationsFor2Pages}
         />,
       )
+      const activePageStyle = 'backgroundColor: #3f51b5'
 
-      const dataGrid = within(getByRole('grid'))
-      expect(dataGrid.getByText('1-25 of 29')).toBeInTheDocument()
+      // Only check buttons in first pagination instance
+      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
 
-      const nextPageButton = getByLabelText('Next page')
+      const nextPageButton = getAllByLabelText('Go to page 2')[0]
       fireEvent.click(nextPageButton)
 
-      expect(dataGrid.getByText('26-29 of 29')).toBeInTheDocument()
-      expect(dataGrid.queryByText('1-25 of 29')).toBeFalsy()
+      expect(getAllByLabelText('page 2')[0]).toHaveStyle(activePageStyle)
+      expect(getAllByLabelText('Go to page 1')[0]).not.toHaveStyle(
+        activePageStyle,
+      )
 
       // Get first sort button
       const sortButton = getAllByLabelText('Sort')[0]
       fireEvent.click(sortButton)
 
-      expect(dataGrid.getByText('1-25 of 29')).toBeInTheDocument()
-      expect(dataGrid.queryByText('26-29 of 29')).toBeFalsy()
+      expect(getAllByLabelText('Go to page 2')[0]).not.toHaveStyle(
+        activePageStyle,
+      )
+      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
     })
 
     it('should reset to page 1 after search, filters, and sorting are applied', () => {
-      const { getByRole, getByLabelText } = render(
+      const { getByRole, getAllByLabelText } = render(
         <RecommendationsTable
           {...testProps}
           recommendations={mockRecommendationsFor2Pages}
         />,
       )
 
-      const dataGrid = within(getByRole('grid'))
-      const nextPageButton = getByLabelText('Next page')
+      const activePageStyle = 'backgroundColor: #3f51b5'
+
+      // Only check buttons in first pagination instance
+      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
+
+      const nextPageButton = getAllByLabelText('Go to page 2')[0]
       fireEvent.click(nextPageButton)
 
-      expect(dataGrid.getByText('26-29 of 29')).toBeInTheDocument()
-      expect(dataGrid.queryByText('1-25 of 29')).toBeFalsy()
+      expect(getAllByLabelText('page 2')[0]).toHaveStyle(activePageStyle)
+      expect(getAllByLabelText('Go to page 1')[0]).not.toHaveStyle(
+        activePageStyle,
+      )
 
       //change value of the search bar
       const searchBar = getByRole('textbox')
-      fireEvent.change(searchBar, { target: { value: 'account 1' } })
+      fireEvent.change(searchBar, { target: { value: 'aws' } })
 
-      expect(dataGrid.getByText('1-11 of 11')).toBeInTheDocument()
-      expect(dataGrid.queryByText('26-29 of 29')).toBeFalsy()
-    })
-
-    it('should display message when table is empty', () => {
-      const { getByRole } = render(
-        <RecommendationsTable
-          {...testProps}
-          recommendations={mockRecommendationsFor2Pages}
-        />,
+      expect(getAllByLabelText('Go to page 2')[0]).not.toHaveStyle(
+        activePageStyle,
       )
-      const dataGrid = within(getByRole('grid'))
-      const searchBar = getByRole('textbox')
-
-      const emptyGridMessage =
-        "There's no data to display! Expand your search parameters to get started. (Try adding accounts, regions or recommendation types)"
-      expect(dataGrid.queryByText(emptyGridMessage)).not.toBeInTheDocument()
-
-      fireEvent.change(searchBar, {
-        target: { value: 'should filter everything out' },
-      })
-      expect(dataGrid.queryByText(emptyGridMessage)).toBeInTheDocument()
+      expect(getAllByLabelText('page 1')[0]).toHaveStyle(activePageStyle)
     })
   })
 })
