@@ -135,6 +135,102 @@ describe('Recommendations Table', () => {
     actualRowData[0].forEach((cell) => expect(cell.innerHTML).toBe('-'))
   })
 
+  const co2eSavingsToBeRounded = [
+    [0.01, 0.01],
+    [0.001, 0.001],
+    [0.0005, 0.001],
+    [0.0001, 0],
+    [0.00001, 0],
+    [0.000001, 0],
+    [0.0000001, 0],
+  ]
+
+  each(co2eSavingsToBeRounded).it(
+    'rounds the co2e savings to the nearest 0.001',
+    (savings, roundedSavings) => {
+      const { getAllByRole } = render(
+        <RecommendationsTable
+          {...testProps}
+          recommendations={[
+            {
+              cloudProvider: undefined,
+              accountId: undefined,
+              accountName: undefined,
+              region: undefined,
+              recommendationType: undefined,
+              recommendationDetail: undefined,
+              costSavings: null,
+              co2eSavings: savings,
+              kilowattHourSavings: null,
+            },
+          ]}
+          useKilograms={false}
+        />,
+      )
+
+      const dataRows = getAllByRole('row')
+      dataRows.shift() // Removes row with table headers
+
+      const actualRowData = dataRows.map((row) =>
+        within(row).getAllByRole('cell'),
+      )
+
+      const firstRow = actualRowData[0]
+
+      // get last cell for CO2 data
+      expect(firstRow[firstRow.length - 1].innerHTML).toBe(`${roundedSavings}`)
+    },
+  )
+
+  const co2eSavingsToBeRoundedInKilograms = [
+    [0.01, 10],
+    [0.001, 1],
+    [0.0005, 0.5],
+    [0.0001, 0.1],
+    [0.00001, 0.01],
+    [0.000001, 0.001],
+    [0.0000001, 0],
+  ]
+
+  each(co2eSavingsToBeRoundedInKilograms).it(
+    'rounds the co2e savings to the nearest 0.001',
+    (savings, roundedSavingsInKilograms) => {
+      const { getAllByRole } = render(
+        <RecommendationsTable
+          {...testProps}
+          recommendations={[
+            {
+              cloudProvider: undefined,
+              accountId: undefined,
+              accountName: undefined,
+              region: undefined,
+              recommendationType: undefined,
+              recommendationDetail: undefined,
+              costSavings: null,
+              co2eSavings: savings,
+              kilowattHourSavings: null,
+            },
+          ]}
+          useKilograms={true}
+        />,
+      )
+
+      const dataRows = getAllByRole('row')
+      dataRows.shift() // Removes row with table headers
+
+      const actualRowData = dataRows.map((row) =>
+        within(row).getAllByRole('cell'),
+      )
+
+      const firstRow = actualRowData[0]
+
+      // get last cell for CO2 data
+      expect(firstRow[firstRow.length - 1].innerHTML).toBe(
+        `${roundedSavingsInKilograms}`,
+      )
+    },
+  )
+
   it('toggles CO2 units between metric tons and kilograms', () => {
     const mockRecommendations = [
       {
