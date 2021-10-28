@@ -12,6 +12,7 @@ import React, {
 import {
   DataGrid,
   GridColDef,
+  GridOverlay,
   GridRowParams,
   MuiEvent,
 } from '@material-ui/data-grid'
@@ -178,6 +179,15 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               <Toggle label="CO2e Units" handleToggle={handleToggle} />
             </div>
             <DataGrid
+              components={{
+                NoRowsOverlay: () => (
+                  <GridOverlay>
+                    There's no data to display! Expand your search parameters to
+                    get started. (Try adding accounts, regions or recommendation
+                    types)
+                  </GridOverlay>
+                ),
+              }}
               autoHeight
               rows={rows}
               columns={getColumns(useKilograms)}
