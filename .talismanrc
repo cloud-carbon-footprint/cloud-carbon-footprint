@@ -235,6 +235,8 @@ fileignoreconfig:
   checksum: 8cbcdd56c389772ba6086966824c015f000d273f6d05e7a75befb24d40c64019
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/runner.ts
   checksum: ae3644fd8001fc1545fb3b365f24b2be657750bcbad705cd3da249b705aad74f
+- filename: packages/create-app/templates/default-app/packages/client/src/common/FilterBar/utils/OptionChooser.ts
+  checksum: f8363f5b5b73eb748bb26c061a313c0cfdf2a42ef77d1c2fc459a14f3be5fdef
 - filename: packages/create-app/templates/default-app/packages/client/src/common/SelectDropdown/SelectDropdown.tsx
   checksum: 507878a88bedbb206f820069c94cccb1e482ab6ad12f7d7acb48723333494096
 - filename: packages/create-app/templates/default-app/packages/client/src/dashboard/charts/CarbonIntensityRange.tsx

@@ -3,7 +3,7 @@
  */
 
 import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from './FiltersUtil'
+import { DropdownSelections, optionIsInDropdownOptions } from './FiltersUtil'
 import {
   ALL_DROPDOWN_FILTER_OPTIONS,
   ALL_KEY,
@@ -52,13 +52,15 @@ export abstract class OptionChooser {
       }
 
       return Object.fromEntries(
-        selectionOptions.map((option) => [
-          option,
-          this.addAllDropDownOptions(
-            this.choosers[option](),
-            option as DropdownFilterOptions,
-          ),
-        ]),
+        selectionOptions.map((option) => {
+          return [
+            option,
+            this.addAllDropDownOptions(
+              this.choosers[option](),
+              option as DropdownFilterOptions,
+            ),
+          ]
+        }),
       )
     }
   }
@@ -69,10 +71,23 @@ export abstract class OptionChooser {
 
   chooseDropdownFilterOption(filterOption: string): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
-    this.selections.forEach((selection) => {
-      if (selection.key !== ALL_KEY) {
+    const currentCloudProviders = Array.from(
+      this.getCloudProvidersFromSelections(this.selections),
+    )
+    currentCloudProviders.forEach((currentCloudProvider) => {
+      if (
+        optionIsInDropdownOptions(
+          this.oldSelections.cloudProviders,
+          currentCloudProvider,
+        )
+      ) {
+        this.oldSelections[filterOption].forEach((oldSelectionOption) => {
+          oldSelectionOption.cloudProvider === currentCloudProvider.key &&
+            desiredSelections.add(oldSelectionOption)
+        })
+      } else {
         this.filterOptions[filterOption].forEach((option) => {
-          option.cloudProvider === (selection.cloudProvider || selection.key) &&
+          option.cloudProvider === currentCloudProvider.key &&
             desiredSelections.add(option)
         })
       }
@@ -95,10 +110,11 @@ export abstract class OptionChooser {
       new Set<DropdownOption>()
     selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
+        const selectionCloudProvider = selection.cloudProvider || selection.key
         cloudProviderSelections.add(
           <DropdownOption>(
             CLOUD_PROVIDER_OPTIONS.find(
-              (option) => option.key === selection.cloudProvider,
+              (option) => option.key === selectionCloudProvider,
             )
           ),
         )
