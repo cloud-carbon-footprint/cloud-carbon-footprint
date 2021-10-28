@@ -9,7 +9,6 @@ import {
   ALL_KEY,
   CLOUD_PROVIDER_OPTIONS,
 } from './DropdownConstants'
-import { pluck } from 'ramda'
 
 export abstract class OptionChooser {
   protected choosers: {
@@ -53,13 +52,15 @@ export abstract class OptionChooser {
       }
 
       return Object.fromEntries(
-        selectionOptions.map((option) => [
-          option,
-          this.addAllDropDownOptions(
-            this.choosers[option](),
-            option as DropdownFilterOptions,
-          ),
-        ]),
+        selectionOptions.map((option) => {
+          return [
+            option,
+            this.addAllDropDownOptions(
+              this.choosers[option](),
+              option as DropdownFilterOptions,
+            ),
+          ]
+        }),
       )
     }
   }
@@ -70,26 +71,10 @@ export abstract class OptionChooser {
 
   chooseDropdownFilterOption(filterOption: string): Set<DropdownOption> {
     const desiredSelections: Set<DropdownOption> = new Set()
-
-    console.log(this.selections)
     const currentCloudProviders = Array.from(
       this.getCloudProvidersFromSelections(this.selections),
     )
-    console.log(currentCloudProviders)
-
     currentCloudProviders.forEach((currentCloudProvider) => {
-      if (!currentCloudProvider) return
-      const cloudProviderKeys = pluck(
-        'key',
-        this.filterOptions[filterOption].filter(
-          (option) => option.cloudProvider === currentCloudProvider.key,
-        ),
-      )
-
-      console.log(this.filterOptions)
-      console.log(filterOption, this.filterOptions[filterOption])
-      console.log(cloudProviderKeys)
-
       if (
         optionIsInDropdownOptions(
           this.oldSelections.cloudProviders,
@@ -97,32 +82,16 @@ export abstract class OptionChooser {
         )
       ) {
         this.oldSelections[filterOption].forEach((oldSelectionOption) => {
-          const hasKey = cloudProviderKeys.includes(oldSelectionOption.key)
-          hasKey && desiredSelections.add(oldSelectionOption)
+          oldSelectionOption.cloudProvider === currentCloudProvider.key &&
+            desiredSelections.add(oldSelectionOption)
         })
       } else {
-        cloudProviderKeys.forEach((option) =>
-          desiredSelections.add(
-            <DropdownOption>(
-              this.filterOptions[option].find(
-                (option) => option.key === filterOption,
-              )
-            ),
-          ),
-        )
+        this.filterOptions[filterOption].forEach((option) => {
+          option.cloudProvider === currentCloudProvider.key &&
+            desiredSelections.add(option)
+        })
       }
     })
-
-    // this.selections.forEach((selection) => {
-    //   if (selection.key !== ALL_KEY) {
-    //     this.filterOptions[filterOption].forEach((option) => {
-    //       option.cloudProvider === (selection.cloudProvider || selection.key) &&
-    //         desiredSelections.add(option)
-    //     })
-    //   }
-    // })
-    // if (filterOption === DropdownFilterOptions.ACCOUNTS)
-    // console.log(desiredSelections)
     return desiredSelections
   }
 
@@ -141,10 +110,11 @@ export abstract class OptionChooser {
       new Set<DropdownOption>()
     selections.forEach((selection) => {
       if (selection.key !== ALL_KEY) {
+        const selectionCloudProvider = selection.cloudProvider || selection.key
         cloudProviderSelections.add(
           <DropdownOption>(
             CLOUD_PROVIDER_OPTIONS.find(
-              (option) => option.key === selection.cloudProvider,
+              (option) => option.key === selectionCloudProvider,
             )
           ),
         )

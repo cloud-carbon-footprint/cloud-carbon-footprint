@@ -1,5 +1,3 @@
-scopeconfig:
-  - scope: node
 fileignoreconfig:
 - filename: .changeset/honest-penguins-clap.md
   checksum: ac6a3b992c06dfdfba27b96cf9b93f38b3d87bba3581e5a8428f42f186eb0ee7
@@ -121,6 +119,8 @@ fileignoreconfig:
   checksum: 03deb9260bd7bd7106da1eb4d70130284530ac15381ce52a0554f2f48de9d484
 - filename: packages/client/src/common/FilterBar/utils/FiltersUtil.ts
   checksum: 4023aca308afc058ea67013d0a5a3f8a513eb7e47d4b87b9ee0daebe3e030fc1
+- filename: packages/client/src/common/FilterBar/utils/OptionChooser.ts
+  checksum: c32a914549f1f0b14676e2fc073ade25979a2db15362a01221061283d7713d56
 - filename: packages/client/src/common/SelectDropdown/SelectDropdown.tsx
   checksum: e30283b83d2ccfa4e72c58d243c11c8251019cf5d7f6da5b8c9649a94984c147
 - filename: packages/client/src/dashboard/CarbonComparisonCard.tsx
@@ -307,3 +307,6 @@ fileignoreconfig:
   checksum: 70858864e1b6d2e91547f823d455acd4bfd8457a4b9df6d493607e95333de753
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
+scopeconfig:
+- scope: node
+version: "1.0"
