@@ -128,9 +128,14 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
           // Replace any undefined values and round numbers to thousandth decimal
           Object.keys(recommendation).forEach((key) => {
             recommendationRow[key] = recommendationRow[key] ?? '-'
-            if (key.includes('Savings') && recommendationRow[key] != '-')
-              recommendationRow[key] =
+            if (key.includes('Savings') && recommendationRow[key] != '-') {
+              const roundedRecommendation =
                 Math.round(recommendationRow[key] * 1000) / 1000
+              recommendationRow[key] =
+                roundedRecommendation >= 0.001
+                  ? roundedRecommendation
+                  : '< 0.001'
+            }
           })
           return recommendationRow
         },
