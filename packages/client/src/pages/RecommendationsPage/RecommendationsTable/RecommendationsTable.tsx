@@ -20,14 +20,14 @@ import {
   RecommendationResult,
   ServiceData,
 } from '@cloud-carbon-footprint/common'
+import { Typography } from '@material-ui/core'
 import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
 import DateRange from 'common/DateRange'
 import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
 import Forecast from './Forecast/Forecast'
-import { Typography } from '@material-ui/core'
-import CustomPagination from './CustomPaginaton'
+import CustomPagination from './CustomPagination'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]

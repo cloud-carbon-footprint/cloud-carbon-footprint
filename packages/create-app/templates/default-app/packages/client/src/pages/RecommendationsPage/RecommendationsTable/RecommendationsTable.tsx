@@ -20,13 +20,14 @@ import {
   RecommendationResult,
   ServiceData,
 } from '@cloud-carbon-footprint/common'
+import { Typography } from '@material-ui/core'
 import DashboardCard from 'layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
 import DateRange from 'common/DateRange'
 import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
 import Forecast from './Forecast/Forecast'
-import { Typography } from '@material-ui/core'
+import CustomPagination from './CustomPagination'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
@@ -38,7 +39,10 @@ type RecommendationsTableProps = {
   useKilograms: boolean
 }
 
-const getColumns = (useKilograms: boolean): GridColDef[] => [
+const getColumns = (
+  useKilograms: boolean,
+  recommendations: RecommendationResult[],
+): GridColDef[] => [
   {
     field: 'cloudProvider',
     headerName: 'Cloud Provider',
@@ -69,6 +73,19 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
     headerName: useKilograms
       ? 'Potential Carbon Savings (kg)'
       : 'Potential Carbon Savings (t)',
+    sortComparator: (v1, v2, param1, param2) => {
+      const rowParam1 = param1.api.getRowParams(param1.id)
+      const rowParam2 = param2.api.getRowParams(param2.id)
+
+      const recommendation1: RecommendationResult = recommendations.find(
+        (element) => element.accountName == rowParam1.row.accountName,
+      )
+      const recommendation2: RecommendationResult = recommendations.find(
+        (element) => element.accountName == rowParam2.row.accountName,
+      )
+
+      return recommendation1.co2eSavings - recommendation2.co2eSavings
+    },
     flex: 0.75,
   },
 ]
@@ -81,7 +98,18 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 }): ReactElement => {
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
+  const initialPageState = {
+    page: 0,
+    pageSize: 25,
+    sortOrder: null,
+  }
+  const [pageState, setPageState] = useState(initialPageState)
+
   const classes = useStyles()
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageState({ ...pageState, pageSize: newPageSize })
+  }
 
   const createRecommendationRows = (
     recommendations: RecommendationResult[],
@@ -111,9 +139,14 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     }
   }
 
+  const resetToInitialPage = (initialPage = 0) => {
+    setPageState({ ...pageState, page: initialPage })
+  }
+
   const handleSearchBarChange = (value: string) => {
     setSearchBarValue(value)
     requestSearch(value)
+    resetToInitialPage()
   }
 
   const requestSearch = (searchValue: string) => {
@@ -143,7 +176,12 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   useEffect(() => {
     requestSearch(searchBarValue)
-  }, [recommendations, useKilograms])
+  }, [useKilograms])
+
+  useEffect(() => {
+    requestSearch(searchBarValue)
+    resetToInitialPage()
+  }, [recommendations])
 
   const escapeRegExp = (value: string): string => {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
@@ -151,6 +189,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   const tooltipMessage =
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
+
+  const customPaginationComponent = () => (
+    <CustomPagination handlePageSizeChange={handlePageSizeChange} />
+  )
 
   return (
     <DashboardCard>
@@ -175,18 +217,9 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               />
             </div>
             <DataGrid
-              components={{
-                NoRowsOverlay: () => (
-                  <GridOverlay>
-                    There's no data to display! Expand your search parameters to
-                    get started. (Try adding accounts, regions or recommendation
-                    types)
-                  </GridOverlay>
-                ),
-              }}
               autoHeight
               rows={rows}
-              columns={getColumns(useKilograms)}
+              columns={getColumns(useKilograms, recommendations)}
               columnBuffer={6}
               hideFooterSelectedRowCount={true}
               classes={{
@@ -195,6 +228,34 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               }}
               onRowClick={handleRowClick}
               disableColumnFilter
+              pageSize={pageState.pageSize}
+              components={{
+                Toolbar: customPaginationComponent,
+                Pagination: customPaginationComponent,
+                NoRowsOverlay: () => (
+                  <GridOverlay>
+                    There's no data to display! Expand your search parameters to
+                    get started. (Try adding accounts, regions or recommendation
+                    types)
+                  </GridOverlay>
+                ),
+              }}
+              onPageSizeChange={handlePageSizeChange}
+              page={pageState.page}
+              onPageChange={(newPage) =>
+                setPageState({ ...pageState, page: newPage })
+              }
+              onSortModelChange={(model) => {
+                let page = pageState.page
+                if (pageState.sortOrder !== model[0]?.sort) {
+                  page = 0
+                  setPageState({
+                    ...pageState,
+                    sortOrder: model[0]?.sort,
+                    page,
+                  })
+                }
+              }}
             />
           </div>
         </div>
