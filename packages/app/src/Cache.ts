@@ -126,7 +126,7 @@ export default function cache(): any {
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request)
 
-      if (process.env.USE_TEST_CACHE) return cachedEstimates
+      if (process.env.TEST_MODE) return cachedEstimates
 
       // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)

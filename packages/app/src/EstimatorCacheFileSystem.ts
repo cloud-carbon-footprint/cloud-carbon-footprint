@@ -27,7 +27,7 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
 
   private async loadEstimates(): Promise<EstimationResult[]> {
     let data = '[]'
-    const loadedCache = process.env.USE_TEST_CACHE ? testCachePath : cachePath
+    const loadedCache = process.env.TEST_MODE ? testCachePath : cachePath
     try {
       data = await fs.readFile(loadedCache, 'utf8')
     } catch (error) {

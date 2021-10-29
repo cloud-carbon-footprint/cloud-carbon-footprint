@@ -4,28 +4,31 @@
 
 import {
   configLoader,
-  EstimationResult,
-  reduceByTimestamp,
   EmissionRatioResult,
-  RecommendationResult,
+  EstimationResult,
   LookupTableInput,
   LookupTableOutput,
+  RecommendationResult,
+  reduceByTimestamp,
 } from '@cloud-carbon-footprint/common'
 import {
-  AzureAccount,
   AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  AzureAccount,
 } from '@cloud-carbon-footprint/azure'
 import {
-  AWSAccount,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  AWSAccount,
 } from '@cloud-carbon-footprint/aws'
 import {
-  GCPAccount,
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  GCPAccount,
 } from '@cloud-carbon-footprint/gcp'
 
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
+import { promises as fs } from 'fs'
+
+export const recommendationsMockPath = 'recommendations.mock.json'
 
 export default class App {
   @cache()
@@ -141,6 +144,13 @@ export default class App {
   async getRecommendations(
     request: RecommendationRequest,
   ): Promise<RecommendationResult[]> {
+    if (process.env.TEST_MODE) {
+      const recommendationsMock = await fs.readFile(
+        recommendationsMockPath,
+        'utf8',
+      )
+      return JSON.parse(recommendationsMock)
+    }
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP

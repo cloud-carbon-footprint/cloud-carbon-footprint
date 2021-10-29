@@ -215,7 +215,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             <DateRange lookBackPeriodDays={13} />
             <Tooltip message={tooltipMessage} />
           </div>
-          <div className={classes.tableContainer}>
+          <div
+            data-testid="recommendations-data-grid"
+            className={classes.tableContainer}
+          >
             <div className={classes.toolbarContainer}>
               <SearchBar
                 value={searchBarValue}

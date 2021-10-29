@@ -26,7 +26,11 @@ const Toggle: FunctionComponent<ToggleProps> = ({
         id="toggle"
         data-testid="toggle"
       />
-      <label className={classes.toggle} htmlFor="toggle">
+      <label
+        className={classes.toggle}
+        htmlFor="toggle"
+        data-testid="toggle-label"
+      >
         <span className={classes.toggleHandler} />
       </label>
     </div>

@@ -8,9 +8,9 @@ import each from 'jest-each'
 
 describe('Forecast Card', () => {
   it('should render the card', () => {
-    const { getByTestId } = render(<ForecastCard />)
+    const { getByTestId } = render(<ForecastCard id="test" />)
 
-    expect(getByTestId('forecast-card')).toBeInTheDocument()
+    expect(getByTestId('forecast-card-test')).toBeInTheDocument()
   })
 
   const testProps = [
@@ -35,6 +35,7 @@ describe('Forecast Card', () => {
         costSavings="0"
         co2ePercentChange={25}
         costPercentChange={10}
+        id="test"
       />,
     )
 
@@ -49,6 +50,7 @@ describe('Forecast Card', () => {
         co2eSavings="1"
         costSavings="1"
         useKilograms={true}
+        id="test"
       />,
     )
     expect(getByText('Kilograms CO2e')).toBeInTheDocument()
@@ -62,6 +64,7 @@ describe('Forecast Card', () => {
         co2eSavings="9"
         costSavings="1"
         useKilograms={false}
+        id="test"
       />,
     )
     expect(getByText('Metric Tons CO2e')).toBeInTheDocument()

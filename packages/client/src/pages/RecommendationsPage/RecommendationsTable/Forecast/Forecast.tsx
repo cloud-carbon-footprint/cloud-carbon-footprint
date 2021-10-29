@@ -81,6 +81,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
           useKilograms={useKilograms}
+          id="last-thirty-day-total"
         />
         <ForwardIcon className={classes.icon} />
         <ForecastCard
@@ -90,6 +91,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           co2ePercentChange={co2ePercentChange}
           costPercentChange={costPercentChange}
           useKilograms={useKilograms}
+          id="projected-thirty-day-total"
         />
         <div className={clsx(classes.icon, classes.equalSign)}>=</div>
         <ForecastEquivalencyCard
