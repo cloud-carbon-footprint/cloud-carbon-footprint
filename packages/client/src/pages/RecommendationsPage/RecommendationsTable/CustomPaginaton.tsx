@@ -6,14 +6,18 @@ import {
   useGridSlotComponentProps,
   GridToolbarContainer,
 } from '@material-ui/data-grid'
-import useStyles from './recommendationsTableStyles'
 import Pagination from '@material-ui/lab/Pagination'
 import { Box, MenuItem, Select, Typography } from '@material-ui/core'
-import { ReactElement } from 'react'
+import { FunctionComponent, ReactElement } from 'react'
+import useStyles from './recommendationsTableStyles'
 
-function CustomPagination(
-  handlePageSizeChange: (event: React.ChangeEvent<{ value: unknown }>) => void,
-): ReactElement {
+type CustomPaginationProps = {
+  handlePageSizeChange: (number) => void
+}
+
+const CustomPagination: FunctionComponent<CustomPaginationProps> = ({
+  handlePageSizeChange,
+}): ReactElement => {
   const { state, apiRef } = useGridSlotComponentProps()
   const classes = useStyles()
 
@@ -21,7 +25,10 @@ function CustomPagination(
     <GridToolbarContainer>
       <Box display="flex" flexGrow={1} />
       <Typography className={classes.rowsPerPage}>Rows per page:</Typography>
-      <Select value={state.pagination.pageSize} onChange={handlePageSizeChange}>
+      <Select
+        value={state.pagination.pageSize}
+        onChange={(event) => handlePageSizeChange(event.target.value)}
+      >
         <MenuItem value={25}>25</MenuItem>
         <MenuItem value={50}>50</MenuItem>
         <MenuItem value={100}>100</MenuItem>

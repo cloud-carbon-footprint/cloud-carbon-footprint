@@ -107,10 +107,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
 
   const classes = useStyles()
 
-  const handlePageSizeChange = (
-    event: React.ChangeEvent<{ value: unknown }>,
-  ) => {
-    setPageState({ ...pageState, pageSize: event.target.value as number })
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageState({ ...pageState, pageSize: newPageSize })
   }
 
   const createRecommendationRows = (
@@ -192,6 +190,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   const tooltipMessage =
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
 
+  const customPaginationComponent = () => (
+    <CustomPagination handlePageSizeChange={handlePageSizeChange} />
+  )
+
   return (
     <DashboardCard>
       <>
@@ -228,8 +230,8 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
               disableColumnFilter
               pageSize={pageState.pageSize}
               components={{
-                Toolbar: () => CustomPagination(handlePageSizeChange),
-                Pagination: () => CustomPagination(handlePageSizeChange),
+                Toolbar: customPaginationComponent,
+                Pagination: customPaginationComponent,
                 NoRowsOverlay: () => (
                   <GridOverlay>
                     There's no data to display! Expand your search parameters to
@@ -238,9 +240,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
                   </GridOverlay>
                 ),
               }}
-              onPageSizeChange={(newPageSize) =>
-                setPageState({ ...pageState, pageSize: newPageSize })
-              }
+              onPageSizeChange={handlePageSizeChange}
               page={pageState.page}
               onPageChange={(newPage) =>
                 setPageState({ ...pageState, page: newPage })
