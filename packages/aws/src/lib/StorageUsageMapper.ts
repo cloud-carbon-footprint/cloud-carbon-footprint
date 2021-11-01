@@ -30,6 +30,7 @@ export interface MutableFootprintEstimate {
 export enum DiskType {
   SSD = 'SSD',
   HDD = 'HDD',
+  UNKNOWN = 'UNKNOWN',
 }
 
 export async function getUsageFromCostExplorer(

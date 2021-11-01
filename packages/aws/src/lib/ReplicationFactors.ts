@@ -32,12 +32,14 @@ export const AWS_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
         return REPLICATION_FACTORS.S3_ONE_ZONE_REDUCED_REDUNDANCY // 2
       if (containsAny(['TimedStorage', 'EarlyDelete'], usageType))
         return REPLICATION_FACTORS.S3 // 3
+      return REPLICATION_FACTORS.DEFAULT // 1
     },
     [SERVICES.EC2]: (usageType: string): number => {
       if (usageType.includes('VolumeUsage'))
         return REPLICATION_FACTORS.EC2_EBS_VOLUME // 2
       if (usageType.includes('SnapshotUsage'))
         return REPLICATION_FACTORS.EC2_EBS_SNAPSHOT // 3
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.EFS]: (usageType: string): number => {
       if (usageType.includes('ZIA')) return REPLICATION_FACTORS.EFS_ONE_ZONE // 2
@@ -49,6 +51,7 @@ export const AWS_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
       if (usageType.includes('Aurora')) return REPLICATION_FACTORS.RDS_AURORA // 6
       if (usageType.includes('Multi-AZ'))
         return REPLICATION_FACTORS.RDS_MULTI_AZ // 2
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.DOC_DB]: (usageType: string): number => {
       if (usageType.includes('BackupUsage'))
@@ -61,13 +64,19 @@ export const AWS_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
     [SERVICES.ECR]: (usageType: string): number => {
       if (usageType.includes('TimedStorage'))
         return REPLICATION_FACTORS.ECR_STORAGE // 3
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.ELASTICACHE]: (usageType: string): number => {
       if (usageType.includes('BackupUsage'))
         return REPLICATION_FACTORS.DOCUMENT_ELASTICACHE_BACKUP // 3
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.SIMPLE_DB]: (usageType: string): number => {
       if (usageType.includes('TimedStorage'))
         return REPLICATION_FACTORS.SIMPLE_DB // 2
+      return REPLICATION_FACTORS.DEFAULT
+    },
+    DEFAULT: (): number => {
+      return REPLICATION_FACTORS.DEFAULT // 1
     },
   }

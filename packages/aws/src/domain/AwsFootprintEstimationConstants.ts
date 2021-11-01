@@ -118,6 +118,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     ECR_STORAGE: 3,
     DOCUMENT_ELASTICACHE_BACKUP: 3,
     SIMPLE_DB: 2,
+    DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
   CO2E_PER_COST: {

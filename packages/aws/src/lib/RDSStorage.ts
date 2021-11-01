@@ -97,6 +97,7 @@ export default class RDSStorage implements ICloudService {
     this.rdsStorageLogger.warn(
       'Unexpected Cost explorer Dimension Name: ' + awsGroupKey,
     )
+    return DiskType.UNKNOWN
   }
 
   async getCosts(start: Date, end: Date, region: string): Promise<Cost[]> {
