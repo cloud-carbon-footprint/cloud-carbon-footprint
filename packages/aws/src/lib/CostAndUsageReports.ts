@@ -245,14 +245,12 @@ export default class CostAndUsageReports {
           this.costAndUsageReportsLogger.warn(
             `Could not estimate compute usage for usage type: ${costAndUsageReportRow.usageType}`,
           )
-          return
-          // TODO: ADD COMMENTED SECTIONS WITHOUT BREAKING TESTS
-          // {
-          //   timestamp: computeFootprint.timestamp,
-          //   kilowattHours: 0,
-          //   co2e: computeFootprint.co2e,
-          //   usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
-          // }
+          return {
+            timestamp: computeFootprint.timestamp,
+            kilowattHours: 0,
+            co2e: computeFootprint.co2e,
+            usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
+          }
         }
 
         // if there exist any memory footprint,
@@ -314,14 +312,12 @@ export default class CostAndUsageReports {
         this.costAndUsageReportsLogger.warn(
           `Unexpected pricing unit: ${costAndUsageReportRow.usageUnit}`,
         )
-        return
-      // TODO: ADD COMMENTED SECTIONS WITHOUT BREAKING TESTS
-      // {
-      //     timestamp: new Date(),
-      //     kilowattHours: 0,
-      //     co2e: 0,
-      //     usesAverageCPUConstant: false,
-      //   }
+        return {
+          timestamp: new Date(),
+          kilowattHours: 0,
+          co2e: 0,
+          usesAverageCPUConstant: false,
+        }
     }
   }
 

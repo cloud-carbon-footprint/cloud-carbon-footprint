@@ -58,7 +58,7 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     // or if the instance type is not a burstable instance, otherwise return void
     const { isValidInstanceType, isBurstableInstance } =
       this.checkInstanceTypes(instanceFamily)
-    if (!isValidInstanceType || isBurstableInstance) return
+    if (!isValidInstanceType || isBurstableInstance) return 0
 
     // grab the list of processors per instance type
     // and then the aws specific memory constant for the processors
