@@ -31,12 +31,15 @@ export const GCP_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
       if (usageType.includes('Regional'))
         return REPLICATION_FACTORS.COMPUTE_ENGINE_REGIONAL_DISKS // 2
       if (containsAny(['Snapshot', 'Image'], usageType)) {
-        if (Object.values(<any>GCP_MULTI_REGIONS).includes(region))
+        const multiRegions = Object.values(GCP_MULTI_REGIONS)
+        const dualRegions = Object.values(GCP_DUAL_REGIONS)
+        if (multiRegions.includes(region as GCP_MULTI_REGIONS))
           return REPLICATION_FACTORS.CLOUD_STORAGE_MULTI_REGION
-        if (Object.values(<any>GCP_DUAL_REGIONS).includes(region))
+        if (dualRegions.includes(region as GCP_DUAL_REGIONS))
           return REPLICATION_FACTORS.CLOUD_STORAGE_DUAL_REGION
         return REPLICATION_FACTORS.CLOUD_STORAGE_SINGLE_REGION
       }
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.CLOUD_FILESTORE]: (): number => {
       return REPLICATION_FACTORS.CLOUD_FILESTORE
@@ -45,11 +48,14 @@ export const GCP_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
       if (
         usageType.includes('Regional - Standard storage') ||
         usageType.includes('HA')
-      )
+      ) {
         return REPLICATION_FACTORS.CLOUD_SQL_HIGH_AVAILABILITY
+      }
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.CLOUD_MEMORYSTORE_FOR_REDIS]: (usageType: string): number => {
       if (usageType.includes('Standard'))
         return REPLICATION_FACTORS.CLOUD_MEMORY_STORE_REDIS
+      return REPLICATION_FACTORS.DEFAULT
     },
   }

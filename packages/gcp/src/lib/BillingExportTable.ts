@@ -179,7 +179,7 @@ export default class BillingExportTable {
   private getEstimateByUsageUnit(
     billingExportRow: BillingExportRow,
     unknownRows: BillingExportRow[],
-  ): FootprintEstimate {
+  ): FootprintEstimate | void {
     const emissionsFactors: CloudConstantsEmissionsFactors =
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
     const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(

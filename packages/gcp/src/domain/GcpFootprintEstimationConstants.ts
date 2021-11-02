@@ -100,6 +100,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     CLOUD_FILESTORE: 2,
     CLOUD_SQL_HIGH_AVAILABILITY: 2,
     CLOUD_MEMORY_STORE_REDIS: 2,
+    DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
   CO2E_PER_COST: {
