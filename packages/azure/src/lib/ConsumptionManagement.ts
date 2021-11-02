@@ -126,6 +126,7 @@ export default class ConsumptionManagementService {
           footprintEstimate,
         )
       }
+      return []
     })
 
     if (results.length > 0) {
@@ -311,6 +312,12 @@ export default class ConsumptionManagementService {
         this.consumptionManagementLogger.warn(
           `Unsupported usage unit: ${consumptionDetailRow.usageUnit}`,
         )
+        return {
+          timestamp: new Date(),
+          kilowattHours: 0,
+          co2e: 0,
+          usesAverageCPUConstant: false,
+        }
     }
   }
 
@@ -627,7 +634,7 @@ export default class ConsumptionManagementService {
     // check to see if the instance type is contained in the virtual machine mapping list
     // or if there is memory associated with it, otherwise return void
     const { isValidInstanceType } = this.checkInstanceTypes(seriesName)
-    if (!isValidInstanceType || !instanceTypeMemory) return
+    if (!isValidInstanceType || !instanceTypeMemory) return 0
 
     // grab the list of processors per instance type
     // and then the Azure specific memory constant for the processors

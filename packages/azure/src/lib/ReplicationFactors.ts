@@ -24,6 +24,7 @@ export const AZURE_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForServic
       if (usageType.includes('ZRS')) return REPLICATION_FACTORS.STORAGE_ZRS
       if (usageType.includes('GRS')) return REPLICATION_FACTORS.STORAGE_GRS
       if (usageType.includes('Disks')) return REPLICATION_FACTORS.STORAGE_DISKS
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.DB_MYSQL]: (): number => {
       return REPLICATION_FACTORS.DATABASE_MYSQL
@@ -31,10 +32,12 @@ export const AZURE_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForServic
     [SERVICES.COSMOS_DB]: (usageType: string): number => {
       if (usageType.includes('Data Stored'))
         return REPLICATION_FACTORS.COSMOS_DB
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.SQL_DB]: (usageType: string): number => {
       if (containsAny(['Data Stored', 'vCore'], usageType))
         return REPLICATION_FACTORS.SQL_DB
+      return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.REDIS_CACHE]: (): number => {
       return REPLICATION_FACTORS.REDIS_CACHE

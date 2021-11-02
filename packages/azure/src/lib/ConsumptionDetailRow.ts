@@ -58,15 +58,17 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     return this.usageType
   }
 
-  private getSeriesFromInstanceType() {
+  private getSeriesFromInstanceType(): string {
+    let matchingSeriesName = ''
     for (const seriesName in VIRTUAL_MACHINE_TYPE_SERIES_MAPPING) {
       if (
         VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName].hasOwnProperty(
           this.usageType,
         )
       ) {
-        return seriesName
+        matchingSeriesName = seriesName
       }
     }
+    return matchingSeriesName
   }
 }

@@ -112,6 +112,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     COSMOS_DB: 4,
     SQL_DB: 3,
     REDIS_CACHE: 2,
+    DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
   CO2E_PER_COST: {
