@@ -81,6 +81,7 @@ export type SidePanelProps = {
   children: ReactNode
   defaultIsOpen?: boolean
   openOnChange?: RecommendationRow
+  onClose?: () => void
 }
 
 export type FilterProps = {
