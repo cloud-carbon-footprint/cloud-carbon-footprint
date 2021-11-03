@@ -13,7 +13,8 @@
     "experimentalDecorators": true,
     "target": "ES5",
     "downlevelIteration": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
   },
   "include": ["./src"],
   "exclude": ["node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]
