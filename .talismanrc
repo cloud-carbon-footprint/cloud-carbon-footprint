@@ -1,4 +1,8 @@
 fileignoreconfig:
+- filename: terraform/terraform.tf
+  checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
+- filename: terraform/main.tf
+  checksum: d100a69256c220e1ff9f50fc9afc1fc0ece946bff92cf8c0b23038823fce320d
 - filename: .changeset/honest-penguins-clap.md
   checksum: ac6a3b992c06dfdfba27b96cf9b93f38b3d87bba3581e5a8428f42f186eb0ee7
 - filename: .changeset/nice-timers-repair.md
