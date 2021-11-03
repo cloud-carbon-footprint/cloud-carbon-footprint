@@ -24,7 +24,7 @@ export default class EstimatorCacheGoogleCloudStorage
     this.cacheFileName = cacheFileName
   }
 
-  getEstimates(): Promise<EstimationResult[] | void> {
+  getEstimates(): Promise<EstimationResult[]> {
     return this.getCloudFileContent()
   }
 
@@ -48,7 +48,7 @@ export default class EstimatorCacheGoogleCloudStorage
     }
   }
 
-  private async getCloudFileContent(): Promise<EstimationResult[] | void> {
+  private async getCloudFileContent(): Promise<EstimationResult[]> {
     try {
       const streamOfCacheFile = storage
         .bucket(this.bucketName)
@@ -70,6 +70,7 @@ export default class EstimatorCacheGoogleCloudStorage
       if (err.code !== 404) {
         console.warn(`Error loading cloud data: ${err.message}`)
       }
+      return []
     }
   }
 
