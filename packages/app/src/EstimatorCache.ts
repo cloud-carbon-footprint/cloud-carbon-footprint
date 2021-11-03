@@ -6,6 +6,6 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 
 export default interface EstimatorCache {
-  getEstimates(request: EstimationRequest): Promise<EstimationResult[]>
+  getEstimates(request: EstimationRequest): Promise<EstimationResult[] | void>
   setEstimates(data: EstimationResult[]): void
 }

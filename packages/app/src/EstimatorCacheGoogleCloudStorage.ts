@@ -24,7 +24,7 @@ export default class EstimatorCacheGoogleCloudStorage
     this.cacheFileName = cacheFileName
   }
 
-  getEstimates(): Promise<EstimationResult[]> {
+  getEstimates(): Promise<EstimationResult[] | void> {
     return this.getCloudFileContent()
   }
 
@@ -48,14 +48,14 @@ export default class EstimatorCacheGoogleCloudStorage
     }
   }
 
-  private async getCloudFileContent(): Promise<EstimationResult[]> {
+  private async getCloudFileContent(): Promise<EstimationResult[] | void> {
     try {
-      const streamOfcacheFile = storage
+      const streamOfCacheFile = storage
         .bucket(this.bucketName)
         .file(this.cacheFileName)
 
       const cachedJson = await this.streamToString(
-        await streamOfcacheFile.createReadStream(),
+        await streamOfCacheFile.createReadStream(),
       )
 
       const dateTimeReviver = (key: string, value: string) => {
