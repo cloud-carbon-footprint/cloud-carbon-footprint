@@ -5,12 +5,17 @@
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 import GCPCredentials from '../application/GCPCredentials'
 import { Config as mockConfig } from '@cloud-carbon-footprint/common'
-import { ChainableTemporaryCredentials, Credentials } from 'aws-sdk'
+import {
+  ChainableTemporaryCredentials,
+  Credentials,
+  EC2MetadataCredentials,
+} from 'aws-sdk'
 import Mock = jest.Mock
 
 jest.mock('aws-sdk', () => {
   return {
     ChainableTemporaryCredentials: jest.fn(),
+    EC2MetadataCredentials: jest.fn(),
     Credentials: jest.fn(),
     config: jest.requireActual('aws-sdk').config,
   }
@@ -31,6 +36,17 @@ function mockChainableTemporaryCredentials(
     )
   })
   return chainableTemporaryCredentials
+}
+
+function mockEC2MetadataCredentials(options: {
+  httpOptions: { timeout: number }
+  maxRetries: number
+}) {
+  const ec2MetadataCredentials = EC2MetadataCredentials as unknown as Mock
+  ec2MetadataCredentials.mockImplementationOnce(() => {
+    return new EC2MetadataCredentials(options)
+  })
+  return ec2MetadataCredentials
 }
 
 describe('AWSCredentialsProvider', () => {
@@ -86,6 +102,20 @@ describe('AWSCredentialsProvider', () => {
     // then
     expect(credentials).toBeInstanceOf(Credentials)
     expect(mockedChainableTemporaryCredentials).toHaveBeenCalledWith(params)
+  })
+
+  it('create returns EC2MetadataCredentials', () => {
+    // given
+    mockConfig.AWS.authentication.mode = 'IAM'
+    const options = { httpOptions: { timeout: 5000 }, maxRetries: 10 }
+    const mockedEC2MetadataCredentials = mockEC2MetadataCredentials(options)
+    const accountId = '123'
+
+    // when
+    const credentials = AWSCredentialsProvider.create(accountId)
+    // then
+    expect(credentials).toBeInstanceOf(EC2MetadataCredentials)
+    expect(mockedEC2MetadataCredentials).toHaveBeenCalledWith(options)
   })
 
   it('create returns Credentials by default', () => {
