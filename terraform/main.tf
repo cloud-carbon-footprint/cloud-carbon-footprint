@@ -19,8 +19,8 @@ resource "aws_security_group" "ccf_instance_sg" {
   vpc_id = var.vpc_id
 
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = var.allowed_cidr_blocks
     security_groups = [
