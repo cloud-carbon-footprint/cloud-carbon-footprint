@@ -15,6 +15,7 @@ import {
   GridOverlay,
   GridRowParams,
   MuiEvent,
+  GridCellParams,
 } from '@material-ui/data-grid'
 import {
   RecommendationResult,
@@ -28,6 +29,10 @@ import Tooltip from 'common/Tooltip'
 import SearchBar from '../SearchBar'
 import Forecast from './Forecast/Forecast'
 import CustomPagination from './CustomPagination'
+import {
+  tableFormatNearZero,
+  tableFormatRawCo2e,
+} from '../../../utils/helpers/transformData'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
@@ -39,10 +44,7 @@ type RecommendationsTableProps = {
   useKilograms: boolean
 }
 
-const getColumns = (
-  useKilograms: boolean,
-  recommendations: RecommendationResult[],
-): GridColDef[] => [
+const getColumns = (useKilograms: boolean): GridColDef[] => [
   {
     field: 'cloudProvider',
     headerName: 'Cloud Provider',
@@ -67,24 +69,25 @@ const getColumns = (
     field: 'costSavings',
     headerName: 'Potential Cost Savings ($)',
     flex: 0.75,
+    renderCell: (params) => {
+      if (typeof params.value === 'number') {
+        return tableFormatNearZero(params.value)
+      } else {
+        return '-'
+      }
+    },
   },
   {
     field: 'co2eSavings',
     headerName: useKilograms
       ? 'Potential Carbon Savings (kg)'
       : 'Potential Carbon Savings (t)',
-    sortComparator: (v1, v2, param1, param2) => {
-      const rowParam1 = param1.api.getRowParams(param1.id)
-      const rowParam2 = param2.api.getRowParams(param2.id)
-
-      const recommendation1: RecommendationResult = recommendations.find(
-        (element) => element.accountName == rowParam1.row.accountName,
-      )
-      const recommendation2: RecommendationResult = recommendations.find(
-        (element) => element.accountName == rowParam2.row.accountName,
-      )
-
-      return recommendation1.co2eSavings - recommendation2.co2eSavings
+    renderCell: (params: GridCellParams) => {
+      if (typeof params.value === 'number') {
+        return tableFormatRawCo2e(useKilograms, params.value)
+      } else {
+        return '-'
+      }
     },
     flex: 0.75,
   },
@@ -121,16 +124,11 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             ...recommendation,
             id: index,
             useKilograms,
-            co2eSavings: useKilograms
-              ? recommendation.co2eSavings * 1000
-              : recommendation.co2eSavings,
+            co2eSavings: recommendation.co2eSavings,
           }
           // Replace any undefined values and round numbers to thousandth decimal
           Object.keys(recommendation).forEach((key) => {
             recommendationRow[key] = recommendationRow[key] ?? '-'
-            if (key.includes('Savings') && recommendationRow[key] != '-')
-              recommendationRow[key] =
-                Math.round(recommendationRow[key] * 1000) / 1000
           })
           return recommendationRow
         },
@@ -163,8 +161,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
         return Object.keys(row).some((field: string) => {
           if (!fieldsToNotFilter.includes(field)) {
             let value = row[field]
-            if (field.includes('Savings')) {
-              value = Math.round(value * 1000) / 1000
+            if (field === 'co2eSavings') {
+              value = tableFormatRawCo2e(useKilograms, value)
+            } else if (field === 'costSavings') {
+              value = tableFormatNearZero(value)
             }
             return searchRegex.test(value?.toString())
           }
@@ -219,7 +219,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             <DataGrid
               autoHeight
               rows={rows}
-              columns={getColumns(useKilograms, recommendations)}
+              columns={getColumns(useKilograms)}
               columnBuffer={6}
               hideFooterSelectedRowCount={true}
               classes={{

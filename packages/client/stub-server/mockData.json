@@ -1403,9 +1403,9 @@
       "instanceName": "example-instance",
       "recommendationDetail": "Modify instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 114.978485686549784698,
-      "costSavings": 13.5068457394857938475938475,
-      "co2eSavings": 11.9843948573948579384759384
+      "kilowattHourSavings": 114.978,
+      "costSavings": 13.506,
+      "co2eSavings": 11.984
     },
     {
       "cloudProvider": "AWS",

@@ -8,6 +8,10 @@ import SidePanel from 'common/SidePanel'
 import { RecommendationRow } from 'Types'
 import { RecommendationsPanelRow, RecommendationsPanelColumn } from './layout'
 import useStyles from './recommendationsSidePanelStyles'
+import {
+  tableFormatNearZero,
+  tableFormatRawCo2e,
+} from '../../../utils/helpers/transformData'
 
 type RecommendationsSidePanelProps = {
   recommendation: RecommendationRow
@@ -66,19 +70,22 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
           <RecommendationsPanelColumn
             label="Cost Savings"
             subLabel="(USD)"
-            content={recommendation.costSavings}
+            content={tableFormatNearZero(recommendation.costSavings)}
           />
           <RecommendationsPanelColumn
             label="CO2e Savings"
             subLabel={
               recommendation.useKilograms ? '(kilograms)' : '(metric tons)'
             }
-            content={recommendation.co2eSavings}
+            content={tableFormatRawCo2e(
+              recommendation.useKilograms,
+              recommendation.co2eSavings,
+            )}
           />
           <RecommendationsPanelColumn
             label="Energy Savings"
             subLabel="(kilowatt hours)"
-            content={recommendation.kilowattHourSavings}
+            content={tableFormatNearZero(recommendation.kilowattHourSavings)}
           />
         </Grid>
       </SidePanel>
