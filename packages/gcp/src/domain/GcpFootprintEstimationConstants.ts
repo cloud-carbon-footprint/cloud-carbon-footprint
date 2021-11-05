@@ -18,7 +18,7 @@ import {
 export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
   HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
-  MIN_WATTS_MEDIAN: 0.71,
+  MIN_WATTS_MEDIAN: 0.68,
   MIN_WATTS_BY_COMPUTE_PROCESSOR: {
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.64,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.65,
@@ -29,6 +29,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 3.04,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
+    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 0.45,
   },
   getMinWatts: (computeProcessors: string[]): number => {
     const minWattsForProcessors: number[] = computeProcessors.map(
@@ -44,7 +45,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       ? wattsForProcessors
       : GCP_CLOUD_CONSTANTS.MIN_WATTS_MEDIAN
   },
-  MAX_WATTS_MEDIAN: 4.26,
+  MAX_WATTS_MEDIAN: 4.11,
   MAX_WATTS_BY_COMPUTE_PROCESSOR: {
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.97,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.26,
@@ -55,6 +56,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 8.25,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
+    [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 2.02,
   },
   getMaxWatts: (computeProcessors: string[]): number => {
     const maxWattsForProcessors: number[] = computeProcessors.map(
