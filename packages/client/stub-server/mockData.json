@@ -1403,9 +1403,9 @@
       "instanceName": "example-instance",
       "recommendationDetail": "Modify instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 114.978,
-      "costSavings": 13.506,
-      "co2eSavings": 11.984
+      "kilowattHourSavings": 114.978485686549784698,
+      "costSavings": 13.5068457394857938475938475,
+      "co2eSavings": 11.9843948573948579384759384
     },
     {
       "cloudProvider": "AWS",
@@ -1523,6 +1523,58 @@
       "kilowattHourSavings": 116.483,
       "costSavings": 8.409,
       "co2eSavings": 14.929
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account near zero",
+      "accountName": "gcp account near zero",
+      "region": "us-east1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-9",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
+      "resourceId": 8928403120086348000,
+      "kilowattHourSavings": 0.0001,
+      "costSavings": 0.0002,
+      "co2eSavings": 0.0003
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp account at zero",
+      "accountName": "gcp account at zero",
+      "region": "us-east1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-9",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
+      "resourceId": 8928403120086348000,
+      "kilowattHourSavings": 0.0,
+      "costSavings": 0.0,
+      "co2eSavings": 0.0
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp at 0.001",
+      "accountName": "gcp account at 0.001",
+      "region": "us-east1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-9",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
+      "resourceId": 8928403120086348000,
+      "kilowattHourSavings": 0.001,
+      "costSavings": 0.001,
+      "co2eSavings": 0.001
+    },
+    {
+      "cloudProvider": "GCP",
+      "accountId": "gcp at 0.002",
+      "accountName": "gcp account at 0.002",
+      "region": "us-east1",
+      "recommendationType": "STOP_VM",
+      "instanceName": "test-instance-9",
+      "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
+      "resourceId": 8928403120086348000,
+      "kilowattHourSavings": 0.002,
+      "costSavings": 0.002,
+      "co2eSavings": 0.002
     }
   ]
 }

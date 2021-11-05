@@ -265,6 +265,36 @@ const useFilterDataFromRecommendations = (
   return filterResultResponse
 }
 
+/**
+ * Formats the value so that it has at most 3 fraction digits and substitutes
+ * "< 0.001" if the value is greater than zero but otherwise would be formatted
+ * as zero.
+ *
+ * @param rawValue Raw numeric value to format
+ */
+function tableFormatNearZero(rawValue: number): string {
+  const formattedValue = rawValue
+    .toLocaleString(undefined, {
+      maximumFractionDigits: 3,
+    })
+    .replace(',', '')
+  return formattedValue === '0' && rawValue > 0 ? '< 0.001' : formattedValue
+}
+
+/**
+ * Formats the raw co2e value, optionally multiplying by 1000 if useKilograms
+ * is true.
+ *
+ * @param useKilograms If true, multiplies the value by 1000
+ * @param rawValue     Raw numeric co2e value
+ */
+function tableFormatRawCo2e(useKilograms: boolean, rawValue: number): string {
+  if (useKilograms) {
+    rawValue *= 1000
+  }
+  return tableFormatNearZero(rawValue)
+}
+
 export {
   sumEstimate,
   sumRecommendations,
@@ -274,4 +304,6 @@ export {
   sumServiceTotals,
   useFilterDataFromEstimates,
   useFilterDataFromRecommendations,
+  tableFormatNearZero,
+  tableFormatRawCo2e,
 }

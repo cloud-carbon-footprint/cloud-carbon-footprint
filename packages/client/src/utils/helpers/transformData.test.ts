@@ -5,20 +5,22 @@
 import { renderHook } from '@testing-library/react-hooks'
 import {
   mockData,
-  mockDataWithUnknownsAWS,
   mockDataWithHigherPrecision,
+  mockDataWithUnknownsAWS,
   mockDataWithUnknownsGCP,
   mockRecommendationData,
 } from '../data'
 import {
-  sumEstimate,
+  calculatePercentChange,
+  tableFormatNearZero,
+  formattedNumberWithCommas,
   sumCO2ByServiceOrRegion,
+  sumEstimate,
+  sumRecommendations,
   sumServiceTotals,
   useFilterDataFromEstimates,
   useFilterDataFromRecommendations,
-  sumRecommendations,
-  calculatePercentChange,
-  formattedNumberWithCommas,
+  tableFormatRawCo2e,
 } from './transformData'
 import {
   mockDataWithSmallNumbers,
@@ -26,6 +28,7 @@ import {
   mockEmissionsAndRecommendationsWithUnknowns,
 } from '../data/mockData'
 import { UnknownTypes } from 'Types'
+import each from 'jest-each'
 
 const testAccountA = 'test-a'
 const testAccountB = 'test-b'
@@ -388,4 +391,41 @@ describe('sumServiceTotals', () => {
       )
     })
   })
+})
+
+describe('tableFormatNearZero', () => {
+  const a = [
+    [0, '0'],
+    [0.0001, '< 0.001'],
+    [0.00099, '0.001'],
+    [0.001, '0.001'],
+    [1, '1'],
+  ]
+  each(a).it(
+    ' formats numbers near zero properly',
+    (numericInput: number, expectedOutput: string) => {
+      expect(tableFormatNearZero(numericInput)).toEqual(expectedOutput)
+    },
+  )
+})
+
+describe('tableFormatRawCo2e', () => {
+  const a = [
+    [0, false, '0'],
+    [0, true, '0'],
+    [0.0001, false, '< 0.001'],
+    [0.0001, true, '0.1'],
+    [0.00099, false, '0.001'],
+    [0.00099, true, '0.99'],
+    [1, false, '1'],
+    [1, true, '1000'],
+  ]
+  each(a).it(
+    ' formats Co2e properly',
+    (numericInput: number, useKilograms: boolean, expectedOutput: string) => {
+      expect(tableFormatRawCo2e(useKilograms, numericInput)).toEqual(
+        expectedOutput,
+      )
+    },
+  )
 })
