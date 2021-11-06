@@ -179,6 +179,18 @@ Feel free to post a comment in the pull request to ping reviewers if you are awa
 
 ---
 
+### Documentation
+
+To add contribute to the documentation, make sure you are in the `microsite` directory, then run the commands below.
+
+```
+yarn install # install the dependencies
+yarn start   # start a running instance of docusaurus 
+```
+
+This will start a live-updating server show that will show any change you make the markdown files in `microsite/docs/`  as soon as they are saved.
+
+
 ## Bundle size analysis 🔍
 
 From the client folder
