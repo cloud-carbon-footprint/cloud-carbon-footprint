@@ -73,10 +73,7 @@ const RecommendationsPage = (): ReactElement => {
     params: GridRowParams,
     _event: MuiEvent<SyntheticEvent>,
   ) => {
-    if (
-      selectedRecommendation &&
-      params.row.accountId === selectedRecommendation.accountId
-    ) {
+    if (selectedRecommendation && params.row.id === selectedRecommendation.id) {
       setSelectedRecommendation(undefined)
     } else {
       setSelectedRecommendation(params.row as RecommendationRow)
