@@ -4,14 +4,17 @@ title: Getting Started
 slug: /getting-started
 ---
 
-There are two different ways to get started with Cloud Carbon Footprint:
+There are three different ways to get started with Cloud Carbon Footprint:
 
 - Create a standalone app using the command line interface
 - Clone the Cloud Carbon Footprint repository
+- Run Cloud Carbon Footprint in an ephemeral workspace with a hosted development environment provider
 
 For the best way of staying up to date with the project, you can create a standalone app for simple customization according to your needs. This method uses the @cloud-carbon-footprint packages as npm dependencies, making for a more lightweight standalone app.
 
 Forking and cloning the repository is the best way to contribute to the project. Cloning the project will include all of the @cloud-carbon-footprint packages for local development and configuration. This path offers the option to create Pull Requests and to stay up to date with the latest changes.
+
+If you want to run project in a disposable development environment to see how Cloud Carbon Footprint works, and make changes, you can spin up an environment with Gitpod, a hosted service. This will be running a development environment on _their_ infrastructure - bear this in mind when testing it out with any cloud provider credentials.
 
 ### Prerequisites
 
@@ -99,3 +102,30 @@ Note:
 - During install, Talisman may fail to add the pre-commit hook to this repository because one already exists for Husky. This is fine because it can still execute in the existing husky pre-commit hook, once installed.
 
 - During install, Talisman will also ask you for the directory of your git repositories. If you don't want to install Talisman in all your git repos, then cancel out at this step.
+
+
+## Run Cloud Carbon Footprint in an ephemeral workspace
+
+If you want to spin up an temporary development environment for Cloud Carbon Footprint, you can use Gitpod, an open source service for creating disposable environments to work on software projects.
+
+### Using the hosted service
+
+If you have an account on https://gitpod.io, you can open a workspace for the cloud carbon footprint project by following the link in your browser of the form `https://gitpod.io/#project-url-on-github`
+
+So for Cloud carbon footpring, you would visit:
+
+https://gitpod.io/#https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/
+
+This will run through the steps outlined in the documentation below install the necessary dependencies for the project, and open an instance of VS Code in your browser that you an work on immediately.
+
+If you want to check out a specific branch, or open a workspace for specific pull request or issue, add the full url for the issue or pull request you are interested in. A workspace will be created with the corresponding branch already checked out, that you can share with others to pair in, and use git to commit changes, before pushing your changes to the relevant the branch. 
+
+https://gitpod.io/#https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/513
+https://gitpod.io/#https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/tree/recs-filter
+
+Shortly after you close the browser tab for your workspace, Gitpod will tear down and delete the workspace. For more information, please consult the [Gitpod docs](https://www.gitpod.io/docs/)
+
+### Using a self-hosted instance of gitpod
+
+If you need to, you can run also run gitpod on your own infrastructure, and use it to connect to source code repositories other than Github. [Doing so is well documented](https://www.gitpod.io/docs/self-hosted/latest), but beyond the scope of the docs for this project.
+
