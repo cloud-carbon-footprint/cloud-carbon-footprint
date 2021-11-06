@@ -75,7 +75,7 @@ const RecommendationsPage = (): ReactElement => {
   ) => {
     if (
       selectedRecommendation &&
-      params.row.accountId === selectedRecommendation.accountId
+      params.row.id === selectedRecommendation.id
     ) {
       setSelectedRecommendation(undefined)
     } else {
