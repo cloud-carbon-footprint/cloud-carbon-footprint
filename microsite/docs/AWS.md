@@ -8,7 +8,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 1.  Ensure your aws account has the correct permissions
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
-    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify the "AssumeRolePolicyDocument" is where you define the user or role that will have permissions to assume the "ccf-athena" role. 
+    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify the "AssumeRolePolicyDocument" is where you define the user or role that will have permissions to assume the "ccf-athena" role.
     - This role name will be used for the value in the environment variable: `AWS_TARGET_ACCOUNT_ROLE_NAME`
 
 2.  Enable the Cost and Usage Billing AWS feature.
@@ -40,6 +40,14 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 :warning: This will incur some cost. Use this sparingly if you wish to test with live data.
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
+
+### Deployment Options
+
+The application can also be deployed in AWS by making use of EC2 as the compute service to run it on. In order to do so, we provide a basic infrastructure setup that spins up all the necessary cloud resources, from the required role/policies to the actual compute resource and its provisioning (EC2 with user data).
+
+The infrastructure setup, developed with Terraform, can be found in `terraform/aws` and needs to be parametrized with the right values and tweaked to the specific circumstances of the user i.e. there might not be the need to fire up all resources but a subset of them.
+
+For more information, please note that there are specific instructions for this [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/terraform/aws/README.md).
 
 ### Unsupported Usage Types
 
