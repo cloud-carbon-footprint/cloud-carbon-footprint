@@ -8,7 +8,7 @@ Although the aim was to remain generic, some things might not be entirely applic
 
 ## Architecture
 
-This general architecture for the infrastucture components consist of the following components:
+The general architecture consists of the following components:
 
 - EC2 instance and instance profile
 - EC2 Security Group
