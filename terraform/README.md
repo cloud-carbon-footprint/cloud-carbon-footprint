@@ -39,7 +39,7 @@ We create an ElasticIP to be attached to the EC2 instance. This EIP will later b
 
 A DNS record within a private/public hosted zone that will allow to map a `HOST` name to the EIP private IP (your instance IP).
 
-### S3 buck`et
+### S3 bucket
 
 Necessary to do remote state management of Terraform state
 
