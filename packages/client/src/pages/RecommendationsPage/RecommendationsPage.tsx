@@ -73,7 +73,11 @@ const RecommendationsPage = (): ReactElement => {
     params: GridRowParams,
     _event: MuiEvent<SyntheticEvent>,
   ) => {
-    setSelectedRecommendation(params.row as RecommendationRow)
+    if (selectedRecommendation && params.row.id === selectedRecommendation.id) {
+      setSelectedRecommendation(undefined)
+    } else {
+      setSelectedRecommendation(params.row as RecommendationRow)
+    }
   }
 
   if (recommendationsLoading || emissionsLoading)
@@ -92,7 +96,10 @@ const RecommendationsPage = (): ReactElement => {
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
           {selectedRecommendation && (
-            <RecommendationsSidePanel recommendation={selectedRecommendation} />
+            <RecommendationsSidePanel
+              recommendation={selectedRecommendation}
+              onClose={() => setSelectedRecommendation(undefined)}
+            />
           )}
           <RecommendationsTable
             emissionsData={filteredEmissionsData}

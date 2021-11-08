@@ -15,10 +15,11 @@ import {
 
 type RecommendationsSidePanelProps = {
   recommendation: RecommendationRow
+  onClose: () => void
 }
 
 const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps> =
-  ({ recommendation }): ReactElement => {
+  ({ recommendation, onClose }): ReactElement => {
     const classes = useStyles()
 
     return (
@@ -27,6 +28,7 @@ const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps>
         title="Recommendation Details"
         defaultIsOpen
         openOnChange={recommendation}
+        onClose={onClose}
       >
         <Container className={classes.detailsContainer}>
           <RecommendationsPanelRow
