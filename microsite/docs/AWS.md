@@ -41,6 +41,14 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
 DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
 
+### Deployment Options
+
+The application can also be deployed in AWS by making use of EC2 as the compute service to run it on. In order to do so, we provide a basic infrastructure setup that spins up all the necessary cloud resources, from the required role/policies to the actual compute resource and its provisioning (EC2 with user data).
+
+The infrastructure setup, developed with Terraform, can be found in `terraform/aws` and needs to be parametrized with the right values and tweaked to the specific circumstances of the user i.e. there might not be the need to fire up all resources but a subset of them.
+
+For more information, please note that there are specific instructions for this [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/terraform/aws/README.md).
+
 ### Unsupported Usage Types
 
 The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/aws/src/lib/CostAndUsageTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with a warning like this:
