@@ -8,7 +8,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 1.  Ensure your aws account has the correct permissions
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
-    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify the "AssumeRolePolicyDocument" is where you define the user or role that will have permissions to assume the "ccf-athena" role. 
+    - You can use the CloudFormation template file [ccf-athena.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-athena.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify the "AssumeRolePolicyDocument" is where you define the user or role that will have permissions to assume the "ccf-athena" role.
     - This role name will be used for the value in the environment variable: `AWS_TARGET_ACCOUNT_ROLE_NAME`
 
 2.  Enable the Cost and Usage Billing AWS feature.
@@ -65,6 +65,8 @@ We currently support three modes of authentication with AWS, that you can see in
 2. "AWS" - this is used to authenticate via an AWS role that has the necessary permissions to query the CloudWatch and Cost Explorer APIs.
 
 3. "GCP" - this is used by GCP Service Accounts that authenticate via a temporary AWS STS token. This method is used by the application when deployed to Google App Engine.
+
+4. "EC2-METADATA" - this uses the AWS credentials that are automatically provided via an Instance Profile when you run the application on an EC2 instance. In order for this to work, you need to make sure that the appropriate IAM role is already created (as specified in step 1 of this document), and associated with the EC2 instance. See more information [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html).
 
 The authentication mode is set inside [packages/common/src/Config.ts.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/common/src/Config.ts)
 
