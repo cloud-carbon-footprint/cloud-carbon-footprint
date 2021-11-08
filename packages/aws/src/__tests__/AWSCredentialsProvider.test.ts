@@ -106,7 +106,7 @@ describe('AWSCredentialsProvider', () => {
 
   it('create returns EC2MetadataCredentials', () => {
     // given
-    mockConfig.AWS.authentication.mode = 'IAM'
+    mockConfig.AWS.authentication.mode = 'EC2-METADATA'
     const options = { httpOptions: { timeout: 5000 }, maxRetries: 10 }
     const mockedEC2MetadataCredentials = mockEC2MetadataCredentials(options)
     const accountId = '123'

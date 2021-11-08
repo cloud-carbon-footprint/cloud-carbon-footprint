@@ -31,7 +31,7 @@ export default class AWSCredentialsProvider {
               configLoader().AWS.authentication.options.targetRoleName,
           },
         })
-      case 'IAM':
+      case 'EC2-METADATA':
         return new EC2MetadataCredentials({
           httpOptions: { timeout: 5000 },
           maxRetries: 10,
