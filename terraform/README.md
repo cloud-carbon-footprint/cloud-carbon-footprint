@@ -21,7 +21,7 @@ The general architecture consists of the following components:
 
 It is the compute resource on which the CCF tool will run. It is configured to run on a private subnet, and to be provisioned using user data.
 
-The user data script is provided in the `install.sh` file, and it contains all the necessary steps to setup the application in this cloud instance. Make sure that you replace EVERY placeholder within that install file with the appropriate values to your case. This are exactly the same ones that you configure the `.env` files for both the client and the API. [Read more](https://www.cloudcarbonfootprint.org/docs/aws).
+The user data script is provided in the `install.sh` file, and it contains all the necessary steps to setup the application in this cloud instance. Make sure that you replace EVERY placeholder within that install file with the appropriate values to your case. These are exactly the same ones that you would use to configure the `.env` files for both the client and the API. [Read more](https://www.cloudcarbonfootprint.org/docs/aws).
 
 ### EC2 Security Group
 
