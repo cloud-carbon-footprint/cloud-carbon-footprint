@@ -4,7 +4,7 @@
 
 This directory contains basic infrastructure code to setup the application in AWS using basic services such as EC2, IAM, Route53. The goal is to have a simple and generic setup that can be configured to each customer needs.
 
-Although the aim was to remain generic, some things might not be entirely applicable to your particular case e.g. you might not have a VPN setup to access private compute instances. You should consider revisit the architecture and adjust the infrastucture accordingly.
+Although the aim was to remain generic, some things might not be entirely applicable to your particular case e.g. you might not have a VPN setup to access private compute instances. You should consider revisiting the architecture and adjusting the infrastructure accordingly.
 
 ## Architecture
 
