@@ -17,6 +17,7 @@ jest.mock('react-router-dom', () => ({
 
 const startDate = moment.utc('2020-08-26')
 const endDate = moment.utc('2020-08-27')
+const ignoreCache = true
 const region = 'us-east-2'
 
 describe('RemoteServiceHook', () => {
@@ -24,7 +25,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockResolvedValue({ data: ['data'] })
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region),
     )
 
     await waitForNextUpdate()
@@ -36,7 +37,12 @@ describe('RemoteServiceHook', () => {
       })
     }, 1000)
     expect(axiosMocked.get).toBeCalledWith('/api/footprint', {
-      params: { end: '2020-08-27', start: '2020-08-26', region: region },
+      params: {
+        end: '2020-08-27',
+        start: '2020-08-26',
+        ignoreCache,
+        region: region,
+      },
     })
   })
 

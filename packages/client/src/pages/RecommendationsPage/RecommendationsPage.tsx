@@ -38,6 +38,7 @@ const RecommendationsPage = (): ReactElement => {
     [],
     startDate,
     endDate,
+    true,
   )
 
   const combinedData: EmissionsAndRecommendationResults = {

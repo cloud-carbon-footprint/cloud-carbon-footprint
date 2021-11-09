@@ -69,16 +69,18 @@ describe('Recommendations Page', () => {
 
     const parameters = mockUseRemoteService.mock.calls[0]
 
-    expect(parameters.length).toEqual(3)
+    expect(parameters.length).toEqual(4)
 
     const initial = parameters[0]
     const startDate = parameters[1]
     const endDate = parameters[2]
+    const ignoreCache = parameters[3]
 
     expect(initial).toEqual([])
     expect(startDate.month()).toEqual(endDate.month() - 1)
 
     expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+    expect(ignoreCache).toBeTruthy()
   })
 
   it('should show loading icon if data has not been returned', () => {

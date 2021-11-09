@@ -14,8 +14,8 @@ import {
 
 import {
   EstimationRequestValidationError,
-  PartialDataError,
   Logger,
+  PartialDataError,
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
 
@@ -37,6 +37,7 @@ const FootprintApiMiddleware = async function (
   const rawRequest: FootprintEstimatesRawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
+    ignoreCache: req.query.ignoreCache?.toString(),
   }
   apiLogger.info(
     `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,

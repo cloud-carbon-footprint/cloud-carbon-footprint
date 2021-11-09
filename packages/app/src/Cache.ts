@@ -73,6 +73,7 @@ function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
     return {
       startDate: dates.start.utc().toDate(),
       endDate: dates.end.utc().toDate(),
+      ignoreCache: false,
     }
   })
 }
@@ -123,6 +124,11 @@ export default function cache(): any {
     descriptor.value = async (
       request: EstimationRequest,
     ): Promise<EstimationResult[]> => {
+      if (request.ignoreCache && !process.env.TEST_MODE) {
+        cacheLogger.info('Ignoring cache...')
+        return decoratedFunction.apply(target, [request])
+      }
+
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request)
 

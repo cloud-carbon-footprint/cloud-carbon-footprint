@@ -48,6 +48,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await cacheManager.getEstimates(request)
 
@@ -74,6 +75,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await cacheManager.getEstimates(request)
 
@@ -153,6 +155,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await cacheManager.getEstimates(request)
 
@@ -175,6 +178,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await cacheManager.getEstimates(request)
 

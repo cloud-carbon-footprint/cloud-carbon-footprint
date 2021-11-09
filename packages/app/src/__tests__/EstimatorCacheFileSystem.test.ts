@@ -54,6 +54,7 @@ describe('EstimatorCacheFileSystem', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await estimatorCache.getEstimates(request)
 
@@ -75,6 +76,7 @@ describe('EstimatorCacheFileSystem', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await estimatorCache.getEstimates(request)
 

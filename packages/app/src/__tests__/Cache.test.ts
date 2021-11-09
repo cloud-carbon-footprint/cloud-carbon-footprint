@@ -97,6 +97,7 @@ describe('Cache', () => {
       const rawRequest: EstimationRequest = {
         startDate: moment.utc('2020-01-01').toDate(),
         endDate: moment.utc('2020-01-02').toDate(),
+        ignoreCache: false,
       }
 
       const expectedEstimationResults: EstimationResult[] =
@@ -118,6 +119,7 @@ describe('Cache', () => {
       const rawRequest: EstimationRequest = {
         startDate: moment.utc('2019-12-31').toDate(),
         endDate: moment.utc('2020-01-08').toDate(),
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
@@ -163,6 +165,7 @@ describe('Cache', () => {
         startDate: moment.utc('2019-12-31').toDate(),
         endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
@@ -183,6 +186,7 @@ describe('Cache', () => {
       expect(originalFunction).toHaveBeenCalledWith({
         startDate: moment.utc('2020-01-01').toDate(),
         endDate: moment.utc('2020-01-02').toDate(),
+        ignoreCache: false,
       })
     })
 
@@ -192,6 +196,7 @@ describe('Cache', () => {
         startDate: moment.utc('2020-07-31').toDate(),
         endDate: moment.utc('2020-08-01').toDate(),
         region: 'us-east-1',
+        ignoreCache: false,
       }
 
       //unordered dates
@@ -222,6 +227,7 @@ describe('Cache', () => {
         startDate: moment.utc('2019-12-31').toDate(),
         endDate: moment.utc('2020-01-01').toDate(),
         region: 'us-east-1',
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = []
@@ -245,6 +251,7 @@ describe('Cache', () => {
         startDate: moment.utc('2019-12-31').toDate(),
         endDate: moment.utc('2020-01-01').toDate(),
         region: 'us-east-1',
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = []
@@ -271,6 +278,7 @@ describe('Cache', () => {
       const rawRequest: EstimationRequest = {
         startDate: moment.utc('2020-07-10').toDate(),
         endDate: moment.utc('2020-07-20').toDate(),
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = []
@@ -310,6 +318,7 @@ describe('Cache', () => {
       const rawRequest: EstimationRequest = {
         startDate: moment.utc('2020-07-10').toDate(),
         endDate: moment.utc('2020-07-20').toDate(),
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
@@ -360,6 +369,7 @@ describe('Cache', () => {
       const rawRequest: EstimationRequest = {
         startDate: moment.utc('2021-01-01').toDate(),
         endDate: moment.utc('2021-02-01').toDate(),
+        ignoreCache: false,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(

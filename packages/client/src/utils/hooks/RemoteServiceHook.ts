@@ -14,6 +14,7 @@ const useRemoteService = (
   initial: EstimationResult[],
   startDate: moment.Moment,
   endDate: moment.Moment,
+  ignoreCache = false,
   region?: string,
 ): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(initial)
@@ -35,6 +36,7 @@ const useRemoteService = (
             start: start,
             end: end,
             region: region,
+            ignoreCache,
           },
         })
         setData(res.data)
@@ -56,7 +58,7 @@ const useRemoteService = (
     }
 
     fetchEstimates()
-  }, [end, start, region, setError])
+  }, [end, start, region, ignoreCache, setError])
 
   handleApiError(error)
 

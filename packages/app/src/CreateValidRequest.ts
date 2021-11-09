@@ -20,6 +20,7 @@ export interface EstimationRequest {
   startDate: Date
   endDate: Date
   region?: string
+  ignoreCache: boolean
   //cloudProvider?:CloudProviderEnum
 }
 
@@ -70,10 +71,12 @@ function validate(
 function rawRequestToEstimationRequest(
   request: FootprintEstimatesRawRequest,
 ): EstimationRequest {
+  const ignoreCache = request.ignoreCache === 'true'
   return {
     startDate: moment.utc(request.startDate).toDate(),
     endDate: moment.utc(request.endDate).toDate(),
     region: request.region,
+    ignoreCache,
   }
 }
 

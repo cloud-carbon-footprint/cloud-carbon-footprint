@@ -93,6 +93,7 @@ describe('CacheManager', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       const estimates = await estimatorCacheGoogleCloudStorage.getEstimates(
         request,
@@ -119,6 +120,7 @@ describe('CacheManager', () => {
       const request: EstimationRequest = {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
+        ignoreCache: false,
       }
       await estimatorCacheGoogleCloudStorage.getEstimates(request)
 
