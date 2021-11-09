@@ -1,5 +1,9 @@
 # Contributing to cloud-carbon-footprint
 
+## Adopters
+
+Thanks for contributing! If you've started using Cloud Carbon Footprint, please add your name and organization to our [list of adopters](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/ADOPTERS.md). Doing so helps our project!
+
 ## Issues ​⛔
 
 Issues are created [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/issues).
@@ -47,8 +51,8 @@ Contributors are encouraged to solve issues collaboratively and help one another
 
 Most issues are resolved by opening a pull request. The process for opening and reviewing a pull request is similar to that of opening and triaging issues, but carries with it a necessary review and approval workflow that ensures that the proposed changes meet the minimal quality and functional guidelines of the cloud-carbon-footprint project.
 
----
 
+---
 ## <a id="pull_requests"></a>Pull Requests 📥
 
 Pull Requests are the way concrete changes are made to the code, documentation, dependencies, and tools contained in the `cloud-carbon-footprint/cloud-carbon-footprint` repository. Please [link your PR](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) to an issue so we can more easily track the work being done
