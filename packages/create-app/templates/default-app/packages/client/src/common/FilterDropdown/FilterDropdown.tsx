@@ -92,6 +92,7 @@ const FilterDropdown: FunctionComponent<FilterDropdownProps> = (props) => {
   return (
     <Autocomplete
       id={props.id}
+      classes={{ listbox: classes.listBox }}
       multiple
       disableCloseOnSelect
       disableClearable

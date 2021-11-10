@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   inputLabel: {
     textTransform: 'none',
   },
+  listBox: {
+    overflowX: 'hidden',
+  },
   textField: {
     backgroundColor: theme.palette.background.paper,
     overflow: 'none',
