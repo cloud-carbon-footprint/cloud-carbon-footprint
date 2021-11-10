@@ -7,7 +7,7 @@ import {
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import { ComputeEngine, Recommendations } from '../lib'
-import { google } from 'googleapis'
+import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
 
 const mockMetricServiceClient = jest.fn()
 jest.mock('@google-cloud/monitoring', () => {
@@ -71,7 +71,7 @@ describe('GCPAccount', () => {
       },
     ]
 
-    const getClientSpy = jest.spyOn(google.auth, 'getClient')
+    const getClientSpy = jest.spyOn(googleAuth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 

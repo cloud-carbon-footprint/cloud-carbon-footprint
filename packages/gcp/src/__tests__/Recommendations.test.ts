@@ -1,7 +1,8 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { google } from 'googleapis'
+import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
+import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
 import { APIEndpoint } from 'googleapis-common'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { ProjectsClient } from '@google-cloud/resource-manager'
@@ -73,14 +74,14 @@ describe('GCP Recommendations Service', () => {
   let googleComputeClient: APIEndpoint
 
   beforeEach(async () => {
-    const getClientSpy = jest.spyOn(google.auth, 'getClient')
+    const getClientSpy = jest.spyOn(googleAuth, 'getClient')
 
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 
-    googleAuthClient = await google.auth.getClient({
+    googleAuthClient = await googleAuth.getClient({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     })
-    googleComputeClient = google.compute('v1')
+    googleComputeClient = googleCompute('v1')
 
     setupSpy(
       googleComputeClient.instances,

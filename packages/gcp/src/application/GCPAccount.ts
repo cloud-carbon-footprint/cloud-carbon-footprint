@@ -8,7 +8,8 @@ import { BigQuery } from '@google-cloud/bigquery'
 import { ProjectsClient } from '@google-cloud/resource-manager'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { APIEndpoint } from 'googleapis-common'
-import { google } from 'googleapis'
+import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
+import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
 import {
   ICloudService,
   Region,
@@ -106,10 +107,10 @@ export default class GCPAccount extends CloudProviderAccount {
   }
 
   async getDataForRecommendations(): Promise<RecommendationResult[]> {
-    const googleAuthClient: GoogleAuthClient = await google.auth.getClient({
+    const googleAuthClient: GoogleAuthClient = await googleAuth.getClient({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     })
-    const googleComputeClient: APIEndpoint = google.compute('v1')
+    const googleComputeClient: APIEndpoint = googleCompute('v1')
 
     const recommendations = new Recommendations(
       new ComputeEstimator(),

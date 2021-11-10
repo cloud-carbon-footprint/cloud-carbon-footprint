@@ -3,7 +3,8 @@
  */
 
 import { ProjectsClient } from '@google-cloud/resource-manager'
-import { compute_v1, google } from 'googleapis'
+import { compute_v1 } from 'googleapis'
+import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
 import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { GoogleAuthClient, wait } from '@cloud-carbon-footprint/common'
@@ -66,7 +67,7 @@ describe('GCP Service Wrapper', () => {
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 
     const googleAuthClient: GoogleAuthClient = await auth.getClient()
-    const googleComputeClient = google.compute('v1')
+    const googleComputeClient = googleCompute('v1')
 
     serviceWrapper = new ServiceWrapper(
       new ProjectsClient(),
@@ -240,7 +241,7 @@ describe('GCP Service Wrapper', () => {
 
   describe('error handling', () => {
     let serviceWrapper: ServiceWrapper
-    const googleComputeClient = google.compute('v1')
+    const googleComputeClient = googleCompute('v1')
 
     beforeEach(async () => {
       const auth = new GoogleAuth({
