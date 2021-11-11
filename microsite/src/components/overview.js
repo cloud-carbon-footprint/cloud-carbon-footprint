@@ -29,14 +29,10 @@ function Overview() {
         </h2>
         <p className={styles.overviewText}>
           Cloud Carbon Footprint is an open source tool that provides visibility
-          and tooling to measure, monitor and reduce your cloud carbon
-          emissions. We use best practice methodologies such as{' '}
-          <Link to="https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/">
-            Etsy's Cloud Jewels: Estimating kWh in the Cloud
-          </Link>
-          , to convert cloud utilization into estimated energy usage and carbon
-          emissions, producing metrics that can be shared with employees,
-          investors, and other stakeholders.
+          and tooling to measure, monitor and reduce your cloud carbon emissions.
+          We use best practice methodologies to convert cloud utilization into
+          estimated energy usage and carbon emissions, producing metrics and carbon savings
+          estimates that can be shared with employees, investors, and other stakeholders.
         </p>
         <Link className="button__link" to="docs/getting-started">
           <Button variant="contained" classes={{ root: classes.paddingLow }}>
