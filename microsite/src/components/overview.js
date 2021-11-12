@@ -12,14 +12,23 @@ function Overview() {
       id="carbon-footprint-of-your-cloud-usage"
       className={styles.overviewContainer}
     >
-      <div className={clsx(styles.overviewItem, styles.overviewItemImage)}>
-        <picture>
+      <div className={clsx(styles.overviewItem, styles.overviewItemImage, styles.overviewImageStack)}>
+        <picture  className={styles.overviewImageStackDashboard}>
           <source srcSet="img/cloud_carbon_footprint-small.webp 600w, img/cloud_carbon_footprint.webp 1200w" />
           <img
-            className={styles.overviewImage}
+            className={styles.overviewImageDashboard}
             type="image/webp"
             src="img/cloud_carbon_footprint-small.webp"
-            alt="Cloud carbon footprint tool screen capture"
+            alt="Cloud carbon footprint emissions dashboard, screen capture"
+          />
+        </picture>
+        <picture className={styles.overviewImageStackRecs}>
+          <source srcSet="img/cloud_carbon_footprint_recs-small.webp 600w, img/cloud_carbon_footprint_recs.webp 1200w"/>
+          <img
+            className={styles.overviewImageRecs}
+            type="image/webp"
+            src="img/cloud_carbon_footprint_recs-small.webp"
+            alt="Cloud carbon footprint recommendations dashboard, screen capture"
           />
         </picture>
       </div>

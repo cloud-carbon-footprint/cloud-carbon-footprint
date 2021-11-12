@@ -36,12 +36,35 @@
   width: 100%;
 }
 
-.overviewImage {
-  height: 100%;
-  width: 100%;
+.overviewImageDashboard, .overviewImageRecs {
   box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
-    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
 }
+
+/*container for both images*/
+.overviewImageStack {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/*top image*/
+.overviewImageStackDashboard {
+  grid-column: 1 / 10; /*bottom left*/
+  /*grid-column: 3 / -1; !*bottom right*!*/
+  margin-top: 47%;
+  z-index: 1;
+}
+
+/*bottom image*/
+.overviewImageStackRecs {
+  grid-column: 3 / -1; /* top right*/
+  /*grid-column: 1 / 10;  !*top left*!*/
+}
+
+.overviewImageStackDashboard, .overviewImageStackRecs {
+  grid-row: 1 / 2;
+}
+
 
 @media screen and (max-width: 1280px) and (min-width: 966px) {
   .overviewImage {
