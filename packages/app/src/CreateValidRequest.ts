@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment from 'moment'
+import moment, { unitOfTime } from 'moment'
 import { values, contains } from 'ramda'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
@@ -72,9 +72,13 @@ function rawRequestToEstimationRequest(
   request: FootprintEstimatesRawRequest,
 ): EstimationRequest {
   const ignoreCache = request.ignoreCache === 'true'
+  const rawGroupBy = configLoader().GROUP_QUERY_RESULTS_BY
+  const roundingUnit = (rawGroupBy || 'day') as unitOfTime.StartOf
+  // Please keep in mind the end date logic here when dealing with larger rounding units, in case you aren't seeing any
+  // data.
   return {
-    startDate: moment.utc(request.startDate).toDate(),
-    endDate: moment.utc(request.endDate).toDate(),
+    startDate: moment.utc(request.startDate).startOf(roundingUnit).toDate(),
+    endDate: moment.utc(request.endDate).startOf(roundingUnit).toDate(),
     region: request.region,
     ignoreCache,
   }

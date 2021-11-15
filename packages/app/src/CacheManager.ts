@@ -30,15 +30,19 @@ export default class CacheManager implements EstimatorCache {
   async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
     const { GCS } = this.cacheModes
     let estimates
+    const grouping = configLoader().GROUP_QUERY_RESULTS_BY
 
     switch (this.currentCacheMode) {
       case GCS:
         this.cacheLogger.info('Using GCS bucket cache file...')
-        estimates = await googleCloudCacheService.getEstimates(request)
+        estimates = await googleCloudCacheService.getEstimates(
+          request,
+          grouping,
+        )
         break
       default:
         this.cacheLogger.info('Using local cache file...')
-        estimates = await cacheService.getEstimates(request)
+        estimates = await cacheService.getEstimates(request, grouping)
         break
     }
 
@@ -52,11 +56,12 @@ export default class CacheManager implements EstimatorCache {
       return
     }
 
+    const grouping = configLoader().GROUP_QUERY_RESULTS_BY
     switch (this.currentCacheMode) {
       case GCS:
-        return googleCloudCacheService.setEstimates(estimates)
+        return googleCloudCacheService.setEstimates(estimates, grouping)
       default:
-        return cacheService.setEstimates(estimates)
+        return cacheService.setEstimates(estimates, grouping)
     }
   }
 

@@ -242,7 +242,7 @@ describe('Cache', () => {
       await propertyDescriptor.value(rawRequest)
 
       //assert
-      expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates)
+      expect(mockSetEstimates).toHaveBeenCalledWith(computedEstimates, 'day')
     })
 
     it('should not save into cache when API response contains empty data', async () => {
@@ -310,6 +310,7 @@ describe('Cache', () => {
       //assert
       expect(mockSetEstimates).toHaveBeenCalledWith(
         computedEstimates.concat(buildFootprintEstimates('2020-07-15', 5)),
+        'day',
       )
     })
 

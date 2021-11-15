@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { cachePath } from '../EstimatorCacheFileSystem'
 import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { promises } from 'fs'
 import EstimatorCache from '../EstimatorCache'
@@ -39,6 +38,17 @@ describe('EstimatorCacheFileSystem', () => {
   })
 
   describe('getEstimates', () => {
+    const OLD_ENV = process.env
+
+    beforeEach(() => {
+      jest.resetModules() // Most important - it clears the cache
+      process.env = { ...OLD_ENV } // Make a copy
+    })
+
+    afterAll(() => {
+      process.env = OLD_ENV // Restore old environment
+    })
+
     it('should return estimates of a request', async () => {
       //setup
       const startDate = '2020-10-01'
@@ -56,7 +66,7 @@ describe('EstimatorCacheFileSystem', () => {
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
       }
-      const estimates = await estimatorCache.getEstimates(request)
+      const estimates = await estimatorCache.getEstimates(request, 'day')
 
       //assert
       expect(estimates).toEqual(cachedData)
@@ -78,7 +88,7 @@ describe('EstimatorCacheFileSystem', () => {
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
       }
-      const estimates = await estimatorCache.getEstimates(request)
+      const estimates = await estimatorCache.getEstimates(request, 'day')
 
       //assert
       expect(estimates).toEqual(buildFootprintEstimates(dataFirstDate, 2))
@@ -89,10 +99,13 @@ describe('EstimatorCacheFileSystem', () => {
       mockFs.readFile.mockResolvedValueOnce('[]')
 
       //run
-      await estimatorCache.getEstimates({} as EstimationRequest)
+      await estimatorCache.getEstimates({} as EstimationRequest, 'day')
 
       //assert
-      expect(mockFs.readFile).toHaveBeenCalledWith(cachePath, 'utf8')
+      expect(mockFs.readFile).toHaveBeenCalledWith(
+        'estimates.cache-by-day.json',
+        'utf8',
+      )
     })
 
     it('should return empty when file doesnt exist', async () => {
@@ -103,6 +116,7 @@ describe('EstimatorCacheFileSystem', () => {
       //run
       const estimates = await estimatorCache.getEstimates(
         {} as EstimationRequest,
+        'day',
       )
 
       //assert
@@ -116,10 +130,31 @@ describe('EstimatorCacheFileSystem', () => {
       console.warn = jest.fn()
 
       //run
-      await estimatorCache.getEstimates({} as EstimationRequest)
+      await estimatorCache.getEstimates({} as EstimationRequest, 'day')
 
       //assert
-      expect(mockFs.writeFile).toHaveBeenCalledWith(cachePath, '[]', 'utf8')
+      expect(mockFs.writeFile).toHaveBeenCalledWith(
+        'estimates.cache-by-day.json',
+        '[]',
+        'utf8',
+      )
+    })
+
+    it('should use the test file if in test mode', async () => {
+      //setup
+      mockFs.readFile.mockRejectedValueOnce('ENOENT: no such file or directory')
+      console.warn = jest.fn()
+      process.env.TEST_MODE = 'true'
+
+      //run
+      await estimatorCache.getEstimates({} as EstimationRequest, 'day')
+
+      //assert
+      expect(mockFs.writeFile).toHaveBeenCalledWith(
+        'estimates.cache.test.json',
+        '[]',
+        'utf8',
+      )
     })
   })
 
@@ -132,11 +167,11 @@ describe('EstimatorCacheFileSystem', () => {
       mockFs.readFile.mockResolvedValueOnce(JSON.stringify(cachedEstimates))
 
       //setup
-      await estimatorCache.setEstimates(estimatesToSave)
+      await estimatorCache.setEstimates(estimatesToSave, 'day')
 
       //assert
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        cachePath,
+        'estimates.cache-by-day.json',
         JSON.stringify(cachedEstimates.concat(estimatesToSave)),
         'utf8',
       )

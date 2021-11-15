@@ -129,8 +129,9 @@ export default function cache(): any {
         return decoratedFunction.apply(target, [request])
       }
 
+      const grouping = configLoader().GROUP_QUERY_RESULTS_BY
       const cachedEstimates: EstimationResult[] =
-        await cacheManager.getEstimates(request)
+        await cacheManager.getEstimates(request, grouping)
 
       if (process.env.TEST_MODE) return cachedEstimates
 
@@ -149,7 +150,8 @@ export default function cache(): any {
         // write missing estimates to cache
         const estimatesToPersist = fillDates(missingDates, estimates)
         cacheLogger.info('Setting new estimates to cache file...')
-        await cacheManager.setEstimates(estimatesToPersist)
+        const grouping = configLoader().GROUP_QUERY_RESULTS_BY
+        await cacheManager.setEstimates(estimatesToPersist, grouping)
       }
 
       // so we don't return results with no estimates

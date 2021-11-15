@@ -110,7 +110,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
       expect(estimates).resolves
       expect(
         EstimatorCacheGoogleCloudStorage.prototype.setEstimates,
-      ).toHaveBeenCalledWith(cachedData)
+      ).toHaveBeenCalledWith(cachedData, 'day')
     })
     it('should not set estimates on empty data', async () => {
       //setup
@@ -213,7 +213,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       expect(estimates).resolves
       expect(
         EstimatorCacheFileSystem.prototype.setEstimates,
-      ).toHaveBeenCalledWith(cachedData)
+      ).toHaveBeenCalledWith(cachedData, 'day')
     })
 
     it('should not set estimates on empty data', async () => {

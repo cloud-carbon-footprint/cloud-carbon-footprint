@@ -7,9 +7,9 @@ import { Stream } from 'stream'
 import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationRequest } from './CreateValidRequest'
 
-export const cacheFileName =
-  process.env.CCF_CACHE_PATH || 'estimates.cache.json'
+export const cachePrefix = process.env.CCF_CACHE_PATH || 'estimates.cache'
 
 const storage = new Storage()
 
@@ -17,19 +17,23 @@ export default class EstimatorCacheGoogleCloudStorage
   implements EstimatorCache
 {
   private readonly bucketName: string
-  private readonly cacheFileName: string
 
   constructor(bucketName: string) {
     this.bucketName = bucketName
-    this.cacheFileName = cacheFileName
   }
 
-  getEstimates(): Promise<EstimationResult[]> {
-    return this.getCloudFileContent()
+  getEstimates(
+    request: EstimationRequest,
+    grouping: string,
+  ): Promise<EstimationResult[]> {
+    return this.getCloudFileContent(grouping)
   }
 
-  async setEstimates(estimates: EstimationResult[]): Promise<void> {
-    const cachedEstimates = await this.getCloudFileContent()
+  async setEstimates(
+    estimates: EstimationResult[],
+    grouping: string,
+  ): Promise<void> {
+    const cachedEstimates = await this.getCloudFileContent(grouping)
 
     try {
       const mergedData = cachedEstimates
@@ -38,7 +42,9 @@ export default class EstimatorCacheGoogleCloudStorage
 
       const estimatesJsonData = JSON.stringify(mergedData)
 
-      const cacheFile = storage.bucket(this.bucketName).file(this.cacheFileName)
+      const cacheFileName =
+        EstimatorCacheGoogleCloudStorage.getCacheFile(grouping)
+      const cacheFile = storage.bucket(this.bucketName).file(cacheFileName)
 
       await cacheFile.save(estimatesJsonData, {
         contentType: 'application/json',
@@ -48,11 +54,15 @@ export default class EstimatorCacheGoogleCloudStorage
     }
   }
 
-  private async getCloudFileContent(): Promise<EstimationResult[]> {
+  private async getCloudFileContent(
+    grouping: string,
+  ): Promise<EstimationResult[]> {
+    const cacheFileName =
+      EstimatorCacheGoogleCloudStorage.getCacheFile(grouping)
     try {
       const streamOfCacheFile = storage
         .bucket(this.bucketName)
-        .file(this.cacheFileName)
+        .file(cacheFileName)
 
       const cachedJson = await this.streamToString(
         await streamOfCacheFile.createReadStream(),
@@ -83,5 +93,14 @@ export default class EstimatorCacheGoogleCloudStorage
         resolve(Buffer.concat(chunks).toString('utf8'))
       })
     })
+  }
+
+  private static getCacheFile(grouping: string): string {
+    const existingFileExtension = cachePrefix.lastIndexOf('.json')
+    const prefix =
+      existingFileExtension !== -1
+        ? cachePrefix.substr(existingFileExtension)
+        : cachePrefix
+    return `${prefix}-by-${grouping}.json`
   }
 }

@@ -97,6 +97,7 @@ describe('CacheManager', () => {
       }
       const estimates = await estimatorCacheGoogleCloudStorage.getEstimates(
         request,
+        'day',
       )
 
       //assert
@@ -122,7 +123,7 @@ describe('CacheManager', () => {
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
       }
-      await estimatorCacheGoogleCloudStorage.getEstimates(request)
+      await estimatorCacheGoogleCloudStorage.getEstimates(request, 'day')
 
       //assert
       expect(console.warn).toHaveBeenCalled()
@@ -149,6 +150,7 @@ describe('CacheManager', () => {
       //run
       const write = await estimatorCacheGoogleCloudStorage.setEstimates(
         cachedData,
+        'day',
       )
 
       //assert
@@ -174,7 +176,7 @@ describe('CacheManager', () => {
       console.warn = jest.fn()
 
       //run
-      await estimatorCacheGoogleCloudStorage.setEstimates(cachedData)
+      await estimatorCacheGoogleCloudStorage.setEstimates(cachedData, 'day')
 
       //assert
       expect(console.warn).toHaveBeenCalled()
