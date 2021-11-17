@@ -9,7 +9,7 @@ import moment from 'moment'
 import { EstimationRequest } from './CreateValidRequest'
 import { getCacheFileName } from './CacheFileNameProvider'
 
-export const testCachePath = 'estimates.cache.test.json'
+export const testCachePath = 'mock-estimates.json'
 
 export default class EstimatorCacheFileSystem implements EstimatorCache {
   getEstimates(

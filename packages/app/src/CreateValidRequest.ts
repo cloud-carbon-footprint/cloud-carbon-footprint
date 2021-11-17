@@ -50,8 +50,8 @@ function validate(
     errors.push('Not a valid region for this account')
   }
 
-  if (startDate.isSameOrAfter(endDate)) {
-    errors.push('Start date is not before end date')
+  if (startDate.isAfter(endDate)) {
+    errors.push('Start date is after end date')
   }
 
   const now = moment()
@@ -72,13 +72,17 @@ function rawRequestToEstimationRequest(
   request: FootprintEstimatesRawRequest,
 ): EstimationRequest {
   const ignoreCache = request.ignoreCache === 'true'
-  const rawGroupBy = configLoader().GROUP_QUERY_RESULTS_BY
-  const roundingUnit = (rawGroupBy || 'day') as unitOfTime.StartOf
-  // Please keep in mind the end date logic here when dealing with larger rounding units, in case you aren't seeing any
-  // data.
+  const startMoment = moment.utc(request.startDate)
+  const endMoment = moment.utc(request.endDate)
+  if (!ignoreCache) {
+    const rawGroupBy = configLoader().GROUP_QUERY_RESULTS_BY
+    const roundingUnit = (rawGroupBy || 'day') as unitOfTime.StartOf
+    startMoment.startOf(roundingUnit)
+    endMoment.endOf(roundingUnit)
+  }
   return {
-    startDate: moment.utc(request.startDate).startOf(roundingUnit).toDate(),
-    endDate: moment.utc(request.endDate).startOf(roundingUnit).toDate(),
+    startDate: startMoment.toDate(),
+    endDate: endMoment.toDate(),
     region: request.region,
     ignoreCache,
   }

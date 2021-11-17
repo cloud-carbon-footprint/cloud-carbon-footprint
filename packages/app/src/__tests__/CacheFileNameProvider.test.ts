@@ -16,12 +16,12 @@ describe('getCacheFile', () => {
 
   it('should use the default prefix if a hard-coded one is not provided', async () => {
     const cacheFile = getCacheFileName('day')
-    expect(cacheFile).toEqual('estimates.cache-by-day.json')
+    expect(cacheFile).toEqual('estimates.cache.day.json')
   })
 
   it('should alter the hard-coded cache path if one is provided', async () => {
     process.env.CCF_CACHE_PATH = 'my-cache-file.json'
     const cacheFile = getCacheFileName('day')
-    expect(cacheFile).toEqual('my-cache-file-by-day.json')
+    expect(cacheFile).toEqual('my-cache-file.day.json')
   })
 })

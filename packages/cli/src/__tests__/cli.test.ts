@@ -203,7 +203,7 @@ describe('cli', () => {
       it('throws an estimation validation error', async () => {
         // setup
         const start = '2020-06-16'
-        const end = '2020-06-16'
+        const end = '2020-06-15'
         const command = [
           'executable',
           'file',

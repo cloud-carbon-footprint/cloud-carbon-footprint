@@ -22,7 +22,7 @@ describe('CreateValidRequest', () => {
 
     expect(result).toEqual({
       startDate: moment.utc('2020-07-01').toDate(),
-      endDate: moment.utc('2020-07-13').toDate(),
+      endDate: moment.utc('2020-07-13T23:59:59.999Z').toDate(),
       region: AWS_REGIONS.US_EAST_1,
       ignoreCache: false,
     })
@@ -36,19 +36,7 @@ describe('CreateValidRequest', () => {
     }
 
     expect(() => CreateValidFootprintRequest(input)).toThrow(
-      'Start date is not before end date',
-    )
-  })
-
-  it('ensures the start date is not the end date', () => {
-    const input = {
-      startDate: '2020-07-13',
-      endDate: '2020-07-13',
-      region: AWS_REGIONS.US_EAST_1,
-    }
-
-    expect(() => CreateValidFootprintRequest(input)).toThrow(
-      'Start date is not before end date',
+      'Start date is after end date',
     )
   })
 
@@ -186,7 +174,7 @@ describe('CreateValidRequest', () => {
     }
 
     expect(() => CreateValidFootprintRequest(input)).toThrow(
-      'Start date is not before end date, Start date is in the future',
+      'Start date is after end date, Start date is in the future',
     )
   })
 

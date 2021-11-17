@@ -103,7 +103,7 @@ describe('EstimatorCacheFileSystem', () => {
 
       //assert
       expect(mockFs.readFile).toHaveBeenCalledWith(
-        'estimates.cache-by-day.json',
+        'estimates.cache.day.json',
         'utf8',
       )
     })
@@ -134,7 +134,7 @@ describe('EstimatorCacheFileSystem', () => {
 
       //assert
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        'estimates.cache-by-day.json',
+        'estimates.cache.day.json',
         '[]',
         'utf8',
       )
@@ -151,7 +151,7 @@ describe('EstimatorCacheFileSystem', () => {
 
       //assert
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        'estimates.cache.test.json',
+        'mock-estimates.json',
         '[]',
         'utf8',
       )
@@ -171,7 +171,7 @@ describe('EstimatorCacheFileSystem', () => {
 
       //assert
       expect(mockFs.writeFile).toHaveBeenCalledWith(
-        'estimates.cache-by-day.json',
+        'estimates.cache.day.json',
         JSON.stringify(cachedEstimates.concat(estimatesToSave)),
         'utf8',
       )

@@ -50,12 +50,20 @@ export interface CCFConfig {
     }
   }
   LOGGING_MODE?: string
-  GROUP_QUERY_RESULTS_BY?: string
+  GROUP_QUERY_RESULTS_BY?: GroupBy
   CACHE_MODE?: string
 }
 
+export enum GroupBy {
+  day = 'day',
+  week = 'week',
+  month = 'month',
+  quarter = 'quarter',
+  year = 'year',
+}
+
 export type QUERY_DATE_TYPES = {
-  [key: string]: string
+  [key in GroupBy]: string
 }
 
 const getAWSAccounts = () => {
@@ -172,7 +180,10 @@ export const appConfig: CCFConfig = {
     },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
-  GROUP_QUERY_RESULTS_BY: process.env.GROUP_QUERY_RESULTS_BY || 'day',
+  GROUP_QUERY_RESULTS_BY:
+    GroupBy[
+      (process.env.GROUP_QUERY_RESULTS_BY || 'day') as keyof typeof GroupBy
+    ],
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
 }
 
