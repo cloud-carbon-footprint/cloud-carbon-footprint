@@ -3,6 +3,7 @@
  */
 
 import express from 'express'
+import * as amqp from 'amqplib/callback_api'
 
 import {
   App,
@@ -18,6 +19,7 @@ import {
   PartialDataError,
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
+import queueEstimations from './worker'
 
 const apiLogger = new Logger('api')
 
@@ -107,6 +109,55 @@ const RecommendationsApiMiddleware = async function (
   }
 }
 
+const QueueApiMiddleWare = async function (
+  req: express.Request,
+  res: express.Response,
+): Promise<void> {
+  amqp.connect('amqp://localhost', (_err, conn) => {
+    conn.createChannel((_err, ch) => {
+      const q = 'footprint'
+      ch.assertQueue(q, { durable: true }) // durable makes it persist after connection closes
+
+      const msg = 'Start Footprint'
+      ch.sendToQueue(q, Buffer.from(msg), { persistent: true }) // makes the message persist in the queue
+      console.log(` [X] Send ${msg}`)
+    })
+
+    setTimeout(() => {
+      conn.close()
+    }, 50000)
+  })
+
+  setTimeout(() => {
+    queueEstimations(apiLogger)
+  }, 10000)
+  res.status(202).send('The footprint request is being processed!')
+}
+
+const FootprintStatusApiMiddleware = async function (
+  req: express.Request,
+  res: express.Response,
+) {
+  let statusMessage
+  amqp.connect('amqp://localhost', function (err, conn) {
+    conn.createChannel(function (err, ch) {
+      const q = 'footprint-status'
+      ch.assertQueue(q, { durable: true })
+      console.log(' [*] Checking for status message in %s.', q)
+      ch.consume(
+        q,
+        function (msg) {
+          console.log(' [x] Received %s', msg.content.toString())
+          statusMessage = msg.content.toString()
+          ch.ack(msg) // Manually acknowledge message
+        },
+        { noAck: false }, // won't wait for acknowledgement from client after processing
+      )
+    })
+  })
+  res.status(200).send(statusMessage)
+}
+
 const router = express.Router()
 
 router.get('/footprint', FootprintApiMiddleware)
@@ -115,4 +166,6 @@ router.get('/recommendations', RecommendationsApiMiddleware)
 router.get('/healthz', (req: express.Request, res: express.Response) => {
   res.status(200).send('OK')
 })
+router.get('/queue-footprint', QueueApiMiddleWare)
+router.get('/status-footprint', FootprintStatusApiMiddleware)
 export default router

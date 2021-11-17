@@ -73,6 +73,7 @@
     "@cloud-carbon-footprint/app": "^0.3.0",
     "@cloud-carbon-footprint/common": "^1.2.0",
     "@types/express": "^4.17.12",
+    "amqplib": "^0.8.0",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "module-alias": "^2.2.2"
