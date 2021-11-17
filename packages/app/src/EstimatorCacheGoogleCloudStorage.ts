@@ -8,8 +8,7 @@ import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
-
-export const cachePrefix = process.env.CCF_CACHE_PATH || 'estimates.cache'
+import { getCacheFileName } from './CacheFileNameProvider'
 
 const storage = new Storage()
 
@@ -42,8 +41,7 @@ export default class EstimatorCacheGoogleCloudStorage
 
       const estimatesJsonData = JSON.stringify(mergedData)
 
-      const cacheFileName =
-        EstimatorCacheGoogleCloudStorage.getCacheFile(grouping)
+      const cacheFileName = getCacheFileName(grouping)
       const cacheFile = storage.bucket(this.bucketName).file(cacheFileName)
 
       await cacheFile.save(estimatesJsonData, {
@@ -57,8 +55,7 @@ export default class EstimatorCacheGoogleCloudStorage
   private async getCloudFileContent(
     grouping: string,
   ): Promise<EstimationResult[]> {
-    const cacheFileName =
-      EstimatorCacheGoogleCloudStorage.getCacheFile(grouping)
+    const cacheFileName = getCacheFileName(grouping)
     try {
       const streamOfCacheFile = storage
         .bucket(this.bucketName)
@@ -93,14 +90,5 @@ export default class EstimatorCacheGoogleCloudStorage
         resolve(Buffer.concat(chunks).toString('utf8'))
       })
     })
-  }
-
-  private static getCacheFile(grouping: string): string {
-    const existingFileExtension = cachePrefix.lastIndexOf('.json')
-    const prefix =
-      existingFileExtension !== -1
-        ? cachePrefix.substr(existingFileExtension)
-        : cachePrefix
-    return `${prefix}-by-${grouping}.json`
   }
 }

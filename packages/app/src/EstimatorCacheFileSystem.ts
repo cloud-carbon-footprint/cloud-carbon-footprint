@@ -7,8 +7,8 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { promises as fs } from 'fs'
 import moment from 'moment'
 import { EstimationRequest } from './CreateValidRequest'
+import { getCacheFileName } from './CacheFileNameProvider'
 
-export const cachePrefix = process.env.CCF_CACHE_PATH || 'estimates.cache'
 export const testCachePath = 'estimates.cache.test.json'
 
 export default class EstimatorCacheFileSystem implements EstimatorCache {
@@ -25,7 +25,9 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
   ): Promise<void> {
     const cachedEstimates = await this.loadEstimates(grouping)
 
-    const cacheFile: string = EstimatorCacheFileSystem.getCacheFile(grouping)
+    const cacheFile: string = process.env.TEST_MODE
+      ? testCachePath
+      : getCacheFileName(grouping)
     return fs.writeFile(
       cacheFile,
       JSON.stringify(cachedEstimates.concat(estimates)),
@@ -35,9 +37,9 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
 
   private async loadEstimates(grouping: string): Promise<EstimationResult[]> {
     let data = '[]'
-    const loadedCache: string = process.env.TEST_MODE
+    const loadedCache = process.env.TEST_MODE
       ? testCachePath
-      : EstimatorCacheFileSystem.getCacheFile(grouping)
+      : getCacheFileName(grouping)
     try {
       data = await fs.readFile(loadedCache, 'utf8')
     } catch (error) {
@@ -53,17 +55,5 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
       return value
     }
     return JSON.parse(data, dateTimeReviver)
-  }
-
-  private static getCacheFile(grouping: string): string {
-    if (process.env.TEST_MODE) {
-      return testCachePath
-    }
-    const existingFileExtension = cachePrefix.lastIndexOf('.json')
-    const prefix =
-      existingFileExtension !== -1
-        ? cachePrefix.substr(existingFileExtension)
-        : cachePrefix
-    return `${prefix}-by-${grouping}.json`
   }
 }
