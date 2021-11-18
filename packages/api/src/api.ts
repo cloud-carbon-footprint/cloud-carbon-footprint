@@ -21,13 +21,6 @@ import {
 
 const apiLogger = new Logger('api')
 
-/**
- * Returns the raw estimates
- *
- * Query params:
- * start - Required, UTC start date in format YYYY-MM-DD
- * end - Required, UTC start date in format YYYY-MM-DD
- */
 const FootprintApiMiddleware = async function (
   req: express.Request,
   res: express.Response,
@@ -43,12 +36,19 @@ const FootprintApiMiddleware = async function (
     `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
   )
   const footprintApp = new App()
+  const estimationRequest = CreateValidFootprintRequest(rawRequest)
   try {
-    const estimationRequest = CreateValidFootprintRequest(rawRequest)
-    const estimationResults = await footprintApp.getCostAndEstimates(
-      estimationRequest,
+    const footprintJob = await res.locals.footprintQueue.getJob(
+      res.locals.jobId,
     )
-    res.json(estimationResults)
+    if (await footprintJob.isCompleted()) {
+      const estimationResults = await footprintApp.getCostAndEstimates(
+        estimationRequest,
+      )
+      res.json(estimationResults)
+    } else {
+      res.status(202).send('Emissions Estimates Processing')
+    }
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
     if (
