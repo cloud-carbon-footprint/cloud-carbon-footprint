@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: yarn --immutable
       - name: Log yarn version
-        run: yarn -v
+        run: /usr/local/bin/yarn -v
       - name: Create Release Pull Request
         uses: changesets/action@master
         with:
