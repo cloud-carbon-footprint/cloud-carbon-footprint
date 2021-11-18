@@ -22,7 +22,7 @@ describe('CreateValidRequest', () => {
 
     expect(result).toEqual({
       startDate: moment.utc('2020-07-01').toDate(),
-      endDate: moment.utc('2020-07-13T23:59:59.999Z').toDate(),
+      endDate: moment.utc('2020-07-13').toDate(),
       region: AWS_REGIONS.US_EAST_1,
       ignoreCache: false,
     })

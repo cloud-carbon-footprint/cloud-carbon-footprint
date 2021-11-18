@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment, { unitOfTime } from 'moment'
+import moment from 'moment'
 import { values, contains } from 'ramda'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
@@ -74,12 +74,6 @@ function rawRequestToEstimationRequest(
   const ignoreCache = request.ignoreCache === 'true'
   const startMoment = moment.utc(request.startDate)
   const endMoment = moment.utc(request.endDate)
-  if (!ignoreCache) {
-    const rawGroupBy = configLoader().GROUP_QUERY_RESULTS_BY
-    const roundingUnit = (rawGroupBy || 'day') as unitOfTime.StartOf
-    startMoment.startOf(roundingUnit)
-    endMoment.endOf(roundingUnit)
-  }
   return {
     startDate: startMoment.toDate(),
     endDate: endMoment.toDate(),
