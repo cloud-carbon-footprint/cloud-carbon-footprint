@@ -19,6 +19,7 @@ import {
   MemoryEstimator,
   UnknownEstimator,
   CloudProviderAccount,
+  EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
   configLoader,
@@ -81,6 +82,9 @@ export default class GCPAccount extends CloudProviderAccount {
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
       new BigQuery({ projectId: this.id }),
     )
     return billingExportTableService.getEstimates(startDate, endDate)
@@ -96,6 +100,9 @@ export default class GCPAccount extends CloudProviderAccount {
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
     )
     return billingExportTableService.getEstimatesFromInputData(inputData)
   }

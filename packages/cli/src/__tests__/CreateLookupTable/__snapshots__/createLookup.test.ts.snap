@@ -22,7 +22,7 @@ AmazonRDS,us-east-1,Aurora:StorageIOUsage,IOs,,,0.017273950899999998,0.000007181
 
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with default output file path 1`] = `
 "serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,8.769444444444446e-7,3.165769444444445e-10
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,0.0000012684216634037498,4.5790022048875366e-10
 Compute Engine,europe-west1,Storage PD Capacity,byte-seconds,,,1.7735146684572102e-19,3.7598510971292856e-23
 Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,bytes,,,1.0058283805847168e-12,2.1323561668395997e-16
 Compute Engine,us-central1,SSD backed PD Capacity,byte-seconds,,,3.3651303965598345e-19,1.5277692000381648e-22
@@ -33,7 +33,7 @@ Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to America
 
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with provided output file name 1`] = `
 "serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,8.769444444444446e-7,3.165769444444445e-10
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,0.0000012684216634037498,4.5790022048875366e-10
 Compute Engine,europe-west1,Storage PD Capacity,byte-seconds,,,1.7735146684572102e-19,3.7598510971292856e-23
 Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,bytes,,,1.0058283805847168e-12,2.1323561668395997e-16
 Compute Engine,us-central1,SSD backed PD Capacity,byte-seconds,,,3.3651303965598345e-19,1.5277692000381648e-22

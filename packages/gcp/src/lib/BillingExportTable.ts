@@ -36,6 +36,8 @@ import {
   UnknownUsage,
   accumulateCo2PerCost,
   EstimateClassification,
+  EmbodiedEmissionsUsage,
+  EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 
 import {
@@ -52,6 +54,9 @@ import {
 } from './BillingExportTypes'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING,
+  MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING,
+  N1_SHARED_CORE_MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING,
   SHARED_CORE_PROCESSORS,
 } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
@@ -72,6 +77,7 @@ export default class BillingExportTable {
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
+    private readonly embodiedEmissionsEstimator: EmbodiedEmissionsEstimator,
     private readonly bigQuery?: BigQuery,
   ) {
     this.tableName = configLoader().GCP.BIG_QUERY_TABLE
@@ -188,12 +194,30 @@ export default class BillingExportTable {
     switch (billingExportRow.usageUnit) {
       case 'seconds':
         if (this.isComputeUsage(billingExportRow.usageType)) {
-          return this.getComputeFootprintEstimate(
+          const computeFootprint = this.getComputeFootprintEstimate(
             billingExportRow,
             billingExportRow.timestamp,
             powerUsageEffectiveness,
             emissionsFactors,
           )
+
+          const embodiedEmissions = this.getEmbodiedEmissions(
+            billingExportRow,
+            emissionsFactors,
+          )
+
+          if (embodiedEmissions.co2e) {
+            return {
+              timestamp: computeFootprint.timestamp,
+              kilowattHours:
+                computeFootprint.kilowattHours +
+                embodiedEmissions.kilowattHours,
+              co2e: computeFootprint.co2e + embodiedEmissions.co2e,
+              usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
+            }
+          }
+
+          return computeFootprint
         } else {
           unknownRows.push(billingExportRow)
         }
@@ -293,6 +317,77 @@ export default class BillingExportTable {
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
+  }
+
+  private getEmbodiedEmissions(
+    usageRow: BillingExportRow,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ): FootprintEstimate {
+    const { instancevCpu, scopeThreeEmissions, largestInstancevCpu } =
+      this.getDataFromMachineType(usageRow.machineType)
+
+    const embodiedEmissionsUsage: EmbodiedEmissionsUsage = {
+      instancevCpu,
+      largestInstancevCpu,
+      usageTimePeriod: usageRow.usageAmount / instancevCpu / 3600,
+      scopeThreeEmissions,
+    }
+
+    return this.embodiedEmissionsEstimator.estimate(
+      [embodiedEmissionsUsage],
+      usageRow.region,
+      emissionsFactors,
+    )[0]
+  }
+
+  private getDataFromMachineType(machineType: string): {
+    [key: string]: number
+  } {
+    if (!machineType) {
+      return {
+        instancevCpu: 0,
+        scopeThreeEmissions: 0,
+        largestInstancevCpu: 0,
+      }
+    }
+
+    const machineFamily = machineType?.split('-').slice(0, 2).join('-')
+    const [machineFamilySharedCore] = machineType?.split('-')
+
+    const instancevCpu =
+      MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING[machineFamily]?.[
+        machineType
+      ]?.[0] ||
+      MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING[
+        machineFamilySharedCore
+      ]?.[machineType]?.[0] ||
+      N1_SHARED_CORE_MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING[machineType]?.[0]
+
+    const scopeThreeEmissions =
+      MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING[machineFamily]?.[
+        machineType
+      ]?.[1] ||
+      MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING[
+        machineFamilySharedCore
+      ]?.[machineType]?.[1] ||
+      N1_SHARED_CORE_MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING[machineType]?.[1]
+
+    const familyMachineTypes: number[][] = Object.values(
+      MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING[machineFamily] ||
+        MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING[
+          machineFamilySharedCore
+        ] ||
+        N1_SHARED_CORE_MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING,
+    )
+
+    const largestInstancevCpu =
+      familyMachineTypes[familyMachineTypes.length - 1][0]
+
+    return {
+      instancevCpu,
+      scopeThreeEmissions,
+      largestInstancevCpu,
+    }
   }
 
   private getStorageFootprintEstimate(

@@ -1,8 +1,4 @@
 fileignoreconfig:
-- filename: terraform/terraform.tf
-  checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
-- filename: terraform/main.tf
-  checksum: d100a69256c220e1ff9f50fc9afc1fc0ece946bff92cf8c0b23038823fce320d
 - filename: .changeset/honest-penguins-clap.md
   checksum: ac6a3b992c06dfdfba27b96cf9b93f38b3d87bba3581e5a8428f42f186eb0ee7
 - filename: .changeset/nice-timers-repair.md
@@ -115,6 +111,8 @@ fileignoreconfig:
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/cli/.env.template
   checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
+- filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
+  checksum: b8cc5e0b33ec073b43f4e22cd6eeec1192e500cfec10f6493235bec94475d526
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
@@ -209,6 +207,10 @@ fileignoreconfig:
   checksum: e555cf176c9994abaa53a21136b41c9721a70823dac263e3174395157e816890
 - filename: packages/core/src/domain/FootprintEstimationConstants.ts
   checksum: 78324c862f0ba591dbd2e7276f92034e4eebfab00bf77972c6f1a3c90e788eb1
+- filename: packages/core/src/embodiedEmissions/EmbodiedEmissionsEstimator.ts
+  checksum: b8a2089a0d8b3976451f3637b60e276e8b984cd5ce10b5988829e28af638b71b
+- filename: packages/core/src/embodiedEmissions/__tests__/EmbodiedEmissionsEstimator.test.ts
+  checksum: ee6bde77a86d9d356b2d973c97d73af9662c084854a0a45f7c9b89b38e5819df
 - filename: packages/core/src/services/aws/CostAndUsageReports.ts
   checksum: 55126e27e72ead83fdfd451ba1e0109199692703db45a5af1a639e367422b004
 - filename: packages/core/src/services/aws/__tests__/CostAndUsageReports.test.ts
@@ -262,7 +264,9 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: acbcbeb104c8c57227d9fdcbe7b3f6cb6821fcac58538119b0b0e19c1ae0159d
+  checksum: 0d6392282b6441274e25a2b8936b3dc7d8ee7b2f4a470bfc97800e96c79558e6
+- filename: packages/gcp/src/lib/BillingExportTable.ts
+  checksum: df8f16310cd2bf983821666d495f5bf1945584851e1242e37ecdf0a652102113
 - filename: packages/gcp/src/lib/BillingExportTypes.ts
   checksum: 27e7319ef9204e0c6e575ddf8bf288d2627fb8542f468ddde86439420be8c93d
 - filename: packages/gcp/src/lib/MachineTypes.ts
@@ -311,6 +315,10 @@ fileignoreconfig:
   checksum: 0c512ee30188650b4cabd43e88f098f4c8bb1cd2b563797d217f3b724589c545
 - filename: setupTests.ts
   checksum: 70858864e1b6d2e91547f823d455acd4bfd8457a4b9df6d493607e95333de753
+- filename: terraform/main.tf
+  checksum: d100a69256c220e1ff9f50fc9afc1fc0ece946bff92cf8c0b23038823fce320d
+- filename: terraform/terraform.tf
+  checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
 scopeconfig:

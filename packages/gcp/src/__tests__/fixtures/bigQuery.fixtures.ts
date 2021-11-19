@@ -431,6 +431,77 @@ export const mockQueryComputeWithDifferentMachineTypes: any[][] = [
   ],
 ]
 
+export const mockQueryComputeWithDifferentMachineTypesForEmbodiedEmissions: any[][] =
+  [
+    [
+      {
+        timestamp: bigQueryDateOne,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'us-central1',
+        serviceName: 'Compute Engine',
+        usageType: 'N1 Predefined Instance Core running in Americas',
+        usageUnit: 'seconds',
+        vCpus: '12',
+        usageAmount: 86400,
+        cost: 0.758656,
+        machineType: 'n1-standard-1',
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'us-central1',
+        serviceName: 'Compute Engine',
+        usageType: 'E2 Instance Core running in Americas',
+        usageUnit: 'seconds',
+        vCpus: '16',
+        usageAmount: 259200,
+        cost: 1.570404,
+        machineType: 'e2-medium',
+      },
+      {
+        timestamp: bigQueryDateThree,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'us-central1',
+        serviceName: 'Compute Engine',
+        usageType: 'N2 Predefined Instance Core running in Americas',
+        usageUnit: 'seconds',
+        vCpus: '24',
+        usageAmount: 345599.5396,
+        cost: 0.959995,
+        machineType: 'n2-standard-2',
+      },
+      {
+        timestamp: bigQueryDateFour,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'asia-south1',
+        serviceName: 'Compute Engine',
+        usageType: 'N1 Shared Core Instance running in Mumbai',
+        usageUnit: 'seconds',
+        vCpus: '24',
+        usageAmount: 93698,
+        cost: 0.681886,
+        machineType: 'f1-micro',
+      },
+      {
+        timestamp: bigQueryDateFive,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'asia-south1',
+        serviceName: 'Compute Engine',
+        usageType: 'N1 Shared Core Instance running in Mumbai',
+        usageUnit: 'seconds',
+        vCpus: '24',
+        usageAmount: 93698,
+        cost: 0.681886,
+        machineType: null,
+      },
+    ],
+  ]
+
 export const mockQueryCloudStorageWithReplicationFactors: any[][] = [
   [
     {

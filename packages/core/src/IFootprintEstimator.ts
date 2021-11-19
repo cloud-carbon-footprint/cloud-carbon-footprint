@@ -14,6 +14,6 @@ export default interface IFootprintEstimator {
     data: IUsageData[],
     region: string,
     emissionsFactors: CloudConstantsEmissionsFactors,
-    constants: CloudConstants,
+    constants?: CloudConstants,
   ): FootprintEstimate[]
 }

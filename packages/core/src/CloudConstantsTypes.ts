@@ -35,6 +35,7 @@ export type CloudConstantsByProvider = {
   AVG_CPU_UTILIZATION_2020: number
   REPLICATION_FACTORS?: { [key: string]: number }
   CO2E_PER_COST?: Co2ePerCost
+  SERVER_EXPECTED_LIFESPAN?: number
 }
 
 export type CloudConstantsEmissionsFactors = {
