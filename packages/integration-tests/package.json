@@ -17,7 +17,7 @@
   "devDependencies": {
     "@testing-library/testcafe": "^4.4.0",
     "concurrently": "^6.3.0",
-    "eslint": "^7.26.0",
+    "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-testcafe": "^0.2.1",
