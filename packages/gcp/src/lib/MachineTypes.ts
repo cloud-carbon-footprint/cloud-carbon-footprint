@@ -220,6 +220,7 @@ export const MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING: {
     'e2-micro': [2, 1.1553],
     'e2-small': [2, 1.1553],
     'e2-medium': [2, 1.1553],
+    'e2-standard-32': [32, 1.1553], // Used as a proxy for a full server in the machine family
   },
 }
 
@@ -228,4 +229,5 @@ export const N1_SHARED_CORE_MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
 } = {
   'f1-micro': [1, 1.6171],
   'g1-small': [1, 1.6071],
+  'n1-standard-96': [96, 1.6271], // Used as a proxy for a full server in the machine family
 }
