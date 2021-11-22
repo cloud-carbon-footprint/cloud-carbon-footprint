@@ -25,6 +25,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@types/lodash": "^4.14.169",
+    "amqplib": "^0.8.0",
     "apexcharts": "^3.26.3",
     "axios": "^0.24.0",
     "dotenv": "^10.0.0",

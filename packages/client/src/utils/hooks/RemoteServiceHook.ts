@@ -7,8 +7,8 @@ import axios from 'axios'
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { useErrorHandling } from '../../layout/ErrorPage'
-import { ServiceResult } from '../../Types'
+import { useErrorHandling } from 'layout/ErrorPage'
+import { ServiceResult } from 'Types'
 
 const useRemoteService = (
   initial: EstimationResult[],

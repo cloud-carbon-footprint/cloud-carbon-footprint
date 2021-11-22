@@ -6,11 +6,11 @@ import React, { ReactElement, useState } from 'react'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Switch, Route } from 'react-router-dom'
-import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
 import RecommendationsPage from './pages/RecommendationsPage/'
 import ErrorPage from './layout/ErrorPage'
 import HeaderBar from './layout/HeaderBar'
 import MobileWarning from './layout/MobileWarning'
+import QueueTest from './QueueTest'
 
 function App(): ReactElement {
   const [mobileWarningEnabled, setMobileWarningEnabled] = useState(
@@ -50,7 +50,8 @@ function App(): ReactElement {
             <RecommendationsPage />
           </Route>
           <Route path="/">
-            <EmissionsMetricsPage />
+            {/*<EmissionsMetricsPage />*/}
+            <QueueTest />
           </Route>
         </Switch>
       </Container>

@@ -5,3 +5,4 @@
 export { default as useRemoteEmissionService } from './EmissionFactorServiceHook'
 export { default as useRemoteService } from './RemoteServiceHook'
 export { default as useRemoteRecommendationsService } from './RecommendationsServiceHook'
+export { default as useRemoteQueueService } from './RemoteQueueServiceHook'
