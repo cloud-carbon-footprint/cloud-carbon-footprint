@@ -48,27 +48,27 @@ export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
 }
 
 export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
-  [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, scope3 emissions]
+  [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, scope3 emissions (mt CO2e)]
 } = {
   'e2-standard': {
-    'e2-standard-2': [2, 1.2246],
-    'e2-standard-4': [4, 1.2015],
-    'e2-standard-8': [8, 1.1784],
-    'e2-standard-16': [16, 1.1553],
-    'e2-standard-32': [32, 1.1553],
+    'e2-standard-2': [2, 1.2303],
+    'e2-standard-4': [4, 1.2303],
+    'e2-standard-8': [8, 1.2303],
+    'e2-standard-16': [16, 1.2303],
+    'e2-standard-32': [32, 1.2303],
   },
   'e2-highmen': {
-    'e2-highmem-2': [2, 1.1553],
-    'e2-highmem-4': [4, 1.1553],
-    'e2-highmem-8': [8, 1.1553],
-    'e2-highmem-16': [16, 1.1553],
+    'e2-highmem-2': [2, 1.2303],
+    'e2-highmem-4': [4, 1.2303],
+    'e2-highmem-8': [8, 1.2303],
+    'e2-highmem-16': [16, 1.2303],
   },
   'e2-highcpu': {
-    'e2-highcpu-2': [2, 1.0805],
-    'e2-highcpu-4': [4, 1.0611],
-    'e2-highcpu-8': [8, 1.0416],
-    'e2-highcpu-16': [16, 1.0222],
-    'e2-highcpu-32': [32, 1.0222],
+    'e2-highcpu-2': [2, 1.0972],
+    'e2-highcpu-4': [4, 1.0972],
+    'e2-highcpu-8': [8, 1.0972],
+    'e2-highcpu-16': [16, 1.0972],
+    'e2-highcpu-32': [32, 1.0972],
   },
   'n2-standard': {
     'n2-standard-2': [2, 1.8379],
@@ -153,29 +153,29 @@ export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
     't2d-standard-60': [60, 1.3107],
   },
   'n1-standard': {
-    'n1-standard-1': [1, 1.7957],
-    'n1-standard-2': [2, 1.7536],
-    'n1-standard-4': [4, 1.7114],
-    'n1-standard-8': [8, 1.6693],
+    'n1-standard-1': [1, 1.6271],
+    'n1-standard-2': [2, 1.6271],
+    'n1-standard-4': [4, 1.6271],
+    'n1-standard-8': [8, 1.6271],
     'n1-standard-16': [16, 1.6271],
     'n1-standard-32': [32, 1.6271],
     'n1-standard-64': [64, 1.6271],
     'n1-standard-96': [96, 1.6271],
   },
   'n1-highmem': {
-    'n1-highmem-2': [2, 2.073],
-    'n1-highmem-4': [4, 2.0531],
-    'n1-highmem-8': [8, 2.0331],
-    'n1-highmem-16': [16, 2.0132],
+    'n1-highmem-2': [2, 1.9932],
+    'n1-highmem-4': [4, 1.9932],
+    'n1-highmem-8': [8, 1.9932],
+    'n1-highmem-16': [16, 1.9932],
     'n1-highmem-32': [32, 1.9932],
     'n1-highmem-64': [64, 1.9932],
     'n1-highmem-96': [96, 1.9932],
   },
   'n1-highcpu': {
-    'n1-highcpu-2': [2, 1.2583],
-    'n1-highcpu-4': [4, 1.2556],
-    'n1-highcpu-8': [8, 1.253],
-    'n1-highcpu-16': [16, 1.2503],
+    'n1-highcpu-2': [2, 1.2476],
+    'n1-highcpu-4': [4, 1.2476],
+    'n1-highcpu-8': [8, 1.2476],
+    'n1-highcpu-16': [16, 1.2476],
     'n1-highcpu-32': [32, 1.2476],
     'n1-highcpu-64': [64, 1.2476],
     'n1-highcpu-96': [96, 1.2476],
@@ -188,12 +188,12 @@ export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
     'c2-standard-60': [60, 1.4607],
   },
   'm1-ultramem': {
-    'm1-ultramem-40': [40, 1.125],
+    'm1-ultramem-40': [40, 1.1],
     'm1-ultramem-80': [80, 1.1],
     'm1-ultramem-160': [160, 1.1],
   },
   'm1-megamem': {
-    'm1-megamem-96': [96, 1.1527],
+    'm1-megamem-96': [96, 1.15],
   },
   'm2-ultramem': {
     'm2-ultramem-208': [208, 1.1],
@@ -217,9 +217,9 @@ export const MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING: {
   [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, scope3 emissions]
 } = {
   e2: {
-    'e2-micro': [2, 1.1553],
-    'e2-small': [2, 1.1553],
-    'e2-medium': [2, 1.1553],
+    'e2-micro': [2, 1.2303],
+    'e2-small': [2, 1.2303],
+    'e2-medium': [2, 1.2303],
     'e2-standard-32': [32, 1.1553], // Used as a proxy for a full server in the machine family
   },
 }
@@ -227,7 +227,7 @@ export const MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING: {
 export const N1_SHARED_CORE_MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
   [instanceSize: string]: number[] // [vcpus, scope3 emissions]
 } = {
-  'f1-micro': [1, 1.6171],
-  'g1-small': [1, 1.6071],
+  'f1-micro': [1, 1.5771],
+  'g1-small': [1, 1.5771],
   'n1-standard-96': [96, 1.6271], // Used as a proxy for a full server in the machine family
 }
