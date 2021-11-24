@@ -13,11 +13,11 @@ describe('helpers', () => {
     expect(result).toEqual(4)
   })
 
-  it('calculateGigabyteHours gigabyteHours is undefined', () => {
+  it('calculateGigabyteHours gigabyteHours is cero', () => {
     // when
     const result = calculateGigabyteHours(1, 1, 2, 0, 0)
     // then
-    expect(result).toBeUndefined()
+    expect(result).toBe(0)
   })
 
   it('calculateGigabyteHours gigabyteHours is not undefined', () => {

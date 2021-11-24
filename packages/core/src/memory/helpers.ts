@@ -16,7 +16,7 @@ export const calculateGigabyteHours = (
   usageAmount: number,
 ): number => {
   const instanceMemory = largestInstanceTypeMemory / physicalChips
-  let gigabyteHours
+  let gigabyteHours = 0
   // once we calculate the memory from aws instance type data and cross reference it with the
   // memory we calculate from the microarchitecture (SPECPower Data) associated with the instance type,
   // we find the difference and calculate memory usage based on the additional gigabytes

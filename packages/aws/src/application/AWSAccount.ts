@@ -20,6 +20,7 @@ import {
   MemoryEstimator,
   UnknownEstimator,
   CloudProviderAccount,
+  EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
   EstimationResult,
@@ -137,6 +138,9 @@ export default class AWSAccount extends CloudProviderAccount {
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
       this.createServiceWrapper(
         this.getServiceConfigurationOptions(
           configLoader().AWS.ATHENA_REGION,
@@ -157,6 +161,9 @@ export default class AWSAccount extends CloudProviderAccount {
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
     )
     return costAndUsageReportsService.getEstimatesFromInputData(inputData)
   }

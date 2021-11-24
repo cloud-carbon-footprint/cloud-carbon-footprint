@@ -32,6 +32,8 @@ import {
   CloudConstants,
   CloudConstantsEmissionsFactors,
   ComputeEstimator,
+  EmbodiedEmissionsEstimator,
+  EmbodiedEmissionsUsage,
   EstimateClassification,
   FootprintEstimate,
   MemoryEstimator,
@@ -66,7 +68,11 @@ import {
 } from '../domain'
 import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from './AWSMemoryEstimatesBuilder'
-import { GPU_INSTANCES_TYPES } from './AWSInstanceTypes'
+import {
+  EC2_INSTANCE_TYPES,
+  GPU_INSTANCES_TYPES,
+  INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING,
+} from './AWSInstanceTypes'
 
 export default class CostAndUsageReports {
   private readonly dataBaseName: string
@@ -81,6 +87,7 @@ export default class CostAndUsageReports {
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
+    private readonly embodiedEmissionsEstimator: EmbodiedEmissionsEstimator,
     private readonly serviceWrapper?: ServiceWrapper,
   ) {
     this.dataBaseName = configLoader().AWS.ATHENA_DB_NAME
@@ -241,6 +248,11 @@ export default class CostAndUsageReports {
           this.memoryEstimator,
         ).memoryFootprint
 
+        const embodiedEmissions = this.getEmbodiedEmissions(
+          costAndUsageReportRow,
+          emissionsFactors,
+        )
+
         if (isNaN(computeFootprint.kilowattHours)) {
           this.costAndUsageReportsLogger.warn(
             `Could not estimate compute usage for usage type: ${costAndUsageReportRow.usageType}`,
@@ -253,20 +265,26 @@ export default class CostAndUsageReports {
           }
         }
 
-        // if there exist any memory footprint,
-        // add the kwh and co2e for both compute and memory
-        if (memoryFootprint.co2e) {
+        // if there exist any memory footprint or embodied emissions,
+        // add the kwh and co2e for all compute,  memory, and embodied emissions
+        if (memoryFootprint.co2e || embodiedEmissions.co2e) {
           accumulateCo2PerCost(
             EstimateClassification.COMPUTE,
             computeFootprint.co2e + memoryFootprint.co2e,
+            // embodiedEmissions.co2e,
             costAndUsageReportRow.cost,
             AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
           )
           return {
             timestamp: computeFootprint.timestamp,
             kilowattHours:
-              computeFootprint.kilowattHours + memoryFootprint.kilowattHours,
-            co2e: computeFootprint.co2e + memoryFootprint.co2e,
+              computeFootprint.kilowattHours +
+              memoryFootprint.kilowattHours +
+              embodiedEmissions.kilowattHours,
+            co2e:
+              computeFootprint.co2e +
+              memoryFootprint.co2e +
+              embodiedEmissions.co2e,
             usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
           }
         }
@@ -578,5 +596,85 @@ export default class CostAndUsageReports {
     const results: GetQueryResultsOutput[] =
       await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)
+  }
+
+  private getEmbodiedEmissions(
+    costAndUsageReportRow: CostAndUsageReportsRow,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ) {
+    const { instancevCpu, scopeThreeEmissions, largestInstancevCpu } =
+      this.getDataFromUsageType(costAndUsageReportRow.usageType)
+
+    if (!instancevCpu || !scopeThreeEmissions || !largestInstancevCpu)
+      return {
+        timestamp: undefined,
+        kilowattHours: 0,
+        co2e: 0,
+      }
+
+    const embodiedEmissionsUsage: EmbodiedEmissionsUsage = {
+      instancevCpu,
+      largestInstancevCpu,
+      usageTimePeriod: costAndUsageReportRow.usageAmount / instancevCpu,
+      scopeThreeEmissions,
+    }
+
+    return this.embodiedEmissionsEstimator.estimate(
+      [embodiedEmissionsUsage],
+      costAndUsageReportRow.region,
+      emissionsFactors,
+    )[0]
+  }
+
+  //TODO: refactor to use instance type instead of usage type
+  private getDataFromUsageType(usageType: string): { [key: string]: number } {
+    //ways in which the usage type is coming in:
+    //APS3-Kafka.t3.small
+    //m5.2xlarge
+    //InstanceUsage:db.t2.micro
+    //m4.large.elasticsearch
+
+    let instance = usageType?.split(':').pop()
+    if (!usageType.includes(':'))
+      instance = usageType?.split('.').slice(1, 3).join('.')
+
+    if (instance.includes('db'))
+      instance = instance?.split('.').slice(1, 3).join('.')
+
+    const [instanceFamily, instanceSize] = instance.split('.')
+
+    if (!instance || !instanceSize) {
+      return {
+        instancevCpu: 0,
+        scopeThreeEmissions: 0,
+        largestInstancevCpu: 0,
+      }
+    }
+
+    const instancevCpu =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[0] ||
+      INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING[instanceFamily]?.[
+        instanceSize
+      ]?.[0]
+
+    const scopeThreeEmissions =
+      EC2_INSTANCE_TYPES[instanceFamily]?.[instanceSize]?.[2] ||
+      INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING[instanceFamily]?.[
+        instanceSize
+      ]?.[1]
+
+    const familyInstanceTypes: number[][] = Object.values(
+      EC2_INSTANCE_TYPES[instanceFamily] ||
+        INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING[instanceFamily],
+    )
+
+    const [largestInstancevCpu] =
+      familyInstanceTypes[familyInstanceTypes.length - 1]
+
+    return {
+      instancevCpu,
+      scopeThreeEmissions,
+      largestInstancevCpu,
+    }
   }
 }

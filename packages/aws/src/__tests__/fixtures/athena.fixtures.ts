@@ -1230,3 +1230,65 @@ export const athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService: Athe
       Rows: [queryResultsHeaders, ...queryResultsDataFifteen],
     },
   }
+
+const queryResultsDataSixteen = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE2-BoxUsage:t2.micro' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '1' },
+      { VarCharValue: '2' },
+      { VarCharValue: '5' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-28' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'ElasticMapReduce' },
+      { VarCharValue: 'APN1-BoxUsage:m5.xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '4' },
+      { VarCharValue: '6' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-29' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'ca-central-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USW2-SpotUsage:m5zn.2xlarge' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '8' },
+      { VarCharValue: '12' },
+      { VarCharValue: '20' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2020-10-31' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-west-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '8' },
+      { VarCharValue: '88' },
+      { VarCharValue: '25' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataSixteen],
+    },
+  }

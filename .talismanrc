@@ -96,7 +96,7 @@ fileignoreconfig:
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: ae4d3c68639b3cad55fd80dc12d0af52628a1c8680bf51b06fd0fdb8e4dcd466
+  checksum: 473ab5e56e4bd7fff0bc394c3219571a0d9cec53670da41e0b417b1a92074852
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
@@ -105,6 +105,8 @@ fileignoreconfig:
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
   checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
+- filename: packages/aws/src/lib/CostAndUsageReports.ts
+  checksum: 2e92787fdea6e84d9d3c036fb00de3dd28b3a50a6dabdef7af7092dc1146d956
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
 - filename: packages/azure/package.json
