@@ -13,18 +13,29 @@ const differences = [
   },
   {
     text:
+      'Provides estimates for both energy and carbon emissions for all types of cloud usage including ' +
+      'embodied emissions from manufacturing, with the ability to drill down into emissions ' +
+      'by cloud provider, account, service and time period. '
+  },
+  {
+    text:
+      'Provides actionable recommendations for AWS and Google Cloud to reduce cost and carbon emissions, ' +
+      'as well as projected savings and real world impact in trees planted. '
+  },
+  {
+    text:
       'Ability to measure usage at a granular service level and use actual server ' +
       'utilization rather than average utilization for hyperscale data centers',
   },
   {
     text:
-      'Provides estimates for both energy and carbon emissions from cloud usage',
+      'Monitors your energy usage and carbon footprint visually via graphs and charts or export metrics in CSV ' +
+      'to share with stakeholders. Shows your emissions in terms of airline flights, phones charged and trees planet. '
   },
   {
     text:
-      'Monitors your energy usage and carbon footprint visually via graphs and ' +
-      'charts, with the ability to keep track of data in tables and export metrics in ' +
-      'CSV to share with stakeholders',
+      'Provides multiple ways to integrate energy and carbon metrics in existing usage and billing data sets, ' +
+      'data pipelines, monitoring systems or dashboard solutions. ',
   },
   {
     text:

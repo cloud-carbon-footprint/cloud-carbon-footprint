@@ -5,34 +5,34 @@ import CardContent from '@material-ui/core/CardContent'
 
 const cardContents = [
   {
-    title: 'Reduce Cost',
+    title: 'Cloud costs are through the roof...',
     description:
-      'Know where to target your optimizations, such as reducing ' +
-      'the number and size of servers and requests. This decreases your usage and saves you money.',
+      'Instead, identify trends, spikes, and opportunities for cost and carbon reduction.  ' +
+      'Prioritize amongst specific optimizations and forecast savings.',
     icon: 'img/trending_down-black-24dp.svg',
     iconAlt: 'Trending down icon',
   },
   {
-    title: 'Meet Sustainability Goals',
+    title: 'Carbon impact of your cloud use is unaccounted for...',
     description:
-      'Measure your emissions over time and see what workloads are ' +
-      'the dirtiest. Switch usage to regions with greener energy to meet your targets.',
+      'Measure, monitor and report on your cloud carbon footprint as part of your Scope 3 emissions. ' +
+      'Make it a key metric for developers and stakeholders alike in day to day and strategic decision making.',
     icon: 'img/bar_chart-black-24dp.svg',
     iconAlt: 'Bar chart icon',
   },
   {
-    title: 'Satisfy Investors and Employees',
+    title: 'Need to meet sustainability targets...',
     description:
-      'Demonstrate a commitment to sustainability and enable ' +
-      'stakeholders to measure cloud carbon emissions to inform decision making.',
+      'Understand your cloud carbon footprint baseline and make specific, ' +
+      'targeted reductions to reduce your emissions, such as rightsizing, deleting idle instances, and more.',
     icon: 'img/fact_check-black-24dp.svg',
     iconAlt: 'Fact check icon',
   },
   {
-    title: 'Ground Up Sustainability',
+    title: 'Infrastructure inhibits speed to market...',
     description:
-      'Enable engineers to monitor emissions and usage daily. This allows for ' +
-      'iteratively updating practices and choices to optimize for emissions and cost reduction.',
+      'You can enable faster experimentation and product delivery by reducing cloud waste. ' +
+      'Automate green cloud approaches to reduce cycle times. ',
     icon: 'img/legend_toggle-black-24dp.svg',
     iconAlt: 'Legend icon',
   },
