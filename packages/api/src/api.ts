@@ -6,7 +6,6 @@ import express from 'express'
 
 import {
   App,
-  CreateValidFootprintRequest,
   CreateValidRecommendationsRequest,
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
@@ -27,27 +26,41 @@ const FootprintApiMiddleware = async function (
 ): Promise<void> {
   // Set the request time out to 10 minutes to allow the request enough time to complete.
   req.socket.setTimeout(1000 * 60 * 10)
-  const rawRequest: FootprintEstimatesRawRequest = {
-    startDate: req.query.start?.toString(),
-    endDate: req.query.end?.toString(),
-    ignoreCache: req.query.ignoreCache?.toString(),
-  }
-  apiLogger.info(
-    `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
-  )
-  const footprintApp = new App()
-  const estimationRequest = CreateValidFootprintRequest(rawRequest)
+  // const rawRequest: FootprintEstimatesRawRequest = {
+  //   startDate: req.query.start?.toString(),
+  //   endDate: req.query.end?.toString(),
+  //   ignoreCache: req.query.ignoreCache?.toString(),
+  // }
+  // apiLogger.info(
+  //   `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
+  // )
+  // const footprintApp = new App()
+  // const estimationRequest = CreateValidFootprintRequest(rawRequest)
   try {
-    const footprintJob = await res.locals.footprintQueue.getJob(
-      res.locals.jobId,
-    )
-    if (await footprintJob.isCompleted()) {
-      const estimationResults = await footprintApp.getCostAndEstimates(
-        estimationRequest,
+    const footprintJob = res.locals.footprintJob
+    const jobIsCompleted = await footprintJob?.isCompleted()
+    console.log('*** Footprint Job Exists? ***', !!footprintJob)
+    console.log('*** Job is Complete? ***', jobIsCompleted)
+
+    if (footprintJob && jobIsCompleted) {
+      // const estimationResults = await footprintApp.getCostAndEstimates(
+      //   estimationRequest,
+      // )
+      console.log('*** Return Value ***', footprintJob.returnvalue)
+      res.json(footprintJob.returnvalue)
+    } else if (!footprintJob) {
+      console.log('*** Footprint Job Id ***', footprintJob?.id)
+      const rawRequest: FootprintEstimatesRawRequest = {
+        startDate: req.query.start?.toString(),
+        endDate: req.query.end?.toString(),
+        ignoreCache: req.query.ignoreCache?.toString(),
+      }
+      apiLogger.info(
+        `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
       )
-      res.json(estimationResults)
+      res.status(202).send('Emissions Estimates Started')
     } else {
-      res.status(202).send('Emissions Estimates Processing')
+      res.status(202).send('Emissions Estimates Still In Progress')
     }
   } catch (e) {
     apiLogger.error(`Unable to process footprint request.`, e)
