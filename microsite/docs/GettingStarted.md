@@ -1,6 +1,7 @@
 ---
 id: getting-started
 title: Getting Started
+slug: /getting-started
 ---
 
 There are two different ways to get started with Cloud Carbon Footprint:

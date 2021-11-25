@@ -1,6 +1,7 @@
 ---
 id: run-with-mocked-data
 title: Run with Mocked Data
+slug: /run-with-mocked-data
 ---
 
 If you are looking to get up and running quickly or are not ready to connect to real cloud provider data, it is possible to run the app using mocked data.

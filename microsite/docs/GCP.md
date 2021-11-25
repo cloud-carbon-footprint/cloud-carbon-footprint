@@ -1,6 +1,7 @@
 ---
 id: gcp
 title: GCP
+slug: /gcp
 ---
 
 Your Google Cloud Account needs to be configured to export Billing Data to BigQuery, and the application needs to authenticate with GCP to run queries on that data in BigQuery.

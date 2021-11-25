@@ -1,6 +1,7 @@
 ---
 id: azure
 title: Azure
+slug: /azure
 ---
 
 Your Microsoft Azure account needs to have an App registered and Service Principal with permissions to read billing and usage data from your Subscriptions

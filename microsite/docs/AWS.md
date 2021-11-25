@@ -1,6 +1,7 @@
 ---
 id: aws
 title: AWS
+slug: /aws
 ---
 
 Your AWS account needs to be configured to generate Cost and Usage reports and save those reports in S3, and the application needs to authenticate with AWS and run queries on that data using Amazon Athena.

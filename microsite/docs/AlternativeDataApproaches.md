@@ -1,6 +1,7 @@
 ---
 id: alternative-data-approaches
 title: Alternative Data Approaches
+slug: /alternative-data-approaches
 ---
 
 We support two approaches to gathering usage data for different cloud providers.

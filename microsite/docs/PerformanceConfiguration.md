@@ -1,6 +1,7 @@
 ---
 id: performance-configurations
 title: Performance Configurations
+slug: /performance-configurations
 ---
 
 ### Options to Improve Query Performance
