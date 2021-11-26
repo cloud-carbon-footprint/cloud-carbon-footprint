@@ -3,6 +3,9 @@
  */
 
 export type LookupTableInput = {
+  id: string
+  cost: string
+  usageAmount: string
   serviceName: string
   region: string
   usageType: string
@@ -12,6 +15,7 @@ export type LookupTableInput = {
 }
 
 export type LookupTableOutput = {
+  id: string
   serviceName: string
   region: string
   usageType: string

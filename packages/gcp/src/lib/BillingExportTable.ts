@@ -122,11 +122,12 @@ export default class BillingExportTable {
 
     inputData.map((inputDataRow: LookupTableInput) => {
       const usageRow = {
+        id: inputDataRow.id,
         serviceName: inputDataRow.serviceName,
-        usageAmount: 1,
+        usageAmount: Number(inputDataRow.usageAmount),
         usageType: inputDataRow.usageType,
         usageUnit: inputDataRow.usageUnit,
-        cost: 1,
+        cost: Number(inputDataRow.cost),
         region: inputDataRow.region,
         machineType: inputDataRow.machineType,
         timestamp: new Date(''),
@@ -139,6 +140,7 @@ export default class BillingExportTable {
       )
       if (footprintEstimate)
         results.push({
+          id: billingExportRow.id,
           serviceName: billingExportRow.serviceName,
           region: billingExportRow.region,
           usageType: billingExportRow.usageType,
@@ -155,6 +157,7 @@ export default class BillingExportTable {
           this.getEstimateForUnknownUsage(billingExportRow)
         if (footprintEstimate)
           results.push({
+            id: billingExportRow.id,
             serviceName: billingExportRow.serviceName,
             region: billingExportRow.region,
             usageType: billingExportRow.usageType,

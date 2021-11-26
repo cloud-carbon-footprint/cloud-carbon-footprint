@@ -3,6 +3,7 @@
  */
 
 export default abstract class BillingDataRow {
+  public id: string
   public serviceName: string
   public accountId: string
   public accountName: string

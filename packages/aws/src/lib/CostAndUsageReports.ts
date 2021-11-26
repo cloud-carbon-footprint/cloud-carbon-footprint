@@ -141,6 +141,7 @@ export default class CostAndUsageReports {
         Data: [
           { VarCharValue: 'timestamp' },
           { VarCharValue: 'accountName' },
+          { VarCharValue: 'id' },
           { VarCharValue: 'serviceName' },
           { VarCharValue: 'region' },
           { VarCharValue: 'usageType' },
@@ -153,13 +154,14 @@ export default class CostAndUsageReports {
       const usageRowData = [
         { VarCharValue: '' },
         { VarCharValue: '' },
+        { VarCharValue: inputDataRow.id },
         { VarCharValue: inputDataRow.serviceName },
         { VarCharValue: inputDataRow.region },
         { VarCharValue: inputDataRow.usageType },
         { VarCharValue: inputDataRow.usageUnit },
         { VarCharValue: inputDataRow.vCpus },
-        { VarCharValue: '1' },
-        { VarCharValue: '1' },
+        { VarCharValue: inputDataRow.cost },
+        { VarCharValue: inputDataRow.usageAmount },
       ]
       const costAndUsageReportRow = new CostAndUsageReportsRow(
         usageRowsHeader,
@@ -173,6 +175,7 @@ export default class CostAndUsageReports {
 
       if (footprintEstimate) {
         result.push({
+          id: inputDataRow.id,
           serviceName: inputDataRow.serviceName,
           region: inputDataRow.region,
           usageType: inputDataRow.usageType,
@@ -189,6 +192,7 @@ export default class CostAndUsageReports {
         const footprintEstimate = this.getEstimateForUnknownUsage(inputDataRow)
         if (footprintEstimate)
           result.push({
+            id: `${inputDataRow.id}`,
             serviceName: inputDataRow.serviceName,
             region: inputDataRow.region,
             usageType: inputDataRow.usageType,
