@@ -25,7 +25,7 @@ Forking and cloning the repository is the best way to contribute to the project.
 
 We provide the @cloud-carbon-footprint/create-app package to create standalone instances of Cloud Carbon Footprint.
 
-This option offers a quick setup, but has @cloud-carbon-footprint packages as dependencies. This means you will inherit the core estimation logic, but will have less freedom over customizing that logic. If you want to explore linking in local Cloud Carbon Footprint packages to your created app, you can refer to [this section](create-app#linking-in-local-cloud-carbon-footprint-packages).
+This option offers a quick setup, but has @cloud-carbon-footprint packages as dependencies. This means you will inherit the core estimation logic, but will have less freedom over customizing that logic. If you want to explore linking in local Cloud Carbon Footprint packages to your created app, you can refer to [this section](./CreateApp.md#linking-in-local-cloud-carbon-footprint-packages).
 
 Using npx, you can then run the following command to create an app within your current working directory:
 
@@ -33,7 +33,7 @@ Using npx, you can then run the following command to create an app within your c
 npx @cloud-carbon-footprint/create-app
 ```
 
-You can read more about this process in [Create an app](create-app).
+You can read more about this process in [Create an app](./CreateApp.md).
 
 ## Configuring the App Locally
 
@@ -72,7 +72,7 @@ A standard install gives you more visibility and control around your particular 
 yarn install
 ```
 
-You can now continue by running with [mocked data](run-with-mocked-data) or [manually configuring your cloud providers](aws)
+You can now continue by running with [mocked data](./RunWithMockedData.md) or [manually configuring your cloud providers](./AWS.md)
 
 ### Starting the App
 

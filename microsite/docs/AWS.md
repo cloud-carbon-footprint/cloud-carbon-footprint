@@ -18,7 +18,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
 3.  Setup Athena DB to save the Cost and Usage Reports.
 
-    - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here.](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html) There is a lot of helpful detail in the guides that goes beyond the specific needs for our app, but once you are able to succesfully query the Cost and Usage Reports from Athena, you should be set up sufficiently.
+    - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here.](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html) There is a lot of helpful detail in the guides that goes beyond the specific needs for our app, but once you are able to successfully query the Cost and Usage Reports from Athena, you should be set up sufficiently.
 
 4.  Configure aws credentials locally, using awscli.
 

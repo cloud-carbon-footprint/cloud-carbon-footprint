@@ -1,6 +1,7 @@
 ---
 id: methodology
 title: Methodology
+slug: /methodology
 ---
 
 ## Summary
@@ -88,7 +89,7 @@ For AWS Savings Plans, we only include the line item type `SavingsPlanCoveredUsa
 
 When calculating total kilowatt hours for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
 
-For details on some of the specific usage type classifications, please view the [Classifying Usage Types page](classifying-usage-types).
+For details on some of the specific usage type classifications, please view the [Classifying Usage Types page](./ClassifyingUsageTypes.md).
 
 #### 2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)
 

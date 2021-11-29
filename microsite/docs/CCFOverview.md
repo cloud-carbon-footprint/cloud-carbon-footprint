@@ -1,6 +1,7 @@
 ---
 id: overview
 title: Overview
+slug: /overview
 ---
 
 Cloud Carbon Footprint provides a way for organizations to measure, monitor, and reduce their carbon emissions from the cloud. It supports connecting to multiple cloud providers, allowing you to get a full picture of your cloud emissions.
@@ -16,7 +17,7 @@ For feedback, questions, or if you’d like to collaborate on shaping the produc
 ### How it works
 
 Cloud Carbon Footprint works by taking your cloud provider usage data, converting it into energy, and then taking into account the power usage effectiveness of the cloud provider’s data centers and the carbon intensity of the region where the data center pulls power from.  
-For a more detailed and in depth explanation into the approach and methodology, please reference the [Methodology Page.](methodology)
+For a more detailed and in depth explanation into the approach and methodology, please reference the [Methodology Page.](./Methodology.md)
 
 ### Fitting Cloud Carbon Footprint to your needs
 
@@ -24,6 +25,6 @@ The code has been written using domain driven design, to allow for easy extensio
 
 ### Trying it out
 
-We have provided a few ways for you to get up and running, depending on your situation. To simply test out Cloud Carbon Footprint quickly, we have provided a few packages that can help you quickly spin up the whole app or the portion(s) you need. To test drive, visit the [Try Now](getting-started) page.
+We have provided a few ways for you to get up and running, depending on your situation. To simply test out Cloud Carbon Footprint quickly, we have provided a few packages that can help you quickly spin up the whole app or the portion(s) you need. To test drive, visit the [Try Now](./GettingStarted.md) page.
 
-If you are looking to run the app locally or to contribute, we recommend [running the app locally](introduction). With this approach you can also get up and [running quickly with mocked data](run-with-mocked-data) or go ahead and [connect your own cloud data](aws) and estimate your actual emissions.
+If you are looking to run the app locally or to contribute, we recommend [running the app locally](./RunningLocallyIntro.md). With this approach you can also get up and [running quickly with mocked data](./RunWithMockedData.md) or go ahead and [connect your own cloud data](./AWS.md) and estimate your actual emissions.

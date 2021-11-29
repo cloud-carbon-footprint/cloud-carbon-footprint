@@ -32,7 +32,7 @@ Your Microsoft Azure account needs to have an App registered and Service Princip
 
 ⚠️ This will incur some cost. Use this sparingly if you wish to test with live data.
 
-DISCLAIMER: If your editor of choice is VS Code, we recommend to use either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occured when starting up the server in VS Code terminals.
+DISCLAIMER: If your editor of choice is VS Code, we recommend using either your native or custom terminal of choice (i.e. iterm) instead. Unexpected authentication issues have occurred when starting up the server in VS Code terminals.
 
 ### Unsupported Usage Types
 

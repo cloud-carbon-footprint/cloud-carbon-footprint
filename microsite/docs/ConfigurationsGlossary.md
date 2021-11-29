@@ -1,6 +1,7 @@
 ---
 id: configurations-glossary
 title: Configurations Glossary
+slug: /configurations-glossary
 ---
 
 ## Api/cli Packages
