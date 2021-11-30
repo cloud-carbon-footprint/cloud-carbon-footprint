@@ -1292,3 +1292,26 @@ export const athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions: At
       Rows: [queryResultsHeaders, ...queryResultsDataSixteen],
     },
   }
+
+const queryResultsDataSeventeen = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE2-BoxUsage:t2.micro' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '1' },
+      { VarCharValue: '0' }, // usage amount
+      { VarCharValue: '5' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithNoUsageAmount: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataSeventeen],
+    },
+  }

@@ -270,8 +270,9 @@ export default class CostAndUsageReports {
         if (memoryFootprint.co2e || embodiedEmissions.co2e) {
           accumulateCo2PerCost(
             EstimateClassification.COMPUTE,
-            computeFootprint.co2e + memoryFootprint.co2e,
-            // embodiedEmissions.co2e,
+            computeFootprint.co2e +
+              memoryFootprint.co2e +
+              embodiedEmissions.co2e,
             costAndUsageReportRow.cost,
             AWS_CLOUD_CONSTANTS.CO2E_PER_COST,
           )
@@ -603,7 +604,7 @@ export default class CostAndUsageReports {
     emissionsFactors: CloudConstantsEmissionsFactors,
   ) {
     const { instancevCpu, scopeThreeEmissions, largestInstancevCpu } =
-      this.getDataFromUsageType(costAndUsageReportRow.usageType)
+      this.getDataFromInstanceType(costAndUsageReportRow.instanceType)
 
     if (!instancevCpu || !scopeThreeEmissions || !largestInstancevCpu)
       return {
@@ -626,24 +627,12 @@ export default class CostAndUsageReports {
     )[0]
   }
 
-  //TODO: refactor to use instance type instead of usage type
-  private getDataFromUsageType(usageType: string): { [key: string]: number } {
-    //ways in which the usage type is coming in:
-    //APS3-Kafka.t3.small
-    //m5.2xlarge
-    //InstanceUsage:db.t2.micro
-    //m4.large.elasticsearch
+  private getDataFromInstanceType(instanceType: string): {
+    [key: string]: number
+  } {
+    const [instanceFamily, instanceSize] = instanceType.split('.')
 
-    let instance = usageType?.split(':').pop()
-    if (!usageType.includes(':'))
-      instance = usageType?.split('.').slice(1, 3).join('.')
-
-    if (instance.includes('db'))
-      instance = instance?.split('.').slice(1, 3).join('.')
-
-    const [instanceFamily, instanceSize] = instance.split('.')
-
-    if (!instance || !instanceSize) {
+    if (!instanceType || !instanceSize) {
       return {
         instancevCpu: 0,
         scopeThreeEmissions: 0,
