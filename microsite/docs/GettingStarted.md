@@ -14,7 +14,7 @@ For the best way of staying up to date with the project, you can create a standa
 
 Forking and cloning the repository is the best way to contribute to the project. Cloning the project will include all of the @cloud-carbon-footprint packages for local development and configuration. This path offers the option to create Pull Requests and to stay up to date with the latest changes.
 
-If you want to run project in a disposable development environment to see how Cloud Carbon Footprint works, and make changes, you can spin up an environment with Gitpod, a hosted service. This will be running a development environment on _their_ infrastructure - bear this in mind when testing it out with any cloud provider credentials.
+If you want to run project in a disposable development environment to see how Cloud Carbon Footprint works, and make changes, you can spin up an environment with Gitpod, a hosted service. This will be running a development environment on _Gitpod's_ infrastructure - bear this in mind when testing it out with any cloud provider credentials.
 
 ### Prerequisites
 
@@ -69,7 +69,7 @@ If you have any problems with the guided install, you can instead choose to do a
 
 ### Standard Install
 
-A standard install gives you more visibility and control around your particular setup.
+A standard installation gives you more visibility and control around your particular setup.
 
 ```
 yarn install
@@ -112,11 +112,11 @@ If you want to spin up an temporary development environment for Cloud Carbon Foo
 
 If you have an account on https://gitpod.io, you can open a workspace for the cloud carbon footprint project by following the link in your browser of the form `https://gitpod.io/#project-url-on-github`
 
-So for Cloud carbon footpring, you would visit:
+So for Cloud Carbon Footprint, you would visit:
 
 https://gitpod.io/#https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/
 
-This will run through the steps outlined in the documentation below install the necessary dependencies for the project, and open an instance of VS Code in your browser that you an work on immediately.
+This will run through the steps outlined in the documentation below and install the necessary dependencies for the project, then open an instance of VS Code in your browser that you can work on immediately.
 
 If you want to check out a specific branch, or open a workspace for specific pull request or issue, add the full url for the issue or pull request you are interested in. A workspace will be created with the corresponding branch already checked out, that you can share with others to pair in, and use git to commit changes, before pushing your changes to the relevant the branch. 
 
@@ -127,5 +127,5 @@ Shortly after you close the browser tab for your workspace, Gitpod will tear dow
 
 ### Using a self-hosted instance of gitpod
 
-If you need to, you can run also run gitpod on your own infrastructure, and use it to connect to source code repositories other than Github. [Doing so is well documented](https://www.gitpod.io/docs/self-hosted/latest), but beyond the scope of the docs for this project.
+If you need to, you can run also run Gitpod on your own infrastructure, and use it to connect to source code repositories other than GitHub. [Doing so is well documented](https://www.gitpod.io/docs/self-hosted/latest), but beyond the scope of the docs for this project.
 
