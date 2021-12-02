@@ -111,6 +111,10 @@ fileignoreconfig:
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
+- filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
+  checksum: 417f8779c31e5b885ef7249c8c2d132f90ed75d07ca59ac8713fbe5a20041615
+- filename: packages/azure/src/lib/ConsumptionManagement.ts
+  checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
   checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap

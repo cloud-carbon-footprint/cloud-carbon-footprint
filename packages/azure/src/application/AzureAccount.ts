@@ -17,6 +17,7 @@ import {
   MemoryEstimator,
   UnknownEstimator,
   CloudProviderAccount,
+  EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import { EstimationResult, Logger } from '@cloud-carbon-footprint/common'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
@@ -69,6 +70,9 @@ export default class AzureAccount extends CloudProviderAccount {
             ),
             new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
             new UnknownEstimator(),
+            new EmbodiedEmissionsEstimator(
+              AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+            ),
             new ConsumptionManagementClient(
               // eslint-disable-next-line
               // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.

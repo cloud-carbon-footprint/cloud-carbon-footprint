@@ -38,6 +38,8 @@ import {
   getPhysicalChips,
   accumulateCo2PerCost,
   EstimateClassification,
+  EmbodiedEmissionsEstimator,
+  EmbodiedEmissionsUsage,
 } from '@cloud-carbon-footprint/core'
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
@@ -83,6 +85,7 @@ export default class ConsumptionManagementService {
     private readonly networkingEstimator: NetworkingEstimator,
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
+    private readonly embodiedEmissionsEstimator: EmbodiedEmissionsEstimator,
     private readonly consumptionManagementClient: ConsumptionManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
@@ -244,6 +247,11 @@ export default class ConsumptionManagementService {
           true,
         )
 
+        const embodiedEmissions = this.getEmbodiedEmissions(
+          consumptionDetailRow,
+          emissionsFactors,
+        )
+
         // if memory usage, only return the memory footprint
         if (this.isMemoryUsage(consumptionDetailRow.usageType)) {
           return memoryFootprint
@@ -251,10 +259,12 @@ export default class ConsumptionManagementService {
 
         // if there exist any kilowatt hours from a memory footprint,
         // add the kwh and co2e for both compute and memory
-        if (memoryFootprint.kilowattHours) {
+        if (memoryFootprint.kilowattHours || embodiedEmissions.co2e) {
           accumulateCo2PerCost(
             EstimateClassification.COMPUTE,
-            computeFootprint.co2e + memoryFootprint.co2e,
+            computeFootprint.co2e +
+              memoryFootprint.co2e +
+              embodiedEmissions.co2e,
             consumptionDetailRow.cost,
             AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
           )
@@ -262,8 +272,13 @@ export default class ConsumptionManagementService {
           return {
             timestamp: memoryFootprint.timestamp,
             kilowattHours:
-              computeFootprint.kilowattHours + memoryFootprint.kilowattHours,
-            co2e: computeFootprint.co2e + memoryFootprint.co2e,
+              computeFootprint.kilowattHours +
+              memoryFootprint.kilowattHours +
+              embodiedEmissions.kilowattHours,
+            co2e:
+              computeFootprint.co2e +
+              memoryFootprint.co2e +
+              embodiedEmissions.co2e,
             usesAverageCPUConstant: computeFootprint.usesAverageCPUConstant,
           }
         }
@@ -711,5 +726,66 @@ export default class ConsumptionManagementService {
     return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
       ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
       : EstimateClassification.UNKNOWN
+  }
+
+  private getEmbodiedEmissions(
+    consumptionDetailRow: ConsumptionDetailRow,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ) {
+    const { instancevCpu, scopeThreeEmissions, largestInstancevCpu } =
+      this.getDataFromSeriesNameAndUsageType(
+        consumptionDetailRow.seriesName,
+        consumptionDetailRow.usageType,
+      )
+
+    const embodiedEmissionsUsage: EmbodiedEmissionsUsage = {
+      instancevCpu,
+      largestInstancevCpu,
+      usageTimePeriod: consumptionDetailRow.usageAmount / instancevCpu,
+      scopeThreeEmissions,
+    }
+
+    return this.embodiedEmissionsEstimator.estimate(
+      [embodiedEmissionsUsage],
+      consumptionDetailRow.region,
+      emissionsFactors,
+    )[0]
+  }
+
+  private getDataFromSeriesNameAndUsageType(
+    seriesName: string,
+    usageType: string,
+  ): {
+    [key: string]: number
+  } {
+    // check to see if the instance type is contained in the virtual machine mapping list
+    const { isValidInstanceType } = this.checkInstanceTypes(seriesName)
+    if (!isValidInstanceType)
+      return {
+        instancevCpu: 0,
+        scopeThreeEmissions: 0,
+        largestInstancevCpu: 0,
+      }
+
+    const instancevCpu =
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[0]
+
+    const scopeThreeEmissions =
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[2]
+
+    // grab the entire instance series that the instance type is classified within
+    const seriesInstanceTypes: number[][] = Object.values(
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName],
+    )
+
+    // grab the vcpu from the largest instance type in the family
+    const [largestInstancevCpu] =
+      seriesInstanceTypes[seriesInstanceTypes.length - 1]
+
+    return {
+      instancevCpu,
+      scopeThreeEmissions,
+      largestInstancevCpu,
+    }
   }
 }
