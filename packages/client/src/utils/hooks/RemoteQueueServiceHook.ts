@@ -55,31 +55,37 @@ const useRemoteService = (
           setError(DEFAULT_RESPONSE)
         }
       } finally {
-        setTimeout(() => setLoading({ queue: false, data: true }), 1000)
+        setTimeout(() => {
+          setLoading({ queue: false, data: true })
+          checkEstimates()
+        }, 1000)
       }
     }
 
-    // const checkEstimates = async () => {
-    //   console.log('Made it here')
-    //   setTimeout(async () => {
-    //     if (loading.data) {
-    //       try {
-    //         const res = await axios.get('/api/footprint')
-    //         setData(res.data)
-    //         if (res.status === 200) {
-    //           setLoading({ ...loading, data: false })
-    //         }
-    //       } catch (error) {
-    //         console.log(error.response)
-    //       }
-    //     } else {
-    //       return
-    //     }
-    //   }, 15000)
-    // }
+    const checkEstimates = async () => {
+      console.log('*** Polling Estimates ***', loading)
+      let estimatesStillInProgress = true
+      try {
+        const res = await axios.get('/api/footprint', {
+          params: {
+            start: start,
+            end: end,
+            region: region,
+            ignoreCache,
+          },
+        })
+        setData(res.data)
+        if (res.status === 200) {
+          setLoading({ ...loading, data: false })
+          estimatesStillInProgress = false
+        }
+      } catch (error) {
+        console.log(error.response)
+      }
+      if (estimatesStillInProgress) setTimeout(await checkEstimates, 20000)
+    }
 
     queueEstimates()
-    // .then(() => checkEstimates())
   }, [end, start, region, ignoreCache, setError])
 
   handleApiError(error)

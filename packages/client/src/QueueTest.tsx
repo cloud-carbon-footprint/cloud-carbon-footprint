@@ -6,6 +6,7 @@ import { useRemoteQueueService } from './utils/hooks'
 import config from './ConfigLoader'
 import moment, { unitOfTime } from 'moment'
 import { ReactElement } from 'react'
+import { pluck } from 'ramda'
 
 const QueueTest = (): ReactElement => {
   // Setup Queue Hook
@@ -27,7 +28,20 @@ const QueueTest = (): ReactElement => {
     return <h1>Loading</h1>
   }
 
-  return <h1>{data === [] ? 'Yes' : 'No'}</h1>
+  if (typeof data === 'string') return <h1>{data}</h1>
+
+  return (
+    <>
+      <h1> Data Loaded</h1>
+      <ul>
+        {pluck('timestamp', data)
+          .flat()
+          .map((timestamp, index) => (
+            <li key={index}>{timestamp}</li>
+          ))}
+      </ul>
+    </>
+  )
 }
 
 export default QueueTest

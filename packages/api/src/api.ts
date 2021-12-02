@@ -41,6 +41,7 @@ const FootprintApiMiddleware = async function (
     const jobIsCompleted = await footprintJob?.isCompleted()
     console.log('*** Footprint Job Exists? ***', !!footprintJob)
     console.log('*** Job is Complete? ***', jobIsCompleted)
+    console.log('*** Job Status ***', footprintJob?.status)
 
     if (footprintJob && jobIsCompleted) {
       // const estimationResults = await footprintApp.getCostAndEstimates(
