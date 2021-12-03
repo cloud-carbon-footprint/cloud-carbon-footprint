@@ -28,15 +28,16 @@ export default class ConsumptionDetailRow extends BillingDataRow {
 
     super(consumptionDetails)
     this.usageType = this.parseUsageType()
-    this.vCpuHours = this.usageAmount * this.getVCpus()
     this.seriesName = this.getSeriesFromInstanceType()
+    this.vCpuHours = this.usageAmount * this.getVCpus()
     this.region = this.getRegionFromResourceLocation()
   }
 
   public getVCpus(): number {
-    const seriesName = this.getSeriesFromInstanceType()
     return (
-      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[this.usageType]?.[0] ||
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[this.seriesName]?.[
+        this.usageType
+      ]?.[0] ||
       VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[this.usageType]?.[0] ||
       1
     )

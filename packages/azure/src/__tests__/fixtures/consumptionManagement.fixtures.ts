@@ -671,13 +671,12 @@ export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseWit
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
     },
-    /*
     {
       date: new Date('2020-11-02'),
       quantity: 0.250004,
-      cost: 10,
+      cost: 15,
       meterDetails: {
-        meterName: 'D4as v4 Spot',
+        meterName: 'DS11-1 v2',
         unitOfMeasure: '1 Hour',
         meterCategory: 'Virtual Machines',
       },
@@ -687,69 +686,15 @@ export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseWit
     },
     {
       date: new Date('2020-11-02'),
-      quantity: 7,
-      cost: 10,
+      quantity: 17,
+      cost: 5,
       meterDetails: {
-        meterName: 'F1',
-        unitOfMeasure: '1 Hour',
-        meterCategory: 'Azure App Service',
+        meterName: 'D2 v2',
+        unitOfMeasure: '10 Hour',
+        meterCategory: 'Virtual Machines',
       },
       subscriptionId: 'test-subscription-id',
       subscriptionName: 'test-subscription',
-      resourceLocation: 'CentralUS',
+      resourceLocation: 'uksouth',
     },
-    {
-      date: new Date('2020-11-03'),
-      quantity: 10,
-      cost: 12,
-      meterDetails: {
-        meterName: 'vCPU Duration',
-        unitOfMeasure: '1000 Hours',
-        meterCategory: 'Container Instances',
-      },
-      subscriptionId: 'test-subscription-id',
-      subscriptionName: 'test-subscription',
-      resourceLocation: 'SouthCentralUS',
-    },
-    {
-      date: new Date('2020-11-03'),
-      quantity: 12,
-      cost: 12,
-      meterDetails: {
-        meterName: '2 vCore',
-        unitOfMeasure: '100 Hours',
-        meterCategory: 'Azure Database for MySQL',
-      },
-      subscriptionId: 'test-subscription-id',
-      subscriptionName: 'test-subscription',
-      resourceLocation: 'Unknown',
-    },
-    {
-      date: new Date('2020-11-03'),
-      quantity: 12,
-      cost: 12,
-      meterDetails: {
-        meterName: '1-2 vCPU VM Support',
-        unitOfMeasure: '100 Hours',
-        meterCategory: 'Virtual Machines Licenses',
-      },
-      subscriptionId: 'test-subscription-id',
-      subscriptionName: 'test-subscription',
-      resourceLocation: 'ukwest',
-    },
-    {
-      date: new Date('2020-11-03'),
-      quantity: 12,
-      cost: 12,
-      meterDetails: {
-        meterName: 'VpnGw1',
-        unitOfMeasure: '100 Hours',
-        meterCategory: 'VPN Gateway',
-      },
-      subscriptionId: 'test-subscription-id',
-      subscriptionName: 'test-subscription',
-      resourceLocation: 'Unknown',
-    },
-
-     */
   ]

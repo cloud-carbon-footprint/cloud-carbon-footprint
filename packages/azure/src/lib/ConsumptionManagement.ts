@@ -46,6 +46,7 @@ import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
+  VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
 } from './VirtualMachineTypes'
 import {
   COMPUTE_USAGE_UNITS,
@@ -738,6 +739,13 @@ export default class ConsumptionManagementService {
         consumptionDetailRow.usageType,
       )
 
+    if (!instancevCpu || !scopeThreeEmissions || !largestInstancevCpu)
+      return {
+        timestamp: new Date(),
+        kilowattHours: 0,
+        co2e: 0,
+      }
+
     const embodiedEmissionsUsage: EmbodiedEmissionsUsage = {
       instancevCpu,
       largestInstancevCpu,
@@ -758,29 +766,29 @@ export default class ConsumptionManagementService {
   ): {
     [key: string]: number
   } {
-    // check to see if the instance type is contained in the virtual machine mapping list
-    const { isValidInstanceType } = this.checkInstanceTypes(seriesName)
-    if (!isValidInstanceType)
-      return {
-        instancevCpu: 0,
-        scopeThreeEmissions: 0,
-        largestInstancevCpu: 0,
-      }
-
     const instancevCpu =
-      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[0]
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[0] ||
+      VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[usageType]?.[0]
 
     const scopeThreeEmissions =
-      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[2]
+      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[2] ||
+      VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[usageType]?.[2]
 
-    // grab the entire instance series that the instance type is classified within
-    const seriesInstanceTypes: number[][] = Object.values(
-      VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName],
-    )
+    let largestInstancevCpu
+    if (seriesName) {
+      // grab the entire instance series that the instance type is classified within
+      const seriesInstanceTypes: number[][] = Object.values(
+        VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName],
+      )
 
-    // grab the vcpu from the largest instance type in the family
-    const [largestInstancevCpu] =
-      seriesInstanceTypes[seriesInstanceTypes.length - 1]
+      // grab the vcpu from the largest instance type in the family
+      ;[largestInstancevCpu] =
+        seriesInstanceTypes[seriesInstanceTypes.length - 1]
+    } else {
+      ;[largestInstancevCpu] = [
+        VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[usageType]?.[0],
+      ]
+    }
 
     return {
       instancevCpu,
