@@ -58,32 +58,39 @@ export default class AzureAccount extends CloudProviderAccount {
       )
     }
 
-    const estimationResults = await Promise.all(
-      subscriptions.map(
-        async (subscription: SubscriptionModels.Subscription) => {
-          const consumptionManagementService = new ConsumptionManagementService(
-            new ComputeEstimator(),
-            new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-            new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-            new NetworkingEstimator(
-              AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT,
-            ),
-            new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-            new UnknownEstimator(),
-            new EmbodiedEmissionsEstimator(
-              AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
-            ),
-            new ConsumptionManagementClient(
-              // eslint-disable-next-line
-              // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
-              this.credentials,
-              subscription.subscriptionId,
-            ),
-          )
-          return consumptionManagementService.getEstimates(startDate, endDate)
-        },
-      ),
-    )
+    const estimationResults = []
+
+    const processSubscription = async (
+      subscription: SubscriptionModels.Subscription,
+    ) => {
+      const consumptionManagementService = new ConsumptionManagementService(
+        new ComputeEstimator(),
+        new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+        new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+        new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+        new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        new UnknownEstimator(),
+        new EmbodiedEmissionsEstimator(
+          AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+        ),
+        new ConsumptionManagementClient(
+          // eslint-disable-next-line
+          // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+          this.credentials,
+          subscription.subscriptionId,
+        ),
+      )
+      return consumptionManagementService.getEstimates(startDate, endDate)
+    }
+
+    for (const subscription of subscriptions) {
+      this.logger.info(`Getting data for ${subscription.displayName} ...`)
+      const subscriptionEstimationResult = await processSubscription(
+        subscription,
+      )
+      estimationResults.push(subscriptionEstimationResult)
+    }
+
     return estimationResults.flat()
   }
 }
