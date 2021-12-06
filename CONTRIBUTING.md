@@ -87,7 +87,7 @@ $ git push origin/trunk
 
 ### Forks
 
-If you are a core contributor, you may want to fetch changes from a forked repository. To make that easier, we have a script that will add the new remote and checkout the fork's brach. It can be invoked with:
+If you are a core contributor, you may want to fetch changes from a forked repository. To make that easier, we have a script that will add the new remote and checkout the fork's branch. It can be invoked with:
 
 ```
 $ ./scripts/remote_branch.sh remote-name remote-branch-name
