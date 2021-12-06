@@ -1315,3 +1315,26 @@ export const athenaMockGetQueryResultsWithNoUsageAmount: Athena.GetQueryResultsO
       Rows: [queryResultsHeaders, ...queryResultsDataSeventeen],
     },
   }
+
+const queryResultsDataEighteen = [
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE2-BoxUsage:ml.m5.xlarge' }, // usage type
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '1' },
+      { VarCharValue: '8' },
+      { VarCharValue: '5' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithUnknownInstanceType: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataEighteen],
+    },
+  }
