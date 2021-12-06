@@ -853,7 +853,7 @@ describe('Azure Consumption Management Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Returns estimates for Compute with Embodied Emissions', async () => {
+  it('Returns estimates for Compute with Embodied Emissions, and modern usage type', async () => {
     mockUsageDetails.list.mockResolvedValue(
       mockConsumptionManagementResponseNine,
     )
@@ -914,6 +914,17 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'uksouth', //unknown usage
+          },
+          {
+            accountId: 'test-subscription-id',
+            accountName: 'test-subscription',
+            cloudProvider: 'AZURE',
+            co2e: 0.000013141083294251028,
+            cost: 5,
+            kilowattHours: 0.03160775768000632,
+            region: 'EastUS',
+            serviceName: 'Virtual Machines',
+            usesAverageCPUConstant: false, //unknown usage
           },
         ],
       },
