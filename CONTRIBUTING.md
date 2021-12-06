@@ -85,6 +85,14 @@ $ git rebase upstream/trunk
 $ git push origin/trunk
 ```
 
+### Forks
+
+If you are a core contributor, you may want to fetch changes from a forked repository. To make that easier, we have a script that will add the new remote and checkout the fork's brach. It can be invoked with:
+
+```
+$ ./scripts/remote_branch.sh remote-name remote-branch-name
+```
+
 ### Code
 
 Most pull requests opened against the `cloud-carbon-footprint/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the packages/api/ folder or the documentation.
