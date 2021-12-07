@@ -630,9 +630,11 @@ export default class CostAndUsageReports {
   private getDataFromInstanceType(instanceType: string): {
     [key: string]: number
   } {
-    const [instanceFamily, instanceSize] = instanceType.split('.')
+    const instanceTypeDetails = instanceType.split('.')
+    const instanceSize = instanceTypeDetails[instanceTypeDetails.length - 1]
+    const instanceFamily = instanceTypeDetails[instanceTypeDetails.length - 2]
 
-    if (!instanceType || !instanceSize) {
+    if (!instanceSize || !instanceFamily) {
       return {
         instancevCpu: 0,
         scopeThreeEmissions: 0,

@@ -8,25 +8,17 @@ import {
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
   VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
 } from './VirtualMachineTypes'
-import { LegacyUsageDetail } from '@azure/arm-consumption/esm/models'
+import {
+  LegacyUsageDetail,
+  ModernUsageDetail,
+} from '@azure/arm-consumption/esm/models'
 import { AZURE_REGIONS } from './AzureRegions'
 
 export default class ConsumptionDetailRow extends BillingDataRow {
-  constructor(usageDetail: LegacyUsageDetail) {
-    const consumptionDetails = {
-      cloudProvider: 'AZURE',
-      accountId: usageDetail.subscriptionId,
-      accountName: usageDetail.subscriptionName,
-      timestamp: new Date(usageDetail.date),
-      usageType: usageDetail.meterDetails.meterName,
-      usageUnit: usageDetail.meterDetails.unitOfMeasure,
-      usageAmount: usageDetail.quantity,
-      serviceName: usageDetail.meterDetails.meterCategory,
-      cost: usageDetail.cost,
-      region: usageDetail.resourceLocation,
-    }
-
+  constructor(usageDetail: LegacyUsageDetail | ModernUsageDetail) {
+    const consumptionDetails = getConsumptionDetails(usageDetail)
     super(consumptionDetails)
+
     this.usageType = this.parseUsageType()
     this.seriesName = this.getSeriesFromInstanceType()
     this.vCpuHours = this.usageAmount * this.getVCpus()
@@ -71,5 +63,37 @@ export default class ConsumptionDetailRow extends BillingDataRow {
       }
     }
     return matchingSeriesName
+  }
+}
+
+const getConsumptionDetails = (
+  usageDetail: LegacyUsageDetail | ModernUsageDetail,
+) => {
+  const consumptionDetails: Partial<BillingDataRow> = {
+    cloudProvider: 'AZURE',
+    accountName: usageDetail.subscriptionName,
+    timestamp: new Date(usageDetail.date),
+    usageAmount: usageDetail.quantity,
+    region: usageDetail.resourceLocation,
+  }
+
+  if (usageDetail.kind === 'modern') {
+    return {
+      ...consumptionDetails,
+      accountId: usageDetail.subscriptionGuid,
+      usageType: usageDetail.meterName,
+      usageUnit: usageDetail.unitOfMeasure,
+      serviceName: usageDetail.meterCategory,
+      cost: usageDetail.costInUSD,
+    }
+  } else {
+    return {
+      ...consumptionDetails,
+      accountId: usageDetail.subscriptionId,
+      usageType: usageDetail.meterDetails.meterName,
+      usageUnit: usageDetail.meterDetails.unitOfMeasure,
+      serviceName: usageDetail.meterDetails.meterCategory,
+      cost: usageDetail.cost,
+    }
   }
 }

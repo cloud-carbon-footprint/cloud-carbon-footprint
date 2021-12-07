@@ -42,6 +42,7 @@ import {
   athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService,
   athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions,
   athenaMockGetQueryResultsWithNoUsageAmount,
+  athenaMockGetQueryResultsWithUnknownInstanceType,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
@@ -1504,6 +1505,49 @@ describe('CostAndUsageReports Service', () => {
         ],
       },
     ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for instance types with additional prefix', async () => {
+    // Example Instance Type: ml.m5.xlarge or db.t2.micro
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithUnknownInstanceType)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000012303282883723591,
+            cost: 5,
+            kilowattHours: 0.027950127749623667,
+            region: 'us-east-2',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+        ],
+      },
+    ]
+
     expect(result).toEqual(expectedResult)
   })
 
