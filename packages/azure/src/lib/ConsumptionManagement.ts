@@ -171,13 +171,13 @@ export default class ConsumptionManagementService {
       } catch (e) {
         // check to see if error is from exceeding the rate limit and grab retry time value
         const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
-        const rateLimitRemaingValue = this.getConsumptionTenantValue(
+        const rateLimitRemainingValue = this.getConsumptionTenantValue(
           e,
           'remaining',
         )
         const errorMsg =
           'Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason:'
-        if (rateLimitRemaingValue == 0) {
+        if (rateLimitRemainingValue == 0) {
           this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
           this.consumptionManagementLogger.info(
             `Retrying after ${retryAfterValue} seconds`,
@@ -205,7 +205,10 @@ export default class ConsumptionManagementService {
     return e.response.headers._headersMap[tenantHeaders[type]]?.value
   }
 
-  private async getConsumptionUsageDetails(startDate: Date, endDate: Date) {
+  private async getConsumptionUsageDetails(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<UsageDetailsListResult> {
     try {
       const options = {
         expand: 'properties/meterDetails',
@@ -216,9 +219,24 @@ export default class ConsumptionManagementService {
         options,
       )
     } catch (e) {
-      throw new Error(
-        `Azure ConsumptionManagementClient.usageDetails.list failed. Reason: ${e.message}`,
+      // check to see if error is from exceeding the rate limit and grab retry time value
+      const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
+      const rateLimitRemainingValue = this.getConsumptionTenantValue(
+        e,
+        'remaining',
       )
+      const errorMsg =
+        'Azure ConsumptionManagementClient.usageDetails.list failed. Reason:'
+      if (rateLimitRemainingValue == 0) {
+        this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
+        this.consumptionManagementLogger.info(
+          `Retrying after ${retryAfterValue} seconds`,
+        )
+        await wait(retryAfterValue * 1000)
+        return this.getConsumptionUsageDetails(startDate, endDate)
+      } else {
+        throw new Error(`${errorMsg} ${e.message}`)
+      }
     }
   }
 

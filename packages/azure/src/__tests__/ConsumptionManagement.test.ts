@@ -1118,7 +1118,18 @@ describe('Azure Consumption Management Service', () => {
 
   it('Throws an error when usageDetails.list fails', async () => {
     const errorMessage = 'Something went wrong!'
-    const testError = new Error(errorMessage)
+    const testError = {
+      message: errorMessage,
+      response: {
+        headers: {
+          _headersMap: {
+            'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests': {
+              value: 10,
+            },
+          },
+        },
+      },
+    }
     mockUsageDetails.list.mockRejectedValue(testError)
 
     const consumptionManagementService = new ConsumptionManagementService(
