@@ -13,7 +13,7 @@ jobs:
     name: Create Changeset PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - name: Install Dependencies
         run: yarn --immutable
       - name: Create Release Pull Request
