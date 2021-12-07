@@ -45,8 +45,8 @@ import {
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING,
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
-  VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
 } from './VirtualMachineTypes'
 import {
   COMPUTE_USAGE_UNITS,
@@ -232,8 +232,11 @@ export default class ConsumptionManagementService {
     )
     switch (consumptionDetailRow.usageUnit) {
       case COMPUTE_USAGE_UNITS.HOUR_1:
+      case COMPUTE_USAGE_UNITS.HOUR_10:
       case COMPUTE_USAGE_UNITS.HOURS_10:
+      case COMPUTE_USAGE_UNITS.HOUR_100:
       case COMPUTE_USAGE_UNITS.HOURS_100:
+      case COMPUTE_USAGE_UNITS.HOUR_1000:
       case COMPUTE_USAGE_UNITS.HOURS_1000:
         const computeFootprint = this.getComputeFootprintEstimate(
           consumptionDetailRow,
@@ -768,11 +771,11 @@ export default class ConsumptionManagementService {
   } {
     const instancevCpu =
       VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[0] ||
-      VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[usageType]?.[0]
+      VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING[usageType]?.[0]
 
     const scopeThreeEmissions =
       VIRTUAL_MACHINE_TYPE_SERIES_MAPPING[seriesName]?.[usageType]?.[2] ||
-      VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[usageType]?.[2]
+      VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING[usageType]?.[3]
 
     let largestInstancevCpu
     if (seriesName) {
@@ -785,9 +788,8 @@ export default class ConsumptionManagementService {
       ;[largestInstancevCpu] =
         seriesInstanceTypes[seriesInstanceTypes.length - 1]
     } else {
-      ;[largestInstancevCpu] = [
-        VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[usageType]?.[0],
-      ]
+      largestInstancevCpu =
+        VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING[usageType]?.[2]
     }
 
     return {

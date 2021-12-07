@@ -5,6 +5,7 @@
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
 
 import {
+  VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING,
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
   VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
 } from './VirtualMachineTypes'
@@ -31,6 +32,9 @@ export default class ConsumptionDetailRow extends BillingDataRow {
         this.usageType
       ]?.[0] ||
       VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING[this.usageType]?.[0] ||
+      VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING[
+        this.usageType
+      ]?.[0] ||
       1
     )
   }

@@ -37,8 +37,11 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
 
 export enum COMPUTE_USAGE_UNITS {
   HOUR_1 = '1 Hour',
+  HOUR_10 = '10 Hour', //do for the others maybe
   HOURS_10 = '10 Hours',
+  HOUR_100 = '100 Hour',
   HOURS_100 = '100 Hours',
+  HOUR_1000 = '1000 Hour',
   HOURS_1000 = '1000 Hours',
 }
 
