@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import * as _ from 'lodash'
+import { equals } from 'ramda'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import { DateRange } from 'Types'
 
@@ -23,7 +23,7 @@ const filterBy = (
   defaultRange: DateRange,
 ): EstimationResult[] => {
   if (!range.min || !range.max) return data
-  if (_.isEqual(range, defaultRange)) return data
+  if (equals(range, defaultRange)) return data
 
   const min = formatDateToTime(range.min)
   const max = formatDateToTime(range.max)

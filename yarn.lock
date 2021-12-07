@@ -2223,7 +2223,6 @@ __metadata:
     "@testing-library/react-hooks": ^7.0.0
     "@testing-library/user-event": ^13.1.9
     "@types/jest": ^27.0.1
-    "@types/lodash": ^4.14.169
     "@types/mockdate": ^3.0.0
     "@types/node": ^16.0.1
     "@types/ramda": ^0.27.40
@@ -2249,7 +2248,6 @@ __metadata:
     jest: 26.6.0
     json-server: ^0.17.0
     lint-staged: ^11.0.1
-    lodash: ^4.17.21
     mockdate: ^3.0.5
     moment: ^2.29.1
     prettier: ^2.3.0
@@ -5124,7 +5122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.169, @types/lodash@npm:^4.14.72":
+"@types/lodash@npm:^4.14.72":
   version: 4.14.169
   resolution: "@types/lodash@npm:4.14.169"
   checksum: 78c9e49f4c9d21e72bdf5d7f64da3a2db4daad9e8b72cbd72605dacfddec49038e0ddc21e6646e169e78d4f365fb8abb34a03dbb29cbb1112f332adb81be3e4f

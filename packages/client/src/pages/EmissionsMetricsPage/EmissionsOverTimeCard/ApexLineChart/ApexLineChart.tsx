@@ -3,6 +3,7 @@
  */
 
 import React, { FunctionComponent, useEffect } from 'react'
+import { equals } from 'ramda'
 import { renderToStaticMarkup } from 'react-dom/server'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
@@ -14,7 +15,6 @@ import { getChartColors } from 'utils/themes'
 import { sumServiceTotals, getMaxOfDataSeries } from 'utils/helpers'
 import { filterBy, sortByDate } from './helpers'
 import CustomTooltip from './CustomTooltip'
-import * as _ from 'lodash'
 
 type LegendToggle = {
   [key: string]: boolean
@@ -68,12 +68,12 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
         : null,
     }
 
-    if (!_.isEqual(chartData, newSortedData)) setChartData(newSortedData)
+    if (!equals(chartData, newSortedData)) setChartData(newSortedData)
     if (
       newDefaultRange.min instanceof Date &&
       newDefaultRange.max instanceof Date
     ) {
-      if (!_.isEqual(defaultRange, newDefaultRange)) {
+      if (!equals(defaultRange, newDefaultRange)) {
         setDateRange(newDefaultRange)
         setDefaultRange(newDefaultRange)
       }
