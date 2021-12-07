@@ -151,7 +151,7 @@ export default class AWSAccount extends CloudProviderAccount {
     return costAndUsageReportsService.getEstimates(startDate, endDate)
   }
 
-  getCostAndUsageReportsDataFromInputData(
+  static getCostAndUsageReportsDataFromInputData(
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     const costAndUsageReportsService = new CostAndUsageReports(

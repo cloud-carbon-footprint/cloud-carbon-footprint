@@ -48,7 +48,7 @@ export default async function createLookupTable(
     const awsInputData: LookupTableInput[] = await csv().fromFile(awsInputFile)
     validateInputData(awsInputData)
     const awsEstimatesData: LookupTableOutput[] =
-      await new App().getAwsEstimatesFromInputData(awsInputData)
+      new App().getAwsEstimatesFromInputData(awsInputData)
     await writeToCsv(awsOutputFile, awsEstimatesData)
   }
 
@@ -56,7 +56,7 @@ export default async function createLookupTable(
     const gcpInputData: LookupTableInput[] = await csv().fromFile(gcpInputFile)
     validateInputData(gcpInputData)
     const gcpEstimatesData: LookupTableOutput[] =
-      await new App().getGcpEstimatesFromInputData(gcpInputData)
+      new App().getGcpEstimatesFromInputData(gcpInputData)
     await writeToCsv(gcpOutputFile, gcpEstimatesData)
   }
 }
