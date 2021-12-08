@@ -33,7 +33,7 @@ jobs:
           node-version: 12.x
 
       - name: Microsite yarn install
-        run: yarn
+        run: yarn install --immutable
         working-directory: microsite
 
       - name: Build microsite
