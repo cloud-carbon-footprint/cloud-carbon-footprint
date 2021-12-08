@@ -1,5 +1,29 @@
 # @cloud-carbon-footprint/app
 
+## 0.3.1
+
+### Patch Changes
+
+- 4238d3b8: Fixes bug with Create Lookup Table requiring credentials for AWS input
+
+  For Create-App updates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/f8732281a02fe087d09343ffd4531ebe688fc655).
+
+- 4238d3b8: Cache produces different data depending on which page is loaded
+
+  For changes to the create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/70ae49e00e3d0bb3fd5c9e439a6a309bc9f04381)
+
+- 4238d3b8: Removes logic that changes start/end dates to first or last of group by period, so API response is accurate
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+  - @cloud-carbon-footprint/aws@0.6.0
+  - @cloud-carbon-footprint/gcp@0.5.0
+  - @cloud-carbon-footprint/azure@0.5.0
+
 ## 0.3.0
 
 ### Minor Changes
