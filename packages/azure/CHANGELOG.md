@@ -1,18 +1,5 @@
 # @cloud-carbon-footprint/azure
 
-## 0.5.0
-
-### Minor Changes
-
-- 504a5dc1: changeset: Adds embodied emissions to the estimations for AWS and Azure
-
-### Patch Changes
-
-- Updated dependencies [91f88ab9]
-- Updated dependencies [560b4b70]
-- Updated dependencies [504a5dc1]
-  - @cloud-carbon-footprint/core@0.12.0
-
 ## 0.4.1
 
 ### Patch Changes
