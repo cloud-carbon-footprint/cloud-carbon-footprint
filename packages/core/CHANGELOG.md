@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/core
 
+## 0.12.0
+
+### Minor Changes
+
+- f06b4775: "Add embodied emissions to the estimations for GCP"
+
+### Patch Changes
+
+- f06b4775: Bug fix in core package to handle no estimates and implementation of terraform deployments for aws
+- f06b4775: changeset: Adds embodied emissions to the estimations for AWS and Azure
+
 ## 0.11.1
 
 ### Patch Changes
