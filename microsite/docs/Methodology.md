@@ -27,9 +27,7 @@ estimated energy (Watt-Hours) and greenhouse gas emissions expressed as carbon d
 display these visualizations in a dashboard for developers, sustainability leaders and other stakeholders in an
 organization to view and take action. It currently supports AWS, Google Cloud and Microsoft Azure.
 
-**We calculate our CO2e estimates with this formula:**
-<br />
-*Total CO2e = operational emissions + embodied Emissions*
+**We calculate our CO2e estimates with this formula:**<br />*Total CO2e = operational emissions + embodied Emissions*
 
 Where:
 
