@@ -8,19 +8,23 @@ Your Google Cloud Account needs to be configured to export Billing Data to BigQu
 
 1.  Ensure you have a GCP Service Account with the permission to start BigQuery jobs and read Bigquery job results. Learn more about GCP Service Accounts [here.](https://cloud.google.com/iam/docs/service-accounts)
 
-2.  Create and download a JSON private file for this Service Account to your local filesystem, and make sure to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. Learn more about this authentication method [here.](https://cloud.google.com/docs/authentication/getting-started)
+2.  Ensure that your enviroment is configured to authenticate with Google Cloud as described [here](https://cloud.google.com/docs/authentication/getting-started).
 
-    - Note: make sure you use the full path for this environment variable, eg `/Users/<user>/path/to/credential`
+    - If you do download a service accout key, make sure `GOOGLE_APPLICATION_CREDENTIALS` points to full path of the service account key file.
 
-3.  Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here.](https://cloud.google.com/billing/docs/how-to/export-data-bigquery)
+3.  Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here](https://cloud.google.com/billing/docs/how-to/export-data-bigquery).
 
-4.  Configure environmental variables for the api and client.
+4.  Configure environmental variables for the api and client:
 
-    - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data'' approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packgages/api/.env` file.
+    - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data'' approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packages/api/.env` file.
 
     - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [client/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
     - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROVIDERS` array.
+
+    -  `GCP_BIG_QUERY_TABLE` is the Table ID of the billing export data in the format: `PROJECT_ID.DATASET_NAME.TABLE_NAME`. Don't forget to replace the colon in the table id if you copy it from BigQuery.
+    -  `GCP_BILLING_PROJECT_ID` is the project id for the project that owns the Billing Export dataset.
+    -  `GCP_BILLING_PROJECT_NAME` is the project name for the project that owns the Billing Export dataset.
 
 5.  Finally, start up the application:
 
