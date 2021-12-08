@@ -1,20 +1,5 @@
 # @cloud-carbon-footprint/cli
 
-## 1.1.1
-
-### Patch Changes
-
-- 9a5e8299: Fixes bug with Create Lookup Table requiring credentials for AWS input
-
-  For Create-App updates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/f8732281a02fe087d09343ffd4531ebe688fc655).
-
-- 560b4b70: "Add embodied emissions to the estimations for GCP"
-- 504a5dc1: changeset: Adds embodied emissions to the estimations for AWS and Azure
-- Updated dependencies [9a5e8299]
-- Updated dependencies [c6b0566a]
-- Updated dependencies [2cdd5dac]
-  - @cloud-carbon-footprint/app@0.3.1
-
 ## 1.1.0
 
 ### Minor Changes
