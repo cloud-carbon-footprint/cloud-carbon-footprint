@@ -73,6 +73,8 @@ fileignoreconfig:
   checksum: f4b232851337efec90c4a88271cdf4cde2a9d732f0f69824223f1dcf7c6b8aaa
 - filename: microsite/docs/CreatingALookupTable.md
   checksum: 71905a04532ef57e9eab56fefd1c1e43dfd48fabb928a044bbb7c5100640fe5c
+- filename: microsite/docs/EmbodiedEmissions.md
+  checksum: b4632f1cedf090cc50021e2a45c57d25d81c73ddf4cdba517e21f28a9a4f549d
 - filename: microsite/docs/RunWithDocker.md
   checksum: 9a603a0351717c055caf3529fe8aecb8a4ffb509ac598d089ed2a28ebd2d83ae
 - filename: microsite/src/components/differentiator.js
@@ -112,7 +114,6 @@ fileignoreconfig:
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: 710dffbbb9109a0c6e5e2717b1bbeae910342209ace4e3c54cd95fc6c6f6332b
   checksum: 29b7a2e1b5debbee7ec4249bd4827c4785288c9d8860092332935ffa755e152d
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
