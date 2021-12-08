@@ -28,7 +28,7 @@ display these visualizations in a dashboard for developers, sustainability leade
 organization to view and take action. It currently supports AWS, Google Cloud and Microsoft Azure.
 
 **We calculate our CO2e estimates with this formula:**
-<br>
+<br />
 *Total CO2e = operational emissions + embodied Emissions*
 
 Where:

@@ -15,13 +15,13 @@ In our implementation, we leverage this formula provided by the SCI standard:
 Where:
 
 `TE = Total Embodied Emissions, the sum of Life Cycle Assessment(LCA) emissions for all hardware components`
-<br>
+<br />
 `TR = Time Reserved, the length of time the hardware is reserved for use by the software`
-<br>
+<br />
 `EL = Expected Lifespan, the anticipated time that the equipment will be installed`
-<br>
+<br />
 `RR = Resources Reserved, the number of resources reserved for use by the software.`
-<br>
+<br />
 `TR = Total Resources, the total number of resources available.`
 
 In order to get **TE** for each specified hardware per cloud provider, we leveraged section 5 of the methodology presented in the Teads Engineering article [“Building an AWS EC2 Carbon Emissions Dataset”](https://medium.com/teads-engineering/building-an-aws-ec2-carbon-emissions-dataset-3f0fd76c98ac) by Benjamin Davy, to estimate the manufacturing emissions for each hardware. In the case of AWS, we directly use the total embodied emissions calculated by the Teads team as they have gathered additional information about the underlying hardware provisioned for each instance type. For GCP and Azure, we have calculated the total embodied emissions using the underlying microarchitecture or microarchitectures that could be used for a given instance or machine type. We welcome any contributions to help us gain further accuracy like AWS, which we believe should be possible at least in the case of Azure. We have published this embodied emissions data in [this spreadsheet](https://docs.google.com/spreadsheets/d/1k-6JtneEu4E9pXQ9QMCXAfyntNJl8MnV2YzO4aKHh-0/edit?usp=sharing), and will be using the Cloud Carbon Footprint [ccf-coefficients repository](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients) as a library of the most up to date embodied emissions data for each cloud provider.
