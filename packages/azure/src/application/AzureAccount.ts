@@ -7,6 +7,7 @@ import { SubscriptionClient } from '@azure/arm-subscriptions'
 import { Subscription } from '@azure/arm-subscriptions/esm/models'
 import { ApplicationTokenCredentials } from '@azure/ms-rest-nodeauth'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
+import R from 'ramda'
 
 import {
   ComputeEstimator,
@@ -56,24 +57,31 @@ export default class AzureAccount extends CloudProviderAccount {
       )
     }
 
-    const estimationResults = await Promise.all(
-      subscriptions.map(async (subscription: Subscription) => {
-        try {
-          this.logger.info(`Getting data for ${subscription.displayName}...`)
-          return await this.getDataForSubscription(
-            startDate,
-            endDate,
-            subscription.subscriptionId,
-          )
-        } catch (e) {
-          this.logger.warn(
-            `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
-          )
-          return []
-        }
-      }),
-    )
-    return estimationResults.flat()
+    const estimationResults = []
+    const subscriptionChunks = R.splitEvery(10, subscriptions)
+    console.time()
+    for (const subscriptions of subscriptionChunks) {
+      const subscriptionEstimationResults = await Promise.all(
+        subscriptions.map(async (subscription: Subscription) => {
+          try {
+            this.logger.info(`Getting data for ${subscription.displayName}...`)
+            return await this.getDataForSubscription(
+              startDate,
+              endDate,
+              subscription.subscriptionId,
+            )
+          } catch (e) {
+            this.logger.warn(
+              `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
+            )
+            return []
+          }
+        }),
+      )
+      estimationResults.push(subscriptionEstimationResults)
+    }
+    console.timeEnd()
+    return R.flatten(estimationResults)
   }
   private async getDataForSubscription(
     startDate: Date,
