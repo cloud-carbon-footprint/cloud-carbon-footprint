@@ -10,7 +10,7 @@ Your Google Cloud Billing Account needs to be configured to export Billing Data 
 
 2.  Ensure that your enviroment is configured to authenticate with Google Cloud as described [here](https://cloud.google.com/docs/authentication/getting-started).
 
-    - If you do download a service accout key, make sure th environment variable `GOOGLE_APPLICATION_CREDENTIALS` points to the full path of the service account key file.
+    - If you do download a service accout key, make sure the environment variable `GOOGLE_APPLICATION_CREDENTIALS` points to the full path of the service account key file.
 
 3.  Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here](https://cloud.google.com/billing/docs/how-to/export-data-bigquery).
 
