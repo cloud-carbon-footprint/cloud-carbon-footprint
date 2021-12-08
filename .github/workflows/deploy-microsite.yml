@@ -30,7 +30,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Microsite yarn install
-        run: yarn install --immutable
+        run: yarn
         working-directory: microsite
 
       - name: Build microsite
