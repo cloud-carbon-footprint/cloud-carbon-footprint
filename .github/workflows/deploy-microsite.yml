@@ -27,13 +27,14 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - name: Setup Node.js 12.x
-        uses: actions/setup-node@v2
+      - name: use node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org/
 
       - name: Microsite yarn install
-        run: yarn install --immutable
+        run: yarn
         working-directory: microsite
 
       - name: Build microsite
