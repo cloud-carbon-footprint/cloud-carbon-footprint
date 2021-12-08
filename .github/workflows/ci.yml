@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: yarn install --immutable
+        run: yarn
       - name: lint
         run: yarn lint
       - name: test and upload coverage
