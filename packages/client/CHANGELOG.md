@@ -1,5 +1,47 @@
 # @cloud-carbon-footprint/client
 
+## 2.2.0
+
+### Minor Changes
+
+- 4238d3b8: Adds custom pagination to the top and bottom of the recommendations table
+
+  For changes to the create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6137391c474861bfa61c68c15371fc1167c39f4e)
+
+- 4238d3b8: Allow recommendations side panel to be opened and closed by clicking the same recommendation row. Also fixed bug where side panel would not reopen for same recommendation row after being closed
+- 4238d3b8: Adds mobile incompatibility warning for devices smaller than intended screen size
+
+  For changes to Create-App templates, please reference this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/42769e1ba6f273807bc9053adc98dae2df967a09).
+
+### Patch Changes
+
+- 4238d3b8: Update messaging on recs table when no data due to filtering
+
+  For changes to Create-App templates, please reference this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d4b2d6fb4dfd5a99d4601e8bbbf52d22fef83a73).
+
+- 4238d3b8: Cache produces different data depending on which page is loaded
+
+  For changes to the create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/70ae49e00e3d0bb3fd5c9e439a6a309bc9f04381)
+
+- 4238d3b8: Metric tons / kg toggle applies to full recs dashboard
+
+  For changes to Create-App templates, please reference this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3eaa11435c57c18657c19f2e276ec1e709d1f58e).
+
+- 4238d3b8: Updates packages axios, googleapis and @changesets/cli
+- 4238d3b8: Fixes filters bug not being able to apply more than 1 filter on recs page
+
+  For changes to the Create-App templates, please reference this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/a21d9a96a86442f06d3e0468fd8b86b992884b30)
+
+- 4238d3b8: Searching in recs table does not work for kg
+  For changes to Create-App templates, please reference this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/90565c8598f18f75db274485e6aed2e768b391e0).
+- 4238d3b8: Filter dropdown for Recommendations should not side scroll
+
+  For changes to Create-App templates, please reference this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/f782f760ff752cc994caa972360eddd95533be09).
+
+- 4238d3b8: Stop rounding to 0 in rec table and enable search for co2 savings in kg
+- 4238d3b8: adds embodied emissions documentation to client side panel
+  Please reference [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6a1984c8930e799477ff73054b2c879b9f16fbe2) for updates.
+
 ## 2.1.1
 
 ### Patch Changes
