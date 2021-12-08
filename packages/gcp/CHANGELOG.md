@@ -1,5 +1,24 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.5.0
+
+### Minor Changes
+
+- 560b4b70: "Add embodied emissions to the estimations for GCP"
+- 9b30bb5e: Add support for GCP Tau T2D (AMD EPYC Gen 3) instance types
+
+### Patch Changes
+
+- 9a5e8299: Fixes bug with Create Lookup Table requiring credentials for AWS input
+
+  For Create-App updates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/f8732281a02fe087d09343ffd4531ebe688fc655).
+
+- a9738abe: Updates packages axios, googleapis and @changesets/cli
+- Updated dependencies [91f88ab9]
+- Updated dependencies [560b4b70]
+- Updated dependencies [504a5dc1]
+  - @cloud-carbon-footprint/core@0.12.0
+
 ## 0.4.1
 
 ### Patch Changes
