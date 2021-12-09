@@ -190,6 +190,34 @@ describe('Cache', () => {
       })
     })
 
+    it('calls original function with grouping in the request', async () => {
+      //setup
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2019-12-31').toDate(),
+        endDate: moment.utc('2020-01-02').toDate(),
+        region: 'us-east-1',
+        ignoreCache: false,
+        groupBy: 'week',
+      }
+
+      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+        '2019-12-31',
+        7,
+      )
+
+      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+
+      //run
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+      await propertyDescriptor.value(rawRequest)
+
+      //assert
+      expect(mockGetEstimates).toHaveBeenCalledWith(
+        rawRequest,
+        rawRequest.groupBy,
+      )
+    })
+
     it('does not fetch dates when cache service returns unordered estimates', async () => {
       //setup
       const rawRequest: EstimationRequest = {

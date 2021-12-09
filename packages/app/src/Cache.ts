@@ -129,7 +129,7 @@ export default function cache(): any {
         return decoratedFunction.apply(target, [request])
       }
 
-      const grouping = configLoader().GROUP_QUERY_RESULTS_BY
+      const grouping = request.groupBy || configLoader().GROUP_QUERY_RESULTS_BY
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request, grouping)
 

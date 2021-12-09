@@ -190,6 +190,28 @@ describe('CreateValidRequest', () => {
     )
   })
 
+  describe('given: groupBy param', () => {
+    //use tests parametrization for the rest of the test cases
+    it('should return group by specified', () => {
+      const input = {
+        startDate: '2020-07-01',
+        endDate: '2020-07-13',
+        region: AWS_REGIONS.US_EAST_1,
+        groupBy: 'months',
+      }
+
+      const result = CreateValidFootprintRequest(input)
+
+      expect(result).toEqual({
+        startDate: moment.utc('2020-07-01').toDate(),
+        endDate: moment.utc('2020-07-13').toDate(),
+        region: AWS_REGIONS.US_EAST_1,
+        ignoreCache: false,
+        groupBy: 'months',
+      })
+    })
+  })
+
   describe('recommendations request', () => {
     it('parses the AWS recommendation target for a Single Instance Family', () => {
       const input = {
