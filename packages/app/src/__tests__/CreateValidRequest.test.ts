@@ -197,7 +197,7 @@ describe('CreateValidRequest', () => {
         startDate: '2020-07-01',
         endDate: '2020-07-13',
         region: AWS_REGIONS.US_EAST_1,
-        groupBy: 'months',
+        groupBy: 'month',
       }
 
       const result = CreateValidFootprintRequest(input)
@@ -207,7 +207,7 @@ describe('CreateValidRequest', () => {
         endDate: moment.utc('2020-07-13').toDate(),
         region: AWS_REGIONS.US_EAST_1,
         ignoreCache: false,
-        groupBy: 'months',
+        groupBy: 'month',
       })
     })
   })

@@ -38,6 +38,7 @@ const FootprintApiMiddleware = async function (
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
     ignoreCache: req.query.ignoreCache?.toString(),
+    groupBy: req.query.groupBy?.toString(),
   }
   apiLogger.info(
     `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,

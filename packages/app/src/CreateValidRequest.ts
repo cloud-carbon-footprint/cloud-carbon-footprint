@@ -73,7 +73,7 @@ function validate(
     errors.push('End date is in the future')
   }
 
-  if (!Object.keys(GROUP_BY).includes(groupBy)) {
+  if (groupBy && !Object.keys(GROUP_BY).includes(groupBy)) {
     errors.push('Please specify a valid groupBy period')
   }
 
