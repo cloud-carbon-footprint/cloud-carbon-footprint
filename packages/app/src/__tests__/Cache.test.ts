@@ -399,6 +399,7 @@ describe('Cache', () => {
         startDate: moment.utc('2021-01-01').toDate(),
         endDate: moment.utc('2021-02-01').toDate(),
         ignoreCache: false,
+        groupBy: 'day',
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(

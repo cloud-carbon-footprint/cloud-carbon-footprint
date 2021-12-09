@@ -12,13 +12,13 @@ import { EstimationRequest } from './CreateValidRequest'
 import DurationConstructor = moment.unitOfTime.DurationConstructor
 
 const cacheManager: EstimatorCache = new CacheManager()
-const groupCacheResultsBy = configLoader()
-  .GROUP_QUERY_RESULTS_BY as DurationConstructor
 
 function getMissingDates(
   cachedEstimates: EstimationResult[],
   request: EstimationRequest,
+  grouping: string,
 ): Moment[] {
+  const groupCacheResultsBy = grouping as DurationConstructor
   const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
   })
@@ -43,7 +43,11 @@ function getMissingDates(
   return missingDates
 }
 
-function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
+function getMissingDataRequests(
+  missingDates: Moment[],
+  grouping: string,
+): EstimationRequest[] {
+  const groupCacheResultsBy = grouping as DurationConstructor
   const groupMissingDates = missingDates.reduce((acc, date) => {
     const lastSubArray = acc[acc.length - 1]
 
@@ -124,24 +128,25 @@ export default function cache(): any {
     descriptor.value = async (
       request: EstimationRequest,
     ): Promise<EstimationResult[]> => {
+      const grouping = request.groupBy || configLoader().GROUP_QUERY_RESULTS_BY
+
       if (request.ignoreCache && !process.env.TEST_MODE) {
         cacheLogger.info('Ignoring cache...')
         return decoratedFunction.apply(target, [request])
       }
-
-      const grouping = request.groupBy || configLoader().GROUP_QUERY_RESULTS_BY
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request, grouping)
 
       if (process.env.TEST_MODE) return cachedEstimates
 
       // get estimates for dates missing from the cache
-      const missingDates = getMissingDates(cachedEstimates, request)
-      const missingEstimates = getMissingDataRequests(missingDates).map(
-        (request) => {
-          return decoratedFunction.apply(target, [request])
-        },
-      )
+      const missingDates = getMissingDates(cachedEstimates, request, grouping)
+      const missingEstimates = getMissingDataRequests(
+        missingDates,
+        grouping,
+      ).map((request) => {
+        return decoratedFunction.apply(target, [request])
+      })
       const estimates: EstimationResult[] = (
         await Promise.all(missingEstimates)
       ).flat()
@@ -150,7 +155,6 @@ export default function cache(): any {
         // write missing estimates to cache
         const estimatesToPersist = fillDates(missingDates, estimates)
         cacheLogger.info('Setting new estimates to cache file...')
-        const grouping = configLoader().GROUP_QUERY_RESULTS_BY
         await cacheManager.setEstimates(estimatesToPersist, grouping)
       }
 
