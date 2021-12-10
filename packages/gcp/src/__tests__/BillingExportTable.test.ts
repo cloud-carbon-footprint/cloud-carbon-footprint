@@ -485,8 +485,8 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
           {
-            kilowattHours: 0.20764383156192132,
-            co2e: 0.000016196218861829862,
+            kilowattHours: 0.211878579423001,
+            co2e: 0.000016526529194994077,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -547,8 +547,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 0.10202701050831775,
-            co2e: 0.00004632026277077626,
+            kilowattHours: 0.10281277077223262,
+            co2e: 0.00004667699793059361,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -579,8 +579,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
-            kilowattHours: 0.33226928470121686,
-            co2e: 0.00015085025525435247,
+            kilowattHours: 0.33462656235264876,
+            co2e: 0.00015192045930810253,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -1111,8 +1111,8 @@ describe('GCP BillingExportTable Service', () => {
 
     const expectedResult: LookupTableOutput[] = [
       {
-        co2e: 4.509389302173178e-10,
-        kilowattHours: 0.000001249138310851296,
+        co2e: 4.550678093818705e-10,
+        kilowattHours: 0.000001260575649257259,
         machineType: 'n1-standard-4',
         region: 'us-east4',
         serviceName: 'Compute Engine',
