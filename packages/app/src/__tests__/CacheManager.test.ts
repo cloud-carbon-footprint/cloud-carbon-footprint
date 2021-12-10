@@ -80,7 +80,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
       const estimates = await cacheManager.getEstimates(request)
 
       //assert
-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 2))
+      expect(estimates).toEqual(buildFootprintEstimates(startDate, 3))
     })
   })
 
@@ -183,7 +183,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       const estimates = await cacheManager.getEstimates(request)
 
       //assert
-      expect(estimates).toEqual(buildFootprintEstimates(startDate, 2))
+      expect(estimates).toEqual(buildFootprintEstimates(startDate, 3))
     })
   })
 

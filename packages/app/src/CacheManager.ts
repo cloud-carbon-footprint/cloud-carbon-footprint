@@ -75,7 +75,7 @@ export default class CacheManager implements EstimatorCache {
     return estimates.filter(({ timestamp }) => {
       return moment
         .utc(timestamp)
-        .isBetween(startDate, endDate, undefined, '[)')
+        .isBetween(startDate, endDate, undefined, '[]')
     })
   }
 }

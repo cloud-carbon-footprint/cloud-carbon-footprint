@@ -9,16 +9,13 @@ import { Logger } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import EstimatorCache from './EstimatorCache'
 import { EstimationRequest } from './CreateValidRequest'
-import DurationConstructor = moment.unitOfTime.DurationConstructor
 
 const cacheManager: EstimatorCache = new CacheManager()
 
 function getMissingDates(
   cachedEstimates: EstimationResult[],
   request: EstimationRequest,
-  grouping: string,
 ): Moment[] {
-  const groupCacheResultsBy = grouping as DurationConstructor
   const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
   })
@@ -26,28 +23,31 @@ function getMissingDates(
     return a.valueOf() - b.valueOf()
   })
 
+  // Note: this logic requires using 'day' as the unit to accumulate missing dates. Using a large unit (e.g. week/month) can
+  // cause data discrepancies. We should redesign the cache to better support those groupBy options.
+  const accumulateUnit = 'day'
   const missingDates: Moment[] = []
+
   const dateIndex = moment.utc(request.startDate)
   for (let i = 0; i < cachedDates.length; i++) {
     while (dateIndex.isBefore(cachedDates[i])) {
       missingDates.push(moment.utc(dateIndex.toDate()))
-      dateIndex.add(1, groupCacheResultsBy)
+      dateIndex.add(1, accumulateUnit)
     }
-    dateIndex.add(1, groupCacheResultsBy)
+    dateIndex.add(1, accumulateUnit)
   }
 
-  while (dateIndex.isBefore(moment.utc(request.endDate))) {
+  while (dateIndex.isSameOrBefore(moment.utc(request.endDate))) {
     missingDates.push(moment.utc(dateIndex.toDate()))
-    dateIndex.add(1, groupCacheResultsBy)
+    dateIndex.add(1, accumulateUnit)
   }
   return missingDates
 }
 
-function getMissingDataRequests(
-  missingDates: Moment[],
-  grouping: string,
-): EstimationRequest[] {
-  const groupCacheResultsBy = grouping as DurationConstructor
+function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
+  // Note: this logic requires using 'day' as the unit to accumulate missing dates. Using a large unit (e.g. week/month) can
+  // cause data discrepancies. We should redesign the cache to better support those groupBy options.
+  const accumulateUnit = 'day'
   const groupMissingDates = missingDates.reduce((acc, date) => {
     const lastSubArray = acc[acc.length - 1]
 
@@ -55,7 +55,7 @@ function getMissingDataRequests(
       !lastSubArray ||
       !moment
         .utc(date)
-        .subtract(1, groupCacheResultsBy)
+        .subtract(1, accumulateUnit)
         .isSame(lastSubArray[lastSubArray.length - 1])
     ) {
       acc.push([])
@@ -69,7 +69,7 @@ function getMissingDataRequests(
   const requestDates = groupMissingDates.map((group) => {
     return {
       start: group[0],
-      end: moment(group[group.length - 1]).add('1', groupCacheResultsBy),
+      end: moment(group[group.length - 1]),
     }
   })
 
@@ -140,13 +140,12 @@ export default function cache(): any {
       if (process.env.TEST_MODE) return cachedEstimates
 
       // get estimates for dates missing from the cache
-      const missingDates = getMissingDates(cachedEstimates, request, grouping)
-      const missingEstimates = getMissingDataRequests(
-        missingDates,
-        grouping,
-      ).map((request) => {
-        return decoratedFunction.apply(target, [request])
-      })
+      const missingDates = getMissingDates(cachedEstimates, request)
+      const missingEstimates = getMissingDataRequests(missingDates).map(
+        (request) => {
+          return decoratedFunction.apply(target, [request])
+        },
+      )
       const estimates: EstimationResult[] = (
         await Promise.all(missingEstimates)
       ).flat()

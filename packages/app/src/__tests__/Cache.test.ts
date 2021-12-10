@@ -4,11 +4,7 @@
 
 import moment from 'moment'
 import DurationConstructor = moment.unitOfTime.DurationConstructor
-import {
-  configLoader,
-  EstimationResult,
-  ServiceData,
-} from '@cloud-carbon-footprint/common'
+import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 import CacheManager from '../CacheManager'
@@ -26,18 +22,6 @@ jest.mock('../CacheManager', () => {
     }
   })
 })
-
-jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
-    string,
-    unknown
-  >),
-  configLoader: jest.fn().mockImplementation(() => {
-    return {
-      GROUP_QUERY_RESULTS_BY: 'day',
-    }
-  }),
-}))
 
 const dummyServiceEstimate: ServiceData[] = [
   {
@@ -84,14 +68,6 @@ describe('Cache', () => {
   })
 
   describe('cache-returned function per day', () => {
-    beforeEach(() => {
-      ;(configLoader as jest.Mock).mockReturnValue({
-        GROUP_QUERY_RESULTS_BY: 'day',
-      })
-    })
-    afterEach(() => {
-      jest.restoreAllMocks()
-    })
     it('returns cached data from cache service instead of calling the real method', async () => {
       //setup
       const rawRequest: EstimationRequest = {
@@ -101,7 +77,7 @@ describe('Cache', () => {
       }
 
       const expectedEstimationResults: EstimationResult[] =
-        buildFootprintEstimates('2020-01-01', 1, dummyServiceEstimate)
+        buildFootprintEstimates('2020-01-01', 2, dummyServiceEstimate)
       mockGetEstimates.mockResolvedValueOnce(expectedEstimationResults)
 
       const target = {}
@@ -262,7 +238,7 @@ describe('Cache', () => {
 
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
-      const computedEstimates = buildFootprintEstimates('2019-12-31', 1)
+      const computedEstimates = buildFootprintEstimates('2019-12-31', 2)
       originalFunction.mockResolvedValueOnce(computedEstimates)
 
       //run
@@ -337,7 +313,7 @@ describe('Cache', () => {
 
       //assert
       expect(mockSetEstimates).toHaveBeenCalledWith(
-        computedEstimates.concat(buildFootprintEstimates('2020-07-15', 5)),
+        computedEstimates.concat(buildFootprintEstimates('2020-07-15', 6)),
         'day',
       )
     })
@@ -352,7 +328,7 @@ describe('Cache', () => {
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
         '2020-07-15',
-        5,
+        6,
       )
       mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
 
@@ -381,67 +357,6 @@ describe('Cache', () => {
 
       //assert
       expect(results).toEqual(computedEstimates)
-    })
-  })
-
-  describe('cache-returned function per week', () => {
-    beforeEach(() => {
-      ;(configLoader as jest.Mock).mockReturnValue({
-        GROUP_QUERY_RESULTS_BY: 'week',
-      })
-    })
-    afterEach(() => {
-      jest.restoreAllMocks()
-    })
-    it('fetches dates not stored in cache', async () => {
-      //given
-      const rawRequest: EstimationRequest = {
-        startDate: moment.utc('2021-01-01').toDate(),
-        endDate: moment.utc('2021-02-01').toDate(),
-        ignoreCache: false,
-        groupBy: 'day',
-      }
-
-      const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
-        '2021-01-01',
-        2,
-        dummyServiceEstimate,
-        'weeks',
-      )
-
-      mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
-
-      const computedEstimates1 = buildFootprintEstimates(
-        '2021-01-15',
-        2,
-        dummyServiceEstimate,
-        'weeks',
-      )
-
-      const computedEstimates2 = buildFootprintEstimates(
-        '2021-01-29',
-        2,
-        dummyServiceEstimate,
-        'weeks',
-      )
-
-      originalFunction
-        .mockResolvedValueOnce(computedEstimates1)
-        .mockResolvedValueOnce(computedEstimates2)
-
-      //when
-      cacheDecorator({}, 'propertyTest', propertyDescriptor)
-      const estimationResult: EstimationResult[] =
-        await propertyDescriptor.value(rawRequest)
-
-      //then
-      const expectedEstimationResults: EstimationResult[] = [
-        ...cachedEstimates,
-        ...computedEstimates1,
-        ...computedEstimates2,
-      ]
-
-      expect(estimationResult).toEqual(expectedEstimationResults)
     })
   })
 })
