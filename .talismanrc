@@ -120,7 +120,7 @@ fileignoreconfig:
 - filename: packages/cli/.env.template
   checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
-  checksum: df033838854fdc1a238c6ed2160c02782ff71f17e91815e7be2865b4af80bf3f
+  checksum: 6818b054bb908533e8eed46d3324e3df500f8df9cbfb8e25329723c0369e9315
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
