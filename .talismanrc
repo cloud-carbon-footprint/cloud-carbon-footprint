@@ -5,6 +5,8 @@ fileignoreconfig:
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
+- filename: .changeset/sixty-peas-design.md
+  checksum: a353a88260b60bba06f294ed5e7227edf2b3782b97f67ac02bbe163f2435f8fd
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
 - filename: .changeset/wet-jobs-destroy.md
