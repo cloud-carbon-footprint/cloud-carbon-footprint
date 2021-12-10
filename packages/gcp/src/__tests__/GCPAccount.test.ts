@@ -2,12 +2,21 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
+
+import { ComputeEngine, Recommendations } from '../lib'
+
 import {
   Config as mockConfig,
+  EstimationResult,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
-import { ComputeEngine, Recommendations } from '../lib'
-import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
+
+import {
+  Region,
+  RegionCosts,
+  RegionEstimates,
+} from '@cloud-carbon-footprint/core'
 
 const mockMetricServiceClient = jest.fn()
 jest.mock('@google-cloud/monitoring', () => {
@@ -49,6 +58,80 @@ describe('GCPAccount', () => {
     expect(mockMetricServiceClient).toHaveBeenCalledWith({
       projectId: projectId,
     })
+  })
+
+  it('should get data for regions', async () => {
+    // given
+    const startDate: Date = new Date('2020-01-01')
+    const endDate: Date = new Date('2020-01-02')
+    const expectedEstimatesData: RegionEstimates = {
+      ComputeEngine: [
+        {
+          timestamp: startDate,
+          kilowattHours: 10,
+          co2e: 2,
+          usesAverageCPUConstant: false,
+        },
+      ],
+    }
+    const getEstimatesSpy = jest.spyOn(Region.prototype, 'getEstimates')
+    getEstimatesSpy.mockResolvedValue(expectedEstimatesData)
+
+    const expectedCostData: RegionCosts = {
+      ComputeEngine: [
+        {
+          timestamp: startDate,
+          amount: 1000,
+          currency: 'USD',
+        },
+      ],
+    }
+    const getCostsSpy = jest.spyOn(Region.prototype, 'getCosts')
+    getCostsSpy.mockResolvedValue(expectedCostData)
+
+    const regions: string[] = ['test-region-1', 'test-region-2']
+    const GCPAccount = require('../application/GCPAccount').default
+    const testGCPAccount = new GCPAccount('12345678', 'test account', regions)
+
+    // when
+    const result = await testGCPAccount.getDataForRegions(startDate, endDate)
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: startDate,
+        serviceEstimates: [
+          {
+            cloudProvider: 'GCP',
+            kilowattHours: 10,
+            co2e: 2,
+            cost: 1000,
+            usesAverageCPUConstant: false,
+            accountId: '12345678',
+            accountName: 'test account',
+            serviceName: 'ComputeEngine',
+            region: 'test-region-1',
+          },
+        ],
+      },
+      {
+        timestamp: startDate,
+        serviceEstimates: [
+          {
+            cloudProvider: 'GCP',
+            kilowattHours: 10,
+            co2e: 2,
+            cost: 1000,
+            usesAverageCPUConstant: false,
+            accountId: '12345678',
+            accountName: 'test account',
+            serviceName: 'ComputeEngine',
+            region: 'test-region-2',
+          },
+        ],
+      },
+    ]
+    expect(result).toEqual(expectedResult)
   })
 
   it('should get data for gcp recommendations', async () => {

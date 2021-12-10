@@ -9,10 +9,10 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      statements: 97,
+      statements: 98,
       branches: 93,
-      functions: 95,
-      lines: 97,
+      functions: 97,
+      lines: 98,
     },
   },
   testPathIgnorePatterns: [
