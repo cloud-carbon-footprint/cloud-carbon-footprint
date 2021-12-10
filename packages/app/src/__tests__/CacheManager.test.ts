@@ -49,8 +49,12 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
+        groupBy: 'week',
       }
-      const estimates = await cacheManager.getEstimates(request)
+      const estimates = await cacheManager.getEstimates(
+        request,
+        request.groupBy,
+      )
 
       //assert
       expect(estimates).toEqual(buildFootprintEstimates(startDate, 1))
@@ -76,8 +80,12 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
+        groupBy: 'week',
       }
-      const estimates = await cacheManager.getEstimates(request)
+      const estimates = await cacheManager.getEstimates(
+        request,
+        request.groupBy,
+      )
 
       //assert
       expect(estimates).toEqual(buildFootprintEstimates(startDate, 3))
@@ -104,7 +112,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
       const cacheManager = new CacheManager()
 
       //run
-      const estimates = await cacheManager.setEstimates(cachedData)
+      const estimates = await cacheManager.setEstimates(cachedData, 'day')
 
       //assert
       expect(estimates).resolves
@@ -124,7 +132,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
       )
 
       //run
-      const estimates = await cacheManager.setEstimates(cachedData)
+      const estimates = await cacheManager.setEstimates(cachedData, 'day')
 
       //assert
       expect(estimates).resolves
@@ -156,8 +164,12 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
+        groupBy: 'week',
       }
-      const estimates = await cacheManager.getEstimates(request)
+      const estimates = await cacheManager.getEstimates(
+        request,
+        request.groupBy,
+      )
 
       //assert
       expect(estimates).toEqual(buildFootprintEstimates(startDate, 1))
@@ -179,8 +191,12 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
+        groupBy: 'week',
       }
-      const estimates = await cacheManager.getEstimates(request)
+      const estimates = await cacheManager.getEstimates(
+        request,
+        request.groupBy,
+      )
 
       //assert
       expect(estimates).toEqual(buildFootprintEstimates(startDate, 3))
@@ -207,7 +223,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       const cacheManager = new CacheManager()
 
       //run
-      const estimates = await cacheManager.setEstimates(cachedData)
+      const estimates = await cacheManager.setEstimates(cachedData, 'day')
 
       //assert
       expect(estimates).resolves
@@ -228,7 +244,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
       )
 
       //run
-      const estimates = await cacheManager.setEstimates(cachedData)
+      const estimates = await cacheManager.setEstimates(cachedData, 'day')
 
       //assert
       expect(estimates).resolves
