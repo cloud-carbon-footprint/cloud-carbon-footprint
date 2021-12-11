@@ -167,7 +167,14 @@ export const appConfig: CCFConfig = {
   GCP: {
     projects: JSON.parse(getGCPProjects()) || [],
     NAME: 'GCP',
-    CURRENT_REGIONS: ['us-east1', 'us-central1', 'us-west1'],
+    CURRENT_REGIONS: [
+      'us-east1',
+      'us-central1',
+      'us-west1',
+      'europe-west1',
+      'europe-west2',
+      'europe-west3',
+    ],
     CURRENT_SERVICES: [
       {
         key: 'computeEngine',
