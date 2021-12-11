@@ -23,9 +23,9 @@ const previousYearOfUsage =
 
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
-    { key: 'aws', name: 'AWS' },
+    // { key: 'aws', name: 'AWS' },
     { key: 'gcp', name: 'GCP' },
-    { key: 'azure', name: 'Azure' },
+    // { key: 'azure', name: 'Azure' },
   ],
   PREVIOUS_YEAR_OF_USAGE: previousYearOfUsage,
   DATE_RANGE: {
