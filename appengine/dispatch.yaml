@@ -1,12 +1,12 @@
 dispatch:
-  - url: "staging.cloud-carbon-footprint.wl.r.appspot.com/api/*"
+  - url: "staging.cloud-carbon-footprint.ey.r.appspot.com/api/*"
     service: api-staging
 
-  - url: "staging.cloud-carbon-footprint.wl.r.appspot.com/*"
+  - url: "staging.cloud-carbon-footprint.ey.r.appspot.com*"
     service: default-staging
 #
-#  - url: "cloud-carbon-footprint.wl.r.appspot.com/api/*"
+#  - url: "cloud-carbon-footprint.ey.r.appspot.com/api/*"
 #    service: api
 #
-#  - url: "cloud-carbon-footprint.wl.r.appspot.com/*"
+#  - url: "cloud-carbon-footprint.ey.r.appspot.com/*"
 #    service: default
