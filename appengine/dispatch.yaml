@@ -4,9 +4,9 @@ dispatch:
 
   - url: "staging.cloud-carbon-footprint.wl.r.appspot.com/*"
     service: default-staging
-
-  - url: "cloud-carbon-footprint.wl.r.appspot.com/api/*"
-    service: api
-
-  - url: "cloud-carbon-footprint.wl.r.appspot.com/*"
-    service: default
+#
+#  - url: "cloud-carbon-footprint.wl.r.appspot.com/api/*"
+#    service: api
+#
+#  - url: "cloud-carbon-footprint.wl.r.appspot.com/*"
+#    service: default
