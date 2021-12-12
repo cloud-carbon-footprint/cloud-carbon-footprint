@@ -54,19 +54,19 @@ describe('Recommendations Filters', () => {
   }
 
   const rawResults = [
-    {
-      cloudProvider: 'AWS',
-      accountId: 'aws account 1',
-      accountName: 'aws account 1',
-      region: 'aws region 1',
-      recommendationType: 'Modify',
-      instanceName: 'example-instance',
-      recommendationDetail: 'Modify instance: example-instance.',
-      resourceId: 'i-0f12345678912b12I',
-      kilowattHourSavings: 4.978,
-      costSavings: 43.506,
-      co2eSavings: 0.984,
-    },
+    // {
+    //   cloudProvider: 'AWS',
+    //   accountId: 'aws account 1',
+    //   accountName: 'aws account 1',
+    //   region: 'aws region 1',
+    //   recommendationType: 'Modify',
+    //   instanceName: 'example-instance',
+    //   recommendationDetail: 'Modify instance: example-instance.',
+    //   resourceId: 'i-0f12345678912b12I',
+    //   kilowattHourSavings: 4.978,
+    //   costSavings: 43.506,
+    //   co2eSavings: 0.984,
+    // },
     {
       cloudProvider: 'GCP',
       accountId: 'gcp account 1',
@@ -239,31 +239,6 @@ describe('Recommendations Filters', () => {
     ).toEqual(JSON.stringify(expectedChooser))
   })
 
-  it('should filter recommendations by accounts', () => {
-    const accountOption = {
-      key: 'aws account 1',
-      name: 'aws account 1',
-      cloudProvider: 'aws',
-    }
-
-    const filters = new RecommendationsFilters(
-      defaultConfig,
-    ).withDropdownOption(
-      [accountOption],
-      filterOptions,
-      DropdownFilterOptions.ACCOUNTS,
-    )
-
-    const expectedAccountFiltered = {
-      emissions: [],
-      recommendations: [rawResults[0]],
-    }
-
-    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
-      expectedAccountFiltered,
-    )
-  })
-
   it('should create cloud provider chooser', () => {
     const filterType = DropdownFilterOptions.CLOUD_PROVIDERS
     const selections = [filteredResultResponse.cloudProviders[0]]
@@ -350,31 +325,6 @@ describe('Recommendations Filters', () => {
     ).toEqual(JSON.stringify(expectedChooser))
   })
 
-  it('should filter recommendations by regions', () => {
-    const regionOption = {
-      key: 'aws region 1',
-      name: 'aws region 1',
-      cloudProvider: 'aws',
-    }
-
-    const filters = new RecommendationsFilters(
-      defaultConfig,
-    ).withDropdownOption(
-      [regionOption],
-      filterOptions,
-      DropdownFilterOptions.REGIONS,
-    )
-
-    const expectedAccountFiltered = {
-      emissions: [],
-      recommendations: [rawResults[0]],
-    }
-
-    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
-      expectedAccountFiltered,
-    )
-  })
-
   it('should create RecommendationType chooser', () => {
     const filterType = DropdownFilterOptions.RECOMMENDATION_TYPES
     const selections = [filteredResultResponse.recommendationTypes[0]]
@@ -404,30 +354,5 @@ describe('Recommendations Filters', () => {
         ),
       ),
     ).toEqual(JSON.stringify(expectedChooser))
-  })
-
-  it('should filter recommendations by recommendation type', () => {
-    const recommendationTypeOption = {
-      key: 'delete-image',
-      name: 'DELETE_IMAGE',
-      cloudProvider: 'gcp',
-    }
-
-    const filters = new RecommendationsFilters(
-      defaultConfig,
-    ).withDropdownOption(
-      [recommendationTypeOption],
-      filterOptions,
-      DropdownFilterOptions.RECOMMENDATION_TYPES,
-    )
-
-    const expectedAccountFiltered = {
-      emissions: [],
-      recommendations: [rawResults[1]],
-    }
-
-    expect(filters.filter(emissionsAndRecommendationsData)).toEqual(
-      expectedAccountFiltered,
-    )
   })
 })
