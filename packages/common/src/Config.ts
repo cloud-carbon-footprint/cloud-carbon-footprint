@@ -114,7 +114,7 @@ const getConfig = (): CCFConfig => ({
     ATHENA_DB_TABLE: getEnvVar('AWS_ATHENA_DB_TABLE') || '',
     ATHENA_QUERY_RESULT_LOCATION:
       getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
-    ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
+    ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION') || '',
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
