@@ -48,7 +48,8 @@ jobs:
       - name: lint
         run: yarn lint
       - name: test and upload coverage
-        run: yarn test
+        run: | 
+          yarn test
           bash <(curl -s https://codecov.io/bash)
           bash <(curl -s https://codecov.io/bash) -f packages/client/coverage/* -F client
           bash <(curl -s https://codecov.io/bash) -f packages/core/coverage/* -F core
