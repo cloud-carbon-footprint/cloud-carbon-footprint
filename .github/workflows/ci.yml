@@ -46,18 +46,18 @@ jobs:
         run: yarn
       - name: lint
         run: yarn lint
-      - name: test and upload coverage
-        run: | 
-          yarn test
-          bash <(curl -s https://codecov.io/bash)
-          bash <(curl -s https://codecov.io/bash) -f packages/client/coverage/* -F client
-          bash <(curl -s https://codecov.io/bash) -f packages/core/coverage/* -F core
-          bash <(curl -s https://codecov.io/bash) -f packages/app/coverage/* -F app
-          bash <(curl -s https://codecov.io/bash) -f packages/api/coverage/* -F api
-          bash <(curl -s https://codecov.io/bash) -f packages/cli/coverage/* -F cli
-          bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
-          bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
-          bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
+#      - name: test and upload coverage
+#        run: |
+#          yarn test
+#          bash <(curl -s https://codecov.io/bash)
+#          bash <(curl -s https://codecov.io/bash) -f packages/client/coverage/* -F client
+#          bash <(curl -s https://codecov.io/bash) -f packages/core/coverage/* -F core
+#          bash <(curl -s https://codecov.io/bash) -f packages/app/coverage/* -F app
+#          bash <(curl -s https://codecov.io/bash) -f packages/api/coverage/* -F api
+#          bash <(curl -s https://codecov.io/bash) -f packages/cli/coverage/* -F cli
+#          bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
+#          bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
+#          bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
   build:
     needs: lint-test
     runs-on: ubuntu-latest
