@@ -3,11 +3,15 @@
  */
 
 import moment from 'moment'
-import DurationConstructor = moment.unitOfTime.DurationConstructor
-import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  GroupBy,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
 import CacheManager from '../CacheManager'
+import DurationConstructor = moment.unitOfTime.DurationConstructor
 
 let mockSetEstimates: jest.Mock
 let mockGetEstimates: jest.Mock
@@ -163,6 +167,8 @@ describe('Cache', () => {
         startDate: moment.utc('2020-01-01').toDate(),
         endDate: moment.utc('2020-01-02').toDate(),
         ignoreCache: false,
+        groupBy: undefined,
+        region: 'us-east-1',
       })
     })
 
@@ -173,7 +179,7 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
         ignoreCache: false,
-        groupBy: 'week',
+        groupBy: GroupBy.week,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(

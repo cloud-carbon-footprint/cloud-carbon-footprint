@@ -6,9 +6,11 @@ import CacheManager from '../CacheManager'
 import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
 import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { EstimationRequest } from '../CreateValidRequest'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
-
-import { Config as mockConfig } from '@cloud-carbon-footprint/common'
+import {
+  Config as mockConfig,
+  EstimationResult,
+  GroupBy,
+} from '@cloud-carbon-footprint/common'
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   return [...Array(consecutiveDays)].map((v, i) => {
@@ -19,6 +21,7 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   })
 }
 
+const grouping = GroupBy.week
 describe('CacheManager - CACHE_MODE: GCS', () => {
   beforeAll(() => {
     mockConfig.GCP.CACHE_BUCKET_NAME = 'test-bucket-name'
@@ -49,7 +52,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
-        groupBy: 'week',
+        groupBy: grouping,
       }
       const estimates = await cacheManager.getEstimates(
         request,
@@ -80,7 +83,7 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
-        groupBy: 'week',
+        groupBy: grouping,
       }
       const estimates = await cacheManager.getEstimates(
         request,
@@ -164,7 +167,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
-        groupBy: 'week',
+        groupBy: grouping,
       }
       const estimates = await cacheManager.getEstimates(
         request,
@@ -191,7 +194,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         startDate: moment.utc(startDate).toDate(),
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
-        groupBy: 'week',
+        groupBy: grouping,
       }
       const estimates = await cacheManager.getEstimates(
         request,

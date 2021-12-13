@@ -4,7 +4,11 @@
 
 import moment, { Moment } from 'moment'
 import R from 'ramda'
-import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  configLoader,
+  GroupBy,
+} from '@cloud-carbon-footprint/common'
 import { Logger } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import EstimatorCache from './EstimatorCache'
@@ -44,7 +48,10 @@ function getMissingDates(
   return missingDates
 }
 
-function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
+function getMissingDataRequests(
+  missingDates: Moment[],
+  request: EstimationRequest,
+): EstimationRequest[] {
   // Note: this logic requires using 'day' as the unit to accumulate missing dates. Using a large unit (e.g. week/month) can
   // cause data discrepancies. We should redesign the cache to better support those groupBy options.
   const accumulateUnit = 'day'
@@ -78,6 +85,8 @@ function getMissingDataRequests(missingDates: Moment[]): EstimationRequest[] {
       startDate: dates.start.utc().toDate(),
       endDate: dates.end.utc().toDate(),
       ignoreCache: false,
+      groupBy: request.groupBy,
+      region: request.region,
     }
   })
 }
@@ -128,7 +137,8 @@ export default function cache(): any {
     descriptor.value = async (
       request: EstimationRequest,
     ): Promise<EstimationResult[]> => {
-      const grouping = request.groupBy || configLoader().GROUP_QUERY_RESULTS_BY
+      const grouping =
+        (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
 
       if (request.ignoreCache && !process.env.TEST_MODE) {
         cacheLogger.info('Ignoring cache...')
@@ -141,11 +151,12 @@ export default function cache(): any {
 
       // get estimates for dates missing from the cache
       const missingDates = getMissingDates(cachedEstimates, request)
-      const missingEstimates = getMissingDataRequests(missingDates).map(
-        (request) => {
-          return decoratedFunction.apply(target, [request])
-        },
-      )
+      const missingEstimates = getMissingDataRequests(
+        missingDates,
+        request,
+      ).map((request) => {
+        return decoratedFunction.apply(target, [request])
+      })
       const estimates: EstimationResult[] = (
         await Promise.all(missingEstimates)
       ).flat()

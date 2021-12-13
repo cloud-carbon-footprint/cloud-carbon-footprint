@@ -6,6 +6,7 @@ import {
   configLoader,
   EmissionRatioResult,
   EstimationResult,
+  GroupBy,
   LookupTableInput,
   LookupTableOutput,
   RecommendationResult,
@@ -37,6 +38,8 @@ export default class App {
   ): Promise<EstimationResult[]> {
     const startDate = request.startDate
     const endDate = request.endDate
+    const grouping =
+      (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
@@ -62,7 +65,7 @@ export default class App {
           AWS.BILLING_ACCOUNT_ID,
           AWS.BILLING_ACCOUNT_NAME,
           [AWS.ATHENA_REGION],
-        ).getDataFromCostAndUsageReports(startDate, endDate)
+        ).getDataFromCostAndUsageReports(startDate, endDate, grouping)
         AWSEstimatesByRegion.push(estimates)
       } else {
         // Resolve AWS Estimates synchronously in order to avoid hitting API limits
@@ -83,7 +86,7 @@ export default class App {
           GCP.BILLING_PROJECT_ID,
           GCP.BILLING_PROJECT_NAME,
           [],
-        ).getDataFromBillingExportTable(startDate, endDate)
+        ).getDataFromBillingExportTable(startDate, endDate, grouping)
         GCPEstimatesByRegion.push(estimates)
       } else {
         // Resolve GCP Estimates asynchronously

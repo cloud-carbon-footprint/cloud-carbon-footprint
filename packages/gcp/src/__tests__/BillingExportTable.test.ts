@@ -6,6 +6,7 @@ import { BigQuery } from '@google-cloud/bigquery'
 import each from 'jest-each'
 import {
   EstimationResult,
+  GroupBy,
   LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 import {
@@ -54,6 +55,7 @@ jest.mock('@google-cloud/bigquery', () => {
 describe('GCP BillingExportTable Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
+  const grouping = GroupBy.day
   const accountId = 'test-account-id'
   const accountName = 'test-account-name'
 
@@ -105,6 +107,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -151,6 +154,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -224,6 +228,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -297,6 +302,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -409,6 +415,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -466,6 +473,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -539,6 +547,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -647,6 +656,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -676,6 +686,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -732,6 +743,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -796,6 +808,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -871,6 +884,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -962,6 +976,7 @@ describe('GCP BillingExportTable Service', () => {
     const result = await billingExportTableService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -1193,7 +1208,7 @@ describe('GCP BillingExportTable Service', () => {
     )
 
     await expect(() =>
-      billingExportTableService.getEstimates(startDate, endDate),
+      billingExportTableService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
       `BigQuery get Query Results failed. Reason: ${mockErrorDetails.reason}, Domain: ${mockErrorDetails.domain}, Message: ${mockErrorDetails.message}`,
     )
@@ -1224,7 +1239,7 @@ describe('GCP BillingExportTable Service', () => {
     )
 
     await expect(() =>
-      billingExportTableService.getEstimates(startDate, endDate),
+      billingExportTableService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
       `BigQuery create Query Job failed. Reason: ${mockErrorDetails.reason}, Location: ${mockErrorDetails.location}, Message: ${mockErrorDetails.message}`,
     )
