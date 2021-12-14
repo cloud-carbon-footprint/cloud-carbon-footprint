@@ -33,7 +33,7 @@ const appConfig: ClientConfig = {
     VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '12',
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
-  GROUP_BY: process.env.GROUP_BY,
+  GROUP_BY: process.env.REACT_APP_GROUP_BY || 'day',
 }
 
 export default appConfig
