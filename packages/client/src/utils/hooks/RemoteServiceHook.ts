@@ -7,8 +7,9 @@ import axios from 'axios'
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { useErrorHandling } from '../../layout/ErrorPage'
-import { ServiceResult } from '../../Types'
+import { useErrorHandling } from 'layout/ErrorPage'
+import { ServiceResult } from 'Types'
+import config from 'ConfigLoader'
 
 const useRemoteService = (
   initial: EstimationResult[],
@@ -37,6 +38,7 @@ const useRemoteService = (
             end: end,
             region: region,
             ignoreCache,
+            groupBy: config().GROUP_BY,
           },
         })
         setData(res.data)

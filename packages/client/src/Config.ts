@@ -15,6 +15,7 @@ export interface ClientConfig {
     VALUE: string
     TYPE: string
   }
+  GROUP_BY: string
 }
 
 const previousYearOfUsage =
@@ -32,6 +33,7 @@ const appConfig: ClientConfig = {
     VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '12',
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
+  GROUP_BY: process.env.GROUP_BY,
 }
 
 export default appConfig
