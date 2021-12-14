@@ -59,16 +59,17 @@ export default class Lambda implements ICloudService {
       const timestampField = resultByDate[0]
       const wattsField = resultByDate[1]
       const timestamp = new Date(timestampField.value.substr(0, 10))
-      const wattHours =
-        Number.parseFloat(wattsField.value) * AWS_CLOUD_CONSTANTS.getPUE()
+      const kilowattHours =
+        (Number.parseFloat(wattsField.value) * AWS_CLOUD_CONSTANTS.getPUE()) /
+        1000
       const co2e = estimateCo2(
-        wattHours,
+        kilowattHours,
         region,
         AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       )
       return {
         timestamp,
-        kilowattHours: wattHours,
+        kilowattHours: kilowattHours,
         co2e,
       }
     })

@@ -204,12 +204,12 @@ export function getAverage(nums: number[]): number {
 }
 
 export function estimateCo2(
-  estimatedWattHours: number,
+  estimatedKilowattHours: number,
   region: string,
   emissionsFactors?: CloudConstantsEmissionsFactors,
 ): number {
   return (
-    estimatedWattHours *
+    estimatedKilowattHours *
     (emissionsFactors[region] || emissionsFactors['Unknown'])
   )
 }

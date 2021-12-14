@@ -68,12 +68,13 @@ describe('Lambda', () => {
       region,
     )
 
+    const expectedKilowattHours = 0.00011350000000000001
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.1135,
+        kilowattHours: expectedKilowattHours,
         co2e: estimateCo2(
-          0.1135,
+          expectedKilowattHours,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
@@ -119,22 +120,23 @@ describe('Lambda', () => {
       new Date(dayThree),
       region,
     )
-
+    const expectedKilowattHoursOne = 0.00011350000000000001
+    const expectedKilowattHoursTwo = 0.00045400000000000003
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.1135,
+        kilowattHours: expectedKilowattHoursOne,
         co2e: estimateCo2(
-          0.1135,
+          expectedKilowattHoursOne,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
       },
       {
         timestamp: new Date(endDate),
-        kilowattHours: 0.454,
+        kilowattHours: expectedKilowattHoursTwo,
         co2e: estimateCo2(
-          0.454,
+          expectedKilowattHoursTwo,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
@@ -193,21 +195,24 @@ describe('Lambda', () => {
       expect.anything(),
     )
 
+    const expectedKilowattHoursOne = 0.00022700000000000002
+    const expectedKilowattHoursTwo = 0.00026105000000000003
+
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.227,
+        kilowattHours: expectedKilowattHoursOne,
         co2e: estimateCo2(
-          0.227,
+          expectedKilowattHoursOne,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
       },
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.26105,
+        kilowattHours: expectedKilowattHoursTwo,
         co2e: estimateCo2(
-          0.26105,
+          expectedKilowattHoursTwo,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
@@ -267,21 +272,22 @@ describe('Lambda', () => {
       },
       expect.anything(),
     )
+    const expectedKilowattHours = 0.00026105000000000003
     expect(result).toEqual([
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.26105,
+        kilowattHours: expectedKilowattHours,
         co2e: estimateCo2(
-          0.26105,
+          expectedKilowattHours,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
       },
       {
         timestamp: new Date(startDate),
-        kilowattHours: 0.26105,
+        kilowattHours: expectedKilowattHours,
         co2e: estimateCo2(
-          0.26105,
+          expectedKilowattHours,
           region,
           AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
         ),
