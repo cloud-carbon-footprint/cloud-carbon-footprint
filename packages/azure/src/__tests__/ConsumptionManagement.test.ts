@@ -5,27 +5,31 @@
 import { ServiceClientCredentials } from '@azure/ms-rest-js'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
-import { EstimationResult, configLoader } from '@cloud-carbon-footprint/common'
 import {
-  StorageEstimator,
+  configLoader,
+  EstimationResult,
+  GroupBy,
+} from '@cloud-carbon-footprint/common'
+import {
   ComputeEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  UnknownEstimator,
-  EstimateClassification,
   EmbodiedEmissionsEstimator,
+  EstimateClassification,
+  MemoryEstimator,
+  NetworkingEstimator,
+  StorageEstimator,
+  UnknownEstimator,
 } from '@cloud-carbon-footprint/core'
 
 import {
+  mockConsumptionManagementResponseEight,
+  mockConsumptionManagementResponseFive,
   mockConsumptionManagementResponseFour,
+  mockConsumptionManagementResponseNine,
   mockConsumptionManagementResponseOne,
+  mockConsumptionManagementResponseSeven,
+  mockConsumptionManagementResponseSix,
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
-  mockConsumptionManagementResponseFive,
-  mockConsumptionManagementResponseSix,
-  mockConsumptionManagementResponseSeven,
-  mockConsumptionManagementResponseEight,
-  mockConsumptionManagementResponseNine,
 } from './fixtures/consumptionManagement.fixtures'
 
 import { ConsumptionManagementService } from '../lib'
@@ -70,6 +74,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 describe('Azure Consumption Management Service', () => {
   const startDate = new Date('2020-11-02')
   const endDate = new Date('2020-11-03')
+  const grouping: GroupBy = GroupBy.day
   const subscriptionId = 'test-subscription-id'
   const subscriptionName = 'test-subscription'
   const mockCredentials: ServiceClientCredentials = { signRequest: jest.fn() }
@@ -122,6 +127,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -239,6 +245,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -351,6 +358,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -408,6 +416,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -492,6 +501,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -598,6 +608,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -693,6 +704,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     expect(result).toEqual([])
@@ -721,6 +733,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -876,6 +889,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -957,6 +971,7 @@ describe('Azure Consumption Management Service', () => {
     const result = await consumptionManagementService.getEstimates(
       startDate,
       endDate,
+      grouping,
     )
 
     const expectedResult: EstimationResult[] = [
@@ -1023,9 +1038,12 @@ describe('Azure Consumption Management Service', () => {
         new ConsumptionManagementClient(mockCredentials, subscriptionId),
       )
 
+      const groupingByWeek = GroupBy.week
+
       const result = await consumptionManagementService.getEstimates(
         startDate,
         endDate,
+        groupingByWeek,
       )
 
       const expectedResult: EstimationResult[] = [
@@ -1147,7 +1165,7 @@ describe('Azure Consumption Management Service', () => {
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
     await expect(() =>
-      consumptionManagementService.getEstimates(startDate, endDate),
+      consumptionManagementService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
       `Azure ConsumptionManagementClient.usageDetails.list failed. Reason: ${errorMessage}`,
     )
@@ -1192,7 +1210,7 @@ describe('Azure Consumption Management Service', () => {
     )
 
     await expect(() =>
-      consumptionManagementService.getEstimates(startDate, endDate),
+      consumptionManagementService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
       `Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason: ${errorMessage.message}`,
     )

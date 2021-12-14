@@ -109,6 +109,7 @@ export default class App {
         const estimates = await azureAccount.getDataFromConsumptionManagement(
           startDate,
           endDate,
+          grouping,
         )
         AzureEstimatesByRegion.push(estimates)
       }

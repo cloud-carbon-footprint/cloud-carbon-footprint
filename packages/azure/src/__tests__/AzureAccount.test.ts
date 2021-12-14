@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 
 import AzureAccount from '../application/AzureAccount'
 import AzureCredentialsProvider from '../application/AzureCredentialsProvider'
@@ -32,6 +32,7 @@ const getEstimatesSpy = jest.spyOn(
 describe('Azure Account', () => {
   const startDate: Date = new Date('2021-01-01')
   const endDate: Date = new Date('2021-01-01')
+  const grouping: GroupBy = GroupBy.day
   const testAccountId = 'test-subscription-id'
   const testAccountName = 'test-subscription'
 
@@ -75,6 +76,7 @@ describe('Azure Account', () => {
     const results = await azureAccount.getDataFromConsumptionManagement(
       startDate,
       endDate,
+      grouping,
     )
 
     // then
@@ -114,7 +116,12 @@ describe('Azure Account', () => {
     ]
 
     expect(results).toEqual(expectedEstimates)
-    expect(getEstimatesSpy).toHaveBeenNthCalledWith(2, startDate, endDate)
+    expect(getEstimatesSpy).toHaveBeenNthCalledWith(
+      2,
+      startDate,
+      endDate,
+      grouping,
+    )
   })
 
   it('Throws an error when AzureCredentialsProvider.create fails', async () => {
