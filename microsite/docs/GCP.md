@@ -32,7 +32,7 @@ DISCLAIMER: If your editor of choice is VS Code, we recommend using either your 
 
 ### Unsupported Usage Types
 
-The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/core/src/services/gcp/BillingExportTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with a warning like this:
+The application has a file containing supported usage types located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/gcp/src/lib/BillingExportTypes.ts). The current lists consist of types the application has faced, so there are likely to be some types not yet handled. When querying your data, you may come across unsupported types with a warning like this:
 
 `2021-03-31T09:48:38.815Z [BillingExportTable] warn: Unsupported Usage unit: Filestore Capacity Standard`
 
