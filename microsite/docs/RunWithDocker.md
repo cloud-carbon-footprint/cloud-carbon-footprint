@@ -1,6 +1,7 @@
 ---
 id: run-with-docker
 title: Run with Docker
+slug: /run-with-docker
 ---
 
 If you would like to run with Docker, you'll need install docker and docker-compose:
@@ -18,7 +19,7 @@ If you would like to run with Docker, you'll need install docker and docker-comp
 
         yarn create-docker-secrets
 
-4.  Remove any secrets in `docker-compose.yml` that you aren’t not using.
+4.  Remove any secrets in `docker-compose.yml` that you are not using.
 5.  Run the application with docker compose:
 
         docker-compose up

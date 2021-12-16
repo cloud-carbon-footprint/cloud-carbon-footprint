@@ -2,10 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { LegacyUsageDetail } from '@azure/arm-consumption/esm/models'
+import {
+  LegacyUsageDetail,
+  ModernUsageDetail,
+} from '@azure/arm-consumption/esm/models'
 
 interface AzureUsageDetailsResponseWithNextLink
-  extends Array<Partial<LegacyUsageDetail>> {
+  extends Array<Partial<LegacyUsageDetail | ModernUsageDetail>> {
   /**
    * @member {string} [nextLink] The link (url) to the next page of results.
    * **NOTE: This property will not be serialized. It can only be populated by
@@ -653,5 +656,60 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       subscriptionId: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'All Regions',
+    },
+  ]
+
+export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseWithNextLink =
+  [
+    {
+      date: new Date('2020-11-02'),
+      quantity: 5,
+      cost: 10,
+      meterDetails: {
+        meterName: 'D8 v3',
+        unitOfMeasure: '1 Hour',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'northeurope',
+    },
+    {
+      date: new Date('2020-11-02'),
+      quantity: 0.250004,
+      cost: 15,
+      meterDetails: {
+        meterName: 'DS11-1 v2',
+        unitOfMeasure: '1 Hour',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'westeurope',
+    },
+    {
+      date: new Date('2020-11-02'),
+      quantity: 17,
+      cost: 5,
+      meterDetails: {
+        meterName: 'D2 v2',
+        unitOfMeasure: '10 Hour',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'uksouth',
+    },
+    {
+      kind: 'modern',
+      date: new Date('2020-11-02'),
+      quantity: 17,
+      costInUSD: 5,
+      meterName: 'D2 v2',
+      unitOfMeasure: '10 Hour',
+      meterCategory: 'Virtual Machines',
+      subscriptionGuid: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'EASTUS',
     },
   ]

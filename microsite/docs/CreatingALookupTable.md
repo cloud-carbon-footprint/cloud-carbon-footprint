@@ -1,11 +1,12 @@
 ---
 id: creating-a-lookup-table
 title: Creating a Lookup Table
+slug: /creating-a-lookup-table
 ---
 
-In order to support the big data processing requirements that some organizations have, it may be more practical or efficient for you to compute carbon metrics within your existing processing. To do so, we support the generation of a look up table that can be utilized as an additional step in your pipeline.
+In order to support the big data processing requirements that some organizations have, it may be more practical or efficient for you to compute carbon metrics within your existing processing. To do so, we support the generation of a lookup table that can be utilized as an additional step in your pipeline.
 
-The lookup table maps the estimated energy (kilowatt hours) and carbon emissions (CO2e) to 1 unit of usage, for all the unique combinations of region, service name, usage type and usage unit in the billing data of your cloud provider(s).
+The lookup table maps the estimated energy (kilowatt-hours) and carbon emissions (CO2e) to 1 unit of usage, for all the unique combinations of region, service name, usage type and usage unit in the billing data of your cloud provider(s).
 
 Once generated, this lookup table (CSV file) can be deployed to your ETL or other data processing pipeline. Then when processing your billing data, you can simply multiply your usage amount by the values in the lookup tables to estimate energy and CO2e. This approach avoids having to use the Cloud Carbon Footprint application code directly, and works regardless of the programming language or environment used in your pipeline.
 

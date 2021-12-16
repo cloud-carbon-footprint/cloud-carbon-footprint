@@ -41,6 +41,8 @@ import {
   athenaMockGetQueryResultsWithReclassifiedUnknowns,
   athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService,
   athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions,
+  athenaMockGetQueryResultsWithNoUsageAmount,
+  athenaMockGetQueryResultsWithUnknownInstanceType,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
@@ -513,7 +515,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 6.594881633999999e-9,
             cost: 2,
             region: 'us-east-2',
-            serviceName: 'AmazonECS', // not change
+            serviceName: 'AmazonECS',
             usesAverageCPUConstant: false,
             kilowattHours: 0.000014981999999999998,
           },
@@ -524,7 +526,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.000004221208691000001,
             cost: 2,
             region: 'us-west-1',
-            serviceName: 'AmazonECS', //not change -- good
+            serviceName: 'AmazonECS',
             usesAverageCPUConstant: true,
             kilowattHours: 0.012031000000000002,
           },
@@ -535,7 +537,7 @@ describe('CostAndUsageReports Service', () => {
             co2e: 0.000023928805021908376,
             cost: 4,
             region: 'us-west-1',
-            serviceName: 'AmazonMSK', // change because embodied e and memory
+            serviceName: 'AmazonMSK',
             usesAverageCPUConstant: true,
             kilowattHours: 0.0682002417535958,
           },
@@ -547,38 +549,38 @@ describe('CostAndUsageReports Service', () => {
             cost: 4,
             kilowattHours: 0.0714493394484431,
             region: 'ap-south-1',
-            serviceName: 'AmazonMSK', // change because embodied e
+            serviceName: 'AmazonMSK',
             usesAverageCPUConstant: true,
           },
           {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00000586301540451404,
+            co2e: 0.00001312379015400668,
             cost: 2,
-            kilowattHours: 0.016710365086213742,
+            kilowattHours: 0.037404528157893524,
             region: 'us-west-1',
-            serviceName: 'AmazonEKS', // not change
+            serviceName: 'AmazonEKS',
             usesAverageCPUConstant: false,
           },
           {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000014068599018180094,
+            co2e: 0.00003149445841696244,
             cost: 4,
-            kilowattHours: 0.04009735769487088,
+            kilowattHours: 0.08976334906690238,
             region: 'us-west-1',
-            serviceName: 'AmazonRoute53', // not change
+            serviceName: 'AmazonRoute53',
             usesAverageCPUConstant: true,
           },
           {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000014068599018180094,
+            co2e: 0.00003149445841696244,
             cost: 4,
-            kilowattHours: 0.04009735769487088,
+            kilowattHours: 0.08976334906690238,
             region: 'us-west-1',
             serviceName: '8icvdraalzbfrdevgamoddblf', // change because of embodied e
             usesAverageCPUConstant: true,
@@ -1330,12 +1332,12 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.009849313798773454,
+            co2e: 0.019480908079911777,
             cost: 10516.725,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: true,
-            kilowattHours: 23.69018724675218,
+            kilowattHours: 46.85670185544798,
           },
         ],
       },
@@ -1471,38 +1473,81 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.015339830814400001,
+            co2e: 0.01557463889088402,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AmazonApiGateway',
             usesAverageCPUConstant: true,
-            kilowattHours: 48.543768400000005,
+            kilowattHours: 49.28683193317728,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.015339830814400001,
+            co2e: 0.01557463889088402,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AWSDirectConnect',
             usesAverageCPUConstant: true,
-            kilowattHours: 48.543768400000005,
+            kilowattHours: 49.28683193317728,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.015339830814400001,
+            co2e: 0.01557463889088402,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AWSDirectoryService',
             usesAverageCPUConstant: true,
-            kilowattHours: 48.543768400000005,
+            kilowattHours: 49.28683193317728,
           },
         ],
       },
     ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for instance types with additional prefix', async () => {
+    // Example Instance Type: ml.m5.xlarge or db.t2.micro
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithUnknownInstanceType)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.000012303282883723591,
+            cost: 5,
+            kilowattHours: 0.027950127749623667,
+            region: 'us-east-2',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+        ],
+      },
+    ]
+
     expect(result).toEqual(expectedResult)
   })
 
@@ -1545,6 +1590,48 @@ describe('CostAndUsageReports Service', () => {
     await expect(() =>
       athenaService.getEstimates(startDate, endDate),
     ).rejects.toThrow(`Athena start query failed. Reason Start failed.`)
+  })
+
+  it('returns 0 kilowattHours when no usage amount', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithNoUsageAmount)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(startDate, endDate)
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-30'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0,
+            cost: 5,
+            kilowattHours: 0,
+            region: 'us-east-2',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+        ],
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
   })
 
   const startQueryExecutionSpy = jest.fn()

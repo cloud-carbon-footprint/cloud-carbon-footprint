@@ -137,6 +137,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       co2e: 0,
     },
   },
+  SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 
 export const AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =

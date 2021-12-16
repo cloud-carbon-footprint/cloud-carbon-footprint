@@ -90,7 +90,7 @@ export default class GCPAccount extends CloudProviderAccount {
     return billingExportTableService.getEstimates(startDate, endDate)
   }
 
-  getBillingExportDataFromInputData(
+  static getBillingExportDataFromInputData(
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     const billingExportTableService = new BillingExportTable(

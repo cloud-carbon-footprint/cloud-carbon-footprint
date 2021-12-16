@@ -73,6 +73,8 @@ fileignoreconfig:
   checksum: f4b232851337efec90c4a88271cdf4cde2a9d732f0f69824223f1dcf7c6b8aaa
 - filename: microsite/docs/CreatingALookupTable.md
   checksum: 71905a04532ef57e9eab56fefd1c1e43dfd48fabb928a044bbb7c5100640fe5c
+- filename: microsite/docs/EmbodiedEmissions.md
+  checksum: b4632f1cedf090cc50021e2a45c57d25d81c73ddf4cdba517e21f28a9a4f549d
 - filename: microsite/docs/RunWithDocker.md
   checksum: 9a603a0351717c055caf3529fe8aecb8a4ffb509ac598d089ed2a28ebd2d83ae
 - filename: microsite/src/components/differentiator.js
@@ -96,7 +98,7 @@ fileignoreconfig:
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 473ab5e56e4bd7fff0bc394c3219571a0d9cec53670da41e0b417b1a92074852
+  checksum: 22455676a8177bba10d62a907bd86e95706633f00ff40a9f6358ef22d437e02e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
@@ -106,15 +108,19 @@ fileignoreconfig:
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
   checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
 - filename: packages/aws/src/lib/CostAndUsageReports.ts
-  checksum: 2e92787fdea6e84d9d3c036fb00de3dd28b3a50a6dabdef7af7092dc1146d956
+  checksum: 1e137cc798c5ad0176a70c08933b020baafe906969ac91fd34e033de68b1106a
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
+- filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
+  checksum: 29b7a2e1b5debbee7ec4249bd4827c4785288c9d8860092332935ffa755e152d
+- filename: packages/azure/src/lib/ConsumptionManagement.ts
+  checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
   checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
-  checksum: 45b785608886d1ea1b02909c538a7339978cb989695d4098ae67d1e12c3775e4
+  checksum: df033838854fdc1a238c6ed2160c02782ff71f17e91815e7be2865b4af80bf3f
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx

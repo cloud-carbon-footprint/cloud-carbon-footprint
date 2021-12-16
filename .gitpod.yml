@@ -1,0 +1,16 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - init: |
+      yarn install
+      yarn test
+    # obviously don't do this in prod
+    # this allows us to spin up a demo with mock data
+    command: DANGEROUSLY_DISABLE_HOST_CHECK=true yarn start-with-mock-data
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-preview
+  # set this to open-preview, if you want to be able to browse to API endpoints
+  - port: 4000
+    onOpen: ignore

@@ -85,6 +85,14 @@ $ git rebase upstream/trunk
 $ git push origin/trunk
 ```
 
+### Forks
+
+If you are a core contributor, you may want to fetch changes from a forked repository. To make that easier, we have a script that will add the new remote and checkout the fork's branch. It can be invoked with:
+
+```
+$ ./scripts/remote_branch.sh remote-name remote-branch-name
+```
+
 ### Code
 
 Most pull requests opened against the `cloud-carbon-footprint/cloud-carbon-footprint` repository include changes to either the Typescript/React code in the client/ folder, the Typescript code in the packages/api/ folder or the documentation.
@@ -147,7 +155,7 @@ $ yarn test
 
 ### Changeset Version Update
 
-Once you have commited your changes. run `yarn changeset` from the root directory. You will be prompted to choose which packages that need to be updated using the arrow keys and space bar. You will need to choose the appropriate update for each package that you have contributed to using the guidelines set with [Semantic Versioning](https://semver.org/). You will also be prompted to leave a detailed description of your changes. This process will create a markdown file in the .changesets directory to be included in your commit and pushed. Changesets are only requested if you made an update to any of the packages.
+Once you have committed your changes. run `yarn changeset` from the root directory. You will be prompted to choose which packages that need to be updated using the arrow keys and space bar. You will need to choose the appropriate update for each package that you have contributed to using the guidelines set with [Semantic Versioning](https://semver.org/). You will also be prompted to leave a detailed description of your changes. This process will create a markdown file in the .changesets directory to be included in your commit and pushed. Changesets are only requested if you made an update to any of the packages.
 
 ### Push
 
@@ -179,6 +187,17 @@ Feel free to post a comment in the pull request to ping reviewers if you are awa
 
 ---
 
+### Documentation
+
+To contribute to the documentation, make sure you are in the `microsite` directory, then run the commands below.
+```
+yarn install # install the dependencies
+yarn start   # start a running instance of docusaurus 
+```
+
+This will start a live-updating server show that will show any change you make the markdown files in `microsite/docs/`  as soon as they are saved.
+
+
 ## Bundle size analysis 🔍
 
 From the client folder
@@ -194,17 +213,17 @@ This will help in visualizing the bundle size, seeing bundles that might not be 
 
 ## Continuous Integration Pipeline 🔁
 
-We use Github Actions for our CI pipeline. [Link to pipeline](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/actions/workflows/ci.yml).
+We use GitHub Actions for our CI pipeline. [Link to pipeline](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/actions/workflows/ci.yml).
 
-You can learn more about Github Actions in the [Github Actions Documentation](https://docs.github.com/en/actions)
+You can learn more about GitHub Actions in the [Github Actions Documentation](https://docs.github.com/en/actions)
 
 ---
 
 ## Approval for Production
 
-When pushing up, Github Actions will automatically go through the steps of deploying to staging as long as all tests and linting past.
+When pushing up, GitHub Actions will automatically go through the steps of deploying to staging as long as all tests and linting past.
 
-To deploy to production, go to Github Actions and view the CI workflow to deploy. It is a manual approval, therefore if it is ready to be
+To deploy to production, go to GitHub Actions and view the CI workflow to deploy. It is a manual approval, therefore if it is ready to be
 pushed into production, click on "Review deployments", select production, then approve the deployment.
 
 ---
