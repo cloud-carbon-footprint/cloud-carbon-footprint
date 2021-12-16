@@ -6,11 +6,11 @@ slug: /gcp
 
 Your Google Cloud Billing Account needs to be configured to export Billing Data to BigQuery, and the application needs to authenticate with GCP to run queries on that data in BigQuery.
 
-1.  Ensure you have a GCP Service Account with the permission to start BigQuery jobs and read Bigquery job results by granting atleast `roles/bigquery.dataViewer` and `roles/bigquery.jobUser` to the service account.
+1.  Ensure you have a GCP Service Account with the permission to start BigQuery jobs and read Bigquery job results by granting at least `roles/bigquery.dataViewer` and `roles/bigquery.jobUser` to the service account. Learn more about GCP Service Accounts [here](https://cloud.google.com/iam/docs/service-accounts).
 
-2.  Ensure that your enviroment is configured to authenticate with Google Cloud as described [here](https://cloud.google.com/docs/authentication/getting-started).
+2.  Ensure that your environment is configured to authenticate with Google Cloud as described [here](https://cloud.google.com/docs/authentication/getting-started).
 
-    - If you do download a service accout key, make sure the environment variable `GOOGLE_APPLICATION_CREDENTIALS` points to the full path of the service account key file.
+    - If you do download a service account key, make sure the environment variable `GOOGLE_APPLICATION_CREDENTIALS` points to the full path of the service account key file. E.g. `/Users/<user>/path/to/credential`
 
 3.  Set up Google Cloud billing data to export to BigQuery. You can find the instructions for this [here](https://cloud.google.com/billing/docs/how-to/export-data-bigquery).
 
@@ -18,13 +18,11 @@ Your Google Cloud Billing Account needs to be configured to export Billing Data 
 
     - After configuring your credentials, we need to set a number of environment variables in the app, so it can authenticate. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data'' approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packages/api/.env` file.
 
-    - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [client/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
+    - There is also a `packages/client/.env` file that allows you to set some configuration for the data range the application requests data for. See [packages/client/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/.env.template) for a template. Rename this file as .env, optionally remove the comments and then set the environment variables.
 
     - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the `appConfig` object in the [client Config file](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the `CURRENT_PROVIDERS` array.
 
-    -  `GCP_BIG_QUERY_TABLE` is the Table ID of the billing export data in the format: `PROJECT_ID.DATASET_NAME.TABLE_NAME`. Don't forget to replace the colon in the table id if you copy it from BigQuery.
-    -  `GCP_BILLING_PROJECT_ID` is the project id for the project that owns the Billing Export dataset.
-    -  `GCP_BILLING_PROJECT_NAME` is the project name for the project that owns the Billing Export dataset.
+    - For more details on the GCP specific configuration options and their definitions, please read the [Configuration Glossary](./configurations-glossary#variables-needed-for-the-billing-data-holistic-approach-with-gcp)
 
 5.  Finally, start up the application:
 
