@@ -29,6 +29,7 @@ import {
   AWS_RECOMMENDATIONS_TARGETS,
   LookupTableInput,
   LookupTableOutput,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -130,6 +131,7 @@ export default class AWSAccount extends CloudProviderAccount {
   getDataFromCostAndUsageReports(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const costAndUsageReportsService = new CostAndUsageReports(
       new ComputeEstimator(),
@@ -148,7 +150,7 @@ export default class AWSAccount extends CloudProviderAccount {
         ),
       ),
     )
-    return costAndUsageReportsService.getEstimates(startDate, endDate)
+    return costAndUsageReportsService.getEstimates(startDate, endDate, grouping)
   }
 
   static getCostAndUsageReportsDataFromInputData(

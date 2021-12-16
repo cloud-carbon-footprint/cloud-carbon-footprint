@@ -10,6 +10,7 @@ import {
   configLoader,
   EstimationRequestValidationError,
   RecommendationsRequestValidationError,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 import {
   FootprintEstimatesRawRequest,
@@ -21,6 +22,7 @@ export interface EstimationRequest {
   endDate: Date
   region?: string
   ignoreCache: boolean
+  groupBy?: string
   //cloudProvider?:CloudProviderEnum
 }
 
@@ -36,6 +38,7 @@ function validate(
   startDate: moment.Moment,
   endDate: moment.Moment,
   region?: string,
+  groupBy?: string,
 ): void | EstimationRequestValidationError {
   const errors = []
   if (!startDate.isValid()) {
@@ -63,34 +66,12 @@ function validate(
     errors.push('End date is in the future')
   }
 
+  if (groupBy && !Object.keys(GroupBy).includes(groupBy)) {
+    errors.push('Please specify a valid groupBy period')
+  }
+
   if (errors.length > 0) {
     throw new EstimationRequestValidationError(errors.join(', '))
-  }
-}
-
-function rawRequestToEstimationRequest(
-  request: FootprintEstimatesRawRequest,
-): EstimationRequest {
-  const ignoreCache = request.ignoreCache === 'true'
-  const startMoment = moment.utc(request.startDate)
-  const endMoment = moment.utc(request.endDate)
-  return {
-    startDate: startMoment.toDate(),
-    endDate: endMoment.toDate(),
-    region: request.region,
-    ignoreCache,
-  }
-}
-
-function rawRequestToRecommendationsRequest(
-  request: RecommendationsRawRequest,
-): RecommendationRequest {
-  const awsRecommendationTarget =
-    (request.awsRecommendationTarget as AWS_RECOMMENDATIONS_TARGETS) ||
-    AWS_DEFAULT_RECOMMENDATION_TARGET
-
-  return {
-    awsRecommendationTarget,
   }
 }
 
@@ -127,6 +108,23 @@ function validateRecommendationTarget(
   }
 }
 
+function rawRequestToEstimationRequest(
+  request: FootprintEstimatesRawRequest,
+): EstimationRequest {
+  const ignoreCache = request.ignoreCache === 'true'
+  const startMoment = moment.utc(request.startDate)
+  const endMoment = moment.utc(request.endDate)
+  const groupBy = request.groupBy as GroupBy
+
+  return {
+    startDate: startMoment.toDate(),
+    endDate: endMoment.toDate(),
+    region: request.region,
+    ignoreCache,
+    groupBy,
+  }
+}
+
 // throws EstimationRequestValidationError if either validation fails
 export function CreateValidFootprintRequest(
   request: FootprintEstimatesRawRequest,
@@ -136,8 +134,20 @@ export function CreateValidFootprintRequest(
   const startDate = moment.utc(request.startDate)
   const endDate = moment.utc(request.endDate)
 
-  validate(startDate, endDate, request.region)
+  validate(startDate, endDate, request.region, request.groupBy)
   return rawRequestToEstimationRequest(request)
+}
+
+function rawRequestToRecommendationsRequest(
+  request: RecommendationsRawRequest,
+): RecommendationRequest {
+  const awsRecommendationTarget =
+    (request.awsRecommendationTarget as AWS_RECOMMENDATIONS_TARGETS) ||
+    AWS_DEFAULT_RECOMMENDATION_TARGET
+
+  return {
+    awsRecommendationTarget,
+  }
 }
 
 export function CreateValidRecommendationsRequest(

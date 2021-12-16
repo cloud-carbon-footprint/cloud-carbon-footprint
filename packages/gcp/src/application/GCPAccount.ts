@@ -28,6 +28,7 @@ import {
   GoogleAuthClient,
   LookupTableInput,
   LookupTableOutput,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
@@ -45,16 +46,19 @@ export default class GCPAccount extends CloudProviderAccount {
     super()
   }
 
-  getDataForRegions(
+  async getDataForRegions(
     startDate: Date,
     endDate: Date,
-  ): Promise<EstimationResult[]>[] {
-    return this.regions.map((regionId) => {
-      return this.getDataForRegion(regionId, startDate, endDate)
-    })
+  ): Promise<EstimationResult[]> {
+    const estimationResults = await Promise.all(
+      this.regions.map(async (regionId) => {
+        return await this.getDataForRegion(regionId, startDate, endDate)
+      }),
+    )
+    return estimationResults.flat()
   }
 
-  getDataForRegion(
+  async getDataForRegion(
     regionId: string,
     startDate: Date,
     endDate: Date,
@@ -71,10 +75,14 @@ export default class GCPAccount extends CloudProviderAccount {
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       gcpConstants,
     )
-    return this.getRegionData('GCP', region, startDate, endDate)
+    return await this.getRegionData('GCP', region, startDate, endDate)
   }
 
-  getDataFromBillingExportTable(startDate: Date, endDate: Date) {
+  getDataFromBillingExportTable(
+    startDate: Date,
+    endDate: Date,
+    grouping: GroupBy,
+  ) {
     const billingExportTableService = new BillingExportTable(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
@@ -87,7 +95,7 @@ export default class GCPAccount extends CloudProviderAccount {
       ),
       new BigQuery({ projectId: this.id }),
     )
-    return billingExportTableService.getEstimates(startDate, endDate)
+    return billingExportTableService.getEstimates(startDate, endDate, grouping)
   }
 
   static getBillingExportDataFromInputData(

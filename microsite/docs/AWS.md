@@ -48,7 +48,7 @@ The application can also be deployed in AWS by making use of EC2 as the compute 
 
 The infrastructure setup, developed with Terraform, can be found in `terraform/aws` and needs to be parametrized with the right values and tweaked to the specific circumstances of the user i.e. there might not be the need to fire up all resources but a subset of them.
 
-For more information, please note that there are specific instructions for this [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/terraform/aws/README.md).
+For more information, please note that there are specific instructions for this [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/terraform/aws/README.md).
 
 ### Unsupported Usage Types
 

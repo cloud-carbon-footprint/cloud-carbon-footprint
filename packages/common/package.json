@@ -55,7 +55,7 @@
     "ts-jest": "^26.5.6",
     "ts-node": "^10.2.1",
     "ts-node-dev": "^1.1.6",
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.3"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^4.0.5",

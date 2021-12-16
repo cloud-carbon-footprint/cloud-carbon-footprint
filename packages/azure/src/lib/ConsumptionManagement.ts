@@ -9,13 +9,13 @@ import {
 } from '@azure/arm-consumption/esm/models'
 
 import {
-  configLoader,
   Logger,
   EstimationResult,
   convertTerabytesToGigabytes,
   convertGigaBytesToTerabyteHours,
   containsAny,
   wait,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -99,6 +99,7 @@ export default class ConsumptionManagementService {
   public async getEstimates(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
     const allUsageRows = await this.pageThroughUsageRows(usageRows)
@@ -109,7 +110,7 @@ export default class ConsumptionManagementService {
       const consumptionDetailRow: ConsumptionDetailRow =
         new ConsumptionDetailRow(consumptionRow)
 
-      this.updateTimestampByWeek(consumptionDetailRow)
+      this.updateTimestampByWeek(grouping, consumptionDetailRow)
 
       if (this.isUnsupportedUsage(consumptionDetailRow)) {
         return []
@@ -145,10 +146,10 @@ export default class ConsumptionManagementService {
   }
 
   private updateTimestampByWeek(
+    grouping: GroupBy,
     consumptionDetailRow: ConsumptionDetailRow,
   ): void {
-    const startOfType: string =
-      AZURE_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
+    const startOfType: string = AZURE_QUERY_GROUP_BY[grouping]
     const firstDayOfWeek = moment
       .utc(consumptionDetailRow.timestamp)
       .startOf(startOfType as unitOfTime.StartOf)

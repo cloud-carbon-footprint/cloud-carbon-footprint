@@ -12,7 +12,7 @@ module.exports = {
         type: 'category',
         label: 'How It Works',
         collapsed: false,
-        items: ['methodology', 'classifying-usage-types'],
+        items: ['methodology', 'classifying-usage-types', 'embodied-emissions'],
       },
       ],
     },

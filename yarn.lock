@@ -2029,7 +2029,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/api@workspace:packages/api"
   dependencies:
-    "@cloud-carbon-footprint/app": ^0.3.0
+    "@cloud-carbon-footprint/app": ^0.3.1
     "@cloud-carbon-footprint/common": ^1.2.0
     "@types/express": ^4.17.12
     "@types/jest": ^27.0.1
@@ -2057,18 +2057,18 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/app@0.3.0, @cloud-carbon-footprint/app@^0.3.0, @cloud-carbon-footprint/app@workspace:packages/app":
+"@cloud-carbon-footprint/app@0.3.1, @cloud-carbon-footprint/app@^0.3.1, @cloud-carbon-footprint/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
   dependencies:
-    "@cloud-carbon-footprint/aws": ^0.5.0
-    "@cloud-carbon-footprint/azure": ^0.4.0
+    "@cloud-carbon-footprint/aws": ^0.6.0
+    "@cloud-carbon-footprint/azure": ^0.5.0
     "@cloud-carbon-footprint/common": ^1.2.0
-    "@cloud-carbon-footprint/gcp": ^0.4.0
+    "@cloud-carbon-footprint/gcp": ^0.5.0
     "@google-cloud/monitoring": ^2.3.1
     "@google-cloud/storage": ^5.8.5
     "@types/jest": ^27.0.1
@@ -2088,16 +2088,16 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/aws@^0.5.0, @cloud-carbon-footprint/aws@workspace:packages/aws":
+"@cloud-carbon-footprint/aws@^0.6.0, @cloud-carbon-footprint/aws@workspace:packages/aws":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/aws@workspace:packages/aws"
   dependencies:
     "@cloud-carbon-footprint/common": ^1.2.0
-    "@cloud-carbon-footprint/core": ^0.11.1
+    "@cloud-carbon-footprint/core": ^0.12.0
     "@google-cloud/iam-credentials": ^1.0.3
     "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
@@ -2123,11 +2123,11 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.1
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/azure@^0.4.0, @cloud-carbon-footprint/azure@workspace:packages/azure":
+"@cloud-carbon-footprint/azure@^0.5.0, @cloud-carbon-footprint/azure@workspace:packages/azure":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
@@ -2136,7 +2136,7 @@ __metadata:
     "@azure/ms-rest-js": ^2.2.3
     "@azure/ms-rest-nodeauth": ^3.0.7
     "@cloud-carbon-footprint/common": ^1.2.0
-    "@cloud-carbon-footprint/core": ^0.11.1
+    "@cloud-carbon-footprint/core": ^0.12.0
     "@google-cloud/secret-manager": ^3.7.1
     "@types/jest": ^27.0.1
     "@types/jest-when": ^2.7.2
@@ -2159,7 +2159,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.1
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -2167,7 +2167,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
   dependencies:
-    "@cloud-carbon-footprint/app": 0.3.0
+    "@cloud-carbon-footprint/app": 0.3.1
     "@cloud-carbon-footprint/common": ^1.2.0
     "@types/cli-table": ^0.3.0
     "@types/jest": ^27.0.1
@@ -2203,7 +2203,7 @@ __metadata:
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.6
     typed-prompts: ^1.5.0
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -2261,7 +2261,7 @@ __metadata:
     react-scripts: ^4.0.3
     react-test-renderer: ^17.0.2
     styled-components: ^5.3.0
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -2287,12 +2287,12 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.5
+    typescript: ^4.5.3
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/core@^0.11.1, @cloud-carbon-footprint/core@workspace:packages/core":
+"@cloud-carbon-footprint/core@^0.12.0, @cloud-carbon-footprint/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/core@workspace:packages/core"
   dependencies:
@@ -2321,7 +2321,7 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.6
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -2349,18 +2349,18 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.2.1
     typed-prompts: ^1.5.0
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   bin:
     ccf-create-app: bin/ccf-create-app
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/gcp@^0.4.0, @cloud-carbon-footprint/gcp@workspace:packages/gcp":
+"@cloud-carbon-footprint/gcp@^0.5.0, @cloud-carbon-footprint/gcp@workspace:packages/gcp":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/gcp@workspace:packages/gcp"
   dependencies:
     "@cloud-carbon-footprint/common": ^1.2.0
-    "@cloud-carbon-footprint/core": ^0.11.1
+    "@cloud-carbon-footprint/core": ^0.12.0
     "@google-cloud/bigquery": ^5.6.0
     "@google-cloud/monitoring": ^2.3.1
     "@google-cloud/recommender": ^4.2.2
@@ -2388,7 +2388,7 @@ __metadata:
     ts-jest: ^26.5.1
     ts-node: ^10.2.1
     ts-node-dev: ^1.1.1
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -21732,7 +21732,7 @@ resolve@^2.0.0-next.3:
     rimraf: ^3.0.2
     sonar-scanner: ^3.1.0
     ts-node: ^10.2.1
-    typescript: ^4.3.5
+    typescript: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -24526,13 +24526,13 @@ typescript@^3.3.3:
   languageName: node
   linkType: hard
 
-typescript@^4.3.5:
-  version: 4.3.5
-  resolution: "typescript@npm:4.3.5"
+"typescript@npm:^4.5.3":
+  version: 4.5.3
+  resolution: "typescript@npm:4.5.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: bab033b5e2b0790dd35b77fd005df976ef80b8d84fd2c6e63cc31808151875beae9216e5a315fe7068e8499905c3c354248fe83272cdfc13b7705635f0c66c97
+  checksum: 2ac278c20418882816789ad94a5d9e7f11969db7a2a23fa09e61f2fedf3814265cbd4f89d7f5b6e1f0e7be2b5f169becf5dab913d0da255b073ea3c8c324e6d4
   languageName: node
   linkType: hard
 
@@ -24546,13 +24546,13 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
-  version: 4.3.5
-  resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=493e53"
+"typescript@patch:typescript@^4.5.3#~builtin<compat/typescript>":
+  version: 4.5.3
+  resolution: "typescript@patch:typescript@npm%3A4.5.3#~builtin<compat/typescript>::version=4.5.3&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 61fc1a2ca5037420de5bbe17c6ddc4cbcc0d52301ed94f0a7b5821c55ff9eb96307f0816f745ca8f0fc87ed92f3951cde6d97cd6fd6bc6920c02ea63b5b26259
+  checksum: 3c3a664dfb66e7c45d3823cc1a4038dc506415041f39249ed3af1799a64b3065448549d9e9ba509c94335d1e2dfbe311a4b9e36574e87d248f9381d541cb8626
   languageName: node
   linkType: hard
 

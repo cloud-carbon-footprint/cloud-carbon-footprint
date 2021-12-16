@@ -1,5 +1,24 @@
 # @cloud-carbon-footprint/aws
 
+## 0.6.0
+
+### Minor Changes
+
+- 4238d3b8: Bug fix in core package to handle no estimates and implementation of terraform deployments for aws
+- 4238d3b8: changeset: Adds embodied emissions to the estimations for AWS and Azure
+
+### Patch Changes
+
+- 4238d3b8: Fixes bug with Create Lookup Table requiring credentials for AWS input
+
+  For Create-App updates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/f8732281a02fe087d09343ffd4531ebe688fc655).
+
+- 4238d3b8: updates aws high fidelity approach to display account names
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+- Updated dependencies [4238d3b8]
+  - @cloud-carbon-footprint/core@0.12.0
+
 ## 0.5.1
 
 ### Patch Changes

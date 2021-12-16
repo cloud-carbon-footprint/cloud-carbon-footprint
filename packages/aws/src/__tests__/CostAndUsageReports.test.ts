@@ -13,7 +13,7 @@ import {
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
 } from 'aws-sdk/clients/athena'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
   NetworkingEstimator,
@@ -67,6 +67,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 describe('CostAndUsageReports Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
+  const grouping = GroupBy.day
   const testAccountId = '123456789'
   const testAccountName = '123456789'
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
@@ -136,7 +137,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     expect(startQueryExecutionSpy).toHaveBeenCalledWith(
       {
@@ -276,7 +281,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -362,7 +371,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -431,7 +444,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -502,7 +519,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -612,7 +633,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -711,7 +736,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -788,7 +817,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -879,7 +912,11 @@ describe('CostAndUsageReports Service', () => {
       ),
       getServiceWrapper(),
     )
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -931,7 +968,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -983,7 +1024,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -1106,7 +1151,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -1215,7 +1264,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -1311,7 +1364,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -1419,7 +1476,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -1527,7 +1588,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
@@ -1567,7 +1632,7 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
     await expect(() =>
-      athenaService.getEstimates(startDate, endDate),
+      athenaService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
       `Athena query failed. Reason TEST. Query ID: some-execution-id`,
     )
@@ -1588,7 +1653,7 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
     await expect(() =>
-      athenaService.getEstimates(startDate, endDate),
+      athenaService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(`Athena start query failed. Reason Start failed.`)
   })
 
@@ -1610,7 +1675,11 @@ describe('CostAndUsageReports Service', () => {
       getServiceWrapper(),
     )
 
-    const result = await athenaService.getEstimates(startDate, endDate)
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     const expectedResult: EstimationResult[] = [
       {
