@@ -101,8 +101,10 @@ fileignoreconfig:
   checksum: 3fd7ec81bfa309f1d01ae0eadb695a418850e671d148715ae4259e14706491f5
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
+- filename: packages/aws/src/__tests__/AWSAccount.test.ts
+  checksum: bb589b733b04064c81990eab8a6d51a207aeab949191d905437138c9ce8f1d68
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 22455676a8177bba10d62a907bd86e95706633f00ff40a9f6358ef22d437e02e
+  checksum: 3cd4f39d4394d6cfd43e7920ec9d79dec948d12928c6ab9f718a608a5a3c07b9
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts

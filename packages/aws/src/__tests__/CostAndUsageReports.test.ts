@@ -13,7 +13,12 @@ import {
   GetQueryExecutionOutput,
   GetQueryResultsOutput,
 } from 'aws-sdk/clients/athena'
-import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  GroupBy,
+  LookupTableInput,
+  LookupTableOutput,
+} from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
   NetworkingEstimator,
@@ -1613,6 +1618,48 @@ describe('CostAndUsageReports Service', () => {
       },
     ]
 
+    expect(result).toEqual(expectedResult)
+  })
+
+  it(' successfully return lookup table data from getEstimatesFromInputData function', () => {
+    // given
+    const inputData: LookupTableInput[] = [
+      {
+        serviceName: 'AmazonEC2',
+        region: 'us-east-1',
+        usageType: 'USE2-BoxUsage:t2.micro',
+        usageUnit: 'Hrs',
+        vCpus: '2',
+      },
+    ]
+
+    // when
+    const costAndUsageReportsService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+    )
+    const result =
+      costAndUsageReportsService.getEstimatesFromInputData(inputData)
+
+    // then
+    const expectedResult: LookupTableOutput[] = [
+      {
+        serviceName: 'AmazonEC2',
+        region: 'us-east-1',
+        usageType: 'USE2-BoxUsage:t2.micro',
+        usageUnit: 'Hrs',
+        vCpus: '2',
+        kilowattHours: 0.013198543918379168,
+        co2e: 0.000005487360626785731,
+      },
+    ]
     expect(result).toEqual(expectedResult)
   })
 

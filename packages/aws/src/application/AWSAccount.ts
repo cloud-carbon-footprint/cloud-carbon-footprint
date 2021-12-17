@@ -191,22 +191,15 @@ export default class AWSAccount extends CloudProviderAccount {
     }
   }
 
-  private cw: CloudWatch
-  private ce: CostExplorer
-  private cwl: CloudWatchLogs
-  private ath: Athena
-
   private createServiceWrapper(options: ServiceConfigurationOptions) {
     return new ServiceWrapper(
-      this.cw ? this.cw : new CloudWatch(options),
-      this.cwl ? this.cwl : new CloudWatchLogs(options),
-      this.ce
-        ? this.ce
-        : new CostExplorer({
-            region: 'us-east-1',
-            credentials: options.credentials,
-          }),
-      this.ath ? this.ath : new Athena(options),
+      new CloudWatch(options),
+      new CloudWatchLogs(options),
+      new CostExplorer({
+        region: 'us-east-1',
+        credentials: options.credentials,
+      }),
+      new Athena(options),
     )
   }
 
