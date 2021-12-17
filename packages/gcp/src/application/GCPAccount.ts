@@ -65,8 +65,8 @@ export default class GCPAccount extends CloudProviderAccount {
   ): Promise<EstimationResult[]> {
     const gcpServices = this.getServices()
     const gcpConstants = {
-      minWatts: GCP_CLOUD_CONSTANTS.MIN_WATTS_AVG,
-      maxWatts: GCP_CLOUD_CONSTANTS.MAX_WATTS_AVG,
+      minWatts: GCP_CLOUD_CONSTANTS.MIN_WATTS_MEDIAN,
+      maxWatts: GCP_CLOUD_CONSTANTS.MAX_WATTS_MEDIAN,
       powerUsageEffectiveness: GCP_CLOUD_CONSTANTS.getPUE(),
     }
     const region = new Region(
