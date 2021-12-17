@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/app
 
+## 0.3.2
+
+### Patch Changes
+
+- 09f2c05f: Upgrades version of typescript to 4.5.3
+- 31bd5de8: Reverts using group by for cache logic to make it more accurate when grouping more than a day. Updates cache to return end day inclusive.
+- Updated dependencies [09f2c05f]
+- Updated dependencies [414da110]
+- Updated dependencies [55bee6a1]
+  - @cloud-carbon-footprint/aws@0.6.1
+  - @cloud-carbon-footprint/azure@0.5.1
+  - @cloud-carbon-footprint/common@1.2.1
+  - @cloud-carbon-footprint/gcp@0.5.1
+
 ## 0.3.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/cli
 
+## 1.1.2
+
+### Patch Changes
+
+- 09f2c05f: Upgrades version of typescript to 4.5.3
+- 55bee6a1: Updates scope 3 emissions coefficients for Machine Types for GCP
+- Updated dependencies [09f2c05f]
+- Updated dependencies [31bd5de8]
+  - @cloud-carbon-footprint/app@0.3.2
+  - @cloud-carbon-footprint/common@1.2.1
+
 ## 1.1.1
 
 ### Patch Changes
