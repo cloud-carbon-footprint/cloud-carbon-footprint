@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/api
 
+## 1.2.2
+
+### Patch Changes
+
+- 09f2c05f: Upgrades version of typescript to 4.5.3
+- Updated dependencies [09f2c05f]
+- Updated dependencies [31bd5de8]
+  - @cloud-carbon-footprint/app@0.3.2
+  - @cloud-carbon-footprint/common@1.2.1
+
 ## 1.2.1
 
 ### Patch Changes
