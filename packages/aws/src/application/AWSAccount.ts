@@ -29,6 +29,7 @@ import {
   AWS_RECOMMENDATIONS_TARGETS,
   LookupTableInput,
   LookupTableOutput,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -130,6 +131,7 @@ export default class AWSAccount extends CloudProviderAccount {
   getDataFromCostAndUsageReports(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const costAndUsageReportsService = new CostAndUsageReports(
       new ComputeEstimator(),
@@ -148,7 +150,7 @@ export default class AWSAccount extends CloudProviderAccount {
         ),
       ),
     )
-    return costAndUsageReportsService.getEstimates(startDate, endDate)
+    return costAndUsageReportsService.getEstimates(startDate, endDate, grouping)
   }
 
   static getCostAndUsageReportsDataFromInputData(
@@ -189,22 +191,15 @@ export default class AWSAccount extends CloudProviderAccount {
     }
   }
 
-  private cw: CloudWatch
-  private ce: CostExplorer
-  private cwl: CloudWatchLogs
-  private ath: Athena
-
   private createServiceWrapper(options: ServiceConfigurationOptions) {
     return new ServiceWrapper(
-      this.cw ? this.cw : new CloudWatch(options),
-      this.cwl ? this.cwl : new CloudWatchLogs(options),
-      this.ce
-        ? this.ce
-        : new CostExplorer({
-            region: 'us-east-1',
-            credentials: options.credentials,
-          }),
-      this.ath ? this.ath : new Athena(options),
+      new CloudWatch(options),
+      new CloudWatchLogs(options),
+      new CostExplorer({
+        region: 'us-east-1',
+        credentials: options.credentials,
+      }),
+      new Athena(options),
     )
   }
 

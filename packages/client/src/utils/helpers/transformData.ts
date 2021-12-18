@@ -69,11 +69,12 @@ const sumServiceTotals = (
 
 export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
   if (series.length === 0) return 1
-  return Math.max(
+  const max = Math.max(
     ...series.map((dataPair) => {
       return dataPair.y
     }),
   )
+  return max ? max : 1
 }
 
 const roundNumberBasedOnSize = (number: number, digits: number): number => {

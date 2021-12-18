@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 1.2.1
+
+### Patch Changes
+
+- a304acb6: Upgrades version of typescript to 4.5.3
+
 ## 1.2.0
 
 ### Minor Changes

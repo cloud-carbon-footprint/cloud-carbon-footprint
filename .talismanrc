@@ -1,10 +1,14 @@
 fileignoreconfig:
+- filename: .changeset/famous-ligers-breathe.md
+  checksum: 0a9343cef13e632b64dfbff81a6bd65d97f53b610e98a211c5a06f7f4193d298
 - filename: .changeset/honest-penguins-clap.md
   checksum: ac6a3b992c06dfdfba27b96cf9b93f38b3d87bba3581e5a8428f42f186eb0ee7
 - filename: .changeset/nice-timers-repair.md
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
+- filename: .changeset/sixty-peas-design.md
+  checksum: a353a88260b60bba06f294ed5e7227edf2b3782b97f67ac02bbe163f2435f8fd
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
 - filename: .changeset/wet-jobs-destroy.md
@@ -97,8 +101,10 @@ fileignoreconfig:
   checksum: 3fd7ec81bfa309f1d01ae0eadb695a418850e671d148715ae4259e14706491f5
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
+- filename: packages/aws/src/__tests__/AWSAccount.test.ts
+  checksum: bb589b733b04064c81990eab8a6d51a207aeab949191d905437138c9ce8f1d68
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 22455676a8177bba10d62a907bd86e95706633f00ff40a9f6358ef22d437e02e
+  checksum: 3cd4f39d4394d6cfd43e7920ec9d79dec948d12928c6ab9f718a608a5a3c07b9
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
@@ -120,7 +126,7 @@ fileignoreconfig:
 - filename: packages/cli/.env.template
   checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
-  checksum: df033838854fdc1a238c6ed2160c02782ff71f17e91815e7be2865b4af80bf3f
+  checksum: 6818b054bb908533e8eed46d3324e3df500f8df9cbfb8e25329723c0369e9315
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
@@ -272,7 +278,7 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: d249d6b5816d3765b5bee3df866084e83e5e8e50e89c1099c8ee5167e20e1450
+  checksum: d9620d1cc9413fefae1f1d1362e6dc21eb4b3bec77ba72476a9afb196880ac09
 - filename: packages/gcp/src/lib/BillingExportTable.ts
   checksum: df8f16310cd2bf983821666d495f5bf1945584851e1242e37ecdf0a652102113
 - filename: packages/gcp/src/lib/BillingExportTypes.ts

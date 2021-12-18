@@ -17,7 +17,11 @@ import {
   CloudProviderAccount,
   EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
-import { EstimationResult, Logger } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  GroupBy,
+  Logger,
+} from '@cloud-carbon-footprint/common'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
 
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
@@ -46,6 +50,7 @@ export default class AzureAccount extends CloudProviderAccount {
   public async getDataFromConsumptionManagement(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const subscriptions = await this.subscriptionClient.subscriptions.list()
 
@@ -64,6 +69,7 @@ export default class AzureAccount extends CloudProviderAccount {
             startDate,
             endDate,
             subscription.subscriptionId,
+            grouping,
           )
         } catch (e) {
           this.logger.warn(
@@ -79,6 +85,7 @@ export default class AzureAccount extends CloudProviderAccount {
     startDate: Date,
     endDate: Date,
     subscriptionId: string,
+    grouping: GroupBy,
   ) {
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
@@ -97,6 +104,10 @@ export default class AzureAccount extends CloudProviderAccount {
         subscriptionId,
       ),
     )
-    return consumptionManagementService.getEstimates(startDate, endDate)
+    return consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
   }
 }

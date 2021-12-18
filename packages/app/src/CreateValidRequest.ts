@@ -10,6 +10,7 @@ import {
   configLoader,
   EstimationRequestValidationError,
   RecommendationsRequestValidationError,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 import {
   FootprintEstimatesRawRequest,
@@ -32,14 +33,6 @@ export interface RecommendationRequest {
 // eslint-disable-next-line
 // @ts-ignore
 moment.suppressDeprecationWarnings = true
-
-const GROUP_BY = {
-  day: 'day',
-  week: 'week',
-  quarter: 'quarter',
-  month: 'month',
-  year: 'year',
-}
 
 function validate(
   startDate: moment.Moment,
@@ -73,7 +66,7 @@ function validate(
     errors.push('End date is in the future')
   }
 
-  if (groupBy && !Object.keys(GROUP_BY).includes(groupBy)) {
+  if (groupBy && !Object.keys(GroupBy).includes(groupBy)) {
     errors.push('Please specify a valid groupBy period')
   }
 
@@ -121,7 +114,7 @@ function rawRequestToEstimationRequest(
   const ignoreCache = request.ignoreCache === 'true'
   const startMoment = moment.utc(request.startDate)
   const endMoment = moment.utc(request.endDate)
-  const groupBy = request.groupBy
+  const groupBy = request.groupBy as GroupBy
 
   return {
     startDate: startMoment.toDate(),

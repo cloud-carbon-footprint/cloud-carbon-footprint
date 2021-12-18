@@ -10,6 +10,8 @@ import {
   AWS_RECOMMENDATIONS_TARGETS,
   AWS_DEFAULT_RECOMMENDATION_TARGET,
   EstimationResult,
+  LookupTableInput,
+  LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 import {
   EBS,
@@ -185,6 +187,34 @@ describe('AWSAccount', () => {
     )
 
     expect(result).toEqual(expectedEstimatesResult)
+  })
+
+  it('should getCostAndUsageReportsDataFromInputData', () => {
+    const inputData: LookupTableInput[] = [
+      {
+        serviceName: 'AmazonEC2',
+        region: 'us-east-1',
+        usageType: 'USE2-BoxUsage:t2.micro',
+        usageUnit: 'Hrs',
+        vCpus: '2',
+      },
+    ]
+
+    const AWSAccount = require('../application/AWSAccount').default
+    const result = AWSAccount.getCostAndUsageReportsDataFromInputData(inputData)
+
+    const expectedResult: LookupTableOutput[] = [
+      {
+        serviceName: 'AmazonEC2',
+        region: 'us-east-1',
+        usageType: 'USE2-BoxUsage:t2.micro',
+        usageUnit: 'Hrs',
+        vCpus: '2',
+        kilowattHours: 0.013198543918379168,
+        co2e: 0.000005487360626785731,
+      },
+    ]
+    expect(result).toEqual(expectedResult)
   })
 
   it('should get data for recommendations', async () => {

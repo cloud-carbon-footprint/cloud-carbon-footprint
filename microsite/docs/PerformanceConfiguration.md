@@ -17,9 +17,11 @@ In your `packages/client/.env` file, you can provide the following variables for
 
 #### Group By Timestamp in Queries
 
-In your `packages/api/.env` file, you can provide the following variable for a custom query option to group the data by date type:
+In your `packages/client/.env` file, you can provide the following variable for a custom query option to group the data by date type:
 
-- `GROUP_QUERY_RESULTS_BY` (example values: day, week, month, quarter, year)
+- `REACT_APP_GROUP_BY` (example values: day, week, month, quarter, year)
+
+Note: this is still configurable in `packages/api/.env` with the `GROUP_QUERY_RESULTS_BY` option, but this will be deprecated soon.
 
 ### Caching Configurations
 

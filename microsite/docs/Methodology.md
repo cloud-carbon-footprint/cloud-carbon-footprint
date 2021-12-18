@@ -17,12 +17,12 @@ their carbon footprint. This application is a starting point to enable organizat
 their emissions across multiple cloud providers.
 
 There are currently no guidelines for reporting Scope 3 emissions as part of the Greenhouse Gas (GHG) Protocol, which
-cloud provider usage would fall under. However we hope more and more organizations report on both location-based and
+cloud provider usage would fall under. However, we hope more and more organizations report on both location-based and
 market-based emissions from cloud usage. To that end, this application’s focus is on providing a location-based cloud
 emissions estimate, and we welcome contributions that could aid with market-based reporting to include energy attributes
 such as RECs or power purchasing agreements.
 
-This application pulls usage data (compute, storage, networking, etc) from major cloud providers and calculates
+This application pulls usage data (compute, storage, networking, etc.) from major cloud providers and calculates
 estimated energy (Watt-Hours) and greenhouse gas emissions expressed as carbon dioxide equivalents (metric tons CO2e). We
 display these visualizations in a dashboard for developers, sustainability leaders and other stakeholders in an
 organization to view and take action. It currently supports AWS, Google Cloud and Microsoft Azure.
@@ -40,7 +40,7 @@ And:
 Our approach builds upon [Etsy's Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/) 
 (cloud energy conversion factors) for estimating CO2e emissions for cloud compute and storage services, with 
 the addition of networking and memory usage. We similarly use point estimates without confidence intervals due
-to the experimental nature of the project, which are not meant as a replacement for data from cloud providers and we
+to the experimental nature of the project, which are not meant as a replacement for data from cloud providers, and we
 cannot guarantee their accuracy.
 
 We encourage and welcome any improvements and extensions to both the methodology and
@@ -275,7 +275,7 @@ On top of that, these studies use different methodologies and end up with result
 
 ##### Chosen coefficient
 
-It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [source](https://aws.amazon.com/about-aws/global-infrastructure/). Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: **0.001 kWh/Gb**. Again, we welcome feedback or contributions to improve this coefficient.
+It is safe to assume hyper-scale cloud providers have a very energy efficient network between their data centers with their own optical fiber networks and submarine cable [[source](https://aws.amazon.com/about-aws/global-infrastructure/)]. Data exchanges between data-centers are also done with a very high bitrate (~100 GbE -> 100 Gbps), thus being the most efficient use-case. Given these assumptions, we have decided to use the smallest coefficient available to date: **0.001 kWh/Gb**. Again, we welcome feedback or contributions to improve this coefficient.
 
 We want to thank [@martin-laurent](https://github.com/martin-laurent) for providing this research and recommended coefficient.
 
