@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .changeset/breezy-singers-own.md
+  checksum: a1a0b0b676bfe049874b22ef95052509012d209e4ebd02accb8bca16d11fd52e
 - filename: .changeset/famous-ligers-breathe.md
   checksum: 0a9343cef13e632b64dfbff81a6bd65d97f53b610e98a211c5a06f7f4193d298
 - filename: .changeset/honest-penguins-clap.md
