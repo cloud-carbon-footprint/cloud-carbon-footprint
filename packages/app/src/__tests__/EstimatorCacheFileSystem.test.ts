@@ -2,11 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
-import { promises } from 'fs'
-import EstimatorCache from '../EstimatorCache'
 import moment from 'moment'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { promises } from 'fs'
+import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
+import EstimatorCache from '../EstimatorCache'
+import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from '../CreateValidRequest'
 
 jest.mock('fs', () => {
@@ -16,10 +16,14 @@ jest.mock('fs', () => {
 const mockFs = promises as jest.Mocked<typeof promises>
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+  const grouping = 'day' as GroupBy
   return [...Array(consecutiveDays)].map((v, i) => {
     return {
       timestamp: moment.utc(startDate).add(i, 'days').toDate(),
       serviceEstimates: [],
+      periodStartDate: undefined,
+      periodEndDate: undefined,
+      groupBy: grouping,
     }
   })
 }

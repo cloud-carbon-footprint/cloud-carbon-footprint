@@ -127,6 +127,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -185,6 +188,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -201,6 +207,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-west1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -259,6 +268,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-02'),
@@ -275,6 +287,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -388,6 +403,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-south1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -446,6 +464,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -504,6 +525,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-west1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -520,6 +544,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -567,6 +594,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -583,6 +613,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -599,6 +632,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-04'),
@@ -615,6 +651,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-south1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-05'),
@@ -631,6 +670,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-south1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-05T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -717,6 +759,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -784,6 +829,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -860,6 +908,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -925,6 +976,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 4.277502497037252e-14,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1006,6 +1060,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 80.2682499734564,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-02'),
@@ -1033,6 +1090,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 8.265049024686325e-8,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -1060,6 +1120,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 0.000017706963670674972,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-04'),
@@ -1087,6 +1150,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 2.7575440083940826e-13,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-05'),
@@ -1103,6 +1169,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-05T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)

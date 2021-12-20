@@ -65,6 +65,9 @@ describe('Azure Account', () => {
             region: 'UK South',
           },
         ],
+        periodStartDate: startDate,
+        periodEndDate: endDate,
+        groupBy: grouping,
       },
     ]
 
@@ -96,6 +99,9 @@ describe('Azure Account', () => {
             region: 'UK South',
           },
         ],
+        periodStartDate: startDate,
+        periodEndDate: endDate,
+        groupBy: grouping,
       },
       {
         timestamp: startDate,
@@ -112,6 +118,9 @@ describe('Azure Account', () => {
             region: 'UK South',
           },
         ],
+        periodStartDate: startDate,
+        periodEndDate: endDate,
+        groupBy: grouping,
       },
     ]
 

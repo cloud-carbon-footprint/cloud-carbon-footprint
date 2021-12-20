@@ -168,6 +168,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'CentralUS',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -217,6 +220,9 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -330,6 +336,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'centralindia',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -388,6 +397,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'uksouth',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -446,6 +458,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.04459392,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-02'),
@@ -473,6 +488,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.0067122042757308,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -553,6 +571,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.000005629481856,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-04'),
@@ -580,6 +601,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.0017746560000000003,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-04T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -638,6 +662,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.015215399999999999,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-04'),
@@ -676,6 +703,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 7.155870966717116e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-04T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -763,6 +793,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-03'),
@@ -790,6 +823,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-04'),
@@ -817,6 +853,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-05'),
@@ -844,6 +883,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-05T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-11-06'),
@@ -860,6 +902,9 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-11-06T23:59:59.000Z'),
+        periodStartDate: new Date('2021-11-06T00:00:00.000Z'),
       },
     ]
 
@@ -941,6 +986,9 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1001,6 +1049,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'uksouth',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1128,6 +1179,9 @@ describe('Azure Consumption Management Service', () => {
               usesAverageCPUConstant: true,
             },
           ],
+          groupBy: GroupBy.week,
+          periodEndDate: new Date('2020-11-08T23:59:59.000Z'),
+          periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
         },
       ]
       expect(result).toEqual(expectedResult)

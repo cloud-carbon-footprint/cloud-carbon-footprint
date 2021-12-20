@@ -53,7 +53,7 @@ export default class App {
             account.id,
             account.name,
             AWS.CURRENT_REGIONS,
-          ).getDataForRegion(request.region, startDate, endDate),
+          ).getDataForRegion(request.region, startDate, endDate, grouping),
         )
         estimatesForAccounts.push(estimates)
       }
@@ -75,7 +75,7 @@ export default class App {
               account.id,
               account.name,
               AWS.CURRENT_REGIONS,
-            ).getDataForRegions(startDate, endDate),
+            ).getDataForRegions(startDate, endDate, grouping),
           )
           AWSEstimatesByRegion.push(estimates)
         }
@@ -97,7 +97,7 @@ export default class App {
                 project.id,
                 project.name,
                 GCP.CURRENT_REGIONS,
-              ).getDataForRegions(startDate, endDate)
+              ).getDataForRegions(startDate, endDate, grouping)
             })
             .flat(),
         )

@@ -122,6 +122,7 @@ export default class CostAndUsageReports {
           results,
           costAndUsageReportRow,
           footprintEstimate,
+          grouping,
         )
     })
 
@@ -129,7 +130,12 @@ export default class CostAndUsageReports {
       unknownRows.map((rowData: CostAndUsageReportsRow) => {
         const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            grouping,
+          )
       })
     }
     return results

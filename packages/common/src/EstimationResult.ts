@@ -3,10 +3,15 @@
  */
 
 import { reduceBy } from 'ramda'
+import { GroupBy } from './Config'
+import { getPeriodEndDate } from './helpers'
 
 export interface EstimationResult {
   readonly timestamp: Date
   readonly serviceEstimates: ServiceData[]
+  periodStartDate: Date
+  periodEndDate: Date
+  groupBy: GroupBy
 }
 
 export interface ServiceData {
@@ -29,6 +34,9 @@ export const reduceByTimestamp = (
   interface MutableEstimationResult {
     timestamp: Date | undefined
     serviceEstimates: ServiceData[]
+    periodStartDate: Date
+    periodEndDate: Date
+    groupBy: GroupBy
   }
 
   const accumulatingFn = (
@@ -37,6 +45,8 @@ export const reduceByTimestamp = (
   ) => {
     acc.timestamp = acc.timestamp || new Date(value.timestamp)
     acc.serviceEstimates = acc.serviceEstimates.concat(value.serviceEstimates)
+    acc.periodStartDate = acc.timestamp || new Date(value.timestamp)
+    acc.periodEndDate = getPeriodEndDate(acc.periodStartDate, GroupBy.day)
     return acc
   }
   const getTimeOfEstimate = (estimationResult: { timestamp: Date }) =>
@@ -44,7 +54,13 @@ export const reduceByTimestamp = (
 
   const result = reduceBy(
     accumulatingFn,
-    { timestamp: undefined, serviceEstimates: [] },
+    {
+      timestamp: undefined,
+      serviceEstimates: [],
+      periodStartDate: undefined,
+      periodEndDate: undefined,
+      groupBy: GroupBy.day,
+    },
     getTimeOfEstimate,
     estimationResults,
   )

@@ -49,10 +49,16 @@ export default class GCPAccount extends CloudProviderAccount {
   async getDataForRegions(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const estimationResults = await Promise.all(
       this.regions.map(async (regionId) => {
-        return await this.getDataForRegion(regionId, startDate, endDate)
+        return await this.getDataForRegion(
+          regionId,
+          startDate,
+          endDate,
+          grouping,
+        )
       }),
     )
     return estimationResults.flat()
@@ -62,6 +68,7 @@ export default class GCPAccount extends CloudProviderAccount {
     regionId: string,
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const gcpServices = this.getServices()
     const gcpConstants = {
@@ -75,7 +82,7 @@ export default class GCPAccount extends CloudProviderAccount {
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       gcpConstants,
     )
-    return await this.getRegionData('GCP', region, startDate, endDate)
+    return await this.getRegionData('GCP', region, startDate, endDate, grouping)
   }
 
   getDataFromBillingExportTable(

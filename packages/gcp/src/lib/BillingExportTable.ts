@@ -106,6 +106,7 @@ export default class BillingExportTable {
           results,
           billingExportRow,
           footprintEstimate,
+          grouping,
         )
     })
 
@@ -113,7 +114,12 @@ export default class BillingExportTable {
       unknownRows.map((rowData: BillingExportRow) => {
         const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            grouping,
+          )
       })
     }
     return results

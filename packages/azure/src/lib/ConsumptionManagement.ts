@@ -129,6 +129,7 @@ export default class ConsumptionManagementService {
           results,
           consumptionDetailRow,
           footprintEstimate,
+          grouping,
         )
       }
       return []
@@ -138,7 +139,12 @@ export default class ConsumptionManagementService {
       unknownRows.map((rowData: ConsumptionDetailRow) => {
         const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            grouping,
+          )
       })
     }
 

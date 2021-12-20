@@ -6,6 +6,7 @@ import { median, reduceBy } from 'ramda'
 
 import { COMPUTE_PROCESSOR_TYPES } from './compute'
 import { BillingDataRow, CloudConstantsEmissionsFactors } from '.'
+import { GroupBy, getPeriodEndDate } from '@cloud-carbon-footprint/common'
 
 export default interface FootprintEstimate {
   timestamp: Date
@@ -62,6 +63,9 @@ export const aggregateEstimatesByDay = (
 export interface MutableEstimationResult {
   timestamp: Date
   serviceEstimates: MutableServiceEstimate[]
+  periodStartDate: Date
+  periodEndDate: Date
+  groupBy: GroupBy
 }
 
 export interface MutableServiceEstimate {
@@ -94,6 +98,7 @@ export const appendOrAccumulateEstimatesByDay = (
   results: MutableEstimationResult[],
   rowData: BillingDataRow,
   footprintEstimate: FootprintEstimate,
+  grouping: GroupBy,
 ): void => {
   const serviceEstimate: MutableServiceEstimate = {
     cloudProvider: rowData.cloudProvider,
@@ -142,6 +147,9 @@ export const appendOrAccumulateEstimatesByDay = (
   } else {
     results.push({
       timestamp: rowData.timestamp,
+      periodStartDate: rowData.timestamp,
+      periodEndDate: getPeriodEndDate(rowData.timestamp, grouping),
+      groupBy: grouping,
       serviceEstimates: [serviceEstimate],
     })
   }

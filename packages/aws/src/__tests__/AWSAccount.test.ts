@@ -4,27 +4,29 @@
 
 import { Credentials } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
+import { CloudProviderAccount } from '@cloud-carbon-footprint/core'
 import {
-  Config as mockConfig,
-  RecommendationResult,
-  AWS_RECOMMENDATIONS_TARGETS,
   AWS_DEFAULT_RECOMMENDATION_TARGET,
+  AWS_RECOMMENDATIONS_TARGETS,
+  Config as mockConfig,
   EstimationResult,
+  getPeriodEndDate,
+  GroupBy,
+  RecommendationResult,
   LookupTableInput,
   LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 import {
+  CostAndUsageReports,
   EBS,
-  S3,
   EC2,
   ElastiCache,
-  RDS,
   Lambda,
-  CostAndUsageReports,
+  RDS,
+  S3,
 } from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 import { Recommendations } from '../lib/Recommendations'
-import { CloudProviderAccount } from '@cloud-carbon-footprint/core'
 
 jest.mock('../application/AWSCredentialsProvider')
 
@@ -157,7 +159,11 @@ describe('AWSAccount', () => {
 
     getRegionDataSpy.mockResolvedValue(expectedEstimatesResult)
 
-    const result = await testAwsAccount.getDataForRegions(startDate, endDate)
+    const result = await testAwsAccount.getDataForRegions(
+      startDate,
+      endDate,
+      GroupBy.day,
+    )
 
     expect(result).toEqual(expectedEstimatesResult)
   })
@@ -332,6 +338,9 @@ function getExpectedEstimationResult(startDate: Date = new Date()) {
           usesAverageCPUConstant: false,
         },
       ],
+      periodStartDate: new Date(startDate),
+      periodEndDate: getPeriodEndDate(new Date(startDate), GroupBy.day),
+      groupBy: GroupBy.day,
     },
   ]
 }

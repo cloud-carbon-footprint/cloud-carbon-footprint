@@ -5,6 +5,7 @@
 import { create } from 'react-test-renderer'
 import { render } from '@testing-library/react'
 import CustomTooltip from './CustomTooltip'
+import each from 'jest-each'
 
 describe('Custom Tooltip', () => {
   const cloudEstimatesPerDay = [
@@ -22,7 +23,21 @@ describe('Custom Tooltip', () => {
       kilowattHours: 200,
       cost: 10,
     },
+    {
+      x: new Date('2021-11-01'),
+      y: 20,
+      usesAverageCPUConstant: true,
+      kilowattHours: 200,
+      cost: 10,
+    },
   ]
+
+  // jest.mock('ConfigLoader', () => ({
+  //   __esModule: true,
+  //   default: () => ({
+  //     GROUP_BY: 'day',
+  //   }),
+  // }))
 
   it('renders data in tooltip', () => {
     const tooltip = create(
@@ -52,5 +67,18 @@ describe('Custom Tooltip', () => {
     const expectedLabel = `${cloudEstimatesPerDay[0].y} metric tons CO2e`
 
     expect(getByText(expectedLabel)).toBeInTheDocument()
+  })
+
+  describe('Show tooltip title according to group by param', () => {
+    each([
+      ['Week 45, November', 'week'],
+      ['November 01, 2021', 'day'],
+    ]).it('should show %s and month when grouping by %s', (expectedLabel) => {
+      const { getByText } = render(
+        <CustomTooltip dataPoint={cloudEstimatesPerDay[2]} />,
+      )
+
+      expect(getByText(expectedLabel)).toBeInTheDocument()
+    })
   })
 })
