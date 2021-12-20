@@ -27,14 +27,20 @@ const ForecastEquivalencyCard: FunctionComponent<ForecastEquivalencyProps> = ({
       <div className={classes.contentContainer}>
         <div className={classes.contentItemsContainer}>
           <Eco className={classes.treeSeedlingsIcon} />
-          <Typography className={classes.textContent}>
+          <Typography
+            className={classes.textContent}
+            data-testid="tree-seedlings-grown"
+          >
             {treeSeedlings}
           </Typography>
           <Typography>Tree seedlings grown</Typography>
         </div>
         <div className={classes.contentItemsContainer}>
           <CalendarToday className={classes.calendarIcon} />
-          <Typography className={classes.textContent}>
+          <Typography
+            className={classes.textContent}
+            data-testid="cost-savings-per-month"
+          >
             {yearCostSavings}
           </Typography>
           <Typography>Dollars per month</Typography>

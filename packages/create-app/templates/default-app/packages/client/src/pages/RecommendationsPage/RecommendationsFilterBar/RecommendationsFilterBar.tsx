@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { FunctionComponent, ReactElement } from 'react'
+import React, { FunctionComponent, ReactElement } from 'react'
 import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,

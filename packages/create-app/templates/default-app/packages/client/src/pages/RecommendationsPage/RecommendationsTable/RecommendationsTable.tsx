@@ -11,11 +11,11 @@ import React, {
 } from 'react'
 import {
   DataGrid,
+  GridCellParams,
   GridColDef,
   GridOverlay,
   GridRowParams,
   MuiEvent,
-  GridCellParams,
 } from '@material-ui/data-grid'
 import {
   RecommendationResult,
@@ -32,7 +32,7 @@ import CustomPagination from './CustomPagination'
 import {
   tableFormatNearZero,
   tableFormatRawCo2e,
-} from '../../../utils/helpers/transformData'
+} from 'utils/helpers/transformData'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
@@ -208,7 +208,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             <DateRange lookBackPeriodDays={13} />
             <Tooltip message={tooltipMessage} />
           </div>
-          <div className={classes.tableContainer}>
+          <div
+            data-testid="recommendations-data-grid"
+            className={classes.tableContainer}
+          >
             <div className={classes.toolbarContainer}>
               <SearchBar
                 value={searchBarValue}
