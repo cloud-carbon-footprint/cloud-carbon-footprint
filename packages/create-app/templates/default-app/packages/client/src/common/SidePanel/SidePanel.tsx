@@ -31,6 +31,9 @@ const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
 
   const handleDrawerClose = () => {
     setOpen(false)
+    if (props.onClose) {
+      props.onClose()
+    }
   }
 
   const drawerStatus = open ? 'open' : 'closed'
