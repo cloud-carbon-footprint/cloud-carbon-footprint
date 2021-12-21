@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import EmissionsByDayTable from '../EmissionsByDayTable'
 
 describe('EmissionsByDayTable', () => {
@@ -15,6 +15,9 @@ describe('EmissionsByDayTable', () => {
   const input: EstimationResult[] = [
     {
       timestamp: timestamp,
+      periodStartDate: timestamp,
+      periodEndDate: moment(timestamp).add(1, 'd').toDate(),
+      groupBy: GroupBy.day,
       serviceEstimates: [
         {
           cloudProvider: 'aws',
@@ -86,6 +89,9 @@ describe('EmissionsByDayTable', () => {
     },
     {
       timestamp: moment.utc('2020-07-09').toDate(),
+      periodStartDate: moment.utc('2020-07-09').toDate(),
+      periodEndDate: moment('2020-07-09').add(1, 'd').toDate(),
+      groupBy: GroupBy.day,
       serviceEstimates: [
         {
           cloudProvider: 'aws',
