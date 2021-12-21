@@ -162,6 +162,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'ApiGatewayCacheUsage',
   'PortUsage',
   'SharedMsftAD-Usage',
+  'Kafka.mcu.general',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
