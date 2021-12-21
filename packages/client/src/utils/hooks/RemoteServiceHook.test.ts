@@ -13,6 +13,7 @@ const mockPush = jest.fn((args) => console.log('history push args', args))
 jest.mock('react-router-dom', () => ({
   useHistory: () => ({ push: mockPush }),
 }))
+
 jest.mock('ConfigLoader', () => ({
   __esModule: true,
   default: () => ({

@@ -2,10 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import each from 'jest-each'
 import { create } from 'react-test-renderer'
 import { render } from '@testing-library/react'
+import config from 'ConfigLoader'
 import CustomTooltip from './CustomTooltip'
-import each from 'jest-each'
 
 describe('Custom Tooltip', () => {
   const cloudEstimatesPerDay = [
@@ -32,14 +33,16 @@ describe('Custom Tooltip', () => {
     },
   ]
 
-  // jest.mock('ConfigLoader', () => ({
-  //   __esModule: true,
-  //   default: () => ({
-  //     GROUP_BY: 'day',
-  //   }),
-  // }))
+  // TODO: Fix this mock, for some reason it's being ignored
+  jest.mock('ConfigLoader', () => ({
+    __esModule: true,
+    default: () => ({
+      GROUP_BY: 'day',
+    }),
+  }))
 
   it('renders data in tooltip', () => {
+    config().GROUP_BY = 'day'
     const tooltip = create(
       <CustomTooltip dataPoint={cloudEstimatesPerDay[1]} />,
     )
@@ -73,12 +76,17 @@ describe('Custom Tooltip', () => {
     each([
       ['Week 45, November', 'week'],
       ['November 01, 2021', 'day'],
-    ]).it('should show %s and month when grouping by %s', (expectedLabel) => {
-      const { getByText } = render(
-        <CustomTooltip dataPoint={cloudEstimatesPerDay[2]} />,
-      )
+    ]).it(
+      'should show %s and month when grouping by %s',
+      (expectedLabel, grouping) => {
+        config().GROUP_BY = grouping
 
-      expect(getByText(expectedLabel)).toBeInTheDocument()
-    })
+        const { getByText } = render(
+          <CustomTooltip dataPoint={cloudEstimatesPerDay[2]} />,
+        )
+
+        expect(getByText(expectedLabel)).toBeInTheDocument()
+      },
+    )
   })
 })
