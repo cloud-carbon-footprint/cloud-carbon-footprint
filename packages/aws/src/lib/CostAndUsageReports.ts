@@ -671,11 +671,12 @@ export default class CostAndUsageReports {
 
     const familyInstanceTypes: number[][] = Object.values(
       EC2_INSTANCE_TYPES[instanceFamily] ||
-        INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING[instanceFamily],
+        INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING[instanceFamily] ||
+        {},
     )
 
     const [largestInstancevCpu] =
-      familyInstanceTypes[familyInstanceTypes.length - 1]
+      familyInstanceTypes[familyInstanceTypes.length - 1] || []
 
     return {
       instancevCpu,
