@@ -18,8 +18,6 @@ type CustomTooltipProps = {
   dataPoint: cloudEstPerDay
 }
 
-//pass group by here --- weeks start on monday
-
 const CustomTooltip = ({ dataPoint }: CustomTooltipProps): ReactElement => {
   const grouping: string = config().GROUP_BY
 
@@ -27,8 +25,8 @@ const CustomTooltip = ({ dataPoint }: CustomTooltipProps): ReactElement => {
     const dateLabel = {
       day: moment.utc(dataPoint.x).format('MMMM DD, YYYY'),
       week: moment.utc(dataPoint.x).format('[Week] w, MMMM'),
-      month: moment.utc(dataPoint.x).format('MMMM YYYY'),
-      quarter: moment.utc(dataPoint.x).format('Qo [quarter], YYYY'),
+      month: moment.utc(dataPoint.x).format('MMMM, YYYY'),
+      quarter: moment.utc(dataPoint.x).format('Qo [Quarter], YYYY'),
       year: moment.utc(dataPoint.x).format('YYYY'),
     }
     return (

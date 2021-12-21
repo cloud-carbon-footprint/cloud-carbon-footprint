@@ -74,19 +74,19 @@ describe('Custom Tooltip', () => {
 
   describe('Show tooltip title according to group by param', () => {
     each([
+      ['2021', 'year'],
+      ['4th Quarter, 2021', 'quarter'],
+      ['November, 2021', 'month'],
       ['Week 45, November', 'week'],
       ['November 01, 2021', 'day'],
-    ]).it(
-      'should show %s and month when grouping by %s',
-      (expectedLabel, grouping) => {
-        config().GROUP_BY = grouping
+    ]).it('should show %s when grouping by %s', (expectedLabel, grouping) => {
+      config().GROUP_BY = grouping
 
-        const { getByText } = render(
-          <CustomTooltip dataPoint={cloudEstimatesPerDay[2]} />,
-        )
+      const { getByText } = render(
+        <CustomTooltip dataPoint={cloudEstimatesPerDay[2]} />,
+      )
 
-        expect(getByText(expectedLabel)).toBeInTheDocument()
-      },
-    )
+      expect(getByText(expectedLabel)).toBeInTheDocument()
+    })
   })
 })
