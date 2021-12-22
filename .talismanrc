@@ -122,7 +122,7 @@ fileignoreconfig:
 - filename: packages/azure/package.json
   checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: 29b7a2e1b5debbee7ec4249bd4827c4785288c9d8860092332935ffa755e152d
+  checksum: d3ddccc632c3dc8b7f860b52191e60c2aca51206af10a4e6258e6c5c3d2a32e4
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template

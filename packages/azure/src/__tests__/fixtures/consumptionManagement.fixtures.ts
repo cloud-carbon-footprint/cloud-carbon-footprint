@@ -334,7 +334,7 @@ export const mockConsumptionManagementResponseFour: Partial<LegacyUsageDetail>[]
 export const mockConsumptionManagementResponseFive: Partial<LegacyUsageDetail>[] =
   [
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 5,
       cost: 20,
       meterDetails: {
@@ -347,7 +347,7 @@ export const mockConsumptionManagementResponseFive: Partial<LegacyUsageDetail>[]
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 48,
       cost: 5,
       meterDetails: {
@@ -360,7 +360,7 @@ export const mockConsumptionManagementResponseFive: Partial<LegacyUsageDetail>[]
       resourceLocation: 'apsoutheast',
     },
     {
-      date: new Date('2021-11-02'),
+      date: new Date('2020-11-02'),
       quantity: 0.111375,
       cost: 10,
       meterDetails: {
@@ -373,7 +373,7 @@ export const mockConsumptionManagementResponseFive: Partial<LegacyUsageDetail>[]
       resourceLocation: 'EastUS2',
     },
     {
-      date: new Date('2021-11-02'),
+      date: new Date('2020-11-02'),
       quantity: 14.44976379,
       cost: 7,
       meterDetails: {
@@ -390,7 +390,7 @@ export const mockConsumptionManagementResponseFive: Partial<LegacyUsageDetail>[]
 export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] =
   [
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 0.002654,
       cost: 20,
       meterDetails: {
@@ -403,7 +403,7 @@ export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] 
       resourceLocation: 'WestUS',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 0.012219,
       cost: 15,
       meterDetails: {
@@ -416,7 +416,7 @@ export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] 
       resourceLocation: 'SouthCentralUS',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 0.000015,
       cost: 10,
       meterDetails: {
@@ -429,7 +429,7 @@ export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] 
       resourceLocation: 'uksouth',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 0.027492,
       cost: 5,
       meterDetails: {
@@ -442,7 +442,7 @@ export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] 
       resourceLocation: 'uswest2',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 0.2973480663,
       cost: 2,
       meterDetails: {
@@ -455,7 +455,7 @@ export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] 
       resourceLocation: 'uksouth',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 123456789,
       cost: 2,
       meterDetails: {
@@ -472,7 +472,7 @@ export const mockConsumptionManagementResponseSix: Partial<LegacyUsageDetail>[] 
 export const mockConsumptionManagementResponseSeven: Partial<LegacyUsageDetail>[] =
   [
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 0.01344086022,
       cost: 20,
       meterDetails: {
@@ -485,7 +485,7 @@ export const mockConsumptionManagementResponseSeven: Partial<LegacyUsageDetail>[
       resourceLocation: 'uksouth',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 12,
       cost: 30,
       meterDetails: {
@@ -498,7 +498,7 @@ export const mockConsumptionManagementResponseSeven: Partial<LegacyUsageDetail>[
       resourceLocation: 'uksouth',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 0.02150770413,
       cost: 35,
       meterDetails: {
@@ -511,7 +511,7 @@ export const mockConsumptionManagementResponseSeven: Partial<LegacyUsageDetail>[
       resourceLocation: 'CentralUS',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 0.006989247310827,
       cost: 40,
       meterDetails: {
@@ -524,7 +524,7 @@ export const mockConsumptionManagementResponseSeven: Partial<LegacyUsageDetail>[
       resourceLocation: 'uksouth',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 2,
       cost: 45,
       meterDetails: {
@@ -567,7 +567,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 0.02150770413,
       cost: 35,
       meterDetails: {
@@ -580,7 +580,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-03'),
+      date: new Date('2020-11-03'),
       quantity: 25,
       cost: 0.4835702479,
       meterDetails: {
@@ -593,7 +593,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 10,
       cost: 5,
       meterDetails: {
@@ -606,7 +606,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-04'),
+      date: new Date('2020-11-04'),
       quantity: 20,
       cost: 0.006280996057,
       meterDetails: {
@@ -619,7 +619,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-05'),
+      date: new Date('2020-11-05'),
       quantity: 14.44976379,
       cost: 7,
       meterDetails: {
@@ -632,7 +632,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-05'),
+      date: new Date('2020-11-05'),
       quantity: 32,
       cost: 18,
       meterDetails: {
@@ -645,7 +645,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2021-11-06'),
+      date: new Date('2020-11-06'),
       quantity: 20,
       cost: 0.003168316832,
       meterDetails: {
@@ -711,5 +711,48 @@ export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseWit
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
+    },
+  ]
+
+export const mockConsumptionManagementResponseTen: AzureUsageDetailsResponseWithNextLink =
+  [
+    {
+      date: new Date('2020-11-01'),
+      quantity: 5,
+      cost: 10,
+      meterDetails: {
+        meterName: 'D8 v3',
+        unitOfMeasure: '1 Hour',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'northeurope',
+    },
+    {
+      date: new Date('2020-11-02'),
+      quantity: 0.250004,
+      cost: 15,
+      meterDetails: {
+        meterName: 'DS11-1 v2',
+        unitOfMeasure: '1 Hour',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'westeurope',
+    },
+    {
+      date: new Date('2020-11-08'),
+      quantity: 17,
+      cost: 5,
+      meterDetails: {
+        meterName: 'D2 v2',
+        unitOfMeasure: '10 Hour',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'uksouth',
     },
   ]

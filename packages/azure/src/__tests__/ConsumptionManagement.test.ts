@@ -28,6 +28,7 @@ import {
   mockConsumptionManagementResponseOne,
   mockConsumptionManagementResponseSeven,
   mockConsumptionManagementResponseSix,
+  mockConsumptionManagementResponseTen,
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
 } from './fixtures/consumptionManagement.fixtures'
@@ -73,7 +74,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 
 describe('Azure Consumption Management Service', () => {
   const startDate = new Date('2020-11-02')
-  const endDate = new Date('2020-11-03')
+  const endDate = new Date('2020-11-07')
   const grouping: GroupBy = GroupBy.day
   const subscriptionId = 'test-subscription-id'
   const subscriptionName = 'test-subscription'
@@ -433,7 +434,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -459,11 +460,11 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-02'),
+        timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -489,8 +490,8 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-02T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-02T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -524,7 +525,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -572,11 +573,11 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-04'),
+        timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -602,8 +603,8 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-04T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-04T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -637,7 +638,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -663,11 +664,11 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-04'),
+        timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -704,8 +705,8 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-04T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-04T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -798,7 +799,7 @@ describe('Azure Consumption Management Service', () => {
         periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -824,11 +825,11 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-03T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-03T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-04'),
+        timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -854,11 +855,11 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-04T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-04T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-05'),
+        timestamp: new Date('2020-11-05'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -884,11 +885,11 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-05T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-05T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-05T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-06'),
+        timestamp: new Date('2020-11-06'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -903,8 +904,8 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2021-11-06T23:59:59.000Z'),
-        periodStartDate: new Date('2021-11-06T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-06T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-06T00:00:00.000Z'),
       },
     ]
 
@@ -1186,6 +1187,56 @@ describe('Azure Consumption Management Service', () => {
       ]
       expect(result).toEqual(expectedResult)
     })
+  })
+
+  it('Returns estimates filtered within the start and end date', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseTen,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      // eslint-disable-next-line
+      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.011153267136340895,
+            co2e: 0.000004349774183172949,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 15,
+            region: 'westeurope',
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
   })
 
   it('Throws an error when usageDetails.list fails', async () => {

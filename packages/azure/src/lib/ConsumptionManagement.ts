@@ -106,34 +106,40 @@ export default class ConsumptionManagementService {
     const results: MutableEstimationResult[] = []
     const unknownRows: ConsumptionDetailRow[] = []
 
-    allUsageRows.map((consumptionRow: LegacyUsageDetail) => {
-      const consumptionDetailRow: ConsumptionDetailRow =
-        new ConsumptionDetailRow(consumptionRow)
+    allUsageRows
+      .filter(
+        (consumptionRow: LegacyUsageDetail) =>
+          new Date(consumptionRow.date) >= startDate &&
+          new Date(consumptionRow.date) < endDate,
+      )
+      .map((consumptionRow: LegacyUsageDetail) => {
+        const consumptionDetailRow: ConsumptionDetailRow =
+          new ConsumptionDetailRow(consumptionRow)
 
-      this.updateTimestampByWeek(grouping, consumptionDetailRow)
+        this.updateTimestampByWeek(grouping, consumptionDetailRow)
 
-      if (this.isUnsupportedUsage(consumptionDetailRow)) {
+        if (this.isUnsupportedUsage(consumptionDetailRow)) {
+          return []
+        }
+
+        if (this.isUnknownUsage(consumptionDetailRow)) {
+          unknownRows.push(consumptionDetailRow)
+          return []
+        }
+
+        const footprintEstimate =
+          this.getEstimateByPricingUnit(consumptionDetailRow)
+
+        if (footprintEstimate) {
+          appendOrAccumulateEstimatesByDay(
+            results,
+            consumptionDetailRow,
+            footprintEstimate,
+            grouping,
+          )
+        }
         return []
-      }
-
-      if (this.isUnknownUsage(consumptionDetailRow)) {
-        unknownRows.push(consumptionDetailRow)
-        return []
-      }
-
-      const footprintEstimate =
-        this.getEstimateByPricingUnit(consumptionDetailRow)
-
-      if (footprintEstimate) {
-        appendOrAccumulateEstimatesByDay(
-          results,
-          consumptionDetailRow,
-          footprintEstimate,
-          grouping,
-        )
-      }
-      return []
-    })
+      })
 
     if (results.length > 0) {
       unknownRows.map((rowData: ConsumptionDetailRow) => {
