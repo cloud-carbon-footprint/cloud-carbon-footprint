@@ -45,8 +45,9 @@ export const reduceByTimestamp = (
   ) => {
     acc.timestamp = acc.timestamp || new Date(value.timestamp)
     acc.serviceEstimates = acc.serviceEstimates.concat(value.serviceEstimates)
+    acc.groupBy = acc.groupBy || value.groupBy
     acc.periodStartDate = acc.timestamp || new Date(value.timestamp)
-    acc.periodEndDate = getPeriodEndDate(acc.periodStartDate, GroupBy.day)
+    acc.periodEndDate = getPeriodEndDate(acc.periodStartDate, acc.groupBy)
     return acc
   }
   const getTimeOfEstimate = (estimationResult: { timestamp: Date }) =>
@@ -59,7 +60,7 @@ export const reduceByTimestamp = (
       serviceEstimates: [],
       periodStartDate: undefined,
       periodEndDate: undefined,
-      groupBy: GroupBy.day,
+      groupBy: undefined,
     },
     getTimeOfEstimate,
     estimationResults,

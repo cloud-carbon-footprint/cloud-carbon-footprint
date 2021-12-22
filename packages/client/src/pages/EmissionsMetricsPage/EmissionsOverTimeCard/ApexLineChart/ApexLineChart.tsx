@@ -4,6 +4,7 @@
 
 import React, { FunctionComponent, useEffect } from 'react'
 import { equals } from 'ramda'
+import moment from 'moment'
 import { renderToStaticMarkup } from 'react-dom/server'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
@@ -57,15 +58,26 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
   const maxKilowattHours = getMaxOfDataSeries(kilowattHoursSeriesData)
   const maxCost = getMaxOfDataSeries(costSeriesData)
 
+  const grouping = data[0].groupBy
+  const dateFormat = {
+    day: 'MMMM DD, YYYY',
+    week: '[Week] w, MMMM',
+    month: 'MMMM YYYY',
+    quarter: 'MMMM YYYY',
+    year: 'YYYY',
+  }
+  console.log(grouping)
+
   useEffect(() => {
     const newSortedData = sortByDate(data)
+    const min = newSortedData[0]?.timestamp
+      ? new Date(newSortedData[0]?.timestamp)
+      : null
+    const endDate = new Date(newSortedData[newSortedData.length - 1]?.timestamp)
+    const max = endDate ? moment(endDate).add(1, `${grouping}s`).toDate() : null
     const newDefaultRange = {
-      min: newSortedData[0]?.timestamp
-        ? new Date(newSortedData[0]?.timestamp)
-        : null,
-      max: newSortedData[newSortedData.length - 1]?.timestamp
-        ? new Date(newSortedData[newSortedData.length - 1]?.timestamp)
-        : null,
+      min,
+      max,
     }
 
     if (!equals(chartData, newSortedData)) setChartData(newSortedData)
@@ -198,11 +210,25 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     },
     xaxis: {
       type: 'datetime',
+      tickAmount: data.length,
       title: {
         text: '',
         offsetY: 18,
         style: {
           fontSize: '15px',
+        },
+      },
+      labels: {
+        formatter: function (val, timestamp) {
+          return (
+            moment(timestamp)
+              // .add(1, `${grouping}s`)
+              .add(1, `d`)
+              .format(dateFormat['day'])
+          )
+        },
+        style: {
+          display: 'contents !important',
         },
       },
     },
@@ -273,6 +299,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     },
   }
 
+  console.log(dateRange)
   return (
     <Chart
       aria-label="apex-line-chart"

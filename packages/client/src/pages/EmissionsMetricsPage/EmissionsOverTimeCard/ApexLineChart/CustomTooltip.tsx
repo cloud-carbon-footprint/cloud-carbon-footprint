@@ -19,7 +19,7 @@ type CustomTooltipProps = {
 }
 
 const CustomTooltip = ({ dataPoint }: CustomTooltipProps): ReactElement => {
-  const grouping: string = config().GROUP_BY
+  const grouping: string = 'day' || config().GROUP_BY
 
   if (dataPoint?.x) {
     const dateLabel = {
