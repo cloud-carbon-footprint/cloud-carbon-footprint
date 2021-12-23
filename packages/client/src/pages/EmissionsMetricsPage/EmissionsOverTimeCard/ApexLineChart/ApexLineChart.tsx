@@ -108,6 +108,14 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       },
     ])
 
+    ApexCharts.exec('lineChart', 'updateOptions', [
+      {
+        xaxis: {
+          category: global.labels,
+        },
+      },
+    ])
+
     toggledSeries.forEach((legendToggle: LegendToggle) => {
       const [seriesKey, toggleValue] = Object.entries(legendToggle)[0]
       toggleValue
@@ -209,8 +217,8 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       },
     },
     xaxis: {
-      type: 'datetime',
-      tickAmount: data.length,
+      type: 'category',
+      tickAmount: 'dataPoints',
       title: {
         text: '',
         offsetY: 18,
@@ -219,9 +227,9 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
         },
       },
       labels: {
-        formatter: function (val, timestamp) {
+        formatter: function (val) {
           return (
-            moment(timestamp)
+            moment(val)
               // .add(1, `${grouping}s`)
               .add(1, `d`)
               .format(dateFormat['day'])
