@@ -12,21 +12,22 @@ The custom tooltip also allows us to add an asterisk for data points that were e
 import React, { ReactElement } from 'react'
 import moment from 'moment'
 import { cloudEstPerDay } from 'Types'
-import config from 'ConfigLoader'
 
 type CustomTooltipProps = {
   dataPoint: cloudEstPerDay
+  grouping: string
 }
 
-const CustomTooltip = ({ dataPoint }: CustomTooltipProps): ReactElement => {
-  const grouping: string = 'day' || config().GROUP_BY
-
+const CustomTooltip = ({
+  dataPoint,
+  grouping,
+}: CustomTooltipProps): ReactElement => {
   if (dataPoint?.x) {
     const dateLabel = {
-      day: moment.utc(dataPoint.x).format('MMMM DD, YYYY'),
-      week: moment.utc(dataPoint.x).format('[Week] w, MMMM'),
-      month: moment.utc(dataPoint.x).format('MMMM, YYYY'),
-      quarter: moment.utc(dataPoint.x).format('Qo [Quarter], YYYY'),
+      day: moment.utc(dataPoint.x).format('MMM DD, YYYY'),
+      week: moment.utc(dataPoint.x).format('[Week] w, MMM'),
+      month: moment.utc(dataPoint.x).format('MMM YYYY'),
+      quarter: moment.utc(dataPoint.x).format('Qo [Quarter] YYYY'),
       year: moment.utc(dataPoint.x).format('YYYY'),
     }
     return (

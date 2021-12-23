@@ -72,6 +72,13 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
         "shared": true,
       },
       "xaxis": Object {
+        "labels": Object {
+          "formatter": [Function],
+          "style": Object {
+            "display": "contents !important",
+          },
+        },
+        "tickAmount": "dataPoints",
         "title": Object {
           "offsetY": 18,
           "style": Object {
@@ -79,7 +86,7 @@ exports[`ApexLineChart renders with correct configuration 1`] = `
           },
           "text": "",
         },
-        "type": "datetime",
+        "type": "category",
       },
       "yaxis": Array [
         Object {

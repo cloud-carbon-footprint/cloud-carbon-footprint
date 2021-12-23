@@ -59,6 +59,7 @@ describe('ApexLineChart', () => {
       return {
         timestamp: this.timestamp,
         serviceEstimates: this.serviceEstimates,
+        groupBy: 'day',
       }
     }
   }

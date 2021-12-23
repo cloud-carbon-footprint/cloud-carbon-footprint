@@ -58,15 +58,14 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
   const maxKilowattHours = getMaxOfDataSeries(kilowattHoursSeriesData)
   const maxCost = getMaxOfDataSeries(costSeriesData)
 
-  const grouping = data[0].groupBy
+  const grouping = data[0]?.groupBy || 'day'
   const dateFormat = {
-    day: 'MMMM DD, YYYY',
-    week: '[Week] w, MMMM',
-    month: 'MMMM YYYY',
-    quarter: 'MMMM YYYY',
+    day: 'MMM DD, YYYY',
+    week: '[Week] w, MMM',
+    month: 'MMM YYYY',
+    quarter: 'Qo [Quarter] YYYY',
     year: 'YYYY',
   }
-  console.log(grouping)
 
   useEffect(() => {
     const newSortedData = sortByDate(data)
@@ -205,7 +204,10 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       shared: true,
       custom: function ({ dataPointIndex }: { dataPointIndex: number }) {
         return renderToStaticMarkup(
-          <CustomTooltip dataPoint={co2SeriesData[dataPointIndex]} />,
+          <CustomTooltip
+            dataPoint={co2SeriesData[dataPointIndex]}
+            grouping={grouping}
+          />,
         )
       },
     },
@@ -228,12 +230,7 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       },
       labels: {
         formatter: function (val) {
-          return (
-            moment(val)
-              // .add(1, `${grouping}s`)
-              .add(1, `d`)
-              .format(dateFormat['day'])
-          )
+          return moment(val).add(1, `d`).format(dateFormat[grouping])
         },
         style: {
           display: 'contents !important',
@@ -307,7 +304,6 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
     },
   }
 
-  console.log(dateRange)
   return (
     <Chart
       aria-label="apex-line-chart"

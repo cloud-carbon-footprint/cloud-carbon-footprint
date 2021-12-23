@@ -120,6 +120,7 @@ describe('App', () => {
     endDate: moment(endDate).add(1, 'weeks').toDate(),
     region: region,
     ignoreCache: false,
+    groupBy: grouping,
   }
   const testAwsAccountId = '12345678'
   const testAwsAccountName = 'test AWS account'
@@ -447,6 +448,7 @@ describe('App', () => {
       startDate: start,
       endDate: end,
       ignoreCache: false,
+      groupBy: grouping,
     }
 
     const result = await app.getCostAndEstimates(request)
@@ -557,6 +559,7 @@ describe('App', () => {
       startDate: start,
       endDate: end,
       ignoreCache: false,
+      groupBy: grouping,
     }
 
     const result = await app.getCostAndEstimates(request)
@@ -679,6 +682,7 @@ describe('App', () => {
       startDate: start,
       endDate: end,
       ignoreCache: false,
+      groupBy: grouping,
     }
 
     const result = await app.getCostAndEstimates(request)

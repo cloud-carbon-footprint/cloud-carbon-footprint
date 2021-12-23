@@ -96,7 +96,11 @@ describe('GCPAccount', () => {
     const testGCPAccount = new GCPAccount('12345678', 'test account', regions)
 
     // when
-    const result = await testGCPAccount.getDataForRegions(startDate, endDate)
+    const result = await testGCPAccount.getDataForRegions(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     // then
     const expectedResult: EstimationResult[] = [
