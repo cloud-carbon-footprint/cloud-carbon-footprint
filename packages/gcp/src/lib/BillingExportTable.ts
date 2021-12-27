@@ -15,6 +15,7 @@ import {
   convertByteSecondsToGigabyteHours,
   LookupTableInput,
   LookupTableOutput,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -84,8 +85,12 @@ export default class BillingExportTable {
     this.billingExportTableLogger = new Logger('BillingExportTable')
   }
 
-  async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
-    const usageRows = await this.getUsage(start, end)
+  async getEstimates(
+    start: Date,
+    end: Date,
+    grouping: GroupBy,
+  ): Promise<EstimationResult[]> {
+    const usageRows = await this.getUsage(start, end, grouping)
 
     const results: MutableEstimationResult[] = []
     const unknownRows: BillingExportRow[] = []
@@ -586,10 +591,14 @@ export default class BillingExportTable {
       : EstimateClassification.UNKNOWN
   }
 
-  private async getUsage(start: Date, end: Date): Promise<RowMetadata[]> {
+  private async getUsage(
+    start: Date,
+    end: Date,
+    grouping: GroupBy,
+  ): Promise<RowMetadata[]> {
     const query = `SELECT
                     DATE_TRUNC(DATE(usage_start_time), ${
-                      GCP_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
+                      GCP_QUERY_GROUP_BY[grouping]
                     }) as timestamp,
                     project.id as accountId,
                     project.name as accountName,

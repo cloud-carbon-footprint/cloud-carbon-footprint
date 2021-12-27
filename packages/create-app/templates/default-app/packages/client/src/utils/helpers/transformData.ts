@@ -69,11 +69,12 @@ const sumServiceTotals = (
 
 export const getMaxOfDataSeries = (series: cloudEstPerDay[]): number => {
   if (series.length === 0) return 1
-  return Math.max(
+  const max = Math.max(
     ...series.map((dataPair) => {
       return dataPair.y
     }),
   )
+  return max ? max : 1
 }
 
 const roundNumberBasedOnSize = (number: number, digits: number): number => {
@@ -139,7 +140,7 @@ const sumEstimate = (
   key: string,
 ): number => {
   let serviceEstimates = data
-  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult)
+  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult
   if (data[0] && 'serviceEstimates' in data[0]) {
     const estimationData = data as EstimationResult[]
     serviceEstimates = estimationData.flatMap(

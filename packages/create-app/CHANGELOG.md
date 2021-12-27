@@ -1,5 +1,28 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.1.2
+
+### Patch Changes
+
+- 5ab4cce8: updates client package template files
+  Updates referenced in the following commits:
+  [[1](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/2ebb5fe08f90c97717d1b332f1a6e3f2f1aabfbb)]
+
+  [[2](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1b7f05dddf0effa78523e5dcb3cc4ca176974ca5)]
+
+## 1.1.1
+
+### Patch Changes
+
+- a304acb6: Upgrades version of typescript to 4.5.3
+- a304acb6: updates GCPAccount to use MIN_WATTS_MEDIAN and MAX_WATTS_MEDIAN to compute estimations actually work. Updates client to not break when cost is zero
+
+  please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/0cdcd2c5ab0b68a69374b31b32c10721fb8f094a) for create-app package updates.
+
+- a304acb6: fixes linting error in create-app EmissionsSidePanel.tsx in create-app template.
+  please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/784461d99c62e3e4e672425f9ec836de23116b45) for updates.
+- 0675533c: create app update
+
 ## 1.1.0
 
 ### Minor Changes

@@ -101,6 +101,10 @@
       "mtPerKwHour": 0.000074
     },
     {
+      "region": "us-east2",
+      "mtPerKwHour": 0.000475105
+    },
+    {
       "region": "us-central1",
       "mtPerKwHour": 0.000540461
     },
@@ -1386,9 +1390,9 @@
       "instanceName": "example-instance-5",
       "recommendationDetail": "Modify instance: example-instance-5.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 6.513,
-      "costSavings": 33.611,
-      "co2eSavings": 0.492
+      "kilowattHourSavings": 116.513,
+      "costSavings": 3.611,
+      "co2eSavings": 11.492
     },
     {
       "cloudProvider": "AWS",
@@ -1399,9 +1403,9 @@
       "instanceName": "example-instance",
       "recommendationDetail": "Modify instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 4.978,
-      "costSavings": 43.506,
-      "co2eSavings": 0.984
+      "kilowattHourSavings": 114.978,
+      "costSavings": 13.506,
+      "co2eSavings": 11.984
     },
     {
       "cloudProvider": "AWS",
@@ -1412,9 +1416,9 @@
       "instanceName": "example-instance-2",
       "recommendationDetail": "Modify instance: example-instance-2.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 8.419,
+      "kilowattHourSavings": 18.419,
       "costSavings": 5.667,
-      "co2eSavings": 0.288
+      "co2eSavings": 1.288
     },
     {
       "cloudProvider": "AWS",
@@ -1425,9 +1429,9 @@
       "instanceName": "example-instance",
       "recommendationDetail": "Delete instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 1.195,
-      "costSavings": 34.442,
-      "co2eSavings": 0.892
+      "kilowattHourSavings": 11.195,
+      "costSavings": 4.442,
+      "co2eSavings": 1.892
     },
     {
       "cloudProvider": "AWS",
@@ -1438,9 +1442,9 @@
       "instanceName": "example-instance",
       "recommendationDetail": "Delete instance: example-instance.",
       "resourceId": "i-0f12345678912b12I",
-      "kilowattHourSavings": 1.717,
-      "costSavings": 25.788,
-      "co2eSavings": 0.972
+      "kilowattHourSavings": 111.717,
+      "costSavings": 5.788,
+      "co2eSavings": 11.972
     },
     {
       "cloudProvider": "GCP",
@@ -1450,10 +1454,10 @@
       "recommendationType": "DELETE_IMAGE",
       "instanceName": "test-instance-1",
       "recommendationDetail": "Save cost by performing a DELETE_IMAGE for instance: test-instance-1.",
-      "resourceId": 6906976106869123607,
-      "kilowattHourSavings": 2.081,
+      "resourceId": 6906976106869124000,
+      "kilowattHourSavings": 12.081,
       "costSavings": 1.314,
-      "co2eSavings": 0.466
+      "co2eSavings": 1.466
     },
     {
       "cloudProvider": "GCP",
@@ -1463,10 +1467,10 @@
       "recommendationType": "SNAPSHOT_AND_DELETE_DISK",
       "instanceName": "test-instance-3",
       "recommendationDetail": "Save cost by performing a SNAPSHOT_AND_DELETE_DISK for instance: test-instance-3.",
-      "resourceId": 4256745502855943014,
-      "kilowattHourSavings": 8.742,
-      "costSavings": 24.549,
-      "co2eSavings": 0.803
+      "resourceId": 4256745502855943000,
+      "kilowattHourSavings": 18.742,
+      "costSavings": 4.549,
+      "co2eSavings": 1.803
     },
     {
       "cloudProvider": "GCP",
@@ -1476,10 +1480,10 @@
       "recommendationType": "CHANGE_MACHINE_TYPE",
       "instanceName": "test-instance-10",
       "recommendationDetail": "Save cost by performing a CHANGE_MACHINE_TYPE for instance: test-instance-10.",
-      "resourceId": 9625521363699054071,
-      "kilowattHourSavings": 6.989,
-      "costSavings": 48.165,
-      "co2eSavings": 0.855
+      "resourceId": 9625521363699055000,
+      "kilowattHourSavings": 16.989,
+      "costSavings": 8.165,
+      "co2eSavings": 2.855
     },
     {
       "cloudProvider": "GCP",
@@ -1489,10 +1493,10 @@
       "recommendationType": "DELETE_ADDRESS",
       "instanceName": "test-instance-8",
       "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-8.",
-      "resourceId": 9351508929180876947,
-      "kilowattHourSavings": 9.946,
-      "costSavings": 35.2,
-      "co2eSavings": 0.068
+      "resourceId": 9351508929180877000,
+      "kilowattHourSavings": 19.946,
+      "costSavings": 5.2,
+      "co2eSavings": 0.168
     },
     {
       "cloudProvider": "GCP",
@@ -1502,10 +1506,10 @@
       "recommendationType": "DELETE_DISK",
       "instanceName": "test-instance-14",
       "recommendationDetail": "Save cost by performing a DELETE_DISK for instance: test-instance-14.",
-      "resourceId": 7840914330904416378,
-      "kilowattHourSavings": 8.782,
-      "costSavings": 18.359,
-      "co2eSavings": 0.875
+      "resourceId": 7840914330904416000,
+      "kilowattHourSavings": 18.782,
+      "costSavings": 8.359,
+      "co2eSavings": 2.875
     },
     {
       "cloudProvider": "GCP",
@@ -1515,10 +1519,10 @@
       "recommendationType": "STOP_VM",
       "instanceName": "test-instance-9",
       "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
-      "resourceId": 8928403120086347428,
-      "kilowattHourSavings": 6.483,
-      "costSavings": 18.409,
-      "co2eSavings": 0.929
+      "resourceId": 8928403120086348000,
+      "kilowattHourSavings": 116.483,
+      "costSavings": 8.409,
+      "co2eSavings": 14.929
     },
     {
       "cloudProvider": "GCP",

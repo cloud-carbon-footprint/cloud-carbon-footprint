@@ -27,10 +27,12 @@ export default class CacheManager implements EstimatorCache {
     GCS: 'GCS',
   }
 
-  async getEstimates(request: EstimationRequest): Promise<EstimationResult[]> {
+  async getEstimates(
+    request: EstimationRequest,
+    grouping: string,
+  ): Promise<EstimationResult[]> {
     const { GCS } = this.cacheModes
     let estimates
-    const grouping = configLoader().GROUP_QUERY_RESULTS_BY
 
     switch (this.currentCacheMode) {
       case GCS:
@@ -49,14 +51,16 @@ export default class CacheManager implements EstimatorCache {
     return estimates ? this.filterEstimatesForRequest(request, estimates) : []
   }
 
-  async setEstimates(estimates: EstimationResult[]): Promise<void> {
+  async setEstimates(
+    estimates: EstimationResult[],
+    grouping: string,
+  ): Promise<void> {
     const { GCS } = this.cacheModes
 
     if (estimates.length === 0) {
       return
     }
 
-    const grouping = configLoader().GROUP_QUERY_RESULTS_BY
     switch (this.currentCacheMode) {
       case GCS:
         return googleCloudCacheService.setEstimates(estimates, grouping)
@@ -75,7 +79,7 @@ export default class CacheManager implements EstimatorCache {
     return estimates.filter(({ timestamp }) => {
       return moment
         .utc(timestamp)
-        .isBetween(startDate, endDate, undefined, '[)')
+        .isBetween(startDate, endDate, undefined, '[]')
     })
   }
 }

@@ -24,6 +24,7 @@ import {
   LookupTableOutput,
   Logger,
   wait,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -95,8 +96,12 @@ export default class CostAndUsageReports {
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
     this.costAndUsageReportsLogger = new Logger('CostAndUsageReports')
   }
-  async getEstimates(start: Date, end: Date): Promise<EstimationResult[]> {
-    const usageRows = await this.getUsage(start, end)
+  async getEstimates(
+    start: Date,
+    end: Date,
+    grouping: GroupBy,
+  ): Promise<EstimationResult[]> {
+    const usageRows = await this.getUsage(start, end, grouping)
     const usageRowsHeader: Row = usageRows.shift()
 
     const results: MutableEstimationResult[] = []
@@ -526,10 +531,14 @@ export default class CostAndUsageReports {
     return containsAny(GPU_INSTANCES_TYPES, usageType)
   }
 
-  private async getUsage(start: Date, end: Date): Promise<Athena.Row[]> {
+  private async getUsage(
+    start: Date,
+    end: Date,
+    grouping: GroupBy,
+  ): Promise<Athena.Row[]> {
     const params = {
       QueryString: `SELECT DATE(DATE_TRUNC('${
-        AWS_QUERY_GROUP_BY[configLoader().GROUP_QUERY_RESULTS_BY]
+        AWS_QUERY_GROUP_BY[grouping]
       }', line_item_usage_start_date)) AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,

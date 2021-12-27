@@ -15,6 +15,7 @@ export type ForecastCardProps = {
   co2ePercentChange?: number
   costPercentChange?: number
   useKilograms?: boolean
+  id: string
 }
 
 const ForecastCard: FunctionComponent<ForecastCardProps> = ({
@@ -24,13 +25,14 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   co2ePercentChange,
   costPercentChange,
   useKilograms,
+  id,
 }) => {
   const classes = useStyles({ co2ePercentChange, costPercentChange })
   const hasCo2ePercentChange = co2ePercentChange || co2ePercentChange === 0
   const hasCostPercentChange = costPercentChange || costPercentChange === 0
 
   return (
-    <Card data-testid="forecast-card" className={classes.card}>
+    <Card data-testid={`forecast-card-${id}`} className={classes.card}>
       <div className={classes.titleContainer}>
         <Typography className={classes.title}>{title}</Typography>
       </div>
@@ -42,11 +44,15 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
       >
         <div className={classes.numberContainer}>
           <Typography
+            data-testid={`co2e-savings-${id}`}
             className={clsx(classes.textContent, classes.co2eSavings)}
           >
             {co2eSavings}
           </Typography>
-          <Typography className={classes.unitsText}>
+          <Typography
+            className={classes.unitsText}
+            data-testid={`unit-of-measure-${id}`}
+          >
             {useKilograms ? 'Kilograms CO2e' : 'Metric Tons CO2e'}
           </Typography>
           {hasCo2ePercentChange && <PercentBadge amount={co2ePercentChange} />}
@@ -54,11 +60,17 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
         <Divider variant="middle" className={classes.divider} />
         <div className={classes.numberContainer}>
           <Typography
+            data-testid={`cost-savings-${id}`}
             className={clsx(classes.textContent, classes.costSavings)}
           >
             {costSavings}
           </Typography>
-          {hasCostPercentChange && <PercentBadge amount={costPercentChange} />}
+          {hasCostPercentChange && (
+            <PercentBadge
+              data-testid={`cost-percent-change-${id}`}
+              amount={costPercentChange}
+            />
+          )}
         </div>
       </div>
     </Card>

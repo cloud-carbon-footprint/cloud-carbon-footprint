@@ -48,13 +48,13 @@ slug: /configurations-glossary
 
 ### Variables needed for the Billing Data (Holistic) approach with GCP:
 
-| Variable                       | Example Value                  | Type    | Notes                                                                                                                                                                                                   |
-| ------------------------------ | ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GCP_USE_BILLING_DATA           | true                           | boolean | Use this to configure the application to query Billing Export Data via Google BigQuery. Unset to make this false. Defaults to true.                                                                     |
-| GOOGLE_APPLICATION_CREDENTIALS | /path/to/your/credentials.json | string  | The absolute path to your service account private key file. This service account needs to have permission to query Billing Data using BigQuery.                                                         |
-| GCP_BIG_QUERY_TABLE            | project.dataset.BQ_table_name  | string  | The name of your BigQuery table configured to consume Billing Export data. See [here](https://cloud.google.com/billing/docs/how-to/bq-examples) for details on how to specify your BigQuery Table Name. |
-| GCP_BILLING_PROJECT_ID         | your-project-id                | string  | The GCP Project ID that your service account exists in that has permission to query Billing Data using BigQuery.                                                                                        |
-| GCP_BILLING_PROJECT_NAME       | your-project-name              | string  | The name for the GCP Project specified in the previous variable.                                                                                                                                        |
+| Variable                       | Example Value                  | Type    | Notes                                                                                                                                                                                                                                                                                                 |
+| ------------------------------ | ------------------------------ | ------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GCP_USE_BILLING_DATA           | true                           | boolean | Use this to configure the application to query Billing Export Data via Google BigQuery. Unset to make this false. Defaults to true.                                                                                                                                                                   |
+| GOOGLE_APPLICATION_CREDENTIALS | /path/to/your/credentials.json | string  | The absolute path to your service account private key file. This service account needs to have permission to query Billing Data using BigQuery.                                                                                                                                                       |
+| GCP_BIG_QUERY_TABLE            | project.dataset.BQ_table_name  | string  | The name of your BigQuery table configured to consume Billing Export data in the format: `PROJECT_ID.DATASET_NAME.TABLE_NAME`. Don't forget to replace the colon in the table id if you copy it from BigQuery. See [here](https://cloud.google.com/billing/docs/how-to/bq-examples) for more details. |
+| GCP_BILLING_PROJECT_ID         | your-project-id                | string  | The GCP Project ID that your service account exists in that has permission to query Billing Data using BigQuery.                                                                                                                                                                                      |
+| GCP_BILLING_PROJECT_NAME       | your-project-name              | string  | The name for the GCP Project specified in the previous variable.                                                                                                                                                                                                                                      |
 
 <br/>
 
@@ -85,14 +85,6 @@ slug: /configurations-glossary
 
 <br/>
 
-### Optionally set this to group timestamps from queried data to help with performance:
-
-| Variable               | Value | Notes  | Notes                                                                                             |
-| ---------------------- | ----- | ------ | ------------------------------------------------------------------------------------------------- |
-| GROUP_QUERY_RESULTS_BY | day   | string | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year) |
-
-<br/>
-
 ### Optionally set this to store cache file in Google Cloud Storage
 
 | Variable              | Example Value  | Type   | Notes                                                                               |
@@ -102,17 +94,11 @@ slug: /configurations-glossary
 
 <br/>
 
-## Client Package
+## Client Package - all variables are optional
 
 | Variable                         | Example Value | Type    | Notes                                                                                                                                               |
-| -------------------------------- | ------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|----------------------------------|---------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | REACT_APP_PREVIOUS_YEAR_OF_USAGE | true          | boolean | Use this to ensure the application requests usage data from the entire previous calendar year to today. Unset to make this false. Defaults to true. |
-
-<br/>
-
-### Optionally set the date range to query estimation data for, starting from today and going back a certain range.
-
-| Variable                   | Example Value | Type   | Notes                                                                                            |
-| -------------------------- | ------------- | ------ | ------------------------------------------------------------------------------------------------ |
-| REACT_APP_DATE_RANGE_VALUE | 1             | number | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.                                            |
-| REACT_APP_DATE_RANGE_TYPE  | year          | string | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s) |
+| REACT_APP_GROUP_BY               | month         | string  | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year)                                                   |
+| REACT_APP_DATE_RANGE_VALUE       | 1             | number  | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.                                                                                               |
+| REACT_APP_DATE_RANGE_TYPE        | year          | string  | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s)                                                    |
