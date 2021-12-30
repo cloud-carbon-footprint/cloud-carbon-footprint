@@ -15,7 +15,7 @@ jobs:
     steps:
       # Fetch and checkout the repo
       - name: Checkout Repo
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -34,7 +34,7 @@ jobs:
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
           REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
-          run: |
-            cd packages/client
-            ./create_client_env_file.sh
-            yarn build
+        run: |
+          cd packages/client
+          ./create_client_env_file.sh
+          yarn build
