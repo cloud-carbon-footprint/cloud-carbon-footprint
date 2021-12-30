@@ -13,27 +13,27 @@ jobs:
   builds-client:
     runs-on: ubuntu-latest
     steps:
+      # Fetch and checkout the repo
       - name: Checkout Repo
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
-
-        - name: Client Yarn Install
-          run: yarn
-          working-directory: packages/client
-
-        - name: Build Client
-          env:
-            REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
-            REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
-            REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
-            REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+      # Run Yarn Install in the Client Package
+      - name: Client Yarn Install
+        run: yarn
+        working-directory: packages/client
+      # Build the Client Package
+      - name: Build Client
+        env:
+          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
+          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
           run: |
             cd packages/client
             ./create_client_env_file.sh
