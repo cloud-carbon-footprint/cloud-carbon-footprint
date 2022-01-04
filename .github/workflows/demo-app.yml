@@ -1,4 +1,4 @@
-name: Update Demo App
+name: Deploy Demo App
 
 on:
   push:
@@ -10,11 +10,14 @@ on:
       - 'packages/api/**'
 
 jobs:
-  builds-client:
+  build-client:
+    if: github.ref == 'refs/heads/trunk'
     runs-on: ubuntu-latest
+    env:
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
     steps:
       # Fetch and checkout the repo
-      - name: Checkout Repo
+      - name: Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -24,11 +27,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
       # Run Yarn Install in the Client Package
-      - name: Client Yarn Install
+      - name: Install client
         run: yarn
         working-directory: packages/client
       # Build the Client Package
-      - name: Build Client
+      - name: Build client
         env:
           REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
@@ -38,3 +41,41 @@ jobs:
           cd packages/client
           ./create_client_env_file.sh
           yarn build
+          cd ..
+      # Update/Deploy the Client Package
+      - name: Update and deploy demo app
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+        run: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          # Create mock data directory and files
+          mkdir packages/client/stub-server/api
+          mkdir packages/client/stub-server/api/regions
+
+          node scripts/create-client-mock-data.js
+
+          # Copy static build files to demo Google Cloud Bucket
+          # gsutil cp -r packages/client/build/* gs://demo.cloudcarbonfootprint.org
+
+          #  *** Test copying Files ***
+          gsutil mb -b on -l us-east1 gs://test-demo/
+          gsutil cp -r packages/client/build/* gs://test-demo
+          gsutil cp -r packages/client/stub-server/api gs://test-demo
+
+           # Clean up temporary files
+          rm -r packages/client/stub-server/api
