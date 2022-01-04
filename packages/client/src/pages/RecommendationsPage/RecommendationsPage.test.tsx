@@ -27,6 +27,9 @@ const mockUseRemoteService = useRemoteService as jest.MockedFunction<
   typeof useRemoteService
 >
 
+// Set Test Date for Moment
+moment.now = () => +new Date('2021-12-01T00:00:00.000Z')
+
 describe('Recommendations Page', () => {
   let data: EstimationResult[]
   beforeEach(() => {
