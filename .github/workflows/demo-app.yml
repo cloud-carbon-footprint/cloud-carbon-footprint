@@ -72,7 +72,7 @@ jobs:
           # gsutil cp -r packages/client/build/* gs://demo.cloudcarbonfootprint.org
 
           #  *** Test copying Files ***
-          gsutil mb -b on -l us-east1 gs://test-demo/
+          gsutil mb -b on -l us-east1 gs://ccf-test-demo/
           gsutil cp -r packages/client/build/* gs://test-demo
           gsutil cp -r packages/client/stub-server/api gs://test-demo
 
