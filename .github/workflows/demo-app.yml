@@ -10,8 +10,8 @@ on:
       - 'packages/api/**'
 
 jobs:
-  build-client:
-    if: github.ref == 'refs/heads/trunk'
+  deploy-demo-app:
+    if: github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
       image: node:14.16.0-alpine3.10
