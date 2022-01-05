@@ -110,7 +110,7 @@ export default class ConsumptionManagementService {
       .filter(
         (consumptionRow: LegacyUsageDetail) =>
           new Date(consumptionRow.date) >= startDate &&
-          new Date(consumptionRow.date) < endDate,
+          new Date(consumptionRow.date) <= endDate,
       )
       .map((consumptionRow: LegacyUsageDetail) => {
         const consumptionDetailRow: ConsumptionDetailRow =

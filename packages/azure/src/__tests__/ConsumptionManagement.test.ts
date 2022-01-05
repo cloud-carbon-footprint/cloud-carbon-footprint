@@ -1217,7 +1217,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2020-11-02'),
+        timestamp: new Date('2020-11-07'),
         serviceEstimates: [
           {
             kilowattHours: 0.011153267136340895,
@@ -1232,8 +1232,8 @@ describe('Azure Consumption Management Service', () => {
           },
         ],
         groupBy: grouping,
-        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
-        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+        periodEndDate: new Date('2020-11-07T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-07T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)

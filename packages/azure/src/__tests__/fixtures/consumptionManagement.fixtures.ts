@@ -730,7 +730,7 @@ export const mockConsumptionManagementResponseTen: AzureUsageDetailsResponseWith
       resourceLocation: 'northeurope',
     },
     {
-      date: new Date('2020-11-02'),
+      date: new Date('2020-11-07'),
       quantity: 0.250004,
       cost: 15,
       meterDetails: {
