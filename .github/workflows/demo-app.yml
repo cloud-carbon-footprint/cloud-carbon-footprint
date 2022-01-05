@@ -46,6 +46,7 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          GOOGLE_DEMO_STORAGE_BUCKET: ${{ secrets.GOOGLE_DEMO_STORAGE_BUCKET }}
         run: |
           apk add --update python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -69,8 +70,8 @@ jobs:
           node scripts/create-client-mock-data.js
 
           # Copy static build files to demo Google Cloud Bucket
-          gsutil cp -r packages/client/build/* gs://demo.cloudcarbonfootprint.org
-          gsutil cp -r packages/client/stub-server/api gs://demo.cloudcarbonfootprint.org
+          gsutil cp -r packages/client/build/* gs://${GOOGLE_DEMO_STORAGE_BUCKET}
+          gsutil cp -r packages/client/stub-server/api gs://${GOOGLE_DEMO_STORAGE_BUCKET}
 
            # Clean up temporary files
           rm -r packages/client/stub-server/api
