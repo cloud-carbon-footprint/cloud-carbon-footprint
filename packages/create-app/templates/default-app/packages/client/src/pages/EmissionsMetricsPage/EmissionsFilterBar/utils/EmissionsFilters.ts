@@ -116,6 +116,9 @@ export class EmissionsFilters extends Filters {
       return {
         timestamp: estimationResult.timestamp,
         serviceEstimates: filteredServiceEstimates,
+        periodStartDate: estimationResult.periodStartDate,
+        periodEndDate: estimationResult.periodEndDate,
+        groupBy: estimationResult.groupBy,
       }
     })
   }
