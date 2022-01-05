@@ -27,7 +27,7 @@ test('loading screen appears when app is starting', async (t) => {
 
 test('filter components render with correct data when app loads', async (t) => {
   const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-  const accounts = Selector('span').withText('Accounts: 10 of 10')
+  const accounts = Selector('span').withText('Accounts: 14 of 14')
   const regions = Selector('span').withText('Regions: 8 of 8')
   const recommendationTypes = Selector('span').withText(
     'Recommendation Types: 8 of 8',
@@ -102,10 +102,10 @@ test('toggle changes unit of measure', async (t) => {
   await t
     .expect(unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Metric Tons CO2e')
-  await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('0')
-  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('-62.72')
-  await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$-69.01')
+  await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('275')
+  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('212.27')
+  await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$213.22')
+  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$144.21')
   await t
     .expect(tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (t)')
@@ -117,10 +117,12 @@ test('toggle changes unit of measure', async (t) => {
   await t
     .expect(unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Kilograms CO2e')
-  await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('0')
-  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('-62,724')
-  await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$-69.01')
+  await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('275,000')
+  await t
+    .expect(co2eSavingsProjectedThirtyDayTotal.textContent)
+    .eql('212,272.7')
+  await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$213.22')
+  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$144.21')
   await t
     .expect(tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (kg)')
