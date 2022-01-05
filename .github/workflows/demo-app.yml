@@ -1,13 +1,13 @@
 name: Deploy Demo App
 
 on:
-  push:
-    branches:
-      - trunk
-    paths:
-      - '.github/workflows/demo-app.yml'
-      - 'packages/client/**'
-      - 'packages/api/**'
+  workflow_dispatch:
+  pull_request:
+    branches: [trunk]
+    types: [closed]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
 
 jobs:
   deploy-demo-app:
