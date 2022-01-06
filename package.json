@@ -45,6 +45,6 @@
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install",
     "postinstall": "husky install",
-    "version": "yarn changeset version && yarn install"
+    "version": "yarn changeset version && yarn install --immutable"
   }
 }
