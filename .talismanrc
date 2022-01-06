@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .changeset/big-experts-kick.md
+  checksum: 74d451296b12b20492767a90f35ec464016a6eca3593c13a672b40d0fd8f8b06
 - filename: .changeset/breezy-singers-own.md
   checksum: a1a0b0b676bfe049874b22ef95052509012d209e4ebd02accb8bca16d11fd52e
 - filename: .changeset/famous-ligers-breathe.md
