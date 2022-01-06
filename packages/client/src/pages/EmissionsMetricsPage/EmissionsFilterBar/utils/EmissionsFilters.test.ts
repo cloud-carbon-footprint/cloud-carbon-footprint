@@ -10,7 +10,7 @@ import {
   FilterOptions,
   FilterResultResponse,
 } from 'Types'
-import { FiltersDateRange, Filters } from 'common/FilterBar/utils/Filters'
+import { FiltersDateRange } from 'common/FilterBar/utils/Filters'
 import { EmissionsFilters } from './EmissionsFilters'
 import {
   alphabetizeDropdownOptions,
@@ -250,11 +250,8 @@ describe('Filters', () => {
     })
 
     it('should return an empty array for data when all service estimates are empty', () => {
-      const estimationResults = generateEstimations(moment.utc(), 1)
+      const estimationResults = generateEstimations(moment.utc(), 1, [])
       const filters = new EmissionsFilters()
-      estimationResults.forEach((estimate) => {
-        estimate.serviceEstimates = []
-      })
       const filteredData = filters.filter(estimationResults)
 
       expect(filteredData).toEqual([])
@@ -264,7 +261,7 @@ describe('Filters', () => {
   describe('withServices', () => {
     it('should default to All Services', () => {
       const filterConfig = EmissionsFilters.generateConfig(options)
-      const filters = new Filters(filterConfig)
+      const filters = new EmissionsFilters(filterConfig)
 
       expect(filters.options.services).toEqual([allServiceOption, ...services])
     })

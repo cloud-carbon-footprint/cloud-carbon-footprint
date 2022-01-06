@@ -299,7 +299,7 @@ describe('Recommendations Table', () => {
     it('should update the search bar', () => {
       const { getByRole } = render(<RecommendationsTable {...testProps} />)
 
-      const searchBar = getByRole('textbox')
+      const searchBar = getByRole('textbox') as HTMLInputElement
 
       fireEvent.change(searchBar, { target: { value: 'account 1' } })
 
@@ -328,7 +328,7 @@ describe('Recommendations Table', () => {
           />,
         )
 
-        const searchBar = getByRole('textbox')
+        const searchBar = getByRole('textbox') as HTMLInputElement
 
         fireEvent.change(searchBar, { target: { value: searchValue } })
 

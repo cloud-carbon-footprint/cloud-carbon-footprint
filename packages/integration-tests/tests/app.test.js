@@ -6,7 +6,12 @@ import waitOn from 'wait-on'
 
 fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
   .before(async () => {
-    await waitOn({ resources: ['http://localhost:3000/'] })
+    await waitOn({
+      resources: [
+        'http://localhost:3000/',
+        'http://localhost:4000/api/healthz',
+      ],
+    })
   })
   .beforeEach(async (t) => {
     const header = Selector('#app-bar-header')

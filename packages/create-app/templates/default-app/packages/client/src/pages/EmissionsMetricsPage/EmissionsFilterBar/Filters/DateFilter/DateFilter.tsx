@@ -21,8 +21,9 @@ const DateFilter: FunctionComponent<FilterProps> = ({
   )
   const startDate = filters.dateRange?.startDate || null
   const endDate = filters.dateRange?.endDate || null
-  const [focusedInput, setFocusedInput] =
-    useState<'startDate' | 'endDate' | null>(null)
+  const [focusedInput, setFocusedInput] = useState<
+    'startDate' | 'endDate' | null
+  >(null)
 
   const isOutsideRange =
     (start: moment.Moment, end: moment.Moment) => (current: moment.Moment) => {

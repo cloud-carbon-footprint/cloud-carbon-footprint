@@ -58,7 +58,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockRejectedValue({ response })
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region),
     )
 
     await waitForNextUpdate()
@@ -78,7 +78,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockRejectedValue('some error')
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region),
     )
 
     await waitForNextUpdate()

@@ -122,7 +122,7 @@ describe('CarbonComparisonCard', () => {
     ]
 
     it('should format co2e to default locale integer with large number', async () => {
-      const testData = dataWithCo2e(999999.55555555555)
+      const testData = dataWithCo2e(999999.55)
       const { getByTestId } = render(<CarbonComparisonCard data={testData} />)
       const co2 = getByTestId('co2')
       expect(co2).toHaveTextContent('999,999.6')

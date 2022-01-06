@@ -124,7 +124,7 @@ fileignoreconfig:
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
 - filename: packages/azure/package.json
-  checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
+  checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
   checksum: d3ddccc632c3dc8b7f860b52191e60c2aca51206af10a4e6258e6c5c3d2a32e4
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
@@ -137,6 +137,8 @@ fileignoreconfig:
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
   checksum: 0005b5abc9cba50b821c955aa1cc28e9860d4c8748f52c3bf6927eef620500fc
+- filename: packages/client/src/common/FilterBar/utils/DropdownConstants.test.ts
+  checksum: b9f3b222216d0937d53a026581820e5a8b4d6a9dd76c2a312e46ef5f1a84540a
 - filename: packages/client/src/common/FilterBar/utils/DropdownConstants.ts
   checksum: 03deb9260bd7bd7106da1eb4d70130284530ac15381ce52a0554f2f48de9d484
 - filename: packages/client/src/common/FilterBar/utils/FiltersUtil.ts

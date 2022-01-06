@@ -20,7 +20,7 @@ import {
 import ForecastCard from '../ForecastCard'
 import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
 
-type ForecastProps = {
+export type ForecastProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
   useKilograms: boolean

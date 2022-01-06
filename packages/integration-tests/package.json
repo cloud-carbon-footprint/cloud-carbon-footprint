@@ -15,15 +15,16 @@
     "clean": "rimraf screenshots"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.5",
     "@testing-library/testcafe": "^4.4.0",
     "concurrently": "^6.3.0",
-    "eslint": "^7.26.0",
+    "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-testcafe": "^0.2.1",
     "lint-staged": "^11.0.1",
-    "prettier": "^2.3.0",
-    "testcafe": "^1.14.2",
+    "prettier": "^2.5.1",
+    "testcafe": "^1.18.1",
     "wait-on": "^6.0.0"
   },
   "lint-staged": {

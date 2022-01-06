@@ -13,39 +13,40 @@ type RecommendationsPanelColumnProps = {
   hasLeftAlignedContent?: boolean
 }
 
-const RecommendationsPanelColumn: FunctionComponent<RecommendationsPanelColumnProps> =
-  ({ label, content, subLabel, hasLeftAlignedContent }) => {
-    const classes = useStyles()
-    return (
-      <Grid
-        className={classes.detailsColumn}
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        <Grid item>
-          <Typography className={classes.contentLabel} component="p">
-            {label}
-          </Typography>
-        </Grid>
-        {subLabel && (
-          <Grid item>
-            <Typography className={classes.subLabel} component="p">
-              {subLabel}
-            </Typography>
-          </Grid>
-        )}
-        <Grid item>
-          <Typography
-            component="p"
-            align={hasLeftAlignedContent ? 'left' : 'center'}
-          >
-            {content}
-          </Typography>
-        </Grid>
+const RecommendationsPanelColumn: FunctionComponent<
+  RecommendationsPanelColumnProps
+> = ({ label, content, subLabel, hasLeftAlignedContent }) => {
+  const classes = useStyles()
+  return (
+    <Grid
+      className={classes.detailsColumn}
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
+      <Grid item>
+        <Typography className={classes.contentLabel} component="p">
+          {label}
+        </Typography>
       </Grid>
-    )
-  }
+      {subLabel && (
+        <Grid item>
+          <Typography className={classes.subLabel} component="p">
+            {subLabel}
+          </Typography>
+        </Grid>
+      )}
+      <Grid item>
+        <Typography
+          component="p"
+          align={hasLeftAlignedContent ? 'left' : 'center'}
+        >
+          {content}
+        </Typography>
+      </Grid>
+    </Grid>
+  )
+}
 
 export default RecommendationsPanelColumn

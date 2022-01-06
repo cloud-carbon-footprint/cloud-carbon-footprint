@@ -2,9 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import dotenv from 'dotenv'
-dotenv.config()
-
 export interface ClientConfig {
   CURRENT_PROVIDERS: {
     key: string

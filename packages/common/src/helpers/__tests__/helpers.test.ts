@@ -42,6 +42,7 @@ describe('Helpers', () => {
   })
 
   it('waits one second', async () => {
+    jest.spyOn(global, 'setTimeout')
     const waitTime = 1000
 
     const promise = wait(waitTime)

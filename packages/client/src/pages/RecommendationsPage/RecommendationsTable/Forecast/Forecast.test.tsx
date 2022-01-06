@@ -4,15 +4,16 @@
 
 import React from 'react'
 import { render } from '@testing-library/react'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { ServiceData } from '@cloud-carbon-footprint/common'
 import { mockData, mockRecommendationData } from 'utils/data'
-import Forecast from './Forecast'
+import Forecast, { ForecastProps } from './Forecast'
 
 describe('Forecast', () => {
-  const emissionsData: EstimationResult[] = mockData
-  const testProps = {
+  const emissionsData: ServiceData[] = mockData[0].serviceEstimates
+  const testProps: ForecastProps = {
     emissionsData,
     recommendations: mockRecommendationData,
+    useKilograms: false,
   }
 
   it('should render the title', () => {

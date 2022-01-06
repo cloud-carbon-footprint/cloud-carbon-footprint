@@ -8,7 +8,13 @@ import each from 'jest-each'
 
 describe('Forecast Equivalency Card', () => {
   it('should render the card', () => {
-    const { getByTestId } = render(<ForecastEquivalencyCard />)
+    const { getByTestId } = render(
+      <ForecastEquivalencyCard
+        title="Title"
+        treeSeedlings="0"
+        yearCostSavings="0"
+      />,
+    )
 
     expect(getByTestId('forecast-equivalency-card')).toBeInTheDocument()
   })
