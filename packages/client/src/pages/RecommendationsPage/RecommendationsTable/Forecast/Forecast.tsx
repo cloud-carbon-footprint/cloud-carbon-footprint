@@ -12,7 +12,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import useStyles from './forecastStyles'
 import {
-  sumEstimate,
+  sumEstimates,
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,
@@ -35,8 +35,8 @@ const Forecast: FunctionComponent<ForecastProps> = ({
 
   const forecastMultiplier = useKilograms ? 1000 : 1
 
-  const sumCurrentCo2e = sumEstimate(emissionsData, 'co2e')
-  const sumCurrentCost = sumEstimate(emissionsData, 'cost')
+  const sumCurrentCo2e = sumEstimates(emissionsData, 'co2e')
+  const sumCurrentCost = sumEstimates(emissionsData, 'cost')
 
   const currentCo2eFormatted = formattedNumberWithCommas(
     sumCurrentCo2e * forecastMultiplier,
@@ -49,11 +49,15 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
   const projectedSavingsCost = sumCurrentCost - sumSavingsCost
 
-  const projectedCo2eFormatted = formattedNumberWithCommas(
+  const formatProjectedSavings = (projectedSavings: number): string =>
+    projectedSavings > 0 ? formattedNumberWithCommas(projectedSavings) : '0'
+
+  const projectedCo2eFormatted = formatProjectedSavings(
     projectedSavingsCo2e * forecastMultiplier,
   )
-  const projectedCostFormatted = `$${formattedNumberWithCommas(
-    projectedSavingsCost,
+
+  const projectedCostFormatted = `$${formatProjectedSavings(
+    projectedSavingsCo2e * forecastMultiplier,
   )}`
 
   const co2ePercentChange = calculatePercentChange(

@@ -135,7 +135,7 @@ const sumCO2ByServiceOrRegion = (
   }, Object.create({}))
 }
 
-const sumEstimate = (
+const sumEstimates = (
   data: (EstimationResult | ServiceData)[],
   key: string,
 ): number => {
@@ -297,7 +297,7 @@ function tableFormatRawCo2e(useKilograms: boolean, rawValue: number): string {
 }
 
 export {
-  sumEstimate,
+  sumEstimates,
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,

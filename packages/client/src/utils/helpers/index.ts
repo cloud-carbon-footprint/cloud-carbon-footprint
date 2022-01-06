@@ -3,7 +3,7 @@
  */
 
 export {
-  sumEstimate,
+  sumEstimates,
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,

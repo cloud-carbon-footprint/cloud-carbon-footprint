@@ -3,10 +3,11 @@
  */
 
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, within } from '@testing-library/react'
 import { ServiceData } from '@cloud-carbon-footprint/common'
 import { mockData, mockRecommendationData } from 'utils/data'
 import Forecast, { ForecastProps } from './Forecast'
+import { mockDataWithSmallNumbers } from '../../../../utils/data/mockData'
 
 describe('Forecast', () => {
   const emissionsData: ServiceData[] = mockData[0].serviceEstimates
@@ -35,6 +36,22 @@ describe('Forecast', () => {
     const current = getByText('Projected 30 Day Total')
 
     expect(current).toBeInTheDocument()
+  })
+
+  it('should show a projected forecast of zero if the savings are less than current forecast', () => {
+    //TODO: Add test for showing 0 for negative projected totals
+    const smallEmissionsData: ServiceData[] =
+      mockDataWithSmallNumbers[0].serviceEstimates
+    const { getByTestId } = render(
+      <Forecast {...testProps} emissionsData={smallEmissionsData} />,
+    )
+
+    const projectedCard = within(
+      getByTestId('forecast-card-projected-thirty-day-total'),
+    )
+
+    expect(projectedCard.getByText('0')).toBeInTheDocument()
+    expect(projectedCard.getByText('$0')).toBeInTheDocument()
   })
 
   it('should render the equivalency card', () => {

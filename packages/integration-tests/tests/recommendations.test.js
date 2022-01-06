@@ -103,9 +103,9 @@ test('toggle changes unit of measure', async (t) => {
     .expect(unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Metric Tons CO2e')
   await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('0')
-  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('-62.72')
+  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
   await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$-69.01')
+  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
   await t
     .expect(tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (t)')
@@ -118,9 +118,9 @@ test('toggle changes unit of measure', async (t) => {
     .expect(unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Kilograms CO2e')
   await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('0')
-  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('-62,724')
+  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
   await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$-69.01')
+  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
   await t
     .expect(tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (kg)')

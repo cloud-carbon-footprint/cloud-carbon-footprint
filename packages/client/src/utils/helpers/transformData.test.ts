@@ -15,7 +15,7 @@ import {
   tableFormatNearZero,
   formattedNumberWithCommas,
   sumCO2ByServiceOrRegion,
-  sumEstimate,
+  sumEstimates,
   sumRecommendations,
   sumServiceTotals,
   useFilterDataFromEstimates,
@@ -45,7 +45,7 @@ describe('transformData', () => {
 
   it('returns the sum of CO2 metric tons and gallons', () => {
     const expected = 30
-    expect(sumEstimate(mockData, 'co2e')).toEqual(expected)
+    expect(sumEstimates(mockData, 'co2e')).toEqual(expected)
   })
 
   it('returns the sum of CO2 metric tons and gallons', () => {
