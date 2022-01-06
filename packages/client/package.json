@@ -100,7 +100,7 @@
     "immer": "^9.0.2",
     "jest": "^27.4.7",
     "json-server": "^0.17.0",
-    "lint-staged": "^11.0.1",
+    "lint-staged": "^12.1.5",
     "mockdate": "^3.0.5",
     "prettier": "^2.5.1"
   },
