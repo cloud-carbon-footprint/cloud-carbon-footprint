@@ -44,6 +44,7 @@
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "version": "yarn install && yarn changeset version"
   }
 }
