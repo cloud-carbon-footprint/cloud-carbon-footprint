@@ -15,6 +15,7 @@ then
     find . -name "*.test.tsx" -type f -delete
     find . -name "*.test.tsx.snap" -type f -delete
     find . -name "*.test.ts" -type f -delete
+    find . -name "*.test.ts.snap" -type f -delete
     echo -e "Successfully copied files from [$1] package into $templatePath.\nMake sure to double check before committing! :D"
 else
     echo "Error: Directory \"$templatePath\" does not exists. Please specify an appropriate template package."
