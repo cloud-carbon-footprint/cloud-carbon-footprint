@@ -57,20 +57,22 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   )
 
   const projectedCostFormatted = `$${formatProjectedSavings(
-    projectedSavingsCo2e * forecastMultiplier,
+    projectedSavingsCost,
   )}`
 
-  const co2ePercentChange = calculatePercentChange(
+  const getPercentChange = (oldAmount: number, newAmount: number): number =>
+    newAmount > 0 ? calculatePercentChange(oldAmount, newAmount) : 0
+
+  const co2ePercentChange = getPercentChange(
     sumCurrentCo2e,
     projectedSavingsCo2e,
   )
-  const costPercentChange = calculatePercentChange(
+  const costPercentChange = getPercentChange(
     sumCurrentCost,
     projectedSavingsCost,
   )
 
   const monthlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost)}`
-
   const treeSeedlings = formattedNumberWithCommas(
     sumSavingsCo2e * 16.5337915448,
     0,

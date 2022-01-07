@@ -39,19 +39,21 @@ describe('Forecast', () => {
   })
 
   it('should show a projected forecast of zero if the savings are less than current forecast', () => {
-    //TODO: Add test for showing 0 for negative projected totals
     const smallEmissionsData: ServiceData[] =
       mockDataWithSmallNumbers[0].serviceEstimates
     const { getByTestId } = render(
       <Forecast {...testProps} emissionsData={smallEmissionsData} />,
     )
 
-    const projectedCard = within(
+    const projectedForecastCard = within(
       getByTestId('forecast-card-projected-thirty-day-total'),
     )
 
-    expect(projectedCard.getByText('0')).toBeInTheDocument()
-    expect(projectedCard.getByText('$0')).toBeInTheDocument()
+    const percentBadges = projectedForecastCard.queryAllByText('0%')
+
+    expect(projectedForecastCard.getByText('0')).toBeInTheDocument()
+    expect(projectedForecastCard.getByText('$0')).toBeInTheDocument()
+    expect(percentBadges.length).toBe(2)
   })
 
   it('should render the equivalency card', () => {
