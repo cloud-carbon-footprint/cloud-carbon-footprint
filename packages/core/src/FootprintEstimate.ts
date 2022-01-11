@@ -226,8 +226,11 @@ export function estimateKwh(
   estimatedCo2e: number,
   region: string,
   emissionsFactors?: CloudConstantsEmissionsFactors,
+  replicationFactor = 1,
 ): number {
   return (
-    estimatedCo2e / (emissionsFactors[region] || emissionsFactors['Unknown'])
+    (estimatedCo2e /
+      (emissionsFactors[region] || emissionsFactors['Unknown'])) *
+    replicationFactor
   )
 }

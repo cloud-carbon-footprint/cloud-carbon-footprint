@@ -35,6 +35,7 @@ import {
   mockQueryMemoryStoreWithReplicationFactors,
   mockQueryReclassifiedUnknowns,
   mockQueryComputeWithDifferentMachineTypesForEmbodiedEmissions,
+  mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors,
 } from './fixtures/bigQuery.fixtures'
 import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
 import { unknownsReclassification } from './fixtures/unknownsReclassification.fixtures'
@@ -827,6 +828,109 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: true,
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimations for unknown CloudSpanner and Kubernetes Engine and requests usageTypes', async () => {
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 7.6772109375e-9,
+            cost: 170,
+            kilowattHours: 0.00001691015625,
+            region: 'us-central1',
+            serviceName: 'Cloud Memorystore for Redis',
+            usesAverageCPUConstant: false,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 3.58594784007353e-9,
+            cost: 50,
+            region: 'asia-south1',
+            serviceName: 'Cloud Spanner',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.00000497357536764706,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 8.057192095588236e-9,
+            cost: 150,
+            region: 'asia-east1',
+            serviceName: 'Cloud Spanner',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000014920726102941178,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 1.075784352022059e-8,
+            cost: 150,
+            kilowattHours: 0.000014920726102941178,
+            region: 'asia-south1',
+            serviceName: 'Kubernetes Engine',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 1.5806022518382354e-8,
+            cost: 350,
+            kilowattHours: 0.000034815027573529415,
+            region: 'us-central1',
+            serviceName: 'Kubernetes Engine',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 2.82499080882353e-10,
+            region: 'europe',
+            serviceName: 'App Engine',
+            usesAverageCPUConstant: false,
+            cost: 10,
+            kilowattHours: 9.947150735294118e-7,
           },
         ],
         groupBy: grouping,

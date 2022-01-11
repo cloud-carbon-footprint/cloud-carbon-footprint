@@ -563,6 +563,7 @@ export default class BillingExportTable {
         rowData.usageType,
         rowData.usageUnit,
       ),
+      replicationFactor: this.getReplicationFactor(rowData),
     }
     const unknownConstants: CloudConstants = {
       kilowattHoursPerCost: GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
@@ -619,7 +620,7 @@ export default class BillingExportTable {
                     ON system_labels.key = "compute.googleapis.com/machine_spec"
                   WHERE
                     cost_type != 'rounding_error'
-                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
+                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
                     AND usage_start_time >= TIMESTAMP('${moment
                       .utc(start)
                       .format('YYYY-MM-DD')}')
