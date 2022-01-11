@@ -2,9 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import clsx from 'clsx'
 import { Card, Divider, Typography } from '@material-ui/core'
+import Tooltip from 'common/Tooltip'
 import useStyles from './forecastCardStyles'
 import PercentBadge from '../PercentBadge'
 
@@ -31,10 +32,20 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   const hasCo2ePercentChange = co2ePercentChange !== undefined
   const hasCostPercentChange = costPercentChange !== undefined
 
+  const co2ePercentIsInvalid =
+    hasCo2ePercentChange && co2ePercentChange === null
+  const costPercentIsInvalid =
+    hasCostPercentChange && costPercentChange === null
+
+  const noProjectedChangeMessage =
+    'Additional usage data is needed to calculate projected totals'
+  const shouldDisplayTooltip = co2ePercentIsInvalid || costPercentIsInvalid
+
   return (
     <Card data-testid={`forecast-card-${id}`} className={classes.card}>
       <div className={classes.titleContainer}>
         <Typography className={classes.title}>{title}</Typography>
+        {shouldDisplayTooltip && <Tooltip message={noProjectedChangeMessage} />}
       </div>
       <div
         className={clsx(classes.contentContainer, {
