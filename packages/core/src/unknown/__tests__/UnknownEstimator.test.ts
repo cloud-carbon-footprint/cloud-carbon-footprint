@@ -20,10 +20,10 @@ describe('UnknownEstimator', () => {
       [awsUsEast1Region]: 0.000415755,
     }
     const awsConstants = {
-      co2ePerCost: {
+      kilowattHoursPerCost: {
         [EstimateClassification.COMPUTE]: {
           cost: 50,
-          co2e: 0.000987654321,
+          kilowattHours: 20,
         },
       },
     }
@@ -36,9 +36,9 @@ describe('UnknownEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 0.01975308642,
+        co2e: 0.166302,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
-        kilowattHours: 47.511362268643786,
+        kilowattHours: 400,
         usesAverageCPUConstant: true,
       },
     ])
@@ -58,10 +58,10 @@ describe('UnknownEstimator', () => {
       [awsUsEast1Region]: 0.000415755,
     }
     const awsConstants = {
-      co2ePerCost: {
+      kilowattHoursPerCost: {
         total: {
           cost: 50,
-          co2e: 0.000987654321,
+          kilowattHours: 22,
         },
       },
     }
@@ -74,9 +74,9 @@ describe('UnknownEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 0.01975308642,
+        co2e: 0.18293220000000002,
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
-        kilowattHours: 47.511362268643786,
+        kilowattHours: 440,
         usesAverageCPUConstant: false,
       },
     ])
@@ -97,14 +97,14 @@ describe('UnknownEstimator', () => {
       [gcpUsEast1Region]: 0.00048,
     }
     const gcpConstants = {
-      co2ePerCost: {
+      kilowattHoursPerCost: {
         [EstimateClassification.STORAGE]: {
           cost: 50,
-          co2e: 0.000987654321,
+          kilowattHours: 20,
         },
         [EstimateClassification.MEMORY]: {
           cost: 75,
-          co2e: 0.00987654321,
+          kilowattHours: 20,
         },
       },
     }
@@ -118,9 +118,9 @@ describe('UnknownEstimator', () => {
 
       expect(result).toEqual([
         {
-          co2e: 0.01975308642,
+          co2e: 0.192,
           timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          kilowattHours: 41.152263375,
+          kilowattHours: 400,
           usesAverageCPUConstant: false,
         },
       ])
@@ -144,9 +144,9 @@ describe('UnknownEstimator', () => {
 
       expect(result).toEqual([
         {
-          co2e: 0.13168724280000002,
+          co2e: 0.128,
           timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          kilowattHours: 274.3484225,
+          kilowattHours: 266.6666666666667,
           usesAverageCPUConstant: false,
         },
       ])

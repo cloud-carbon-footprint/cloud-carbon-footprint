@@ -115,26 +115,26 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
-  CO2E_PER_COST: {
+  KILOWATT_HOURS_PER_COST: {
     [EstimateClassification.COMPUTE]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     [EstimateClassification.STORAGE]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     [EstimateClassification.NETWORKING]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     [EstimateClassification.MEMORY]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     total: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
   },
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours

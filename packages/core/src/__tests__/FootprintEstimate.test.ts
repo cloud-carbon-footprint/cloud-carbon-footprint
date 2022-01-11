@@ -7,7 +7,7 @@ import FootprintEstimate, {
   appendOrAccumulateEstimatesByDay,
   estimateCo2,
   getWattsByAverageOrMedian,
-  accumulateCo2PerCost,
+  accumulateKilowattHoursPerCost,
   MutableServiceEstimate,
   EstimateClassification,
 } from '../FootprintEstimate'
@@ -296,37 +296,40 @@ describe('FootprintEstimate', () => {
     expect(results).toEqual(newResultThree)
   })
 
-  it('accumulates co2e and cost totals per usage classification', () => {
+  it('accumulates kilowatt hours and cost totals per usage classification', () => {
     const cost = 654
-    const co2e = 0.000987654321
+    const kilowattHours = 0.000987654321
     const constants = {
-      co2ePerCost: {
+      kilowattHoursPerCost: {
         [EstimateClassification.COMPUTE]: {
           cost: 0,
-          co2e: 0,
+          kilowattHours: 0,
         },
         total: {
           cost: 0,
-          co2e: 0,
+          kilowattHours: 0,
         },
       },
     }
 
-    accumulateCo2PerCost(
+    accumulateKilowattHoursPerCost(
       EstimateClassification.COMPUTE,
-      co2e,
+      kilowattHours,
       cost,
-      constants.co2ePerCost,
+      constants.kilowattHoursPerCost,
     )
 
-    expect(constants.co2ePerCost[EstimateClassification.COMPUTE].cost).toEqual(
-      654,
-    )
-    expect(constants.co2ePerCost[EstimateClassification.COMPUTE].co2e).toEqual(
+    expect(
+      constants.kilowattHoursPerCost[EstimateClassification.COMPUTE].cost,
+    ).toEqual(654)
+    expect(
+      constants.kilowattHoursPerCost[EstimateClassification.COMPUTE]
+        .kilowattHours,
+    ).toEqual(0.000987654321)
+    expect(constants.kilowattHoursPerCost.total.cost).toEqual(654)
+    expect(constants.kilowattHoursPerCost.total.kilowattHours).toEqual(
       0.000987654321,
     )
-    expect(constants.co2ePerCost.total.cost).toEqual(654)
-    expect(constants.co2ePerCost.total.co2e).toEqual(0.000987654321)
   })
 
   describe('getWattsByAverageOrMedian', () => {

@@ -15,12 +15,12 @@ export default interface FootprintEstimate {
   usesAverageCPUConstant?: boolean
 }
 
-export type CostAndCo2eTotals = {
+export type CostAndKilowattHourTotals = {
   cost: number
-  co2e: number
+  kilowattHours: number
 }
 
-export type Co2ePerCost = { [key: string]: CostAndCo2eTotals }
+export type KilowattHoursPerCost = { [key: string]: CostAndKilowattHourTotals }
 
 export enum EstimateClassification {
   COMPUTE = 'compute',
@@ -80,17 +80,17 @@ export interface MutableServiceEstimate {
   usesAverageCPUConstant: boolean
 }
 
-export const accumulateCo2PerCost = (
+export const accumulateKilowattHoursPerCost = (
   classification: EstimateClassification,
-  co2e: number,
+  kilowattHours: number,
   cost: number,
-  costPerCo2e: Co2ePerCost,
+  costPerCo2e: KilowattHoursPerCost,
 ): void => {
   costPerCo2e[classification].cost += cost
   costPerCo2e.total.cost += cost
-  if (co2e > 0) {
-    costPerCo2e[classification].co2e += co2e
-    costPerCo2e.total.co2e += co2e
+  if (kilowattHours > 0) {
+    costPerCo2e[classification].kilowattHours += kilowattHours
+    costPerCo2e.total.kilowattHours += kilowattHours
   }
 }
 
