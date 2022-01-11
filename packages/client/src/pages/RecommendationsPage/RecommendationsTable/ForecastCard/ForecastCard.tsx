@@ -28,8 +28,8 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   id,
 }) => {
   const classes = useStyles({ co2ePercentChange, costPercentChange })
-  const hasCo2ePercentChange = co2ePercentChange || co2ePercentChange === 0
-  const hasCostPercentChange = costPercentChange || costPercentChange === 0
+  const hasCo2ePercentChange = co2ePercentChange !== undefined
+  const hasCostPercentChange = costPercentChange !== undefined
 
   return (
     <Card data-testid={`forecast-card-${id}`} className={classes.card}>

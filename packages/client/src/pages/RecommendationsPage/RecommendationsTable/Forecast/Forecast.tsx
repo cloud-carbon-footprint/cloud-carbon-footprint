@@ -61,7 +61,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   )}`
 
   const getPercentChange = (oldAmount: number, newAmount: number): number =>
-    newAmount > 0 ? calculatePercentChange(oldAmount, newAmount) : 0
+    newAmount > 0 ? calculatePercentChange(oldAmount, newAmount) : null
 
   const co2ePercentChange = getPercentChange(
     sumCurrentCo2e,

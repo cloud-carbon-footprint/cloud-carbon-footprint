@@ -3,6 +3,7 @@
  */
 
 import { render } from '@testing-library/react'
+import each from 'jest-each'
 import PercentBadge from './PercentBadge'
 
 describe('PercentBadge', () => {
@@ -25,4 +26,27 @@ describe('PercentBadge', () => {
     expect(queryByTestId('decrease-arrow')).toBeFalsy()
     expect(queryByTestId('increase-arrow')).toBeInTheDocument()
   })
+
+  const testParams = [
+    [0, '0%'],
+    [null, '-'],
+    [undefined, '-'],
+  ]
+  each(testParams).it(
+    'should render a neutral icon when a percentage is %s',
+    (percentageAmount, expectedResult) => {
+      const { queryByTestId, getByTestId } = render(
+        <PercentBadge amount={percentageAmount} />,
+      )
+
+      expect(getByTestId('percentage-badge-label').innerHTML).toBe(
+        expectedResult,
+      )
+
+      const expectedArrow =
+        percentageAmount === 0 ? 'flat-arrow' : 'decrease-arrow'
+
+      expect(queryByTestId(expectedArrow)).toBeInTheDocument()
+    },
+  )
 })

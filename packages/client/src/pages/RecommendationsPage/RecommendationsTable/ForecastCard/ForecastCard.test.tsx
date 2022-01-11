@@ -29,20 +29,20 @@ describe('Forecast Card', () => {
     },
   )
 
-  it('should render percents badge if percentChange is passed to it', () => {
+  it('should render percents badge if percentChange is passed with defined value', () => {
     const { getByText } = render(
       <ForecastCard
         title="Title"
         co2eSavings="0"
         costSavings="0"
         co2ePercentChange={25}
-        costPercentChange={10}
+        costPercentChange={null}
         id="test"
       />,
     )
 
     expect(getByText('25%')).toBeInTheDocument()
-    expect(getByText('10%')).toBeInTheDocument()
+    expect(getByText('-')).toBeInTheDocument()
   })
 
   it('should render kilograms if toggle is set to kilograms', () => {

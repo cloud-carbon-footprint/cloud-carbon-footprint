@@ -49,11 +49,14 @@ describe('Forecast', () => {
       getByTestId('forecast-card-projected-thirty-day-total'),
     )
 
-    const percentBadges = projectedForecastCard.queryAllByText('0%')
+    const percentBadges = projectedForecastCard.queryAllByTestId(
+      'percentage-badge-label',
+    )
 
     expect(projectedForecastCard.getByText('0')).toBeInTheDocument()
     expect(projectedForecastCard.getByText('$0')).toBeInTheDocument()
-    expect(percentBadges.length).toBe(2)
+    expect(percentBadges[0].innerHTML).toBe('-')
+    expect(percentBadges[1].innerHTML).toBe('-')
   })
 
   it('should render the equivalency card', () => {
