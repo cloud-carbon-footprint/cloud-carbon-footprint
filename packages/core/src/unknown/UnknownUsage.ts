@@ -9,5 +9,5 @@ export default interface UnknownUsage extends IUsageData {
   readonly usageUnit: string
   readonly usageType?: string
   readonly reclassificationType: string
-  readonly replicationFactor: number
+  readonly replicationFactor?: number
 }
