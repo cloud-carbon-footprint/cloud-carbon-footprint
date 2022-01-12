@@ -322,6 +322,19 @@ const queryResultsDataFour = [
       { VarCharValue: '10' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-31' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonES' },
+      { VarCharValue: 'EUC1-HeavyUsage:t3.medium.elasticsearch' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '3' },
+      { VarCharValue: '14' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithKinesisESAndEc2Spot: Athena.GetQueryResultsOutput =

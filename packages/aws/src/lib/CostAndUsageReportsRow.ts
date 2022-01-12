@@ -100,7 +100,10 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
         this.usageType,
       )
     ) {
-      return this.getBurstableInstanceVCPu(instanceType) * this.usageAmount
+      return (
+        this.getBurstableInstanceVCPu(instanceType.split('.', 2).join('.')) *
+        this.usageAmount
+      )
     }
     if (!vCpuFromReport)
       return this.extractVCpuFromInstanceType(instanceType) * this.usageAmount
