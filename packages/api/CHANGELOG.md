@@ -1,5 +1,14 @@
 # @cloud-carbon-footprint/api
 
+## 1.3.1
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- Updated dependencies [8fd171ed]
+  - @cloud-carbon-footprint/app@0.4.1
+  - @cloud-carbon-footprint/common@1.3.1
+
 ## 1.3.0
 
 ### Minor Changes

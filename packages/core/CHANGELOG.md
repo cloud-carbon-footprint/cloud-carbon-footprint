@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/core
 
+## 0.14.0
+
+### Minor Changes
+
+- 808085cc: Adds replication factor for Cloud Spanner and Kubernetes engine and updates unsoported usage types
+- aaeb61a3: Updates estimation for unknown usage types to calculate kilowatt hours first, then co2e, to improve acccuracy
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- Updated dependencies [8fd171ed]
+  - @cloud-carbon-footprint/common@1.3.1
+
 ## 0.13.0
 
 ### Minor Changes
