@@ -1343,6 +1343,19 @@ const queryResultsDataEighteen = [
       { VarCharValue: '5' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'HostBoxUsage:mac1.metal' }, // usage type
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '1' },
+      { VarCharValue: '8' },
+      { VarCharValue: '5' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithUnknownInstanceType: Athena.GetQueryResultsOutput =

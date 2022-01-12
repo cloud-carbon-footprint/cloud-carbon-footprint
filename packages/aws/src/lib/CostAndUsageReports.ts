@@ -511,7 +511,12 @@ export default class CostAndUsageReports {
   }
 
   private usageTypeIsUnsupported(usageType: string): boolean {
-    return endsWithAny(UNSUPPORTED_USAGE_TYPES, usageType)
+    return (
+      endsWithAny(UNSUPPORTED_USAGE_TYPES, usageType) ||
+      UNSUPPORTED_USAGE_TYPES.some((unsupportedUsageType) =>
+        usageType.includes(unsupportedUsageType),
+      )
+    )
   }
 
   private usageTypeIsUnknown(usageType: string): boolean {

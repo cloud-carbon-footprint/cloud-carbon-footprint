@@ -169,6 +169,7 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'Dollar', // AWSDeveloperSupport - no energy associated with support cost
+  'HostBoxUsage', // "Double counted" with resource usage rows, so ignore.
 ]
 
 export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
