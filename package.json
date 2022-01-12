@@ -4,7 +4,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.18.0",
     "@types/fs-extra": "^9.0.13",
-    "concurrently": "^6.3.0",
+    "concurrently": "^7.0.0",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
     "lerna": "^4.0.0",
