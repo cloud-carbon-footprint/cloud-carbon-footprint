@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/app
 
+## 0.4.1
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- Updated dependencies [cce87388]
+- Updated dependencies [8fd171ed]
+- Updated dependencies [808085cc]
+- Updated dependencies [aaeb61a3]
+- Updated dependencies [2e27711e]
+  - @cloud-carbon-footprint/aws@0.8.0
+  - @cloud-carbon-footprint/azure@0.7.0
+  - @cloud-carbon-footprint/common@1.3.1
+  - @cloud-carbon-footprint/gcp@0.7.0
+
 ## 0.4.0
 
 ### Minor Changes

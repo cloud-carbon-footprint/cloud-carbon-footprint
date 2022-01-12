@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 1.1.3
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+
 ## 1.1.2
 
 ### Patch Changes

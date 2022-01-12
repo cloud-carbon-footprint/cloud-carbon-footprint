@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/aws
 
+## 0.8.0
+
+### Minor Changes
+
+- aaeb61a3: Updates estimation for unknown usage types to calculate kilowatt hours first, then co2e, to improve acccuracy
+
+### Patch Changes
+
+- cce87388: Removes suffix from aws usage type
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- 2e27711e: adds HostBoxUsage to unsupported usage types in aws to not double count
+- Updated dependencies [8fd171ed]
+- Updated dependencies [808085cc]
+- Updated dependencies [aaeb61a3]
+  - @cloud-carbon-footprint/common@1.3.1
+  - @cloud-carbon-footprint/core@0.14.0
+
 ## 0.7.0
 
 ### Minor Changes
