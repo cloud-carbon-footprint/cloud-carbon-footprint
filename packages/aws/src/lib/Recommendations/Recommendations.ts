@@ -21,9 +21,9 @@ import {
 import { ServiceWrapper } from '../ServiceWrapper'
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
-import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
-import RightsizingTargetRecommendation from './RightsizingTargetRecommendation'
-import RightsizingRecommendation from './RightsizingRecommendation'
+import RightsizingCurrentRecommendation from './Rightsizing/RightsizingCurrentRecommendation'
+import RightsizingTargetRecommendation from './Rightsizing/RightsizingTargetRecommendation'
+import RightsizingRecommendation from './Rightsizing/RightsizingRecommendation'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
