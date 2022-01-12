@@ -90,7 +90,7 @@ describe('Forecast Card', () => {
       fireEvent.mouseOver(screen.getByTestId('tooltip'))
 
       const expectedMessage =
-        'Additional usage data is needed to calculate projected totals'
+        'Your savings opportunity over 30 days is larger than your current carbon or spend. For a percentage to be shown, additional data may be needed.'
 
       await waitFor(() => {
         expect(getByText(expectedMessage)).toBeVisible()

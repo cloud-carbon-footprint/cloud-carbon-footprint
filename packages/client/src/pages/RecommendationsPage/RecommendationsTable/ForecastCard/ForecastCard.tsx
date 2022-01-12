@@ -38,7 +38,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
     hasCostPercentChange && costPercentChange === null
 
   const noProjectedChangeMessage =
-    'Additional usage data is needed to calculate projected totals'
+    'Your savings opportunity over 30 days is larger than your current carbon or spend. For a percentage to be shown, additional data may be needed.'
   const shouldDisplayTooltip = co2ePercentIsInvalid || costPercentIsInvalid
 
   return (
