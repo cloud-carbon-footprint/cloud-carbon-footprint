@@ -17,12 +17,12 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
     "@testing-library/testcafe": "^4.4.0",
-    "concurrently": "^6.3.0",
+    "concurrently": "^7.0.0",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-testcafe": "^0.2.1",
-    "lint-staged": "^11.0.1",
+    "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
     "testcafe": "^1.18.1",
     "wait-on": "^6.0.0"
