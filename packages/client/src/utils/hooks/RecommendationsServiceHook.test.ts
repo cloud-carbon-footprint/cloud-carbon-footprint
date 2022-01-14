@@ -9,9 +9,11 @@ import useRemoteRecommendationsService from './RecommendationsServiceHook'
 jest.mock('axios')
 const axiosMocked = axios as jest.Mocked<typeof axios>
 
-const mockPush = jest.fn((args) => console.log('history push args', args))
+const mockUseNavigate = jest.fn((args) =>
+  console.log('history push args', args),
+)
 jest.mock('react-router-dom', () => ({
-  useHistory: () => ({ push: mockPush }),
+  useNavigate: () => mockUseNavigate,
 }))
 
 describe('Recommendations Service Hook', () => {
@@ -68,7 +70,7 @@ describe('Recommendations Service Hook', () => {
 
     await waitForNextUpdate()
 
-    expect(mockPush).toBeCalledWith('/error', response)
+    expect(mockUseNavigate).toBeCalledWith('/error', { state: response })
 
     setTimeout(() => {
       expect(result.current).toEqual({
@@ -88,7 +90,7 @@ describe('Recommendations Service Hook', () => {
 
     await waitForNextUpdate()
 
-    expect(mockPush).toBeCalledWith('/error', defaultResponse)
+    expect(mockUseNavigate).toBeCalledWith('/error', { state: defaultResponse })
 
     setTimeout(() => {
       expect(result.current).toEqual({
@@ -111,7 +113,7 @@ describe('Recommendations Service Hook', () => {
 
     await waitForNextUpdate()
 
-    expect(mockPush).toBeCalledWith('/error', response)
+    expect(mockUseNavigate).toBeCalledWith('/error', { state: response })
 
     setTimeout(() => {
       expect(result.current).toEqual({

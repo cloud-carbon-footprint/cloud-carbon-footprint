@@ -8,9 +8,7 @@ import ErrorPage from './ErrorPage'
 
 jest.mock('react-router-dom', () => ({
   ...(jest.requireActual('react-router-dom') as Record<string, unknown>),
-  useHistory: () => ({
-    push: jest.fn(),
-  }),
+  useNavigate: () => jest.fn(),
   useLocation: () => ({
     state: {
       statusText: 'internal error',
