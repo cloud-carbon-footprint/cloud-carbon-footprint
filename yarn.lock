@@ -3229,15 +3229,16 @@ __metadata:
     "@testing-library/react": ^12.1.2
     "@testing-library/react-hooks": ^7.0.2
     "@testing-library/user-event": ^13.5.0
+    "@types/history": ^4.7.10
     "@types/jest": ^27.4.0
     "@types/mockdate": ^3.0.0
     "@types/node": ^17.0.8
     "@types/ramda": ^0.27.40
     "@types/react": ^17.0.38
     "@types/react-dates": ^21.8.2
-    "@types/react-dom": ^17.0.5
-    "@types/react-router": ^5.1.14
-    "@types/react-router-dom": ^5.1.7
+    "@types/react-dom": ^17.0.11
+    "@types/react-router": ^5.1.17
+    "@types/react-router-dom": ^5.3.2
     "@types/styled-components": ^5.1.9
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
@@ -6061,6 +6062,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/history@npm:^4.7.10":
+  version: 4.7.10
+  resolution: "@types/history@npm:4.7.10"
+  checksum: 6cd70136a086cac4e1e7832769b1d3952ac3adb73a1b34d7adc0dce87ea7a2707a86b855fac5b74dfa02b17251a79320402c3e079f7a03c24d65e0460fdeba64
+  languageName: node
+  linkType: hard
+
 "@types/hoist-non-react-statics@npm:*":
   version: 3.3.1
   resolution: "@types/hoist-non-react-statics@npm:3.3.1"
@@ -6338,12 +6346,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^17.0.5":
-  version: 17.0.5
-  resolution: "@types/react-dom@npm:17.0.5"
+"@types/react-dom@npm:^17.0.11":
+  version: 17.0.11
+  resolution: "@types/react-dom@npm:17.0.11"
   dependencies:
     "@types/react": "*"
-  checksum: ff301198c621864e1ee6c566285dc5cdc9eb5d881ca7fe7fcb8ebf29afe0357ffb7f77e401ab81ff444c64ff1375f653eeb28f04cd088a361915dee31cb3f4a8
+  checksum: 4d5730dffbef86c887cecad7e3cecda424ce6a64d0b5441c63b5b015d48219868660a2bb1aa15e897e565ad8867fa6b885d4358b04e1c4e589ba4c07c3fda55c
   languageName: node
   linkType: hard
 
@@ -6365,24 +6373,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-router-dom@npm:^5.1.7":
-  version: 5.1.7
-  resolution: "@types/react-router-dom@npm:5.1.7"
+"@types/react-router-dom@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "@types/react-router-dom@npm:5.3.2"
   dependencies:
     "@types/history": "*"
     "@types/react": "*"
     "@types/react-router": "*"
-  checksum: ad40f55557bb7cd8d19d783c1d7dbca85e8874e03cced37e464f74f9f0a588a9a7e411de74da362d1a5c5bf80f7aaca78fe9a66d26741e47c5c06e49a62d1229
+  checksum: 90f052dc5a43a77edaf41d2afa781c8ed2164cd7922b3cdf5daae446b02a2f279382425e6efc338260782c0a24d25a6101e3658acb41c8a053695968a351ea96
   languageName: node
   linkType: hard
 
-"@types/react-router@npm:*, @types/react-router@npm:^5.1.14":
+"@types/react-router@npm:*":
   version: 5.1.14
   resolution: "@types/react-router@npm:5.1.14"
   dependencies:
     "@types/history": "*"
     "@types/react": "*"
   checksum: 3dd8b89112da5ccae373868073b2a0b6f8bc4d53897e90f85f496f9ef9a7b104ccdc4f874b2ad9e61400ae622bcbcffeb98c4fca400939a9da64632ebd7cc61a
+  languageName: node
+  linkType: hard
+
+"@types/react-router@npm:^5.1.17":
+  version: 5.1.17
+  resolution: "@types/react-router@npm:5.1.17"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+  checksum: b9d1c7b6ce073652c39712d2b02aeec7640036e369c04be2e57e4b0eb049b64ec9f34fb91cad680ab3f794e89576f77aacadb015b61eb21500a1779e5c955b86
   languageName: node
   linkType: hard
 
