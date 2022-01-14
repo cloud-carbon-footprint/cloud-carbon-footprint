@@ -1,4 +1,4 @@
-service: api
+service: staging-default
 
 runtime: nodejs12
 instance_class: B4_1G
