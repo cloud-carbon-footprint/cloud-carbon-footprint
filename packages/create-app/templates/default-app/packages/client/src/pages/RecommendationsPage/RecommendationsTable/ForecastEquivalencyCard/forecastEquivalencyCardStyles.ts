@@ -6,7 +6,9 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   card: {
-    width: 600,
+    backgroundColor: '#3F51B5',
+    flex: '1 1 350px',
+    maxWidth: 600,
     minHeight: 350,
     border: '5px solid #3F51B5',
     borderRadius: 15,
@@ -14,24 +16,22 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
   },
   titleContainer: {
     backgroundColor: '#3F51B5',
-    width: 600,
-    position: 'absolute',
-    top: 0,
+    width: '100%',
     height: 64,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 5,
   },
   title: {
     fontStyle: 'normal',
     fontWeight: 'normal',
-    fontSize: 24,
-    lineHeight: 2,
-    color: '#FFFFFF',
+    fontSize: 20,
+    lineHeight: 1,
+    color: 'white',
   },
   textContent: {
     fontSize: 36,
@@ -41,11 +41,11 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 75,
+    backgroundColor: 'white',
+    gap: 30,
     width: '100%',
+    minHeight: 350 - 79,
     alignItems: 'center',
-    marginTop: 75,
-    marginBottom: 20,
   },
   treeSeedlingsIcon: {
     width: 104,
@@ -64,6 +64,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'center',
     minWidth: 180,
+    padding: 10,
   },
 }))
 

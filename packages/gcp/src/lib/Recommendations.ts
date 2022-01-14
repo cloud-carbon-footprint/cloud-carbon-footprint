@@ -39,7 +39,7 @@ import {
 } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
 import { GCP_REGIONS } from './GCPRegions'
-import { CostAndCo2eTotals } from '@cloud-carbon-footprint/core'
+import { CostAndKilowattHourTotals } from '@cloud-carbon-footprint/core'
 
 export default class Recommendations implements ICloudRecommendationsService {
   readonly RECOMMENDER_IDS: string[] = [
@@ -58,7 +58,7 @@ export default class Recommendations implements ICloudRecommendationsService {
   ]
   private readonly primaryImpactPerformance = 'PERFORMANCE'
   private readonly recommendationsLogger: Logger
-  private readonly costAndCo2eTotals: CostAndCo2eTotals
+  private readonly costAndCo2eTotals: CostAndKilowattHourTotals
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly hddStorageEstimator: StorageEstimator,
@@ -68,7 +68,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     this.recommendationsLogger = new Logger('GCPRecommendations')
     this.costAndCo2eTotals = {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     }
   }
 
@@ -127,7 +127,10 @@ export default class Recommendations implements ICloudRecommendationsService {
                 })
                 return
               } else {
-                this.accumulateCostAndCo2e(cost, estimatedCO2eSavings.co2e)
+                this.accumulateCostAndCo2e(
+                  cost,
+                  estimatedCO2eSavings.kilowattHours,
+                )
                 recommendationsResult.push({
                   cloudProvider: 'GCP',
                   accountId: project.id,
@@ -183,18 +186,18 @@ export default class Recommendations implements ICloudRecommendationsService {
         co2e: 0,
         kilowattHours: 0,
       }
-    const co2ePerCost =
-      this.costAndCo2eTotals.co2e / this.costAndCo2eTotals.cost
-    const co2e = cost * co2ePerCost
-    const kilowattHours =
-      co2e /
+    const kilowattHoursPerCost =
+      this.costAndCo2eTotals.kilowattHours / this.costAndCo2eTotals.cost
+    const kilowattHours = cost * kilowattHoursPerCost
+    const co2e =
+      kilowattHours *
       GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[this.parseRegionFromZone(zone)]
     return { co2e, kilowattHours }
   }
 
-  private accumulateCostAndCo2e(cost: number, co2e: number) {
+  private accumulateCostAndCo2e(cost: number, kilowattHours: number) {
     this.costAndCo2eTotals.cost += cost
-    this.costAndCo2eTotals.co2e += co2e
+    this.costAndCo2eTotals.kilowattHours += kilowattHours
   }
 
   private async getEstimatedCO2eSavings(

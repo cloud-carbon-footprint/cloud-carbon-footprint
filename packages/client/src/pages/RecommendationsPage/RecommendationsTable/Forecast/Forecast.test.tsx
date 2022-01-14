@@ -3,16 +3,18 @@
  */
 
 import React from 'react'
-import { render } from '@testing-library/react'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { render, within } from '@testing-library/react'
+import { ServiceData } from '@cloud-carbon-footprint/common'
 import { mockData, mockRecommendationData } from 'utils/data'
-import Forecast from './Forecast'
+import Forecast, { ForecastProps } from './Forecast'
+import { mockDataWithSmallNumbers } from '../../../../utils/data/mockData'
 
 describe('Forecast', () => {
-  const emissionsData: EstimationResult[] = mockData
-  const testProps = {
+  const emissionsData: ServiceData[] = mockData[0].serviceEstimates
+  const testProps: ForecastProps = {
     emissionsData,
     recommendations: mockRecommendationData,
+    useKilograms: false,
   }
 
   it('should render the title', () => {
@@ -34,6 +36,27 @@ describe('Forecast', () => {
     const current = getByText('Projected 30 Day Total')
 
     expect(current).toBeInTheDocument()
+  })
+
+  it('should show a projected forecast of zero if the savings are less than current forecast', () => {
+    const smallEmissionsData: ServiceData[] =
+      mockDataWithSmallNumbers[0].serviceEstimates
+    const { getByTestId } = render(
+      <Forecast {...testProps} emissionsData={smallEmissionsData} />,
+    )
+
+    const projectedForecastCard = within(
+      getByTestId('forecast-card-projected-thirty-day-total'),
+    )
+
+    const percentBadges = projectedForecastCard.queryAllByTestId(
+      'percentage-badge-label',
+    )
+
+    expect(projectedForecastCard.getByText('0')).toBeInTheDocument()
+    expect(projectedForecastCard.getByText('$0')).toBeInTheDocument()
+    expect(percentBadges[0].innerHTML).toBe('-')
+    expect(percentBadges[1].innerHTML).toBe('-')
   })
 
   it('should render the equivalency card', () => {

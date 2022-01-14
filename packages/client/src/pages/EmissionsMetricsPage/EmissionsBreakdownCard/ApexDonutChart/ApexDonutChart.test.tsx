@@ -10,11 +10,12 @@ import Chart from 'react-apexcharts'
 import {
   EstimationResult,
   EmissionRatioResult,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 
-import { ServiceResult } from '../../../../Types'
+import { ServiceResult } from 'Types'
 import { ApexDonutChart } from './ApexDonutChart'
-import { useRemoteEmissionService } from '../../../../utils/hooks'
+import { useRemoteEmissionService } from 'utils/hooks'
 
 jest.mock('apexcharts')
 jest.mock('utils/themes')
@@ -29,26 +30,34 @@ const emissionsFactorData: EmissionRatioResult[] = [
   {
     region: 'us-west-1',
     mtPerKwHour: 0.000645,
+    cloudProvider: 'AWS',
   },
   {
     region: 'us-west-2',
     mtPerKwHour: 0.000635,
+    cloudProvider: 'AWS',
   },
   {
     region: 'us-west-3',
     mtPerKwHour: 0.000475,
+    cloudProvider: 'AWS',
   },
   {
     region: 'us-west-4',
     mtPerKwHour: 0.000315,
+    cloudProvider: 'AWS',
   },
 ]
 
 describe('ApexDonutChart', () => {
   let fixture: ReactTestRenderer
+  const timestamp: Date = moment('2019-08-10T00:00:00.000Z').toDate()
   const data: EstimationResult[] = [
     {
-      timestamp: moment('2019-08-10T00:00:00.000Z').toDate(),
+      timestamp: timestamp,
+      periodStartDate: timestamp,
+      periodEndDate: timestamp,
+      groupBy: GroupBy.day,
       serviceEstimates: [
         {
           cloudProvider: 'AWS',

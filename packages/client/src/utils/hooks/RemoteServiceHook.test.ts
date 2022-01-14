@@ -13,6 +13,7 @@ const mockPush = jest.fn((args) => console.log('history push args', args))
 jest.mock('react-router-dom', () => ({
   useHistory: () => ({ push: mockPush }),
 }))
+
 jest.mock('ConfigLoader', () => ({
   __esModule: true,
   default: () => ({
@@ -57,7 +58,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockRejectedValue({ response })
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region),
     )
 
     await waitForNextUpdate()
@@ -77,7 +78,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockRejectedValue('some error')
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region),
     )
 
     await waitForNextUpdate()

@@ -8,6 +8,7 @@ import {
   EstimationResult,
   configLoader,
   GroupBy,
+  getPeriodEndDate,
 } from '@cloud-carbon-footprint/common'
 import { Logger } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
@@ -103,6 +104,7 @@ function concat(
 function fillDates(
   missingDates: Moment[],
   estimates: EstimationResult[],
+  grouping: GroupBy,
 ): EstimationResult[] {
   const dates: Moment[] = estimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
@@ -113,6 +115,9 @@ function fillDates(
     return {
       timestamp: timestamp.toDate(),
       serviceEstimates: [],
+      periodStartDate: timestamp.toDate(),
+      periodEndDate: getPeriodEndDate(timestamp.toDate(), grouping),
+      groupBy: grouping,
     }
   })
   return [...emptyEstimates, ...estimates].sort(
@@ -163,7 +168,7 @@ export default function cache(): any {
 
       if (estimates.length > 0) {
         // write missing estimates to cache
-        const estimatesToPersist = fillDates(missingDates, estimates)
+        const estimatesToPersist = fillDates(missingDates, estimates, grouping)
         cacheLogger.info('Setting new estimates to cache file...')
         await cacheManager.setEstimates(estimatesToPersist, grouping)
       }

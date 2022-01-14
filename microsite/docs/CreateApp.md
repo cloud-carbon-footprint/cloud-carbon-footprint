@@ -19,7 +19,7 @@ Creating a Cloud Carbon Footprint app guides you through the initial setup of se
 The command to run the create app package using npx is:
 
 ```
-npx @cloud-carbon-footprint/create-app
+npx @cloud-carbon-footprint/create-app@latest
 ```
 
 In the case that you would prefer to install the app yourself, you can run the same command with the following flag:

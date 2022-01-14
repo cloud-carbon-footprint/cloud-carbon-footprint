@@ -15,6 +15,8 @@ import {
   configLoader,
   EmissionRatioResult,
   EstimationResult,
+  getPeriodEndDate,
+  GroupBy,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import { AWSAccount } from '@cloud-carbon-footprint/aws'
@@ -111,12 +113,14 @@ describe('App', () => {
   let app: App
   const startDate = '2020-08-07'
   const endDate = '2020-08-10'
+  const grouping = GroupBy.day
   const region = 'us-east-1'
   const request: EstimationRequest = {
     startDate: moment(startDate).toDate(),
     endDate: moment(endDate).add(1, 'weeks').toDate(),
     region: region,
     ignoreCache: false,
+    groupBy: grouping,
   }
   const testAwsAccountId = '12345678'
   const testAwsAccountName = 'test AWS account'
@@ -169,8 +173,9 @@ describe('App', () => {
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
         (v, i) => {
+          const timestamp = moment.utc(startDate).add(i, 'days').toDate()
           return {
-            timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+            timestamp,
             serviceEstimates: [
               {
                 cloudProvider: 'AWS',
@@ -184,6 +189,9 @@ describe('App', () => {
                 usesAverageCPUConstant: false,
               },
             ],
+            periodStartDate: timestamp,
+            periodEndDate: getPeriodEndDate(timestamp, grouping),
+            groupBy: grouping,
           }
         },
       )
@@ -271,6 +279,9 @@ describe('App', () => {
               usesAverageCPUConstant: false,
             },
           ],
+          periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
+          periodEndDate: new Date('2020-08-07T23:59:59.000Z'),
+          groupBy: grouping,
         },
       ]
 
@@ -324,6 +335,9 @@ describe('App', () => {
               usesAverageCPUConstant: false,
             },
           ],
+          periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
+          periodEndDate: new Date('2020-08-07T23:59:59.000Z'),
+          groupBy: grouping,
         },
       ]
       expect(estimationResult).toEqual(expectedEstimationResults)
@@ -374,11 +388,12 @@ describe('App', () => {
 
       const expectedEstimationResults: EstimationResult[] = [...Array(7)].map(
         (v, i) => {
+          const timestamp = moment
+            .utc(startDate)
+            .subtract(6 - i, 'days')
+            .toDate()
           return {
-            timestamp: moment
-              .utc(startDate)
-              .subtract(6 - i, 'days')
-              .toDate(),
+            timestamp,
             serviceEstimates: [
               {
                 cloudProvider: 'AWS',
@@ -392,6 +407,9 @@ describe('App', () => {
                 usesAverageCPUConstant: false,
               },
             ],
+            periodStartDate: timestamp,
+            periodEndDate: getPeriodEndDate(timestamp, grouping),
+            groupBy: grouping,
           }
         },
       )
@@ -430,6 +448,7 @@ describe('App', () => {
       startDate: start,
       endDate: end,
       ignoreCache: false,
+      groupBy: grouping,
     }
 
     const result = await app.getCostAndEstimates(request)
@@ -461,6 +480,9 @@ describe('App', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: 'day',
+        periodEndDate: new Date('2020-08-07T23:59:59.000Z'),
+        periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
       },
     ]
 
@@ -537,6 +559,7 @@ describe('App', () => {
       startDate: start,
       endDate: end,
       ignoreCache: false,
+      groupBy: grouping,
     }
 
     const result = await app.getCostAndEstimates(request)
@@ -590,6 +613,9 @@ describe('App', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-08-07T23:59:59.000Z'),
+        periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
       },
     ]
 
@@ -656,6 +682,7 @@ describe('App', () => {
       startDate: start,
       endDate: end,
       ignoreCache: false,
+      groupBy: grouping,
     }
 
     const result = await app.getCostAndEstimates(request)
@@ -753,6 +780,9 @@ describe('App', () => {
             kilowattHours: 4,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-08-07T23:59:59.000Z'),
+        periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
       },
     ]
 

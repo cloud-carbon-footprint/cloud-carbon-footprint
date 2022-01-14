@@ -4,18 +4,21 @@
   "devDependencies": {
     "@changesets/cli": "^2.18.0",
     "@types/fs-extra": "^9.0.13",
-    "concurrently": "^6.3.0",
+    "concurrently": "^7.0.0",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.4",
     "lerna": "^4.0.0",
     "rimraf": "^3.0.2",
     "sonar-scanner": "^3.1.0",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.5.3"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   },
   "resolutions": {
-    "@types/react": "^17.0.6",
-    "@types/express-serve-static-core": "^4.17.21"
+    "@types/react": "^17.0.38",
+    "@types/express-serve-static-core": "^4.17.21",
+    "@grpc/grpc-js": "^1.4.6",
+    "@types/eslint": "^8.2.1",
+    "google-auth-library": "^7.11.0"
   },
   "workspaces": {
     "packages": [
@@ -41,6 +44,7 @@
     "deploy": "cd terraform && ./run.sh apply",
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "version": "yarn changeset version && yarn install --no-immutable"
   }
 }

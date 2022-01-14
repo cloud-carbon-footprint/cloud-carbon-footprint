@@ -21,7 +21,10 @@ In your `packages/client/.env` file, you can provide the following variable for 
 
 - `REACT_APP_GROUP_BY` (example values: day, week, month, quarter, year)
 
-Note: this is still configurable in `packages/api/.env` with the `GROUP_QUERY_RESULTS_BY` option, but this will be deprecated soon.
+
+Please Note: 
+- Data grouped by time periods other than days will usually honor the time period of the grouping over a specific date range that falls within the range. For example, when data is grouped by month and the dates Oct. 18 - Nov. 12 are requested, the API and UI will return one data point for November that includes all available data for the month of November (1st - 30th). Behavior when requesting specific dates including portions of the group by period may not be consistent due to caching.
+- Grouping is still configurable in `packages/api/.env` with the `GROUP_QUERY_RESULTS_BY` option, but this will be deprecated soon.
 
 ### Caching Configurations
 

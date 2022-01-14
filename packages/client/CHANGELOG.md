@@ -1,5 +1,36 @@
 # @cloud-carbon-footprint/client
 
+## 2.3.1
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- e72d9807: Fixes recommendations forecast projected totals showing negative numbers when current totals are too low
+
+  For updates to create app templates, please review the following commits:
+
+  - [Initial Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/73d505f79f8f4eccc0808d714a8b6c74020ee87e)
+  - [Second Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7d60888a7b716427ffc7a934ca137d8a86b373f8)
+  - [Final Commit]()https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d62bfc5837a96510882c75bca71249ddf6152b9a
+
+- Updated dependencies [8fd171ed]
+  - @cloud-carbon-footprint/common@1.3.1
+
+## 2.3.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- c29a3b53: updates testing and groupby param default
+  Commit for the groupBy param default change can be found [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/a6630892a294213b798cb529ffe8f3504f7a7dad)
+- Updated dependencies [c29a3b53]
+  - @cloud-carbon-footprint/common@1.3.0
+
 ## 2.2.1
 
 ### Patch Changes

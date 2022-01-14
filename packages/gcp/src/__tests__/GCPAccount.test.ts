@@ -9,6 +9,7 @@ import { ComputeEngine, Recommendations } from '../lib'
 import {
   Config as mockConfig,
   EstimationResult,
+  GroupBy,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
@@ -64,6 +65,7 @@ describe('GCPAccount', () => {
     // given
     const startDate: Date = new Date('2020-01-01')
     const endDate: Date = new Date('2020-01-02')
+    const grouping: GroupBy = GroupBy.day
     const expectedEstimatesData: RegionEstimates = {
       ComputeEngine: [
         {
@@ -94,7 +96,11 @@ describe('GCPAccount', () => {
     const testGCPAccount = new GCPAccount('12345678', 'test account', regions)
 
     // when
-    const result = await testGCPAccount.getDataForRegions(startDate, endDate)
+    const result = await testGCPAccount.getDataForRegions(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     // then
     const expectedResult: EstimationResult[] = [
@@ -113,6 +119,9 @@ describe('GCPAccount', () => {
             region: 'test-region-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2020-01-01T00:00:00.000Z'),
       },
       {
         timestamp: startDate,
@@ -129,6 +138,9 @@ describe('GCPAccount', () => {
             region: 'test-region-2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2020-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)

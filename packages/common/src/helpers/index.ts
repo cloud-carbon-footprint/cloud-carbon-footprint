@@ -13,4 +13,10 @@ export {
   convertGigaBytesToTerabyteHours,
 } from './unitConversion'
 
-export { containsAny, endsWithAny, wait, getHoursInMonth } from './helpers'
+export {
+  containsAny,
+  endsWithAny,
+  wait,
+  getHoursInMonth,
+  getPeriodEndDate,
+} from './helpers'

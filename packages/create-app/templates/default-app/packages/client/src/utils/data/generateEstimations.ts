@@ -4,9 +4,10 @@
 
 import moment from 'moment'
 import {
-  EstimationResult,
-  ServiceData,
   EmissionRatioResult,
+  EstimationResult,
+  GroupBy,
+  ServiceData,
 } from '@cloud-carbon-footprint/common'
 
 const getRandomInt = (max: number): number => {
@@ -169,6 +170,9 @@ const generateEstimations = (
       .toDate()
     const estimationsForMonth: EstimationResult = {
       timestamp,
+      periodStartDate: timestamp,
+      periodEndDate: moment(timestamp).add(1, 'm').toDate(),
+      groupBy: GroupBy.month,
       serviceEstimates: servicesToTest.map((serviceToTest: string) => {
         return fakeServiceMap()[serviceToTest]
       }),

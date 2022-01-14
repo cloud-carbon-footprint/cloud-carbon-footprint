@@ -6,7 +6,12 @@ import waitOn from 'wait-on'
 
 fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
   .before(async () => {
-    await waitOn({ resources: ['http://localhost:3000/'] })
+    await waitOn({
+      resources: [
+        'http://localhost:3000/',
+        'http://localhost:4000/api/healthz',
+      ],
+    })
   })
   .beforeEach(async (t) => {
     const header = Selector('#app-bar-header')
@@ -21,7 +26,7 @@ test('loading screen appears when app is starting', async (t) => {
 
 test('main components render with correct data when app loads', async (t) => {
   const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-  const accounts = Selector('span').withText('Accounts: 20 of 20')
+  const accounts = Selector('span').withText('Accounts: 12 of 12')
   const services = Selector('span').withText('Services: 8 of 8')
   const lineChart = Selector('#apexchartslineChart')
   const carbonComparisonCard = Selector('#carbonComparisonCard')
@@ -47,7 +52,7 @@ test('side drawer opens and closes when clicked', async (t) => {
 })
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
-  let totalCo2Amount = Selector('#metric-one').withText('309')
+  let totalCo2Amount = Selector('#metric-one').withText('57')
   const cloudProviderDropDown = Selector('#cloud-provider-filter')
     .sibling('div')
     .child('button')
@@ -62,19 +67,19 @@ test('total metric tons is loaded correctly with different dropdown selections',
   await t.click(cloudProviderDropDown)
   const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
   await t.click(awsDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('86')
+  totalCo2Amount = Selector('#metric-one').withText('20')
   await t.expect(totalCo2Amount.exists).ok()
 
   await t.click(accountsDropDown)
   const accountsDropdownItem = Selector('#accounts-filter-option-1')
   await t.click(accountsDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('152')
+  totalCo2Amount = Selector('#metric-one').withText('38')
   await t.expect(totalCo2Amount.exists).ok()
 
   await t.click(servicesDropDown)
   const servicesDropdownItem = Selector('#services-filter-option-1')
   await t.click(servicesDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('138')
+  totalCo2Amount = Selector('#metric-one').withText('34')
   await t.expect(totalCo2Amount.exists).ok()
 })
 
@@ -82,9 +87,9 @@ test('carbon equivalency component displays each option when clicked', async (t)
   const flightsButton = Selector('#flights')
   const phonesButton = Selector('#phones')
   const treesButton = Selector('#trees')
-  const flightsTaken = Selector('p').withText('381')
-  const phonesCharged = Selector('p').withText('37.6+ M')
-  const treeSeedlings = Selector('p').withText('5,109')
+  const flightsTaken = Selector('p').withText('70')
+  const phonesCharged = Selector('p').withText('6.9+ M')
+  const treeSeedlings = Selector('p').withText('942')
 
   await t.click(flightsButton).expect(flightsTaken.exists).ok()
   await t.click(phonesButton).expect(phonesCharged.exists).ok()

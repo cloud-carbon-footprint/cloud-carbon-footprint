@@ -2,13 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { render } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import ForecastCard from './ForecastCard'
 import each from 'jest-each'
 
 describe('Forecast Card', () => {
   it('should render the card', () => {
-    const { getByTestId } = render(<ForecastCard id="test" />)
+    const { getByTestId } = render(
+      <ForecastCard id="test" title="Title" co2eSavings="0" costSavings="0" />,
+    )
 
     expect(getByTestId('forecast-card-test')).toBeInTheDocument()
   })
@@ -27,20 +29,20 @@ describe('Forecast Card', () => {
     },
   )
 
-  it('should render percents badge if percentChange is passed to it', () => {
+  it('should render percents badge if percentChange is passed with defined value', () => {
     const { getByText } = render(
       <ForecastCard
         title="Title"
         co2eSavings="0"
         costSavings="0"
         co2ePercentChange={25}
-        costPercentChange={10}
+        costPercentChange={null}
         id="test"
       />,
     )
 
     expect(getByText('25%')).toBeInTheDocument()
-    expect(getByText('10%')).toBeInTheDocument()
+    expect(getByText('-')).toBeInTheDocument()
   })
 
   it('should render kilograms if toggle is set to kilograms', () => {
@@ -69,5 +71,56 @@ describe('Forecast Card', () => {
     )
     expect(getByText('Metric Tons CO2e')).toBeInTheDocument()
     expect(queryByText('Kilograms CO2e')).not.toBeInTheDocument()
+  })
+
+  describe('Tooltip', () => {
+    it('should render with the expected message', async () => {
+      const { getByText } = render(
+        <ForecastCard
+          id="test"
+          title="Title"
+          co2eSavings="9"
+          costSavings="1"
+          co2ePercentChange={25}
+          costPercentChange={null}
+          useKilograms={false}
+        />,
+      )
+
+      fireEvent.mouseOver(screen.getByTestId('tooltip'))
+
+      const expectedMessage =
+        'Your savings opportunity over 30 days is larger than your current carbon or spend. For a percentage to be shown, additional data may be needed.'
+
+      await waitFor(() => {
+        expect(getByText(expectedMessage)).toBeVisible()
+      })
+    })
+
+    const testCases = [
+      [{ co2ePercentChange: 25, costPercentChange: null }, true],
+      [{ co2ePercentChange: null, costPercentChange: 25 }, true],
+      [{ co2ePercentChange: null, costPercentChange: null }, true],
+      [{ co2ePercentChange: -25, costPercentChange: 25 }, false],
+    ]
+    each(testCases).it(
+      'should only render a tooltip if one of the projected costs are not calculated',
+      (percentageProps, expectedResult) => {
+        const { queryByTestId } = render(
+          <ForecastCard
+            id="test"
+            title="Title"
+            co2eSavings="9"
+            costSavings="1"
+            useKilograms={false}
+            {...percentageProps}
+          />,
+        )
+
+        const tooltipIsRendered = !!queryByTestId('tooltip')
+
+        expect(tooltipIsRendered).toBe(expectedResult)
+      },
+    )
   })
 })

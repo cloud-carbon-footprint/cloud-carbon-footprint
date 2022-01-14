@@ -102,29 +102,32 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     CLOUD_FILESTORE: 2,
     CLOUD_SQL_HIGH_AVAILABILITY: 2,
     CLOUD_MEMORY_STORE_REDIS: 2,
+    CLOUD_SPANNER_SINGLE_REGION: 4,
+    CLOUD_SPANNER_MULTI_REGION: 6,
+    KUBERNETES_ENGINE: 4,
     DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
-  CO2E_PER_COST: {
+  KILOWATT_HOURS_PER_COST: {
     [EstimateClassification.COMPUTE]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     [EstimateClassification.STORAGE]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     [EstimateClassification.NETWORKING]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     [EstimateClassification.MEMORY]: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
     total: {
       cost: 0,
-      co2e: 0,
+      kilowattHours: 0,
     },
   },
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours

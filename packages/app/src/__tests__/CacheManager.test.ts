@@ -9,14 +9,19 @@ import { EstimationRequest } from '../CreateValidRequest'
 import {
   Config as mockConfig,
   EstimationResult,
+  getPeriodEndDate,
   GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   return [...Array(consecutiveDays)].map((v, i) => {
+    const timestamp = moment.utc(startDate).add(i, 'days').toDate()
     return {
-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+      timestamp,
       serviceEstimates: [],
+      periodStartDate: timestamp,
+      periodEndDate: getPeriodEndDate(timestamp, GroupBy.day),
+      groupBy: GroupBy.day,
     }
   })
 }

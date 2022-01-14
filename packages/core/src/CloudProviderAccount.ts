@@ -2,14 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { union } from 'ramda'
-import moment from 'moment'
 import {
   EstimationResult,
+  GroupBy,
   reduceByTimestamp,
 } from '@cloud-carbon-footprint/common'
 
 import { aggregateCostsByDay, Cost } from './cost'
 import { Region, FootprintEstimate, aggregateEstimatesByDay } from '.'
+import moment from 'moment'
 
 export default class CloudProviderAccount {
   id?: string
@@ -19,6 +20,7 @@ export default class CloudProviderAccount {
     region: Region,
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const [regionEstimates, regionCosts] = await Promise.all([
       region.getEstimates(startDate, endDate),
@@ -73,6 +75,9 @@ export default class CloudProviderAccount {
                 usesAverageCPUConstant: !!estimate?.usesAverageCPUConstant,
               },
             ],
+            periodStartDate: startDate,
+            periodEndDate: endDate,
+            groupBy: grouping,
           }
         })
 

@@ -44,15 +44,13 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'Fee',
   'fee',
   'Billing',
-  'Commitment',
   'Reattribution',
-  'Commit',
   'Cache Fill',
   'External IP Charge',
-  'Load Balancing',
   'Static Ip',
   'Vpn Tunnel',
   'GPU', // Currently unsupported for carbon estimation
+  'Service Charge',
 ]
 
 export const UNKNOWN_SERVICE_TYPES: string[] = [

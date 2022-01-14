@@ -1,0 +1,77 @@
+name: Deploy Demo App
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [trunk]
+    types: [closed]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
+
+jobs:
+  deploy-demo-app:
+    if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.18-alpine3.14
+    environment:
+      name: staging
+    env:
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
+    steps:
+      # Fetch and checkout the repo
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      # Run Yarn Install in the Client Package
+      - name: Install client
+        run: yarn
+        working-directory: packages/client
+      # Build the Client Package
+      - name: Build client
+        env:
+          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
+          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+        run: |
+          cd packages/client
+          ./create_client_env_file.sh
+          yarn build
+          cd ..
+      # Update/Deploy the Client Package
+      - name: Update and deploy demo app
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          GOOGLE_DEMO_STORAGE_BUCKET: ${{ secrets.GOOGLE_DEMO_STORAGE_BUCKET }}
+        run: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          # Create mock data directory and files
+          mkdir packages/client/stub-server/api
+          mkdir packages/client/stub-server/api/regions
+
+          node scripts/create-client-mock-data.js
+
+          # Copy static build files to demo Google Cloud Bucket
+          gsutil cp -r packages/client/build/* gs://${GOOGLE_DEMO_STORAGE_BUCKET}
+          gsutil cp -r packages/client/stub-server/api gs://${GOOGLE_DEMO_STORAGE_BUCKET}
+
+           # Clean up temporary files
+          rm -r packages/client/stub-server/api

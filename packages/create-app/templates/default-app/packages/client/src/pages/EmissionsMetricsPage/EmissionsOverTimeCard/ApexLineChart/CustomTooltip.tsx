@@ -15,14 +15,25 @@ import { cloudEstPerDay } from 'Types'
 
 type CustomTooltipProps = {
   dataPoint: cloudEstPerDay
+  grouping: string
 }
 
-const CustomTooltip = ({ dataPoint }: CustomTooltipProps): ReactElement => {
+const CustomTooltip = ({
+  dataPoint,
+  grouping,
+}: CustomTooltipProps): ReactElement => {
   if (dataPoint?.x) {
+    const dateLabel = {
+      day: moment.utc(dataPoint.x).format('MMM DD, YYYY'),
+      week: moment.utc(dataPoint.x).format('[Week] w, MMM'),
+      month: moment.utc(dataPoint.x).format('MMM YYYY'),
+      quarter: moment.utc(dataPoint.x).format('Qo [Quarter] YYYY'),
+      year: moment.utc(dataPoint.x).format('YYYY'),
+    }
     return (
       <div style={{ padding: '10px' }}>
         <div>
-          <b>{moment.utc(dataPoint.x).format('MMMM DD')}</b>
+          <b>{dateLabel[grouping]}</b>
         </div>
         <div>
           {dataPoint.y} metric tons CO2e

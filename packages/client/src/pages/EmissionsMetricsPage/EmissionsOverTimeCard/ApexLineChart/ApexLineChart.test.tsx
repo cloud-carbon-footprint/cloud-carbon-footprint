@@ -9,7 +9,7 @@ import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 import { render } from '@testing-library/react'
 import ApexLineChart from './ApexLineChart'
-import { ServiceData } from '@cloud-carbon-footprint/common'
+import { GroupBy, ServiceData } from '@cloud-carbon-footprint/common'
 
 jest.mock('apexcharts')
 jest.mock('utils/themes')
@@ -58,7 +58,10 @@ describe('ApexLineChart', () => {
     build() {
       return {
         timestamp: this.timestamp,
+        periodStartDate: this.timestamp,
+        periodEndDate: this.timestamp,
         serviceEstimates: this.serviceEstimates,
+        groupBy: GroupBy.day,
       }
     }
   }

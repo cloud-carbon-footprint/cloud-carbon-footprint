@@ -11,85 +11,88 @@ import useStyles from './recommendationsSidePanelStyles'
 import {
   tableFormatNearZero,
   tableFormatRawCo2e,
-} from '../../../utils/helpers/transformData'
+} from 'utils/helpers/transformData'
 
-type RecommendationsSidePanelProps = {
+export type RecommendationsSidePanelProps = {
   recommendation: RecommendationRow
+  onClose?: () => void
 }
 
-const RecommendationsSidePanel: FunctionComponent<RecommendationsSidePanelProps> =
-  ({ recommendation }): ReactElement => {
-    const classes = useStyles()
+const RecommendationsSidePanel: FunctionComponent<
+  RecommendationsSidePanelProps
+> = ({ recommendation, onClose }): ReactElement => {
+  const classes = useStyles()
 
-    return (
-      <SidePanel
-        drawerWidth={475}
-        title="Recommendation Details"
-        defaultIsOpen
-        openOnChange={recommendation}
-      >
-        <Container className={classes.detailsContainer}>
-          <RecommendationsPanelRow
-            label="Cloud Provider"
-            content={recommendation.cloudProvider}
-          />
-          <RecommendationsPanelRow
-            label="Account Name"
-            content={recommendation.accountName}
-          />
-          <RecommendationsPanelRow
-            label="Account ID"
-            content={recommendation.accountId}
-          />
-          <RecommendationsPanelRow
-            label="Region"
-            content={recommendation.region}
-          />
-          <RecommendationsPanelRow
-            label="Resource Name"
-            content={recommendation.instanceName}
-          />
-          <RecommendationsPanelRow
-            label="Resource ID"
-            content={recommendation.resourceId}
-          />
-        </Container>
-        <Divider />
-        <Container className={classes.detailsContainer}>
-          <RecommendationsPanelColumn
-            label="Recommendation Type"
-            content={recommendation.recommendationType}
-          />
-          <RecommendationsPanelColumn
-            label="Recommendation Detail"
-            content={recommendation.recommendationDetail}
-            hasLeftAlignedContent
-          />
-        </Container>
-        <Grid className={classes.savingsContainer} container wrap="nowrap">
-          <RecommendationsPanelColumn
-            label="Cost Savings"
-            subLabel="(USD)"
-            content={tableFormatNearZero(recommendation.costSavings)}
-          />
-          <RecommendationsPanelColumn
-            label="CO2e Savings"
-            subLabel={
-              recommendation.useKilograms ? '(kilograms)' : '(metric tons)'
-            }
-            content={tableFormatRawCo2e(
-              recommendation.useKilograms,
-              recommendation.co2eSavings,
-            )}
-          />
-          <RecommendationsPanelColumn
-            label="Energy Savings"
-            subLabel="(kilowatt hours)"
-            content={tableFormatNearZero(recommendation.kilowattHourSavings)}
-          />
-        </Grid>
-      </SidePanel>
-    )
-  }
+  return (
+    <SidePanel
+      drawerWidth={475}
+      title="Recommendation Details"
+      defaultIsOpen
+      openOnChange={recommendation}
+      onClose={onClose}
+    >
+      <Container className={classes.detailsContainer}>
+        <RecommendationsPanelRow
+          label="Cloud Provider"
+          content={recommendation.cloudProvider}
+        />
+        <RecommendationsPanelRow
+          label="Account Name"
+          content={recommendation.accountName}
+        />
+        <RecommendationsPanelRow
+          label="Account ID"
+          content={recommendation.accountId}
+        />
+        <RecommendationsPanelRow
+          label="Region"
+          content={recommendation.region}
+        />
+        <RecommendationsPanelRow
+          label="Resource Name"
+          content={recommendation.instanceName}
+        />
+        <RecommendationsPanelRow
+          label="Resource ID"
+          content={recommendation.resourceId}
+        />
+      </Container>
+      <Divider />
+      <Container className={classes.detailsContainer}>
+        <RecommendationsPanelColumn
+          label="Recommendation Type"
+          content={recommendation.recommendationType}
+        />
+        <RecommendationsPanelColumn
+          label="Recommendation Detail"
+          content={recommendation.recommendationDetail}
+          hasLeftAlignedContent
+        />
+      </Container>
+      <Grid className={classes.savingsContainer} container wrap="nowrap">
+        <RecommendationsPanelColumn
+          label="Cost Savings"
+          subLabel="(USD)"
+          content={tableFormatNearZero(recommendation.costSavings)}
+        />
+        <RecommendationsPanelColumn
+          label="CO2e Savings"
+          subLabel={
+            recommendation.useKilograms ? '(kilograms)' : '(metric tons)'
+          }
+          content={tableFormatRawCo2e(
+            recommendation.useKilograms,
+            recommendation.co2eSavings,
+          )}
+        />
+        <RecommendationsPanelColumn
+          label="Energy Savings"
+          subLabel="(kilowatt hours)"
+          content={tableFormatNearZero(recommendation.kilowattHourSavings)}
+        />
+      </Grid>
+    </SidePanel>
+  )
+}
 
 export default RecommendationsSidePanel

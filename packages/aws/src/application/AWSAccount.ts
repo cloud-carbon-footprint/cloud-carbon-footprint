@@ -68,11 +68,12 @@ export default class AWSAccount extends CloudProviderAccount {
   async getDataForRegions(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const results: EstimationResult[][] = []
     for (const regionId of this.regions) {
       const regionEstimates: EstimationResult[] = await Promise.all(
-        await this.getDataForRegion(regionId, startDate, endDate),
+        await this.getDataForRegion(regionId, startDate, endDate, grouping),
       )
       results.push(regionEstimates)
     }
@@ -84,6 +85,7 @@ export default class AWSAccount extends CloudProviderAccount {
     regionId: string,
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const awsServices = this.getServices(regionId)
     const awsConstants = {
@@ -102,6 +104,7 @@ export default class AWSAccount extends CloudProviderAccount {
       region,
       startDate,
       endDate,
+      grouping,
     )
   }
 

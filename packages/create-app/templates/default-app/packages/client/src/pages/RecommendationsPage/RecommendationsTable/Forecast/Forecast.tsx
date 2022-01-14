@@ -12,7 +12,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import useStyles from './forecastStyles'
 import {
-  sumEstimate,
+  sumEstimates,
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,
@@ -20,7 +20,7 @@ import {
 import ForecastCard from '../ForecastCard'
 import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
 
-type ForecastProps = {
+export type ForecastProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
   useKilograms: boolean
@@ -35,8 +35,8 @@ const Forecast: FunctionComponent<ForecastProps> = ({
 
   const forecastMultiplier = useKilograms ? 1000 : 1
 
-  const sumCurrentCo2e = sumEstimate(emissionsData, 'co2e')
-  const sumCurrentCost = sumEstimate(emissionsData, 'cost')
+  const sumCurrentCo2e = sumEstimates(emissionsData, 'co2e')
+  const sumCurrentCost = sumEstimates(emissionsData, 'cost')
 
   const currentCo2eFormatted = formattedNumberWithCommas(
     sumCurrentCo2e * forecastMultiplier,
@@ -49,24 +49,30 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   const projectedSavingsCo2e = sumCurrentCo2e - sumSavingsCo2e
   const projectedSavingsCost = sumCurrentCost - sumSavingsCost
 
-  const projectedCo2eFormatted = formattedNumberWithCommas(
+  const formatProjectedSavings = (projectedSavings: number): string =>
+    projectedSavings > 0 ? formattedNumberWithCommas(projectedSavings) : '0'
+
+  const projectedCo2eFormatted = formatProjectedSavings(
     projectedSavingsCo2e * forecastMultiplier,
   )
-  const projectedCostFormatted = `$${formattedNumberWithCommas(
+
+  const projectedCostFormatted = `$${formatProjectedSavings(
     projectedSavingsCost,
   )}`
 
-  const co2ePercentChange = calculatePercentChange(
+  const getPercentChange = (oldAmount: number, newAmount: number): number =>
+    newAmount > 0 ? calculatePercentChange(oldAmount, newAmount) : null
+
+  const co2ePercentChange = getPercentChange(
     sumCurrentCo2e,
     projectedSavingsCo2e,
   )
-  const costPercentChange = calculatePercentChange(
+  const costPercentChange = getPercentChange(
     sumCurrentCost,
     projectedSavingsCost,
   )
 
   const monthlyCostSavings = `$${formattedNumberWithCommas(sumSavingsCost)}`
-
   const treeSeedlings = formattedNumberWithCommas(
     sumSavingsCo2e * 16.5337915448,
     0,
@@ -81,6 +87,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
           useKilograms={useKilograms}
+          id="last-thirty-day-total"
         />
         <ForwardIcon className={classes.icon} />
         <ForecastCard
@@ -90,6 +97,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           co2ePercentChange={co2ePercentChange}
           costPercentChange={costPercentChange}
           useKilograms={useKilograms}
+          id="projected-thirty-day-total"
         />
         <div className={clsx(classes.icon, classes.equalSign)}>=</div>
         <ForecastEquivalencyCard

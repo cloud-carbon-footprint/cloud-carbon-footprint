@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "skipLibCheck": true
   },
   "include": ["./src", "../app/src/GCPCredentials.ts", "../app/src/__tests__/AWSCredentialsProvider.test.ts",]
 }

@@ -25,14 +25,14 @@ const sumServiceTotals = (
   const kilowattHoursSeries: cloudEstPerDay[] = []
   const costSeries: cloudEstPerDay[] = []
 
-  data.forEach((estimatationResult) => {
+  data.forEach((estimationResult) => {
     let total = 0
     let totalCost = 0
     let totalWattHours = 0
 
     let usesAverageCPUConstant = false
 
-    estimatationResult.serviceEstimates.forEach((serviceEstimate) => {
+    estimationResult.serviceEstimates.forEach((serviceEstimate) => {
       if (serviceEstimate.usesAverageCPUConstant === true) {
         usesAverageCPUConstant = true
       }
@@ -42,7 +42,7 @@ const sumServiceTotals = (
     })
 
     co2Series.push({
-      x: estimatationResult.timestamp,
+      x: estimationResult.timestamp,
       y: roundNumberBasedOnSize(total, 4),
       usesAverageCPUConstant: usesAverageCPUConstant,
       cost: roundNumberBasedOnSize(totalCost, 2),
@@ -50,12 +50,12 @@ const sumServiceTotals = (
     })
 
     kilowattHoursSeries.push({
-      x: estimatationResult.timestamp,
+      x: estimationResult.timestamp,
       y: roundNumberBasedOnSize(totalWattHours, 2),
     })
 
     costSeries.push({
-      x: estimatationResult.timestamp,
+      x: estimationResult.timestamp,
       y: roundNumberBasedOnSize(totalCost, 2),
     })
   })
@@ -135,12 +135,12 @@ const sumCO2ByServiceOrRegion = (
   }, Object.create({}))
 }
 
-const sumEstimate = (
+const sumEstimates = (
   data: (EstimationResult | ServiceData)[],
   key: string,
 ): number => {
   let serviceEstimates = data
-  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult)
+  //TODO: Clean up this typechecking (should check if data is a type of EstimationResult
   if (data[0] && 'serviceEstimates' in data[0]) {
     const estimationData = data as EstimationResult[]
     serviceEstimates = estimationData.flatMap(
@@ -297,7 +297,7 @@ function tableFormatRawCo2e(useKilograms: boolean, rawValue: number): string {
 }
 
 export {
-  sumEstimate,
+  sumEstimates,
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,

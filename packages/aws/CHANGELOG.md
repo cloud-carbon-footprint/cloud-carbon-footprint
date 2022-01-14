@@ -1,5 +1,37 @@
 # @cloud-carbon-footprint/aws
 
+## 0.8.0
+
+### Minor Changes
+
+- aaeb61a3: Updates estimation for unknown usage types to calculate kilowatt hours first, then co2e, to improve acccuracy
+
+### Patch Changes
+
+- cce87388: Removes suffix from aws usage type
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- 2e27711e: adds HostBoxUsage to unsupported usage types in aws to not double count
+- Updated dependencies [8fd171ed]
+- Updated dependencies [808085cc]
+- Updated dependencies [aaeb61a3]
+  - @cloud-carbon-footprint/common@1.3.1
+  - @cloud-carbon-footprint/core@0.14.0
+
+## 0.7.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- c29a3b53: Fixes instance family logic when calculating embodied emissions
+- Updated dependencies [c29a3b53]
+  - @cloud-carbon-footprint/common@1.3.0
+  - @cloud-carbon-footprint/core@0.13.0
+
 ## 0.6.1
 
 ### Patch Changes

@@ -35,6 +35,7 @@ import {
   mockQueryMemoryStoreWithReplicationFactors,
   mockQueryReclassifiedUnknowns,
   mockQueryComputeWithDifferentMachineTypesForEmbodiedEmissions,
+  mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors,
 } from './fixtures/bigQuery.fixtures'
 import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
 import { unknownsReclassification } from './fixtures/unknownsReclassification.fixtures'
@@ -60,26 +61,26 @@ describe('GCP BillingExportTable Service', () => {
   const accountName = 'test-account-name'
 
   beforeEach(() => {
-    GCP_CLOUD_CONSTANTS.CO2E_PER_COST = {
+    GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
       [EstimateClassification.COMPUTE]: {
         cost: 0,
-        co2e: 0,
+        kilowattHours: 0,
       },
       [EstimateClassification.STORAGE]: {
         cost: 0,
-        co2e: 0,
+        kilowattHours: 0,
       },
       [EstimateClassification.NETWORKING]: {
         cost: 0,
-        co2e: 0,
+        kilowattHours: 0,
       },
       [EstimateClassification.MEMORY]: {
         cost: 0,
-        co2e: 0,
+        kilowattHours: 0,
       },
       total: {
         cost: 0,
-        co2e: 0,
+        kilowattHours: 0,
       },
     }
   })
@@ -127,6 +128,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -185,6 +189,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -201,6 +208,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-west1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -259,6 +269,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-02'),
@@ -275,6 +288,9 @@ describe('GCP BillingExportTable Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -388,6 +404,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-south1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -446,6 +465,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -504,6 +526,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-west1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -520,6 +545,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-east1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -567,6 +595,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -583,6 +614,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -599,6 +633,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'us-central1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-04'),
@@ -615,6 +652,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-south1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-05'),
@@ -631,6 +671,9 @@ describe('GCP BillingExportTable Service', () => {
             region: 'asia-south1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-05T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -709,14 +752,17 @@ describe('GCP BillingExportTable Service', () => {
             accountId: 'test-account-id',
             accountName: 'test-account-name',
             cloudProvider: 'GCP',
-            co2e: 0.023602335085839265,
+            co2e: 0.0038353794514488803,
             cost: 20,
-            kilowattHours: 302.59403956204187,
+            kilowattHours: 49.1715314288318,
             region: 'us-west1',
             serviceName: 'Cloud SQL',
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -776,14 +822,120 @@ describe('GCP BillingExportTable Service', () => {
             accountId: 'test-account-id',
             accountName: 'test-account-name',
             cloudProvider: 'GCP',
-            co2e: 0.00002115064033466667,
+            co2e: 0.000021150640334666668,
             cost: 10,
-            kilowattHours: 0.04406383403055556,
+            kilowattHours: 0.044063834030555554,
             region: 'us-east1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimations for unknown CloudSpanner and Kubernetes Engine and requests usageTypes', async () => {
+    mockJob.getQueryResults.mockResolvedValue(
+      mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors,
+    )
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 7.6772109375e-9,
+            cost: 170,
+            kilowattHours: 0.00001691015625,
+            region: 'us-central1',
+            serviceName: 'Cloud Memorystore for Redis',
+            usesAverageCPUConstant: false,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 3.58594784007353e-9,
+            cost: 50,
+            region: 'asia-south1',
+            serviceName: 'Cloud Spanner',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.00000497357536764706,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 8.057192095588236e-9,
+            cost: 150,
+            region: 'asia-east1',
+            serviceName: 'Cloud Spanner',
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.000014920726102941178,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 1.075784352022059e-8,
+            cost: 150,
+            kilowattHours: 0.000014920726102941178,
+            region: 'asia-south1',
+            serviceName: 'Kubernetes Engine',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 1.5806022518382354e-8,
+            cost: 350,
+            kilowattHours: 0.000034815027573529415,
+            region: 'us-central1',
+            serviceName: 'Kubernetes Engine',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 2.82499080882353e-10,
+            region: 'europe',
+            serviceName: 'App Engine',
+            usesAverageCPUConstant: false,
+            cost: 10,
+            kilowattHours: 9.947150735294118e-7,
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -852,14 +1004,17 @@ describe('GCP BillingExportTable Service', () => {
             accountId: 'test-account-id',
             accountName: 'test-account-name',
             cloudProvider: 'GCP',
-            co2e: 9.82610692583593e-7,
+            co2e: 1.4287114552629927e-7,
             cost: 10,
-            kilowattHours: 0.012597572981840936,
+            kilowattHours: 0.0018316813529012728,
             region: 'us-west1',
             serviceName: 'Compute Engine',
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -925,6 +1080,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 4.277502497037252e-14,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1006,6 +1164,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 80.2682499734564,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-02'),
@@ -1025,14 +1186,17 @@ describe('GCP BillingExportTable Service', () => {
             accountId: accountId,
             accountName: accountName,
             cloudProvider: 'GCP',
-            co2e: 3.967223531849436e-11,
+            co2e: 3.967223531849437e-11,
             cost: 0.012744,
             region: 'us-east1',
             serviceName: 'Stackdriver Monitoring',
             usesAverageCPUConstant: false,
-            kilowattHours: 8.265049024686325e-8,
+            kilowattHours: 8.265049024686326e-8,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -1060,6 +1224,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 0.000017706963670674972,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-04'),
@@ -1087,6 +1254,9 @@ describe('GCP BillingExportTable Service', () => {
             kilowattHours: 2.7575440083940826e-13,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-05'),
@@ -1095,14 +1265,17 @@ describe('GCP BillingExportTable Service', () => {
             accountId: 'test-account-id',
             accountName: 'test-account-name',
             cloudProvider: 'GCP',
-            co2e: 8.484253236594484e-12,
+            co2e: 1.274405538246796e-11,
             cost: 0.000004,
-            kilowattHours: 1.1767341520935485e-8,
+            kilowattHours: 1.7675527576238503e-8,
             region: 'asia-south1',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-05T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1171,8 +1344,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'seconds',
       },
       {
-        co2e: 2.1323561668395997e-16,
-        kilowattHours: 5.906803786259279e-13,
+        co2e: 3.6310404539108276e-16,
+        kilowattHours: 1.0058283805847168e-12,
         machineType: '',
         region: 'us-east4',
         serviceName: 'Compute Engine',

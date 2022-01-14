@@ -11,11 +11,11 @@ import React, {
 } from 'react'
 import {
   DataGrid,
+  GridCellParams,
   GridColDef,
   GridOverlay,
   GridRowParams,
   MuiEvent,
-  GridCellParams,
 } from '@material-ui/data-grid'
 import {
   RecommendationResult,
@@ -32,7 +32,7 @@ import CustomPagination from './CustomPagination'
 import {
   tableFormatNearZero,
   tableFormatRawCo2e,
-} from '../../../utils/helpers/transformData'
+} from 'utils/helpers/transformData'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
@@ -147,6 +147,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     resetToInitialPage()
   }
 
+  const escapeRegExp = (value: string): string => {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+  }
+
   const requestSearch = (searchValue: string) => {
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
     const fieldsToNotFilter = [
@@ -183,10 +187,6 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     resetToInitialPage()
   }, [recommendations])
 
-  const escapeRegExp = (value: string): string => {
-    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
-  }
-
   const tooltipMessage =
     'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
 
@@ -208,7 +208,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             <DateRange lookBackPeriodDays={13} />
             <Tooltip message={tooltipMessage} />
           </div>
-          <div className={classes.tableContainer}>
+          <div
+            data-testid="recommendations-data-grid"
+            className={classes.tableContainer}
+          >
             <div className={classes.toolbarContainer}>
               <SearchBar
                 value={searchBarValue}

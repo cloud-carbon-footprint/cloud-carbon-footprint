@@ -205,88 +205,88 @@ jobs:
 #          tags: |
 #            cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
 #            cloudcarbonfootprint/api:latest
-#  deploy-staging:
-#    if: github.ref == 'refs/heads/trunk'
-#    needs: build
-#    runs-on: ubuntu-latest
-#    container:
-#      image: node:14.16.0-alpine3.10
-#    environment:
-#      name: staging
-#    env:
-#      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
-#      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
-#      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
-#      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
-#      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
-#      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
-#      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
-#      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
-#      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
-#      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
-#      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
-#      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
-#      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
-#      GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
-#      GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
-#      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
-#      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-#      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-#      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
-#      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
-#      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
-#      CACHE_MODE: ${{ secrets.CACHE_MODE }}
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: dist-workspace
-#          path: dist-workspace
-#      - name: deploy-staging
-#        env:
-#          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
-#          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-#        run: |
-#          apk add --update python3 py-crcmod bash libc6-compat curl
-#          export PATH=$PATH:/root/google-cloud-sdk/bin
-#          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-#
-#          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
-#          cp packages/api/app-staging.yaml dist-workspace/packages/api
-#
-#          cp packages/client/app-staging.yaml dist-workspace/packages/client
-#
-#          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
-#          yarn set version 1.22.4
-#
-#          rm yarn.lock
-#          rm package.json
-#
-#          cd dist-workspace/packages/api
-#          # Generate yarn.lock file
-#          yarn install
-#          ./create_server_env_file.sh
-#          cd ../../..
-#
-#          # Store service account
-#          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-#
-#          # Initialize gcloud CLI
-#          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-#
-#          gcloud --quiet config set project $GOOGLE_PROJECT_ID
-#
-#          cd appengine
-#          ./deploy-staging.sh
-#          cd ..
+  deploy-staging:
+    if: github.ref == 'refs/heads/trunk'
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.18-alpine3.14
+    environment:
+      name: staging
+    env:
+      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
+      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
+      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
+      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
+      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
+      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
+      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
+      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
+      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
+      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
+      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
+      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
+      GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
+      GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
+      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
+      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
+      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
+      CACHE_MODE: ${{ secrets.CACHE_MODE }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist-workspace
+          path: dist-workspace
+      - name: deploy-staging
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+        run: |
+          apk add --update python3 py-crcmod bash libc6-compat curl
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
+          cp packages/api/app-staging.yaml dist-workspace/packages/api
+
+          cp packages/client/app-staging.yaml dist-workspace/packages/client
+
+          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
+          yarn set version 1.22.4
+
+          rm yarn.lock
+          rm package.json
+
+          cd dist-workspace/packages/api
+          # Generate yarn.lock file
+          yarn install
+          ./create_server_env_file.sh
+          cd ../../..
+
+          # Store service account
+          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          cd appengine
+          ./deploy-staging.sh
+          cd ..
   deploy-production:
     if: github.ref == 'refs/heads/trunk'
 #    needs: deploy-staging
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: node:14.16.0-alpine3.10
+      image: node:14.18-alpine3.14
     environment:
       name: production
     env:

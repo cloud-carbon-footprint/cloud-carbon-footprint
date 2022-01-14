@@ -2,9 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import dotenv from 'dotenv'
-dotenv.config()
-
 export interface ClientConfig {
   CURRENT_PROVIDERS: {
     key: string
@@ -15,6 +12,7 @@ export interface ClientConfig {
     VALUE: string
     TYPE: string
   }
+  GROUP_BY: string
 }
 
 const previousYearOfUsage =
@@ -32,6 +30,7 @@ const appConfig: ClientConfig = {
     VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '12',
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
+  GROUP_BY: process.env.REACT_APP_GROUP_BY,
 }
 
 export default appConfig

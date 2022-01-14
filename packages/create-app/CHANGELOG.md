@@ -1,5 +1,44 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.2.1
+
+### Patch Changes
+
+- ba956839: Updates create-templates with package bumps and fixes for linting/typescript issues.
+
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8fd171edb91cee5262c9d4d3a09fae6b7c265110).
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- e72d9807: Fixes recommendations forecast projected totals showing negative numbers when current totals are too low
+
+  For updates to create app templates, please review the following commits:
+
+  - [Initial Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/73d505f79f8f4eccc0808d714a8b6c74020ee87e)
+  - [Second Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7d60888a7b716427ffc7a934ca137d8a86b373f8)
+  - [Final Commit]()https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d62bfc5837a96510882c75bca71249ddf6152b9a
+
+## 1.2.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- b27594c2: update groupby param in template file
+
+## 1.1.2
+
+### Patch Changes
+
+- 5ab4cce8: updates client package template files
+  Updates referenced in the following commits:
+  [[1](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/2ebb5fe08f90c97717d1b332f1a6e3f2f1aabfbb)]
+
+  [[2](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1b7f05dddf0effa78523e5dcb3cc4ca176974ca5)]
+
 ## 1.1.1
 
 ### Patch Changes

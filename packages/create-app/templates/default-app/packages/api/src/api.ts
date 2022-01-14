@@ -14,8 +14,8 @@ import {
 
 import {
   EstimationRequestValidationError,
-  PartialDataError,
   Logger,
+  PartialDataError,
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
 
@@ -37,10 +37,16 @@ const FootprintApiMiddleware = async function (
   const rawRequest: FootprintEstimatesRawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
+    ignoreCache: req.query.ignoreCache?.toString(),
+    groupBy: req.query.groupBy?.toString(),
   }
   apiLogger.info(
     `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
   )
+  if (!rawRequest.groupBy)
+    apiLogger.warn(
+      'GroupBy parameter not specified. This will be required in the future.',
+    )
   const footprintApp = new App()
   try {
     const estimationRequest = CreateValidFootprintRequest(rawRequest)

@@ -32,19 +32,21 @@ interface PaginationProps<T> extends PaginateData<T> {
   handlePage: (page: Page<T>) => void
 }
 
-const usePaginateData: <T>(data: T[], pageSize: number) => UsePaginateData<T> =
-  (data, pageSize) => {
-    const paginatedData = []
-    const newEntries = [...data]
-    while (newEntries.length > 0) {
-      const paginatedSubData = newEntries.splice(0, pageSize)
-      paginatedData.push(paginatedSubData)
-    }
-    return {
-      paginatedData,
-      totalPages: paginatedData.length,
-    }
+const usePaginateData: <T>(
+  data: T[],
+  pageSize: number,
+) => UsePaginateData<T> = (data, pageSize) => {
+  const paginatedData = []
+  const newEntries = [...data]
+  while (newEntries.length > 0) {
+    const paginatedSubData = newEntries.splice(0, pageSize)
+    paginatedData.push(paginatedSubData)
   }
+  return {
+    paginatedData,
+    totalPages: paginatedData.length,
+  }
+}
 
 const Pagination: <T>(
   props: PropsWithChildren<PaginationProps<T>>,

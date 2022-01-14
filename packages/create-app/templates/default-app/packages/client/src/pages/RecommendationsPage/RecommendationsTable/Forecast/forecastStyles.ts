@@ -18,21 +18,22 @@ const useStyles = makeStyles(() => ({
   },
   forecastContainer: {
     display: 'flex',
+    flex: '0 1 auto',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 30,
+    gap: 20,
   },
   icon: {
-    width: 100,
-    height: 100,
+    width: 75,
+    height: 75,
     color: '#EDEDED',
   },
   equalSign: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 155,
+    fontSize: 120,
   },
 }))
 

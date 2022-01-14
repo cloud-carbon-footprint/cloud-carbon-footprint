@@ -35,7 +35,7 @@ import {
   CloudConstantsEmissionsFactors,
   CloudConstants,
   UnknownUsage,
-  accumulateCo2PerCost,
+  accumulateKilowattHoursPerCost,
   EstimateClassification,
   EmbodiedEmissionsUsage,
   EmbodiedEmissionsEstimator,
@@ -106,6 +106,7 @@ export default class BillingExportTable {
           results,
           billingExportRow,
           footprintEstimate,
+          grouping,
         )
     })
 
@@ -113,7 +114,12 @@ export default class BillingExportTable {
       unknownRows.map((rowData: BillingExportRow) => {
         const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            grouping,
+          )
       })
     }
     return results
@@ -295,11 +301,11 @@ export default class BillingExportTable {
     )[0]
 
     if (computeFootprint)
-      accumulateCo2PerCost(
+      accumulateKilowattHoursPerCost(
         EstimateClassification.COMPUTE,
-        computeFootprint.co2e,
+        computeFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
       )
 
     return computeFootprint
@@ -427,11 +433,11 @@ export default class BillingExportTable {
 
     if (storageFootprint) {
       storageFootprint.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
+      accumulateKilowattHoursPerCost(
         EstimateClassification.STORAGE,
-        storageFootprint.co2e,
+        storageFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
       )
     }
 
@@ -461,11 +467,11 @@ export default class BillingExportTable {
 
     if (memoryFootprint) {
       memoryFootprint.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
+      accumulateKilowattHoursPerCost(
         EstimateClassification.MEMORY,
-        memoryFootprint.co2e,
+        memoryFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
       )
     }
 
@@ -495,11 +501,11 @@ export default class BillingExportTable {
 
     if (networkingFootprint) {
       networkingFootprint.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
+      accumulateKilowattHoursPerCost(
         EstimateClassification.NETWORKING,
-        networkingFootprint.co2e,
+        networkingFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
       )
     }
 
@@ -557,9 +563,10 @@ export default class BillingExportTable {
         rowData.usageType,
         rowData.usageUnit,
       ),
+      replicationFactor: this.getReplicationFactor(rowData),
     }
     const unknownConstants: CloudConstants = {
-      co2ePerCost: GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      kilowattHoursPerCost: GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],
@@ -613,7 +620,7 @@ export default class BillingExportTable {
                     ON system_labels.key = "compute.googleapis.com/machine_spec"
                   WHERE
                     cost_type != 'rounding_error'
-                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
+                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
                     AND usage_start_time >= TIMESTAMP('${moment
                       .utc(start)
                       .format('YYYY-MM-DD')}')

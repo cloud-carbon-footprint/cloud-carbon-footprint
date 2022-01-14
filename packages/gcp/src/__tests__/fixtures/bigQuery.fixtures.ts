@@ -601,6 +601,84 @@ export const mockQueryComputeEngineCloudFilestoreCloudSQLWithReplicationFactors:
     ],
   ]
 
+export const mockQueryCloudSpannerKubernetesEngineAndRequestsUsageTypesWithReplicationFactors: any[][] =
+  [
+    [
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'us-central1',
+        serviceName: 'Cloud Memorystore for Redis',
+        usageType: 'Redis Capacity Basic M1 Iowa/South Carolina/Oregon',
+        usageUnit: 'byte-seconds',
+        usageAmount: 9.27712935936e13,
+        cost: 170,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'asia-south1',
+        serviceName: 'Cloud Spanner',
+        usageType: 'Server Node for Regional Configuration (Mumbai, India)',
+        usageUnit: 'seconds',
+        usageAmount: 4.3932929e7,
+        cost: 50,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'asia-east1',
+        serviceName: 'Cloud Spanner',
+        usageType: 'Storage for Multi-Region Configuration (Asia-Pacific)',
+        usageUnit: 'byte-seconds',
+        usageAmount: 4.30631674707968e15,
+        cost: 150,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'asia-south1',
+        serviceName: 'Kubernetes Engine',
+        usageType: 'Regional Kubernetes Clusters',
+        usageUnit: 'seconds',
+        usageAmount: 4.34927505e8,
+        cost: 150,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'us-central1',
+        serviceName: 'Kubernetes Engine',
+        usageType: 'Autopilot Kubernetes Clusters',
+        usageUnit: 'seconds',
+        usageAmount: 3.6839623e7,
+        cost: 350,
+        machineType: null,
+      },
+      {
+        timestamp: bigQueryDateTwo,
+        accountId: accountId,
+        accountName: accountName,
+        region: 'europe',
+        serviceName: 'App Engine',
+        usageType: 'Cloud Datastore Read Ops',
+        usageUnit: 'requests',
+        usageAmount: 40232,
+        cost: 10,
+        machineType: null,
+      },
+    ],
+  ]
+
 export const mockQueryMemoryStoreWithReplicationFactors: any[][] = [
   [
     {
