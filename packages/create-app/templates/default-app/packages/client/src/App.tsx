@@ -5,7 +5,7 @@
 import React, { ReactElement, useState } from 'react'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Switch, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
 import RecommendationsPage from './pages/RecommendationsPage/'
 import ErrorPage from './layout/ErrorPage'
@@ -42,17 +42,11 @@ function App(): ReactElement {
     <>
       <HeaderBar />
       <Container maxWidth={false} className={classes.appContainer}>
-        <Switch>
-          <Route path="/error" exact>
-            <ErrorPage />
-          </Route>
-          <Route path="/recommendations" exact>
-            <RecommendationsPage />
-          </Route>
-          <Route path="/">
-            <EmissionsMetricsPage />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/" element={<EmissionsMetricsPage />} />
+          <Route path="/recommendations" element={<RecommendationsPage />} />
+          <Route path="/error" element={<ErrorPage />} />
+        </Routes>
       </Container>
     </>
   )

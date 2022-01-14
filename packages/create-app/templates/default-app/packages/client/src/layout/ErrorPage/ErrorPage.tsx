@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement, useState } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import CloudOffIcon from '@material-ui/icons/CloudOff'
 import { Grid } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -21,12 +21,12 @@ type ErrorHandlingType = {
 }
 
 export const useErrorHandling = (): ErrorHandlingType => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [error, setError] = useState({})
 
   const handleApiError = (error: ErrorState) => {
     if (error.status) {
-      history.push(`/error`, error)
+      navigate(`/error`, { state: error })
     }
   }
 
