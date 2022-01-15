@@ -1,7 +1,6 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 
 import AzureAccount from '../application/AzureAccount'
@@ -10,7 +9,7 @@ import ConsumptionManagementService from '../lib/ConsumptionManagement'
 
 const mockListSubscriptions = { list: jest.fn() }
 
-jest.mock('@azure/arm-subscriptions', () => {
+jest.mock('@azure/arm-resources-subscriptions', () => {
   return {
     SubscriptionClient: jest.fn().mockImplementation(() => {
       return {
@@ -44,7 +43,7 @@ describe('Azure Account', () => {
     }
     ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
 
-    mockListSubscriptions.list.mockResolvedValue([
+    mockListSubscriptions.list.mockReturnValue([
       { subscriptionId: 'sub-1' },
       { subscriptionId: 'sub-2' },
     ])

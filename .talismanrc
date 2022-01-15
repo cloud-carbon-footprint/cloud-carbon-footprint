@@ -127,6 +127,8 @@ fileignoreconfig:
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
 - filename: packages/azure/package.json
   checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
+- filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
+  checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
   checksum: 44650b0c9d0b17f0e899361ae990a25f0b4204dfeb771ab0d5fdee6072be581b
 - filename: packages/azure/src/lib/ConsumptionManagement.ts

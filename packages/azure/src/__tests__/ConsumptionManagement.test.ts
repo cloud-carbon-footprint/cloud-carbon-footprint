@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { ServiceClientCredentials } from '@azure/ms-rest-js'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import {
@@ -78,7 +77,10 @@ describe('Azure Consumption Management Service', () => {
   const grouping: GroupBy = GroupBy.day
   const subscriptionId = 'test-subscription-id'
   const subscriptionName = 'test-subscription'
-  const mockCredentials: ServiceClientCredentials = { signRequest: jest.fn() }
+  const mockCredentials = {
+    msalFlow: jest.fn(),
+    getToken: jest.fn(),
+  }
 
   beforeEach(() => {
     AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
@@ -120,8 +122,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -244,8 +244,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -360,8 +358,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -421,8 +417,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -512,8 +506,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -625,8 +617,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -727,8 +717,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -756,8 +744,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -927,8 +913,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -1012,8 +996,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -1085,8 +1067,6 @@ describe('Azure Consumption Management Service', () => {
         new EmbodiedEmissionsEstimator(
           AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
         ),
-        // eslint-disable-next-line
-        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
         new ConsumptionManagementClient(mockCredentials, subscriptionId),
       )
 
@@ -1204,8 +1184,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -1265,8 +1243,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
     await expect(() =>
@@ -1309,8 +1285,6 @@ describe('Azure Consumption Management Service', () => {
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
