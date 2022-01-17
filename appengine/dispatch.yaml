@@ -5,8 +5,8 @@ dispatch:
 #  - url: "staging.cloud-carbon-footprint.ey.r.appspot.com/*"
 #    service: client-staging
 #
-  - url: "cloud-carbon-footprint-334920.ey.r.appspot.com/api/*"
-    service: default
+  - url: "ogcs-btqm-osphub.ey.r.appspot.com/api/*"
+    service: api
 
-  - url: "cloud-carbon-footprint-334920.ey.r.appspot.com/*"
-    service: client
+  - url: "ogcs-btqm-osphub.ey.r.appspot.com/*"
+    service: default
