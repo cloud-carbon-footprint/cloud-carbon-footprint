@@ -1,4 +1,4 @@
-service: client
+service: default
 
 runtime: nodejs12
 instance_class: F1
