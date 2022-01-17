@@ -29,7 +29,7 @@
     "express": "^4.17.1",
     "helmet": "^5.0.1",
     "moment": "^2.29.1",
-    "ramda": "^0.27.1",
+    "ramda": "^0.28.0",
     "react": "^17.0.2",
     "react-apexcharts": "^1.3.9",
     "react-dates": "^21.8.0",
