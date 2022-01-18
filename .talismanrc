@@ -96,7 +96,7 @@ fileignoreconfig:
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
-  checksum: 3a380b3fb5f198b9886b6b1b208025b8c3981fb92e5b3d65491c90268b84d92e
+  checksum: cbc3e0916748c68ad7bf7e807c4e7ecadb7f9951592855690d19824568f5d747
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
@@ -134,7 +134,7 @@ fileignoreconfig:
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
-  checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
+  checksum: a2ae46aa8a31ea604db82e97f890262d3f60626e99cc18dfda2e75ba69761c8c
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 6818b054bb908533e8eed46d3324e3df500f8df9cbfb8e25329723c0369e9315
 - filename: packages/client/create_client_env_file.sh
@@ -254,9 +254,9 @@ fileignoreconfig:
 - filename: packages/core/src/unknown/UnknownEstimator.ts
   checksum: 4033fa577fb1b42245c0471ce7da72f76713d394370a17695c022eb22ca7c42c
 - filename: packages/create-app/templates/default-app/packages/api/.env.template
-  checksum: 8e43d5762bac88981cadb25efc990af9869b3a0a9532968f9eb4da4865ee5936
+  checksum: 59a37b0faff7579cd95fbd310e876d94771897d47f37e23b5fda045d4339280a
 - filename: packages/create-app/templates/default-app/packages/cli/.env.template
-  checksum: e2b528c1b774302df3a351d3836fe632a8cb12f89706d9a8c24ace558b5191a7
+  checksum: 3fae3d5751fb055049e042136dacf9f2d95cfb4679bbead05cbd720a65bbd16b
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/aws.ts
   checksum: 402853f10d9ee56006cea9b63d6ec8d34d6eed506addf89d048d3072069d9f7b
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/azure.ts

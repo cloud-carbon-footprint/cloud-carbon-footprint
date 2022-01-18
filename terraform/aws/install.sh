@@ -1,3 +1,5 @@
+# © 2021 Thoughtworks, Inc.
+
 #!/bin/bash
 
 # Install dependencies (git, node, yarn, jq)
@@ -23,7 +25,7 @@ cp .env.template .env
 
 sed -i '23,48d' .env
 sed -i '17,18d' .env
-sed -i 's/your-target-account-role-name (e.g. ccf-athena)/<YOUR-TARGET-ACCOUNT-ROLE-NAME>/g' .env
+sed -i 's/your-target-account-role-name (e.g. ccf-app)/<YOUR-TARGET-ACCOUNT-ROLE-NAME>/g' .env
 sed -i 's/your-athena-db-name/<YOUR-ATHENA-DB-NAME>/g' .env
 sed -i 's/your-athena-db-table/<YOUR-ATHENA-DB-TABLE>/g' .env
 sed -i 's/your-athena-region/<YOUR-ATHENA-REGION>/g' .env
