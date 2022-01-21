@@ -3,7 +3,13 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, Athena } from 'aws-sdk'
+import AWS, {
+  CloudWatch,
+  CloudWatchLogs,
+  CostExplorer,
+  Athena,
+  S3,
+} from 'aws-sdk'
 import { GetMetricDataInput } from 'aws-sdk/clients/cloudwatch'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 
@@ -25,6 +31,7 @@ describe('aws service helper', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
       new Athena(),
     )
 

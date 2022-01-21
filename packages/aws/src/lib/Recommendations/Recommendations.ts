@@ -17,6 +17,7 @@ import {
   RecommendationResult,
   Logger,
   AWS_RECOMMENDATIONS_TARGETS,
+  configLoader,
 } from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from '../ServiceWrapper'
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
@@ -24,6 +25,7 @@ import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import RightsizingCurrentRecommendation from './Rightsizing/RightsizingCurrentRecommendation'
 import RightsizingTargetRecommendation from './Rightsizing/RightsizingTargetRecommendation'
 import RightsizingRecommendation from './Rightsizing/RightsizingRecommendation'
+import moment from 'moment'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -40,14 +42,102 @@ export default class Recommendations implements ICloudRecommendationsService {
   async getRecommendations(
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
-    const params: GetRightsizingRecommendationRequest = {
-      Service: this.rightsizingRecommendationsService,
-      Configuration: {
-        BenefitsConsidered: false,
-        RecommendationTarget: recommendationTarget,
-      },
-    }
+    if (configLoader().AWS.RECOMMENDER_SERVICE === 'ComputeOptimizer') {
+      const params = {
+        Bucket: `ccf-co-recommendations-central`,
+      }
 
+      try {
+        const bucketObjectsList = await this.serviceWrapper.listBucketObjects(
+          params,
+        )
+
+        const recommendationsResult: RecommendationResult[] = []
+
+        for (const recommendationsData of bucketObjectsList.Contents) {
+          const recommendationDate = new Date(
+            recommendationsData.Key.match(
+              /[0-9]{4}-[0-9]{2}-[0-9]{2}/g,
+            )[0].toString(),
+          )
+
+          if (
+            moment.utc(recommendationDate) >= moment.utc().subtract(1, 'days')
+          ) {
+            const params = {
+              Bucket: bucketObjectsList.Name, // use the env for the bucket name
+              Key: recommendationsData.Key,
+            }
+
+            const parsedRecommendations =
+              await this.serviceWrapper.getComputeOptimizerRecommendationsResponse(
+                params,
+              )
+
+            // console.log(parsedRecommendations)
+
+            for (const recommendation of parsedRecommendations) {
+              // if (
+              //   recommendation.finding.toUpperCase() !== 'OPTIMIZED' &&
+              //   recommendation.finding
+              // ) {
+
+              recommendationsResult.push({
+                cloudProvider: 'AWS',
+                accountId: recommendation.accountId,
+                accountName: recommendation.accountId,
+                instanceName: recommendation.instanceName,
+                region: recommendation.instanceArn.instanceArn.split(':')[3],
+                recommendationType: recommendation.finding,
+                resourceId: recommendation.instanceArn.split('/').pop(),
+                recommendationOptions: [
+                  {
+                    instanceType:
+                      recommendation.recommendationOptions_1_instanceType,
+                    costSavings:
+                      recommendation.recommendationOptions_1_estimatedMonthlySavings_value,
+                  },
+                  {
+                    instanceType:
+                      recommendation.recommendationOptions_2_instanceType,
+                    costSavings:
+                      recommendation.recommendationOptions_2_estimatedMonthlySavings_value,
+                  },
+                  {
+                    instanceType:
+                      recommendation.recommendationOptions_3_instanceType,
+                    costSavings:
+                      recommendation.recommendationOptions_3_estimatedMonthlySavings_value,
+                  },
+                ],
+                co2eSavings: 0,
+                kilowattHourSavings: 0,
+              })
+              // }
+            }
+          }
+        }
+        return recommendationsResult
+      } catch (e) {
+        throw new Error(
+          `Failed to grab AWS Compute Optimizer recommendations. Reason: ${e.message}`,
+        )
+      }
+    } else {
+      const params: GetRightsizingRecommendationRequest = {
+        Service: this.rightsizingRecommendationsService,
+        Configuration: {
+          BenefitsConsidered: false,
+          RecommendationTarget: recommendationTarget,
+        },
+      }
+      return await this.getRightsizingRecommendations(params)
+    }
+  }
+
+  private async getRightsizingRecommendations(
+    params: GetRightsizingRecommendationRequest,
+  ) {
     try {
       const results =
         await this.serviceWrapper.getRightsizingRecommendationsResponses(params)

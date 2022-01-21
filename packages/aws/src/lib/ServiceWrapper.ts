@@ -2,7 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CloudWatch, CostExplorer, CloudWatchLogs, Athena } from 'aws-sdk'
+import { CloudWatch, CostExplorer, CloudWatchLogs, S3, Athena } from 'aws-sdk'
+import csv from 'csvtojson'
 import { path } from 'ramda'
 import {
   GetCostAndUsageRequest,
@@ -16,12 +17,14 @@ import {
 } from 'aws-sdk/clients/cloudwatch'
 import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 import { PartialDataError } from '@cloud-carbon-footprint/common'
+import { ListObjectsV2Output } from 'aws-sdk/clients/s3'
 
 export class ServiceWrapper {
   constructor(
     private readonly cloudWatch: CloudWatch,
     private readonly cloudWatchLogs: CloudWatchLogs,
     private readonly costExplorer: CostExplorer,
+    private readonly s3: S3,
     private readonly athena?: Athena,
   ) {}
 
@@ -145,6 +148,25 @@ export class ServiceWrapper {
     params: GetRightsizingRecommendationRequest,
   ): Promise<GetRightsizingRecommendationResponse[]> {
     return await this.getRightsizingRecommendationResponse(params)
+  }
+
+  //get objects
+  public async listBucketObjects(
+    params: S3.Types.ListObjectsV2Request,
+  ): Promise<ListObjectsV2Output> {
+    return await this.s3.listObjectsV2(params).promise()
+  }
+
+  //get recommendation data and parse it
+  public async getComputeOptimizerRecommendationsResponse(
+    params: S3.Types.GetObjectRequest,
+  ): Promise<any[]> {
+    //TODO: fix return type
+    const stream = this.s3.getObject(params).createReadStream()
+    console.log(stream)
+    const parsedCsv = await csv().fromStream(stream)
+    const parsedArray = JSON.parse(JSON.stringify(parsedCsv))
+    return parsedArray
   }
 }
 
