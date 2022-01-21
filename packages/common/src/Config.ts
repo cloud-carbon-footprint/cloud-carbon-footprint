@@ -15,6 +15,7 @@ export interface CCFConfig {
     ATHENA_QUERY_RESULT_LOCATION?: string
     ATHENA_REGION?: string
     NAME: string
+    RECOMMENDER_SERVICE: string
     CURRENT_SERVICES: { key: string; name: string }[]
     CURRENT_REGIONS: string[]
     accounts?: {
@@ -105,6 +106,7 @@ export const appConfig: CCFConfig = {
       },
     },
     NAME: 'AWS',
+    RECOMMENDER_SERVICE: getEnvVar('AWS_RECOMMENDER_SERVICE') || '',
     CURRENT_REGIONS: [
       'us-east-1',
       'us-east-2',

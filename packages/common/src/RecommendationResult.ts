@@ -8,10 +8,16 @@ export interface RecommendationResult {
   readonly accountName: string
   readonly region: string | null
   readonly recommendationType: string
-  readonly recommendationDetail: string
+  readonly recommendationDetail?: string
   readonly resourceId?: string
   readonly instanceName?: string
   readonly kilowattHourSavings: number
-  costSavings: number
+  costSavings?: number
   co2eSavings: number
+  recommendationOptions?: RecommendationOptions[]
+}
+
+export type RecommendationOptions = {
+  instanceType: string
+  costSavings: number
 }
