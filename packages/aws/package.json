@@ -47,7 +47,7 @@
     "aws-sdk": "^2.927.0",
     "aws-sdk-mock": "^5.1.0",
     "moment": "^2.29.1",
-    "ramda": "^0.27.1"
+    "ramda": "^0.28.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",

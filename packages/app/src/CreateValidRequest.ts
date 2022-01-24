@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { values, contains } from 'ramda'
+import { values, includes } from 'ramda'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_TARGETS,
@@ -49,7 +49,7 @@ function validate(
     errors.push('End date is not in a recognized RFC2822 or ISO format')
   }
 
-  if (region && !contains(region, values(configLoader().AWS.CURRENT_REGIONS))) {
+  if (region && !includes(region, values(configLoader().AWS.CURRENT_REGIONS))) {
     errors.push('Not a valid region for this account')
   }
 
