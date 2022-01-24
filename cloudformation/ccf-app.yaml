@@ -16,7 +16,7 @@ Resources:
     Type: 'AWS::IAM::Role'
     Description: This role allows Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena
     Properties:
-      RoleName: 'ccf-athena'
+      RoleName: 'ccf-app'
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:

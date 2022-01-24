@@ -42,7 +42,8 @@
   },
   "dependencies": {
     "@azure/arm-consumption": "^8.0.0",
-    "@azure/arm-subscriptions": "^3.0.0",
+    "@azure/arm-resources-subscriptions": "^2.0.0",
+    "@azure/identity": "^2.0.1",
     "@azure/ms-rest-js": "^2.2.3",
     "@azure/ms-rest-nodeauth": "^3.0.7",
     "@cloud-carbon-footprint/common": "^1.3.1",

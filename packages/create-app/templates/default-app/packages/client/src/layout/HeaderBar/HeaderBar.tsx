@@ -5,6 +5,7 @@
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
+import clsx from 'clsx'
 import useStyles from './headerBarStyles'
 import logo from './ccf_logo.png'
 
@@ -31,8 +32,7 @@ const HeaderBar = (): ReactElement => {
         </NavLink>
         <NavLink
           to="/recommendations"
-          className={classes.navLink}
-          activeClassName={classes.activeNavLink}
+          className={clsx(classes.navLink, { isActive: classes.activeNavLink })}
         >
           <Typography component="h2">RECOMMENDATIONS</Typography>
         </NavLink>
