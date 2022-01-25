@@ -125,6 +125,8 @@ fileignoreconfig:
   checksum: 1e137cc798c5ad0176a70c08933b020baafe906969ac91fd34e033de68b1106a
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
+- filename: packages/aws/src/lib/Recommendations/Recommendations.ts
+  checksum: 366f101f67bd31dc640998666be0f6f8da68c0167b3627ebbaa2b498adc831fb
 - filename: packages/azure/package.json
   checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
 - filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts

@@ -15,7 +15,14 @@ export {
 export { reduceByTimestamp } from './EstimationResult'
 export type { EstimationResult, ServiceData } from './EstimationResult'
 export type { EmissionRatioResult } from './EmissionRatioResult'
-export type { RecommendationResult } from './RecommendationResult'
+export type {
+  RecommendationResult,
+  RecommendationOption,
+} from './RecommendationResult'
+export type {
+  ComputeOptimizerRecommendationData,
+  GetComputeOptimizerRecommendationsRequest,
+} from './ComputeOptimizerRecommendationData'
 export type { LookupTableInput, LookupTableOutput } from './LookupTableInput'
 export {
   AWS_RECOMMENDATIONS_TARGETS,
