@@ -8,6 +8,7 @@ import AWS, {
   CloudWatchLogs,
   CostExplorer,
   Athena as AWSAthena,
+  S3,
 } from 'aws-sdk'
 import {
   GetQueryExecutionOutput,
@@ -87,6 +88,7 @@ describe('CostAndUsageReports Service', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
       new AWSAthena(),
     )
 

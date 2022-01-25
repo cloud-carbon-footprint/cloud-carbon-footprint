@@ -4,6 +4,9 @@
 import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
 import AWSMock from 'aws-sdk-mock'
 import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import path from 'path'
+import moment from 'moment'
+import * as fs from 'fs'
 
 import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
 import {
@@ -20,12 +23,9 @@ import {
   rightsizingRecommendationModify,
   rightsizingRecommendationTerminate,
 } from './fixtures/costExplorer.fixtures'
+import { computeOptimizerBucketContentsList } from './fixtures/computeOptimizer.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
-import {
-  computeOptimizerBucketContentsList,
-  computeOptimizerOverProvisioned,
-} from './fixtures/computeOptimizer.fixtures'
 
 describe('AWS Recommendations Service', () => {
   const getServiceWrapper = () =>
@@ -37,9 +37,9 @@ describe('AWS Recommendations Service', () => {
     )
 
   describe('Rightsizing Recommendations', () => {
-    jest.mock('moment', () => {
-      return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
-    })
+    moment.now = function () {
+      return +new Date('2020-04-01T00:00:00.000Z')
+    }
 
     beforeAll(() => {
       AWSMock.setSDKInstance(AWS)
@@ -295,22 +295,7 @@ describe('AWS Recommendations Service', () => {
   })
 
   describe('Compute Optimizer Recommendations', () => {
-    // jest.mock('@cloud-carbon-footprint/common', () => ({
-    //   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
-    //     string,
-    //     unknown
-    //   >),
-    //   configLoader: jest.fn().mockImplementation(() => {
-    //     return {
-    //       AWS: {
-    //         RECOMMENDER_SERVICE: 'ComputeOptimizer',
-    //       },
-    //     }
-    //   }),
-    // }))
-
     const listBucketObjectsSpy = jest.fn()
-    const getBucketObjectSpy = jest.fn()
 
     beforeAll(() => {
       AWSMock.setSDKInstance(AWS)
@@ -319,33 +304,24 @@ describe('AWS Recommendations Service', () => {
     afterEach(() => {
       AWSMock.restore()
       jest.restoreAllMocks()
-      // getComputeOptimizerRecommendationSpy.mockClear()
     })
 
-    function mockListComputeOptimizerBucketContent(response: any) {
-      listBucketObjectsSpy.mockResolvedValue(response)
-      AWSMock.mock('S3', 'listObjectsV2', listBucketObjectsSpy)
-    }
+    it('gets recommendations from Compute Optimizer', async () => {
+      moment.now = function () {
+        return +new Date('2022-01-21T00:00:00.000Z')
+      }
 
-    function mockGetComputeOptimizerBucketData(response: any) {
-      getBucketObjectSpy.mockResolvedValue(response)
-      AWSMock.mock('S3', 'getObject', getBucketObjectSpy)
-    }
-
-    it('Get recommendations from Compute Optimizer type: OverProvisioned', async () => {
-      // ;(configLoader as jest.Mock).mockReturnValue({
-      //   ...configLoader(),
-      //   AWS: {
-      //     ...configLoader().AWS,
-      //     RECOMMENDER_SERVICE: 'ComputeOptimizer',
-      //   },
-      // })
+      const mockCSVFilePath = path.join(
+        process.cwd(),
+        '/src/__tests__/fixtures/computeOptimizer.csv',
+      )
 
       const defaultConfig = configLoader().AWS.RECOMMENDER_SERVICE
       configLoader().AWS.RECOMMENDER_SERVICE = 'ComputeOptimizer'
+      configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET = 'test-bucket'
 
-      mockListComputeOptimizerBucketContent(computeOptimizerBucketContentsList)
-      mockGetComputeOptimizerBucketData(computeOptimizerOverProvisioned)
+      mockListComputeOptimizerBucket(computeOptimizerBucketContentsList)
+      mockGetComputeOptimizerBucket(mockCSVFilePath)
 
       const awsRecommendationsServices = new Recommendations(
         new ComputeEstimator(),
@@ -357,28 +333,21 @@ describe('AWS Recommendations Service', () => {
         AWS_DEFAULT_RECOMMENDATION_TARGET,
       )
 
-      expect(getBucketObjectSpy).toHaveBeenCalledWith(
-        {
-          Bucket: computeOptimizerBucketContentsList.Name,
-          Key: computeOptimizerBucketContentsList.Contents[0].Key,
-        },
-        expect.anything(),
-      )
       const expectedResult: RecommendationResult[] = [
         {
           cloudProvider: 'AWS',
-          accountId: 'test-account',
-          accountName: 'test-account',
-          region: 'us-east-2',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
           recommendationType: 'OVER_PROVISIONED',
           kilowattHourSavings: 0,
           resourceId: 'i-0c80d1b0f3a0c5c69',
           instanceName: 'PA-VM-100 | Networks',
           co2eSavings: 0,
           recommendationOptions: [
-            { instanceType: 't3.xLarge', costSavings: 33.79 },
-            { instanceType: 'm5.xlarge', costSavings: 7.04 },
-            { instanceType: 'm4.xlarge', costSavings: 0 },
+            { instanceType: 't3.xlarge', costSavings: '33.79' },
+            { instanceType: 'm5.xlarge', costSavings: '7.04' },
+            { instanceType: '', costSavings: '' },
           ],
         },
       ]
@@ -386,5 +355,15 @@ describe('AWS Recommendations Service', () => {
       expect(result).toEqual(expectedResult)
       configLoader().AWS.RECOMMENDER_SERVICE = defaultConfig
     })
+
+    function mockListComputeOptimizerBucket(response: any) {
+      listBucketObjectsSpy.mockResolvedValue(response)
+      AWSMock.mock('S3', 'listObjectsV2', listBucketObjectsSpy)
+    }
+
+    function mockGetComputeOptimizerBucket(mockFilePath: any) {
+      const mockFile = fs.readFileSync(mockFilePath)
+      AWSMock.mock('S3', 'getObject', Buffer.alloc(mockFile.length, mockFile))
+    }
   })
 })

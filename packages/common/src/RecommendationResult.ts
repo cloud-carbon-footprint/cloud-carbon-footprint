@@ -14,10 +14,10 @@ export interface RecommendationResult {
   readonly kilowattHourSavings: number
   costSavings?: number
   co2eSavings: number
-  recommendationOptions?: RecommendationOptions[]
+  recommendationOptions?: RecommendationOption[]
 }
 
-export type RecommendationOptions = {
+export type RecommendationOption = {
   instanceType: string
-  costSavings: number
+  costSavings: string
 }
