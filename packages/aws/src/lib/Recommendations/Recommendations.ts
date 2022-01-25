@@ -2,12 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import moment from 'moment'
 import {
   GetRightsizingRecommendationRequest,
   RightsizingRecommendationList,
   RightsizingRecommendation as AwsRightsizingRecommendation,
 } from 'aws-sdk/clients/costexplorer'
-
 import {
   ICloudRecommendationsService,
   ComputeEstimator,
@@ -23,11 +23,12 @@ import {
 import { ServiceWrapper } from '../ServiceWrapper'
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
-import RightsizingCurrentRecommendation from './Rightsizing/RightsizingCurrentRecommendation'
-import RightsizingTargetRecommendation from './Rightsizing/RightsizingTargetRecommendation'
-import RightsizingRecommendation from './Rightsizing/RightsizingRecommendation'
-import moment from 'moment'
-import ComputeOptimizerRecommendation from './ComputeOptimizer/ComputeOptimizerRecommendation'
+import {
+  RightsizingRecommendation,
+  RightsizingTargetRecommendation,
+  RightsizingCurrentRecommendation,
+} from './Rightsizing'
+import { ComputeOptimizerRecommendation } from './ComputeOptimizer'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -94,6 +95,7 @@ export default class Recommendations implements ICloudRecommendationsService {
           parsedRecommendations.forEach((recommendation) => {
             const computeOptimizerRecommendation =
               new ComputeOptimizerRecommendation(recommendation)
+
             recommendationsResult.push({
               cloudProvider: 'AWS',
               accountId: computeOptimizerRecommendation.accountId,

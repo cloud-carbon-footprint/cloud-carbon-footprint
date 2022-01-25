@@ -8,6 +8,7 @@ import {
   Credentials,
   CloudWatchLogs,
   Athena,
+  S3 as S3Service,
 } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 
@@ -202,6 +203,7 @@ export default class AWSAccount extends CloudProviderAccount {
         region: 'us-east-1',
         credentials: options.credentials,
       }),
+      new S3Service(options),
       new Athena(options),
     )
   }
