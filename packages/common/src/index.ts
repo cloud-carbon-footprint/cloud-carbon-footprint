@@ -28,5 +28,9 @@ export {
   AWS_RECOMMENDATIONS_TARGETS,
   AWS_DEFAULT_RECOMMENDATION_TARGET,
 } from './RecommendationTarget'
+export {
+  AWS_RECOMMENDATIONS_SERVICES,
+  AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
+} from './RecommendationsService'
 export * from './helpers'
 export type { GoogleAuthClient } from './Types'

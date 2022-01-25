@@ -5,28 +5,29 @@
 import moment from 'moment'
 import {
   GetRightsizingRecommendationRequest,
-  RightsizingRecommendationList,
   RightsizingRecommendation as AwsRightsizingRecommendation,
+  RightsizingRecommendationList,
 } from 'aws-sdk/clients/costexplorer'
 import {
-  ICloudRecommendationsService,
   ComputeEstimator,
+  ICloudRecommendationsService,
   MemoryEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
-  RecommendationResult,
-  Logger,
+  AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   GetComputeOptimizerRecommendationsRequest,
+  Logger,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from '../ServiceWrapper'
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import {
+  RightsizingCurrentRecommendation,
   RightsizingRecommendation,
   RightsizingTargetRecommendation,
-  RightsizingCurrentRecommendation,
 } from './Rightsizing'
 import { ComputeOptimizerRecommendation } from './ComputeOptimizer'
 
@@ -45,7 +46,10 @@ export default class Recommendations implements ICloudRecommendationsService {
   async getRecommendations(
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
-    if (configLoader().AWS.RECOMMENDER_SERVICE === 'ComputeOptimizer') {
+    if (
+      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
+      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+    ) {
       const params = {
         Bucket: configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
       }

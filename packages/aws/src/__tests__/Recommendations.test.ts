@@ -11,6 +11,7 @@ import * as fs from 'fs'
 import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
+  AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   RecommendationResult,
@@ -316,8 +317,9 @@ describe('AWS Recommendations Service', () => {
         '/src/__tests__/fixtures/computeOptimizer.csv',
       )
 
-      const defaultConfig = configLoader().AWS.RECOMMENDER_SERVICE
-      configLoader().AWS.RECOMMENDER_SERVICE = 'ComputeOptimizer'
+      const defaultConfig = configLoader().AWS.RECOMMENDATIONS_SERVICE
+      configLoader().AWS.RECOMMENDATIONS_SERVICE =
+        AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
       configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET = 'test-bucket'
 
       mockListComputeOptimizerBucket(computeOptimizerBucketContentsList)
@@ -353,7 +355,7 @@ describe('AWS Recommendations Service', () => {
       ]
 
       expect(result).toEqual(expectedResult)
-      configLoader().AWS.RECOMMENDER_SERVICE = defaultConfig
+      configLoader().AWS.RECOMMENDATIONS_SERVICE = defaultConfig
     })
 
     function mockListComputeOptimizerBucket(response: any) {
