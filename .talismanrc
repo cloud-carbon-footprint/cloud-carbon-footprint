@@ -119,6 +119,8 @@ fileignoreconfig:
   checksum: 882473df680508d6168bcb4b4cde7d44bc1d6d28f7566488b32a7c9e5073c22d
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
+- filename: packages/aws/src/__tests__/fixtures/computeOptimizer.fixtures.ts
+  checksum: d37b4ba7a60dfd7d3b354c23b92aca3c6987a9703b81fcf0157993c02c8fb93d
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
   checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
 - filename: packages/aws/src/lib/CostAndUsageReports.ts

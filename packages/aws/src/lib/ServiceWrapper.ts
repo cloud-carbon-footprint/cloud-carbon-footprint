@@ -16,11 +16,9 @@ import {
   GetMetricDataOutput,
   MetricDataResult,
 } from 'aws-sdk/clients/cloudwatch'
-import {
-  ComputeOptimizerRecommendationData,
-  PartialDataError,
-} from '@cloud-carbon-footprint/common'
+import { PartialDataError } from '@cloud-carbon-footprint/common'
 import { ListObjectsV2Output } from 'aws-sdk/clients/s3'
+import { ComputeOptimizerRecommendationData } from './Recommendations/ComputeOptimizer'
 
 export class ServiceWrapper {
   constructor(

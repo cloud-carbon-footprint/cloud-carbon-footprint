@@ -17,12 +17,10 @@ export type { EstimationResult, ServiceData } from './EstimationResult'
 export type { EmissionRatioResult } from './EmissionRatioResult'
 export type {
   RecommendationResult,
-  RecommendationOption,
+  EC2RecommendationOption,
+  EBSRecommendationOption,
+  ComputeOptimizerRecommendationOption,
 } from './RecommendationResult'
-export type {
-  ComputeOptimizerRecommendationData,
-  GetComputeOptimizerRecommendationsRequest,
-} from './ComputeOptimizerRecommendationData'
 export type { LookupTableInput, LookupTableOutput } from './LookupTableInput'
 export {
   AWS_RECOMMENDATIONS_TARGETS,

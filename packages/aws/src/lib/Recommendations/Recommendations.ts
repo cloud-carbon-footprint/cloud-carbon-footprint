@@ -17,7 +17,6 @@ import {
   AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
-  GetComputeOptimizerRecommendationsRequest,
   Logger,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
@@ -29,7 +28,10 @@ import {
   RightsizingRecommendation,
   RightsizingTargetRecommendation,
 } from './Rightsizing'
-import { ComputeOptimizerRecommendation } from './ComputeOptimizer'
+import {
+  ComputeOptimizerEC2Recommendation,
+  GetComputeOptimizerRecommendationsRequest,
+} from './ComputeOptimizer'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -83,9 +85,11 @@ export default class Recommendations implements ICloudRecommendationsService {
           )[0].toString(),
         )
 
-        if (
+        const isFromPreviousDay =
           moment.utc(recommendationDate) >= moment.utc().subtract(1, 'days')
-        ) {
+        const isIncludedType = !recommendationsData.Key.includes('asg')
+
+        if (isFromPreviousDay && isIncludedType) {
           const params = {
             Bucket: bucketObjectsList.Name,
             Key: recommendationsData.Key,
@@ -97,22 +101,26 @@ export default class Recommendations implements ICloudRecommendationsService {
             )
 
           parsedRecommendations.forEach((recommendation) => {
-            const computeOptimizerRecommendation =
-              new ComputeOptimizerRecommendation(recommendation)
+            const recommendationType = recommendation.finding.toUpperCase()
 
-            recommendationsResult.push({
-              cloudProvider: 'AWS',
-              accountId: computeOptimizerRecommendation.accountId,
-              accountName: computeOptimizerRecommendation.accountId,
-              instanceName: computeOptimizerRecommendation.instanceName,
-              region: computeOptimizerRecommendation.region,
-              recommendationType: computeOptimizerRecommendation.type,
-              resourceId: computeOptimizerRecommendation.resourceId,
-              recommendationOptions:
-                computeOptimizerRecommendation.recommendationOptions,
-              co2eSavings: 0,
-              kilowattHourSavings: 0,
-            })
+            if (recommendationType === 'OVER_PROVISIONED') {
+              const computeOptimizerRecommendation =
+                new ComputeOptimizerEC2Recommendation(recommendation)
+
+              recommendationsResult.push({
+                cloudProvider: 'AWS',
+                accountId: computeOptimizerRecommendation.accountId,
+                accountName: computeOptimizerRecommendation.accountId,
+                instanceName: computeOptimizerRecommendation.instanceName,
+                region: computeOptimizerRecommendation.region,
+                recommendationType: computeOptimizerRecommendation.type,
+                resourceId: computeOptimizerRecommendation.resourceId,
+                recommendationOptions:
+                  computeOptimizerRecommendation.recommendationOptions,
+                co2eSavings: 0,
+                kilowattHourSavings: 0,
+              })
+            }
           })
         }
       }

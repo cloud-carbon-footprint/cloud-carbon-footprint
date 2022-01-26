@@ -14,10 +14,20 @@ export interface RecommendationResult {
   readonly kilowattHourSavings: number
   costSavings?: number
   co2eSavings: number
-  recommendationOptions?: RecommendationOption[]
+  recommendationOptions?: ComputeOptimizerRecommendationOption[]
 }
 
-export type RecommendationOption = {
+export type ComputeOptimizerRecommendationOption =
+  | EC2RecommendationOption
+  | EBSRecommendationOption
+
+export type EC2RecommendationOption = {
   instanceType: string
+  costSavings: string
+}
+
+export type EBSRecommendationOption = {
+  volumeType: string
+  volumeSize: string
   costSavings: string
 }

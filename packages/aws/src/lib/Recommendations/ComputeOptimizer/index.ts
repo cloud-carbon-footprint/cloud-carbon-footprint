@@ -2,4 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-export { default as ComputeOptimizerRecommendation } from './ComputeOptimizerRecommendation'
+export { default as ComputeOptimizerEC2Recommendation } from './ComputeOptimizerEC2Recommendation'
+export {
+  ComputeOptimizerRecommendationData,
+  GetComputeOptimizerRecommendationsRequest,
+} from './ComputeOptimizerRecommendationData'

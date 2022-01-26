@@ -1,41 +1,29 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import {
-  ComputeOptimizerRecommendationData,
-  RecommendationOption,
-} from '@cloud-carbon-footprint/common'
+import { ComputeOptimizerRecommendationOption } from '@cloud-carbon-footprint/common'
+import { ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 
 export default class ComputeOptimizerRecommendation {
   public accountId: string
   public accountName: string
   public region: string
   public type: string
-  public instanceName: string
   public resourceId: string
-  public recommendationOptions: RecommendationOption[]
-  public usageAmount: number
+  public recommendationOptions: ComputeOptimizerRecommendationOption[]
 
-  constructor(init: Partial<ComputeOptimizerRecommendationData>) {
+  protected constructor(init: Partial<ComputeOptimizerRecommendationData>) {
     Object.assign(this, init)
 
     this.accountName = this.accountId
-    this.region = init.instanceArn.split(':')[3]
     this.type = init.finding
-    this.resourceId = init.instanceArn.split('/').pop()
-    this.recommendationOptions = [
-      {
-        instanceType: init.recommendationOptions_1_instanceType,
-        costSavings: init.recommendationOptions_1_estimatedMonthlySavings_value,
-      },
-      {
-        instanceType: init.recommendationOptions_2_instanceType,
-        costSavings: init.recommendationOptions_2_estimatedMonthlySavings_value,
-      },
-      {
-        instanceType: init.recommendationOptions_3_instanceType,
-        costSavings: init.recommendationOptions_3_estimatedMonthlySavings_value,
-      },
-    ]
+  }
+
+  public getRegion(resourceArn: string) {
+    return resourceArn.split(':')[3]
+  }
+
+  public getResourceId(resourceArn: string) {
+    return resourceArn.split('/').pop()
   }
 }

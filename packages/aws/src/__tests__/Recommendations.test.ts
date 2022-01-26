@@ -24,7 +24,10 @@ import {
   rightsizingRecommendationModify,
   rightsizingRecommendationTerminate,
 } from './fixtures/costExplorer.fixtures'
-import { computeOptimizerBucketContentsList } from './fixtures/computeOptimizer.fixtures'
+import {
+  mockEBSComputeOptimizerBucketList,
+  mockEC2ComputeOptimizerBucketList,
+} from './fixtures/computeOptimizer.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 
@@ -298,7 +301,12 @@ describe('AWS Recommendations Service', () => {
   describe('Compute Optimizer Recommendations', () => {
     const listBucketObjectsSpy = jest.fn()
 
+    const defaultConfig = configLoader().AWS.RECOMMENDATIONS_SERVICE
+
     beforeAll(() => {
+      configLoader().AWS.RECOMMENDATIONS_SERVICE =
+        AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+      configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET = 'test-bucket'
       AWSMock.setSDKInstance(AWS)
     })
 
@@ -307,22 +315,18 @@ describe('AWS Recommendations Service', () => {
       jest.restoreAllMocks()
     })
 
-    it('gets recommendations from Compute Optimizer', async () => {
+    afterAll(() => {
+      configLoader().AWS.RECOMMENDATIONS_SERVICE = defaultConfig
+    })
+
+    it('gets recommendations for only "Over Provisioned" EC2 instances ignoring AutoScalingGroup', async () => {
       moment.now = function () {
         return +new Date('2022-01-21T00:00:00.000Z')
       }
 
-      const mockCSVFilePath = path.join(
-        process.cwd(),
-        '/src/__tests__/fixtures/computeOptimizer.csv',
-      )
+      const mockCSVFilePath = '/src/__tests__/fixtures/computeOptimizerEC2.csv'
 
-      const defaultConfig = configLoader().AWS.RECOMMENDATIONS_SERVICE
-      configLoader().AWS.RECOMMENDATIONS_SERVICE =
-        AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
-      configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET = 'test-bucket'
-
-      mockListComputeOptimizerBucket(computeOptimizerBucketContentsList)
+      mockListComputeOptimizerBucket(mockEC2ComputeOptimizerBucketList)
       mockGetComputeOptimizerBucket(mockCSVFilePath)
 
       const awsRecommendationsServices = new Recommendations(
@@ -355,7 +359,47 @@ describe('AWS Recommendations Service', () => {
       ]
 
       expect(result).toEqual(expectedResult)
-      configLoader().AWS.RECOMMENDATIONS_SERVICE = defaultConfig
+    })
+
+    xit('gets recommendations for only "Not Optimized" EBS volumes', async () => {
+      moment.now = function () {
+        return +new Date('2022-01-21T00:00:00.000Z')
+      }
+
+      const mockCSVFilePath = '/src/__tests__/fixtures/computeOptimizerEBS.csv'
+
+      mockListComputeOptimizerBucket(mockEBSComputeOptimizerBucketList)
+      mockGetComputeOptimizerBucket(mockCSVFilePath)
+
+      const awsRecommendationsServices = new Recommendations(
+        new ComputeEstimator(),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        getServiceWrapper(),
+      )
+
+      const result = await awsRecommendationsServices.getRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'us-west-2',
+          recommendationType: 'NotOptimized',
+          kilowattHourSavings: 0,
+          resourceId: 'vol-00e39f1234a7eadfb',
+          co2eSavings: 0,
+          recommendationOptions: [
+            { volumeType: 'gp3', volumeSize: '80', costSavings: '1,8' },
+            { volumeType: 'gp3', volumeSize: '80', costSavings: '0' },
+            { volumeType: '', volumeSize: '', costSavings: '' },
+          ],
+        },
+      ]
+
+      expect(result).toEqual(expectedResult)
     })
 
     function mockListComputeOptimizerBucket(response: any) {
@@ -363,7 +407,8 @@ describe('AWS Recommendations Service', () => {
       AWSMock.mock('S3', 'listObjectsV2', listBucketObjectsSpy)
     }
 
-    function mockGetComputeOptimizerBucket(mockFilePath: any) {
+    function mockGetComputeOptimizerBucket(mockCSVFilePath: string) {
+      const mockFilePath = path.join(process.cwd(), mockCSVFilePath)
       const mockFile = fs.readFileSync(mockFilePath)
       AWSMock.mock('S3', 'getObject', Buffer.alloc(mockFile.length, mockFile))
     }
