@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { sum, pluck } from 'ramda'
+import { sum } from 'ramda'
 
 import CloudConstants, {
   CloudConstantsEmissionsFactors,
@@ -12,6 +12,7 @@ import FootprintEstimate, {
   EstimateClassification,
   estimateCo2,
   KilowattHoursPerCost,
+  CostAndKilowattHourTotals,
 } from '../FootprintEstimate'
 import IFootprintEstimator from '../IFootprintEstimator'
 import UnknownUsage from './UnknownUsage'
@@ -109,11 +110,13 @@ export default class UnknownEstimator implements IFootprintEstimator {
   }
 
   private getTotalFor(
-    type: string,
+    type: keyof CostAndKilowattHourTotals,
     kilowattHoursPerCost: KilowattHoursPerCost,
   ) {
-    // eslint-disable-next-line
-    // @ts-ignore
-    return sum(Object.values(pluck(type, kilowattHoursPerCost.total)))
+    return sum(
+      Object.values(kilowattHoursPerCost.total).map(
+        (costAndKilowattHourTotals) => costAndKilowattHourTotals[type],
+      ),
+    )
   }
 }
