@@ -108,7 +108,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
-  KILOWATT_HOURS_PER_COST: {
+  KILOWATT_HOURS_PER_COST_LEGACY: {
     [EstimateClassification.COMPUTE]: {
       cost: 0,
       kilowattHours: 0,

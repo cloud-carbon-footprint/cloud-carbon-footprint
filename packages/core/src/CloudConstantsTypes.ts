@@ -2,7 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { KilowattHoursPerCost } from './FootprintEstimate'
+import {
+  KilowattHoursPerCost,
+  KilowattHoursPerCostLegacy,
+} from './FootprintEstimate'
 
 export default interface CloudConstants {
   readonly minWatts?: number
@@ -10,6 +13,7 @@ export default interface CloudConstants {
   readonly powerUsageEffectiveness?: number
   readonly avgCpuUtilization?: number
   readonly replicationFactor?: number
+  readonly kilowattHoursPerCostLegacy?: KilowattHoursPerCostLegacy
   readonly kilowattHoursPerCost?: KilowattHoursPerCost
 }
 
@@ -34,6 +38,8 @@ export type CloudConstantsByProvider = {
   getPUE: (region?: string) => number
   AVG_CPU_UTILIZATION_2020: number
   REPLICATION_FACTORS?: { [key: string]: number }
+  // TODO - Remove once all cloud providers are using the option below, or a new option: KILOWATT_HOURS_BY_USAGE_AMOUNT
+  KILOWATT_HOURS_PER_COST_LEGACY?: KilowattHoursPerCostLegacy
   KILOWATT_HOURS_PER_COST?: KilowattHoursPerCost
   SERVER_EXPECTED_LIFESPAN?: number
 }

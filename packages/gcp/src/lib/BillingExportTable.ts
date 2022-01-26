@@ -35,7 +35,7 @@ import {
   CloudConstantsEmissionsFactors,
   CloudConstants,
   UnknownUsage,
-  accumulateKilowattHoursPerCost,
+  accumulateKilowattHoursPerCostLegacy,
   EstimateClassification,
   EmbodiedEmissionsUsage,
   EmbodiedEmissionsEstimator,
@@ -301,11 +301,11 @@ export default class BillingExportTable {
     )[0]
 
     if (computeFootprint)
-      accumulateKilowattHoursPerCost(
+      accumulateKilowattHoursPerCostLegacy(
         EstimateClassification.COMPUTE,
         computeFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
       )
 
     return computeFootprint
@@ -433,11 +433,11 @@ export default class BillingExportTable {
 
     if (storageFootprint) {
       storageFootprint.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
+      accumulateKilowattHoursPerCostLegacy(
         EstimateClassification.STORAGE,
         storageFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
       )
     }
 
@@ -467,11 +467,11 @@ export default class BillingExportTable {
 
     if (memoryFootprint) {
       memoryFootprint.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
+      accumulateKilowattHoursPerCostLegacy(
         EstimateClassification.MEMORY,
         memoryFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
       )
     }
 
@@ -501,11 +501,11 @@ export default class BillingExportTable {
 
     if (networkingFootprint) {
       networkingFootprint.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
+      accumulateKilowattHoursPerCostLegacy(
         EstimateClassification.NETWORKING,
         networkingFootprint.kilowattHours,
         usageRow.cost,
-        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
       )
     }
 
@@ -566,7 +566,8 @@ export default class BillingExportTable {
       replicationFactor: this.getReplicationFactor(rowData),
     }
     const unknownConstants: CloudConstants = {
-      kilowattHoursPerCost: GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+      kilowattHoursPerCostLegacy:
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],

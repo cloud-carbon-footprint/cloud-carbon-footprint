@@ -83,7 +83,7 @@ describe('Azure Consumption Management Service', () => {
   }
 
   beforeEach(() => {
-    AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
+    AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY = {
       [EstimateClassification.COMPUTE]: {
         cost: 0,
         kilowattHours: 0,

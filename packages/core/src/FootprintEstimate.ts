@@ -20,7 +20,16 @@ export type CostAndKilowattHourTotals = {
   kilowattHours: number
 }
 
-export type KilowattHoursPerCost = { [key: string]: CostAndKilowattHourTotals }
+// TODO: Remove once all cloud providers are updated to use the types below instead
+export type KilowattHoursPerCostLegacy = {
+  [key: string]: CostAndKilowattHourTotals
+}
+
+export type KilowattHoursPerCost = {
+  [key: string]: {
+    [key: string]: CostAndKilowattHourTotals
+  }
+}
 
 export enum EstimateClassification {
   COMPUTE = 'compute',
@@ -80,17 +89,81 @@ export interface MutableServiceEstimate {
   usesAverageCPUConstant: boolean
 }
 
-export const accumulateKilowattHoursPerCost = (
+// TODO - Remove once all cloud providers are using the new function below.
+export const accumulateKilowattHoursPerCostLegacy = (
   classification: EstimateClassification,
   kilowattHours: number,
   cost: number,
-  costPerCo2e: KilowattHoursPerCost,
+  costPerCo2e: KilowattHoursPerCostLegacy,
 ): void => {
   costPerCo2e[classification].cost += cost
   costPerCo2e.total.cost += cost
   if (kilowattHours > 0) {
     costPerCo2e[classification].kilowattHours += kilowattHours
     costPerCo2e.total.kilowattHours += kilowattHours
+  }
+}
+
+export const accumulateKilowattHoursPerCost = (
+  costPerCo2e: KilowattHoursPerCost,
+  billingDataRow: BillingDataRow,
+  kilowattHours: number,
+): void => {
+  setOrAccumulateByServiceAndUsageUnit(
+    costPerCo2e,
+    billingDataRow,
+    kilowattHours,
+  )
+  setOrAccumulateUsageUnitTotals(costPerCo2e, billingDataRow, kilowattHours)
+}
+
+const setOrAccumulateByServiceAndUsageUnit = (
+  costPerCo2e: KilowattHoursPerCost,
+  billingDataRow: BillingDataRow,
+  kilowattHours: number,
+): void => {
+  const { serviceName, usageUnit, cost } = billingDataRow
+  // Service doesn't exist: set service and usage unit
+  if (!costPerCo2e[serviceName]) {
+    costPerCo2e[serviceName] = {
+      [usageUnit]: {
+        cost: cost,
+        kilowattHours: kilowattHours,
+      },
+    }
+    return
+  }
+
+  // Service exists, but no usage unit for the service: set usage unit for service
+  if (costPerCo2e[serviceName] && !costPerCo2e[serviceName][usageUnit]) {
+    costPerCo2e[serviceName][usageUnit] = {
+      cost: cost,
+      kilowattHours: kilowattHours,
+    }
+    return
+  }
+
+  // Usage unit exists for service - accumulate
+  if (costPerCo2e[serviceName][usageUnit]) {
+    costPerCo2e[serviceName][usageUnit].cost += cost
+    costPerCo2e[serviceName][usageUnit].kilowattHours += kilowattHours
+  }
+}
+
+const setOrAccumulateUsageUnitTotals = (
+  costPerCo2e: KilowattHoursPerCost,
+  billingDataRow: BillingDataRow,
+  kilowattHours: number,
+): void => {
+  const { usageUnit, cost } = billingDataRow
+  if (costPerCo2e.total[usageUnit]) {
+    costPerCo2e.total[usageUnit].cost += cost
+    costPerCo2e.total[usageUnit].kilowattHours += kilowattHours
+  } else {
+    costPerCo2e.total[usageUnit] = {
+      cost: cost,
+      kilowattHours: kilowattHours,
+    }
   }
 }
 

@@ -35,7 +35,6 @@ import {
   ComputeEstimator,
   EmbodiedEmissionsEstimator,
   EmbodiedEmissionsUsage,
-  EstimateClassification,
   FootprintEstimate,
   MemoryEstimator,
   MutableEstimationResult,
@@ -59,7 +58,6 @@ import {
   SSD_SERVICES,
   SSD_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
-  UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING,
 } from './CostAndUsageTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
@@ -279,20 +277,18 @@ export default class CostAndUsageReports {
         // if there exist any memory footprint or embodied emissions,
         // add the kwh and co2e for all compute,  memory, and embodied emissions
         if (memoryFootprint.co2e || embodiedEmissions.co2e) {
-          accumulateKilowattHoursPerCost(
-            EstimateClassification.COMPUTE,
+          const kilowattHours =
             computeFootprint.kilowattHours +
-              memoryFootprint.kilowattHours +
-              embodiedEmissions.kilowattHours,
-            costAndUsageReportRow.cost,
+            memoryFootprint.kilowattHours +
+            embodiedEmissions.kilowattHours
+          accumulateKilowattHoursPerCost(
             AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+            costAndUsageReportRow,
+            kilowattHours,
           )
           return {
             timestamp: computeFootprint.timestamp,
-            kilowattHours:
-              computeFootprint.kilowattHours +
-              memoryFootprint.kilowattHours +
-              embodiedEmissions.kilowattHours,
+            kilowattHours: kilowattHours,
             co2e:
               computeFootprint.co2e +
               memoryFootprint.co2e +
@@ -303,10 +299,9 @@ export default class CostAndUsageReports {
 
         if (computeFootprint)
           accumulateKilowattHoursPerCost(
-            EstimateClassification.COMPUTE,
-            computeFootprint.kilowattHours,
-            costAndUsageReportRow.cost,
             AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+            costAndUsageReportRow,
+            computeFootprint.kilowattHours,
           )
 
         return computeFootprint
@@ -358,7 +353,6 @@ export default class CostAndUsageReports {
       timestamp: rowData.timestamp,
       cost: rowData.cost,
       usageUnit: rowData.usageUnit,
-      reclassificationType: this.getClassification(rowData.usageUnit),
     }
     const unknownConstants: CloudConstants = {
       kilowattHoursPerCost: AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
@@ -369,12 +363,6 @@ export default class CostAndUsageReports {
       AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       unknownConstants,
     )[0]
-  }
-
-  private getClassification(usageUnit: string) {
-    return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
-      ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
-      : EstimateClassification.UNKNOWN
   }
 
   private getNetworkingFootprintEstimate(
@@ -401,10 +389,9 @@ export default class CostAndUsageReports {
     if (networkingEstimate) {
       networkingEstimate.usesAverageCPUConstant = false
       accumulateKilowattHoursPerCost(
-        EstimateClassification.NETWORKING,
-        networkingEstimate.kilowattHours,
-        costAndUsageReportRow.cost,
         AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        costAndUsageReportRow,
+        networkingEstimate.kilowattHours,
       )
     }
     return networkingEstimate
@@ -451,10 +438,9 @@ export default class CostAndUsageReports {
     if (estimate) {
       estimate.usesAverageCPUConstant = false
       accumulateKilowattHoursPerCost(
-        EstimateClassification.STORAGE,
-        estimate.kilowattHours,
-        costAndUsageReportRow.cost,
         AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        costAndUsageReportRow,
+        estimate.kilowattHours,
       )
     }
     return estimate

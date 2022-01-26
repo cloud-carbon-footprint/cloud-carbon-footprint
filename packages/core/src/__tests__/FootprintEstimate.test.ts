@@ -7,13 +7,16 @@ import FootprintEstimate, {
   appendOrAccumulateEstimatesByDay,
   estimateCo2,
   getWattsByAverageOrMedian,
-  accumulateKilowattHoursPerCost,
+  accumulateKilowattHoursPerCostLegacy,
   MutableServiceEstimate,
   EstimateClassification,
+  accumulateKilowattHoursPerCost,
 } from '../FootprintEstimate'
 import BillingDataRow from '../BillingDataRow'
 import { COMPUTE_PROCESSOR_TYPES } from '../compute'
 import { GroupBy } from '@cloud-carbon-footprint/common'
+import each from 'jest-each'
+import { accumulateKilowattHoursPerCostData } from './fixtures/footprintEstimate.fixtures'
 
 describe('FootprintEstimate', () => {
   const dayOne = new Date('2021-01-01')
@@ -296,11 +299,11 @@ describe('FootprintEstimate', () => {
     expect(results).toEqual(newResultThree)
   })
 
-  it('accumulates kilowatt hours and cost totals per usage classification', () => {
+  it('accumulates kilowatt hours and cost totals per usage classification (legacy)', () => {
     const cost = 654
     const kilowattHours = 0.000987654321
     const constants = {
-      kilowattHoursPerCost: {
+      kilowattHoursPerCostLegacy: {
         [EstimateClassification.COMPUTE]: {
           cost: 0,
           kilowattHours: 0,
@@ -312,23 +315,36 @@ describe('FootprintEstimate', () => {
       },
     }
 
-    accumulateKilowattHoursPerCost(
+    accumulateKilowattHoursPerCostLegacy(
       EstimateClassification.COMPUTE,
       kilowattHours,
       cost,
-      constants.kilowattHoursPerCost,
+      constants.kilowattHoursPerCostLegacy,
     )
 
     expect(
-      constants.kilowattHoursPerCost[EstimateClassification.COMPUTE].cost,
+      constants.kilowattHoursPerCostLegacy[EstimateClassification.COMPUTE].cost,
     ).toEqual(654)
     expect(
-      constants.kilowattHoursPerCost[EstimateClassification.COMPUTE]
+      constants.kilowattHoursPerCostLegacy[EstimateClassification.COMPUTE]
         .kilowattHours,
     ).toEqual(0.000987654321)
-    expect(constants.kilowattHoursPerCost.total.cost).toEqual(654)
-    expect(constants.kilowattHoursPerCost.total.kilowattHours).toEqual(
+    expect(constants.kilowattHoursPerCostLegacy.total.cost).toEqual(654)
+    expect(constants.kilowattHoursPerCostLegacy.total.kilowattHours).toEqual(
       0.000987654321,
+    )
+  })
+  describe('accumulateKilowattHoursPerCostData', () => {
+    each(accumulateKilowattHoursPerCostData).it(
+      'kilowatt hours and cost totals per service and usage unit',
+      (kilowattHoursPerCost, billingDataRow, kilowattHours, expectedResult) => {
+        accumulateKilowattHoursPerCost(
+          kilowattHoursPerCost,
+          billingDataRow,
+          kilowattHours,
+        )
+        expect(kilowattHoursPerCost).toEqual(expectedResult)
+      },
     )
   })
 

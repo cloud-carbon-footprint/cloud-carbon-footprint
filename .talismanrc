@@ -112,7 +112,7 @@ fileignoreconfig:
 - filename: packages/aws/src/__tests__/AWSAccount.test.ts
   checksum: bb589b733b04064c81990eab8a6d51a207aeab949191d905437138c9ce8f1d68
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: dec740fa24b841aad2751ba861380f00916867b4b8c0e85187f3129594d7800b
+  checksum: 785babdf00a035b62c97bd9aac4b7e2d7c9ecee2650e332cb5bf07f5ce9f5d0e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
@@ -138,7 +138,7 @@ fileignoreconfig:
 - filename: packages/cli/.env.template
   checksum: a2ae46aa8a31ea604db82e97f890262d3f60626e99cc18dfda2e75ba69761c8c
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
-  checksum: 6818b054bb908533e8eed46d3324e3df500f8df9cbfb8e25329723c0369e9315
+  checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
@@ -228,7 +228,7 @@ fileignoreconfig:
 - filename: packages/core/src/CloudConstantsTypes.ts
   checksum: fc77184302e75b36ed681d349abebfeb6e5da8ea8b45ab96096e88e43b892e55
 - filename: packages/core/src/FootprintEstimate.ts
-  checksum: 34b4bbb73155c20235fc87b7f67c2ccaad2b1a8d538e2ffb70cac0a87ece69f6
+  checksum: 3caa98d972fe4ec6159c846d4e795b91f1d97bda128120e13ec78960e9474959
 - filename: packages/core/src/FootprintEstimatesDataBuilder.ts
   checksum: ff85444731d66f4a7b3ebaca7d2f64c7bfac5772f8ff2dfa9789620ceb8238a3
 - filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts

@@ -61,7 +61,7 @@ describe('GCP BillingExportTable Service', () => {
   const accountName = 'test-account-name'
 
   beforeEach(() => {
-    GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
+    GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY = {
       [EstimateClassification.COMPUTE]: {
         cost: 0,
         kilowattHours: 0,

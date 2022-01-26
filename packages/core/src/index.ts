@@ -21,6 +21,7 @@ export { default as UsageData } from './IUsageData'
 export {
   default as FootprintEstimate,
   appendOrAccumulateEstimatesByDay,
+  accumulateKilowattHoursPerCostLegacy,
   accumulateKilowattHoursPerCost,
   MutableEstimationResult,
   aggregateEstimatesByDay,
@@ -28,6 +29,7 @@ export {
   getAverage,
   estimateCo2,
   estimateKwh,
+  KilowattHoursPerCostLegacy,
   KilowattHoursPerCost,
   CostAndKilowattHourTotals,
   EstimateClassification,

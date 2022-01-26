@@ -36,7 +36,7 @@ import {
   CloudConstantsEmissionsFactors,
   calculateGigabyteHours,
   getPhysicalChips,
-  accumulateKilowattHoursPerCost,
+  accumulateKilowattHoursPerCostLegacy,
   EstimateClassification,
   EmbodiedEmissionsEstimator,
   EmbodiedEmissionsUsage,
@@ -294,13 +294,13 @@ export default class ConsumptionManagementService {
         // if there exist any kilowatt hours from a memory footprint,
         // add the kwh and co2e for both compute and memory
         if (memoryFootprint.kilowattHours || embodiedEmissions.co2e) {
-          accumulateKilowattHoursPerCost(
+          accumulateKilowattHoursPerCostLegacy(
             EstimateClassification.COMPUTE,
             computeFootprint.kilowattHours +
               memoryFootprint.kilowattHours +
               embodiedEmissions.kilowattHours,
             consumptionDetailRow.cost,
-            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
           )
 
           return {
@@ -318,11 +318,11 @@ export default class ConsumptionManagementService {
         }
 
         if (computeFootprint)
-          accumulateKilowattHoursPerCost(
+          accumulateKilowattHoursPerCostLegacy(
             EstimateClassification.COMPUTE,
             computeFootprint.kilowattHours,
             consumptionDetailRow.cost,
-            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
           )
 
         return computeFootprint
@@ -396,11 +396,11 @@ export default class ConsumptionManagementService {
 
     if (networkingEstimate) {
       networkingEstimate.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
+      accumulateKilowattHoursPerCostLegacy(
         EstimateClassification.NETWORKING,
         networkingEstimate.kilowattHours,
         consumptionDetailRow.cost,
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
       )
     }
     return networkingEstimate
@@ -445,11 +445,11 @@ export default class ConsumptionManagementService {
       )
     if (estimate) {
       estimate.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
+      accumulateKilowattHoursPerCostLegacy(
         EstimateClassification.STORAGE,
         estimate.kilowattHours,
         consumptionDetailRow.cost,
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
       )
     }
     return estimate
@@ -512,11 +512,11 @@ export default class ConsumptionManagementService {
     if (memoryEstimate) {
       memoryEstimate.usesAverageCPUConstant = false
       !withCompute &&
-        accumulateKilowattHoursPerCost(
+        accumulateKilowattHoursPerCostLegacy(
           EstimateClassification.MEMORY,
           memoryEstimate.kilowattHours,
           consumptionDetailRow.cost,
-          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
         )
     }
     return memoryEstimate
@@ -746,7 +746,8 @@ export default class ConsumptionManagementService {
       reclassificationType: this.getClassification(rowData.usageUnit),
     }
     const unknownConstants: CloudConstants = {
-      kilowattHoursPerCost: AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+      kilowattHoursPerCostLegacy:
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],
