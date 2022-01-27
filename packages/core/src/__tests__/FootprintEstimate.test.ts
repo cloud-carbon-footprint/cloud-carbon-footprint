@@ -3,14 +3,15 @@
  */
 
 import FootprintEstimate, {
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
+  accumulateKilowattHoursPerCostLegacy,
   aggregateEstimatesByDay,
   appendOrAccumulateEstimatesByDay,
+  EstimateClassification,
   estimateCo2,
   getWattsByAverageOrMedian,
-  accumulateKilowattHoursPerCostLegacy,
   MutableServiceEstimate,
-  EstimateClassification,
-  accumulateKilowattHoursPerCost,
 } from '../FootprintEstimate'
 import BillingDataRow from '../BillingDataRow'
 import { COMPUTE_PROCESSOR_TYPES } from '../compute'
@@ -337,13 +338,19 @@ describe('FootprintEstimate', () => {
   describe('accumulateKilowattHoursPerCostData', () => {
     each(accumulateKilowattHoursPerCostData).it(
       'kilowatt hours and cost totals per service and usage unit',
-      (kilowattHoursPerCost, billingDataRow, kilowattHours, expectedResult) => {
-        accumulateKilowattHoursPerCost(
-          kilowattHoursPerCost,
+      (
+        kilowattHoursByServiceAndUsageUnit,
+        billingDataRow,
+        kilowattHours,
+        expectedResult,
+      ) => {
+        accumulateKilowattHours(
+          kilowattHoursByServiceAndUsageUnit,
           billingDataRow,
           kilowattHours,
+          AccumulateKilowattHoursBy.COST,
         )
-        expect(kilowattHoursPerCost).toEqual(expectedResult)
+        expect(kilowattHoursByServiceAndUsageUnit).toEqual(expectedResult)
       },
     )
   })

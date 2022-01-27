@@ -230,7 +230,7 @@ fileignoreconfig:
 - filename: packages/core/src/CloudConstantsTypes.ts
   checksum: fc77184302e75b36ed681d349abebfeb6e5da8ea8b45ab96096e88e43b892e55
 - filename: packages/core/src/FootprintEstimate.ts
-  checksum: 3caa98d972fe4ec6159c846d4e795b91f1d97bda128120e13ec78960e9474959
+  checksum: b612b985e7084b457cc0f3824f31fda6a21c7371e5e717ced360665b985a0b97
 - filename: packages/core/src/FootprintEstimatesDataBuilder.ts
   checksum: ff85444731d66f4a7b3ebaca7d2f64c7bfac5772f8ff2dfa9789620ceb8238a3
 - filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts

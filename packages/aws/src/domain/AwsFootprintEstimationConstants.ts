@@ -119,7 +119,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     SIMPLE_DB: 2,
     DEFAULT: 1,
   },
-  KILOWATT_HOURS_PER_COST: {
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
     total: {},
   },
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours

@@ -172,7 +172,7 @@ describe('UnknownEstimator', () => {
       }
 
       const awsConstants = {
-        kilowattHoursPerCost: {
+        kilowattHoursByServiceAndUsageUnit: {
           [service]: {
             [usageUnit]: {
               cost: 50,
@@ -214,7 +214,7 @@ describe('UnknownEstimator', () => {
       }
 
       const awsConstants = {
-        kilowattHoursPerCost: {
+        kilowattHoursByServiceAndUsageUnit: {
           total: {
             [usageUnit]: {
               cost: 50,
@@ -256,7 +256,7 @@ describe('UnknownEstimator', () => {
       }
 
       const awsConstants = {
-        kilowattHoursPerCost: {
+        kilowattHoursByServiceAndUsageUnit: {
           total: {
             testUsageUnitTwo: {
               cost: 50,

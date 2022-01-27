@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { KilowattHoursPerCost } from '../../FootprintEstimate'
+import { KilowattHoursByServiceAndUsageUnit } from '../../FootprintEstimate'
 import BillingDataRow from '../../BillingDataRow'
 
 const serviceOne = 'serviceOne'
@@ -13,10 +13,10 @@ const kilowattHours = 20
 const cost = 10
 
 export const accumulateKilowattHoursPerCostData: [
-  KilowattHoursPerCost, // co-efficients before accumulating
+  KilowattHoursByServiceAndUsageUnit, // co-efficients before accumulating
   BillingDataRow, // billing data to accumulate
   number, // kilowattHours to accumulate
-  KilowattHoursPerCost, // expected co-efficients after accumulating
+  KilowattHoursByServiceAndUsageUnit, // expected co-efficients after accumulating
 ][] = [
   // new service and usage unit
   [

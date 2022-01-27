@@ -3,7 +3,7 @@
  */
 
 import {
-  KilowattHoursPerCost,
+  KilowattHoursByServiceAndUsageUnit,
   KilowattHoursPerCostLegacy,
 } from './FootprintEstimate'
 
@@ -14,7 +14,7 @@ export default interface CloudConstants {
   readonly avgCpuUtilization?: number
   readonly replicationFactor?: number
   readonly kilowattHoursPerCostLegacy?: KilowattHoursPerCostLegacy
-  readonly kilowattHoursPerCost?: KilowattHoursPerCost
+  readonly kilowattHoursByServiceAndUsageUnit?: KilowattHoursByServiceAndUsageUnit
 }
 
 export type CloudConstantsByProvider = {
@@ -40,7 +40,7 @@ export type CloudConstantsByProvider = {
   REPLICATION_FACTORS?: { [key: string]: number }
   // TODO - Remove once all cloud providers are using the option below, or a new option: KILOWATT_HOURS_BY_USAGE_AMOUNT
   KILOWATT_HOURS_PER_COST_LEGACY?: KilowattHoursPerCostLegacy
-  KILOWATT_HOURS_PER_COST?: KilowattHoursPerCost
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT?: KilowattHoursByServiceAndUsageUnit
   SERVER_EXPECTED_LIFESPAN?: number
 }
 

@@ -15,20 +15,25 @@ export default interface FootprintEstimate {
   usesAverageCPUConstant?: boolean
 }
 
-export type CostAndKilowattHourTotals = {
-  cost: number
+export type KilowattHourTotals = {
+  usageAmount?: number
+  cost?: number
   kilowattHours: number
 }
 
 // TODO: Remove once all cloud providers are updated to use the types below instead
 export type KilowattHoursPerCostLegacy = {
-  [key: string]: CostAndKilowattHourTotals
+  [key: string]: KilowattHourTotals
 }
 
-export type KilowattHoursPerCost = {
+export type KilowattHoursByServiceAndUsageUnit = {
   [key: string]: {
-    [key: string]: CostAndKilowattHourTotals
+    [key: string]: KilowattHourTotals
   }
+}
+export enum AccumulateKilowattHoursBy {
+  COST = 'cost',
+  USAGE_AMOUNT = 'usageAmount',
 }
 
 export enum EstimateClassification {
@@ -104,30 +109,39 @@ export const accumulateKilowattHoursPerCostLegacy = (
   }
 }
 
-export const accumulateKilowattHoursPerCost = (
-  costPerCo2e: KilowattHoursPerCost,
+export const accumulateKilowattHours = (
+  kilowattHoursByServiceAndUsageUnit: KilowattHoursByServiceAndUsageUnit,
   billingDataRow: BillingDataRow,
   kilowattHours: number,
+  accumulateBy: AccumulateKilowattHoursBy,
 ): void => {
   setOrAccumulateByServiceAndUsageUnit(
-    costPerCo2e,
+    kilowattHoursByServiceAndUsageUnit,
     billingDataRow,
     kilowattHours,
+    accumulateBy,
   )
-  setOrAccumulateUsageUnitTotals(costPerCo2e, billingDataRow, kilowattHours)
+  setOrAccumulateUsageUnitTotals(
+    kilowattHoursByServiceAndUsageUnit,
+    billingDataRow,
+    kilowattHours,
+    accumulateBy,
+  )
 }
 
 const setOrAccumulateByServiceAndUsageUnit = (
-  costPerCo2e: KilowattHoursPerCost,
+  kilowattHoursByServiceAndUsageUnit: KilowattHoursByServiceAndUsageUnit,
   billingDataRow: BillingDataRow,
   kilowattHours: number,
+  accumulateBy: AccumulateKilowattHoursBy,
 ): void => {
-  const { serviceName, usageUnit, cost } = billingDataRow
+  const { serviceName, usageUnit, [accumulateBy]: accumValue } = billingDataRow
+
   // Service doesn't exist: set service and usage unit
-  if (!costPerCo2e[serviceName]) {
-    costPerCo2e[serviceName] = {
+  if (!kilowattHoursByServiceAndUsageUnit[serviceName]) {
+    kilowattHoursByServiceAndUsageUnit[serviceName] = {
       [usageUnit]: {
-        cost: cost,
+        [accumulateBy]: accumValue,
         kilowattHours: kilowattHours,
       },
     }
@@ -135,33 +149,41 @@ const setOrAccumulateByServiceAndUsageUnit = (
   }
 
   // Service exists, but no usage unit for the service: set usage unit for service
-  if (costPerCo2e[serviceName] && !costPerCo2e[serviceName][usageUnit]) {
-    costPerCo2e[serviceName][usageUnit] = {
-      cost: cost,
+  if (
+    kilowattHoursByServiceAndUsageUnit[serviceName] &&
+    !kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit]
+  ) {
+    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit] = {
+      [accumulateBy]: accumValue,
       kilowattHours: kilowattHours,
     }
     return
   }
 
   // Usage unit exists for service - accumulate
-  if (costPerCo2e[serviceName][usageUnit]) {
-    costPerCo2e[serviceName][usageUnit].cost += cost
-    costPerCo2e[serviceName][usageUnit].kilowattHours += kilowattHours
+  if (kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit]) {
+    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][accumulateBy] +=
+      accumValue
+    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit].kilowattHours +=
+      kilowattHours
   }
 }
 
 const setOrAccumulateUsageUnitTotals = (
-  costPerCo2e: KilowattHoursPerCost,
+  kilowattHoursByServiceAndUsageUnit: KilowattHoursByServiceAndUsageUnit,
   billingDataRow: BillingDataRow,
   kilowattHours: number,
+  accumulateBy: AccumulateKilowattHoursBy,
 ): void => {
-  const { usageUnit, cost } = billingDataRow
-  if (costPerCo2e.total[usageUnit]) {
-    costPerCo2e.total[usageUnit].cost += cost
-    costPerCo2e.total[usageUnit].kilowattHours += kilowattHours
+  const { usageUnit, [accumulateBy]: accumValue } = billingDataRow
+  if (kilowattHoursByServiceAndUsageUnit.total[usageUnit]) {
+    kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] +=
+      accumValue
+    kilowattHoursByServiceAndUsageUnit.total[usageUnit].kilowattHours +=
+      kilowattHours
   } else {
-    costPerCo2e.total[usageUnit] = {
-      cost: cost,
+    kilowattHoursByServiceAndUsageUnit.total[usageUnit] = {
+      [accumulateBy]: accumValue,
       kilowattHours: kilowattHours,
     }
   }

@@ -28,7 +28,8 @@ import {
 } from '@cloud-carbon-footprint/common'
 
 import {
-  accumulateKilowattHoursPerCost,
+  AccumulateKilowattHoursBy,
+  accumulateKilowattHours,
   appendOrAccumulateEstimatesByDay,
   CloudConstants,
   CloudConstantsEmissionsFactors,
@@ -50,14 +51,14 @@ import { ServiceWrapper } from './ServiceWrapper'
 import {
   AWS_QUERY_GROUP_BY,
   BYTE_HOURS_USAGE_TYPES,
-  UNSUPPORTED_USAGE_TYPES,
   HDD_USAGE_TYPES,
+  KNOWN_USAGE_UNITS,
   LINE_ITEM_TYPES,
   NETWORKING_USAGE_TYPES,
-  KNOWN_USAGE_UNITS,
   SSD_SERVICES,
   SSD_USAGE_TYPES,
   UNKNOWN_USAGE_TYPES,
+  UNSUPPORTED_USAGE_TYPES,
 } from './CostAndUsageTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 
@@ -281,10 +282,11 @@ export default class CostAndUsageReports {
             computeFootprint.kilowattHours +
             memoryFootprint.kilowattHours +
             embodiedEmissions.kilowattHours
-          accumulateKilowattHoursPerCost(
-            AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+          accumulateKilowattHours(
+            AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
             costAndUsageReportRow,
             kilowattHours,
+            AccumulateKilowattHoursBy.COST,
           )
           return {
             timestamp: computeFootprint.timestamp,
@@ -298,10 +300,11 @@ export default class CostAndUsageReports {
         }
 
         if (computeFootprint)
-          accumulateKilowattHoursPerCost(
-            AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+          accumulateKilowattHours(
+            AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
             costAndUsageReportRow,
             computeFootprint.kilowattHours,
+            AccumulateKilowattHoursBy.COST,
           )
 
         return computeFootprint
@@ -355,7 +358,8 @@ export default class CostAndUsageReports {
       usageUnit: rowData.usageUnit,
     }
     const unknownConstants: CloudConstants = {
-      kilowattHoursPerCost: AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+      kilowattHoursByServiceAndUsageUnit:
+        AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],
@@ -388,10 +392,11 @@ export default class CostAndUsageReports {
     }
     if (networkingEstimate) {
       networkingEstimate.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
-        AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+      accumulateKilowattHours(
+        AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
         costAndUsageReportRow,
         networkingEstimate.kilowattHours,
+        AccumulateKilowattHoursBy.COST,
       )
     }
     return networkingEstimate
@@ -437,10 +442,11 @@ export default class CostAndUsageReports {
       )
     if (estimate) {
       estimate.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCost(
-        AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST,
+      accumulateKilowattHours(
+        AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
         costAndUsageReportRow,
         estimate.kilowattHours,
+        AccumulateKilowattHoursBy.COST,
       )
     }
     return estimate

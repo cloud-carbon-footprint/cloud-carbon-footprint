@@ -96,7 +96,7 @@ describe('CostAndUsageReports Service', () => {
   })
 
   beforeEach(() => {
-    AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
+    AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
       total: {},
     }
   })
