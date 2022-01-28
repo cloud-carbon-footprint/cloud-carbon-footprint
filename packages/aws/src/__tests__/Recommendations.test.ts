@@ -27,6 +27,7 @@ import {
 import {
   mockEBSComputeOptimizerBucketList,
   mockEC2ComputeOptimizerBucketList,
+  mockLambdaComputeOptimizerBucketList,
 } from './fixtures/computeOptimizer.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
@@ -395,6 +396,48 @@ describe('AWS Recommendations Service', () => {
             { volumeType: 'gp3', volumeSize: '80', costSavings: '6.2' },
             { volumeType: 'gp2', volumeSize: '80', costSavings: '8' },
             { volumeType: '', volumeSize: '', costSavings: '' },
+          ],
+        },
+      ]
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('gets recommendations for only "Not Optimized" Lambda functions', async () => {
+      moment.now = function () {
+        return +new Date('2022-01-21T00:00:00.000Z')
+      }
+
+      const mockCSVFilePath =
+        '/src/__tests__/fixtures/ComputeOptimizerLambda.csv'
+
+      mockListComputeOptimizerBucket(mockLambdaComputeOptimizerBucketList)
+      mockGetComputeOptimizerBucket(mockCSVFilePath)
+
+      const awsRecommendationsServices = new Recommendations(
+        new ComputeEstimator(),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        getServiceWrapper(),
+      )
+
+      const result = await awsRecommendationsServices.getRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'us-east-2',
+          recommendationType: 'NotOptimized',
+          kilowattHourSavings: 0,
+          functionName: 'api-user-prod-add_user',
+          co2eSavings: 0,
+          recommendationOptions: [
+            { memorySize: '848', costSavings: '2.988E-04' },
+            { memorySize: '', costSavings: '' },
+            { memorySize: '', costSavings: '' },
           ],
         },
       ]

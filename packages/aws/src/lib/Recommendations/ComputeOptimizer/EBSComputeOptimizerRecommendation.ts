@@ -5,7 +5,7 @@ import { EBSRecommendationOption } from '@cloud-carbon-footprint/common'
 import { EBSComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 
-export default class ComputeOptimizerEBSRecommendation extends ComputeOptimizerRecommendation {
+export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public accountId: string
   public accountName: string
   public region: string
@@ -13,7 +13,7 @@ export default class ComputeOptimizerEBSRecommendation extends ComputeOptimizerR
   public resourceId: string
   public currentCost: string
   public volumeType: string
-  public volumeSIze: string
+  public volumeSize: string
   public recommendationOptions: EBSRecommendationOption[]
 
   constructor(
@@ -27,7 +27,7 @@ export default class ComputeOptimizerEBSRecommendation extends ComputeOptimizerR
     this.currentCost = computeOptimizerRecommendationData.current_monthlyPrice
     this.volumeType =
       computeOptimizerRecommendationData.currentConfiguration_volumeType
-    this.volumeSIze =
+    this.volumeSize =
       computeOptimizerRecommendationData.currentConfiguration_volumeSize
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.volumeArn,

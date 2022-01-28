@@ -19,6 +19,7 @@ export type {
   RecommendationResult,
   EC2RecommendationOption,
   EBSRecommendationOption,
+  LambdaRecommendationOption,
   ComputeOptimizerRecommendationOption,
 } from './RecommendationResult'
 export type { LookupTableInput, LookupTableOutput } from './LookupTableInput'

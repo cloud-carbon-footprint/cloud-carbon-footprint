@@ -5,7 +5,7 @@ import { EC2RecommendationOption } from '@cloud-carbon-footprint/common'
 import { EC2ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 
-export default class ComputeOptimizerEC2Recommendation extends ComputeOptimizerRecommendation {
+export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public accountId: string
   public accountName: string
   public region: string

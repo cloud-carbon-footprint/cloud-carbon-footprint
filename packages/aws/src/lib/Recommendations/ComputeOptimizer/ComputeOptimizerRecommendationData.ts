@@ -38,6 +38,23 @@ export interface EBSComputeOptimizerRecommendationData {
   recommendationOptions_3_estimatedMonthlySavings_value: string
 }
 
+export interface LambdaComputeOptimizerRecommendationData {
+  accountId: string
+  functionArn: string
+  functionName: string
+  finding: string
+  functionVersion: string
+  currentConfiguration_memorySize: string
+  currentConfiguration_timeout: string
+  recommendations_count: string
+  recommendationOptions_1_configuration_memorySize: string
+  recommendationOptions_1_estimatedMonthlySavings_value: string
+  recommendationOptions_2_configuration_memorySize: string
+  recommendationOptions_2_estimatedMonthlySavings_value: string
+  recommendationOptions_3_configuration_memorySize: string
+  recommendationOptions_3_estimatedMonthlySavings_value: string
+}
+
 export type GetComputeOptimizerRecommendationsRequest = {
   Bucket: string
 }

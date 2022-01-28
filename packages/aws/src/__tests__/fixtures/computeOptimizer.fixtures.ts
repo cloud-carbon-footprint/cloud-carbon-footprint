@@ -37,6 +37,19 @@ export const mockEBSComputeOptimizerBucketList: ListObjectsV2Output = {
   Name: 'test-bucket',
 }
 
+export const mockLambdaComputeOptimizerBucketList: ListObjectsV2Output = {
+  Contents: [
+    {
+      Key: 'recommendations/lambda/compute-optimizer/12345678/us-east-2-2022-01-21T050030Z-e123a06b-4ae2-0e51-a27f-bff1ecb5173f.csv',
+      LastModified: new Date('01-20-2022'),
+      ETag: '123456jdfjndk7465gfffanisbdj12',
+      Size: 4130,
+      StorageClass: 'STANDARD',
+    },
+  ],
+  Name: 'test-bucket',
+}
+
 export const ec2ComputeOptimizer = [
   {
     accountId: '1234567890',
@@ -135,5 +148,40 @@ export const ebsComputeOptimizer = [
     recommendationOptions_2_configuration_volumeSize: '80',
     recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
     recommendationOptions_2_estimatedMonthlySavings_value: '8',
+  },
+]
+
+export const LambdaComputeOptimizer = [
+  {
+    accountId: '1234567890',
+    functionArn:
+      'arn:aws:lambda:us-east-2:1234567890:function:api-user-prod-add_user:$LATEST',
+    finding: 'NotOptimized',
+    functionVersion: '$LATEST',
+    currentConfiguration_memorySize: '1024',
+    // currentConfiguration_timeout: '300',
+    recommendations_count: '1',
+    recommendationOptions_1_configuration_memorySize: '848',
+    recommendationOptions_2_configuration_memorySize: '',
+    recommendationOptions_3_configuration_memorySize: '',
+    recommendationOptions_1_estimatedMonthlySavings_value: '2.988E-04',
+    recommendationOptions_2_estimatedMonthlySavings_value: '',
+    recommendationOptions_3_estimatedMonthlySavings_value: '',
+  },
+  {
+    accountId: '1234567890',
+    functionArn:
+      'arn:aws:lambda:us-east-2:1234567890:function:sumo-webhook-prod:$LATEST',
+    finding: 'Optimized',
+    functionVersion: '$LATEST',
+    currentConfiguration_memorySize: '1024',
+    // currentConfiguration_timeout: '300',
+    recommendations_count: '0',
+    recommendationOptions_1_configuration_memorySize: '',
+    recommendationOptions_2_configuration_memorySize: '',
+    recommendationOptions_3_configuration_memorySize: '',
+    recommendationOptions_1_estimatedMonthlySavings_value: '',
+    recommendationOptions_2_estimatedMonthlySavings_value: '',
+    recommendationOptions_3_estimatedMonthlySavings_value: '',
   },
 ]

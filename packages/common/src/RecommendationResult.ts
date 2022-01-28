@@ -11,6 +11,7 @@ export interface RecommendationResult {
   readonly recommendationDetail?: string
   readonly resourceId?: string
   readonly instanceName?: string
+  readonly functionName?: string
   readonly kilowattHourSavings: number
   costSavings?: number
   co2eSavings: number
@@ -20,6 +21,7 @@ export interface RecommendationResult {
 export type ComputeOptimizerRecommendationOption =
   | EC2RecommendationOption
   | EBSRecommendationOption
+  | LambdaRecommendationOption
 
 export type EC2RecommendationOption = {
   instanceType: string
@@ -29,5 +31,10 @@ export type EC2RecommendationOption = {
 export type EBSRecommendationOption = {
   volumeType: string
   volumeSize: string
+  costSavings: string
+}
+
+export type LambdaRecommendationOption = {
+  memorySize: string
   costSavings: string
 }

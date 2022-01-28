@@ -29,10 +29,11 @@ import {
   RightsizingTargetRecommendation,
 } from './Rightsizing'
 import {
-  ComputeOptimizerEC2Recommendation,
+  EC2ComputeOptimizerRecommendation,
+  EBSComputeOptimizerRecommendation,
+  LambdaComputeOptimizerRecommendation,
   GetComputeOptimizerRecommendationsRequest,
 } from './ComputeOptimizer'
-import ComputeOptimizerEBSRecommendation from './ComputeOptimizer/ComputeOptimizerEBSRecommendation'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -78,6 +79,7 @@ export default class Recommendations implements ICloudRecommendationsService {
       )
 
       const recommendationsResult: RecommendationResult[] = []
+      const includedRecommendationTypes = ['OVER_PROVISIONED', 'NOTOPTIMIZED']
 
       for (const recommendationsData of bucketObjectsList.Contents) {
         const recommendationDate = new Date(
@@ -88,9 +90,10 @@ export default class Recommendations implements ICloudRecommendationsService {
 
         const isFromPreviousDay =
           moment.utc(recommendationDate) >= moment.utc().subtract(1, 'days')
-        const isIncludedType = !recommendationsData.Key.includes('asg')
+        const isIncludedService = !recommendationsData.Key.includes('asg')
+        const service: string = recommendationsData.Key.split('/')[1]
 
-        if (isFromPreviousDay && isIncludedType) {
+        if (isFromPreviousDay && isIncludedService) {
           const params = {
             Bucket: bucketObjectsList.Name,
             Key: recommendationsData.Key,
@@ -104,31 +107,30 @@ export default class Recommendations implements ICloudRecommendationsService {
           parsedRecommendations.forEach((recommendation) => {
             const recommendationType = recommendation.finding
 
-            if (recommendationType.toUpperCase() === 'OVER_PROVISIONED') {
+            if (
+              includedRecommendationTypes.includes(
+                recommendationType.toUpperCase(),
+              )
+            ) {
+              const computeOptimizerRecommendationServices: {
+                [service: string]: any
+              } = {
+                ec2: EC2ComputeOptimizerRecommendation,
+                ebs: EBSComputeOptimizerRecommendation,
+                lambda: LambdaComputeOptimizerRecommendation,
+              }
+
               const computeOptimizerRecommendation =
-                new ComputeOptimizerEC2Recommendation(recommendation)
+                new computeOptimizerRecommendationServices[service](
+                  recommendation,
+                )
 
               recommendationsResult.push({
                 cloudProvider: 'AWS',
                 accountId: computeOptimizerRecommendation.accountId,
                 accountName: computeOptimizerRecommendation.accountId,
-                instanceName: computeOptimizerRecommendation.instanceName,
-                region: computeOptimizerRecommendation.region,
-                recommendationType: computeOptimizerRecommendation.type,
-                resourceId: computeOptimizerRecommendation.resourceId,
-                recommendationOptions:
-                  computeOptimizerRecommendation.recommendationOptions,
-                co2eSavings: 0,
-                kilowattHourSavings: 0,
-              })
-            } else if (recommendationType === 'NotOptimized') {
-              const computeOptimizerRecommendation =
-                new ComputeOptimizerEBSRecommendation(recommendation)
-
-              recommendationsResult.push({
-                cloudProvider: 'AWS',
-                accountId: computeOptimizerRecommendation.accountId,
-                accountName: computeOptimizerRecommendation.accountId,
+                instanceName: computeOptimizerRecommendation?.instanceName,
+                functionName: computeOptimizerRecommendation?.functionName,
                 region: computeOptimizerRecommendation.region,
                 recommendationType: computeOptimizerRecommendation.type,
                 resourceId: computeOptimizerRecommendation.resourceId,
