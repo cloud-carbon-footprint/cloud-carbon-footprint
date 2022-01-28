@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { ComputeOptimizerRecommendationOption } from '@cloud-carbon-footprint/common'
-import { ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
+import { EC2ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 
 export default class ComputeOptimizerRecommendation {
   public accountId: string
@@ -12,7 +12,7 @@ export default class ComputeOptimizerRecommendation {
   public resourceId: string
   public recommendationOptions: ComputeOptimizerRecommendationOption[]
 
-  protected constructor(init: Partial<ComputeOptimizerRecommendationData>) {
+  protected constructor(init: Partial<EC2ComputeOptimizerRecommendationData>) {
     Object.assign(this, init)
 
     this.accountName = this.accountId

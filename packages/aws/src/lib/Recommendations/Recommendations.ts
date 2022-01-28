@@ -32,6 +32,7 @@ import {
   ComputeOptimizerEC2Recommendation,
   GetComputeOptimizerRecommendationsRequest,
 } from './ComputeOptimizer'
+import ComputeOptimizerEBSRecommendation from './ComputeOptimizer/ComputeOptimizerEBSRecommendation'
 
 export default class Recommendations implements ICloudRecommendationsService {
   private readonly rightsizingRecommendationsService: string
@@ -101,9 +102,9 @@ export default class Recommendations implements ICloudRecommendationsService {
             )
 
           parsedRecommendations.forEach((recommendation) => {
-            const recommendationType = recommendation.finding.toUpperCase()
+            const recommendationType = recommendation.finding
 
-            if (recommendationType === 'OVER_PROVISIONED') {
+            if (recommendationType.toUpperCase() === 'OVER_PROVISIONED') {
               const computeOptimizerRecommendation =
                 new ComputeOptimizerEC2Recommendation(recommendation)
 
@@ -112,6 +113,22 @@ export default class Recommendations implements ICloudRecommendationsService {
                 accountId: computeOptimizerRecommendation.accountId,
                 accountName: computeOptimizerRecommendation.accountId,
                 instanceName: computeOptimizerRecommendation.instanceName,
+                region: computeOptimizerRecommendation.region,
+                recommendationType: computeOptimizerRecommendation.type,
+                resourceId: computeOptimizerRecommendation.resourceId,
+                recommendationOptions:
+                  computeOptimizerRecommendation.recommendationOptions,
+                co2eSavings: 0,
+                kilowattHourSavings: 0,
+              })
+            } else if (recommendationType === 'NotOptimized') {
+              const computeOptimizerRecommendation =
+                new ComputeOptimizerEBSRecommendation(recommendation)
+
+              recommendationsResult.push({
+                cloudProvider: 'AWS',
+                accountId: computeOptimizerRecommendation.accountId,
+                accountName: computeOptimizerRecommendation.accountId,
                 region: computeOptimizerRecommendation.region,
                 recommendationType: computeOptimizerRecommendation.type,
                 resourceId: computeOptimizerRecommendation.resourceId,

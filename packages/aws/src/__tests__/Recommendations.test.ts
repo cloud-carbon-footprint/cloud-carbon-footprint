@@ -361,7 +361,7 @@ describe('AWS Recommendations Service', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    xit('gets recommendations for only "Not Optimized" EBS volumes', async () => {
+    it('gets recommendations for only "Not Optimized" EBS volumes', async () => {
       moment.now = function () {
         return +new Date('2022-01-21T00:00:00.000Z')
       }
@@ -392,8 +392,8 @@ describe('AWS Recommendations Service', () => {
           resourceId: 'vol-00e39f1234a7eadfb',
           co2eSavings: 0,
           recommendationOptions: [
-            { volumeType: 'gp3', volumeSize: '80', costSavings: '1,8' },
-            { volumeType: 'gp3', volumeSize: '80', costSavings: '0' },
+            { volumeType: 'gp3', volumeSize: '80', costSavings: '6.2' },
+            { volumeType: 'gp2', volumeSize: '80', costSavings: '8' },
             { volumeType: '', volumeSize: '', costSavings: '' },
           ],
         },

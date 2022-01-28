@@ -18,7 +18,7 @@ import {
 } from 'aws-sdk/clients/cloudwatch'
 import { PartialDataError } from '@cloud-carbon-footprint/common'
 import { ListObjectsV2Output } from 'aws-sdk/clients/s3'
-import { ComputeOptimizerRecommendationData } from './Recommendations/ComputeOptimizer'
+import { EC2ComputeOptimizerRecommendationData } from './Recommendations/ComputeOptimizer'
 
 export class ServiceWrapper {
   constructor(
@@ -159,7 +159,7 @@ export class ServiceWrapper {
 
   public async getComputeOptimizerRecommendationsResponse(
     params: S3.Types.GetObjectRequest,
-  ): Promise<ComputeOptimizerRecommendationData[]> {
+  ): Promise<EC2ComputeOptimizerRecommendationData[]> {
     const stream = this.s3.getObject(params).createReadStream()
     const parsedCsv = await csv().fromStream(stream)
     return JSON.parse(JSON.stringify(parsedCsv))

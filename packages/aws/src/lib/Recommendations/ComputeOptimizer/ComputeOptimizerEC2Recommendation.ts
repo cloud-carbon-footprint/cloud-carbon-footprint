@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { EC2RecommendationOption } from '@cloud-carbon-footprint/common'
-import { ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
+import { EC2ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 
 export default class ComputeOptimizerEC2Recommendation extends ComputeOptimizerRecommendation {
@@ -16,7 +16,7 @@ export default class ComputeOptimizerEC2Recommendation extends ComputeOptimizerR
   public usageAmount: number
 
   constructor(
-    computeOptimizerRecommendationData: Partial<ComputeOptimizerRecommendationData>,
+    computeOptimizerRecommendationData: Partial<EC2ComputeOptimizerRecommendationData>,
   ) {
     super(computeOptimizerRecommendationData)
 

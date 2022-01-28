@@ -113,8 +113,11 @@ export const ebsComputeOptimizer = [
     recommendationOptions_1_configuration_volumeSize: '80',
     recommendationOptions_2_configuration_volumeType: 'gp2',
     recommendationOptions_2_configuration_volumeSize: '80',
-    recommendationOptions_1_monthlyPrice: '6.2',
-    recommendationOptions_2_monthlyPrice: '8',
+    recommendationOptions_3_configuration_volumeType: '',
+    recommendationOptions_3_configuration_volumeSize: '',
+    recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
+    recommendationOptions_2_estimatedMonthlySavings_value: '8',
+    recommendationOptions_3_estimatedMonthlySavings_value: '',
   },
   {
     accountId: '1234567890',
@@ -130,7 +133,7 @@ export const ebsComputeOptimizer = [
     recommendationOptions_1_configuration_volumeSize: '80',
     recommendationOptions_2_configuration_volumeType: 'gp2',
     recommendationOptions_2_configuration_volumeSize: '80',
-    recommendationOptions_1_monthlyPrice: '6.2',
-    recommendationOptions_2_monthlyPrice: '8',
+    recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
+    recommendationOptions_2_estimatedMonthlySavings_value: '8',
   },
 ]
