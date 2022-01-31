@@ -130,7 +130,6 @@ export default class Recommendations implements ICloudRecommendationsService {
                 accountId: computeOptimizerRecommendation.accountId,
                 accountName: computeOptimizerRecommendation.accountId,
                 instanceName: computeOptimizerRecommendation?.instanceName,
-                functionName: computeOptimizerRecommendation?.functionName,
                 region: computeOptimizerRecommendation.region,
                 recommendationType: computeOptimizerRecommendation.type,
                 resourceId: computeOptimizerRecommendation.resourceId,

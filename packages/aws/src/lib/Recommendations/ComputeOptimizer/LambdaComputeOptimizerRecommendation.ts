@@ -8,7 +8,6 @@ import { LambdaRecommendationOption } from '@cloud-carbon-footprint/common'
 export default class LambdaComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public accountId: string
   public accountName: string
-  public functionName: string
   public functionVersion: string
   public region: string
   public type: string
@@ -22,11 +21,11 @@ export default class LambdaComputeOptimizerRecommendation extends ComputeOptimiz
 
     this.accountName = this.accountId
     this.region = this.getRegion(computeOptimizerRecommendationData.functionArn)
-    this.type = computeOptimizerRecommendationData.finding
+    this.type = `Lambda-${computeOptimizerRecommendationData.finding}`
     this.memorySize =
       computeOptimizerRecommendationData.currentConfiguration_memorySize
     this.functionVersion = computeOptimizerRecommendationData.functionVersion
-    this.functionName = this.getFunctionName(
+    this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.functionArn,
     )
     this.recommendationOptions = [
@@ -51,8 +50,10 @@ export default class LambdaComputeOptimizerRecommendation extends ComputeOptimiz
     ]
   }
 
-  private getFunctionName(functionArn: string) {
+  private getResourceId(functionArn: string) {
     const functionData = functionArn.split(':')
-    return functionData[functionData.length - 2]
+    const name = functionData[functionData.length - 2]
+    const version = functionData[functionData.length - 1]
+    return `${name}:${version}`
   }
 }

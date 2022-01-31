@@ -22,7 +22,7 @@ export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerR
 
     this.accountName = this.accountId
     this.region = this.getRegion(computeOptimizerRecommendationData.instanceArn)
-    this.type = computeOptimizerRecommendationData.finding
+    this.type = `EC2-${computeOptimizerRecommendationData.finding}`
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.instanceArn,
     )

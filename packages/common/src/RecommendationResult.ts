@@ -11,7 +11,6 @@ export interface RecommendationResult {
   readonly recommendationDetail?: string
   readonly resourceId?: string
   readonly instanceName?: string
-  readonly functionName?: string
   readonly kilowattHourSavings: number
   costSavings?: number
   co2eSavings: number

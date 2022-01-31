@@ -23,7 +23,7 @@ export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerR
 
     this.accountName = this.accountId
     this.region = this.getRegion(computeOptimizerRecommendationData.volumeArn)
-    this.type = computeOptimizerRecommendationData.finding
+    this.type = `EBS-${computeOptimizerRecommendationData.finding}`
     this.currentCost = computeOptimizerRecommendationData.current_monthlyPrice
     this.volumeType =
       computeOptimizerRecommendationData.currentConfiguration_volumeType
