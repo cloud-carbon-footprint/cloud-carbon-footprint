@@ -50,7 +50,7 @@ export default class LambdaComputeOptimizerRecommendation extends ComputeOptimiz
     ]
   }
 
-  private getResourceId(functionArn: string) {
+  public getResourceId(functionArn: string) {
     const functionData = functionArn.split(':')
     const name = functionData[functionData.length - 2]
     const version = functionData[functionData.length - 1]
