@@ -62,8 +62,13 @@ export const ec2ComputeOptimizer = [
     recommendations_count: '3',
     recommendationOptions_1_instanceType: 't3.xlarge',
     recommendationOptions_2_instanceType: 'm5.xlarge',
+    recommendationOptions_3_instanceType: 'r5n.large',
     recommendationOptions_1_estimatedMonthlySavings_value: '33.79',
     recommendationOptions_2_estimatedMonthlySavings_value: '7.04',
+    recommendationOptions_3_estimatedMonthlySavings_value: '5.04',
+    recommendationOptions_1_performanceRisk: '3.0',
+    recommendationOptions_2_performanceRisk: '1.0',
+    recommendationOptions_3_performanceRisk: '1.0',
   },
   {
     accountId: '1234567890',
@@ -76,8 +81,13 @@ export const ec2ComputeOptimizer = [
     recommendations_count: '3',
     recommendationOptions_1_instanceType: 't3.xlarge',
     recommendationOptions_2_instanceType: 'm5.xlarge',
+    recommendationOptions_3_instanceType: 'r5n.large',
     recommendationOptions_1_estimatedMonthlySavings_value: '13.79',
     recommendationOptions_2_estimatedMonthlySavings_value: '2.01',
+    recommendationOptions_3_estimatedMonthlySavings_value: '5.01',
+    recommendationOptions_1_performanceRisk: '1.0',
+    recommendationOptions_2_performanceRisk: '1.0',
+    recommendationOptions_3_performanceRisk: '3.0',
   },
   {
     accountId: '1234567890',
@@ -90,8 +100,13 @@ export const ec2ComputeOptimizer = [
     recommendations_count: '3',
     recommendationOptions_1_instanceType: 't3.xlarge',
     recommendationOptions_2_instanceType: 'm5.xlarge',
+    recommendationOptions_3_instanceType: 'r5n.large',
     recommendationOptions_1_estimatedMonthlySavings_value: '88.79',
     recommendationOptions_2_estimatedMonthlySavings_value: '17.34',
+    recommendationOptions_3_estimatedMonthlySavings_value: '5.01',
+    recommendationOptions_1_performanceRisk: '1.0',
+    recommendationOptions_2_performanceRisk: '1.0',
+    recommendationOptions_3_performanceRisk: '3.0',
   },
 ]
 
@@ -131,6 +146,9 @@ export const ebsComputeOptimizer = [
     recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
     recommendationOptions_2_estimatedMonthlySavings_value: '8',
     recommendationOptions_3_estimatedMonthlySavings_value: '',
+    recommendationOptions_1_performanceRisk: '1.0',
+    recommendationOptions_2_performanceRisk: '2.0',
+    recommendationOptions_3_performanceRisk: '1.0',
   },
   {
     accountId: '1234567890',
@@ -148,6 +166,9 @@ export const ebsComputeOptimizer = [
     recommendationOptions_2_configuration_volumeSize: '80',
     recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
     recommendationOptions_2_estimatedMonthlySavings_value: '8',
+    recommendationOptions_1_performanceRisk: '3.0',
+    recommendationOptions_2_performanceRisk: '1.0',
+    recommendationOptions_3_performanceRisk: '1.0',
   },
 ]
 

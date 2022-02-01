@@ -32,18 +32,24 @@ export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_1_instanceType,
         costSavings:
           computeOptimizerRecommendationData.recommendationOptions_1_estimatedMonthlySavings_value,
+        performanceRisk:
+          computeOptimizerRecommendationData.recommendationOptions_1_performanceRisk,
       },
       {
         instanceType:
           computeOptimizerRecommendationData.recommendationOptions_2_instanceType,
         costSavings:
           computeOptimizerRecommendationData.recommendationOptions_2_estimatedMonthlySavings_value,
+        performanceRisk:
+          computeOptimizerRecommendationData.recommendationOptions_2_performanceRisk,
       },
       {
         instanceType:
           computeOptimizerRecommendationData.recommendationOptions_3_instanceType,
         costSavings:
           computeOptimizerRecommendationData.recommendationOptions_3_estimatedMonthlySavings_value,
+        performanceRisk:
+          computeOptimizerRecommendationData.recommendationOptions_3_performanceRisk,
       },
     ]
   }

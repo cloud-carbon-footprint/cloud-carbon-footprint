@@ -16,6 +16,9 @@ export interface EC2ComputeOptimizerRecommendationData {
   recommendationOptions_1_estimatedMonthlySavings_value: string
   recommendationOptions_2_estimatedMonthlySavings_value: string
   recommendationOptions_3_estimatedMonthlySavings_value: string
+  recommendationOptions_1_performanceRisk: string
+  recommendationOptions_2_performanceRisk: string
+  recommendationOptions_3_performanceRisk: string
 }
 
 export interface EBSComputeOptimizerRecommendationData {
@@ -36,6 +39,9 @@ export interface EBSComputeOptimizerRecommendationData {
   recommendationOptions_3_configuration_volumeType: string
   recommendationOptions_3_configuration_volumeSize: string
   recommendationOptions_3_estimatedMonthlySavings_value: string
+  recommendationOptions_1_performanceRisk: string
+  recommendationOptions_2_performanceRisk: string
+  recommendationOptions_3_performanceRisk: string
 }
 
 export interface LambdaComputeOptimizerRecommendationData {

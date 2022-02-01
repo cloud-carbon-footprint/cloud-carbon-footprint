@@ -351,11 +351,8 @@ describe('AWS Recommendations Service', () => {
           resourceId: 'i-0c80d1b0f3a0c5c69',
           instanceName: 'PA-VM-100 | Networks',
           co2eSavings: 0,
-          recommendationOptions: [
-            { instanceType: 't3.xlarge', costSavings: '33.79' },
-            { instanceType: 'm5.xlarge', costSavings: '7.04' },
-            { instanceType: '', costSavings: '' },
-          ],
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
         },
       ]
 
@@ -392,11 +389,8 @@ describe('AWS Recommendations Service', () => {
           kilowattHourSavings: 0,
           resourceId: 'vol-00e39f1234a7eadfb',
           co2eSavings: 0,
-          recommendationOptions: [
-            { volumeType: 'gp3', volumeSize: '80', costSavings: '6.2' },
-            { volumeType: 'gp2', volumeSize: '80', costSavings: '8' },
-            { volumeType: '', volumeSize: '', costSavings: '' },
-          ],
+          recommendationDetail: 'gp3',
+          costSavings: 6.2,
         },
       ]
 
@@ -434,11 +428,8 @@ describe('AWS Recommendations Service', () => {
           kilowattHourSavings: 0,
           resourceId: 'api-user-prod-add_user:$LATEST',
           co2eSavings: 0,
-          recommendationOptions: [
-            { memorySize: '848', costSavings: '2.988E-04' },
-            { memorySize: '', costSavings: '' },
-            { memorySize: '', costSavings: '' },
-          ],
+          recommendationDetail: '848',
+          costSavings: 2.988e-4,
         },
       ]
 

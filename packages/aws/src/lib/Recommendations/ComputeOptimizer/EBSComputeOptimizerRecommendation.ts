@@ -40,6 +40,8 @@ export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_1_configuration_volumeSize,
         costSavings:
           computeOptimizerRecommendationData.recommendationOptions_1_estimatedMonthlySavings_value,
+        performanceRisk:
+          computeOptimizerRecommendationData.recommendationOptions_1_performanceRisk,
       },
       {
         volumeType:
@@ -48,6 +50,8 @@ export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_2_configuration_volumeSize,
         costSavings:
           computeOptimizerRecommendationData.recommendationOptions_2_estimatedMonthlySavings_value,
+        performanceRisk:
+          computeOptimizerRecommendationData.recommendationOptions_2_performanceRisk,
       },
       {
         volumeType:
@@ -56,6 +60,8 @@ export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_3_configuration_volumeSize,
         costSavings:
           computeOptimizerRecommendationData.recommendationOptions_3_estimatedMonthlySavings_value,
+        performanceRisk:
+          computeOptimizerRecommendationData.recommendationOptions_3_performanceRisk,
       },
     ]
   }

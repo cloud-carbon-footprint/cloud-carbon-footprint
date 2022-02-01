@@ -125,6 +125,24 @@ export default class Recommendations implements ICloudRecommendationsService {
                   recommendation,
                 )
 
+              let recommendationOption =
+                computeOptimizerRecommendation.recommendationOptions[0]
+              if (service != 'lambda') {
+                recommendationOption =
+                  computeOptimizerRecommendation.recommendationOptions.find(
+                    (recommendation: any) =>
+                      recommendation.performanceRisk <= 3,
+                  )
+              }
+
+              const recommendationOptionServiceType: {
+                [service: string]: any
+              } = {
+                ec2: 'instanceType',
+                ebs: 'volumeType',
+                lambda: 'memorySize',
+              }
+
               recommendationsResult.push({
                 cloudProvider: 'AWS',
                 accountId: computeOptimizerRecommendation.accountId,
@@ -133,8 +151,11 @@ export default class Recommendations implements ICloudRecommendationsService {
                 region: computeOptimizerRecommendation.region,
                 recommendationType: computeOptimizerRecommendation.type,
                 resourceId: computeOptimizerRecommendation.resourceId,
-                recommendationOptions:
-                  computeOptimizerRecommendation.recommendationOptions,
+                recommendationDetail:
+                  recommendationOption?.[
+                    recommendationOptionServiceType[service]
+                  ],
+                costSavings: parseFloat(recommendationOption.costSavings),
                 co2eSavings: 0,
                 kilowattHourSavings: 0,
               })

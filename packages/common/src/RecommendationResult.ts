@@ -25,12 +25,14 @@ export type ComputeOptimizerRecommendationOption =
 export type EC2RecommendationOption = {
   instanceType: string
   costSavings: string
+  performanceRisk: string
 }
 
 export type EBSRecommendationOption = {
   volumeType: string
   volumeSize: string
   costSavings: string
+  performanceRisk: string
 }
 
 export type LambdaRecommendationOption = {
