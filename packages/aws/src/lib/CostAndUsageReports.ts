@@ -101,6 +101,7 @@ export default class CostAndUsageReports {
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const usageRows = await this.getUsage(start, end, grouping)
+    this.costAndUsageReportsLogger.info(`${usageRows.length}`)
     const usageRowsHeader: Row = usageRows.shift()
 
     const results: MutableEstimationResult[] = []

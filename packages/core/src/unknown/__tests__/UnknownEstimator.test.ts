@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import UnknownEstimator from '../UnknownEstimator'
+import UnknownEstimator, { EstimateUnknownUsageBy } from '../UnknownEstimator'
 import { EstimateClassification } from '../../FootprintEstimate'
 
 describe('UnknownEstimator', () => {
@@ -28,7 +28,7 @@ describe('UnknownEstimator', () => {
           },
         },
       }
-      const result = new UnknownEstimator().estimate(
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
         input,
         awsUsEast1Region,
         awsEmissionsFactors,
@@ -66,7 +66,7 @@ describe('UnknownEstimator', () => {
           },
         },
       }
-      const result = new UnknownEstimator().estimate(
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
         input,
         awsUsEast1Region,
         awsEmissionsFactors,
@@ -110,12 +110,9 @@ describe('UnknownEstimator', () => {
         },
       }
       it('for storage', () => {
-        const result = new UnknownEstimator().estimate(
-          input,
-          gcpUsEast1Region,
-          gcpEmissionsFactors,
-          gcpConstants,
-        )
+        const result = new UnknownEstimator(
+          EstimateUnknownUsageBy.COST,
+        ).estimate(input, gcpUsEast1Region, gcpEmissionsFactors, gcpConstants)
 
         expect(result).toEqual([
           {
@@ -136,7 +133,9 @@ describe('UnknownEstimator', () => {
           },
         ]
 
-        const result = new UnknownEstimator().estimate(
+        const result = new UnknownEstimator(
+          EstimateUnknownUsageBy.COST,
+        ).estimate(
           newInput,
           gcpUsEast1Region,
           gcpEmissionsFactors,
@@ -181,7 +180,7 @@ describe('UnknownEstimator', () => {
           },
         },
       }
-      const result = new UnknownEstimator().estimate(
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
         input,
         awsUsEast1Region,
         awsEmissionsFactors,
@@ -223,7 +222,7 @@ describe('UnknownEstimator', () => {
           },
         },
       }
-      const result = new UnknownEstimator().estimate(
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
         input,
         awsUsEast1Region,
         awsEmissionsFactors,
@@ -269,7 +268,7 @@ describe('UnknownEstimator', () => {
           },
         },
       }
-      const result = new UnknownEstimator().estimate(
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
         input,
         awsUsEast1Region,
         awsEmissionsFactors,

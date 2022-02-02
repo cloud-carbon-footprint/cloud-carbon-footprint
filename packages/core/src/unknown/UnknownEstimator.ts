@@ -17,7 +17,14 @@ import FootprintEstimate, {
 import IFootprintEstimator from '../IFootprintEstimator'
 import UnknownUsage from './UnknownUsage'
 
+export enum EstimateUnknownUsageBy {
+  COST = 'cost',
+  USAGE_AMOUNT = 'usageAmount',
+}
+
 export default class UnknownEstimator implements IFootprintEstimator {
+  constructor(private estimateKilowattHoursBy: EstimateUnknownUsageBy) {}
+
   estimate(
     data: UnknownUsage[],
     region: string,
@@ -35,7 +42,7 @@ export default class UnknownEstimator implements IFootprintEstimator {
           data.reclassificationType,
         )
       } else {
-        estimatedKilowattHours = this.estimateKilowattHoursByCost(
+        estimatedKilowattHours = this.estimateKilowattHours(
           data,
           constants.kilowattHoursByServiceAndUsageUnit,
         )
@@ -55,7 +62,7 @@ export default class UnknownEstimator implements IFootprintEstimator {
     })
   }
 
-  private estimateKilowattHoursByCost(
+  private estimateKilowattHours(
     unknownUsage: UnknownUsage,
     kilowattHoursByServiceAndUsageUnit: KilowattHoursByServiceAndUsageUnit,
   ): number {
@@ -67,8 +74,9 @@ export default class UnknownEstimator implements IFootprintEstimator {
 
     if (serviceAndUsageUnit)
       return (
-        (serviceAndUsageUnit.kilowattHours / serviceAndUsageUnit.cost) *
-        unknownUsage.cost
+        (serviceAndUsageUnit.kilowattHours /
+          serviceAndUsageUnit[this.estimateKilowattHoursBy]) *
+        unknownUsage[this.estimateKilowattHoursBy]
       )
 
     const totalForUsageUnit =
@@ -76,19 +84,23 @@ export default class UnknownEstimator implements IFootprintEstimator {
 
     if (totalForUsageUnit)
       return (
-        (totalForUsageUnit.kilowattHours / totalForUsageUnit.cost) *
-        unknownUsage.cost
+        (totalForUsageUnit.kilowattHours /
+          totalForUsageUnit[this.estimateKilowattHoursBy]) *
+        unknownUsage[this.estimateKilowattHoursBy]
       )
     const totalKiloWattHours = this.getTotalFor(
       'kilowattHours',
       kilowattHoursByServiceAndUsageUnit,
     )
     const totalCost = this.getTotalFor(
-      'cost',
+      this.estimateKilowattHoursBy,
       kilowattHoursByServiceAndUsageUnit,
     )
 
-    return (totalKiloWattHours / totalCost) * unknownUsage.cost
+    return (
+      (totalKiloWattHours / totalCost) *
+      unknownUsage[this.estimateKilowattHoursBy]
+    )
   }
 
   private estimateKilowattHoursLegacy(

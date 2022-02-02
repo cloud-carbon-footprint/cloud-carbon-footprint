@@ -7,6 +7,7 @@ import {
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
+  EstimateUnknownUsageBy,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
 } from '@cloud-carbon-footprint/core'
 
@@ -122,6 +123,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
     total: {},
   },
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy.COST,
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 

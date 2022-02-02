@@ -2,17 +2,17 @@
  * © 2021 Thoughtworks, Inc.
  */
 import {
-  getWattsByAverageOrMedian,
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
-  EstimateClassification,
+  EstimateUnknownUsageBy,
+  getWattsByAverageOrMedian,
 } from '@cloud-carbon-footprint/core'
 
 import {
-  GCP_REGIONS,
   GCP_DUAL_REGIONS,
   GCP_MULTI_REGIONS,
+  GCP_REGIONS,
 } from '../lib/GCPRegions'
 
 export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
@@ -108,28 +108,10 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
-  KILOWATT_HOURS_PER_COST_LEGACY: {
-    [EstimateClassification.COMPUTE]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    [EstimateClassification.STORAGE]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    [EstimateClassification.NETWORKING]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    [EstimateClassification.MEMORY]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    total: {
-      cost: 0,
-      kilowattHours: 0,
-    },
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
+    total: {},
   },
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy.USAGE_AMOUNT,
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 

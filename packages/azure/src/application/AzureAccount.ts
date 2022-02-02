@@ -97,7 +97,7 @@ export default class AzureAccount extends CloudProviderAccount {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),

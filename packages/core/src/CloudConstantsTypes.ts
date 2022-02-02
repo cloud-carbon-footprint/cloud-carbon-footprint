@@ -6,6 +6,7 @@ import {
   KilowattHoursByServiceAndUsageUnit,
   KilowattHoursPerCostLegacy,
 } from './FootprintEstimate'
+import { EstimateUnknownUsageBy } from './unknown'
 
 export default interface CloudConstants {
   readonly minWatts?: number
@@ -41,6 +42,7 @@ export type CloudConstantsByProvider = {
   // TODO - Remove once all cloud providers are using the option below, or a new option: KILOWATT_HOURS_BY_USAGE_AMOUNT
   KILOWATT_HOURS_PER_COST_LEGACY?: KilowattHoursPerCostLegacy
   KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT?: KilowattHoursByServiceAndUsageUnit
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy
   SERVER_EXPECTED_LIFESPAN?: number
 }
 

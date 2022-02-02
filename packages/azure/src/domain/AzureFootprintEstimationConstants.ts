@@ -9,6 +9,7 @@ import {
   COMPUTE_PROCESSOR_TYPES,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
   EstimateClassification,
+  EstimateUnknownUsageBy,
 } from '@cloud-carbon-footprint/core'
 
 import { AZURE_REGIONS } from '../lib/AzureRegions'
@@ -137,6 +138,7 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       kilowattHours: 0,
     },
   },
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy.COST,
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 
