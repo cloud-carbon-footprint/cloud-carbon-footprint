@@ -3267,6 +3267,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.9.0
     aws-sdk: ^2.927.0
     aws-sdk-mock: ^5.1.0
+    csvtojson: ^2.0.10
     eslint: ^8.6.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0

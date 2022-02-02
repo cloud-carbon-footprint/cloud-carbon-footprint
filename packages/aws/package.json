@@ -46,6 +46,7 @@
     "@google-cloud/iam-credentials": "^1.1.1",
     "aws-sdk": "^2.927.0",
     "aws-sdk-mock": "^5.1.0",
+    "csvtojson": "^2.0.10",
     "moment": "^2.29.1",
     "ramda": "^0.28.0"
   },
