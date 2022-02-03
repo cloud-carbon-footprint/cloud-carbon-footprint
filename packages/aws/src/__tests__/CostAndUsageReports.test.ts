@@ -8,6 +8,7 @@ import AWS, {
   CloudWatchLogs,
   CostExplorer,
   Athena as AWSAthena,
+  S3,
 } from 'aws-sdk'
 import {
   GetQueryExecutionOutput,
@@ -25,7 +26,6 @@ import {
   MemoryEstimator,
   StorageEstimator,
   UnknownEstimator,
-  EstimateClassification,
   EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import CostAndUsageReports from '../lib/CostAndUsageReports'
@@ -87,6 +87,7 @@ describe('CostAndUsageReports Service', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
       new AWSAthena(),
     )
 
@@ -95,23 +96,8 @@ describe('CostAndUsageReports Service', () => {
   })
 
   beforeEach(() => {
-    AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
-      [EstimateClassification.COMPUTE]: {
-        cost: 0,
-        kilowattHours: 0,
-      },
-      [EstimateClassification.STORAGE]: {
-        cost: 0,
-        kilowattHours: 0,
-      },
-      [EstimateClassification.NETWORKING]: {
-        cost: 0,
-        kilowattHours: 0,
-      },
-      total: {
-        cost: 0,
-        kilowattHours: 0,
-      },
+    AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
+      total: {},
     }
   })
 
@@ -136,7 +122,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -292,7 +278,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -385,7 +371,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -416,12 +402,12 @@ describe('CostAndUsageReports Service', () => {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000016006234896000002,
+            co2e: 0.0000044492759507991384,
             cost: 10,
-            kilowattHours: 0.038499200000000004,
+            kilowattHours: 0.010701677552402589,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
         ],
         groupBy: grouping,
@@ -464,7 +450,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -556,7 +542,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -620,9 +606,9 @@ describe('CostAndUsageReports Service', () => {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000008870676166771764,
+            co2e: 0.000010643760080225716,
             cost: 2,
-            kilowattHours: 0.025282593867006486,
+            kilowattHours: 0.030336116240407784,
             region: 'us-west-1',
             serviceName: 'AmazonEKS',
             usesAverageCPUConstant: false,
@@ -631,23 +617,23 @@ describe('CostAndUsageReports Service', () => {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000021287520160451432,
+            co2e: 0.000017741352333543527,
             cost: 4,
-            kilowattHours: 0.06067223248081557,
+            kilowattHours: 0.05056518773401297,
             region: 'us-west-1',
             serviceName: 'AmazonRoute53',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
           {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000021287520160451432,
+            co2e: 0.000017741352333543527,
             cost: 4,
-            kilowattHours: 0.06067223248081557,
+            kilowattHours: 0.05056518773401297,
             region: 'us-west-1',
             serviceName: '8icvdraalzbfrdevgamoddblf', // change because of embodied e
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
         ],
         groupBy: grouping,
@@ -673,7 +659,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -779,7 +765,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -863,7 +849,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -970,7 +956,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1028,7 +1014,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1087,7 +1073,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1232,7 +1218,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1348,7 +1334,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1451,7 +1437,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1487,7 +1473,7 @@ describe('CostAndUsageReports Service', () => {
             cost: 10516.725,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
             kilowattHours: 55.5231504211405,
           },
         ],
@@ -1513,12 +1499,12 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 2.1265671481160096e-18,
+            co2e: 0.0006754805005297028,
             cost: 600,
             region: 'us-east-2',
             serviceName: 'AmazonCloudWatch',
             usesAverageCPUConstant: false,
-            kilowattHours: 4.8310539568774404e-15,
+            kilowattHours: 1.5345307801677532,
           },
         ],
         groupBy: grouping,
@@ -1572,7 +1558,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1637,34 +1623,34 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.015574638890884018,
+            co2e: 0.0001503719348123479,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AmazonApiGateway',
-            usesAverageCPUConstant: true,
-            kilowattHours: 49.286831933177275,
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.4758605532036326,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.015574638890884018,
+            co2e: 0.0001503719348123479,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AWSDirectConnect',
-            usesAverageCPUConstant: true,
-            kilowattHours: 49.286831933177275,
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.4758605532036326,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.015574638890884018,
+            co2e: 0.0001503719348123479,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AWSDirectoryService',
-            usesAverageCPUConstant: true,
-            kilowattHours: 49.286831933177275,
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.4758605532036326,
           },
         ],
         groupBy: grouping,
@@ -1687,7 +1673,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1744,7 +1730,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1776,7 +1762,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1797,7 +1783,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1819,7 +1805,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),

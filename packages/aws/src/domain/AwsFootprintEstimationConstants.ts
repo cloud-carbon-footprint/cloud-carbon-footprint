@@ -7,8 +7,8 @@ import {
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
+  EstimateUnknownUsageBy,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
-  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import { AWS_REGIONS } from '../lib/AWSRegions'
@@ -120,25 +120,10 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     SIMPLE_DB: 2,
     DEFAULT: 1,
   },
-  // these constants accumulate as the usage rows are mapped over
-  KILOWATT_HOURS_PER_COST: {
-    [EstimateClassification.COMPUTE]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    [EstimateClassification.STORAGE]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    [EstimateClassification.NETWORKING]: {
-      cost: 0,
-      kilowattHours: 0,
-    },
-    total: {
-      cost: 0,
-      kilowattHours: 0,
-    },
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
+    total: {},
   },
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy.COST,
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 

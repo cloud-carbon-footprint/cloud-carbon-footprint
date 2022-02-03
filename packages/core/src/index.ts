@@ -21,16 +21,19 @@ export { default as UsageData } from './IUsageData'
 export {
   default as FootprintEstimate,
   appendOrAccumulateEstimatesByDay,
-  accumulateKilowattHoursPerCost,
+  accumulateKilowattHoursPerCostLegacy,
+  accumulateKilowattHours,
   MutableEstimationResult,
   aggregateEstimatesByDay,
   getWattsByAverageOrMedian,
   getAverage,
   estimateCo2,
   estimateKwh,
-  KilowattHoursPerCost,
-  CostAndKilowattHourTotals,
+  KilowattHoursPerCostLegacy,
+  KilowattHoursByServiceAndUsageUnit,
+  KilowattHourTotals,
   EstimateClassification,
+  AccumulateKilowattHoursBy,
 } from './FootprintEstimate'
 export { default as ICloudService } from './ICloudService'
 export { default as BillingDataRow } from './BillingDataRow'

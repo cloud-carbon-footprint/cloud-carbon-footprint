@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
-import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 export const MEMORY_USAGE_TYPES: string[] = ['RAM', 'Ram', 'Memory']
 
@@ -81,40 +80,10 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
   'Stackdriver',
 ]
 
-export const UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING: {
-  [key: string]: string[]
-} = {
-  seconds: [EstimateClassification.COMPUTE],
-  bytes: [EstimateClassification.NETWORKING],
-  'byte-seconds': [
-    EstimateClassification.STORAGE,
-    EstimateClassification.MEMORY,
-  ],
-}
-
-export const UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING: {
-  [key: string]: string
-} = {
-  Analysis: EstimateClassification.COMPUTE,
-  'Streaming Insert': EstimateClassification.COMPUTE,
-  'Data Fusion Basic': EstimateClassification.UNKNOWN,
-  'Data Fusion Developer': EstimateClassification.UNKNOWN,
-  'Content Bytes Inspected': EstimateClassification.COMPUTE,
-  'Content Bytes Transformed': EstimateClassification.COMPUTE,
-  'Shuffle chargeable data processed': EstimateClassification.COMPUTE,
-  ManagedZone: EstimateClassification.UNKNOWN,
-  'Device Data Volume': EstimateClassification.STORAGE,
-  'IP address reservation': EstimateClassification.UNKNOWN,
-  'Data Retrieval': EstimateClassification.COMPUTE,
-  'Cloud Armor Policy Charge': EstimateClassification.UNKNOWN,
-  'NAT Gateway: Data processing charge': EstimateClassification.COMPUTE,
-  'Commit (1 year)': EstimateClassification.UNKNOWN,
-  'Secret version replica storage': EstimateClassification.STORAGE,
-  'Email Pro 100k plan': EstimateClassification.UNKNOWN,
-  'Log Volume': EstimateClassification.STORAGE,
-  'Metric Volume': EstimateClassification.STORAGE,
-  'GCP Support': EstimateClassification.UNKNOWN,
-}
+export const SERVICES_TO_OVERRIDE_USAGE_UNIT_AS_UNKNOWN: string[] = [
+  'Secret Manager',
+  'Cloud Key Management Service',
+]
 
 export const COMPUTE_STRING_FORMATS: string[] = [
   'Core',

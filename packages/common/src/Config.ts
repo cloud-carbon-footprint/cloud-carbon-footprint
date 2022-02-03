@@ -3,6 +3,10 @@
  */
 import fs from 'fs'
 import dotenv from 'dotenv'
+import {
+  AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
+  AWS_RECOMMENDATIONS_SERVICES,
+} from './RecommendationsService'
 dotenv.config()
 
 export interface CCFConfig {
@@ -15,6 +19,8 @@ export interface CCFConfig {
     ATHENA_QUERY_RESULT_LOCATION?: string
     ATHENA_REGION?: string
     NAME: string
+    RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES
+    COMPUTE_OPTIMIZER_BUCKET: string
     CURRENT_SERVICES: { key: string; name: string }[]
     CURRENT_REGIONS: string[]
     accounts?: {
@@ -105,6 +111,11 @@ export const appConfig: CCFConfig = {
       },
     },
     NAME: 'AWS',
+    RECOMMENDATIONS_SERVICE:
+      AWS_RECOMMENDATIONS_SERVICES[
+        getEnvVar('AWS_RECOMMENDATIONS_SERVICE') as AWS_RECOMMENDATIONS_SERVICES
+      ] || AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
+    COMPUTE_OPTIMIZER_BUCKET: getEnvVar('AWS_COMPUTE_OPTIMIZER_BUCKET') || '',
     CURRENT_REGIONS: [
       'us-east-1',
       'us-east-2',

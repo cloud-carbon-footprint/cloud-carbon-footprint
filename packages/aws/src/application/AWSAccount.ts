@@ -3,46 +3,47 @@
  */
 
 import {
+  Athena,
   CloudWatch,
+  CloudWatchLogs,
   CostExplorer,
   Credentials,
-  CloudWatchLogs,
-  Athena,
+  S3 as S3Service,
 } from 'aws-sdk'
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 
 import {
-  ICloudService,
-  Region,
-  ComputeEstimator,
-  StorageEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  UnknownEstimator,
   CloudProviderAccount,
+  ComputeEstimator,
   EmbodiedEmissionsEstimator,
+  ICloudService,
+  MemoryEstimator,
+  NetworkingEstimator,
+  Region,
+  StorageEstimator,
+  UnknownEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
-  EstimationResult,
-  configLoader,
-  RecommendationResult,
   AWS_RECOMMENDATIONS_TARGETS,
+  configLoader,
+  EstimationResult,
+  GroupBy,
   LookupTableInput,
   LookupTableOutput,
-  GroupBy,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
 import {
+  CostAndUsageReports,
   EBS,
-  S3,
   EC2,
   ElastiCache,
+  Lambda,
   RDS,
   RDSComputeService,
   RDSStorage,
-  Lambda,
+  S3,
   ServiceWrapper,
-  CostAndUsageReports,
 } from '../lib'
 
 import AWSCredentialsProvider from './AWSCredentialsProvider'
@@ -142,7 +143,7 @@ export default class AWSAccount extends CloudProviderAccount {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -165,7 +166,7 @@ export default class AWSAccount extends CloudProviderAccount {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -202,6 +203,7 @@ export default class AWSAccount extends CloudProviderAccount {
         region: 'us-east-1',
         credentials: options.credentials,
       }),
+      new S3Service(options),
       new Athena(options),
     )
   }

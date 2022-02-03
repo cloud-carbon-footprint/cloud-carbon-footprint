@@ -16,9 +16,8 @@ module.exports = {
     },
   },
   testPathIgnorePatterns: [
-    '<rootDir>/src/services/aws/__tests__/fixtures',
-    '<rootDir>/src/services/gcp/__tests__/fixtures',
     '<rootDir>/src/__tests__/__mocks__',
+    '<rootDir>/src/__tests__/fixtures',
   ],
   coveragePathIgnorePatterns: [
     '<rootDir>/src/index.ts',

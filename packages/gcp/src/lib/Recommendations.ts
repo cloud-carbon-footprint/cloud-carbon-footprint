@@ -39,7 +39,7 @@ import {
 } from './RecommendationsTypes'
 import ServiceWrapper from './ServiceWrapper'
 import { GCP_REGIONS } from './GCPRegions'
-import { CostAndKilowattHourTotals } from '@cloud-carbon-footprint/core'
+import { KilowattHourTotals } from '@cloud-carbon-footprint/core'
 
 export default class Recommendations implements ICloudRecommendationsService {
   readonly RECOMMENDER_IDS: string[] = [
@@ -58,7 +58,7 @@ export default class Recommendations implements ICloudRecommendationsService {
   ]
   private readonly primaryImpactPerformance = 'PERFORMANCE'
   private readonly recommendationsLogger: Logger
-  private readonly costAndCo2eTotals: CostAndKilowattHourTotals
+  private readonly costAndCo2eTotals: KilowattHourTotals
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly hddStorageEstimator: StorageEstimator,

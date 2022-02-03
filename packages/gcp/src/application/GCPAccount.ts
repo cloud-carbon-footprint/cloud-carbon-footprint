@@ -96,7 +96,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -114,7 +114,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),

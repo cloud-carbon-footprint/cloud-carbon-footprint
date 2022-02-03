@@ -83,7 +83,7 @@ describe('Azure Consumption Management Service', () => {
   }
 
   beforeEach(() => {
-    AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST = {
+    AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY = {
       [EstimateClassification.COMPUTE]: {
         cost: 0,
         kilowattHours: 0,
@@ -118,7 +118,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -240,7 +240,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -354,7 +354,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -413,7 +413,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -502,7 +502,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -613,7 +613,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -713,7 +713,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -740,7 +740,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -909,7 +909,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -992,7 +992,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1063,7 +1063,7 @@ describe('Azure Consumption Management Service', () => {
         new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
         new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-        new UnknownEstimator(),
+        new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
         new EmbodiedEmissionsEstimator(
           AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
         ),
@@ -1180,7 +1180,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1239,7 +1239,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1281,7 +1281,7 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
