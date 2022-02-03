@@ -29,10 +29,10 @@ import {
   RightsizingTargetRecommendation,
 } from './Rightsizing'
 import {
-  EC2ComputeOptimizerRecommendation,
   EBSComputeOptimizerRecommendation,
-  LambdaComputeOptimizerRecommendation,
+  EC2ComputeOptimizerRecommendation,
   GetComputeOptimizerRecommendationsRequest,
+  LambdaComputeOptimizerRecommendation,
 } from './ComputeOptimizer'
 
 export default class Recommendations implements ICloudRecommendationsService {
@@ -50,24 +50,39 @@ export default class Recommendations implements ICloudRecommendationsService {
   async getRecommendations(
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
+    const computeOptimizerParams = {
+      Bucket: configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
+    }
+
+    const rightSizingParams: GetRightsizingRecommendationRequest = {
+      Service: this.rightsizingRecommendationsService,
+      Configuration: {
+        BenefitsConsidered: false,
+        RecommendationTarget: recommendationTarget,
+      },
+    }
+
     if (
       configLoader().AWS.RECOMMENDATIONS_SERVICE ===
       AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
     ) {
-      const params = {
-        Bucket: configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
-      }
-      return await this.getComputerOptimizerRecommendations(params)
-    } else {
-      const params: GetRightsizingRecommendationRequest = {
-        Service: this.rightsizingRecommendationsService,
-        Configuration: {
-          BenefitsConsidered: false,
-          RecommendationTarget: recommendationTarget,
-        },
-      }
-      return await this.getRightsizingRecommendations(params)
+      return await this.getComputerOptimizerRecommendations(
+        computeOptimizerParams,
+      )
+    } else if (
+      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
+      AWS_RECOMMENDATIONS_SERVICES.RightSizing
+    ) {
+      return await this.getRightsizingRecommendations(rightSizingParams)
     }
+
+    const rightSizingRecommendations: RecommendationResult[] =
+      await this.getRightsizingRecommendations(rightSizingParams)
+
+    const computeOptimizerRecommendations: RecommendationResult[] =
+      await this.getComputerOptimizerRecommendations(computeOptimizerParams)
+
+    return rightSizingRecommendations.concat(computeOptimizerRecommendations)
   }
 
   private async getComputerOptimizerRecommendations(

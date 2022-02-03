@@ -22,15 +22,16 @@ import {
   rightsizingCrossFamilyRecommendationModify,
   rightsizingCrossFamilyRecommendationTerminate,
   rightsizingRecommendationModify,
+  rightsizingRecommendationModify1,
   rightsizingRecommendationTerminate,
 } from './fixtures/costExplorer.fixtures'
+import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
+import { ServiceWrapper } from '../lib/ServiceWrapper'
 import {
   mockEBSComputeOptimizerBucketList,
   mockEC2ComputeOptimizerBucketList,
   mockLambdaComputeOptimizerBucketList,
 } from './fixtures/computeOptimizer.fixtures'
-import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
 
 describe('AWS Recommendations Service', () => {
   const getServiceWrapper = () =>
@@ -41,22 +42,111 @@ describe('AWS Recommendations Service', () => {
       new S3(),
     )
 
+  const listBucketObjectsSpy = jest.fn()
+
+  const defaultConfig = configLoader().AWS.RECOMMENDATIONS_SERVICE
+
+  beforeAll(() => {
+    AWSMock.setSDKInstance(AWS)
+  })
+
+  afterEach(() => {
+    AWSMock.restore()
+    jest.restoreAllMocks()
+    getRightsizingRecommendationSpy.mockClear()
+  })
+
+  const getRightsizingRecommendationSpy = jest.fn()
+
+  function mockGetRightsizingRecommendation(
+    response: GetRightsizingRecommendationResponse,
+  ) {
+    getRightsizingRecommendationSpy.mockResolvedValue(response)
+    AWSMock.mock(
+      'CostExplorer',
+      'getRightsizingRecommendation',
+      getRightsizingRecommendationSpy,
+    )
+  }
+
+  function mockListComputeOptimizerBucket(response: any) {
+    listBucketObjectsSpy.mockResolvedValue(response)
+    AWSMock.mock('S3', 'listObjectsV2', listBucketObjectsSpy)
+  }
+
+  function mockGetComputeOptimizerBucket(mockCSVFilePath: string) {
+    const mockFilePath = path.join(process.cwd(), mockCSVFilePath)
+    const mockFile = fs.readFileSync(mockFilePath)
+    AWSMock.mock('S3', 'getObject', Buffer.alloc(mockFile.length, mockFile))
+  }
+
+  describe('Both Rightsizing and Compute Optimizer Recommendations', () => {
+    it('gets both Rightsizing and Compute Optimizer Recommendations at the same time', async () => {
+      configLoader().AWS.RECOMMENDATIONS_SERVICE =
+        AWS_RECOMMENDATIONS_SERVICES.All
+      configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET = 'test-bucket'
+
+      moment.now = function () {
+        return +new Date('2022-01-21T00:00:00.000Z')
+      }
+      const mockCSVFilePath = '/src/__tests__/fixtures/computeOptimizerEC2.csv'
+      mockListComputeOptimizerBucket(mockEC2ComputeOptimizerBucketList)
+      mockGetComputeOptimizerBucket(mockCSVFilePath)
+
+      moment.now = function () {
+        return +new Date('2020-04-01T00:00:00.000Z')
+      }
+      mockGetRightsizingRecommendation(rightsizingRecommendationModify1)
+
+      const awsRecommendationsServices = new Recommendations(
+        new ComputeEstimator(),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        getServiceWrapper(),
+      )
+
+      const result = await awsRecommendationsServices.getRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
+
+      const expectedResult: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: 'test-account',
+          accountName: 'test-account',
+          region: 'us-east-2',
+          recommendationType: 'Modify',
+          recommendationDetail:
+            'Modify instance: test-instance-name. Update instance type t2.micro to t2.nano',
+          kilowattHourSavings: 0.18836460000000002,
+          resourceId: 'Test-resource-id',
+          instanceName: 'test-instance-name',
+          co2eSavings: 0.0000829156481802,
+          costSavings: 226,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c80d1b0f3a0c5c69',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 0,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
+        },
+      ]
+      configLoader().AWS.RECOMMENDATIONS_SERVICE = defaultConfig
+      expect(result).toEqual(expectedResult)
+    })
+  })
+
   describe('Rightsizing Recommendations', () => {
-    moment.now = function () {
-      return +new Date('2020-04-01T00:00:00.000Z')
-    }
-
-    beforeAll(() => {
-      AWSMock.setSDKInstance(AWS)
-    })
-
-    afterEach(() => {
-      AWSMock.restore()
-      jest.restoreAllMocks()
-      getRightsizingRecommendationSpy.mockClear()
-    })
-
     it('Get recommendations from Rightsizing API type: Terminate with pagination', async () => {
+      moment.now = function () {
+        return +new Date('2020-04-01T00:00:00.000Z')
+      }
       mockGetRightsizingRecommendation(rightsizingRecommendationTerminate)
 
       const awsRecommendationsServices = new Recommendations(
@@ -138,6 +228,9 @@ describe('AWS Recommendations Service', () => {
     })
 
     it('Get recommendations from Rightsizing API type: Modify', async () => {
+      moment.now = function () {
+        return +new Date('2020-04-01T00:00:00.000Z')
+      }
       mockGetRightsizingRecommendation(rightsizingRecommendationModify)
 
       const awsRecommendationsServices = new Recommendations(
@@ -181,6 +274,9 @@ describe('AWS Recommendations Service', () => {
     })
 
     it('Get recommendations from Rightsizing API type: Terminate with Cross Family parameter', async () => {
+      moment.now = function () {
+        return +new Date('2020-04-01T00:00:00.000Z')
+      }
       mockGetRightsizingRecommendation(
         rightsizingCrossFamilyRecommendationTerminate,
       )
@@ -226,6 +322,9 @@ describe('AWS Recommendations Service', () => {
     })
 
     it('Get recommendations from Rightsizing API type: Modify with Cross Family parameter', async () => {
+      moment.now = function () {
+        return +new Date('2020-04-01T00:00:00.000Z')
+      }
       mockGetRightsizingRecommendation(
         rightsizingCrossFamilyRecommendationModify,
       )
@@ -284,36 +383,14 @@ describe('AWS Recommendations Service', () => {
         `Failed to grab AWS Rightsizing recommendations. Reason: error-test`,
       )
     })
-
-    const getRightsizingRecommendationSpy = jest.fn()
-
-    function mockGetRightsizingRecommendation(
-      response: GetRightsizingRecommendationResponse,
-    ) {
-      getRightsizingRecommendationSpy.mockResolvedValue(response)
-      AWSMock.mock(
-        'CostExplorer',
-        'getRightsizingRecommendation',
-        getRightsizingRecommendationSpy,
-      )
-    }
   })
 
   describe('Compute Optimizer Recommendations', () => {
-    const listBucketObjectsSpy = jest.fn()
-
-    const defaultConfig = configLoader().AWS.RECOMMENDATIONS_SERVICE
-
     beforeAll(() => {
       configLoader().AWS.RECOMMENDATIONS_SERVICE =
         AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
       configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET = 'test-bucket'
       AWSMock.setSDKInstance(AWS)
-    })
-
-    afterEach(() => {
-      AWSMock.restore()
-      jest.restoreAllMocks()
     })
 
     afterAll(() => {
@@ -435,16 +512,5 @@ describe('AWS Recommendations Service', () => {
 
       expect(result).toEqual(expectedResult)
     })
-
-    function mockListComputeOptimizerBucket(response: any) {
-      listBucketObjectsSpy.mockResolvedValue(response)
-      AWSMock.mock('S3', 'listObjectsV2', listBucketObjectsSpy)
-    }
-
-    function mockGetComputeOptimizerBucket(mockCSVFilePath: string) {
-      const mockFilePath = path.join(process.cwd(), mockCSVFilePath)
-      const mockFile = fs.readFileSync(mockFilePath)
-      AWSMock.mock('S3', 'getObject', Buffer.alloc(mockFile.length, mockFile))
-    }
   })
 })
