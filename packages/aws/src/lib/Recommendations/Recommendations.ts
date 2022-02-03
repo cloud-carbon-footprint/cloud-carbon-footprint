@@ -80,6 +80,7 @@ export default class Recommendations implements ICloudRecommendationsService {
 
       const recommendationsResult: RecommendationResult[] = []
       const includedRecommendationTypes = ['OVER_PROVISIONED', 'NOTOPTIMIZED']
+      const optimalPerformanceRiskLevel = 3
 
       for (const recommendationsData of bucketObjectsList.Contents) {
         const recommendationDate = new Date(
@@ -131,7 +132,8 @@ export default class Recommendations implements ICloudRecommendationsService {
                 recommendationOption =
                   computeOptimizerRecommendation.recommendationOptions.find(
                     (recommendation: any) =>
-                      recommendation.performanceRisk <= 3,
+                      recommendation.performanceRisk <=
+                      optimalPerformanceRiskLevel,
                   )
               }
 
