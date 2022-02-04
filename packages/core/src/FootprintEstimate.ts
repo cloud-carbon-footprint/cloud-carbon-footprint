@@ -21,27 +21,15 @@ export type KilowattHourTotals = {
   kilowattHours: number
 }
 
-// TODO: Remove once all cloud providers are updated to use the types below instead
-export type KilowattHoursPerCostLegacy = {
-  [key: string]: KilowattHourTotals
-}
-
 export type KilowattHoursByServiceAndUsageUnit = {
   [key: string]: {
     [key: string]: KilowattHourTotals
   }
 }
+
 export enum AccumulateKilowattHoursBy {
   COST = 'cost',
   USAGE_AMOUNT = 'usageAmount',
-}
-
-export enum EstimateClassification {
-  COMPUTE = 'compute',
-  STORAGE = 'storage',
-  NETWORKING = 'networking',
-  MEMORY = 'memory',
-  UNKNOWN = 'unknown',
 }
 
 export const aggregateEstimatesByDay = (
@@ -92,21 +80,6 @@ export interface MutableServiceEstimate {
   cost: number
   region: string
   usesAverageCPUConstant: boolean
-}
-
-// TODO - Remove once all cloud providers are using the new function below.
-export const accumulateKilowattHoursPerCostLegacy = (
-  classification: EstimateClassification,
-  kilowattHours: number,
-  cost: number,
-  costPerCo2e: KilowattHoursPerCostLegacy,
-): void => {
-  costPerCo2e[classification].cost += cost
-  costPerCo2e.total.cost += cost
-  if (kilowattHours > 0) {
-    costPerCo2e[classification].kilowattHours += kilowattHours
-    costPerCo2e.total.kilowattHours += kilowattHours
-  }
 }
 
 export const accumulateKilowattHours = (
