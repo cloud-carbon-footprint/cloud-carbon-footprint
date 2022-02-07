@@ -69,20 +69,8 @@ export default class Recommendations implements ICloudRecommendationsService {
       return await this.getComputerOptimizerRecommendations(
         computeOptimizerParams,
       )
-    } else if (
-      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
-      AWS_RECOMMENDATIONS_SERVICES.RightSizing
-    ) {
-      return await this.getRightsizingRecommendations(rightSizingParams)
     }
-
-    const rightSizingRecommendations: RecommendationResult[] =
-      await this.getRightsizingRecommendations(rightSizingParams)
-
-    const computeOptimizerRecommendations: RecommendationResult[] =
-      await this.getComputerOptimizerRecommendations(computeOptimizerParams)
-
-    return rightSizingRecommendations.concat(computeOptimizerRecommendations)
+    return await this.getRightsizingRecommendations(rightSizingParams)
   }
 
   private async getComputerOptimizerRecommendations(

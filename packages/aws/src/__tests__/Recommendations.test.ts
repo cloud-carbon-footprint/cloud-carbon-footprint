@@ -80,7 +80,7 @@ describe('AWS Recommendations Service', () => {
     AWSMock.mock('S3', 'getObject', Buffer.alloc(mockFile.length, mockFile))
   }
 
-  describe('Both Rightsizing and Compute Optimizer Recommendations', () => {
+  xdescribe('Both Rightsizing and Compute Optimizer Recommendations', () => {
     it('gets both Rightsizing and Compute Optimizer Recommendations at the same time', async () => {
       configLoader().AWS.RECOMMENDATIONS_SERVICE =
         AWS_RECOMMENDATIONS_SERVICES.All
