@@ -96,7 +96,7 @@ fileignoreconfig:
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
-  checksum: cbc3e0916748c68ad7bf7e807c4e7ecadb7f9951592855690d19824568f5d747
+  checksum: d03181cabc8f5892fc53166916062bd64e4f7dbfe1e1bef06e5009bec3254aa7
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
@@ -294,7 +294,7 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: 2c6b7548d778fcb1ad2399d700c1073b9805123169ab57b67495dff7ab95f8d5
+  checksum: 31f5b2d40cf881c24f7b7002e552ecda5e9f33c2dfa25c53c83c43d8fc5fa743
 - filename: packages/gcp/src/lib/BillingExportTable.ts
   checksum: df8f16310cd2bf983821666d495f5bf1945584851e1242e37ecdf0a652102113
 - filename: packages/gcp/src/lib/BillingExportTypes.ts

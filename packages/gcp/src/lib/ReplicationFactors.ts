@@ -17,6 +17,7 @@ enum SERVICES {
   CLOUD_MEMORYSTORE_FOR_REDIS = 'Cloud Memorystore for Redis',
   CLOUD_SPANNER = 'Cloud Spanner',
   KUBERNETES_ENGINE = 'Kubernetes Engine',
+  CLOUD_COMPOSER = 'Cloud Composer',
 }
 
 export const GCP_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService =
@@ -69,8 +70,16 @@ export const GCP_REPLICATION_FACTORS_FOR_SERVICES: ReplicationFactorsForService 
       return REPLICATION_FACTORS.DEFAULT
     },
     [SERVICES.KUBERNETES_ENGINE]: (usageType: string): number => {
-      if (usageType.includes('Regional') || usageType.includes('Autopilot'))
+      if (
+        usageType.includes('Clusters') &&
+        (usageType.includes('Regional') || usageType.includes('Autopilot'))
+      )
         return REPLICATION_FACTORS.KUBERNETES_ENGINE
+      return REPLICATION_FACTORS.DEFAULT
+    },
+    [SERVICES.CLOUD_COMPOSER]: (usageType: string): number => {
+      if (usageType.includes('Storage') || usageType.includes('storage'))
+        return REPLICATION_FACTORS.CLOUD_STORAGE_SINGLE_REGION
       return REPLICATION_FACTORS.DEFAULT
     },
   }

@@ -37,6 +37,9 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Billing Adjustment',
   'Filestore Capacity Premium',
   'Filestore Capacity Standard',
+  'Pod mCPU Requests',
+  'Pod Memory Requests',
+  'Pod Ephemeral Storage Requests',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
@@ -62,7 +65,6 @@ export const UNKNOWN_SERVICE_TYPES: string[] = [
   'Support',
   'Secret Manager',
   'Cloud Build',
-  'Kubernetes Engine',
   'Cloud Run',
   'Cloud Data Fusion',
   'Cloud Dialogflow API',
@@ -91,6 +93,8 @@ export const COMPUTE_STRING_FORMATS: string[] = [
   'VCPU',
   'vCPU',
   'CPU',
+  'CPUs',
+  'Kubernetes Clusters',
 ]
 
 export const NETWORKING_STRING_FORMATS: string[] = [
