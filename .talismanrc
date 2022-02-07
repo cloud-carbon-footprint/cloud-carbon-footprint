@@ -100,7 +100,7 @@ fileignoreconfig:
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
-  checksum: 192968478bb96ed73fd0b22cedaf01c4083725e7f5384820018a26c9bd3a741d
+  checksum: 8066c01dc6ee716d0aa6ace5a446fc2c8c95462686684ee9d31e5da4c5752db9
 - filename: packages/api/estimates.cache-uscs.json
   checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
@@ -138,7 +138,7 @@ fileignoreconfig:
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
-  checksum: a2ae46aa8a31ea604db82e97f890262d3f60626e99cc18dfda2e75ba69761c8c
+  checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/client/create_client_env_file.sh
@@ -258,9 +258,9 @@ fileignoreconfig:
 - filename: packages/core/src/unknown/UnknownEstimator.ts
   checksum: 4033fa577fb1b42245c0471ce7da72f76713d394370a17695c022eb22ca7c42c
 - filename: packages/create-app/templates/default-app/packages/api/.env.template
-  checksum: 59a37b0faff7579cd95fbd310e876d94771897d47f37e23b5fda045d4339280a
+  checksum: 6a3a9348d74dd6df5978cc0aa6a2fa0c5b51cb62484735614eb5338ccdb6458e
 - filename: packages/create-app/templates/default-app/packages/cli/.env.template
-  checksum: 3fae3d5751fb055049e042136dacf9f2d95cfb4679bbead05cbd720a65bbd16b
+  checksum: 7663594e66cc73a1906c4195e8860d3bec17d17ce3a582d2095638702dda9db4
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/aws.ts
   checksum: 402853f10d9ee56006cea9b63d6ec8d34d6eed506addf89d048d3072069d9f7b
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/azure.ts
