@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment from 'moment'
 import {
   GetRightsizingRecommendationRequest,
   RightsizingRecommendation as AwsRightsizingRecommendation,
@@ -14,9 +13,7 @@ import {
   MemoryEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
-  AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
-  configLoader,
   Logger,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
@@ -28,14 +25,10 @@ import {
   RightsizingRecommendation,
   RightsizingTargetRecommendation,
 } from './Rightsizing'
-import {
-  EBSComputeOptimizerRecommendation,
-  EC2ComputeOptimizerRecommendation,
-  GetComputeOptimizerRecommendationsRequest,
-  LambdaComputeOptimizerRecommendation,
-} from './ComputeOptimizer'
 
-export default class Recommendations implements ICloudRecommendationsService {
+export default class RightsizingRecommendations
+  implements ICloudRecommendationsService
+{
   private readonly rightsizingRecommendationsService: string
   private readonly recommendationsLogger: Logger
   constructor(
@@ -50,11 +43,7 @@ export default class Recommendations implements ICloudRecommendationsService {
   async getRecommendations(
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
-    const computeOptimizerParams = {
-      Bucket: configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
-    }
-
-    const rightSizingParams: GetRightsizingRecommendationRequest = {
+    const params: GetRightsizingRecommendationRequest = {
       Service: this.rightsizingRecommendationsService,
       Configuration: {
         BenefitsConsidered: false,
@@ -62,123 +51,6 @@ export default class Recommendations implements ICloudRecommendationsService {
       },
     }
 
-    if (
-      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
-      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
-    ) {
-      return await this.getComputerOptimizerRecommendations(
-        computeOptimizerParams,
-      )
-    }
-    return await this.getRightsizingRecommendations(rightSizingParams)
-  }
-
-  private async getComputerOptimizerRecommendations(
-    params: GetComputeOptimizerRecommendationsRequest,
-  ) {
-    try {
-      const bucketObjectsList = await this.serviceWrapper.listBucketObjects(
-        params,
-      )
-
-      const recommendationsResult: RecommendationResult[] = []
-      const includedRecommendationTypes = ['OVER_PROVISIONED', 'NOTOPTIMIZED']
-      const optimalPerformanceRiskLevel = 3
-
-      for (const recommendationsData of bucketObjectsList.Contents) {
-        const recommendationDate = new Date(
-          recommendationsData.Key.match(
-            /[0-9]{4}-[0-9]{2}-[0-9]{2}/g,
-          )[0].toString(),
-        )
-
-        const isFromPreviousDay =
-          moment.utc(recommendationDate) >= moment.utc().subtract(1, 'days')
-        const isIncludedService = !recommendationsData.Key.includes('asg')
-        const service: string = recommendationsData.Key.split('/')[1]
-
-        if (isFromPreviousDay && isIncludedService) {
-          const params = {
-            Bucket: bucketObjectsList.Name,
-            Key: recommendationsData.Key,
-          }
-
-          const parsedRecommendations =
-            await this.serviceWrapper.getComputeOptimizerRecommendationsResponse(
-              params,
-            )
-
-          parsedRecommendations.forEach((recommendation) => {
-            const recommendationType = recommendation.finding
-
-            if (
-              includedRecommendationTypes.includes(
-                recommendationType.toUpperCase(),
-              )
-            ) {
-              const computeOptimizerRecommendationServices: {
-                [service: string]: any
-              } = {
-                ec2: EC2ComputeOptimizerRecommendation,
-                ebs: EBSComputeOptimizerRecommendation,
-                lambda: LambdaComputeOptimizerRecommendation,
-              }
-
-              const computeOptimizerRecommendation =
-                new computeOptimizerRecommendationServices[service](
-                  recommendation,
-                )
-
-              let recommendationOption =
-                computeOptimizerRecommendation.recommendationOptions[0]
-              if (service != 'lambda') {
-                recommendationOption =
-                  computeOptimizerRecommendation.recommendationOptions.find(
-                    (recommendation: any) =>
-                      recommendation.performanceRisk <=
-                      optimalPerformanceRiskLevel,
-                  )
-              }
-
-              const recommendationOptionServiceType: {
-                [service: string]: any
-              } = {
-                ec2: 'instanceType',
-                ebs: 'volumeType',
-                lambda: 'memorySize',
-              }
-
-              recommendationsResult.push({
-                cloudProvider: 'AWS',
-                accountId: computeOptimizerRecommendation.accountId,
-                accountName: computeOptimizerRecommendation.accountId,
-                instanceName: computeOptimizerRecommendation?.instanceName,
-                region: computeOptimizerRecommendation.region,
-                recommendationType: computeOptimizerRecommendation.type,
-                resourceId: computeOptimizerRecommendation.resourceId,
-                recommendationDetail:
-                  recommendationOption?.[
-                    recommendationOptionServiceType[service]
-                  ],
-                costSavings: parseFloat(recommendationOption.costSavings),
-                co2eSavings: 0,
-                kilowattHourSavings: 0,
-              })
-            }
-          })
-        }
-      }
-      return recommendationsResult
-    } catch (e) {
-      throw new Error(
-        `Failed to grab AWS Compute Optimizer recommendations. Reason: ${e.message}`,
-      )
-    }
-  }
-
-  private async getRightsizingRecommendations(
-    params: GetRightsizingRecommendationRequest,
-  ) {
     try {
       const results =
         await this.serviceWrapper.getRightsizingRecommendationsResponses(params)

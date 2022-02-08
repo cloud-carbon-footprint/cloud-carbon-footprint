@@ -13,3 +13,7 @@ export { default as Lambda } from './Lambda'
 export { ServiceWrapper } from './ServiceWrapper'
 export { default as CostAndUsageReports } from './CostAndUsageReports'
 export { AWS_REGIONS } from './AWSRegions'
+export {
+  RightsizingRecommendations,
+  ComputeOptimizerRecommendations,
+} from './Recommendations'

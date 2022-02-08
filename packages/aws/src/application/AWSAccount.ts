@@ -24,6 +24,7 @@ import {
   UnknownEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
+  AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   EstimationResult,
@@ -52,7 +53,10 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import { Recommendations } from '../lib/Recommendations'
+import {
+  RightsizingRecommendations,
+  ComputeOptimizerRecommendations,
+} from '../lib/Recommendations'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -118,15 +122,31 @@ export default class AWSAccount extends CloudProviderAccount {
   async getDataForRecommendations(
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
-    const recommendations = new Recommendations(
+    const serviceWrapper = this.createServiceWrapper(
+      this.getServiceConfigurationOptions(
+        configLoader().AWS.ATHENA_REGION,
+        this.credentials,
+      ),
+    )
+
+    if (
+      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
+      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+    ) {
+      const recommendations = new ComputeOptimizerRecommendations(
+        new ComputeEstimator(),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        serviceWrapper,
+      )
+      return await recommendations.getRecommendations(
+        configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
+      )
+    }
+
+    const recommendations = new RightsizingRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      this.createServiceWrapper(
-        this.getServiceConfigurationOptions(
-          configLoader().AWS.ATHENA_REGION,
-          this.credentials,
-        ),
-      ),
+      serviceWrapper,
     )
 
     return await recommendations.getRecommendations(recommendationTarget)

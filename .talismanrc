@@ -117,6 +117,8 @@ fileignoreconfig:
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
   checksum: 882473df680508d6168bcb4b4cde7d44bc1d6d28f7566488b32a7c9e5073c22d
+- filename: packages/aws/src/__tests__/RightsizingRecommendations.test.ts
+  checksum: 5f4b552f103b11d0aa6b194799bc70a930d2eb64b5a3d1474fb8284de8861439
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
 - filename: packages/aws/src/__tests__/fixtures/computeOptimizer.fixtures.ts
@@ -127,6 +129,8 @@ fileignoreconfig:
   checksum: 1e137cc798c5ad0176a70c08933b020baafe906969ac91fd34e033de68b1106a
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
+- filename: packages/aws/src/lib/Recommendations/ComputeOptimizerRecommendations.ts
+  checksum: f028097741c58142ed4ac1a5748f80727ad9428666741e5b304f4994595c9438
 - filename: packages/aws/src/lib/Recommendations/Recommendations.ts
   checksum: 366f101f67bd31dc640998666be0f6f8da68c0167b3627ebbaa2b498adc831fb
 - filename: packages/azure/package.json
