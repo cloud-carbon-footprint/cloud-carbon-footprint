@@ -223,12 +223,12 @@ Compute estimations, the application treats every 4 ACU-Hours as one vCPU Hour.
 
 In the case of GKE clusters, our application makes some assumptions about the number of virtual CPUs provisioned per cluster.
 For each cluster you need to provision a number of "nodes", each representing one Compute Engine machine type, with 
-the default machine type being e2-medium, which has one vCPU provisioned. In order to estimate the energy from GKE Compute, we 
+the [default machine type being e2-medium](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture), which has one vCPU provisioned. In order to estimate the energy from GKE Compute, we 
 multiply the average number of vCPUs provisioned per cluster by the usage amount in hours, to get the total vCPU Hours.
 
 By default, our application assumes 3 vCPUs provisioned because the default number of nodes is 3, and the default machine 
 type of e2-medium has 1 vCPU. However, you can override this default using the `GCP_VCPUS_PER_GKE_CLUSTER` [configuration 
-option](./ConfigurationsGlossary.md), which we recommend if you know you're provisioning more or less than 3 vCPUs per cluster.     
+option](./ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 3 vCPUs per cluster.     
 
 ##### A note on GCP Cloud Composer Compute Estimates
 
@@ -240,7 +240,7 @@ provisioned per environment by the usage amount in hours, to get the total vCPU 
 
 By default, our application assumes 14 vCPUs provisioned because this is the default option for the medium environment size.
 However, you can override this default using the `GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT` [configuration
-option](./ConfigurationsGlossary.md), which we recommend if you know you're provisioning more or less than 14 vCPUs per 
+option](./ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 14 vCPUs per 
 environment.
 
 #### Storage
