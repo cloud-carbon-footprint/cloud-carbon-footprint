@@ -12,18 +12,50 @@ Given that these usage types have been derived from Thoughtworks' usage, there m
 
 ## Handling Unknown Usage Types
 
-Currently, the application is built to support the energy and carbon emissions estimations for Compute, Storage, Networking and Memory usage types. Per cloud provider, there is a unique list of services and usage types that we intentionally classify as “Unsupported”. Some of these we do not intend to estimate energy usage, (i.e. Refunds, or License fees).
+Currently, the application is built to support the energy and carbon emissions estimations for Compute, Storage, Networking and Memory usage types. For the purpose of this documentation, these should be considered “known” usage types. Per cloud provider, there is a unique list of services and usage types that we intentionally classify as “Unsupported”. Some of these we do not intend to estimate energy usage, (i.e. Refunds, or License fees).
 
-There are, however, a number of billing line items that may not meet the criteria to be classified with a high degree of confidence as compute, storage, networking or memory - despite us having confidence there is energy and carbon emissions associated with them. This can be the case with higher level managed services where we have little information about the underlying infrastructure provisioned. For these line items, we have developed an approach that estimates energy and carbon emissions using cost as a proxy. For each of these line items we identify the best fit usage type (compute, storage, networking, memory), and then use the average kilowatt-hour per dollar of that type to calculate the energy use from the line item’s cost.
+There are, however, a number of billing line items that may not meet the criteria to be classified with a high degree of confidence as compute, storage, networking or memory - despite us having confidence there is energy and carbon emissions associated with them. This can be the case with higher level managed services where we have little information about the underlying infrastructure provisioned. For these line items, we have developed an approach that estimates energy and carbon emissions using usage amount (GCP, Azure) or cost (AWS) as a proxy. For each of these line items we identify the best fit known usage type by looking at the service and usage unit, then use the average kilowatt-hour per dollar of that best fit usage type to calculate the energy, using the line item’s usage amount or cost depending on the cloud provider.
 
 ### Applying the Kilowatt-hour/Cost Coefficient
 
-The Kilowatt-hour/Cost Coefficient is dynamically determined by calculating the sum of the Kilowatt-hours and Cost respectively per each classification and then dividing that total Kilowatt-hours by the total cost. For example, if the sum of all the usage classified as Compute was found to be 100 Kilowatt-hours and $1,000 of Cost, the “compute coefficient” would be 0.1 Kilowatt-hours/dollars (100 Kilowatt-hours / $1,000). 
+For each “known” usage type, we dynamically build the average kilowatt-hour per usage amount (or cost for AWS) for each unique service and usage unit combination, then multiply that by the usage amount (or cost for AWS) for any unknown rows. We also track the totals to be used for unknown rows that do not match a known service and usage unit combination. Here are these steps in more detail, using GCP services and usage units as an example:
 
-Once we determine the coefficient for each classification, we are able to attempt to “re-classify” the previously determined Unknown usage types. This approach varies from checking the usage unit, to parsing out specific strings from the usage type description of the Unknown usage. For example, if the Unknown usage has a usage unit of “10 Hours” or “seconds”, or the usage type description contains the string “2 vCPU”, we can reasonably assume this could be re-classified as Compute. You can see examples of these re-classified Unknown usage rows for each cloud provider in [this spreadsheet](https://docs.google.com/spreadsheets/d/1vA91srfzCCQUSfDnvSxCLr30a0KzdoiGt1CQ2T8LrDY/edit?usp=sharing).
+1. For known usage rows, track usageAmount and kilowattHour per service and usage unit, accumulating the values. The result looks something like this:
+```
+{
+  kubernetesEngine: {
+    seconds: {
+      usageAmount: 10,
+      kilowattHours: 100,
+},
+    bytes: {
+      usageAmount: 20,
+      kilowattHours: 200,
+}
+},
+  computeEngine: {...},
+  totals: {
+    seconds: {
+      usageAmount: 50,
+      kilowattHours: 1000,
+},
+  bytes: {...},
+}
+```
+2. For each unknown row, if there is a known usageAmount/kilowattHours ratio with the same service and usage unit, multiply the usageAmount by the ratio to determine the estimated kilowatt hours. Then convert that to CO2e based on Google’s published grid emission and carbon free energy percentage, per data center. For example, if we had this “unknown” row using the example data in the previous bullet, the estimated kilowatt-hours would be 100 / 10 * 300 = 3000 kilowatt-hours:
 
-Once we make this reclassification, we multiply the respective Kilowatt-hour/Cost Coefficient by the cost of the specific Unknown usage to determine a Kilowatt-hour estimation. We then multiply this by the cloud provider grid emissions factors based on the region, to get estimated metric tons of CO2e. 
+| Service name     | Usage unit Value | Usage amount |
+|------------------|------------------|--------------|
+| kubernetesEngine | seconds          | 300          |
 
-We use the same approach for re-classifying Unknown usages as Compute, Storage, Networking and Memory. If we are still unable to re-classify the usage, it will remain as Unknown and we multiply the cost of the Unknown usage by a Kilowatt-hour/Cost coefficient based on the total cost and total Kilowatt-hour of that specific cloud provider usage. These dynamic coefficients will be consumer specific as each user of the application will have different sums of cost and Kilowatt-hours.
+3. If there is no same service name and usage unit, then we multiply the usage amount by KWh/usage unit ratio for total usage with that usage unit. For example, if we had this “unknown” row using the example data in the first bullet, the estimated kilowatt-hours would be 1000 / 50 * 400 = 8000 kilowatt-hours:
+
+| Service name | Usage unit Value | Usage amount |
+|--------------|------------------|--------------|
+| appEngine    | seconds          | 400          |
+
+#### Why we use cost for AWS instead:
+
+In the case of AWS, we track and accumulate known Kilowatt-hours and cost, rather than the Kilowatt-hours and usage amount. We then multiple the cost of unknown usage by these dynamic coefficients. This is because there is no column for “usage unit” in the AWS Cost and Usage Reports, only a “pricing unit”. This means we are unable to use the usage amount to estimate kilowatt hours as we don’t know what usage unit we should multiply it by to estimate Kilowatt-hours.
 
 We welcome any and all feedback on this approach, or suggestions for entirely different approaches to handling Unknown cloud usage.
