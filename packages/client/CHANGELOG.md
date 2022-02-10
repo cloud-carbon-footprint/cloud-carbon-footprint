@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/client
 
+## 2.3.2
+
+### Patch Changes
+
+- f40ce29e: Adds Compute Optimizer Recommendations for AWS
+- 0e577b5b: Bumps react-router-dom to latest major version, and updates related code
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/common@1.4.0
+
 ## 2.3.1
 
 ### Patch Changes

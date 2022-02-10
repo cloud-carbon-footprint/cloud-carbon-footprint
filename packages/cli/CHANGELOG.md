@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/cli
 
+## 1.3.0
+
+### Minor Changes
+
+- 04f2be16: Adds configurable option to use Google's published carbon free energy % in emissions factors. Updates estimation logic for GCP services: Cloud Composer and Kubernetes Engine, to improve accuracy.
+
+### Patch Changes
+
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/common@1.4.0
+  - @cloud-carbon-footprint/app@0.4.2
+
 ## 1.2.1
 
 ### Patch Changes

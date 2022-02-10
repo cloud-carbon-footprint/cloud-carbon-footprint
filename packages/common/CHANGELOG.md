@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/common
 
+## 1.4.0
+
+### Minor Changes
+
+- f40ce29e: Adds Compute Optimizer Recommendations for AWS
+- 04f2be16: Adds configurable option to use Google's published carbon free energy % in emissions factors. Updates estimation logic for GCP services: Cloud Composer and Kubernetes Engine, to improve accuracy.
+
 ## 1.3.1
 
 ### Patch Changes
