@@ -293,6 +293,39 @@ const mockDataWithSmallNumbers: EstimationResult[] = [
   },
 ]
 
+const mockDataWithLargeNumbers: EstimationResult[] = [
+  {
+    timestamp: dateOne,
+    periodStartDate: dateOne,
+    periodEndDate: dateOnePeriodEnd,
+    groupBy: GroupBy.day,
+    serviceEstimates: [
+      {
+        cloudProvider: 'aws',
+        accountId: '1',
+        accountName: 'testacct',
+        serviceName: 'ebs',
+        kilowattHours: 2.5,
+        co2e: 200,
+        cost: 325.25,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+      {
+        cloudProvider: 'aws',
+        accountId: '2',
+        accountName: 'testacct',
+        serviceName: 'ec2',
+        kilowattHours: 1.8,
+        co2e: 127,
+        cost: 203.47,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+    ],
+  },
+]
+
 const mockRecommendationData: RecommendationResult[] = [
   {
     cloudProvider: 'AWS',
@@ -356,6 +389,7 @@ export {
   mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
   mockDataWithSmallNumbers,
+  mockDataWithLargeNumbers,
   mockRecommendationData,
   mockRecommendationDataWithUnknowns,
   mockEmissionsAndRecommendations,
