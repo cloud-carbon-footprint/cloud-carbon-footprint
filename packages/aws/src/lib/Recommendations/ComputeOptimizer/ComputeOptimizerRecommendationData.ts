@@ -6,9 +6,6 @@ export interface ComputeOptimizerRecommendationData {
   accountId: string
   finding: string
   recommendations_count: string
-  recommendationOptions_1_instanceType: string
-  recommendationOptions_2_instanceType: string
-  recommendationOptions_3_instanceType: string
   recommendationOptions_1_estimatedMonthlySavings_value: string
   recommendationOptions_2_estimatedMonthlySavings_value: string
   recommendationOptions_3_estimatedMonthlySavings_value: string

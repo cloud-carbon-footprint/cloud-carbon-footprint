@@ -59,6 +59,6 @@ export default class LambdaCurrentComputeOptimizerRecommendation extends Compute
   }
 
   public getVcpusForLambda(memorySize: string) {
-    return (parseFloat(memorySize) / 1769).toString() //memory equivalent to 1 vcpu
+    return (parseFloat(memorySize) / 1769).toString() //memory(MB) equivalent to 1 vcpu
   }
 }
