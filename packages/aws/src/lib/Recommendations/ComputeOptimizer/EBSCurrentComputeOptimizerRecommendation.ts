@@ -1,20 +1,12 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { EBSRecommendationOption } from '@cloud-carbon-footprint/common'
 import { EBSComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 
-export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
-  public accountId: string
-  public accountName: string
-  public region: string
-  public type: string
-  public resourceId: string
-  public currentCost: string
+export default class EBSCurrentComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public volumeType: string
-  public volumeSize: string
-  public recommendationOptions: EBSRecommendationOption[]
+  public volumeSize: number
 
   constructor(
     computeOptimizerRecommendationData: Partial<EBSComputeOptimizerRecommendationData>,
@@ -24,11 +16,11 @@ export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerR
     this.accountName = this.accountId
     this.region = this.getRegion(computeOptimizerRecommendationData.volumeArn)
     this.type = `EBS-${computeOptimizerRecommendationData.finding}`
-    this.currentCost = computeOptimizerRecommendationData.current_monthlyPrice
     this.volumeType =
       computeOptimizerRecommendationData.currentConfiguration_volumeType
-    this.volumeSize =
-      computeOptimizerRecommendationData.currentConfiguration_volumeSize
+    this.volumeSize = parseInt(
+      computeOptimizerRecommendationData.currentConfiguration_volumeSize,
+    )
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.volumeArn,
     )

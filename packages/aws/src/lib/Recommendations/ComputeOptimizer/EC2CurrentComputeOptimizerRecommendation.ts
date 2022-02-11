@@ -1,18 +1,15 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { EC2RecommendationOption } from '@cloud-carbon-footprint/common'
+import { getHoursInMonth } from '@cloud-carbon-footprint/common'
 import { EC2ComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 
-export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
-  public accountId: string
-  public accountName: string
-  public region: string
-  public type: string
+export default class EC2CurrentComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public instanceName: string
-  public resourceId: string
-  public recommendationOptions: EC2RecommendationOption[]
+  public vCpuHours: number
+  public instanceType: string
+  public currentVcpus: string
   public usageAmount: number
 
   constructor(
@@ -26,6 +23,10 @@ export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerR
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.instanceArn,
     )
+    this.instanceType = computeOptimizerRecommendationData.instanceType
+    this.currentVcpus = computeOptimizerRecommendationData.current_vcpus
+    this.vCpuHours = this.getVCpuHours(this.currentVcpus, this.instanceType)
+    this.usageAmount = getHoursInMonth()
     this.recommendationOptions = [
       {
         instanceType:
@@ -34,6 +35,7 @@ export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_1_estimatedMonthlySavings_value,
         performanceRisk:
           computeOptimizerRecommendationData.recommendationOptions_1_performanceRisk,
+        Vcpu: computeOptimizerRecommendationData.recommendationOptions_1_vcpus,
       },
       {
         instanceType:
@@ -42,6 +44,7 @@ export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_2_estimatedMonthlySavings_value,
         performanceRisk:
           computeOptimizerRecommendationData.recommendationOptions_2_performanceRisk,
+        Vcpu: computeOptimizerRecommendationData.recommendationOptions_2_vcpus,
       },
       {
         instanceType:
@@ -50,6 +53,7 @@ export default class EC2ComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_3_estimatedMonthlySavings_value,
         performanceRisk:
           computeOptimizerRecommendationData.recommendationOptions_3_performanceRisk,
+        Vcpu: computeOptimizerRecommendationData.recommendationOptions_3_vcpus,
       },
     ]
   }

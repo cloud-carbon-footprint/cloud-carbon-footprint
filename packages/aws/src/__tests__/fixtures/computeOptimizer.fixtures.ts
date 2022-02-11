@@ -56,7 +56,7 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    currentInstanceType: 'm4.xlarge',
+    instanceType: 'm4.xlarge',
     finding: 'OVER_PROVISIONED',
     current_vcpus: '4',
     recommendations_count: '3',
@@ -69,13 +69,16 @@ export const ec2ComputeOptimizer = [
     recommendationOptions_1_performanceRisk: '3.0',
     recommendationOptions_2_performanceRisk: '1.0',
     recommendationOptions_3_performanceRisk: '1.0',
+    recommendationOptions_1_vcpus: '2',
+    recommendationOptions_2_vcpus: '2',
+    recommendationOptions_3_vcpus: '2',
   },
   {
     accountId: '1234567890',
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    currentInstanceType: 'm4.xlarge',
+    instanceType: 'm4.xlarge',
     finding: 'UNDER_PROVISIONED',
     current_vcpus: '2',
     recommendations_count: '3',
@@ -88,13 +91,16 @@ export const ec2ComputeOptimizer = [
     recommendationOptions_1_performanceRisk: '1.0',
     recommendationOptions_2_performanceRisk: '1.0',
     recommendationOptions_3_performanceRisk: '3.0',
+    recommendationOptions_1_vcpus: '2',
+    recommendationOptions_2_vcpus: '2',
+    recommendationOptions_3_vcpus: '2',
   },
   {
     accountId: '1234567890',
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    currentInstanceType: 'm4.xlarge',
+    instanceType: 'm4.xlarge',
     finding: 'OPTIMIZED',
     current_vcpus: '3',
     recommendations_count: '3',
@@ -107,6 +113,9 @@ export const ec2ComputeOptimizer = [
     recommendationOptions_1_performanceRisk: '1.0',
     recommendationOptions_2_performanceRisk: '1.0',
     recommendationOptions_3_performanceRisk: '3.0',
+    recommendationOptions_1_vcpus: '2',
+    recommendationOptions_2_vcpus: '2',
+    recommendationOptions_3_vcpus: '2',
   },
 ]
 
@@ -138,7 +147,7 @@ export const ebsComputeOptimizer = [
     currentConfiguration_volumeSize: '80',
     recommendations_count: '2',
     recommendationOptions_1_configuration_volumeType: 'gp3',
-    recommendationOptions_1_configuration_volumeSize: '80',
+    recommendationOptions_1_configuration_volumeSize: '50',
     recommendationOptions_2_configuration_volumeType: 'gp2',
     recommendationOptions_2_configuration_volumeSize: '80',
     recommendationOptions_3_configuration_volumeType: '',

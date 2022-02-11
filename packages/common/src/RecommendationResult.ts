@@ -26,6 +26,7 @@ export type EC2RecommendationOption = {
   instanceType: string
   costSavings: string
   performanceRisk: string
+  Vcpu: string
 }
 
 export type EBSRecommendationOption = {

@@ -7,7 +7,11 @@ import path from 'path'
 import moment from 'moment'
 import * as fs from 'fs'
 
-import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
+import {
+  ComputeEstimator,
+  MemoryEstimator,
+  StorageEstimator,
+} from '@cloud-carbon-footprint/core'
 import {
   AWS_RECOMMENDATIONS_SERVICES,
   configLoader,
@@ -34,6 +38,7 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
     new ComputeOptimizerRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       getServiceWrapper(),
     )
 
@@ -87,10 +92,10 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         accountName: '1234567890',
         region: 'eu-central-1',
         recommendationType: 'EC2-OVER_PROVISIONED',
-        kilowattHourSavings: 0,
+        kilowattHourSavings: 9.737524749599999,
         resourceId: 'i-0c80d1b0f3a0c5c69',
         instanceName: 'PA-VM-100 | Networks',
-        co2eSavings: 0,
+        co2eSavings: 0.0032912833653648,
         recommendationDetail: 't3.xlarge',
         costSavings: 33.79,
       },
@@ -122,9 +127,9 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         accountName: '1234567890',
         region: 'us-west-2',
         recommendationType: 'EBS-NotOptimized',
-        kilowattHourSavings: 0,
+        kilowattHourSavings: 0.000044265,
         resourceId: 'vol-00e39f1234a7eadfb',
-        co2eSavings: 0,
+        co2eSavings: 1.5530862164999997e-8,
         recommendationDetail: 'gp3',
         costSavings: 6.2,
       },
@@ -156,9 +161,9 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         accountName: '1234567890',
         region: 'us-east-2',
         recommendationType: 'Lambda-NotOptimized',
-        kilowattHourSavings: 0,
+        kilowattHourSavings: 0.1781104877331825,
         resourceId: 'api-user-prod-add_user:$LATEST',
-        co2eSavings: 0,
+        co2eSavings: 0.00007840192126380642,
         recommendationDetail: '848',
         costSavings: 2.988e-4,
       },

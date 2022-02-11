@@ -2,9 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-export { default as EC2ComputeOptimizerRecommendation } from './EC2ComputeOptimizerRecommendation'
-export { default as EBSComputeOptimizerRecommendation } from './EBSComputeOptimizerRecommendation'
-export { default as LambdaComputeOptimizerRecommendation } from './LambdaComputeOptimizerRecommendation'
+export { default as EC2CurrentComputeOptimizerRecommendation } from './EC2CurrentComputeOptimizerRecommendation'
+export { default as EBSCurrentComputeOptimizerRecommendation } from './EBSCurrentComputeOptimizerRecommendation'
+export { default as LambdaCurrentComputeOptimizerRecommendation } from './LambdaCurrentComputeOptimizerRecommendation'
 export {
   EC2ComputeOptimizerRecommendationData,
   GetComputeOptimizerRecommendationsRequest,
