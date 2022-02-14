@@ -12,11 +12,11 @@ const useStyles = makeStyles(({ spacing, typography }) => ({
     fontSize: 14,
   },
   smallLabel: {
-    fontWeight: typography.fontWeightBold,
+    fontWeight: 'bold',
     fontSize: 14,
   },
   contentLabel: {
-    fontWeight: typography.fontWeightBold,
+    fontWeight: 'bold',
   },
   subLabel: {
     fontSize: 12,
