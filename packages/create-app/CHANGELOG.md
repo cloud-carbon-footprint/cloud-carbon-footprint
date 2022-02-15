@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.2.4
+
+### Patch Changes
+
+- ae0c0b66: Updates create app templates from [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c6578692316b4fe402d30ac37262e3d2d2277f0d).
+
 ## 1.2.3
 
 ### Patch Changes
