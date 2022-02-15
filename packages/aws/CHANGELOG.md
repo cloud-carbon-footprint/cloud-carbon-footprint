@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/aws
 
+## 0.9.1
+
+### Patch Changes
+
+- 4873fa2f: Adds reference link for aws instance types
+
 ## 0.9.0
 
 ### Minor Changes
