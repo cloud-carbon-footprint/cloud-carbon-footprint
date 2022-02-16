@@ -5,7 +5,6 @@
 import { createObjectCsvWriter } from "csv-writer";
 import {
     ebsComputeOptimizer,
-    ec2ComputeOptimizer,
 } from '../packages/aws/src/__tests__/fixtures/computeOptimizer.fixtures'
 
 async function writeCSV() {

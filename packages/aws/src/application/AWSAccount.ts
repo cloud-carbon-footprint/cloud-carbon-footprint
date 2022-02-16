@@ -136,6 +136,7 @@ export default class AWSAccount extends CloudProviderAccount {
       const recommendations = new ComputeOptimizerRecommendations(
         new ComputeEstimator(),
         new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
         new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         serviceWrapper,
       )

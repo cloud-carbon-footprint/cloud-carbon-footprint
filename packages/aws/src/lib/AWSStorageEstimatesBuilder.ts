@@ -13,7 +13,7 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import { convertGigabyteHoursToTerabyteHours } from '@cloud-carbon-footprint/common'
+import { convertGigaBytesToTerabyteHours } from '@cloud-carbon-footprint/common'
 import { EBSCurrentComputeOptimizerRecommendation } from './Recommendations/ComputeOptimizer'
 
 export default class AWSStorageEstimatesBuilder extends FootprintEstimatesDataBuilder {
@@ -27,18 +27,13 @@ export default class AWSStorageEstimatesBuilder extends FootprintEstimatesDataBu
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(this.region)
     this.storageUsage = this.getStorageUsage()
     this.storageConstants = this.getStorageConstants()
-    this.storageFootprint = this.getStorageFootprint(
-      storageEstimator,
-      this.storageUsage,
-      this.storageConstants,
-      this.region,
-    )
+    this.storageFootprint = this.getStorageFootprint(storageEstimator)
     this.volumeSize = rowData.volumeSize
   }
 
   private getStorageUsage(): StorageUsage {
     return {
-      terabyteHours: convertGigabyteHoursToTerabyteHours(this.volumeSize),
+      terabyteHours: convertGigaBytesToTerabyteHours(this.volumeSize),
     }
   }
 
@@ -51,15 +46,12 @@ export default class AWSStorageEstimatesBuilder extends FootprintEstimatesDataBu
 
   private getStorageFootprint(
     storageEstimator: StorageEstimator,
-    storageUsage: StorageUsage,
-    storageConstants: CloudConstants,
-    region: string,
   ): FootprintEstimate {
     return storageEstimator.estimate(
-      [storageUsage],
-      region,
+      [this.storageUsage],
+      this.region,
       AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      storageConstants,
+      this.storageConstants,
     )[0]
   }
 }

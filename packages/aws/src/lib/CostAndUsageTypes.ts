@@ -25,6 +25,7 @@ export const SSD_SERVICES: string[] = [
 export const SSD_USAGE_TYPES: string[] = [
   'VolumeUsage.gp2', // EBS
   'VolumeUsage.io2', // EBS
+  'VolumeUsage.io1', // EBS
   'VolumeUsage.gp3', // EBS
   'VolumeUsage.piops', // EBS
   'GP2-Storage', // RDS

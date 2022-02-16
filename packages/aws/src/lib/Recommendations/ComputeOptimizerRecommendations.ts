@@ -22,6 +22,7 @@ import EC2TargetComputeOptimizerRecommendation from './ComputeOptimizer/EC2Targe
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import EBSTargetComputeOptimizerRecommendation from './ComputeOptimizer/EBSTargetComputeOptimizerRecommendation'
 import LambdaTargetComputeOptimizerRecommendation from './ComputeOptimizer/LambdaTargetComputeOptimizerRecommendation'
+import { SSD_USAGE_TYPES } from '../CostAndUsageTypes'
 
 export default class ComputeOptimizerRecommendations
   implements ICloudRecommendationsService
@@ -30,7 +31,8 @@ export default class ComputeOptimizerRecommendations
   constructor(
     private readonly computeEstimator: ComputeEstimator,
     private readonly memoryEstimator: MemoryEstimator,
-    private readonly storageEstimator: StorageEstimator,
+    private readonly ssdStorageEstimator: StorageEstimator,
+    private readonly hddStorageEstimator: StorageEstimator,
     private readonly serviceWrapper: ServiceWrapper,
   ) {
     this.recommendationsLogger = new Logger('AWSRecommendations')
@@ -111,14 +113,13 @@ export default class ComputeOptimizerRecommendations
 
               if (service === 'ebs') {
                 const currentStorageFootprint =
-                  this.getStorageFootprintEstimates(
+                  this.getStorageFootprintEstimate(
                     currentComputeOptimizerRecommendation,
                   )
 
-                const targetStorageFootprint =
-                  this.getStorageFootprintEstimates(
-                    targetComputeOptimizerRecommendation,
-                  )
+                const targetStorageFootprint = this.getStorageFootprintEstimate(
+                  targetComputeOptimizerRecommendation,
+                )
 
                 kilowattHourSavings =
                   currentStorageFootprint.kilowattHours -
@@ -206,12 +207,20 @@ export default class ComputeOptimizerRecommendations
     return [computeFootprint, memoryFootprint]
   }
 
-  private getStorageFootprintEstimates(
+  private getStorageFootprintEstimate(
     computeOptimizerRecommendation: EBSCurrentComputeOptimizerRecommendation,
   ) {
+    let storageEstimator = this.hddStorageEstimator
+    if (this.volumeTypeIsSSD(computeOptimizerRecommendation.volumeType)) {
+      storageEstimator = this.ssdStorageEstimator
+    }
     return new AWSStorageEstimatesBuilder(
       computeOptimizerRecommendation,
-      this.storageEstimator,
+      storageEstimator,
     ).storageFootprint
+  }
+
+  private volumeTypeIsSSD(volumeType: string) {
+    return SSD_USAGE_TYPES.some((type) => type.includes(volumeType))
   }
 }

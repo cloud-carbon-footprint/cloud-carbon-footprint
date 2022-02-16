@@ -38,6 +38,7 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
     new ComputeOptimizerRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       getServiceWrapper(),
     )
@@ -127,10 +128,22 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         accountName: '1234567890',
         region: 'us-west-2',
         recommendationType: 'EBS-NotOptimized',
-        kilowattHourSavings: 0.000044265,
+        kilowattHourSavings: 0.0019612799999999993,
         resourceId: 'vol-00e39f1234a7eadfb',
-        co2eSavings: 1.5530862164999997e-8,
+        co2eSavings: 6.881366620799998e-7,
         recommendationDetail: 'gp3',
+        costSavings: 6.2,
+      },
+      {
+        cloudProvider: 'AWS',
+        accountId: '1234567890',
+        accountName: '1234567890',
+        region: 'us-west-2',
+        recommendationType: 'EBS-NotOptimized',
+        kilowattHourSavings: 0.0010623599999999994,
+        resourceId: 'vol-00e39f1234a7eaqrt',
+        co2eSavings: 3.7274069195999967e-7,
+        recommendationDetail: 'st1',
         costSavings: 6.2,
       },
     ]
