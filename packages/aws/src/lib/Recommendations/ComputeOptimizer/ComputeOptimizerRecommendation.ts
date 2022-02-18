@@ -18,7 +18,7 @@ export default class ComputeOptimizerRecommendation {
   public resourceId: string
   public costSavings: number
   public recommendationOptions: ComputeOptimizerRecommendationOption[]
-  public optimalRecommendation: any //TODO type this correctly
+  public optimalRecommendation: ComputeOptimizerRecommendationOption
 
   protected constructor(init: Partial<ComputeOptimizerRecommendationData>) {
     Object.assign(this, init)
@@ -35,7 +35,7 @@ export default class ComputeOptimizerRecommendation {
     return resourceArn.split('/').pop()
   }
 
-  public getVCpuHours(currentVcpus: string, instanceType?: string): number {
+  public getVCpuHours(vcpus: string, instanceType?: string): number {
     if (
       containsAny(
         Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION),
@@ -43,23 +43,24 @@ export default class ComputeOptimizerRecommendation {
       )
     ) {
       return (
-        ((parseFloat(currentVcpus) *
+        ((parseFloat(vcpus) *
           BURSTABLE_INSTANCE_BASELINE_UTILIZATION[instanceType]) /
           AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020) *
         getHoursInMonth()
       )
     }
     // Multiply the number of virtual CPUS by the hours in a month
-    return parseFloat(currentVcpus) * getHoursInMonth()
+    return parseFloat(vcpus) * getHoursInMonth()
   }
 
   public getOptimalRecommendation(
     recommendationOptions: ComputeOptimizerRecommendationOption[],
-    optimalPerformanceRiskLevel = 3,
   ): ComputeOptimizerRecommendationOption {
+    const optimalPerformanceRiskLevel = 3
     return recommendationOptions.find(
-      (recommendation: any) =>
-        recommendation.performanceRisk <= optimalPerformanceRiskLevel,
+      (recommendation: ComputeOptimizerRecommendationOption) =>
+        parseFloat(recommendation.performanceRisk) <=
+        optimalPerformanceRiskLevel,
     )
   }
 }

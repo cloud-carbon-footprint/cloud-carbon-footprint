@@ -26,7 +26,7 @@ export type EC2RecommendationOption = {
   instanceType: string
   costSavings: string
   performanceRisk: string
-  Vcpu: string
+  vcpus: string
 }
 
 export type EBSRecommendationOption = {
@@ -39,4 +39,5 @@ export type EBSRecommendationOption = {
 export type LambdaRecommendationOption = {
   memorySize: string
   costSavings: string
+  performanceRisk?: string
 }

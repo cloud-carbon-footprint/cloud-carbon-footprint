@@ -8,7 +8,7 @@ import { getHoursInMonth } from '@cloud-carbon-footprint/common'
 export default class LambdaCurrentComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public functionVersion: string
   public memorySize: string
-  public Vcpus: string
+  public vCpus: string
   public vCpuHours: number
   public usageAmount: number
 
@@ -26,8 +26,8 @@ export default class LambdaCurrentComputeOptimizerRecommendation extends Compute
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.functionArn,
     )
-    this.Vcpus = this.getVcpusForLambda(this.memorySize)
-    this.vCpuHours = this.getVCpuHours(this.Vcpus)
+    this.vCpus = this.getVcpusForLambda(this.memorySize)
+    this.vCpuHours = this.getVCpuHours(this.vCpus)
     this.usageAmount = getHoursInMonth()
     this.recommendationOptions = [
       {

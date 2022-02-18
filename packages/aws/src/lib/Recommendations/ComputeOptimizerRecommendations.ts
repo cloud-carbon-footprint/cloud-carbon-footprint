@@ -13,15 +13,15 @@ import { Logger, RecommendationResult } from '@cloud-carbon-footprint/common'
 import { ServiceWrapper } from '../ServiceWrapper'
 import {
   EBSCurrentComputeOptimizerRecommendation,
+  EBSTargetComputeOptimizerRecommendation,
   EC2CurrentComputeOptimizerRecommendation,
+  EC2TargetComputeOptimizerRecommendation,
   LambdaCurrentComputeOptimizerRecommendation,
+  LambdaTargetComputeOptimizerRecommendation,
 } from './ComputeOptimizer'
 import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSStorageEstimatesBuilder from '../AWSStorageEstimatesBuilder'
-import EC2TargetComputeOptimizerRecommendation from './ComputeOptimizer/EC2TargetComputeOptimizerRecommendation'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
-import EBSTargetComputeOptimizerRecommendation from './ComputeOptimizer/EBSTargetComputeOptimizerRecommendation'
-import LambdaTargetComputeOptimizerRecommendation from './ComputeOptimizer/LambdaTargetComputeOptimizerRecommendation'
 import { SSD_USAGE_TYPES } from '../CostAndUsageTypes'
 
 export default class ComputeOptimizerRecommendations

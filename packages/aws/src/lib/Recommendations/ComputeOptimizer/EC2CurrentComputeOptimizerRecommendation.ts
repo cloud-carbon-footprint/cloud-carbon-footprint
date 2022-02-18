@@ -35,7 +35,7 @@ export default class EC2CurrentComputeOptimizerRecommendation extends ComputeOpt
           computeOptimizerRecommendationData.recommendationOptions_1_estimatedMonthlySavings_value,
         performanceRisk:
           computeOptimizerRecommendationData.recommendationOptions_1_performanceRisk,
-        Vcpu: computeOptimizerRecommendationData.recommendationOptions_1_vcpus,
+        vcpus: computeOptimizerRecommendationData.recommendationOptions_1_vcpus,
       },
       {
         instanceType:
@@ -44,7 +44,7 @@ export default class EC2CurrentComputeOptimizerRecommendation extends ComputeOpt
           computeOptimizerRecommendationData.recommendationOptions_2_estimatedMonthlySavings_value,
         performanceRisk:
           computeOptimizerRecommendationData.recommendationOptions_2_performanceRisk,
-        Vcpu: computeOptimizerRecommendationData.recommendationOptions_2_vcpus,
+        vcpus: computeOptimizerRecommendationData.recommendationOptions_2_vcpus,
       },
       {
         instanceType:
@@ -53,7 +53,7 @@ export default class EC2CurrentComputeOptimizerRecommendation extends ComputeOpt
           computeOptimizerRecommendationData.recommendationOptions_3_estimatedMonthlySavings_value,
         performanceRisk:
           computeOptimizerRecommendationData.recommendationOptions_3_performanceRisk,
-        Vcpu: computeOptimizerRecommendationData.recommendationOptions_3_vcpus,
+        vcpus: computeOptimizerRecommendationData.recommendationOptions_3_vcpus,
       },
     ]
   }
