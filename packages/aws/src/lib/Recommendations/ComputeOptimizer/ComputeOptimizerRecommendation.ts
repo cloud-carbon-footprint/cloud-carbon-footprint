@@ -18,11 +18,9 @@ export default class ComputeOptimizerRecommendation {
   public resourceId: string
   public costSavings: number
   public recommendationOptions: ComputeOptimizerRecommendationOption[]
-  public optimalRecommendation: ComputeOptimizerRecommendationOption
 
   protected constructor(init: Partial<ComputeOptimizerRecommendationData>) {
-    Object.assign(this, init)
-
+    this.accountId = init.accountId
     this.accountName = this.accountId
     this.type = init.finding
   }

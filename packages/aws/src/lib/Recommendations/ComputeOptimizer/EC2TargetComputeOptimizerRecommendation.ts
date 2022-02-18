@@ -21,6 +21,7 @@ export default class EC2TargetComputeOptimizerRecommendation extends ComputeOpti
     super(computeOptimizerRecommendationData)
 
     this.accountName = this.accountId
+    this.instanceName = computeOptimizerRecommendationData.instanceName
     this.region = this.getRegion(computeOptimizerRecommendationData.instanceArn)
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.instanceArn,
@@ -55,12 +56,12 @@ export default class EC2TargetComputeOptimizerRecommendation extends ComputeOpti
       },
     ]
 
-    this.optimalRecommendation = this.getOptimalRecommendation(
+    const optimalRecommendation = this.getOptimalRecommendation(
       this.recommendationOptions,
     ) as EC2RecommendationOption
-    this.instanceType = this.optimalRecommendation.instanceType
-    this.targetVcpus = this.optimalRecommendation.vcpus
-    this.costSavings = parseFloat(this.optimalRecommendation.costSavings)
+    this.instanceType = optimalRecommendation.instanceType
+    this.targetVcpus = optimalRecommendation.vcpus
+    this.costSavings = parseFloat(optimalRecommendation.costSavings)
     this.vCpuHours = this.getVCpuHours(this.targetVcpus, this.instanceType)
     this.usageAmount = getHoursInMonth()
   }

@@ -11,7 +11,7 @@ import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 export default class LambdaTargetComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public functionVersion: string
   public memorySize: string
-  public targetVcpus: string
+  public vCpus: string
   public vCpuHours: number
   public usageAmount: number
 
@@ -43,15 +43,15 @@ export default class LambdaTargetComputeOptimizerRecommendation extends ComputeO
       },
     ]
 
-    this.optimalRecommendation = this
+    const optimalRecommendation = this
       .recommendationOptions[0] as LambdaRecommendationOption
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.functionArn,
     )
-    this.memorySize = this.optimalRecommendation.memorySize
-    this.targetVcpus = this.getVcpusForLambda(this.memorySize)
-    this.costSavings = parseFloat(this.optimalRecommendation.costSavings)
-    this.vCpuHours = this.getVCpuHours(this.targetVcpus)
+    this.memorySize = optimalRecommendation.memorySize
+    this.vCpus = this.getVcpusForLambda(this.memorySize)
+    this.costSavings = parseFloat(optimalRecommendation.costSavings)
+    this.vCpuHours = this.getVCpuHours(this.vCpus)
     this.usageAmount = getHoursInMonth()
   }
 

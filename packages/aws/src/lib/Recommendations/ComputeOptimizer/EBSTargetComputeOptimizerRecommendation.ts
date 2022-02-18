@@ -47,11 +47,11 @@ export default class EBSTargetComputeOptimizerRecommendation extends ComputeOpti
           computeOptimizerRecommendationData.recommendationOptions_3_performanceRisk,
       },
     ]
-    this.optimalRecommendation = this.getOptimalRecommendation(
+    const optimalRecommendation = this.getOptimalRecommendation(
       this.recommendationOptions,
     ) as EBSRecommendationOption
-    this.volumeType = this.optimalRecommendation.volumeType
-    this.volumeSize = parseInt(this.optimalRecommendation.volumeSize)
-    this.costSavings = parseFloat(this.optimalRecommendation.costSavings)
+    this.volumeType = optimalRecommendation.volumeType
+    this.volumeSize = parseInt(optimalRecommendation.volumeSize)
+    this.costSavings = parseFloat(optimalRecommendation.costSavings)
   }
 }

@@ -18,6 +18,7 @@ export default class EC2CurrentComputeOptimizerRecommendation extends ComputeOpt
     super(computeOptimizerRecommendationData)
 
     this.accountName = this.accountId
+    this.instanceName = computeOptimizerRecommendationData.instanceName
     this.region = this.getRegion(computeOptimizerRecommendationData.instanceArn)
     this.type = `EC2-${computeOptimizerRecommendationData.finding}`
     this.resourceId = this.getResourceId(
