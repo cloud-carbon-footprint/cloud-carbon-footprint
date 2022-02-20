@@ -65,6 +65,8 @@ import {
 } from '../domain'
 import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
+const apiLogger = new Logger('api')
+
 export default class BillingExportTable {
   private readonly tableName: string
   private readonly billingExportTableLogger: Logger
@@ -614,6 +616,7 @@ export default class BillingExportTable {
                     usageUnit,
                     machineType`
 
+    apiLogger.error(`REMOVE_ME Failing query `, query)
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
   }
@@ -624,6 +627,7 @@ export default class BillingExportTable {
       ;[rows] = await job.getQueryResults()
     } catch (e) {
       const { reason, domain, message } = e.errors[0]
+      apiLogger.error(`REMOVE_ME Error e `, e)
       throw new Error(
         `BigQuery get Query Results failed. Reason: ${reason}, Domain: ${domain}, Message: ${message}`,
       )
