@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.8.0
+
+### Minor Changes
+
+- a23e1e59: Updates logic for handling unknown usage types to dynamically build kilowatt hour per usage amount (GCP, Azure) or cost (AWS) by service name and usage unit, to increase accuracy.
+- 04f2be16: Adds configurable option to use Google's published carbon free energy % in emissions factors. Updates estimation logic for GCP services: Cloud Composer and Kubernetes Engine, to improve accuracy.
+
+### Patch Changes
+
+- Updated dependencies [a23e1e59]
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/core@0.15.0
+  - @cloud-carbon-footprint/common@1.4.0
+
 ## 0.7.0
 
 ### Minor Changes

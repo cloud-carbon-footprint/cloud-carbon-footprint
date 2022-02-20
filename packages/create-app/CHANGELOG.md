@@ -1,5 +1,49 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.2.7
+
+### Patch Changes
+
+- e8e72e92: Updates create-app nodeLinker config to match main CCF repo, and uncreases yarn install maxBuffer to allow for it to complete
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b334ba845e27a80513d96c3e52099f8045480658) for updates to the create-app templates.
+
+## 1.2.6
+
+### Patch Changes
+
+- b5222054: Updates create-app yarn version to 3, fixed type error in create-app and adds resolution for @babel/core due to compilation error in create-app
+
+  Please see [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1474abca91e4e7118a1f4a25df2921ca1bf502f6) for create-app template updates.
+
+## 1.2.5
+
+### Patch Changes
+
+- e562970f: Replaces typography.fontWeightBold with 'bold' string to fix compilation errors in create-app package
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aed91d0ec33a78bb64f1a93f93cdb2c578fc5e8a) for updating your create-app templates.
+
+## 1.2.4
+
+### Patch Changes
+
+- ae0c0b66: Updates create app templates from [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c6578692316b4fe402d30ac37262e3d2d2277f0d).
+
+## 1.2.3
+
+### Patch Changes
+
+- ae0c0b66: Updates create app templates from [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c6578692316b4fe402d30ac37262e3d2d2277f0d).
+
+## 1.2.2
+
+### Patch Changes
+
+- 01bea87b: Updates create-app client template with latest version of react-router-dom and necessary code changes.
+
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/03a7728ea005c84460306af3c9e9ed7bb5191e88).
+
 ## 1.2.1
 
 ### Patch Changes

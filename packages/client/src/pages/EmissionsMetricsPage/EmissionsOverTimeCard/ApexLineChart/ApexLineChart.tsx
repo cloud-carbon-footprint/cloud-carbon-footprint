@@ -4,7 +4,7 @@
 
 import React, { FunctionComponent, useEffect } from 'react'
 import { equals } from 'ramda'
-import moment from 'moment'
+import moment, { unitOfTime } from 'moment'
 import { renderToStaticMarkup } from 'react-dom/server'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
@@ -73,7 +73,11 @@ const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
       ? new Date(newSortedData[0]?.timestamp)
       : null
     const endDate = new Date(newSortedData[newSortedData.length - 1]?.timestamp)
-    const max = endDate ? moment(endDate).add(1, `${grouping}s`).toDate() : null
+    const max = endDate
+      ? moment(endDate)
+          .add(1, `${grouping}s` as unitOfTime.DurationConstructor)
+          .toDate()
+      : null
     const newDefaultRange = {
       min,
       max,

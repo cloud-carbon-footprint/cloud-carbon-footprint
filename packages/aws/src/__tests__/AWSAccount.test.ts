@@ -7,14 +7,15 @@ import { ServiceConfigurationOptions } from 'aws-sdk/lib/service'
 import { CloudProviderAccount } from '@cloud-carbon-footprint/core'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
+  AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   Config as mockConfig,
   EstimationResult,
   getPeriodEndDate,
   GroupBy,
-  RecommendationResult,
   LookupTableInput,
   LookupTableOutput,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import {
   CostAndUsageReports,
@@ -26,7 +27,10 @@ import {
   S3,
 } from '../lib'
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
-import { Recommendations } from '../lib/Recommendations'
+import {
+  RightsizingRecommendations,
+  ComputeOptimizerRecommendations,
+} from '../lib/Recommendations'
 
 jest.mock('../application/AWSCredentialsProvider')
 
@@ -225,7 +229,7 @@ describe('AWSAccount', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('should get data for recommendations', async () => {
+  it('should get data for rightsizing recommendations', async () => {
     const AWSAccount = require('../application/AWSAccount').default
     const testAwsAccount = new AWSAccount('12345678', 'test account', [
       'some-region',
@@ -246,7 +250,7 @@ describe('AWSAccount', () => {
     ]
 
     const getRecommendations = jest.spyOn(
-      Recommendations.prototype,
+      RightsizingRecommendations.prototype,
       'getRecommendations',
     )
 
@@ -279,7 +283,7 @@ describe('AWSAccount', () => {
     ]
 
     const getRecommendations = jest.spyOn(
-      Recommendations.prototype,
+      RightsizingRecommendations.prototype,
       'getRecommendations',
     )
 
@@ -292,6 +296,43 @@ describe('AWSAccount', () => {
     expect(getRecommendations).toHaveBeenCalledWith(
       AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
     )
+  })
+
+  it('should get data for compute optimizer recommendations', async () => {
+    const AWSAccount = require('../application/AWSAccount').default
+    const testAwsAccount = new AWSAccount('12345678', 'test account', [
+      'some-region',
+    ])
+    mockConfig.AWS.RECOMMENDATIONS_SERVICE =
+      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AWS',
+        accountId: '1234567890',
+        accountName: '1234567890',
+        region: 'eu-central-1',
+        recommendationType: 'EC2-OVER_PROVISIONED',
+        kilowattHourSavings: 0,
+        resourceId: 'i-0c80d1b0f3a0c5c69',
+        instanceName: 'PA-VM-100 | Networks',
+        co2eSavings: 0,
+        recommendationDetail: 't3.xlarge',
+        costSavings: 33.79,
+      },
+    ]
+
+    const getRecommendations = jest.spyOn(
+      ComputeOptimizerRecommendations.prototype,
+      'getRecommendations',
+    )
+
+    getRecommendations.mockResolvedValue(expectedRecommendations)
+    const result = await testAwsAccount.getDataForRecommendations(
+      AWS_DEFAULT_RECOMMENDATION_TARGET,
+    )
+
+    expect(result).toEqual(expectedRecommendations)
   })
 })
 

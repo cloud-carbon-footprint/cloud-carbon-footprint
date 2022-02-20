@@ -4,7 +4,7 @@
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(({ palette, spacing, typography }) => {
+const useStyles = makeStyles(({ palette, spacing }) => {
   return {
     title: {
       color: palette.primary.contrastText,
@@ -33,11 +33,11 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
     },
     metricOne: {
       color: palette.primary.contrastText,
-      fontWeight: typography.fontWeightBold,
+      fontWeight: 'bold',
     },
     metricTwo: {
       color: palette.primary.light,
-      fontWeight: typography.fontWeightBold,
+      fontWeight: 'bold',
     },
     icon: {
       height: 240,

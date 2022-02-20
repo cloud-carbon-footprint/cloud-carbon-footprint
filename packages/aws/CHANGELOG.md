@@ -1,5 +1,27 @@
 # @cloud-carbon-footprint/aws
 
+## 0.9.1
+
+### Patch Changes
+
+- 4873fa2f: Adds reference link for aws instance types
+
+## 0.9.0
+
+### Minor Changes
+
+- a23e1e59: Updates logic for handling unknown usage types to dynamically build kilowatt hour per usage amount (GCP, Azure) or cost (AWS) by service name and usage unit, to increase accuracy.
+- f40ce29e: Adds Compute Optimizer Recommendations for AWS
+
+### Patch Changes
+
+- d728b378: Restructures AWS Recommendations directory and updates all corresponding files
+- Updated dependencies [a23e1e59]
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/core@0.15.0
+  - @cloud-carbon-footprint/common@1.4.0
+
 ## 0.8.0
 
 ### Minor Changes

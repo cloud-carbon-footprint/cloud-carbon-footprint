@@ -2,4 +2,5 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-export { default as Recommendations } from './Recommendations'
+export { default as RightsizingRecommendations } from './RightsizingRecommendations'
+export { default as ComputeOptimizerRecommendations } from './ComputeOptimizerRecommendations'

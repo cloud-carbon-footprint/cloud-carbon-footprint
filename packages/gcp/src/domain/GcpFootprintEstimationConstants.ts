@@ -14,6 +14,7 @@ import {
   GCP_MULTI_REGIONS,
   GCP_REGIONS,
 } from '../lib/GCPRegions'
+import { configLoader } from '@cloud-carbon-footprint/common'
 
 export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
@@ -104,7 +105,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     CLOUD_MEMORY_STORE_REDIS: 2,
     CLOUD_SPANNER_SINGLE_REGION: 4,
     CLOUD_SPANNER_MULTI_REGION: 6,
-    KUBERNETES_ENGINE: 4,
+    KUBERNETES_ENGINE: 3,
     DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
@@ -115,8 +116,48 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 
-export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
-  {
+const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
+  // These emission factors take into account Google Carbon Free Energy percentage in each region. Source: https://cloud.google.com/sustainability/region-carbon
+  if (configLoader().GCP.USE_CARBON_FREE_ENERGY_PERCENTAGE)
+    return {
+      [GCP_REGIONS.US_CENTRAL1]: 0.00003178,
+      [GCP_REGIONS.US_CENTRAL2]: 0.00003178,
+      [GCP_REGIONS.US_EAST1]: 0.0003504,
+      [GCP_REGIONS.US_EAST4]: 0.00015162,
+      [GCP_REGIONS.US_WEST1]: 0.0000078,
+      [GCP_REGIONS.US_WEST2]: 0.00011638,
+      [GCP_REGIONS.US_WEST3]: 0.00038376,
+      [GCP_REGIONS.US_WEST4]: 0.00036855,
+      [GCP_REGIONS.ASIA_EAST1]: 0.0004428,
+      [GCP_REGIONS.ASIA_EAST2]: 0.000453,
+      [GCP_REGIONS.ASIA_NORTHEAST1]: 0.00048752,
+      [GCP_REGIONS.ASIA_NORTHEAST2]: 0.000442,
+      [GCP_REGIONS.ASIA_NORTHEAST3]: 0.00031533,
+      [GCP_REGIONS.ASIA_SOUTH1]: 0.00063448,
+      [GCP_REGIONS.ASIA_SOUTH2]: 0.000657,
+      [GCP_REGIONS.ASIA_SOUTHEAST1]: 0.00047328,
+      [GCP_REGIONS.ASIA_SOUTHEAST2]: 0.000647,
+      [GCP_REGIONS.AUSTRALIA_SOUTHEAST1]: 0.00064703,
+      [GCP_REGIONS.AUSTRALIA_SOUTHEAST2]: 0.000691,
+      [GCP_REGIONS.EUROPE_CENTRAL2]: 0.000622,
+      [GCP_REGIONS.EUROPE_NORTH1]: 0.00000798,
+      [GCP_REGIONS.EUROPE_WEST1]: 0.00004452,
+      [GCP_REGIONS.EUROPE_WEST2]: 0.00009471,
+      [GCP_REGIONS.EUROPE_WEST3]: 0.00010841,
+      [GCP_REGIONS.EUROPE_WEST4]: 0.000164,
+      [GCP_REGIONS.EUROPE_WEST6]: 0.000087,
+      [GCP_REGIONS.NORTHAMERICA_NORTHEAST1]: 0.000027,
+      [GCP_REGIONS.SOUTHAMERICA_EAST1]: 0.00001236,
+      [GCP_DUAL_REGIONS.ASIA1]: 0.00046476,
+      [GCP_DUAL_REGIONS.EUR4]: 0.00008599,
+      [GCP_DUAL_REGIONS.NAM4]: 0.00019109,
+      [GCP_MULTI_REGIONS.ASIA]: 0.0005058233333,
+      [GCP_MULTI_REGIONS.EU]: 0.0001723183333,
+      [GCP_MULTI_REGIONS.US]: 0.00018025875,
+      [GCP_REGIONS.UNKNOWN]: 0.0003035889286, // Average across all regions
+    }
+  // These emissions factors don't take into account Google's CFE%, and just use the Grid emissions factors published by Google.
+  return {
     [GCP_REGIONS.US_CENTRAL1]: 0.000454,
     [GCP_REGIONS.US_CENTRAL2]: 0.000454,
     [GCP_REGIONS.US_EAST1]: 0.00048,
@@ -153,3 +194,7 @@ export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFa
     [GCP_MULTI_REGIONS.US]: 0.0003734285714,
     [GCP_REGIONS.UNKNOWN]: 0.0004116296296, // Average of the above regions
   }
+}
+
+export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
+  getGCPEmissionsFactors()

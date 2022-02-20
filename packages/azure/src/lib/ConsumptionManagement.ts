@@ -9,37 +9,37 @@ import {
 } from '@azure/arm-consumption/esm/models'
 
 import {
-  Logger,
-  EstimationResult,
-  convertTerabytesToGigabytes,
-  convertGigaBytesToTerabyteHours,
   containsAny,
-  wait,
+  convertGigaBytesToTerabyteHours,
+  convertTerabytesToGigabytes,
+  EstimationResult,
   GroupBy,
+  Logger,
+  wait,
 } from '@cloud-carbon-footprint/common'
 import {
-  ComputeEstimator,
-  StorageEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  UnknownEstimator,
-  ComputeUsage,
-  StorageUsage,
-  NetworkingUsage,
-  MemoryUsage,
-  UnknownUsage,
-  FootprintEstimate,
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
   appendOrAccumulateEstimatesByDay,
-  MutableEstimationResult,
-  COMPUTE_PROCESSOR_TYPES,
+  calculateGigabyteHours,
   CloudConstants,
   CloudConstantsEmissionsFactors,
-  calculateGigabyteHours,
-  getPhysicalChips,
-  accumulateKilowattHoursPerCostLegacy,
-  EstimateClassification,
+  COMPUTE_PROCESSOR_TYPES,
+  ComputeEstimator,
+  ComputeUsage,
   EmbodiedEmissionsEstimator,
   EmbodiedEmissionsUsage,
+  FootprintEstimate,
+  getPhysicalChips,
+  MemoryEstimator,
+  MemoryUsage,
+  MutableEstimationResult,
+  NetworkingEstimator,
+  NetworkingUsage,
+  StorageEstimator,
+  StorageUsage,
+  UnknownEstimator,
+  UnknownUsage,
 } from '@cloud-carbon-footprint/core'
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
@@ -49,23 +49,22 @@ import {
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
 } from './VirtualMachineTypes'
 import {
+  AZURE_QUERY_GROUP_BY,
+  CACHE_MEMORY_GB,
   COMPUTE_USAGE_UNITS,
   CONTAINER_REGISTRY_STORAGE_GB,
   HDD_MANAGED_DISKS_STORAGE_GB,
-  NETWORKING_USAGE_TYPES,
-  NETWORKING_USAGE_UNITS,
   MEMORY_USAGE_TYPES,
   MEMORY_USAGE_UNITS,
+  NETWORKING_USAGE_TYPES,
+  NETWORKING_USAGE_UNITS,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
   STORAGE_USAGE_UNITS,
-  UNSUPPORTED_USAGE_TYPES,
-  AZURE_QUERY_GROUP_BY,
-  CACHE_MEMORY_GB,
   TenantHeaders,
   UNKNOWN_SERVICES,
   UNKNOWN_USAGE_TYPES,
-  UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING,
+  UNSUPPORTED_USAGE_TYPES,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -294,21 +293,20 @@ export default class ConsumptionManagementService {
         // if there exist any kilowatt hours from a memory footprint,
         // add the kwh and co2e for both compute and memory
         if (memoryFootprint.kilowattHours || embodiedEmissions.co2e) {
-          accumulateKilowattHoursPerCostLegacy(
-            EstimateClassification.COMPUTE,
+          const kilowattHours =
             computeFootprint.kilowattHours +
-              memoryFootprint.kilowattHours +
-              embodiedEmissions.kilowattHours,
-            consumptionDetailRow.cost,
-            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
+            memoryFootprint.kilowattHours +
+            embodiedEmissions.kilowattHours
+          accumulateKilowattHours(
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+            consumptionDetailRow,
+            kilowattHours,
+            AccumulateKilowattHoursBy.USAGE_AMOUNT,
           )
 
           return {
             timestamp: memoryFootprint.timestamp,
-            kilowattHours:
-              computeFootprint.kilowattHours +
-              memoryFootprint.kilowattHours +
-              embodiedEmissions.kilowattHours,
+            kilowattHours: kilowattHours,
             co2e:
               computeFootprint.co2e +
               memoryFootprint.co2e +
@@ -318,11 +316,11 @@ export default class ConsumptionManagementService {
         }
 
         if (computeFootprint)
-          accumulateKilowattHoursPerCostLegacy(
-            EstimateClassification.COMPUTE,
+          accumulateKilowattHours(
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+            consumptionDetailRow,
             computeFootprint.kilowattHours,
-            consumptionDetailRow.cost,
-            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
+            AccumulateKilowattHoursBy.USAGE_AMOUNT,
           )
 
         return computeFootprint
@@ -396,11 +394,11 @@ export default class ConsumptionManagementService {
 
     if (networkingEstimate) {
       networkingEstimate.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCostLegacy(
-        EstimateClassification.NETWORKING,
+      accumulateKilowattHours(
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        consumptionDetailRow,
         networkingEstimate.kilowattHours,
-        consumptionDetailRow.cost,
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
     return networkingEstimate
@@ -445,11 +443,11 @@ export default class ConsumptionManagementService {
       )
     if (estimate) {
       estimate.usesAverageCPUConstant = false
-      accumulateKilowattHoursPerCostLegacy(
-        EstimateClassification.STORAGE,
+      accumulateKilowattHours(
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        consumptionDetailRow,
         estimate.kilowattHours,
-        consumptionDetailRow.cost,
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
     return estimate
@@ -512,11 +510,11 @@ export default class ConsumptionManagementService {
     if (memoryEstimate) {
       memoryEstimate.usesAverageCPUConstant = false
       !withCompute &&
-        accumulateKilowattHoursPerCostLegacy(
-          EstimateClassification.MEMORY,
+        accumulateKilowattHours(
+          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+          consumptionDetailRow,
           memoryEstimate.kilowattHours,
-          consumptionDetailRow.cost,
-          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
+          AccumulateKilowattHoursBy.USAGE_AMOUNT,
         )
     }
     return memoryEstimate
@@ -741,13 +739,13 @@ export default class ConsumptionManagementService {
   ): FootprintEstimate {
     const unknownUsage: UnknownUsage = {
       timestamp: rowData.timestamp,
-      cost: rowData.cost,
+      usageAmount: rowData.usageAmount,
       usageUnit: rowData.usageUnit,
-      reclassificationType: this.getClassification(rowData.usageUnit),
     }
+
     const unknownConstants: CloudConstants = {
-      kilowattHoursPerCostLegacy:
-        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_PER_COST_LEGACY,
+      kilowattHoursByServiceAndUsageUnit:
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],
@@ -755,12 +753,6 @@ export default class ConsumptionManagementService {
       AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       unknownConstants,
     )[0]
-  }
-
-  private getClassification(usageUnit: string) {
-    return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
-      ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
-      : EstimateClassification.UNKNOWN
   }
 
   private getEmbodiedEmissions(

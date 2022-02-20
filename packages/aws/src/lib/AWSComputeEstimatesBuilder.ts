@@ -16,10 +16,14 @@ import {
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 import RightsizingRecommendation from './Recommendations/Rightsizing/RightsizingTargetRecommendation'
+import { EC2CurrentComputeOptimizerRecommendation } from './Recommendations/ComputeOptimizer'
 
 export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBuilder {
   constructor(
-    rowData: RightsizingRecommendation | CostAndUsageReportsRow,
+    rowData:
+      | RightsizingRecommendation
+      | CostAndUsageReportsRow
+      | EC2CurrentComputeOptimizerRecommendation,
     computeEstimator: ComputeEstimator,
   ) {
     super(rowData)

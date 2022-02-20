@@ -1,5 +1,17 @@
 # @cloud-carbon-footprint/core
 
+## 0.15.0
+
+### Minor Changes
+
+- a23e1e59: Updates logic for handling unknown usage types to dynamically build kilowatt hour per usage amount (GCP, Azure) or cost (AWS) by service name and usage unit, to increase accuracy.
+
+### Patch Changes
+
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/common@1.4.0
+
 ## 0.14.0
 
 ### Minor Changes

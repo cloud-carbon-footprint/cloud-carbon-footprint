@@ -24,10 +24,14 @@ import {
 } from './AWSInstanceTypes'
 import RightsizingRecommendation from './Recommendations/Rightsizing/RightsizingRecommendation'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
+import { EC2CurrentComputeOptimizerRecommendation } from './Recommendations/ComputeOptimizer'
 
 export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBuilder {
   constructor(
-    rowData: RightsizingRecommendation | CostAndUsageReportsRow,
+    rowData:
+      | RightsizingRecommendation
+      | CostAndUsageReportsRow
+      | EC2CurrentComputeOptimizerRecommendation,
     memoryEstimator: MemoryEstimator,
   ) {
     super(rowData)
@@ -52,6 +56,8 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
   }
 
   private getGigabytesFromInstanceTypeAndProcessors(): number {
+    if (!this.instanceType) return 0
+
     const [instanceFamily, instanceSize] = this.instanceType.split('.')
 
     // check to see if the instance type is contained in the AWSInstanceTypes lists

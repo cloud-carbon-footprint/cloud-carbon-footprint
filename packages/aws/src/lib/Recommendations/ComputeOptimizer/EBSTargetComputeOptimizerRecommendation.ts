@@ -5,33 +5,16 @@ import { EBSRecommendationOption } from '@cloud-carbon-footprint/common'
 import { EBSComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
 
-export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
-  public accountId: string
-  public accountName: string
-  public region: string
-  public type: string
-  public resourceId: string
-  public currentCost: string
+export default class EBSTargetComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public volumeType: string
-  public volumeSize: string
-  public recommendationOptions: EBSRecommendationOption[]
+  public volumeSize: number
 
   constructor(
     computeOptimizerRecommendationData: Partial<EBSComputeOptimizerRecommendationData>,
   ) {
     super(computeOptimizerRecommendationData)
-
     this.accountName = this.accountId
     this.region = this.getRegion(computeOptimizerRecommendationData.volumeArn)
-    this.type = `EBS-${computeOptimizerRecommendationData.finding}`
-    this.currentCost = computeOptimizerRecommendationData.current_monthlyPrice
-    this.volumeType =
-      computeOptimizerRecommendationData.currentConfiguration_volumeType
-    this.volumeSize =
-      computeOptimizerRecommendationData.currentConfiguration_volumeSize
-    this.resourceId = this.getResourceId(
-      computeOptimizerRecommendationData.volumeArn,
-    )
     this.recommendationOptions = [
       {
         volumeType:
@@ -64,5 +47,11 @@ export default class EBSComputeOptimizerRecommendation extends ComputeOptimizerR
           computeOptimizerRecommendationData.recommendationOptions_3_performanceRisk,
       },
     ]
+    const optimalRecommendation = this.getOptimalRecommendation(
+      this.recommendationOptions,
+    ) as EBSRecommendationOption
+    this.volumeType = optimalRecommendation.volumeType
+    this.volumeSize = parseInt(optimalRecommendation.volumeSize)
+    this.costSavings = parseFloat(optimalRecommendation.costSavings)
   }
 }

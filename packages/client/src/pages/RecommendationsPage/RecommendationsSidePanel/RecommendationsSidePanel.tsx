@@ -23,6 +23,12 @@ const RecommendationsSidePanel: FunctionComponent<
 > = ({ recommendation, onClose }): ReactElement => {
   const classes = useStyles()
 
+  let resourceName = recommendation.instanceName
+  if (recommendation.recommendationType.includes('EBS')) {
+    resourceName = recommendation.resourceId
+  } else if (recommendation.recommendationType.includes('Lambda')) {
+    resourceName = recommendation.resourceId.split(':')[0]
+  }
   return (
     <SidePanel
       drawerWidth={475}
@@ -48,10 +54,7 @@ const RecommendationsSidePanel: FunctionComponent<
           label="Region"
           content={recommendation.region}
         />
-        <RecommendationsPanelRow
-          label="Resource Name"
-          content={recommendation.instanceName}
-        />
+        <RecommendationsPanelRow label="Resource Name" content={resourceName} />
         <RecommendationsPanelRow
           label="Resource ID"
           content={recommendation.resourceId}

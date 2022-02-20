@@ -8,6 +8,7 @@ import {
   MemoryUsage,
   COMPUTE_PROCESSOR_TYPES,
   ComputeUsage,
+  StorageUsage,
 } from '.'
 
 export default abstract class FootprintEstimatesDataBuilder {
@@ -18,12 +19,16 @@ export default abstract class FootprintEstimatesDataBuilder {
   public powerUsageEffectiveness: number
   public replicationFactor: number
   public computeProcessors: string[]
+  public volumeSize: number
   public computeUsage: ComputeUsage
   public computeConstants: CloudConstants
   public computeFootprint: FootprintEstimate
   public memoryUsage: MemoryUsage
   public memoryConstants: CloudConstants
   public memoryFootprint: FootprintEstimate
+  public storageUsage: StorageUsage
+  public storageConstants: CloudConstants
+  public storageFootprint: FootprintEstimate
 
   protected constructor(init: Partial<FootprintEstimatesDataBuilder>) {
     Object.assign(this, init)

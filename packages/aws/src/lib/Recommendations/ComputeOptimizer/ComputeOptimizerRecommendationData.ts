@@ -2,13 +2,26 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+export interface ComputeOptimizerRecommendationData {
+  accountId: string
+  finding: string
+  recommendations_count: string
+  recommendationOptions_1_estimatedMonthlySavings_value: string
+  recommendationOptions_2_estimatedMonthlySavings_value: string
+  recommendationOptions_3_estimatedMonthlySavings_value: string
+  recommendationOptions_1_performanceRisk: string
+  recommendationOptions_2_performanceRisk: string
+  recommendationOptions_3_performanceRisk: string
+}
+
 export interface EC2ComputeOptimizerRecommendationData {
   accountId: string
-  currentInstanceType: string
+  instanceType: string
   current_vcpus: string
   finding: string
   instanceName: string
   instanceArn: string
+  vCpuHours: number
   recommendations_count: string
   recommendationOptions_1_instanceType: string
   recommendationOptions_2_instanceType: string
@@ -19,6 +32,9 @@ export interface EC2ComputeOptimizerRecommendationData {
   recommendationOptions_1_performanceRisk: string
   recommendationOptions_2_performanceRisk: string
   recommendationOptions_3_performanceRisk: string
+  recommendationOptions_1_vcpus: string
+  recommendationOptions_2_vcpus: string
+  recommendationOptions_3_vcpus: string
 }
 
 export interface EBSComputeOptimizerRecommendationData {

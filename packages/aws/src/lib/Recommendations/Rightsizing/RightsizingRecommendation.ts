@@ -26,6 +26,7 @@ export default class RightsizingRecommendation {
   }
 
   public getVCpuHours(resourceDetails: EC2ResourceDetails): number {
+    // Reference: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html#baseline_performance
     if (
       containsAny(
         Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION),

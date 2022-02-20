@@ -1,5 +1,31 @@
 # @cloud-carbon-footprint/client
 
+## 2.3.4
+
+### Patch Changes
+
+- b5222054: Updates create-app yarn version to 3, fixed type error in create-app and adds resolution for @babel/core due to compilation error in create-app
+
+  Please see [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1474abca91e4e7118a1f4a25df2921ca1bf502f6) for create-app template updates.
+
+## 2.3.3
+
+### Patch Changes
+
+- e562970f: Replaces typography.fontWeightBold with 'bold' string to fix compilation errors in create-app package
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aed91d0ec33a78bb64f1a93f93cdb2c578fc5e8a) for updating your create-app templates.
+
+## 2.3.2
+
+### Patch Changes
+
+- f40ce29e: Adds Compute Optimizer Recommendations for AWS
+- 0e577b5b: Bumps react-router-dom to latest major version, and updates related code
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/common@1.4.0
+
 ## 2.3.1
 
 ### Patch Changes

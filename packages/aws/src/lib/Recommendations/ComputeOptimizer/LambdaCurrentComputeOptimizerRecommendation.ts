@@ -3,16 +3,14 @@
  */
 import { LambdaComputeOptimizerRecommendationData } from './ComputeOptimizerRecommendationData'
 import ComputeOptimizerRecommendation from './ComputeOptimizerRecommendation'
-import { LambdaRecommendationOption } from '@cloud-carbon-footprint/common'
+import { getHoursInMonth } from '@cloud-carbon-footprint/common'
 
-export default class LambdaComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
-  public accountId: string
-  public accountName: string
+export default class LambdaCurrentComputeOptimizerRecommendation extends ComputeOptimizerRecommendation {
   public functionVersion: string
-  public region: string
-  public type: string
   public memorySize: string
-  public recommendationOptions: LambdaRecommendationOption[]
+  public vCpus: string
+  public vCpuHours: number
+  public usageAmount: number
 
   constructor(
     computeOptimizerRecommendationData: Partial<LambdaComputeOptimizerRecommendationData>,
@@ -28,6 +26,9 @@ export default class LambdaComputeOptimizerRecommendation extends ComputeOptimiz
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.functionArn,
     )
+    this.vCpus = this.getVcpusForLambda(this.memorySize)
+    this.vCpuHours = this.getVCpuHours(this.vCpus)
+    this.usageAmount = getHoursInMonth()
     this.recommendationOptions = [
       {
         memorySize:
@@ -55,5 +56,9 @@ export default class LambdaComputeOptimizerRecommendation extends ComputeOptimiz
     const name = functionData[functionData.length - 2]
     const version = functionData[functionData.length - 1]
     return `${name}:${version}`
+  }
+
+  public getVcpusForLambda(memorySize: string) {
+    return (parseFloat(memorySize) / 1769).toString() //memory(MB) equivalent to 1 vcpu
   }
 }

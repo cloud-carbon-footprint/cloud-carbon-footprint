@@ -289,6 +289,7 @@ export default class BillingExportTable {
       minWatts: GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
       maxWatts: GCP_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(usageRow),
     }
 
     const computeFootprint = this.computeEstimator.estimate(

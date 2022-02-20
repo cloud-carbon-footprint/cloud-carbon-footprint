@@ -56,7 +56,8 @@ async function buildApp(appDir: string) {
     await Task.forItem('executing', cmd, async () => {
       process.chdir(appDir)
       try {
-        await exec(cmd)
+        // Increase the default stdout buffer size from 500 MB (default) to 2000 MB in order to allow for the yarn install to succeed
+        await exec(cmd, { maxBuffer: 1024 * 2000 })
       } catch (error) {
         process.stdout.write(error.stderr)
         process.stdout.write(error.stdout)

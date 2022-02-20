@@ -8,7 +8,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => {
   return createStyles({
     contentBold: {
       padding: spacing(2, 2, 0, 2),
-      fontWeight: typography.fontWeightBold,
+      fontWeight: 'bold',
     },
     content: {
       padding: spacing(2),
