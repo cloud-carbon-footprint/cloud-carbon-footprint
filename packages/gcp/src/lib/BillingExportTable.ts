@@ -616,7 +616,7 @@ export default class BillingExportTable {
                     usageUnit,
                     machineType`
 
-    apiLogger.error(`REMOVE_ME Failing query `, query)
+    apiLogger.info('REMOVE_ME Failing query ' + query.toString())
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
   }
@@ -627,7 +627,7 @@ export default class BillingExportTable {
       ;[rows] = await job.getQueryResults()
     } catch (e) {
       const { reason, domain, message } = e.errors[0]
-      apiLogger.error(`REMOVE_ME Error e `, e)
+      apiLogger.error('REMOVE_ME Error e ', e.toString())
       throw new Error(
         `BigQuery get Query Results failed. Reason: ${reason}, Domain: ${domain}, Message: ${message}`,
       )
