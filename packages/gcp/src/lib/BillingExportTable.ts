@@ -626,8 +626,8 @@ export default class BillingExportTable {
     try {
       ;[rows] = await job.getQueryResults()
     } catch (e) {
-      const { reason, domain, message } = e.errors[0]
       apiLogger.error('REMOVE_ME Error e ', e.toString())
+      const { reason, domain, message } = e.errors[0]
       throw new Error(
         `BigQuery get Query Results failed. Reason: ${reason}, Domain: ${domain}, Message: ${message}`,
       )
