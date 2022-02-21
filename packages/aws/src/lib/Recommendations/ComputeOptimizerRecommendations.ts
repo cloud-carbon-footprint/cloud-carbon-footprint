@@ -152,14 +152,6 @@ export default class ComputeOptimizerRecommendations
                 }
               }
 
-              const recommendationDetailServiceType: {
-                [service: string]: string
-              } = {
-                ebs: 'volumeType',
-                ec2: 'instanceType',
-                lambda: 'memorySize',
-              }
-
               recommendationsResult.push({
                 cloudProvider: 'AWS',
                 accountId: currentComputeOptimizerRecommendation.accountId,
@@ -169,13 +161,15 @@ export default class ComputeOptimizerRecommendations
                 region: currentComputeOptimizerRecommendation.region,
                 recommendationType: currentComputeOptimizerRecommendation.type,
                 resourceId: currentComputeOptimizerRecommendation.resourceId,
-                recommendationDetail:
-                  targetComputeOptimizerRecommendation[
-                    recommendationDetailServiceType[service]
-                  ],
-                costSavings: parseFloat(
-                  targetComputeOptimizerRecommendation.costSavings,
+                recommendationDetail: this.getRecommendationDetail(
+                  service,
+                  currentComputeOptimizerRecommendation,
+                  targetComputeOptimizerRecommendation,
                 ),
+                costSavings:
+                  parseFloat(
+                    targetComputeOptimizerRecommendation.costSavings,
+                  ) || 0,
                 co2eSavings,
                 kilowattHourSavings,
               })
@@ -189,6 +183,48 @@ export default class ComputeOptimizerRecommendations
         `Failed to grab AWS Compute Optimizer recommendations. Reason: ${e.message}`,
       )
     }
+  }
+
+  private getRecommendationDetail(
+    service: string,
+    currentRecommendation:
+      | EC2CurrentComputeOptimizerRecommendation
+      | EBSCurrentComputeOptimizerRecommendation,
+    targetRecommendation:
+      | EC2TargetComputeOptimizerRecommendation
+      | EBSTargetComputeOptimizerRecommendation,
+  ): string {
+    type ServiceDetail = { [service: string]: string }
+    const modifyType: ServiceDetail = {
+      ec2: 'instance type',
+      ebs: 'volume type',
+      lambda: 'configuration memory size',
+    }
+    let currentType,
+      targetType = ''
+    if (
+      currentRecommendation instanceof
+        EC2CurrentComputeOptimizerRecommendation &&
+      targetRecommendation instanceof EC2TargetComputeOptimizerRecommendation
+    ) {
+      currentType = currentRecommendation.instanceType
+      targetType = targetRecommendation.instanceType
+    } else if (
+      currentRecommendation instanceof
+        EBSCurrentComputeOptimizerRecommendation &&
+      targetRecommendation instanceof EBSTargetComputeOptimizerRecommendation
+    ) {
+      currentType = `${currentRecommendation.volumeType}(${currentRecommendation.volumeSize}GB)`
+      targetType = `${targetRecommendation.volumeType}(${targetRecommendation.volumeSize}GB)`
+    } else if (
+      currentRecommendation instanceof
+        LambdaCurrentComputeOptimizerRecommendation &&
+      targetRecommendation instanceof LambdaTargetComputeOptimizerRecommendation
+    ) {
+      currentType = `${currentRecommendation.memorySize}MB`
+      targetType = `${targetRecommendation.memorySize}MB`
+    }
+    return `Save cost by changing ${modifyType[service]} from ${currentType} to ${targetType}.`
   }
 
   private getComputeAndMemoryFootprintEstimates(

@@ -175,7 +175,7 @@ export const ebsComputeOptimizer = [
     recommendationOptions_2_configuration_volumeSize: '80',
     recommendationOptions_3_configuration_volumeType: '',
     recommendationOptions_3_configuration_volumeSize: '',
-    recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
+    recommendationOptions_1_estimatedMonthlySavings_value: '0',
     recommendationOptions_2_estimatedMonthlySavings_value: '8',
     recommendationOptions_3_estimatedMonthlySavings_value: '',
     recommendationOptions_1_performanceRisk: '1.0',
