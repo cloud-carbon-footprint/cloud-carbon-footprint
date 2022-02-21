@@ -65,7 +65,7 @@ import {
 } from '../domain'
 import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
-const apiLogger = new Logger('api')
+const apiLogger = new Logger('gcp')
 
 export default class BillingExportTable {
   private readonly tableName: string
@@ -616,7 +616,8 @@ export default class BillingExportTable {
                     usageUnit,
                     machineType`
 
-    apiLogger.info('REMOVE_ME Failing query ' + query.toString())
+    // TODO: remove logs after issue has been solved
+    apiLogger.info('Get usage query:  ' + query.toString())
     const job: Job = await this.createQueryJob(query)
     return await this.getQueryResults(job)
   }
@@ -626,6 +627,7 @@ export default class BillingExportTable {
     try {
       ;[rows] = await job.getQueryResults()
     } catch (e) {
+      // TODO: remove logs after issue has been solved
       apiLogger.error('get query result error: ', e)
       const { reason, domain, message } = e.errors[0]
       throw new Error(
