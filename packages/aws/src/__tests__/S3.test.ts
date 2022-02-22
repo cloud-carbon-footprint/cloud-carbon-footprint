@@ -3,7 +3,12 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
+import AWS, {
+  CloudWatch,
+  CloudWatchLogs,
+  CostExplorer,
+  S3 as S3Service,
+} from 'aws-sdk'
 import S3 from '../lib/S3'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
@@ -35,6 +40,7 @@ describe('S3', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3Service(),
     )
 
   it('gets S3 usage', async () => {

@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+import { CloudWatch, CostExplorer, CloudWatchLogs, S3 } from 'aws-sdk'
 import { FootprintEstimate, Cost } from '@cloud-carbon-footprint/core'
 import RDS from '../lib/RDS'
 import RDSStorage from '../lib/RDSStorage'
@@ -18,6 +18,7 @@ describe('RDS Service', function () {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   it('Combines the results from both the RDSCompute and RDSStorage services ', async () => {

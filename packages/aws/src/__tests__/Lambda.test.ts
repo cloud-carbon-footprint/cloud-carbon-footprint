@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatchLogs, CostExplorer, CloudWatch } from 'aws-sdk'
+import AWS, { CloudWatchLogs, CostExplorer, CloudWatch, S3 } from 'aws-sdk'
 import { estimateCo2 } from '@cloud-carbon-footprint/core'
 import Lambda from '../lib/Lambda'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
@@ -37,6 +37,7 @@ describe('Lambda', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   it('gets Lambda usage for one function and one day', async () => {
