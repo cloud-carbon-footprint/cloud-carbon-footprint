@@ -42,4 +42,5 @@ Resources:
                 Action:
                   - logs:GetQueryResults
                   - logs:StopQuery
+                  - logs:DescribeQueries
                 Resource: '*'

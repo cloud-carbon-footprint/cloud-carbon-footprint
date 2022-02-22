@@ -32,6 +32,13 @@ describe('Lambda', () => {
     logGroupName: groupName,
   }))
 
+  const runningQueries: CloudWatchLogs.QueryInfo[] = [
+    {
+      queryId: 'test',
+      status: 'Running',
+    },
+  ]
+
   const getServiceWrapper = () =>
     new ServiceWrapper(
       new CloudWatch(),
@@ -59,6 +66,7 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
+    mockDescribeQueries(runningQueries)
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
@@ -112,6 +120,7 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
+    mockDescribeQueries(runningQueries)
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
@@ -176,6 +185,7 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
+    mockDescribeQueries(runningQueries)
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
@@ -242,6 +252,7 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
+    mockDescribeQueries(runningQueries)
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
@@ -298,6 +309,7 @@ describe('Lambda', () => {
 
   it('gets Lambda usage for one function and one day when there are no group names for that region', async () => {
     mockDescribeLogGroups([])
+    mockDescribeQueries([])
 
     const lambdaService = new Lambda(60000, 1000, getServiceWrapper())
     const result = await lambdaService.getEstimates(
@@ -328,6 +340,7 @@ describe('Lambda', () => {
     }
 
     mockDescribeLogGroups(logGroups)
+    mockDescribeQueries(runningQueries)
     mockStartQuery(queryResponse)
     mockGetResults(results)
 
@@ -389,6 +402,21 @@ describe('Lambda', () => {
       ) => {
         callback(null, {
           logGroups: logGroups,
+        })
+      },
+    )
+  }
+
+  function mockDescribeQueries(queries: CloudWatchLogs.QueryInfo[]) {
+    AWSMock.mock(
+      'CloudWatchLogs',
+      'describeQueries',
+      (
+        params: CloudWatchLogs.DescribeQueriesRequest,
+        callback: (a: Error, response: any) => any,
+      ) => {
+        callback(null, {
+          queries: queries,
         })
       },
     )

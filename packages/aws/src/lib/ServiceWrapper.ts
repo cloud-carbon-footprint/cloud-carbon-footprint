@@ -102,6 +102,12 @@ export class ServiceWrapper {
     return await this.cloudWatchLogs.describeLogGroups(params).promise()
   }
 
+  public async describeCloudWatchLogsQueries(
+    params: CloudWatchLogs.DescribeQueriesRequest,
+  ): Promise<CloudWatchLogs.DescribeQueriesResponse> {
+    return await this.cloudWatchLogs.describeQueries(params).promise()
+  }
+
   public async startCloudWatchLogsQuery(
     params: CloudWatchLogs.StartQueryRequest,
   ): Promise<CloudWatchLogs.StartQueryResponse> {
