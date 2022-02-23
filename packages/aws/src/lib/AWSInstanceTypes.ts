@@ -1099,6 +1099,13 @@ export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
   'dc1.8xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
   'ds2.xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
   'ds2.8xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
+  'inf1.xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
+  'inf1.2xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
+  'inf1.6xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
+  'inf1.24xlarge': [COMPUTE_PROCESSOR_TYPES.UNKNOWN],
+  'f1.2xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'f1.4xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'f1.16xlarge': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
 }
 
 export const GPU_INSTANCES_TYPES: string[] = [
@@ -1110,10 +1117,6 @@ export const GPU_INSTANCES_TYPES: string[] = [
   'p2.xlarge',
   'p2.8xlarge',
   'p2.16xlarge',
-  'nf1.xlarge',
-  'inf1.2xlarge',
-  'inf1.6xlarge',
-  'inf1.24xlarge',
   'g4dn.xlarge',
   'g4dn.2xlarge',
   'g4dn.4xlarge',
@@ -1130,7 +1133,4 @@ export const GPU_INSTANCES_TYPES: string[] = [
   'g3.4xlarge',
   'g3.8xlarge',
   'g3.16xlarge',
-  'f1.2xlarge',
-  'f1.4xlarge',
-  'f1.16xlarge',
 ]
