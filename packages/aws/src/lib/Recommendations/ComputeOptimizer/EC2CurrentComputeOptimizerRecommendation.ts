@@ -24,7 +24,8 @@ export default class EC2CurrentComputeOptimizerRecommendation extends ComputeOpt
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.instanceArn,
     )
-    this.instanceType = computeOptimizerRecommendationData.instanceType
+    this.instanceType = computeOptimizerRecommendationData.currentInstanceType
+    this.description = this.instanceType
     this.currentVcpus = computeOptimizerRecommendationData.current_vcpus
     this.vCpuHours = this.getVCpuHours(this.currentVcpus, this.instanceType)
     this.usageAmount = getHoursInMonth()

@@ -145,9 +145,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         kilowattHourSavings: 0.0010623599999999994,
         resourceId: 'vol-00e39f1234a7eaqrt',
         co2eSavings: 3.7274069195999967e-7,
-        // TODO: Add alternate rec detail for if cost savings is 0
         recommendationDetail:
-          'Save cost by changing volume type from st1(80GB) to st1(50GB).',
+          'Improve performance by changing volume type from st1(80GB) to st1(50GB).',
         costSavings: 0,
       },
     ]

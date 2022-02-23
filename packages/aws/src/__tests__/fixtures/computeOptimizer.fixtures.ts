@@ -56,7 +56,7 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    instanceType: 'm4.xlarge',
+    currentInstanceType: 'm4.xlarge',
     finding: 'OVER_PROVISIONED',
     current_vcpus: '4',
     recommendations_count: '3',
@@ -78,7 +78,7 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    instanceType: 'm4.xlarge',
+    currentInstanceType: 'm4.xlarge',
     finding: 'UNDER_PROVISIONED',
     current_vcpus: '2',
     recommendations_count: '3',
@@ -100,7 +100,7 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    instanceType: 'm4.xlarge',
+    currentInstanceType: 'm4.xlarge',
     finding: 'OPTIMIZED',
     current_vcpus: '3',
     recommendations_count: '3',

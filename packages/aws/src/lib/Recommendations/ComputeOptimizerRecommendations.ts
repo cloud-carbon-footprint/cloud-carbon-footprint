@@ -23,6 +23,7 @@ import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
 import AWSStorageEstimatesBuilder from '../AWSStorageEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
 import { SSD_USAGE_TYPES } from '../CostAndUsageTypes'
+import ComputeOptimizerRecommendation from './ComputeOptimizer/ComputeOptimizerRecommendation'
 
 export default class ComputeOptimizerRecommendations
   implements ICloudRecommendationsService
@@ -187,44 +188,20 @@ export default class ComputeOptimizerRecommendations
 
   private getRecommendationDetail(
     service: string,
-    currentRecommendation:
-      | EC2CurrentComputeOptimizerRecommendation
-      | EBSCurrentComputeOptimizerRecommendation,
-    targetRecommendation:
-      | EC2TargetComputeOptimizerRecommendation
-      | EBSTargetComputeOptimizerRecommendation,
+    currentRecommendation: ComputeOptimizerRecommendation,
+    targetRecommendation: ComputeOptimizerRecommendation,
   ): string {
     type ServiceDetail = { [service: string]: string }
+    const benefit = targetRecommendation.costSavings
+      ? 'Save cost'
+      : 'Improve performance'
     const modifyType: ServiceDetail = {
       ec2: 'instance type',
       ebs: 'volume type',
       lambda: 'configuration memory size',
     }
-    let currentType,
-      targetType = ''
-    if (
-      currentRecommendation instanceof
-        EC2CurrentComputeOptimizerRecommendation &&
-      targetRecommendation instanceof EC2TargetComputeOptimizerRecommendation
-    ) {
-      currentType = currentRecommendation.instanceType
-      targetType = targetRecommendation.instanceType
-    } else if (
-      currentRecommendation instanceof
-        EBSCurrentComputeOptimizerRecommendation &&
-      targetRecommendation instanceof EBSTargetComputeOptimizerRecommendation
-    ) {
-      currentType = `${currentRecommendation.volumeType}(${currentRecommendation.volumeSize}GB)`
-      targetType = `${targetRecommendation.volumeType}(${targetRecommendation.volumeSize}GB)`
-    } else if (
-      currentRecommendation instanceof
-        LambdaCurrentComputeOptimizerRecommendation &&
-      targetRecommendation instanceof LambdaTargetComputeOptimizerRecommendation
-    ) {
-      currentType = `${currentRecommendation.memorySize}MB`
-      targetType = `${targetRecommendation.memorySize}MB`
-    }
-    return `Save cost by changing ${modifyType[service]} from ${currentType} to ${targetType}.`
+
+    return `${benefit} by changing ${modifyType[service]} from ${currentRecommendation.description} to ${targetRecommendation.description}.`
   }
 
   private getComputeAndMemoryFootprintEstimates(
