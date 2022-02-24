@@ -43,7 +43,7 @@
   "dependencies": {
     "@cloud-carbon-footprint/common": "^1.4.0",
     "@cloud-carbon-footprint/core": "^0.15.0",
-    "@google-cloud/bigquery": "^5.9.3",
+    "@google-cloud/bigquery": "^5.11.0",
     "@google-cloud/monitoring": "^2.3.5",
     "@google-cloud/recommender": "^4.2.5",
     "@google-cloud/resource-manager": "^3.0.0",
