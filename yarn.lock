@@ -13154,9 +13154,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-auth-library@npm:^7.11.0":
-  version: 7.11.0
-  resolution: "google-auth-library@npm:7.11.0"
+"google-auth-library@npm:^7.14.0":
+  version: 7.14.0
+  resolution: "google-auth-library@npm:7.14.0"
   dependencies:
     arrify: ^2.0.0
     base64-js: ^1.3.0
@@ -13167,7 +13167,7 @@ __metadata:
     gtoken: ^5.0.4
     jws: ^4.0.0
     lru-cache: ^6.0.0
-  checksum: fb1d0c39bbd19163d07f3d4958ab1af695b5fbc33caa1fcbb2acede43cf31c3cc449da949629ac6a212c55b1190a8c5b38e11015cdbdf1ec902d99d0e2ee4f07
+  checksum: 0fe254bc985c7b3be5ae6708afae9cd8a92cb468d956458e8fb6ec76ce8900ee90dbf1c8aa51790039c388682db6a6b510b6bef48ae6e1cea6f5d893b163381c
   languageName: node
   linkType: hard
 
