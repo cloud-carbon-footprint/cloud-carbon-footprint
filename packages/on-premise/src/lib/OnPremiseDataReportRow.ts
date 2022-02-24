@@ -39,7 +39,7 @@ export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
     } else if (cpuId.includes('AMD')) {
       processor = cpuId.split(' ')[2]
     }
-    return COMPUTE_PROCESSOR_FAMILY_MAPPING[processor]
+    return COMPUTE_PROCESSOR_FAMILY_MAPPING[processor] || []
   }
 
   public getUsageHoursFromTimestamps(start: Date, end: Date): number {

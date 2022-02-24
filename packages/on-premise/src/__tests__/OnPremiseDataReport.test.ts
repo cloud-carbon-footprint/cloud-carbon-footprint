@@ -151,4 +151,36 @@ describe('On-Premise Data Report', () => {
     ]
     expect(result).toEqual(expectedResult)
   })
+
+  it('Estimates use average values for region, memory and watts as default', () => {
+    const newerMockDataInput: OnPremiseDataInput[] = [
+      {
+        cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
+        memory: 1350690,
+        machineType: 'server',
+        startTime: new Date('2022-01-17T13:38:18Z'),
+        endTime: new Date('2022-01-24T18:22:29.918423Z'),
+      },
+    ]
+
+    const onPremiseDataReport = new OnPremiseDataReport(
+      new ComputeEstimator(),
+      new MemoryEstimator(ON_PREMISE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+    )
+
+    const result = onPremiseDataReport.getEstimates(newerMockDataInput)
+
+    const expectedResult: OnPremiseDataOutput[] = [
+      {
+        cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
+        memory: 1350690,
+        machineType: 'server',
+        startTime: new Date('2022-01-17T13:38:18Z'),
+        endTime: new Date('2022-01-24T18:22:29.918423Z'),
+        co2e: 0.04691537675108586,
+        kilowattHours: 145.3246388784467,
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
 })
