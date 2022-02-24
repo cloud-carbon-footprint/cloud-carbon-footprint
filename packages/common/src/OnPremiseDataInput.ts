@@ -3,11 +3,11 @@
  */
 
 export type OnPremiseDataInput = {
-  cpuId?: string
-  memory?: number
-  machineType?: string
-  startTime?: Date
-  endTime?: Date
+  cpuId: string
+  memory: number
+  machineType: string
+  startTime: Date
+  endTime: Date
   country?: string
   region?: string
   serverUtilization?: number
@@ -15,11 +15,11 @@ export type OnPremiseDataInput = {
 }
 
 export type OnPremiseDataOutput = {
-  cpuId?: string
-  memory?: number
-  machineType?: string
-  startTime?: Date
-  endTime?: Date
+  cpuId: string
+  memory: number
+  machineType: string
+  startTime: Date
+  endTime: Date
   country?: string
   region?: string
   serverUtilization?: number
