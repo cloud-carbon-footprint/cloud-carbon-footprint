@@ -1,0 +1,15 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
+
+import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core'
+
+export const COMPUTE_PROCESSOR_FAMILY_MAPPING: {
+  [series: string]: string[]
+} = {
+  'E5-2667': [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE],
+  'E5-2667 v4': [COMPUTE_PROCESSOR_TYPES.BROADWELL],
+  'E5-2667 v3': [COMPUTE_PROCESSOR_TYPES.HASWELL],
+  '7262': [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN],
+  'Silver 4114': [COMPUTE_PROCESSOR_TYPES.SKYLAKE],
+}

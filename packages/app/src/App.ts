@@ -9,6 +9,8 @@ import {
   GroupBy,
   LookupTableInput,
   LookupTableOutput,
+  OnPremiseDataInput,
+  OnPremiseDataOutput,
   RecommendationResult,
   reduceByTimestamp,
 } from '@cloud-carbon-footprint/common'
@@ -24,6 +26,7 @@ import {
   GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   GCPAccount,
 } from '@cloud-carbon-footprint/gcp'
+import { OnPremise } from "@cloud-carbon-footprint/on-premise";
 
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
@@ -217,5 +220,11 @@ export default class App {
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     return GCPAccount.getBillingExportDataFromInputData(inputData)
+  }
+
+  getOnPremiseEstimatesFromInputData(
+      inputData: OnPremiseDataInput[],
+  ): OnPremiseDataOutput[] {
+    return OnPremise.getOnPremiseDataFromInputData(inputData)
   }
 }

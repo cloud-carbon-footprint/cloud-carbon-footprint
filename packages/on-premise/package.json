@@ -1,17 +1,18 @@
 {
-  "name": "@cloud-carbon-footprint/cli",
-  "version": "1.3.0",
+  "name": "@cloud-carbon-footprint/on-premise",
+  "version": "0.0.0",
   "license": "Apache-2.0",
-  "description": "Command Line Interface as an entrypoint to get cloud energy and carbon emissions.",
+  "description": "The core logic to gather usage data and estimate energy and carbon emissions from on-premise data centers.",
   "main": "src/index.ts",
+  "types": "src/index.ts",
   "publishConfig": {
     "main": "dist/index.js"
   },
   "homepage": "https://www.cloudcarbonfootprint.org/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
-    "directory": "packages/cli"
+    "url": "git+https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.git",
+    "directory": "packages/on-premise"
   },
   "keywords": [
     "thoughtworks",
@@ -27,19 +28,23 @@
     "type-check": "tsc --noEmit",
     "sonar:scan": "sonar-scanner",
     "test:watch": "yarn test --coverage --watchAll",
-    "build": "rimraf dist && yarn build:tsc",
-    "build:tsc": "tsc --build tsconfig.json",
+    "build": "rimraf dist && yarn build:tsc && yarn prepack && cp package.json dist && yarn postpack",
+    "build:workspace": "mkdir -p ../../dist-workspace/packages/on-premise/dist && cp -R dist ../../dist-workspace/packages/on-premise && mv ../../dist-workspace/packages/on-premise/dist/package.json ../../dist-workspace/packages/on-premise",
+    "build:update": "node ../../scripts/update-package-dependencies.js on-premise core common",
     "prepack": "ts-node ../../scripts/prepack.ts",
     "postpack": "ts-node ../../scripts/postpack.ts",
+    "build:tsc": "tsc --build tsconfig.json",
     "build:watch": "onchange 'src/**/*.ts' -- yarn build",
     "view:coverage": "serve coverage/lcov-report",
     "clean": "rimraf dist && rimraf coverage && rimraf logs",
     "lint": "eslint '*/**/*.ts' --quiet",
-    "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
-    "start": "ts-node src/index.ts",
-    "guided-install": "ts-node src/GuidedInstall/index.ts",
-    "create-lookup-table": "ts-node src/CreateLookupTable/index.ts",
-    "estimate-on-premise-data": "ts-node src/EstimateOnPremiseData/index.ts"
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
+  },
+  "dependencies": {
+    "@cloud-carbon-footprint/common": "^1.4.0",
+    "@cloud-carbon-footprint/core": "^0.15.0",
+    "@google-cloud/secret-manager": "^3.10.1",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
@@ -48,7 +53,6 @@
     "@types/source-map-support": "^0.5.3",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
-    "aws-sdk-mock": "^5.1.0",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -64,23 +68,6 @@
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.4"
-  },
-  "dependencies": {
-    "@cloud-carbon-footprint/app": "0.4.2",
-    "@cloud-carbon-footprint/common": "^1.4.0",
-    "@types/cli-table": "^0.3.0",
-    "@types/prompts": "^2.0.12",
-    "@types/ramda": "^0.27.40",
-    "aws-sdk": "^2.910.0",
-    "cli-table": "^0.3.6",
-    "commander": "^8.0.0",
-    "csv-writer": "^1.6.0",
-    "csvtojson": "^2.0.10",
-    "dotenv": "^14.2.0",
-    "fs-extra": "^10.0.0",
-    "moment": "^2.29.1",
-    "ramda": "^0.28.0",
-    "typed-prompts": "^1.5.0"
   },
   "lint-staged": {
     "*.{js,ts}": [

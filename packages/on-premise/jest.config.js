@@ -9,11 +9,13 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      statements: 92,
-      branches: 84,
-      lines: 93,
-      functions: 93,
+      statements: 95,
+      branches: 86,
+      functions: 96,
+      lines: 95,
     },
   },
+  testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],
   modulePathIgnorePatterns: ['index.ts'],
+  coveragePathIgnorePatterns: ['<rootDir>/src/.*/index.ts'],
 }

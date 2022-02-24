@@ -46,6 +46,10 @@ export const convertTerabytesToGigabytes = (usageAmount: number): number => {
   return usageAmount * 1000
 }
 
+export const convertMegabytesToGigabytes = (usageAmount: number): number => {
+  return usageAmount / 1024
+}
+
 export const convertGigaBytesToTerabyteHours = (
   usageAmount: number,
 ): number => {

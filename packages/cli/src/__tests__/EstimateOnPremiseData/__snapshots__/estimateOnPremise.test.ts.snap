@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`estimateOnPremiseData creates on premise estimates CSV creates on premise CSV file, with default output file path 1`] = `
+"cpuId,memory,machineType,startTime,endTime,country,region,serverUtilization,powerUsageEffectiveness,kilowattHours,co2e
+Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,,,98.95676,0.0409997648032
+"
+`;
+
+exports[`estimateOnPremiseData creates on premise estimates CSV creates on premise CSV file, with provided output file name 1`] = `
+"cpuId,memory,machineType,startTime,endTime,country,region,serverUtilization,powerUsageEffectiveness,kilowattHours,co2e
+Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,,,98.95676,0.0409997648032
+"
+`;
