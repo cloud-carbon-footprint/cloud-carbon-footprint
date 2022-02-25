@@ -145,7 +145,7 @@ describe('On-Premise Data Report', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Estimates use average values for region, memory and watts as default', () => {
+  it('Estimates using average values for region, memory and watts as default', () => {
     const newMockDataInput: OnPremiseDataInput[] = [
       {
         cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
@@ -172,43 +172,6 @@ describe('On-Premise Data Report', () => {
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
         co2e: 0.04691537675108586,
         kilowattHours: 145.3246388784467,
-        usageHours: 172,
-      },
-    ]
-    expect(result).toEqual(expectedResult)
-  })
-
-  it('Returns estimates with configured serverUtilization and pue with US region', () => {
-    const newMockDataInput = [
-      {
-        ...mockDataInput[0],
-      },
-    ]
-    newMockDataInput[0].memory = 1350690
-    newMockDataInput[0].cpuUtilization = 45
-    newMockDataInput[0].powerUsageEffectiveness = 1.45
-    newMockDataInput[0].region = 'Texas'
-
-    const onPremiseDataReport = new OnPremiseDataReport(
-      new ComputeEstimator(),
-      new MemoryEstimator(ON_PREMISE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-    )
-
-    const result = onPremiseDataReport.getEstimates(newMockDataInput)
-
-    const expectedResult: OnPremiseDataOutput[] = [
-      {
-        cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
-        memory: 1350690,
-        machineType: 'server',
-        startTime: new Date('2022-01-17T13:38:18Z'),
-        endTime: new Date('2022-01-24T18:22:29.918423Z'),
-        country: 'United States',
-        region: 'Texas',
-        cpuUtilization: 45,
-        powerUsageEffectiveness: 1.45,
-        co2e: 0.062382491692975564,
-        kilowattHours: 150.565967592623,
         usageHours: 172,
       },
     ]
@@ -286,7 +249,7 @@ describe('On-Premise Data Report', () => {
       72.24,
     ],
   ])(
-    'it should configured values for averageWatts or cpuUtilization by machineType',
+    'it should return configured values for averageWatts or cpuUtilization by machineType',
     (
       machineType: string[],
       cpuUtilization: number | undefined,

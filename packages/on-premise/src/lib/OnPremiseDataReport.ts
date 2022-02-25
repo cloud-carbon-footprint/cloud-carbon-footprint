@@ -54,7 +54,7 @@ export default class OnPremiseDataReport {
       const onPremiseDataReportRow: OnPremiseDataReportRow =
         new OnPremiseDataReportRow(onPremiseDataRow)
 
-      const footprintEstimate = this.getEstimateByMachineType(
+      const footprintEstimate = this.getFootprintEstimate(
         onPremiseDataReportRow,
       )
 
@@ -75,7 +75,7 @@ export default class OnPremiseDataReport {
     return results
   }
 
-  private getEstimateByMachineType(
+  private getFootprintEstimate(
     onPremiseDataReportRow: OnPremiseDataReportRow,
   ): Partial<FootprintEstimate> {
     const emissionsFactors: CloudConstantsEmissionsFactors =
@@ -124,9 +124,9 @@ export default class OnPremiseDataReport {
 
     const { configuredCpuUtilization, averageWatts } =
       this.getConfigurableCoefficients(machineType, cpuUtilization)
+
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: configuredCpuUtilization,
-      // TODO: update vCpuHours variable name as usageHours for on-prem
       vCpuHours: usageHours,
       usesAverageCPUConstant: true,
     }
@@ -153,6 +153,7 @@ export default class OnPremiseDataReport {
   ): FootprintEstimate {
     const { region, usageHours, memory, processorFamilies } =
       onPremiseDataReportRow
+
     const memoryUsage: MemoryUsage = {
       gigabyteHours: this.getGigabyteHours(
         usageHours,
@@ -198,23 +199,20 @@ export default class OnPremiseDataReport {
         if (this.serverAverageWatts) averageWatts = this.serverAverageWatts
         if (this.serverCpuUtilization)
           configuredCpuUtilization = this.serverCpuUtilization
-
         return { configuredCpuUtilization, averageWatts }
+
       case ON_PREMISE_MACHINE_TYPES.LAPTOP:
-        // configuredCpuUtilization = ON_PREMISE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
         if (this.laptopAverageWatts) averageWatts = this.laptopAverageWatts
         if (this.laptopCpuUtilization)
           configuredCpuUtilization = this.laptopCpuUtilization
-
         return { configuredCpuUtilization, averageWatts }
+
       case ON_PREMISE_MACHINE_TYPES.DESKTOP:
-        // configuredCpuUtilization = ON_PREMISE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
         if (this.desktopAverageWatts) averageWatts = this.desktopAverageWatts
         if (this.desktopCpuUtilization)
           configuredCpuUtilization = this.desktopCpuUtilization
-        // configuredCpuUtilization = configuredCpuUtilization ? configuredCpuUtilization : ON_PREMISE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020
-
         return { configuredCpuUtilization, averageWatts }
+
       default:
         return { configuredCpuUtilization, averageWatts: undefined }
     }

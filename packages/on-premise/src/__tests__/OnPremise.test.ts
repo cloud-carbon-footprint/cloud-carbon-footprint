@@ -31,7 +31,7 @@ describe('On Premise', () => {
     jest.clearAllMocks()
   })
 
-  it('gets results from getDataFromOnPremise function', () => {
+  it('gets results from getOnPremiseDataFromInputData function', () => {
     const mockEstimates: OnPremiseDataOutput[] = [
       {
         cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
@@ -41,6 +41,7 @@ describe('On Premise', () => {
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
         country: 'United States',
         region: 'Texas',
+        usageHours: 172,
         kilowattHours: 0.09313874999999999,
         co2e: 0.000021235635,
       },

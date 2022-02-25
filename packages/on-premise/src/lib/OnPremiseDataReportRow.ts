@@ -56,7 +56,7 @@ export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
   }
 
   public getRegionData(country: string, region: string): string {
-    if (region) return `${country}-${region}`
+    if (region && country === 'United States') return `${country}-${region}`
     return country
   }
 }

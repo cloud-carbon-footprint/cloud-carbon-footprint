@@ -22,7 +22,6 @@ export const ON_PREMISE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 45.33333333,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 166.4,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 300.4444444,
-    // [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 128.0,
   },
   getMemory: (computeProcessors: string[]): number => {
     const memoryForProcessors: number[] = computeProcessors.map(
@@ -46,7 +45,6 @@ export const ON_PREMISE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 41.5,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 91.6,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 83.4,
-    // [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 0.45,
   },
   getMinWatts: (computeProcessors: string[]): number => {
     const minWattsForProcessors: number[] = computeProcessors.map(
@@ -75,7 +73,6 @@ export const ON_PREMISE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE]: 89.6,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 295.5,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 394.5,
-    // [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 2.02,
   },
   getMaxWatts: (computeProcessors: string[]): number => {
     const maxWattsForProcessors: number[] = computeProcessors.map(
