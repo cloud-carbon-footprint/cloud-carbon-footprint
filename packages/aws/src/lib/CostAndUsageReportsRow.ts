@@ -39,8 +39,8 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     )
     super(billingDataRow)
 
-    this.vCpuHours = this.getVCpuHours(Number(this.vCpus))
     this.usageAmount = this.getUsageAmount()
+    this.vCpuHours = this.getVCpuHours(Number(this.vCpus))
     this.usageUnit = this.getUsageUnit()
     this.timestamp = new Date(this.timestamp)
     this.cost = Number(this.cost)
