@@ -12,6 +12,7 @@ import {
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
+  GPU_INSTANCES_TYPES,
   MSK_INSTANCE_TYPES,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
@@ -41,6 +42,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
 
     this.usageAmount = this.getUsageAmount()
     this.vCpuHours = this.getVCpuHours(Number(this.vCpus))
+    this.gpuHours = this.getGpuHours()
     this.usageUnit = this.getUsageUnit()
     this.timestamp = new Date(this.timestamp)
     this.cost = Number(this.cost)
@@ -80,10 +82,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
   }
 
   private getVCpuHours(vCpuFromReport: number): number {
-    const instanceType = this.usageType
-      .split(':')
-      .pop()
-      .replace(/^((db|cache|dax|dms|ml|mq|KernelGateway-ml|.+Kafka)\.)/, '')
+    const instanceType = this.extractInstanceTypeFromUsageType()
 
     // When the service is AWS Glue, 4 virtual CPUs are provisioned (from AWS Docs).
     if (this.serviceName === 'AWSGlue')
@@ -108,6 +107,18 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     if (!vCpuFromReport)
       return this.extractVCpuFromInstanceType(instanceType) * this.usageAmount
     return vCpuFromReport * this.usageAmount
+  }
+
+  private getGpuHours(): number {
+    const instanceType = this.extractInstanceTypeFromUsageType()
+    return GPU_INSTANCES_TYPES[instanceType] * this.usageAmount || 0
+  }
+
+  private extractInstanceTypeFromUsageType(): string {
+    return this.usageType
+      .split(':')
+      .pop()
+      .replace(/^((db|cache|dax|dms|ml|mq|KernelGateway-ml|.+Kafka)\.)/, '')
   }
 
   private getBurstableInstanceVCPu(instanceType: string) {

@@ -44,6 +44,7 @@ import {
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
+  GPU_VIRTUAL_MACHINE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING,
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
@@ -121,7 +122,10 @@ export default class ConsumptionManagementService {
           return []
         }
 
-        if (this.isUnknownUsage(consumptionDetailRow)) {
+        if (
+          this.isUnknownUsage(consumptionDetailRow) ||
+          this.isGpuUsage(consumptionDetailRow.usageType)
+        ) {
           unknownRows.push(consumptionDetailRow)
           return []
         }
@@ -544,6 +548,10 @@ export default class ConsumptionManagementService {
         consumptionDetailRow.usageUnit,
       )
     )
+  }
+
+  private isGpuUsage(usageType: string): boolean {
+    return containsAny(GPU_VIRTUAL_MACHINE_TYPES, usageType)
   }
 
   private getUsageAmountInGigabyteHours(

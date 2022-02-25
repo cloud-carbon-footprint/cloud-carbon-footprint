@@ -3,6 +3,7 @@
  */
 
 export enum COMPUTE_PROCESSOR_TYPES {
+  // CPU Processors
   CASCADE_LAKE = 'Cascade Lake',
   SKYLAKE = 'Skylake',
   HASWELL = 'Haswell',
@@ -13,9 +14,20 @@ export enum COMPUTE_PROCESSOR_TYPES {
   AMD_EPYC_1ST_GEN = 'AMD EPYC 1st Gen',
   AMD_EPYC_2ND_GEN = 'AMD EPYC 2nd Gen',
   AMD_EPYC_3RD_GEN = 'AMD EPYC 3rd Gen',
-  GPU = 'GPU',
   AWS_GRAVITON = 'AWS Graviton',
   AWS_GRAVITON_2 = 'AWS Graviton2',
+  // GPU Processors
+  NVIDIA_K520 = 'NVIDIA K520',
+  NVIDIA_A10G = 'NVIDIA A10G',
+  NVIDIA_T4 = 'NVIDIA T4',
+  NVIDIA_TESLA_M60 = 'NVIDIA Tesla M60',
+  NVIDIA_TESLA_K80 = 'NVIDIA Tesla K80',
+  NVIDIA_TESLA_V100 = 'NVIDIA Tesla V100',
+  NVIDIA_TESLA_A100 = 'NVIDIA Tesla A100',
+  NVIDIA_TESLA_P4 = 'NVIDIA Tesla P4',
+  NVIDIA_TESLA_P100 = 'NVIDIA Tesla P100',
+  AMD_RADEON_PRO_V520 = 'AMD Radeon Pro V520',
+  // Unknown
   UNKNOWN = 'Unknown',
 }
 

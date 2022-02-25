@@ -14,7 +14,6 @@ import {
 
 import {
   configLoader,
-  containsAny,
   convertBytesToTerabytes,
   convertGigabyteHoursToTerabyteHours,
   convertGigabyteMonthsToTerabyteHours,
@@ -70,7 +69,6 @@ import AWSComputeEstimatesBuilder from './AWSComputeEstimatesBuilder'
 import AWSMemoryEstimatesBuilder from './AWSMemoryEstimatesBuilder'
 import {
   EC2_INSTANCE_TYPES,
-  GPU_INSTANCES_TYPES,
   INSTANCE_FAMILY_TO_INSTANCE_TYPE_MAPPING,
 } from './AWSInstanceTypes'
 
@@ -221,8 +219,7 @@ export default class CostAndUsageReports {
 
     if (
       this.usageTypeIsUnknown(costAndUsageReportRow.usageType) ||
-      this.usageUnitIsUnknown(costAndUsageReportRow.usageUnit) ||
-      this.usageTypeisGpu(costAndUsageReportRow.usageType)
+      this.usageUnitIsUnknown(costAndUsageReportRow.usageUnit)
     ) {
       unknownRows.push(costAndUsageReportRow)
       return
@@ -524,10 +521,6 @@ export default class CostAndUsageReports {
     return !Object.values(KNOWN_USAGE_UNITS).some(
       (knownUsageUnit) => knownUsageUnit === usageUnit,
     )
-  }
-
-  private usageTypeisGpu(usageType: string): boolean {
-    return containsAny(GPU_INSTANCES_TYPES, usageType)
   }
 
   private async getUsage(
