@@ -52,6 +52,7 @@ import {
   UNSUPPORTED_USAGE_TYPES,
 } from './BillingExportTypes'
 import {
+  GPU_MACHINE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING,
   MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING,
@@ -273,17 +274,25 @@ export default class BillingExportTable {
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
+    const isGPUComputeUsage = usageRow.usageType.includes('GPU')
+
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      vCpuHours: usageRow.vCpuHours,
+      vCpuHours: isGPUComputeUsage ? usageRow.gpuHours : usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
     }
-
-    const computeProcessors = this.getComputeProcessorsFromUsageType(
-      usageRow.usageType,
-      usageRow.machineType,
-    )
+    let computeProcessors
+    if (isGPUComputeUsage) {
+      computeProcessors = this.getGpuComputeProcessorsFromUsageType(
+        usageRow.usageType,
+      )
+    } else {
+      computeProcessors = this.getComputeProcessorsFromUsageType(
+        usageRow.usageType,
+        usageRow.machineType,
+      )
+    }
 
     const computeConstants: CloudConstants = {
       minWatts: GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
@@ -327,6 +336,14 @@ export default class BillingExportTable {
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
+  }
+  private getGpuComputeProcessorsFromUsageType(usageType: string): string[] {
+    const gpuComputeProcessors = GPU_MACHINE_TYPES.filter((processor) =>
+      usageType.startsWith(processor),
+    )
+    return gpuComputeProcessors.length
+      ? gpuComputeProcessors
+      : GPU_MACHINE_TYPES
   }
 
   private getEmbodiedEmissions(

@@ -51,7 +51,6 @@ export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'External IP Charge',
   'Static Ip',
   'Vpn Tunnel',
-  'GPU', // Currently unsupported for carbon estimation
   'Service Charge',
 ]
 
@@ -95,6 +94,7 @@ export const COMPUTE_STRING_FORMATS: string[] = [
   'CPU',
   'CPUs',
   'Kubernetes Clusters',
+  'GPU',
 ]
 
 export const NETWORKING_STRING_FORMATS: string[] = [

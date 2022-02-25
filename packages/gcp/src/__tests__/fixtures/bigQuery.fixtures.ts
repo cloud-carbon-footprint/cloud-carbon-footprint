@@ -123,6 +123,47 @@ export const mockQueryResultsComputeEngineRam: any[][] = [
   ],
 ]
 
+export const mockQueryResultsGPUMachineTypes: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateTwo,
+      accountId: accountId,
+      accountName: accountName,
+      region: 'us-west1',
+      serviceName: 'Compute engine',
+      usageType: 'Nvidia Tesla V100 GPU running in Americas',
+      usageUnit: 'seconds',
+      usageAmount: 3600,
+      cost: 10,
+      machineType: null,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountId: accountId,
+      accountName: accountName,
+      region: 'europe-west1',
+      serviceName: 'Compute engine',
+      usageType: 'Nvidia Tesla A100 GPU running in Americas',
+      usageUnit: 'seconds',
+      usageAmount: 3600,
+      cost: 8,
+      machineType: null,
+    },
+    {
+      timestamp: bigQueryDateTwo,
+      accountId: accountId,
+      accountName: accountName,
+      region: 'europe-west1',
+      serviceName: 'Notebooks',
+      usageType: 'Notebooks GPU Standard',
+      usageUnit: 'seconds',
+      usageAmount: 3600,
+      cost: 8,
+      machineType: null,
+    },
+  ],
+]
+
 export const mockQueryResultsUnknownUsages: any[][] = [
   [
     {
