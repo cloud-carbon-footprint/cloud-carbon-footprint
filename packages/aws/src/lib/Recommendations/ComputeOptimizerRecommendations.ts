@@ -109,71 +109,78 @@ export default class ComputeOptimizerRecommendations
                   recommendation,
                 )
 
-              let kilowattHourSavings = 0
-              let co2eSavings = 0
+              if (targetComputeOptimizerRecommendation.costSavings) {
+                let kilowattHourSavings = 0
+                let co2eSavings = 0
 
-              if (service === 'ebs') {
-                const currentStorageFootprint =
-                  this.getStorageFootprintEstimate(
-                    currentComputeOptimizerRecommendation,
-                  )
+                if (service === 'ebs') {
+                  const currentStorageFootprint =
+                    this.getStorageFootprintEstimate(
+                      currentComputeOptimizerRecommendation,
+                    )
 
-                const targetStorageFootprint = this.getStorageFootprintEstimate(
-                  targetComputeOptimizerRecommendation,
-                )
+                  const targetStorageFootprint =
+                    this.getStorageFootprintEstimate(
+                      targetComputeOptimizerRecommendation,
+                    )
 
-                kilowattHourSavings =
-                  currentStorageFootprint.kilowattHours -
-                  targetStorageFootprint.kilowattHours
-                co2eSavings =
-                  currentStorageFootprint.co2e - targetStorageFootprint.co2e
-              } else {
-                const [currentComputeFootprint, currentMemoryFootprint] =
-                  this.getComputeAndMemoryFootprintEstimates(
-                    currentComputeOptimizerRecommendation,
-                  )
+                  kilowattHourSavings =
+                    currentStorageFootprint.kilowattHours -
+                    targetStorageFootprint.kilowattHours
+                  co2eSavings =
+                    currentStorageFootprint.co2e - targetStorageFootprint.co2e
+                } else {
+                  const [currentComputeFootprint, currentMemoryFootprint] =
+                    this.getComputeAndMemoryFootprintEstimates(
+                      currentComputeOptimizerRecommendation,
+                    )
 
-                const [targetComputeFootprint, targetMemoryFootprint] =
-                  this.getComputeAndMemoryFootprintEstimates(
-                    targetComputeOptimizerRecommendation,
-                  )
+                  const [targetComputeFootprint, targetMemoryFootprint] =
+                    this.getComputeAndMemoryFootprintEstimates(
+                      targetComputeOptimizerRecommendation,
+                    )
 
-                kilowattHourSavings =
-                  currentComputeFootprint.kilowattHours -
-                  targetComputeFootprint.kilowattHours
-                co2eSavings =
-                  currentComputeFootprint.co2e - targetComputeFootprint.co2e
+                  kilowattHourSavings =
+                    currentComputeFootprint.kilowattHours -
+                    targetComputeFootprint.kilowattHours
+                  co2eSavings =
+                    currentComputeFootprint.co2e - targetComputeFootprint.co2e
 
-                if (currentMemoryFootprint.co2e || targetMemoryFootprint.co2e) {
-                  kilowattHourSavings +=
-                    currentMemoryFootprint.kilowattHours -
-                    targetMemoryFootprint.kilowattHours
-                  co2eSavings +=
-                    currentMemoryFootprint.co2e - targetMemoryFootprint.co2e
+                  if (
+                    currentMemoryFootprint.co2e ||
+                    targetMemoryFootprint.co2e
+                  ) {
+                    kilowattHourSavings +=
+                      currentMemoryFootprint.kilowattHours -
+                      targetMemoryFootprint.kilowattHours
+                    co2eSavings +=
+                      currentMemoryFootprint.co2e - targetMemoryFootprint.co2e
+                  }
                 }
-              }
 
-              recommendationsResult.push({
-                cloudProvider: 'AWS',
-                accountId: currentComputeOptimizerRecommendation.accountId,
-                accountName: currentComputeOptimizerRecommendation.accountId,
-                instanceName:
-                  currentComputeOptimizerRecommendation?.instanceName,
-                region: currentComputeOptimizerRecommendation.region,
-                recommendationType: currentComputeOptimizerRecommendation.type,
-                resourceId: currentComputeOptimizerRecommendation.resourceId,
-                recommendationDetail: this.getRecommendationDetail(
-                  service,
-                  currentComputeOptimizerRecommendation,
-                  targetComputeOptimizerRecommendation,
-                ),
-                costSavings:
-                  parseFloat(
-                    targetComputeOptimizerRecommendation.costSavings,
-                  ) || 0,
-                co2eSavings,
-                kilowattHourSavings,
-              })
+                recommendationsResult.push({
+                  cloudProvider: 'AWS',
+                  accountId: currentComputeOptimizerRecommendation.accountId,
+                  accountName: currentComputeOptimizerRecommendation.accountId,
+                  instanceName:
+                    currentComputeOptimizerRecommendation?.instanceName,
+                  region: currentComputeOptimizerRecommendation.region,
+                  recommendationType:
+                    currentComputeOptimizerRecommendation.type,
+                  resourceId: currentComputeOptimizerRecommendation.resourceId,
+                  recommendationDetail: this.getRecommendationDetail(
+                    service,
+                    currentComputeOptimizerRecommendation,
+                    targetComputeOptimizerRecommendation,
+                  ),
+                  costSavings:
+                    parseFloat(
+                      targetComputeOptimizerRecommendation.costSavings,
+                    ) || 0,
+                  co2eSavings,
+                  kilowattHourSavings,
+                })
+              }
             }
           })
         }
@@ -192,16 +199,13 @@ export default class ComputeOptimizerRecommendations
     targetRecommendation: ComputeOptimizerRecommendation,
   ): string {
     type ServiceDetail = { [service: string]: string }
-    const benefit = targetRecommendation.costSavings
-      ? 'Save cost'
-      : 'Improve performance'
     const modifyType: ServiceDetail = {
       ec2: 'instance type',
       ebs: 'volume type',
       lambda: 'configuration memory size',
     }
 
-    return `${benefit} by changing ${modifyType[service]} from ${currentRecommendation.description} to ${targetRecommendation.description}.`
+    return `Save cost by changing ${modifyType[service]} from ${currentRecommendation.description} to ${targetRecommendation.description}.`
   }
 
   private getComputeAndMemoryFootprintEstimates(

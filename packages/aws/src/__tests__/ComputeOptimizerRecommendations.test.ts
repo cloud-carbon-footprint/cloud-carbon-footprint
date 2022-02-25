@@ -136,19 +136,6 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
           'Save cost by changing volume type from gp2(80GB) to gp3(50GB).',
         costSavings: 6.2,
       },
-      {
-        cloudProvider: 'AWS',
-        accountId: '1234567890',
-        accountName: '1234567890',
-        region: 'us-west-2',
-        recommendationType: 'EBS-NotOptimized',
-        kilowattHourSavings: 0.0010623599999999994,
-        resourceId: 'vol-00e39f1234a7eaqrt',
-        co2eSavings: 3.7274069195999967e-7,
-        recommendationDetail:
-          'Improve performance by changing volume type from st1(80GB) to st1(50GB).',
-        costSavings: 0,
-      },
     ]
 
     expect(result).toEqual(expectedResult)
