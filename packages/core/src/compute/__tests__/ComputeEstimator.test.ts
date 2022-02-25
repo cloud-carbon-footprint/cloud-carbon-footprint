@@ -59,7 +59,7 @@ describe('ComputeEstimator', () => {
       powerUsageEffectiveness: 1.135,
       minWatts: 0.71,
       maxWatts: 3.46,
-      averageWatts: 350
+      averageWatts: 350,
     }
     const result = new ComputeEstimator().estimate(
       input,
