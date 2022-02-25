@@ -10,7 +10,7 @@ export type OnPremiseDataInput = {
   endTime?: Date
   country?: string
   region?: string
-  serverUtilization?: number
+  cpuUtilization?: number
   powerUsageEffectiveness?: number
 }
 
@@ -22,8 +22,9 @@ export type OnPremiseDataOutput = {
   endTime?: Date
   country?: string
   region?: string
-  serverUtilization?: number
+  cpuUtilization?: number
   powerUsageEffectiveness?: number
+  usageHours: number
   kilowattHours: number
   co2e: number
 }

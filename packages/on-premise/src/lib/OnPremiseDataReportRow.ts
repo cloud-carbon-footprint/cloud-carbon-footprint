@@ -7,7 +7,10 @@ import {
   OnPremiseDataInput,
   convertMegabytesToGigabytes,
 } from '@cloud-carbon-footprint/common'
-import { COMPUTE_PROCESSOR_FAMILY_MAPPING } from './MachineTypes'
+import {
+  INTEL_COMPUTE_PROCESSOR_FAMILY_MAPPING,
+  AMD_COMPUTE_PROCESSOR_FAMILY_MAPPING,
+} from './MachineTypes'
 import OnPremiseBillingDataRow from './OnPremiseBillingDataRow'
 
 export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
@@ -22,7 +25,7 @@ export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
       usageData.endTime,
     )
     this.region = this.getRegionData(usageData.country, usageData.region)
-    this.serverUtilization = usageData.serverUtilization
+    this.cpuUtilization = usageData.cpuUtilization
     this.powerUsageEffectiveness = usageData.powerUsageEffectiveness
   }
 
@@ -39,7 +42,11 @@ export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
     } else if (cpuId.includes('AMD')) {
       processor = cpuId.split(' ')[2]
     }
-    return COMPUTE_PROCESSOR_FAMILY_MAPPING[processor] || []
+    return (
+      INTEL_COMPUTE_PROCESSOR_FAMILY_MAPPING[processor] ||
+      AMD_COMPUTE_PROCESSOR_FAMILY_MAPPING[processor] ||
+      []
+    )
   }
 
   public getUsageHoursFromTimestamps(start: Date, end: Date): number {

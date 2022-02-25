@@ -12,6 +12,7 @@ export default interface CloudConstants {
   readonly avgCpuUtilization?: number
   readonly replicationFactor?: number
   readonly kilowattHoursByServiceAndUsageUnit?: KilowattHoursByServiceAndUsageUnit
+  readonly averageWatts?: number
 }
 
 export type CloudConstantsByProvider = {

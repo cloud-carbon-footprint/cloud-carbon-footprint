@@ -8,7 +8,7 @@ export default abstract class OnPremiseBillingDataRow {
   public processorFamilies: string[]
   public usageHours: number
   public region: string
-  public serverUtilization: number
+  public cpuUtilization: number
   public powerUsageEffectiveness: number
   public kilowattHours?: number
   public co2e?: number
