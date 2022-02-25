@@ -146,7 +146,7 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
       return +new Date('2022-01-21T00:00:00.000Z')
     }
 
-    const mockCSVFilePath = '/src/__tests__/fixtures/ComputeOptimizerLambda.csv'
+    const mockCSVFilePath = '/src/__tests__/fixtures/computeOptimizerLambda.csv'
 
     mockListComputeOptimizerBucket(mockLambdaComputeOptimizerBucketList)
     mockGetComputeOptimizerBucket(mockCSVFilePath)
