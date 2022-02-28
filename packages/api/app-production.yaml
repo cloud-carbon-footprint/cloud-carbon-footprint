@@ -3,7 +3,7 @@ service: api
 runtime: nodejs12
 instance_class: B4_1G
 basic_scaling:
-  max_instances: 5
+  max_instances: 10
   idle_timeout: 30m
 
 entrypoint: npm run start:webprod
