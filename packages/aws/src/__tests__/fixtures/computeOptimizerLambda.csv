@@ -1,0 +1,4 @@
+accountId,functionArn,finding,functionVersion,currentConfiguration_memorySize,recommendations_count,recommendationOptions_1_configuration_memorySize,recommendationOptions_2_configuration_memorySize,recommendationOptions_3_configuration_memorySize,recommendationOptions_1_estimatedMonthlySavings_value,recommendationOptions_2_estimatedMonthlySavings_value,recommendationOptions_3_estimatedMonthlySavings_value
+1234567890,arn:aws:lambda:us-east-2:1234567890:function:api-user-prod-add_user:$LATEST,NotOptimized,$LATEST,1024,1,848,,,2.988E-04,,
+1234567890,arn:aws:lambda:us-east-2:1234567890:function:api-user-prod-add_user:$LATEST,NotOptimized,$LATEST,1024,1,848,,,,,
+1234567890,arn:aws:lambda:us-east-2:1234567890:function:sumo-webhook-prod:$LATEST,Optimized,$LATEST,1024,0,,,,,,

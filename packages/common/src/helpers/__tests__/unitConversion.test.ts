@@ -10,6 +10,7 @@ import {
   convertGigabyteMonthsToTerabyteHours,
   convertGigaBytesToTerabyteHours,
   convertTerabytesToGigabytes,
+  convertMegabytesToGigabytes,
 } from '../unitConversion'
 
 describe('Calculations helpers', () => {
@@ -19,23 +20,27 @@ describe('Calculations helpers', () => {
     const result = convertByteSecondsToTerabyteHours(usageAmount)
     expect(result).toEqual(1.2631870857957337e-15)
   })
-  it('convert convert bytes to gigabytes', () => {
+  it('convert bytes to gigabytes', () => {
     const result = convertBytesToGigabytes(usageAmount)
     expect(result).toEqual(4.6566128730773926e-9)
   })
-  it('convert convert byteHours to terabyteHours', () => {
+  it('convert megabytes to gigabytes', () => {
+    const result = convertMegabytesToGigabytes(usageAmount)
+    expect(result).toEqual(0.0048828125)
+  })
+  it('convert byteHours to terabyteHours', () => {
     const result = convertBytesToTerabytes(usageAmount)
     expect(result).toEqual(4.547473508864641e-12)
   })
-  it('convert convert gigabyteHours to terabyteHours', () => {
+  it('convert gigabyteHours to terabyteHours', () => {
     const result = convertGigabyteHoursToTerabyteHours(usageAmount)
     expect(result).toEqual(0.005)
   })
-  it('convert convert gigabyte months to terabyteHours', () => {
+  it('convert gigabyte months to terabyteHours', () => {
     const result = convertGigabyteMonthsToTerabyteHours(usageAmount, timestamp)
     expect(result).toEqual(3.6)
   })
-  it('convert convert gigabyte months to terabyteHours with invalid timestamp', () => {
+  it('convert gigabyte months to terabyteHours with invalid timestamp', () => {
     const result = convertGigabyteMonthsToTerabyteHours(
       usageAmount,
       new Date(''),

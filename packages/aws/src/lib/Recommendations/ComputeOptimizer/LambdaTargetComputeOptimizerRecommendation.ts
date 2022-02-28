@@ -49,6 +49,7 @@ export default class LambdaTargetComputeOptimizerRecommendation extends ComputeO
       computeOptimizerRecommendationData.functionArn,
     )
     this.memorySize = optimalRecommendation.memorySize
+    this.description = `${this.memorySize}MB`
     this.vCpus = this.getVcpusForLambda(this.memorySize)
     this.costSavings = parseFloat(optimalRecommendation.costSavings)
     this.vCpuHours = this.getVCpuHours(this.vCpus)

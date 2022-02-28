@@ -52,6 +52,7 @@ export default class EBSTargetComputeOptimizerRecommendation extends ComputeOpti
     ) as EBSRecommendationOption
     this.volumeType = optimalRecommendation.volumeType
     this.volumeSize = parseInt(optimalRecommendation.volumeSize)
+    this.description = `${this.volumeType}(${this.volumeSize}GB)`
     this.costSavings = parseFloat(optimalRecommendation.costSavings)
   }
 }

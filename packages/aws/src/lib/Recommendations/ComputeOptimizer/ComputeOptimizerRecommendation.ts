@@ -15,6 +15,7 @@ export default class ComputeOptimizerRecommendation {
   public accountName: string
   public region: string
   public type: string
+  public description: string
   public resourceId: string
   public costSavings: number
   public recommendationOptions: ComputeOptimizerRecommendationOption[]

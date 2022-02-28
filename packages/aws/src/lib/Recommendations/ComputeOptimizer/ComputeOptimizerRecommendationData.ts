@@ -16,7 +16,7 @@ export interface ComputeOptimizerRecommendationData {
 
 export interface EC2ComputeOptimizerRecommendationData {
   accountId: string
-  instanceType: string
+  currentInstanceType: string
   current_vcpus: string
   finding: string
   instanceName: string

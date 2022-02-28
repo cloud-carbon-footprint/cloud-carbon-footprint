@@ -48,6 +48,7 @@ import {
   athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions,
   athenaMockGetQueryResultsWithNoUsageAmount,
   athenaMockGetQueryResultsWithUnknownInstanceType,
+  athenaMockGetQueryResultsWithGPUInstances,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
@@ -796,12 +797,12 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 6.45075072774111e-8,
+            co2e: 3.6373933057209234e-8,
             cost: 10,
             region: 'us-west-1',
             serviceName: 'AmazonRedshift',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.00018385488064336328,
+            kilowattHours: 0.00010367049360632625,
           },
           {
             accountId: testAccountId,
@@ -1705,6 +1706,66 @@ describe('CostAndUsageReports Service', () => {
         groupBy: grouping,
         periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
         periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for GPU instances', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithGPUInstances)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2022-01-01'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.021190411684420526,
+            cost: 10,
+            kilowattHours: 50.96850713622332,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.058734806910342365,
+            cost: 10,
+            kilowattHours: 133.43148914062064,
+            region: 'us-east-2',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2022-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2022-01-01T00:00:00.000Z'),
       },
     ]
 

@@ -97,7 +97,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         resourceId: 'i-0c80d1b0f3a0c5c69',
         instanceName: 'PA-VM-100 | Networks',
         co2eSavings: 0.0032912833653648,
-        recommendationDetail: 't3.xlarge',
+        recommendationDetail:
+          'Save cost by changing instance type from m4.xlarge to t3.xlarge.',
         costSavings: 33.79,
       },
     ]
@@ -105,7 +106,7 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('gets recommendations for only "Not Optimized" EBS volumes', async () => {
+  it('gets recommendations for only "Not Optimized" EBS volumes (with and without cost savings)', async () => {
     moment.now = function () {
       return +new Date('2022-01-21T00:00:00.000Z')
     }
@@ -131,19 +132,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         kilowattHourSavings: 0.0019612799999999993,
         resourceId: 'vol-00e39f1234a7eadfb',
         co2eSavings: 6.881366620799998e-7,
-        recommendationDetail: 'gp3',
-        costSavings: 6.2,
-      },
-      {
-        cloudProvider: 'AWS',
-        accountId: '1234567890',
-        accountName: '1234567890',
-        region: 'us-west-2',
-        recommendationType: 'EBS-NotOptimized',
-        kilowattHourSavings: 0.0010623599999999994,
-        resourceId: 'vol-00e39f1234a7eaqrt',
-        co2eSavings: 3.7274069195999967e-7,
-        recommendationDetail: 'st1',
+        recommendationDetail:
+          'Save cost by changing volume type from gp2(80GB) to gp3(50GB).',
         costSavings: 6.2,
       },
     ]
@@ -156,7 +146,7 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
       return +new Date('2022-01-21T00:00:00.000Z')
     }
 
-    const mockCSVFilePath = '/src/__tests__/fixtures/ComputeOptimizerLambda.csv'
+    const mockCSVFilePath = '/src/__tests__/fixtures/computeOptimizerLambda.csv'
 
     mockListComputeOptimizerBucket(mockLambdaComputeOptimizerBucketList)
     mockGetComputeOptimizerBucket(mockCSVFilePath)
@@ -177,7 +167,8 @@ describe('AWS Compute Optimizer Recommendations Service', () => {
         kilowattHourSavings: 0.1781104877331825,
         resourceId: 'api-user-prod-add_user:$LATEST',
         co2eSavings: 0.00007840192126380642,
-        recommendationDetail: '848',
+        recommendationDetail:
+          'Save cost by changing configuration memory size from 1024MB to 848MB.',
         costSavings: 2.988e-4,
       },
     ]

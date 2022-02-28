@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CostExplorer, CloudWatch, CloudWatchLogs } from 'aws-sdk'
+import AWS, { CostExplorer, CloudWatch, CloudWatchLogs, S3 } from 'aws-sdk'
 import { Logger } from '@cloud-carbon-footprint/common'
 import { StorageEstimator } from '@cloud-carbon-footprint/core'
 import EBS from '../lib/EBS'
@@ -33,6 +33,7 @@ describe('Ebs', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   afterEach(() => {

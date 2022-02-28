@@ -32,6 +32,7 @@ import {
   mockQueryResultsAppEngineSSDStorage,
   mockQueryResultsCloudSQLSSDComputeEngineDataFlowHDD,
   mockQueryResultsComputeEngineRam,
+  mockQueryResultsGPUMachineTypes,
   mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryResultsUnknownUsages,
 } from './fixtures/bigQuery.fixtures'
@@ -1056,6 +1057,74 @@ describe('GCP BillingExportTable Service', () => {
             serviceName: 'Compute engine',
             usesAverageCPUConstant: false,
             kilowattHours: 4.277502497037252e-14,
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('estimation for GPU Machine Types', async () => {
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsGPUMachineTypes)
+    //when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-10-28'),
+        serviceEstimates: [
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 0.000014562404999999998,
+            cost: 10,
+            region: 'us-west1',
+            serviceName: 'Compute engine',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.1866975,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 0.00005185944,
+            cost: 8,
+            region: 'europe-west1',
+            serviceName: 'Compute engine',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.24462,
+          },
+          {
+            accountId: accountId,
+            accountName: accountName,
+            cloudProvider: 'GCP',
+            co2e: 0.00003131982,
+            cost: 8,
+            region: 'europe-west1',
+            serviceName: 'Notebooks',
+            usesAverageCPUConstant: true,
+            kilowattHours: 0.147735,
           },
         ],
         groupBy: grouping,

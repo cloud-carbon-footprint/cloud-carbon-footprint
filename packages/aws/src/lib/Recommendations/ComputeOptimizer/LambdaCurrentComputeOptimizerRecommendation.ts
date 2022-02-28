@@ -22,6 +22,7 @@ export default class LambdaCurrentComputeOptimizerRecommendation extends Compute
     this.type = `Lambda-${computeOptimizerRecommendationData.finding}`
     this.memorySize =
       computeOptimizerRecommendationData.currentConfiguration_memorySize
+    this.description = `${this.memorySize}MB`
     this.functionVersion = computeOptimizerRecommendationData.functionVersion
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.functionArn,

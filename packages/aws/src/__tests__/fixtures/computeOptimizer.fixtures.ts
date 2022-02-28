@@ -56,7 +56,7 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    instanceType: 'm4.xlarge',
+    currentInstanceType: 'm4.xlarge',
     finding: 'OVER_PROVISIONED',
     current_vcpus: '4',
     recommendations_count: '3',
@@ -78,7 +78,29 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    instanceType: 'm4.xlarge',
+    currentInstanceType: 'm4.xlarge',
+    finding: 'OVER_PROVISIONED',
+    current_vcpus: '4',
+    recommendations_count: '3',
+    recommendationOptions_1_instanceType: 't3.xlarge',
+    recommendationOptions_2_instanceType: 'm5.xlarge',
+    recommendationOptions_3_instanceType: 'r5n.large',
+    recommendationOptions_1_estimatedMonthlySavings_value: '0',
+    recommendationOptions_2_estimatedMonthlySavings_value: '7.04',
+    recommendationOptions_3_estimatedMonthlySavings_value: '5.04',
+    recommendationOptions_1_performanceRisk: '3.0',
+    recommendationOptions_2_performanceRisk: '1.0',
+    recommendationOptions_3_performanceRisk: '1.0',
+    recommendationOptions_1_vcpus: '2',
+    recommendationOptions_2_vcpus: '2',
+    recommendationOptions_3_vcpus: '2',
+  },
+  {
+    accountId: '1234567890',
+    instanceArn:
+      'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
+    instanceName: 'PA-VM-100 | Networks',
+    currentInstanceType: 'm4.xlarge',
     finding: 'UNDER_PROVISIONED',
     current_vcpus: '2',
     recommendations_count: '3',
@@ -100,7 +122,7 @@ export const ec2ComputeOptimizer = [
     instanceArn:
       'arn:aws:ec2:eu-central-1:1234567890:instance/i-0c80d1b0f3a0c5c69',
     instanceName: 'PA-VM-100 | Networks',
-    instanceType: 'm4.xlarge',
+    currentInstanceType: 'm4.xlarge',
     finding: 'OPTIMIZED',
     current_vcpus: '3',
     recommendations_count: '3',
@@ -175,7 +197,7 @@ export const ebsComputeOptimizer = [
     recommendationOptions_2_configuration_volumeSize: '80',
     recommendationOptions_3_configuration_volumeType: '',
     recommendationOptions_3_configuration_volumeSize: '',
-    recommendationOptions_1_estimatedMonthlySavings_value: '6.2',
+    recommendationOptions_1_estimatedMonthlySavings_value: '0',
     recommendationOptions_2_estimatedMonthlySavings_value: '8',
     recommendationOptions_3_estimatedMonthlySavings_value: '',
     recommendationOptions_1_performanceRisk: '1.0',
@@ -204,7 +226,7 @@ export const ebsComputeOptimizer = [
   },
 ]
 
-export const LambdaComputeOptimizer = [
+export const lambdaComputeOptimizer = [
   {
     accountId: '1234567890',
     functionArn:
@@ -217,6 +239,21 @@ export const LambdaComputeOptimizer = [
     recommendationOptions_2_configuration_memorySize: '',
     recommendationOptions_3_configuration_memorySize: '',
     recommendationOptions_1_estimatedMonthlySavings_value: '2.988E-04',
+    recommendationOptions_2_estimatedMonthlySavings_value: '',
+    recommendationOptions_3_estimatedMonthlySavings_value: '',
+  },
+  {
+    accountId: '1234567890',
+    functionArn:
+      'arn:aws:lambda:us-east-2:1234567890:function:api-user-prod-add_user:$LATEST',
+    finding: 'NotOptimized',
+    functionVersion: '$LATEST',
+    currentConfiguration_memorySize: '1024',
+    recommendations_count: '1',
+    recommendationOptions_1_configuration_memorySize: '848',
+    recommendationOptions_2_configuration_memorySize: '',
+    recommendationOptions_3_configuration_memorySize: '',
+    recommendationOptions_1_estimatedMonthlySavings_value: '',
     recommendationOptions_2_estimatedMonthlySavings_value: '',
     recommendationOptions_3_estimatedMonthlySavings_value: '',
   },

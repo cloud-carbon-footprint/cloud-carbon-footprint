@@ -9,11 +9,16 @@ import {
   FootprintEstimate,
   FootprintEstimatesDataBuilder,
 } from '@cloud-carbon-footprint/core'
+import { containsAny } from '@cloud-carbon-footprint/common'
 import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AWSInstanceTypes'
+import {
+  GPU_INSTANCES_TYPES,
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  INSTANCE_TYPE_GPU_PROCESSOR_MAPPING,
+} from './AWSInstanceTypes'
 import CostAndUsageReportsRow from './CostAndUsageReportsRow'
 import RightsizingRecommendation from './Recommendations/Rightsizing/RightsizingTargetRecommendation'
 import { EC2CurrentComputeOptimizerRecommendation } from './Recommendations/ComputeOptimizer'
@@ -35,12 +40,13 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
       rowData.instanceType,
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
     )
-    this.computeUsage = this.getComputeUsage()
+    this.gpuComputeProcessors = this.getComputeProcessors(
+      rowData.instanceType,
+      INSTANCE_TYPE_GPU_PROCESSOR_MAPPING,
+    )
     this.computeConstants = this.getComputeConstants()
     this.computeFootprint = this.getComputeFootprint(
       computeEstimator,
-      this.computeUsage,
-      this.computeConstants,
       this.region,
     )
   }
@@ -49,6 +55,14 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     return {
       cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       vCpuHours: this.vCpuHours,
+      usesAverageCPUConstant: true,
+    }
+  }
+
+  private getGpuComputeUsage(): ComputeUsage {
+    return {
+      cpuUtilizationAverage: AWS_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      vCpuHours: this.gpuHours, // TODO - explain object key
       usesAverageCPUConstant: true,
     }
   }
@@ -62,17 +76,43 @@ export default class AWSComputeEstimatesBuilder extends FootprintEstimatesDataBu
     }
   }
 
+  private getGpuComputeConstants(): CloudConstants {
+    return {
+      minWatts: AWS_CLOUD_CONSTANTS.getMinWatts(this.gpuComputeProcessors),
+      maxWatts: AWS_CLOUD_CONSTANTS.getMaxWatts(this.gpuComputeProcessors),
+      powerUsageEffectiveness: this.powerUsageEffectiveness,
+      replicationFactor: this.replicationFactor,
+    }
+  }
+
   private getComputeFootprint(
     computeEstimator: ComputeEstimator,
-    computeUsage: ComputeUsage,
-    computeConstants: CloudConstants,
     region: string,
   ): FootprintEstimate {
-    return computeEstimator.estimate(
-      [computeUsage],
+    const computeEstimate = computeEstimator.estimate(
+      [this.getComputeUsage()],
       region,
       AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      computeConstants,
+      this.getComputeConstants(),
     )[0]
+
+    if (this.isGpuInstance()) {
+      const gpuComputeEstimate = computeEstimator.estimate(
+        [this.getGpuComputeUsage()],
+        region,
+        AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        this.getGpuComputeConstants(),
+      )[0]
+
+      computeEstimate.kilowattHours += gpuComputeEstimate.kilowattHours
+      computeEstimate.co2e += gpuComputeEstimate.co2e
+      return computeEstimate
+    }
+
+    return computeEstimate
+  }
+
+  private isGpuInstance(): boolean {
+    return containsAny(Object.keys(GPU_INSTANCES_TYPES), this.usageType)
   }
 }

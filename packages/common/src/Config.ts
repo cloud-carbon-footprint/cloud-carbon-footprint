@@ -61,6 +61,20 @@ export interface CCFConfig {
   LOGGING_MODE?: string
   GROUP_QUERY_RESULTS_BY?: GroupBy
   CACHE_MODE?: string
+  ON_PREMISE?: {
+    SERVER?: {
+      CPU_UTILIZATION?: number
+      AVERAGE_WATTS?: number
+    }
+    LAPTOP?: {
+      CPU_UTILIZATION?: number
+      AVERAGE_WATTS?: number
+    }
+    DESKTOP?: {
+      CPU_UTILIZATION?: number
+      AVERAGE_WATTS?: number
+    }
+  }
 }
 
 export enum GroupBy {
@@ -213,6 +227,26 @@ export const appConfig: CCFConfig = {
       (process.env.GROUP_QUERY_RESULTS_BY || 'day') as keyof typeof GroupBy
     ],
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
+  ON_PREMISE: {
+    SERVER: {
+      CPU_UTILIZATION: parseFloat(
+        getEnvVar('ON_PREMISE_CPU_UTILIZATION_SERVER'),
+      ),
+      AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_SERVER')),
+    },
+    LAPTOP: {
+      CPU_UTILIZATION: parseFloat(
+        getEnvVar('ON_PREMISE_CPU_UTILIZATION_LAPTOP'),
+      ),
+      AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_LAPTOP')),
+    },
+    DESKTOP: {
+      CPU_UTILIZATION: parseFloat(
+        getEnvVar('ON_PREMISE_CPU_UTILIZATION_DESKTOP'),
+      ),
+      AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
+    },
+  },
 }
 
 export default appConfig

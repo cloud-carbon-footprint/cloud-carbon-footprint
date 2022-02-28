@@ -21,6 +21,7 @@ import {
 
 export default class Lambda implements ICloudService {
   private readonly LOG_GROUP_SIZE_REQUEST_LIMIT = 20
+  private readonly MAX_CONCURRENT_LOG_QUERIES = 10
   serviceName = 'Lambda'
 
   constructor(
@@ -136,6 +137,17 @@ export default class Lambda implements ICloudService {
       endTime: end.getTime(),
       queryString: query,
       logGroupNames: groupNames,
+    }
+
+    while (true) {
+      const runningQueries =
+        await this.serviceWrapper.describeCloudWatchLogsQueries({
+          status: 'Running',
+        })
+
+      if (runningQueries.queries.length < this.MAX_CONCURRENT_LOG_QUERIES) break
+
+      await wait(this.POLL_INTERVAL)
     }
 
     const queryData = await this.serviceWrapper.startCloudWatchLogsQuery(params)

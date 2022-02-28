@@ -12,11 +12,12 @@ export default interface CloudConstants {
   readonly avgCpuUtilization?: number
   readonly replicationFactor?: number
   readonly kilowattHoursByServiceAndUsageUnit?: KilowattHoursByServiceAndUsageUnit
+  readonly averageWatts?: number
 }
 
 export type CloudConstantsByProvider = {
-  SSDCOEFFICIENT: number
-  HDDCOEFFICIENT: number
+  SSDCOEFFICIENT?: number
+  HDDCOEFFICIENT?: number
   MEMORY_AVG?: number
   MEMORY_BY_COMPUTE_PROCESSOR?: { [key: string]: number }
   getMemory?: (computeProcessors?: string[]) => number
@@ -29,14 +30,14 @@ export type CloudConstantsByProvider = {
   MAX_WATTS_BY_COMPUTE_PROCESSOR: { [key: string]: number }
   getMaxWatts: (computeProcessors?: string[]) => number
   PUE_AVG: number
-  NETWORKING_COEFFICIENT: number
+  NETWORKING_COEFFICIENT?: number
   MEMORY_COEFFICIENT?: number
   PUE_TRAILING_TWELVE_MONTH?: { [key: string]: number }
   getPUE: (region?: string) => number
   AVG_CPU_UTILIZATION_2020: number
   REPLICATION_FACTORS?: { [key: string]: number }
-  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: KilowattHoursByServiceAndUsageUnit
-  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT?: KilowattHoursByServiceAndUsageUnit
+  ESTIMATE_UNKNOWN_USAGE_BY?: EstimateUnknownUsageBy
   SERVER_EXPECTED_LIFESPAN?: number
 }
 

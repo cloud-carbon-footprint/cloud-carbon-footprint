@@ -21,6 +21,8 @@ export default class EBSCurrentComputeOptimizerRecommendation extends ComputeOpt
     this.volumeSize = parseInt(
       computeOptimizerRecommendationData.currentConfiguration_volumeSize,
     )
+    this.description = `${this.volumeType}(${this.volumeSize}GB)`
+
     this.resourceId = this.getResourceId(
       computeOptimizerRecommendationData.volumeArn,
     )

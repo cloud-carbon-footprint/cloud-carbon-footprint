@@ -14,11 +14,14 @@ import {
 export default abstract class FootprintEstimatesDataBuilder {
   public usageAmount: number
   public instanceType: string
+  public usageType: string
   public vCpuHours: number
+  public gpuHours: number
   public region: string
   public powerUsageEffectiveness: number
   public replicationFactor: number
   public computeProcessors: string[]
+  public gpuComputeProcessors: string[]
   public volumeSize: number
   public computeUsage: ComputeUsage
   public computeConstants: CloudConstants

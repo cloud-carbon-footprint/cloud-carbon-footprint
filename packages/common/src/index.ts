@@ -23,6 +23,10 @@ export type {
   ComputeOptimizerRecommendationOption,
 } from './RecommendationResult'
 export type { LookupTableInput, LookupTableOutput } from './LookupTableInput'
+export type {
+  OnPremiseDataInput,
+  OnPremiseDataOutput,
+} from './OnPremiseDataInput'
 export {
   AWS_RECOMMENDATIONS_TARGETS,
   AWS_DEFAULT_RECOMMENDATION_TARGET,

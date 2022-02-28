@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CostExplorer, CloudWatchLogs } from 'aws-sdk'
+import AWS, { CloudWatch, CostExplorer, CloudWatchLogs, S3 } from 'aws-sdk'
 import ElastiCache from '../lib/ElastiCache'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
@@ -35,6 +35,7 @@ describe('ElastiCache', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   afterEach(() => {

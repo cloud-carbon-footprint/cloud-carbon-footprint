@@ -60,6 +60,7 @@ export default class EC2TargetComputeOptimizerRecommendation extends ComputeOpti
       this.recommendationOptions,
     ) as EC2RecommendationOption
     this.instanceType = optimalRecommendation.instanceType
+    this.description = this.instanceType
     this.targetVcpus = optimalRecommendation.vcpus
     this.costSavings = parseFloat(optimalRecommendation.costSavings)
     this.vCpuHours = this.getVCpuHours(this.targetVcpus, this.instanceType)
