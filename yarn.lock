@@ -3593,7 +3593,6 @@ __metadata:
   dependencies:
     "@cloud-carbon-footprint/common": ^1.4.0
     "@cloud-carbon-footprint/core": ^0.15.0
-    "@google-cloud/secret-manager": ^3.10.1
     "@types/jest": ^27.4.0
     "@types/jest-when": ^2.7.4
     "@types/node": ^17.0.8
