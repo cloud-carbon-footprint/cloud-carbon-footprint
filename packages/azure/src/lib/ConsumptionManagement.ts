@@ -44,6 +44,7 @@ import {
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
+  GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING,
   GPU_VIRTUAL_MACHINE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING,
@@ -122,10 +123,7 @@ export default class ConsumptionManagementService {
           return []
         }
 
-        if (
-          this.isUnknownUsage(consumptionDetailRow) ||
-          this.isGpuUsage(consumptionDetailRow.usageType)
-        ) {
+        if (this.isUnknownUsage(consumptionDetailRow)) {
           unknownRows.push(consumptionDetailRow)
           return []
         }
@@ -480,12 +478,60 @@ export default class ConsumptionManagementService {
       replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
 
-    return this.computeEstimator.estimate(
+    const computeFootprintEstimate = this.computeEstimator.estimate(
       [computeUsage],
       consumptionDetailRow.region,
       emissionsFactors,
       computeConstants,
     )[0]
+
+    if (this.isGpuUsage(consumptionDetailRow.usageType)) {
+      return this.appendGpuComputeEstimate(
+        consumptionDetailRow,
+        powerUsageEffectiveness,
+        emissionsFactors,
+        computeFootprintEstimate,
+      )
+    }
+
+    return computeFootprintEstimate
+  }
+
+  private appendGpuComputeEstimate(
+    consumptionDetailRow: ConsumptionDetailRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    computeFootprintEstimate: FootprintEstimate,
+  ) {
+    const gpuComputeProcessors = this.getGpuComputeProcessorsFromUsageType(
+      consumptionDetailRow.usageType,
+    )
+
+    const gpuComputeUsage: ComputeUsage = {
+      timestamp: consumptionDetailRow.timestamp,
+      cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      vCpuHours: consumptionDetailRow.gpuHours,
+      usesAverageCPUConstant: true,
+    }
+
+    const gpuComputeConstants: CloudConstants = {
+      minWatts: AZURE_CLOUD_CONSTANTS.getMinWatts(gpuComputeProcessors),
+      maxWatts: AZURE_CLOUD_CONSTANTS.getMaxWatts(gpuComputeProcessors),
+      powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
+    }
+
+    const gpuComputeFootprintEstimate = this.computeEstimator.estimate(
+      [gpuComputeUsage],
+      consumptionDetailRow.region,
+      emissionsFactors,
+      gpuComputeConstants,
+    )[0]
+
+    computeFootprintEstimate.kilowattHours +=
+      gpuComputeFootprintEstimate.kilowattHours
+    computeFootprintEstimate.co2e += gpuComputeFootprintEstimate.co2e
+    return computeFootprintEstimate
   }
 
   private getMemoryFootprintEstimate(
@@ -551,7 +597,7 @@ export default class ConsumptionManagementService {
   }
 
   private isGpuUsage(usageType: string): boolean {
-    return containsAny(GPU_VIRTUAL_MACHINE_TYPES, usageType)
+    return containsAny(Object.keys(GPU_VIRTUAL_MACHINE_TYPES), usageType)
   }
 
   private getUsageAmountInGigabyteHours(
@@ -664,6 +710,14 @@ export default class ConsumptionManagementService {
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
+  }
+
+  private getGpuComputeProcessorsFromUsageType(usageType: string): string[] {
+    return (
+      GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING[usageType] || [
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )

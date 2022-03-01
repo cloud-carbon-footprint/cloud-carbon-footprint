@@ -3243,6 +3243,7 @@ __metadata:
     "@cloud-carbon-footprint/azure": ^0.8.0
     "@cloud-carbon-footprint/common": ^1.4.0
     "@cloud-carbon-footprint/gcp": ^0.8.0
+    "@cloud-carbon-footprint/on-premise": ^0.0.0
     "@google-cloud/monitoring": ^2.3.5
     "@google-cloud/storage": ^5.16.1
     "@types/jest": ^27.4.0
@@ -3586,7 +3587,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/on-premise@workspace:packages/on-premise":
+"@cloud-carbon-footprint/on-premise@^0.0.0, @cloud-carbon-footprint/on-premise@workspace:packages/on-premise":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/on-premise@workspace:packages/on-premise"
   dependencies:

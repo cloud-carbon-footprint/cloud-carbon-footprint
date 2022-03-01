@@ -25,8 +25,10 @@ export enum COMPUTE_PROCESSOR_TYPES {
   NVIDIA_TESLA_V100 = 'Nvidia Tesla V100',
   NVIDIA_TESLA_A100 = 'Nvidia Tesla A100',
   NVIDIA_TESLA_P4 = 'Nvidia Tesla P4',
+  NVIDIA_TESLA_P40 = 'Nvidia Tesla P40',
   NVIDIA_TESLA_P100 = 'Nvidia Tesla P100',
   AMD_RADEON_PRO_V520 = 'AMD Radeon Pro V520',
+  XILINX_ALVEO_U250 = 'Xilinx Alveo U250',
   // Unknown
   UNKNOWN = 'Unknown',
 }

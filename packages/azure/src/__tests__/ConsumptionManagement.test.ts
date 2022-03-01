@@ -20,6 +20,7 @@ import {
 
 import {
   mockConsumptionManagementResponseEight,
+  mockConsumptionManagementResponseEleven,
   mockConsumptionManagementResponseFive,
   mockConsumptionManagementResponseFour,
   mockConsumptionManagementResponseNine,
@@ -954,6 +955,84 @@ describe('Azure Consumption Management Service', () => {
         groupBy: grouping,
         periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
         periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimates for GPU Virtual Machines', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseEleven,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.9433750904448066,
+            co2e: 0.0002981065285805589,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'northeurope',
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+      },
+      {
+        timestamp: new Date('2020-11-03'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.9415345494881285,
+            co2e: 0.00039144769662243694,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'EastUS',
+          },
+          {
+            kilowattHours: 2.77408029810322,
+            co2e: 0.0010818913162602558,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'westeurope',
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
