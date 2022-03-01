@@ -784,4 +784,16 @@ export const mockConsumptionManagementResponseEleven: AzureUsageDetailsResponseW
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
     },
+    {
+      kind: 'modern',
+      date: new Date('2020-11-03'),
+      quantity: 1,
+      costInUSD: 10,
+      meterName: 'ND96asr A100 v4',
+      unitOfMeasure: '10 Hours',
+      meterCategory: 'Virtual Machines',
+      subscriptionGuid: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'WESTEUROPE',
+    },
   ]
