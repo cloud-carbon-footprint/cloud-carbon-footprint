@@ -756,3 +756,32 @@ export const mockConsumptionManagementResponseTen: AzureUsageDetailsResponseWith
       resourceLocation: 'uksouth',
     },
   ]
+
+export const mockConsumptionManagementResponseEleven: AzureUsageDetailsResponseWithNextLink =
+  [
+    {
+      date: new Date('2020-11-02'),
+      quantity: 1,
+      cost: 10,
+      meterDetails: {
+        meterName: 'NC24',
+        unitOfMeasure: '10 Hours',
+        meterCategory: 'Virtual Machines',
+      },
+      subscriptionId: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'northeurope',
+    },
+    {
+      kind: 'modern',
+      date: new Date('2020-11-03'),
+      quantity: 1,
+      costInUSD: 10,
+      meterName: 'NC24',
+      unitOfMeasure: '10 Hours',
+      meterCategory: 'Virtual Machines',
+      subscriptionGuid: 'test-subscription-id',
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'EASTUS',
+    },
+  ]
