@@ -91,7 +91,7 @@ export const ON_PREMISE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       : ON_PREMISE_CLOUD_CONSTANTS.MAX_WATTS_AVG
   },
   MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
-  PUE_AVG: 1.4,
+  PUE_AVG: 1.58,
   getPUE: (): number => {
     return ON_PREMISE_CLOUD_CONSTANTS.PUE_AVG
   },
@@ -118,6 +118,7 @@ export const ON_PREMISE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmis
     Switzerland: 0.00001152,
     'United Kingdom': 0.00021233,
     'United States': 0.00042394,
+    // values specific for US states are sourced from NERC regional emissions factors
     'United States-California': 0.00017562,
     'United States-Virginia': 0.00028842,
     'United States-Louisiana': 0.00037481,
@@ -127,5 +128,5 @@ export const ON_PREMISE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmis
     'United States-Washington': 0.00013567,
     'United States-Ohio': 0.00056357,
     'United States-Oregon': 0.00017562,
-    Unknown: 0.0003228315385,
+    Unknown: 0.0003228315385, // average
   }

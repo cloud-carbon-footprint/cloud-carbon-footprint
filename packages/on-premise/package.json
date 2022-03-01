@@ -43,7 +43,6 @@
   "dependencies": {
     "@cloud-carbon-footprint/common": "^1.4.0",
     "@cloud-carbon-footprint/core": "^0.15.0",
-    "@google-cloud/secret-manager": "^3.10.1",
     "moment": "^2.29.1"
   },
   "devDependencies": {
