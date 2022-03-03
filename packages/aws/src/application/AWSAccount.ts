@@ -54,8 +54,8 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
 import {
-  RightsizingRecommendations,
   ComputeOptimizerRecommendations,
+  RightsizingRecommendations,
 } from '../lib/Recommendations'
 
 export default class AWSAccount extends CloudProviderAccount {
@@ -129,9 +129,11 @@ export default class AWSAccount extends CloudProviderAccount {
       ),
     )
 
+    const recommendationData: RecommendationResult[] = []
+
     if (
-      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
-      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+      configLoader().AWS.RECOMMENDATIONS_SERVICE !==
+      AWS_RECOMMENDATIONS_SERVICES.RightSizing
     ) {
       const recommendations = new ComputeOptimizerRecommendations(
         new ComputeEstimator(),
@@ -140,18 +142,29 @@ export default class AWSAccount extends CloudProviderAccount {
         new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         serviceWrapper,
       )
-      return await recommendations.getRecommendations(
+      const computeOptimizerResults = await recommendations.getRecommendations(
         configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
       )
+      recommendationData.push(...computeOptimizerResults)
     }
 
-    const recommendations = new RightsizingRecommendations(
-      new ComputeEstimator(),
-      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      serviceWrapper,
-    )
+    if (
+      configLoader().AWS.RECOMMENDATIONS_SERVICE !==
+      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+    ) {
+      const recommendations = new RightsizingRecommendations(
+        new ComputeEstimator(),
+        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+        serviceWrapper,
+      )
+      const rightSizingResults = await recommendations.getRecommendations(
+        recommendationTarget,
+      )
 
-    return await recommendations.getRecommendations(recommendationTarget)
+      recommendationData.push(...rightSizingResults)
+    }
+
+    return this.getUniquesWithHighestCarbonSavings(recommendationData)
   }
 
   getDataFromCostAndUsageReports(
@@ -194,6 +207,37 @@ export default class AWSAccount extends CloudProviderAccount {
       ),
     )
     return costAndUsageReportsService.getEstimatesFromInputData(inputData)
+  }
+
+  /*
+  TODO - Confirm the following:
+   - What to do with equal carbon savings? Return first? Or Return highest cost savings?
+   - Should all of this logic be moved to a general iRecommendationsService class that handles calling both when needed
+   - Should I only be checking for certain recommendation types, or is it fine to loop through like this?
+   */
+  private getUniquesWithHighestCarbonSavings(
+    recommendationData: RecommendationResult[],
+  ): RecommendationResult[] {
+    const uniqueRecommendationData: RecommendationResult[] = []
+    const mappedResourceIds: { [resourceId: string]: RecommendationResult[] } =
+      {}
+    recommendationData.forEach((recommendation) => {
+      if (mappedResourceIds[recommendation.resourceId])
+        mappedResourceIds[recommendation.resourceId].push(recommendation)
+      else mappedResourceIds[recommendation.resourceId] = [recommendation]
+    })
+
+    for (const resource in mappedResourceIds) {
+      const resourceRecommendations = mappedResourceIds[resource]
+      if (
+        resourceRecommendations.length > 1 &&
+        resourceRecommendations[1].co2eSavings >
+          resourceRecommendations[0].co2eSavings
+      )
+        uniqueRecommendationData.push(resourceRecommendations[1])
+      else uniqueRecommendationData.push(resourceRecommendations[0])
+    }
+    return uniqueRecommendationData
   }
 
   private getService(

@@ -229,110 +229,284 @@ describe('AWSAccount', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('should get data for rightsizing recommendations', async () => {
-    const AWSAccount = require('../application/AWSAccount').default
-    const testAwsAccount = new AWSAccount('12345678', 'test account', [
-      'some-region',
-    ])
+  describe('Recommendations', () => {
+    it('should get data for rightsizing recommendations', async () => {
+      const AWSAccount = require('../application/AWSAccount').default
+      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+        'some-region',
+      ])
 
-    const expectedRecommendations: RecommendationResult[] = [
-      {
-        cloudProvider: 'AWS',
-        accountId: 'account-id',
-        accountName: 'account-name',
-        region: 'us-east-1',
-        recommendationType: 'Terminate',
-        recommendationDetail: 'Terminate instance: instance-name',
-        kilowattHourSavings: 5,
-        co2eSavings: 4,
-        costSavings: 3,
-      },
-    ]
+      const expectedRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: 'account-id',
+          accountName: 'account-name',
+          region: 'us-east-1',
+          recommendationType: 'Terminate',
+          recommendationDetail: 'Terminate instance: instance-name',
+          kilowattHourSavings: 5,
+          co2eSavings: 4,
+          costSavings: 3,
+        },
+      ]
 
-    const getRecommendations = jest.spyOn(
-      RightsizingRecommendations.prototype,
-      'getRecommendations',
-    )
+      const getRecommendations = jest.spyOn(
+        RightsizingRecommendations.prototype,
+        'getRecommendations',
+      )
 
-    getRecommendations.mockResolvedValue(expectedRecommendations)
-    const result = await testAwsAccount.getDataForRecommendations(
-      AWS_DEFAULT_RECOMMENDATION_TARGET,
-    )
+      getRecommendations.mockResolvedValue(expectedRecommendations)
+      const result = await testAwsAccount.getDataForRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
 
-    expect(result).toEqual(expectedRecommendations)
-  })
+      expect(result).toEqual(expectedRecommendations)
+    })
 
-  it('should get data for Cross Instance Family recommendations', async () => {
-    const AWSAccount = require('../application/AWSAccount').default
-    const testAwsAccount = new AWSAccount('12345678', 'test account', [
-      'some-region',
-    ])
+    it('should get data for Cross Instance Family recommendations', async () => {
+      const AWSAccount = require('../application/AWSAccount').default
+      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+        'some-region',
+      ])
 
-    const expectedRecommendations: RecommendationResult[] = [
-      {
-        cloudProvider: 'AWS',
-        accountId: 'account-id',
-        accountName: 'account-name',
-        region: 'us-east-1',
-        recommendationType: 'Terminate',
-        recommendationDetail: 'Terminate instance: instance-name',
-        kilowattHourSavings: 5,
-        co2eSavings: 4,
-        costSavings: 3,
-      },
-    ]
+      const expectedRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: 'account-id',
+          accountName: 'account-name',
+          region: 'us-east-1',
+          recommendationType: 'Terminate',
+          recommendationDetail: 'Terminate instance: instance-name',
+          kilowattHourSavings: 5,
+          co2eSavings: 4,
+          costSavings: 3,
+        },
+      ]
 
-    const getRecommendations = jest.spyOn(
-      RightsizingRecommendations.prototype,
-      'getRecommendations',
-    )
+      const getRecommendations = jest.spyOn(
+        RightsizingRecommendations.prototype,
+        'getRecommendations',
+      )
 
-    getRecommendations.mockResolvedValue(expectedRecommendations)
-    const result = await testAwsAccount.getDataForRecommendations(
-      AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
-    )
+      getRecommendations.mockResolvedValue(expectedRecommendations)
+      const result = await testAwsAccount.getDataForRecommendations(
+        AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
+      )
 
-    expect(result).toEqual(expectedRecommendations)
-    expect(getRecommendations).toHaveBeenCalledWith(
-      AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
-    )
-  })
+      expect(result).toEqual(expectedRecommendations)
+      expect(getRecommendations).toHaveBeenCalledWith(
+        AWS_RECOMMENDATIONS_TARGETS.CROSS_INSTANCE_FAMILY,
+      )
+    })
 
-  it('should get data for compute optimizer recommendations', async () => {
-    const AWSAccount = require('../application/AWSAccount').default
-    const testAwsAccount = new AWSAccount('12345678', 'test account', [
-      'some-region',
-    ])
-    mockConfig.AWS.RECOMMENDATIONS_SERVICE =
-      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+    it('should get data for compute optimizer recommendations', async () => {
+      const AWSAccount = require('../application/AWSAccount').default
+      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+        'some-region',
+      ])
+      mockConfig.AWS.RECOMMENDATIONS_SERVICE =
+        AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
 
-    const expectedRecommendations: RecommendationResult[] = [
-      {
-        cloudProvider: 'AWS',
-        accountId: '1234567890',
-        accountName: '1234567890',
-        region: 'eu-central-1',
-        recommendationType: 'EC2-OVER_PROVISIONED',
-        kilowattHourSavings: 0,
-        resourceId: 'i-0c80d1b0f3a0c5c69',
-        instanceName: 'PA-VM-100 | Networks',
-        co2eSavings: 0,
-        recommendationDetail: 't3.xlarge',
-        costSavings: 33.79,
-      },
-    ]
+      const expectedRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c80d1b0f3a0c5c69',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 0,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
+        },
+      ]
 
-    const getRecommendations = jest.spyOn(
-      ComputeOptimizerRecommendations.prototype,
-      'getRecommendations',
-    )
+      const getRecommendations = jest.spyOn(
+        ComputeOptimizerRecommendations.prototype,
+        'getRecommendations',
+      )
 
-    getRecommendations.mockResolvedValue(expectedRecommendations)
-    const result = await testAwsAccount.getDataForRecommendations(
-      AWS_DEFAULT_RECOMMENDATION_TARGET,
-    )
+      getRecommendations.mockResolvedValue(expectedRecommendations)
+      const result = await testAwsAccount.getDataForRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
 
-    expect(result).toEqual(expectedRecommendations)
+      expect(result).toEqual(expectedRecommendations)
+    })
+
+    it('should get data for all recommendation services (compute optimizer and rightsizing)', async () => {
+      const AWSAccount = require('../application/AWSAccount').default
+      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+        'some-region',
+      ])
+      mockConfig.AWS.RECOMMENDATIONS_SERVICE = AWS_RECOMMENDATIONS_SERVICES.All
+
+      const expectedRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c80d1b0f3a0c5c69',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 0,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: 'account-id',
+          accountName: 'account-name',
+          region: 'us-east-1',
+          recommendationType: 'Terminate',
+          recommendationDetail: 'Terminate instance: instance-name',
+          kilowattHourSavings: 5,
+          co2eSavings: 4,
+          costSavings: 3,
+        },
+      ]
+
+      const getComputeOptimizerRecommendations = jest.spyOn(
+        ComputeOptimizerRecommendations.prototype,
+        'getRecommendations',
+      )
+      getComputeOptimizerRecommendations.mockResolvedValue([
+        expectedRecommendations[0],
+      ])
+
+      const getRightsizingRecommendations = jest.spyOn(
+        RightsizingRecommendations.prototype,
+        'getRecommendations',
+      )
+
+      getRightsizingRecommendations.mockResolvedValue([
+        expectedRecommendations[1],
+      ])
+
+      const result = await testAwsAccount.getDataForRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
+
+      expect(result).toEqual(expectedRecommendations)
+    })
+
+    it('should get data with highest carbon savings when retrieving duplicate ids from all recommendation services', async () => {
+      const AWSAccount = require('../application/AWSAccount').default
+      const testAwsAccount = new AWSAccount('12345678', 'test account', [
+        'some-region',
+      ])
+      mockConfig.AWS.RECOMMENDATIONS_SERVICE = AWS_RECOMMENDATIONS_SERVICES.All
+
+      const mockComputeOptimizerRecommendations = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c80d1b0f3a0c5c69',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 3,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c40d2b0p5a0c4c72',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 6,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
+        },
+      ]
+      const mockRightsizingRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
+          recommendationType: 'Terminate',
+          resourceId: 'i-0c80d1b0f3a0c5c69',
+          recommendationDetail: 'Terminate instance: instance-name',
+          kilowattHourSavings: 5,
+          co2eSavings: 2,
+          costSavings: 3,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'Modify',
+          resourceId: 'i-0c40d2b0p5a0c4c72',
+          recommendationDetail: 'Modify instance: instance-name',
+          kilowattHourSavings: 5,
+          co2eSavings: 6.12,
+          costSavings: 3,
+        },
+      ]
+
+      const expectedRecommendations = [
+        {
+          cloudProvider: 'AWS',
+          accountId: '1234567890',
+          accountName: '1234567890',
+          region: 'eu-central-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c80d1b0f3a0c5c69',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 3,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 33.79,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'Modify',
+          resourceId: 'i-0c40d2b0p5a0c4c72',
+          recommendationDetail: 'Modify instance: instance-name',
+          kilowattHourSavings: 5,
+          co2eSavings: 6.12,
+          costSavings: 3,
+        },
+      ]
+
+      const getComputeOptimizerRecommendations = jest.spyOn(
+        ComputeOptimizerRecommendations.prototype,
+        'getRecommendations',
+      )
+      getComputeOptimizerRecommendations.mockResolvedValue(
+        mockComputeOptimizerRecommendations,
+      )
+
+      const getRightsizingRecommendations = jest.spyOn(
+        RightsizingRecommendations.prototype,
+        'getRecommendations',
+      )
+
+      getRightsizingRecommendations.mockResolvedValue(
+        mockRightsizingRecommendations,
+      )
+
+      const result = await testAwsAccount.getDataForRecommendations(
+        AWS_DEFAULT_RECOMMENDATION_TARGET,
+      )
+
+      expect(result).toEqual(expectedRecommendations)
+    })
   })
 })
 
