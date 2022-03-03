@@ -13,4 +13,4 @@ env_variables:
   GRPC_TRACE: all
   GRPC_VERBOSITY: DEBUG
 
-service_account: ccf-high-accuracy-account@ogcs-btqm-osphub.iam.gserviceaccount.com
+service_account: ogcs-btqm-osphub@appspot.gserviceaccount.com
