@@ -3,6 +3,10 @@
   "version": "2.3.4",
   "license": "Apache-2.0",
   "description": "The front-end dashboard for Cloud Carbon Footprint.",
+  "main": "src/index.tsx",
+  "publishConfig": {
+    "main": "dist/index.js"
+  },
   "homepage": "https://www.cloudcarbonfootprint.org/",
   "repository": {
     "type": "git",
