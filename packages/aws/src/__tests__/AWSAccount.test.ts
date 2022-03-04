@@ -394,7 +394,7 @@ describe('AWSAccount', () => {
       expect(result).toEqual(expectedRecommendations)
     })
 
-    it('should get data with highest carbon savings when retrieving duplicate ids from all recommendation services', async () => {
+    it('should get data with highest savings when retrieving duplicate ids from all recommendation services', async () => {
       const AWSAccount = require('../application/AWSAccount').default
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
@@ -428,6 +428,19 @@ describe('AWSAccount', () => {
           recommendationDetail: 't3.xlarge',
           costSavings: 33.79,
         },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c90f1b0p8a0c4c47',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 8,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 44.83,
+        },
       ]
       const mockRightsizingRecommendations: RecommendationResult[] = [
         {
@@ -453,6 +466,18 @@ describe('AWSAccount', () => {
           kilowattHourSavings: 5,
           co2eSavings: 6.12,
           costSavings: 3,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'Modify',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c90f1b0p8a0c4c47',
+          recommendationDetail: 't3.xlarge',
+          co2eSavings: 8,
+          costSavings: 45.72,
         },
       ]
 
@@ -481,6 +506,18 @@ describe('AWSAccount', () => {
           kilowattHourSavings: 5,
           co2eSavings: 6.12,
           costSavings: 3,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'Modify',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c90f1b0p8a0c4c47',
+          recommendationDetail: 't3.xlarge',
+          co2eSavings: 8,
+          costSavings: 45.72,
         },
       ]
 
