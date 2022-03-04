@@ -6,15 +6,18 @@ import React, { ReactElement, SyntheticEvent, useState } from 'react'
 import moment from 'moment'
 import { Grid } from '@material-ui/core'
 import { GridRowParams, MuiEvent } from '@material-ui/data-grid'
-import { useRemoteRecommendationsService, useRemoteService } from 'utils/hooks'
+import {
+  useRemoteRecommendationsService,
+  useRemoteService,
+} from '../../utils/hooks'
 import {
   EmissionsAndRecommendationResults,
   FilterResultResponse,
   RecommendationRow,
-} from 'Types'
-import LoadingMessage from 'common/LoadingMessage'
-import { useFilterDataFromRecommendations } from 'utils/helpers/transformData'
-import useFilters from 'common/FilterBar/utils/FilterHook'
+} from '../../Types'
+import LoadingMessage from '../../common/LoadingMessage'
+import { useFilterDataFromRecommendations } from '../../utils/helpers/transformData'
+import useFilters from '../../common/FilterBar/utils/FilterHook'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsSidePanel from './RecommendationsSidePanel'

@@ -6,7 +6,7 @@ import { Divider, Link, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import { OpenInNew } from '@material-ui/icons'
 import React, { FunctionComponent } from 'react'
-import SidePanel from 'common/SidePanel'
+import SidePanel from '../../../common/SidePanel'
 import useStyles from './emissionsSidePanelStyles'
 
 const EmissionsSidePanel: FunctionComponent = () => {

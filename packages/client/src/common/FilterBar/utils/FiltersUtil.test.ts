@@ -2,7 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 import * as FiltersUtil from './FiltersUtil'
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
+import {
+  DropdownFilterOptions,
+  DropdownOption,
+  FilterOptions,
+} from '../../../Types'
 import {
   ALL_CLOUD_PROVIDERS_VALUE,
   ALL_SERVICES_VALUE,

@@ -3,14 +3,14 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
+import { DropdownOption, FilterBarProps, FilterOptions } from '../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import FilterBar from 'common/FilterBar'
+} from '../../../common/FilterBar/utils/DropdownConstants'
+import FilterBar from '../../../common/FilterBar'
 import {
   AccountFilter,
   CloudProviderFilter,

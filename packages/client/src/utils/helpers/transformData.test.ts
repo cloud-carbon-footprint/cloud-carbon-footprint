@@ -27,7 +27,7 @@ import {
   mockEmissionsAndRecommendations,
   mockEmissionsAndRecommendationsWithUnknowns,
 } from '../data/mockData'
-import { UnknownTypes } from 'Types'
+import { UnknownTypes } from '../../Types'
 import each from 'jest-each'
 
 const testAccountA = 'test-a'

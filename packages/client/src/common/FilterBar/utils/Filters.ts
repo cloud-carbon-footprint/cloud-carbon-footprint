@@ -15,7 +15,7 @@ import {
   FiltersConfig,
   MaybeFiltersDateRange,
   FilterResults,
-} from 'Types'
+} from '../../../Types'
 import { DropdownSelections } from './FiltersUtil'
 import { OptionChooser } from './OptionChooser'
 

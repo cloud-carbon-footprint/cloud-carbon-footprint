@@ -16,7 +16,7 @@ import {
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,
-} from 'utils/helpers'
+} from '../../../../utils/helpers'
 import ForecastCard from '../ForecastCard'
 import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
 

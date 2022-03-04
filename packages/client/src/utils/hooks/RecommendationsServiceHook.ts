@@ -3,10 +3,10 @@
  */
 
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from 'Types'
+import { ServiceResult } from '../../Types'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useErrorHandling } from 'layout/ErrorPage'
+import { useErrorHandling } from '../../layout/ErrorPage'
 
 const useRemoteRecommendationsService = (
   awsRecommendationTarget?: string,

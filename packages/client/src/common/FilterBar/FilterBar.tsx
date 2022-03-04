@@ -10,7 +10,7 @@ import React, {
   SetStateAction,
 } from 'react'
 import useStyles from './filterBarStyles'
-import { FilterOptions, FilterProps } from 'Types'
+import { FilterOptions, FilterProps } from '../../Types'
 import { Filters } from './utils/Filters'
 
 type FilterBarProps = {

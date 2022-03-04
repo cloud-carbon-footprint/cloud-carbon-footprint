@@ -4,12 +4,12 @@
 
 import React, { FunctionComponent, ReactElement, useState } from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ChartDataTypes } from 'Types'
-import SelectDropdown from 'common/SelectDropdown'
-import NoDataMessage from 'common/NoDataMessage'
-import DashboardCard from 'layout/DashboardCard'
-import { useRemoteEmissionService } from 'utils/hooks'
-import { sumCO2ByServiceOrRegion } from 'utils/helpers'
+import { ChartDataTypes } from '../../../Types'
+import SelectDropdown from '../../../common/SelectDropdown'
+import NoDataMessage from '../../../common/NoDataMessage'
+import DashboardCard from '../../../layout/DashboardCard'
+import { useRemoteEmissionService } from '../../../utils/hooks'
+import { sumCO2ByServiceOrRegion } from '../../../utils/helpers'
 import ApexBarChart from './ApexBarChart'
 import useStyles from './emissionsBreakdownStyles'
 

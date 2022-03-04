@@ -50,6 +50,7 @@
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
     "build:workspace": "mkdir -p ../../dist-workspace/packages/client/build && cp -R build ../../dist-workspace/packages/client && cp package.json ../../dist-workspace/packages/client && cp index.js ../../dist-workspace/packages/client",
     "build:update": "node ../../scripts/update-package-dependencies.js client common",
+    "build:tsc": "rimraf dist && tsc --build tsconfig.json && copyfiles -u 1 src/**/*.svg src/**/*.png dist/",
     "test": "react-scripts --expose-gc test --watchAll=false",
     "test:snapshot": "yarn test -u",
     "eject": "react-scripts eject",
@@ -94,6 +95,7 @@
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.9.0",
     "concurrently": "^7.0.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -103,7 +105,8 @@
     "json-server": "^0.17.0",
     "lint-staged": "^12.1.7",
     "mockdate": "^3.0.5",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

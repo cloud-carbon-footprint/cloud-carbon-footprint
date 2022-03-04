@@ -16,7 +16,7 @@ import {
   DropdownOption,
   UnknownTypes,
   EmissionsAndRecommendationResults,
-} from 'Types'
+} from '../../Types'
 
 const sumServiceTotals = (
   data: EstimationResult[],

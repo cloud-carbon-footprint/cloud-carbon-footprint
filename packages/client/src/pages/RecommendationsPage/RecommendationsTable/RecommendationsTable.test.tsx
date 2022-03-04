@@ -6,14 +6,14 @@ import { fireEvent, render, within, screen } from '@testing-library/react'
 import each from 'jest-each'
 import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from 'Types'
+import { ServiceResult } from '../../../Types'
 import {
   generateEstimations,
   mockData,
   mockRecommendationData,
-} from 'utils/data'
+} from '../../../utils/data'
 import RecommendationsTable from './RecommendationsTable'
-import { useRemoteService } from 'utils/hooks'
+import { useRemoteService } from '../../../utils/hooks'
 
 jest.mock('utils/hooks/RemoteServiceHook')
 

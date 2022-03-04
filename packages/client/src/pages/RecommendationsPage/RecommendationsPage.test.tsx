@@ -9,9 +9,12 @@ import {
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import RecommendationsPage from './RecommendationsPage'
-import { generateEstimations, mockRecommendationData } from 'utils/data'
-import { useRemoteRecommendationsService, useRemoteService } from 'utils/hooks'
-import { ServiceResult } from 'Types'
+import { generateEstimations, mockRecommendationData } from '../../utils/data'
+import {
+  useRemoteRecommendationsService,
+  useRemoteService,
+} from '../../utils/hooks'
+import { ServiceResult } from '../../Types'
 import moment from 'moment'
 import { act } from 'react-dom/test-utils'
 

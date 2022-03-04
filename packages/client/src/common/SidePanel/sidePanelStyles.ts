@@ -3,7 +3,7 @@
  */
 
 import { makeStyles } from '@material-ui/core/styles'
-import { SidePanelProps } from 'Types'
+import { SidePanelProps } from '../../Types'
 
 const useStyles = makeStyles(
   ({ palette, transitions, spacing, breakpoints, mixins }) => ({

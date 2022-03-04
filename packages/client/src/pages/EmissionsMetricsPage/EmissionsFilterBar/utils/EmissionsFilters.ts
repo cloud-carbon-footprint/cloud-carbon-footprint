@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { Filters } from 'common/FilterBar/utils/Filters'
+import { Filters } from '../../../../common/FilterBar/utils/Filters'
 import {
   DropdownFilterOptions,
   DropdownOption,
@@ -11,17 +11,17 @@ import {
   FilterResultResponse,
   FiltersConfig,
   unknownOptionTypes,
-} from 'Types'
+} from '../../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_DROPDOWN_FILTER_OPTIONS,
   ALL_SERVICES_DROPDOWN_OPTION,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
+} from '../../../../common/FilterBar/utils/DropdownConstants'
 import { EstimationResult, ServiceData } from '@cloud-carbon-footprint/common'
 import { AccountChooser } from './options/AccountChooser'
-import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
-import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
+import { DropdownSelections } from '../../../../common/FilterBar/utils/FiltersUtil'
+import { OptionChooser } from '../../../../common/FilterBar/utils/OptionChooser'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { ServiceChooser } from './options/ServiceChooser'
 

@@ -7,8 +7,8 @@ import {
   ReactTestInstance,
   ReactTestRenderer,
 } from 'react-test-renderer'
-import { mockDataWithHigherPrecision } from 'utils/data'
-import NoDataMessage from 'common/NoDataMessage'
+import { mockDataWithHigherPrecision } from '../../../utils/data'
+import NoDataMessage from '../../../common/NoDataMessage'
 import ApexLineChart from './ApexLineChart'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 

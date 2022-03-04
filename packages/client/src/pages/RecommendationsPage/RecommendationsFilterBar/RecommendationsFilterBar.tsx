@@ -3,17 +3,17 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
+import { DropdownOption, FilterBarProps, FilterOptions } from '../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION,
   ALL_REGIONS_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import FilterBar from 'common/FilterBar'
-import AccountFilter from 'common/AccountFilter'
-import CloudProviderFilter from 'common/CloudProviderFilter'
+} from '../../../common/FilterBar/utils/DropdownConstants'
+import FilterBar from '../../../common/FilterBar'
+import AccountFilter from '../../../common/AccountFilter'
+import CloudProviderFilter from '../../../common/CloudProviderFilter'
 import RegionFilter from './Filters/RegionFilter'
 import RecommendationTypeFilter from './Filters/RecommendationType'
 import Toggle from '../../../common/Toggle'

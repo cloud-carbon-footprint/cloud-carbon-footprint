@@ -10,11 +10,14 @@ import {
   ReactTestRenderer,
 } from 'react-test-renderer'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from 'Types'
-import SelectDropdown from 'common/SelectDropdown'
-import NoDataMessage from 'common/NoDataMessage'
-import { useRemoteEmissionService } from 'utils/hooks'
-import { fakeEmissionFactors, mockDataWithHigherPrecision } from 'utils/data'
+import { ServiceResult } from '../../../Types'
+import SelectDropdown from '../../../common/SelectDropdown'
+import NoDataMessage from '../../../common/NoDataMessage'
+import { useRemoteEmissionService } from '../../../utils/hooks'
+import {
+  fakeEmissionFactors,
+  mockDataWithHigherPrecision,
+} from '../../../utils/data'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import ApexBarChart from './ApexBarChart'
 
