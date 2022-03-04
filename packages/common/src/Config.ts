@@ -3,10 +3,7 @@
  */
 import fs from 'fs'
 import dotenv from 'dotenv'
-import {
-  AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
-  AWS_RECOMMENDATIONS_SERVICES,
-} from './RecommendationsService'
+import { AWS_RECOMMENDATIONS_SERVICES } from './RecommendationsService'
 dotenv.config()
 
 export interface CCFConfig {
@@ -131,7 +128,7 @@ export const appConfig: CCFConfig = {
     RECOMMENDATIONS_SERVICE:
       AWS_RECOMMENDATIONS_SERVICES[
         getEnvVar('AWS_RECOMMENDATIONS_SERVICE') as AWS_RECOMMENDATIONS_SERVICES
-      ] || AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
+      ],
     COMPUTE_OPTIMIZER_BUCKET: getEnvVar('AWS_COMPUTE_OPTIMIZER_BUCKET') || '',
     CURRENT_REGIONS: [
       'us-east-1',

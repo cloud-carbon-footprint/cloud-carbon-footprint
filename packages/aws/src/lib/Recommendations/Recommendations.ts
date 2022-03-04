@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import {
+  AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
   AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
@@ -26,7 +27,15 @@ export default class Recommendations {
     serviceWrapper: ServiceWrapper,
   ): Promise<RecommendationResult[]> {
     const recommendationData: RecommendationResult[] = []
-    const recommendationService = configLoader().AWS.RECOMMENDATIONS_SERVICE
+
+    let recommendationService = configLoader().AWS.RECOMMENDATIONS_SERVICE
+    if (!recommendationService) {
+      const configLogger = new Logger('AWSRecommendations')
+      configLogger.warn(
+        'No AWS recommendations service was specified in env config. Retrieving only Rightsizing recommendations by default. The default service option may become "all" services in the future.',
+      )
+      recommendationService = AWS_DEFAULT_RECOMMENDATIONS_SERVICE
+    }
 
     if (recommendationService !== AWS_RECOMMENDATIONS_SERVICES.RightSizing) {
       const computeOptimizerRecommendations =
@@ -44,15 +53,9 @@ export default class Recommendations {
       recommendationData.push(...rightsizingRecommendations)
     }
 
-    if (recommendationService === AWS_RECOMMENDATIONS_SERVICES.All) {
-      const recommendationsLogger = new Logger('AWSRecommendations')
-      recommendationsLogger.warn(
-        'No AWS recommendations service was specified. Retrieving only Rightsizing recommendations by default. The default service option may become "all" services in the future.',
-      )
-      return Recommendations.getUniquesWithHighestSavings(recommendationData)
-    }
-
-    return recommendationData
+    return recommendationService === AWS_RECOMMENDATIONS_SERVICES.All
+      ? Recommendations.getUniquesWithHighestSavings(recommendationData)
+      : recommendationData
   }
 
   private static async getComputeOptimizer(
