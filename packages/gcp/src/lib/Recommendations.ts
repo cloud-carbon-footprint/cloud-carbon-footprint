@@ -23,10 +23,7 @@ import {
   Logger,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
-import {
-  GCP_CLOUD_CONSTANTS,
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   SHARED_CORE_PROCESSORS_BASELINE_UTILIZATION,
@@ -190,8 +187,7 @@ export default class Recommendations implements ICloudRecommendationsService {
       this.costAndCo2eTotals.kilowattHours / this.costAndCo2eTotals.cost
     const kilowattHours = cost * kilowattHoursPerCost
     const co2e =
-      kilowattHours *
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH[this.parseRegionFromZone(zone)]
+      kilowattHours * getGCPEmissionsFactors()[this.parseRegionFromZone(zone)]
     return { co2e, kilowattHours }
   }
 
@@ -464,7 +460,7 @@ export default class Recommendations implements ICloudRecommendationsService {
     return this.computeEstimator.estimate(
       [computeUsage],
       region,
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      getGCPEmissionsFactors(),
       computeConstants,
     )[0]
   }
@@ -491,7 +487,7 @@ export default class Recommendations implements ICloudRecommendationsService {
       ...storageEstimator.estimate(
         [storageUsage],
         region,
-        GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        getGCPEmissionsFactors(),
         storageConstants,
       )[0],
     }

@@ -37,7 +37,7 @@ describe('api', () => {
 
   beforeEach(() => {
     server = express()
-    server.use(api)
+    server.use(api())
   })
 
   describe('/footprint', () => {

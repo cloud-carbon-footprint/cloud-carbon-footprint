@@ -23,24 +23,33 @@ enum LOGGING_LEVELS {
 }
 
 export default class Logger implements ILogger {
-  private logger: WinstonLogger
+  private _logger: WinstonLogger
+  private logLabel: string
 
   private readonly format = printf(({ level, message, label, timestamp }) => {
     return `${timestamp} [${label}] ${level}: ${message} `
   })
 
   constructor(logLabel: string) {
-    try {
-      switch (configLoader().LOGGING_MODE) {
-        case 'GCP':
-          this.logger = this.getGCPLogger()
-          break
-        default:
-          this.logger = this.getDefaultLogger(logLabel)
+    this.logLabel = logLabel
+  }
+
+  get logger() {
+    if (!this._logger) {
+      try {
+        switch (configLoader().LOGGING_MODE) {
+          case 'GCP':
+            this._logger = this.getGCPLogger()
+            break
+          default:
+            this._logger = this.getDefaultLogger(this.logLabel)
+        }
+      } catch (error) {
+        this._logger = this.getDefaultLogger(this.logLabel).error(error)
       }
-    } catch (error) {
-      this.getDefaultLogger(logLabel).error(error)
     }
+
+    return this._logger
   }
 
   private getGCPLogger() {
