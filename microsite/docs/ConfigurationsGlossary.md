@@ -104,6 +104,19 @@ slug: /configurations-glossary
 
 <br/>
 
+## Optionally set these custom configurations for On-Premise calculations
+
+| Variable              | Example Value  | Type   | Notes                                                                               |
+| --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
+| ON_PREMISE_CPU_UTILIZATION_SERVER | 40 | number | For on-premise servers, provides an average value for cpu utilization.            |
+| ON_PREMISE_CPU_UTILIZATION_LAPTOP | 40 | number | For on-premise laptops, provides an average value for cpu utilization.   |
+| ON_PREMISE_CPU_UTILIZATION_DESKTOP | 40 | number | For on-premise desktops, provides an average value for cpu utilization.   |
+| ON_PREMISE_AVG_WATTS_SERVER | 300 | number | For on-premise servers, provides an average value for average watts.   |
+| ON_PREMISE_AVG_WATTS_LAPTOP | 300 | number | For on-premise laptops, provides an average value for average watts. |
+| ON_PREMISE_AVG_WATTS_DESKTOP | 300 | number | For on-premise desktops, provides an average value for average watts. |
+
+<br/>
+
 ## Client Package - all variables are optional
 
 | Variable                         | Example Value | Type    | Notes                                                                                                                                               |
