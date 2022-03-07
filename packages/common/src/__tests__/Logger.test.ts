@@ -27,17 +27,20 @@ jest.mock('winston', () => {
 })
 
 import Logger from '../Logger'
-import mockConfig from '../Config'
+import { setConfig } from '../ConfigLoader'
 
 describe('Logger', () => {
   const testMessage = 'test log message'
   const testErr = new Error('error test message')
 
   describe('Default logger', () => {
-    const testLogger = new Logger('test')
+    let testLogger: Logger = undefined
 
-    afterEach(() => {
-      jest.resetAllMocks()
+    beforeEach(() => {
+      setConfig({
+        LOGGING_MODE: null,
+      })
+      testLogger = new Logger('test')
     })
 
     it('logs debug', () => {
@@ -76,11 +79,14 @@ describe('Logger', () => {
   })
 
   describe('GCP logger', () => {
-    mockConfig.LOGGING_MODE = 'GCP'
-    const testLogger = new Logger('test')
+    let testLogger: Logger = undefined
 
-    afterEach(() => {
-      jest.resetAllMocks()
+    beforeEach(() => {
+      setConfig({
+        LOGGING_MODE: 'GCP',
+      })
+
+      testLogger = new Logger('test')
     })
 
     it('logs debug', () => {
