@@ -1,4 +1,4 @@
 export {
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+  getGCPEmissionsFactors,
   GCP_CLOUD_CONSTANTS,
 } from './GcpFootprintEstimationConstants'

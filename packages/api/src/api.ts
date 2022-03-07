@@ -13,6 +13,8 @@ import {
 } from '@cloud-carbon-footprint/app'
 
 import {
+  setConfig,
+  CCFConfig,
   EstimationRequestValidationError,
   Logger,
   PartialDataError,
@@ -112,12 +114,19 @@ const RecommendationsApiMiddleware = async function (
   }
 }
 
-const router = express.Router()
+const createRouter = (config?: CCFConfig) => {
+  setConfig(config)
 
-router.get('/footprint', FootprintApiMiddleware)
-router.get('/regions/emissions-factors', EmissionsApiMiddleware)
-router.get('/recommendations', RecommendationsApiMiddleware)
-router.get('/healthz', (req: express.Request, res: express.Response) => {
-  res.status(200).send('OK')
-})
-export default router
+  const router = express.Router()
+
+  router.get('/footprint', FootprintApiMiddleware)
+  router.get('/regions/emissions-factors', EmissionsApiMiddleware)
+  router.get('/recommendations', RecommendationsApiMiddleware)
+  router.get('/healthz', (req: express.Request, res: express.Response) => {
+    res.status(200).send('OK')
+  })
+
+  return router
+}
+
+export default createRouter

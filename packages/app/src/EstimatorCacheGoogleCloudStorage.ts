@@ -6,7 +6,7 @@ import { Storage } from '@google-cloud/storage'
 import { Stream } from 'stream'
 import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import { getCacheFileName } from './CacheFileNameProvider'
 
@@ -15,12 +15,6 @@ const storage = new Storage()
 export default class EstimatorCacheGoogleCloudStorage
   implements EstimatorCache
 {
-  private readonly bucketName: string
-
-  constructor(bucketName: string) {
-    this.bucketName = bucketName
-  }
-
   getEstimates(
     request: EstimationRequest,
     grouping: string,
@@ -33,6 +27,7 @@ export default class EstimatorCacheGoogleCloudStorage
     grouping: string,
   ): Promise<void> {
     const cachedEstimates = await this.getCloudFileContent(grouping)
+    const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
 
     try {
       const mergedData = cachedEstimates
@@ -42,7 +37,7 @@ export default class EstimatorCacheGoogleCloudStorage
       const estimatesJsonData = JSON.stringify(mergedData)
 
       const cacheFileName = getCacheFileName(grouping)
-      const cacheFile = storage.bucket(this.bucketName).file(cacheFileName)
+      const cacheFile = storage.bucket(bucketName).file(cacheFileName)
 
       await cacheFile.save(estimatesJsonData, {
         contentType: 'application/json',
@@ -56,10 +51,10 @@ export default class EstimatorCacheGoogleCloudStorage
     grouping: string,
   ): Promise<EstimationResult[]> {
     const cacheFileName = getCacheFileName(grouping)
+    const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
+
     try {
-      const streamOfCacheFile = storage
-        .bucket(this.bucketName)
-        .file(cacheFileName)
+      const streamOfCacheFile = storage.bucket(bucketName).file(cacheFileName)
 
       const cachedJson = await this.streamToString(
         await streamOfCacheFile.createReadStream(),

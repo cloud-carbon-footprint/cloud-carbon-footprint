@@ -140,7 +140,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 
-const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
+export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
   // These emission factors take into account Google Carbon Free Energy percentage in each region. Source: https://cloud.google.com/sustainability/region-carbon
   if (configLoader().GCP.USE_CARBON_FREE_ENERGY_PERCENTAGE)
     return {
@@ -219,6 +219,3 @@ const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
     [GCP_REGIONS.UNKNOWN]: 0.0004116296296, // Average of the above regions
   }
 }
-
-export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
-  getGCPEmissionsFactors()

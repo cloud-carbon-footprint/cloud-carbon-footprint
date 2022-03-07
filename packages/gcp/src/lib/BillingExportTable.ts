@@ -60,10 +60,7 @@ import {
   SHARED_CORE_PROCESSORS,
 } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
-import {
-  GCP_CLOUD_CONSTANTS,
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class BillingExportTable {
@@ -197,7 +194,7 @@ export default class BillingExportTable {
     unknownRows: BillingExportRow[],
   ): FootprintEstimate | void {
     const emissionsFactors: CloudConstantsEmissionsFactors =
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+      getGCPEmissionsFactors()
     const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
       billingExportRow.region,
     )
@@ -584,7 +581,7 @@ export default class BillingExportTable {
     return this.unknownEstimator.estimate(
       [unknownUsage],
       rowData.region,
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      getGCPEmissionsFactors(),
       unknownConstants,
     )[0]
   }

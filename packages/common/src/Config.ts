@@ -103,7 +103,7 @@ const getEnvVar = (envVar: string): string => {
   }
 }
 
-export const appConfig: CCFConfig = {
+const getConfig = (): CCFConfig => ({
   AWS: {
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
@@ -237,6 +237,6 @@ export const appConfig: CCFConfig = {
       AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
     },
   },
-}
+})
 
-export default appConfig
+export default getConfig
