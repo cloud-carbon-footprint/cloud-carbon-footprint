@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 import express from 'express'
 import helmet from 'helmet'
 
-import api from './api'
+import { createRouter } from './api'
 import auth from './auth'
 import { Logger } from '@cloud-carbon-footprint/common'
 
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production') {
 
 httpApp.use(helmet())
 
-httpApp.use('/api', api())
+httpApp.use('/api', createRouter())
 
 httpApp.listen(port, () =>
   serverLogger.info(
