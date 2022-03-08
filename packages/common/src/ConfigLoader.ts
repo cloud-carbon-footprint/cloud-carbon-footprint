@@ -4,7 +4,7 @@
 
 import getConfig, { CCFConfig } from './Config'
 
-let _config: CCFConfig = undefined
+let _config: CCFConfig = getConfig()
 
 export const setConfig = (ccfConfig: CCFConfig = getConfig()) => {
   return (_config = ccfConfig)

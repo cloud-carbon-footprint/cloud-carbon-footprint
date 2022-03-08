@@ -9,7 +9,7 @@ import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
-  Config as mockConfig,
+  setConfig,
   EstimationResult,
   getPeriodEndDate,
   GroupBy,
@@ -65,19 +65,22 @@ describe('AWSAccount', () => {
   })
 
   it('should return empty if no service in config file', () => {
-    mockConfig.AWS.CURRENT_SERVICES = []
+    setConfig({
+      AWS: {
+        CURRENT_SERVICES: [],
+      },
+    })
     const AWSAccount = require('../application/AWSAccount').default
     const services = new AWSAccount().getServices()
     expect(services).toHaveLength(0)
   })
 
   it('should throw error if unknown service', () => {
-    mockConfig.AWS.CURRENT_SERVICES = [
-      {
-        key: 'duck',
-        name: '',
+    setConfig({
+      AWS: {
+        CURRENT_SERVICES: [{ key: 'duck', name: '' }],
       },
-    ]
+    })
 
     const awsAccount = require('../application/AWSAccount').default
     const account = new awsAccount('123', 'us-east-1')
@@ -304,8 +307,13 @@ describe('AWSAccount', () => {
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
-      mockConfig.AWS.RECOMMENDATIONS_SERVICE =
-        AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+
+      setConfig({
+        AWS: {
+          RECOMMENDATIONS_SERVICE:
+            AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer,
+        },
+      })
 
       const expectedRecommendations: RecommendationResult[] = [
         {
@@ -341,7 +349,12 @@ describe('AWSAccount', () => {
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
-      mockConfig.AWS.RECOMMENDATIONS_SERVICE = AWS_RECOMMENDATIONS_SERVICES.All
+
+      setConfig({
+        AWS: {
+          RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES.All,
+        },
+      })
 
       const expectedRecommendations: RecommendationResult[] = [
         {
@@ -399,7 +412,12 @@ describe('AWSAccount', () => {
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
-      mockConfig.AWS.RECOMMENDATIONS_SERVICE = AWS_RECOMMENDATIONS_SERVICES.All
+
+      setConfig({
+        AWS: {
+          RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES.All,
+        },
+      })
 
       const mockComputeOptimizerRecommendations = [
         {
@@ -548,12 +566,11 @@ describe('AWSAccount', () => {
 })
 
 function expectAWSService(key: string) {
-  mockConfig.AWS.CURRENT_SERVICES = [
-    {
-      key: key,
-      name: '',
+  setConfig({
+    AWS: {
+      CURRENT_SERVICES: [{ key: key, name: '' }],
     },
-  ]
+  })
   const testRegion = 'some-region'
   const AWSAccount = require('../application/AWSAccount').default
   const services = new AWSAccount('12345678', 'test account', [

@@ -4,7 +4,7 @@
 
 import AWSCredentialsProvider from '../application/AWSCredentialsProvider'
 import GCPCredentials from '../application/GCPCredentials'
-import { Config as mockConfig } from '@cloud-carbon-footprint/common'
+import { setConfig } from '@cloud-carbon-footprint/common'
 import {
   ChainableTemporaryCredentials,
   Credentials,
@@ -53,23 +53,21 @@ describe('AWSCredentialsProvider', () => {
   const targetRoleName = 'testTargetRoleName'
   const proxyAccountId = '987654321'
   const proxyRoleName = 'testProxyRoleName'
-  beforeAll(() => {
-    mockConfig.AWS = {
-      CURRENT_REGIONS: [],
-      CURRENT_SERVICES: [],
-      NAME: '',
-      authentication: {
-        mode: 'GCP',
-        options: {
-          targetRoleName: targetRoleName,
-          proxyAccountId: proxyAccountId,
-          proxyRoleName: proxyRoleName,
-        },
-      },
-    }
-  })
+
   it('create returns GCPCredentialsProvider', () => {
     // given
+    setConfig({
+      AWS: {
+        authentication: {
+          mode: 'GCP',
+          options: {
+            targetRoleName: targetRoleName,
+            proxyAccountId: proxyAccountId,
+            proxyRoleName: proxyRoleName,
+          },
+        },
+      },
+    })
     const accountId = '12345678910'
     const expectedCredentials = new GCPCredentials(
       accountId,
@@ -87,7 +85,18 @@ describe('AWSCredentialsProvider', () => {
 
   it('create returns ChainableTemporaryCredentials', () => {
     // given
-    mockConfig.AWS.authentication.mode = 'AWS'
+    setConfig({
+      AWS: {
+        authentication: {
+          mode: 'AWS',
+          options: {
+            targetRoleName: targetRoleName,
+            proxyAccountId: proxyAccountId,
+            proxyRoleName: proxyRoleName,
+          },
+        },
+      },
+    })
     const mockedChainableTemporaryCredentials =
       mockChainableTemporaryCredentials('', '', '')
     const accountId = '123'
@@ -106,7 +115,16 @@ describe('AWSCredentialsProvider', () => {
 
   it('create returns EC2MetadataCredentials', () => {
     // given
-    mockConfig.AWS.authentication.mode = 'EC2-METADATA'
+    setConfig({
+      AWS: {
+        authentication: {
+          mode: 'EC2-METADATA',
+          options: {
+            targetRoleName: targetRoleName,
+          },
+        },
+      },
+    })
     const options = { httpOptions: { timeout: 5000 }, maxRetries: 10 }
     const mockedEC2MetadataCredentials = mockEC2MetadataCredentials(options)
     const accountId = '123'
@@ -120,7 +138,14 @@ describe('AWSCredentialsProvider', () => {
 
   it('create returns Credentials by default', () => {
     // given
-    mockConfig.AWS.authentication.mode = undefined
+    setConfig({
+      AWS: {
+        authentication: {
+          mode: undefined,
+        },
+      },
+    })
+
     const accountId = '123'
     const credentialsOptions = { accessKeyId: '', secretAccessKey: '' }
     const credentialsMock = Credentials as unknown as Mock
