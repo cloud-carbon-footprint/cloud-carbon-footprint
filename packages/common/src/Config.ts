@@ -15,11 +15,11 @@ export interface CCFConfig {
     ATHENA_DB_TABLE?: string
     ATHENA_QUERY_RESULT_LOCATION?: string
     ATHENA_REGION?: string
-    NAME: string
-    RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES
-    COMPUTE_OPTIMIZER_BUCKET: string
-    CURRENT_SERVICES: { key: string; name: string }[]
-    CURRENT_REGIONS: string[]
+    NAME?: string
+    RECOMMENDATIONS_SERVICE?: AWS_RECOMMENDATIONS_SERVICES
+    COMPUTE_OPTIMIZER_BUCKET?: string
+    CURRENT_SERVICES?: { key: string; name: string }[]
+    CURRENT_REGIONS?: string[]
     accounts?: {
       id: string
       name?: string
@@ -30,9 +30,9 @@ export interface CCFConfig {
     }
   }
   GCP?: {
-    NAME: string
-    CURRENT_SERVICES: { key: string; name: string }[]
-    CURRENT_REGIONS: string[]
+    NAME?: string
+    CURRENT_SERVICES?: { key: string; name: string }[]
+    CURRENT_REGIONS?: string[]
     projects?: {
       id: string
       name?: string
