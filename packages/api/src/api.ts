@@ -114,7 +114,7 @@ const RecommendationsApiMiddleware = async function (
   }
 }
 
-const createRouter = (config?: CCFConfig) => {
+export const createRouter = (config?: CCFConfig) => {
   setConfig(config)
 
   const router = express.Router()
@@ -128,5 +128,3 @@ const createRouter = (config?: CCFConfig) => {
 
   return router
 }
-
-export default createRouter
