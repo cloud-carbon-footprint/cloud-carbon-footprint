@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/core
 
+## 0.16.0
+
+### Minor Changes
+
+- 497ae495: Adds support for estimating energy and carbon emissions for Azure GPU VMs
+- ef6af294: Adds initial support for energy/carbon estimation for GPU instances for AWS and GCP
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
+### Patch Changes
+
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/common@1.5.0
+
 ## 0.15.0
 
 ### Minor Changes

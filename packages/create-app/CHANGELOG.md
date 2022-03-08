@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.3.0
+
+### Minor Changes
+
+- fae222a5: Updates api to allow CCF config to be passed into the router.
+
+  See [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8a8014189f234cfd50723dfc5e9e75525e013016) to update your api package template files.
+
+### Patch Changes
+
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
 ## 1.2.7
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.9.0
+
+### Minor Changes
+
+- ef6af294: Adds initial support for energy/carbon estimation for GPU instances for AWS and GCP
+- 7ecd432d: Adds support for optionally passing in the CCF Config into the api router
+
+### Patch Changes
+
+- Updated dependencies [497ae495]
+- Updated dependencies [ef6af294]
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/core@0.16.0
+  - @cloud-carbon-footprint/common@1.5.0
+
 ## 0.8.0
 
 ### Minor Changes
