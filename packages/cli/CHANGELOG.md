@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/cli
 
+## 1.4.0
+
+### Minor Changes
+
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
+### Patch Changes
+
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/app@0.5.0
+  - @cloud-carbon-footprint/common@1.5.0
+
 ## 1.3.0
 
 ### Minor Changes

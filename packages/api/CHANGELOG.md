@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/api
 
+## 1.4.0
+
+### Minor Changes
+
+- 7ecd432d: Adds support for optionally passing in the CCF Config into the api router
+
+### Patch Changes
+
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/app@0.5.0
+  - @cloud-carbon-footprint/common@1.5.0
+
 ## 1.3.1
 
 ### Patch Changes
