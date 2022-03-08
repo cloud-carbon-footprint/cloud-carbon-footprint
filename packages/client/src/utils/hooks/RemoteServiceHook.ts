@@ -12,11 +12,12 @@ import { ServiceResult } from '../../Types'
 import config from '../../ConfigLoader'
 
 const useRemoteService = (
-  initial: EstimationResult[],
-  startDate: moment.Moment,
-  endDate: moment.Moment,
-  ignoreCache = false,
-  region?: string,
+    initial: EstimationResult[],
+    startDate: moment.Moment,
+    endDate: moment.Moment,
+    ignoreCache = false,
+    region?: string,
+    baseUrl?: string,
 ): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
@@ -28,11 +29,14 @@ const useRemoteService = (
 
   useEffect(() => {
     const fetchEstimates = async () => {
+      if (!baseUrl) {
+        return
+      }
       setError({})
       setLoading(true)
 
       try {
-        const res = await axios.get('/api/footprint', {
+        const res = await axios.get(`${baseUrl}/footprint`, {
           params: {
             start: start,
             end: end,
@@ -60,7 +64,7 @@ const useRemoteService = (
     }
 
     fetchEstimates()
-  }, [end, start, region, ignoreCache, setError])
+  }, [end, start, region, ignoreCache, setError, baseUrl])
 
   handleApiError(error)
 

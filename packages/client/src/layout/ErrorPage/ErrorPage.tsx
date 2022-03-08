@@ -21,13 +21,13 @@ type ErrorHandlingType = {
 }
 
 export const useErrorHandling = (): ErrorHandlingType => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [error, setError] = useState({})
 
   const handleApiError = (error: ErrorState) => {
-    if (error.status) {
-      navigate(`/error`, { state: error })
-    }
+    // if (error.status) {
+    //   navigate(`/error`, { state: error })
+    // }
   }
 
   return { handleApiError, error, setError }

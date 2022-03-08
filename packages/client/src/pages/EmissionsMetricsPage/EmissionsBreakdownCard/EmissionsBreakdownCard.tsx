@@ -14,18 +14,18 @@ import ApexBarChart from './ApexBarChart'
 import useStyles from './emissionsBreakdownStyles'
 
 type EmissionsBreakdownContainerProps = {
-  containerClass?: string
   data: EstimationResult[]
+  baseUrl?: string
 }
 
 const EmissionsBreakdownCard: FunctionComponent<
   EmissionsBreakdownContainerProps
-> = ({ data }): ReactElement => {
+> = ({ data, baseUrl }): ReactElement => {
   const classes = useStyles()
   const [chartType, setChartType] = useState(ChartDataTypes.REGION)
 
   const { data: emissionsData, loading: emissionsLoading } =
-    useRemoteEmissionService()
+    useRemoteEmissionService(baseUrl)
   const barChartData = sumCO2ByServiceOrRegion(
     data as EstimationResult[],
     chartType,
