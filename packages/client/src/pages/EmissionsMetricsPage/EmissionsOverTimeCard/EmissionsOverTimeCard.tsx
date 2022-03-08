@@ -10,7 +10,6 @@ import DashboardCard from '../../../layout/DashboardCard'
 import ApexLineChart from './ApexLineChart/ApexLineChart'
 
 type EmissionsOverTimeProps = {
-  classes: ClassNameMap<string>
   filteredData: EstimationResult[]
 }
 

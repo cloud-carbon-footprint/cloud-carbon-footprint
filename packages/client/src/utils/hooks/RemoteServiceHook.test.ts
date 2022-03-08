@@ -33,7 +33,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockResolvedValue({ data: ['data'] })
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, ignoreCache, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region, '/api/footprint'),
     )
 
     await waitForNextUpdate()
@@ -60,7 +60,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockRejectedValue({ response })
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, ignoreCache, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region, '/api/footprint'),
     )
 
     await waitForNextUpdate()
@@ -80,7 +80,7 @@ describe('RemoteServiceHook', () => {
     axiosMocked.get.mockRejectedValue('some error')
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteService([], startDate, endDate, ignoreCache, region),
+      useRemoteService([], startDate, endDate, ignoreCache, region, '/api/footprint'),
     )
 
     await waitForNextUpdate()
