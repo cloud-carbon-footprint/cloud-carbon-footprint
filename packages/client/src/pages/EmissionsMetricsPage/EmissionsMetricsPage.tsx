@@ -20,9 +20,8 @@ import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { EmissionsFilters } from './EmissionsFilterBar/utils/EmissionsFilters'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import {ThemeProvider} from "styled-components";
 
-const BASE_URL = "/api";
+const BASE_URL = '/api'
 
 export default function EmissionsMetricsPage(): ReactElement {
   const classes = useStyles()
@@ -39,7 +38,14 @@ export default function EmissionsMetricsPage(): ReactElement {
       .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
-  const { data, loading } = useRemoteService([], startDate, endDate, false, undefined, BASE_URL)
+  const { data, loading } = useRemoteService(
+    [],
+    startDate,
+    endDate,
+    false,
+    undefined,
+    BASE_URL,
+  )
 
   const filteredDataResults: FilterResultResponse =
     useFilterDataFromEstimates(data)
@@ -74,13 +80,14 @@ export default function EmissionsMetricsPage(): ReactElement {
       />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          <EmissionsOverTimeCard
-            filteredData={filteredEstimationData}
-          />
+          <EmissionsOverTimeCard filteredData={filteredEstimationData} />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
               <CarbonComparisonCard data={filteredEstimationData} />
-              <EmissionsBreakdownCard data={filteredEstimationData} baseUrl={BASE_URL} />
+              <EmissionsBreakdownCard
+                data={filteredEstimationData}
+                baseUrl={BASE_URL}
+              />
             </Grid>
           </Grid>
           <CarbonIntensityMap />

@@ -12,12 +12,12 @@ import { ServiceResult } from '../../Types'
 import config from '../../ConfigLoader'
 
 const useRemoteService = (
-    initial: EstimationResult[],
-    startDate: moment.Moment,
-    endDate: moment.Moment,
-    ignoreCache = false,
-    region?: string,
-    baseUrl?: string,
+  initial: EstimationResult[],
+  startDate: moment.Moment,
+  endDate: moment.Moment,
+  ignoreCache = false,
+  region?: string,
+  baseUrl?: string,
 ): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
