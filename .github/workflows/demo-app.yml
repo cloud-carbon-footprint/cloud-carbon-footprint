@@ -2,6 +2,8 @@ name: Deploy Demo App
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ trunk ]
   pull_request:
     branches: [trunk]
     types: [closed]
@@ -48,7 +50,7 @@ jobs:
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
           GOOGLE_DEMO_STORAGE_BUCKET: ${{ secrets.GOOGLE_DEMO_STORAGE_BUCKET }}
         run: |
-          apk add --update python3 py-crcmod bash libc6-compat curl
+          apk add --update python3 py-crcmod bash libc6-compat gcompat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
