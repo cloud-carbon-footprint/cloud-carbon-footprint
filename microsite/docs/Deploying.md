@@ -16,6 +16,14 @@ Or if you want to use GitHub Actions, you can see the configuration for this in 
 
 It will deploy to `https://<something>.appspot.com`.
 
+### Deploy to AWS
+
+The application can also be deployed in AWS by making use of EC2 as the compute service to run it on. In order to do so, we provide a basic infrastructure setup that spins up all the necessary cloud resources, from the required role/policies to the actual compute resource and its provisioning (EC2 with user data).
+
+The infrastructure setup, developed with Terraform, can be found in `terraform/aws` and needs to be parametrized with the right values and tweaked to the specific circumstances of the user i.e. there might not be the need to fire up all resources but a subset of them.
+
+For more information, please note that there are specific instructions for this [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/terraform/aws/README.md).
+
 ## Deploy to other cloud providers
 
 Cloud Carbon Footprint should be deployable to other cloud providers such as [Heroku](https://www.heroku.com/) or [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/). However, only Google App Engine has been tested currently, so there may be some work involved in doing this.
