@@ -10,6 +10,7 @@ import { useErrorHandling } from '../../layout/ErrorPage'
 
 const useRemoteRecommendationsService = (
   awsRecommendationTarget?: string,
+  baseUrl?: string,
 ): ServiceResult<RecommendationResult> => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -18,17 +19,20 @@ const useRemoteRecommendationsService = (
 
   useEffect(() => {
     const fetchRecommendations = async () => {
+      if (!baseUrl) {
+        return
+      }
       setError({})
       setLoading(true)
 
       try {
         const res = awsRecommendationTarget
-          ? await axios.get('/api/recommendations', {
+          ? await axios.get(`${baseUrl}/recommendations`, {
               params: {
                 awsRecommendationTarget,
               },
             })
-          : await axios.get('/api/recommendations')
+          : await axios.get(`${baseUrl}/recommendations`)
         setData(res.data)
       } catch (e) {
         const DEFAULT_RESPONSE = {
@@ -47,7 +51,7 @@ const useRemoteRecommendationsService = (
     }
 
     fetchRecommendations()
-  }, [awsRecommendationTarget, setError])
+  }, [awsRecommendationTarget, setError, baseUrl])
 
   handleApiError(error)
 

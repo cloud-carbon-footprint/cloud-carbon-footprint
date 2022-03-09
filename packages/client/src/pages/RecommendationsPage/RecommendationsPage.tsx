@@ -24,12 +24,14 @@ import RecommendationsSidePanel from './RecommendationsSidePanel'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
 import { RecommendationsFilters } from './RecommendationsFilterBar/utils/RecommendationsFilters'
 
+const BASE_URL = '/api'
+
 const RecommendationsPage = (): ReactElement => {
   const classes = useStyles()
 
   // Recommendation Data
   const { data: recommendations, loading: recommendationsLoading } =
-    useRemoteRecommendationsService()
+    useRemoteRecommendationsService(BASE_URL)
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<RecommendationRow>()
   const [useKilograms, setUseKilograms] = useState(false)
@@ -42,6 +44,7 @@ const RecommendationsPage = (): ReactElement => {
     startDate,
     endDate,
     true,
+    BASE_URL,
   )
 
   const combinedData: EmissionsAndRecommendationResults = {
