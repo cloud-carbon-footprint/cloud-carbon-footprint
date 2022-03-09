@@ -28,21 +28,21 @@ jobs:
         with:
           fetch-depth: 0
       # Run Yarn Install in the Client Package
-#      - name: Install client
-#        run: yarn
-#        working-directory: packages/client
-#      # Build the Client Package
-#      - name: Build client
-#        env:
-#          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
-#          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
-#          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
-#          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
-#        run: |
-#          cd packages/client
-#          ./create_client_env_file.sh
-#          yarn build
-#          cd ..
+      - name: Install client
+        run: yarn
+        working-directory: packages/client
+      # Build the Client Package
+      - name: Build client
+        env:
+          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
+          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+        run: |
+          cd packages/client
+          ./create_client_env_file.sh
+          yarn build
+          cd ..
       # Update/Deploy the Client Package
       - name: Update and deploy demo app
         env:
