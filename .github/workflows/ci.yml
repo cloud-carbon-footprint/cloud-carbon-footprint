@@ -1,11 +1,11 @@
 name: CI
 on:
   workflow_dispatch:
-#  push:
-#    branches: [trunk]
-#    paths-ignore:
-#      - 'microsite/**'
-#      - '.github/workflows/deploy-microsite.yml'
+  push:
+    branches: [trunk]
+    paths-ignore:
+      - 'microsite/**'
+      - '.github/workflows/deploy-microsite.yml'
   pull_request:
     branches: [trunk]
     types: [closed]
@@ -210,7 +210,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.18-alpine3.13
     environment:
       name: staging
     env:
@@ -288,7 +288,7 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.18-alpine3.13
     environment:
       name: production
     env:
