@@ -16,7 +16,7 @@ jobs:
 #    if: github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.19-alpine3.15
     environment:
       name: staging
     env:
@@ -50,7 +50,7 @@ jobs:
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
           GOOGLE_DEMO_STORAGE_BUCKET: ${{ secrets.GOOGLE_DEMO_STORAGE_BUCKET }}
         run: |
-          apk add --update python3 py-crcmod bash protobuf libc6-compat curl
+          apk add --update python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
