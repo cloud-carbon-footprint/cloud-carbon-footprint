@@ -54,7 +54,7 @@ jobs:
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
           apk del python2
-          apk add --no-cache add python3
+          apk add --no-cache python3
 
           # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
           yarn set version 1.22.4
