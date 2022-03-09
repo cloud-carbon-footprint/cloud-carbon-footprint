@@ -28,21 +28,21 @@ jobs:
         with:
           fetch-depth: 0
       # Run Yarn Install in the Client Package
-      - name: Install client
-        run: yarn
-        working-directory: packages/client
-      # Build the Client Package
-      - name: Build client
-        env:
-          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
-          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
-          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
-          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
-        run: |
-          cd packages/client
-          ./create_client_env_file.sh
-          yarn build
-          cd ..
+#      - name: Install client
+#        run: yarn
+#        working-directory: packages/client
+#      # Build the Client Package
+#      - name: Build client
+#        env:
+#          REACT_APP_DATE_RANGE_VALUE: ${{ secrets.REACT_APP_DATE_RANGE_VALUE }}
+#          REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
+#          REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
+#          REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+#        run: |
+#          cd packages/client
+#          ./create_client_env_file.sh
+#          yarn build
+#          cd ..
       # Update/Deploy the Client Package
       - name: Update and deploy demo app
         env:
@@ -50,7 +50,7 @@ jobs:
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
           GOOGLE_DEMO_STORAGE_BUCKET: ${{ secrets.GOOGLE_DEMO_STORAGE_BUCKET }}
         run: |
-          apk add --update python3 py-crcmod bash libc6-compat gcompat curl
+          apk add --update python3 py-crcmod bash libc6-compat=1.2.2-r7 curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
