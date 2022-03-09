@@ -3,7 +3,6 @@
  */
 
 import React, { useMemo } from 'react'
-import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider, CssBaseline } from '@material-ui/core'
 
@@ -24,6 +23,5 @@ function Root() {
     </BrowserRouter>
   )
 }
-
 
 export default Root

@@ -3,7 +3,6 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { ClassNameMap } from '@material-ui/styles'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import NoDataMessage from '../../../common/NoDataMessage'
 import DashboardCard from '../../../layout/DashboardCard'

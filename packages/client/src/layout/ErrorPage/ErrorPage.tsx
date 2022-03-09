@@ -3,7 +3,7 @@
  */
 
 import React, { ReactElement, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import CloudOffIcon from '@material-ui/icons/CloudOff'
 import { Grid } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -25,6 +25,7 @@ export const useErrorHandling = (): ErrorHandlingType => {
   const [error, setError] = useState({})
 
   const handleApiError = (error: ErrorState) => {
+    console.error(error)
     // if (error.status) {
     //   navigate(`/error`, { state: error })
     // }

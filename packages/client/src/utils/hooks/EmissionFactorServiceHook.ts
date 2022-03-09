@@ -2,18 +2,20 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {useEffect, useState, useRef} from 'react'
+import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
-import {EmissionRatioResult} from '@cloud-carbon-footprint/common'
-import {useErrorHandling} from '../../layout/ErrorPage'
+import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
+import { useErrorHandling } from '../../layout/ErrorPage'
 
-import {ServiceResult} from '../../Types'
+import { ServiceResult } from '../../Types'
 
-const useRemoteEmissionService = (baseUrl?: string,): ServiceResult<EmissionRatioResult> => {
+const useRemoteEmissionService = (
+  baseUrl?: string,
+): ServiceResult<EmissionRatioResult> => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const _isMounted = useRef(true)
-  const {handleApiError, error, setError} = useErrorHandling()
+  const { handleApiError, error, setError } = useErrorHandling()
 
   useEffect(() => {
     const fetchEstimates = async () => {
@@ -38,8 +40,8 @@ const useRemoteEmissionService = (baseUrl?: string,): ServiceResult<EmissionRati
         }
 
         if (e.response) {
-          const {status, statusText} = e.response
-          setError({status, statusText})
+          const { status, statusText } = e.response
+          setError({ status, statusText })
         } else {
           setError(DEFAULT_RESPONSE)
         }
@@ -58,7 +60,7 @@ const useRemoteEmissionService = (baseUrl?: string,): ServiceResult<EmissionRati
 
   handleApiError(error)
 
-  return {data, loading}
+  return { data, loading }
 }
 
 export default useRemoteEmissionService
