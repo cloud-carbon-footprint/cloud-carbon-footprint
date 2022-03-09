@@ -53,7 +53,6 @@ jobs:
           apk add --update python2 bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-          apk del python2 && apk --no-cache add python3=3.9.5-r2 py-crcmod
 
           # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
           yarn set version 1.22.4
