@@ -9,10 +9,10 @@ import React, { FunctionComponent } from 'react'
 import SidePanel from '../../../common/SidePanel'
 import useStyles from './emissionsSidePanelStyles'
 
-const EmissionsSidePanel: FunctionComponent = () => {
+export const Methodology: FunctionComponent = () => {
   const classes = useStyles()
   return (
-    <SidePanel title="How do we get our carbon estimates?" drawerWidth={360}>
+    <>
       <Typography className={classes.content} component="p">
         Our CO2e Estimate Formula:
       </Typography>
@@ -62,6 +62,14 @@ const EmissionsSidePanel: FunctionComponent = () => {
         Read more in our full methodology here{' '}
         <OpenInNew fontSize="small" className={classes.openIcon} />
       </Link>
+    </>
+  )
+}
+
+const EmissionsSidePanel: FunctionComponent = () => {
+  return (
+    <SidePanel title="How do we get our carbon estimates?" drawerWidth={360}>
+      <Methodology />
     </SidePanel>
   )
 }
