@@ -8,6 +8,7 @@ import { ThemeProvider, CssBaseline } from '@material-ui/core'
 
 import App from './App'
 import { determineTheme } from './utils/themes'
+import ReactDOM from 'react-dom'
 
 function Root() {
   const theme = useMemo(() => determineTheme(), [])
@@ -24,4 +25,4 @@ function Root() {
   )
 }
 
-export default Root
+ReactDOM.render(<Root />, document.getElementById('root'))
