@@ -5,7 +5,8 @@
   "description": "The front-end dashboard for Cloud Carbon Footprint.",
   "main": "src/index.tsx",
   "publishConfig": {
-    "main": "dist/index.js"
+    "main": "dist/lib.js",
+    "types": "dist/lib.d.ts"
   },
   "homepage": "https://www.cloudcarbonfootprint.org/",
   "repository": {
@@ -55,6 +56,9 @@
     "build:workspace": "mkdir -p ../../dist-workspace/packages/client/build && cp -R build ../../dist-workspace/packages/client && cp package.json ../../dist-workspace/packages/client && cp index.js ../../dist-workspace/packages/client",
     "build:update": "node ../../scripts/update-package-dependencies.js client common",
     "build:tsc": "rimraf dist && tsc --build tsconfig.json && copyfiles -u 1 src/**/*.svg src/**/*.png dist/",
+    "build:hack": "yarn build:tsc && yarn prepack && rm -rf ../../../backstage/node_modules/@cloud-carbon-footprint/client/* ; cp -r package.json dist ../../../backstage/node_modules/@cloud-carbon-footprint/client/ && yarn postpack",
+    "prepack": "ts-node ../../scripts/prepack.ts",
+    "postpack": "ts-node ../../scripts/postpack.ts",
     "test": "react-scripts --expose-gc test --watchAll=false",
     "test:snapshot": "yarn test -u",
     "eject": "react-scripts eject",
