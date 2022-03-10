@@ -56,17 +56,17 @@ needs. Every organization will have a different cloud setup and tech stack, so w
 separate the estimation logic from both the data input source (e.g. cloud APIs, on-premise or co-located data centers)
 and the output source (e.g front-end dashboard, CSV, etc) so new inputs and outputs can easily be added.
 
-### Options for cloud usage and cost data source
+### Cloud usage and cost data source
 
-We support two approaches to gathering usage and cost data for different cloud providers. One approach gives a more holistic understanding of your emissions whereas the other prioritizes accuracy:
+#### Using Billing Data for Cloud Usage (Holistic)
 
-#### 1. Using Billing Data for Cloud Usage (Holistic)
-
-By default, we query cloud provider billing and usage APIs:
+By default, we query cloud provider billing and usage APIs to provide a holistic understanding of your emissions:
 
 - AWS Cost and Usage Reports with Amazon Athena
 - GCP Billing Export Table using BigQuery.
 - Azure Consumption Management API
+
+Please see the [Alternative Data Approaches](./AlternativeDataApproaches.md) page for additional information and other data sourcing options.
 
 This pulls usage and cost data from all linked accounts in your AWS, GCP, or Azure Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
 
@@ -93,30 +93,9 @@ The way we determine total vCPU Hours for the compute estimation varies for each
 
 For AWS Savings Plans, we only include the line item type `SavingsPlanCoveredUsage` because our understanding is that the other Savings Plans line item types refer to fees or discounts in the form of refunds.
 
-When calculating total kilowatt hours for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
+When calculating total kilowatt-hours for AWS Lambda service using Billing Data (Holistic), we are assuming that `MemorySetInMB` will be 1792, and since we will then divide this by the constant 1792, we just don't include it in the calculation.
 
-For details on some of the specific usage type classifications, please view the [Classifying Usage Types page](./ClassifyingUsageTypes.md).
-
-#### 2. Using Cloud Usage APIs for Cloud Usage (Higher Accuracy)
-
-This approach utilizes the AWS CloudWatch and Cost Explore APIs, and the GCP Cloud Monitoring API to pull usage and cost data. We achieve this by looping through the accounts and then making the API calls on each account for the regions and services set in the application configuration. We retrieve an hourly granularity for usage and daily granularity for cost. This approach is arguably more accurate as we use the actual CPU utilization percentage in the emission estimation for compute usage, but is confined to the services that have been implemented so far in the application. We currently only support compute and storage for this approach.
-
-The cloud providers and services currently supported with this approach are:
-
-AWS
-
-- EC2 (compute)
-- Lambda (compute)
-- EBS (storage)
-- RDS (compute & storage)
-- S3 (storage)
-- Elasticache (compute)
-
-GCP
-
-- Compute Engine (compute)
-
-Azure is not currently supported for this approach.
+For details on some specific usage type classifications, please view the [Classifying Usage Types page](./ClassifyingUsageTypes.md).
 
 ### Energy Estimate (Watt-Hours)
 
