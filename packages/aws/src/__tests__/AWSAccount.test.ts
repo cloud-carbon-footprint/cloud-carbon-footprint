@@ -9,7 +9,7 @@ import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
-  Config as mockConfig,
+  setConfig,
   EstimationResult,
   getPeriodEndDate,
   GroupBy,
@@ -65,19 +65,22 @@ describe('AWSAccount', () => {
   })
 
   it('should return empty if no service in config file', () => {
-    mockConfig.AWS.CURRENT_SERVICES = []
+    setConfig({
+      AWS: {
+        CURRENT_SERVICES: [],
+      },
+    })
     const AWSAccount = require('../application/AWSAccount').default
     const services = new AWSAccount().getServices()
     expect(services).toHaveLength(0)
   })
 
   it('should throw error if unknown service', () => {
-    mockConfig.AWS.CURRENT_SERVICES = [
-      {
-        key: 'duck',
-        name: '',
+    setConfig({
+      AWS: {
+        CURRENT_SERVICES: [{ key: 'duck', name: '' }],
       },
-    ]
+    })
 
     const awsAccount = require('../application/AWSAccount').default
     const account = new awsAccount('123', 'us-east-1')
@@ -304,8 +307,13 @@ describe('AWSAccount', () => {
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
-      mockConfig.AWS.RECOMMENDATIONS_SERVICE =
-        AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+
+      setConfig({
+        AWS: {
+          RECOMMENDATIONS_SERVICE:
+            AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer,
+        },
+      })
 
       const expectedRecommendations: RecommendationResult[] = [
         {
@@ -341,7 +349,12 @@ describe('AWSAccount', () => {
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
-      mockConfig.AWS.RECOMMENDATIONS_SERVICE = AWS_RECOMMENDATIONS_SERVICES.All
+
+      setConfig({
+        AWS: {
+          RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES.All,
+        },
+      })
 
       const expectedRecommendations: RecommendationResult[] = [
         {
@@ -394,12 +407,17 @@ describe('AWSAccount', () => {
       expect(result).toEqual(expectedRecommendations)
     })
 
-    it('should get data with highest carbon savings when retrieving duplicate ids from all recommendation services', async () => {
+    it('should get data with highest savings when retrieving duplicate ids from all recommendation services', async () => {
       const AWSAccount = require('../application/AWSAccount').default
       const testAwsAccount = new AWSAccount('12345678', 'test account', [
         'some-region',
       ])
-      mockConfig.AWS.RECOMMENDATIONS_SERVICE = AWS_RECOMMENDATIONS_SERVICES.All
+
+      setConfig({
+        AWS: {
+          RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES.All,
+        },
+      })
 
       const mockComputeOptimizerRecommendations = [
         {
@@ -428,6 +446,19 @@ describe('AWSAccount', () => {
           recommendationDetail: 't3.xlarge',
           costSavings: 33.79,
         },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'EC2-OVER_PROVISIONED',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c90f1b0p8a0c4c47',
+          instanceName: 'PA-VM-100 | Networks',
+          co2eSavings: 8,
+          recommendationDetail: 't3.xlarge',
+          costSavings: 44.83,
+        },
       ]
       const mockRightsizingRecommendations: RecommendationResult[] = [
         {
@@ -453,6 +484,18 @@ describe('AWSAccount', () => {
           kilowattHourSavings: 5,
           co2eSavings: 6.12,
           costSavings: 3,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'Modify',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c90f1b0p8a0c4c47',
+          recommendationDetail: 't3.xlarge',
+          co2eSavings: 8,
+          costSavings: 45.72,
         },
       ]
 
@@ -481,6 +524,18 @@ describe('AWSAccount', () => {
           kilowattHourSavings: 5,
           co2eSavings: 6.12,
           costSavings: 3,
+        },
+        {
+          cloudProvider: 'AWS',
+          accountId: '0987654321',
+          accountName: '0987654321',
+          region: 'us-east-1',
+          recommendationType: 'Modify',
+          kilowattHourSavings: 0,
+          resourceId: 'i-0c90f1b0p8a0c4c47',
+          recommendationDetail: 't3.xlarge',
+          co2eSavings: 8,
+          costSavings: 45.72,
         },
       ]
 
@@ -511,12 +566,11 @@ describe('AWSAccount', () => {
 })
 
 function expectAWSService(key: string) {
-  mockConfig.AWS.CURRENT_SERVICES = [
-    {
-      key: key,
-      name: '',
+  setConfig({
+    AWS: {
+      CURRENT_SERVICES: [{ key: key, name: '' }],
     },
-  ]
+  })
   const testRegion = 'some-region'
   const AWSAccount = require('../application/AWSAccount').default
   const services = new AWSAccount('12345678', 'test account', [

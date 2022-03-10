@@ -14,7 +14,7 @@ jobs:
     if: github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.18-alpine3.13
     environment:
       name: staging
     env:

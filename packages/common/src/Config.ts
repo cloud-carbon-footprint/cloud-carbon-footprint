@@ -3,10 +3,7 @@
  */
 import fs from 'fs'
 import dotenv from 'dotenv'
-import {
-  AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
-  AWS_RECOMMENDATIONS_SERVICES,
-} from './RecommendationsService'
+import { AWS_RECOMMENDATIONS_SERVICES } from './RecommendationsService'
 dotenv.config()
 
 export interface CCFConfig {
@@ -18,11 +15,11 @@ export interface CCFConfig {
     ATHENA_DB_TABLE?: string
     ATHENA_QUERY_RESULT_LOCATION?: string
     ATHENA_REGION?: string
-    NAME: string
-    RECOMMENDATIONS_SERVICE: AWS_RECOMMENDATIONS_SERVICES
-    COMPUTE_OPTIMIZER_BUCKET: string
-    CURRENT_SERVICES: { key: string; name: string }[]
-    CURRENT_REGIONS: string[]
+    NAME?: string
+    RECOMMENDATIONS_SERVICE?: AWS_RECOMMENDATIONS_SERVICES
+    COMPUTE_OPTIMIZER_BUCKET?: string
+    CURRENT_SERVICES?: { key: string; name: string }[]
+    CURRENT_REGIONS?: string[]
     accounts?: {
       id: string
       name?: string
@@ -33,9 +30,9 @@ export interface CCFConfig {
     }
   }
   GCP?: {
-    NAME: string
-    CURRENT_SERVICES: { key: string; name: string }[]
-    CURRENT_REGIONS: string[]
+    NAME?: string
+    CURRENT_SERVICES?: { key: string; name: string }[]
+    CURRENT_REGIONS?: string[]
     projects?: {
       id: string
       name?: string
@@ -106,7 +103,7 @@ const getEnvVar = (envVar: string): string => {
   }
 }
 
-export const appConfig: CCFConfig = {
+const getConfig = (): CCFConfig => ({
   AWS: {
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
@@ -131,7 +128,7 @@ export const appConfig: CCFConfig = {
     RECOMMENDATIONS_SERVICE:
       AWS_RECOMMENDATIONS_SERVICES[
         getEnvVar('AWS_RECOMMENDATIONS_SERVICE') as AWS_RECOMMENDATIONS_SERVICES
-      ] || AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
+      ],
     COMPUTE_OPTIMIZER_BUCKET: getEnvVar('AWS_COMPUTE_OPTIMIZER_BUCKET') || '',
     CURRENT_REGIONS: [
       'us-east-1',
@@ -240,6 +237,6 @@ export const appConfig: CCFConfig = {
       AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
     },
   },
-}
+})
 
-export default appConfig
+export default getConfig

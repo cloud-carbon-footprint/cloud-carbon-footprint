@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/azure
 
+## 0.9.0
+
+### Minor Changes
+
+- 497ae495: Adds support for estimating energy and carbon emissions for Azure GPU VMs
+
+### Patch Changes
+
+- ef6af294: Adds initial support for energy/carbon estimation for GPU instances for AWS and GCP
+- Updated dependencies [497ae495]
+- Updated dependencies [ef6af294]
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/core@0.16.0
+  - @cloud-carbon-footprint/common@1.5.0
+
 ## 0.8.0
 
 ### Minor Changes

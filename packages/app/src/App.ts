@@ -22,10 +22,7 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   AWSAccount,
 } from '@cloud-carbon-footprint/aws'
-import {
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-  GCPAccount,
-} from '@cloud-carbon-footprint/gcp'
+import { getGCPEmissionsFactors, GCPAccount } from '@cloud-carbon-footprint/gcp'
 import { OnPremise } from '@cloud-carbon-footprint/on-premise'
 
 import cache from './Cache'
@@ -129,7 +126,7 @@ export default class App {
   getEmissionsFactors(): EmissionRatioResult[] {
     const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH = {
       AWS: AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      GCP: GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      GCP: getGCPEmissionsFactors(),
       AZURE: AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
     }
 

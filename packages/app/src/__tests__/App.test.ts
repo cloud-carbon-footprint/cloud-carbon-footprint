@@ -90,10 +90,10 @@ jest.mock('@cloud-carbon-footprint/gcp', () => ({
     string,
     unknown
   >),
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: {
+  getGCPEmissionsFactors: jest.fn().mockReturnValue({
     gcpRegion1: 3,
     gcpRegion2: 4,
-  },
+  }),
 }))
 
 jest.mock('@cloud-carbon-footprint/azure', () => ({
