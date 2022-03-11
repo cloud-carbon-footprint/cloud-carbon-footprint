@@ -102,8 +102,7 @@ For details on some specific usage type classifications, please view the [Classi
 In order to estimate energy used by cloud providers we are leveraging the methodology that Etsy created called 
 “[Cloud Jewels](https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/)” to determine 
 energy coefficients (kWh) for cloud service compute and storage usage. In addition, we’ve added energy estimation 
-for networking and memory usage. The application also doesn’t currently include estimations for cloud GPU usage, 
-but this is on the roadmap. You can see a summary of all our energy coefficients in Appendix I below.
+for networking and memory usage. You can see a summary of all our energy coefficients in Appendix I below.
 
 We look at the servers used by cloud providers on their website and reference their energy usage from both the
 [SPECPower](https://www.spec.org/power_ssj2008/results/power_ssj2008.html) database and the [2016 US Data Center Energy
@@ -161,6 +160,25 @@ When we don’t know the underlying processor micro-architecture, we use the ave
 
 - Average Min Watts: 0.78
 - Average Max Matts: 3.76
+
+#### Graphic Processing Units (GPUs)
+
+All the major cloud providers have instances or machines that include GPUs. Unfortunately, the SPECPower Database 
+doesn’t include energy data for the min and max watts of GPUs, so we have determined a different approach.
+
+When it comes to GPUs, we are able to leverage the same compute estimation formula, but because the cloud providers 
+provision entire physical GPUs to customers, instead of using virtual CPU Hours, we use GPU Hours.
+
+When it comes to determining the min and max watts for physical GPUs, we have leveraged a [data set published by Teads](https://medium.com/teads-engineering/building-an-aws-ec2-carbon-emissions-dataset-3f0fd76c98ac) 
+that includes the watts at 0% utilization and 100% utilization for various GPU machine types, which is based on data 
+provided by [Tech Power Up](https://www.techpowerup.com/gpu-specs/). Teads measured the CPU Utilization at 0% and 100% 
+utilization of AWS bare metal instances (CPUs), and applied the same ratio to GPU. We have further applied the same 
+ratios for Azure and GCP GPUs, which includes additional GPUs than what Teads published. You can see the full list of 
+GPUs and min/max watts in Appendix III below.
+
+We understand there are a number of assumptions underpinning this approach, and very much welcome improvements based on 
+ore accurate data sets.
+
 
 ##### A note on AWS Lambda Compute Estimates
 
@@ -274,7 +292,7 @@ For networking, it is safe to assume that the electricity used to power the inte
 
 There have not been many studies that deal specifically with estimating the electricity impact of exchanging data across data-centers. Most studies focus on estimating the impact of end-user traffic from the data center to the mobile phone; integrating the scope of the core network (what we are interested in), the local access to internet (optical fiber, copper, or 3G/4G/5G) and eventually the connection to the phone (WiFi or 4G).
 
-On top of that, these studies use different methodologies and end up with results with orders of magnitude in differences. See appendix III below for a summary of the most recent studies. Note that it is very hard to find recent studies that provide an estimation for optical fiber networks, the scope we are interested in.
+On top of that, these studies use different methodologies and end up with results with orders of magnitude in differences. See appendix IV below for a summary of the most recent studies. Note that it is very hard to find recent studies that provide an estimation for optical fiber networks, the scope we are interested in.
 
 ##### Chosen coefficient
 
@@ -381,7 +399,7 @@ adequately reflect. Outside the US, we generally use carbonfootprint.com’s [co
 For most of Europe, however, we use [EEA emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6).
 In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report.
 
-You can see the full list of emissions factors in Appendix IV below.
+You can see the full list of emissions factors in Appendix V below.
 
 We understand this is a rough estimated conversion as these are only averages over a given year that is pre-2020, and
 they also don’t take into account time of day. We welcome improvements to this, for example [electrictyMap
@@ -445,7 +463,24 @@ When it comes to the AWS Graviton 2 custom processor, it is likely more efficien
 we are yet to find any reliable min or max watts values. For the time being, we apply the lowest min/max watts for any microarchitecture: AMD EPYC 2nd Gen.
 The same is true for the GB / physical chip used to estimate energy for memory usage.
 
-### Appendix III: Recent Networking studies
+### Appendix III: GPUs and min/max watts
+
+| Manufacturer | Name            | Watts (Idle) | Watts (100%) |
+|--------------|-----------------|--------------|--------------|
+| NVIDIA       | Tesla M60       | 35           | 306          |
+| NVIDIA       | T4              | 8            | 71           |
+| NVIDIA       | Tesla K80       | 35           | 306          |
+| NVIDIA       | Tesla V100      | 35           | 306          |
+| NVIDIA       | Tesla A100      | 46           | 407          |
+| NVIDIA       | K520            | 26           | 229          |
+| NVIDIA       | A10G            | 18           | 153          |
+| NVIDIA       | Tesla P4        | 9            | 76.5         |
+| NVIDIA       | Tesla P100      | 36           | 306          |
+| NVIDIA       | Tesla P40       | 30           | 255          |
+| AMD          | Radeon Pro V520 | 26           | 229          |
+| Xilinx       | Alveo U250      | 27           | 229.5        |
+
+### Appendix IV: Recent Networking studies
 
 | Study                                                                                                                                                                      | Scope                   | Year (data applied) | Energy intensity kWh/GB                |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ------------------- | -------------------------------------- |
@@ -457,7 +492,7 @@ The same is true for the GB / physical chip used to estimate energy for memory u
 | [New perspectives on internet electricity use in 2030](https://www.researchgate.net/publication/342643762_New_perspectives_on_internet_electricity_use_in_2030), A. Andrae | Fixed access network    | 2020                | 0.07 - 0.055                           |
 | [Talk](https://www.youtube.com/watch?t=2520&v=Xo0PB5i_b4Y&feature=youtu.be) by J. Malmodin                                                                                 | Fixed broadband network | ?                   | 0.1 - 0.001 (depending on the bitrate) |
 
-### Appendix IV: Grid emissions factors:
+### Appendix V: Grid emissions factors:
 
 #### AWS
 
