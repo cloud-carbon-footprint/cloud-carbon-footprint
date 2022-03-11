@@ -293,7 +293,8 @@ says that “As a rule of thumb, however, you want to allocate around 3 watts of
 memory,” which amounts to ~0.375 W/GB. [Micron](https://www.micron.com/-/media/client/global/documents/products/technical-note/dram/tn4007_ddr4_power_calculation.pdf) 
 provides a power model that states “... each DRAM will consume approximately 408.3mW of total power,” which equals a 
 power consumption of ~0.4083 W/GB. Given this information, we have decided to take the average of both these figures, 
-and go with 0.392 W/GB, or **0.000392 kWh/GB**. We want to acknowledge that this is a complex subject with limited available data, and welcome additional research or studies to improve this coefficient.
+and go with 0.392 W/GB, or 0.000392 kW/GB. In the application we have implemented this as **0.000392 Kilowatt Hour / Gigabyte Hour**.
+We want to acknowledge that this is a complex subject with limited available data, and welcome additional research or studies to improve this coefficient.
 
 ##### Applying the coefficient
 
