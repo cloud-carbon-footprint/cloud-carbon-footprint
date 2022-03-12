@@ -2,17 +2,28 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import EmissionsMetricsPage from './pages/EmissionsMetricsPage'
 import RecommendationsPage from './pages/RecommendationsPage/'
 import ErrorPage from './layout/ErrorPage'
 import HeaderBar from './layout/HeaderBar'
 import MobileWarning from './layout/MobileWarning'
+import { AxiosError } from 'axios'
+import { formatAxiosError } from './layout/ErrorPage/ErrorPage'
 
 function App(): ReactElement {
+  const navigate = useNavigate()
+  const onApiError = useCallback(
+    (e: AxiosError) => {
+      console.error(e)
+      navigate('/error', { state: formatAxiosError(e) })
+    },
+    [navigate],
+  )
+
   const [mobileWarningEnabled, setMobileWarningEnabled] = useState(
     window.innerWidth < 768,
   )
@@ -43,8 +54,14 @@ function App(): ReactElement {
       <HeaderBar />
       <Container maxWidth={false} className={classes.appContainer}>
         <Routes>
-          <Route path="/" element={<EmissionsMetricsPage />} />
-          <Route path="/recommendations" element={<RecommendationsPage />} />
+          <Route
+            path="/"
+            element={<EmissionsMetricsPage onApiError={onApiError} />}
+          />
+          <Route
+            path="/recommendations"
+            element={<RecommendationsPage onApiError={onApiError} />}
+          />
           <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </Container>

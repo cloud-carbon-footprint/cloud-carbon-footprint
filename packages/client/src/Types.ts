@@ -14,6 +14,7 @@ import { DropdownSelections } from './common/FilterBar/utils/FiltersUtil'
 export interface ServiceResult<T> {
   data: T[]
   loading: boolean
+  error: Error | null
 }
 
 export interface cloudEstPerDay {

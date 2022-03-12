@@ -16,16 +16,17 @@ import useStyles from './emissionsBreakdownStyles'
 type EmissionsBreakdownContainerProps = {
   data: EstimationResult[]
   baseUrl?: string
+  onApiError?: (e: Error) => void
 }
 
 const EmissionsBreakdownCard: FunctionComponent<
   EmissionsBreakdownContainerProps
-> = ({ data, baseUrl }): ReactElement => {
+> = ({ data, baseUrl, onApiError }): ReactElement => {
   const classes = useStyles()
   const [chartType, setChartType] = useState(ChartDataTypes.REGION)
 
   const { data: emissionsData, loading: emissionsLoading } =
-    useRemoteEmissionService(baseUrl)
+    useRemoteEmissionService(baseUrl, onApiError)
   const barChartData = sumCO2ByServiceOrRegion(
     data as EstimationResult[],
     chartType,
