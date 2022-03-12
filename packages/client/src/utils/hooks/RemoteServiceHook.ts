@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
-import { useErrorHandling } from '../../layout/ErrorPage'
+import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 import { ServiceResult } from '../../Types'
 import config from '../../ConfigLoader'
 
@@ -18,11 +18,12 @@ const useRemoteService = (
   ignoreCache = false,
   region?: string,
   baseUrl?: string,
+  onApiError?: (e: Error) => void,
 ): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(initial)
   const [loading, setLoading] = useState(false)
 
-  const { handleApiError, error, setError } = useErrorHandling()
+  const { error, setError } = useAxiosErrorHandling(onApiError)
 
   const start: string = startDate.format('YYYY-MM-DD').toString()
   const end: string = endDate.format('YYYY-MM-DD').toString()
@@ -32,7 +33,7 @@ const useRemoteService = (
       if (!baseUrl) {
         return
       }
-      setError({})
+      setError()
       setLoading(true)
 
       try {
@@ -47,17 +48,7 @@ const useRemoteService = (
         })
         setData(res.data)
       } catch (e) {
-        const DEFAULT_RESPONSE = {
-          status: '520',
-          statusText: 'Unknown Error',
-        }
-
-        if (e.response) {
-          const { status, statusText } = e.response
-          setError({ status, statusText })
-        } else {
-          setError(DEFAULT_RESPONSE)
-        }
+        setError(e)
       } finally {
         setTimeout(() => setLoading(false), 1000)
       }
@@ -66,9 +57,7 @@ const useRemoteService = (
     fetchEstimates()
   }, [end, start, region, ignoreCache, setError, baseUrl])
 
-  handleApiError(error)
-
-  return { data, loading }
+  return { data, loading, error }
 }
 
 export default useRemoteService

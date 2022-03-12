@@ -23,15 +23,22 @@ import useStyles from './recommendationsPageStyles'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
 import { RecommendationsFilters } from './RecommendationsFilterBar/utils/RecommendationsFilters'
+import { ErrorState } from '../../layout/ErrorPage/ErrorPage'
 
 const BASE_URL = '/api'
 
-const RecommendationsPage = (): ReactElement => {
+interface RecommendationsPageProps {
+  onApiError?: (e: ErrorState) => void
+}
+
+const RecommendationsPage = ({
+  onApiError,
+}): ReactElement<RecommendationsPageProps> => {
   const classes = useStyles()
 
   // Recommendation Data
   const { data: recommendations, loading: recommendationsLoading } =
-    useRemoteRecommendationsService(BASE_URL)
+    useRemoteRecommendationsService(undefined, BASE_URL, onApiError)
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<RecommendationRow>()
   const [useKilograms, setUseKilograms] = useState(false)
@@ -44,7 +51,9 @@ const RecommendationsPage = (): ReactElement => {
     startDate,
     endDate,
     true,
+    undefined,
     BASE_URL,
+    onApiError,
   )
 
   const combinedData: EmissionsAndRecommendationResults = {

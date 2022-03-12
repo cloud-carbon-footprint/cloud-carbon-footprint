@@ -23,7 +23,12 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 const BASE_URL = '/api'
 
-export default function EmissionsMetricsPage(): ReactElement {
+interface EmissionsMetricsPageProps {
+  onApiError?: (e: Error) => void
+}
+export default function EmissionsMetricsPage({
+  onApiError,
+}: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
   const classes = useStyles()
   const dateRangeType: string = config().DATE_RANGE.TYPE
   const dateRangeValue: string = config().DATE_RANGE.VALUE
@@ -45,6 +50,7 @@ export default function EmissionsMetricsPage(): ReactElement {
     false,
     undefined,
     BASE_URL,
+    onApiError,
   )
 
   const filteredDataResults: FilterResultResponse =
@@ -87,6 +93,7 @@ export default function EmissionsMetricsPage(): ReactElement {
               <EmissionsBreakdownCard
                 data={filteredEstimationData}
                 baseUrl={BASE_URL}
+                onApiError={onApiError}
               />
             </Grid>
           </Grid>
