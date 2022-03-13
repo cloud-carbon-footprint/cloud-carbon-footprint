@@ -13,12 +13,14 @@ import useStyles from './filterBarStyles'
 import { FilterOptions, FilterProps } from '../../Types'
 import { Filters } from './utils/Filters'
 
+export type FilterBarConfig = {
+  filters: Filters
+  setFilters: Dispatch<SetStateAction<Filters>>
+  filterOptions: FilterOptions
+}
+
 type FilterBarProps = {
-  config: {
-    filters: Filters
-    setFilters: Dispatch<SetStateAction<Filters>>
-    filterOptions: FilterOptions
-  }
+  config: FilterBarConfig
   components: FunctionComponent<FilterProps>[]
   suffixComponent?: ReactElement
 }

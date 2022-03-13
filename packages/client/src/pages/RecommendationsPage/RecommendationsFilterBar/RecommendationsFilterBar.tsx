@@ -21,12 +21,12 @@ import Toggle from '../../../common/Toggle'
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
-  filteredDataResults,
+  filterOptions,
   setUseKilograms,
 }): ReactElement => {
   const getFilterOptions = (): FilterOptions => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.accounts,
+      filterOptions?.accounts,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
 
@@ -36,7 +36,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     ]
 
     const allRegionDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.regions,
+      filterOptions?.regions,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
 
@@ -46,7 +46,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     ]
 
     const allRecommendationTypeOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.recommendationTypes,
+      filterOptions?.recommendationTypes,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
 

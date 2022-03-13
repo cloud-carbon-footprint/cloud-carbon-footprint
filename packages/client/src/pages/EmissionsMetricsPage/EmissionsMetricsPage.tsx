@@ -5,11 +5,7 @@
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
 import moment, { unitOfTime } from 'moment'
-import { useRemoteFootprintService } from '../../utils/hooks'
-import { useFilterDataFromEstimates } from '../../utils/helpers'
-import { FilterResultResponse } from '../../Types'
 import config from '../../ConfigLoader'
-import useFilters from '../../common/FilterBar/utils/FilterHook'
 import LoadingMessage from '../../common/LoadingMessage'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
@@ -18,14 +14,14 @@ import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
-import { EmissionsFilters } from './EmissionsFilterBar/utils/EmissionsFilters'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { useFootprintData } from '../../utils/hooks/FootprintDataHook'
 
 const BASE_URL = '/api'
 
 interface EmissionsMetricsPageProps {
   onApiError?: (e: Error) => void
 }
+
 export default function EmissionsMetricsPage({
   onApiError,
 }: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
@@ -43,29 +39,14 @@ export default function EmissionsMetricsPage({
       .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
-  const { data, loading } = useRemoteFootprintService({
+  const footprint = useFootprintData({
+    baseUrl: BASE_URL,
     startDate,
     endDate,
-    baseUrl: BASE_URL,
     onApiError,
   })
 
-  const filteredDataResults: FilterResultResponse =
-    useFilterDataFromEstimates(data)
-
-  const buildFilters = (filteredResponse: FilterResultResponse) => {
-    const updatedConfig = EmissionsFilters.generateConfig(filteredResponse)
-    return new EmissionsFilters(updatedConfig)
-  }
-
-  const { filteredData, filters, setFilters } = useFilters(
-    data,
-    buildFilters,
-    filteredDataResults,
-  )
-  const filteredEstimationData = filteredData as EstimationResult[]
-
-  if (loading) {
+  if (footprint.loading) {
     return (
       <LoadingMessage
         message={'Loading cloud data. This may take a while...'}
@@ -76,19 +57,15 @@ export default function EmissionsMetricsPage({
   return (
     <>
       <EmissionsSidePanel />
-      <EmissionsFilterBar
-        filters={filters}
-        setFilters={setFilters}
-        filteredDataResults={filteredDataResults}
-      />
+      <EmissionsFilterBar {...footprint.filterBarProps} />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          <EmissionsOverTimeCard filteredData={filteredEstimationData} />
+          <EmissionsOverTimeCard data={footprint.filteredData} />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
-              <CarbonComparisonCard data={filteredEstimationData} />
+              <CarbonComparisonCard data={footprint.filteredData} />
               <EmissionsBreakdownCard
-                data={filteredEstimationData}
+                data={footprint.filteredData}
                 baseUrl={BASE_URL}
                 onApiError={onApiError}
               />

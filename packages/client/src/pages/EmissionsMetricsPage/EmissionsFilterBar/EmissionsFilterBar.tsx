@@ -22,11 +22,11 @@ import {
 const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
-  filteredDataResults,
+  filterOptions,
 }): ReactElement => {
   const getFilterOptions = (): FilterOptions => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.accounts,
+      filterOptions?.accounts,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
     const accountOptions: DropdownOption[] = [
@@ -35,7 +35,7 @@ const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
     ]
 
     const allServiceDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.services,
+      filterOptions?.services,
       [{ key: '', name: '' }],
     )
     const serviceOptions: DropdownOption[] = [

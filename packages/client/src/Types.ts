@@ -55,7 +55,7 @@ export interface FiltersConfig {
 export type FilterBarProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
-  filteredDataResults: FilterResultResponse
+  filterOptions: FilterOptions
   setUseKilograms?: (boolean) => void
 }
 
