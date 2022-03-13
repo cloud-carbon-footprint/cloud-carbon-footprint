@@ -2,23 +2,23 @@
 
 exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] = `
 <div
-  className="MuiGrid-root makeStyles-cardHalf-4 MuiGrid-item"
+  className="MuiGrid-root makeStyles-cardHalf-17 MuiGrid-item"
 >
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-card-3 makeStyles-minHeight-5 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiCard-root makeStyles-card-16 makeStyles-minHeight-18 MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      className="MuiBox-root MuiBox-root-9 makeStyles-contentContainer-7"
+      className="MuiBox-root MuiBox-root-22 makeStyles-contentContainer-20"
     >
       <div
-        className="MuiCardContent-root makeStyles-cardContent-8"
+        className="MuiCardContent-root makeStyles-cardContent-21"
       >
         <div
-          className="makeStyles-topContainer-1"
+          className="makeStyles-topContainer-14"
           id="emissionsBreakdownContainer"
         >
           <p
-            className="makeStyles-title-2"
+            className="makeStyles-title-15"
           >
             Emissions Breakdown
           </p>
@@ -33,7 +33,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               <div
                 aria-haspopup="listbox"
                 aria-labelledby="breakdown-selector"
-                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-10"
+                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-23"
                 id="breakdown-selector"
                 onBlur={[Function]}
                 onFocus={[Function]}
@@ -67,7 +67,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
           </div>
         </div>
         <div
-          className="makeStyles-barChartContainer-11"
+          className="makeStyles-barChartContainer-24"
         >
           <div
             style={
@@ -320,10 +320,10 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
             width="100%"
           />
           <div
-            className="makeStyles-paginationContainer-12"
+            className="makeStyles-paginationContainer-25"
           >
             <span
-              className="makeStyles-paginationLabel-13"
+              className="makeStyles-paginationLabel-26"
             >
               1 - 1
                of 

@@ -13,12 +13,12 @@ import {
   mockRecommendationData,
 } from '../../../utils/data'
 import RecommendationsTable from './RecommendationsTable'
-import { useRemoteService } from '../../../utils/hooks'
+import { useRemoteFootprintService } from '../../../utils/hooks'
 
-jest.mock('utils/hooks/RemoteServiceHook')
+jest.mock('../../../utils/hooks/FootprintServiceHook')
 
-const mockUseRemoteService = useRemoteService as jest.MockedFunction<
-  typeof useRemoteService
+const mockUseRemoteService = useRemoteFootprintService as jest.MockedFunction<
+  typeof useRemoteFootprintService
 >
 
 const testProps = {
@@ -37,6 +37,7 @@ describe('Recommendations Table', () => {
     const mockReturnValue: ServiceResult<EstimationResult> = {
       loading: false,
       data: data,
+      error: null,
     }
     mockUseRemoteService.mockReturnValue(mockReturnValue)
   })

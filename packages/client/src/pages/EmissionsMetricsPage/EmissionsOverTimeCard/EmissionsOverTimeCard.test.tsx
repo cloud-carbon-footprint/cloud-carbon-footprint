@@ -13,7 +13,7 @@ import ApexLineChart from './ApexLineChart'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 
 jest.mock('apexcharts')
-jest.mock('utils/themes')
+jest.mock('../../../utils/themes')
 
 describe('Emissions Over Time Card', () => {
   const styleClass = {}

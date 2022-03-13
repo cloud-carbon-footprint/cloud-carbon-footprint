@@ -7,20 +7,23 @@ import moment from 'moment'
 import { render } from '@testing-library/react'
 
 import {
-  EstimationResult,
   EmissionRatioResult,
+  EstimationResult,
 } from '@cloud-carbon-footprint/common'
 
-import { useRemoteService, useRemoteEmissionService } from '../../utils/hooks'
-import { generateEstimations, fakeEmissionFactors } from '../../utils/data'
+import {
+  useRemoteEmissionService,
+  useRemoteFootprintService,
+} from '../../utils/hooks'
+import { fakeEmissionFactors, generateEstimations } from '../../utils/data'
 import { ServiceResult } from '../../Types'
 import EmissionsMetricsPage from './EmissionsMetricsPage'
 
 jest.mock('apexcharts')
-jest.mock('utils/hooks/RemoteServiceHook')
-jest.mock('utils/hooks/EmissionFactorServiceHook')
-jest.mock('utils/themes')
-jest.mock('ConfigLoader', () => ({
+jest.mock('../../utils/hooks/FootprintServiceHook')
+jest.mock('../../utils/hooks/EmissionFactorServiceHook')
+jest.mock('../../utils/themes')
+jest.mock('../../ConfigLoader', () => ({
   __esModule: true,
   default: () => ({
     CURRENT_PROVIDERS: [
@@ -40,8 +43,8 @@ const mockedUseEmissionFactorService =
     typeof useRemoteEmissionService
   >
 
-const mockUseRemoteService = useRemoteService as jest.MockedFunction<
-  typeof useRemoteService
+const mockUseRemoteService = useRemoteFootprintService as jest.MockedFunction<
+  typeof useRemoteFootprintService
 >
 
 describe('Emissions Metrics Page', () => {
@@ -53,10 +56,12 @@ describe('Emissions Metrics Page', () => {
     const mockReturnValue: ServiceResult<EstimationResult> = {
       loading: false,
       data: data,
+      error: null,
     }
     const mockEmissionsReturnValue: ServiceResult<EmissionRatioResult> = {
       loading: false,
       data: fakeEmissionFactors,
+      error: null,
     }
     mockedUseEmissionFactorService.mockReturnValue(mockEmissionsReturnValue)
     mockUseRemoteService.mockReturnValue(mockReturnValue)
@@ -68,22 +73,17 @@ describe('Emissions Metrics Page', () => {
   })
 
   it('should passed in to remote service hook today and january first of the last year', () => {
-    render(<EmissionsMetricsPage />)
+    const onApiError = jest.fn()
+    render(<EmissionsMetricsPage onApiError={onApiError} />)
 
-    const parameters = mockUseRemoteService.mock.calls[0]
+    const parameters = mockUseRemoteService.mock.calls[0][0]
 
-    expect(parameters.length).toEqual(3)
-
-    const initial = parameters[0]
-    const startDate = parameters[1]
-    const endDate = parameters[2]
-
-    expect(initial).toEqual([])
-    expect(startDate.year()).toEqual(endDate.year() - 1)
-    expect(startDate.month()).toEqual(0)
-    expect(startDate.date()).toEqual(1)
-
-    expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+    expect(parameters.startDate.year()).toEqual(parameters.endDate.year() - 1)
+    expect(parameters.startDate.month()).toEqual(0)
+    expect(parameters.startDate.date()).toEqual(1)
+    expect(parameters.endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+    expect(parameters.baseUrl).toEqual('/api')
+    expect(parameters.onApiError).toEqual(onApiError)
   })
 
   it('should show loading icon if data has not been returned', () => {

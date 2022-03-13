@@ -17,9 +17,9 @@ import {
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
 } from '../../../../../common/FilterBar/utils/DropdownConstants'
-import { EmissionsFilters } from '../../../../../utils/EmissionsFilters'
+import { EmissionsFilters } from '../../utils/EmissionsFilters'
 
-jest.mock('ConfigLoader', () => {
+jest.mock('../../../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

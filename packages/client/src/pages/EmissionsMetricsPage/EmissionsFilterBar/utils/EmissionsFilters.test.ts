@@ -79,7 +79,7 @@ declare global {
   }
 }
 
-jest.mock('ConfigLoader', () => {
+jest.mock('../../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

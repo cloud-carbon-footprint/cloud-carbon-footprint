@@ -23,7 +23,7 @@ export type ErrorHandlingType = {
 export const useAxiosErrorHandling = (
   onApiError?: (e: Error) => void,
 ): ErrorHandlingType => {
-  const [error, setError] = useState<AxiosError | null>()
+  const [error, setError] = useState<AxiosError | null>(null)
 
   useEffect(() => {
     if (error && onApiError) {

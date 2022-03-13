@@ -9,27 +9,32 @@ import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 
 import { ServiceResult } from '../../Types'
 
+interface UseRemoteEmissionServiceParams {
+  baseUrl: string | null
+  onApiError?: (e: Error) => void
+}
 const useRemoteEmissionService = (
-  baseUrl: string | undefined,
-  onApiError?: (e: Error) => void,
+  params: UseRemoteEmissionServiceParams,
 ): ServiceResult<EmissionRatioResult> => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const _isMounted = useRef(true)
-  const { error, setError } = useAxiosErrorHandling(onApiError)
+  const { error, setError } = useAxiosErrorHandling(params.onApiError)
 
   useEffect(() => {
     const fetchEstimates = async () => {
-      if (!baseUrl) {
+      if (!params.baseUrl) {
         return
       }
       if (_isMounted.current) {
-        setError()
+        setError(null)
         setLoading(true)
       }
 
       try {
-        const res = await axios.get(`${baseUrl}/regions/emissions-factors`)
+        const res = await axios.get(
+          `${params.baseUrl}/regions/emissions-factors`,
+        )
 
         if (_isMounted.current) {
           setData(res.data)
@@ -47,7 +52,7 @@ const useRemoteEmissionService = (
     return () => {
       _isMounted.current = false
     }
-  }, [setError, baseUrl])
+  }, [setError, params.baseUrl])
 
   return { data, loading, error }
 }

@@ -18,7 +18,7 @@ import { ApexDonutChart } from './ApexDonutChart'
 import { useRemoteEmissionService } from '../../../../utils/hooks'
 
 jest.mock('apexcharts')
-jest.mock('utils/themes')
+jest.mock('../../../../utils/themes')
 jest.mock('../../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
