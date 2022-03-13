@@ -5,7 +5,7 @@
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
 import moment, { unitOfTime } from 'moment'
-import { useRemoteService } from '../../utils/hooks'
+import { useRemoteFootprintService } from '../../utils/hooks'
 import { useFilterDataFromEstimates } from '../../utils/helpers'
 import { FilterResultResponse } from '../../Types'
 import config from '../../ConfigLoader'
@@ -43,15 +43,12 @@ export default function EmissionsMetricsPage({
       .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
-  const { data, loading } = useRemoteService(
-    [],
+  const { data, loading } = useRemoteFootprintService({
     startDate,
     endDate,
-    false,
-    undefined,
-    BASE_URL,
+    baseUrl: BASE_URL,
     onApiError,
-  )
+  })
 
   const filteredDataResults: FilterResultResponse =
     useFilterDataFromEstimates(data)

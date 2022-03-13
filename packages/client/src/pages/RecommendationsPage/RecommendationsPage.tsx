@@ -8,7 +8,7 @@ import { Grid } from '@material-ui/core'
 import { GridRowParams, MuiEvent } from '@material-ui/data-grid'
 import {
   useRemoteRecommendationsService,
-  useRemoteService,
+  useRemoteFootprintService,
 } from '../../utils/hooks'
 import {
   EmissionsAndRecommendationResults,
@@ -38,7 +38,7 @@ const RecommendationsPage = ({
 
   // Recommendation Data
   const { data: recommendations, loading: recommendationsLoading } =
-    useRemoteRecommendationsService(undefined, BASE_URL, onApiError)
+    useRemoteRecommendationsService({ baseUrl: BASE_URL, onApiError })
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<RecommendationRow>()
   const [useKilograms, setUseKilograms] = useState(false)
@@ -46,15 +46,14 @@ const RecommendationsPage = ({
   // Emissions Estimation Data
   const endDate: moment.Moment = moment.utc()
   const startDate = moment.utc().subtract('1', 'month')
-  const { data: emissions, loading: emissionsLoading } = useRemoteService(
-    [],
-    startDate,
-    endDate,
-    true,
-    undefined,
-    BASE_URL,
-    onApiError,
-  )
+  const { data: emissions, loading: emissionsLoading } =
+    useRemoteFootprintService({
+      startDate,
+      endDate,
+      ignoreCache: true,
+      baseUrl: BASE_URL,
+      onApiError,
+    })
 
   const combinedData: EmissionsAndRecommendationResults = {
     recommendations,

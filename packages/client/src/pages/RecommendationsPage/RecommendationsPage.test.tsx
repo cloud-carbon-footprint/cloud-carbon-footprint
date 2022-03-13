@@ -11,23 +11,23 @@ import {
 import RecommendationsPage from './RecommendationsPage'
 import { generateEstimations, mockRecommendationData } from '../../utils/data'
 import {
+  useRemoteFootprintService,
   useRemoteRecommendationsService,
-  useRemoteService,
 } from '../../utils/hooks'
 import { ServiceResult } from '../../Types'
 import moment from 'moment'
 import { act } from 'react-dom/test-utils'
 
-jest.mock('utils/hooks/RecommendationsServiceHook')
-jest.mock('utils/hooks/RemoteServiceHook')
+jest.mock('../../utils/hooks/RecommendationsServiceHook')
+jest.mock('../../utils/hooks/FootprintServiceHook')
 
 const mockedUseRecommendationsService =
   useRemoteRecommendationsService as jest.MockedFunction<
     typeof useRemoteRecommendationsService
   >
 
-const mockUseRemoteService = useRemoteService as jest.MockedFunction<
-  typeof useRemoteService
+const mockUseRemoteService = useRemoteFootprintService as jest.MockedFunction<
+  typeof useRemoteFootprintService
 >
 
 // Set Test Date for Moment
@@ -40,6 +40,7 @@ describe('Recommendations Page', () => {
       {
         loading: false,
         data: mockRecommendationData,
+        error: null,
       }
     mockedUseRecommendationsService.mockReturnValue(
       mockRecommendationsReturnValue,
@@ -49,6 +50,7 @@ describe('Recommendations Page', () => {
     const mockReturnValue: ServiceResult<EstimationResult> = {
       loading: false,
       data: data,
+      error: null,
     }
     mockUseRemoteService.mockReturnValue(mockReturnValue)
   })
@@ -71,22 +73,16 @@ describe('Recommendations Page', () => {
   })
 
   it('should pass in to remote service hook today and one month prior', () => {
-    render(<RecommendationsPage />)
+    const onApiError = jest.fn()
+    render(<RecommendationsPage onApiError={onApiError} />)
 
-    const parameters = mockUseRemoteService.mock.calls[0]
+    const parameters = mockUseRemoteService.mock.calls[0][0]
 
-    expect(parameters.length).toEqual(4)
-
-    const initial = parameters[0]
-    const startDate = parameters[1]
-    const endDate = parameters[2]
-    const ignoreCache = parameters[3]
-
-    expect(initial).toEqual([])
-    expect(startDate.month()).toEqual(endDate.month() - 1)
-
-    expect(endDate.isSame(moment.utc(), 'day')).toBeTruthy()
-    expect(ignoreCache).toBeTruthy()
+    expect(parameters.startDate.month()).toEqual(parameters.endDate.month() - 1)
+    expect(parameters.endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+    expect(parameters.ignoreCache).toBeTruthy()
+    expect(parameters.onApiError).toEqual(onApiError)
+    expect(parameters.baseUrl).toEqual('/api')
   })
 
   it('should show loading icon if data has not been returned', () => {

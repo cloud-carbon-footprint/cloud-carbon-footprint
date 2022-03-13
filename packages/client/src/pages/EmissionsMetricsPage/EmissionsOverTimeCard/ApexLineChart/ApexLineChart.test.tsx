@@ -12,7 +12,7 @@ import ApexLineChart from './ApexLineChart'
 import { GroupBy, ServiceData } from '@cloud-carbon-footprint/common'
 
 jest.mock('apexcharts')
-jest.mock('utils/themes')
+jest.mock('../../../../utils/themes')
 
 describe('ApexLineChart', () => {
   class EstimationResultBuilder {
