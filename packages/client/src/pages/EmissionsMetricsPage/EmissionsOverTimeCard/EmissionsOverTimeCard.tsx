@@ -9,15 +9,15 @@ import DashboardCard from '../../../layout/DashboardCard'
 import ApexLineChart from './ApexLineChart/ApexLineChart'
 
 type EmissionsOverTimeProps = {
-  filteredData: EstimationResult[]
+  data: EstimationResult[]
 }
 
 const EmissionsOverTimeCard: FunctionComponent<EmissionsOverTimeProps> = ({
-  filteredData,
+  data,
 }): ReactElement =>
-  filteredData.length ? (
+  data.length ? (
     <DashboardCard testId="cloudUsage">
-      <ApexLineChart data={filteredData} />
+      <ApexLineChart data={data} />
     </DashboardCard>
   ) : (
     <NoDataMessage isTop isBold title="Cloud Usage" />

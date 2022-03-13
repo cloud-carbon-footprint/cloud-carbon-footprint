@@ -3,27 +3,17 @@
  */
 
 import React, { ReactElement, SyntheticEvent, useState } from 'react'
-import moment from 'moment'
 import { Grid } from '@material-ui/core'
 import { GridRowParams, MuiEvent } from '@material-ui/data-grid'
-import {
-  useRemoteRecommendationsService,
-  useRemoteFootprintService,
-} from '../../utils/hooks'
-import {
-  EmissionsAndRecommendationResults,
-  FilterResultResponse,
-  RecommendationRow,
-} from '../../Types'
+
+import { RecommendationRow } from '../../Types'
 import LoadingMessage from '../../common/LoadingMessage'
-import { useFilterDataFromRecommendations } from '../../utils/helpers/transformData'
-import useFilters from '../../common/FilterBar/utils/FilterHook'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
-import { RecommendationsFilters } from './RecommendationsFilterBar/utils/RecommendationsFilters'
 import { ErrorState } from '../../layout/ErrorPage/ErrorPage'
+import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook'
 
 const BASE_URL = '/api'
 
@@ -35,54 +25,9 @@ const RecommendationsPage = ({
   onApiError,
 }): ReactElement<RecommendationsPageProps> => {
   const classes = useStyles()
-
-  // Recommendation Data
-  const { data: recommendations, loading: recommendationsLoading } =
-    useRemoteRecommendationsService({ baseUrl: BASE_URL, onApiError })
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<RecommendationRow>()
   const [useKilograms, setUseKilograms] = useState(false)
-
-  // Emissions Estimation Data
-  const endDate: moment.Moment = moment.utc()
-  const startDate = moment.utc().subtract('1', 'month')
-  const { data: emissions, loading: emissionsLoading } =
-    useRemoteFootprintService({
-      startDate,
-      endDate,
-      ignoreCache: true,
-      baseUrl: BASE_URL,
-      onApiError,
-    })
-
-  const combinedData: EmissionsAndRecommendationResults = {
-    recommendations,
-    emissions: emissions.flatMap(
-      (estimationResult) => estimationResult.serviceEstimates,
-    ),
-  }
-
-  const isEmissionsDataLoaded = combinedData.emissions.length > 0
-  const filteredDataResults: FilterResultResponse =
-    useFilterDataFromRecommendations(combinedData)
-
-  const buildFilters = (filteredResponse: FilterResultResponse) => {
-    const updatedConfig =
-      RecommendationsFilters.generateConfig(filteredResponse)
-    return new RecommendationsFilters(updatedConfig)
-  }
-
-  const { filteredData, filters, setFilters } = useFilters(
-    combinedData,
-    buildFilters,
-    filteredDataResults,
-    isEmissionsDataLoaded,
-  )
-
-  const {
-    recommendations: filteredRecommendationData,
-    emissions: filteredEmissionsData,
-  } = filteredData as EmissionsAndRecommendationResults
 
   const handleRowClick = (
     params: GridRowParams,
@@ -95,7 +40,12 @@ const RecommendationsPage = ({
     }
   }
 
-  if (recommendationsLoading || emissionsLoading)
+  const recommendations = useRecommendationData({
+    baseUrl: BASE_URL,
+    onApiError,
+  })
+
+  if (recommendations.loading)
     return (
       <LoadingMessage message="Loading recommendations. This may take a while..." />
     )
@@ -103,9 +53,7 @@ const RecommendationsPage = ({
   return (
     <>
       <RecommendationsFilterBar
-        filters={filters}
-        setFilters={setFilters}
-        filteredDataResults={filteredDataResults}
+        {...recommendations.filterBarProps}
         setUseKilograms={setUseKilograms}
       />
       <div className={classes.boxContainer}>
@@ -117,8 +65,8 @@ const RecommendationsPage = ({
             />
           )}
           <RecommendationsTable
-            emissionsData={filteredEmissionsData}
-            recommendations={filteredRecommendationData}
+            emissionsData={recommendations.filteredEmissionsData}
+            recommendations={recommendations.filteredRecommendationData}
             handleRowClick={handleRowClick}
             useKilograms={useKilograms}
           />

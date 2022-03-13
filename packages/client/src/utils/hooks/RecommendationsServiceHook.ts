@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 
-interface UseRemoteRecommendationServiceParams {
+export interface UseRemoteRecommendationServiceParams {
   baseUrl: string | null
   onApiError?: (e: Error) => void
   awsRecommendationTarget?: string

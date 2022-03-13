@@ -12,7 +12,7 @@ import { ServiceResult } from '../../Types'
 import config from '../../ConfigLoader'
 import moment from 'moment'
 
-interface UseRemoteFootprintServiceParams {
+export interface UseRemoteFootprintServiceParams {
   baseUrl: string | null
   startDate: moment.Moment
   endDate: moment.Moment
