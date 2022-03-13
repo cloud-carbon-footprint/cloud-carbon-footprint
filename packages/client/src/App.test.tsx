@@ -18,7 +18,7 @@ import {
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import { ServiceResult } from './Types'
-import App from './App'
+import { App } from './App'
 
 jest.mock('apexcharts')
 jest.mock('./utils/hooks/FootprintServiceHook')

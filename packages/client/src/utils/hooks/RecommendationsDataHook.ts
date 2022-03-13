@@ -28,7 +28,7 @@ interface RecommendationsData {
 }
 
 export const useRecommendationData = (
-  params: UseRemoteRecommendationServiceParams,
+  params: UseRemoteRecommendationServiceParams & { groupBy?: string },
 ): RecommendationsData => {
   const recommendations = useRemoteRecommendationsService(params)
 
@@ -38,6 +38,7 @@ export const useRecommendationData = (
     startDate: moment.utc().subtract('1', 'month'),
     endDate: moment.utc(),
     ignoreCache: true,
+    groupBy: params.groupBy,
   })
 
   const combinedData: EmissionsAndRecommendationResults = useMemo(

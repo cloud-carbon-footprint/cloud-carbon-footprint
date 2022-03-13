@@ -215,6 +215,8 @@ fileignoreconfig:
   checksum: c01e24418a7aa64dc973ab3cf363c854d61607929895c308f7d85ed80f30730f
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/RegionChooser.ts
   checksum: 91ca68321f34f8c2f5297c15ad09221351df27e31575d06052c5982396e06d21
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsPage.test.tsx
+  checksum: 11900051a10c91a3b0d2d9fc027ad2fbc6cbcf80f1d1dbdb4f9f1373ae604139
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
   checksum: 2fd234d905195964a126f2a42767d01da8bd424c8a9fcab43e0ec12b327c0b5f
 - filename: packages/client/src/react-app-env.d.ts

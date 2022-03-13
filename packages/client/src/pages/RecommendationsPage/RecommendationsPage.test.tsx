@@ -19,6 +19,21 @@ import moment from 'moment'
 
 jest.mock('../../utils/hooks/RecommendationsServiceHook')
 jest.mock('../../utils/hooks/FootprintServiceHook')
+jest.mock('../../ConfigLoader', () => ({
+  __esModule: true,
+  default: () => ({
+    CURRENT_PROVIDERS: [
+      { key: 'aws', name: 'AWS' },
+      { key: 'gcp', name: 'GCP' },
+    ],
+    PREVIOUS_YEAR_OF_USAGE: true,
+    DATE_RANGE: {
+      VALUE: '7',
+      TYPE: 'days',
+    },
+    BASE_URL: '/api',
+  }),
+}))
 
 const mockedUseRecommendationsService =
   useRemoteRecommendationsService as jest.MockedFunction<
