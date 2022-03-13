@@ -9,7 +9,6 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 import { ServiceResult } from '../../Types'
-import config from '../../ConfigLoader'
 import moment from 'moment'
 
 export interface UseRemoteFootprintServiceParams {
@@ -21,6 +20,7 @@ export interface UseRemoteFootprintServiceParams {
   region?: string
   onApiError?: (e: Error) => void
   minLoadTimeMs?: number
+  groupBy?: string
 }
 
 const useRemoteFootprintService = (
@@ -49,7 +49,7 @@ const useRemoteFootprintService = (
             end: end,
             region: params.region,
             ignoreCache: params.ignoreCache,
-            groupBy: config().GROUP_BY,
+            groupBy: params.groupBy,
           },
         })
         setData(res.data)
@@ -61,7 +61,15 @@ const useRemoteFootprintService = (
     }
 
     fetchEstimates()
-  }, [end, start, params.region, params.ignoreCache, setError, params.baseUrl])
+  }, [
+    end,
+    start,
+    params.region,
+    params.ignoreCache,
+    setError,
+    params.baseUrl,
+    params.groupBy,
+  ])
 
   return { data, loading, error }
 }

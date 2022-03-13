@@ -13,6 +13,7 @@ export interface ClientConfig {
     TYPE: string
   }
   GROUP_BY: string
+  BASE_URL: string
 }
 
 const previousYearOfUsage =
@@ -31,6 +32,7 @@ const appConfig: ClientConfig = {
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
   GROUP_BY: process.env.REACT_APP_GROUP_BY,
+  BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
 }
 
 export default appConfig

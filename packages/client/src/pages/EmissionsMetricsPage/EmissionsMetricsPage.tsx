@@ -5,7 +5,6 @@
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
 import moment, { unitOfTime } from 'moment'
-import config from '../../ConfigLoader'
 import LoadingMessage from '../../common/LoadingMessage'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
@@ -14,24 +13,26 @@ import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
-import { useFootprintData } from '../../utils/hooks/FootprintDataHook'
-
-const BASE_URL = '/api'
+import { useFootprintData } from '../../utils/hooks'
+import { ClientConfig } from '../../Config'
+import loadConfig from '../../ConfigLoader'
 
 interface EmissionsMetricsPageProps {
+  config?: ClientConfig
   onApiError?: (e: Error) => void
 }
 
 export default function EmissionsMetricsPage({
+  config = loadConfig(),
   onApiError,
 }: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
   const classes = useStyles()
-  const dateRangeType: string = config().DATE_RANGE.TYPE
-  const dateRangeValue: string = config().DATE_RANGE.VALUE
+  const dateRangeType: string = config.DATE_RANGE.TYPE
+  const dateRangeValue: string = config.DATE_RANGE.VALUE
   const endDate: moment.Moment = moment.utc()
 
   let startDate: moment.Moment
-  if (config().PREVIOUS_YEAR_OF_USAGE) {
+  if (config.PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
     startDate = moment
@@ -40,10 +41,11 @@ export default function EmissionsMetricsPage({
   }
 
   const footprint = useFootprintData({
-    baseUrl: BASE_URL,
+    baseUrl: config.BASE_URL,
     startDate,
     endDate,
     onApiError,
+    groupBy: config.GROUP_BY,
   })
 
   if (footprint.loading) {
@@ -66,7 +68,7 @@ export default function EmissionsMetricsPage({
               <CarbonComparisonCard data={footprint.filteredData} />
               <EmissionsBreakdownCard
                 data={footprint.filteredData}
-                baseUrl={BASE_URL}
+                baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />
             </Grid>

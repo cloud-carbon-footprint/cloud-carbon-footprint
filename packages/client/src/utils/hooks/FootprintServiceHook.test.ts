@@ -16,19 +16,13 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockUseNavigate,
 }))
 
-jest.mock('../../ConfigLoader', () => ({
-  __esModule: true,
-  default: () => ({
-    GROUP_BY: 'month',
-  }),
-}))
-
 const startDate = moment.utc('2020-08-26')
 const endDate = moment.utc('2020-08-27')
 const ignoreCache = true
 const region = 'us-east-2'
 const baseUrl = '/api'
 const minLoadTimeMs = 10
+const groupBy = 'month'
 
 describe('FootprintServiceHook', () => {
   describe('when baseUrl is null', () => {
@@ -62,6 +56,7 @@ describe('FootprintServiceHook', () => {
           ignoreCache,
           region,
           minLoadTimeMs,
+          groupBy,
         }),
       )
 

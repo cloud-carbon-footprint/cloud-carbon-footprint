@@ -10,23 +10,26 @@ import useStyles from './recommendationsPageStyles'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
 import { ErrorState } from '../../layout/ErrorPage/ErrorPage'
 import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook'
-
-const BASE_URL = '/api'
+import { ClientConfig } from '../../Config'
+import loadConfig from '../../ConfigLoader'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
+  config?: ClientConfig
 }
 
 const RecommendationsPage = ({
   onApiError,
+  config = loadConfig(),
 }): ReactElement<RecommendationsPageProps> => {
   const classes = useStyles()
 
   const [useKilograms, setUseKilograms] = useState(false)
 
   const recommendations = useRecommendationData({
-    baseUrl: BASE_URL,
+    baseUrl: config.BASE_URL,
     onApiError,
+    groupBy: config.GROUP_BY,
   })
 
   if (recommendations.loading)

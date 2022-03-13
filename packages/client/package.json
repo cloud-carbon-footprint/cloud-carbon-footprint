@@ -136,7 +136,8 @@
     },
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.ts",
-      "<rootDir>/src/.*/index.ts"
+      "<rootDir>/src/.*/index.ts",
+      "<rootDir>/src/Root.ts"
     ]
   }
 }

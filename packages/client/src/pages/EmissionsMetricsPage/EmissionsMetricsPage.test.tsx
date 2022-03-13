@@ -35,6 +35,7 @@ jest.mock('../../ConfigLoader', () => ({
       VALUE: '7',
       TYPE: 'days',
     },
+    BASE_URL: '/api',
   }),
 }))
 
