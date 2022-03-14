@@ -79,6 +79,8 @@ fileignoreconfig:
   checksum: c5cafaa64e0d809ba7e5670faebfe68a4e6dd48804983526a3985b1ab28d3d11
 - filename: client/src/dashboard/transformData.tsx
   checksum: 77ec816e45b6b7cdbc59551939b955f8f57590414369e617af89d21f90d53b83
+- filename: cloudformation/ccf-compute-optimizer.yaml
+  checksum: 13794d10fb75b46d3c6815362fd63e41f7d98afea859a4e65bdf8c8e0efd6f0b
 - filename: docker-compose.yml
   checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
 - filename: docker/nginx.conf
@@ -95,6 +97,8 @@ fileignoreconfig:
   checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
 - filename: microsite/src/components/innovationPartners.js
   checksum: cf5de9e82c90a564f09e2adf21e003004675c0f74673fae6c0b5faad7818d498
+- filename: microsite/static/img/ccf_compute_optimizer.svg
+  checksum: 4271fca662d95372f0f1439c4a5f82424a06e2c38790a8806e1031dc74387016
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
