@@ -48,12 +48,12 @@
     "@google-cloud/recommender": "^4.2.5",
     "@google-cloud/resource-manager": "^3.0.0",
     "google-gax": "^2.29.0",
-    "googleapis": "^92.0.0",
+    "googleapis": "^96.0.0",
     "moment": "^2.29.1"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
-    "@types/jest-when": "^2.7.4",
+    "@types/jest-when": "^3.5.0",
     "@types/node": "^17.0.8",
     "@types/source-map-support": "^0.5.3",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
