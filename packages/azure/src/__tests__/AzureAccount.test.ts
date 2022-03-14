@@ -1,7 +1,12 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  GroupBy,
+  LookupTableInput,
+  LookupTableOutput,
+} from '@cloud-carbon-footprint/common'
 
 import AzureAccount from '../application/AzureAccount'
 import AzureCredentialsProvider from '../application/AzureCredentialsProvider'
@@ -130,6 +135,34 @@ describe('Azure Account', () => {
       endDate,
       grouping,
     )
+  })
+
+  it('should getDataFromConsumptionManagementInputData', () => {
+    const inputData: LookupTableInput[] = [
+      {
+        serviceName: 'Virtual Machines',
+        region: 'uksouth',
+        usageType: 'D2 v2/DS2 v2',
+        usageUnit: '10 Hours',
+      },
+    ]
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const AWSAccount = require('../application/AzureAccount').default
+    const result =
+      AWSAccount.getDataFromConsumptionManagementInputData(inputData)
+
+    const expectedResult: LookupTableOutput[] = [
+      {
+        serviceName: 'Virtual Machines',
+        region: 'uksouth',
+        usageType: 'D2 v2/DS2 v2',
+        usageUnit: '10 Hours',
+        kilowattHours: 0.015255069630697749,
+        co2e: 0.0000034781558757990868,
+      },
+    ]
+    expect(result).toEqual(expectedResult)
   })
 
   it('Throws an error when AzureCredentialsProvider.create fails', async () => {

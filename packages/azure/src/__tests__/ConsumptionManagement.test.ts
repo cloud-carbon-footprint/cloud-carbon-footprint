@@ -8,6 +8,7 @@ import {
   configLoader,
   EstimationResult,
   GroupBy,
+  LookupTableInput,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -1035,6 +1036,45 @@ describe('Azure Consumption Management Service', () => {
         periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
     ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('successfully returns estimation for lookup table input data', () => {
+    const inputData: LookupTableInput[] = [
+      {
+        serviceName: 'Virtual Machines',
+        region: 'uksouth',
+        usageType: 'D2 v2/DS2 v2',
+        usageUnit: '10 Hours',
+      },
+    ]
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+    )
+
+    const result =
+      consumptionManagementService.getEstimatesFromInputData(inputData)
+
+    const expectedResult: LookupTableInput[] = [
+      {
+        serviceName: 'Virtual Machines',
+        region: 'uksouth',
+        usageType: 'D2 v2/DS2 v2',
+        usageUnit: '10 Hours',
+        kilowattHours: 0.015255069630697749,
+        co2e: 0.0000034781558757990868,
+      },
+    ]
+
     expect(result).toEqual(expectedResult)
   })
 

@@ -141,14 +141,18 @@ fileignoreconfig:
   checksum: 366f101f67bd31dc640998666be0f6f8da68c0167b3627ebbaa2b498adc831fb
 - filename: packages/azure/package.json
   checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
+- filename: packages/azure/src/__tests__/AzureAccount.test.ts
+  checksum: aaae306bc2bf8a39f34e31f41e7e7c9fd98321fcefc72aca0e126500446ccbfb
 - filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
   checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: 15c98a8e5cee427695a74794060a426e62ad0bbea118dcfdfb2ee04da2c3fa11
+  checksum: a27953cfe67d4ffd0c6c1d83162605e3d6deaaf0629f270cc0448b650b014ce9
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
   checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
+- filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
+  checksum: ad3aeec28c7d7e97c0e59274c8cc26d9ecd499a7b2da0bd3af9c491af093bb08
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/client/create_client_env_file.sh
