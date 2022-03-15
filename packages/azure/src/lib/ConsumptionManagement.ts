@@ -90,7 +90,7 @@ export default class ConsumptionManagementService {
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
     private readonly embodiedEmissionsEstimator: EmbodiedEmissionsEstimator,
-    private readonly consumptionManagementClient: ConsumptionManagementClient,
+    private readonly consumptionManagementClient?: ConsumptionManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
     this.consumptionManagementRateLimitRemainingHeader =
@@ -172,6 +172,7 @@ export default class ConsumptionManagementService {
         subscriptionId: '',
         subscriptionName: '',
         resourceLocation: inputDataRow.region,
+        kind: 'legacy' as const,
       }
 
       const consumptionDetailRow = new ConsumptionDetailRow(usageRow)
@@ -214,17 +215,14 @@ export default class ConsumptionManagementService {
   private getFootprintEstimateFromUsageRow(
     consumptionDetailRow: ConsumptionDetailRow,
     unknownRows: ConsumptionDetailRow[],
-  ) {
-    if (this.isUnsupportedUsage(consumptionDetailRow)) {
-      return
+  ): FootprintEstimate | void {
+    if (!this.isUnsupportedUsage(consumptionDetailRow)) {
+      if (this.isUnknownUsage(consumptionDetailRow)) {
+        unknownRows.push(consumptionDetailRow)
+      } else {
+        return this.getEstimateByPricingUnit(consumptionDetailRow)
+      }
     }
-
-    if (this.isUnknownUsage(consumptionDetailRow)) {
-      unknownRows.push(consumptionDetailRow)
-      return
-    }
-
-    return this.getEstimateByPricingUnit(consumptionDetailRow)
   }
 
   private updateTimestampByWeek(

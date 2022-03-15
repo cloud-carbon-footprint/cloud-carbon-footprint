@@ -9,6 +9,7 @@ import {
   EstimationResult,
   GroupBy,
   LookupTableInput,
+  LookupTableOutput,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -1064,7 +1065,7 @@ describe('Azure Consumption Management Service', () => {
     const result =
       consumptionManagementService.getEstimatesFromInputData(inputData)
 
-    const expectedResult: LookupTableInput[] = [
+    const expectedResult: LookupTableOutput[] = [
       {
         serviceName: 'Virtual Machines',
         region: 'uksouth',
