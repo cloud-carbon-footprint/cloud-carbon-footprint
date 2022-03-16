@@ -7,16 +7,21 @@ import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorag
 import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
 import { EstimationRequest } from '../CreateValidRequest'
 import {
-  Config as mockConfig,
+  setConfig,
   EstimationResult,
+  getPeriodEndDate,
   GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   return [...Array(consecutiveDays)].map((v, i) => {
+    const timestamp = moment.utc(startDate).add(i, 'days').toDate()
     return {
-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+      timestamp,
       serviceEstimates: [],
+      periodStartDate: timestamp,
+      periodEndDate: getPeriodEndDate(timestamp, GroupBy.day),
+      groupBy: GroupBy.day,
     }
   })
 }
@@ -24,7 +29,12 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
 const grouping = GroupBy.week
 describe('CacheManager - CACHE_MODE: GCS', () => {
   beforeAll(() => {
-    mockConfig.GCP.CACHE_BUCKET_NAME = 'test-bucket-name'
+    setConfig({
+      GCP: {
+        CACHE_BUCKET_NAME: 'test-bucket-name',
+      },
+      CACHE_MODE: 'GCS',
+    })
   })
 
   afterEach(() => {
@@ -42,8 +52,6 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         .mockImplementation(() => {
           return buildFootprintEstimates(startDate, 1)
         })
-
-      mockConfig.CACHE_MODE = 'GCS'
 
       const cacheManager = new CacheManager()
 
@@ -73,8 +81,6 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
         .mockImplementation(() => {
           return buildFootprintEstimates(startDate, 5)
         })
-
-      mockConfig.CACHE_MODE = 'GCS'
 
       const cacheManager = new CacheManager()
 
@@ -110,8 +116,6 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
           return Promise.resolve()
         })
 
-      mockConfig.CACHE_MODE = 'GCS'
-
       const cacheManager = new CacheManager()
 
       //run
@@ -145,6 +149,12 @@ describe('CacheManager - CACHE_MODE: GCS', () => {
 })
 
 describe('CacheManager - CACHE_MODE: fileSystem', () => {
+  beforeAll(() => {
+    setConfig({
+      CACHE_MODE: '',
+    })
+  })
+
   afterEach(() => {
     jest.resetAllMocks()
   })
@@ -159,7 +169,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         .mockImplementation(() => {
           return buildFootprintEstimates(startDate, 1)
         })
-      mockConfig.CACHE_MODE = ''
+
       const cacheManager = new CacheManager()
 
       //run
@@ -186,7 +196,7 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         .mockImplementation(() => {
           return buildFootprintEstimates(startDate, 5)
         })
-      mockConfig.CACHE_MODE = ''
+
       const cacheManager = new CacheManager()
 
       //run
@@ -220,8 +230,6 @@ describe('CacheManager - CACHE_MODE: fileSystem', () => {
         .mockImplementation(() => {
           return Promise.resolve()
         })
-
-      mockConfig.CACHE_MODE = ''
 
       const cacheManager = new CacheManager()
 

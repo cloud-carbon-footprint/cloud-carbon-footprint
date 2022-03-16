@@ -2,10 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { ServiceClientCredentials } from '@azure/ms-rest-js'
-import { SubscriptionClient } from '@azure/arm-subscriptions'
-import { Subscription } from '@azure/arm-subscriptions/esm/models'
-import { ApplicationTokenCredentials } from '@azure/ms-rest-nodeauth'
+import {
+  SubscriptionClient,
+  Subscription,
+} from '@azure/arm-resources-subscriptions'
+import { ClientSecretCredential } from '@azure/identity'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import {
@@ -28,7 +29,7 @@ import ConsumptionManagementService from '../lib/ConsumptionManagement'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
 export default class AzureAccount extends CloudProviderAccount {
-  private credentials: ApplicationTokenCredentials | ServiceClientCredentials
+  private credentials: ClientSecretCredential
   private subscriptionClient: SubscriptionClient
   private logger: Logger
 
@@ -52,7 +53,10 @@ export default class AzureAccount extends CloudProviderAccount {
     endDate: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
-    const subscriptions = await this.subscriptionClient.subscriptions.list()
+    const subscriptions = []
+    for await (const subscription of this.subscriptionClient.subscriptions.list()) {
+      subscriptions.push(subscription)
+    }
 
     if (subscriptions.length === 0) {
       this.logger.warn(
@@ -93,16 +97,11 @@ export default class AzureAccount extends CloudProviderAccount {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      new ConsumptionManagementClient(
-        // eslint-disable-next-line
-        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
-        this.credentials,
-        subscriptionId,
-      ),
+      new ConsumptionManagementClient(this.credentials, subscriptionId),
     )
     return consumptionManagementService.getEstimates(
       startDate,

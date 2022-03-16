@@ -1,5 +1,35 @@
 # @cloud-carbon-footprint/common
 
+## 1.5.0
+
+### Minor Changes
+
+- 7ecd432d: Adds support for optionally passing in the CCF Config into the api router
+- 9fcbfc67: Adds option for receiving all recommendation services
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
+## 1.4.0
+
+### Minor Changes
+
+- f40ce29e: Adds Compute Optimizer Recommendations for AWS
+- 04f2be16: Adds configurable option to use Google's published carbon free energy % in emissions factors. Updates estimation logic for GCP services: Cloud Composer and Kubernetes Engine, to improve accuracy.
+
+## 1.3.1
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+
+## 1.3.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
 ## 1.2.1
 
 ### Patch Changes

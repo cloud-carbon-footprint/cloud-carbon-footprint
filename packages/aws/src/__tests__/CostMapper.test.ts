@@ -38,6 +38,7 @@ describe('CostMapper', function () {
         undefined,
         undefined,
         new CostExplorer({ region: AWS_REGIONS.US_EAST_1 }),
+        undefined,
       ),
     )
 

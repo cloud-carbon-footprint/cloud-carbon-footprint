@@ -3,20 +3,27 @@
  */
 
 import FootprintEstimate, {
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
   aggregateEstimatesByDay,
   appendOrAccumulateEstimatesByDay,
   estimateCo2,
   getWattsByAverageOrMedian,
-  accumulateCo2PerCost,
   MutableServiceEstimate,
-  EstimateClassification,
 } from '../FootprintEstimate'
 import BillingDataRow from '../BillingDataRow'
 import { COMPUTE_PROCESSOR_TYPES } from '../compute'
+import { GroupBy } from '@cloud-carbon-footprint/common'
+import each from 'jest-each'
+import {
+  accumulateKilowattHoursPerCostData,
+  accumulateKilowattHoursPerUsageAmount,
+} from './fixtures/footprintEstimate.fixtures'
 
 describe('FootprintEstimate', () => {
   const dayOne = new Date('2021-01-01')
   const dayTwo = new Date('2021-01-02')
+  const grouping = GroupBy.day
 
   it('aggregateEstimatesByDay', () => {
     // given
@@ -91,6 +98,9 @@ describe('FootprintEstimate', () => {
             cost: 5,
           },
         ],
+        periodStartDate: dayOne,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        groupBy: GroupBy.day,
       },
     ]
 
@@ -125,6 +135,7 @@ describe('FootprintEstimate', () => {
       results,
       billingDataRowOne,
       footPrintEstimateOne,
+      grouping,
     )
 
     // then - accumulate
@@ -142,6 +153,9 @@ describe('FootprintEstimate', () => {
     const newResultOne = [
       {
         timestamp: dayOne,
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        groupBy: grouping,
         serviceEstimates: [accumulatedServicesEstimate],
       },
     ]
@@ -178,12 +192,16 @@ describe('FootprintEstimate', () => {
       results,
       billingDataRowTwo,
       footPrintEstimateTwo,
+      grouping,
     )
     // then - append
     const newResultTwo = [
       {
         timestamp: dayOne,
         serviceEstimates: [accumulatedServicesEstimate],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
       {
         timestamp: dayTwo,
@@ -200,6 +218,9 @@ describe('FootprintEstimate', () => {
             kilowattHours: 0.00006877379319146276,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
     ]
     expect(results).toEqual(newResultTwo)
@@ -235,12 +256,16 @@ describe('FootprintEstimate', () => {
       results,
       billingDataRowThree,
       footPrintEstimateThree,
+      grouping,
     )
     // then - append
     const newResultThree = [
       {
         timestamp: dayOne,
         serviceEstimates: [accumulatedServicesEstimate],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
       {
         timestamp: dayTwo,
@@ -268,42 +293,52 @@ describe('FootprintEstimate', () => {
             kilowattHours: 0.00006877379319146276,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
     ]
     expect(results).toEqual(newResultThree)
   })
 
-  it('accumulates co2e and cost totals per usage classification', () => {
-    const cost = 654
-    const co2e = 0.000987654321
-    const constants = {
-      co2ePerCost: {
-        [EstimateClassification.COMPUTE]: {
-          cost: 0,
-          co2e: 0,
-        },
-        total: {
-          cost: 0,
-          co2e: 0,
-        },
+  describe('accumulateKilowattHours by cost', () => {
+    each(accumulateKilowattHoursPerCostData).it(
+      'kilowatt hours and cost totals per service and usage unit',
+      (
+        kilowattHoursByServiceAndUsageUnit,
+        billingDataRow,
+        kilowattHours,
+        expectedResult,
+      ) => {
+        accumulateKilowattHours(
+          kilowattHoursByServiceAndUsageUnit,
+          billingDataRow,
+          kilowattHours,
+          AccumulateKilowattHoursBy.COST,
+        )
+        expect(kilowattHoursByServiceAndUsageUnit).toEqual(expectedResult)
       },
-    }
+    )
+  })
 
-    accumulateCo2PerCost(
-      EstimateClassification.COMPUTE,
-      co2e,
-      cost,
-      constants.co2ePerCost,
+  describe('accumulateKilowattHours by usage amount', () => {
+    each(accumulateKilowattHoursPerUsageAmount).it(
+      'kilowatt hours and cost totals per service and usage unit',
+      (
+        kilowattHoursByServiceAndUsageUnit,
+        billingDataRow,
+        kilowattHours,
+        expectedResult,
+      ) => {
+        accumulateKilowattHours(
+          kilowattHoursByServiceAndUsageUnit,
+          billingDataRow,
+          kilowattHours,
+          AccumulateKilowattHoursBy.USAGE_AMOUNT,
+        )
+        expect(kilowattHoursByServiceAndUsageUnit).toEqual(expectedResult)
+      },
     )
-
-    expect(constants.co2ePerCost[EstimateClassification.COMPUTE].cost).toEqual(
-      654,
-    )
-    expect(constants.co2ePerCost[EstimateClassification.COMPUTE].co2e).toEqual(
-      0.000987654321,
-    )
-    expect(constants.co2ePerCost.total.cost).toEqual(654)
-    expect(constants.co2ePerCost.total.co2e).toEqual(0.000987654321)
   })
 
   describe('getWattsByAverageOrMedian', () => {

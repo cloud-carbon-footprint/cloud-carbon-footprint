@@ -5,6 +5,7 @@
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
 
 import {
+  GPU_VIRTUAL_MACHINE_TYPES,
   VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING,
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
   VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
@@ -23,6 +24,7 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     this.usageType = this.parseUsageType()
     this.seriesName = this.getSeriesFromInstanceType()
     this.vCpuHours = this.usageAmount * this.getVCpus()
+    this.gpuHours = this.usageAmount * this.getGpus()
     this.region = this.getRegionFromResourceLocation()
   }
 
@@ -37,6 +39,10 @@ export default class ConsumptionDetailRow extends BillingDataRow {
       ]?.[0] ||
       1
     )
+  }
+
+  private getGpus(): number {
+    return GPU_VIRTUAL_MACHINE_TYPES[this.usageType] || 1
   }
 
   private getRegionFromResourceLocation(): string {

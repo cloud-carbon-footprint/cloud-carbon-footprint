@@ -42,7 +42,7 @@ describe('ComputeEstimator', () => {
     ])
   })
 
-  it('do estimates for AWS South Africa with default replication factor', () => {
+  it('do estimates for AWS South Africa with default replication factor and average watts', () => {
     const input = [
       {
         timestamp: new Date('2020-01-01'),
@@ -59,6 +59,7 @@ describe('ComputeEstimator', () => {
       powerUsageEffectiveness: 1.135,
       minWatts: 0.71,
       maxWatts: 3.46,
+      averageWatts: 350,
     }
     const result = new ComputeEstimator().estimate(
       input,
@@ -69,9 +70,9 @@ describe('ComputeEstimator', () => {
 
     expect(result).toEqual([
       {
-        co2e: 7.76794e-7,
+        co2e: 0.000368648,
         timestamp: new Date('2020-01-01T00:00:00.000Z'),
-        kilowattHours: 0.0008370624999999999,
+        kilowattHours: 0.39725,
         usesAverageCPUConstant: false,
       },
     ])

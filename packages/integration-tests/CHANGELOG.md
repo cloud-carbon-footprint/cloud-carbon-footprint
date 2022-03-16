@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 1.1.3
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+
+## 1.1.2
+
+### Patch Changes
+
+- c29a3b53: updates testing and groupby param default
+  Commit for the groupBy param default change can be found [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/a6630892a294213b798cb529ffe8f3504f7a7dad)
+
 ## 1.1.1
 
 ### Patch Changes

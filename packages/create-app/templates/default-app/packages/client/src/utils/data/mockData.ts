@@ -2,8 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import moment from 'moment'
 import {
   EstimationResult,
+  GroupBy,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
@@ -21,6 +23,9 @@ interface serviceEstimateWithUnknowns {
 
 interface EstimationResultWithUnknowns {
   timestamp: Date
+  periodStartDate: Date
+  periodEndDate: Date
+  groupBy: GroupBy
   serviceEstimates: serviceEstimateWithUnknowns[]
 }
 
@@ -28,12 +33,17 @@ const testAccountA = 'test-a'
 const testAccountB = 'test-b'
 const testAccountC = 'test-c'
 
-const date1 = new Date('2020-07-10T00:00:00.000Z')
-const date2 = new Date('2020-07-11T00:00:00.000Z')
+const dateOne = new Date('2020-07-10T00:00:00.000Z')
+const dateOnePeriodEnd = moment(dateOne).add(1, 'd').toDate()
+const dateTwo = new Date('2020-07-11T00:00:00.000Z')
+const dateTwoPeriodEnd = moment(dateTwo).add(1, 'd').toDate()
 
 const mockData: EstimationResult[] = [
   {
-    timestamp: date1,
+    timestamp: dateOne,
+    periodStartDate: dateOne,
+    periodEndDate: dateOnePeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         serviceName: 'ebs',
@@ -60,7 +70,10 @@ const mockData: EstimationResult[] = [
     ],
   },
   {
-    timestamp: date2,
+    timestamp: dateTwo,
+    periodStartDate: dateTwo,
+    periodEndDate: dateTwoPeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         serviceName: 'ebs',
@@ -90,7 +103,10 @@ const mockData: EstimationResult[] = [
 
 const mockDataWithUnknownsAWS: EstimationResultWithUnknowns[] = [
   {
-    timestamp: date1,
+    timestamp: dateOne,
+    periodStartDate: dateOne,
+    periodEndDate: dateOnePeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         serviceName: null,
@@ -120,7 +136,10 @@ const mockDataWithUnknownsAWS: EstimationResultWithUnknowns[] = [
 
 const mockDataWithUnknownsGCP: EstimationResultWithUnknowns[] = [
   {
-    timestamp: date2,
+    timestamp: dateTwo,
+    periodStartDate: dateTwo,
+    periodEndDate: dateTwoPeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         serviceName: null,
@@ -150,7 +169,10 @@ const mockDataWithUnknownsGCP: EstimationResultWithUnknowns[] = [
 
 const mockDataWithHigherPrecision: EstimationResult[] = [
   {
-    timestamp: date1,
+    timestamp: dateOne,
+    periodStartDate: dateOne,
+    periodEndDate: dateOnePeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         cloudProvider: 'aws',
@@ -177,7 +199,10 @@ const mockDataWithHigherPrecision: EstimationResult[] = [
     ],
   },
   {
-    timestamp: date2,
+    timestamp: dateTwo,
+    periodStartDate: dateTwo,
+    periodEndDate: dateTwoPeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         cloudProvider: 'aws',
@@ -207,7 +232,10 @@ const mockDataWithHigherPrecision: EstimationResult[] = [
 
 const mockDataWithSmallNumbers: EstimationResult[] = [
   {
-    timestamp: date1,
+    timestamp: dateOne,
+    periodStartDate: dateOne,
+    periodEndDate: dateOnePeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         cloudProvider: 'aws',
@@ -234,7 +262,10 @@ const mockDataWithSmallNumbers: EstimationResult[] = [
     ],
   },
   {
-    timestamp: date2,
+    timestamp: dateTwo,
+    periodStartDate: dateTwo,
+    periodEndDate: dateTwoPeriodEnd,
+    groupBy: GroupBy.day,
     serviceEstimates: [
       {
         cloudProvider: 'aws',
@@ -257,6 +288,39 @@ const mockDataWithSmallNumbers: EstimationResult[] = [
         cost: 0.0012345,
         region: 'us-east-1',
         usesAverageCPUConstant: true,
+      },
+    ],
+  },
+]
+
+const mockDataWithLargeNumbers: EstimationResult[] = [
+  {
+    timestamp: dateOne,
+    periodStartDate: dateOne,
+    periodEndDate: dateOnePeriodEnd,
+    groupBy: GroupBy.day,
+    serviceEstimates: [
+      {
+        cloudProvider: 'aws',
+        accountId: '1',
+        accountName: 'testacct',
+        serviceName: 'ebs',
+        kilowattHours: 2.5,
+        co2e: 200,
+        cost: 325.25,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
+      },
+      {
+        cloudProvider: 'aws',
+        accountId: '2',
+        accountName: 'testacct',
+        serviceName: 'ec2',
+        kilowattHours: 1.8,
+        co2e: 127,
+        cost: 203.47,
+        region: 'us-east-1',
+        usesAverageCPUConstant: false,
       },
     ],
   },
@@ -325,6 +389,7 @@ export {
   mockDataWithUnknownsGCP,
   mockDataWithHigherPrecision,
   mockDataWithSmallNumbers,
+  mockDataWithLargeNumbers,
   mockRecommendationData,
   mockRecommendationDataWithUnknowns,
   mockEmissionsAndRecommendations,

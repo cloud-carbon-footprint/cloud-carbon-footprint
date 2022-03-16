@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import AWS, { CostExplorer, CloudWatchLogs, CloudWatch } from 'aws-sdk'
+import AWS, { CostExplorer, CloudWatchLogs, CloudWatch, S3 } from 'aws-sdk'
 import AWSMock from 'aws-sdk-mock'
 import { Logger } from '@cloud-carbon-footprint/common'
 import { StorageEstimator } from '@cloud-carbon-footprint/core'
@@ -39,6 +39,7 @@ describe('RDSStorage', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   it('calculates terabyteHours usage', async () => {

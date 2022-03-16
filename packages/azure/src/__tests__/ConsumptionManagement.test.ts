@@ -2,7 +2,6 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { ServiceClientCredentials } from '@azure/ms-rest-js'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import {
@@ -13,7 +12,6 @@ import {
 import {
   ComputeEstimator,
   EmbodiedEmissionsEstimator,
-  EstimateClassification,
   MemoryEstimator,
   NetworkingEstimator,
   StorageEstimator,
@@ -22,12 +20,14 @@ import {
 
 import {
   mockConsumptionManagementResponseEight,
+  mockConsumptionManagementResponseEleven,
   mockConsumptionManagementResponseFive,
   mockConsumptionManagementResponseFour,
   mockConsumptionManagementResponseNine,
   mockConsumptionManagementResponseOne,
   mockConsumptionManagementResponseSeven,
   mockConsumptionManagementResponseSix,
+  mockConsumptionManagementResponseTen,
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
 } from './fixtures/consumptionManagement.fixtures'
@@ -73,34 +73,18 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 
 describe('Azure Consumption Management Service', () => {
   const startDate = new Date('2020-11-02')
-  const endDate = new Date('2020-11-03')
+  const endDate = new Date('2020-11-07')
   const grouping: GroupBy = GroupBy.day
   const subscriptionId = 'test-subscription-id'
   const subscriptionName = 'test-subscription'
-  const mockCredentials: ServiceClientCredentials = { signRequest: jest.fn() }
+  const mockCredentials = {
+    msalFlow: jest.fn(),
+    getToken: jest.fn(),
+  }
 
   beforeEach(() => {
-    AZURE_CLOUD_CONSTANTS.CO2E_PER_COST = {
-      [EstimateClassification.COMPUTE]: {
-        cost: 0,
-        co2e: 0,
-      },
-      [EstimateClassification.STORAGE]: {
-        cost: 0,
-        co2e: 0,
-      },
-      [EstimateClassification.NETWORKING]: {
-        cost: 0,
-        co2e: 0,
-      },
-      [EstimateClassification.MEMORY]: {
-        cost: 0,
-        co2e: 0,
-      },
-      total: {
-        cost: 0,
-        co2e: 0,
-      },
+    AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
+      total: {},
     }
   })
 
@@ -115,12 +99,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -168,6 +150,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'CentralUS',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -198,25 +183,28 @@ describe('Azure Consumption Management Service', () => {
             accountId: 'test-subscription-id',
             accountName: 'test-subscription',
             cloudProvider: 'AZURE',
-            co2e: 0.00004279344606867067,
+            co2e: 0.0000416293344,
             cost: 12,
-            kilowattHours: 0.1876905529327661,
+            kilowattHours: 0.18258479999999996,
             region: 'ukwest',
             serviceName: 'Virtual Machines Licenses',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
           {
             accountId: 'test-subscription-id',
             accountName: 'test-subscription',
             cloudProvider: 'AZURE',
-            co2e: 0.00004279344606867067,
+            co2e: 0.00007438504751999998,
             cost: 12,
-            kilowattHours: 0.10504036835707087,
+            kilowattHours: 0.18258479999999996,
             region: 'Unknown',
             serviceName: 'VPN Gateway',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -233,12 +221,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -264,8 +250,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'uksouth',
           },
           {
-            kilowattHours: 0.00789074363076923,
-            co2e: 0.0000030773900159999997,
+            kilowattHours: 0.01198666159180294,
+            co2e: 0.000004674798020803146,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -330,6 +316,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'centralindia',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -346,12 +335,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -388,6 +375,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'uksouth',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -404,12 +394,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -421,7 +409,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -446,9 +434,12 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.04459392,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-02'),
+        timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -473,6 +464,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.0067122042757308,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -489,12 +483,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -506,7 +498,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -553,9 +545,12 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.000005629481856,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-04'),
+        timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -580,6 +575,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.0017746560000000003,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -596,12 +594,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -613,7 +609,7 @@ describe('Azure Consumption Management Service', () => {
 
     const expectedResult: EstimationResult[] = [
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -638,9 +634,12 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 0.015215399999999999,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-04'),
+        timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
             accountId: subscriptionId,
@@ -676,6 +675,9 @@ describe('Azure Consumption Management Service', () => {
             kilowattHours: 7.155870966717116e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -692,12 +694,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -721,12 +721,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -752,9 +750,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
           {
-            kilowattHours: 0.057222075240956925,
-            co2e: 0.000018082175776142388,
-            usesAverageCPUConstant: true,
+            kilowattHours: 0.033888293152165336,
+            co2e: 0.000010708700636084245,
+            usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
             accountName: subscriptionName,
@@ -763,9 +761,12 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-03'),
+        timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -779,8 +780,8 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: false,
           },
           {
-            kilowattHours: 4.056546057067727e-8,
-            co2e: 1.2818685540334018e-11,
+            kilowattHours: 0.16944146576082666,
+            co2e: 0.000053543503180421224,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -790,9 +791,12 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-04'),
+        timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -806,8 +810,8 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: false,
           },
           {
-            kilowattHours: 0.000014885960655090001,
-            co2e: 4.70396356700844e-9,
+            kilowattHours: 0.13555317260866134,
+            co2e: 0.00004283480254433698,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -817,9 +821,12 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-04T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-04T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-05'),
+        timestamp: new Date('2020-11-05'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
@@ -833,8 +840,8 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: false,
           },
           {
-            kilowattHours: 0.0172599538518792,
-            co2e: 0.000005454145417193827,
+            kilowattHours: 0.21688507617385813,
+            co2e: 0.00006853568407093917,
             usesAverageCPUConstant: false,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -844,22 +851,28 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-05T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-05T00:00:00.000Z'),
       },
       {
-        timestamp: new Date('2021-11-06'),
+        timestamp: new Date('2020-11-06'),
         serviceEstimates: [
           {
             accountId: 'test-subscription-id',
             accountName: 'test-subscription',
             cloudProvider: 'AZURE',
-            co2e: 3.845837304822073e-9,
+            co2e: 0.00005522436252076863,
             cost: 0.003168316832,
-            kilowattHours: 0.000009439954111001652,
+            kilowattHours: 0.13555317260866134,
             region: 'All Regions',
             serviceName: 'Azure DNS',
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-06T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-06T00:00:00.000Z'),
       },
     ]
 
@@ -877,12 +890,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -941,6 +952,87 @@ describe('Azure Consumption Management Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('Returns estimates for GPU Virtual Machines', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseEleven,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.9433750904448066,
+            co2e: 0.0002981065285805589,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'northeurope',
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+      },
+      {
+        timestamp: new Date('2020-11-03'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.9415345494881285,
+            co2e: 0.00039144769662243694,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'EastUS',
+          },
+          {
+            kilowattHours: 2.77408029810322,
+            co2e: 0.0010818913162602558,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 10,
+            region: 'westeurope',
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -959,12 +1051,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 
@@ -1001,6 +1091,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'uksouth',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1029,12 +1122,10 @@ describe('Azure Consumption Management Service', () => {
         new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
         new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
         new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-        new UnknownEstimator(),
+        new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
         new EmbodiedEmissionsEstimator(
           AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
         ),
-        // eslint-disable-next-line
-        // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
         new ConsumptionManagementClient(mockCredentials, subscriptionId),
       )
 
@@ -1109,29 +1200,80 @@ describe('Azure Consumption Management Service', () => {
               accountId: 'test-subscription-id',
               accountName: 'test-subscription',
               cloudProvider: 'AZURE',
-              co2e: 0.00004279344606867067,
+              co2e: 0.0000416293344,
               cost: 12,
-              kilowattHours: 0.1876905529327661,
+              kilowattHours: 0.18258479999999996,
               region: 'ukwest',
               serviceName: 'Virtual Machines Licenses',
-              usesAverageCPUConstant: true,
+              usesAverageCPUConstant: false,
             },
             {
               accountId: 'test-subscription-id',
               accountName: 'test-subscription',
               cloudProvider: 'AZURE',
-              co2e: 0.00004279344606867067,
+              co2e: 0.00007438504751999998,
               cost: 12,
-              kilowattHours: 0.10504036835707087,
+              kilowattHours: 0.18258479999999996,
               region: 'Unknown',
               serviceName: 'VPN Gateway',
-              usesAverageCPUConstant: true,
+              usesAverageCPUConstant: false,
             },
           ],
+          groupBy: GroupBy.week,
+          periodEndDate: new Date('2020-11-08T23:59:59.000Z'),
+          periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
         },
       ]
       expect(result).toEqual(expectedResult)
     })
+  })
+
+  it('Returns estimates filtered within the start and end date', async () => {
+    mockUsageDetails.list.mockResolvedValue(
+      mockConsumptionManagementResponseTen,
+    )
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-07'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.011153267136340895,
+            co2e: 0.000004349774183172949,
+            usesAverageCPUConstant: true,
+            cloudProvider: 'AZURE',
+            accountId: subscriptionId,
+            accountName: subscriptionName,
+            serviceName: 'Virtual Machines',
+            cost: 15,
+            region: 'westeurope',
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-07T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-07T00:00:00.000Z'),
+      },
+    ]
+    expect(result).toEqual(expectedResult)
   })
 
   it('Throws an error when usageDetails.list fails', async () => {
@@ -1156,12 +1298,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
     await expect(() =>
@@ -1200,12 +1340,10 @@ describe('Azure Consumption Management Service', () => {
       new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
-      // eslint-disable-next-line
-      // @ts-ignore: @azure/arm-consumption is using an older version of @azure/ms-rest-js, causing a type error.
       new ConsumptionManagementClient(mockCredentials, subscriptionId),
     )
 

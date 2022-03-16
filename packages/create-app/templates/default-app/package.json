@@ -2,13 +2,22 @@
   "name": "root-template",
   "private": true,
   "devDependencies": {
-    "@types/fs-extra": "^9.0.11",
-    "concurrently": "^6.3.0",
+    "@types/fs-extra": "^9.0.13",
+    "concurrently": "^7.0.0",
     "fs-extra": "^10.0.0",
     "lerna": "^4.0.0",
-    "marked": ">=2.0.5",
-    "ts-node": "^9.1.1",
-    "typescript": "4.3.4"
+    "rimraf": "^3.0.2",
+    "sonar-scanner": "^3.1.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "resolutions": {
+    "@types/react": "^17.0.38",
+    "@types/express-serve-static-core": "^4.17.21",
+    "@grpc/grpc-js": "^1.4.6",
+    "@types/eslint": "^8.2.1",
+    "google-auth-library": "^7.11.0",
+    "@babel/core": "~7.16.7"
   },
   "workspaces": {
     "packages": [
@@ -24,6 +33,8 @@
     "start-api": "yarn workspace @cloud-carbon-footprint/api-template start",
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli-template start",
     "test": "lerna run test -- --coverage",
-    "guided-install": "cd packages/cli && yarn guided-install"
+    "guided-install": "cd packages/cli && yarn guided-install",
+    "create-lookup-table": "yarn workspace @cloud-carbon-footprint/cli create-lookup-table",
+    "estimate-on-premise-data": "yarn workspace @cloud-carbon-footprint/cli estimate-on-premise-data"
   }
 }

@@ -12,14 +12,13 @@ import EstimatorCacheGoogleCloudStorage from './EstimatorCacheGoogleCloudStorage
 
 const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
 const googleCloudCacheService: EstimatorCache =
-  new EstimatorCacheGoogleCloudStorage(configLoader().GCP.CACHE_BUCKET_NAME)
+  new EstimatorCacheGoogleCloudStorage()
 
 export default class CacheManager implements EstimatorCache {
   private readonly currentCacheMode: string
   private readonly cacheLogger: Logger
 
   constructor() {
-    this.currentCacheMode = configLoader().CACHE_MODE
     this.cacheLogger = new Logger('cache')
   }
 
@@ -34,7 +33,7 @@ export default class CacheManager implements EstimatorCache {
     const { GCS } = this.cacheModes
     let estimates
 
-    switch (this.currentCacheMode) {
+    switch (configLoader().CACHE_MODE) {
       case GCS:
         this.cacheLogger.info('Using GCS bucket cache file...')
         estimates = await googleCloudCacheService.getEstimates(
@@ -61,7 +60,7 @@ export default class CacheManager implements EstimatorCache {
       return
     }
 
-    switch (this.currentCacheMode) {
+    switch (configLoader().CACHE_MODE) {
       case GCS:
         return googleCloudCacheService.setEstimates(estimates, grouping)
       default:

@@ -7,8 +7,9 @@ import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
 import { ComputeEngine, Recommendations } from '../lib'
 
 import {
-  Config as mockConfig,
+  setConfig,
   EstimationResult,
+  GroupBy,
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
@@ -36,7 +37,11 @@ describe('GCPAccount', () => {
   })
 
   it('should return empty if no service in config file', () => {
-    mockConfig.GCP.CURRENT_SERVICES = []
+    setConfig({
+      GCP: {
+        CURRENT_SERVICES: [],
+      },
+    })
 
     const GCPAccount = require('../application/GCPAccount').default
     const services = new GCPAccount(['us-east1']).getServices()
@@ -44,7 +49,11 @@ describe('GCPAccount', () => {
   })
 
   it('should throw error if unknown service', () => {
-    mockConfig.GCP.CURRENT_SERVICES = [{ key: 'goose', name: '' }]
+    setConfig({
+      GCP: {
+        CURRENT_SERVICES: [{ key: 'goose', name: '' }],
+      },
+    })
 
     const GCPAccount = require('../application/GCPAccount').default
     const account = new GCPAccount(['us-east1'])
@@ -64,6 +73,7 @@ describe('GCPAccount', () => {
     // given
     const startDate: Date = new Date('2020-01-01')
     const endDate: Date = new Date('2020-01-02')
+    const grouping: GroupBy = GroupBy.day
     const expectedEstimatesData: RegionEstimates = {
       ComputeEngine: [
         {
@@ -94,7 +104,11 @@ describe('GCPAccount', () => {
     const testGCPAccount = new GCPAccount('12345678', 'test account', regions)
 
     // when
-    const result = await testGCPAccount.getDataForRegions(startDate, endDate)
+    const result = await testGCPAccount.getDataForRegions(
+      startDate,
+      endDate,
+      grouping,
+    )
 
     // then
     const expectedResult: EstimationResult[] = [
@@ -113,6 +127,9 @@ describe('GCPAccount', () => {
             region: 'test-region-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2020-01-01T00:00:00.000Z'),
       },
       {
         timestamp: startDate,
@@ -129,6 +146,9 @@ describe('GCPAccount', () => {
             region: 'test-region-2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2020-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -171,12 +191,11 @@ describe('GCPAccount', () => {
 })
 
 function expectGCPService(key: string) {
-  mockConfig.GCP.CURRENT_SERVICES = [
-    {
-      key: key,
-      name: '',
+  setConfig({
+    GCP: {
+      CURRENT_SERVICES: [{ key: key, name: '' }],
     },
-  ]
+  })
 
   const GCPAccount = require('../application/GCPAccount').default
   const services = new GCPAccount('test-project', 'test project', [

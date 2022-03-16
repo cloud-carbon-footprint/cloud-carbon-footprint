@@ -4,8 +4,7 @@
 
 import React from 'react'
 import moment from 'moment'
-import { MemoryRouter, Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 import { fireEvent, render } from '@testing-library/react'
 import { generateEstimations, fakeEmissionFactors } from './utils/data'
 import {
@@ -98,26 +97,20 @@ describe('App', () => {
 
   describe('page routing', () => {
     it('navigates to the home page', () => {
-      const history = createMemoryHistory()
-      history.push('/')
-
       const { getByTestId } = render(
-        <Router history={history}>
+        <MemoryRouter initialEntries={['/']}>
           <App />
-        </Router>,
+        </MemoryRouter>,
       )
 
       expect(getByTestId('infoIcon')).toBeInTheDocument()
     })
 
     it('navigates to the Recommendations Page', () => {
-      const history = createMemoryHistory()
-      history.push('/recommendations')
-
       const { getByText } = render(
-        <Router history={history}>
+        <MemoryRouter initialEntries={['/recommendations']}>
           <App />
-        </Router>,
+        </MemoryRouter>,
       )
 
       expect(getByText('Recommendations')).toBeInTheDocument()

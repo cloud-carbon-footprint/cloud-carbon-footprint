@@ -3,7 +3,8 @@
  */
 import { GetRightsizingRecommendationResponse } from 'aws-sdk/clients/costexplorer'
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import moment from 'moment'
 
 import { ComputeEstimator, MemoryEstimator } from '@cloud-carbon-footprint/core'
 import {
@@ -12,26 +13,22 @@ import {
   RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
-import { Recommendations } from '../lib/Recommendations'
 import {
   rightsizingCrossFamilyRecommendationModify,
   rightsizingCrossFamilyRecommendationTerminate,
   rightsizingRecommendationModify,
   rightsizingRecommendationTerminate,
 } from './fixtures/costExplorer.fixtures'
-import { AWS_CLOUD_CONSTANTS } from '../domain/AwsFootprintEstimationConstants'
-import { ServiceWrapper } from '../lib/ServiceWrapper'
+import { AWS_CLOUD_CONSTANTS } from '../domain'
+import { ServiceWrapper, RightsizingRecommendations } from '../lib'
 
-jest.mock('moment', () => {
-  return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
-})
-
-describe('AWS Recommendations Service', () => {
+describe('AWS Rightsizing Recommendations Service', () => {
   const getServiceWrapper = () =>
     new ServiceWrapper(
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   beforeAll(() => {
@@ -44,10 +41,26 @@ describe('AWS Recommendations Service', () => {
     getRightsizingRecommendationSpy.mockClear()
   })
 
+  const getRightsizingRecommendationSpy = jest.fn()
+
+  function mockGetRightsizingRecommendation(
+    response: GetRightsizingRecommendationResponse,
+  ) {
+    getRightsizingRecommendationSpy.mockResolvedValue(response)
+    AWSMock.mock(
+      'CostExplorer',
+      'getRightsizingRecommendation',
+      getRightsizingRecommendationSpy,
+    )
+  }
+
   it('Get recommendations from Rightsizing API type: Terminate with pagination', async () => {
+    moment.now = function () {
+      return +new Date('2020-04-01T00:00:00.000Z')
+    }
     mockGetRightsizingRecommendation(rightsizingRecommendationTerminate)
 
-    const awsRecommendationsServices = new Recommendations(
+    const awsRecommendationsServices = new RightsizingRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
@@ -126,9 +139,12 @@ describe('AWS Recommendations Service', () => {
   })
 
   it('Get recommendations from Rightsizing API type: Modify', async () => {
+    moment.now = function () {
+      return +new Date('2020-04-01T00:00:00.000Z')
+    }
     mockGetRightsizingRecommendation(rightsizingRecommendationModify)
 
-    const awsRecommendationsServices = new Recommendations(
+    const awsRecommendationsServices = new RightsizingRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
@@ -169,11 +185,14 @@ describe('AWS Recommendations Service', () => {
   })
 
   it('Get recommendations from Rightsizing API type: Terminate with Cross Family parameter', async () => {
+    moment.now = function () {
+      return +new Date('2020-04-01T00:00:00.000Z')
+    }
     mockGetRightsizingRecommendation(
       rightsizingCrossFamilyRecommendationTerminate,
     )
 
-    const awsRecommendationsServices = new Recommendations(
+    const awsRecommendationsServices = new RightsizingRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
@@ -214,9 +233,12 @@ describe('AWS Recommendations Service', () => {
   })
 
   it('Get recommendations from Rightsizing API type: Modify with Cross Family parameter', async () => {
+    moment.now = function () {
+      return +new Date('2020-04-01T00:00:00.000Z')
+    }
     mockGetRightsizingRecommendation(rightsizingCrossFamilyRecommendationModify)
 
-    const awsRecommendationsServices = new Recommendations(
+    const awsRecommendationsServices = new RightsizingRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
@@ -247,14 +269,16 @@ describe('AWS Recommendations Service', () => {
   })
 
   it('Logs the error response if there is a problem getting recommendations', async () => {
-    getRightsizingRecommendationSpy.mockRejectedValue({ message: 'error-test' })
+    getRightsizingRecommendationSpy.mockRejectedValue({
+      message: 'error-test',
+    })
     AWSMock.mock(
       'CostExplorer',
       'getRightsizingRecommendation',
       getRightsizingRecommendationSpy,
     )
 
-    const awsRecommendationsServices = new Recommendations(
+    const awsRecommendationsServices = new RightsizingRecommendations(
       new ComputeEstimator(),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
       getServiceWrapper(),
@@ -268,17 +292,4 @@ describe('AWS Recommendations Service', () => {
       `Failed to grab AWS Rightsizing recommendations. Reason: error-test`,
     )
   })
-
-  const getRightsizingRecommendationSpy = jest.fn()
-
-  function mockGetRightsizingRecommendation(
-    response: GetRightsizingRecommendationResponse,
-  ) {
-    getRightsizingRecommendationSpy.mockResolvedValue(response)
-    AWSMock.mock(
-      'CostExplorer',
-      'getRightsizingRecommendation',
-      getRightsizingRecommendationSpy,
-    )
-  }
 })

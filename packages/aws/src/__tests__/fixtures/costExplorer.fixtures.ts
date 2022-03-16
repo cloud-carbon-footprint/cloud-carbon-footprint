@@ -126,6 +126,51 @@ export const rightsizingRecommendationModify: GetRightsizingRecommendationRespon
     ],
   }
 
+export const rightsizingRecommendationModify1: GetRightsizingRecommendationResponse =
+  {
+    RightsizingRecommendations: [
+      {
+        AccountId: 'test-account',
+        CurrentInstance: {
+          ResourceId: 'Test-resource-id',
+          InstanceName: 'test-instance-name',
+          ResourceDetails: {
+            EC2ResourceDetails: {
+              InstanceType: 't2.micro',
+              Region: 'US East (Ohio)',
+              Vcpu: '1',
+            },
+          },
+        },
+        RightsizingType: 'Modify',
+        ModifyRecommendationDetail: {
+          TargetInstances: [
+            {
+              EstimatedMonthlySavings: '226',
+              ResourceDetails: {
+                EC2ResourceDetails: {
+                  InstanceType: 't2.nano',
+                  Region: 'US East (Ohio)',
+                  Vcpu: '1',
+                },
+              },
+            },
+            {
+              EstimatedMonthlySavings: '116',
+              ResourceDetails: {
+                EC2ResourceDetails: {
+                  InstanceType: 't2.large',
+                  Region: 'US East (Ohio)',
+                  Vcpu: '2',
+                },
+              },
+            },
+          ],
+        },
+      },
+    ],
+  }
+
 export const rightsizingCrossFamilyRecommendationTerminate: GetRightsizingRecommendationResponse =
   {
     RightsizingRecommendations: [

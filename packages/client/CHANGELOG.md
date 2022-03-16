@@ -1,5 +1,62 @@
 # @cloud-carbon-footprint/client
 
+## 2.3.4
+
+### Patch Changes
+
+- b5222054: Updates create-app yarn version to 3, fixed type error in create-app and adds resolution for @babel/core due to compilation error in create-app
+
+  Please see [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1474abca91e4e7118a1f4a25df2921ca1bf502f6) for create-app template updates.
+
+## 2.3.3
+
+### Patch Changes
+
+- e562970f: Replaces typography.fontWeightBold with 'bold' string to fix compilation errors in create-app package
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aed91d0ec33a78bb64f1a93f93cdb2c578fc5e8a) for updating your create-app templates.
+
+## 2.3.2
+
+### Patch Changes
+
+- f40ce29e: Adds Compute Optimizer Recommendations for AWS
+- 0e577b5b: Bumps react-router-dom to latest major version, and updates related code
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/common@1.4.0
+
+## 2.3.1
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- e72d9807: Fixes recommendations forecast projected totals showing negative numbers when current totals are too low
+
+  For updates to create app templates, please review the following commits:
+
+  - [Initial Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/73d505f79f8f4eccc0808d714a8b6c74020ee87e)
+  - [Second Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7d60888a7b716427ffc7a934ca137d8a86b373f8)
+  - [Final Commit]()https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d62bfc5837a96510882c75bca71249ddf6152b9a
+
+- Updated dependencies [8fd171ed]
+  - @cloud-carbon-footprint/common@1.3.1
+
+## 2.3.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- c29a3b53: updates testing and groupby param default
+  Commit for the groupBy param default change can be found [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/a6630892a294213b798cb529ffe8f3504f7a7dad)
+- Updated dependencies [c29a3b53]
+  - @cloud-carbon-footprint/common@1.3.0
+
 ## 2.2.1
 
 ### Patch Changes

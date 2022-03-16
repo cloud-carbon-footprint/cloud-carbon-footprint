@@ -322,6 +322,19 @@ const queryResultsDataFour = [
       { VarCharValue: '10' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-31' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonES' },
+      { VarCharValue: 'EUC1-HeavyUsage:t3.medium.elasticsearch' },
+      { VarCharValue: 'Hours' },
+      { VarCharValue: '' },
+      { VarCharValue: '3' },
+      { VarCharValue: '14' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithKinesisESAndEc2Spot: Athena.GetQueryResultsOutput =
@@ -974,55 +987,6 @@ const queryResultsDataThirteen = [
     Data: [
       { VarCharValue: '2021-01-01' },
       { VarCharValue: '123456789' },
-      { VarCharValue: 'eu-west-3' },
-      { VarCharValue: 'AmazonEC2' },
-      { VarCharValue: 'EUW3-SpotUsage:i3.8xlarge' },
-      { VarCharValue: 'Hours' },
-      { VarCharValue: '' },
-      { VarCharValue: '370.0' },
-      { VarCharValue: '866.096' },
-    ],
-  },
-  {
-    Data: [
-      { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
-      { VarCharValue: 'us-east-1' },
-      { VarCharValue: 'AmazonEC2' },
-      { VarCharValue: 'SpotUsage:d2.8xlarge' },
-      { VarCharValue: 'Hrs' },
-      { VarCharValue: '' },
-      { VarCharValue: '3962.0' },
-      { VarCharValue: '75' },
-    ],
-  },
-  {
-    Data: [
-      { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
-      { VarCharValue: 'eu-west-1' },
-      { VarCharValue: 'AmazonEC2' },
-      { VarCharValue: 'EU-EBSOptimized:g4dn.xlarge' },
-      { VarCharValue: 'Hrs' },
-      { VarCharValue: '' },
-      { VarCharValue: '4.734722' },
-      { VarCharValue: '0.0' },
-    ],
-  },
-]
-
-export const athenaMockGetQueryResultsAdditionalInstanceTypes: Athena.GetQueryResultsOutput =
-  {
-    ResultSet: {
-      Rows: [queryResultsHeaders, ...queryResultsDataThirteen],
-    },
-  }
-
-const queryResultsDataFourteen = [
-  {
-    Data: [
-      { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
@@ -1115,10 +1079,10 @@ const queryResultsDataFourteen = [
 export const athenaMockGetQueryResultsWithReclassifiedUnknowns: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
-      Rows: [queryResultsHeaders, ...queryResultsDataFourteen],
+      Rows: [queryResultsHeaders, ...queryResultsDataThirteen],
     },
   }
-const queryResultsDataFifteen = [
+const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
@@ -1227,11 +1191,11 @@ const queryResultsDataFifteen = [
 export const athenaMockGetQueryH1ApiFsxBackupDirectConnectDirectoryService: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
-      Rows: [queryResultsHeaders, ...queryResultsDataFifteen],
+      Rows: [queryResultsHeaders, ...queryResultsDataFourteen],
     },
   }
 
-const queryResultsDataSixteen = [
+const queryResultsDataFifteen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
@@ -1289,11 +1253,11 @@ const queryResultsDataSixteen = [
 export const athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
-      Rows: [queryResultsHeaders, ...queryResultsDataSixteen],
+      Rows: [queryResultsHeaders, ...queryResultsDataFifteen],
     },
   }
 
-const queryResultsDataSeventeen = [
+const queryResultsDataSixteen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
@@ -1312,11 +1276,11 @@ const queryResultsDataSeventeen = [
 export const athenaMockGetQueryResultsWithNoUsageAmount: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
-      Rows: [queryResultsHeaders, ...queryResultsDataSeventeen],
+      Rows: [queryResultsHeaders, ...queryResultsDataSixteen],
     },
   }
 
-const queryResultsDataEighteen = [
+const queryResultsDataSeventeen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
@@ -1330,9 +1294,58 @@ const queryResultsDataEighteen = [
       { VarCharValue: '5' },
     ],
   },
+  {
+    Data: [
+      { VarCharValue: '2020-10-30' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'HostBoxUsage:mac1.metal' }, // usage type
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '1' },
+      { VarCharValue: '8' },
+      { VarCharValue: '5' },
+    ],
+  },
 ]
 
 export const athenaMockGetQueryResultsWithUnknownInstanceType: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsDataSeventeen],
+    },
+  }
+
+const queryResultsDataEighteen = [
+  {
+    Data: [
+      { VarCharValue: '2022-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '96' },
+      { VarCharValue: '24' },
+      { VarCharValue: '10' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2022-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-2' },
+      { VarCharValue: 'AmazonEC2' },
+      { VarCharValue: 'USE2-BoxUsage:p4d.24xlarge' },
+      { VarCharValue: 'Hrs' },
+      { VarCharValue: '96' },
+      { VarCharValue: '48' },
+      { VarCharValue: '10' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithGPUInstances: Athena.GetQueryResultsOutput =
   {
     ResultSet: {
       Rows: [queryResultsHeaders, ...queryResultsDataEighteen],

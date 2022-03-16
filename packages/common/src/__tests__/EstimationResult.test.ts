@@ -3,6 +3,8 @@
  */
 
 import { reduceByTimestamp } from '../EstimationResult'
+import { getPeriodEndDate } from '../helpers'
+import { GroupBy } from '../Config'
 
 describe('Estimation Result', () => {
   const estimateOne = {
@@ -32,14 +34,21 @@ describe('Estimation Result', () => {
 
   it('reduces by timestamp', () => {
     // given
+    const grouping = GroupBy.day
     const initialData = [
       {
         timestamp: exampleDate,
         serviceEstimates: [estimateOne],
+        periodStartDate: exampleDate,
+        periodEndDate: getPeriodEndDate(exampleDate, grouping),
+        groupBy: grouping,
       },
       {
         timestamp: exampleDate,
         serviceEstimates: [estimateTwo],
+        periodStartDate: exampleDate,
+        periodEndDate: getPeriodEndDate(exampleDate, grouping),
+        groupBy: grouping,
       },
     ]
 
@@ -51,6 +60,9 @@ describe('Estimation Result', () => {
       {
         timestamp: exampleDate,
         serviceEstimates: [estimateOne, estimateTwo],
+        periodStartDate: exampleDate,
+        periodEndDate: getPeriodEndDate(exampleDate, grouping),
+        groupBy: grouping,
       },
     ]
 

@@ -1,5 +1,91 @@
 # @cloud-carbon-footprint/create-app
 
+## 1.3.0
+
+### Minor Changes
+
+- fae222a5: Updates api to allow CCF config to be passed into the router.
+
+  See [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8a8014189f234cfd50723dfc5e9e75525e013016) to update your api package template files.
+
+### Patch Changes
+
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
+## 1.2.7
+
+### Patch Changes
+
+- e8e72e92: Updates create-app nodeLinker config to match main CCF repo, and uncreases yarn install maxBuffer to allow for it to complete
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b334ba845e27a80513d96c3e52099f8045480658) for updates to the create-app templates.
+
+## 1.2.6
+
+### Patch Changes
+
+- b5222054: Updates create-app yarn version to 3, fixed type error in create-app and adds resolution for @babel/core due to compilation error in create-app
+
+  Please see [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/1474abca91e4e7118a1f4a25df2921ca1bf502f6) for create-app template updates.
+
+## 1.2.5
+
+### Patch Changes
+
+- e562970f: Replaces typography.fontWeightBold with 'bold' string to fix compilation errors in create-app package
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/aed91d0ec33a78bb64f1a93f93cdb2c578fc5e8a) for updating your create-app templates.
+
+## 1.2.4
+
+### Patch Changes
+
+- ae0c0b66: Updates create app templates from [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c6578692316b4fe402d30ac37262e3d2d2277f0d).
+
+## 1.2.3
+
+### Patch Changes
+
+- ae0c0b66: Updates create app templates from [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c6578692316b4fe402d30ac37262e3d2d2277f0d).
+
+## 1.2.2
+
+### Patch Changes
+
+- 01bea87b: Updates create-app client template with latest version of react-router-dom and necessary code changes.
+
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/03a7728ea005c84460306af3c9e9ed7bb5191e88).
+
+## 1.2.1
+
+### Patch Changes
+
+- ba956839: Updates create-templates with package bumps and fixes for linting/typescript issues.
+
+  For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8fd171edb91cee5262c9d4d3a09fae6b7c265110).
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- e72d9807: Fixes recommendations forecast projected totals showing negative numbers when current totals are too low
+
+  For updates to create app templates, please review the following commits:
+
+  - [Initial Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/73d505f79f8f4eccc0808d714a8b6c74020ee87e)
+  - [Second Commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7d60888a7b716427ffc7a934ca137d8a86b373f8)
+  - [Final Commit]()https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/d62bfc5837a96510882c75bca71249ddf6152b9a
+
+## 1.2.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- b27594c2: update groupby param in template file
+
 ## 1.1.2
 
 ### Patch Changes

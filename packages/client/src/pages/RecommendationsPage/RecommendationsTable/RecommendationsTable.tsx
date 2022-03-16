@@ -147,6 +147,10 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     resetToInitialPage()
   }
 
+  const escapeRegExp = (value: string): string => {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+  }
+
   const requestSearch = (searchValue: string) => {
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
     const fieldsToNotFilter = [
@@ -183,12 +187,9 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     resetToInitialPage()
   }, [recommendations])
 
-  const escapeRegExp = (value: string): string => {
-    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
-  }
-
   const tooltipMessage =
-    'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage'
+    'Recommendations are based on cloud usage from the last 14 days, except for GCP CHANGE_MACHINE_TYPE which is from the last 8 days of usage. ' +
+    'Estimates marked with a dash (-) do not yet have an appropriate methodology to calculate the associated energy or carbon savings.'
 
   const customPaginationComponent = () => (
     <CustomPagination handlePageSizeChange={handlePageSizeChange} />

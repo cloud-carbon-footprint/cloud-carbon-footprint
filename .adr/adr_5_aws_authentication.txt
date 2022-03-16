@@ -8,4 +8,4 @@ Context:
     - We didn't want to store API keys/credentials on our GCP App Engine instance.
 Consequences:
     — In order to run the application locally with a GCP Service Account, you need to correctly configure your server/.env file, and ensure the Service Account Unique ID is added to the proxy account Identity Provider.
-    - New accounts that you want to run cloud-carbon-footprint against need to add the "ccf" or the "ccf-athena" roles found in the /cloudformation directory.
+    - New accounts that you want to run cloud-carbon-footprint against need to add the "ccf" or the "ccf-app" roles found in the /cloudformation directory.

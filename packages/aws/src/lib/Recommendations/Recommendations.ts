@@ -1,175 +1,128 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-
 import {
-  GetRightsizingRecommendationRequest,
-  RightsizingRecommendationList,
-  RightsizingRecommendation as AwsRightsizingRecommendation,
-} from 'aws-sdk/clients/costexplorer'
-
+  AWS_DEFAULT_RECOMMENDATIONS_SERVICE,
+  AWS_RECOMMENDATIONS_SERVICES,
+  AWS_RECOMMENDATIONS_TARGETS,
+  configLoader,
+  Logger,
+  RecommendationResult,
+} from '@cloud-carbon-footprint/common'
 import {
-  ICloudRecommendationsService,
   ComputeEstimator,
   MemoryEstimator,
+  StorageEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
-  RecommendationResult,
-  Logger,
-  AWS_RECOMMENDATIONS_TARGETS,
-} from '@cloud-carbon-footprint/common'
+  ComputeOptimizerRecommendations,
+  RightsizingRecommendations,
+} from './index'
+import { AWS_CLOUD_CONSTANTS } from '../../domain'
 import { ServiceWrapper } from '../ServiceWrapper'
-import AWSComputeEstimatesBuilder from '../AWSComputeEstimatesBuilder'
-import AWSMemoryEstimatesBuilder from '../AWSMemoryEstimatesBuilder'
-import RightsizingCurrentRecommendation from './RightsizingCurrentRecommendation'
-import RightsizingTargetRecommendation from './RightsizingTargetRecommendation'
-import RightsizingRecommendation from './RightsizingRecommendation'
 
-export default class Recommendations implements ICloudRecommendationsService {
-  private readonly rightsizingRecommendationsService: string
-  private readonly recommendationsLogger: Logger
-  constructor(
-    private readonly computeEstimator: ComputeEstimator,
-    private readonly memoryEstimator: MemoryEstimator,
-    private readonly serviceWrapper: ServiceWrapper,
-  ) {
-    this.rightsizingRecommendationsService = 'AmazonEC2'
-    this.recommendationsLogger = new Logger('AWSRecommendations')
+export default class Recommendations {
+  static async getRecommendations(
+    recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
+    serviceWrapper: ServiceWrapper,
+  ): Promise<RecommendationResult[]> {
+    const recommendationData: RecommendationResult[] = []
+
+    let recommendationService = configLoader().AWS.RECOMMENDATIONS_SERVICE
+    if (!recommendationService) {
+      const configLogger = new Logger('AWSRecommendations')
+      configLogger.warn(
+        'No AWS recommendations service was specified in env config. Retrieving only Rightsizing recommendations by default. The default service option may become "all" services in the future.',
+      )
+      recommendationService = AWS_DEFAULT_RECOMMENDATIONS_SERVICE
+    }
+
+    if (recommendationService !== AWS_RECOMMENDATIONS_SERVICES.RightSizing) {
+      const computeOptimizerRecommendations =
+        await Recommendations.getComputeOptimizer(serviceWrapper)
+      recommendationData.push(...computeOptimizerRecommendations)
+    }
+
+    if (
+      recommendationService !== AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
+    ) {
+      const rightsizingRecommendations = await Recommendations.getRightsizing(
+        serviceWrapper,
+        recommendationTarget,
+      )
+      recommendationData.push(...rightsizingRecommendations)
+    }
+
+    return recommendationService === AWS_RECOMMENDATIONS_SERVICES.All
+      ? Recommendations.getUniquesWithHighestSavings(recommendationData)
+      : recommendationData
   }
 
-  async getRecommendations(
+  private static async getComputeOptimizer(
+    serviceWrapper: ServiceWrapper,
+  ): Promise<RecommendationResult[]> {
+    const computeOptimizerRecommendations = new ComputeOptimizerRecommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      serviceWrapper,
+    )
+    return await computeOptimizerRecommendations.getRecommendations(
+      configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
+    )
+  }
+
+  private static async getRightsizing(
+    serviceWrapper: ServiceWrapper,
     recommendationTarget: AWS_RECOMMENDATIONS_TARGETS,
   ): Promise<RecommendationResult[]> {
-    const params: GetRightsizingRecommendationRequest = {
-      Service: this.rightsizingRecommendationsService,
-      Configuration: {
-        BenefitsConsidered: false,
-        RecommendationTarget: recommendationTarget,
-      },
-    }
-
-    try {
-      const results =
-        await this.serviceWrapper.getRightsizingRecommendationsResponses(params)
-      const rightsizingRecommendations: RightsizingRecommendationList =
-        results.flatMap(
-          ({ RightsizingRecommendations }) => RightsizingRecommendations,
-        )
-      const recommendationsResult: RecommendationResult[] = []
-      rightsizingRecommendations.forEach(
-        (recommendation: AwsRightsizingRecommendation) => {
-          const rightsizingCurrentRecommendation =
-            new RightsizingCurrentRecommendation(recommendation)
-
-          const [currentComputeFootprint, currentMemoryFootprint] =
-            this.getFootprintEstimates(rightsizingCurrentRecommendation)
-
-          let kilowattHourSavings = currentComputeFootprint.kilowattHours
-          let co2eSavings = currentComputeFootprint.co2e
-          let costSavings = rightsizingCurrentRecommendation.costSavings
-          let recommendationDetail = this.getRecommendationDetail(
-            rightsizingCurrentRecommendation,
-          )
-
-          if (currentMemoryFootprint.co2e) {
-            kilowattHourSavings += currentMemoryFootprint.kilowattHours
-            co2eSavings += currentMemoryFootprint.co2e
-          }
-
-          if (recommendation.RightsizingType === 'Modify') {
-            this.getTargetInstance(recommendation)
-            const rightsizingTargetRecommendation =
-              new RightsizingTargetRecommendation(recommendation)
-
-            const [targetComputeFootprint, targetMemoryFootprint] =
-              this.getFootprintEstimates(rightsizingTargetRecommendation)
-
-            kilowattHourSavings -= targetComputeFootprint.kilowattHours
-            co2eSavings -= targetComputeFootprint.co2e
-            costSavings = rightsizingTargetRecommendation.costSavings
-            recommendationDetail = this.getRecommendationDetail(
-              rightsizingCurrentRecommendation,
-              rightsizingTargetRecommendation,
-            )
-
-            if (targetMemoryFootprint.co2e) {
-              kilowattHourSavings -= targetMemoryFootprint.kilowattHours
-              co2eSavings -= targetMemoryFootprint.co2e
-            }
-          }
-
-          // if there are no potential savings, do not include recommendation object
-          recommendationsResult.push({
-            cloudProvider: 'AWS',
-            accountId: rightsizingCurrentRecommendation.accountId,
-            accountName: rightsizingCurrentRecommendation.accountId,
-            region: rightsizingCurrentRecommendation.region,
-            recommendationType: rightsizingCurrentRecommendation.type,
-            recommendationDetail,
-            kilowattHourSavings,
-            resourceId: rightsizingCurrentRecommendation.resourceId,
-            instanceName: rightsizingCurrentRecommendation.instanceName,
-            co2eSavings,
-            costSavings,
-          })
-        },
-      )
-      return recommendationsResult
-    } catch (e) {
-      throw new Error(
-        `Failed to grab AWS Rightsizing recommendations. Reason: ${e.message}`,
-      )
-    }
-  }
-
-  private getRecommendationDetail(
-    rightsizingCurrentRecommendation: RightsizingCurrentRecommendation,
-    rightsizingTargetRecommendation?: RightsizingTargetRecommendation,
-  ): string {
-    const modifyDetail = `Update instance type ${rightsizingCurrentRecommendation.instanceType} to ${rightsizingTargetRecommendation?.instanceType}`
-    let defaultDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}.`
-    if (!rightsizingCurrentRecommendation.instanceName) {
-      defaultDetail = `${rightsizingCurrentRecommendation.type} instance with Resource ID: ${rightsizingCurrentRecommendation.resourceId}.`
-    }
-    const recommendationTypes: { [key: string]: string } = {
-      Terminate: defaultDetail,
-      Modify: `${defaultDetail} ${modifyDetail}`,
-    }
-    return recommendationTypes[rightsizingCurrentRecommendation.type]
-  }
-
-  private getFootprintEstimates(
-    rightsizingRecommendation: RightsizingRecommendation,
-  ) {
-    const computeFootprint = new AWSComputeEstimatesBuilder(
-      rightsizingRecommendation,
-      this.computeEstimator,
-    ).computeFootprint
-
-    const memoryFootprint = new AWSMemoryEstimatesBuilder(
-      rightsizingRecommendation,
-      this.memoryEstimator,
-    ).memoryFootprint
-
-    return [computeFootprint, memoryFootprint]
-  }
-
-  private getTargetInstance(
-    rightsizingRecommendationData: AwsRightsizingRecommendation,
-  ): void {
-    let targetInstance =
-      rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances.pop()
-    let savings = 0
-    rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances.map(
-      (instance) => {
-        if (parseFloat(instance.EstimatedMonthlySavings) >= savings) {
-          savings = parseFloat(instance.EstimatedMonthlySavings)
-          targetInstance = instance
-        }
-      },
+    const rightsizingRecommendations = new RightsizingRecommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      serviceWrapper,
     )
-    rightsizingRecommendationData.ModifyRecommendationDetail.TargetInstances = [
-      targetInstance,
-    ]
+    return await rightsizingRecommendations.getRecommendations(
+      recommendationTarget,
+    )
   }
+
+  // Potential Refactor: Skip all Compute Optimizer recommendations that aren't EC2
+  private static getUniquesWithHighestSavings(
+    recommendationData: RecommendationResult[],
+  ): RecommendationResult[] {
+    const uniqueRecommendationData: RecommendationResult[] = []
+    const mappedResources: { [resourceId: string]: RecommendationResult[] } = {}
+    recommendationData.forEach((recommendation) => {
+      if (mappedResources[recommendation.resourceId])
+        mappedResources[recommendation.resourceId].push(recommendation)
+      else mappedResources[recommendation.resourceId] = [recommendation]
+    })
+
+    for (const resource in mappedResources) {
+      const resourceRecommendations = mappedResources[resource]
+      if (resourceRecommendations.length > 1)
+        uniqueRecommendationData.push(
+          getHighestSavings(resourceRecommendations),
+        )
+      else uniqueRecommendationData.push(resourceRecommendations[0])
+    }
+    return uniqueRecommendationData
+  }
+}
+
+function getHighestSavings(recommendations: RecommendationResult[]) {
+  const [recommendationOne, recommendationTwo] = recommendations
+  if (recommendationTwo.co2eSavings > recommendationOne.co2eSavings)
+    return recommendationTwo
+  if (recommendationTwo.co2eSavings === recommendationOne.co2eSavings)
+    return getHighestCostSavings(recommendations)
+  return recommendations[0]
+}
+
+function getHighestCostSavings(recommendations: RecommendationResult[]) {
+  const [recommendationOne, recommendationTwo] = recommendations
+  return recommendationTwo.costSavings > recommendationOne.costSavings
+    ? recommendationTwo
+    : recommendationOne
 }

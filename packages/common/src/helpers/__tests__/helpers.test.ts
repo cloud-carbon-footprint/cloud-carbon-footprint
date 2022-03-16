@@ -2,7 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { containsAny, endsWithAny, getHoursInMonth, wait } from '../helpers'
+import each from 'jest-each'
+import { GroupBy } from '../../Config'
+import {
+  containsAny,
+  endsWithAny,
+  getHoursInMonth,
+  wait,
+  getPeriodEndDate,
+} from '../helpers'
 
 jest.useFakeTimers()
 jest.mock('moment', () => {
@@ -34,6 +42,7 @@ describe('Helpers', () => {
   })
 
   it('waits one second', async () => {
+    jest.spyOn(global, 'setTimeout')
     const waitTime = 1000
 
     const promise = wait(waitTime)
@@ -48,5 +57,19 @@ describe('Helpers', () => {
     const expected = 720
 
     expect(getHoursInMonth()).toEqual(expected)
+  })
+
+  describe('gets period end date for various grouping options', () => {
+    each([
+      [GroupBy.day, new Date('2020-04-01T23:59:59.000Z')],
+      [GroupBy.week, new Date('2020-04-07T23:59:59.000Z')],
+      [GroupBy.month, new Date('2020-04-30T23:59:59.000Z')],
+      [GroupBy.quarter, new Date('2020-07-01T00:59:59.000Z')],
+      [GroupBy.year, new Date('2021-03-31T23:59:59.000Z')],
+    ]).it('should get period end date for %s', (grouping, expectedResult) => {
+      const result = getPeriodEndDate(new Date(), grouping)
+
+      expect(result).toEqual(expectedResult)
+    })
   })
 })

@@ -4,12 +4,12 @@
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(({ palette, typography }) => ({
+const useStyles = makeStyles(({ palette }) => ({
   toggleWrapper: {
     position: 'relative',
     overflow: 'hidden',
     fontFamily: 'Helvetica, Arial, sans-serif',
-    fontWeight: typography.fontWeightBold,
+    fontWeight: 'bold',
     width: 310,
     display: 'flex',
     flexDirection: 'row',
@@ -17,7 +17,7 @@ const useStyles = makeStyles(({ palette, typography }) => ({
     alignItems: 'center',
   },
   label: {
-    fontWeight: typography.fontWeightBold,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   toggleInput: {

@@ -210,7 +210,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: node:14.16.0-alpine3.10
+      image: node:14.18-alpine3.14
     environment:
       name: staging
     env:
@@ -229,6 +229,9 @@ jobs:
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
       GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
+      GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: ${{ secrets.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE }}
+      GCP_VCPUS_PER_GKE_CLUSTER: ${{ secrets.GCP_VCPUS_PER_GKE_CLUSTER }}
+      GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT: ${{ secrets.GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT }}
       AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -285,7 +288,7 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     container:
-      image: node:14.16.0-alpine3.10
+      image: node:14.18-alpine3.14
     environment:
       name: production
     env:
@@ -304,6 +307,9 @@ jobs:
       GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
       GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
       GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
+      GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: ${{ secrets.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE }}
+      GCP_VCPUS_PER_GKE_CLUSTER: ${{ secrets.GCP_VCPUS_PER_GKE_CLUSTER }}
+      GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT: ${{ secrets.GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT }}
       AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}

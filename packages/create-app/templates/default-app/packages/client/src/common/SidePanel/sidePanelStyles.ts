@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { SidePanelProps } from 'Types'
 
 const useStyles = makeStyles(
-  ({ palette, transitions, spacing, typography, breakpoints, mixins }) => ({
+  ({ palette, transitions, spacing, breakpoints, mixins }) => ({
     infoButton: {
       margin: spacing(10, 'auto'),
       color:
@@ -48,7 +48,7 @@ const useStyles = makeStyles(
     contentTitle: {
       padding: spacing(2),
       textAlign: 'center',
-      fontWeight: typography.fontWeightBold,
+      fontWeight: 'bold',
       fontSize: 18,
     },
   }),

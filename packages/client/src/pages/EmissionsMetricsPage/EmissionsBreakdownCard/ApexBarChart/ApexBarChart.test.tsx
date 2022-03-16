@@ -7,14 +7,15 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer'
 import Chart from 'react-apexcharts'
 import moment from 'moment'
 import {
-  EstimationResult,
   EmissionRatioResult,
+  EstimationResult,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 import { fakeEmissionFactors } from 'utils/data'
 import { sumCO2ByServiceOrRegion } from 'utils/helpers'
-import { PageEntry } from 'Types'
+import { Page, PageEntry } from 'Types'
 import ApexBarChart from './ApexBarChart'
-import Pagination, { Page } from '../Pagination'
+import Pagination from '../Pagination'
 import { createCustomBarColors } from './helpers'
 
 jest.mock('apexcharts')
@@ -22,9 +23,13 @@ jest.mock('apexcharts')
 describe('ApexBarChart', () => {
   let fixture: ReactTestRenderer
   let barChartData: { string: [string, number] }
+  const timestamp: Date = moment('2019-08-10T00:00:00.000Z').toDate()
   const data: EstimationResult[] = [
     {
-      timestamp: moment('2019-08-10T00:00:00.000Z').toDate(),
+      timestamp: timestamp,
+      periodStartDate: timestamp,
+      periodEndDate: timestamp,
+      groupBy: GroupBy.day,
       serviceEstimates: [
         {
           cloudProvider: 'AWS',

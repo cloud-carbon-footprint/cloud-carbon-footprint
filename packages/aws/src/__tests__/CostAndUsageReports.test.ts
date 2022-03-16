@@ -8,6 +8,7 @@ import AWS, {
   CloudWatchLogs,
   CostExplorer,
   Athena as AWSAthena,
+  S3,
 } from 'aws-sdk'
 import {
   GetQueryExecutionOutput,
@@ -25,7 +26,6 @@ import {
   MemoryEstimator,
   StorageEstimator,
   UnknownEstimator,
-  EstimateClassification,
   EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import CostAndUsageReports from '../lib/CostAndUsageReports'
@@ -48,6 +48,7 @@ import {
   athenaMockGetQueryResultsWithEC2ElasticMapWithEmbodiedEmissions,
   athenaMockGetQueryResultsWithNoUsageAmount,
   athenaMockGetQueryResultsWithUnknownInstanceType,
+  athenaMockGetQueryResultsWithGPUInstances,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
@@ -87,6 +88,7 @@ describe('CostAndUsageReports Service', () => {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
       new AWSAthena(),
     )
 
@@ -95,23 +97,8 @@ describe('CostAndUsageReports Service', () => {
   })
 
   beforeEach(() => {
-    AWS_CLOUD_CONSTANTS.CO2E_PER_COST = {
-      [EstimateClassification.COMPUTE]: {
-        cost: 0,
-        co2e: 0,
-      },
-      [EstimateClassification.STORAGE]: {
-        cost: 0,
-        co2e: 0,
-      },
-      [EstimateClassification.NETWORKING]: {
-        cost: 0,
-        co2e: 0,
-      },
-      total: {
-        cost: 0,
-        co2e: 0,
-      },
+    AWS_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
+      total: {},
     }
   })
 
@@ -136,7 +123,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -202,6 +189,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-11-03'),
@@ -218,6 +208,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-2',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-03T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-29'),
@@ -234,6 +227,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-east-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-29T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-29T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-30'),
@@ -261,6 +257,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
 
@@ -280,7 +279,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -352,6 +351,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.03108584775563959,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -370,7 +372,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -401,14 +403,17 @@ describe('CostAndUsageReports Service', () => {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.000016006234896000002,
+            co2e: 0.0000044492759507991384,
             cost: 10,
-            kilowattHours: 0.038499200000000004,
+            kilowattHours: 0.010701677552402589,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-31'),
@@ -425,6 +430,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-31T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-31T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -443,7 +451,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -482,6 +490,9 @@ describe('CostAndUsageReports Service', () => {
             region: 'us-west-1',
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-31'),
@@ -497,7 +508,21 @@ describe('CostAndUsageReports Service', () => {
             cost: 10,
             region: 'us-east-1',
           },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0000024009352344000006,
+            cost: 14,
+            kilowattHours: 0.005774880000000001,
+            region: 'us-east-1',
+            serviceName: 'AmazonES',
+            usesAverageCPUConstant: true,
+          },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-31T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-31T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -518,7 +543,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -582,9 +607,9 @@ describe('CostAndUsageReports Service', () => {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00001312379015400668,
+            co2e: 0.000010643760080225716,
             cost: 2,
-            kilowattHours: 0.037404528157893524,
+            kilowattHours: 0.030336116240407784,
             region: 'us-west-1',
             serviceName: 'AmazonEKS',
             usesAverageCPUConstant: false,
@@ -593,25 +618,28 @@ describe('CostAndUsageReports Service', () => {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00003149445841696244,
+            co2e: 0.000017741352333543527,
             cost: 4,
-            kilowattHours: 0.08976334906690238,
+            kilowattHours: 0.05056518773401297,
             region: 'us-west-1',
             serviceName: 'AmazonRoute53',
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
           {
             accountId: '123456789',
             accountName: '123456789',
             cloudProvider: 'AWS',
-            co2e: 0.00003149445841696244,
+            co2e: 0.000017741352333543527,
             cost: 4,
-            kilowattHours: 0.08976334906690238,
+            kilowattHours: 0.05056518773401297,
             region: 'us-west-1',
             serviceName: '8icvdraalzbfrdevgamoddblf', // change because of embodied e
-            usesAverageCPUConstant: true,
+            usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -632,7 +660,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -715,6 +743,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.016843399999999998,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -735,7 +766,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -766,12 +797,12 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 6.45075072774111e-8,
+            co2e: 3.6373933057209234e-8,
             cost: 10,
             region: 'us-west-1',
             serviceName: 'AmazonRedshift',
             usesAverageCPUConstant: true,
-            kilowattHours: 0.00018385488064336328,
+            kilowattHours: 0.00010367049360632625,
           },
           {
             accountId: testAccountId,
@@ -796,6 +827,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.1154976,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -816,7 +850,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -844,6 +878,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.024990035163717835,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-28'),
@@ -860,6 +897,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.1087279982745107,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-28T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-28T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-29'),
@@ -876,6 +916,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.3249198354759396,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-29T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-29T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2020-10-31'),
@@ -892,6 +935,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 2.9142892899138806,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-31T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-31T00:00:00.000Z'),
       },
     ]
 
@@ -911,7 +957,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -950,6 +996,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: false,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -966,7 +1015,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1006,6 +1055,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.27848474801323647,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1022,7 +1074,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1051,6 +1103,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000013921034560789199,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-03'),
@@ -1067,6 +1122,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.000012878153246556,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-03T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-04'),
@@ -1083,6 +1141,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 2.4851100375076387e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-04T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-04T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-05'),
@@ -1099,6 +1160,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.00010595529580428001,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-05T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-05T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-06'),
@@ -1115,6 +1179,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 6.250303140268443e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-06T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-06T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-07'),
@@ -1131,6 +1198,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 0.0000011762860016401646,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-07T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-07T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1149,7 +1219,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1244,6 +1314,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 4942.207102554803,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1262,7 +1335,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1346,6 +1419,9 @@ describe('CostAndUsageReports Service', () => {
             kilowattHours: 3.05859696924017e-7,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1362,7 +1438,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1394,14 +1470,17 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.019480908079911777,
+            co2e: 0.02308402740334127,
             cost: 10516.725,
             region: 'us-east-1',
             serviceName: 'AmazonEC2',
-            usesAverageCPUConstant: true,
-            kilowattHours: 46.85670185544798,
+            usesAverageCPUConstant: false,
+            kilowattHours: 55.5231504211405,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-02'),
@@ -1421,14 +1500,17 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 2.1265671481160096e-18,
+            co2e: 0.0006754805005297028,
             cost: 600,
             region: 'us-east-2',
             serviceName: 'AmazonCloudWatch',
             usesAverageCPUConstant: false,
-            kilowattHours: 4.83105395687744e-15,
+            kilowattHours: 1.5345307801677532,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
       {
         timestamp: new Date('2021-01-03'),
@@ -1448,14 +1530,17 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.025562663862604765,
+            co2e: 0.027064863483754618,
             cost: 27051.45224,
             region: 'us-east-2',
             serviceName: 'AmazonEC2',
             usesAverageCPUConstant: false,
-            kilowattHours: 58.07228260399504,
+            kilowattHours: 61.48492228020051,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-03T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-03T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1474,7 +1559,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1539,36 +1624,39 @@ describe('CostAndUsageReports Service', () => {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.01557463889088402,
+            co2e: 0.0001503719348123479,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AmazonApiGateway',
-            usesAverageCPUConstant: true,
-            kilowattHours: 49.28683193317728,
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.4758605532036326,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.01557463889088402,
+            co2e: 0.0001503719348123479,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AWSDirectConnect',
-            usesAverageCPUConstant: true,
-            kilowattHours: 49.28683193317728,
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.4758605532036326,
           },
           {
             accountId: testAccountId,
             accountName: testAccountName,
             cloudProvider: 'AWS',
-            co2e: 0.01557463889088402,
+            co2e: 0.0001503719348123479,
             cost: 10,
             region: 'eu-west-1',
             serviceName: 'AWSDirectoryService',
-            usesAverageCPUConstant: true,
-            kilowattHours: 49.28683193317728,
+            usesAverageCPUConstant: false,
+            kilowattHours: 0.4758605532036326,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -1586,7 +1674,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1615,6 +1703,69 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for GPU instances', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithGPUInstances)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2022-01-01'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.021190411684420526,
+            cost: 10,
+            kilowattHours: 50.96850713622332,
+            region: 'us-east-1',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.058734806910342365,
+            cost: 10,
+            kilowattHours: 133.43148914062064,
+            region: 'us-east-2',
+            serviceName: 'AmazonEC2',
+            usesAverageCPUConstant: true,
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2022-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2022-01-01T00:00:00.000Z'),
       },
     ]
 
@@ -1640,7 +1791,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1672,7 +1823,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1693,7 +1844,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1715,7 +1866,7 @@ describe('CostAndUsageReports Service', () => {
       new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -1744,6 +1895,9 @@ describe('CostAndUsageReports Service', () => {
             usesAverageCPUConstant: true,
           },
         ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-10-30T23:59:59.000Z'),
+        periodStartDate: new Date('2020-10-30T00:00:00.000Z'),
       },
     ]
 

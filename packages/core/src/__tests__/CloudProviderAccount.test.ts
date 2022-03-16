@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { GroupBy } from '@cloud-carbon-footprint/common'
 import CloudProviderAccount from '../CloudProviderAccount'
 import { mockCloudService } from './__mocks__/CloudService'
 import { CloudConstantsEmissionsFactors } from '../CloudConstantsTypes'
@@ -24,6 +25,7 @@ jest.mock('../Region', () => {
 describe('CloudProviderAccount', () => {
   const dayOne = new Date('2021-01-01')
   const dayTwo = new Date('2021-01-02')
+  const grouping = GroupBy.day
 
   const testCloudProvider = new CloudProviderAccount()
 
@@ -80,6 +82,7 @@ describe('CloudProviderAccount', () => {
       testRegion,
       dayOne,
       dayTwo,
+      grouping,
     )
 
     // then
@@ -96,6 +99,9 @@ describe('CloudProviderAccount', () => {
           },
         ],
         timestamp: dayOne,
+        groupBy: 'day',
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
       {
         serviceEstimates: [
@@ -109,6 +115,9 @@ describe('CloudProviderAccount', () => {
           },
         ],
         timestamp: dayTwo,
+        groupBy: 'day',
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -143,6 +152,7 @@ describe('CloudProviderAccount', () => {
       testRegion,
       dayOne,
       dayTwo,
+      grouping,
     )
 
     // then
@@ -159,6 +169,9 @@ describe('CloudProviderAccount', () => {
           },
         ],
         timestamp: dayOne,
+        groupBy: 'day',
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)
@@ -190,6 +203,7 @@ describe('CloudProviderAccount', () => {
       testRegion,
       dayOne,
       dayTwo,
+      grouping,
     )
 
     // then
@@ -206,6 +220,9 @@ describe('CloudProviderAccount', () => {
           },
         ],
         timestamp: dayOne,
+        groupBy: 'day',
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
       },
     ]
     expect(result).toEqual(expectedResult)

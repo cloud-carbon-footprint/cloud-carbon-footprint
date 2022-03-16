@@ -49,7 +49,7 @@ slug: /configurations-glossary
 ### Variables needed for the Billing Data (Holistic) approach with GCP:
 
 | Variable                       | Example Value                  | Type    | Notes                                                                                                                                                                                                                                                                                                 |
-| ------------------------------ | ------------------------------ | ------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|--------------------------------|--------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | GCP_USE_BILLING_DATA           | true                           | boolean | Use this to configure the application to query Billing Export Data via Google BigQuery. Unset to make this false. Defaults to true.                                                                                                                                                                   |
 | GOOGLE_APPLICATION_CREDENTIALS | /path/to/your/credentials.json | string  | The absolute path to your service account private key file. This service account needs to have permission to query Billing Data using BigQuery.                                                                                                                                                       |
 | GCP_BIG_QUERY_TABLE            | project.dataset.BQ_table_name  | string  | The name of your BigQuery table configured to consume Billing Export data in the format: `PROJECT_ID.DATASET_NAME.TABLE_NAME`. Don't forget to replace the colon in the table id if you copy it from BigQuery. See [here](https://cloud.google.com/billing/docs/how-to/bq-examples) for more details. |
@@ -63,6 +63,16 @@ slug: /configurations-glossary
 | Variable     | Example Value                                            | Type  | Notes                                                                                                                                                |
 | ------------ | -------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GCP_PROJECTS | [{"id":"your-gcp-project-id","name":"Your GCP Project"}] | array | This is array of objects with keys "id" and "name" that match the GCP Projects you want to pull usage data from to run energy/carbon estimation for. |
+
+<br/>
+
+### Optionally set these GCP variables:
+
+| Variable                                 | Example Value | Type    | Notes                                                                                                                                                                                                                                                                                                                                                                                           |
+|------------------------------------------|---------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE    | true          | boolean | Setting this to true will change the emissions factors used by the application to take into account [Google's Carbon Free Energy percentage](https://cloud.google.com/sustainability/region-carbon) in each region. For example in us-central1, the grid emissions factor is 494 gCO2eq/kWh with CFE% of 93%. With this option set to true, the application would instead use 31.78 gCO2eq/kWh. |
+| GCP_VCPUS_PER_GKE_CLUSTER                | 3             | number  | Use this to configure the average number of vCPUs the application should use to estimate energy consumption of Kubernetes Engine clusters. If unset, defaults to 3, which is the default number of vCPUs provisioned.                                                                                                                                                                           |
+| GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT | 14            | number  | Use this to configure the average number of vCPUs the application should use to estimate energy consumption of Cloud Composer Environments. If unset, defaults to 14, which is the number of vCPUs provisioned for a medium sized environment.                                                                                                                                                  |
 
 <br/>
 
@@ -91,6 +101,19 @@ slug: /configurations-glossary
 | --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
 | CACHE_MODE            | GCS            | string | Set with 'GCS' to use this option or leave it empty to use the default.             |
 | GCS_CACHE_BUCKET_NAME | my-bucket-name | string | Is the name of you Google Cloud Storage bucket where the cache file will be stored. |
+
+<br/>
+
+## Optionally set these custom configurations for On-Premise calculations
+
+| Variable              | Example Value  | Type   | Notes                                                                               |
+| --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
+| ON_PREMISE_CPU_UTILIZATION_SERVER | 40 | number | For on-premise servers, provides an average value for cpu utilization.            |
+| ON_PREMISE_CPU_UTILIZATION_LAPTOP | 40 | number | For on-premise laptops, provides an average value for cpu utilization.   |
+| ON_PREMISE_CPU_UTILIZATION_DESKTOP | 40 | number | For on-premise desktops, provides an average value for cpu utilization.   |
+| ON_PREMISE_AVG_WATTS_SERVER | 300 | number | For on-premise servers, provides an average value for average watts.   |
+| ON_PREMISE_AVG_WATTS_LAPTOP | 300 | number | For on-premise laptops, provides an average value for average watts. |
+| ON_PREMISE_AVG_WATTS_DESKTOP | 300 | number | For on-premise desktops, provides an average value for average watts. |
 
 <br/>
 

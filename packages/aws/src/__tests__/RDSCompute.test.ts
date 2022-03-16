@@ -3,7 +3,7 @@
  */
 
 import AWSMock from 'aws-sdk-mock'
-import AWS, { CloudWatch, CloudWatchLogs, CostExplorer } from 'aws-sdk'
+import AWS, { CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
 import RDSComputeService from '../lib/RDSCompute'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import mockAWSCloudWatchGetMetricDataCall from '../lib/mockAWSCloudWatchGetMetricDataCall'
@@ -40,6 +40,7 @@ describe('RDS Compute', function () {
       new CloudWatch(),
       new CloudWatchLogs(),
       new CostExplorer(),
+      new S3(),
     )
 
   it('should get RDS CPU utilization for two hours of different days', async () => {

@@ -32,10 +32,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
-import {
-  GCP_CLOUD_CONSTANTS,
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 
 export default class GCPAccount extends CloudProviderAccount {
   constructor(
@@ -49,10 +46,16 @@ export default class GCPAccount extends CloudProviderAccount {
   async getDataForRegions(
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const estimationResults = await Promise.all(
       this.regions.map(async (regionId) => {
-        return await this.getDataForRegion(regionId, startDate, endDate)
+        return await this.getDataForRegion(
+          regionId,
+          startDate,
+          endDate,
+          grouping,
+        )
       }),
     )
     return estimationResults.flat()
@@ -62,6 +65,7 @@ export default class GCPAccount extends CloudProviderAccount {
     regionId: string,
     startDate: Date,
     endDate: Date,
+    grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const gcpServices = this.getServices()
     const gcpConstants = {
@@ -72,10 +76,10 @@ export default class GCPAccount extends CloudProviderAccount {
     const region = new Region(
       regionId,
       gcpServices,
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      getGCPEmissionsFactors(),
       gcpConstants,
     )
-    return await this.getRegionData('GCP', region, startDate, endDate)
+    return await this.getRegionData('GCP', region, startDate, endDate, grouping)
   }
 
   getDataFromBillingExportTable(
@@ -89,7 +93,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),
@@ -107,7 +111,7 @@ export default class GCPAccount extends CloudProviderAccount {
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
       new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-      new UnknownEstimator(),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
       new EmbodiedEmissionsEstimator(
         GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
       ),

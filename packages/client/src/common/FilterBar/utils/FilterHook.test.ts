@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { renderHook, act, HookResult } from '@testing-library/react-hooks'
+import { renderHook, act, RenderResult } from '@testing-library/react-hooks'
 import useFilters, { UseFiltersResults } from './FilterHook'
 import moment from 'moment'
 import { generateEstimations } from 'utils/data'
@@ -14,7 +14,7 @@ describe('useFilters', () => {
   describe('changing timeframe', () => {
     const estimationResults = generateEstimations(moment.utc(), 14)
     const filteredResult: FilterResultResponse = { accounts: [], services: [] }
-    let result: HookResult<UseFiltersResults>
+    let result: RenderResult<UseFiltersResults>
 
     beforeEach(() => {
       const buildFilter = (filteredResponse: FilterResultResponse) => {

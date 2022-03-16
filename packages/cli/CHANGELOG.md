@@ -1,5 +1,56 @@
 # @cloud-carbon-footprint/cli
 
+## 1.4.0
+
+### Minor Changes
+
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
+### Patch Changes
+
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/app@0.5.0
+  - @cloud-carbon-footprint/common@1.5.0
+
+## 1.3.0
+
+### Minor Changes
+
+- 04f2be16: Adds configurable option to use Google's published carbon free energy % in emissions factors. Updates estimation logic for GCP services: Cloud Composer and Kubernetes Engine, to improve accuracy.
+
+### Patch Changes
+
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/common@1.4.0
+  - @cloud-carbon-footprint/app@0.4.2
+
+## 1.2.1
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- Updated dependencies [8fd171ed]
+  - @cloud-carbon-footprint/app@0.4.1
+  - @cloud-carbon-footprint/common@1.3.1
+
+## 1.2.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- Updated dependencies [c29a3b53]
+  - @cloud-carbon-footprint/app@0.4.0
+  - @cloud-carbon-footprint/common@1.3.0
+
 ## 1.1.2
 
 ### Patch Changes

@@ -9,6 +9,8 @@ import {
   GroupBy,
   LookupTableInput,
   LookupTableOutput,
+  OnPremiseDataInput,
+  OnPremiseDataOutput,
   RecommendationResult,
   reduceByTimestamp,
 } from '@cloud-carbon-footprint/common'
@@ -20,10 +22,8 @@ import {
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
   AWSAccount,
 } from '@cloud-carbon-footprint/aws'
-import {
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-  GCPAccount,
-} from '@cloud-carbon-footprint/gcp'
+import { getGCPEmissionsFactors, GCPAccount } from '@cloud-carbon-footprint/gcp'
+import { OnPremise } from '@cloud-carbon-footprint/on-premise'
 
 import cache from './Cache'
 import { EstimationRequest, RecommendationRequest } from './CreateValidRequest'
@@ -53,7 +53,7 @@ export default class App {
             account.id,
             account.name,
             AWS.CURRENT_REGIONS,
-          ).getDataForRegion(request.region, startDate, endDate),
+          ).getDataForRegion(request.region, startDate, endDate, grouping),
         )
         estimatesForAccounts.push(estimates)
       }
@@ -75,7 +75,7 @@ export default class App {
               account.id,
               account.name,
               AWS.CURRENT_REGIONS,
-            ).getDataForRegions(startDate, endDate),
+            ).getDataForRegions(startDate, endDate, grouping),
           )
           AWSEstimatesByRegion.push(estimates)
         }
@@ -97,7 +97,7 @@ export default class App {
                 project.id,
                 project.name,
                 GCP.CURRENT_REGIONS,
-              ).getDataForRegions(startDate, endDate)
+              ).getDataForRegions(startDate, endDate, grouping)
             })
             .flat(),
         )
@@ -126,7 +126,7 @@ export default class App {
   getEmissionsFactors(): EmissionRatioResult[] {
     const CLOUD_PROVIDER_EMISSIONS_FACTORS_METRIC_TON_PER_KWH = {
       AWS: AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-      GCP: GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      GCP: getGCPEmissionsFactors(),
       AZURE: AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
     }
 
@@ -217,5 +217,11 @@ export default class App {
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     return GCPAccount.getBillingExportDataFromInputData(inputData)
+  }
+
+  getOnPremiseEstimatesFromInputData(
+    inputData: OnPremiseDataInput[],
+  ): OnPremiseDataOutput[] {
+    return OnPremise.getOnPremiseDataFromInputData(inputData)
   }
 }

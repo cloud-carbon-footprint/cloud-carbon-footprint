@@ -2,7 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { CloudWatch, CostExplorer, CloudWatchLogs, Athena } from 'aws-sdk'
+import { Athena, CloudWatch, CloudWatchLogs, CostExplorer, S3 } from 'aws-sdk'
+import csv from 'csvtojson'
 import { path } from 'ramda'
 import {
   GetCostAndUsageRequest,
@@ -13,15 +14,18 @@ import {
 import {
   GetMetricDataInput,
   GetMetricDataOutput,
+  MetricDataResult,
 } from 'aws-sdk/clients/cloudwatch'
-import { MetricDataResult } from 'aws-sdk/clients/cloudwatch'
 import { PartialDataError } from '@cloud-carbon-footprint/common'
+import { ListObjectsV2Output } from 'aws-sdk/clients/s3'
+import { EC2ComputeOptimizerRecommendationData } from './Recommendations/ComputeOptimizer'
 
 export class ServiceWrapper {
   constructor(
     private readonly cloudWatch: CloudWatch,
     private readonly cloudWatchLogs: CloudWatchLogs,
     private readonly costExplorer: CostExplorer,
+    private readonly s3: S3,
     private readonly athena?: Athena,
   ) {}
 
@@ -98,6 +102,12 @@ export class ServiceWrapper {
     return await this.cloudWatchLogs.describeLogGroups(params).promise()
   }
 
+  public async describeCloudWatchLogsQueries(
+    params: CloudWatchLogs.DescribeQueriesRequest,
+  ): Promise<CloudWatchLogs.DescribeQueriesResponse> {
+    return await this.cloudWatchLogs.describeQueries(params).promise()
+  }
+
   public async startCloudWatchLogsQuery(
     params: CloudWatchLogs.StartQueryRequest,
   ): Promise<CloudWatchLogs.StartQueryResponse> {
@@ -145,6 +155,20 @@ export class ServiceWrapper {
     params: GetRightsizingRecommendationRequest,
   ): Promise<GetRightsizingRecommendationResponse[]> {
     return await this.getRightsizingRecommendationResponse(params)
+  }
+
+  public async listBucketObjects(
+    params: S3.Types.ListObjectsV2Request,
+  ): Promise<ListObjectsV2Output> {
+    return await this.s3.listObjectsV2(params).promise()
+  }
+
+  public async getComputeOptimizerRecommendationsResponse(
+    params: S3.Types.GetObjectRequest,
+  ): Promise<EC2ComputeOptimizerRecommendationData[]> {
+    const stream = this.s3.getObject(params).createReadStream()
+    const parsedCsv = await csv().fromStream(stream)
+    return JSON.parse(JSON.stringify(parsedCsv))
   }
 }
 

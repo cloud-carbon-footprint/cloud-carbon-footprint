@@ -87,7 +87,7 @@ export type SidePanelProps = {
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
-  options: FilterOptions
+  options?: FilterOptions
 }
 
 export type FilterLabelMapping = { [type in DropdownFilterOptions]?: string }

@@ -10,4 +10,9 @@ module.exports = {
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   setupFiles: ['../../setupTests.ts'],
+  globals: {
+    'ts-jest': {
+      isolatedModules: true,
+    },
+  },
 }

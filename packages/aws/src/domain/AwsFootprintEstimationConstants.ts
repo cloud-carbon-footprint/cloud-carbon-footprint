@@ -7,8 +7,8 @@ import {
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
+  EstimateUnknownUsageBy,
   US_NERC_REGIONS_EMISSIONS_FACTORS,
-  EstimateClassification,
 } from '@cloud-carbon-footprint/core'
 
 import { AWS_REGIONS } from '../lib/AWSRegions'
@@ -43,6 +43,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   MIN_WATTS_AVG: 0.74,
   MIN_WATTS_BY_COMPUTE_PROCESSOR: {
+    // CPUs
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.64,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.65,
     [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
@@ -53,6 +54,17 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
     [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2]: 0.47,
+    // GPUs
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_K520]: 26,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G]: 18,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_T4]: 8,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_M60]: 35,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_K80]: 35,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_V100]: 35,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_A100]: 46,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4]: 9,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P100]: 36,
+    [COMPUTE_PROCESSOR_TYPES.AMD_RADEON_PRO_V520]: 26,
   },
   getMinWatts: (computeProcessors: string[]): number => {
     const minWattsForProcessors: number[] = computeProcessors.map(
@@ -70,6 +82,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   MAX_WATTS_AVG: 3.5,
   MAX_WATTS_BY_COMPUTE_PROCESSOR: {
+    // CPUs
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.97,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.26,
     [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.69,
@@ -80,6 +93,17 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
     [COMPUTE_PROCESSOR_TYPES.AWS_GRAVITON_2]: 1.69,
+    // GPUs
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_K520]: 229,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G]: 153,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_T4]: 71,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_M60]: 306,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_K80]: 306,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_V100]: 306,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_A100]: 407,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4]: 76.5,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P100]: 306,
+    [COMPUTE_PROCESSOR_TYPES.AMD_RADEON_PRO_V520]: 229,
   },
   getMaxWatts: (computeProcessors: string[]): number => {
     const maxWattsForProcessors: number[] = computeProcessors.map(
@@ -120,25 +144,10 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     SIMPLE_DB: 2,
     DEFAULT: 1,
   },
-  // these constants accumulate as the usage rows are mapped over
-  CO2E_PER_COST: {
-    [EstimateClassification.COMPUTE]: {
-      cost: 0,
-      co2e: 0,
-    },
-    [EstimateClassification.STORAGE]: {
-      cost: 0,
-      co2e: 0,
-    },
-    [EstimateClassification.NETWORKING]: {
-      cost: 0,
-      co2e: 0,
-    },
-    total: {
-      cost: 0,
-      co2e: 0,
-    },
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
+    total: {},
   },
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy.COST,
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 

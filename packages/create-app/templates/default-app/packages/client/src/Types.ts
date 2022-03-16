@@ -81,12 +81,13 @@ export type SidePanelProps = {
   children: ReactNode
   defaultIsOpen?: boolean
   openOnChange?: RecommendationRow
+  onClose?: () => void
 }
 
 export type FilterProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
-  options: FilterOptions
+  options?: FilterOptions
 }
 
 export type FilterLabelMapping = { [type in DropdownFilterOptions]?: string }

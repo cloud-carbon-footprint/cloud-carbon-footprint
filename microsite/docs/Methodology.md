@@ -219,6 +219,30 @@ the number of vCPUs provisioned is directly proportional to the amount of memory
 Given that, for every ACU Hour, we estimate that 0.25 vCPUs are provisioned (2 GB of memory divided by 8). So for
 Compute estimations, the application treats every 4 ACU-Hours as one vCPU Hour.
 
+##### A note on GCP Kubernetes Engine (GKE) Compute Estimates 
+
+In the case of GKE clusters, our application makes some assumptions about the number of virtual CPUs provisioned per cluster.
+For each cluster you need to provision a number of "nodes", each representing one Compute Engine machine type, with 
+the [default machine type being e2-medium](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture), which has one vCPU provisioned. In order to estimate the energy from GKE Compute, we 
+multiply the average number of vCPUs provisioned per cluster by the usage amount in hours, to get the total vCPU Hours.
+
+By default, our application assumes 3 vCPUs provisioned because the default number of nodes is 3, and the default machine 
+type of e2-medium has 1 vCPU. However, you can override this default using the `GCP_VCPUS_PER_GKE_CLUSTER` [configuration 
+option](./ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 3 vCPUs per cluster.     
+
+##### A note on GCP Cloud Composer Compute Estimates
+
+In the case of [Cloud Composer Environments](https://cloud.google.com/composer/docs/concepts/architecture), there are a 
+number of vCPUs provisioned based on the environment size, with GKE providing a lot of the underlying infrastructure. 
+There are three Cloud Composer Environment sizes, each with a default number of vCPUs that can be provisioned via schedulers,
+workers and a web server. In order to estimate the energy from Cloud Composer, we multiply the average number of vCPUs 
+provisioned per environment by the usage amount in hours, to get the total vCPU Hours.
+
+By default, our application assumes 14 vCPUs provisioned because this is the default option for the medium environment size.
+However, you can override this default using the `GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT` [configuration
+option](./ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 14 vCPUs per 
+environment.
+
 #### Storage
 
 For storage, we also follow the same methodology as Cloud Jewels by deriving a Wh/Tbh coefficient for both HDD and SSD
@@ -245,16 +269,16 @@ organization may have a 20 Gigabyte AWS EBS Volume allocated, but is only utiliz
 device. In this case we would use 20 GBs in the energy estimation formula for EBS storage.
 
 
-##### Storage Services Replication Factors
+##### Replication Factors
 
 In order to achieve adequate durability and availability for data stores and to ensure better redundancy in the case 
-of service outages, most cloud provider storage and database services automatically replicate your data as well as any 
+of service outages, most cloud provider storage, database services and node pools automatically replicate your data as well as any 
 associated compute and memory resources. Sometimes this is within an individual data center, other times it is within a 
 geographical location or across multiple geographical locations.
 
 Because of this, the actual infrastructure (and energy) required to provide a given amount of storage can be multiple 
 times more than what might be provided by cloud providers as the allocated amount of usage. After analyzing cloud 
-storage and database services, we have determined a number of “replication factors” to take this into account, which 
+storage, database services and node pools, we have determined a number of “replication factors” to take this into account, which 
 you can see the details of in this [spreadsheet](https://docs.google.com/spreadsheets/d/1D7mIGKkdO1djPoMVmlXRmzA7_4tTiGZLYdVbfe85xQM/edit#gid=735227650). 
 These replication factors are applied to the total energy and CO2e estimate for each storage or database service 
 (inclusive of all types of resources replicated).
@@ -486,6 +510,39 @@ The same is true for the GB / physical chip used to estimate energy for memory u
 | sa-east-1      | Brazil        |             | 0.000074              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
 
 #### GCP
+
+With GCP, there are two possible sets of grid emissions factors that the application can use, which is set using the `GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE` configuration option.
+
+1. Grid emissions factors that take into account Google's published [Carbon Free Energy percentage](https://cloud.google.com/sustainability/region-carbon) in each region. For example in us-central1, the grid emissions factor is 494 gCO2eq/kWh with CFE% of 93%. With the option above set to true, the application would instead use 31.78 gCO2eq/kWh, or 0.00003178 metric tons / kWh. We understand that applying the CFE% in this way may lead to some inaccuracies, because this figure is an hourly average percentage, and our application doesn't estimate emissions at that level of granularity. However, through internal testing we have found that overall it gets the application closer the real world distribution of emissions across GCP regions.
+
+| Region                  | Location          | CO2e (metric ton/kWh) | Source                                                          |
+| ----------------------- | ----------------- | --------------------- | --------------------------------------------------------------- |
+| us-central1             | Iowa              | 0.00003178            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-east1                | South Carolina    | 0.0003504             | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-east4                | Northern Virginia | 0.00015162            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west1                | Oregon            | 0.0000078             | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west2                | Los Angeles       | 0.00011638            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west3                | Salt Lake City    | 0.00038376            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west4                | Las Vegas         | 0.00036855            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-east1              | Taiwan            | 0.0004428             | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-east2              | Hong Kong         | 0.000453              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast1         | Japan             | 0.00048752            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast2         | Japan             | 0.000442              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast3         | South Korea       | 0.00031533            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-south1             | India             | 0.00063448            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast1         | Singapore         | 0.000657              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast2         | Indonesia         | 0.00047328            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| australia-southeast1    | Australia         | 0.000647              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-north1           | Finland           | 0.00064703            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west1            | Belgium           | 0.000691              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west2            | England           | 0.000622              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west3            | Germany           | 0.00000798            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west4            | Netherlands       | 0.00004452            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west6            | Switzerland       | 0.00009471            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| northamerica-northeast1 | Canada            | 0.00010841            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| southamerica-east1      | Brazil            | 0.000164              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+
+2. Grid emissions factors that don't take into account Google's published Carbon Free Energy percentage. Given the potential inaccuracies in applying the CFE % mentioned above, we include an option to just use the grid emissions factors published by Google, with the factoring the CFE %.  
 
 | Region                  | Location          | CO2e (metric ton/kWh) | Source                                                          |
 | ----------------------- | ----------------- | --------------------- | --------------------------------------------------------------- |

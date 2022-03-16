@@ -2,24 +2,26 @@
  * © 2021 Thoughtworks, Inc.
  */
 import {
-  getWattsByAverageOrMedian,
   CloudConstantsByProvider,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
-  EstimateClassification,
+  EstimateUnknownUsageBy,
+  getWattsByAverageOrMedian,
 } from '@cloud-carbon-footprint/core'
 
 import {
-  GCP_REGIONS,
   GCP_DUAL_REGIONS,
   GCP_MULTI_REGIONS,
+  GCP_REGIONS,
 } from '../lib/GCPRegions'
+import { configLoader } from '@cloud-carbon-footprint/common'
 
 export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
   HDDCOEFFICIENT: 0.65, // watt hours / terabyte hour
   MIN_WATTS_MEDIAN: 0.68,
   MIN_WATTS_BY_COMPUTE_PROCESSOR: {
+    // CPUs
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 0.64,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 0.65,
     [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 0.71,
@@ -30,6 +32,17 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 0.82,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 0.47,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 0.45,
+    // GPUs
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_K520]: 26,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G]: 18,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_T4]: 8,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_M60]: 35,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_K80]: 35,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_V100]: 35,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_A100]: 46,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4]: 9,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P100]: 36,
+    [COMPUTE_PROCESSOR_TYPES.AMD_RADEON_PRO_V520]: 26,
   },
   getMinWatts: (computeProcessors: string[]): number => {
     const minWattsForProcessors: number[] = computeProcessors.map(
@@ -47,6 +60,7 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   MAX_WATTS_MEDIAN: 4.11,
   MAX_WATTS_BY_COMPUTE_PROCESSOR: {
+    // CPUs
     [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]: 3.97,
     [COMPUTE_PROCESSOR_TYPES.SKYLAKE]: 4.26,
     [COMPUTE_PROCESSOR_TYPES.BROADWELL]: 3.69,
@@ -57,6 +71,17 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN]: 2.55,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_2ND_GEN]: 1.69,
     [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN]: 2.02,
+    // GPUs
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_K520]: 229,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_A10G]: 153,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_T4]: 71,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_M60]: 306,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_K80]: 306,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_V100]: 306,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_A100]: 407,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4]: 76.5,
+    [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P100]: 306,
+    [COMPUTE_PROCESSOR_TYPES.AMD_RADEON_PRO_V520]: 229,
   },
   getMaxWatts: (computeProcessors: string[]): number => {
     const maxWattsForProcessors: number[] = computeProcessors.map(
@@ -102,36 +127,61 @@ export const GCP_CLOUD_CONSTANTS: CloudConstantsByProvider = {
     CLOUD_FILESTORE: 2,
     CLOUD_SQL_HIGH_AVAILABILITY: 2,
     CLOUD_MEMORY_STORE_REDIS: 2,
+    CLOUD_SPANNER_SINGLE_REGION: 4,
+    CLOUD_SPANNER_MULTI_REGION: 6,
+    KUBERNETES_ENGINE: 3,
     DEFAULT: 1,
   },
   // these constants accumulate as the usage rows are mapped over
-  CO2E_PER_COST: {
-    [EstimateClassification.COMPUTE]: {
-      cost: 0,
-      co2e: 0,
-    },
-    [EstimateClassification.STORAGE]: {
-      cost: 0,
-      co2e: 0,
-    },
-    [EstimateClassification.NETWORKING]: {
-      cost: 0,
-      co2e: 0,
-    },
-    [EstimateClassification.MEMORY]: {
-      cost: 0,
-      co2e: 0,
-    },
-    total: {
-      cost: 0,
-      co2e: 0,
-    },
+  KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
+    total: {},
   },
+  ESTIMATE_UNKNOWN_USAGE_BY: EstimateUnknownUsageBy.USAGE_AMOUNT,
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 
-export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
-  {
+export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
+  // These emission factors take into account Google Carbon Free Energy percentage in each region. Source: https://cloud.google.com/sustainability/region-carbon
+  if (configLoader().GCP.USE_CARBON_FREE_ENERGY_PERCENTAGE)
+    return {
+      [GCP_REGIONS.US_CENTRAL1]: 0.00003178,
+      [GCP_REGIONS.US_CENTRAL2]: 0.00003178,
+      [GCP_REGIONS.US_EAST1]: 0.0003504,
+      [GCP_REGIONS.US_EAST4]: 0.00015162,
+      [GCP_REGIONS.US_WEST1]: 0.0000078,
+      [GCP_REGIONS.US_WEST2]: 0.00011638,
+      [GCP_REGIONS.US_WEST3]: 0.00038376,
+      [GCP_REGIONS.US_WEST4]: 0.00036855,
+      [GCP_REGIONS.ASIA_EAST1]: 0.0004428,
+      [GCP_REGIONS.ASIA_EAST2]: 0.000453,
+      [GCP_REGIONS.ASIA_NORTHEAST1]: 0.00048752,
+      [GCP_REGIONS.ASIA_NORTHEAST2]: 0.000442,
+      [GCP_REGIONS.ASIA_NORTHEAST3]: 0.00031533,
+      [GCP_REGIONS.ASIA_SOUTH1]: 0.00063448,
+      [GCP_REGIONS.ASIA_SOUTH2]: 0.000657,
+      [GCP_REGIONS.ASIA_SOUTHEAST1]: 0.00047328,
+      [GCP_REGIONS.ASIA_SOUTHEAST2]: 0.000647,
+      [GCP_REGIONS.AUSTRALIA_SOUTHEAST1]: 0.00064703,
+      [GCP_REGIONS.AUSTRALIA_SOUTHEAST2]: 0.000691,
+      [GCP_REGIONS.EUROPE_CENTRAL2]: 0.000622,
+      [GCP_REGIONS.EUROPE_NORTH1]: 0.00000798,
+      [GCP_REGIONS.EUROPE_WEST1]: 0.00004452,
+      [GCP_REGIONS.EUROPE_WEST2]: 0.00009471,
+      [GCP_REGIONS.EUROPE_WEST3]: 0.00010841,
+      [GCP_REGIONS.EUROPE_WEST4]: 0.000164,
+      [GCP_REGIONS.EUROPE_WEST6]: 0.000087,
+      [GCP_REGIONS.NORTHAMERICA_NORTHEAST1]: 0.000027,
+      [GCP_REGIONS.SOUTHAMERICA_EAST1]: 0.00001236,
+      [GCP_DUAL_REGIONS.ASIA1]: 0.00046476,
+      [GCP_DUAL_REGIONS.EUR4]: 0.00008599,
+      [GCP_DUAL_REGIONS.NAM4]: 0.00019109,
+      [GCP_MULTI_REGIONS.ASIA]: 0.0005058233333,
+      [GCP_MULTI_REGIONS.EU]: 0.0001723183333,
+      [GCP_MULTI_REGIONS.US]: 0.00018025875,
+      [GCP_REGIONS.UNKNOWN]: 0.0003035889286, // Average across all regions
+    }
+  // These emissions factors don't take into account Google's CFE%, and just use the Grid emissions factors published by Google.
+  return {
     [GCP_REGIONS.US_CENTRAL1]: 0.000454,
     [GCP_REGIONS.US_CENTRAL2]: 0.000454,
     [GCP_REGIONS.US_EAST1]: 0.00048,
@@ -168,3 +218,4 @@ export const GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFa
     [GCP_MULTI_REGIONS.US]: 0.0003734285714,
     [GCP_REGIONS.UNKNOWN]: 0.0004116296296, // Average of the above regions
   }
+}

@@ -6,9 +6,9 @@ import {
   RightsizingRecommendation as AwsRightsizingRecommendation,
 } from 'aws-sdk/clients/costexplorer'
 import { containsAny, getHoursInMonth } from '@cloud-carbon-footprint/common'
-import { AWS_MAPPED_REGION_NAMES_TO_CODES, AWS_REGIONS } from '../AWSRegions'
-import { BURSTABLE_INSTANCE_BASELINE_UTILIZATION } from '../AWSInstanceTypes'
-import { AWS_CLOUD_CONSTANTS } from '../../domain'
+import { AWS_MAPPED_REGION_NAMES_TO_CODES, AWS_REGIONS } from '../../AWSRegions'
+import { BURSTABLE_INSTANCE_BASELINE_UTILIZATION } from '../../AWSInstanceTypes'
+import { AWS_CLOUD_CONSTANTS } from '../../../domain'
 
 export default class RightsizingRecommendation {
   public accountId: string
@@ -26,6 +26,7 @@ export default class RightsizingRecommendation {
   }
 
   public getVCpuHours(resourceDetails: EC2ResourceDetails): number {
+    // Reference: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html#baseline_performance
     if (
       containsAny(
         Object.keys(BURSTABLE_INSTANCE_BASELINE_UTILIZATION),

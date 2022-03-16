@@ -5,7 +5,7 @@ import moment from 'moment'
 import { PassThrough } from 'stream'
 import EstimatorCache from '../EstimatorCache'
 import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from '../CreateValidRequest'
 
 const creatReadStreamMock = jest.fn()
@@ -48,10 +48,15 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 }))
 
 function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+  const grouping = 'day' as GroupBy
   return [...Array(consecutiveDays)].map((v, i) => {
+    const timestamp = moment.utc(startDate).add(i, 'days').toDate()
     return {
-      timestamp: moment.utc(startDate).add(i, 'days').toDate(),
+      timestamp,
       serviceEstimates: [],
+      periodStartDate: undefined,
+      periodEndDate: undefined,
+      groupBy: grouping,
     }
   })
 }

@@ -1,16 +1,24 @@
 fileignoreconfig:
+- filename: .changeset/big-experts-kick.md
+  checksum: 74d451296b12b20492767a90f35ec464016a6eca3593c13a672b40d0fd8f8b06
 - filename: .changeset/breezy-singers-own.md
   checksum: a1a0b0b676bfe049874b22ef95052509012d209e4ebd02accb8bca16d11fd52e
 - filename: .changeset/famous-ligers-breathe.md
   checksum: 0a9343cef13e632b64dfbff81a6bd65d97f53b610e98a211c5a06f7f4193d298
+- filename: .changeset/flat-boxes-greet.md
+  checksum: b4797d1c4964a793b17768d0bdb26373037331c308360d95c1f0d22bc370fdd3
 - filename: .changeset/honest-penguins-clap.md
   checksum: ac6a3b992c06dfdfba27b96cf9b93f38b3d87bba3581e5a8428f42f186eb0ee7
+- filename: .changeset/lemon-eels-do.md
+  checksum: 9666d69d2e48b24c8158e659c7a0b3a21ef33ee949f7eb8a6ca5a640fd25cc00
 - filename: .changeset/nice-timers-repair.md
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
 - filename: .changeset/sixty-peas-design.md
   checksum: a353a88260b60bba06f294ed5e7227edf2b3782b97f67ac02bbe163f2435f8fd
+- filename: .changeset/spotty-rabbits-crash.md
+  checksum: a4cbe048796e9aea13ee0c2e5e280ca8bfa7529854f729d975f1ae1154ac0fd0
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
 - filename: .changeset/wet-jobs-destroy.md
@@ -90,11 +98,11 @@ fileignoreconfig:
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
-  checksum: 3a380b3fb5f198b9886b6b1b208025b8c3981fb92e5b3d65491c90268b84d92e
+  checksum: d03181cabc8f5892fc53166916062bd64e4f7dbfe1e1bef06e5009bec3254aa7
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
-  checksum: 192968478bb96ed73fd0b22cedaf01c4083725e7f5384820018a26c9bd3a741d
+  checksum: 1c7391ee9b9069215bff80845ef7f752850fed31a96ebbef0efec8c015e56821
 - filename: packages/api/estimates.cache-uscs.json
   checksum: 0ed3196623ac3ad3ec034c0694c8e0c525549e0b362719808fd21d3ed9d11cba
 - filename: packages/api/estimates.cache.test.json
@@ -106,33 +114,45 @@ fileignoreconfig:
 - filename: packages/aws/src/__tests__/AWSAccount.test.ts
   checksum: bb589b733b04064c81990eab8a6d51a207aeab949191d905437138c9ce8f1d68
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 3cd4f39d4394d6cfd43e7920ec9d79dec948d12928c6ab9f718a608a5a3c07b9
+  checksum: 785babdf00a035b62c97bd9aac4b7e2d7c9ecee2650e332cb5bf07f5ce9f5d0e
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
   checksum: 882473df680508d6168bcb4b4cde7d44bc1d6d28f7566488b32a7c9e5073c22d
+- filename: packages/aws/src/__tests__/RightsizingRecommendations.test.ts
+  checksum: 5f4b552f103b11d0aa6b194799bc70a930d2eb64b5a3d1474fb8284de8861439
 - filename: packages/aws/src/__tests__/ServiceWrapper.test.ts
   checksum: c26a34fd76e6512e88ae39550cd52adf10579215dec5e71b5ea2deddbf606b05
+- filename: packages/aws/src/__tests__/fixtures/computeOptimizer.fixtures.ts
+  checksum: c943d9f69842b8df41ba8ac63a81fd244012e0f3ced20b6a4420492765b82955
 - filename: packages/aws/src/lib/AWSMemoryEstimatesBuilder.ts
   checksum: 088f8bcc742f395d6dd2b75238a0375bd6e60e34c5ede4f5a09247d468eb9064
 - filename: packages/aws/src/lib/CostAndUsageReports.ts
   checksum: 1e137cc798c5ad0176a70c08933b020baafe906969ac91fd34e033de68b1106a
 - filename: packages/aws/src/lib/CostAndUsageTypes.ts
   checksum: c4c46cb8727ec9c567cbeaa0af0ede1b51607db610112927fbb6d68f8aade34b
+- filename: packages/aws/src/lib/Recommendations/ComputeOptimizerRecommendations.ts
+  checksum: f028097741c58142ed4ac1a5748f80727ad9428666741e5b304f4994595c9438
+- filename: packages/aws/src/lib/Recommendations/Recommendations.ts
+  checksum: 366f101f67bd31dc640998666be0f6f8da68c0167b3627ebbaa2b498adc831fb
 - filename: packages/azure/package.json
-  checksum: 792277472de01c37a251fe6d1b2caca123c2aaeeb86fdc3a6d462cc3e02c0bf0
+  checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
+- filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
+  checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: 29b7a2e1b5debbee7ec4249bd4827c4785288c9d8860092332935ffa755e152d
+  checksum: 15c98a8e5cee427695a74794060a426e62ad0bbea118dcfdfb2ee04da2c3fa11
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
-  checksum: 6af836cdd18ea031008172ba2768544acdb631a82bb3eed48b34f1a9c565edb5
+  checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
-  checksum: 6818b054bb908533e8eed46d3324e3df500f8df9cbfb8e25329723c0369e9315
+  checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
   checksum: 0005b5abc9cba50b821c955aa1cc28e9860d4c8748f52c3bf6927eef620500fc
+- filename: packages/client/src/common/FilterBar/utils/DropdownConstants.test.ts
+  checksum: b9f3b222216d0937d53a026581820e5a8b4d6a9dd76c2a312e46ef5f1a84540a
 - filename: packages/client/src/common/FilterBar/utils/DropdownConstants.ts
   checksum: 03deb9260bd7bd7106da1eb4d70130284530ac15381ce52a0554f2f48de9d484
 - filename: packages/client/src/common/FilterBar/utils/FiltersUtil.ts
@@ -211,12 +231,14 @@ fileignoreconfig:
   checksum: 2a1551ebe105d866d121c17029d53c7466b67e2cfc1c71b13b5894ae5bc06b50
 - filename: packages/client/stub-server/recommendations.json
   checksum: fd9afa539a5991cb21416293ae9d17a57005b5bcacdd148fe9f4ce0fd3de145e
+- filename: packages/common/src/Config.ts
+  checksum: 8cde1d40a5a56e3f1454534817d254a7b61baf2d28e185bf0c5093d8320c8b85
 - filename: packages/core/package.json
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/CloudConstantsTypes.ts
   checksum: fc77184302e75b36ed681d349abebfeb6e5da8ea8b45ab96096e88e43b892e55
 - filename: packages/core/src/FootprintEstimate.ts
-  checksum: 32425cda8ef4abd41dc94b65e7ad32a53b57a80e11a8422e864c2354f2c8426a
+  checksum: b612b985e7084b457cc0f3824f31fda6a21c7371e5e717ced360665b985a0b97
 - filename: packages/core/src/FootprintEstimatesDataBuilder.ts
   checksum: ff85444731d66f4a7b3ebaca7d2f64c7bfac5772f8ff2dfa9789620ceb8238a3
 - filename: packages/core/src/compute/__tests__/ComputeUsage.test.ts
@@ -244,9 +266,9 @@ fileignoreconfig:
 - filename: packages/core/src/unknown/UnknownEstimator.ts
   checksum: 4033fa577fb1b42245c0471ce7da72f76713d394370a17695c022eb22ca7c42c
 - filename: packages/create-app/templates/default-app/packages/api/.env.template
-  checksum: 8e43d5762bac88981cadb25efc990af9869b3a0a9532968f9eb4da4865ee5936
+  checksum: 6a3a9348d74dd6df5978cc0aa6a2fa0c5b51cb62484735614eb5338ccdb6458e
 - filename: packages/create-app/templates/default-app/packages/cli/.env.template
-  checksum: e2b528c1b774302df3a351d3836fe632a8cb12f89706d9a8c24ace558b5191a7
+  checksum: 7663594e66cc73a1906c4195e8860d3bec17d17ce3a582d2095638702dda9db4
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/aws.ts
   checksum: 402853f10d9ee56006cea9b63d6ec8d34d6eed506addf89d048d3072069d9f7b
 - filename: packages/create-app/templates/default-app/packages/cli/src/GuidedInstall/azure.ts
@@ -280,7 +302,9 @@ fileignoreconfig:
 - filename: packages/create-app/templates/default-app/packages/client/src/utils/helpers/transformData.ts
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
-  checksum: d9620d1cc9413fefae1f1d1362e6dc21eb4b3bec77ba72476a9afb196880ac09
+  checksum: a7b7558f8736ffc379fadf79d749cfa5d1470e204b88053e56d0fa13f42d0cd4
+- filename: packages/gcp/src/__tests__/GCPAccount.test.ts
+  checksum: 26ef0caf65177a4e013ecff94012824cee58ceed48c09b29f7710712084ab9c4
 - filename: packages/gcp/src/lib/BillingExportTable.ts
   checksum: df8f16310cd2bf983821666d495f5bf1945584851e1242e37ecdf0a652102113
 - filename: packages/gcp/src/lib/BillingExportTypes.ts
@@ -291,6 +315,12 @@ fileignoreconfig:
   checksum: 03ccb62c70e3436a4bc8f186ace884b6f3ace1a94823b31d9f236b8abf29d3c7
 - filename: packages/gcp/src/lib/ReplicationFactors.ts
   checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
+- filename: packages/on-premise/package.json
+  checksum: 89606e85e166cfe7a1b0df38792457f3be1dad7ff48a4930ca32f60b6fbd8f4b
+- filename: packages/on-premise/src/lib/OnPremiseTypes.ts
+  checksum: 49c37e2e94fa4c14b8e375a4c3972f3f091270fe11a0dcb3da0704cced051ce4
+- filename: scripts/createCSV.ts
+  checksum: 7efc0c9020a53f0efcb3ca8c4b7c2fbf23088ed2c959cf1df61407708816a2bc
 - filename: server/.env.template
   checksum: 58e214d42823e2ef4c18525c5aec77a49dd817a890dad020e1263a681cf67fef
 - filename: server/create_server_env_file.sh

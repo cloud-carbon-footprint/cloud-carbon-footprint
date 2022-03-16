@@ -7,6 +7,7 @@ import { confirmPrompt, EnvConfig, inputPrompt } from './common'
 export async function GCPSetup(): Promise<EnvConfig> {
   const env: EnvConfig = {}
   env.GCP_USE_BILLING_DATA = 'true'
+  env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE = 'true'
 
   await confirmPrompt(
     'Ensure you have a GCP Service Account with the permission to start BigQuery jobs and read Bigquery job results. Learn more about GCP Service Accounts [here](https://cloud.google.com/docs/authentication/getting-started).',

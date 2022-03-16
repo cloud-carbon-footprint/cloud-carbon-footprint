@@ -9,63 +9,64 @@ import {
 } from '@azure/arm-consumption/esm/models'
 
 import {
-  Logger,
-  EstimationResult,
-  convertTerabytesToGigabytes,
-  convertGigaBytesToTerabyteHours,
   containsAny,
-  wait,
+  convertGigaBytesToTerabyteHours,
+  convertTerabytesToGigabytes,
+  EstimationResult,
   GroupBy,
+  Logger,
+  wait,
 } from '@cloud-carbon-footprint/common'
 import {
-  ComputeEstimator,
-  StorageEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  UnknownEstimator,
-  ComputeUsage,
-  StorageUsage,
-  NetworkingUsage,
-  MemoryUsage,
-  UnknownUsage,
-  FootprintEstimate,
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
   appendOrAccumulateEstimatesByDay,
-  MutableEstimationResult,
-  COMPUTE_PROCESSOR_TYPES,
+  calculateGigabyteHours,
   CloudConstants,
   CloudConstantsEmissionsFactors,
-  calculateGigabyteHours,
-  getPhysicalChips,
-  accumulateCo2PerCost,
-  EstimateClassification,
+  COMPUTE_PROCESSOR_TYPES,
+  ComputeEstimator,
+  ComputeUsage,
   EmbodiedEmissionsEstimator,
   EmbodiedEmissionsUsage,
+  FootprintEstimate,
+  getPhysicalChips,
+  MemoryEstimator,
+  MemoryUsage,
+  MutableEstimationResult,
+  NetworkingEstimator,
+  NetworkingUsage,
+  StorageEstimator,
+  StorageUsage,
+  UnknownEstimator,
+  UnknownUsage,
 } from '@cloud-carbon-footprint/core'
 
 import ConsumptionDetailRow from './ConsumptionDetailRow'
 import {
+  GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING,
+  GPU_VIRTUAL_MACHINE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   VIRTUAL_MACHINE_TYPE_CONSTRAINED_VCPU_CAPABLE_MAPPING,
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
 } from './VirtualMachineTypes'
 import {
+  AZURE_QUERY_GROUP_BY,
+  CACHE_MEMORY_GB,
   COMPUTE_USAGE_UNITS,
   CONTAINER_REGISTRY_STORAGE_GB,
   HDD_MANAGED_DISKS_STORAGE_GB,
-  NETWORKING_USAGE_TYPES,
-  NETWORKING_USAGE_UNITS,
   MEMORY_USAGE_TYPES,
   MEMORY_USAGE_UNITS,
+  NETWORKING_USAGE_TYPES,
+  NETWORKING_USAGE_UNITS,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
   STORAGE_USAGE_UNITS,
-  UNSUPPORTED_USAGE_TYPES,
-  AZURE_QUERY_GROUP_BY,
-  CACHE_MEMORY_GB,
   TenantHeaders,
   UNKNOWN_SERVICES,
   UNKNOWN_USAGE_TYPES,
-  UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING,
+  UNSUPPORTED_USAGE_TYPES,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -106,39 +107,51 @@ export default class ConsumptionManagementService {
     const results: MutableEstimationResult[] = []
     const unknownRows: ConsumptionDetailRow[] = []
 
-    allUsageRows.map((consumptionRow: LegacyUsageDetail) => {
-      const consumptionDetailRow: ConsumptionDetailRow =
-        new ConsumptionDetailRow(consumptionRow)
+    allUsageRows
+      .filter(
+        (consumptionRow: LegacyUsageDetail) =>
+          new Date(consumptionRow.date) >= startDate &&
+          new Date(consumptionRow.date) <= endDate,
+      )
+      .map((consumptionRow: LegacyUsageDetail) => {
+        const consumptionDetailRow: ConsumptionDetailRow =
+          new ConsumptionDetailRow(consumptionRow)
 
-      this.updateTimestampByWeek(grouping, consumptionDetailRow)
+        this.updateTimestampByWeek(grouping, consumptionDetailRow)
 
-      if (this.isUnsupportedUsage(consumptionDetailRow)) {
+        if (this.isUnsupportedUsage(consumptionDetailRow)) {
+          return []
+        }
+
+        if (this.isUnknownUsage(consumptionDetailRow)) {
+          unknownRows.push(consumptionDetailRow)
+          return []
+        }
+
+        const footprintEstimate =
+          this.getEstimateByPricingUnit(consumptionDetailRow)
+
+        if (footprintEstimate) {
+          appendOrAccumulateEstimatesByDay(
+            results,
+            consumptionDetailRow,
+            footprintEstimate,
+            grouping,
+          )
+        }
         return []
-      }
-
-      if (this.isUnknownUsage(consumptionDetailRow)) {
-        unknownRows.push(consumptionDetailRow)
-        return []
-      }
-
-      const footprintEstimate =
-        this.getEstimateByPricingUnit(consumptionDetailRow)
-
-      if (footprintEstimate) {
-        appendOrAccumulateEstimatesByDay(
-          results,
-          consumptionDetailRow,
-          footprintEstimate,
-        )
-      }
-      return []
-    })
+      })
 
     if (results.length > 0) {
       unknownRows.map((rowData: ConsumptionDetailRow) => {
         const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            grouping,
+          )
       })
     }
 
@@ -282,21 +295,20 @@ export default class ConsumptionManagementService {
         // if there exist any kilowatt hours from a memory footprint,
         // add the kwh and co2e for both compute and memory
         if (memoryFootprint.kilowattHours || embodiedEmissions.co2e) {
-          accumulateCo2PerCost(
-            EstimateClassification.COMPUTE,
-            computeFootprint.co2e +
-              memoryFootprint.co2e +
-              embodiedEmissions.co2e,
-            consumptionDetailRow.cost,
-            AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+          const kilowattHours =
+            computeFootprint.kilowattHours +
+            memoryFootprint.kilowattHours +
+            embodiedEmissions.kilowattHours
+          accumulateKilowattHours(
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+            consumptionDetailRow,
+            kilowattHours,
+            AccumulateKilowattHoursBy.USAGE_AMOUNT,
           )
 
           return {
             timestamp: memoryFootprint.timestamp,
-            kilowattHours:
-              computeFootprint.kilowattHours +
-              memoryFootprint.kilowattHours +
-              embodiedEmissions.kilowattHours,
+            kilowattHours: kilowattHours,
             co2e:
               computeFootprint.co2e +
               memoryFootprint.co2e +
@@ -306,11 +318,11 @@ export default class ConsumptionManagementService {
         }
 
         if (computeFootprint)
-          accumulateCo2PerCost(
-            EstimateClassification.COMPUTE,
-            computeFootprint.co2e,
-            consumptionDetailRow.cost,
-            AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+          accumulateKilowattHours(
+            AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+            consumptionDetailRow,
+            computeFootprint.kilowattHours,
+            AccumulateKilowattHoursBy.USAGE_AMOUNT,
           )
 
         return computeFootprint
@@ -384,11 +396,11 @@ export default class ConsumptionManagementService {
 
     if (networkingEstimate) {
       networkingEstimate.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
-        EstimateClassification.NETWORKING,
-        networkingEstimate.co2e,
-        consumptionDetailRow.cost,
-        AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+      accumulateKilowattHours(
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        consumptionDetailRow,
+        networkingEstimate.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
     return networkingEstimate
@@ -433,11 +445,11 @@ export default class ConsumptionManagementService {
       )
     if (estimate) {
       estimate.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
-        EstimateClassification.STORAGE,
-        estimate.co2e,
-        consumptionDetailRow.cost,
-        AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+      accumulateKilowattHours(
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        consumptionDetailRow,
+        estimate.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
     return estimate
@@ -466,12 +478,60 @@ export default class ConsumptionManagementService {
       replicationFactor: this.getReplicationFactor(consumptionDetailRow),
     }
 
-    return this.computeEstimator.estimate(
+    const computeFootprintEstimate = this.computeEstimator.estimate(
       [computeUsage],
       consumptionDetailRow.region,
       emissionsFactors,
       computeConstants,
     )[0]
+
+    if (this.isGpuUsage(consumptionDetailRow.usageType)) {
+      return this.appendGpuComputeEstimate(
+        consumptionDetailRow,
+        powerUsageEffectiveness,
+        emissionsFactors,
+        computeFootprintEstimate,
+      )
+    }
+
+    return computeFootprintEstimate
+  }
+
+  private appendGpuComputeEstimate(
+    consumptionDetailRow: ConsumptionDetailRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+    computeFootprintEstimate: FootprintEstimate,
+  ) {
+    const gpuComputeProcessors = this.getGpuComputeProcessorsFromUsageType(
+      consumptionDetailRow.usageType,
+    )
+
+    const gpuComputeUsage: ComputeUsage = {
+      timestamp: consumptionDetailRow.timestamp,
+      cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      vCpuHours: consumptionDetailRow.gpuHours,
+      usesAverageCPUConstant: true,
+    }
+
+    const gpuComputeConstants: CloudConstants = {
+      minWatts: AZURE_CLOUD_CONSTANTS.getMinWatts(gpuComputeProcessors),
+      maxWatts: AZURE_CLOUD_CONSTANTS.getMaxWatts(gpuComputeProcessors),
+      powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
+    }
+
+    const gpuComputeFootprintEstimate = this.computeEstimator.estimate(
+      [gpuComputeUsage],
+      consumptionDetailRow.region,
+      emissionsFactors,
+      gpuComputeConstants,
+    )[0]
+
+    computeFootprintEstimate.kilowattHours +=
+      gpuComputeFootprintEstimate.kilowattHours
+    computeFootprintEstimate.co2e += gpuComputeFootprintEstimate.co2e
+    return computeFootprintEstimate
   }
 
   private getMemoryFootprintEstimate(
@@ -500,11 +560,11 @@ export default class ConsumptionManagementService {
     if (memoryEstimate) {
       memoryEstimate.usesAverageCPUConstant = false
       !withCompute &&
-        accumulateCo2PerCost(
-          EstimateClassification.MEMORY,
-          memoryEstimate.co2e,
-          consumptionDetailRow.cost,
-          AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+        accumulateKilowattHours(
+          AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+          consumptionDetailRow,
+          memoryEstimate.kilowattHours,
+          AccumulateKilowattHoursBy.USAGE_AMOUNT,
         )
     }
     return memoryEstimate
@@ -534,6 +594,10 @@ export default class ConsumptionManagementService {
         consumptionDetailRow.usageUnit,
       )
     )
+  }
+
+  private isGpuUsage(usageType: string): boolean {
+    return containsAny(Object.keys(GPU_VIRTUAL_MACHINE_TYPES), usageType)
   }
 
   private getUsageAmountInGigabyteHours(
@@ -651,6 +715,14 @@ export default class ConsumptionManagementService {
     )
   }
 
+  private getGpuComputeProcessorsFromUsageType(usageType: string): string[] {
+    return (
+      GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING[usageType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
+  }
+
   private getGigabyteHoursFromInstanceTypeAndProcessors(
     usageType: string,
     usageAmount: number,
@@ -729,12 +801,13 @@ export default class ConsumptionManagementService {
   ): FootprintEstimate {
     const unknownUsage: UnknownUsage = {
       timestamp: rowData.timestamp,
-      cost: rowData.cost,
+      usageAmount: rowData.usageAmount,
       usageUnit: rowData.usageUnit,
-      reclassificationType: this.getClassification(rowData.usageUnit),
     }
+
     const unknownConstants: CloudConstants = {
-      co2ePerCost: AZURE_CLOUD_CONSTANTS.CO2E_PER_COST,
+      kilowattHoursByServiceAndUsageUnit:
+        AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],
@@ -742,12 +815,6 @@ export default class ConsumptionManagementService {
       AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
       unknownConstants,
     )[0]
-  }
-
-  private getClassification(usageUnit: string) {
-    return UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
-      ? UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
-      : EstimateClassification.UNKNOWN
   }
 
   private getEmbodiedEmissions(

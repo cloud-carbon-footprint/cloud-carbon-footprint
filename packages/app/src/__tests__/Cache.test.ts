@@ -5,6 +5,7 @@
 import moment from 'moment'
 import {
   EstimationResult,
+  getPeriodEndDate,
   GroupBy,
   ServiceData,
 } from '@cloud-carbon-footprint/common'
@@ -48,9 +49,13 @@ function buildFootprintEstimates(
   timestampUnit: DurationConstructor = 'days',
 ) {
   return [...Array(consecutiveTimestamps)].map((v, i) => {
+    const timestamp = moment.utc(startDate).add(i, timestampUnit).toDate()
     return {
-      timestamp: moment.utc(startDate).add(i, timestampUnit).toDate(),
+      timestamp,
       serviceEstimates: [...serviceEstimates],
+      periodStartDate: timestamp,
+      periodEndDate: getPeriodEndDate(timestamp, GroupBy.day),
+      groupBy: GroupBy.day,
     }
   })
 }

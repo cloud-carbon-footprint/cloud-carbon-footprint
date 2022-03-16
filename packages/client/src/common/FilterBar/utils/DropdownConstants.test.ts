@@ -116,9 +116,12 @@ describe('DropdownConstants', () => {
       cloudProvider: 'aws',
     }
     it('should sort alphabetically and group by cloud providers', () => {
-      expect(buildAndOrderDropdownOptions([optionA, optionB, optionC])).toEqual(
-        [optionC, optionB, optionA],
-      )
+      expect(
+        buildAndOrderDropdownOptions(
+          [optionA, optionB, optionC],
+          [{ cloudProvider: '', key: 'string', name: 'string' }],
+        ),
+      ).toEqual([optionC, optionB, optionA])
     })
 
     it('will sort using fallback options if no main options available', () => {

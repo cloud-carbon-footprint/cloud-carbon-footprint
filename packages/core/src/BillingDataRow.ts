@@ -16,6 +16,7 @@ export default abstract class BillingDataRow {
   public timestamp: Date
   public vCpus: number
   public vCpuHours: number
+  public gpuHours: number
   public machineType: string
   public seriesName: string
   public instanceType: string

@@ -2,16 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {
-  ApplicationTokenCredentials,
-  loginWithServicePrincipalSecret,
-} from '@azure/ms-rest-nodeauth'
+import { ClientSecretCredential } from '@azure/identity'
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 
 import { configLoader } from '@cloud-carbon-footprint/common'
 
 export default class AzureCredentialsProvider {
-  static async create(): Promise<ApplicationTokenCredentials> {
+  static async create(): Promise<ClientSecretCredential> {
     const clientId = configLoader().AZURE.authentication.clientId
     const clientSecret = configLoader().AZURE.authentication.clientSecret
     const tenantId = configLoader().AZURE.authentication.tenantId
@@ -21,17 +18,13 @@ export default class AzureCredentialsProvider {
         const clientIdFromGoogle = await this.getGoogleSecret(clientId)
         const clientSecretFromGoogle = await this.getGoogleSecret(clientSecret)
         const tenantIdFromGoogle = await this.getGoogleSecret(tenantId)
-        return await loginWithServicePrincipalSecret(
+        return new ClientSecretCredential(
+          tenantIdFromGoogle,
           clientIdFromGoogle,
           clientSecretFromGoogle,
-          tenantIdFromGoogle,
         )
       default:
-        return await loginWithServicePrincipalSecret(
-          clientId,
-          clientSecret,
-          tenantId,
-        )
+        return new ClientSecretCredential(tenantId, clientId, clientSecret)
     }
   }
 

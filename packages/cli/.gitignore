@@ -6,3 +6,4 @@ dist
 !aws_input.test.csv
 !gcp_input.test.csv
 !incorrect_input.test.csv
+!on_premise_data_input.test.csv

@@ -2,20 +2,23 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import EmissionsByDayAndServiceTable from '../EmissionsByDayAndServiceTable'
 import moment = require('moment')
 
 describe('EmissionsTable', () => {
-  const timestamp1 = moment.utc('2020-07-10').toDate()
-  const timestamp2 = moment.utc('2020-07-09').toDate()
+  const timestampOne = moment.utc('2020-07-10').toDate()
+  const timestampTwo = moment.utc('2020-07-09').toDate()
   const testAccountId = 'test account id'
   const testAccountName = 'test account'
   const region = 'us-east-1'
 
   const input: EstimationResult[] = [
     {
-      timestamp: timestamp1,
+      timestamp: timestampOne,
+      periodStartDate: timestampOne,
+      periodEndDate: moment(timestampOne).add(1, 'd').toDate(),
+      groupBy: GroupBy.day,
       serviceEstimates: [
         {
           cloudProvider: 'aws',
@@ -97,7 +100,10 @@ describe('EmissionsTable', () => {
       ],
     },
     {
-      timestamp: timestamp2,
+      timestamp: timestampTwo,
+      periodStartDate: timestampTwo,
+      periodEndDate: moment(timestampTwo).add(1, 'd').toDate(),
+      groupBy: GroupBy.day,
       serviceEstimates: [
         {
           cloudProvider: 'aws',

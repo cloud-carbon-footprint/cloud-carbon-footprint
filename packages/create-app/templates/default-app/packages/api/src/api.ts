@@ -13,9 +13,11 @@ import {
 } from '@cloud-carbon-footprint/app'
 
 import {
+  setConfig,
+  CCFConfig,
   EstimationRequestValidationError,
-  PartialDataError,
   Logger,
+  PartialDataError,
   RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
 
@@ -37,10 +39,16 @@ const FootprintApiMiddleware = async function (
   const rawRequest: FootprintEstimatesRawRequest = {
     startDate: req.query.start?.toString(),
     endDate: req.query.end?.toString(),
+    ignoreCache: req.query.ignoreCache?.toString(),
+    groupBy: req.query.groupBy?.toString(),
   }
   apiLogger.info(
     `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
   )
+  if (!rawRequest.groupBy)
+    apiLogger.warn(
+      'GroupBy parameter not specified. This will be required in the future.',
+    )
   const footprintApp = new App()
   try {
     const estimationRequest = CreateValidFootprintRequest(rawRequest)
@@ -106,10 +114,17 @@ const RecommendationsApiMiddleware = async function (
   }
 }
 
-const router = express.Router()
+export const createRouter = (config?: CCFConfig) => {
+  setConfig(config)
 
-router.get('/footprint', FootprintApiMiddleware)
-router.get('/regions/emissions-factors', EmissionsApiMiddleware)
-router.get('/recommendations', RecommendationsApiMiddleware)
+  const router = express.Router()
 
-export default router
+  router.get('/footprint', FootprintApiMiddleware)
+  router.get('/regions/emissions-factors', EmissionsApiMiddleware)
+  router.get('/recommendations', RecommendationsApiMiddleware)
+  router.get('/healthz', (req: express.Request, res: express.Response) => {
+    res.status(200).send('OK')
+  })
+
+  return router
+}

@@ -82,6 +82,7 @@ describe('GuidedInstall', () => {
         GCP_BILLING_PROJECT_NAME: 'account name',
         GCP_BIG_QUERY_TABLE: 'BIG table',
         GCP_USE_BILLING_DATA: 'true',
+        GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE: 'true',
         GOOGLE_APPLICATION_CREDENTIALS: 'private key file path',
       }
       expect(mockCreateEnvFile).toHaveBeenCalledWith('./', expectedEnv)

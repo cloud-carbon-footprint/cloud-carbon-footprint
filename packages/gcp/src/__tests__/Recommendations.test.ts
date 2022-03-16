@@ -712,8 +712,8 @@ describe('GCP Recommendations Service', () => {
         recommendationType: 'DELETE_ADDRESS',
         recommendationDetail:
           "Save cost by deleting idle address 'test-address'.",
-        kilowattHourSavings: 25.199366400000002,
-        co2eSavings: 0.012095695872000002,
+        kilowattHourSavings: 155.07302400000003,
+        co2eSavings: 0.07443505152000002,
         costSavings: 40,
         resourceId: '123456789012345',
         instanceName: 'test-address',

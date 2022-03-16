@@ -16,6 +16,7 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "noImplicitReturns": true,
+    "declaration": true,
   },
   "include": ["./src"],
   "exclude": ["node_modules", "scripts", "**/__tests__/**" , "**/*.test.*",]

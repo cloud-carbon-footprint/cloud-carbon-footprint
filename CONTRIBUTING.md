@@ -147,15 +147,41 @@ This ensures that your working branch has the latest changes from `cloud-carbon-
 
 ### Test
 
-While our tests run every time you commit thanks to the pre-commit hook described above, if you would like to run the tests idependant of a commit, use the following:
+While our tests run every time you commit thanks to the pre-commit hook described above, if you would like to run the tests independent of a commit, use the following:
 
 ```
 $ yarn test
 ```
 
+### Updating Create-App Templates
+
+After committing your initial changes, it's important to remember that we have users who use the create-app version of our app and rely on the template files within that package.
+To ensure that your changes are reflected in those template files, you will need to update the same files within the corresponding package of the `packages/create-app/templates/default-app/packages` directory.
+
+Fortunately, we have a handy shell script to make this process easier. Using your terminal, you can utilize this script to copy the `src` directory of a package into the corresponding create-app template package's `src` directory.
+
+To use the script, you can run the following command from the project's root directory:
+```
+scripts/update_templates.sh [package-name]
+```
+
+After successfully calling this command with a given package, you should get a confirmation message letting you know which directory has been updated.
+Make sure to keep the following in mind:
+- The create-app templates only include the api, cli, and client packages. Passing another package name will result in an error.
+- Template packages usually do not include test files or fixtures, therefore, the script will remove any test or fixture files that are copied over.
+- Only the `src` directory of the given package will be copied over. For any files changed outside the `src` directory such as the `package.json`, you will need to manually copy those changes over.
+- Out of best practice, make sure to check any changed files prior to committing the results of this script using `git diff` or `git status` to ensure that all the changes you've made were properly copied over. Make sure to remove or rollback any changes that you did not work on.
+
 ### Changeset Version Update
 
 Once you have committed your changes. run `yarn changeset` from the root directory. You will be prompted to choose which packages that need to be updated using the arrow keys and space bar. You will need to choose the appropriate update for each package that you have contributed to using the guidelines set with [Semantic Versioning](https://semver.org/). You will also be prompted to leave a detailed description of your changes. This process will create a markdown file in the .changesets directory to be included in your commit and pushed. Changesets are only requested if you made an update to any of the packages.
+
+If your changes required an update to any of the create-app templates, make sure to add a message including a link or reference to that commit in the generated changeset file. This helps anyone that is using a create-app version of the CCF tool easily make the appropriate updates to their app.
+
+Example Markdown Message:
+````
+For changes to create-app templates, please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8fd171edb91cee5262c9d4d3a09fae6b7c265110).
+````
 
 ### Push
 

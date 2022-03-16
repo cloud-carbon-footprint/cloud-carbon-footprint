@@ -2,151 +2,136 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import UnknownEstimator from '../UnknownEstimator'
-import { EstimateClassification } from '../../FootprintEstimate'
+import UnknownEstimator, { EstimateUnknownUsageBy } from '../UnknownEstimator'
 
 describe('UnknownEstimator', () => {
-  it('does estimates for unknown usage type', () => {
-    const input = [
-      {
-        timestamp: new Date('2021-01-01'),
-        cost: 1000,
-        usageUnit: 'Hrs',
-        reclassificationType: EstimateClassification.COMPUTE,
-      },
-    ]
-    const awsUsEast1Region = 'us-east-1'
-    const awsEmissionsFactors = {
-      [awsUsEast1Region]: 0.000415755,
-    }
-    const awsConstants = {
-      co2ePerCost: {
-        [EstimateClassification.COMPUTE]: {
-          cost: 50,
-          co2e: 0.000987654321,
+  describe('Classification by service and usage unit', () => {
+    it('does estimates for unknown usage type for AWS, based on cost', () => {
+      const service = 'testService'
+      const usageUnit = 'testUsageUnit'
+      const input = [
+        {
+          timestamp: new Date('2021-01-01'),
+          cost: 1000,
+          usageUnit: usageUnit,
+          service: service,
         },
-      },
-    }
-    const result = new UnknownEstimator().estimate(
-      input,
-      awsUsEast1Region,
-      awsEmissionsFactors,
-      awsConstants,
-    )
+      ]
+      const awsUsEast1Region = 'us-east-1'
+      const awsEmissionsFactors = {
+        [awsUsEast1Region]: 0.000415755,
+      }
 
-    expect(result).toEqual([
-      {
-        co2e: 0.01975308642,
-        timestamp: new Date('2021-01-01T00:00:00.000Z'),
-        kilowattHours: 47.511362268643786,
-        usesAverageCPUConstant: true,
-      },
-    ])
-  })
-
-  it('does estimates for unknown usage types that stay classified as unknown', () => {
-    const input = [
-      {
-        timestamp: new Date('2021-01-01'),
-        cost: 1000,
-        usageUnit: 'ConfigRuleEvaluations',
-        reclassificationType: EstimateClassification.UNKNOWN,
-      },
-    ]
-    const awsUsEast1Region = 'us-east-1'
-    const awsEmissionsFactors = {
-      [awsUsEast1Region]: 0.000415755,
-    }
-    const awsConstants = {
-      co2ePerCost: {
-        total: {
-          cost: 50,
-          co2e: 0.000987654321,
+      const awsConstants = {
+        kilowattHoursByServiceAndUsageUnit: {
+          [service]: {
+            [usageUnit]: {
+              cost: 50,
+              kilowattHours: 20,
+            },
+          },
         },
-      },
-    }
-    const result = new UnknownEstimator().estimate(
-      input,
-      awsUsEast1Region,
-      awsEmissionsFactors,
-      awsConstants,
-    )
-
-    expect(result).toEqual([
-      {
-        co2e: 0.01975308642,
-        timestamp: new Date('2021-01-01T00:00:00.000Z'),
-        kilowattHours: 47.511362268643786,
-        usesAverageCPUConstant: false,
-      },
-    ])
-  })
-
-  describe('gets the correct usage type classification', () => {
-    const input = [
-      {
-        timestamp: new Date('2021-01-01'),
-        cost: 1000,
-        usageUnit: 'byte-seconds',
-        usageType: 'Storage',
-        reclassificationType: EstimateClassification.STORAGE,
-      },
-    ]
-    const gcpUsEast1Region = 'us-east1'
-    const gcpEmissionsFactors = {
-      [gcpUsEast1Region]: 0.00048,
-    }
-    const gcpConstants = {
-      co2ePerCost: {
-        [EstimateClassification.STORAGE]: {
-          cost: 50,
-          co2e: 0.000987654321,
-        },
-        [EstimateClassification.MEMORY]: {
-          cost: 75,
-          co2e: 0.00987654321,
-        },
-      },
-    }
-    it('for storage', () => {
-      const result = new UnknownEstimator().estimate(
+      }
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
         input,
-        gcpUsEast1Region,
-        gcpEmissionsFactors,
-        gcpConstants,
+        awsUsEast1Region,
+        awsEmissionsFactors,
+        awsConstants,
       )
 
       expect(result).toEqual([
         {
-          co2e: 0.01975308642,
+          co2e: 0.166302,
           timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          kilowattHours: 41.152263375,
+          kilowattHours: 400,
           usesAverageCPUConstant: false,
         },
       ])
     })
-
-    it('for memory', () => {
-      const newInput = [
+    it('does estimates for unknown usage type for AWS, based on cost, using totals for that usage unit', () => {
+      const service = 'testService'
+      const usageUnit = 'testUsageUnit'
+      const input = [
         {
-          ...input[0],
-          usageType: 'Memory',
-          reclassificationType: EstimateClassification.MEMORY,
+          timestamp: new Date('2021-01-01'),
+          cost: 1000,
+          usageUnit: usageUnit,
+          service: service,
         },
       ]
+      const awsUsEast1Region = 'us-east-1'
+      const awsEmissionsFactors = {
+        [awsUsEast1Region]: 0.000415755,
+      }
 
-      const result = new UnknownEstimator().estimate(
-        newInput,
-        gcpUsEast1Region,
-        gcpEmissionsFactors,
-        gcpConstants,
+      const awsConstants = {
+        kilowattHoursByServiceAndUsageUnit: {
+          total: {
+            [usageUnit]: {
+              cost: 50,
+              kilowattHours: 22,
+            },
+          },
+        },
+      }
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
+        input,
+        awsUsEast1Region,
+        awsEmissionsFactors,
+        awsConstants,
       )
 
       expect(result).toEqual([
         {
-          co2e: 0.13168724280000002,
+          co2e: 0.18293220000000002,
           timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          kilowattHours: 274.3484225,
+          kilowattHours: 440,
+          usesAverageCPUConstant: false,
+        },
+      ])
+    })
+    it('does estimates for unknown usage type for AWS, based on cost, where usage unit is not in known usage', () => {
+      const service = 'testService'
+      const usageUnit = 'testUsageUnit'
+      const input = [
+        {
+          timestamp: new Date('2021-01-01'),
+          cost: 2000,
+          usageUnit: usageUnit,
+          service: service,
+        },
+      ]
+      const awsUsEast1Region = 'us-east-1'
+      const awsEmissionsFactors = {
+        [awsUsEast1Region]: 0.000415755,
+      }
+
+      const awsConstants = {
+        kilowattHoursByServiceAndUsageUnit: {
+          total: {
+            testUsageUnitTwo: {
+              cost: 50,
+              kilowattHours: 22,
+            },
+            testUsageUnitThree: {
+              cost: 30,
+              kilowattHours: 10,
+            },
+          },
+        },
+      }
+      const result = new UnknownEstimator(EstimateUnknownUsageBy.COST).estimate(
+        input,
+        awsUsEast1Region,
+        awsEmissionsFactors,
+        awsConstants,
+      )
+
+      expect(result).toEqual([
+        {
+          co2e: 0.332604,
+          timestamp: new Date('2021-01-01T00:00:00.000Z'),
+          kilowattHours: 800,
           usesAverageCPUConstant: false,
         },
       ])

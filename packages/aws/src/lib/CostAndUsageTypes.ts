@@ -3,7 +3,6 @@
  */
 
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
-import { EstimateClassification } from '@cloud-carbon-footprint/core'
 
 // This are the services we are over estimating to be SSD because we don't know what the underlying storage type is (SSD or HDD).
 export const SSD_SERVICES: string[] = [
@@ -26,6 +25,7 @@ export const SSD_SERVICES: string[] = [
 export const SSD_USAGE_TYPES: string[] = [
   'VolumeUsage.gp2', // EBS
   'VolumeUsage.io2', // EBS
+  'VolumeUsage.io1', // EBS
   'VolumeUsage.gp3', // EBS
   'VolumeUsage.piops', // EBS
   'GP2-Storage', // RDS
@@ -162,66 +162,15 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'ApiGatewayCacheUsage',
   'PortUsage',
   'SharedMsftAD-Usage',
+  'Kafka.mcu.general',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
   'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'Dollar', // AWSDeveloperSupport - no energy associated with support cost
+  'HostBoxUsage', // "Double counted" with resource usage rows, so ignore.
 ]
-
-export const UNKNOWN_USAGE_TO_ASSUMED_USAGE_MAPPING: {
-  [key: string]: string[]
-} = {
-  Hrs: [EstimateClassification.COMPUTE],
-  Metrics: [EstimateClassification.STORAGE],
-  'GB-Hours': [EstimateClassification.STORAGE],
-  GB: [EstimateClassification.NETWORKING],
-  IOs: [EstimateClassification.COMPUTE],
-  ShardHour: [EstimateClassification.COMPUTE],
-  'LCU-Hrs': [EstimateClassification.COMPUTE],
-  Hours: [EstimateClassification.COMPUTE],
-  Hour: [EstimateClassification.COMPUTE],
-  hour: [EstimateClassification.COMPUTE],
-  'DPU-Hour': [EstimateClassification.COMPUTE],
-  'WriteCapacityUnit-Hrs': [EstimateClassification.COMPUTE],
-  'ReadCapacityUnit-Hrs': [EstimateClassification.COMPUTE],
-  'Lambda-GB-Second': [EstimateClassification.COMPUTE],
-  'vCPU-Hours': [EstimateClassification.COMPUTE],
-  Terabytes: [EstimateClassification.NETWORKING],
-  Requests: [EstimateClassification.NETWORKING],
-  Request: [EstimateClassification.NETWORKING],
-  'API Requests': [EstimateClassification.NETWORKING],
-  'API Calls': [EstimateClassification.NETWORKING],
-  Events: [EstimateClassification.STORAGE],
-  ConfigurationItemRecorded: [EstimateClassification.STORAGE],
-  Keys: [EstimateClassification.STORAGE],
-  Objects: [EstimateClassification.STORAGE],
-  Count: [EstimateClassification.STORAGE],
-  'Obj-Month': [EstimateClassification.STORAGE],
-  Secrets: [EstimateClassification.STORAGE],
-  Queries: [EstimateClassification.UNKNOWN],
-  Mo: [EstimateClassification.UNKNOWN],
-  PutRequest: [EstimateClassification.UNKNOWN],
-  HostedZone: [EstimateClassification.UNKNOWN],
-  User: [EstimateClassification.UNKNOWN],
-  'UsageRecord-month': [EstimateClassification.STORAGE],
-  Activities: [EstimateClassification.UNKNOWN],
-  StateTransitions: [EstimateClassification.UNKNOWN],
-  ConfigRuleEvaluations: [EstimateClassification.UNKNOWN],
-  '64K-Chunks': [EstimateClassification.UNKNOWN],
-  Notifications: [EstimateClassification.NETWORKING],
-  Alarms: [EstimateClassification.COMPUTE],
-  URL: [EstimateClassification.UNKNOWN],
-  'GB-Mo': [EstimateClassification.STORAGE],
-  GigaBytes: [EstimateClassification.NETWORKING],
-  'GB-Month': [EstimateClassification.STORAGE],
-  'GB-Mp': [EstimateClassification.STORAGE],
-  'GB-month': [EstimateClassification.STORAGE],
-  seconds: [EstimateClassification.COMPUTE],
-  Second: [EstimateClassification.COMPUTE],
-  'ACU-Hr': [EstimateClassification.COMPUTE],
-}
 
 export const LINE_ITEM_TYPES: string[] = [
   'Usage',

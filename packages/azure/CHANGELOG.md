@@ -1,5 +1,66 @@
 # @cloud-carbon-footprint/azure
 
+## 0.9.0
+
+### Minor Changes
+
+- 497ae495: Adds support for estimating energy and carbon emissions for Azure GPU VMs
+
+### Patch Changes
+
+- ef6af294: Adds initial support for energy/carbon estimation for GPU instances for AWS and GCP
+- Updated dependencies [497ae495]
+- Updated dependencies [ef6af294]
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/core@0.16.0
+  - @cloud-carbon-footprint/common@1.5.0
+
+## 0.8.0
+
+### Minor Changes
+
+- a23e1e59: Updates logic for handling unknown usage types to dynamically build kilowatt hour per usage amount (GCP, Azure) or cost (AWS) by service name and usage unit, to increase accuracy.
+
+### Patch Changes
+
+- Updated dependencies [a23e1e59]
+- Updated dependencies [f40ce29e]
+- Updated dependencies [04f2be16]
+  - @cloud-carbon-footprint/core@0.15.0
+  - @cloud-carbon-footprint/common@1.4.0
+
+## 0.7.0
+
+### Minor Changes
+
+- aaeb61a3: Updates estimation for unknown usage types to calculate kilowatt hours first, then co2e, to improve acccuracy
+
+### Patch Changes
+
+- 8fd171ed: Updates a number of packages and fixes linting, typescript and dependency issues
+- Updated dependencies [8fd171ed]
+- Updated dependencies [808085cc]
+- Updated dependencies [aaeb61a3]
+  - @cloud-carbon-footprint/common@1.3.1
+  - @cloud-carbon-footprint/core@0.14.0
+
+## 0.6.0
+
+### Minor Changes
+
+- c29a3b53: Adds support for specifying groupBy via API param and for displaying line chart data according to data grouping
+
+  For changes to create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8743e9a36f005716095300b7a1f331b4ffaa8100).
+
+### Patch Changes
+
+- c29a3b53: fixes filter logic for consumption management api
+- Updated dependencies [c29a3b53]
+  - @cloud-carbon-footprint/common@1.3.0
+  - @cloud-carbon-footprint/core@0.13.0
+
 ## 0.5.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/core",
-  "version": "0.12.1",
+  "version": "0.16.0",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions.",
   "main": "src/index.ts",
@@ -41,34 +41,34 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
-    "@types/jest-when": "^2.7.2",
-    "@types/node": "^16.0.1",
+    "@types/jest": "^27.4.0",
+    "@types/jest-when": "^2.7.4",
+    "@types/node": "^17.0.8",
     "@types/source-map-support": "^0.5.3",
-    "@typescript-eslint/eslint-plugin": "^4.24.0",
-    "@typescript-eslint/parser": "^4.24.0",
-    "eslint": "^7.26.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-unused-imports": "^1.1.1",
-    "jest": "26.6.0",
-    "jest-when": "^3.3.1",
-    "lint-staged": "^11.0.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "jest": "^27.4.7",
+    "jest-when": "^3.5.0",
+    "lint-staged": "^12.1.7",
     "onchange": "^7.1.0",
-    "prettier": "^2.3.0",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
-    "ts-jest": "^26.5.6",
-    "ts-node": "^10.2.1",
-    "ts-node-dev": "^1.1.6",
-    "typescript": "^4.5.3"
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/common": "^1.2.1",
+    "@cloud-carbon-footprint/common": "^1.5.0",
     "@types/ramda": "^0.27.40",
     "aws-sdk": "^2.910.0",
     "moment": "^2.29.1",
-    "ramda": "^0.27.1"
+    "ramda": "^0.28.0"
   },
   "lint-staged": {
     "*.{js,ts}": [

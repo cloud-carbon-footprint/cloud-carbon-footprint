@@ -3,8 +3,8 @@
  */
 
 import { google } from '@google-cloud/secret-manager/build/protos/protos'
-import { loginWithServicePrincipalSecret } from '@azure/ms-rest-nodeauth'
 import IAccessSecretVersionResponse = google.cloud.secretmanager.v1.IAccessSecretVersionResponse
+import { ClientSecretCredential } from '@azure/identity'
 
 import { configLoader as config } from '@cloud-carbon-footprint/common'
 
@@ -22,9 +22,28 @@ jest.mock('@google-cloud/secret-manager', () => {
   }
 })
 jest.mock('@cloud-carbon-footprint/common')
-jest.mock('@azure/ms-rest-nodeauth')
-const mockLoginWithServicePrincipalSecret =
-  loginWithServicePrincipalSecret as jest.Mock
+
+jest.mock('@azure/identity', () => {
+  return {
+    ClientSecretCredential: jest.fn(),
+  }
+})
+
+function mockClientSecretCredential(
+  targetTenantId: string,
+  targetClientId: string,
+  targetClientSecret: string,
+) {
+  const clientSecretCredential = ClientSecretCredential as unknown as Mock
+  clientSecretCredential.mockImplementationOnce(() => {
+    return new ClientSecretCredential(
+      targetTenantId,
+      targetClientId,
+      targetClientSecret,
+    )
+  })
+  return clientSecretCredential
+}
 
 describe('Azure Credentials Provider', () => {
   beforeEach(() => {
@@ -49,25 +68,25 @@ describe('Azure Credentials Provider', () => {
     const mockSecretVersion = buildMockSecretResponse(azureClientSecret)
     const mockSecretTenantId = buildMockSecretResponse(azureTenantId)
 
-    const expectedCredentials = {
-      clientId: azureClientId,
-      secret: azureClientSecret,
-      domain: azureTenantId,
-    }
+    const mockCredentials = mockClientSecretCredential(
+      azureTenantId,
+      azureClientId,
+      azureClientSecret,
+    )
 
     mockSecretAccessVersion.mockResolvedValueOnce(mockSecretClientId)
     mockSecretAccessVersion.mockResolvedValueOnce(mockSecretVersion)
     mockSecretAccessVersion.mockResolvedValueOnce(mockSecretTenantId)
-    mockLoginWithServicePrincipalSecret.mockResolvedValue(expectedCredentials)
 
-    const credentials = await AzureCredentialsProvider.create()
+    const credentials: ClientSecretCredential =
+      await AzureCredentialsProvider.create()
 
-    expect(mockLoginWithServicePrincipalSecret).toHaveBeenCalledWith(
+    expect(mockCredentials).toHaveBeenCalledWith(
+      azureTenantId,
       azureClientId,
       azureClientSecret,
-      azureTenantId,
     )
-    expect(credentials).toEqual(expectedCredentials)
+    expect(credentials).toBeInstanceOf(ClientSecretCredential)
   })
 
   function buildMockSecretResponse(

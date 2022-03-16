@@ -6,54 +6,53 @@ import moment from 'moment'
 import { BigQuery, Job, RowMetadata } from '@google-cloud/bigquery'
 
 import {
-  Logger,
   configLoader,
-  EstimationResult,
   containsAny,
+  convertByteSecondsToGigabyteHours,
   convertByteSecondsToTerabyteHours,
   convertBytesToGigabytes,
-  convertByteSecondsToGigabyteHours,
+  EstimationResult,
+  GroupBy,
+  Logger,
   LookupTableInput,
   LookupTableOutput,
-  GroupBy,
 } from '@cloud-carbon-footprint/common'
 
 import {
-  ComputeEstimator,
-  StorageEstimator,
-  NetworkingEstimator,
-  MemoryEstimator,
-  UnknownEstimator,
-  ComputeUsage,
-  StorageUsage,
-  NetworkingUsage,
-  MemoryUsage,
-  FootprintEstimate,
-  MutableEstimationResult,
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
   appendOrAccumulateEstimatesByDay,
-  COMPUTE_PROCESSOR_TYPES,
-  CloudConstantsEmissionsFactors,
   CloudConstants,
-  UnknownUsage,
-  accumulateCo2PerCost,
-  EstimateClassification,
-  EmbodiedEmissionsUsage,
+  CloudConstantsEmissionsFactors,
+  COMPUTE_PROCESSOR_TYPES,
+  ComputeEstimator,
+  ComputeUsage,
   EmbodiedEmissionsEstimator,
+  EmbodiedEmissionsUsage,
+  FootprintEstimate,
+  MemoryEstimator,
+  MemoryUsage,
+  MutableEstimationResult,
+  NetworkingEstimator,
+  NetworkingUsage,
+  StorageEstimator,
+  StorageUsage,
+  UnknownEstimator,
+  UnknownUsage,
 } from '@cloud-carbon-footprint/core'
 
 import {
-  MEMORY_USAGE_TYPES,
-  UNKNOWN_USAGE_TYPES,
-  UNKNOWN_SERVICE_TYPES,
   COMPUTE_STRING_FORMATS,
-  UNSUPPORTED_USAGE_TYPES,
-  NETWORKING_STRING_FORMATS,
   GCP_QUERY_GROUP_BY,
+  MEMORY_USAGE_TYPES,
+  NETWORKING_STRING_FORMATS,
+  UNKNOWN_SERVICE_TYPES,
+  UNKNOWN_USAGE_TYPES,
   UNKNOWN_USAGE_UNITS,
-  UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING,
-  UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING,
+  UNSUPPORTED_USAGE_TYPES,
 } from './BillingExportTypes'
 import {
+  GPU_MACHINE_TYPES,
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
   MACHINE_FAMILY_SHARED_CORE_TO_MACHINE_TYPE_MAPPING,
   MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING,
@@ -61,10 +60,7 @@ import {
   SHARED_CORE_PROCESSORS,
 } from './MachineTypes'
 import BillingExportRow from './BillingExportRow'
-import {
-  GCP_CLOUD_CONSTANTS,
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 import { GCP_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class BillingExportTable {
@@ -106,6 +102,7 @@ export default class BillingExportTable {
           results,
           billingExportRow,
           footprintEstimate,
+          grouping,
         )
     })
 
@@ -113,7 +110,12 @@ export default class BillingExportTable {
       unknownRows.map((rowData: BillingExportRow) => {
         const footprintEstimate = this.getEstimateForUnknownUsage(rowData)
         if (footprintEstimate)
-          appendOrAccumulateEstimatesByDay(results, rowData, footprintEstimate)
+          appendOrAccumulateEstimatesByDay(
+            results,
+            rowData,
+            footprintEstimate,
+            grouping,
+          )
       })
     }
     return results
@@ -195,7 +197,7 @@ export default class BillingExportTable {
     unknownRows: BillingExportRow[],
   ): FootprintEstimate | void {
     const emissionsFactors: CloudConstantsEmissionsFactors =
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
+      getGCPEmissionsFactors()
     const powerUsageEffectiveness: number = GCP_CLOUD_CONSTANTS.getPUE(
       billingExportRow.region,
     )
@@ -272,22 +274,31 @@ export default class BillingExportTable {
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
+    const isGPUComputeUsage = usageRow.usageType.includes('GPU')
+
     const computeUsage: ComputeUsage = {
       cpuUtilizationAverage: GCP_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
-      vCpuHours: usageRow.vCpuHours,
+      vCpuHours: isGPUComputeUsage ? usageRow.gpuHours : usageRow.vCpuHours,
       usesAverageCPUConstant: true,
       timestamp,
     }
-
-    const computeProcessors = this.getComputeProcessorsFromUsageType(
-      usageRow.usageType,
-      usageRow.machineType,
-    )
+    let computeProcessors
+    if (isGPUComputeUsage) {
+      computeProcessors = this.getGpuComputeProcessorsFromUsageType(
+        usageRow.usageType,
+      )
+    } else {
+      computeProcessors = this.getComputeProcessorsFromUsageType(
+        usageRow.usageType,
+        usageRow.machineType,
+      )
+    }
 
     const computeConstants: CloudConstants = {
       minWatts: GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors),
       maxWatts: GCP_CLOUD_CONSTANTS.getMaxWatts(computeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(usageRow),
     }
 
     const computeFootprint = this.computeEstimator.estimate(
@@ -298,11 +309,11 @@ export default class BillingExportTable {
     )[0]
 
     if (computeFootprint)
-      accumulateCo2PerCost(
-        EstimateClassification.COMPUTE,
-        computeFootprint.co2e,
-        usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      accumulateKilowattHours(
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        usageRow,
+        computeFootprint.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
 
     return computeFootprint
@@ -325,6 +336,14 @@ export default class BillingExportTable {
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
+  }
+  private getGpuComputeProcessorsFromUsageType(usageType: string): string[] {
+    const gpuComputeProcessors = GPU_MACHINE_TYPES.filter((processor) =>
+      usageType.startsWith(processor),
+    )
+    return gpuComputeProcessors.length
+      ? gpuComputeProcessors
+      : GPU_MACHINE_TYPES
   }
 
   private getEmbodiedEmissions(
@@ -430,11 +449,11 @@ export default class BillingExportTable {
 
     if (storageFootprint) {
       storageFootprint.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
-        EstimateClassification.STORAGE,
-        storageFootprint.co2e,
-        usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      accumulateKilowattHours(
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        usageRow,
+        storageFootprint.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
 
@@ -464,11 +483,11 @@ export default class BillingExportTable {
 
     if (memoryFootprint) {
       memoryFootprint.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
-        EstimateClassification.MEMORY,
-        memoryFootprint.co2e,
-        usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      accumulateKilowattHours(
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        usageRow,
+        memoryFootprint.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
 
@@ -498,11 +517,11 @@ export default class BillingExportTable {
 
     if (networkingFootprint) {
       networkingFootprint.usesAverageCPUConstant = false
-      accumulateCo2PerCost(
-        EstimateClassification.NETWORKING,
-        networkingFootprint.co2e,
-        usageRow.cost,
-        GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      accumulateKilowattHours(
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        usageRow,
+        networkingFootprint.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
       )
     }
 
@@ -553,42 +572,21 @@ export default class BillingExportTable {
   ): FootprintEstimate {
     const unknownUsage: UnknownUsage = {
       timestamp: rowData.timestamp,
-      cost: rowData.cost,
+      usageAmount: rowData.usageAmount,
       usageUnit: rowData.usageUnit,
       usageType: rowData.usageType,
-      reclassificationType: this.getUnknownReclassification(
-        rowData.usageType,
-        rowData.usageUnit,
-      ),
+      replicationFactor: this.getReplicationFactor(rowData),
     }
     const unknownConstants: CloudConstants = {
-      co2ePerCost: GCP_CLOUD_CONSTANTS.CO2E_PER_COST,
+      kilowattHoursByServiceAndUsageUnit:
+        GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
     }
     return this.unknownEstimator.estimate(
       [unknownUsage],
       rowData.region,
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      getGCPEmissionsFactors(),
       unknownConstants,
     )[0]
-  }
-
-  getUnknownReclassification(usageType: string, usageUnit: string): string {
-    if (usageUnit === 'byte-seconds') {
-      if (containsAny(['Memory'], usageType)) {
-        return EstimateClassification.MEMORY
-      }
-      return EstimateClassification.STORAGE
-    }
-
-    for (const key in UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING) {
-      if (usageType.includes(key)) {
-        return UNKNOWN_USAGE_TYPE_TO_ASSUMED_USAGE_MAPPING[key]
-      }
-    }
-
-    return UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING[usageUnit]?.[0]
-      ? UNKNOWN_USAGE_UNIT_TO_ASSUMED_USAGE_MAPPING[usageUnit][0]
-      : EstimateClassification.UNKNOWN
   }
 
   private async getUsage(
@@ -616,7 +614,7 @@ export default class BillingExportTable {
                     ON system_labels.key = "compute.googleapis.com/machine_spec"
                   WHERE
                     cost_type != 'rounding_error'
-                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes')
+                    AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
                     AND usage_start_time >= TIMESTAMP('${moment
                       .utc(start)
                       .format('YYYY-MM-DD')}')

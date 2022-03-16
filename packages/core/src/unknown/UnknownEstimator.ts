@@ -2,18 +2,27 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { sum } from 'ramda'
+
 import CloudConstants, {
   CloudConstantsEmissionsFactors,
 } from '../CloudConstantsTypes'
 import FootprintEstimate, {
-  Co2ePerCost,
-  estimateKwh,
-  EstimateClassification,
+  estimateCo2,
+  KilowattHoursByServiceAndUsageUnit,
+  KilowattHourTotals,
 } from '../FootprintEstimate'
 import IFootprintEstimator from '../IFootprintEstimator'
 import UnknownUsage from './UnknownUsage'
 
+export enum EstimateUnknownUsageBy {
+  COST = 'cost',
+  USAGE_AMOUNT = 'usageAmount',
+}
+
 export default class UnknownEstimator implements IFootprintEstimator {
+  constructor(private estimateKilowattHoursBy: EstimateUnknownUsageBy) {}
+
   estimate(
     data: UnknownUsage[],
     region: string,
@@ -21,44 +30,73 @@ export default class UnknownEstimator implements IFootprintEstimator {
     constants: CloudConstants,
   ): FootprintEstimate[] {
     return data.map((data: UnknownUsage) => {
-      const usesAverageCPUConstant =
-        data.reclassificationType === EstimateClassification.COMPUTE
-      const estimatedCO2Emissions = this.estimateCo2(
-        data.cost,
-        constants.co2ePerCost,
-        data.reclassificationType,
+      const estimatedKilowattHours = this.estimateKilowattHours(
+        data,
+        constants.kilowattHoursByServiceAndUsageUnit,
       )
-      const estimatedKilowattHours = estimateKwh(
-        estimatedCO2Emissions,
+      const estimatedCo2eEmissions = estimateCo2(
+        estimatedKilowattHours,
         region,
         emissionsFactors,
       )
       return {
         timestamp: data.timestamp,
         kilowattHours: estimatedKilowattHours,
-        co2e: estimatedCO2Emissions,
-        usesAverageCPUConstant,
+        co2e: estimatedCo2eEmissions,
+        usesAverageCPUConstant: false,
       }
     })
   }
 
-  private estimateCo2(
-    cost: number,
-    co2ePerCost: Co2ePerCost,
-    classification: string,
+  private estimateKilowattHours(
+    unknownUsage: UnknownUsage,
+    kilowattHoursByServiceAndUsageUnit: KilowattHoursByServiceAndUsageUnit,
   ): number {
-    // This creates a coefficient based on the co2e per cost ratio of a given usage classification,
-    // then multiplies the coefficient by the reclassified unknown usage cost to get estimated co2e.
-    // If the new classification is still unknown, the coefficient is the average from the totals.
-    if (
-      classification === EstimateClassification.UNKNOWN ||
-      !co2ePerCost[classification].cost
+    const serviceAndUsageUnit =
+      kilowattHoursByServiceAndUsageUnit[unknownUsage.service] &&
+      kilowattHoursByServiceAndUsageUnit[unknownUsage.service][
+        unknownUsage.usageUnit
+      ]
+
+    if (serviceAndUsageUnit)
+      return (
+        (serviceAndUsageUnit.kilowattHours /
+          serviceAndUsageUnit[this.estimateKilowattHoursBy]) *
+        unknownUsage[this.estimateKilowattHoursBy]
+      )
+
+    const totalForUsageUnit =
+      kilowattHoursByServiceAndUsageUnit.total[unknownUsage.usageUnit]
+
+    if (totalForUsageUnit)
+      return (
+        (totalForUsageUnit.kilowattHours /
+          totalForUsageUnit[this.estimateKilowattHoursBy]) *
+        unknownUsage[this.estimateKilowattHoursBy]
+      )
+    const totalKiloWattHours = this.getTotalFor(
+      'kilowattHours',
+      kilowattHoursByServiceAndUsageUnit,
     )
-      return (co2ePerCost.total.co2e / co2ePerCost.total.cost) * cost
+    const totalCost = this.getTotalFor(
+      this.estimateKilowattHoursBy,
+      kilowattHoursByServiceAndUsageUnit,
+    )
 
     return (
-      (co2ePerCost[classification].co2e / co2ePerCost[classification].cost) *
-      cost
+      (totalKiloWattHours / totalCost) *
+      unknownUsage[this.estimateKilowattHoursBy]
+    )
+  }
+
+  private getTotalFor(
+    type: keyof KilowattHourTotals,
+    kilowattHoursPerCost: KilowattHoursByServiceAndUsageUnit,
+  ) {
+    return sum(
+      Object.values(kilowattHoursPerCost.total).map(
+        (costAndKilowattHourTotals) => costAndKilowattHourTotals[type],
+      ),
     )
   }
 }
