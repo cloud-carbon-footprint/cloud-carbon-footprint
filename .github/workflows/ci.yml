@@ -1,3 +1,4 @@
+
 name: CI
 on:
   workflow_dispatch:
@@ -111,10 +112,12 @@ jobs:
           yarn lerna run build:workspace
           # replacing local @cloud-carbon-footprint dependencies with a local reference
           yarn lerna run build:update
+      - name: zip artifact
+        run: zip dist-workspace.zip dist-workspace/* -r
       - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace
-          path: dist-workspace
+          path: dist-workspace.zip
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -245,7 +248,8 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-workspace
-          path: dist-workspace
+      - name: unzip artifact for deployment
+        run: unzip dist-workspace.zip
       - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
@@ -323,7 +327,8 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-workspace
-          path: dist-workspace
+      - name: unzip artifact for deployment
+        run: unzip dist-workspace.zip
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
