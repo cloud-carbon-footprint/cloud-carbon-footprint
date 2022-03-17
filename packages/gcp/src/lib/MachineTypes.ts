@@ -37,6 +37,7 @@ export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
   t2d: [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN],
   n1: skyLakeBroadwellHaswellSandyBridgeIvyBridge,
   c2: [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
+  c2d: [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN],
   m2: broadwelCascadeLake,
   m1: broadwellSkylake,
   a2: [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE],
@@ -194,6 +195,15 @@ export const MACHINE_FAMILY_TO_MACHINE_TYPE_MAPPING: {
     'c2-standard-16': [16, 1.5107],
     'c2-standard-30': [30, 1.5107],
     'c2-standard-60': [60, 1.5107],
+  },
+  'c2d-standard': {
+    'c2-standard-2': [2, 1.6991],
+    'c2-standard-4': [4, 1.6991],
+    'c2-standard-8': [8, 1.6991],
+    'c2-standard-16': [16, 1.6991],
+    'c2-standard-32': [32, 1.6991],
+    'c2-standard-56': [56, 1.6991],
+    'c2-standard-112': [112, 1.6991],
   },
   'm1-ultramem': {
     'm1-ultramem-40': [40, 1.1],
