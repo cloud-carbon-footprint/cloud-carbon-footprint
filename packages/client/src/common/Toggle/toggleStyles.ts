@@ -72,7 +72,7 @@ const useStyles = makeStyles(({ palette }) => ({
     display: 'inline-block',
     position: 'relative',
     zIndex: 1,
-    background: '#3F51B5',
+    background: '#e62314',
     width: 110,
     height: 50,
     borderRadius: 15,

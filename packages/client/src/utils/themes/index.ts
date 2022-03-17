@@ -33,9 +33,15 @@ const determineTheme = (): Theme => {
       background: {
         default: '#F1F1F1',
       },
+      primary: {
+        main: '#e62314',
+      },
+      secondary: {
+        main: '#5f696e',
+      },
       chart: [
         // primary
-        { main: '#2C82BE' },
+        { main: '#e62314' },
         { main: '#B8DCF5' },
         { main: '#76DDF8' },
         { main: '#53A8E2' },
@@ -54,7 +60,7 @@ const determineTheme = (): Theme => {
         { main: '#E2EF70' },
         { main: '#70E4EF' },
       ],
-      primaryBlue: '#3F51B5',
+      primaryBlue: '#5f696e',
       lightBlue: 'rgba(63, 81, 181, 0.08)',
       lightTitle: 'rgba(0, 0, 0, 0.87)',
       lightMessage: '#b0bec5',

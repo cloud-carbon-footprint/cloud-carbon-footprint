@@ -5,9 +5,10 @@
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import React, { ReactElement } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import useStyles from './headerBarStyles'
-import logo from './ccf_logo.png'
+import logo from './osp_ccf_logo.png'
 
 const HeaderBar = (): ReactElement => {
   const classes = useStyles()
@@ -27,9 +28,18 @@ const HeaderBar = (): ReactElement => {
             className={classes.logo}
           />
           <Typography component="h1" variant="h5">
-            Cloud Carbon Footprint
+            OSP Cloud Carbon Footprint
           </Typography>
         </NavLink>
+        <Link
+          to="#"
+          onClick={(e) => {
+            window.open('mailto:ccf@osp.de')
+            e.preventDefault()
+          }}
+        >
+          <Typography component="h2">CONTACT</Typography>
+        </Link>
         <NavLink
           to="/recommendations"
           className={clsx(classes.navLink, { isActive: classes.activeNavLink })}

@@ -6,11 +6,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   card: {
-    backgroundColor: '#3F51B5',
+    backgroundColor: '#e62314',
     flex: '1 1 350px',
     maxWidth: 600,
     minHeight: 350,
-    border: '5px solid #3F51B5',
+    border: '5px solid #e62314',
     borderRadius: 15,
     display: 'flex',
     flexDirection: 'column',
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   titleContainer: {
-    backgroundColor: '#3F51B5',
+    backgroundColor: '#e62314',
     width: '100%',
     height: 64,
     display: 'flex',
