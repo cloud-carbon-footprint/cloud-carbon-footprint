@@ -12,3 +12,5 @@ env_variables:
   CCF_CACHE_PATH: /tmp/estimates.cache.json
   GRPC_TRACE: all
   GRPC_VERBOSITY: DEBUG
+
+service_account: ccf-app@ogcs-btqm-osphub.iam.gserviceaccount.com
