@@ -47,9 +47,6 @@ const useStyles = makeStyles((theme: Theme) =>
     errorMessage: {
       fontSize: '18px',
     },
-    gridPlacement: {
-      marginBottom: '25%',
-    },
   }),
 )
 
@@ -80,19 +77,17 @@ const ErrorPage = (): ReactElement => {
       direction="column"
       alignItems="center"
       justify="center"
-      style={{ minHeight: '100vh' }}
+      style={{ height: '100%' }}
     >
       <CloudOffIcon className={classes.cloudIcon} />
-      <Grid item className={classes.gridPlacement} xs={12}>
-        <div data-testid="error-page">
-          <h1 className={classes.errorStatus}>
-            {status} {statusText}
-          </h1>
-          <div className={classes.errorMessage}>
-            Something has gone wrong, please try again later
-          </div>
+      <div data-testid="error-page">
+        <h1 className={classes.errorStatus}>
+          {status} {statusText}
+        </h1>
+        <div className={classes.errorMessage}>
+          Something has gone wrong, please try again later
         </div>
-      </Grid>
+      </div>
     </Grid>
   )
 }

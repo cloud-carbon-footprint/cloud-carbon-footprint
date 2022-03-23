@@ -57,7 +57,7 @@ export default function EmissionsMetricsPage({
   }
 
   return (
-    <>
+    <div className={classes.pageContainer}>
       <EmissionsSidePanel />
       <EmissionsFilterBar {...footprint.filterBarProps} />
       <div className={classes.boxContainer}>
@@ -76,6 +76,6 @@ export default function EmissionsMetricsPage({
           <CarbonIntensityMap />
         </Grid>
       </div>
-    </>
+    </div>
   )
 }

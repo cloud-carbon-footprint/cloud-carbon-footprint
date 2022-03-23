@@ -38,7 +38,7 @@ const RecommendationsPage = ({
     )
 
   return (
-    <>
+    <div className={classes.pageContainer}>
       <RecommendationsFilterBar
         {...recommendations.filterBarProps}
         setUseKilograms={setUseKilograms}
@@ -52,7 +52,7 @@ const RecommendationsPage = ({
           />
         </Grid>
       </div>
-    </>
+    </div>
   )
 }
 

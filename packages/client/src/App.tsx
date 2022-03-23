@@ -40,6 +40,7 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
   const useStyles = makeStyles(() => ({
     appContainer: {
       padding: 0,
+      height: 'calc(100vh - 65px)',
     },
   }))
 
