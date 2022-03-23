@@ -109,6 +109,38 @@ describe('createLookupTable', () => {
       expect(fs.existsSync(outputFilePath)).toBe(true)
       expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
     })
+
+    it('creates Azure lookup table CSV file, with default output file path', async () => {
+      inputFilePath = path.join(__dirname, 'azure_input.test.csv')
+      outputFilePath = path.join(process.cwd(), 'azure_lookup_data.csv')
+
+      await createLookupTable([
+        'executable',
+        'file',
+        '--azureInput',
+        inputFilePath,
+      ])
+
+      expect(fs.existsSync(outputFilePath)).toBe(true)
+      expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
+    })
+
+    it('creates Azure lookup table CSV file, with provided output file name', async () => {
+      inputFilePath = path.join(__dirname, 'azure_input.test.csv')
+      outputFilePath = path.join(process.cwd(), 'azure_lookup_data.csv')
+
+      await createLookupTable([
+        'executable',
+        'file',
+        '--azureInput',
+        inputFilePath,
+        '--azureOutput',
+        'azure_lookup_data.csv',
+      ])
+
+      expect(fs.existsSync(outputFilePath)).toBe(true)
+      expect(fs.readFileSync(outputFilePath).toString()).toMatchSnapshot()
+    })
   })
 
   it('Throws if the input data file is incorrect', async () => {

@@ -3207,7 +3207,7 @@ __metadata:
     "@cloud-carbon-footprint/common": ^1.5.0
     "@types/express": ^4.17.12
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/source-map-support": ^0.5.3
     "@types/supertest": ^2.0.11
@@ -3231,7 +3231,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3263,7 +3263,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3275,7 +3275,7 @@ __metadata:
     "@cloud-carbon-footprint/core": ^0.16.0
     "@google-cloud/iam-credentials": ^1.1.1
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
@@ -3299,7 +3299,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3316,7 +3316,7 @@ __metadata:
     "@cloud-carbon-footprint/core": ^0.16.0
     "@google-cloud/secret-manager": ^3.10.1
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
@@ -3336,7 +3336,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3348,7 +3348,7 @@ __metadata:
     "@cloud-carbon-footprint/common": ^1.5.0
     "@types/cli-table": ^0.3.0
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/prompts": ^2.0.12
     "@types/ramda": ^0.27.40
@@ -3361,7 +3361,7 @@ __metadata:
     commander: ^8.0.0
     csv-writer: ^1.6.0
     csvtojson: ^2.0.10
-    dotenv: ^14.2.0
+    dotenv: ^16.0.0
     eslint: ^8.6.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
@@ -3380,7 +3380,7 @@ __metadata:
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
     typed-prompts: ^1.5.0
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3413,7 +3413,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
     apexcharts: ^3.26.3
-    axios: ^0.25.0
+    axios: ^0.26.1
     concurrently: ^7.0.0
     copyfiles: ^2.4.1
     eslint: ^8.6.0
@@ -3440,7 +3440,7 @@ __metadata:
     react-test-renderer: ^17.0.2
     rimraf: ^3.0.2
     styled-components: ^5.3.0
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3453,7 +3453,7 @@ __metadata:
     "@types/node": ^17.0.8
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
-    dotenv: ^14.2.0
+    dotenv: ^16.0.0
     eslint: ^8.6.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
@@ -3466,7 +3466,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
     winston: ^3.3.3
   languageName: unknown
   linkType: soft
@@ -3477,7 +3477,7 @@ __metadata:
   dependencies:
     "@cloud-carbon-footprint/common": ^1.5.0
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/ramda": ^0.27.40
     "@types/source-map-support": ^0.5.3
@@ -3500,7 +3500,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3528,7 +3528,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.4.0
     typed-prompts: ^1.5.0
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   bin:
     ccf-create-app: bin/ccf-create-app
   languageName: unknown
@@ -3545,7 +3545,7 @@ __metadata:
     "@google-cloud/recommender": ^4.2.5
     "@google-cloud/resource-manager": ^3.0.0
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
@@ -3555,7 +3555,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unused-imports: ^2.0.0
     google-gax: ^2.29.0
-    googleapis: ^92.0.0
+    googleapis: ^96.0.0
     jest: ^27.4.7
     jest-when: ^3.5.0
     lint-staged: ^12.1.7
@@ -3567,7 +3567,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -3596,7 +3596,7 @@ __metadata:
     "@cloud-carbon-footprint/common": ^1.5.0
     "@cloud-carbon-footprint/core": ^0.16.0
     "@types/jest": ^27.4.0
-    "@types/jest-when": ^2.7.4
+    "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
@@ -3616,7 +3616,7 @@ __metadata:
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -6342,12 +6342,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest-when@npm:^2.7.4":
-  version: 2.7.4
-  resolution: "@types/jest-when@npm:2.7.4"
+"@types/jest-when@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "@types/jest-when@npm:3.5.0"
   dependencies:
     "@types/jest": "*"
-  checksum: fea5f5c9b882ee5191ef47dfbbe71ce7935d4ede7ac12c2bf7dbceead3da066930aa492fc534f8b53ef6694f30313b5669b87cb45e36ddbece42c6ff27b01364
+  checksum: 059756af981d2bc002ae6a876bf27a20dac83c17cd8bd346d1564602cad559f523ebdd871a69b72a0b65a346b8792dfb4b6ceb45113eba5031e94ec9df45c87a
   languageName: node
   linkType: hard
 
@@ -8079,12 +8079,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "axios@npm:0.25.0"
+"axios@npm:^0.26.1":
+  version: 0.26.1
+  resolution: "axios@npm:0.26.1"
   dependencies:
-    follow-redirects: ^1.14.7
-  checksum: 2a8a3787c05f2a0c9c3878f49782357e2a9f38945b93018fb0c4fd788171c43dceefbb577988628e09fea53952744d1ecebde234b561f1e703aa43e0a598a3ad
+    follow-redirects: ^1.14.8
+  checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
   languageName: node
   linkType: hard
 
@@ -11116,10 +11116,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^14.2.0":
-  version: 14.2.0
-  resolution: "dotenv@npm:14.2.0"
-  checksum: 85a0e44918ef49e64c278f757dab50a156b9a6ca67f708876fd81d265e575e35b67387fc681d910df99368d6c1edca66cd546edeb0f7db3b499cb876c999233e
+"dotenv@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "dotenv@npm:16.0.0"
+  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
   languageName: node
   linkType: hard
 
@@ -12514,13 +12514,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.7":
+"follow-redirects@npm:^1.14.0":
   version: 1.14.7
   resolution: "follow-redirects@npm:1.14.7"
   peerDependenciesMeta:
     debug:
       optional: true
   checksum: f6d03e5e30877431065bca0d1b2e3db93949eb799d368a5c07ea8a4b71205f0349a3f8f0191bf13a07c93885522834dca1dc8e527dc99a772c6911fba24edc5f
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.8":
+  version: 1.14.9
+  resolution: "follow-redirects@npm:1.14.9"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: f5982e0eb481818642492d3ca35a86989c98af1128b8e1a62911a3410621bc15d2b079e8170b35b19d3bdee770b73ed431a257ed86195af773771145baa57845
   languageName: node
   linkType: hard
 
@@ -13290,13 +13300,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"googleapis@npm:^92.0.0":
-  version: 92.0.0
-  resolution: "googleapis@npm:92.0.0"
+"googleapis@npm:^96.0.0":
+  version: 96.0.0
+  resolution: "googleapis@npm:96.0.0"
   dependencies:
     google-auth-library: ^7.0.2
     googleapis-common: ^5.0.2
-  checksum: 47eb8c440d2c7e549bb1c2e8c4e8fde99c6bdd2719fdf0d9be020291409bd71b7d3806b2f864c31e0b292b4a3c2af28c05842a4964f8b31c7b6f91a0f93c00a3
+  checksum: 77cfaf65ef29310db19a72351a97dccb7bcc3acd2c0f5f8c079f62c66b98295b620b8eed180a1c4da1f3ea74a1a8fbedbb039180adba36af6cadfeb9472f6bcb
   languageName: node
   linkType: hard
 
@@ -21098,7 +21108,7 @@ resolve@^2.0.0-next.3:
     rimraf: ^3.0.2
     sonar-scanner: ^3.1.0
     ts-node: ^10.4.0
-    typescript: ^4.5.4
+    typescript: ^4.6.2
   languageName: unknown
   linkType: soft
 
@@ -23776,43 +23786,23 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-typescript@^3.3.3:
-  version: 3.9.9
-  resolution: "typescript@npm:3.9.9"
+"typescript@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "typescript@npm:4.6.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 0dac8ae4b5ec76a2a5c0148fa718e64318d90d5309216554b3938afc911561860b6e6f95564c650cc5b7baa0360577c8b9a4fda272dd2d1fb376ad805863da06
+  checksum: 8a44ed7e6f6c4cb1ebe8cf236ecda2fb119d84dcf0fbd77e707b2dfea1bbcfc4e366493a143513ce7f57203c75da9d4e20af6fe46de89749366351046be7577c
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.5.4":
-  version: 4.5.4
-  resolution: "typescript@npm:4.5.4"
+"typescript@patch:typescript@npm%3A^4.6.2#~builtin<compat/typescript>":
+  version: 4.6.2
+  resolution: "typescript@patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 59f3243f9cd6fe3161e6150ff6bf795fc843b4234a655dbd938a310515e0d61afd1ac942799e7415e4334255e41c2c49b7dd5d9fd38a17acd25a6779ca7e0961
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^3.3.3#~builtin<compat/typescript>":
-  version: 3.9.9
-  resolution: "typescript@patch:typescript@npm%3A3.9.9#~builtin<compat/typescript>::version=3.9.9&hash=493e53"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 98b833f7767e8773ed3eba0f320e2b2ed716d55a948f04592e437c77783897864c2b82df834dd8821511fd026c0c5607ed43ddc0d91e2021ab02874a061e0f95
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^4.5.4#~builtin<compat/typescript>":
-  version: 4.5.4
-  resolution: "typescript@patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 2e488dde7d2c4a2fa2e79cf2470600f8ce81bc0563c276b72df8ff412d74456ae532ba824650ae936ce207440c79720ddcfaa25e3cb4477572b8534fa4e34d49
+  checksum: efb83260a22ee49d4c8bdc59b3cefe54fdf51d6f563f5c3a35aa3d5e46fb12f3f1d33a36d6f9f64171e567ead1847e99cb612d0a9a74e7d44e16cad9d0bbc937
   languageName: node
   linkType: hard
 

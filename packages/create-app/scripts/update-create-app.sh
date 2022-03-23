@@ -14,7 +14,8 @@ npm login || exit 1
 echo "Publishing..."
 npm publish || exit 1
 git checkout package.json
-echo "Installing new app..."
+echo "Installing new app outside CCF repo..."
+cd ../../..
 npx @cloud-carbon-footprint/create-app-dev || exit 1
 echo "Starting app..."
 cd ccf-app

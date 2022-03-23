@@ -219,6 +219,12 @@ export default class App {
     return GCPAccount.getBillingExportDataFromInputData(inputData)
   }
 
+  getAzureEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    return AzureAccount.getDataFromConsumptionManagementInputData(inputData)
+  }
+
   getOnPremiseEstimatesFromInputData(
     inputData: OnPremiseDataInput[],
   ): OnPremiseDataOutput[] {

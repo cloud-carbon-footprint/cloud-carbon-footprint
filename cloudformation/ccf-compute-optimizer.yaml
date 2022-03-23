@@ -1,0 +1,306 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "Export and Relocate AWS Compute Optimizer Recommendations"
+
+Parameters:
+  BucketNamePrefix:
+    Type: String
+  CentralBucketName:
+    Type: String
+  CCFRoleName:
+    Type: String
+  CreateCentralBucket:
+    Type: String
+    Default: "True"
+    AllowedValues: ["True", "False"]
+  IncludeMemberAccounts:
+    Type: String
+    Default: "True"
+    AllowedValues: ["True", "False"]
+
+Conditions:
+  USWest2: !Equals [ !Ref "AWS::Region", 'us-west-2' ]
+  CreateCentralBucketCond: !And
+    - !Equals [ !Ref CreateCentralBucket, "True" ]
+    - !Condition USWest2
+Resources:
+  centralBucket:
+    Condition: CreateCentralBucketCond
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              "SSEAlgorithm": "AES256"
+      LifecycleConfiguration:
+        Rules:
+          - Id: DefaultPolicy
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+            ExpirationInDays: 7
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      BucketName: !Ref CentralBucketName
+  centralBucketPolicy:
+    DependsOn: centralBucket
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref centralBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS: "arn:aws:iam::${AWS::AccountId}:role/${CCFRoleName}"
+            Action:
+              - "s3:ListBucket"
+              - "s3:GetObject"
+            Resource:
+              - !Sub "arn:aws:s3:::${CentralBucketName}"
+              - !Sub "arn:aws:s3:::${CentralBucketName}/*"
+  LambdaExecutionRole:
+    Condition: USWest2
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ComputeOptimizerExportRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Principal:
+            Service: "lambda.amazonaws.com"
+          Action: "sts:AssumeRole"
+      Path: "/"
+  LambdaPolicy:
+    Condition: USWest2
+    Type: AWS::IAM::Policy
+    Properties:
+      Roles:
+        - !Ref LambdaExecutionRole
+      PolicyName: LambdaPolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: "logs:CreateLogGroup"
+            Effect: "Allow"
+            Resource: "*"
+          - Effect: "Allow"
+            Action:
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+            Resource: "*"
+          - Effect: "Allow"
+            Action:
+              - "xray:PutTraceSegments"
+              - "xray:PutTelemetryRecords"
+            Resource: "*"
+          - Action:
+              - "compute-optimizer:*"
+              - "ec2:DescribeInstances"
+              - "ec2:DescribeVolumes"
+              - "lambda:ListFunctions"
+              - "lambda:ListProvisionedConcurrencyConfigs"
+              - "autoscaling:DescribeAutoScalingGroups"
+              - "cloudwatch:GetMetricData"
+              - "organizations:ListAccounts"
+              - "organizations:DescribeOrganization"
+              - "organizations:DescribeAccount"
+              - "organizations:EnableAWSServiceAccess"
+            Effect: "Allow"
+            Resource: "*"
+          - Action:
+              - "s3:*"
+            Effect: "Allow"
+            Resource:
+              - !Sub 'arn:aws:s3:::${BucketNamePrefix}-*'
+              - !Sub 'arn:aws:s3:::${CentralBucketName}'
+              - !Sub 'arn:aws:s3:::${CentralBucketName}/*'
+
+  exportFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: nodejs14.x
+      Timeout: 300
+      Role: !If [USWest2, !GetAtt LambdaExecutionRole.Arn, !Sub 'arn:aws:iam::${AWS::AccountId}:role/ComputeOptimizerExportRole']
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          const AWS = require('aws-sdk');
+          const region = process.env.AWS_REGION;
+          const destinationBucket = process.env.DESTINATION_BUCKET;
+          const includeMemberAccounts = process.env.INCLUDE_MEMBER_ACCOUNTS === 'True';
+          AWS.config.update({ region: region });
+          const computeOptimizer = new AWS.ComputeOptimizer();
+
+          exports.handler = async (event) => {
+              const exports = {
+                  ec2: computeOptimizer.exportEC2InstanceRecommendations,
+                  asg: computeOptimizer.exportAutoScalingGroupRecommendations,
+                  ebs: computeOptimizer.exportEBSVolumeRecommendations,
+                  lambda: computeOptimizer.exportLambdaFunctionRecommendations
+              };
+            for (const [exportType, exportFunc] of Object.entries(exports)) {
+              const exportParams = {
+                s3DestinationConfig: {
+                  bucket: `${destinationBucket}`,
+                  keyPrefix: `recommendations/${exportType}`
+                },
+                fileFormat: 'Csv',
+                includeMemberAccounts: includeMemberAccounts
+              };
+              try {
+                  const response = await exportFunc.bind(computeOptimizer)(exportParams).promise();
+                  console.log(response);
+              } catch (e) {
+                  console.log(e);
+              }
+            }
+            return {
+              statusCode: 200,
+            };
+          };
+      Description: Function to trigger recommendations exports from compute-optimizer
+      Environment:
+        Variables:
+          DESTINATION_BUCKET: !Sub '${BucketNamePrefix}-${AWS::Region}'
+          INCLUDE_MEMBER_ACCOUNTS: !Ref IncludeMemberAccounts
+  exportFunctionPermission:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !Ref exportFunction
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt exportFunctionCWERule.Arn
+  exportFunctionCWERule:
+    Type: "AWS::Events::Rule"
+    Properties:
+      Description: Computer Optimizer Export Trigger
+      Name: exportFunctionTrigger
+      ScheduleExpression: "cron(0 5 * * ? *)"
+      State: ENABLED
+      Targets:
+        - Id: exportFunction
+          Arn: !GetAtt exportFunction.Arn
+  exportFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${exportFunction}'
+      RetentionInDays: 7
+
+  relocateFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: nodejs14.x
+      Timeout: 300
+      Role: !If [USWest2, !GetAtt LambdaExecutionRole.Arn, !Sub 'arn:aws:iam::${AWS::AccountId}:role/ComputeOptimizerExportRole']
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          const AWS = require('aws-sdk');
+          const destinationBucket = process.env.DESTINATION_BUCKET;
+          const region = process.env.AWS_REGION;
+          const s3 = new AWS.S3({region: region});
+
+          exports.handler = async (event) => {
+              for (const record of event.Records) {
+                  const params = {
+                      Bucket: destinationBucket,
+                      CopySource: encodeURI(`${record.s3.bucket.name}/${record.s3.object.key}`),
+                      Key: record.s3.object.key,
+                  };
+                  try {
+                      const response = await s3.copyObject(params).promise();
+                      console.log(response);
+                  } catch (e) {
+                      console.log(e);
+                  }
+              };
+              return {
+                  statusCode: 200
+              };
+          };
+      Description: Function to centralise exported compute optimizer recommendations
+      Environment:
+        Variables:
+          DESTINATION_BUCKET : !Ref CentralBucketName
+  relocateFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt relocateFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !Sub 'arn:aws:s3:::${BucketNamePrefix}-${AWS::Region}'
+  relocateFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${relocateFunction}'
+      RetentionInDays: 7
+
+  exportsBucket:
+    DependsOn: relocateFunctionPermission
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              "SSEAlgorithm": "AES256"
+      LifecycleConfiguration:
+        Rules:
+          - Id: DefaultPolicy
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+            ExpirationInDays: 7
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: 'recommendations/'
+                  - Name: suffix
+                    Value: '.csv'
+            Function: !GetAtt relocateFunction.Arn
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      BucketName: !Sub '${BucketNamePrefix}-${AWS::Region}'
+
+  exportsBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref exportsBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "compute-optimizer.amazonaws.com"
+            Action: "s3:GetBucketAcl"
+            Resource: !Sub "arn:aws:s3:::${BucketNamePrefix}-${AWS::Region}"
+          - Effect: "Allow"
+            Principal:
+              Service: "compute-optimizer.amazonaws.com"
+            Action: "s3:GetBucketPolicyStatus"
+            Resource: !Sub "arn:aws:s3:::${BucketNamePrefix}-${AWS::Region}"
+          - Effect: "Allow"
+            Principal:
+              Service: "compute-optimizer.amazonaws.com"
+            Action: "s3:PutObject"
+            Resource: !Sub "arn:aws:s3:::${BucketNamePrefix}-${AWS::Region}/recommendations/*"
+            Condition:
+              StringEquals:
+                "s3:x-amz-acl": "bucket-owner-full-control"
+Outputs:
+  RegionalBucket:
+    Description: Local region S3 bucket to get the exports
+    Value: !Ref exportsBucket

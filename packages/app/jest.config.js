@@ -12,7 +12,7 @@ module.exports = {
       statements: 92,
       branches: 84,
       lines: 93,
-      functions: 93,
+      functions: 91,
     },
   },
   modulePathIgnorePatterns: ['index.ts'],

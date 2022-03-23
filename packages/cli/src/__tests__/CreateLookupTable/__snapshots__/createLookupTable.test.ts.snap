@@ -20,6 +20,28 @@ AmazonRDS,us-east-1,Aurora:StorageIOUsage,IOs,,,0.005235033187267262,0.000002176
 "
 `;
 
+exports[`createLookupTable creates lookup table CSV creates Azure lookup table CSV file, with default output file path 1`] = `
+"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
+Virtual Machines,uksouth,D2 v2/DS2 v2,10 Hours,,,0.015255069630697749,0.0000034781558757990868
+Virtual Machines,westeurope,D4as v4 Spot,1 Hour,,,0.01122905020123717,0.000004379329578482496
+Azure App Service,CentralUS,F1,1 Hour,,,0.009100215473961493,0.000004297394753268836
+Container Instances,SouthCentralUS,vCPU Duration,1000 Hours,,,0.0025359,0.0000010049594187
+Azure Database for MySQL,Unknown,2 vCore,100 Hours,,,0.015215399999999999,0.000006198753959999999
+VPN Gateway,Unknown,VpnGw1,100 Hours,,,0.015215399999999999,0.000006198753959999999
+"
+`;
+
+exports[`createLookupTable creates lookup table CSV creates Azure lookup table CSV file, with provided output file name 1`] = `
+"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
+Virtual Machines,uksouth,D2 v2/DS2 v2,10 Hours,,,0.015255069630697749,0.0000034781558757990868
+Virtual Machines,westeurope,D4as v4 Spot,1 Hour,,,0.01122905020123717,0.000004379329578482496
+Azure App Service,CentralUS,F1,1 Hour,,,0.009100215473961493,0.000004297394753268836
+Container Instances,SouthCentralUS,vCPU Duration,1000 Hours,,,0.0025359,0.0000010049594187
+Azure Database for MySQL,Unknown,2 vCore,100 Hours,,,0.015215399999999999,0.000006198753959999999
+VPN Gateway,Unknown,VpnGw1,100 Hours,,,0.015215399999999999,0.000006198753959999999
+"
+`;
+
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with default output file path 1`] = `
 "serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
 Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,0.000001260575649257259,4.550678093818705e-10
