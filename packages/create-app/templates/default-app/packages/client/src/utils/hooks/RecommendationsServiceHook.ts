@@ -3,55 +3,54 @@
  */
 
 import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from 'Types'
+import { ServiceResult } from '../../Types'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useErrorHandling } from 'layout/ErrorPage'
+import { useAxiosErrorHandling } from '../../layout/ErrorPage'
+
+export interface UseRemoteRecommendationServiceParams {
+  baseUrl: string | null
+  onApiError?: (e: Error) => void
+  awsRecommendationTarget?: string
+  minLoadTimeMs?: number
+}
 
 const useRemoteRecommendationsService = (
-  awsRecommendationTarget?: string,
+  params: UseRemoteRecommendationServiceParams,
 ): ServiceResult<RecommendationResult> => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const { handleApiError, error, setError } = useErrorHandling()
+  const { error, setError } = useAxiosErrorHandling(params.onApiError)
 
   useEffect(() => {
     const fetchRecommendations = async () => {
-      setError({})
+      if (!params.baseUrl) {
+        return
+      }
+      setError(null)
       setLoading(true)
 
       try {
-        const res = awsRecommendationTarget
-          ? await axios.get('/api/recommendations', {
+        const res = params.awsRecommendationTarget
+          ? await axios.get(`${params.baseUrl}/recommendations`, {
               params: {
-                awsRecommendationTarget,
+                awsRecommendationTarget: params.awsRecommendationTarget,
               },
             })
-          : await axios.get('/api/recommendations')
+          : await axios.get(`${params.baseUrl}/recommendations`)
         setData(res.data)
       } catch (e) {
-        const DEFAULT_RESPONSE = {
-          status: '520',
-          statusText: 'Unknown Error',
-        }
-        if (e.response) {
-          const { status, statusText } = e.response
-          setError({ status, statusText })
-        } else {
-          setError(DEFAULT_RESPONSE)
-        }
+        setError(e)
       } finally {
-        setTimeout(() => setLoading(false), 1000)
+        setTimeout(() => setLoading(false), params.minLoadTimeMs ?? 1000)
       }
     }
 
     fetchRecommendations()
-  }, [awsRecommendationTarget, setError])
+  }, [params.awsRecommendationTarget, setError, params.baseUrl])
 
-  handleApiError(error)
-
-  return { data, loading }
+  return { data, loading, error }
 }
 
 export default useRemoteRecommendationsService

@@ -12,7 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import { TextField, Typography } from '@material-ui/core'
-import { DropdownOption } from 'Types'
+import { DropdownOption } from '../../Types'
 import useStyles from './filterDropdownStyles'
 
 interface FilterDropdownProps {

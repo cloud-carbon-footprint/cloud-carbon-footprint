@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { OpenInNew } from '@material-ui/icons'
-import { ComparisonItem } from 'Types'
+import { ComparisonItem } from '../../../../Types'
 import useStyles from '../carbonComparisonStyles'
 
 type CarbonComparisonProps = {

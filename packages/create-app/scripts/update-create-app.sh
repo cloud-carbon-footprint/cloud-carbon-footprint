@@ -8,7 +8,7 @@ cd ../../..
 yarn install || exit 1
 cd packages/create-app
 echo "Building..."
-npm run build || exit 1
+yarn build:app || exit 1
 echo "Login..."
 npm login || exit 1
 echo "Publishing..."

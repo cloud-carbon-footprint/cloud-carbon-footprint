@@ -2,9 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
+import { OptionChooser } from '../../../../../common/FilterBar/utils/OptionChooser'
+import {
+  DropdownFilterOptions,
+  DropdownOption,
+  FilterOptions,
+} from '../../../../../Types'
+import { DropdownSelections } from '../../../../../common/FilterBar/utils/FiltersUtil'
 
 export class AccountChooser extends OptionChooser {
   constructor(

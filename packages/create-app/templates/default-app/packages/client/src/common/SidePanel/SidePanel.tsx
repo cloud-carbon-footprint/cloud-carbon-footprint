@@ -6,7 +6,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { Close, Info } from '@material-ui/icons'
 import { Typography, Drawer, Divider, IconButton } from '@material-ui/core'
-import { SidePanelProps } from 'Types'
+import { SidePanelProps } from '../../Types'
 import useStyles from './sidePanelStyles'
 
 const SidePanel: FunctionComponent<SidePanelProps> = (props) => {
