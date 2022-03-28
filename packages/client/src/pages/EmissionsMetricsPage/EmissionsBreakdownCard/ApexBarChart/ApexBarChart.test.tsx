@@ -11,9 +11,9 @@ import {
   EstimationResult,
   GroupBy,
 } from '@cloud-carbon-footprint/common'
-import { fakeEmissionFactors } from 'utils/data'
-import { sumCO2ByServiceOrRegion } from 'utils/helpers'
-import { Page, PageEntry } from 'Types'
+import { fakeEmissionFactors } from '../../../../utils/data'
+import { sumCO2ByServiceOrRegion } from '../../../../utils/helpers'
+import { Page, PageEntry } from '../../../../Types'
 import ApexBarChart from './ApexBarChart'
 import Pagination from '../Pagination'
 import { createCustomBarColors } from './helpers'

@@ -4,7 +4,7 @@
 
 import { equals } from 'ramda'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { DateRange } from 'Types'
+import { DateRange } from '../../../../Types'
 
 const formatDateToTime = (timestamp: string | Date) =>
   timestamp instanceof Date

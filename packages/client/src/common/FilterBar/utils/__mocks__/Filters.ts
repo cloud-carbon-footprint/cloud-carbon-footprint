@@ -1,7 +1,7 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { DropdownOption } from 'Types'
+import { DropdownOption } from '../../../../Types'
 
 export class Filters {
   accounts = [

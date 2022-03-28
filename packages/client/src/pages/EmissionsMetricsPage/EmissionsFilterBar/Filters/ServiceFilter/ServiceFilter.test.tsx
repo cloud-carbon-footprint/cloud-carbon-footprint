@@ -6,16 +6,20 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { fireEvent, render, RenderResult, act } from '@testing-library/react'
 
 import ServiceFilter from './ServiceFilter'
-import { Filters } from 'common/FilterBar/utils/Filters'
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
+import { Filters } from '../../../../../common/FilterBar/utils/Filters'
+import {
+  DropdownFilterOptions,
+  DropdownOption,
+  FilterOptions,
+} from '../../../../../Types'
 import {
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
+} from '../../../../../common/FilterBar/utils/DropdownConstants'
 import { EmissionsFilters } from '../../utils/EmissionsFilters'
 
-jest.mock('ConfigLoader', () => {
+jest.mock('../../../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [
