@@ -47,16 +47,29 @@ Necessary to do remote state management of Terraform state
 
 <img title="CCF architecture" alt="CCF architecture" src="./img/architecture.png">
 
+### Prerequisites
+
+- Terraform >= 0.14.9 (tip: use [tfenv](https://github.com/tfutils/tfenv)) to manage multiple Terraform versions)
 
 ## How to use (basic step by step guide)
 
-1. Change directory to the terraform directory and run `terraform init`
+1. Make sure you have created an S3 bucket for the remote Terraform state file.
 2. Go to `variables.tf` and replace all the placeholders applicable to your case e.g. `YOUR-DEFAULT-AWS-REGION`, `YOUR-KEY-PAIR`. If a variable doesn't apply to your case, delete it to keep things consistent e.g. `YOUR-VPN-SECURITY-GROUP-ID`
-3. Repeat step 2 for the files: `terraform.tf`, `provider.tf`, `dns.tf`, and `data.tf`
+3. Repeat step 2 for the files: `provider.tf`, `dns.tf`, and `data.tf`
 4. Go to `install.sh` and replace all the placeholders that relate to the environment variables values that you configure for your client and the API. Make sure you complete the HOST and PORT variables as well if you're configuring a DNS record for the application. Delete them if not.
-5. Run `terraform fmt`
-6. Run `terraform validate` and make sure the configuration is valid
-7. Run `terraform plan` and `terraform apply` against your cloud provider
+5. Change directory to the terraform directory and run `terraform init`
+6. Run `terraform fmt`
+7. Run `terraform validate` and make sure the configuration is valid 
+8. Run `terraform plan` and `terraform apply` against your cloud provider
+
+## Debugging
+
+To work out if the `install.sh` script succeeds, you can SSH into the instance using the key pair specified in "key_name" variable (or connect via the AWS console), and tail the initialization logs with:
+
+```
+$ sudo su
+$ tail -f /var/log/cloud-init-output.log 
+```
 
 ## Other considerations
 
