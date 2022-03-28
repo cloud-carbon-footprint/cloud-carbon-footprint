@@ -11,7 +11,8 @@ export { default as CarbonIntensityMap } from './pages/EmissionsMetricsPage/Carb
 export { default as EmissionsFilterBar } from './pages/EmissionsMetricsPage/EmissionsFilterBar'
 export { Methodology } from './pages/EmissionsMetricsPage/EmissionsSidePanel/EmissionsSidePanel'
 
-export { default as DefaultConfig, ClientConfig } from './Config'
+export { default as DefaultConfig } from './Config'
+export type { ClientConfig } from './Config'
 export * from './Types'
 export * from './utils/hooks'
 export * from './utils/themes'

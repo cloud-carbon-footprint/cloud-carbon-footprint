@@ -10,6 +10,9 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "declaration": true,
+    "lib": [
+      "dom"
+    ]
   },
   "include": ["./src"],
 }
