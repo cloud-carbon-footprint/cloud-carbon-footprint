@@ -39,7 +39,7 @@ jobs:
         run: |
           cd packages/client
           ./create_client_env_file.sh
-          yarn build
+          yarn build:app
           cd ..
       # Update/Deploy the Client Package
       - name: Update and deploy demo app
