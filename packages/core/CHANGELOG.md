@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/core
 
+## 0.16.1
+
+### Patch Changes
+
+- 510d4b86: updates packages: axios googleapis dotenv @types/jest-when
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8d8c1db6ff94da5127d559e10632479a8520c67a) for changes to the create-app templates.
+
+- ff05607b: Bumps to latest version of typescript and sets resolution for this
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6cdc1469dcd5380c9c8a84b9fe13b977991db54c) for changes to the create-app templates.
+
+- Updated dependencies [510d4b86]
+- Updated dependencies [ff05607b]
+  - @cloud-carbon-footprint/common@1.5.1
+
 ## 0.16.0
 
 ### Minor Changes

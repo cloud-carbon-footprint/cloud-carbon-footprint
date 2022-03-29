@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/app
 
+## 0.5.1
+
+### Patch Changes
+
+- ff05607b: Bumps to latest version of typescript and sets resolution for this
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6cdc1469dcd5380c9c8a84b9fe13b977991db54c) for changes to the create-app templates.
+
+- Updated dependencies [6c590346]
+- Updated dependencies [510d4b86]
+- Updated dependencies [ff05607b]
+  - @cloud-carbon-footprint/aws@0.11.0
+  - @cloud-carbon-footprint/azure@0.9.1
+  - @cloud-carbon-footprint/common@1.5.1
+  - @cloud-carbon-footprint/gcp@0.9.1
+  - @cloud-carbon-footprint/on-premise@0.0.2
+
 ## 0.5.0
 
 ### Minor Changes
