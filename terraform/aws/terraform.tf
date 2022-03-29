@@ -7,9 +7,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket = var.terraform_state_bucket
+    bucket = "YOUR-TERRAFORM-STATE-BUCKET-NAME"
     key    = "terraform.tfstate"
-    region = var.default_region
+    region = "YOUR-DEFAULT-AWS-REGION"
   }
 
   required_version = ">= 0.14.9"
