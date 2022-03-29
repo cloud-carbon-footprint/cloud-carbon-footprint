@@ -2187,7 +2187,6 @@ __metadata:
     "@types/react-dates": ^21.8.2
     "@types/react-dom": ^17.0.11
     "@types/react-router": ^5.1.17
-    "@types/react-router-dom": ^5.3.2
     "@types/styled-components": ^5.1.9
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
@@ -5391,18 +5390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-router-dom@npm:^5.3.2":
-  version: 5.3.3
-  resolution: "@types/react-router-dom@npm:5.3.3"
-  dependencies:
-    "@types/history": ^4.7.11
-    "@types/react": "*"
-    "@types/react-router": "*"
-  checksum: 28c4ea48909803c414bf5a08502acbb8ba414669b4b43bb51297c05fe5addc4df0b8fd00e0a9d1e3535ec4073ef38aaafac2c4a2b95b787167d113bc059beff3
-  languageName: node
-  linkType: hard
-
-"@types/react-router@npm:*, @types/react-router@npm:^5.1.17":
+"@types/react-router@npm:^5.1.17":
   version: 5.1.18
   resolution: "@types/react-router@npm:5.1.18"
   dependencies:
