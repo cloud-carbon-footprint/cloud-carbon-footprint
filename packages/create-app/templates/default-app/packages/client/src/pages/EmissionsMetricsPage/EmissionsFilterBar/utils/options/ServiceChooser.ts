@@ -2,11 +2,15 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
-import { CLOUD_PROVIDER_OPTIONS } from 'common/FilterBar/utils/DropdownConstants'
-import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
-import { optionIsInDropdownOptions } from 'common/FilterBar/utils/FiltersUtil'
+import {
+  DropdownFilterOptions,
+  DropdownOption,
+  FilterOptions,
+} from '../../../../../Types'
+import { DropdownSelections } from '../../../../../common/FilterBar/utils/FiltersUtil'
+import { CLOUD_PROVIDER_OPTIONS } from '../../../../../common/FilterBar/utils/DropdownConstants'
+import { OptionChooser } from '../../../../../common/FilterBar/utils/OptionChooser'
+import { optionIsInDropdownOptions } from '../../../../../common/FilterBar/utils/FiltersUtil'
 
 export class ServiceChooser extends OptionChooser {
   constructor(

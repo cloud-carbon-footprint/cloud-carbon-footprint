@@ -55,7 +55,7 @@ Necessary to do remote state management of Terraform state
 
 1. Make sure you have created an S3 bucket for the remote Terraform state file.
 2. Go to `variables.tf` and replace all the placeholders applicable to your case e.g. `YOUR-DEFAULT-AWS-REGION`, `YOUR-KEY-PAIR`. If a variable doesn't apply to your case, delete it to keep things consistent e.g. `YOUR-VPN-SECURITY-GROUP-ID`
-3. Repeat step 2 for the files: `terraform.tf`, `provider.tf`, `dns.tf`, and `data.tf`
+3. Repeat step 2 for the files: `provider.tf`, `dns.tf`, and `data.tf`
 4. Go to `install.sh` and replace all the placeholders that relate to the environment variables values that you configure for your client and the API. Make sure you complete the HOST and PORT variables as well if you're configuring a DNS record for the application. Delete them if not.
 5. Change directory to the terraform directory and run `terraform init`
 6. Run `terraform fmt`

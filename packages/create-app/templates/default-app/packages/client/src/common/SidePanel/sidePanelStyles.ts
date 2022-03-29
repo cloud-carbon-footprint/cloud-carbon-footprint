@@ -3,7 +3,7 @@
  */
 
 import { makeStyles } from '@material-ui/core/styles'
-import { SidePanelProps } from 'Types'
+import { SidePanelProps } from '../../Types'
 
 const useStyles = makeStyles(
   ({ palette, transitions, spacing, breakpoints, mixins }) => ({
@@ -36,6 +36,7 @@ const useStyles = makeStyles(
       [breakpoints.up('sm')]: {
         width: spacing(6) + 1,
       },
+      marginRight: 14, // Offset to make scrollbar visible
     },
     toolbar: {
       padding: spacing(10, 1),

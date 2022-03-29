@@ -3,14 +3,14 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
+import { DropdownOption, FilterBarProps, FilterOptions } from '../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_SERVICES_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import FilterBar from 'common/FilterBar'
+} from '../../../common/FilterBar/utils/DropdownConstants'
+import FilterBar from '../../../common/FilterBar'
 import {
   AccountFilter,
   CloudProviderFilter,
@@ -22,11 +22,11 @@ import {
 const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
-  filteredDataResults,
+  filterOptions,
 }): ReactElement => {
   const getFilterOptions = (): FilterOptions => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.accounts,
+      filterOptions?.accounts,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
     const accountOptions: DropdownOption[] = [
@@ -35,7 +35,7 @@ const EmissionsFilterBar: FunctionComponent<FilterBarProps> = ({
     ]
 
     const allServiceDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.services,
+      filterOptions?.services,
       [{ key: '', name: '' }],
     )
     const serviceOptions: DropdownOption[] = [

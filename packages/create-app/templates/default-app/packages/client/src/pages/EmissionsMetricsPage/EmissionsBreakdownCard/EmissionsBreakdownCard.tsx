@@ -4,28 +4,29 @@
 
 import React, { FunctionComponent, ReactElement, useState } from 'react'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ChartDataTypes } from 'Types'
-import SelectDropdown from 'common/SelectDropdown'
-import NoDataMessage from 'common/NoDataMessage'
-import DashboardCard from 'layout/DashboardCard'
-import { useRemoteEmissionService } from 'utils/hooks'
-import { sumCO2ByServiceOrRegion } from 'utils/helpers'
+import { ChartDataTypes } from '../../../Types'
+import SelectDropdown from '../../../common/SelectDropdown'
+import NoDataMessage from '../../../common/NoDataMessage'
+import DashboardCard from '../../../layout/DashboardCard'
+import { useRemoteEmissionService } from '../../../utils/hooks'
+import { sumCO2ByServiceOrRegion } from '../../../utils/helpers'
 import ApexBarChart from './ApexBarChart'
 import useStyles from './emissionsBreakdownStyles'
 
 type EmissionsBreakdownContainerProps = {
-  containerClass?: string
   data: EstimationResult[]
+  baseUrl: string | null
+  onApiError?: (e: Error) => void
 }
 
 const EmissionsBreakdownCard: FunctionComponent<
   EmissionsBreakdownContainerProps
-> = ({ data }): ReactElement => {
+> = ({ data, baseUrl, onApiError }): ReactElement => {
   const classes = useStyles()
   const [chartType, setChartType] = useState(ChartDataTypes.REGION)
 
   const { data: emissionsData, loading: emissionsLoading } =
-    useRemoteEmissionService()
+    useRemoteEmissionService({ baseUrl, onApiError })
   const barChartData = sumCO2ByServiceOrRegion(
     data as EstimationResult[],
     chartType,

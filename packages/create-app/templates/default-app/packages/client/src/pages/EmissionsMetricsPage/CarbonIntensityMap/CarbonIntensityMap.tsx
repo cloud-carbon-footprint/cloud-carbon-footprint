@@ -4,8 +4,8 @@
 
 import React, { ReactElement, useState } from 'react'
 import { Box, Typography } from '@material-ui/core'
-import SelectDropdown from 'common/SelectDropdown'
-import DashboardCard from 'layout/DashboardCard'
+import SelectDropdown from '../../../common/SelectDropdown'
+import DashboardCard from '../../../layout/DashboardCard'
 import AWSMap from './AWSMap.png'
 import GCPMap from './GCPMap.png'
 import AzureMap from './AzureMap.png'
