@@ -159,6 +159,8 @@ fileignoreconfig:
   checksum: 84a17332826d7ff73bdcbb3d459ebb13dc07f81a99bd94dca31a68695e34d3d8
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
+- filename: packages/client/.env.template
+  checksum: a2da05dc909b7d35c485fd9e555f35990a0b28ce16c4f7e4cddf7c07a5665fb1
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
@@ -227,6 +229,8 @@ fileignoreconfig:
   checksum: c01e24418a7aa64dc973ab3cf363c854d61607929895c308f7d85ed80f30730f
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/RegionChooser.ts
   checksum: 91ca68321f34f8c2f5297c15ad09221351df27e31575d06052c5982396e06d21
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsPage.test.tsx
+  checksum: 11900051a10c91a3b0d2d9fc027ad2fbc6cbcf80f1d1dbdb4f9f1373ae604139
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
   checksum: 2fd234d905195964a126f2a42767d01da8bd424c8a9fcab43e0ec12b327c0b5f
 - filename: packages/client/src/react-app-env.d.ts

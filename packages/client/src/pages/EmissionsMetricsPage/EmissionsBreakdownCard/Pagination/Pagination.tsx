@@ -15,7 +15,7 @@ import {
   LastPage,
 } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core'
-import { Page } from 'Types'
+import { Page } from '../../../../Types'
 import useStyles from './paginationStyles'
 
 interface UsePaginateData<T> {

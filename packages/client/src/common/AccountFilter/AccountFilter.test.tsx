@@ -5,7 +5,7 @@
 import { fireEvent, act, render } from '@testing-library/react'
 import React from 'react'
 import AccountFilter from './AccountFilter'
-import { FilterOptions } from 'Types'
+import { FilterOptions } from '../../Types'
 import { EmissionsFilters } from '../../pages/EmissionsMetricsPage/EmissionsFilterBar/utils/EmissionsFilters'
 
 describe('AccountFilter', () => {

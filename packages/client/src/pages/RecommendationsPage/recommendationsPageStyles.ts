@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(({ spacing }) => ({
   boxContainer: {
     padding: spacing(3, 10),
-    marginTop: 62,
   },
   loadingContainer: {
     padding: spacing(3, 10),
@@ -16,6 +15,10 @@ const useStyles = makeStyles(({ spacing }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     justifyItems: 'center',
+  },
+  pageContainer: {
+    height: '100%',
+    overflowY: 'scroll',
   },
 }))
 

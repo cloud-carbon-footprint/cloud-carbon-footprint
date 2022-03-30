@@ -22,25 +22,23 @@ import {
   ServiceData,
 } from '@cloud-carbon-footprint/common'
 import { Typography } from '@material-ui/core'
-import DashboardCard from 'layout/DashboardCard'
+import DashboardCard from '../../../layout/DashboardCard'
 import useStyles from './recommendationsTableStyles'
-import DateRange from 'common/DateRange'
-import Tooltip from 'common/Tooltip'
+import DateRange from '../../../common/DateRange'
+import Tooltip from '../../../common/Tooltip'
 import SearchBar from '../SearchBar'
 import Forecast from './Forecast/Forecast'
 import CustomPagination from './CustomPagination'
 import {
   tableFormatNearZero,
   tableFormatRawCo2e,
-} from 'utils/helpers/transformData'
+} from '../../../utils/helpers/transformData'
+import { RecommendationRow } from '../../../Types'
+import RecommendationsSidePanel from '../RecommendationsSidePanel'
 
 type RecommendationsTableProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
-  handleRowClick: (
-    params: GridRowParams,
-    event: MuiEvent<SyntheticEvent>,
-  ) => void
   useKilograms: boolean
 }
 
@@ -96,7 +94,6 @@ const getColumns = (useKilograms: boolean): GridColDef[] => [
 const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   emissionsData,
   recommendations,
-  handleRowClick,
   useKilograms,
 }): ReactElement => {
   const [searchBarValue, setSearchBarValue] = useState('')
@@ -195,76 +192,98 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
     <CustomPagination handlePageSizeChange={handlePageSizeChange} />
   )
 
+  const [selectedRecommendation, setSelectedRecommendation] =
+    useState<RecommendationRow>()
+
+  const handleRowClick = (
+    params: GridRowParams,
+    _event: MuiEvent<SyntheticEvent>,
+  ) => {
+    if (selectedRecommendation && params.row.id === selectedRecommendation.id) {
+      setSelectedRecommendation(undefined)
+    } else {
+      setSelectedRecommendation(params.row as RecommendationRow)
+    }
+  }
+
   return (
-    <DashboardCard>
-      <>
-        <Forecast
-          emissionsData={emissionsData}
-          recommendations={recommendations}
-          useKilograms={useKilograms}
+    <>
+      {selectedRecommendation && (
+        <RecommendationsSidePanel
+          recommendation={selectedRecommendation}
+          onClose={() => setSelectedRecommendation(undefined)}
         />
-        <div className={classes.recommendationsContainer}>
-          <Typography className={classes.title}>Recommendations</Typography>
-          <div className={classes.dateRangeContainer}>
-            <DateRange lookBackPeriodDays={13} />
-            <Tooltip message={tooltipMessage} />
-          </div>
-          <div
-            data-testid="recommendations-data-grid"
-            className={classes.tableContainer}
-          >
-            <div className={classes.toolbarContainer}>
-              <SearchBar
-                value={searchBarValue}
-                onChange={handleSearchBarChange}
-                clearSearch={() => handleSearchBarChange('')}
+      )}
+      <DashboardCard>
+        <>
+          <Forecast
+            emissionsData={emissionsData}
+            recommendations={recommendations}
+            useKilograms={useKilograms}
+          />
+          <div className={classes.recommendationsContainer}>
+            <Typography className={classes.title}>Recommendations</Typography>
+            <div className={classes.dateRangeContainer}>
+              <DateRange lookBackPeriodDays={13} />
+              <Tooltip message={tooltipMessage} />
+            </div>
+            <div
+              data-testid="recommendations-data-grid"
+              className={classes.tableContainer}
+            >
+              <div className={classes.toolbarContainer}>
+                <SearchBar
+                  value={searchBarValue}
+                  onChange={handleSearchBarChange}
+                  clearSearch={() => handleSearchBarChange('')}
+                />
+              </div>
+              <DataGrid
+                autoHeight
+                rows={rows}
+                columns={getColumns(useKilograms)}
+                columnBuffer={6}
+                hideFooterSelectedRowCount={true}
+                classes={{
+                  cell: classes.cell,
+                  row: classes.row,
+                }}
+                onRowClick={handleRowClick}
+                disableColumnFilter
+                pageSize={pageState.pageSize}
+                components={{
+                  Toolbar: customPaginationComponent,
+                  Pagination: customPaginationComponent,
+                  NoRowsOverlay: () => (
+                    <GridOverlay>
+                      There's no data to display! Expand your search parameters
+                      to get started. (Try adding accounts, regions or
+                      recommendation types)
+                    </GridOverlay>
+                  ),
+                }}
+                onPageSizeChange={handlePageSizeChange}
+                page={pageState.page}
+                onPageChange={(newPage) =>
+                  setPageState({ ...pageState, page: newPage })
+                }
+                onSortModelChange={(model) => {
+                  let page = pageState.page
+                  if (pageState.sortOrder !== model[0]?.sort) {
+                    page = 0
+                    setPageState({
+                      ...pageState,
+                      sortOrder: model[0]?.sort,
+                      page,
+                    })
+                  }
+                }}
               />
             </div>
-            <DataGrid
-              autoHeight
-              rows={rows}
-              columns={getColumns(useKilograms)}
-              columnBuffer={6}
-              hideFooterSelectedRowCount={true}
-              classes={{
-                cell: classes.cell,
-                row: classes.row,
-              }}
-              onRowClick={handleRowClick}
-              disableColumnFilter
-              pageSize={pageState.pageSize}
-              components={{
-                Toolbar: customPaginationComponent,
-                Pagination: customPaginationComponent,
-                NoRowsOverlay: () => (
-                  <GridOverlay>
-                    There's no data to display! Expand your search parameters to
-                    get started. (Try adding accounts, regions or recommendation
-                    types)
-                  </GridOverlay>
-                ),
-              }}
-              onPageSizeChange={handlePageSizeChange}
-              page={pageState.page}
-              onPageChange={(newPage) =>
-                setPageState({ ...pageState, page: newPage })
-              }
-              onSortModelChange={(model) => {
-                let page = pageState.page
-                if (pageState.sortOrder !== model[0]?.sort) {
-                  page = 0
-                  setPageState({
-                    ...pageState,
-                    sortOrder: model[0]?.sort,
-                    page,
-                  })
-                }
-              }}
-            />
           </div>
-        </div>
-      </>
-    </DashboardCard>
+        </>
+      </DashboardCard>
+    </>
   )
 }
 

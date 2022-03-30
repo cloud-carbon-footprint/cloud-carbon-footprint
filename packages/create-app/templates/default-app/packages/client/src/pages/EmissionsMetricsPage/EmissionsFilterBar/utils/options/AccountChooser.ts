@@ -3,11 +3,15 @@
  */
 
 import { pluck } from 'ramda'
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
-import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
+import {
+  DropdownFilterOptions,
+  DropdownOption,
+  FilterOptions,
+} from '../../../../../Types'
+import { DropdownSelections } from '../../../../../common/FilterBar/utils/FiltersUtil'
 
-import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
-import { optionIsInDropdownOptions } from 'common/FilterBar/utils/FiltersUtil'
+import { OptionChooser } from '../../../../../common/FilterBar/utils/OptionChooser'
+import { optionIsInDropdownOptions } from '../../../../../common/FilterBar/utils/FiltersUtil'
 
 export class AccountChooser extends OptionChooser {
   constructor(

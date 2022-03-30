@@ -5,12 +5,7 @@
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
 import moment, { unitOfTime } from 'moment'
-import { useRemoteService } from 'utils/hooks'
-import { useFilterDataFromEstimates } from 'utils/helpers'
-import { FilterResultResponse } from 'Types'
-import config from 'ConfigLoader'
-import useFilters from 'common/FilterBar/utils/FilterHook'
-import LoadingMessage from 'common/LoadingMessage'
+import LoadingMessage from '../../common/LoadingMessage'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
@@ -18,17 +13,26 @@ import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
-import { EmissionsFilters } from './EmissionsFilterBar/utils/EmissionsFilters'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { useFootprintData } from '../../utils/hooks'
+import { ClientConfig } from '../../Config'
+import loadConfig from '../../ConfigLoader'
 
-export default function EmissionsMetricsPage(): ReactElement {
+interface EmissionsMetricsPageProps {
+  config?: ClientConfig
+  onApiError?: (e: Error) => void
+}
+
+export default function EmissionsMetricsPage({
+  config = loadConfig(),
+  onApiError,
+}: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
   const classes = useStyles()
-  const dateRangeType: string = config().DATE_RANGE.TYPE
-  const dateRangeValue: string = config().DATE_RANGE.VALUE
+  const dateRangeType: string = config.DATE_RANGE.TYPE
+  const dateRangeValue: string = config.DATE_RANGE.VALUE
   const endDate: moment.Moment = moment.utc()
 
   let startDate: moment.Moment
-  if (config().PREVIOUS_YEAR_OF_USAGE) {
+  if (config.PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
   } else {
     startDate = moment
@@ -36,24 +40,15 @@ export default function EmissionsMetricsPage(): ReactElement {
       .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
   }
 
-  const { data, loading } = useRemoteService([], startDate, endDate)
+  const footprint = useFootprintData({
+    baseUrl: config.BASE_URL,
+    startDate,
+    endDate,
+    onApiError,
+    groupBy: config.GROUP_BY,
+  })
 
-  const filteredDataResults: FilterResultResponse =
-    useFilterDataFromEstimates(data)
-
-  const buildFilters = (filteredResponse: FilterResultResponse) => {
-    const updatedConfig = EmissionsFilters.generateConfig(filteredResponse)
-    return new EmissionsFilters(updatedConfig)
-  }
-
-  const { filteredData, filters, setFilters } = useFilters(
-    data,
-    buildFilters,
-    filteredDataResults,
-  )
-  const filteredEstimationData = filteredData as EstimationResult[]
-
-  if (loading) {
+  if (footprint.loading) {
     return (
       <LoadingMessage
         message={'Loading cloud data. This may take a while...'}
@@ -62,28 +57,25 @@ export default function EmissionsMetricsPage(): ReactElement {
   }
 
   return (
-    <>
+    <div className={classes.pageContainer}>
       <EmissionsSidePanel />
-      <EmissionsFilterBar
-        filters={filters}
-        setFilters={setFilters}
-        filteredDataResults={filteredDataResults}
-      />
+      <EmissionsFilterBar {...footprint.filterBarProps} />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          <EmissionsOverTimeCard
-            classes={classes}
-            filteredData={filteredEstimationData}
-          />
+          <EmissionsOverTimeCard data={footprint.filteredData} />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
-              <CarbonComparisonCard data={filteredEstimationData} />
-              <EmissionsBreakdownCard data={filteredEstimationData} />
+              <CarbonComparisonCard data={footprint.filteredData} />
+              <EmissionsBreakdownCard
+                data={footprint.filteredData}
+                baseUrl={config.BASE_URL}
+                onApiError={onApiError}
+              />
             </Grid>
           </Grid>
           <CarbonIntensityMap />
         </Grid>
       </div>
-    </>
+    </div>
   )
 }

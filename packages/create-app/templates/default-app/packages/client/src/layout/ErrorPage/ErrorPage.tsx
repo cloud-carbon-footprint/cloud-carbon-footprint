@@ -2,35 +2,36 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactElement, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import CloudOffIcon from '@material-ui/icons/CloudOff'
 import { Grid } from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { createStyles, Theme } from '@material-ui/core/styles'
+import { AxiosError } from 'axios'
 
-type ErrorState = {
+export type ErrorState = {
   statusText?: string
   status?: string
 }
 
-type ErrorHandlingType = {
-  handleApiError: (error: ErrorState) => void
-  error: ErrorState
-  setError: (e: ErrorState) => void
+export type ErrorHandlingType = {
+  error: AxiosError | null
+  setError: (e?: AxiosError) => void
 }
 
-export const useErrorHandling = (): ErrorHandlingType => {
-  const navigate = useNavigate()
-  const [error, setError] = useState({})
+export const useAxiosErrorHandling = (
+  onApiError?: (e: Error) => void,
+): ErrorHandlingType => {
+  const [error, setError] = useState<AxiosError | null>(null)
 
-  const handleApiError = (error: ErrorState) => {
-    if (error.status) {
-      navigate(`/error`, { state: error })
+  useEffect(() => {
+    if (error && onApiError) {
+      onApiError(error)
     }
-  }
+  }, [error])
 
-  return { handleApiError, error, setError }
+  return { error, setError }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,19 +47,26 @@ const useStyles = makeStyles((theme: Theme) =>
     errorMessage: {
       fontSize: '18px',
     },
-    gridPlacement: {
-      marginBottom: '25%',
-    },
   }),
 )
 
+const DEFAULT_ERROR = {
+  status: '520',
+  statusText: 'Unknown Error',
+}
+
+export const formatAxiosError = (e: AxiosError): ErrorState => {
+  return e.response
+    ? {
+        status: e.response.status.toString(),
+        statusText: e.response.statusText,
+      }
+    : DEFAULT_ERROR
+}
+
 const ErrorPage = (): ReactElement => {
   const location = useLocation()
-  const { statusText, status } = location.state as ErrorState
-  let message
-  if (status && status.toString() === '500') {
-    message = status + ' Internal Server Error'
-  }
+  const { statusText, status } = (location.state as ErrorState) ?? DEFAULT_ERROR
 
   const classes = useStyles()
 
@@ -69,23 +77,17 @@ const ErrorPage = (): ReactElement => {
       direction="column"
       alignItems="center"
       justify="center"
-      style={{ minHeight: '100vh' }}
+      style={{ height: '100%' }}
     >
       <CloudOffIcon className={classes.cloudIcon} />
-      <Grid item className={classes.gridPlacement} xs={12}>
-        <div data-testid="error-page">
-          {message ? (
-            <h1 className={classes.errorStatus}>{message}</h1>
-          ) : (
-            <h1 className={classes.errorStatus}>
-              {status} {statusText}
-            </h1>
-          )}
-          <div className={classes.errorMessage}>
-            Something has gone wrong, please try again later
-          </div>
+      <div data-testid="error-page">
+        <h1 className={classes.errorStatus}>
+          {status} {statusText}
+        </h1>
+        <div className={classes.errorMessage}>
+          Something has gone wrong, please try again later
         </div>
-      </Grid>
+      </div>
     </Grid>
   )
 }

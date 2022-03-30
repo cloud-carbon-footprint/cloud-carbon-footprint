@@ -6,7 +6,7 @@ import { FunctionComponent } from 'react'
 import clsx from 'clsx'
 import { Typography } from '@material-ui/core'
 import { TrendingDown, TrendingFlat, TrendingUp } from '@material-ui/icons'
-import { formattedNumberWithCommas } from 'utils/helpers/transformData'
+import { formattedNumberWithCommas } from '../../../../utils/helpers/transformData'
 import useStyles from './percentBadgeStyles'
 
 type PercentBadgeProps = {

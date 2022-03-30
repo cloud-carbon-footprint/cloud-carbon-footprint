@@ -3,7 +3,7 @@
  */
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { FilterResultResponse, FilterResults } from 'Types'
+import { FilterResultResponse, FilterResults } from '../../../Types'
 import { Filters } from './Filters'
 
 export interface UseFiltersResults {

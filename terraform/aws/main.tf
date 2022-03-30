@@ -1,18 +1,25 @@
 resource "aws_s3_bucket" "ccf_terraform_state" {
-  bucket = "cloudcarbonfootprint-terraform"
+  bucket = var.terraform_state_bucket
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "ccf_terraform_state_versioning" {
+  bucket = aws_s3_bucket.ccf_terraform_state.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+resource "aws_s3_bucket_server_side_encryption_configuration" "ccf_terraform_state_encryption" {
+  bucket = aws_s3_bucket.ccf_terraform_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
+
 
 resource "aws_security_group" "ccf_instance_sg" {
   name   = "ccf-instance-sg"

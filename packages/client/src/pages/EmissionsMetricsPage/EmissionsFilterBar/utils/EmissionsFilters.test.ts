@@ -4,19 +4,19 @@
 
 import moment from 'moment'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { generateEstimations } from 'utils/data'
+import { generateEstimations } from '../../../../utils/data'
 import {
   DropdownFilterOptions,
   FilterOptions,
   FilterResultResponse,
-} from 'Types'
-import { FiltersDateRange } from 'common/FilterBar/utils/Filters'
+} from '../../../../Types'
+import { FiltersDateRange } from '../../../../common/FilterBar/utils/Filters'
 import { EmissionsFilters } from './EmissionsFilters'
 import {
   alphabetizeDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import config from 'ConfigLoader'
+} from '../../../../common/FilterBar/utils/DropdownConstants'
+import config from '../../../../ConfigLoader'
 
 expect.extend({
   toOnlyHaveServices(actual: EstimationResult[], expected: string[]) {
@@ -79,7 +79,7 @@ declare global {
   }
 }
 
-jest.mock('ConfigLoader', () => {
+jest.mock('../../../../ConfigLoader', () => {
   return jest.fn().mockImplementation(() => {
     return {
       CURRENT_PROVIDERS: [

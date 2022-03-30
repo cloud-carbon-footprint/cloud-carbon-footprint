@@ -10,17 +10,21 @@ import {
   ReactTestRenderer,
 } from 'react-test-renderer'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from 'Types'
-import SelectDropdown from 'common/SelectDropdown'
-import NoDataMessage from 'common/NoDataMessage'
-import { useRemoteEmissionService } from 'utils/hooks'
-import { fakeEmissionFactors, mockDataWithHigherPrecision } from 'utils/data'
+import { ServiceResult } from '../../../Types'
+import SelectDropdown from '../../../common/SelectDropdown'
+import NoDataMessage from '../../../common/NoDataMessage'
+import { useRemoteEmissionService } from '../../../utils/hooks'
+import {
+  fakeEmissionFactors,
+  mockDataWithHigherPrecision,
+} from '../../../utils/data'
 import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import ApexBarChart from './ApexBarChart'
+import { waitFor } from '@testing-library/react'
 
 jest.mock('apexcharts')
-jest.mock('utils/themes')
-jest.mock('utils/hooks/EmissionFactorServiceHook')
+jest.mock('../../../utils/themes')
+jest.mock('../../../utils/hooks/EmissionFactorServiceHook')
 
 const mockedUseEmissionFactorService =
   useRemoteEmissionService as jest.MockedFunction<
@@ -41,6 +45,7 @@ describe('EmissionsBreakdownCard', () => {
       <EmissionsBreakdownCard
         containerClass={styleClass}
         data={mockDataWithHigherPrecision}
+        baseUrl="/api"
       />,
     )
     testInstance = testRenderer.root
@@ -49,6 +54,15 @@ describe('EmissionsBreakdownCard', () => {
   afterEach(() => {
     testRenderer.unmount()
     mockedUseEmissionFactorService.mockClear()
+  })
+
+  it('fetches emissions factors', async () => {
+    await waitFor(() => {
+      expect(mockedUseEmissionFactorService).toHaveBeenCalledWith({
+        baseUrl: '/api',
+        onApiError: undefined,
+      })
+    })
   })
 
   it('renders a select dropdown for the bar chart', () => {

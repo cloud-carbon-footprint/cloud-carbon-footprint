@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownFilterOptions, DropdownOption } from 'Types'
+import { DropdownFilterOptions, DropdownOption } from '../../../Types'
 import { OptionChooser } from './OptionChooser'
 
 export type DropdownSelections = {
