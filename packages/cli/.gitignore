@@ -1,6 +1,8 @@
 dist
 *.csv
 *.cache.json
+estimates.cache.*.json
+*.snap
 .env
 .env.production
 !aws_input.test.csv
