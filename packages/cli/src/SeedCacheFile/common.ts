@@ -2,18 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { confirm, input, list } from 'typed-prompts'
+import { input } from 'typed-prompts'
 import { prop } from 'ramda'
-import {
-  exit,
-  lineBreak,
-  log,
-  prompt,
-  readConfig,
-  resolve,
-  stat,
-  writeFile,
-} from './external'
+import { log, prompt } from './external'
 
 export const inputPrompt = (
   message: string,
