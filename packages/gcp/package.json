@@ -48,7 +48,7 @@
     "@google-cloud/recommender": "^4.2.5",
     "@google-cloud/resource-manager": "^3.0.0",
     "google-gax": "^2.29.0",
-    "googleapis": "^96.0.0",
+    "googleapis": "^100.0.0",
     "moment": "^2.29.1"
   },
   "devDependencies": {
