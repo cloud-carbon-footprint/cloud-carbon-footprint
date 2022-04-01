@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { confirmPrompt, EnvConfig, inputPrompt } from './common'
+import { confirmPrompt, EnvConfig, inputPrompt } from '../common'
 
 export async function GCPSetup(): Promise<EnvConfig> {
   const env: EnvConfig = {}

@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { inputPrompt } from './common'
+import { inputPrompt } from '../common'
 import { App, CreateValidFootprintRequest } from '@cloud-carbon-footprint/app'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 

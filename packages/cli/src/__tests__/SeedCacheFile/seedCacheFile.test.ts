@@ -3,14 +3,14 @@
  */
 
 import seedCacheFile from '../../SeedCacheFile/seedCacheFile'
-import * as common from '../../SeedCacheFile/common'
+import * as common from '../../common'
 import {
   EstimationRequestValidationError,
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
 
 const mockGetCostAndEstimates = jest.fn()
-jest.mock('../../SeedCacheFile/common')
+jest.mock('../../common')
 const mockInputPrompts: jest.Mock = common.inputPrompt as jest.Mock
 
 jest.mock('@cloud-carbon-footprint/app', () => ({

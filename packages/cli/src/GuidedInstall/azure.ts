@@ -2,8 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { confirmPrompt, EnvConfig, inputPrompt } from './common'
-import { lineBreak } from './external'
+import { confirmPrompt, EnvConfig, inputPrompt } from '../common'
+import { lineBreak } from '../common/external'
 
 export async function AzureSetup(): Promise<EnvConfig> {
   const env: EnvConfig = {}
