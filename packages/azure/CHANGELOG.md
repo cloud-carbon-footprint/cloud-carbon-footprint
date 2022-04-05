@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/azure
 
+## 0.9.2
+
+### Patch Changes
+
+- 84e2d1e2: adds support for missing usage types
+
 ## 0.9.1
 
 ### Patch Changes
