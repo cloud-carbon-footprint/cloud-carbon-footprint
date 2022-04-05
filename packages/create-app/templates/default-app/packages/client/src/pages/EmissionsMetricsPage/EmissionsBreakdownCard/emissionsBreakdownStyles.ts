@@ -3,8 +3,9 @@
  */
 
 import { makeStyles } from '@material-ui/core'
+import { CCFTheme } from '../../../utils/themes'
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
   topContainer: {
     boxShadow: 'none',
     display: 'flex',
