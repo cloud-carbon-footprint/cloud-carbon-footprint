@@ -15,6 +15,8 @@ fileignoreconfig:
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
+- filename: .changeset/silent-turtles-breathe.md
+  checksum: 93eb7d9f09dc8535e42065ab86021e41dfa12a2e72d94d07086d64190441a270
 - filename: .changeset/sixty-peas-design.md
   checksum: a353a88260b60bba06f294ed5e7227edf2b3782b97f67ac02bbe163f2435f8fd
 - filename: .changeset/spotty-rabbits-crash.md
