@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/client
 
+## 3.1.1
+
+### Patch Changes
+
+- f6bef017: updates build in ci workflow
+
 ## 3.1.0
 
 ### Minor Changes
