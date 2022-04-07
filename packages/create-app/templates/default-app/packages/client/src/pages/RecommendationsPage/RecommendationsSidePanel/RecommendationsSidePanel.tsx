@@ -4,14 +4,14 @@
 
 import React, { FunctionComponent, ReactElement } from 'react'
 import { Container, Divider, Grid } from '@material-ui/core'
-import SidePanel from 'common/SidePanel'
-import { RecommendationRow } from 'Types'
+import SidePanel from '../../../common/SidePanel'
+import { RecommendationRow } from '../../../Types'
 import { RecommendationsPanelRow, RecommendationsPanelColumn } from './layout'
 import useStyles from './recommendationsSidePanelStyles'
 import {
   tableFormatNearZero,
   tableFormatRawCo2e,
-} from 'utils/helpers/transformData'
+} from '../../../utils/helpers/transformData'
 
 export type RecommendationsSidePanelProps = {
   recommendation: RecommendationRow

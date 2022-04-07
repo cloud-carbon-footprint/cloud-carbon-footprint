@@ -11,9 +11,9 @@ import Chart from 'react-apexcharts'
 import { useTheme } from '@material-ui/core/styles'
 import { GetApp, PanTool, RotateLeft, ZoomIn } from '@material-ui/icons'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { ApexChartProps, DateRange } from 'Types'
-import { getChartColors } from 'utils/themes'
-import { sumServiceTotals, getMaxOfDataSeries } from 'utils/helpers'
+import { ApexChartProps, DateRange } from '../../../../Types'
+import { getChartColors, CCFTheme } from '../../../../utils/themes'
+import { sumServiceTotals, getMaxOfDataSeries } from '../../../../utils/helpers'
 import { filterBy, sortByDate } from './helpers'
 import CustomTooltip from './CustomTooltip'
 
@@ -22,7 +22,7 @@ type LegendToggle = {
 }
 
 const ApexLineChart: FunctionComponent<ApexChartProps> = ({ data }) => {
-  const theme = useTheme()
+  const theme = useTheme() as CCFTheme
   const colors = getChartColors(theme)
   const [blue, yellow, green] = [colors[0], colors[5], colors[8]]
 

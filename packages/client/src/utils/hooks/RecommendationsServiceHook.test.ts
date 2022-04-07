@@ -16,110 +16,123 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockUseNavigate,
 }))
 
+const baseUrl = '/api'
+const minLoadTimeMs = 10
+
 describe('Recommendations Service Hook', () => {
-  it('should send request to /api/recommendations endpoint', async () => {
-    axiosMocked.get.mockResolvedValue({ data: ['test recommendation data'] })
+  describe('when baseUrl is null', () => {
+    it('should do nothing', () => {
+      const { result } = renderHook(() =>
+        useRemoteRecommendationsService({
+          baseUrl: null,
+        }),
+      )
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteRecommendationsService(),
-    )
-
-    await waitForNextUpdate()
-
-    setTimeout(() => {
+      expect(axiosMocked.get).not.toHaveBeenCalled()
       expect(result.current).toEqual({
-        data: ['test recommendation data'],
-        loading: true,
+        data: [],
+        error: null,
+        loading: false,
       })
-    }, 1000)
-
-    expect(axiosMocked.get).toBeCalledWith('/api/recommendations')
-  })
-
-  it('should send request with a specified recommendation target', async () => {
-    axiosMocked.get.mockResolvedValue({
-      data: ['test recommendation cross instance data'],
-    })
-    const recommendationTarget = 'CROSS_INSTANCE_FAMILY'
-
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteRecommendationsService(recommendationTarget),
-    )
-
-    await waitForNextUpdate()
-
-    setTimeout(() => {
-      expect(result.current).toEqual({
-        data: ['test recommendation cross instance data'],
-        loading: true,
-      })
-    }, 1000)
-
-    expect(axiosMocked.get).toBeCalledWith('/api/recommendations', {
-      params: { awsRecommendationTarget: recommendationTarget },
     })
   })
 
-  it('should notify of internal server error', async () => {
-    const response = { status: 500, statusText: 'Internal Server Error' }
-    axiosMocked.get.mockRejectedValue({ response })
+  describe('when baseUrl is provided', () => {
+    it('should send request to /api endpoint', async () => {
+      axiosMocked.get.mockResolvedValue({ data: ['data'] })
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteRecommendationsService(),
-    )
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useRemoteRecommendationsService({
+          baseUrl,
+          minLoadTimeMs,
+          awsRecommendationTarget: 'target',
+        }),
+      )
 
-    await waitForNextUpdate()
-
-    expect(mockUseNavigate).toBeCalledWith('/error', { state: response })
-
-    setTimeout(() => {
-      expect(result.current).toEqual({
-        data: [],
-        loading: true,
+      expect(axiosMocked.get).toBeCalledWith('/api/recommendations', {
+        params: {
+          awsRecommendationTarget: 'target',
+        },
       })
-    }, 1000)
-  })
 
-  it('should notify of a default error response', async () => {
-    const defaultResponse = { status: '520', statusText: 'Unknown Error' }
-    axiosMocked.get.mockRejectedValue('some error')
-
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteRecommendationsService(),
-    )
-
-    await waitForNextUpdate()
-
-    expect(mockUseNavigate).toBeCalledWith('/error', { state: defaultResponse })
-
-    setTimeout(() => {
+      await waitForNextUpdate()
       expect(result.current).toEqual({
-        data: [],
+        data: ['data'],
         loading: true,
+        error: null,
       })
-    }, 1000)
-  })
 
-  it('should notify of a recommendation target error response', async () => {
-    const response = {
-      status: '400',
-      statusText: 'Bad Request',
+      await waitForNextUpdate()
+      expect(result.current).toEqual({
+        data: ['data'],
+        loading: false,
+        error: null,
+      })
+    })
+  })
+  describe('when response is an error', () => {
+    const error = {
+      message: 'Axios generated error message',
+      response: {
+        status: 500,
+        statusText: 'Internal Service Error',
+      },
     }
-    axiosMocked.get.mockRejectedValue({ response })
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useRemoteRecommendationsService(),
-    )
+    beforeEach(() => {
+      axiosMocked.get.mockRejectedValue(error)
+    })
 
-    await waitForNextUpdate()
+    it('should return the error', async () => {
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useRemoteRecommendationsService({
+          baseUrl,
+          minLoadTimeMs,
+        }),
+      )
 
-    expect(mockUseNavigate).toBeCalledWith('/error', { state: response })
-
-    setTimeout(() => {
+      await waitForNextUpdate()
       expect(result.current).toEqual({
         data: [],
         loading: true,
+        error,
       })
-    }, 1000)
+
+      await waitForNextUpdate()
+      expect(result.current).toEqual({
+        data: [],
+        loading: false,
+        error,
+      })
+    })
+
+    describe('when error handler is provided', () => {
+      it('should invoke error handler with error thrown by axios', async () => {
+        const onApiError = jest.fn()
+
+        const { result, waitForNextUpdate } = renderHook(() =>
+          useRemoteRecommendationsService({
+            baseUrl,
+            minLoadTimeMs,
+            onApiError,
+          }),
+        )
+
+        await waitForNextUpdate()
+        expect(result.current).toEqual({
+          data: [],
+          loading: true,
+          error,
+        })
+        expect(onApiError).toHaveBeenCalledWith(error)
+
+        await waitForNextUpdate()
+        expect(result.current).toEqual({
+          data: [],
+          loading: false,
+          error,
+        })
+      })
+    })
   })
 })

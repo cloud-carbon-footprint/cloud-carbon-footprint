@@ -15,6 +15,8 @@ import {
   EstimationResult,
   GroupBy,
   Logger,
+  LookupTableInput,
+  LookupTableOutput,
   wait,
 } from '@cloud-carbon-footprint/common'
 import {
@@ -88,7 +90,7 @@ export default class ConsumptionManagementService {
     private readonly memoryEstimator: MemoryEstimator,
     private readonly unknownEstimator: UnknownEstimator,
     private readonly embodiedEmissionsEstimator: EmbodiedEmissionsEstimator,
-    private readonly consumptionManagementClient: ConsumptionManagementClient,
+    private readonly consumptionManagementClient?: ConsumptionManagementClient,
   ) {
     this.consumptionManagementLogger = new Logger('ConsumptionManagement')
     this.consumptionManagementRateLimitRemainingHeader =
@@ -119,17 +121,10 @@ export default class ConsumptionManagementService {
 
         this.updateTimestampByWeek(grouping, consumptionDetailRow)
 
-        if (this.isUnsupportedUsage(consumptionDetailRow)) {
-          return []
-        }
-
-        if (this.isUnknownUsage(consumptionDetailRow)) {
-          unknownRows.push(consumptionDetailRow)
-          return []
-        }
-
-        const footprintEstimate =
-          this.getEstimateByPricingUnit(consumptionDetailRow)
+        const footprintEstimate = this.getFootprintEstimateFromUsageRow(
+          consumptionDetailRow,
+          unknownRows,
+        )
 
         if (footprintEstimate) {
           appendOrAccumulateEstimatesByDay(
@@ -156,6 +151,78 @@ export default class ConsumptionManagementService {
     }
 
     return results
+  }
+
+  getEstimatesFromInputData(
+    inputData: LookupTableInput[],
+  ): LookupTableOutput[] {
+    const result: LookupTableOutput[] = []
+    const unknownRows: ConsumptionDetailRow[] = []
+
+    inputData.map((inputDataRow: LookupTableInput) => {
+      const usageRow = {
+        date: new Date(''),
+        quantity: 1,
+        cost: 1,
+        meterDetails: {
+          meterName: inputDataRow.usageType,
+          unitOfMeasure: inputDataRow.usageUnit,
+          meterCategory: inputDataRow.serviceName,
+        },
+        subscriptionId: '',
+        subscriptionName: '',
+        resourceLocation: inputDataRow.region,
+        kind: 'legacy' as const,
+      }
+
+      const consumptionDetailRow = new ConsumptionDetailRow(usageRow)
+      const footprintEstimate = this.getFootprintEstimateFromUsageRow(
+        consumptionDetailRow,
+        unknownRows,
+      )
+
+      if (footprintEstimate) {
+        result.push({
+          serviceName: inputDataRow.serviceName,
+          region: inputDataRow.region,
+          usageType: inputDataRow.usageType,
+          usageUnit: inputDataRow.usageUnit,
+          kilowattHours: footprintEstimate.kilowattHours,
+          co2e: footprintEstimate.co2e,
+        })
+      }
+    })
+
+    if (result.length > 0) {
+      unknownRows.map((inputDataRow: ConsumptionDetailRow) => {
+        const footprintEstimate = this.getEstimateForUnknownUsage(inputDataRow)
+        if (footprintEstimate) {
+          result.push({
+            serviceName: inputDataRow.serviceName,
+            region: inputDataRow.region,
+            usageType: inputDataRow.usageType,
+            usageUnit: inputDataRow.usageUnit,
+            kilowattHours: footprintEstimate.kilowattHours,
+            co2e: footprintEstimate.co2e,
+          })
+        }
+      })
+    }
+
+    return result
+  }
+
+  private getFootprintEstimateFromUsageRow(
+    consumptionDetailRow: ConsumptionDetailRow,
+    unknownRows: ConsumptionDetailRow[],
+  ): FootprintEstimate | void {
+    if (!this.isUnsupportedUsage(consumptionDetailRow)) {
+      if (this.isUnknownUsage(consumptionDetailRow)) {
+        unknownRows.push(consumptionDetailRow)
+      } else {
+        return this.getEstimateByPricingUnit(consumptionDetailRow)
+      }
+    }
   }
 
   private updateTimestampByWeek(

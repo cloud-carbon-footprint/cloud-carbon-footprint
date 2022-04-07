@@ -3,8 +3,9 @@
  */
 
 import { makeStyles } from '@material-ui/core/styles'
+import { CCFTheme } from '../../utils/themes'
 
-const useStyles = makeStyles(({ palette, spacing }) => ({
+const useStyles = makeStyles<CCFTheme>(({ palette, spacing }) => ({
   root: {
     width: '100%',
     height: '90%',

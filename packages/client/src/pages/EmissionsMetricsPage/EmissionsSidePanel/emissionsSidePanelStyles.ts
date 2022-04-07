@@ -3,8 +3,9 @@
  */
 
 import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { CCFTheme } from '../../../utils/themes'
 
-const useStyles = makeStyles(({ palette, spacing, typography }) => {
+const useStyles = makeStyles<CCFTheme>(({ palette, spacing, typography }) => {
   return createStyles({
     contentBold: {
       padding: spacing(2, 2, 0, 2),

@@ -6,7 +6,7 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { mockData } from 'utils/data'
+import { mockData } from '../../../utils/data'
 import CarbonComparisonCard from './CarbonComparisonCard'
 
 describe('CarbonComparisonCard', () => {

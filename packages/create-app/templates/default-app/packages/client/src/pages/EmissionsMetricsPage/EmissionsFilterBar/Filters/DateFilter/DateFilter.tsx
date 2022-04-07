@@ -9,7 +9,7 @@ import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { FiltersDateRange } from '../../../../../common/FilterBar/utils/Filters'
 import StyleWrapper from './dateFilterstyles'
-import { FilterProps } from 'Types'
+import { FilterProps } from '../../../../../Types'
 
 const DateFilter: FunctionComponent<FilterProps> = ({
   filters,

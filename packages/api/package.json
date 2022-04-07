@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/api",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "license": "Apache-2.0",
   "description": "The API endpoint as an entrypoint to get cloud energy and carbon emissions. Optionally used by the client dashboard.",
   "main": "src/server.ts",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
-    "@types/jest-when": "^2.7.4",
+    "@types/jest-when": "^3.5.0",
     "@types/node": "^17.0.8",
     "@types/source-map-support": "^0.5.3",
     "@types/supertest": "^2.0.11",
@@ -67,11 +67,11 @@
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.4"
+    "typescript": "^4.6.2"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/app": "^0.5.0",
-    "@cloud-carbon-footprint/common": "^1.5.0",
+    "@cloud-carbon-footprint/app": "^0.5.1",
+    "@cloud-carbon-footprint/common": "^1.5.1",
     "@types/express": "^4.17.12",
     "express": "^4.17.1",
     "helmet": "^5.0.1",

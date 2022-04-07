@@ -1,3 +1,13 @@
+variable "terraform_state_bucket" {
+  type    = string
+  default = "YOUR-TERRAFORM-STATE-BUCKET-NAME"
+}
+
+variable "default_region" {
+  type    = string
+  default = "YOUR-DEFAULT-AWS-REGION"
+}
+
 variable "vpc_id" {
   type    = string
   default = "YOUR-VPC-ID"
@@ -5,7 +15,7 @@ variable "vpc_id" {
 
 variable "ami_id" {
   type    = string
-  default = "ami-05cd35b907b4ffe77" # Amazon Linux AMI 2
+  default = "ami-05cd35b907b4ffe77" # Amazon Linux AMI 2. This changes based on your AWS region.
 }
 
 variable "instance_type" {
@@ -42,11 +52,6 @@ variable "environment" {
 variable "dns_name" {
   type    = string
   default = "ccf"
-}
-
-variable "default_region" {
-  type    = string
-  default = "YOUR-DEFAULT-AWS-REGION"
 }
 
 # This might be useful if you wanna restrict traffic to private subnets

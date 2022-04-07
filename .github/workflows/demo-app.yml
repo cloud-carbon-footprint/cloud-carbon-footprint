@@ -14,7 +14,7 @@ jobs:
     if: github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.18-alpine3.13
     environment:
       name: staging
     env:
@@ -39,7 +39,7 @@ jobs:
         run: |
           cd packages/client
           ./create_client_env_file.sh
-          yarn build
+          yarn build:app
           cd ..
       # Update/Deploy the Client Package
       - name: Update and deploy demo app

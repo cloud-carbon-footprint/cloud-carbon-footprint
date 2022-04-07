@@ -1,3 +1,4 @@
+
 name: CI
 on:
   workflow_dispatch:
@@ -104,17 +105,19 @@ jobs:
         run: |
           cd packages/client
           ./create_client_env_file.sh
-          yarn build
+          yarn build:app
           cd ../..
       - name: build-workspace
         run: |
           yarn lerna run build:workspace
           # replacing local @cloud-carbon-footprint dependencies with a local reference
           yarn lerna run build:update
+      - name: zip artifact
+        run: zip dist-workspace.zip dist-workspace/* -r
       - uses: actions/upload-artifact@v2
         with:
           name: dist-workspace
-          path: dist-workspace
+          path: dist-workspace.zip
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -154,7 +157,13 @@ jobs:
       # - name: build type declarations
       #   run: yarn tsc:full
       - name: build packages
-        run: yarn lerna run build
+        # uses the react-scripts build and tsc build for client
+        run: |
+          yarn lerna run build
+          cd packages/client
+          ./create_client_env_file.sh
+          yarn build:app
+          cd ../..
       # Publishes current version of packages that are not already present in the registry
       - name: publish
         if: github.event.pull_request.head.ref == 'changeset-release/trunk'
@@ -210,7 +219,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.18-alpine3.13
     environment:
       name: staging
     env:
@@ -245,13 +254,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-workspace
-          path: dist-workspace
+      - name: unzip artifact for deployment
+        run: unzip dist-workspace.zip
       - name: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
         run: |
-          apk add --update python3 py-crcmod bash libc6-compat curl
+          apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
@@ -288,7 +298,7 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.14
+      image: node:14.18-alpine3.13
     environment:
       name: production
     env:
@@ -323,13 +333,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: dist-workspace
-          path: dist-workspace
+      - name: unzip artifact for deployment
+        run: unzip dist-workspace.zip
       - name: deploy-production
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
         run: |
-          apk add --update python3 py-crcmod bash libc6-compat curl
+          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 

@@ -12,6 +12,7 @@ module.exports = {
   favicon: 'img/favicon.png',
   organizationName: 'cloud-carbon-footprint', // Usually your GitHub org/user name.
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
+  plugins: [require.resolve('docusaurus-plugin-image-zoom')],
   themeConfig: {
     sidebarCollapsible: true,
     navbar: {
@@ -22,16 +23,16 @@ module.exports = {
       },
       items: [
         {
-          "to": "https://demo.cloudcarbonfootprint.org/",
-          "label": "Demo",
-          "position": "right",
-          "className": "navbar__link"
+          to: 'https://demo.cloudcarbonfootprint.org/',
+          label: 'Demo',
+          position: 'right',
+          className: 'navbar__link',
         },
         {
-          "to": "docs/getting-started",
-          "label": "Get Started",
-          "position": "right",
-          "className": "navbar__link"
+          to: 'docs/getting-started',
+          label: 'Get Started',
+          position: 'right',
+          className: 'navbar__link',
         },
         {
           to: 'docs/overview',
@@ -40,13 +41,21 @@ module.exports = {
           className: 'navbar__link',
         },
         {
-          to:
-            'https://github.com/cloud-carbon-footprint/cloud-carbon-footprint',
+          to: 'https://github.com/cloud-carbon-footprint/cloud-carbon-footprint',
           label: 'Github',
           position: 'right',
           className: 'navbar__link',
         },
       ],
+    },
+    zoom: {
+      selector: '.markdown :not(em) > img',
+      config: {
+        background: {
+          light: 'rgb(255, 255, 255)',
+          dark: 'rgb(50, 50, 50)',
+        },
+      },
     },
     footer: {},
     colorMode: {

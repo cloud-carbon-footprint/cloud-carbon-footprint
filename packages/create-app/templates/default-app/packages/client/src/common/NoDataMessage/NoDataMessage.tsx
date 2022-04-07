@@ -5,7 +5,7 @@
 import React, { FunctionComponent, ReactElement } from 'react'
 import clsx from 'clsx'
 import { CardContent, Grid, Typography } from '@material-ui/core'
-import DashboardCard from 'layout/DashboardCard'
+import DashboardCard from '../../layout/DashboardCard'
 import useStyles from './noDataMessageStyles'
 import shruggingCloud from './V1Shrugging-cloud-icon.svg'
 import emptyStateIcon from './V1Empty-state-generic-icon.svg'

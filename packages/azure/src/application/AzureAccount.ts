@@ -22,6 +22,7 @@ import {
   EstimationResult,
   GroupBy,
   Logger,
+  LookupTableInput,
 } from '@cloud-carbon-footprint/common'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
 
@@ -85,6 +86,24 @@ export default class AzureAccount extends CloudProviderAccount {
     )
     return estimationResults.flat()
   }
+
+  static getDataFromConsumptionManagementInputData(
+    inputData: LookupTableInput[],
+  ) {
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+    )
+    return consumptionManagementService.getEstimatesFromInputData(inputData)
+  }
+
   private async getDataForSubscription(
     startDate: Date,
     endDate: Date,

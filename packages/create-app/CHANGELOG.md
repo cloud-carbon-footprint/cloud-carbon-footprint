@@ -1,5 +1,28 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.0.1
+
+### Patch Changes
+
+- 329f0e7c: updates themes to fix backstage plugin
+  please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/827c2c7f081799704b4733f12757f9d02b4c2440) for template updates
+
+## 2.0.0
+
+### Major Changes
+
+- ebe78a83: Updates CCF Client to allow for publishable component libraries (Backstage Plugin Compatibility)
+
+  **Breaking Changes**: This update contains important refactors to the client package which includes updating the build script to build the new component library, changes to the service hooks, as well as adding better error handling for api calls.
+
+  For update to the create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7a6457bd9de48ffdfccca4232a1f8b744efd9be1) (includes necessary major client changes).
+
+### Patch Changes
+
+- ff05607b: Bumps to latest version of typescript and sets resolution for this
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6cdc1469dcd5380c9c8a84b9fe13b977991db54c) for changes to the create-app templates.
+
 ## 1.3.0
 
 ### Minor Changes

@@ -4,7 +4,7 @@
 
 import axios from 'axios'
 import { renderHook } from '@testing-library/react-hooks'
-import useRemoteService from './EmissionFactorServiceHook'
+import useRemoteEmissionService from './EmissionFactorServiceHook'
 
 jest.mock('axios')
 const axiosMocked = axios as jest.Mocked<typeof axios>
@@ -16,58 +16,93 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockUseNavigate,
 }))
 
+const baseUrl = '/api'
+
 describe('EmissionFactorServiceHook', () => {
-  it('Should send api call to /regions/emissions-factors', async () => {
-    axios.get = jest.fn().mockResolvedValue({
-      data: ['data'],
-      loading: false,
-    })
+  describe('when baseUrl is null', () => {
+    it('should do nothing', () => {
+      const { result } = renderHook(() =>
+        useRemoteEmissionService({
+          baseUrl: null,
+        }),
+      )
 
-    const { result, waitForNextUpdate } = renderHook(() => useRemoteService())
-
-    await waitForNextUpdate()
-
-    expect(result.current).toEqual({
-      data: ['data'],
-      loading: false,
-    })
-
-    expect(axios.get).toBeCalledWith('/api/regions/emissions-factors')
-  })
-
-  test('should notify of custom error response', async () => {
-    const response = { status: 500, statusText: 'Internal Service Error' }
-    axiosMocked.get.mockRejectedValue({ response })
-
-    const { result, waitForNextUpdate } = renderHook(() => useRemoteService())
-
-    await waitForNextUpdate()
-
-    expect(mockUseNavigate).toBeCalledWith('/error', { state: response })
-
-    setTimeout(() => {
+      expect(axiosMocked.get).not.toHaveBeenCalled()
       expect(result.current).toEqual({
         data: [],
+        error: null,
         loading: true,
       })
-    }, 1000)
+    })
   })
+  describe('when baseUrl is provided', () => {
+    it('Should send api call to /regions/emissions-factors', async () => {
+      axiosMocked.get.mockResolvedValue({ data: ['data'] })
 
-  test('should notify of default error response', async () => {
-    const defaultResponse = { status: '520', statusText: 'Unknown Error' }
-    axiosMocked.get.mockRejectedValue('some error')
+      const { result, waitForNextUpdate } = renderHook(() =>
+        useRemoteEmissionService({
+          baseUrl,
+        }),
+      )
 
-    const { result, waitForNextUpdate } = renderHook(() => useRemoteService())
+      expect(axios.get).toBeCalledWith('/api/regions/emissions-factors')
 
-    await waitForNextUpdate()
-
-    expect(mockUseNavigate).toBeCalledWith('/error', { state: defaultResponse })
-
-    setTimeout(() => {
+      await waitForNextUpdate()
       expect(result.current).toEqual({
-        data: [],
-        loading: true,
+        data: ['data'],
+        loading: false,
+        error: null,
       })
-    }, 1000)
+    })
+
+    describe('when response is an error', () => {
+      const error = {
+        message: 'Axios generated error message',
+        response: {
+          status: 500,
+          statusText: 'Internal Service Error',
+        },
+      }
+
+      beforeEach(() => {
+        axiosMocked.get.mockRejectedValue(error)
+      })
+
+      it('should return the error', async () => {
+        const { result, waitForNextUpdate } = renderHook(() =>
+          useRemoteEmissionService({
+            baseUrl,
+          }),
+        )
+
+        await waitForNextUpdate()
+        expect(result.current).toEqual({
+          data: [],
+          loading: false,
+          error,
+        })
+      })
+
+      describe('when error handler is provided', () => {
+        it('should invoke error handler with error thrown by axios', async () => {
+          const onApiError = jest.fn()
+
+          const { result, waitForNextUpdate } = renderHook(() =>
+            useRemoteEmissionService({
+              baseUrl,
+              onApiError,
+            }),
+          )
+
+          await waitForNextUpdate()
+          expect(result.current).toEqual({
+            data: [],
+            loading: false,
+            error,
+          })
+          expect(onApiError).toHaveBeenCalledWith(error)
+        })
+      })
+    })
   })
 })

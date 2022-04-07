@@ -11,6 +11,7 @@ export enum COMPUTE_PROCESSOR_TYPES {
   COFFEE_LAKE = 'Coffee Lake',
   SANDY_BRIDGE = 'Sandy Bridge',
   IVY_BRIDGE = 'Ivy Bridge',
+  ICELAKE = 'Ice Lake',
   AMD_EPYC_1ST_GEN = 'AMD EPYC 1st Gen',
   AMD_EPYC_2ND_GEN = 'AMD EPYC 2nd Gen',
   AMD_EPYC_3RD_GEN = 'AMD EPYC 3rd Gen',

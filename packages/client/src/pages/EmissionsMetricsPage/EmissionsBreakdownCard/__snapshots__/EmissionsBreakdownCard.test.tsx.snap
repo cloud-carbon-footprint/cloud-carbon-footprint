@@ -2,23 +2,23 @@
 
 exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] = `
 <div
-  className="MuiGrid-root makeStyles-cardHalf-4 MuiGrid-item"
+  className="MuiGrid-root makeStyles-cardHalf-17 MuiGrid-item"
 >
   <div
-    className="MuiPaper-root MuiCard-root makeStyles-card-3 makeStyles-minHeight-5 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root MuiCard-root makeStyles-card-16 makeStyles-minHeight-18 MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      className="MuiBox-root MuiBox-root-9 makeStyles-contentContainer-7"
+      className="MuiBox-root MuiBox-root-22 makeStyles-contentContainer-20"
     >
       <div
-        className="MuiCardContent-root makeStyles-cardContent-8"
+        className="MuiCardContent-root makeStyles-cardContent-21"
       >
         <div
-          className="makeStyles-topContainer-1"
+          className="makeStyles-topContainer-14"
           id="emissionsBreakdownContainer"
         >
           <p
-            className="makeStyles-title-2"
+            className="makeStyles-title-15"
           >
             Emissions Breakdown
           </p>
@@ -33,7 +33,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               <div
                 aria-haspopup="listbox"
                 aria-labelledby="breakdown-selector"
-                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-10"
+                className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-23"
                 id="breakdown-selector"
                 onBlur={[Function]}
                 onFocus={[Function]}
@@ -67,7 +67,7 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
           </div>
         </div>
         <div
-          className="makeStyles-barChartContainer-11"
+          className="makeStyles-barChartContainer-24"
         >
           <div
             style={
@@ -209,121 +209,12 @@ exports[`EmissionsBreakdownCard renders a select dropdown for the bar chart 1`] 
               />
             </div>
           </div>
+          <div />
           <div
-            height="500px"
-            options={
-              Object {
-                "chart": Object {
-                  "toolbar": Object {
-                    "offsetX": -120,
-                    "offsetY": -122,
-                    "tools": Object {
-                      "download": "
-            <div class=\\"apexcharts-menu-icon\\" title=\\"Menu\\">
-                <svg class=\\"MuiSvgIcon-root\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" aria-hidden=\\"true\\">
-                <path d=\\"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z\\"></path>
-                </svg>
-            </div>   
-           ",
-                    },
-                  },
-                  "type": "bar",
-                },
-                "colors": Array [],
-                "dataLabels": Object {
-                  "background": Object {
-                    "borderColor": "#303f9f",
-                    "borderRadius": 1,
-                    "borderWidth": 1,
-                    "enabled": true,
-                    "foreColor": "#3f51b5",
-                    "opacity": 0.9,
-                    "padding": 6,
-                  },
-                  "enabled": true,
-                  "formatter": [Function],
-                  "offsetX": 16,
-                  "textAnchor": "start",
-                },
-                "grid": Object {
-                  "padding": Object {
-                    "left": -15,
-                  },
-                  "show": false,
-                  "xaxis": Object {
-                    "lines": Object {
-                      "show": false,
-                    },
-                  },
-                  "yaxis": Object {
-                    "lines": Object {
-                      "show": false,
-                    },
-                  },
-                },
-                "height": "500px",
-                "legend": Object {
-                  "show": false,
-                },
-                "plotOptions": Object {
-                  "bar": Object {
-                    "barHeight": "0%",
-                    "distributed": true,
-                    "horizontal": true,
-                  },
-                },
-                "series": Array [
-                  Object {
-                    "data": Array [],
-                    "name": "Total CO2e",
-                  },
-                ],
-                "tooltip": Object {
-                  "fillSeriesColor": false,
-                  "y": Object {
-                    "formatter": [Function],
-                  },
-                },
-                "xaxis": Object {
-                  "axisBorder": Object {
-                    "show": false,
-                  },
-                  "labels": Object {
-                    "style": Object {
-                      "fontSize": 0,
-                    },
-                  },
-                  "max": 100,
-                  "type": "category",
-                },
-                "yaxis": Object {
-                  "labels": Object {
-                    "maxWidth": 150,
-                    "minWidth": 150,
-                    "offsetY": 5,
-                    "style": Object {
-                      "fontSize": "12px",
-                    },
-                  },
-                },
-              }
-            }
-            series={
-              Array [
-                Object {
-                  "data": Array [],
-                  "name": "Total CO2e",
-                },
-              ]
-            }
-            type="bar"
-            width="100%"
-          />
-          <div
-            className="makeStyles-paginationContainer-12"
+            className="makeStyles-paginationContainer-25"
           >
             <span
-              className="makeStyles-paginationLabel-13"
+              className="makeStyles-paginationLabel-26"
             >
               1 - 1
                of 
