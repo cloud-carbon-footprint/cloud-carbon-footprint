@@ -183,6 +183,7 @@ export default class ConsumptionManagementService {
 
       if (footprintEstimate) {
         result.push({
+          id: inputDataRow.id,
           serviceName: inputDataRow.serviceName,
           region: inputDataRow.region,
           usageType: inputDataRow.usageType,
@@ -198,6 +199,7 @@ export default class ConsumptionManagementService {
         const footprintEstimate = this.getEstimateForUnknownUsage(inputDataRow)
         if (footprintEstimate) {
           result.push({
+            id: inputDataRow.id,
             serviceName: inputDataRow.serviceName,
             region: inputDataRow.region,
             usageType: inputDataRow.usageType,
