@@ -39,6 +39,7 @@
     "start": "ts-node src/index.ts",
     "guided-install": "ts-node src/GuidedInstall/index.ts",
     "create-lookup-table": "ts-node src/CreateLookupTable/index.ts",
+    "create-azure-lookup-input": "ts-node src/CreateLookupTable/CreateAzureInput.ts",
     "estimate-on-premise-data": "ts-node src/EstimateOnPremiseData/index.ts"
   },
   "devDependencies": {
@@ -66,6 +67,8 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
+    "@azure/arm-consumption": "^8.0.0",
+    "@azure/arm-resources-subscriptions": "^2.0.0",
     "@cloud-carbon-footprint/app": "0.5.1",
     "@cloud-carbon-footprint/common": "^1.5.1",
     "@types/cli-table": "^0.3.0",

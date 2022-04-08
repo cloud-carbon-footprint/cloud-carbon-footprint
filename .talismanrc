@@ -153,6 +153,8 @@ fileignoreconfig:
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
   checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
+- filename: packages/cli/src/CreateLookupTable/createAzureInput.ts
+  checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
 - filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
   checksum: ad3aeec28c7d7e97c0e59274c8cc26d9ecd499a7b2da0bd3af9c491af093bb08
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
