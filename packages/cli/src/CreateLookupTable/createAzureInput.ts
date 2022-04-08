@@ -9,15 +9,44 @@ import { AzureCredentialsProvider } from '@cloud-carbon-footprint/azure'
 import { wait } from '@cloud-carbon-footprint/common'
 import { createObjectCsvWriter } from 'csv-writer'
 import path from 'path'
+import commander from 'commander'
+import process from 'process'
 
 /**
  * Creates a csv file with input data for Azure to be used for the Lookup Table.
  * Since Azure doesn't allow custom queries, this needs to be manually created.
  */
-async function createAzureInput() {
-  console.log('Creating Azure input file')
-  const defaultFileName = './azure_input.csv'
-  const targetDestination = path.join(process.cwd(), defaultFileName)
+async function createAzureInput(argv: string[] = process.argv): Promise<void> {
+  const program = new commander.Command()
+  program.storeOptionsAsProperties(false)
+
+  program
+    .option('-s, --startDate <string>', 'Start date in ISO format')
+    .option('-s, --endDate <string>', 'End date in ISO format')
+    .option('-o, --output <string>', 'Output file path', 'azure_input.csv')
+
+  program.parse(argv)
+  const programOptions = program.opts() as {
+    startDate: string
+    endDate: string
+    output: string
+  }
+
+  const endDate = programOptions.endDate
+    ? new Date(programOptions.endDate)
+    : new Date()
+
+  const startDate = programOptions.startDate
+    ? new Date(programOptions.startDate)
+    : new Date(endDate.toISOString())
+
+  if (!programOptions.startDate) {
+    startDate.setDate(startDate.getDate() - 30) // Subtract 30 days from end date
+  }
+
+  const targetDestination = path.join(process.cwd(), programOptions.output)
+
+  console.log('Creating Azure input file...')
   const header = [
     { id: 'serviceName', title: 'serviceName' },
     { id: 'region', title: 'region' },
@@ -30,11 +59,9 @@ async function createAzureInput() {
     header,
   })
 
-  const endDate = new Date()
-  const startDate = new Date()
-  startDate.setDate(endDate.getDate() - 30) // Subtract 30 days
   const azureData = await getConsumptionUsageDetails()
   await csvWriter.writeRecords(azureData)
+  console.log('File saved to ', targetDestination)
   console.log('Azure Input CSV successfully created! Have fun out there :D')
 }
 
@@ -50,14 +77,15 @@ async function getConsumptionUsageDetails() {
       'No subscription returned for these Azure credentials, be sure the registered application has ' +
         'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
     )
-
   const endDate = new Date()
   const startDate = new Date()
   startDate.setDate(endDate.getDate() - 30) // Subtract 30 days
 
   let usageDetails: any[] = []
   console.log(
-    `Getting usage details for ${subscriptions.length} subscriptions. This may take a while...`,
+    `Getting usage details for ${
+      subscriptions.length
+    } subscriptions. ${String.fromCodePoint(0x2615)} This may take a while...`,
   )
 
   for await (const subscription of subscriptions) {
@@ -192,4 +220,6 @@ function getConsumptionTenantValue(e: any, type: string) {
   return e.response.headers._headersMap[tenantHeaders[type]]?.value
 }
 
-createAzureInput()
+createAzureInput().catch((error) => {
+  console.error(`Something went wrong: ${error.message}`)
+})
