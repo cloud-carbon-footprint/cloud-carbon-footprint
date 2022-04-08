@@ -22,7 +22,7 @@ async function createAzureInput(argv: string[] = process.argv): Promise<void> {
 
   program
     .option('-s, --startDate <string>', 'Start date in ISO format')
-    .option('-s, --endDate <string>', 'End date in ISO format')
+    .option('-e, --endDate <string>', 'End date in ISO format')
     .option('-o, --output <string>', 'Output file path', 'azure_input.csv')
 
   program.parse(argv)
