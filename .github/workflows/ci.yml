@@ -118,102 +118,102 @@ jobs:
         with:
           name: dist-workspace
           path: dist-workspace.zip
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    env:
-      CI: 'true'
-      NODE_OPTIONS: --max-old-space-size=4096
-    steps:
-      - uses: actions/checkout@v2
-      # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
-      - name: use node.js 14
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14'
-          registry-url: https://registry.npmjs.org/ # Needed for auth
-      - name: cache all node_modules
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
-      - name: find location of global yarn cache
-        id: yarn-cache
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: cache global yarn cache
-        uses: actions/cache@v2
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: yarn install
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-      # End of yarn setup
-      # - name: build type declarations
-      #   run: yarn tsc:full
-      - name: build packages
-        # uses the react-scripts build and tsc build for client
-        run: |
-          yarn lerna run build
-          cd packages/client
-          ./create_client_env_file.sh
-          yarn build:app
-          cd ../..
-      # Publishes current version of packages that are not already present in the registry
-      - name: publish
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        run: yarn lerna publish from-package --yes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
-      - name: Create a release tag
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        id: create_tag
-        run: node scripts/create-release-tag.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Creates and updates the next available tag with format "latest"
-      - name: Create latest release tag
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        id: create_latest_tag
-        uses: EndBug/latest-tag@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Convert the newly created tag into a release with changelog information
-      - name: Create release on GitHub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Login to DockerHub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push client to Docker Hub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        uses: docker/build-push-action@v2
-        with:
-          context: packages/client
-          push: true
-          tags: |
-            cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
-            cloudcarbonfootprint/client:latest
-      - name: Build and push api to Docker Hub
-        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
-        uses: docker/build-push-action@v2
-        with:
-          context: packages/api
-          push: true
-          tags: |
-            cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
-            cloudcarbonfootprint/api:latest
+#  release:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    env:
+#      CI: 'true'
+#      NODE_OPTIONS: --max-old-space-size=4096
+#    steps:
+#      - uses: actions/checkout@v2
+#      # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
+#      - name: use node.js 14
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: '14'
+#          registry-url: https://registry.npmjs.org/ # Needed for auth
+#      - name: cache all node_modules
+#        id: cache-modules
+#        uses: actions/cache@v2
+#        with:
+#          path: '**/node_modules'
+#          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+#      - name: find location of global yarn cache
+#        id: yarn-cache
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        run: echo "::set-output name=dir::$(yarn cache dir)"
+#      - name: cache global yarn cache
+#        uses: actions/cache@v2
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        with:
+#          path: ${{ steps.yarn-cache.outputs.dir }}
+#          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-yarn-
+#      - name: yarn install
+#        if: steps.cache-modules.outputs.cache-hit != 'true'
+#        run: yarn install --immutable
+#      # End of yarn setup
+#      # - name: build type declarations
+#      #   run: yarn tsc:full
+#      - name: build packages
+#        # uses the react-scripts build and tsc build for client
+#        run: |
+#          yarn lerna run build
+#          cd packages/client
+#          ./create_client_env_file.sh
+#          yarn build:app
+#          cd ../..
+#      # Publishes current version of packages that are not already present in the registry
+#      - name: publish
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        run: yarn lerna publish from-package --yes
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+#      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
+#      - name: Create a release tag
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        id: create_tag
+#        run: node scripts/create-release-tag.js
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      # Creates and updates the next available tag with format "latest"
+#      - name: Create latest release tag
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        id: create_latest_tag
+#        uses: EndBug/latest-tag@latest
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      # Convert the newly created tag into a release with changelog information
+#      - name: Create release on GitHub
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Login to DockerHub
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#      - name: Build and push client to Docker Hub
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: packages/client
+#          push: true
+#          tags: |
+#            cloudcarbonfootprint/client:${{ steps.create_tag.outputs.tag_name }}
+#            cloudcarbonfootprint/client:latest
+#      - name: Build and push api to Docker Hub
+#        if: github.event.pull_request.head.ref == 'changeset-release/trunk'
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: packages/api
+#          push: true
+#          tags: |
+#            cloudcarbonfootprint/api:${{ steps.create_tag.outputs.tag_name }}
+#            cloudcarbonfootprint/api:latest
 #  deploy-staging:
 #    if: github.ref == 'refs/heads/trunk'
 #    needs: build
@@ -295,7 +295,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.13
+      image: node:14.18-alpine3.14
     environment:
       name: production
     env:
@@ -305,6 +305,7 @@ jobs:
       AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
       AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
       AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
+      AWS_USE_BILLING_DATA: ${{ secrets.AWS_USE_BILLING_DATA }}
       AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
       AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
       AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
@@ -338,84 +339,6 @@ jobs:
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
         run: |
           apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl
-          export PATH=$PATH:/root/google-cloud-sdk/bin
-          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
-
-          cp packages/api/create_server_env_file.sh dist-workspace/packages/api
-          cp packages/api/app-production.yaml dist-workspace/packages/api
-
-          cp packages/client/app-production.yaml dist-workspace/packages/client
-
-          # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
-          yarn set version 1.22.4
-
-          rm yarn.lock
-          rm package.json
-
-          cd dist-workspace/packages/api
-          # Generate yarn.lock file
-          yarn install
-          ./create_server_env_file.sh
-          cd ../../..
-
-          # Store service account
-          echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-
-          # Initialize gcloud CLI
-          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-
-          gcloud --quiet config set project $GOOGLE_PROJECT_ID
-
-          cd appengine
-          ./deploy-production.sh
-          cd ..
-  deploy-production:
-    if: github.ref == 'refs/heads/trunk'
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    container:
-      image: node:14.18-alpine3.13
-    environment:
-      name: production
-    env:
-#      AWS_PROXY_ACCOUNT_ID: ${{ secrets.AWS_PROXY_ACCOUNT_ID }}
-#      AWS_PROXY_ROLE_NAME: ${{ secrets.AWS_PROXY_ROLE_NAME }}
-#      AWS_ACCOUNTS: ${{ secrets.AWS_ACCOUNTS }}
-#      AWS_AUTH_MODE: ${{ secrets.AWS_AUTH_MODE }}
-#      AWS_ATHENA_REGION: ${{ secrets.AWS_ATHENA_REGION }}
-#      AWS_TARGET_ACCOUNT_ROLE_NAME: ${{ secrets.AWS_TARGET_ACCOUNT_ROLE_NAME }}
-      AWS_USE_BILLING_DATA: ${{ secrets.AWS_USE_BILLING_DATA }}
-#      AWS_ATHENA_DB_NAME: ${{ secrets.AWS_ATHENA_DB_NAME }}
-#      AWS_ATHENA_DB_TABLE: ${{ secrets.AWS_ATHENA_DB_TABLE }}
-#      AWS_ATHENA_QUERY_RESULT_LOCATION: ${{ secrets.AWS_ATHENA_QUERY_RESULT_LOCATION }}
-#      AWS_BILLING_ACCOUNT_ID: ${{ secrets.AWS_BILLING_ACCOUNT_ID }}
-#      AWS_BILLING_ACCOUNT_NAME: ${{ secrets.AWS_BILLING_ACCOUNT_NAME }}
-#      GCP_PROJECTS: ${{ secrets.GCP_PROJECTS }}
-      GCP_USE_BILLING_DATA: ${{ secrets.GCP_USE_BILLING_DATA }}
-      GCP_BIG_QUERY_TABLE: ${{ secrets.GCP_BIG_QUERY_TABLE }}
-      GCP_BILLING_PROJECT_ID: ${{ secrets.GCP_BILLING_PROJECT_ID }}
-      GCP_BILLING_PROJECT_NAME: ${{ secrets.GCP_BILLING_PROJECT_NAME }}
-#      AZURE_AUTH_MODE: ${{ secrets.AZURE_AUTH_MODE }}
-#      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-#      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-#      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-#      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
-#      GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
-      GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
-      CACHE_MODE: ${{ secrets.CACHE_MODE }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: dist-workspace
-      - name: unzip artifact for deployment
-        run: unzip dist-workspace.zip
-      - name: deploy-production
-        env:
-          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
-          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-        run: |
-          apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl
           export PATH=$PATH:/root/google-cloud-sdk/bin
           curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
 
