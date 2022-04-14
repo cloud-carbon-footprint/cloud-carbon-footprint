@@ -6,11 +6,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   card: {
-    backgroundColor: '#e62314',
+    backgroundColor: '#EC6559',
     flex: '1 1 350px',
     maxWidth: 600,
     minHeight: 350,
-    border: '5px solid #e62314',
+    border: '5px solid #EC6559',
     borderRadius: 15,
     display: 'flex',
     flexDirection: 'column',
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   titleContainer: {
-    backgroundColor: '#e62314',
+    backgroundColor: '#EC6559',
     width: '100%',
     height: 64,
     display: 'flex',
@@ -50,12 +50,12 @@ const useStyles = makeStyles(() => ({
   treeSeedlingsIcon: {
     width: 104,
     height: 104,
-    color: '#73B500',
+    color: '#D3C661',
   },
   calendarIcon: {
     width: 90,
     height: 90,
-    color: '#D99200',
+    color: '#DCA479',
     marginBottom: 13,
     marginTop: 3,
   },

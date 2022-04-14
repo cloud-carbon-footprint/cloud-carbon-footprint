@@ -73,7 +73,7 @@ const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
     display: 'inline-block',
     position: 'relative',
     zIndex: 1,
-    background: '#e62314',
+    background: '#EC6559',
     width: 110,
     height: 50,
     borderRadius: 15,
