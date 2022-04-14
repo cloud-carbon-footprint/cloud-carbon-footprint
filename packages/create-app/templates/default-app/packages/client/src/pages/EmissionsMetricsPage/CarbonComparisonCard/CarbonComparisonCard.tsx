@@ -5,13 +5,13 @@
 import React, { FunctionComponent, useState } from 'react'
 import { FlightTakeoff, PhonelinkRing, Eco } from '@material-ui/icons'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { sumEstimates } from 'utils/helpers'
-import NoDataMessage from 'common/NoDataMessage'
-import DashboardCard from 'layout/DashboardCard'
-import { Source, ComparisonItem } from 'Types'
+import { sumEstimates } from '../../../utils/helpers'
+import NoDataMessage from '../../../common/NoDataMessage'
+import DashboardCard from '../../../layout/DashboardCard'
+import { Source, ComparisonItem } from '../../../Types'
 import CarbonComparison from './CarbonComparison'
 import useStyles from './carbonComparisonStyles'
-import { formattedNumberWithCommas } from 'utils/helpers/transformData'
+import { formattedNumberWithCommas } from '../../../utils/helpers/transformData'
 
 type Selection = 'flights' | 'phones' | 'trees'
 

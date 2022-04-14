@@ -3,31 +3,55 @@
  */
 
 import { CSSProperties } from 'react'
-import { createMuiTheme, Theme } from '@material-ui/core/styles'
+import {
+  createTheme as createMuiTheme,
+  Theme,
+  ThemeOptions,
+} from '@material-ui/core/styles'
+import { Palette, PaletteOptions } from '@material-ui/core/styles/createPalette'
 
-declare module '@material-ui/core/styles/createPalette' {
-  /* eslint-disable */
-  interface Palette {
-    chart: Palette['primary'][]
-    primaryBlue: CSSProperties['color']
-    lightBlue: CSSProperties['color']
-    lightTitle: CSSProperties['color']
-    lightMessage: CSSProperties['color']
-    extLink: CSSProperties['color']
-  }
-  /* eslint-disable */
-  interface PaletteOptions {
-    chart: PaletteOptions['primary'][]
-    primaryBlue: CSSProperties['color']
-    lightBlue: CSSProperties['color']
-    lightTitle: CSSProperties['color']
-    lightMessage: CSSProperties['color']
-    extLink: CSSProperties['color']
-  }
+export type CCFPaletteAdditions = {
+  chart: Palette['primary'][]
+  primaryBlue: CSSProperties['color']
+  lightBlue: CSSProperties['color']
+  lightTitle: CSSProperties['color']
+  lightMessage: CSSProperties['color']
+  extLink: CSSProperties['color']
 }
 
-const determineTheme = (): Theme => {
-  return createMuiTheme({
+export type CCFOptionsPaletteAdditions = {
+  chart: PaletteOptions['primary'][]
+  primaryBlue: CSSProperties['color']
+  lightBlue: CSSProperties['color']
+  lightTitle: CSSProperties['color']
+  lightMessage: CSSProperties['color']
+  extLink: CSSProperties['color']
+}
+
+export type CCFPalette = Palette & CCFPaletteAdditions
+
+export type CCFPaletteOptions = PaletteOptions & CCFOptionsPaletteAdditions
+
+export interface CCFTheme extends Theme {
+  palette: CCFPalette
+}
+
+export interface CCFThemeOptions extends ThemeOptions {
+  palette: CCFPaletteOptions
+}
+
+export type SimpleThemeOptions = {
+  palette: CCFPaletteOptions
+}
+
+export function createThemeOptions(options: CCFThemeOptions): CCFThemeOptions {
+  const { palette } = options
+
+  return { palette }
+}
+
+const defaultTheme = () => {
+  return createTheme({
     palette: {
       type: 'light',
       background: {
@@ -70,8 +94,15 @@ const determineTheme = (): Theme => {
   })
 }
 
-const getChartColors = (theme: Theme) => {
+export function createTheme(options: SimpleThemeOptions): CCFTheme {
+  const themeOptions = createThemeOptions(options)
+  const baseTheme = createMuiTheme(themeOptions) as CCFTheme
+  const theme = { ...baseTheme }
+  return theme
+}
+
+const getChartColors = (theme: CCFTheme) => {
   return theme.palette.chart.map(({ main }) => main)
 }
 
-export { determineTheme, getChartColors }
+export { defaultTheme, getChartColors }

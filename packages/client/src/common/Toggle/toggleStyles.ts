@@ -3,8 +3,9 @@
  */
 
 import { makeStyles } from '@material-ui/core/styles'
+import { CCFTheme } from '../../utils/themes'
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
   toggleWrapper: {
     position: 'relative',
     overflow: 'hidden',

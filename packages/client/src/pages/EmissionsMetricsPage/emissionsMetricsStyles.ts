@@ -9,7 +9,6 @@ const PADDING_LOADING = 2
 const useStyles = makeStyles((theme) => ({
   boxContainer: {
     padding: theme.spacing(3, 10),
-    marginTop: 62,
   },
   loadingContainer: {
     flexDirection: 'column',
@@ -25,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   loadingMessage: {
     padding: theme.spacing(PADDING_LOADING),
     fontSize: '24px',
+  },
+  pageContainer: {
+    height: '100%',
+    overflowY: 'scroll',
   },
 }))
 

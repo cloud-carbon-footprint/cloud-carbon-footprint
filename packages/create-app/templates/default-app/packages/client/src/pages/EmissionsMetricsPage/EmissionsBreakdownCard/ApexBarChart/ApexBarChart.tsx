@@ -5,7 +5,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import Chart from 'react-apexcharts'
 import { useTheme } from '@material-ui/core/styles'
-import { PageEntry, Page, barChartCustomColors } from 'Types'
+import { PageEntry, Page, barChartCustomColors } from '../../../../Types'
 import useStyles from './apexBarChartStyles'
 import { createCustomBarColors, mapToRange } from './helpers'
 import Pagination from '../Pagination'

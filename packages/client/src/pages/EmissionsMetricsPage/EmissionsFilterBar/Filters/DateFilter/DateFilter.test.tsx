@@ -7,7 +7,10 @@ import { render, RenderResult, act, fireEvent } from '@testing-library/react'
 import moment from 'moment'
 import MockDate from 'mockdate'
 import DateFilter from './DateFilter'
-import { FiltersDateRange, Filters } from 'common/FilterBar/utils/Filters'
+import {
+  FiltersDateRange,
+  Filters,
+} from '../../../../../common/FilterBar/utils/Filters'
 import { EmissionsFilters } from '../../utils/EmissionsFilters'
 
 describe('DatePicker', () => {

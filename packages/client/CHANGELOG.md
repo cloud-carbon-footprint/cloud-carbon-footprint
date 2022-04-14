@@ -1,5 +1,43 @@
 # @cloud-carbon-footprint/client
 
+## 3.1.1
+
+### Patch Changes
+
+- f6bef017: updates build in ci workflow
+
+## 3.1.0
+
+### Minor Changes
+
+- 329f0e7c: updates themes to fix backstage plugin
+  please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/827c2c7f081799704b4733f12757f9d02b4c2440) for template updates
+
+## 3.0.0
+
+### Major Changes
+
+- ebe78a83: Updates CCF Client to allow for publishable component libraries (Backstage Plugin Compatibility)
+
+  **Breaking Changes**: This update contains important refactors to the client package which includes updating the build script to build the new component library, changes to the service hooks, as well as adding better error handling for api calls.
+
+  For update to the create-app templates, please refer to this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/7a6457bd9de48ffdfccca4232a1f8b744efd9be1) (includes necessary major client changes).
+
+### Patch Changes
+
+- 510d4b86: updates packages: axios googleapis dotenv @types/jest-when
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8d8c1db6ff94da5127d559e10632479a8520c67a) for changes to the create-app templates.
+
+- 96b710fb: Adds REACT_APP_GROUP_BY to client env template so it's more discoverable
+- ff05607b: Bumps to latest version of typescript and sets resolution for this
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6cdc1469dcd5380c9c8a84b9fe13b977991db54c) for changes to the create-app templates.
+
+- Updated dependencies [510d4b86]
+- Updated dependencies [ff05607b]
+  - @cloud-carbon-footprint/common@1.5.1
+
 ## 2.3.4
 
 ### Patch Changes

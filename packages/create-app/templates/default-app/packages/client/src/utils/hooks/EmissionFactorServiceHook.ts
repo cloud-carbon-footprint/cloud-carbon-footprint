@@ -2,44 +2,45 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
-import { useErrorHandling } from '../../layout/ErrorPage'
+import { useAxiosErrorHandling } from '../../layout/ErrorPage'
 
 import { ServiceResult } from '../../Types'
 
-const useRemoteEmissionService = (): ServiceResult<EmissionRatioResult> => {
+interface UseRemoteEmissionServiceParams {
+  baseUrl: string | null
+  onApiError?: (e: Error) => void
+}
+const useRemoteEmissionService = (
+  params: UseRemoteEmissionServiceParams,
+): ServiceResult<EmissionRatioResult> => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const _isMounted = useRef(true)
-  const { handleApiError, error, setError } = useErrorHandling()
+  const { error, setError } = useAxiosErrorHandling(params.onApiError)
 
   useEffect(() => {
     const fetchEstimates = async () => {
-      setError({})
+      if (!params.baseUrl) {
+        return
+      }
       if (_isMounted.current) {
+        setError(null)
         setLoading(true)
       }
 
       try {
-        const res = await axios.get('/api/regions/emissions-factors')
+        const res = await axios.get(
+          `${params.baseUrl}/regions/emissions-factors`,
+        )
 
         if (_isMounted.current) {
           setData(res.data)
         }
       } catch (e) {
-        const DEFAULT_RESPONSE = {
-          status: '520',
-          statusText: 'Unknown Error',
-        }
-
-        if (e.response) {
-          const { status, statusText } = e.response
-          setError({ status, statusText })
-        } else {
-          setError(DEFAULT_RESPONSE)
-        }
+        setError(e)
       } finally {
         if (_isMounted.current) {
           setLoading(false)
@@ -51,11 +52,9 @@ const useRemoteEmissionService = (): ServiceResult<EmissionRatioResult> => {
     return () => {
       _isMounted.current = false
     }
-  }, [setError])
+  }, [setError, params.baseUrl])
 
-  handleApiError(error)
-
-  return { data, loading }
+  return { data, loading, error }
 }
 
 export default useRemoteEmissionService

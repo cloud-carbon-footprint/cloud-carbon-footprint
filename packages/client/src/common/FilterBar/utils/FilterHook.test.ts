@@ -5,8 +5,8 @@
 import { renderHook, act, RenderResult } from '@testing-library/react-hooks'
 import useFilters, { UseFiltersResults } from './FilterHook'
 import moment from 'moment'
-import { generateEstimations } from 'utils/data'
-import { FilterResultResponse } from 'Types'
+import { generateEstimations } from '../../../utils/data'
+import { FilterResultResponse } from '../../../Types'
 import { EmissionsFilters } from '../../../pages/EmissionsMetricsPage/EmissionsFilterBar/utils/EmissionsFilters'
 
 //TODO: Make this test not be dependent on EmissionsFilters

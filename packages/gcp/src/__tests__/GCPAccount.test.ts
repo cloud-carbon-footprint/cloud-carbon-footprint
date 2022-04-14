@@ -7,7 +7,7 @@ import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
 import { ComputeEngine, Recommendations } from '../lib'
 
 import {
-  Config as mockConfig,
+  setConfig,
   EstimationResult,
   GroupBy,
   RecommendationResult,
@@ -37,7 +37,11 @@ describe('GCPAccount', () => {
   })
 
   it('should return empty if no service in config file', () => {
-    mockConfig.GCP.CURRENT_SERVICES = []
+    setConfig({
+      GCP: {
+        CURRENT_SERVICES: [],
+      },
+    })
 
     const GCPAccount = require('../application/GCPAccount').default
     const services = new GCPAccount(['us-east1']).getServices()
@@ -45,7 +49,11 @@ describe('GCPAccount', () => {
   })
 
   it('should throw error if unknown service', () => {
-    mockConfig.GCP.CURRENT_SERVICES = [{ key: 'goose', name: '' }]
+    setConfig({
+      GCP: {
+        CURRENT_SERVICES: [{ key: 'goose', name: '' }],
+      },
+    })
 
     const GCPAccount = require('../application/GCPAccount').default
     const account = new GCPAccount(['us-east1'])
@@ -183,12 +191,11 @@ describe('GCPAccount', () => {
 })
 
 function expectGCPService(key: string) {
-  mockConfig.GCP.CURRENT_SERVICES = [
-    {
-      key: key,
-      name: '',
+  setConfig({
+    GCP: {
+      CURRENT_SERVICES: [{ key: key, name: '' }],
     },
-  ]
+  })
 
   const GCPAccount = require('../application/GCPAccount').default
   const services = new GCPAccount('test-project', 'test project', [

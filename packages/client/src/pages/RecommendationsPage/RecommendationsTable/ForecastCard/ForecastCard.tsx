@@ -5,7 +5,7 @@
 import React, { FunctionComponent } from 'react'
 import clsx from 'clsx'
 import { Card, Divider, Typography } from '@material-ui/core'
-import Tooltip from 'common/Tooltip'
+import Tooltip from '../../../../common/Tooltip'
 import useStyles from './forecastCardStyles'
 import PercentBadge from '../PercentBadge'
 

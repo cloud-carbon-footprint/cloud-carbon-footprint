@@ -3,7 +3,7 @@
  */
 
 import { EmissionRatioResult } from '@cloud-carbon-footprint/common'
-import { barChartCustomColors, Page, PageEntry } from 'Types'
+import { barChartCustomColors, Page, PageEntry } from '../../../../Types'
 
 const createCustomBarColors = (
   pageData: Page<PageEntry>,

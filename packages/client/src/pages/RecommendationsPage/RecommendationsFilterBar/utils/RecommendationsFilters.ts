@@ -6,7 +6,7 @@ import {
   RecommendationResult,
   ServiceData,
 } from '@cloud-carbon-footprint/common'
-import { Filters } from 'common/FilterBar/utils/Filters'
+import { Filters } from '../../../../common/FilterBar/utils/Filters'
 import {
   DropdownFilterOptions,
   DropdownOption,
@@ -15,13 +15,13 @@ import {
   FilterResultResponse,
   FiltersConfig,
   unknownOptionTypes,
-} from 'Types'
+} from '../../../../Types'
 import {
   ALL_DROPDOWN_FILTER_OPTIONS,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import { DropdownSelections } from 'common/FilterBar/utils/FiltersUtil'
-import { OptionChooser } from 'common/FilterBar/utils/OptionChooser'
+} from '../../../../common/FilterBar/utils/DropdownConstants'
+import { DropdownSelections } from '../../../../common/FilterBar/utils/FiltersUtil'
+import { OptionChooser } from '../../../../common/FilterBar/utils/OptionChooser'
 import { AccountChooser } from './options/AccountChooser'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { RegionChooser } from './options/RegionChooser'

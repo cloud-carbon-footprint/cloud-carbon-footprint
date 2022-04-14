@@ -9,10 +9,10 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      statements: 95,
-      branches: 95,
+      statements: 99,
+      branches: 100,
       functions: 96,
-      lines: 95,
+      lines: 99,
     },
   },
   testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],

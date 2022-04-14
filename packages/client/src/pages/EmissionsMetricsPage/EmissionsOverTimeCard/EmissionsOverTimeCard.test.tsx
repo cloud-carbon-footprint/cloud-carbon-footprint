@@ -7,13 +7,13 @@ import {
   ReactTestInstance,
   ReactTestRenderer,
 } from 'react-test-renderer'
-import { mockDataWithHigherPrecision } from 'utils/data'
-import NoDataMessage from 'common/NoDataMessage'
+import { mockDataWithHigherPrecision } from '../../../utils/data'
+import NoDataMessage from '../../../common/NoDataMessage'
 import ApexLineChart from './ApexLineChart'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 
 jest.mock('apexcharts')
-jest.mock('utils/themes')
+jest.mock('../../../utils/themes')
 
 describe('Emissions Over Time Card', () => {
   const styleClass = {}
@@ -23,7 +23,7 @@ describe('Emissions Over Time Card', () => {
     testRenderer = create(
       <EmissionsOverTimeCard
         classes={styleClass}
-        filteredData={mockDataWithHigherPrecision}
+        data={mockDataWithHigherPrecision}
       />,
     )
     testInstance = testRenderer.root
@@ -47,7 +47,7 @@ describe('Emissions Over Time Card', () => {
 
   it('should render no data message when there is no data to display', () => {
     testRenderer = create(
-      <EmissionsOverTimeCard classes={styleClass} filteredData={[]} />,
+      <EmissionsOverTimeCard classes={styleClass} data={[]} />,
     )
 
     const noDataMessage = testRenderer.root.findAllByType(NoDataMessage)

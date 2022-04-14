@@ -32,10 +32,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
-import {
-  GCP_CLOUD_CONSTANTS,
-  GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
-} from '../domain'
+import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
 
 export default class GCPAccount extends CloudProviderAccount {
   constructor(
@@ -79,7 +76,7 @@ export default class GCPAccount extends CloudProviderAccount {
     const region = new Region(
       regionId,
       gcpServices,
-      GCP_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+      getGCPEmissionsFactors(),
       gcpConstants,
     )
     return await this.getRegionData('GCP', region, startDate, endDate, grouping)

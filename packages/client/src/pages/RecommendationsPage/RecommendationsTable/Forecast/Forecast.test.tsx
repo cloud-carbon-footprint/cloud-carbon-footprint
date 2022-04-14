@@ -9,7 +9,7 @@ import {
   mockRecommendationData,
   mockDataWithLargeNumbers,
   mockDataWithSmallNumbers,
-} from 'utils/data'
+} from '../../../../utils/data'
 import Forecast, { ForecastProps } from './Forecast'
 
 describe('Forecast', () => {

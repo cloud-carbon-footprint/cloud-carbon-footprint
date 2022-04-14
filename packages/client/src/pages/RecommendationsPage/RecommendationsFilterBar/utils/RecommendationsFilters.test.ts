@@ -6,9 +6,9 @@ import { RecommendationsFilters } from './RecommendationsFilters'
 import {
   ALL_DROPDOWN_FILTER_OPTIONS,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
+} from '../../../../common/FilterBar/utils/DropdownConstants'
 
-import { DropdownFilterOptions, FilterOptions } from 'Types'
+import { DropdownFilterOptions, FilterOptions } from '../../../../Types'
 import { AccountChooser } from './options/AccountChooser'
 import { CloudProviderChooser } from './options/CloudProviderChooser'
 import { RegionChooser } from './options/RegionChooser'

@@ -10,15 +10,17 @@ import React, {
   SetStateAction,
 } from 'react'
 import useStyles from './filterBarStyles'
-import { FilterOptions, FilterProps } from 'Types'
+import { FilterOptions, FilterProps } from '../../Types'
 import { Filters } from './utils/Filters'
 
+export type FilterBarConfig = {
+  filters: Filters
+  setFilters: Dispatch<SetStateAction<Filters>>
+  filterOptions: FilterOptions
+}
+
 type FilterBarProps = {
-  config: {
-    filters: Filters
-    setFilters: Dispatch<SetStateAction<Filters>>
-    filterOptions: FilterOptions
-  }
+  config: FilterBarConfig
   components: FunctionComponent<FilterProps>[]
   suffixComponent?: ReactElement
 }
@@ -33,7 +35,6 @@ const FilterBar: FunctionComponent<FilterBarProps> = ({
     <div data-testid="filterBar" className={classes.filterHeader}>
       <Grid
         container
-        spacing={3}
         direction={'row'}
         justify={'center'}
         alignItems={'center'}

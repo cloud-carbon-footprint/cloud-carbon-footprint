@@ -5301,6 +5301,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"docusaurus-plugin-image-zoom@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "docusaurus-plugin-image-zoom@npm:0.0.2"
+  dependencies:
+    medium-zoom: ^1.0.6
+  checksum: 88ae6c21c3d66958448cd91def0c335f1c3f99d13dd7017df6372260fb2617cb07bf788e55f07f24cc26b8d813316dadcff8ea3a37e2c4d0dda4cbab6ec637fc
+  languageName: node
+  linkType: hard
+
 "dom-converter@npm:^0.2":
   version: 0.2.0
   resolution: "dom-converter@npm:0.2.0"
@@ -8857,6 +8866,13 @@ fsevents@~2.3.1:
   version: 0.3.0
   resolution: "media-typer@npm:0.3.0"
   checksum: af1b38516c28ec95d6b0826f6c8f276c58aec391f76be42aa07646b4e39d317723e869700933ca6995b056db4b09a78c92d5440dc23657e6764be5d28874bba1
+  languageName: node
+  linkType: hard
+
+"medium-zoom@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "medium-zoom@npm:1.0.6"
+  checksum: 728b9f661262fd084da26f401ffe9bf98afc6d14ad93d4bfb08b95d32f9c4494a97dc8cb3a62353e8d350dc09c84a3f6f686a0fec321bfb609e5ba5e24bdb9d2
   languageName: node
   linkType: hard
 
@@ -14334,6 +14350,7 @@ fsevents@~2.3.1:
     "@material-ui/core": ^4.11.3
     "@mdx-js/react": ^1.6.21
     clsx: ^1.1.1
+    docusaurus-plugin-image-zoom: ^0.0.2
     react: ^16.8.4
     react-dom: ^16.8.4
   languageName: unknown

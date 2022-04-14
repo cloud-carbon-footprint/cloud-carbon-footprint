@@ -2,8 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import config from 'ConfigLoader'
-import { AllFilterOptionMap, DropdownOption } from 'Types'
+import config from '../../../ConfigLoader'
+import { AllFilterOptionMap, DropdownOption } from '../../../Types'
 
 function sortByCloudProvider(
   { cloudProvider: cloudProvider1 = '' }: DropdownOption,

@@ -2,7 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { DropdownFilterOptions, DropdownOption, FilterOptions } from 'Types'
+import {
+  DropdownFilterOptions,
+  DropdownOption,
+  FilterOptions,
+} from '../../../Types'
 import { DropdownSelections, optionIsInDropdownOptions } from './FiltersUtil'
 import {
   ALL_DROPDOWN_FILTER_OPTIONS,

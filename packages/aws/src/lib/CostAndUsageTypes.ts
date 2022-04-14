@@ -95,6 +95,8 @@ export const HDD_USAGE_TYPES: string[] = [
   'BackupUsage.MultiAZ', // Fsx
   'ColdStorage-ByteHrs-EFS', // AWSBackup
   'WarmStorage-ByteHrs-EFS', //AWSBackup
+  'WarmStorage-ByteHrs-DynamoDB', //AWSBackup
+  'MagneticStore-ByteHrs', // EBS Backup
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -163,9 +165,12 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'PortUsage',
   'SharedMsftAD-Usage',
   'Kafka.mcu.general',
+  'SnapshotArchiveStorage',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
+  'EMR-EKS-EC2-GBHours', // "Double counted" with EC2 usage rows, so ignore.
+  'APS3-EMR-EKS-EC2-vCPUHours', // "Double counted" with EC2 usage rows, so ignore.
   'ECS-EC2-GB-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'ECS-EC2-vCPU-Hours', // "Double counted" with EC2 usage rows, so ignore.
   'Dollar', // AWSDeveloperSupport - no energy associated with support cost

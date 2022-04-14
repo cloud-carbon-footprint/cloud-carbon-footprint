@@ -16,7 +16,7 @@ import {
   DropdownOption,
   UnknownTypes,
   EmissionsAndRecommendationResults,
-} from 'Types'
+} from '../../Types'
 
 const sumServiceTotals = (
   data: EstimationResult[],
@@ -176,7 +176,6 @@ const formattedNumberWithCommas = (num: number, decimalPlaces = 2): string =>
 const useFilterDataFromEstimates = (
   data: EstimationResult[],
 ): FilterResultResponse => {
-  const [filteredData] = useState(data)
   const [filterResultResponse, setFilterResultResponse] =
     useState<FilterResultResponse>({ accounts: [], services: [] })
 
@@ -204,7 +203,7 @@ const useFilterDataFromEstimates = (
       accounts: uniq(accountNames),
       services: uniq(serviceNames),
     })
-  }, [data, filteredData])
+  }, [data])
 
   return filterResultResponse
 }

@@ -3,17 +3,17 @@
  */
 
 import React, { FunctionComponent, ReactElement } from 'react'
-import { DropdownOption, FilterBarProps, FilterOptions } from 'Types'
+import { DropdownOption, FilterBarProps, FilterOptions } from '../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION,
   ALL_REGIONS_DROPDOWN_OPTION,
   buildAndOrderDropdownOptions,
   CLOUD_PROVIDER_OPTIONS,
-} from 'common/FilterBar/utils/DropdownConstants'
-import FilterBar from 'common/FilterBar'
-import AccountFilter from 'common/AccountFilter'
-import CloudProviderFilter from 'common/CloudProviderFilter'
+} from '../../../common/FilterBar/utils/DropdownConstants'
+import FilterBar from '../../../common/FilterBar'
+import AccountFilter from '../../../common/AccountFilter'
+import CloudProviderFilter from '../../../common/CloudProviderFilter'
 import RegionFilter from './Filters/RegionFilter'
 import RecommendationTypeFilter from './Filters/RecommendationType'
 import Toggle from '../../../common/Toggle'
@@ -21,12 +21,12 @@ import Toggle from '../../../common/Toggle'
 const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
-  filteredDataResults,
+  filterOptions,
   setUseKilograms,
 }): ReactElement => {
   const getFilterOptions = (): FilterOptions => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.accounts,
+      filterOptions?.accounts,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
 
@@ -36,7 +36,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     ]
 
     const allRegionDropdownOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.regions,
+      filterOptions?.regions,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
 
@@ -46,7 +46,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     ]
 
     const allRecommendationTypeOptions = buildAndOrderDropdownOptions(
-      filteredDataResults?.recommendationTypes,
+      filterOptions?.recommendationTypes,
       [{ cloudProvider: '', key: 'string', name: 'string' }],
     )
 

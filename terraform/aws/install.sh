@@ -1,5 +1,3 @@
-# © 2021 Thoughtworks, Inc.
-
 #!/bin/bash
 
 # Install dependencies (git, node, yarn, jq)
@@ -15,7 +13,7 @@ yum install -y jq
 # Clone CCF repository and install dependencies
 su - ec2-user
 cd /home/ec2-user
-git clone -b terraform-setup https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.git
+git clone https://github.com/cloud-carbon-footprint/cloud-carbon-footprint.git
 cd cloud-carbon-footprint/
 yarn install
 

@@ -77,6 +77,9 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'GRS',
   'GZRS',
   'Data Retention',
+  'Pay-as-you-go Data at Rest',
+  'Standard Instances',
+  'Node',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [

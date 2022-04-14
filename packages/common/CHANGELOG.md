@@ -1,5 +1,26 @@
 # @cloud-carbon-footprint/common
 
+## 1.5.1
+
+### Patch Changes
+
+- 510d4b86: updates packages: axios googleapis dotenv @types/jest-when
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8d8c1db6ff94da5127d559e10632479a8520c67a) for changes to the create-app templates.
+
+- ff05607b: Bumps to latest version of typescript and sets resolution for this
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6cdc1469dcd5380c9c8a84b9fe13b977991db54c) for changes to the create-app templates.
+
+## 1.5.0
+
+### Minor Changes
+
+- 7ecd432d: Adds support for optionally passing in the CCF Config into the api router
+- 9fcbfc67: Adds option for receiving all recommendation services
+- 9938c9b0: refactors ccf for v1 implementation of on-premise estimations
+  Refer to [this](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/b3ba4120d633a8b83bf8bc0c131855dd67e6a288) commit to update cli package templates.
+
 ## 1.4.0
 
 ### Minor Changes

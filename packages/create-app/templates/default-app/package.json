@@ -33,6 +33,8 @@
     "start-api": "yarn workspace @cloud-carbon-footprint/api-template start",
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli-template start",
     "test": "lerna run test -- --coverage",
-    "guided-install": "cd packages/cli && yarn guided-install"
+    "guided-install": "cd packages/cli && yarn guided-install",
+    "create-lookup-table": "yarn workspace @cloud-carbon-footprint/cli create-lookup-table",
+    "estimate-on-premise-data": "yarn workspace @cloud-carbon-footprint/cli estimate-on-premise-data"
   }
 }

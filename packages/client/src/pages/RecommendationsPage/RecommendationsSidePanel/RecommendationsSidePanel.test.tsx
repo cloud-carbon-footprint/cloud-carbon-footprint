@@ -3,7 +3,7 @@
  */
 
 import { render } from '@testing-library/react'
-import { mockRecommendationData } from 'utils/data'
+import { mockRecommendationData } from '../../../utils/data'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
 
 describe('Recommendations Side Panel', () => {

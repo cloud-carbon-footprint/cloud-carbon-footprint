@@ -24,7 +24,6 @@ import {
   UnknownEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
-  AWS_RECOMMENDATIONS_SERVICES,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   EstimationResult,
@@ -53,10 +52,7 @@ import {
   AWS_CLOUD_CONSTANTS,
   AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
 } from '../domain'
-import {
-  RightsizingRecommendations,
-  ComputeOptimizerRecommendations,
-} from '../lib/Recommendations'
+import { Recommendations } from '../lib/Recommendations'
 
 export default class AWSAccount extends CloudProviderAccount {
   private readonly credentials: Credentials
@@ -129,29 +125,10 @@ export default class AWSAccount extends CloudProviderAccount {
       ),
     )
 
-    if (
-      configLoader().AWS.RECOMMENDATIONS_SERVICE ===
-      AWS_RECOMMENDATIONS_SERVICES.ComputeOptimizer
-    ) {
-      const recommendations = new ComputeOptimizerRecommendations(
-        new ComputeEstimator(),
-        new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
-        new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-        new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
-        serviceWrapper,
-      )
-      return await recommendations.getRecommendations(
-        configLoader().AWS.COMPUTE_OPTIMIZER_BUCKET,
-      )
-    }
-
-    const recommendations = new RightsizingRecommendations(
-      new ComputeEstimator(),
-      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+    return await Recommendations.getRecommendations(
+      recommendationTarget,
       serviceWrapper,
     )
-
-    return await recommendations.getRecommendations(recommendationTarget)
   }
 
   getDataFromCostAndUsageReports(

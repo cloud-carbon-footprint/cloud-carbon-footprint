@@ -3,7 +3,7 @@
  */
 
 export type OnPremiseDataInput = {
-  cpuId?: string
+  machineName?: string
   memory?: number
   machineType?: string
   startTime?: Date
@@ -12,10 +12,11 @@ export type OnPremiseDataInput = {
   region?: string
   cpuUtilization?: number
   powerUsageEffectiveness?: number
+  cost?: number
 }
 
 export type OnPremiseDataOutput = {
-  cpuId?: string
+  machineName?: string
   memory?: number
   machineType?: string
   startTime?: Date
@@ -24,6 +25,7 @@ export type OnPremiseDataOutput = {
   region?: string
   cpuUtilization?: number
   powerUsageEffectiveness?: number
+  cost?: number
   usageHours: number
   kilowattHours: number
   co2e: number

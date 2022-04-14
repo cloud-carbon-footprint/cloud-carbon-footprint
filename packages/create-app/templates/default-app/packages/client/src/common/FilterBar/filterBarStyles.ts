@@ -9,9 +9,8 @@ const PADDING_FILTER = 0.5
 const useStyles = makeStyles((theme) => ({
   filterHeader: {
     top: 0,
-    left: 'auto',
-    position: 'fixed',
-    marginTop: '64px',
+    position: 'sticky', //make filter bar stick to top of container instead of page
+    marginTop: '0px',
     width: '100%',
     backgroundColor: '#fff',
     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',

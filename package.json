@@ -11,15 +11,16 @@
     "rimraf": "^3.0.2",
     "sonar-scanner": "^3.1.0",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.6.2"
   },
   "resolutions": {
     "@types/react": "^17.0.38",
     "@types/express-serve-static-core": "^4.17.21",
-    "@grpc/grpc-js": "^1.4.6",
+    "@grpc/grpc-js": "^1.5.7",
+    "@babel/core": "~7.16.7",
     "@types/eslint": "^8.2.1",
-    "google-auth-library": "^7.14.0",
-    "@babel/core": "~7.16.7"
+    "google-auth-library": "^7.11.0",
+    "typescript": "^4.6.2"
   },
   "workspaces": {
     "packages": [
@@ -37,6 +38,7 @@
     "start-cli": "yarn workspace @cloud-carbon-footprint/cli start",
     "guided-install": "yarn install && yarn workspace @cloud-carbon-footprint/cli guided-install",
     "create-lookup-table": "yarn workspace @cloud-carbon-footprint/cli create-lookup-table",
+    "create-azure-lookup-input": "yarn workspace @cloud-carbon-footprint/cli create-azure-lookup-input",
     "estimate-on-premise-data": "yarn workspace @cloud-carbon-footprint/cli estimate-on-premise-data",
     "create-app": "yarn workspace @cloud-carbon-footprint/create-app start",
     "test-create-app": "yarn workspace @cloud-carbon-footprint/create-app test-create-app",

@@ -36,13 +36,16 @@ slug: /configurations-glossary
 
 <br/>
 
-### Optionally set this to "GCP" or "AWS" if your application is deployed to AWS or GCP:
+### Optionally set these AWS variables:
 
-| Variable             | Example Value         | Type   | Notes                                                                                                                                                                                                                                                                                                                                            |
-| -------------------- | --------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| AWS_AUTH_MODE        | default               | string | The mode to authenticate with for AWS. Options include: 'AWS': uses [ChainableTemporaryCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ChainableTemporaryCredentials.html), for deploying to AWS. 'GCP': Uses temporary STS Tokens, for deploying to GCP. 'default': Uses default local AWS profile, for local development. |
-| AWS_PROXY_ACCOUNT_ID | your-proxy-account-id | string | The AWS account of the account to proxy/chain from, when app is deployed to GCP.                                                                                                                                                                                                                                                                 |
-| AWS_PROXY_ROLE_NAME  | your-proxy-role-name  | string | The AWS role name in the proxy account, to proxy/chain from, when app is deployed to GCP.                                                                                                                                                                                                                                                        |
+| Variable                     | Example Value            | Type   | Notes                                                                                                                                                                                                                                                                                                                                            |
+|------------------------------|--------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AWS_AUTH_MODE                | default                  | string | The mode to authenticate with for AWS. Options include: 'AWS': uses [ChainableTemporaryCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/ChainableTemporaryCredentials.html), for deploying to AWS. 'GCP': Uses temporary STS Tokens, for deploying to GCP. 'default': Uses default local AWS profile, for local development. |
+| AWS_PROXY_ACCOUNT_ID         | your-proxy-account-id    | string | The AWS account of the account to proxy/chain from, when app is deployed to GCP.                                                                                                                                                                                                                                                                 |
+| AWS_PROXY_ROLE_NAME          | your-proxy-role-name     | string | The AWS role name in the proxy account, to proxy/chain from, when app is deployed to GCP.                                                                                                                                                                                                                                                        |
+| AWS_RECOMMENDATIONS_SERVICE  | ComputeOptimizer         | string | The AWS service used to get recommendations from. Options include: "RightSizing", "ComputeOptimizer" or "All". Default is "Rightsizing".                                                                                                                                                                                                         |
+| AWS_COMPUTE_OPTIMIZER_BUCKET | your-central-bucket-name | string | The name of the AWS bucket in which Compute Optimizer recommendations exist. This is only needed id "ComputeOptimizer" or "All" is configured for the `AWS_RECOMMENDATIONS_SERVICE` variable.                                                                                                                                                    |
+
 
 <br/>
 
@@ -101,6 +104,19 @@ slug: /configurations-glossary
 | --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
 | CACHE_MODE            | GCS            | string | Set with 'GCS' to use this option or leave it empty to use the default.             |
 | GCS_CACHE_BUCKET_NAME | my-bucket-name | string | Is the name of you Google Cloud Storage bucket where the cache file will be stored. |
+
+<br/>
+
+## Optionally set these custom configurations for On-Premise calculations
+
+| Variable              | Example Value  | Type   | Notes                                                                               |
+| --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
+| ON_PREMISE_CPU_UTILIZATION_SERVER | 40 | number | For on-premise servers, provides an average value for cpu utilization.            |
+| ON_PREMISE_CPU_UTILIZATION_LAPTOP | 40 | number | For on-premise laptops, provides an average value for cpu utilization.   |
+| ON_PREMISE_CPU_UTILIZATION_DESKTOP | 40 | number | For on-premise desktops, provides an average value for cpu utilization.   |
+| ON_PREMISE_AVG_WATTS_SERVER | 300 | number | For on-premise servers, provides an average value for average watts.   |
+| ON_PREMISE_AVG_WATTS_LAPTOP | 300 | number | For on-premise laptops, provides an average value for average watts. |
+| ON_PREMISE_AVG_WATTS_DESKTOP | 300 | number | For on-premise desktops, provides an average value for average watts. |
 
 <br/>
 

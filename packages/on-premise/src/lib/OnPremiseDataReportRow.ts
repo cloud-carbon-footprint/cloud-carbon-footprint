@@ -3,10 +3,7 @@
  */
 
 import moment from 'moment'
-import {
-  OnPremiseDataInput,
-  convertMegabytesToGigabytes,
-} from '@cloud-carbon-footprint/common'
+import { OnPremiseDataInput } from '@cloud-carbon-footprint/common'
 import {
   INTEL_COMPUTE_PROCESSOR_FAMILY_MAPPING,
   AMD_COMPUTE_PROCESSOR_FAMILY_MAPPING,
@@ -17,9 +14,11 @@ export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
   constructor(usageData: OnPremiseDataInput) {
     super(usageData)
 
-    this.memory = convertMegabytesToGigabytes(usageData.memory)
+    this.memory = usageData.memory
     this.machineType = usageData.machineType
-    this.processorFamilies = this.getProcessorFamilyFromCpuId(usageData.cpuId)
+    this.processorFamilies = this.getProcessorFamilyFromCpuId(
+      usageData.machineName,
+    )
     this.usageHours = this.getUsageHoursFromTimestamps(
       usageData.startTime,
       usageData.endTime,
@@ -29,7 +28,6 @@ export default class OnPremiseDataReportRow extends OnPremiseBillingDataRow {
     this.powerUsageEffectiveness = usageData.powerUsageEffectiveness
   }
 
-  // TODO: update regex to handle all cpu id's
   public getProcessorFamilyFromCpuId(cpuId: string): string[] {
     let processor
     if (cpuId.includes('Intel')) {

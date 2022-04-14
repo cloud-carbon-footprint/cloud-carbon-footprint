@@ -1,0 +1,7 @@
+serviceName,region,usageType,usageUnit
+Virtual Machines,uksouth,D2 v2/DS2 v2,10 Hours
+Virtual Machines,westeurope,D4as v4 Spot,1 Hour
+Azure App Service,CentralUS,F1,1 Hour
+Container Instances,SouthCentralUS,vCPU Duration,1000 Hours
+Azure Database for MySQL,Unknown,2 vCore,100 Hours
+VPN Gateway,Unknown,VpnGw1,100 Hours

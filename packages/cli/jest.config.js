@@ -17,6 +17,7 @@ module.exports = {
   },
   coveragePathIgnorePatterns: [
     '<rootDir>/src/CliPrompts.ts',
+    '<rootDir>/src/CreateLookupTable/createAzureInput.ts',
     '<rootDir>/src/__tests__/fixtures',
   ],
   testPathIgnorePatterns: ['<rootDir>/src/__tests__/fixtures'],

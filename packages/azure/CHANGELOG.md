@@ -1,5 +1,45 @@
 # @cloud-carbon-footprint/azure
 
+## 0.9.2
+
+### Patch Changes
+
+- 84e2d1e2: adds support for missing usage types
+
+## 0.9.1
+
+### Patch Changes
+
+- 510d4b86: updates packages: axios googleapis dotenv @types/jest-when
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8d8c1db6ff94da5127d559e10632479a8520c67a) for changes to the create-app templates.
+
+- ff05607b: Bumps to latest version of typescript and sets resolution for this
+
+  See [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/6cdc1469dcd5380c9c8a84b9fe13b977991db54c) for changes to the create-app templates.
+
+- Updated dependencies [510d4b86]
+- Updated dependencies [ff05607b]
+  - @cloud-carbon-footprint/common@1.5.1
+  - @cloud-carbon-footprint/core@0.16.1
+
+## 0.9.0
+
+### Minor Changes
+
+- 497ae495: Adds support for estimating energy and carbon emissions for Azure GPU VMs
+
+### Patch Changes
+
+- ef6af294: Adds initial support for energy/carbon estimation for GPU instances for AWS and GCP
+- Updated dependencies [497ae495]
+- Updated dependencies [ef6af294]
+- Updated dependencies [7ecd432d]
+- Updated dependencies [9fcbfc67]
+- Updated dependencies [9938c9b0]
+  - @cloud-carbon-footprint/core@0.16.0
+  - @cloud-carbon-footprint/common@1.5.0
+
 ## 0.8.0
 
 ### Minor Changes

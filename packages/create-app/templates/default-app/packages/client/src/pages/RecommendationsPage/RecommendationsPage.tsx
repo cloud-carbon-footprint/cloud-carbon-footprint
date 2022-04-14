@@ -2,115 +2,57 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { ReactElement, SyntheticEvent, useState } from 'react'
-import moment from 'moment'
+import React, { ReactElement, useState } from 'react'
 import { Grid } from '@material-ui/core'
-import { GridRowParams, MuiEvent } from '@material-ui/data-grid'
-import { useRemoteRecommendationsService, useRemoteService } from 'utils/hooks'
-import {
-  EmissionsAndRecommendationResults,
-  FilterResultResponse,
-  RecommendationRow,
-} from 'Types'
-import LoadingMessage from 'common/LoadingMessage'
-import { useFilterDataFromRecommendations } from 'utils/helpers/transformData'
-import useFilters from 'common/FilterBar/utils/FilterHook'
+import LoadingMessage from '../../common/LoadingMessage'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
-import RecommendationsSidePanel from './RecommendationsSidePanel'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
-import { RecommendationsFilters } from './RecommendationsFilterBar/utils/RecommendationsFilters'
+import { ErrorState } from '../../layout/ErrorPage/ErrorPage'
+import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook'
+import { ClientConfig } from '../../Config'
+import loadConfig from '../../ConfigLoader'
 
-const RecommendationsPage = (): ReactElement => {
+interface RecommendationsPageProps {
+  onApiError?: (e: ErrorState) => void
+  config?: ClientConfig
+}
+
+const RecommendationsPage = ({
+  onApiError,
+  config = loadConfig(),
+}): ReactElement<RecommendationsPageProps> => {
   const classes = useStyles()
 
-  // Recommendation Data
-  const { data: recommendations, loading: recommendationsLoading } =
-    useRemoteRecommendationsService()
-  const [selectedRecommendation, setSelectedRecommendation] =
-    useState<RecommendationRow>()
   const [useKilograms, setUseKilograms] = useState(false)
 
-  // Emissions Estimation Data
-  const endDate: moment.Moment = moment.utc()
-  const startDate = moment.utc().subtract('1', 'month')
-  const { data: emissions, loading: emissionsLoading } = useRemoteService(
-    [],
-    startDate,
-    endDate,
-    true,
-  )
+  const recommendations = useRecommendationData({
+    baseUrl: config.BASE_URL,
+    onApiError,
+    groupBy: config.GROUP_BY,
+  })
 
-  const combinedData: EmissionsAndRecommendationResults = {
-    recommendations,
-    emissions: emissions.flatMap(
-      (estimationResult) => estimationResult.serviceEstimates,
-    ),
-  }
-
-  const isEmissionsDataLoaded = combinedData.emissions.length > 0
-  const filteredDataResults: FilterResultResponse =
-    useFilterDataFromRecommendations(combinedData)
-
-  const buildFilters = (filteredResponse: FilterResultResponse) => {
-    const updatedConfig =
-      RecommendationsFilters.generateConfig(filteredResponse)
-    return new RecommendationsFilters(updatedConfig)
-  }
-
-  const { filteredData, filters, setFilters } = useFilters(
-    combinedData,
-    buildFilters,
-    filteredDataResults,
-    isEmissionsDataLoaded,
-  )
-
-  const {
-    recommendations: filteredRecommendationData,
-    emissions: filteredEmissionsData,
-  } = filteredData as EmissionsAndRecommendationResults
-
-  const handleRowClick = (
-    params: GridRowParams,
-    _event: MuiEvent<SyntheticEvent>,
-  ) => {
-    if (selectedRecommendation && params.row.id === selectedRecommendation.id) {
-      setSelectedRecommendation(undefined)
-    } else {
-      setSelectedRecommendation(params.row as RecommendationRow)
-    }
-  }
-
-  if (recommendationsLoading || emissionsLoading)
+  if (recommendations.loading)
     return (
       <LoadingMessage message="Loading recommendations. This may take a while..." />
     )
 
   return (
-    <>
+    <div className={classes.pageContainer}>
       <RecommendationsFilterBar
-        filters={filters}
-        setFilters={setFilters}
-        filteredDataResults={filteredDataResults}
+        {...recommendations.filterBarProps}
         setUseKilograms={setUseKilograms}
       />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          {selectedRecommendation && (
-            <RecommendationsSidePanel
-              recommendation={selectedRecommendation}
-              onClose={() => setSelectedRecommendation(undefined)}
-            />
-          )}
           <RecommendationsTable
-            emissionsData={filteredEmissionsData}
-            recommendations={filteredRecommendationData}
-            handleRowClick={handleRowClick}
+            emissionsData={recommendations.filteredEmissionsData}
+            recommendations={recommendations.filteredRecommendationData}
             useKilograms={useKilograms}
           />
         </Grid>
       </div>
-    </>
+    </div>
   )
 }
 

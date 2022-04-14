@@ -15,8 +15,12 @@ fileignoreconfig:
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
+- filename: .changeset/silent-turtles-breathe.md
+  checksum: 93eb7d9f09dc8535e42065ab86021e41dfa12a2e72d94d07086d64190441a270
 - filename: .changeset/sixty-peas-design.md
   checksum: a353a88260b60bba06f294ed5e7227edf2b3782b97f67ac02bbe163f2435f8fd
+- filename: .changeset/spotty-rabbits-crash.md
+  checksum: a4cbe048796e9aea13ee0c2e5e280ca8bfa7529854f729d975f1ae1154ac0fd0
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
 - filename: .changeset/wet-jobs-destroy.md
@@ -77,6 +81,8 @@ fileignoreconfig:
   checksum: c5cafaa64e0d809ba7e5670faebfe68a4e6dd48804983526a3985b1ab28d3d11
 - filename: client/src/dashboard/transformData.tsx
   checksum: 77ec816e45b6b7cdbc59551939b955f8f57590414369e617af89d21f90d53b83
+- filename: cloudformation/ccf-compute-optimizer.yaml
+  checksum: 13794d10fb75b46d3c6815362fd63e41f7d98afea859a4e65bdf8c8e0efd6f0b
 - filename: docker-compose.yml
   checksum: bd3ecff05d1290b7f7d0a4ba4267c3f34037b52aa82f13c31e35ca8803103b9b
 - filename: docker/nginx.conf
@@ -93,6 +99,8 @@ fileignoreconfig:
   checksum: bd505a5e88a98e98fe13299464c3e438fbb71ecbd5b9ad26ba0b9b72b11cb276
 - filename: microsite/src/components/innovationPartners.js
   checksum: cf5de9e82c90a564f09e2adf21e003004675c0f74673fae6c0b5faad7818d498
+- filename: microsite/static/img/ccf_compute_optimizer.svg
+  checksum: 4271fca662d95372f0f1439c4a5f82424a06e2c38790a8806e1031dc74387016
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
@@ -135,16 +143,24 @@ fileignoreconfig:
   checksum: 366f101f67bd31dc640998666be0f6f8da68c0167b3627ebbaa2b498adc831fb
 - filename: packages/azure/package.json
   checksum: 5059b9e6c08f6482b208ff4a5c3189873868a82cabdd4a089d7efe64eafd004a
+- filename: packages/azure/src/__tests__/AzureAccount.test.ts
+  checksum: aaae306bc2bf8a39f34e31f41e7e7c9fd98321fcefc72aca0e126500446ccbfb
 - filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
   checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: 15c98a8e5cee427695a74794060a426e62ad0bbea118dcfdfb2ee04da2c3fa11
+  checksum: a27953cfe67d4ffd0c6c1d83162605e3d6deaaf0629f270cc0448b650b014ce9
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
   checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
+- filename: packages/cli/src/CreateLookupTable/createAzureInput.ts
+  checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
+- filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
+  checksum: ad3aeec28c7d7e97c0e59274c8cc26d9ecd499a7b2da0bd3af9c491af093bb08
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
+- filename: packages/client/.env.template
+  checksum: a2da05dc909b7d35c485fd9e555f35990a0b28ce16c4f7e4cddf7c07a5665fb1
 - filename: packages/client/create_client_env_file.sh
   checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
@@ -213,6 +229,8 @@ fileignoreconfig:
   checksum: c01e24418a7aa64dc973ab3cf363c854d61607929895c308f7d85ed80f30730f
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsFilterBar/utils/options/RegionChooser.ts
   checksum: 91ca68321f34f8c2f5297c15ad09221351df27e31575d06052c5982396e06d21
+- filename: packages/client/src/pages/RecommendationsPage/RecommendationsPage.test.tsx
+  checksum: 11900051a10c91a3b0d2d9fc027ad2fbc6cbcf80f1d1dbdb4f9f1373ae604139
 - filename: packages/client/src/pages/RecommendationsPage/RecommendationsTable/RecommendationsTable.tsx
   checksum: 2fd234d905195964a126f2a42767d01da8bd424c8a9fcab43e0ec12b327c0b5f
 - filename: packages/client/src/react-app-env.d.ts
@@ -229,6 +247,8 @@ fileignoreconfig:
   checksum: 2a1551ebe105d866d121c17029d53c7466b67e2cfc1c71b13b5894ae5bc06b50
 - filename: packages/client/stub-server/recommendations.json
   checksum: fd9afa539a5991cb21416293ae9d17a57005b5bcacdd148fe9f4ce0fd3de145e
+- filename: packages/common/src/Config.ts
+  checksum: 8cde1d40a5a56e3f1454534817d254a7b61baf2d28e185bf0c5093d8320c8b85
 - filename: packages/core/package.json
   checksum: c0f3b35fe6ca5f0bb14a34ccda0ed917ed97c03b116190210f4da82628891706
 - filename: packages/core/src/CloudConstantsTypes.ts
@@ -299,6 +319,8 @@ fileignoreconfig:
   checksum: 0d806eb083f87fba89e6cf56744269e50c76d2fd4a096a30f8ab7d16fcdcb991
 - filename: packages/gcp/src/__tests__/BillingExportTable.test.ts
   checksum: a7b7558f8736ffc379fadf79d749cfa5d1470e204b88053e56d0fa13f42d0cd4
+- filename: packages/gcp/src/__tests__/GCPAccount.test.ts
+  checksum: 26ef0caf65177a4e013ecff94012824cee58ceed48c09b29f7710712084ab9c4
 - filename: packages/gcp/src/lib/BillingExportTable.ts
   checksum: df8f16310cd2bf983821666d495f5bf1945584851e1242e37ecdf0a652102113
 - filename: packages/gcp/src/lib/BillingExportTypes.ts

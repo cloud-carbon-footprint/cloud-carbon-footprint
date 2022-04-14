@@ -40,12 +40,13 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 
 const mockDataInput: OnPremiseDataInput[] = [
   {
-    cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
-    memory: 130690,
+    machineName: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
+    memory: 127.626953125,
     machineType: 'server',
     startTime: new Date('2022-01-17T13:38:18Z'),
     endTime: new Date('2022-01-24T18:22:29.918423Z'),
     country: 'United States',
+    cost: 93.12,
   },
 ]
 
@@ -64,14 +65,15 @@ describe('On-Premise Data Report', () => {
 
     const expectedResult: OnPremiseDataOutput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
-        memory: 130690,
+        machineName: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
+        memory: 127.626953125,
         machineType: 'server',
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
         country: 'United States',
-        co2e: 0.0419517288344,
-        kilowattHours: 98.95676,
+        cost: 93.12,
+        co2e: 0.04734552254168001,
+        kilowattHours: 111.67977200000001,
         usageHours: 172,
       },
     ]
@@ -84,7 +86,7 @@ describe('On-Premise Data Report', () => {
         ...mockDataInput[0],
       },
     ]
-    newMockDataInput[0].memory = 1350690
+    newMockDataInput[0].memory = 1319.033203125
     const onPremiseDataReport = new OnPremiseDataReport(
       new ComputeEstimator(),
       new MemoryEstimator(ON_PREMISE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
@@ -94,14 +96,15 @@ describe('On-Premise Data Report', () => {
 
     const expectedResult: OnPremiseDataOutput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
-        memory: 1350690,
+        machineName: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
+        memory: 1319.033203125,
         machineType: 'server',
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
         country: 'United States',
-        co2e: 0.06491750897036913,
-        kilowattHours: 153.129001675636,
+        cost: 93.12,
+        co2e: 0.07326404583798803,
+        kilowattHours: 172.81701617678922,
         usageHours: 172,
       },
     ]
@@ -114,7 +117,7 @@ describe('On-Premise Data Report', () => {
         ...mockDataInput[0],
       },
     ]
-    newMockDataInput[0].memory = 1350690
+    newMockDataInput[0].memory = 1319.033203125
     newMockDataInput[0].cpuUtilization = 45
     newMockDataInput[0].powerUsageEffectiveness = 1.45
     newMockDataInput[0].region = 'Texas'
@@ -128,8 +131,8 @@ describe('On-Premise Data Report', () => {
 
     const expectedResult: OnPremiseDataOutput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
-        memory: 1350690,
+        machineName: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
+        memory: 1319.033203125,
         machineType: 'server',
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
@@ -137,6 +140,7 @@ describe('On-Premise Data Report', () => {
         region: 'Texas',
         cpuUtilization: 45,
         powerUsageEffectiveness: 1.45,
+        cost: 93.12,
         co2e: 0.062382491692975564,
         kilowattHours: 150.565967592623,
         usageHours: 172,
@@ -148,9 +152,10 @@ describe('On-Premise Data Report', () => {
   it('Estimates using average values for region, memory and watts as default', () => {
     const newMockDataInput: OnPremiseDataInput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
-        memory: 1350690,
+        machineName: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
+        memory: 1319.033203125,
         machineType: 'server',
+        cost: 93.12,
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
       },
@@ -165,13 +170,14 @@ describe('On-Premise Data Report', () => {
 
     const expectedResult: OnPremiseDataOutput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
-        memory: 1350690,
+        machineName: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
+        memory: 1319.033203125,
         machineType: 'server',
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
-        co2e: 0.04691537675108586,
-        kilowattHours: 145.3246388784467,
+        cost: 93.12,
+        co2e: 0.052947353761939764,
+        kilowattHours: 164.0092353056756,
         usageHours: 172,
       },
     ]
@@ -181,11 +187,12 @@ describe('On-Premise Data Report', () => {
   it('uses default configurable values when machineType is invalid', () => {
     const newMockDataInput: OnPremiseDataInput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
-        memory: 1350690,
+        machineName: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
+        memory: 1319.033203125,
         machineType: 'invalid',
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
+        cost: 93.12,
       },
     ]
 
@@ -198,13 +205,14 @@ describe('On-Premise Data Report', () => {
 
     const expectedResult: OnPremiseDataOutput[] = [
       {
-        cpuId: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
-        memory: 1350690,
+        machineName: 'Intel(R) Xeon(R) Amber 4114 CPU @ 2.20GHz',
+        memory: 1319.033203125,
         machineType: 'invalid',
         startTime: new Date('2022-01-17T13:38:18Z'),
         endTime: new Date('2022-01-24T18:22:29.918423Z'),
-        co2e: 0.04691537675108586,
-        kilowattHours: 145.3246388784467,
+        cost: 93.12,
+        co2e: 0.052947353761939764,
+        kilowattHours: 164.0092353056756,
         usageHours: 172,
       },
     ]
@@ -216,38 +224,32 @@ describe('On-Premise Data Report', () => {
       ['server', 'laptop', 'desktop'],
       45,
       undefined,
-      0.03866408939623999,
-      91.20179599999999,
+      0.043635186604328,
+      102.9277412,
     ],
-    [['server', 'laptop', 'desktop'], undefined, 350, 0.0357296632, 84.28],
+    [['server', 'laptop', 'desktop'], undefined, 350, 0.04032347704, 95.116],
     [
       ['laptop', 'server', 'desktop'],
       75,
       undefined,
-      0.05838992602519999,
-      137.73157999999998,
+      0.06589720222844,
+      155.439926,
     ],
     [
       ['laptop', 'server', 'desktop'],
       undefined,
       250,
-      0.025521187999999997,
-      60.199999999999996,
+      0.028802483599999998,
+      67.94,
     ],
     [
       ['desktop', 'server', 'laptop'],
       60,
       undefined,
-      0.048527007710719994,
-      114.46668799999999,
+      0.054766194416383994,
+      129.18383359999999,
     ],
-    [
-      ['desktop', 'server', 'laptop'],
-      undefined,
-      300,
-      0.030625425599999995,
-      72.24,
-    ],
+    [['desktop', 'server', 'laptop'], undefined, 300, 0.03456298032, 81.528],
   ])(
     'it should return configured values for averageWatts or cpuUtilization by machineType',
     (
@@ -290,12 +292,13 @@ describe('On-Premise Data Report', () => {
 
       const expectedResult: OnPremiseDataOutput[] = [
         {
-          cpuId: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
-          memory: 130690,
+          machineName: 'Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz',
+          memory: 127.626953125,
           machineType: machineType[0],
           startTime: new Date('2022-01-17T13:38:18Z'),
           endTime: new Date('2022-01-24T18:22:29.918423Z'),
           country: 'United States',
+          cost: 93.12,
           co2e: co2e,
           kilowattHours: kwh,
           usageHours: 172,
