@@ -991,8 +991,8 @@ describe('Azure Consumption Management Service', () => {
         timestamp: new Date('2020-11-02'),
         serviceEstimates: [
           {
-            kilowattHours: 0.9433750904448066,
-            co2e: 0.0002981065285805589,
+            kilowattHours: 0.9496270651248067,
+            co2e: 0.0003000821525794389,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -1010,8 +1010,8 @@ describe('Azure Consumption Management Service', () => {
         timestamp: new Date('2020-11-03'),
         serviceEstimates: [
           {
-            kilowattHours: 0.9415345494881285,
-            co2e: 0.00039144769662243694,
+            kilowattHours: 0.9477865241681286,
+            co2e: 0.0003940469863555204,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,
@@ -1021,8 +1021,8 @@ describe('Azure Consumption Management Service', () => {
             region: 'EastUS',
           },
           {
-            kilowattHours: 2.77408029810322,
-            co2e: 0.0010818913162602558,
+            kilowattHours: 2.78033227278322,
+            co2e: 0.0010843295863854558,
             usesAverageCPUConstant: true,
             cloudProvider: 'AZURE',
             accountId: subscriptionId,

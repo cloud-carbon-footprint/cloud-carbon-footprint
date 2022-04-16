@@ -41,15 +41,24 @@ export const AZURE_CLOUD_CONSTANTS: CloudConstantsByProvider = {
       COMPUTE_PROCESSOR_TYPES.AMD_EPYC_3RD_GEN.gb_chip_avg,
   },
   getMemory: (computeProcessors: string[]): number => {
-    const memoryForProcessors: number[] = computeProcessors.map(
-      (processor: string) => {
+    // If certain processors are specified, return their value(s), Otherwise
+    // e.g. in the case of "Unknown" instance types, return the average of all
+    // processors used by the provider
+    let memoryForProcessors: number[] = []
+
+    if (!computeProcessors.length || computeProcessors[0] == 'Unknown') {
+      for (const processor in AZURE_CLOUD_CONSTANTS.MEMORY_BY_COMPUTE_PROCESSOR) {
+        memoryForProcessors.push(
+          AZURE_CLOUD_CONSTANTS.MEMORY_BY_COMPUTE_PROCESSOR[processor],
+        )
+      }
+    } else {
+      memoryForProcessors = computeProcessors.map((processor: string) => {
         return AZURE_CLOUD_CONSTANTS.MEMORY_BY_COMPUTE_PROCESSOR[processor]
-      },
-    )
-    const averageMemoryForProcessors = getAverage(memoryForProcessors)
-    return averageMemoryForProcessors
-      ? averageMemoryForProcessors
-      : AZURE_CLOUD_CONSTANTS.MEMORY_AVG
+      })
+    }
+
+    return getAverage(memoryForProcessors)
   },
   MIN_WATTS_AVG: 0.74,
   MIN_WATTS_BY_COMPUTE_PROCESSOR: {
