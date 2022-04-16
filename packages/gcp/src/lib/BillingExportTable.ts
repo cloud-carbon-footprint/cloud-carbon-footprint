@@ -330,7 +330,7 @@ export default class BillingExportTable {
 
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[processor] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN.name,
       ]
     )
   }

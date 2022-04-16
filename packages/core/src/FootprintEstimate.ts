@@ -265,8 +265,8 @@ export function getWattsByAverageOrMedian(
   wattsForProcessors: number[],
 ): number {
   if (
-    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE) ||
-    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE)
+    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE.name) ||
+    computeProcessors.includes(COMPUTE_PROCESSOR_TYPES.IVY_BRIDGE.name)
   ) {
     return median(wattsForProcessors)
   }
