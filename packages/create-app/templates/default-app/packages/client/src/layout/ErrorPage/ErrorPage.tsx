@@ -76,7 +76,7 @@ const ErrorPage = (): ReactElement => {
       spacing={0}
       direction="column"
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       style={{ height: '100%' }}
     >
       <CloudOffIcon className={classes.cloudIcon} />
