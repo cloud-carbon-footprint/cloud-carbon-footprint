@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/cli
 
+## 1.5.0
+
+### Minor Changes
+
+- 6178cb7a: Adds support for Azure in the Lookup Table
+
+### Patch Changes
+
+- Updated dependencies [dcc33152]
+  - @cloud-carbon-footprint/app@0.6.0
+
 ## 1.4.1
 
 ### Patch Changes

@@ -1991,7 +1991,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/api@workspace:packages/api"
   dependencies:
-    "@cloud-carbon-footprint/app": ^0.5.1
+    "@cloud-carbon-footprint/app": ^0.6.0
     "@cloud-carbon-footprint/common": ^1.5.1
     "@types/express": ^4.17.12
     "@types/jest": ^27.4.0
@@ -2023,12 +2023,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/app@0.5.1, @cloud-carbon-footprint/app@^0.5.1, @cloud-carbon-footprint/app@workspace:packages/app":
+"@cloud-carbon-footprint/app@0.6.0, @cloud-carbon-footprint/app@^0.6.0, @cloud-carbon-footprint/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
   dependencies:
     "@cloud-carbon-footprint/aws": ^0.11.0
-    "@cloud-carbon-footprint/azure": ^0.9.1
+    "@cloud-carbon-footprint/azure": ^0.10.0
     "@cloud-carbon-footprint/common": ^1.5.1
     "@cloud-carbon-footprint/gcp": ^0.9.1
     "@cloud-carbon-footprint/on-premise": ^0.0.2
@@ -2091,7 +2091,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/azure@^0.9.1, @cloud-carbon-footprint/azure@workspace:packages/azure":
+"@cloud-carbon-footprint/azure@^0.10.0, @cloud-carbon-footprint/azure@workspace:packages/azure":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
@@ -2134,7 +2134,7 @@ __metadata:
   dependencies:
     "@azure/arm-consumption": ^8.0.0
     "@azure/arm-resources-subscriptions": ^2.0.0
-    "@cloud-carbon-footprint/app": 0.5.1
+    "@cloud-carbon-footprint/app": 0.6.0
     "@cloud-carbon-footprint/common": ^1.5.1
     "@types/cli-table": ^0.3.0
     "@types/jest": ^27.4.0
