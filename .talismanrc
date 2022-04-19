@@ -23,6 +23,8 @@ fileignoreconfig:
   checksum: a4cbe048796e9aea13ee0c2e5e280ca8bfa7529854f729d975f1ae1154ac0fd0
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
+- filename: .changeset/thick-gorillas-brush.md
+  checksum: 84ba012fcd6e3284b9d5dfda5a180b4cbec1614caaf01f8ec04c78f8d2ed5c24
 - filename: .changeset/wet-jobs-destroy.md
   checksum: c624ef29d606e6a22b36a031f12be832fd7dcd953457295e76ca9472dc4111e7
 - filename: .circleci/config.yml
