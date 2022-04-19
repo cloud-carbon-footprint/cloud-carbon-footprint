@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/app
 
+## 0.6.0
+
+### Minor Changes
+
+- dcc33152: Adds support for Azure in lookup table
+
+### Patch Changes
+
+- Updated dependencies [dcc33152]
+  - @cloud-carbon-footprint/azure@0.10.0
+
 ## 0.5.1
 
 ### Patch Changes
