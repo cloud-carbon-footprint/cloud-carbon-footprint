@@ -46,7 +46,7 @@ async function createAzureInput(argv: string[] = process.argv): Promise<void> {
 
   const targetDestination = path.join(process.cwd(), programOptions.output)
 
-  console.log('Creating Azure input file...')
+  console.info('Creating Azure input file...')
   const header = [
     { id: 'serviceName', title: 'serviceName' },
     { id: 'region', title: 'region' },
@@ -61,8 +61,8 @@ async function createAzureInput(argv: string[] = process.argv): Promise<void> {
 
   const azureData = await getConsumptionUsageDetails()
   await csvWriter.writeRecords(azureData)
-  console.log('File saved to ', targetDestination)
-  console.log('Azure Input CSV successfully created! Have fun out there :D')
+  console.info('File saved to ', targetDestination)
+  console.info('Azure Input CSV successfully created! Have fun out there :D')
 }
 
 async function getConsumptionUsageDetails() {
@@ -82,7 +82,7 @@ async function getConsumptionUsageDetails() {
   startDate.setDate(endDate.getDate() - 30) // Subtract 30 days
 
   let usageDetails: any[] = []
-  console.log(
+  console.info(
     `Getting usage details for ${
       subscriptions.length
     } subscriptions. ${String.fromCodePoint(0x2615)} This may take a while...`,
@@ -106,7 +106,7 @@ async function getConsumptionUsageDetails() {
     usageDetails = usageDetails.concat(allUsageRows)
   }
 
-  // Filter by range, map to columns, and grab unique rows
+  // Filter by range, map to columns, remove rows with empty values, and grab unique rows
   const inputRows: any = usageDetails
     .filter(
       (consumptionRow) =>
@@ -115,18 +115,30 @@ async function getConsumptionUsageDetails() {
     )
     .map((consumptionRow) => {
       const isModernDetail = consumptionRow.kind === 'modern'
-      return {
-        region: consumptionRow.resourceLocation,
-        serviceName: isModernDetail
-          ? consumptionRow.meterCategory
-          : consumptionRow.meterDetails.meterCategory,
-        usageType: isModernDetail
-          ? consumptionRow.meterName
-          : consumptionRow.meterDetails.meterName,
-        usageUnit: isModernDetail
-          ? consumptionRow.unitOfMeasure
-          : consumptionRow.meterDetails.unitOfMeasure,
+      if (isModernDetail) {
+        return {
+          region: consumptionRow.resourceLocation,
+          serviceName: consumptionRow.meterCategory,
+          usageType: consumptionRow.meterName,
+          usageUnit: consumptionRow.unitOfMeasure,
+        }
+      } else {
+        return {
+          region: consumptionRow.resourceLocation,
+          serviceName: consumptionRow.meterDetails.meterCategory,
+          usageType: consumptionRow.meterDetails.meterName,
+          usageUnit: consumptionRow.meterDetails.unitOfMeasure,
+        }
       }
+    })
+    .filter((row) => {
+      const isValidRow = Object.values(row).every((value) => value !== null)
+      if (!isValidRow) {
+        console.warn(
+          `Found row with missing value, skipping -> region: ${row.region}, serviceName: ${row.serviceName}, usageType: ${row.usageType}, usageUnit: ${row.usageUnit}`,
+        )
+      }
+      return isValidRow
     })
     .filter(
       (row, index, usageRows) =>
@@ -179,7 +191,7 @@ async function pageThroughUsageRows(
   usageRows: UsageDetailsListResult,
   consumptionManagementClient: ConsumptionManagementClient,
 ): Promise<UsageDetailsListResult> {
-  console.log(
+  console.info(
     `Fetching details for ${consumptionManagementClient.subscriptionId}`,
   )
   const allUsageRows = [...usageRows]
