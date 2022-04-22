@@ -2,8 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { createEnvFile, EnvConfig, listPrompt, microsite } from './common'
-import { log } from './external'
+import { createEnvFile, EnvConfig, listPrompt, microsite } from '../common'
+import { log } from '../common/external'
 import { AWSSetup } from './aws'
 import { GCPSetup } from './gcp'
 import { AzureSetup } from './azure'

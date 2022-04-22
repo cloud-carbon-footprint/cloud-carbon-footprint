@@ -40,7 +40,8 @@
     "guided-install": "ts-node src/GuidedInstall/index.ts",
     "create-lookup-table": "ts-node src/CreateLookupTable/index.ts",
     "create-azure-lookup": "ts-node src/CreateLookupTable/CreateAzureInput.ts",
-    "estimate-on-premise-data": "ts-node src/EstimateOnPremiseData/index.ts"
+    "estimate-on-premise-data": "ts-node src/EstimateOnPremiseData/index.ts",
+    "seed-cache-file": "ts-node src/SeedCacheFile/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",

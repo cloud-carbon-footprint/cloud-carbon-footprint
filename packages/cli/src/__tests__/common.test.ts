@@ -2,16 +2,16 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import * as external from '../../GuidedInstall/external'
+import * as external from '../common/external'
 import {
   confirmPrompt,
   createEnvFile,
   inputPrompt,
   listPrompt,
-} from '../../GuidedInstall/common'
+} from '../common'
 import { confirm, input, list } from 'typed-prompts'
 
-jest.mock('../../GuidedInstall/external')
+jest.mock('../common/external')
 const mockPrompt: jest.Mock = external.prompt as jest.Mock
 const mockExit: jest.Mock = external.exit as jest.Mock
 const mockLog: jest.Mock = external.log as jest.Mock

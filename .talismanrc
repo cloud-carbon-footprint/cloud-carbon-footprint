@@ -159,6 +159,10 @@ fileignoreconfig:
   checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
 - filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
   checksum: ad3aeec28c7d7e97c0e59274c8cc26d9ecd499a7b2da0bd3af9c491af093bb08
+- filename: packages/cli/src/SeedCacheFile/common.ts
+  checksum: 3894d739849158d1dc80608f1ce7088dbb2edd32782f01cd4381d4ef65d31632
+- filename: packages/cli/src/SeedCacheFile/external.ts
+  checksum: 84a17332826d7ff73bdcbb3d459ebb13dc07f81a99bd94dca31a68695e34d3d8
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/client/.env.template
