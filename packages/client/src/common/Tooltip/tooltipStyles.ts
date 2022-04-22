@@ -4,8 +4,9 @@
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Tooltip as MaterialTooltip, withStyles } from '@material-ui/core'
+import { CCFTheme } from '../../utils/themes'
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles<CCFTheme>(({ palette }) => ({
   tooltip: {
     color: palette.primaryBlue,
     fontSize: 13,

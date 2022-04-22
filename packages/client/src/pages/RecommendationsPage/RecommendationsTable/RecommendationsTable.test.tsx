@@ -211,7 +211,7 @@ describe('Recommendations Table', () => {
       within(row).getAllByRole('cell'),
     )
 
-    actualRowData[0].forEach((cell) => expect(cell.innerHTML).toBe('-'))
+    actualRowData[0].forEach((cell) => expect(cell.innerHTML).toContain('-'))
   })
 
   const co2eSavingsToBeRounded = [

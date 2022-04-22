@@ -10,8 +10,7 @@ export const validateInputData = (inputData: OnPremiseDataInput[]) => {
       !inputRow.machineType ||
       !inputRow.memory ||
       !inputRow.startTime ||
-      !inputRow.endTime ||
-      !inputRow.cost
+      !inputRow.endTime
     ) {
       throw new Error(
         'Input data is incorrect. Please check your input data file and try again.',

@@ -15,12 +15,16 @@ fileignoreconfig:
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
+- filename: .changeset/silent-turtles-breathe.md
+  checksum: 93eb7d9f09dc8535e42065ab86021e41dfa12a2e72d94d07086d64190441a270
 - filename: .changeset/sixty-peas-design.md
   checksum: a353a88260b60bba06f294ed5e7227edf2b3782b97f67ac02bbe163f2435f8fd
 - filename: .changeset/spotty-rabbits-crash.md
   checksum: a4cbe048796e9aea13ee0c2e5e280ca8bfa7529854f729d975f1ae1154ac0fd0
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
+- filename: .changeset/thick-gorillas-brush.md
+  checksum: 84ba012fcd6e3284b9d5dfda5a180b4cbec1614caaf01f8ec04c78f8d2ed5c24
 - filename: .changeset/wet-jobs-destroy.md
   checksum: c624ef29d606e6a22b36a031f12be832fd7dcd953457295e76ca9472dc4111e7
 - filename: .circleci/config.yml
@@ -151,6 +155,8 @@ fileignoreconfig:
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
   checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
+- filename: packages/cli/src/CreateLookupTable/createAzureInput.ts
+  checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
 - filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
   checksum: ad3aeec28c7d7e97c0e59274c8cc26d9ecd499a7b2da0bd3af9c491af093bb08
 - filename: packages/cli/src/SeedCacheFile/common.ts

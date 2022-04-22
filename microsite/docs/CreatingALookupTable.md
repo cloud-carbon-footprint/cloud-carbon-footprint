@@ -24,8 +24,8 @@ The options for this command are:
     --awsOutput <filename> (optional, defaults to "aws_lookup_data.csv")
     --gcpInput <filename> (required. name of input file, e.g. "gcp_input.csv")
     --gcpOutput <filename> (optional, defaults to "gcp_lookup_data.csv")
-
-Currently, only AWS and GCP is supported for this functionality.
+    --azureInput <filename> (required. name of input file, e.g. "azure_input.csv")
+    --azureOutput <filename> (optional, defaults to "azure_lookup_data.csv")
 
 We would like to thank [@mfulleratlassian](https://github.com/mfulleratlassian) for contributing this functionality.
 
@@ -62,3 +62,18 @@ We would like to thank [@mfulleratlassian](https://github.com/mfulleratlassian) 
     AND usage_start_time >= TIMESTAMP('YYYY-MM-DD')
     AND usage_end_time <= TIMESTAMP('YYYY-MM-DD')
     GROUP BY serviceName, region, usageType, usageUnit, machineType
+
+### Azure - Yarn Script
+Creating an input file for Azure using billing data requires the use of the Consumption Management API rather than a direct query.
+To assist with this, we have created a script that makes use of your configured [credentials](./Azure.md) in the `packages/cli/.env` file to query and output the needed mappings to a CSV file.
+
+To use this script, run the following yarn command with the provided parameters:
+   
+    yarn create-azure-lookup <options>
+
+The options for this command are:
+
+    --startDate <YYYY-MM-DD> (optional, defaults to 30 days prior to endDate)
+    --endDate <YYYY-MM-DD> (optional, defaults to current date)
+    --output <filename> (optional, defaults to "azure_input.csv")
+

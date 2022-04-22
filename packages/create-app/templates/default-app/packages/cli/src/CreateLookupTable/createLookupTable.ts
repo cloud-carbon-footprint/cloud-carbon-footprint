@@ -24,14 +24,23 @@ export default async function createLookupTable(
     .option('--awsInput <filename>', 'File containing relevant AWS input data')
     .option('--gcpInput <filename>', 'File containing relevant GCP input data')
     .option(
+      '--azureInput <filename>',
+      'File containing relevant Azure input data',
+    )
+    .option(
       '--awsOutput <filename>',
       'File to write the relevant AWS output data',
       'aws_lookup_data.csv',
     )
     .option(
       '--gcpOutput <filename>',
-      'File to write the relevant AWS output data',
+      'File to write the relevant GCP output data',
       'gcp_lookup_data.csv',
+    )
+    .option(
+      '--azureOutput <filename>',
+      'File to write the relevant Azure output data',
+      'azure_lookup_data.csv',
     )
 
   program.parse(argv)
@@ -43,6 +52,9 @@ export default async function createLookupTable(
 
   const gcpInputFile = programOptions.gcpInput
   const gcpOutputFile = path.join(process.cwd(), programOptions.gcpOutput)
+
+  const azureInputFile = programOptions.azureInput
+  const azureOutputFile = path.join(process.cwd(), programOptions.azureOutput)
 
   if (awsInputFile) {
     const awsInputData: LookupTableInput[] = await csv().fromFile(awsInputFile)
@@ -58,5 +70,15 @@ export default async function createLookupTable(
     const gcpEstimatesData: LookupTableOutput[] =
       new App().getGcpEstimatesFromInputData(gcpInputData)
     await writeToCsv(gcpOutputFile, gcpEstimatesData)
+  }
+
+  if (azureInputFile) {
+    const azureInputData: LookupTableInput[] = await csv().fromFile(
+      azureInputFile,
+    )
+    validateInputData(azureInputData)
+    const azureEstimatesData: LookupTableOutput[] =
+      new App().getAzureEstimatesFromInputData(azureInputData)
+    await writeToCsv(azureOutputFile, azureEstimatesData)
   }
 }

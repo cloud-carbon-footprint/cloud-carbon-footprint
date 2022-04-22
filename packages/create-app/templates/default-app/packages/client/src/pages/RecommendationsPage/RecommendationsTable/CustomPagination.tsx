@@ -3,9 +3,10 @@
  */
 
 import {
-  useGridSlotComponentProps,
+  useGridApiContext,
+  useGridState,
   GridToolbarContainer,
-} from '@material-ui/data-grid'
+} from '@mui/x-data-grid'
 import Pagination from '@material-ui/lab/Pagination'
 import { Box, MenuItem, Select, Typography } from '@material-ui/core'
 import { FunctionComponent, ReactElement } from 'react'
@@ -18,7 +19,8 @@ type CustomPaginationProps = {
 const CustomPagination: FunctionComponent<CustomPaginationProps> = ({
   handlePageSizeChange,
 }): ReactElement => {
-  const { state, apiRef } = useGridSlotComponentProps()
+  const apiRef = useGridApiContext()
+  const [state] = useGridState(apiRef)
   const classes = useStyles()
 
   return (

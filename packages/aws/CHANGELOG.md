@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/aws
 
+## 0.11.1
+
+### Patch Changes
+
+- 84e2d1e2: adds support for missing usage types
+
 ## 0.11.0
 
 ### Minor Changes

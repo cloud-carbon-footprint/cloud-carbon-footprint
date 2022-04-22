@@ -157,9 +157,9 @@ jobs:
       # - name: build type declarations
       #   run: yarn tsc:full
       - name: build packages
-        # uses the react-scripts build for client
+        # uses the react-scripts build and tsc build for client
         run: |
-          yarn lerna run build --ignore @cloud-carbon-footprint/client
+          yarn lerna run build
           cd packages/client
           ./create_client_env_file.sh
           yarn build:app
