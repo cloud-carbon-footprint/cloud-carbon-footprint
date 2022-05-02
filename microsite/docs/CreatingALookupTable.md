@@ -69,7 +69,7 @@ To assist with this, we have created a script that makes use of your configured 
 
 To use this script, run the following yarn command with the provided parameters:
    
-    yarn create-azure-input <options>
+    yarn create-azure-lookup <options>
 
 The options for this command are:
 

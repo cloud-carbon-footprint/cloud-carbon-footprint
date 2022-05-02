@@ -47,6 +47,8 @@ html[data-theme='light'] {
 .navbar__logo {
   margin-right: 20px;
   margin-bottom: 5px;
+  height: initial;
+  width: 58px;
 }
 
 .navbar__link--active,

@@ -16,7 +16,7 @@ import {
   GridOverlay,
   GridRowParams,
   MuiEvent,
-} from '@material-ui/data-grid'
+} from '@mui/x-data-grid'
 import {
   RecommendationResult,
   ServiceData,

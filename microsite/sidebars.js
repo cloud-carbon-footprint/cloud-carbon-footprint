@@ -39,10 +39,16 @@ module.exports = {
           type: 'category',
           label: 'Configuration Options',
           collapsed: false,
-          items: ['performance-configurations', 'configurations-glossary'],
+          items: ['performance-considerations', 'configurations-glossary'],
         },
         'deploying',
       ],
     },
+    {
+      type: 'category',
+      label: 'Integrations',
+      collapsed: false,
+      items: ['backstage-plugins'],
+    }
   ],
 }

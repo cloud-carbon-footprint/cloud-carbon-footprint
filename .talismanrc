@@ -23,6 +23,8 @@ fileignoreconfig:
   checksum: a4cbe048796e9aea13ee0c2e5e280ca8bfa7529854f729d975f1ae1154ac0fd0
 - filename: .changeset/ten-spiders-press.md
   checksum: 6a1d6a6ae0a46baa8c60e363ba27131c2cdf85c2e35cf250d69ee6a30f58cdb7
+- filename: .changeset/thick-gorillas-brush.md
+  checksum: 84ba012fcd6e3284b9d5dfda5a180b4cbec1614caaf01f8ec04c78f8d2ed5c24
 - filename: .changeset/wet-jobs-destroy.md
   checksum: c624ef29d606e6a22b36a031f12be832fd7dcd953457295e76ca9472dc4111e7
 - filename: .circleci/config.yml
@@ -157,6 +159,10 @@ fileignoreconfig:
   checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
 - filename: packages/cli/src/CreateLookupTable/createLookupTable.ts
   checksum: ad3aeec28c7d7e97c0e59274c8cc26d9ecd499a7b2da0bd3af9c491af093bb08
+- filename: packages/cli/src/SeedCacheFile/common.ts
+  checksum: 3894d739849158d1dc80608f1ce7088dbb2edd32782f01cd4381d4ef65d31632
+- filename: packages/cli/src/SeedCacheFile/external.ts
+  checksum: 84a17332826d7ff73bdcbb3d459ebb13dc07f81a99bd94dca31a68695e34d3d8
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/client/.env.template

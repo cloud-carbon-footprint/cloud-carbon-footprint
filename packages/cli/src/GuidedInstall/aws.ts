@@ -2,8 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { confirmPrompt, EnvConfig, inputPrompt } from './common'
-import { lineBreak, log, runCmd } from './external'
+import { confirmPrompt, EnvConfig, inputPrompt } from '../common'
+import { lineBreak, log, runCmd } from '../common/external'
 
 export async function AWSSetup(): Promise<EnvConfig> {
   const env: EnvConfig = {}

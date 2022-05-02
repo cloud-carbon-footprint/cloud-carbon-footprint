@@ -1,7 +1,7 @@
 ---
-id: performance-configurations
-title: Performance Configurations
-slug: /performance-configurations
+id: performance-considerations
+title: Performance Considerations
+slug: /performance-considerations
 ---
 
 ### Options to Improve Query Performance
@@ -48,3 +48,14 @@ If you are experiencing long load times in your staging or production environmen
 `GCS_CACHE_BUCKET_NAME=”some-bucket-name”`
 
 Note: The Google service account that you are using must have access and permissions to read/write into the bucket.
+
+
+#### Seeding cache file
+
+We have an option to run the server side API calls as a background job. This can be useful for larger amounts of data to query from the cloud providers and will have no timeout limit when running with the browser. Before running the script, you will need to set the necessary configurations in a `.env` file in the CLI directory.
+
+From the root directory, run:
+
+`yarn seed-cache-file`
+
+You will then be prompted enter a start date, end date and groupBy parameter. Once this process is finished running. A new cache file will be created in the CLI directory. In order to use the cache file to run with the front-end client package, you will have to copy the cache file to the API directory before starting the application.
