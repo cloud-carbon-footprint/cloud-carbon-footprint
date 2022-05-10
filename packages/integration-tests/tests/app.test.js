@@ -3,6 +3,7 @@
  */
 import { Selector } from 'testcafe'
 import waitOn from 'wait-on'
+import page from './page-model'
 
 fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
   .before(async () => {
@@ -14,72 +15,72 @@ fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
     })
   })
   .beforeEach(async (t) => {
-    const header = Selector('#app-bar-header')
-    await t.expect(header.exists).ok()
+    // const header = Selector('#app-bar-header')
+    await t.expect(page.header.exists).ok()
   })
 
 test('loading screen appears when app is starting', async (t) => {
-  const loading = Selector('#loading-screen')
-  await t.expect(loading.exists).ok()
-  await t.wait(5000).expect(loading.exists).notOk()
+  // const loading = Selector('#loading-screen')
+  await t.expect(page.loading.exists).ok()
+  await t.wait(5000).expect(page.loading.exists).notOk()
 })
 
 test('main components render with correct data when app loads', async (t) => {
-  const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-  const accounts = Selector('span').withText('Accounts: 12 of 12')
-  const services = Selector('span').withText('Services: 8 of 8')
-  const lineChart = Selector('#apexchartslineChart')
-  const carbonComparisonCard = Selector('#carbonComparisonCard')
-  const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
+  //  // const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
+  //   const accounts = Selector('span').withText('Accounts: 12 of 12')
+  //   const services = Selector('span').withText('Services: 8 of 8')
+  //   const lineChart = Selector('#apexchartslineChart')
+  //   const carbonComparisonCard = Selector('#carbonComparisonCard')
+  //   const emissionsBreakdownContainer = Selector('#emissionsBreakdownContainer')
 
-  await t.expect(cloudProviders.exists).ok()
-  await t.expect(accounts.exists).ok()
-  await t.expect(services.exists).ok()
-  await t.expect(lineChart.exists).ok()
-  await t.expect(carbonComparisonCard.exists).ok()
-  await t.expect(emissionsBreakdownContainer.exists).ok()
+  await t.expect(page.cloudProviders.exists).ok()
+  await t.expect(page.accounts.exists).ok()
+  await t.expect(page.services.exists).ok()
+  await t.expect(page.lineChart.exists).ok()
+  await t.expect(page.carbonComparisonCard.exists).ok()
+  await t.expect(page.emissionsBreakdownContainer.exists).ok()
 })
 
 test('side drawer opens and closes when clicked', async (t) => {
-  const drawerOpenButton = Selector('#info-button')
-  const drawerCloseButton = Selector('#close-button-container').child(
-    '.MuiIconButton-root',
-  )
-  const drawerOpen = Selector('#drawer-open').exists
-
-  await t.click(drawerOpenButton).expect(drawerOpen).ok()
-  await t.click(drawerCloseButton).expect(drawerOpen).notOk()
+  //   const drawerOpenButton = Selector('#info-button')
+  //   const drawerCloseButton = Selector('#close-button-container').child(
+  //     '.MuiIconButton-root',
+  //   )
+  //   const drawerOpen = Selector('#drawer-open').exists
+  await t.click(page.drawerOpenButton).expect(page.drawerOpen.exists).ok()
+  await t.click(page.drawerCloseButton).expect(page.drawerOpen.exists).notOk()
 })
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
-  let totalCo2Amount = Selector('#metric-one').withText('57')
-  const cloudProviderDropDown = Selector('#cloud-provider-filter')
-    .sibling('div')
-    .child('button')
-  const accountsDropDown = Selector('#accounts-filter')
-    .sibling('div')
-    .child('button')
-  const servicesDropDown = Selector('#services-filter')
-    .sibling('div')
-    .child('button')
+  // let totalCo2Amount = Selector('#metric-one').withText('57')
+  let totalCo2Amount = page.totalCo2Amount.withText('57')
+  // const cloudProviderDropDown = Selector('#cloud-provider-filter')
+  //   .sibling('div')
+  //   .child('button')
+  // const accountsDropDown = Selector('#accounts-filter')
+  //   .sibling('div')
+  //   .child('button')
+  // const servicesDropDown = Selector('#services-filter')
+  //   .sibling('div')
+  //   .child('button')
 
   await t.expect(totalCo2Amount.exists).ok()
-  await t.click(cloudProviderDropDown)
-  const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
-  await t.click(awsDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('20')
+  await t.click(page.cloudProviderDropDown)
+  // const awsDropdownItem = Selector('#cloud-provider-filter-option-1')
+  await t.click(page.awsDropdownItem)
+  totalCo2Amount = page.totalCo2Amount.withText('20')
   await t.expect(totalCo2Amount.exists).ok()
 
-  await t.click(accountsDropDown)
-  const accountsDropdownItem = Selector('#accounts-filter-option-1')
-  await t.click(accountsDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('38')
+  await t.click(page.accountsDropDown)
+  // const accountsDropdownItem = Selector('#accounts-filter-option-1')
+  await t.click(page.accountsDropdownItem)
+  totalCo2Amount = page.totalCo2Amount.withText('38')
   await t.expect(totalCo2Amount.exists).ok()
 
-  await t.click(servicesDropDown)
-  const servicesDropdownItem = Selector('#services-filter-option-1')
-  await t.click(servicesDropdownItem)
-  totalCo2Amount = Selector('#metric-one').withText('34')
+  await t.click(page.servicesDropDown)
+  // const servicesDropdownItem = Selector('#services-filter-option-1')
+  await t.click(page.servicesDropdownItem)
+  totalCo2Amount = page.totalCo2Amount.withText('34')
   await t.expect(totalCo2Amount.exists).ok()
 })
 
