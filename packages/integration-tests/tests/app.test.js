@@ -85,16 +85,26 @@ test('total metric tons is loaded correctly with different dropdown selections',
 })
 
 test('carbon equivalency component displays each option when clicked', async (t) => {
-  const flightsButton = Selector('#flights')
-  const phonesButton = Selector('#phones')
-  const treesButton = Selector('#trees')
-  const flightsTaken = Selector('p').withText('70')
-  const phonesCharged = Selector('p').withText('6.9+ M')
-  const treeSeedlings = Selector('p').withText('942')
+  // const flightsButton = Selector('#flights')
+  // const phonesButton = Selector('#phones')
+  // const treesButton = Selector('#trees')
+  // const flightsTaken = Selector('p').withText('70')
+  // const phonesCharged = Selector('p').withText('6.9+ M')
+  // const treeSeedlings = Selector('p').withText('942')
 
-  await t.click(flightsButton).expect(flightsTaken.exists).ok()
-  await t.click(phonesButton).expect(phonesCharged.exists).ok()
-  await t.click(treesButton).expect(treeSeedlings.exists).ok()
+  //todo: minimize dataset-specific selectors
+  await t
+    .click(page.flightsButton)
+    .expect(page.emissionsRecord.withText('70').exists)
+    .ok()
+  await t
+    .click(page.phonesButton)
+    .expect(page.emissionsRecord.withText('6.9+ M').exists)
+    .ok()
+  await t
+    .click(page.treesButton)
+    .expect(page.emissionsRecord.withText('942').exists)
+    .ok()
 })
 
 test('emissions breakdown component displays each bar chart when selected', async (t) => {
@@ -102,38 +112,39 @@ test('emissions breakdown component displays each bar chart when selected', asyn
   // For some reason this stops this test failing, and can help with debugging.
   await t.maximizeWindow()
 
-  const dropDownSelector = Selector('#breakdown-selector')
-  const accountSelection = Selector('#account-dropdown')
-  const account = Selector('tspan').withText('aws account 3')
+  // const dropDownSelector = Selector('#breakdown-selector')
+  // const accountSelection = Selector('#account-dropdown')
+  // const account = Selector('tspan').withText('aws account 3')
 
-  await t.click(dropDownSelector)
-  await t.click(accountSelection)
-  await t.expect(account.exists).ok()
+  //sort by account
+  await t.click(page.dropDownSelector)
+  await t.click(page.accountSelection)
+  await t.expect(page.selected.withText('aws account 3').exists).ok() //todo: minimize dataset-specific selectors
 
-  const serviceSelection = Selector('#service-dropdown')
-  const service = Selector('tspan').withText('computeEngine')
+  // const serviceSelection = Selector('#service-dropdown')
+  // const service = Selector('tspan').withText('computeEngine')
+  //sort by service
+  await t.click(page.dropDownSelector)
+  await t.click(page.serviceSelection)
+  await t.expect(page.selected.withText('computeEngine').exists).ok() //todo: minimize dataset-specific selectors
 
-  await t.click(dropDownSelector)
-  await t.click(serviceSelection)
-  await t.expect(service.exists).ok()
-
-  const regionSelection = Selector('#region-dropdown')
-  const region = Selector('tspan').withText('us-east-1')
-
-  await t.click(dropDownSelector)
-  await t.click(regionSelection)
-  await t.expect(region.exists).ok()
+  // const regionSelection = Selector('#region-dropdown')
+  // const region = Selector('tspan').withText('us-east-1')
+  //sort by region
+  await t.click(page.dropDownSelector)
+  await t.click(page.regionSelection)
+  await t.expect(page.selected.withText('us-east-1').exists).ok() //todo: minimize dataset-specific selectors
 })
 
 test('line chart displays the y-axis data when legend is clicked', async (t) => {
-  const kwhLegend = Selector('span').withText('Kilowatt Hours')
-  const costLegend = Selector('span').withText('Cost')
-  const co2eLegend = Selector('span').withText('CO2e')
-  const kwhAxis = Selector('text').withText('Kilowatt Hours (kWh)')
-  const costAxis = Selector('text').withText('Cost ($)')
-  const co2eAxis = Selector('text').withText('CO2e (metric tons)')
+  // const kwhLegend = Selector('span').withText('Kilowatt Hours')
+  // const costLegend = Selector('span').withText('Cost')
+  // const co2eLegend = Selector('span').withText('CO2e')
+  // const kwhAxis = Selector('text').withText('Kilowatt Hours (kWh)')
+  // const costAxis = Selector('text').withText('Cost ($)')
+  // const co2eAxis = Selector('text').withText('CO2e (metric tons)')
 
-  await t.click(kwhLegend).expect(kwhAxis.exists).ok()
-  await t.click(costLegend).expect(costAxis.exists).ok()
-  await t.click(co2eLegend).expect(co2eAxis.exists).notOk()
+  await t.click(page.kwhLegend).expect(page.kwhAxis.exists).ok()
+  await t.click(page.costLegend).expect(page.costAxis.exists).ok()
+  await t.click(page.co2eLegend).expect(page.co2eAxis.exists).notOk()
 })

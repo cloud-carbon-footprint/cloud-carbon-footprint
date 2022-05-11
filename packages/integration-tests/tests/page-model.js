@@ -1,3 +1,6 @@
+/*
+ * © 2021 Thoughtworks, Inc.
+ */
 import { Selector } from 'testcafe'
 
 class Page {
@@ -9,7 +12,7 @@ class Page {
 
     //footprint page - main components
     this.cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-    this.accounts = Selector('span').withText('Accounts: 12 of 12')
+    this.accounts = Selector('span').withText('Accounts: 12 of 12') //todo: minimize dataset-specific selectors
     this.services = Selector('span').withText('Services: 8 of 8')
     this.lineChart = Selector('#apexchartslineChart')
     this.carbonComparisonCard = Selector('#carbonComparisonCard')
@@ -36,6 +39,27 @@ class Page {
     this.awsDropdownItem = Selector('#cloud-provider-filter-option-1')
     this.accountsDropdownItem = Selector('#accounts-filter-option-1')
     this.servicesDropdownItem = Selector('#services-filter-option-1')
+
+    //emissions breakdown
+    this.flightsButton = Selector('#flights')
+    this.phonesButton = Selector('#phones')
+    this.treesButton = Selector('#trees')
+    this.emissionsRecord = Selector('p')
+
+    //emissions bar charts
+    this.dropDownSelector = Selector('#breakdown-selector')
+    this.accountSelection = Selector('#account-dropdown')
+    this.selected = Selector('tspan') //selected account, service, or region
+    this.serviceSelection = Selector('#service-dropdown')
+    this.regionSelection = Selector('#region-dropdown')
+
+    //line chart legend and axes
+    this.kwhLegend = Selector('span').withText('Kilowatt Hours')
+    this.costLegend = Selector('span').withText('Cost')
+    this.co2eLegend = Selector('span').withText('CO2e')
+    this.kwhAxis = Selector('text').withText('Kilowatt Hours (kWh)')
+    this.costAxis = Selector('text').withText('Cost ($)')
+    this.co2eAxis = Selector('text').withText('CO2e (metric tons)')
   }
 }
 
