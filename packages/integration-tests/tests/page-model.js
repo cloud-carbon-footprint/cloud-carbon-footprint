@@ -60,6 +60,23 @@ class Page {
     this.kwhAxis = Selector('text').withText('Kilowatt Hours (kWh)')
     this.costAxis = Selector('text').withText('Cost ($)')
     this.co2eAxis = Selector('text').withText('CO2e (metric tons)')
+
+    //recommendations - main components
+    this.regions = Selector('span').withText('Regions: 8 of 8')
+    this.recommendationTypes = Selector('span').withText(
+      'Recommendation Types: 8 of 8',
+    )
+    this.recAccounts = Selector('span').withText('Accounts: 10 of 10') //todo: minimize dataset-specific selectors
+  }
+
+  async loadingScreen() {
+    //different pages use the same loading screen check
+    await t
+      .expect(this.loading.exists)
+      .ok()
+      .wait(5000)
+      .expect(this.loading.exists)
+      .notOk() //after 5 sec it should be loaded
   }
 }
 

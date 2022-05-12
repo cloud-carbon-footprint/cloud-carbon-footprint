@@ -3,6 +3,7 @@
  */
 import { Selector, ClientFunction } from 'testcafe'
 import waitOn from 'wait-on'
+import page from './page-model'
 const getLocation = ClientFunction(() => document.location.href)
 
 fixture`Cloud Carbon Footprint Recommendations`.page`http://localhost:3000/`
@@ -14,29 +15,30 @@ fixture`Cloud Carbon Footprint Recommendations`.page`http://localhost:3000/`
   .beforeEach(async (t) => {
     const recommendationsButton = Selector('a').withText('RECOMMENDATIONS')
     await t.click(recommendationsButton)
-    const header = Selector('#app-bar-header')
-    await t.expect(header.exists).ok()
+    // const header = Selector('#app-bar-header')
+    await t.expect(page.header.exists).ok()
     await t.expect(getLocation()).contains('recommendations')
   })
 
 test('loading screen appears when app is starting', async (t) => {
-  const loading = Selector('#loading-screen')
-  await t.expect(loading.exists).ok()
-  await t.wait(5000).expect(loading.exists).notOk()
+  // const loading = Selector('#loading-screen')
+  // await t.expect(loading.exists).ok()
+  // await t.wait(5000).expect(loading.exists).notOk()
+  await page.loadingScreen
 })
 
 test('filter components render with correct data when app loads', async (t) => {
-  const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-  const accounts = Selector('span').withText('Accounts: 10 of 10')
-  const regions = Selector('span').withText('Regions: 8 of 8')
-  const recommendationTypes = Selector('span').withText(
-    'Recommendation Types: 8 of 8',
-  )
+  // const cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
+  // const accounts = Selector('span').withText('Accounts: 10 of 10')
+  // const regions = Selector('span').withText('Regions: 8 of 8')
+  // const recommendationTypes = Selector('span').withText(
+  //   'Recommendation Types: 8 of 8',
+  // )
 
-  await t.expect(cloudProviders.exists).ok()
-  await t.expect(accounts.exists).ok()
-  await t.expect(regions.exists).ok()
-  await t.expect(recommendationTypes.exists).ok()
+  await t.expect(page.cloudProviders.exists).ok()
+  await t.expect(page.recAccounts.exists).ok() //accounts count is different for recommendations and footprint
+  await t.expect(page.regions.exists).ok()
+  await t.expect(page.recommendationTypes.exists).ok()
 })
 
 test('card components render with correct data when app loads', async (t) => {

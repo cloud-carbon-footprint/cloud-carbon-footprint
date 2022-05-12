@@ -21,8 +21,9 @@ fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
 
 test('loading screen appears when app is starting', async (t) => {
   // const loading = Selector('#loading-screen')
-  await t.expect(page.loading.exists).ok()
-  await t.wait(5000).expect(page.loading.exists).notOk()
+  // await t.expect(page.loading.exists).ok()
+  // await t.wait(5000).expect(page.loading.exists).notOk()
+  await page.loadingScreen
 })
 
 test('main components render with correct data when app loads', async (t) => {
