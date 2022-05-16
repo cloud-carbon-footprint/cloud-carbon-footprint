@@ -42,89 +42,89 @@ test('filter components render with correct data when app loads', async (t) => {
 })
 
 test('card components render with correct data when app loads', async (t) => {
-  const lastThirtyDayTotal = Selector(
-    "[data-testid='forecast-card-last-thirty-day-total']",
-  )
-  const projectedThirtyDayTotal = Selector(
-    "[data-testid='forecast-card-projected-thirty-day-total']",
-  )
-  const forecastEquivalencyCard = Selector(
-    "[data-testid='forecast-equivalency-card']",
-  )
-  const treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
-  const costSavingsPerMonth = Selector("[data-testid='cost-savings-per-month']")
+  // const lastThirtyDayTotal = Selector(
+  //   "[data-testid='forecast-card-last-thirty-day-total']",
+  // )
+  // const projectedThirtyDayTotal = Selector(
+  //   "[data-testid='forecast-card-projected-thirty-day-total']",
+  // )
+  // const forecastEquivalencyCard = Selector(
+  //   "[data-testid='forecast-equivalency-card']",
+  // )
+  // const treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
+  // const costSavingsPerMonth = Selector("[data-testid='cost-savings-per-month']")
 
-  await t.expect(lastThirtyDayTotal.exists).ok()
-  await t.expect(projectedThirtyDayTotal.exists).ok()
-  await t.expect(forecastEquivalencyCard.exists).ok()
-  await t.expect(treeSeedlingsGrown.textContent).eql('1,037')
-  await t.expect(costSavingsPerMonth.textContent).eql('$69.01')
+  await t.expect(page.lastThirtyDayTotal.exists).ok()
+  await t.expect(page.projectedThirtyDayTotal.exists).ok()
+  await t.expect(page.forecastEquivalencyCard.exists).ok()
+  await t.expect(page.treeSeedlingsGrown.textContent).eql('1,037') //todo: minimize dataset-specific selectors
+  await t.expect(page.costSavingsPerMonth.textContent).eql('$69.01')
 })
 
 test('table components render with correct data when app loads', async (t) => {
-  const searchInput = Selector("[data-testid='search-input']")
-  const recommendationsDataGrid = Selector(
-    "[data-testid='recommendations-data-grid']",
-  )
+  // const searchInput = Selector("[data-testid='search-input']")
+  // const recommendationsDataGrid = Selector(
+  //   "[data-testid='recommendations-data-grid']",
+  // )
 
-  await t.expect(searchInput.exists).ok()
-  await t.expect(recommendationsDataGrid.exists).ok()
+  await t.expect(page.searchInput.exists).ok()
+  await t.expect(page.recommendationsDataGrid.exists).ok()
 })
 
 test('toggle changes unit of measure', async (t) => {
-  const unitOfMeasureLastThirtyDayTotal = Selector(
-    "[data-testid='unit-of-measure-last-thirty-day-total']",
-  )
-  const unitOfMeasureProjectedThirtyDayTotal = Selector(
-    "[data-testid='unit-of-measure-projected-thirty-day-total']",
-  )
-  const co2eSavingsLastThirtyDayTotal = Selector(
-    "[data-testid='co2e-savings-last-thirty-day-total'",
-  )
-  const co2eSavingsProjectedThirtyDayTotal = Selector(
-    "[data-testid='co2e-savings-projected-thirty-day-total'",
-  )
-  const costSavingsLastThirtyDayTotal = Selector(
-    "[data-testid='cost-savings-last-thirty-day-total'",
-  )
-  const costSavingsProjectedThirtyDayTotal = Selector(
-    "[data-testid='cost-savings-projected-thirty-day-total'",
-  )
-  const tableSavingsColumn = Selector(
-    "[role='columnheader'][data-field='co2eSavings']",
-  ).nth(0)
-  const firstSavingsCell = Selector(
-    "[role='cell'][data-field='co2eSavings']",
-  ).nth(0)
-  const toggle = Selector("[data-testid='toggle-label']")
+  // const unitOfMeasureLastThirtyDayTotal = Selector(
+  //   "[data-testid='unit-of-measure-last-thirty-day-total']",
+  // )
+  // const unitOfMeasureProjectedThirtyDayTotal = Selector(
+  //   "[data-testid='unit-of-measure-projected-thirty-day-total']",
+  // )
+  // const co2eSavingsLastThirtyDayTotal = Selector(
+  //   "[data-testid='co2e-savings-last-thirty-day-total'",
+  // )
+  // const co2eSavingsProjectedThirtyDayTotal = Selector(
+  //   "[data-testid='co2e-savings-projected-thirty-day-total'",
+  // )
+  // const costSavingsLastThirtyDayTotal = Selector(
+  //   "[data-testid='cost-savings-last-thirty-day-total'",
+  // )
+  // const costSavingsProjectedThirtyDayTotal = Selector(
+  //   "[data-testid='cost-savings-projected-thirty-day-total'",
+  // )
+  // const tableSavingsColumn = Selector(
+  //   "[role='columnheader'][data-field='co2eSavings']",
+  // ).nth(0)
+  // const firstSavingsCell = Selector(
+  //   "[role='cell'][data-field='co2eSavings']",
+  // ).nth(0)
+  // const toggle = Selector("[data-testid='toggle-label']")
 
   await t
-    .expect(unitOfMeasureLastThirtyDayTotal.textContent)
+    .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
     .eql('Metric Tons CO2e')
   await t
-    .expect(unitOfMeasureProjectedThirtyDayTotal.textContent)
+    .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Metric Tons CO2e')
-  await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('0')
-  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
-  await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('0')
+  await t.expect(page.co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
+  await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$0')
+  await t.expect(page.costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
   await t
-    .expect(tableSavingsColumn.textContent)
+    .expect(page.tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (t)')
-  await t.expect(firstSavingsCell.textContent).eql('11.492')
-  await t.click(toggle, { isTrusted: true })
+  await t.expect(page.firstSavingsCell.textContent).eql('11.492') //todo: minimize dataset-specific selectors
+  await t.click(page.toggle, { isTrusted: true })
   await t
-    .expect(unitOfMeasureLastThirtyDayTotal.textContent)
+    .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
     .eql('Kilograms CO2e')
   await t
-    .expect(unitOfMeasureProjectedThirtyDayTotal.textContent)
+    .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Kilograms CO2e')
-  await t.expect(co2eSavingsLastThirtyDayTotal.textContent).eql('0')
-  await t.expect(co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
-  await t.expect(costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  await t.expect(costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('0')
+  await t.expect(page.co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
+  await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$0')
+  await t.expect(page.costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
   await t
-    .expect(tableSavingsColumn.textContent)
+    .expect(page.tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (kg)')
-  await t.expect(firstSavingsCell.textContent).eql('11492')
+  await t.expect(page.firstSavingsCell.textContent).eql('11492') //todo: minimize dataset-specific selectors
 })

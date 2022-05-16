@@ -5,12 +5,15 @@ import { Selector } from 'testcafe'
 
 class Page {
   constructor() {
+    //--general components here
     //loading screen
     this.loading = Selector('#loading-screen')
     //app header
     this.header = Selector('#app-bar-header')
 
-    //footprint page - main components
+    //--footprint page components here
+
+    //main components
     this.cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
     this.accounts = Selector('span').withText('Accounts: 12 of 12') //todo: minimize dataset-specific selectors
     this.services = Selector('span').withText('Services: 8 of 8')
@@ -61,12 +64,63 @@ class Page {
     this.costAxis = Selector('text').withText('Cost ($)')
     this.co2eAxis = Selector('text').withText('CO2e (metric tons)')
 
+    //--recommendations page components here
+
     //recommendations - main components
     this.regions = Selector('span').withText('Regions: 8 of 8')
     this.recommendationTypes = Selector('span').withText(
       'Recommendation Types: 8 of 8',
     )
     this.recAccounts = Selector('span').withText('Accounts: 10 of 10') //todo: minimize dataset-specific selectors
+
+    //forecast card components
+    this.lastThirtyDayTotal = Selector(
+      "[data-testid='forecast-card-last-thirty-day-total']",
+    )
+    this.projectedThirtyDayTotal = Selector(
+      "[data-testid='forecast-card-projected-thirty-day-total']",
+    )
+    this.forecastEquivalencyCard = Selector(
+      "[data-testid='forecast-equivalency-card']",
+    )
+    this.treeSeedlingsGrown = Selector("[data-testid='tree-seedlings-grown']")
+    this.costSavingsPerMonth = Selector(
+      "[data-testid='cost-savings-per-month']",
+    )
+
+    //table components
+    this.searchInput = Selector("[data-testid='search-input']")
+    this.recommendationsDataGrid = Selector(
+      "[data-testid='recommendations-data-grid']",
+    )
+
+    //units of measure
+    this.unitOfMeasureLastThirtyDayTotal = Selector(
+      "[data-testid='unit-of-measure-last-thirty-day-total']",
+    )
+    this.unitOfMeasureProjectedThirtyDayTotal = Selector(
+      "[data-testid='unit-of-measure-projected-thirty-day-total']",
+    )
+    this.co2eSavingsLastThirtyDayTotal = Selector(
+      "[data-testid='co2e-savings-last-thirty-day-total'",
+    )
+    this.co2eSavingsProjectedThirtyDayTotal = Selector(
+      "[data-testid='co2e-savings-projected-thirty-day-total'",
+    )
+    this.costSavingsLastThirtyDayTotal = Selector(
+      "[data-testid='cost-savings-last-thirty-day-total'",
+    )
+    this.costSavingsProjectedThirtyDayTotal = Selector(
+      "[data-testid='cost-savings-projected-thirty-day-total'",
+    )
+    this.co2eSavingsField = "[data-field='co2eSavings']"
+    this.tableSavingsColumn = Selector(
+      `[role='columnheader']${this.co2eSavingsField}`,
+    ).nth(0)
+    this.firstSavingsCell = Selector(
+      `${this.co2eSavingsField}[role='cell']`,
+    ).nth(0)
+    this.toggle = Selector("[data-testid='toggle-label']")
   }
 
   async loadingScreen() {
