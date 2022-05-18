@@ -67,6 +67,7 @@ class Page {
     //--recommendations page components here
 
     //recommendations - main components
+    this.recommendationsButton = Selector('a').withText('RECOMMENDATIONS')
     this.regions = Selector('span').withText('Regions: 8 of 8')
     this.recommendationTypes = Selector('span').withText(
       'Recommendation Types: 8 of 8',
