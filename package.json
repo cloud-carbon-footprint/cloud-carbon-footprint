@@ -41,6 +41,7 @@
     "create-azure-lookup": "yarn workspace @cloud-carbon-footprint/cli create-azure-lookup-input",
     "estimate-on-premise-data": "yarn workspace @cloud-carbon-footprint/cli estimate-on-premise-data",
     "seed-cache-file": "yarn workspace @cloud-carbon-footprint/cli seed-cache-file",
+    "test:integration": "yarn workspace @cloud-carbon-footprint/integration-tests headless",
     "create-app": "yarn workspace @cloud-carbon-footprint/create-app start",
     "test-create-app": "yarn workspace @cloud-carbon-footprint/create-app test-create-app",
     "create-docker-secrets": "yarn workspace @cloud-carbon-footprint/api create-docker-secrets",
