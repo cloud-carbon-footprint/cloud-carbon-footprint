@@ -47,11 +47,11 @@
     "@cloud-carbon-footprint/on-premise": "^0.0.2",
     "@google-cloud/monitoring": "^2.3.5",
     "@google-cloud/storage": "^5.16.1",
+    "@sovpro/delimited-stream": "^1.1.0",
     "moment": "^2.29.1",
     "ramda": "^0.28.0"
   },
   "devDependencies": {
-    "@sovpro/delimited-stream": "^1.1.0",
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
