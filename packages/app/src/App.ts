@@ -13,6 +13,7 @@ import {
   OnPremiseDataOutput,
   RecommendationResult,
   reduceByTimestamp,
+  Logger,
 } from '@cloud-carbon-footprint/common'
 import {
   AZURE_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
@@ -36,6 +37,7 @@ export default class App {
   async getCostAndEstimates(
     request: EstimationRequest,
   ): Promise<EstimationResult[]> {
+    const appLogger = new Logger('App')
     const startDate = request.startDate
     const endDate = request.endDate
     const grouping =
@@ -61,11 +63,13 @@ export default class App {
     } else {
       const AWSEstimatesByRegion: EstimationResult[][] = []
       if (AWS.USE_BILLING_DATA) {
+        appLogger.info('Starting AWS Estimations')
         const estimates = await new AWSAccount(
           AWS.BILLING_ACCOUNT_ID,
           AWS.BILLING_ACCOUNT_NAME,
           [AWS.ATHENA_REGION],
         ).getDataFromCostAndUsageReports(startDate, endDate, grouping)
+        appLogger.info('Finished AWS Estimations')
         AWSEstimatesByRegion.push(estimates)
       } else {
         // Resolve AWS Estimates synchronously in order to avoid hitting API limits
@@ -82,11 +86,13 @@ export default class App {
       }
       let GCPEstimatesByRegion: EstimationResult[][] = []
       if (GCP.USE_BILLING_DATA) {
+        appLogger.info('Starting GCP Estimations')
         const estimates = await new GCPAccount(
           GCP.BILLING_PROJECT_ID,
           GCP.BILLING_PROJECT_NAME,
           [],
         ).getDataFromBillingExportTable(startDate, endDate, grouping)
+        appLogger.info('Finished GCP Estimations')
         GCPEstimatesByRegion.push(estimates)
       } else {
         // Resolve GCP Estimates asynchronously
@@ -104,6 +110,7 @@ export default class App {
       }
       const AzureEstimatesByRegion: EstimationResult[][] = []
       if (AZURE?.USE_BILLING_DATA) {
+        appLogger.info('Starting Azure Estimations')
         const azureAccount = new AzureAccount()
         await azureAccount.initializeAccount()
         const estimates = await azureAccount.getDataFromConsumptionManagement(
@@ -111,6 +118,7 @@ export default class App {
           endDate,
           grouping,
         )
+        appLogger.info('Finished Azure Estimations')
         AzureEstimatesByRegion.push(estimates)
       }
 

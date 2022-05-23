@@ -103,7 +103,7 @@ export default class CostAndUsageReports {
 
     const results: MutableEstimationResult[] = []
     const unknownRows: CostAndUsageReportsRow[] = []
-
+    this.costAndUsageReportsLogger.info('Mapping over Usage Rows')
     usageRows.map((rowData: Row) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(
         usageRowsHeader,
@@ -544,12 +544,11 @@ export default class CostAndUsageReports {
                     WHERE line_item_line_item_type IN ('${LINE_ITEM_TYPES.join(
                       `', '`,
                     )}')
-                    AND line_item_usage_start_date >= DATE('${moment
+                    AND line_item_usage_start_date BETWEEN DATE('${moment
                       .utc(start)
-                      .format('YYYY-MM-DD')}')
-                    AND line_item_usage_end_date <= DATE('${moment
-                      .utc(end)
-                      .format('YYYY-MM-DD')}')
+                      .format('YYYY-MM-DD')}') AND DATE('${moment
+        .utc(end)
+        .format('YYYY-MM-DD')}')
                     GROUP BY 
                         1,2,3,4,5,6,7`,
       QueryExecutionContext: {
@@ -578,6 +577,7 @@ export default class CostAndUsageReports {
       response = await this.serviceWrapper.startAthenaQueryExecution(
         queryParams,
       )
+      this.costAndUsageReportsLogger.info('Started Athena Query Execution')
     } catch (e) {
       throw new Error(`Athena start query failed. Reason ${e.message}.`)
     }
@@ -587,6 +587,7 @@ export default class CostAndUsageReports {
   private async getQueryResultSetRows(
     queryExecutionInput: GetQueryExecutionInput,
   ) {
+    this.costAndUsageReportsLogger.info('Getting Athena Query Execution')
     while (true) {
       const queryExecutionResults: GetQueryExecutionOutput =
         await this.serviceWrapper.getAthenaQueryExecution(queryExecutionInput)
@@ -599,6 +600,7 @@ export default class CostAndUsageReports {
 
       await wait(1000)
     }
+    this.costAndUsageReportsLogger.info('Getting Athena Query Result Sets')
     const results: GetQueryResultsOutput[] =
       await this.serviceWrapper.getAthenaQueryResultSets(queryExecutionInput)
     return results.flatMap((result) => result.ResultSet.Rows)

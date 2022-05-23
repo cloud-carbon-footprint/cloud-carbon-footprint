@@ -91,6 +91,7 @@ export default class BillingExportTable {
     const results: MutableEstimationResult[] = []
     const unknownRows: BillingExportRow[] = []
 
+    this.billingExportTableLogger.info('Mapping over Usage Rows')
     usageRows.map((usageRow) => {
       const billingExportRow = new BillingExportRow(usageRow)
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
@@ -612,12 +613,11 @@ export default class BillingExportTable {
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
-                    AND usage_start_time >= TIMESTAMP('${moment
+                    AND usage_start_time BETWEEN TIMESTAMP('${moment
                       .utc(start)
-                      .format('YYYY-MM-DD')}')
-                    AND usage_end_time <= TIMESTAMP('${moment
-                      .utc(end)
-                      .format('YYYY-MM-DD')}')
+                      .format('YYYY-MM-DD')}') AND TIMESTAMP('${moment
+      .utc(end)
+      .format('YYYY-MM-DD')}')
                   GROUP BY
                     timestamp,
                     accountId,
@@ -635,6 +635,7 @@ export default class BillingExportTable {
   private async getQueryResults(job: Job) {
     let rows: RowMetadata
     try {
+      this.billingExportTableLogger.info('Getting Big Query Results')
       ;[rows] = await job.getQueryResults()
     } catch (e) {
       const { reason, domain, message } = e.errors[0]

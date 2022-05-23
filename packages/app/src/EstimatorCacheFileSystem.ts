@@ -2,21 +2,21 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import EstimatorCache from './EstimatorCache'
+import fs, { promises } from 'fs'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import { promises as fs } from 'fs'
-import moment from 'moment'
+import EstimatorCache from './EstimatorCache'
 import { EstimationRequest } from './CreateValidRequest'
 import { getCacheFileName } from './CacheFileNameProvider'
+import { writeToFile, getCachedData } from './common/helpers'
 
 export const testCachePath = 'mock-estimates.json'
 
 export default class EstimatorCacheFileSystem implements EstimatorCache {
-  getEstimates(
+  async getEstimates(
     request: EstimationRequest,
     grouping: string,
   ): Promise<EstimationResult[]> {
-    return this.loadEstimates(grouping)
+    return await this.loadEstimates(grouping)
   }
 
   async setEstimates(
@@ -28,32 +28,41 @@ export default class EstimatorCacheFileSystem implements EstimatorCache {
     const cacheFile: string = process.env.TEST_MODE
       ? testCachePath
       : getCacheFileName(grouping)
-    return fs.writeFile(
-      cacheFile,
-      JSON.stringify(cachedEstimates.concat(estimates)),
-      'utf8',
-    )
+
+    await this.fileHandle(cacheFile, cachedEstimates.concat(estimates))
+  }
+
+  private async fileHandle(cacheFile: string, estimates: EstimationResult[]) {
+    let fh = null
+    try {
+      fh = await promises.open(cacheFile, 'r+')
+      await writeToFile(promises, estimates, fh)
+    } catch (err) {
+      console.warn(`Setting estimates error: ${err.message}`)
+    } finally {
+      if (fh) {
+        await fh.close()
+      }
+    }
   }
 
   private async loadEstimates(grouping: string): Promise<EstimationResult[]> {
-    let data = '[]'
+    let cachedData: EstimationResult[] | any
     const loadedCache = process.env.TEST_MODE
       ? testCachePath
       : getCacheFileName(grouping)
     try {
-      data = await fs.readFile(loadedCache, 'utf8')
+      await promises.access(loadedCache)
+      const dataStream = await fs.createReadStream(loadedCache)
+      cachedData = await getCachedData(dataStream)
     } catch (error) {
       console.warn(
         'WARN: Unable to read cache file. Got following error: \n' + error,
         '\n',
         'Creating new cache file...',
       )
-      await fs.writeFile(loadedCache, '[]', 'utf8')
+      await promises.writeFile(loadedCache, '[]', 'utf8')
     }
-    const dateTimeReviver = (key: string, value: string) => {
-      if (key === 'timestamp') return moment.utc(value).toDate()
-      return value
-    }
-    return JSON.parse(data, dateTimeReviver)
+    return cachedData
   }
 }

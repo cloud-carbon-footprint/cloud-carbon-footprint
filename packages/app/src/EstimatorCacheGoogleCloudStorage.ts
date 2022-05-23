@@ -3,23 +3,22 @@
  */
 
 import { Storage } from '@google-cloud/storage'
-import { Stream } from 'stream'
-import moment from 'moment'
 import EstimatorCache from './EstimatorCache'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import { getCacheFileName } from './CacheFileNameProvider'
+import { writeToFile, getCachedData } from './common/helpers'
 
 const storage = new Storage()
 
 export default class EstimatorCacheGoogleCloudStorage
   implements EstimatorCache
 {
-  getEstimates(
+  async getEstimates(
     request: EstimationRequest,
     grouping: string,
   ): Promise<EstimationResult[]> {
-    return this.getCloudFileContent(grouping)
+    return await this.getCloudFileContent(grouping)
   }
 
   async setEstimates(
@@ -28,20 +27,19 @@ export default class EstimatorCacheGoogleCloudStorage
   ): Promise<void> {
     const cachedEstimates = await this.getCloudFileContent(grouping)
     const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
+    const mergedData = cachedEstimates
+      ? cachedEstimates.concat(estimates)
+      : estimates
+    const cacheFileName = getCacheFileName(grouping)
 
     try {
-      const mergedData = cachedEstimates
-        ? cachedEstimates.concat(estimates)
-        : estimates
-
-      const estimatesJsonData = JSON.stringify(mergedData)
-
-      const cacheFileName = getCacheFileName(grouping)
       const cacheFile = storage.bucket(bucketName).file(cacheFileName)
-
-      await cacheFile.save(estimatesJsonData, {
-        contentType: 'application/json',
+      const writeStream = await cacheFile.createWriteStream()
+      await writeToFile(writeStream, mergedData)
+      writeStream.on('error', (err) => {
+        console.error(`There was an error writing the file => ${err}`)
       })
+      await writeStream.end()
     } catch (err) {
       console.warn(`Setting estimates error: ${err.message}`)
     }
@@ -52,38 +50,32 @@ export default class EstimatorCacheGoogleCloudStorage
   ): Promise<EstimationResult[]> {
     const cacheFileName = getCacheFileName(grouping)
     const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
-
+    let cachedData: EstimationResult[] | any = []
     try {
-      const streamOfCacheFile = storage.bucket(bucketName).file(cacheFileName)
-
-      const cachedJson = await this.streamToString(
-        await streamOfCacheFile.createReadStream(),
+      const cacheFile = storage.bucket(bucketName).file(cacheFileName)
+      const cacheFileExists = await Promise.resolve(
+        storage.bucket(bucketName).file(cacheFileName).exists(),
       )
 
-      const dateTimeReviver = (key: string, value: string) => {
-        if (key === 'timestamp') return moment.utc(value).toDate()
-        return value
+      if (cacheFileExists[0]) {
+        const dataStream = await cacheFile.createReadStream()
+        cachedData = await getCachedData(dataStream)
+      } else {
+        console.warn(
+          'WARN: Unable to read cache file.',
+          '\n',
+          'Creating new cache file...',
+        )
+        await cacheFile.save('[]', {
+          contentType: 'application/json',
+        })
       }
-
-      const cacheFileContent = cachedJson || '[]'
-
-      return JSON.parse(cacheFileContent, dateTimeReviver)
     } catch (err) {
       if (err.code !== 404) {
         console.warn(`Error loading cloud data: ${err.message}`)
       }
       return []
     }
-  }
-
-  private streamToString(stream: Stream): Promise<string> {
-    const chunks: Buffer[] = []
-    return new Promise((resolve, reject) => {
-      stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)))
-      stream.on('error', (err) => reject(err))
-      stream.on('end', () => {
-        resolve(Buffer.concat(chunks).toString('utf8'))
-      })
-    })
+    return cachedData
   }
 }

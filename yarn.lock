@@ -2034,6 +2034,7 @@ __metadata:
     "@cloud-carbon-footprint/on-premise": ^0.0.2
     "@google-cloud/monitoring": ^2.3.5
     "@google-cloud/storage": ^5.16.1
+    "@sovpro/delimited-stream": ^1.1.0
     "@types/jest": ^27.4.0
     "@types/node": ^17.0.8
     "@typescript-eslint/eslint-plugin": ^5.9.0
@@ -4859,6 +4860,13 @@ __metadata:
   version: 0.7.1
   resolution: "@sinonjs/text-encoding@npm:0.7.1"
   checksum: 130de0bb568c5f8a611ec21d1a4e3f80ab0c5ec333010f49cfc1adc5cba6d8808699c8a587a46b0f0b016a1f4c1389bc96141e773e8460fcbb441875b2e91ba7
+  languageName: node
+  linkType: hard
+
+"@sovpro/delimited-stream@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@sovpro/delimited-stream@npm:1.1.0"
+  checksum: e78fc97a8509c07b55483df2253137de07b10f14db15d230526a6dd95c86e99d8f54c7af8697806bd16522eec2c50e44e5b4e0294bed80da833a2185f17f3ab6
   languageName: node
   linkType: hard
 

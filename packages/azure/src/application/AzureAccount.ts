@@ -66,6 +66,7 @@ export default class AzureAccount extends CloudProviderAccount {
       )
     }
 
+    this.logger.info('Mapping Over Subscriptions and Usage Rows')
     const estimationResults = await Promise.all(
       subscriptions.map(async (subscription: Subscription) => {
         try {

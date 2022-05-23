@@ -136,7 +136,7 @@ export default function cache(): any {
     propertyKey: string,
     descriptor: PropertyDescriptor,
   ) {
-    const cacheLogger = new Logger('cache')
+    const cacheLogger = new Logger('Cache')
     const decoratedFunction = descriptor.value
 
     descriptor.value = async (
