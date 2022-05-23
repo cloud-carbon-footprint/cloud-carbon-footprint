@@ -59,8 +59,8 @@ jobs:
           bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
           bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
           bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
-      - name: integration tests
-        run: yarn test:integration
+#      - name: integration tests
+#        run: yarn test:integration
   build:
     needs: lint-test
     runs-on: ubuntu-latest
