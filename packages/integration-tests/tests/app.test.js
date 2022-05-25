@@ -42,12 +42,11 @@ test('side drawer opens and closes when clicked', async (t) => {
 })
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
-  //check initial then check after each filter option
-  await t
-    .expect(
-      page.totalCo2Amount.with({ visibilityCheck: true }).withText('57').exists, //the other problem element
-    )
-    .ok() //todo: minimize dataset-specific selectors
+  await page.totalCo2Amount.with({ visibilityCheck: true }).exists //await core element before getting any of its text-specific versions
+  await t.expect(page.cloudProviderDropDown.exists).ok() //expect dropdown menu to also exist
+
+  //check initial value then check after each filter option
+  await t.expect(page.totalCo2Amount.withText('57').exists).ok() //the other problem element //todo: minimize dataset-specific selectors
   await t.click(page.cloudProviderDropDown)
   await t.click(page.awsDropdownItem)
   await t.expect(page.totalCo2Amount.withText('20').exists).ok()
