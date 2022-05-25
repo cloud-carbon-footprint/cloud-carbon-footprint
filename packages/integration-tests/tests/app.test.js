@@ -24,16 +24,17 @@ test('loading screen appears when app is starting', async (t) => {
 })
 
 test('main components render with correct data when app loads', async (t) => {
-  setTimeout(() => {
-    console.log('Delayed for 3 seconds')
-  }, 3000)
   await t.expect(page.cloudProviders.exists).ok()
   await t.expect(page.accounts.exists).ok()
   await t.expect(page.services.exists).ok()
   await t.expect(page.lineChart.exists).ok()
   await t.expect(page.carbonComparisonCard.exists).ok()
-  await t.expect(page.emissionsBreakdownContainer.exists).ok()
-})
+  await t
+    .expect(
+      page.emissionsBreakdownContainer.with({ visibilityCheck: true }).exists, //one of two problem elements - wait for it to be fully visible
+    )
+    .ok()
+}) //waiting seems to help, try updating wait
 
 test('side drawer opens and closes when clicked', async (t) => {
   await t.click(page.drawerOpenButton).expect(page.drawerOpen.exists).ok()
@@ -42,7 +43,11 @@ test('side drawer opens and closes when clicked', async (t) => {
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
   //check initial then check after each filter option
-  await t.expect(page.totalCo2Amount.withText('57').exists).ok() //todo: minimize dataset-specific selectors
+  await t
+    .expect(
+      page.totalCo2Amount.with({ visibilityCheck: true }).withText('57').exists, //the other problem element
+    )
+    .ok() //todo: minimize dataset-specific selectors
   await t.click(page.cloudProviderDropDown)
   await t.click(page.awsDropdownItem)
   await t.expect(page.totalCo2Amount.withText('20').exists).ok()
