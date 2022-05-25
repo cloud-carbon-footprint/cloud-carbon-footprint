@@ -24,7 +24,9 @@ test('loading screen appears when app is starting', async (t) => {
 })
 
 test('main components render with correct data when app loads', async (t) => {
-  await t.expect(page.cloudProviders.exists).ok()
+  await t
+    .expect(page.cloudProviders.with({ visibilityCheck: true }).exists)
+    .ok() //this one was the problem once
   await t.expect(page.accounts.exists).ok()
   await t.expect(page.services.exists).ok()
   await t.expect(page.lineChart.exists).ok()
@@ -43,8 +45,6 @@ test('side drawer opens and closes when clicked', async (t) => {
 
 test('total metric tons is loaded correctly with different dropdown selections', async (t) => {
   await page.totalCo2Amount.with({ visibilityCheck: true }).exists //await core element before getting any of its text-specific versions
-  await t.expect(page.cloudProviderDropDown.exists).ok() //expect dropdown menu to also exist
-
   //check initial value then check after each filter option
   await t.expect(page.totalCo2Amount.withText('57').exists).ok() //the other problem element //todo: minimize dataset-specific selectors
   await t.click(page.cloudProviderDropDown)
