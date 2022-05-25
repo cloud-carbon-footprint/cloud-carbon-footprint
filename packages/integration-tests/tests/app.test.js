@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 import { Selector } from 'testcafe'
+import { skipPartiallyEmittedExpressions } from 'typescript'
 import waitOn from 'wait-on'
 import page from './page-model'
 
@@ -23,6 +24,9 @@ test('loading screen appears when app is starting', async (t) => {
 })
 
 test('main components render with correct data when app loads', async (t) => {
+  setTimeout(() => {
+    console.log('Delayed for 3 seconds')
+  }, 3000)
   await t.expect(page.cloudProviders.exists).ok()
   await t.expect(page.accounts.exists).ok()
   await t.expect(page.services.exists).ok()
