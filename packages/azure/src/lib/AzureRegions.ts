@@ -16,6 +16,7 @@ export const AZURE_REGIONS = {
   BRAZIL_SOUTH: { name: 'brazilsouth', options: ['brazilsouth'] },
   EU_NORTH: { name: 'northeurope', options: ['northeurope', 'europenorth'] },
   EU_WEST: { name: 'westeurope', options: ['westeurope', 'WESTEUROPE'] },
+  EU_FRANCE: { name: 'francecentral', options: ['francecentral'] },
   IN_CENTRAL: {
     name: 'centralindia',
     options: ['centralindia', 'IndiaCentral'],
