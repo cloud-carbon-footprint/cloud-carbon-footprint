@@ -7,16 +7,30 @@
 export const AZURE_REGIONS = {
   // Africa regions
   AF_SOUTH_AFRICA: { name: 'southafrica', options: ['southafrica'] },
-  AF_SOUTH_AFRICA_NORTH: { name: 'southafricanorth', options: ['southafricanorth'] },
-  AF_SOUTH_AFRICA_WEST: { name: 'southafricawest', options: ['southafricawest'] },
-  
-  
+  AF_SOUTH_AFRICA_NORTH: {
+    name: 'southafricanorth',
+    options: ['southafricanorth'],
+  },
+  AF_SOUTH_AFRICA_WEST: {
+    name: 'southafricawest',
+    options: ['southafricawest'],
+  },
+
   // APAC regions
   AP_AUSTRALIA: { name: 'australia', options: ['australia'] },
-  AP_AUSTRALIA_CENTRAL: { name: 'australiacentral', options: ['australiacentral'] },
-  AP_AUSTRALIA_CENTRAL2: { name: 'australiacentral2', options: ['australiacentral2'] },
+  AP_AUSTRALIA_CENTRAL: {
+    name: 'australiacentral',
+    options: ['australiacentral'],
+  },
+  AP_AUSTRALIA_CENTRAL2: {
+    name: 'australiacentral2',
+    options: ['australiacentral2'],
+  },
   AP_AUSTRALIA_EAST: { name: 'australiaeast', options: ['australiaeast'] },
-  AP_AUSTRALIA_SOUTH_EAST: { name: 'australiasoutheast', options: ['australiasoutheast'] },
+  AP_AUSTRALIA_SOUTH_EAST: {
+    name: 'australiasoutheast',
+    options: ['australiasoutheast'],
+  },
   AP_EAST: { name: 'apeast', options: ['apeast'] },
   AP_SOUTH_EAST: { name: 'apsoutheast', options: ['apsoutheast'] },
   AP_JAPAN_EAST: { name: 'japaneast', options: ['japaneast'] },
@@ -49,8 +63,7 @@ export const AZURE_REGIONS = {
   IN_JIO_WEST: { name: 'jioindiawest', options: ['jioindiawest'] },
   IN_SOUTH: { name: 'southindia', options: ['southindia'] },
   IN_WEST: { name: 'westindia', options: ['westindia'] },
-  
-  
+
   // EU regions
   EU_NORTH: { name: 'northeurope', options: ['northeurope', 'europenorth'] },
   EU_WEST: { name: 'westeurope', options: ['westeurope', 'WESTEUROPE'] },
@@ -59,23 +72,32 @@ export const AZURE_REGIONS = {
   EU_FRANCE: { name: 'france', options: ['france'] },
   EU_SWEDEN_CENTRAL: { name: 'swedencentral', options: ['swedencentral'] },
   EU_SWITZERLAND: { name: 'switzerland', options: ['switzerland'] },
-  EU_SWITZERLAND_NORTH: { name: 'switzerlandnorth', options: ['switzerlandnorth'] },
-  EU_SWITZERLAND_WEST: { name: 'switzerlandwest', options: ['switzerlandwest'] },
+  EU_SWITZERLAND_NORTH: {
+    name: 'switzerlandnorth',
+    options: ['switzerlandnorth'],
+  },
+  EU_SWITZERLAND_WEST: {
+    name: 'switzerlandwest',
+    options: ['switzerlandwest'],
+  },
   UK_SOUTH: { name: 'uksouth', options: ['uksouth', 'UKSOUTH'] },
   UK_WEST: { name: 'ukwest', options: ['ukwest'] },
   EU_GERMANY: { name: 'germany', options: ['germany'] },
   EU_GERMANY_NORTH: { name: 'germanynorth', options: ['germanynorth'] },
-  EU_GERMANY_WESTCENTRAL: { name: 'germanywestcentral', options: ['germanywestcentral'] },
+  EU_GERMANY_WESTCENTRAL: {
+    name: 'germanywestcentral',
+    options: ['germanywestcentral'],
+  },
   EU_NORWAY: { name: 'norway', options: ['norway'] },
   EU_NORWAY_EAST: { name: 'norwayeast', options: ['norwayeast'] },
   EU_NORWAY_WEST: { name: 'norwaywest', options: ['norwaywest'] },
   EU_UK: { name: 'uk', options: ['uk'] },
 
   // Middle East regions
-  ME_UAE: { name: 'uae', options : ['uae']},
-  ME_UAE_CENTRAL: { name: 'uaecentral', options : ['uaecentral']},
-  ME_UAE_NORTH: { name: 'uaenorth', options : ['uaenorth']},
-  
+  ME_UAE: { name: 'uae', options: ['uae'] },
+  ME_UAE_CENTRAL: { name: 'uaecentral', options: ['uaecentral'] },
+  ME_UAE_NORTH: { name: 'uaenorth', options: ['uaenorth'] },
+
   // America regions
   US_CANADA: { name: 'canada', options: ['canada'] },
   US_CANADA_CENTRAL: { name: 'canadacentral', options: ['canadacentral'] },
@@ -89,13 +111,25 @@ export const AZURE_REGIONS = {
   US_EAST_2_EUAP: { name: 'eastus2euap', options: ['eastus2euap'] },
   US_EAST_2_STAGE: { name: 'eastus2stage', options: ['eastus2stage'] },
   US_EAST_3: { name: 'EastUS3', options: ['EastUS3'] },
-  US_NORTH_CENTRAL: { name: 'NorthCentralUs', options: ['NorthCentralUs', 'northcentralus'] },
-  US_NORTH_CENTRAL_STAGE: { name: 'northcentralusstage', options: ['northcentralusstage'] },
+  US_NORTH_CENTRAL: {
+    name: 'NorthCentralUs',
+    options: ['NorthCentralUs', 'northcentralus'],
+  },
+  US_NORTH_CENTRAL_STAGE: {
+    name: 'northcentralusstage',
+    options: ['northcentralusstage'],
+  },
   US_SOUTH_CENTRAL: { name: 'SouthCentralUS', options: ['SouthCentralUS'] },
-  US_SOUTH_CENTRAL_STAGE: { name: 'southcentralusstage', options: ['southcentralusstage'] },
+  US_SOUTH_CENTRAL_STAGE: {
+    name: 'southcentralusstage',
+    options: ['southcentralusstage'],
+  },
   US_US: { name: 'unitedstates', options: ['unitedstates'] },
   US_US_EAP: { name: 'unitedstateseuap', options: ['unitedstateseuap'] },
-  US_WEST_CENTRAL: { name: 'WestCentralUS', options: ['WestCentralUS', 'westcentralus'] },
+  US_WEST_CENTRAL: {
+    name: 'WestCentralUS',
+    options: ['WestCentralUS', 'westcentralus'],
+  },
   US_NORTH: { name: 'USNorth', options: ['USNorth'] },
   US_WEST: { name: 'WestUS', options: ['WestUS', 'westus'] },
   US_WEST_STAGE: { name: 'westusstage', options: ['westusstage'] },
