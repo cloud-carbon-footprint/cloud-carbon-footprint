@@ -343,6 +343,10 @@ fileignoreconfig:
   checksum: 3f13178e2d95a97e7fcc961f450934be638e288a623e3fa52927e9b4ca313ad4
 - filename: packages/on-premise/package.json
   checksum: 89606e85e166cfe7a1b0df38792457f3be1dad7ff48a4930ca32f60b6fbd8f4b
+- filename: packages/on-premise/src/lib/OnPremiseBillingDataRow.ts
+  checksum: b4d9a659322e4fee4d94034a464a8a42a025be48645b252c02e3751142979752
+- filename: packages/on-premise/src/lib/OnPremiseDataReport.ts
+  checksum: 5572b0f9cf06ff37474e06d6f25e441fc0578082e2698f114057a50ce9eec13f
 - filename: packages/on-premise/src/lib/OnPremiseTypes.ts
   checksum: 49c37e2e94fa4c14b8e375a4c3972f3f091270fe11a0dcb3da0704cced051ce4
 - filename: scripts/createCSV.ts

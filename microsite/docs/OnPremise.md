@@ -16,20 +16,25 @@ CSV Data Model:
 
 | Name | Type | Description |
 | --------- | --------- | ----------- |
-| machineName | string | Central processing unit description |
+| cpuDescription | string | Central processing unit description |
 | memory | number | Number of gigabytes of memory usage |
 | machineType | string | Machine type (Ie. server, laptop, desktop) |
 | startTime | Date | Timestamp recording the start day/time of usage |
 | endTime | Date | Timestamp recording end day/time of usage |
 | country | string | Country where server was located |
 | region | string | Region or state within country server was located |
+| machineName? | string | Physical host name |
 | cost? | number | The amount of cost associated with each row |
 | cpuUtilization? | number | Specific server utilization percentage (Ie. 50% = 50) |
 | powerUsageEffectiveness? | number | Power usage effectiveness for data center |
+| dailyUptime | number | Active usage hours in the last day |
+| weeklyUptime | number | Active usage hours in the last week |
+| monthlyUptime | number | Active usage hours in the last month |
+| annualUptime | number | Active usage hours in the last year |
 
 You will see via the `machineType` column that our application supports both on-premise servers from data centers, as well as laptop and desktop devices. We have found that when considering a cloud migration, some organizations may see a change in energy/carbon emissions if they begin running laptop or desktop workloads via cloud-hosted workstations instead. Adding any other supported machine types can be easily configured into the application.
 
-The data points for startTime and endTime are used to calculate a figure for usage hours that is used in our calculations. It is worth noting that start and end times are not always completely accurate to determine usage hours when considering machine sleep/dormant times, particularly for laptop and desktop machine types. One potential solution is to implement support for an aggregate active usage hour count or incorporate an average 'downtime'.
+This data model currently requires up-time figures per day, week, month and year. The purpose is to be able to calculate the associated emissions and energy usage with the time a server is active in the given time frame. To determine these values, it is recommended to set up an incremental aggregator that adds hours to each given up-time value when a server is active, and reset the value each day/week/month/year depending on the up-time key.
 
 
 ### Methodology
@@ -82,4 +87,4 @@ In your terminal, run the following command from the application root directory:
 
 `yarn run estimate-on-premise-data --onPremiseInput [<Input File Name>]`
 
-You can optionally add the argument `--onPremiseOutput [<Output File Name>]` to specify the name of the output file which includes the same data from the input file as well as usageHours, kilowattHours and co2e appended as new columns.
+You can optionally add the argument `--onPremiseOutput [<Output File Name>]` to specify the name of the output file which includes the same data from the input file as well as kilowattHours and co2e for each up-time increment appended as new columns.

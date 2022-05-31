@@ -1,2 +1,2 @@
-machineName,memory,machineType,startTime,endTime,country,region,cost,cpuUtilization,powerUsageEffectiveness
-Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,93.12
+cpuDescription,machineName,memory,machineType,startTime,endTime,country,region,cost,cpuUtilization,powerUsageEffectiveness,dailyUptime,weeklyUptime,monthlyUptime,annualUptime
+Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,test-machine-name,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,93.12,,,4,12,36,36
