@@ -3,6 +3,8 @@ fileignoreconfig:
   checksum: 74d451296b12b20492767a90f35ec464016a6eca3593c13a672b40d0fd8f8b06
 - filename: .changeset/breezy-singers-own.md
   checksum: a1a0b0b676bfe049874b22ef95052509012d209e4ebd02accb8bca16d11fd52e
+- filename: .changeset/cool-wolves-jog.md
+  checksum: 9aab6b8ca8080df1e76ac73027573e34f6daf79b0d5a1536ccc455ad32a17740
 - filename: .changeset/famous-ligers-breathe.md
   checksum: 0a9343cef13e632b64dfbff81a6bd65d97f53b610e98a211c5a06f7f4193d298
 - filename: .changeset/flat-boxes-greet.md
