@@ -10,9 +10,9 @@ module.exports = {
   coverageThreshold: {
     global: {
       statements: 75,
-      branches: 65,
-      lines: 78,
-      functions: 71,
+      branches: 70,
+      lines: 80,
+      functions: 82,
     },
   },
   modulePathIgnorePatterns: ['index.ts'],
