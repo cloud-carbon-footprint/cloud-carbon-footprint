@@ -10,6 +10,7 @@ import { EstimationRequest } from '../CreateValidRequest'
 
 const creatReadStreamMock = jest.fn()
 const writeGcsFile = jest.fn()
+const existsMock = jest.fn()
 
 jest.mock('@google-cloud/storage', () => {
   return {
@@ -21,6 +22,7 @@ jest.mock('@google-cloud/storage', () => {
               return {
                 createReadStream: creatReadStreamMock,
                 save: writeGcsFile,
+                exists: existsMock,
               }
             }),
           }
@@ -76,16 +78,25 @@ describe('CacheManager', () => {
   })
 
   describe('getEstimates', () => {
-    it.skip('should get estimates from GCS file', async () => {
+    function buildFootprintJSONEstimates(startDate: string) {
+      return JSON.stringify(buildFootprintEstimates(startDate, 1))
+        .replace(/^\[/, '[\n')
+        .replace(/]$/, '\n]')
+    }
+
+    it('should get estimates from GCS file', async () => {
       //setup
       const startDate = '2020-10-01'
       const endDate = '2020-10-02'
 
       const mockedStream = new PassThrough()
-      mockedStream.push(JSON.stringify(buildFootprintEstimates(startDate, 1)))
+      const jsonString = buildFootprintJSONEstimates(startDate)
+
+      mockedStream.push(jsonString)
       mockedStream.end()
 
       creatReadStreamMock.mockReturnValue(mockedStream)
+      existsMock.mockReturnValue([true])
 
       const cachedData: EstimationResult[] = buildFootprintEstimates(
         startDate,

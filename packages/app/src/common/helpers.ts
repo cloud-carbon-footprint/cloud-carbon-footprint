@@ -1,3 +1,7 @@
+/**
+ * © 2021 Thoughtworks, Inc.
+ */
+
 import moment from 'moment'
 import { Stream } from 'stream'
 import fs from 'fs'
@@ -35,11 +39,7 @@ export const getCachedData = async (dataStream: Stream) => {
     const arr: any = []
     delimitedStream.on('data', (data) => {
       const line = data.toString()
-      if (
-        line.charAt(0) != '[' &&
-        line.charAt(0) != ']' &&
-        line.charAt(0) != ','
-      ) {
+      if (isNotADataDelimiter(line)) {
         arr.push(JSON.parse(line, dateTimeReviver))
       }
     })
@@ -49,6 +49,11 @@ export const getCachedData = async (dataStream: Stream) => {
     })
     dataStream.pipe(delimitedStream)
   })
+  function isNotADataDelimiter(l: string) {
+    // data delimiters are [, ], or empty line
+    // and are encoded on writeToFile() function
+    return !/^[\[\]\n]$/.test(l)
+  }
 }
 
 export const cacheExists = (cachePath: string): Promise<boolean> => {
