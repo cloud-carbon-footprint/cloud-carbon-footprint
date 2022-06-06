@@ -4,33 +4,39 @@
 
 import moment from 'moment'
 import { Stream } from 'stream'
-import fs from 'fs'
 import { DelimitedStream } from '@sovpro/delimited-stream'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
+
+const DATA_WINDOW_SIZE = 100 // this roughly means 100 days per loop
 
 export const writeToFile = async (
   writeStream: any,
   mergedData: EstimationResult[],
   fh?: any,
 ) => {
-  fh
-    ? await writeStream.appendFile(fh, '[' + '\n')
-    : await writeStream.write('[' + '\n')
-  for (let i = 0; i < mergedData.length; i += 100) {
-    const out = mergedData
-      .slice(i, i + 100)
-      .map((el) => JSON.stringify(el))
-      .join('\n' + ',' + '\n')
-    fh ? await writeStream.appendFile(fh, out) : await writeStream.write(out)
-    if (i + 100 < mergedData.length) {
-      fh
-        ? await writeStream.appendFile(fh, '\n' + ',' + '\n')
-        : await writeStream.write('\n' + ',' + '\n')
+  const OPEN_BRACKET = '[' + '\n'
+  const CLOSE_BRACKET = '\n' + ']'
+  const COMMA_SEPARATOR = '\n' + ',' + '\n'
+
+  async function writeIt(output: string) {
+    fh
+      ? await writeStream.appendFile(fh, output)
+      : await writeStream.write(output)
+  }
+
+  await writeIt(OPEN_BRACKET) // beginning of the cache file
+  for (let i = 0; i < mergedData.length; i += DATA_WINDOW_SIZE) {
+    await writeIt(
+      mergedData
+        .slice(i, i + DATA_WINDOW_SIZE)
+        .map((el) => JSON.stringify(el))
+        .join(COMMA_SEPARATOR),
+    ) // write a DATA_WINDOW_SIZE amount of data
+    if (i + DATA_WINDOW_SIZE < mergedData.length) {
+      await writeIt(COMMA_SEPARATOR)
     }
   }
-  fh
-    ? await writeStream.appendFile(fh, '\n' + ']')
-    : await writeStream.write('\n' + ']')
+  await writeIt(CLOSE_BRACKET) // end of the cache file
 }
 
 export const getCachedData = async (dataStream: Stream) => {
@@ -54,17 +60,6 @@ export const getCachedData = async (dataStream: Stream) => {
     // and are encoded on writeToFile() function
     return !/^[\[\]\n]$/.test(l)
   }
-}
-
-export const cacheExists = (cachePath: string): Promise<boolean> => {
-  let cacheExists
-  fs.access(cachePath, (err) => {
-    if (err) {
-      cacheExists = false
-    }
-    cacheExists = false
-  })
-  return cacheExists
 }
 
 const dateTimeReviver = (key: string, value: string) => {
