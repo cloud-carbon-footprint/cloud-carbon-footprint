@@ -14,6 +14,7 @@ export interface ClientConfig {
   }
   GROUP_BY: string
   BASE_URL: string
+  MINIMAL_DATE_AGE: string
 }
 
 const previousYearOfUsage =
@@ -33,6 +34,7 @@ const appConfig: ClientConfig = {
   },
   GROUP_BY: process.env.REACT_APP_GROUP_BY,
   BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
+  MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
 }
 
 export default appConfig

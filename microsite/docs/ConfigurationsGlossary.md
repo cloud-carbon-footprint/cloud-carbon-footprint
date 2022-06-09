@@ -128,3 +128,4 @@ slug: /configurations-glossary
 | REACT_APP_GROUP_BY               | month         | string  | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year)                                                   |
 | REACT_APP_DATE_RANGE_VALUE       | 1             | number  | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.                                                                                               |
 | REACT_APP_DATE_RANGE_TYPE        | year          | string  | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s)                                                    |
+| REACT_APP_MINIMAL_DATE_AGE       | 1             | number  | The amount of days to subtract from current date as end date.                                                                                       |

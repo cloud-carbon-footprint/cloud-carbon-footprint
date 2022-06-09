@@ -29,7 +29,9 @@ export default function EmissionsMetricsPage({
   const classes = useStyles()
   const dateRangeType: string = config.DATE_RANGE.TYPE
   const dateRangeValue: string = config.DATE_RANGE.VALUE
-  const endDate: moment.Moment = moment.utc()
+  const endDate: moment.Moment = moment
+    .utc()
+    .subtract(config.MINIMAL_DATE_AGE, 'days')
 
   let startDate: moment.Moment
   if (config.PREVIOUS_YEAR_OF_USAGE) {

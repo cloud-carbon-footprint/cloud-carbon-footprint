@@ -174,7 +174,7 @@ fileignoreconfig:
 - filename: packages/client/.env.template
   checksum: a2da05dc909b7d35c485fd9e555f35990a0b28ce16c4f7e4cddf7c07a5665fb1
 - filename: packages/client/create_client_env_file.sh
-  checksum: 21f2f2bf245bcb51802e3ff81c1d1c6e988b0a9bcf9e23069fe2c5b49f2db17e
+  checksum: 2ebf0978d768edd6423a9f5f3b0f3fcdbe2c484d69152c6125575ff93e9708f4
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
   checksum: 0005b5abc9cba50b821c955aa1cc28e9860d4c8748f52c3bf6927eef620500fc
 - filename: packages/client/src/common/FilterBar/utils/DropdownConstants.test.ts
