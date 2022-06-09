@@ -1,4 +1,3 @@
-
 name: CI
 on:
   workflow_dispatch:
@@ -59,16 +58,16 @@ jobs:
           bash <(curl -s https://codecov.io/bash) -f packages/aws/coverage/* -F aws
           bash <(curl -s https://codecov.io/bash) -f packages/gcp/coverage/* -F gcp
           bash <(curl -s https://codecov.io/bash) -f packages/azure/coverage/* -F azure
-#      - name: integration tests
-#        run: yarn test:integration
+  #      - name: integration tests
+  #        run: yarn test:integration
   build:
     needs: lint-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-            # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
-            fetch-depth: 0
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -326,7 +325,6 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_USE_BILLING_DATA: ${{ secrets.AZURE_USE_BILLING_DATA }}
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
       GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
       CACHE_MODE: ${{ secrets.CACHE_MODE }}
