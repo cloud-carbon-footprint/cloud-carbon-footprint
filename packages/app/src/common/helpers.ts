@@ -58,7 +58,7 @@ export const getCachedData = async (dataStream: Stream) => {
   function isNotADataDelimiter(l: string) {
     // data delimiters are [, ], or empty line
     // and are encoded on writeToFile() function
-    return !/^[\[\]\n]$/.test(l)
+    return !/^[\[\],\n]$/.test(l)
   }
 }
 
