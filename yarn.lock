@@ -2017,15 +2017,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/app@0.6.0, @cloud-carbon-footprint/app@^0.6.0, @cloud-carbon-footprint/app@workspace:packages/app":
+"@cloud-carbon-footprint/app@0.6.1, @cloud-carbon-footprint/app@^0.6.0, @cloud-carbon-footprint/app@workspace:packages/app":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/app@workspace:packages/app"
   dependencies:
     "@cloud-carbon-footprint/aws": ^0.11.0
-    "@cloud-carbon-footprint/azure": ^0.10.0
-    "@cloud-carbon-footprint/common": ^1.5.1
+    "@cloud-carbon-footprint/azure": ^0.10.1
+    "@cloud-carbon-footprint/common": ^1.6.0
     "@cloud-carbon-footprint/gcp": ^0.9.1
-    "@cloud-carbon-footprint/on-premise": ^0.0.2
+    "@cloud-carbon-footprint/on-premise": ^0.1.0
     "@google-cloud/monitoring": ^2.3.5
     "@google-cloud/storage": ^5.16.1
     "@sovpro/delimited-stream": ^1.1.0
@@ -2086,7 +2086,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/azure@^0.10.0, @cloud-carbon-footprint/azure@workspace:packages/azure":
+"@cloud-carbon-footprint/azure@^0.10.1, @cloud-carbon-footprint/azure@workspace:packages/azure":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
@@ -2095,7 +2095,7 @@ __metadata:
     "@azure/identity": ^2.0.1
     "@azure/ms-rest-js": ^2.2.3
     "@azure/ms-rest-nodeauth": ^3.0.7
-    "@cloud-carbon-footprint/common": ^1.5.1
+    "@cloud-carbon-footprint/common": ^1.6.0
     "@cloud-carbon-footprint/core": ^0.16.1
     "@google-cloud/secret-manager": ^3.10.1
     "@types/jest": ^27.4.0
@@ -2129,8 +2129,8 @@ __metadata:
   dependencies:
     "@azure/arm-consumption": ^8.0.0
     "@azure/arm-resources-subscriptions": ^2.0.0
-    "@cloud-carbon-footprint/app": 0.6.0
-    "@cloud-carbon-footprint/common": ^1.5.1
+    "@cloud-carbon-footprint/app": 0.6.1
+    "@cloud-carbon-footprint/common": ^1.6.0
     "@types/cli-table": ^0.3.0
     "@types/jest": ^27.4.0
     "@types/jest-when": ^3.5.0
@@ -2232,7 +2232,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/common@^1.5.1, @cloud-carbon-footprint/common@workspace:packages/common":
+"@cloud-carbon-footprint/common@^1.5.1, @cloud-carbon-footprint/common@^1.6.0, @cloud-carbon-footprint/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/common@workspace:packages/common"
   dependencies:
@@ -2377,11 +2377,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/on-premise@^0.0.2, @cloud-carbon-footprint/on-premise@workspace:packages/on-premise":
+"@cloud-carbon-footprint/on-premise@^0.1.0, @cloud-carbon-footprint/on-premise@workspace:packages/on-premise":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/on-premise@workspace:packages/on-premise"
   dependencies:
-    "@cloud-carbon-footprint/common": ^1.5.1
+    "@cloud-carbon-footprint/common": ^1.6.0
     "@cloud-carbon-footprint/core": ^0.16.1
     "@types/jest": ^27.4.0
     "@types/jest-when": ^3.5.0

@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/app",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "license": "Apache-2.0",
   "description": "The logic to bootstrap the cloud-carbon-footprint server-side application",
   "main": "src/index.ts",
@@ -41,10 +41,10 @@
   },
   "dependencies": {
     "@cloud-carbon-footprint/aws": "^0.11.0",
-    "@cloud-carbon-footprint/azure": "^0.10.0",
-    "@cloud-carbon-footprint/common": "^1.5.1",
+    "@cloud-carbon-footprint/azure": "^0.10.1",
+    "@cloud-carbon-footprint/common": "^1.6.0",
     "@cloud-carbon-footprint/gcp": "^0.9.1",
-    "@cloud-carbon-footprint/on-premise": "^0.0.2",
+    "@cloud-carbon-footprint/on-premise": "^0.1.0",
     "@google-cloud/monitoring": "^2.3.5",
     "@google-cloud/storage": "^5.16.1",
     "@sovpro/delimited-stream": "^1.1.0",
