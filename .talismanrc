@@ -9,6 +9,8 @@ fileignoreconfig:
   checksum: 0a9343cef13e632b64dfbff81a6bd65d97f53b610e98a211c5a06f7f4193d298
 - filename: .changeset/flat-boxes-greet.md
   checksum: b4797d1c4964a793b17768d0bdb26373037331c308360d95c1f0d22bc370fdd3
+- filename: .changeset/funny-olives-attend.md
+  checksum: a62e7b2574d9c822f0c2debdd3885945c08ed0e0a245468917a5d690c417ec75
 - filename: .changeset/honest-penguins-clap.md
   checksum: ac6a3b992c06dfdfba27b96cf9b93f38b3d87bba3581e5a8428f42f186eb0ee7
 - filename: .changeset/lemon-eels-do.md
