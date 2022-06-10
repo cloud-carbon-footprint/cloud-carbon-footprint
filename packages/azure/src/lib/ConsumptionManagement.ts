@@ -777,7 +777,7 @@ export default class ConsumptionManagementService {
   private getComputeProcessorsFromUsageType(usageType: string): string[] {
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN.name,
       ]
     )
   }
@@ -785,7 +785,7 @@ export default class ConsumptionManagementService {
   private getGpuComputeProcessorsFromUsageType(usageType: string): string[] {
     return (
       GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING[usageType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN.name,
       ]
     )
   }
@@ -815,7 +815,7 @@ export default class ConsumptionManagementService {
     // grab the list of processors per instance type
     // and then the Azure specific memory constant for the processors
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[usageType] || [
-      COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      COMPUTE_PROCESSOR_TYPES.UNKNOWN.name,
     ]
     const processorMemory = AZURE_CLOUD_CONSTANTS.getMemory(processors)
 

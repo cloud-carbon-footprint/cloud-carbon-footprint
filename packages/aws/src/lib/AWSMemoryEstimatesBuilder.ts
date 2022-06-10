@@ -70,7 +70,7 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     // and then the aws specific memory constant for the processors
     const processors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       this.instanceType
-    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN.name]
     const processorMemoryGigabytesPerPhysicalChip =
       AWS_CLOUD_CONSTANTS.getMemory(processors)
 

@@ -449,7 +449,7 @@ export default class Recommendations implements ICloudRecommendationsService {
 
     const computeProcessors = INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[
       machineTypeFamily
-    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN]
+    ] || [COMPUTE_PROCESSOR_TYPES.UNKNOWN.name]
 
     const computeConstants = {
       minWatts: GCP_CLOUD_CONSTANTS.getMinWatts(computeProcessors),

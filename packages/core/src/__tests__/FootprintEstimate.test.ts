@@ -344,7 +344,9 @@ describe('FootprintEstimate', () => {
   describe('getWattsByAverageOrMedian', () => {
     it('returns median', () => {
       // given
-      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE]
+      const computeProcessors: string[] = [
+        COMPUTE_PROCESSOR_TYPES.SANDY_BRIDGE.name,
+      ]
       const wattsForProcessors: number[] = [1, 2, 3, 4, 5]
       // when
 
@@ -358,7 +360,9 @@ describe('FootprintEstimate', () => {
     })
     it('returns 0 with no wattsForProcessors', () => {
       // given
-      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]
+      const computeProcessors: string[] = [
+        COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE.name,
+      ]
       const wattsForProcessors: number[] = []
       // when
 
@@ -372,7 +376,9 @@ describe('FootprintEstimate', () => {
     })
     it('returns first watts with 1 wattsForProcessors', () => {
       // given
-      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]
+      const computeProcessors: string[] = [
+        COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE.name,
+      ]
       const wattsForProcessors: number[] = [5]
       // when
 
@@ -386,7 +392,9 @@ describe('FootprintEstimate', () => {
     })
     it('returns mean watts with >1 wattsForProcessors', () => {
       // given
-      const computeProcessors: string[] = [COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE]
+      const computeProcessors: string[] = [
+        COMPUTE_PROCESSOR_TYPES.CASCADE_LAKE.name,
+      ]
       const wattsForProcessors: number[] = [5, 7, 1, 4, 12, 20]
       // when
 

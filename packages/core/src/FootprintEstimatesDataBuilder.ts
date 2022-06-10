@@ -45,7 +45,7 @@ export default abstract class FootprintEstimatesDataBuilder {
   ): string[] {
     return (
       INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[instanceType] || [
-        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN.name,
       ]
     )
   }
