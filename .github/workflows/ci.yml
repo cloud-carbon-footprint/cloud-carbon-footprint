@@ -103,6 +103,7 @@ jobs:
           REACT_APP_DATE_RANGE_TYPE: ${{ secrets.REACT_APP_DATE_RANGE_TYPE }}
           REACT_APP_PREVIOUS_YEAR_OF_USAGE: ${{ secrets.REACT_APP_PREVIOUS_YEAR_OF_USAGE }}
           REACT_APP_GROUP_BY: ${{ secrets.REACT_APP_GROUP_BY }}
+          REACT_APP_MINIMAL_DATE_AGE: ${{ secrets.REACT_APP_MINIMAL_DATE_AGE }}
         run: |
           cd packages/client
           ./create_client_env_file.sh
