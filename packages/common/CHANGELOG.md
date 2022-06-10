@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 1.6.0
+
+### Minor Changes
+
+- cd239fc2: updates on-premise usage hours up time approach. Update create-app templates referenced [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
 ## 1.5.1
 
 ### Patch Changes

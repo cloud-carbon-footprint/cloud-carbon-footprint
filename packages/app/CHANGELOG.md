@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/app
 
+## 0.6.1
+
+### Patch Changes
+
+- Updated dependencies [7b9a4fc4]
+- Updated dependencies [cd239fc2]
+  - @cloud-carbon-footprint/azure@0.10.1
+  - @cloud-carbon-footprint/common@1.6.0
+  - @cloud-carbon-footprint/on-premise@0.1.0
+
 ## 0.6.0
 
 ### Minor Changes

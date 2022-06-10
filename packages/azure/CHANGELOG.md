@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/azure
 
+## 0.10.1
+
+### Patch Changes
+
+- 7b9a4fc4: Add suport for Azure regions. See [here for details](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/823)
+- Updated dependencies [cd239fc2]
+  - @cloud-carbon-footprint/common@1.6.0
+
 ## 0.10.0
 
 ### Minor Changes
