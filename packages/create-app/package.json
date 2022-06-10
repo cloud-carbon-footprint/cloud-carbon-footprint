@@ -52,7 +52,7 @@
     "handlebars": "^4.7.7",
     "inquirer": "^8.0.0",
     "lint-staged": "^12.1.7",
-    "ora": "^5.4.0",
+    "ora": "^6.1.0",
     "recursive-readdir": "^2.2.2",
     "rimraf": "^3.0.2",
     "typed-prompts": "^1.5.0",
