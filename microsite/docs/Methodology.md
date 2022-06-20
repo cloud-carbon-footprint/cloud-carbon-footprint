@@ -504,25 +504,25 @@ The same is true for the GB / physical chip used to estimate energy for memory u
 | us-west-2      | United States | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | us-gov-east-1  | United States | SERC        | 0.000379069          | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | us-gov-west-1  | United States | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| af-south-1     | South Africa  |             | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ap-east-1      | Hong Kong     |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ap-south-1     | India         |             | 0.0007082              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ap-northeast-3 | Japan         |             | 0.0004658              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ap-northeast-2 | South Korea   |             | 0.0004156                | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ap-southeast-1 | Singapore     |             | 0.000408             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                             |
-| ap-southeast-2 | Australia     |             | 0.00076               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ap-northeast-1 | Japan         |             | 0.0004658              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| ca-central-1   | Canada        |             | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| cn-north-1     | China         |             | 0.0005374              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| cn-northwest-1 | China         |             | 0.0005374              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| eu-central-1   | Germany       |             | 0.00033866              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| eu-west-1      | Ireland       |             | 0.00033599              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| eu-west-2      | England       |             | 0.00021233              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| eu-south-1     | Italy         |             | 0.00032384              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| eu-west-3      | France        |             | 0.00005128              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| eu-north-1     | Sweden        |             | 0.00000567              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| me-south-1     | Bahrain       |             | 0.0005059              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| sa-east-1      | Brazil        |             | 0.0000617              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
+| af-south-1     | South Africa  |             | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-east-1      | Hong Kong     |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-south-1     | India         |             | 0.0007082              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-northeast-3 | Japan         |             | 0.0004658              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-northeast-2 | South Korea   |             | 0.0004156                | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-southeast-1 | Singapore     |             | 0.000408             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)                                             |
+| ap-southeast-2 | Australia     |             | 0.00076               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-northeast-1 | Japan         |             | 0.0004658              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ca-central-1   | Canada        |             | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| cn-north-1     | China         |             | 0.0005374              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| cn-northwest-1 | China         |             | 0.0005374              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| eu-central-1   | Germany       |             | 0.000311              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-west-1      | Ireland       |             | 0.0002786              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-west-2      | England       |             | 0.000225              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-south-1     | Italy         |             | 0.0002134              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-west-3      | France        |             | 0.0000511              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-north-1     | Sweden        |             | 0.0000088              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| me-south-1     | Bahrain       |             | 0.0005059              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| sa-east-1      | Brazil        |             | 0.0000617              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
 
 #### GCP
 
