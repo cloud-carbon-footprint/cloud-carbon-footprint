@@ -91,7 +91,7 @@ describe('AWS Rightsizing Recommendations Service', () => {
         kilowattHourSavings: 272.409501312,
         resourceId: 'test-id',
         instanceName: 'test-instance-name',
-        co2eSavings: 0.11991112115402533,
+        co2eSavings: 0.1118535205147177,
         costSavings: 20,
       },
       {
@@ -104,7 +104,7 @@ describe('AWS Rightsizing Recommendations Service', () => {
         kilowattHourSavings: 60.276672000000005,
         resourceId: 'test-id',
         instanceName: 'test-instance-name',
-        co2eSavings: 0.026533007417664,
+        co2eSavings: 0.024750083736576004,
         costSavings: 80,
       },
       {
@@ -117,14 +117,14 @@ describe('AWS Rightsizing Recommendations Service', () => {
         kilowattHourSavings: 0.37672920000000004,
         resourceId: 'test-id',
         instanceName: 'test-instance-name',
-        co2eSavings: 0.0001658312963604,
+        co2eSavings: 0.00015468802335360003,
         costSavings: 20,
       },
       {
         accountId: 'test-account-3',
         accountName: 'test-account-3',
         cloudProvider: 'AWS',
-        co2eSavings: 0.0001658312963604,
+        co2eSavings: 0.00015468802335360003,
         costSavings: 30,
         kilowattHourSavings: 0.37672920000000004,
         recommendationDetail: 'Terminate instance with Resource ID: test-id.',
@@ -176,7 +176,7 @@ describe('AWS Rightsizing Recommendations Service', () => {
         kilowattHourSavings: 0.18836460000000002,
         resourceId: 'Test-resource-id',
         instanceName: 'test-instance-name',
-        co2eSavings: 0.0000829156481802,
+        co2eSavings: 0.00007734401167680001,
         costSavings: 226,
       },
     ]
@@ -224,7 +224,7 @@ describe('AWS Rightsizing Recommendations Service', () => {
         kilowattHourSavings: 0.37672920000000004,
         resourceId: 'Test-resource-id',
         instanceName: 'test-instance-name',
-        co2eSavings: 0.0001658312963604,
+        co2eSavings: 0.00015468802335360003,
         costSavings: 20,
       },
     ]
@@ -260,7 +260,7 @@ describe('AWS Rightsizing Recommendations Service', () => {
         kilowattHourSavings: -0.37672920000000004,
         resourceId: 'Test-resource-id',
         instanceName: 'test-instance-name',
-        co2eSavings: -0.0001658312963604,
+        co2eSavings: -0.00015468802335360003,
         costSavings: 20,
       },
     ]

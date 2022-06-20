@@ -128,9 +128,9 @@ fileignoreconfig:
 - filename: packages/app/src/common/helpers.ts
   checksum: 2e52b1cd76a3b0184cd91449e2b571dc872c2aae8993c91748dcab981e28cfa5
 - filename: packages/aws/src/__tests__/AWSAccount.test.ts
-  checksum: bb589b733b04064c81990eab8a6d51a207aeab949191d905437138c9ce8f1d68
+  checksum: adb4259db1934a8d27063692a483b43414fc0c289281d59f826f11bd1100ec90
 - filename: packages/aws/src/__tests__/CostAndUsageReports.test.ts
-  checksum: 785babdf00a035b62c97bd9aac4b7e2d7c9ecee2650e332cb5bf07f5ce9f5d0e
+  checksum: ec52a92eb7fb0a0ab7cffda10a2eb4f1bcdab3ee186f2bffa8bae212dfd4ef0b
 - filename: packages/aws/src/__tests__/RDSStorage.test.ts
   checksum: 938e07ab00a28201daeaa949f91feb67d6c8701a53b5cf036f4bf76fb8164cb5
 - filename: packages/aws/src/__tests__/Recommendations.test.ts
@@ -173,6 +173,8 @@ fileignoreconfig:
   checksum: 84a17332826d7ff73bdcbb3d459ebb13dc07f81a99bd94dca31a68695e34d3d8
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
+- filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookupTable.test.ts.snap
+  checksum: a0b70234176993ae30043a05bee36de33eccb653eef9775973787d29837303d3
 - filename: packages/client/.env.template
   checksum: a2da05dc909b7d35c485fd9e555f35990a0b28ce16c4f7e4cddf7c07a5665fb1
 - filename: packages/client/create_client_env_file.sh

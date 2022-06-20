@@ -178,5 +178,5 @@ export const AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFa
     [AWS_REGIONS.EU_NORTH_1]: 0.0000088,
     [AWS_REGIONS.ME_SOUTH_1]: 0.0005059,
     [AWS_REGIONS.SA_EAST_1]: 0.0000617,
-    [AWS_REGIONS.UNKNOWN]: 0.00039997668, // Average of the above regions
+    [AWS_REGIONS.UNKNOWN]: 0.00039278188, // Average of the above regions
   }
