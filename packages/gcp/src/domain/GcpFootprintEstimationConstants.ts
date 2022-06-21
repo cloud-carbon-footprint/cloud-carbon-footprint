@@ -178,7 +178,7 @@ export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
       [GCP_MULTI_REGIONS.ASIA]: 0.0005058233333,
       [GCP_MULTI_REGIONS.EU]: 0.0001723183333,
       [GCP_MULTI_REGIONS.US]: 0.00018025875,
-      [GCP_REGIONS.UNKNOWN]: 0.0003035889286, // Average across all regions
+      [GCP_REGIONS.UNKNOWN]: 0.0003136559259, // Average across all regions (excluding multi and dual regions)
     }
   // These emissions factors don't take into account Google's CFE%, and just use the Grid emissions factors published by Google.
   return {
@@ -216,6 +216,6 @@ export const getGCPEmissionsFactors = (): CloudConstantsEmissionsFactors => {
     [GCP_MULTI_REGIONS.ASIA]: 0.0005515555556,
     [GCP_MULTI_REGIONS.EU]: 0.000284,
     [GCP_MULTI_REGIONS.US]: 0.0003734285714,
-    [GCP_REGIONS.UNKNOWN]: 0.0004116296296, // Average of the above regions
+    [GCP_REGIONS.UNKNOWN]: 0.0004116296296, // Average of the above regions (excludes multi/dual-regions)
   }
 }

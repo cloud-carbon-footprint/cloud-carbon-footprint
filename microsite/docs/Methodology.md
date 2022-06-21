@@ -541,50 +541,56 @@ With GCP, there are two possible sets of grid emissions factors that the applica
 | us-west4                | Las Vegas         | 0.00036855            | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | asia-east1              | Taiwan            | 0.0004428             | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | asia-east2              | Hong Kong         | 0.000453              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-northeast1         | Japan             | 0.00048752            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-northeast2         | Japan             | 0.000442              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-northeast3         | South Korea       | 0.00031533            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-south1             | India             | 0.00063448            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-southeast1         | Singapore         | 0.000657              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-southeast2         | Indonesia         | 0.00047328            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| australia-southeast1    | Australia         | 0.000647              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-north1           | Finland           | 0.00064703            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west1            | Belgium           | 0.000691              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west2            | England           | 0.000622              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west3            | Germany           | 0.00000798            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west4            | Netherlands       | 0.00004452            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west6            | Switzerland       | 0.00009471            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| northamerica-northeast1 | Canada            | 0.00010841            | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| southamerica-east1      | Brazil            | 0.000164              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast1         | Tokyo             | 0.00048752            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast2         | Osaka             | 0.00048752            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast3         | Seoul             | 0.00031533            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-south1             | Mumbai            | 0.00063448            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-south2             | Delhi             | 0.000657              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast1         | Singapore         | 0.00047328            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast2         | Jakarta           | 0.000647              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| australia-southeast1    | Sydney            | 0.00064703            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| australia-southeast2    | Melbourne         | 0.000691              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-central2         | Warsaw            | 0.000622              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-north1           | Finland           | 0.00000798            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west1            | Belgium           | 0.00004452            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west2            | London            | 0.00009471            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west3            | Frankfurt         | 0.00010841            | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west4            | Netherlands       | 0.000164              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west6            | Zurich            | 0.000087              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| northamerica-northeast1 | Montreal          | 0.000027              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| southamerica-east1      | Sao Paulo         | 0.00001236            | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
-2. Grid emissions factors that don't take into account Google's published Carbon Free Energy percentage. Given the potential inaccuracies in applying the CFE % mentioned above, we include an option to just use the grid emissions factors published by Google, with the factoring the CFE %.  
+2. Grid emissions factors that don't take into account Google's published Carbon Free Energy percentage. Given the potential inaccuracies in applying the CFE % mentioned above, we include an option to just use the grid emissions factors published by Google, without factoring the CFE %.  
 
 | Region                  | Location          | CO2e (metric ton/kWh) | Source                                                          |
 | ----------------------- | ----------------- | --------------------- | --------------------------------------------------------------- |
-| us-central1             | Iowa              | 0.000479              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| us-east1                | South Carolina    | 0.0005                | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| us-east4                | Northern Virginia | 0.000383              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| us-west1                | Oregon            | 0.000117              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| us-west2                | Los Angeles       | 0.000248              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| us-west3                | Salt Lake City    | 0.000561              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| us-west4                | Las Vegas         | 0.000491              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-east1              | Taiwan            | 0.000541              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-east2              | Hong Kong         | 0.000626              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-northeast1         | Japan             | 0.000524              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-northeast2         | Japan             | 0.000524              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-northeast3         | South Korea       | 0.00054               | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-south1             | India             | 0.000723              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-central1             | Iowa              | 0.000454              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-east1                | South Carolina    | 0.00048               | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-east4                | Northern Virginia | 0.000361              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west1                | Oregon            | 0.000078              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west2                | Los Angeles       | 0.000253              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west3                | Salt Lake City    | 0.000533              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| us-west4                | Las Vegas         | 0.000455              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-east1              | Taiwan            | 0.00054               | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-east2              | Hong Kong         | 0.000453              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast1         | Tokyo             | 0.000554              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast2         | Osaka             | 0.000442              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-northeast3         | Seoul             | 0.000457              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-south1             | Mumbai            | 0.000721              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-south2             | Delhi             | 0.000657              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 | asia-southeast1         | Singapore         | 0.000493              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| asia-southeast2         | Indonesia         | 0.000772              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| australia-southeast1    | Australia         | 0.000725              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-north1           | Finland           | 0.000181              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west1            | Belgium           | 0.000196              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west2            | England           | 0.000257              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west3            | Germany           | 0.000319              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west4            | Netherlands       | 0.000474              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| europe-west6            | Switzerland       | 0.000029              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| northamerica-northeast1 | Canada            | 0.000143              | [Google](https://cloud.google.com/sustainability/region-carbon) |
-| southamerica-east1      | Brazil            | 0.000109              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| asia-southeast2         | Jakarta           | 0.000647              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| australia-southeast1    | Sydney            | 0.000727              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| australia-southeast2    | Melbourne         | 0.000691              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-central2         | Warsaw            | 0.000622              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-north1           | Finland           | 0.000133              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west1            | Belgium           | 0.000212              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west2            | London            | 0.000231              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west3            | Frankfurt         | 0.000293              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west4            | Netherlands       | 0.00041               | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| europe-west6            | Zurich            | 0.000087              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| northamerica-northeast1 | Montreal          | 0.000027              | [Google](https://cloud.google.com/sustainability/region-carbon) |
+| southamerica-east1      | Sao Paulo         | 0.000103              | [Google](https://cloud.google.com/sustainability/region-carbon) |
 
 #### Azure
 
