@@ -158,7 +158,7 @@ fileignoreconfig:
 - filename: packages/azure/src/__tests__/AzureCredentialsProvider.test.ts
   checksum: 4719d9bfa50789868066ca218f2202a316aaa70904a4152c2a5dfde80f11ba80
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
-  checksum: a27953cfe67d4ffd0c6c1d83162605e3d6deaaf0629f270cc0448b650b014ce9
+  checksum: 68f9a8c23d08e892511e99356f39c010b8e8959fd012aaa51e999cd51e51181b
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
 - filename: packages/cli/.env.template
@@ -174,7 +174,7 @@ fileignoreconfig:
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookupTable.test.ts.snap
-  checksum: a0b70234176993ae30043a05bee36de33eccb653eef9775973787d29837303d3
+  checksum: cc7e5bbdeca11f8a76a5bd067de7cbb63c87e77aac940064bac414b5e0db3702
 - filename: packages/client/.env.template
   checksum: a2da05dc909b7d35c485fd9e555f35990a0b28ce16c4f7e4cddf7c07a5665fb1
 - filename: packages/client/create_client_env_file.sh
