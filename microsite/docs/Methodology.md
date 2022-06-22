@@ -602,29 +602,18 @@ or submit an issue or pull request.
 
 | Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Central US       | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| Central US EUAP  | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| Central US Stage | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US          | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US Stage    | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 2        | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 2 EUAP   | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 2 Stage  | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| Central US*      | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US*         | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 2*       | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | East US 3        | Georgia     | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| North Central US | Illinois    | RFC         | 0.000410608           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| North Central US Stage | Illinois    | RFC   | 0.000410608           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| South Central US | Texas       | TRE         | 0.000373231           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| South Central US Stage | Texas | TRE         | 0.000373231           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| North Central US*| Illinois    | RFC         | 0.000410608           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| South Central US*| Texas       | TRE         | 0.000373231           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | West Central US  | Wyoming     | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US          | California  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US Stage    | California  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US 2        | Washington  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US 2 Stage  | Washington  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US*         | California  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US 2*       | Washington  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | West US 3        | Arizona     | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East Asia        | Hong Kong   |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
-| East Asia Stage  | Hong Kong   |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
-| Southeast Asia   | Singapore   |             | 0.000408              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |                                             
-| Southeast Asia Stage  | Singapore   |        | 0.000408              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |                                             
+| East Asia*       | Hong Kong   |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
+| Southeast Asia*  | Singapore   |             | 0.000408              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |                                             
 | South Africa North      | Johannesburg |     | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
 | South Africa West      | South Africa  |     | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
 | South Africa    | South Africa       |       | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
@@ -640,11 +629,9 @@ or submit an issue or pull request.
 | Korea East     | Korea               |       | 0.0004156             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
 | Korea South    | Korea               |       | 0.0004156             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
 | India          | India               |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
-| India West     | Mumbai              |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
-| India Central  | Pune                |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India West*    | Mumbai              |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India Central* | Pune                |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
 | India South    | Chennai             |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
-| India JIO Central  | Unknown         |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
-| India JIO West | Unknown             |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
 | North Europe   | Ireland             |       | 0.0002786             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
 | West Europe    | Netherlands         |       | 0.0003284             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
 | France         | France              |       | 0.00005128            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
@@ -673,4 +660,5 @@ or submit an issue or pull request.
 | Brazil South   | São Paulo State     |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
 | Brazil South East   | Brazil         |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
 
+*These regions may contain sub-regions for alternative data centers within that same location (i.e. North Central US Stage). These sub-regions share the same carbon intensity as the primary region.
 <!-- © 2021 Thoughtworks, Inc. -->
