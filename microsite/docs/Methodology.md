@@ -391,13 +391,12 @@ Google has [published](https://cloud.google.com/sustainability/region-carbon) th
 
 **AWS & Azure:**
 
-In the United States, we use the EPA’s [eGRID2019 Data](https://www.epa.gov/egrid/download-data) that
+In the United States, we use the EPA’s [eGRID2020 Data](https://www.epa.gov/egrid/download-data) that
 provides NERC region specific emission factors annual for CO2e. We decided to use the NERC region emission factors rather
 than the more granular eGRID subregion or state emissions factors because we feel that it better represents the energy
 consumed by data centers, rather than the energy produced in a given state/subregion which those metrics would more
 adequately reflect. Outside the US, we generally use carbonfootprint.com’s [country specific grid emissions factors report](https://www.carbonfootprint.com/).
-For most of Europe, however, we use [EEA emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6).
-In the case of Singapore, we get the data from the [Energy Market Authority’s electricity grid emissions factors](https://www.ema.gov.sg/statistic.aspx?sta_sid=20140729MPY03nTHx2a1), and for Taiwan we got it from [energypedia](https://energypedia.info/wiki/Energy_Transition_in_Taiwan#cite_ref-20) as neither are included in the carbonfootprint.com report.
+For most of Europe, however, we use [EEA emissions factors](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2).
 
 You can see the full list of emissions factors in Appendix V below.
 
@@ -498,31 +497,31 @@ The same is true for the GB / physical chip used to estimate energy for memory u
 
 | Region         | Country       | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | -------------- | ------------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| us-east-1      | United States | SERC        | 0.000379069        | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-east-2      | United States | RFC         | 0.000410608          | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-east-1      | United States | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-east-2      | United States | RFC         | 0.000410608           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | us-west-1      | United States | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | us-west-2      | United States | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| us-gov-east-1  | United States | SERC        | 0.000379069          | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| us-gov-east-1  | United States | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | us-gov-west-1  | United States | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
 | af-south-1     | South Africa  |             | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
 | ap-east-1      | Hong Kong     |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| ap-south-1     | India         |             | 0.0007082              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| ap-northeast-3 | Japan         |             | 0.0004658              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| ap-northeast-2 | South Korea   |             | 0.0004156                | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| ap-southeast-1 | Singapore     |             | 0.000408             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)                                             |
+| ap-south-1     | India         |             | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-northeast-3 | Japan         |             | 0.0004658             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-northeast-2 | South Korea   |             | 0.0004156             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-southeast-1 | Singapore     |             | 0.000408              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)                                             |
 | ap-southeast-2 | Australia     |             | 0.00076               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| ap-northeast-1 | Japan         |             | 0.0004658              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| ap-northeast-1 | Japan         |             | 0.0004658             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
 | ca-central-1   | Canada        |             | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| cn-north-1     | China         |             | 0.0005374              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| cn-northwest-1 | China         |             | 0.0005374              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| cn-north-1     | China         |             | 0.0005374             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| cn-northwest-1 | China         |             | 0.0005374             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
 | eu-central-1   | Germany       |             | 0.000311              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
-| eu-west-1      | Ireland       |             | 0.0002786              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-west-1      | Ireland       |             | 0.0002786             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
 | eu-west-2      | England       |             | 0.000225              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
-| eu-south-1     | Italy         |             | 0.0002134              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
-| eu-west-3      | France        |             | 0.0000511              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
-| eu-north-1     | Sweden        |             | 0.0000088              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
-| me-south-1     | Bahrain       |             | 0.0005059              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
-| sa-east-1      | Brazil        |             | 0.0000617              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| eu-south-1     | Italy         |             | 0.0002134             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-west-3      | France        |             | 0.0000511             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| eu-north-1     | Sweden        |             | 0.0000088             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| me-south-1     | Bahrain       |             | 0.0005059             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
+| sa-east-1      | Brazil        |             | 0.0000617             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |
 
 #### GCP
 
@@ -603,76 +602,75 @@ or submit an issue or pull request.
 
 | Region           | Location    | NERC Region | CO2e (metric ton/kWh) | Source                                                                                                                      |
 | ---------------- | ----------- | ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Central US       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| Central US EUAP       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| Central US Stage       | Iowa        | MRO         | 0.00047223            | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US          | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US Stage         | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 2        | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 2 EUAP       | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 2 Stage       | Virginia    | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East US 3        | Georgia     | SERC        | 0.000415755           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| North Central US | Illinois    | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| North Central US Stage | Illinois    | RFC         | 0.000440187           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| South Central US | Texas       | TRE         | 0.000396293           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| South Central US Stage | Texas       | TRE         | 0.000396293           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West Central US  | Wyoming     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US          | California  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US Stage         | California  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US 2        | Washington  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US 2 Stage       | Washington  | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| West US 3        | Arizona     | WECC        | 0.000350861           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
-| East Asia        | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| East Asia Stage        | Hong Kong   |             | 0.00081               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Southeast Asia   | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
-| Southeast Asia Stage  | Singapore   |             | 0.0004085             | [EMA Singapore](https://www.ema.gov.sg/singapore-energy-statistics/Ch02/index2)                                             |
-| South Africa North      | Johannesburg     |             | 0.000928              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| South Africa West      | Unknown     |             | 0.000928              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| South Africa      | Unknown     |             | 0.000928              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Australia      | Unknown     |             | 0.000790              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Australia Central     | Canberra     |             | 0.000790              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Australia Central 2      | Canberra     |             | 0.000790              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Australia East     | [New South Wales     |             | 0.000790              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Australia South East     | Victoria  |             | 0.000790              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Japan     | Unknown     |             | 0.000506              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Japan West     | Osaka  |             | 0.000506              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Japan East     | Tokyo, Saitama  |             | 0.000506              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Korea  | Unknown     |             | 0.000500              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Korea East     | Unknown     |             | 0.000500              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| Korea South     | Unknown     |             | 0.000500              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| India       | Unknown      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| India West       | Mumbai      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| India Central    | Pune        |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| India South      | Chennai     |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| India JIO Central       | Unknown      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| India JIO West       | Unknown      |             | 0.000708              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf) |
-| North Europe     | Ireland     |             | 0.000316              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| West Europe      | Netherlands |             | 0.00039               | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| France      | Unknown |             | 0.00003895               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| France Central      | Paris |             | 0.00003895               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| France South      | Unknown |             | 0.00003895               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Sweden Central      | Gävle and Sandviken |             | 0.00001189               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Switzerland      | Unknown |             | 0.00001182               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Switzerland North     | Zürich |             | 0.00001182               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Switzerland West     | Unknown |             | 0.00001182               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| UK         | Unknown      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| UK South         | London      |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| UK West          | Cardiff     |             | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6)                                               |
-| Germany          | Unknown     |             | 0.00037862              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Germany North         | Unknown     |             | 0.00037862              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Germany West Central         | Frankfurt     |             | 0.00037862              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Norway        | Unknown     |             | 0.00001118              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Norway East       | Oslo     |             | 0.00001118              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Norway West       | Unknown     |             | 0.00001118              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| United Arab Emirates       | Unknown     |             | 0.0004258              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| United Arab Emirates North      | Dubai     |             | 0.0004258              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| United Arab Emirates Central      | Unknown     |             | 0.0004258              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Canada     | Unknown     |             | 0.00013              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Canada Central     | Toronto     |             | 0.00013              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Canada East    | Quebec City     |             | 0.00013              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Canada East    | Quebec City     |             | 0.00013              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Brazil    | Unknown     |             | 0.000074              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Brazil South   | São Paulo State     |             | 0.000074              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
-| Brazil South East   | Unknown     |             | 0.000074              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2020_07_emissions_factors_sources_for_2020_electricity_v1_3.pdf)                                               |
+| Central US       | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| Central US EUAP  | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| Central US Stage | Iowa        | MRO         | 0.000426254           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US          | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US Stage    | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 2        | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 2 EUAP   | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 2 Stage  | Virginia    | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East US 3        | Georgia     | SERC        | 0.000379069           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| North Central US | Illinois    | RFC         | 0.000410608           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| North Central US Stage | Illinois    | RFC   | 0.000410608           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| South Central US | Texas       | TRE         | 0.000373231           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| South Central US Stage | Texas | TRE         | 0.000373231           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West Central US  | Wyoming     | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US          | California  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US Stage    | California  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US 2        | Washington  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US 2 Stage  | Washington  | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| West US 3        | Arizona     | WECC        | 0.000322167           | [EPA](https://www.epa.gov/egrid/download-data)                                                                              |
+| East Asia        | Hong Kong   |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
+| East Asia Stage  | Hong Kong   |             | 0.00071               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
+| Southeast Asia   | Singapore   |             | 0.000408              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |                                             
+| Southeast Asia Stage  | Singapore   |        | 0.000408              | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |                                             
+| South Africa North      | Johannesburg |     | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
+| South Africa West      | South Africa  |     | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  |
+| South Africa    | South Africa       |       | 0.0009006             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
+| Australia      | Australia           |       | 0.00079               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
+| Australia Central     | Canberra     |       | 0.00079               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
+| Australia Central 2   | Canberra     |       | 0.00079               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf)  | 
+| Australia East | New South Wales     |       | 0.00079               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Australia South East     | Victoria  |       | 0.00096               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Japan          | Japan               |       | 0.0004658             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Japan West     | Osaka               |       | 0.0004658             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Japan East     | Tokyo, Saitama      |       | 0.0004658             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Korea          | Korea               |       | 0.0004156             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Korea East     | Korea               |       | 0.0004156             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| Korea South    | Korea               |       | 0.0004156             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India          | India               |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India West     | Mumbai              |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India Central  | Pune                |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India South    | Chennai             |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India JIO Central  | Unknown         |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| India JIO West | Unknown             |       | 0.0007082             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) | 
+| North Europe   | Ireland             |       | 0.0002786             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| West Europe    | Netherlands         |       | 0.0003284             | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| France         | France              |       | 0.00005128            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| France Central | Paris               |       | 0.00005128            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| France South   | France              |       | 0.00005128            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Sweden Central | Gävle and Sandviken |       | 0.00000567            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Switzerland    | Switzerland         |       | 0.00000567            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Switzerland North     | Zürich       |       | 0.00000567            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Switzerland West      | Switzerland  |       | 0.00000567            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| UK             | United Kingdom      |       | 0.000225              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| UK South       | London              |       | 0.000225              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| UK West        | Cardiff             |       | 0.000228              | [EEA](https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-9/#tab-chart_2)                                               |
+| Germany        | Germany             |       | 0.00033866            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Germany North  | Germany             |       | 0.00033866            |  [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Germany West Central   | Frankfurt   |       | 0.00033866            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Norway         | Norway              |       | 0.00000762            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Norway East    | Oslo                |       | 0.00000762            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Norway West    | Norway              |       | 0.00000762            | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| United Arab Emirates | United Arab Emirates || 0.0004041             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| United Arab Emirates North  | Dubai  |       | 0.0004041             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| United Arab Emirates Central   | United Arab Emirates | | 0.0004041  | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Canada         | Canada              |       | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Canada Central | Toronto             |       | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Canada East    | Quebec City         |       | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Brazil         | Brazil              |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Brazil South   | São Paulo State     |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Brazil South East   | Brazil         |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
 
 <!-- © 2021 Thoughtworks, Inc. -->
