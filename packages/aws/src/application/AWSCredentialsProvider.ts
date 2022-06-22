@@ -7,6 +7,7 @@ import {
   config as awsConfig,
   ChainableTemporaryCredentials,
   EC2MetadataCredentials,
+  ECSCredentials
 } from 'aws-sdk'
 import { configLoader } from '@cloud-carbon-footprint/common'
 import GCPCredentials from './GCPCredentials'
@@ -24,9 +25,8 @@ export default class AWSCredentialsProvider {
       case 'AWS':
         return new ChainableTemporaryCredentials({
           params: {
-            RoleArn: `arn:aws:iam::${accountId}:role/${
-              configLoader().AWS.authentication.options.targetRoleName
-            }`,
+            RoleArn: `arn:aws:iam::${accountId}:role/${configLoader().AWS.authentication.options.targetRoleName
+              }`,
             RoleSessionName:
               configLoader().AWS.authentication.options.targetRoleName,
           },
@@ -35,6 +35,13 @@ export default class AWSCredentialsProvider {
         return new EC2MetadataCredentials({
           httpOptions: { timeout: 5000 },
           maxRetries: 10,
+        })
+
+      case 'ECS-METADATA':
+        return new ECSCredentials({
+          httpOptions: { timeout: 5000 },
+          maxRetries: 10,
+          retryDelayOptions: { base: 200 }
         })
       default:
         return new Credentials(awsConfig.credentials)
