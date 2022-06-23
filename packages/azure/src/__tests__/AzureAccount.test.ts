@@ -158,8 +158,8 @@ describe('Azure Account', () => {
         region: 'uksouth',
         usageType: 'D2 v2/DS2 v2',
         usageUnit: '10 Hours',
-        kilowattHours: 0.015255069630697749,
-        co2e: 0.0000034781558757990868,
+        kilowattHours: 0.015380813559107052,
+        co2e: 0.0000034606830507990865,
       },
     ]
     expect(result).toEqual(expectedResult)
