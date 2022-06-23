@@ -6,8 +6,7 @@ import { Storage } from '@google-cloud/storage'
 import CacheManager from './CacheManager'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
-import { getCacheFileName } from './CacheFileNameProvider'
-import { writeToFile, getCachedData } from './common/helpers'
+import { writeToFile, getCachedData, getCacheFileName } from './common/helpers'
 
 const storage = new Storage()
 

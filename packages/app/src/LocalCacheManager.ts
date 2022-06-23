@@ -6,8 +6,7 @@ import fs, { promises } from 'fs'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
-import { getCacheFileName } from './CacheFileNameProvider'
-import { writeToFile, getCachedData } from './common/helpers'
+import { writeToFile, getCachedData, getCacheFileName } from './common/helpers'
 
 export const testCachePath = 'mock-estimates.json'
 
