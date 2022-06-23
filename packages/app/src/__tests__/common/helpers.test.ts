@@ -2,7 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { getCachedData, writeToFile, getCacheFileName } from '../../common/helpers'
+import {
+  getCachedData,
+  writeToFile,
+  getCacheFileName,
+} from '../../common/helpers'
 import { Readable, Stream } from 'stream'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 
@@ -70,5 +74,4 @@ describe('common/helpers.ts', () => {
       expect(cacheFile).toEqual('my-cache-file.day.json')
     })
   })
-
 })

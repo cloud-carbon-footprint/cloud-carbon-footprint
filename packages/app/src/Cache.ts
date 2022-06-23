@@ -16,9 +16,88 @@ import GoogleCloudCacheManager from './GoogleCloudCacheManager'
 import LocalCacheManager from './LocalCacheManager'
 import CacheManager from './CacheManager'
 
-const cacheManagerServices: { [key: string]: CacheManager } = {
-  GCS: new GoogleCloudCacheManager(),
-  LOCAL: new LocalCacheManager(),
+/*
+ This function provides a decorator. When this decorates a function, that
+ function passes itself into the cache() as @descriptor. The cache() function
+ then combines and returns data from the cache and decorated function.
+ */
+export default function cache(): any {
+  const cacheManagerServices: { [key: string]: CacheManager } = {
+    GCS: new GoogleCloudCacheManager(),
+    LOCAL: new LocalCacheManager(),
+  }
+
+  return function (
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor,
+  ) {
+    const cacheLogger = new Logger('Cache')
+    const decoratedFunction = descriptor.value
+
+    descriptor.value = async (
+      request: EstimationRequest,
+    ): Promise<EstimationResult[]> => {
+      // References the getCostAndEstimates function that this is decorating
+      const getCostAndEstimates = (request: EstimationRequest) =>
+        decoratedFunction.apply(target, [request])
+
+      const grouping =
+        (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
+
+      // Determine if cache is ignored and get fresh estimates
+      if (request.ignoreCache && !process.env.TEST_MODE) {
+        cacheLogger.info('Ignoring cache...')
+        return getCostAndEstimates(request)
+      }
+
+      // Configure cache manager service and load existing cached estimates (if any)
+      const cacheManager =
+        cacheManagerServices[configLoader().CACHE_MODE] ||
+        cacheManagerServices.LOCAL
+
+      const cachedEstimates: EstimationResult[] =
+        await cacheManager.getEstimates(request, grouping)
+
+      // TODO: Refactor this so cache isn't aware of test environment
+      if (process.env.TEST_MODE) return cachedEstimates
+
+      // Populate and fetch new estimates for dates missing from the cache
+      const missingDates = getMissingDates(cachedEstimates, request)
+      const missingEstimates = getMissingDataRequests(
+        missingDates,
+        request,
+      ).map((request) => {
+        return getCostAndEstimates(request)
+      })
+      const newEstimates: EstimationResult[] = (
+        await Promise.all(missingEstimates)
+      ).flat()
+
+      // Write missing estimates to cache
+      if (newEstimates.length > 0) {
+        const estimatesToPersist = fillDates(
+          missingDates,
+          newEstimates,
+          grouping,
+        )
+        cacheLogger.info('Setting new estimates to cache file...')
+        if (estimatesToPersist.length > 0) {
+          await cacheManager.setEstimates(estimatesToPersist, grouping)
+        }
+      }
+
+      // Filter out empty estimates
+      const filteredCachedEstimates = cachedEstimates.filter(
+        ({ serviceEstimates }) => {
+          return serviceEstimates.length !== 0
+        },
+      )
+
+      // Return new estimates with cached estimates
+      return concat(filteredCachedEstimates, newEstimates)
+    }
+  }
 }
 
 function getMissingDates(
@@ -127,73 +206,4 @@ function fillDates(
   return [...emptyEstimates, ...estimates].sort(
     (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
   )
-}
-
-/*
- This function provides a decorator. When this decorates a function, that
- function passes itself into the cache() as @descriptor. The cache() function
- then combines and returns data from the cache and decorated function.
- */
-export default function cache(): any {
-  return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor,
-  ) {
-    const cacheLogger = new Logger('Cache')
-    const decoratedFunction = descriptor.value
-
-    descriptor.value = async (
-      request: EstimationRequest,
-    ): Promise<EstimationResult[]> => {
-      const grouping =
-        (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
-
-      if (request.ignoreCache && !process.env.TEST_MODE) {
-        cacheLogger.info('Ignoring cache...')
-        return decoratedFunction.apply(target, [request])
-      }
-
-      // Configure cache manager and load existing cached estimates (if any)
-      const cacheManager =
-        cacheManagerServices[configLoader().CACHE_MODE] ||
-        cacheManagerServices.LOCAL
-
-      const cachedEstimates: EstimationResult[] =
-        await cacheManager.getEstimates(request, grouping)
-
-      // TODO: Refactor this so cache isn't aware of test environment
-      if (process.env.TEST_MODE) return cachedEstimates
-
-      // get estimates for dates missing from the cache
-      const missingDates = getMissingDates(cachedEstimates, request)
-      const missingEstimates = getMissingDataRequests(
-        missingDates,
-        request,
-      ).map((request) => {
-        return decoratedFunction.apply(target, [request])
-      })
-      const estimates: EstimationResult[] = (
-        await Promise.all(missingEstimates)
-      ).flat()
-
-      if (estimates.length > 0) {
-        // write missing estimates to cache
-        const estimatesToPersist = fillDates(missingDates, estimates, grouping)
-        cacheLogger.info('Setting new estimates to cache file...')
-        if (estimatesToPersist.length > 0) {
-          await cacheManager.setEstimates(estimatesToPersist, grouping)
-        }
-      }
-
-      // so we don't return results with no estimates
-      const filteredCachedEstimates = cachedEstimates.filter(
-        ({ serviceEstimates }) => {
-          return serviceEstimates.length !== 0
-        },
-      )
-
-      return concat(filteredCachedEstimates, estimates)
-    }
-  }
 }
