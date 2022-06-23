@@ -9,6 +9,7 @@ import {
   ChainableTemporaryCredentials,
   Credentials,
   EC2MetadataCredentials,
+  ECSCredentials,
 } from 'aws-sdk'
 import Mock = jest.Mock
 
@@ -16,6 +17,7 @@ jest.mock('aws-sdk', () => {
   return {
     ChainableTemporaryCredentials: jest.fn(),
     EC2MetadataCredentials: jest.fn(),
+    ECSCredentials: jest.fn(),
     Credentials: jest.fn(),
     config: jest.requireActual('aws-sdk').config,
   }
@@ -47,6 +49,17 @@ function mockEC2MetadataCredentials(options: {
     return new EC2MetadataCredentials(options)
   })
   return ec2MetadataCredentials
+}
+
+function mockECSCredentials(options: {
+  httpOptions: { timeout: number }
+  maxRetries: number
+}) {
+  const ecsCredentials = ECSCredentials as unknown as Mock
+  ecsCredentials.mockImplementationOnce(() => {
+    return new ECSCredentials(options)
+  })
+  return ecsCredentials
 }
 
 describe('AWSCredentialsProvider', () => {
@@ -134,6 +147,29 @@ describe('AWSCredentialsProvider', () => {
     // then
     expect(credentials).toBeInstanceOf(EC2MetadataCredentials)
     expect(mockedEC2MetadataCredentials).toHaveBeenCalledWith(options)
+  })
+
+  it('create returns ECSCredentials', () => {
+    // given
+    setConfig({
+      AWS: {
+        authentication: {
+          mode: 'ECS-METADATA',
+          options: {
+            targetRoleName: targetRoleName,
+          },
+        },
+      },
+    })
+    const options = { httpOptions: { timeout: 5000 }, maxRetries: 10 }
+    const mockedECSCredentials = mockECSCredentials(options)
+    const accountId = '123'
+
+    // when
+    const credentials = AWSCredentialsProvider.create(accountId)
+    // then
+    expect(credentials).toBeInstanceOf(ECSCredentials)
+    expect(mockedECSCredentials).toHaveBeenCalledWith(options)
   })
 
   it('create returns Credentials by default', () => {
