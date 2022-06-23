@@ -1,74 +1,38 @@
 /*
- * "© 2021 Thoughtworks, Inc.
+ * © 2021 Thoughtworks, Inc.
  */
 
-import moment from 'moment'
-import { configLoader, Logger } from '@cloud-carbon-footprint/common'
-import EstimatorCache from './EstimatorCache'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { EstimationResult, Logger } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
-import EstimatorCacheFileSystem from './EstimatorCacheFileSystem'
-import EstimatorCacheGoogleCloudStorage from './EstimatorCacheGoogleCloudStorage'
+import moment from 'moment'
 
-const cacheService: EstimatorCache = new EstimatorCacheFileSystem()
-const googleCloudCacheService: EstimatorCache =
-  new EstimatorCacheGoogleCloudStorage()
+export default abstract class CacheManager {
+  protected readonly cacheLogger: Logger
 
-export default class CacheManager implements EstimatorCache {
-  private readonly currentCacheMode: string
-  private readonly cacheLogger: Logger
-
-  constructor() {
-    this.cacheLogger = new Logger('cache')
+  protected constructor() {
+    this.cacheLogger = new Logger('Cache')
   }
 
-  cacheModes = {
-    GCS: 'GCS',
-  }
-
-  async getEstimates(
+  /**
+   * Returns cached estimates for the given request and grouping.
+   *
+   * @param request  Request the client is making
+   * @param grouping String representing how the data is being grouped
+   */
+  abstract getEstimates(
     request: EstimationRequest,
     grouping: string,
-  ): Promise<EstimationResult[]> {
-    const { GCS } = this.cacheModes
-    let estimates
+  ): Promise<EstimationResult[]>
 
-    switch (configLoader().CACHE_MODE) {
-      case GCS:
-        this.cacheLogger.info('Using GCS bucket cache file...')
-        estimates = await googleCloudCacheService.getEstimates(
-          request,
-          grouping,
-        )
-        break
-      default:
-        this.cacheLogger.info('Using local cache file...')
-        estimates = await cacheService.getEstimates(request, grouping)
-        break
-    }
+  /**
+   * Sets cached estimates to the cache implementation.
+   *
+   * @param data     Data to be cached
+   * @param grouping String representing how the data is being grouped
+   */
+  abstract setEstimates(data: EstimationResult[], grouping: string): void
 
-    return estimates ? this.filterEstimatesForRequest(request, estimates) : []
-  }
-
-  async setEstimates(
-    estimates: EstimationResult[],
-    grouping: string,
-  ): Promise<void> {
-    const { GCS } = this.cacheModes
-
-    if (estimates.length === 0) {
-      return
-    }
-
-    switch (configLoader().CACHE_MODE) {
-      case GCS:
-        return googleCloudCacheService.setEstimates(estimates, grouping)
-      default:
-        return cacheService.setEstimates(estimates, grouping)
-    }
-  }
-
-  private filterEstimatesForRequest(
+  protected filterEstimatesForRequest(
     request: EstimationRequest,
     estimates: EstimationResult[],
   ) {

@@ -3,7 +3,7 @@
  */
 
 import { Storage } from '@google-cloud/storage'
-import EstimatorCache from './EstimatorCache'
+import CacheManager from './CacheManager'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import { getCacheFileName } from './CacheFileNameProvider'
@@ -11,14 +11,18 @@ import { writeToFile, getCachedData } from './common/helpers'
 
 const storage = new Storage()
 
-export default class EstimatorCacheGoogleCloudStorage
-  implements EstimatorCache
-{
+export default class GoogleCloudCacheManager extends CacheManager {
+  constructor() {
+    super()
+  }
+
   async getEstimates(
     request: EstimationRequest,
     grouping: string,
   ): Promise<EstimationResult[]> {
-    return await this.getCloudFileContent(grouping)
+    this.cacheLogger.info('Using GCS bucket cache file...')
+    const estimates = await this.getCloudFileContent(grouping)
+    return estimates ? this.filterEstimatesForRequest(request, estimates) : []
   }
 
   async setEstimates(

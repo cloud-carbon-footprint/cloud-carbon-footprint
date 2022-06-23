@@ -4,19 +4,25 @@
 
 import fs, { promises } from 'fs'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
-import EstimatorCache from './EstimatorCache'
+import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
 import { getCacheFileName } from './CacheFileNameProvider'
 import { writeToFile, getCachedData } from './common/helpers'
 
 export const testCachePath = 'mock-estimates.json'
 
-export default class EstimatorCacheFileSystem implements EstimatorCache {
+export default class LocalCacheManager extends CacheManager {
+  constructor() {
+    super()
+  }
+
   async getEstimates(
     request: EstimationRequest,
     grouping: string,
   ): Promise<EstimationResult[]> {
-    return await this.loadEstimates(grouping)
+    this.cacheLogger.info('Using local cache file...')
+    const estimates = await this.loadEstimates(grouping)
+    return estimates ? this.filterEstimatesForRequest(request, estimates) : []
   }
 
   async setEstimates(

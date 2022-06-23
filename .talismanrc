@@ -125,6 +125,8 @@ fileignoreconfig:
   checksum: f5b0f548d7065f63c5772628903492479fabc1ba3e4cc27246bd6dbe799770e9
 - filename: packages/api/package.json
   checksum: 3fd7ec81bfa309f1d01ae0eadb695a418850e671d148715ae4259e14706491f5
+- filename: packages/app/src/Cache.ts
+  checksum: 078ed75dc878123e42fe26c57127c2c08f876a0a1c32a81a16fb99e4ba6a0d5b
 - filename: packages/app/src/__tests__/App.test.ts
   checksum: 7b6a4f887d04f6bfe01a2555468e88e203c2a478f05b3690623bb82d9b6b094f
 - filename: packages/app/src/common/helpers.ts

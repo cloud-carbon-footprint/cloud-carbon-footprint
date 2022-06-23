@@ -11,8 +11,8 @@ import {
 } from '@cloud-carbon-footprint/common'
 import cache from '../Cache'
 import { EstimationRequest } from '../CreateValidRequest'
-import CacheManager from '../CacheManager'
 import DurationConstructor = moment.unitOfTime.DurationConstructor
+import LocalCacheManager from '../LocalCacheManager'
 
 let mockSetEstimates: jest.Mock
 let mockGetEstimates: jest.Mock
@@ -27,6 +27,23 @@ jest.mock('../CacheManager', () => {
     }
   })
 })
+
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  Logger: jest.fn().mockImplementation(() => {
+    return {
+      info: jest.fn(),
+    }
+  }),
+  configLoader: jest.fn().mockImplementation(() => {
+    return {
+      GROUP_QUERY_RESULTS_BY: 'day',
+    }
+  }),
+}))
 
 const dummyServiceEstimate: ServiceData[] = [
   {
@@ -276,9 +293,12 @@ describe('Cache', () => {
       const computedEstimates = buildFootprintEstimates('2019-12-31', 1)
       originalFunction.mockResolvedValueOnce(computedEstimates)
 
-      CacheManager.prototype.setEstimates = jest.fn()
+      LocalCacheManager.prototype.setEstimates = jest.fn()
 
-      const setEstimatesSpy = jest.spyOn(CacheManager.prototype, 'setEstimates')
+      const setEstimatesSpy = jest.spyOn(
+        LocalCacheManager.prototype,
+        'setEstimates',
+      )
 
       //run
       cacheDecorator({}, 'propertyTest', propertyDescriptor)

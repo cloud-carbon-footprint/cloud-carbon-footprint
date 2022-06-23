@@ -7,7 +7,7 @@ import fs, { promises } from 'fs'
 import { env } from 'process'
 import { GroupBy } from '@cloud-carbon-footprint/common'
 import { writeToFile } from '../common/helpers'
-import EstimatorCacheFileSystem from '../EstimatorCacheFileSystem'
+import LocalCacheManager from '../LocalCacheManager'
 import { EstimationRequest } from '../CreateValidRequest'
 import { FileHandle } from 'fs/promises'
 
@@ -44,14 +44,15 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
   })
 }
 
-describe('EstimatorCacheFileSystem', () => {
-  let estimatorCache: EstimatorCacheFileSystem
+describe('Local Cache Manager', () => {
+  let cacheManager: LocalCacheManager
 
   beforeEach(() => {
-    estimatorCache = new EstimatorCacheFileSystem()
+    cacheManager = new LocalCacheManager()
     jest.resetModules() // Most important - it clears the cache
     jest.resetAllMocks()
     env.TEST_MODE = 'true'
+    console.warn = jest.fn()
   })
 
   it('reads estimations from file when asked to load', async () => {
@@ -59,7 +60,7 @@ describe('EstimatorCacheFileSystem', () => {
       fs.readFileSync('mock-estimates.json', 'utf8'),
     )
 
-    const estimates = await estimatorCache.getEstimates(
+    const estimates = await cacheManager.getEstimates(
       {} as EstimationRequest,
       'day',
     )
@@ -72,7 +73,7 @@ describe('EstimatorCacheFileSystem', () => {
       throw new Error('failed to open cache')
     })
 
-    await estimatorCache.getEstimates({} as EstimationRequest, 'day')
+    await cacheManager.getEstimates({} as EstimationRequest, 'day')
 
     expect(mockFs.writeFile).toHaveBeenCalledWith(
       'mock-estimates.json',
@@ -88,7 +89,7 @@ describe('EstimatorCacheFileSystem', () => {
       close: jest.fn(),
     } as unknown as FileHandle)
 
-    await estimatorCache.setEstimates(estimates, GroupBy.day)
+    await cacheManager.setEstimates(estimates, GroupBy.day)
 
     await expect(mockWrite).toHaveBeenCalledWith(
       expect.anything(),

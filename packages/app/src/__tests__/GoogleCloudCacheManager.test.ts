@@ -3,8 +3,8 @@
  */
 import moment from 'moment'
 import { PassThrough } from 'stream'
-import EstimatorCache from '../EstimatorCache'
-import EstimatorCacheGoogleCloudStorage from '../EstimatorCacheGoogleCloudStorage'
+import CacheManager from '../CacheManager'
+import GoogleCloudCacheManager from '../GoogleCloudCacheManager'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from '../CreateValidRequest'
 
@@ -37,7 +37,11 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     string,
     unknown
   >),
-  Logger: jest.fn(),
+  Logger: jest.fn().mockImplementation(() => {
+    return {
+      info: jest.fn(),
+    }
+  }),
   cache: jest.fn(),
   configLoader: jest.fn().mockImplementation(() => {
     return {
@@ -64,11 +68,12 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
 }
 
 describe('CacheManager', () => {
-  let estimatorCacheGoogleCloudStorage: EstimatorCache
+  let googleCloudCacheManager: CacheManager
 
   beforeEach(() => {
+    console.warn = jest.fn()
     // const bucketName = 'test-bucket-name'
-    estimatorCacheGoogleCloudStorage = new EstimatorCacheGoogleCloudStorage()
+    googleCloudCacheManager = new GoogleCloudCacheManager()
   })
 
   const originalWarn = console.warn
@@ -109,7 +114,7 @@ describe('CacheManager', () => {
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
       }
-      const estimates = await estimatorCacheGoogleCloudStorage.getEstimates(
+      const estimates = await googleCloudCacheManager.getEstimates(
         request,
         'day',
       )
@@ -137,7 +142,7 @@ describe('CacheManager', () => {
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
       }
-      await estimatorCacheGoogleCloudStorage.getEstimates(request, 'day')
+      await googleCloudCacheManager.getEstimates(request, 'day')
 
       //assert
       expect(console.warn).toHaveBeenCalled()
@@ -162,7 +167,7 @@ describe('CacheManager', () => {
       writeGcsFile.mockResolvedValue(true)
 
       //run
-      const write = await estimatorCacheGoogleCloudStorage.setEstimates(
+      const write = await googleCloudCacheManager.setEstimates(
         cachedData,
         'day',
       )
@@ -190,7 +195,7 @@ describe('CacheManager', () => {
       console.warn = jest.fn()
 
       //run
-      await estimatorCacheGoogleCloudStorage.setEstimates(cachedData, 'day')
+      await googleCloudCacheManager.setEstimates(cachedData, 'day')
 
       //assert
       expect(console.warn).toHaveBeenCalled()

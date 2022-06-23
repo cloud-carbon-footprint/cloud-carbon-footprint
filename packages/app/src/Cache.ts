@@ -11,11 +11,15 @@ import {
   getPeriodEndDate,
 } from '@cloud-carbon-footprint/common'
 import { Logger } from '@cloud-carbon-footprint/common'
-import CacheManager from './CacheManager'
-import EstimatorCache from './EstimatorCache'
 import { EstimationRequest } from './CreateValidRequest'
+import GoogleCloudCacheManager from './GoogleCloudCacheManager'
+import LocalCacheManager from './LocalCacheManager'
+import CacheManager from './CacheManager'
 
-const cacheManager: EstimatorCache = new CacheManager()
+const cacheManagerServices: { [key: string]: CacheManager } = {
+  GCS: new GoogleCloudCacheManager(),
+  LOCAL: new LocalCacheManager(),
+}
 
 function getMissingDates(
   cachedEstimates: EstimationResult[],
@@ -149,9 +153,16 @@ export default function cache(): any {
         cacheLogger.info('Ignoring cache...')
         return decoratedFunction.apply(target, [request])
       }
+
+      // Configure cache manager and load existing cached estimates (if any)
+      const cacheManager =
+        cacheManagerServices[configLoader().CACHE_MODE] ||
+        cacheManagerServices.LOCAL
+
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request, grouping)
 
+      // TODO: Refactor this so cache isn't aware of test environment
       if (process.env.TEST_MODE) return cachedEstimates
 
       // get estimates for dates missing from the cache
@@ -170,7 +181,9 @@ export default function cache(): any {
         // write missing estimates to cache
         const estimatesToPersist = fillDates(missingDates, estimates, grouping)
         cacheLogger.info('Setting new estimates to cache file...')
-        await cacheManager.setEstimates(estimatesToPersist, grouping)
+        if (estimatesToPersist.length > 0) {
+          await cacheManager.setEstimates(estimatesToPersist, grouping)
+        }
       }
 
       // so we don't return results with no estimates
