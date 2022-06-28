@@ -72,6 +72,7 @@ export interface CCFConfig {
       AVERAGE_WATTS?: number
     }
   }
+  MONGO_URI?: string
 }
 
 export enum GroupBy {
@@ -237,6 +238,7 @@ const getConfig = (): CCFConfig => ({
       AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
     },
   },
+  MONGO_URI: getEnvVar('CACHE_MODE') || '',
 })
 
 export default getConfig

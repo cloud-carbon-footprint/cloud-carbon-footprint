@@ -15,6 +15,7 @@ import { EstimationRequest } from './CreateValidRequest'
 import GoogleCloudCacheManager from './GoogleCloudCacheManager'
 import LocalCacheManager from './LocalCacheManager'
 import CacheManager from './CacheManager'
+import MongoDbCacheManager from "./MongoDbCacheManager";
 
 /*
  This function provides a decorator. When this decorates a function, that
@@ -25,6 +26,7 @@ export default function cache(): any {
   const cacheManagerServices: { [key: string]: CacheManager } = {
     GCS: new GoogleCloudCacheManager(),
     LOCAL: new LocalCacheManager(),
+    MONGODB: new MongoDbCacheManager(),
   }
 
   return function (

@@ -33,7 +33,7 @@ jest.mock('@google-cloud/storage', () => {
 })
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...(jest.requireActual('@cloud-carbon-footprint/core') as Record<
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
     string,
     unknown
   >),

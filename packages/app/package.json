@@ -49,6 +49,7 @@
     "@google-cloud/storage": "^5.16.1",
     "@sovpro/delimited-stream": "^1.1.0",
     "moment": "^2.29.1",
+    "mongodb": "^4.7.0",
     "ramda": "^0.28.0"
   },
   "devDependencies": {
