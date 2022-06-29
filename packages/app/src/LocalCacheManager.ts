@@ -20,19 +20,20 @@ export default class LocalCacheManager extends CacheManager {
     grouping: string,
   ): Promise<EstimationResult[]> {
     this.cacheLogger.info('Using local cache file...')
-    const estimates = await this.loadEstimates(grouping)
+    const estimates = await this.loadEstimates(grouping, request.subscriptionIds)
     return estimates ? this.filterEstimatesForRequest(request, estimates) : []
   }
 
   async setEstimates(
     estimates: EstimationResult[],
     grouping: string,
+    subscriptionIds?: string,
   ): Promise<void> {
-    const cachedEstimates = await this.loadEstimates(grouping)
+    const cachedEstimates = await this.loadEstimates(grouping, subscriptionIds)
 
     const cacheFile: string = process.env.TEST_MODE
       ? testCachePath
-      : getCacheFileName(grouping)
+      : getCacheFileName(grouping, subscriptionIds)
 
     await this.fileHandle(cacheFile, cachedEstimates.concat(estimates))
   }
@@ -51,11 +52,11 @@ export default class LocalCacheManager extends CacheManager {
     }
   }
 
-  private async loadEstimates(grouping: string): Promise<EstimationResult[]> {
+  private async loadEstimates(grouping: string,subscriptionIds?: string): Promise<EstimationResult[]> {
     let cachedData: EstimationResult[] | any
     const loadedCache = process.env.TEST_MODE
       ? testCachePath
-      : getCacheFileName(grouping)
+      : getCacheFileName(grouping, subscriptionIds)
     try {
       await promises.access(loadedCache)
       const dataStream = await fs.createReadStream(loadedCache)

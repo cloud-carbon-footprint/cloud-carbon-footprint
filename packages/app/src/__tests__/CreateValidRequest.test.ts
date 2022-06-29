@@ -27,6 +27,24 @@ describe('CreateValidRequest', () => {
       ignoreCache: false,
     })
   })
+  it('populates subscriptionIds', () => {
+    const input = {
+      startDate: '2020-07-01',
+      endDate: '2020-07-13',
+      region: AWS_REGIONS.US_EAST_1,
+      subscriptionIds: 'sub-1,sub-2'
+    }
+
+    const result = CreateValidFootprintRequest(input)
+
+    expect(result).toEqual({
+      startDate: moment.utc('2020-07-01').toDate(),
+      endDate: moment.utc('2020-07-13').toDate(),
+      region: AWS_REGIONS.US_EAST_1,
+      ignoreCache: false,
+      subscriptionIds: 'sub-1,sub-2'
+    })
+  })
 
   it('ensures the start date is before the end date', () => {
     const input = {

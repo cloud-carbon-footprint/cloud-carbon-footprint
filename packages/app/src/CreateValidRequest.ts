@@ -23,6 +23,7 @@ export interface EstimationRequest {
   region?: string
   ignoreCache: boolean
   groupBy?: string
+  subscriptionIds?: string
   //cloudProvider?:CloudProviderEnum
 }
 
@@ -122,6 +123,7 @@ function rawRequestToEstimationRequest(
     region: request.region,
     ignoreCache,
     groupBy,
+    subscriptionIds: request.subscriptionIds
   }
 }
 

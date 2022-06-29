@@ -30,7 +30,7 @@ export default abstract class CacheManager {
    * @param data     Data to be cached
    * @param grouping String representing how the data is being grouped
    */
-  abstract setEstimates(data: EstimationResult[], grouping: string): void
+  abstract setEstimates(data: EstimationResult[], grouping: string, subscriptionIds?: string): void
 
   protected filterEstimatesForRequest(
     request: EstimationRequest,

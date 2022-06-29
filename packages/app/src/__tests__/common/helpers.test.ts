@@ -73,5 +73,15 @@ describe('common/helpers.ts', () => {
       const cacheFile = getCacheFileName('day')
       expect(cacheFile).toEqual('my-cache-file.day.json')
     })
+
+    it('should use the default filename if no subscriptionIds are present', async () => {
+      const cacheFile = getCacheFileName('day', undefined)
+      expect(cacheFile).toEqual('estimates.cache.day.json')
+    })
+    
+    it('should add subscriptionIds hash if subscriptionIds are present', async () => {
+      const cacheFile = getCacheFileName('day', 'sub-1,sub-2')
+      expect(cacheFile).not.toEqual('estimates.cache.day.json')
+    })
   })
 })

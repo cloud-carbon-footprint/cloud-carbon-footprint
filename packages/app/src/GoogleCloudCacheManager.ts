@@ -20,20 +20,21 @@ export default class GoogleCloudCacheManager extends CacheManager {
     grouping: string,
   ): Promise<EstimationResult[]> {
     this.cacheLogger.info('Using GCS bucket cache file...')
-    const estimates = await this.getCloudFileContent(grouping)
+    const estimates = await this.getCloudFileContent(grouping, request.subscriptionIds)
     return estimates ? this.filterEstimatesForRequest(request, estimates) : []
   }
 
   async setEstimates(
     estimates: EstimationResult[],
     grouping: string,
+    subscriptionIds?: string
   ): Promise<void> {
-    const cachedEstimates = await this.getCloudFileContent(grouping)
+    const cachedEstimates = await this.getCloudFileContent(grouping, subscriptionIds)
     const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
     const mergedData = cachedEstimates
       ? cachedEstimates.concat(estimates)
       : estimates
-    const cacheFileName = getCacheFileName(grouping)
+    const cacheFileName = getCacheFileName(grouping, subscriptionIds)
 
     try {
       const cacheFile = storage.bucket(bucketName).file(cacheFileName)
@@ -50,8 +51,9 @@ export default class GoogleCloudCacheManager extends CacheManager {
 
   private async getCloudFileContent(
     grouping: string,
+    subscriptionIds?: string
   ): Promise<EstimationResult[]> {
-    const cacheFileName = getCacheFileName(grouping)
+    const cacheFileName = getCacheFileName(grouping, subscriptionIds)
     const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
     let cachedData: EstimationResult[] | any = []
     try {

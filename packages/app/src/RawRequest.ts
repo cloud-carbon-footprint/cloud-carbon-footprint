@@ -7,7 +7,8 @@ export interface FootprintEstimatesRawRequest {
   endDate?: string
   region?: string
   ignoreCache?: string
-  groupBy?: string
+  groupBy?: string,
+  subscriptionIds?: string
 }
 
 export interface RecommendationsRawRequest {

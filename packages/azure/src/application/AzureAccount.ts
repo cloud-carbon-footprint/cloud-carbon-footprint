@@ -53,8 +53,9 @@ export default class AzureAccount extends CloudProviderAccount {
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
+    subscriptionIds?: string,
   ): Promise<EstimationResult[]> {
-    const subscriptions = []
+    let subscriptions = []
     for await (const subscription of this.subscriptionClient.subscriptions.list()) {
       subscriptions.push(subscription)
     }
@@ -66,6 +67,11 @@ export default class AzureAccount extends CloudProviderAccount {
       )
     }
 
+    if (subscriptionIds !== undefined) {
+      const subscriptionArr = subscriptionIds.split(',')
+      subscriptions = subscriptions.filter((sub) =>
+        subscriptionArr.includes(sub.subscriptionId))
+    }
     this.logger.info('Mapping Over Subscriptions and Usage Rows')
     const estimationResults = await Promise.all(
       subscriptions.map(async (subscription: Subscription) => {

@@ -51,6 +51,7 @@ describe('Azure Account', () => {
     mockListSubscriptions.list.mockReturnValue([
       { subscriptionId: 'sub-1' },
       { subscriptionId: 'sub-2' },
+      { subscriptionId: 'sub-3' },
     ])
 
     const mockEstimates: EstimationResult[] = [
@@ -84,6 +85,7 @@ describe('Azure Account', () => {
       startDate,
       endDate,
       grouping,
+      'sub-1,sub-2'
     )
 
     // then
@@ -128,6 +130,7 @@ describe('Azure Account', () => {
       },
     ]
 
+    expect(getEstimatesSpy).toHaveBeenCalledTimes(2)
     expect(results).toEqual(expectedEstimates)
     expect(getEstimatesSpy).toHaveBeenNthCalledWith(
       2,

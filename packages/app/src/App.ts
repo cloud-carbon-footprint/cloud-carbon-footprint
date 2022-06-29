@@ -42,6 +42,7 @@ export default class App {
     const endDate = request.endDate
     const grouping =
       (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
+    const subscriptionIds = request.subscriptionIds;
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
@@ -117,6 +118,7 @@ export default class App {
           startDate,
           endDate,
           grouping,
+          subscriptionIds
         )
         appLogger.info('Finished Azure Estimations')
         AzureEstimatesByRegion.push(estimates)

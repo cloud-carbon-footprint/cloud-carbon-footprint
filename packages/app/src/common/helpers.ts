@@ -72,12 +72,25 @@ const dateTimeReviver = (key: string, value: string) => {
  *
  * @param grouping Unit of measure that the data will be grouped by
  */
-export function getCacheFileName(grouping: string): string {
+export function getCacheFileName(grouping: string, subscriptionIds?: string): string {
   const cachePrefix = process.env.CCF_CACHE_PATH || 'estimates.cache'
   const existingFileExtension = cachePrefix.lastIndexOf('.json')
+  const subscriptionIdsPart = subscriptionIds === undefined ? '' : getHash(subscriptionIds)
   const prefix =
     existingFileExtension !== -1
       ? cachePrefix.substr(0, existingFileExtension)
       : cachePrefix
-  return `${prefix}.${grouping}.json`
+  return `${prefix}.${grouping}${subscriptionIdsPart}.json`
+}
+
+export function getHash(str: string, seed = 0) {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i)
+    h1 = Math.imul(h1 ^ ch, 2654435761)
+    h2 = Math.imul(h2 ^ ch, 1597334677)
+  }
+  h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0)
 }
