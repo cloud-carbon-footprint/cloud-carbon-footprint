@@ -238,7 +238,7 @@ const getConfig = (): CCFConfig => ({
       AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
     },
   },
-  MONGO_URI: getEnvVar('CACHE_MODE') || '',
+  MONGO_URI: getEnvVar('MONGO_URI') || '',
 })
 
 export default getConfig
