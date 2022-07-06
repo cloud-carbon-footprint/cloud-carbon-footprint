@@ -46,25 +46,30 @@ export default class MongoDbCacheManager extends CacheManager {
 
             resolve(
               estimates
-                .aggregate([
-                  {
-                    $group: {
-                      _id: '$timestamp',
-                      timestamp: { $first: '$timestamp' },
-                      serviceEstimates: { $push: '$$ROOT' },
-                      groupBy: { $first: '$groupBy' },
+                .aggregate(
+                  [
+                    {
+                      $group: {
+                        _id: '$timestamp',
+                        timestamp: { $first: '$timestamp' },
+                        serviceEstimates: { $push: '$$ROOT' },
+                        groupBy: { $first: '$groupBy' },
+                      },
                     },
-                  },
-                  {
-                    $unset: [
-                      '_id',
-                      'serviceEstimates._id',
-                      'serviceEstimates.timestamp',
-                      'serviceEstimates.groupBy',
-                    ],
-                  },
-                  { $match: { timestamp: { $gte: startDate, $lte: endDate } } },
-                ])
+                    {
+                      $unset: [
+                        '_id',
+                        'serviceEstimates._id',
+                        'serviceEstimates.timestamp',
+                        'serviceEstimates.groupBy',
+                      ],
+                    },
+                    {
+                      $match: { timestamp: { $gte: startDate, $lte: endDate } },
+                    },
+                  ],
+                  { allowDiskUse: true },
+                )
                 .toArray() as EstimationResult[],
             )
           } else {
