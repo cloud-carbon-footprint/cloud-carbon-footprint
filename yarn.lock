@@ -21090,7 +21090,7 @@ remark-license@niftylettuce/remark-license:
     mdast-util-heading-range: ^2.0.0
     parse-author: ^2.0.0
     spdx-license-list: ^3.0.1
-  checksum: 87b652961b691d16cf41bd26069bea31899bc5ab8e5d2316c9f8dd437f666c2bc177e6565de81fc77859ac75468a44a252942ab128e56bdbfcc9f2d9f3cfb103
+  checksum: 0233f255b29eb6c4f86b11a8f23be0a10515abc549cb99dc70e4b7958f09e6b5759d0623e257ff93e32cda1246014a1095c9e4441baf9a90498dfe8c6ba692f1
   languageName: node
   linkType: hard
 
