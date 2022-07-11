@@ -2052,7 +2052,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/aws@^0.11.0, @cloud-carbon-footprint/aws@workspace:packages/aws":
+"@cloud-carbon-footprint/aws@npm:^0.11.0":
+  version: 0.11.1
+  resolution: "@cloud-carbon-footprint/aws@npm:0.11.1"
+  dependencies:
+    "@cloud-carbon-footprint/common": ^1.5.1
+    "@cloud-carbon-footprint/core": ^0.16.1
+    "@google-cloud/iam-credentials": ^1.1.1
+    aws-sdk: ^2.927.0
+    aws-sdk-mock: ^5.1.0
+    csvtojson: ^2.0.10
+    moment: ^2.29.1
+    ramda: ^0.28.0
+  checksum: 180a100cc40de86a941f3cdbe362a5ea08d5825387ff16d891d81465fb2a218903a4e18f3e1796070da738e6df273532539a5b619748b4123f5f74ca90fc87ea
+  languageName: node
+  linkType: hard
+
+"@cloud-carbon-footprint/aws@workspace:packages/aws":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/aws@workspace:packages/aws"
   dependencies:
