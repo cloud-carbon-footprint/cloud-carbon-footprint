@@ -17,7 +17,7 @@ import LocalCacheManager from '../LocalCacheManager'
 let mockSetEstimates: jest.Mock
 let mockGetEstimates: jest.Mock
 
-jest.mock('../CacheManager', () => {
+jest.mock('../LocalCacheManager', () => {
   return jest.fn().mockImplementation(() => {
     mockSetEstimates = jest.fn()
     mockGetEstimates = jest.fn()
