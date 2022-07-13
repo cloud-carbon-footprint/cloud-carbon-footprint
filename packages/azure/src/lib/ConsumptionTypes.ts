@@ -80,9 +80,9 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'Pay-as-you-go Data at Rest',
   'Standard Instances',
   'Node',
-  'Basic User', 
+  'Basic User',
   'Standard Nodes',
-  'Microsoft-hosted CI'
+  'Microsoft-hosted CI',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
