@@ -72,7 +72,6 @@ describe('CacheManager', () => {
 
   beforeEach(() => {
     console.warn = jest.fn()
-    // const bucketName = 'test-bucket-name'
     googleCloudCacheManager = new GoogleCloudCacheManager()
   })
 

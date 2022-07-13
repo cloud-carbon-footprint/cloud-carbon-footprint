@@ -88,10 +88,12 @@ export default class MongoDbCacheManager extends CacheManager {
     grouping: string,
   ): Promise<EstimationResult[]> {
     this.cacheLogger.info('Using mongo database...')
+    let savedEstimates: EstimationResult[] = []
     try {
       await this.createDbConnection()
       // Connect the client to the server
       await this.mongoClient.connect()
+
       // Specify a database to query
       const collectionName = `estimates-by-${grouping}`
       const database = this.mongoClient.db(this.mongoDbName)
@@ -102,16 +104,16 @@ export default class MongoDbCacheManager extends CacheManager {
         request,
       )
 
-      return estimates ? estimates : []
+      savedEstimates = estimates ?? []
     } catch (e) {
       this.cacheLogger.warn(
         `There was an error getting estimates from MongoDB: ${e.message}`,
       )
-      return []
     } finally {
       // Ensures that the client will close when you finish/error
       await this.mongoClient.close()
     }
+    return savedEstimates
   }
 
   async setEstimates(
