@@ -2,6 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import moment from 'moment'
 import { MongoClient } from 'mongodb'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
@@ -32,7 +33,13 @@ export default class MongoDbCacheManager extends CacheManager {
     collectionName: string,
     request: EstimationRequest,
   ): Promise<EstimationResult[]> {
-    const startDate = new Date(request.startDate)
+    const unitOfTime =
+      request.groupBy === 'week'
+        ? 'isoWeek'
+        : (request.groupBy as moment.unitOfTime.StartOf)
+    const startDate = new Date(
+      moment.utc(request.startDate).startOf(unitOfTime) as unknown as Date,
+    )
     const endDate = new Date(request.endDate)
     return new Promise(function (resolve, reject) {
       db.listCollections({ name: collectionName }).next(
