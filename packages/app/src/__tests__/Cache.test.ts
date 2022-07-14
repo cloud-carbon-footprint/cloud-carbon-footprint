@@ -100,6 +100,7 @@ describe('Cache', () => {
         startDate: moment.utc('2020-01-01').toDate(),
         endDate: moment.utc('2020-01-02').toDate(),
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const expectedEstimationResults: EstimationResult[] =
@@ -122,6 +123,7 @@ describe('Cache', () => {
         startDate: moment.utc('2019-12-31').toDate(),
         endDate: moment.utc('2020-01-08').toDate(),
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
@@ -168,6 +170,7 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
@@ -187,9 +190,9 @@ describe('Cache', () => {
       //assert
       expect(originalFunction).toHaveBeenCalledWith({
         startDate: moment.utc('2020-01-01').toDate(),
-        endDate: moment.utc('2020-01-02').toDate(),
+        endDate: moment.utc('2020-01-02').endOf(GroupBy.day).toDate(),
         ignoreCache: false,
-        groupBy: undefined,
+        groupBy: GroupBy.day,
         region: 'us-east-1',
       })
     })
@@ -201,7 +204,7 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-02').toDate(),
         region: 'us-east-1',
         ignoreCache: false,
-        groupBy: GroupBy.week,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
@@ -229,6 +232,7 @@ describe('Cache', () => {
         endDate: moment.utc('2020-08-01').toDate(),
         region: 'us-east-1',
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       //unordered dates
@@ -260,6 +264,7 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-01').toDate(),
         region: 'us-east-1',
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = []
@@ -284,6 +289,7 @@ describe('Cache', () => {
         endDate: moment.utc('2020-01-01').toDate(),
         region: 'us-east-1',
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = []
@@ -314,6 +320,7 @@ describe('Cache', () => {
         startDate: moment.utc('2020-07-10').toDate(),
         endDate: moment.utc('2020-07-20').toDate(),
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = []
@@ -355,6 +362,7 @@ describe('Cache', () => {
         startDate: moment.utc('2020-07-10').toDate(),
         endDate: moment.utc('2020-07-20').toDate(),
         ignoreCache: false,
+        groupBy: GroupBy.day,
       }
 
       const cachedEstimates: EstimationResult[] = buildFootprintEstimates(

@@ -119,15 +119,11 @@ const getMissingDates = (
     request.groupBy === 'week'
       ? 'isoWeek'
       : (request.groupBy as moment.unitOfTime.StartOf)
-  let current = moment.utc(request.startDate).startOf(unitOfTime)
+  const current = moment.utc(request.startDate).startOf(unitOfTime)
   const end = moment.utc(request.endDate)
-
   while (current <= end) {
     dates.push(moment.utc(current.toDate()))
-    current = current.add(
-      1,
-      request.groupBy as moment.unitOfTime.DurationConstructor,
-    )
+    current.add(1, request.groupBy as moment.unitOfTime.DurationConstructor)
   }
   dates.forEach((date) => {
     const dateIsCached = !!cachedDates.find((cachedDate) => {
