@@ -7,6 +7,7 @@ import {
   config as awsConfig,
   ChainableTemporaryCredentials,
   EC2MetadataCredentials,
+  ECSCredentials,
 } from 'aws-sdk'
 import { configLoader } from '@cloud-carbon-footprint/common'
 import GCPCredentials from './GCPCredentials'
@@ -33,6 +34,11 @@ export default class AWSCredentialsProvider {
         })
       case 'EC2-METADATA':
         return new EC2MetadataCredentials({
+          httpOptions: { timeout: 5000 },
+          maxRetries: 10,
+        })
+      case 'ECS-METADATA':
+        return new ECSCredentials({
           httpOptions: { timeout: 5000 },
           maxRetries: 10,
         })
