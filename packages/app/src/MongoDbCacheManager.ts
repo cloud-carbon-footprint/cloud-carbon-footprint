@@ -141,8 +141,6 @@ export default class MongoDbCacheManager extends CacheManager {
           const newDocument = {
             ...serviceEstimate,
             timestamp: estimate['timestamp'],
-            periodStartDate: estimate['periodStartDate'],
-            periodEndDate: estimate['periodEndDate'],
             groupBy: estimate['groupBy'],
           }
           newEstimates.push(newDocument)

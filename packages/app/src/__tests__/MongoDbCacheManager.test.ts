@@ -259,4 +259,144 @@ describe('MongoDbCacheManager', () => {
       expect(estimates).toEqual([])
     })
   })
+
+  describe('sets estimates', () => {
+    const testDate = new Date('2022-01-01')
+    const mockEstimates: EstimationResult[] = [
+      {
+        timestamp: testDate,
+        groupBy: GroupBy.day,
+        serviceEstimates: [
+          {
+            cloudProvider: 'aws',
+            accountId: '1',
+            accountName: 'test-account',
+            serviceName: 'test-service',
+            kilowattHours: 5,
+            co2e: 10,
+            cost: 5,
+            region: 'test-region',
+            usesAverageCPUConstant: false,
+          },
+          {
+            cloudProvider: 'aws',
+            accountId: '2',
+            accountName: 'test-account-2',
+            serviceName: 'test-service-2',
+            kilowattHours: 5,
+            co2e: 15,
+            cost: 8,
+            region: 'test-region',
+            usesAverageCPUConstant: false,
+          },
+        ],
+        periodStartDate: testDate,
+        periodEndDate: testDate,
+      },
+      {
+        timestamp: testDate,
+        groupBy: GroupBy.day,
+        serviceEstimates: [
+          {
+            cloudProvider: 'aws',
+            accountId: '1',
+            accountName: 'test-account',
+            serviceName: 'test-service',
+            kilowattHours: 5,
+            co2e: 10,
+            cost: 5,
+            region: 'test-region',
+            usesAverageCPUConstant: false,
+          },
+        ],
+        periodStartDate: testDate,
+        periodEndDate: testDate,
+      },
+    ]
+
+    beforeEach(() => {
+      ;(configLoader as jest.Mock).mockReturnValue({
+        ...configLoader(),
+        MONGO_URI: 'test-mongo-uri',
+      })
+    })
+
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
+    it('successfully sets estimates to a mongoDB collection', async () => {
+      const mongoDbCacheManager = new MongoDbCacheManager()
+
+      const mockInsertMany = jest.fn()
+      const mockCollection = jest
+        .fn()
+        .mockImplementation(() => ({ insertMany: mockInsertMany }))
+
+      const mockClient: Partial<MongoClient> = {
+        db: jest.fn().mockImplementation(() => {
+          return {
+            collection: mockCollection,
+          }
+        }),
+        close: jest.fn(),
+        connect: jest.fn(),
+      }
+
+      jest
+        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
+        .mockImplementation(async () => {
+          mongoDbCacheManager.mongoClient = mockClient as MongoClient
+        })
+
+      await mongoDbCacheManager.setEstimates(mockEstimates, 'day')
+
+      // Should insert flat service estimates with timestamp and groupBy appended to each
+      const expectedInsertedEstimates = [
+        {
+          cloudProvider: 'aws',
+          accountId: '1',
+          accountName: 'test-account',
+          serviceName: 'test-service',
+          kilowattHours: 5,
+          co2e: 10,
+          cost: 5,
+          region: 'test-region',
+          usesAverageCPUConstant: false,
+          timestamp: testDate,
+          groupBy: GroupBy.day,
+        },
+        {
+          cloudProvider: 'aws',
+          accountId: '2',
+          accountName: 'test-account-2',
+          serviceName: 'test-service-2',
+          kilowattHours: 5,
+          co2e: 15,
+          cost: 8,
+          region: 'test-region',
+          usesAverageCPUConstant: false,
+          timestamp: testDate,
+          groupBy: GroupBy.day,
+        },
+        {
+          cloudProvider: 'aws',
+          accountId: '1',
+          accountName: 'test-account',
+          serviceName: 'test-service',
+          kilowattHours: 5,
+          co2e: 10,
+          cost: 5,
+          region: 'test-region',
+          usesAverageCPUConstant: false,
+          timestamp: testDate,
+          groupBy: GroupBy.day,
+        },
+      ]
+
+      expect(mockCollection).toHaveBeenCalledWith('estimates-by-day')
+      expect(mockInsertMany).toHaveBeenCalledWith(expectedInsertedEstimates)
+      expect(mockClient.close).toHaveBeenCalled()
+    })
+  })
 })
