@@ -171,6 +171,7 @@ function getMissingDataRequests(
       ignoreCache: false,
       groupBy: request.groupBy,
       region: request.region,
+      subscriptionIds: request.subscriptionIds
     }
   })
 }
