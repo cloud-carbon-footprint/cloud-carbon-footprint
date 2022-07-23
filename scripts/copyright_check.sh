@@ -1,6 +1,6 @@
 #!/bin/bash
 
-copyright="© 2021 Thoughtworks, Inc."
+copyright="© 202[1-2] Thoughtworks, Inc."
 errorCode=0
 domain=`git config user.email`
 
@@ -14,7 +14,7 @@ else
     if [[ $file = *"microsite/"* ]]; then continue; fi
     holder=$(echo $file | grep -E "^.*\.(ts|tsx|js|jsx|md|sh)$" | wc -l)
     if [ $holder -eq 0 ]; then continue; fi
-    if grep "$copyright" $file; then continue; fi
+    if grep -E "$copyright" $file; then continue; fi
 
     echo "ERROR: \"$copyright\" not in file: ${file}"
     exit 1
