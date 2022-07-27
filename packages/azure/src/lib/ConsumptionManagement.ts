@@ -100,10 +100,11 @@ export default class ConsumptionManagementService {
   }
 
   public async getEstimates(
-    startDate: Date,
-    endDate: Date,
+    start: Date,
+    end: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
+    const { startDate, endDate } = this.getGroupByDates(start, end, grouping)
     const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
     const allUsageRows = await this.pageThroughUsageRows(usageRows)
     const results: MutableEstimationResult[] = []
@@ -119,7 +120,7 @@ export default class ConsumptionManagementService {
         const consumptionDetailRow: ConsumptionDetailRow =
           new ConsumptionDetailRow(consumptionRow)
 
-        this.updateTimestampByWeek(grouping, consumptionDetailRow)
+        this.updateTimestampByGrouping(grouping, consumptionDetailRow)
 
         const footprintEstimate = this.getFootprintEstimateFromUsageRow(
           consumptionDetailRow,
@@ -153,7 +154,24 @@ export default class ConsumptionManagementService {
     return results
   }
 
-  getEstimatesFromInputData(
+  public getGroupByDates(
+    startDate: Date,
+    endDate: Date,
+    grouping: GroupBy,
+  ): { [key: string]: Date } {
+    return {
+      startDate: moment
+        .utc(startDate)
+        .startOf(AZURE_QUERY_GROUP_BY[grouping] as unitOfTime.StartOf)
+        .toDate(),
+      endDate: moment
+        .utc(endDate)
+        .endOf(AZURE_QUERY_GROUP_BY[grouping] as unitOfTime.StartOf)
+        .toDate(),
+    }
+  }
+
+  public getEstimatesFromInputData(
     inputData: LookupTableInput[],
   ): LookupTableOutput[] {
     const result: LookupTableOutput[] = []
@@ -225,15 +243,15 @@ export default class ConsumptionManagementService {
     }
   }
 
-  private updateTimestampByWeek(
+  private updateTimestampByGrouping(
     grouping: GroupBy,
     consumptionDetailRow: ConsumptionDetailRow,
   ): void {
     const startOfType: string = AZURE_QUERY_GROUP_BY[grouping]
-    const firstDayOfWeek = moment
+    const firstDayOfGrouping = moment
       .utc(consumptionDetailRow.timestamp)
       .startOf(startOfType as unitOfTime.StartOf)
-    consumptionDetailRow.timestamp = new Date(firstDayOfWeek.toISOString())
+    consumptionDetailRow.timestamp = new Date(firstDayOfGrouping.toISOString())
   }
 
   private async pageThroughUsageRows(

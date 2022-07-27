@@ -164,7 +164,7 @@ fileignoreconfig:
 - filename: packages/azure/src/__tests__/ConsumptionManagement.test.ts
   checksum: 68f9a8c23d08e892511e99356f39c010b8e8959fd012aaa51e999cd51e51181b
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
-  checksum: 669a3212a3eed03bb4a42b7aa2f5b546a2eaa92c16bfe05dfbe0dcc64321a3c0
+  checksum: 42fc6ed4df06fb61f5077f3192d8b8aa8162016621da79f369247fac612afbd6
 - filename: packages/cli/.env.template
   checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
 - filename: packages/cli/src/CreateLookupTable/createAzureInput.ts
