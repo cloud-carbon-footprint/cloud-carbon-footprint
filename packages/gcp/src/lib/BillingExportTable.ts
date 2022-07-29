@@ -141,6 +141,14 @@ export default class BillingExportTable {
       }
 
       const billingExportRow = new BillingExportRow(usageRow)
+
+      // if there is a machineType. override vCpuHours value,
+      // since it is set using usageAmount, which is always 1 for lookup table generation
+      if (billingExportRow.machineType) {
+        const { instancevCpu } = this.getDataFromMachineType(billingExportRow.machineType)
+        billingExportRow.vCpuHours = instancevCpu
+      }
+
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         billingExportRow,
         unknownRows,
@@ -286,7 +294,7 @@ export default class BillingExportTable {
         usageRow.usageType,
       )
     } else {
-      computeProcessors = this.getComputeProcessorsFromUsageType(
+      computeProcessors = this.getComputeProcessorsFromMachineType(
         usageRow.usageType,
         usageRow.machineType,
       )
@@ -317,8 +325,7 @@ export default class BillingExportTable {
     return computeFootprint
   }
 
-  private getComputeProcessorsFromUsageType(
-    usageType: string,
+  private getComputeProcessorsFromMachineType(
     machineType: string,
   ): string[] {
     const sharedCoreMatch =
@@ -326,7 +333,7 @@ export default class BillingExportTable {
       Object.values(SHARED_CORE_PROCESSORS).find((core) =>
         machineType.includes(core),
       )
-    const includesPrefix = usageType.substring(0, 2).toLowerCase()
+    const includesPrefix = machineType.substring(0, 2).toLowerCase()
     const processor = sharedCoreMatch ? sharedCoreMatch : includesPrefix
 
     return (

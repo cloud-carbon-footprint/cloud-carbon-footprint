@@ -513,8 +513,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 12.634439456249067,
-            co2e: 0.006064530938999552,
+            kilowattHours: 11.945374898384484,
+            co2e: 0.005733779951224552,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -582,8 +582,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-10-28'),
         serviceEstimates: [
           {
-            kilowattHours: 0.36541815348500395,
-            co2e: 0.00016589984168219178,
+            kilowattHours: 0.34593765348500394,
+            co2e: 0.00015705569468219178,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -620,8 +620,8 @@ describe('GCP BillingExportTable Service', () => {
         timestamp: new Date('2020-11-04'),
         serviceEstimates: [
           {
-            kilowattHours: 0.08549324069338539,
-            co2e: 0.00006164062653993087,
+            kilowattHours: 0.0990924643044965,
+            co2e: 0.00007144566676354198,
             usesAverageCPUConstant: true,
             cloudProvider: 'GCP',
             accountId: accountId,
@@ -1341,9 +1341,27 @@ describe('GCP BillingExportTable Service', () => {
 
     const expectedResult: LookupTableOutput[] = [
       {
-        co2e: 4.550678093818705e-10,
-        kilowattHours: 0.000001260575649257259,
+        co2e: 3.165769444444445e-10,
+        kilowattHours: 8.769444444444446e-7,
+        machineType: '',
+        region: 'us-east4',
+        serviceName: 'Compute Engine',
+        usageType: 'N1 Predefined Instance Core running in Virginia',
+        usageUnit: 'seconds',
+      },
+      {
+        co2e: 0.000004558846490864938,
+        kilowattHours: 0.012628383631204814,
         machineType: 'n1-standard-4',
+        region: 'us-east4',
+        serviceName: 'Compute Engine',
+        usageType: 'N1 Predefined Instance Core running in Virginia',
+        usageUnit: 'seconds',
+      },
+      {
+        co2e: 0.000009117554490864939,
+        kilowattHours: 0.025256383631204818,
+        machineType: 'n1-standard-8',
         region: 'us-east4',
         serviceName: 'Compute Engine',
         usageType: 'N1 Predefined Instance Core running in Virginia',
@@ -1377,8 +1395,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'byte-seconds',
       },
       {
-        co2e: 3.165769444444445e-10,
-        kilowattHours: 8.769444444444446e-7,
+        co2e: 0.000004558813525648149,
+        kilowattHours: 0.012628292314814818,
         machineType: '',
         region: 'us-east4',
         serviceName: 'App Engine',
