@@ -458,7 +458,6 @@ describe('Cache', () => {
       },
     ]
 
-    // TODO: Confirm start date of Monday is correct for weeks
     const expectedRequestRangesByMonth: MockRequestDateRanges = [
       {
         start: moment.utc('2020-11-01').toDate(),
@@ -519,5 +518,51 @@ describe('Cache', () => {
         expect(originalFunction.mock.calls).toEqual(expectedRequestArguments)
       },
     )
+
+    it('does not make additional requests if there are no missing dates', async () => {
+      //setup
+      mockGetEstimates.mockResolvedValueOnce(cachedEstimates.year)
+
+      //run
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+      await propertyDescriptor.value({
+        startDate: moment.utc('2020-01-01').toDate(),
+        endDate: moment.utc('2020-12-31').toDate(),
+        ignoreCache: false,
+        groupBy: GroupBy.year,
+      })
+
+      //assert
+      expect(originalFunction).not.toHaveBeenCalled()
+    })
+
+    it('makes request for all dates in the range if there are no dates in the cache', async () => {
+      //setup
+      mockGetEstimates.mockResolvedValueOnce([])
+
+      //run
+      cacheDecorator({}, 'propertyTest', propertyDescriptor)
+      await propertyDescriptor.value({
+        startDate: moment.utc('2020-12-21').toDate(),
+        endDate: moment.utc('2021-01-02').toDate(),
+        ignoreCache: false,
+        groupBy: GroupBy.week,
+      })
+
+      const range = expectedRequestRangesByWeek[1]
+
+      //assert
+      expect(originalFunction.mock.calls).toEqual([
+        [
+          {
+            startDate: range.start,
+            endDate: range.end,
+            ignoreCache: false,
+            groupBy: GroupBy.week,
+            region: undefined,
+          },
+        ],
+      ])
+    })
   })
 })
