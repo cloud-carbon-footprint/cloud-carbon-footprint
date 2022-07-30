@@ -148,7 +148,7 @@ export default class BillingExportTable {
         const { instancevCpu } = this.getDataFromMachineType(
           billingExportRow.machineType,
         )
-        billingExportRow.vCpuHours = instancevCpu
+        billingExportRow.vCpuHours = instancevCpu * billingExportRow.vCpuHours
       }
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
@@ -297,7 +297,6 @@ export default class BillingExportTable {
       )
     } else {
       computeProcessors = this.getComputeProcessorsFromMachineType(
-        usageRow.usageType,
         usageRow.machineType,
       )
     }
@@ -333,7 +332,7 @@ export default class BillingExportTable {
       Object.values(SHARED_CORE_PROCESSORS).find((core) =>
         machineType.includes(core),
       )
-    const includesPrefix = machineType.substring(0, 2).toLowerCase()
+    const includesPrefix = machineType?.substring(0, 2).toLowerCase()
     const processor = sharedCoreMatch ? sharedCoreMatch : includesPrefix
 
     return (
