@@ -5,12 +5,12 @@
 import moment, { Moment } from 'moment'
 import R from 'ramda'
 import {
-  EstimationResult,
   configLoader,
-  GroupBy,
+  EstimationResult,
   getPeriodEndDate,
+  GroupBy,
+  Logger,
 } from '@cloud-carbon-footprint/common'
-import { Logger } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import GoogleCloudCacheManager from './GoogleCloudCacheManager'
 import LocalCacheManager from './LocalCacheManager'
@@ -50,7 +50,11 @@ export default function cache(): any {
       // Determine if cache is ignored and get fresh estimates
       if (request.ignoreCache && !process.env.TEST_MODE) {
         cacheLogger.info('Ignoring cache...')
-        return getCostAndEstimates(request)
+        const [newEstimates] = await getEstimatesForMissingDates(
+          getCostAndEstimates,
+          request,
+        )
+        return newEstimates
       }
 
       // Configure cache manager service and load existing cached estimates (if any)
@@ -64,17 +68,11 @@ export default function cache(): any {
       // TODO: Refactor this so cache isn't aware of test environment
       if (process.env.TEST_MODE) return cachedEstimates
 
-      // Populate and fetch new estimates for dates missing from the cache
-      const missingDates = getMissingDates(cachedEstimates, request)
-      const missingEstimates = getMissingDataRequests(
-        missingDates,
+      const [newEstimates, missingDates] = await getEstimatesForMissingDates(
+        getCostAndEstimates,
         request,
-      ).map((request) => {
-        return getCostAndEstimates(request)
-      })
-      const newEstimates: EstimationResult[] = (
-        await Promise.all(missingEstimates)
-      ).flat()
+        cachedEstimates,
+      )
 
       // Write missing estimates to cache
       if (newEstimates.length > 0) {
@@ -100,6 +98,30 @@ export default function cache(): any {
       return concat(filteredCachedEstimates, newEstimates)
     }
   }
+}
+
+/**
+ * Populates and fetches new estimates for dates missing from the cache
+ * (Returns results for entire formatted date range if cachedEstimates is not provided)
+ * @param getCostAndEstimates               - Function that returns estimates for a given request
+ * @param request                           - Original request object with start and end date
+ * @param cachedEstimates                   - Optional array of existing EstimationResults (i.e. cache)
+ * @returns [EstimationResult[], Moment[]]  - Promise containing an array of fulfilled estimation requests
+ *                                           and the missing dates used for the request
+ */
+const getEstimatesForMissingDates = async (
+  getCostAndEstimates: unknown,
+  request: EstimationRequest,
+  cachedEstimates?: EstimationResult[] = [],
+): Promise<[EstimationResult[], Moment[]]> => {
+  const missingDates = getMissingDates(cachedEstimates, request)
+  const missingEstimates = getMissingDataRequests(missingDates, request).map(
+    (request) => {
+      return getCostAndEstimates(request)
+    },
+  )
+  const newEstimates = (await Promise.all(missingEstimates)).flat()
+  return [newEstimates, missingDates]
 }
 
 const getMissingDates = (
