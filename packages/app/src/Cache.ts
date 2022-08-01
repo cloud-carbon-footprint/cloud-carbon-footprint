@@ -110,9 +110,9 @@ export default function cache(): any {
  *                                           and the missing dates used for the request
  */
 const getEstimatesForMissingDates = async (
-  getCostAndEstimates: unknown,
+  getCostAndEstimates: any,
   request: EstimationRequest,
-  cachedEstimates?: EstimationResult[] = [],
+  cachedEstimates: EstimationResult[] = [],
 ): Promise<[EstimationResult[], Moment[]]> => {
   const missingDates = getMissingDates(cachedEstimates, request)
   const missingEstimates = getMissingDataRequests(missingDates, request).map(
