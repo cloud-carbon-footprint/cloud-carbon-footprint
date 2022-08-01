@@ -354,6 +354,40 @@ describe('Cache', () => {
     expect(results).toEqual(computedEstimates)
   })
 
+  it('should not read or write to cache when ignore cache is true', async () => {
+    //setup
+    const rawRequest: EstimationRequest = {
+      startDate: moment.utc('2020-07-12').toDate(),
+      endDate: moment.utc('2020-07-20').toDate(),
+      ignoreCache: true,
+      groupBy: GroupBy.month,
+    }
+
+    const cachedEstimates: EstimationResult[] = buildFootprintEstimates(
+      '2020-07-15',
+      6,
+    )
+
+    mockGetEstimates.mockResolvedValueOnce(cachedEstimates)
+
+    originalFunction.mockResolvedValueOnce([])
+
+    //run
+    cacheDecorator({}, 'propertyTest', propertyDescriptor)
+    await propertyDescriptor.value(rawRequest)
+
+    //assert
+    const expectedRequest = {
+      startDate: moment.utc('2020-07-01').toDate(),
+      endDate: moment.utc('2020-07-01').endOf('month').toDate(),
+      ignoreCache: false,
+      groupBy: GroupBy.month,
+    }
+    expect(originalFunction).toHaveBeenCalledWith(expectedRequest)
+    expect(mockGetEstimates).not.toHaveBeenCalled()
+    expect(mockSetEstimates).not.toHaveBeenCalled()
+  })
+
   describe('populates missing dates', () => {
     type TestCase = [string, EstimationRequest, MockRequestDateRanges]
     type MockEstimates = { [grouping: string]: EstimationResult[] }
