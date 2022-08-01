@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/api
 
+## 1.4.3
+
+### Patch Changes
+
+- Updated dependencies [30d56707]
+- Updated dependencies [f9619727]
+- Updated dependencies [28cb7073]
+  - @cloud-carbon-footprint/app@0.7.0
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 1.4.2
 
 ### Patch Changes

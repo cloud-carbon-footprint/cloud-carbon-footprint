@@ -1,5 +1,23 @@
 # @cloud-carbon-footprint/client
 
+## 3.2.0
+
+### Minor Changes
+
+- f9619727: updates client for new config, app for updated cache logic, and cli for seeding cache file
+
+  client template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5245b4b752ab4d381af58dc2db7cb57fbca9250a)
+  clie template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- 5a3ffa35: Updates carbon intensity maps to reflect new emissions factors
+
+  For changes that are needed for the create-app client template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/265d49fba159612eb6cdbb09a9d2e5fd7989e67e).
+
+- Updated dependencies [28cb7073]
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 3.1.2
 
 ### Patch Changes
