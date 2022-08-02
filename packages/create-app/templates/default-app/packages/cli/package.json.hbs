@@ -39,7 +39,9 @@
    "start": "ts-node src/index.ts",
    "guided-install": "ts-node src/GuidedInstall/index.ts",
    "create-lookup-table": "ts-node src/CreateLookupTable/index.ts",
-   "estimate-on-premise-data": "ts-node src/EstimateOnPremiseData/index.ts"
+   "create-azure-lookup": "ts-node src/CreateLookupTable/CreateAzureInput.ts",
+   "estimate-on-premise-data": "ts-node src/EstimateOnPremiseData/index.ts",
+   "seed-cache-file": "ts-node src/SeedCacheFile/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
@@ -66,6 +68,8 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
+    "@azure/arm-consumption": "^8.0.0",
+    "@azure/arm-resources-subscriptions": "^2.0.0",
     "@cloud-carbon-footprint/app": "^{{version '@cloud-carbon-footprint/app'}}",
     "@cloud-carbon-footprint/common": "^{{version '@cloud-carbon-footprint/common'}}",
     "@types/cli-table": "^0.3.0",
