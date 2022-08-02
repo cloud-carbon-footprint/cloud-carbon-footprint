@@ -1,5 +1,28 @@
 # @cloud-carbon-footprint/app
 
+## 0.7.0
+
+### Minor Changes
+
+- 30d56707: Updates logic for cache management for better extensibility of services
+- f9619727: updates client for new config, app for updated cache logic, and cli for seeding cache file
+
+  client template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5245b4b752ab4d381af58dc2db7cb57fbca9250a)
+  clie template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- Updated dependencies [28cb7073]
+- Updated dependencies [3743b69e]
+- Updated dependencies [b53b36de]
+- Updated dependencies [314c4fdc]
+- Updated dependencies [f37a935f]
+- Updated dependencies [8e3452ee]
+  - @cloud-carbon-footprint/aws@0.13.0
+  - @cloud-carbon-footprint/azure@0.11.0
+  - @cloud-carbon-footprint/common@1.7.0
+  - @cloud-carbon-footprint/gcp@0.10.0
+
 ## 0.6.1
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/cli
 
+## 1.7.0
+
+### Minor Changes
+
+- f9619727: updates client for new config, app for updated cache logic, and cli for seeding cache file
+
+  client template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/5245b4b752ab4d381af58dc2db7cb57fbca9250a)
+  clie template changes located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/3568e74165e73343bfd579c544f6f3de7f3cdcec)
+
+### Patch Changes
+
+- Updated dependencies [30d56707]
+- Updated dependencies [f9619727]
+- Updated dependencies [28cb7073]
+  - @cloud-carbon-footprint/app@0.7.0
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 1.6.0
 
 ### Minor Changes
