@@ -1,11 +1,5 @@
 # @cloud-carbon-footprint/create-app
 
-## 2.0.2
-
-### Patch Changes
-
-- 0ccde95b: updates dep in templates
-
 ## 2.0.1
 
 ### Patch Changes
