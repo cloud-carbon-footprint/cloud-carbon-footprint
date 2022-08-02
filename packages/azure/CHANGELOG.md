@@ -1,19 +1,5 @@
 # @cloud-carbon-footprint/azure
 
-## 0.11.0
-
-### Minor Changes
-
-- 28cb7073: Updates emissions factors for cloud provider regions
-- 3743b69e: removes grouping date logic from azure to cache decorator
-- 314c4fdc: updates groupby logic for azure date range
-
-### Patch Changes
-
-- b53b36de: Add new azure Storage usage
-- Updated dependencies [28cb7073]
-  - @cloud-carbon-footprint/common@1.7.0
-
 ## 0.10.1
 
 ### Patch Changes
