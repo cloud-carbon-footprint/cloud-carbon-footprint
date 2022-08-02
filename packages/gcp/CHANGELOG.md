@@ -1,5 +1,17 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.10.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+
+### Patch Changes
+
+- a7a79c83: updates bugs for lookup table
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 0.9.1
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @cloud-carbon-footprint/aws
 
+## 0.13.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+- a7a79c83: Add ECS Credentials AWS authentication option
+
+### Patch Changes
+
+- Updated dependencies [a7a79c83]
+  - @cloud-carbon-footprint/common@1.7.0
+
 ## 0.11.1
 
 ### Patch Changes
