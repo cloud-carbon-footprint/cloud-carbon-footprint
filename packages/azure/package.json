@@ -41,7 +41,7 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@azure/arm-consumption": "^8.0.0",
+    "@azure/arm-consumption": "^9.0.1",
     "@azure/arm-resources-subscriptions": "^2.0.0",
     "@azure/identity": "^2.0.1",
     "@azure/ms-rest-js": "^2.2.3",
