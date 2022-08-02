@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/common
 
+## 1.7.0
+
+### Minor Changes
+
+- a7a79c83: Updates emissions factors for cloud provider regions
+
 ## 1.6.0
 
 ### Minor Changes

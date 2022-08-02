@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.0.2
+
+### Patch Changes
+
+- 1a1dfd17: updates package json version and scripts for templates
+- a7a79c83: updates dep in templates
+
 ## 2.0.1
 
 ### Patch Changes
