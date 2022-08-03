@@ -68,6 +68,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       RoleName: ComputeOptimizerExportRole
+      ManagedPolicyArns: ["arn:aws:iam::aws:policy/ComputeOptimizerReadOnlyAccess"]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -88,11 +89,21 @@ Resources:
         Statement:
           - Action: "logs:CreateLogGroup"
             Effect: "Allow"
-            Resource: "*"
+            Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:*'
           - Effect: "Allow"
             Action:
               - "logs:CreateLogStream"
+            Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:*'
+          - Effect: "Allow"
+            Action:
               - "logs:PutLogEvents"
+            Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:*:log-stream:*'
+          - Effect: "Allow"
+            Action:
+              - "compute-optimizer:ExportLambdaFunctionRecommendations"
+              - "compute-optimizer:ExportEC2InstanceRecommendations"
+              - "compute-optimizer:ExportAutoScalingGroupRecommendations"
+              - "compute-optimizer:ExportEBSVolumeRecommendations"
             Resource: "*"
           - Effect: "Allow"
             Action:
@@ -100,21 +111,10 @@ Resources:
               - "xray:PutTelemetryRecords"
             Resource: "*"
           - Action:
-              - "compute-optimizer:*"
-              - "ec2:DescribeInstances"
-              - "ec2:DescribeVolumes"
-              - "lambda:ListFunctions"
-              - "lambda:ListProvisionedConcurrencyConfigs"
-              - "autoscaling:DescribeAutoScalingGroups"
-              - "cloudwatch:GetMetricData"
-              - "organizations:ListAccounts"
-              - "organizations:DescribeOrganization"
-              - "organizations:DescribeAccount"
-              - "organizations:EnableAWSServiceAccess"
-            Effect: "Allow"
-            Resource: "*"
-          - Action:
-              - "s3:*"
+              - "s3:GetBucketPolicyStatus"
+              - "s3:PutObject"
+              - "s3:GetObject"
+              - "s3:GetBucketAcl"
             Effect: "Allow"
             Resource:
               - !Sub 'arn:aws:s3:::${BucketNamePrefix}-*'
