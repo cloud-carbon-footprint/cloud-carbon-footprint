@@ -77,6 +77,8 @@ export default class MongoDbCacheManager extends CacheManager {
                   ],
                   { allowDiskUse: true },
                 )
+                .skip(request.skip)
+                .limit(request.limit)
                 .toArray() as EstimationResult[],
             )
           } else {
