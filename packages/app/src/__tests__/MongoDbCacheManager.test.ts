@@ -165,26 +165,22 @@ describe('MongoDbCacheManager', () => {
 
     beforeEach(() => {
       mockClient = {
-        db: jest.fn().mockImplementation(() => {
-          return {
-            listCollections: jest.fn().mockImplementation(() => {
-              return {
-                next: jest.fn().mockImplementation((callback) => {
-                  callback(undefined, { name: 'test-collection' })
-                }),
-              }
+        db: jest.fn().mockImplementation(() => ({
+          listCollections: jest.fn().mockImplementation(() => ({
+            next: jest.fn().mockImplementation((callback) => {
+              callback(undefined, { name: 'test-collection' })
             }),
-            collection: jest.fn().mockImplementation(() => {
-              return {
-                aggregate: jest.fn().mockImplementation(() => {
-                  return {
-                    toArray: jest.fn().mockResolvedValue(mockEstimates),
-                  }
-                }),
-              }
-            }),
-          }
-        }),
+          })),
+          collection: jest.fn().mockImplementation(() => ({
+            aggregate: jest.fn().mockImplementation(() => ({
+              skip: jest.fn().mockImplementation(() => ({
+                limit: jest.fn().mockImplementation(() => ({
+                  toArray: jest.fn().mockResolvedValue(mockEstimates),
+                })),
+              })),
+            })),
+          })),
+        })),
         close: jest.fn(),
         connect: jest.fn(),
       }
@@ -257,6 +253,43 @@ describe('MongoDbCacheManager', () => {
         'Creating new database collection: estimates-by-day',
       )
       expect(estimates).toEqual([])
+    })
+
+    it('paginates estimates when given a limit and skip value from the request', async () => {
+      const requestWithLimitAndSkip = {
+        ...request,
+        limit: 100,
+        skip: 50,
+      }
+
+      jest.spyOn(console, 'info').mockImplementation()
+
+      const mongoDbCacheManager = new MongoDbCacheManager()
+
+      jest
+        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
+        .mockImplementation(async () => {
+          mongoDbCacheManager.mongoClient = mockClient as MongoClient
+        })
+
+      await mongoDbCacheManager.createDbConnection()
+      const estimates = await mongoDbCacheManager.loadEstimates(
+        mongoDbCacheManager.mongoClient.db(mongoDbCacheManager.mongoDbName),
+        'estimates-by-day',
+        requestWithLimitAndSkip,
+      )
+
+      // Expected params from request
+      const { skip, limit } = requestWithLimitAndSkip
+
+      expect(mockClient.db().collection).toHaveBeenCalled()
+      expect(
+        mockClient.db().collection().aggregate().skip,
+      ).toHaveBeenCalledWith(skip)
+      expect(
+        mockClient.db.collection().aggregate().skip().limit,
+      ).toHaveBeenCalledWith(limit)
+      expect(estimates).toEqual(mockEstimates)
     })
   })
 
