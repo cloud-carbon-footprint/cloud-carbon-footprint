@@ -656,9 +656,9 @@ or submit an issue or pull request.
 | Canada         | Canada              |       | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
 | Canada Central | Toronto             |       | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
 | Canada East    | Quebec City         |       | 0.00012               | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
-| Brazil         | Brazil              |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
-| Brazil South   | São Paulo State     |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
-| Brazil South East   | Brazil         |       | 0.0000012             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Brazil         | Brazil              |       | 0.0000617             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Brazil South   | São Paulo State     |       | 0.0000617             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
+| Brazil South East   | Brazil         |       | 0.0000617             | [carbonfootprint.com](https://www.carbonfootprint.com/docs/2022_03_emissions_factors_sources_for_2021_electricity_v11.pdf) |                                               
 
 *These regions may contain sub-regions for alternative data centers within that same location (i.e. North Central US Stage). These sub-regions share the same carbon intensity as the primary region.
 <!-- © 2021 Thoughtworks, Inc. -->
