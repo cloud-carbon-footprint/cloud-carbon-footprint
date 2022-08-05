@@ -146,6 +146,8 @@ describe('MongoDbCacheManager', () => {
 
   describe('loads estimates', () => {
     let mockClient: Partial<MongoClient>
+    let mockLimit
+    let mockSkip
     const testDate = new Date('2022-01-01')
     const mockEstimates: EstimationResult[] = [
       {
@@ -164,6 +166,12 @@ describe('MongoDbCacheManager', () => {
     }
 
     beforeEach(() => {
+      mockLimit = jest.fn().mockImplementation(() => ({
+        toArray: jest.fn().mockResolvedValue(mockEstimates),
+      }))
+      mockSkip = jest.fn().mockImplementation(() => ({
+        limit: mockLimit,
+      }))
       mockClient = {
         db: jest.fn().mockImplementation(() => ({
           listCollections: jest.fn().mockImplementation(() => ({
@@ -173,11 +181,7 @@ describe('MongoDbCacheManager', () => {
           })),
           collection: jest.fn().mockImplementation(() => ({
             aggregate: jest.fn().mockImplementation(() => ({
-              skip: jest.fn().mockImplementation(() => ({
-                limit: jest.fn().mockImplementation(() => ({
-                  toArray: jest.fn().mockResolvedValue(mockEstimates),
-                })),
-              })),
+              skip: mockSkip,
             })),
           })),
         })),
@@ -282,13 +286,8 @@ describe('MongoDbCacheManager', () => {
       // Expected params from request
       const { skip, limit } = requestWithLimitAndSkip
 
-      expect(mockClient.db().collection).toHaveBeenCalled()
-      expect(
-        mockClient.db().collection().aggregate().skip,
-      ).toHaveBeenCalledWith(skip)
-      expect(
-        mockClient.db.collection().aggregate().skip().limit,
-      ).toHaveBeenCalledWith(limit)
+      expect(mockSkip).toHaveBeenCalledWith(skip)
+      expect(mockLimit).toHaveBeenCalledWith(limit)
       expect(estimates).toEqual(mockEstimates)
     })
   })
