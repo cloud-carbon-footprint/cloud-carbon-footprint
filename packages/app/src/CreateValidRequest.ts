@@ -23,6 +23,8 @@ export interface EstimationRequest {
   region?: string
   ignoreCache: boolean
   groupBy?: string
+  limit?: number
+  skip?: number
   //cloudProvider?:CloudProviderEnum
 }
 
@@ -39,6 +41,8 @@ function validate(
   endDate: moment.Moment,
   region?: string,
   groupBy?: string,
+  limit?: string,
+  skip?: string,
 ): void | EstimationRequestValidationError {
   const errors = []
   if (!startDate.isValid()) {
@@ -68,6 +72,14 @@ function validate(
 
   if (groupBy && !Object.keys(GroupBy).includes(groupBy)) {
     errors.push('Please specify a valid groupBy period')
+  }
+
+  if (limit && (isNaN(limit as unknown as number) || parseInt(limit) < 0)) {
+    errors.push('Not a valid limit number')
+  }
+
+  if (skip && (isNaN(skip as unknown as number) || parseInt(skip) <= 0)) {
+    errors.push('Not a valid skip number')
   }
 
   if (errors.length > 0) {
@@ -115,6 +127,8 @@ function rawRequestToEstimationRequest(
   const startMoment = moment.utc(request.startDate)
   const endMoment = moment.utc(request.endDate)
   const groupBy = request.groupBy as GroupBy
+  const limit = parseInt(request.limit) || (request.limit as unknown as number)
+  const skip = parseInt(request.skip) || (request.skip as unknown as number)
 
   return {
     startDate: startMoment.toDate(),
@@ -122,6 +136,8 @@ function rawRequestToEstimationRequest(
     region: request.region,
     ignoreCache,
     groupBy,
+    limit,
+    skip,
   }
 }
 
@@ -134,7 +150,14 @@ export function CreateValidFootprintRequest(
   const startDate = moment.utc(request.startDate)
   const endDate = moment.utc(request.endDate)
 
-  validate(startDate, endDate, request.region, request.groupBy)
+  validate(
+    startDate,
+    endDate,
+    request.region,
+    request.groupBy,
+    request.limit,
+    request.skip,
+  )
   return rawRequestToEstimationRequest(request)
 }
 

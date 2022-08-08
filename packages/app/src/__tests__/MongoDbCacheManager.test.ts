@@ -163,6 +163,7 @@ describe('MongoDbCacheManager', () => {
       startDate: testDate,
       endDate: new Date('2022-01-02'),
       ignoreCache: false,
+      groupBy: 'day',
     }
 
     beforeEach(() => {
@@ -288,6 +289,33 @@ describe('MongoDbCacheManager', () => {
 
       expect(mockSkip).toHaveBeenCalledWith(skip)
       expect(mockLimit).toHaveBeenCalledWith(limit)
+      expect(estimates).toEqual(mockEstimates)
+    })
+
+    it('paginates estimates with default limit and skip values', async () => {
+      const requestWithLimitAndSkip = {
+        ...request,
+      }
+
+      jest.spyOn(console, 'info').mockImplementation()
+
+      const mongoDbCacheManager = new MongoDbCacheManager()
+
+      jest
+        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
+        .mockImplementation(async () => {
+          mongoDbCacheManager.mongoClient = mockClient as MongoClient
+        })
+
+      await mongoDbCacheManager.createDbConnection()
+      const estimates = await mongoDbCacheManager.loadEstimates(
+        mongoDbCacheManager.mongoClient.db(mongoDbCacheManager.mongoDbName),
+        'estimates-by-day',
+        requestWithLimitAndSkip,
+      )
+
+      expect(mockSkip).toHaveBeenCalledWith(0)
+      expect(mockLimit).toHaveBeenCalledWith(365)
       expect(estimates).toEqual(mockEstimates)
     })
   })

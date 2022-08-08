@@ -8,6 +8,14 @@ import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
 
+const defaultGroupByLimits: { [key: string]: number } = {
+  day: 365,
+  week: 52,
+  month: 12,
+  quarter: 4,
+  year: 1,
+}
+
 export default class MongoDbCacheManager extends CacheManager {
   mongoClient: MongoClient
   mongoDbName: string
@@ -41,6 +49,10 @@ export default class MongoDbCacheManager extends CacheManager {
       moment.utc(request.startDate).startOf(unitOfTime) as unknown as Date,
     )
     const endDate = new Date(request.endDate)
+
+    const limit = request.limit || defaultGroupByLimits[request.groupBy]
+    const skip = request.skip || 0
+
     return new Promise(function (resolve, reject) {
       db.listCollections({ name: collectionName }).next(
         async (err: Error, collectionInfo: any) => {
@@ -55,6 +67,9 @@ export default class MongoDbCacheManager extends CacheManager {
               estimates
                 .aggregate(
                   [
+                    {
+                      $match: { timestamp: { $gte: startDate, $lte: endDate } },
+                    },
                     {
                       $group: {
                         _id: '$timestamp',
@@ -72,13 +87,23 @@ export default class MongoDbCacheManager extends CacheManager {
                       ],
                     },
                     {
-                      $match: { timestamp: { $gte: startDate, $lte: endDate } },
+                      $setWindowFields: {
+                        sortBy: { timestamp: 1 },
+                        output: {
+                          index: {
+                            $documentNumber: {},
+                          },
+                          periodTotal: {
+                            $sum: 1,
+                          },
+                        },
+                      },
                     },
                   ],
                   { allowDiskUse: true },
                 )
-                .skip(request.skip)
-                .limit(request.limit)
+                .skip(skip)
+                .limit(limit)
                 .toArray() as EstimationResult[],
             )
           } else {
