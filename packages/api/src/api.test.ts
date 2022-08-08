@@ -123,6 +123,27 @@ describe('api', () => {
         //assert
         expect(response.status).toBe(400)
       })
+
+      it('throw 400 error if invalid limit or skip is passed', async () => {
+        //setup
+        const startDate = '2020-07-12'
+        const endDate = '2020-07-13'
+        const limit = 'limit'
+        const skip = 'skip'
+
+        const expectedResponse: EstimationResult[] = []
+        mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
+
+        //run
+        const response = await request(server).get(
+          encodeURI(
+            `/footprint?start=${startDate}&end=${endDate}&limit=${limit}&skip=${skip}`,
+          ),
+        )
+
+        //assert
+        expect(response.status).toBe(400)
+      })
     })
   })
 

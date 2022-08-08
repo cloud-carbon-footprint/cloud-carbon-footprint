@@ -8,6 +8,8 @@ export interface FootprintEstimatesRawRequest {
   region?: string
   ignoreCache?: string
   groupBy?: string
+  limit?: string
+  skip?: string
 }
 
 export interface RecommendationsRawRequest {

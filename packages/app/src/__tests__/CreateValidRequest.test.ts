@@ -190,6 +190,25 @@ describe('CreateValidRequest', () => {
     )
   })
 
+  it.each([
+    [1, 'test', 'Not a valid skip number'],
+    ['test', 1, 'Not a valid limit number'],
+    [-1, 1, 'Not a valid limit number'],
+    [1, -1, 'Not a valid skip number'],
+  ])(
+    'ensures limit and skip values are numbers',
+    (limit: number | string, skip: number | string, errorMsg: string) => {
+      const input = {
+        startDate: '2000-07-10',
+        endDate: '2020-07-10',
+        region: 'us-east-1',
+        limit,
+        skip,
+      }
+      expect(() => CreateValidFootprintRequest(input)).toThrow(errorMsg)
+    },
+  )
+
   describe('given: groupBy param', () => {
     //use tests parametrization for the rest of the test cases
     it('should return group by specified', () => {

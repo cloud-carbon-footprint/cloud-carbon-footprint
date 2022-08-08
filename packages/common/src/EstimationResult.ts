@@ -12,6 +12,8 @@ export interface EstimationResult {
   periodStartDate: Date
   periodEndDate: Date
   groupBy: GroupBy
+  index?: number
+  periodTotal?: number
 }
 
 export interface ServiceData {
