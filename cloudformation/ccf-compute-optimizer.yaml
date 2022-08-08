@@ -47,7 +47,7 @@ Resources:
         RestrictPublicBuckets: True
       BucketName: !Ref CentralBucketName
   centralBucketPolicy:
-    DependsOn: centralBucket
+    Condition: CreateCentralBucketCond
     Type: 'AWS::S3::BucketPolicy'
     Properties:
       Bucket: !Ref centralBucket
@@ -56,13 +56,24 @@ Resources:
         Statement:
           - Effect: "Allow"
             Principal:
-              AWS: "arn:aws:iam::${AWS::AccountId}:role/${CCFRoleName}"
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:role/${CCFRoleName}"
             Action:
               - "s3:ListBucket"
               - "s3:GetObject"
             Resource:
               - !Sub "arn:aws:s3:::${CentralBucketName}"
               - !Sub "arn:aws:s3:::${CentralBucketName}/*"
+          - Sid: AllowSSLRequestsOnly # AWS Foundational Security Best Practices v1.0.0 S3.5
+            Effect: "Deny"
+            Principal: "*"
+            Action:
+              - "s3:*"
+            Resource:
+              - !Sub "arn:aws:s3:::${CentralBucketName}"
+              - !Sub "arn:aws:s3:::${CentralBucketName}/*"
+            Condition:
+              Bool:
+                'aws:SecureTransport': false
   LambdaExecutionRole:
     Condition: USWest2
     Type: AWS::IAM::Role
