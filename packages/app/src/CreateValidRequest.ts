@@ -78,7 +78,7 @@ function validate(
     errors.push('Not a valid limit number')
   }
 
-  if (skip && (isNaN(skip as unknown as number) || parseInt(skip) <= 0)) {
+  if (skip && (isNaN(skip as unknown as number) || parseInt(skip) < 0)) {
     errors.push('Not a valid skip number')
   }
 
@@ -123,22 +123,17 @@ function validateRecommendationTarget(
 function rawRequestToEstimationRequest(
   request: FootprintEstimatesRawRequest,
 ): EstimationRequest {
-  const ignoreCache = request.ignoreCache === 'true'
-  const startMoment = moment.utc(request.startDate)
-  const endMoment = moment.utc(request.endDate)
-  const groupBy = request.groupBy as GroupBy
-  const limit = parseInt(request.limit) || (request.limit as unknown as number)
-  const skip = parseInt(request.skip) || (request.skip as unknown as number)
-
-  return {
-    startDate: startMoment.toDate(),
-    endDate: endMoment.toDate(),
+  const estimationRequest: EstimationRequest = {
+    startDate: moment.utc(request.startDate).toDate(),
+    endDate: moment.utc(request.endDate).toDate(),
+    ignoreCache: request.ignoreCache === 'true',
+    groupBy: request.groupBy,
     region: request.region,
-    ignoreCache,
-    groupBy,
-    limit,
-    skip,
   }
+  if (request.limit) estimationRequest['limit'] = parseInt(request.limit)
+  if (request.skip) estimationRequest['skip'] = parseInt(request.skip)
+
+  return estimationRequest
 }
 
 // throws EstimationRequestValidationError if either validation fails
