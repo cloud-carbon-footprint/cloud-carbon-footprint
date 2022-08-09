@@ -146,8 +146,6 @@ describe('MongoDbCacheManager', () => {
 
   describe('loads estimates', () => {
     let mockClient: Partial<MongoClient>
-    let mockLimit
-    let mockSkip
     const testDate = new Date('2022-01-01')
     const mockEstimates: EstimationResult[] = [
       {
@@ -167,12 +165,6 @@ describe('MongoDbCacheManager', () => {
     }
 
     beforeEach(() => {
-      mockLimit = jest.fn().mockImplementation(() => ({
-        toArray: jest.fn().mockResolvedValue(mockEstimates),
-      }))
-      mockSkip = jest.fn().mockImplementation(() => ({
-        limit: mockLimit,
-      }))
       mockClient = {
         db: jest.fn().mockImplementation(() => ({
           listCollections: jest.fn().mockImplementation(() => ({
@@ -182,7 +174,7 @@ describe('MongoDbCacheManager', () => {
           })),
           collection: jest.fn().mockImplementation(() => ({
             aggregate: jest.fn().mockImplementation(() => ({
-              skip: mockSkip,
+              toArray: jest.fn().mockResolvedValue(mockEstimates),
             })),
           })),
         })),
@@ -258,65 +250,6 @@ describe('MongoDbCacheManager', () => {
         'Creating new database collection: estimates-by-day',
       )
       expect(estimates).toEqual([])
-    })
-
-    it('paginates estimates when given a limit and skip value from the request', async () => {
-      const requestWithLimitAndSkip = {
-        ...request,
-        limit: 100,
-        skip: 50,
-      }
-
-      jest.spyOn(console, 'info').mockImplementation()
-
-      const mongoDbCacheManager = new MongoDbCacheManager()
-
-      jest
-        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
-        .mockImplementation(async () => {
-          mongoDbCacheManager.mongoClient = mockClient as MongoClient
-        })
-
-      await mongoDbCacheManager.createDbConnection()
-      const estimates = await mongoDbCacheManager.loadEstimates(
-        mongoDbCacheManager.mongoClient.db(mongoDbCacheManager.mongoDbName),
-        'estimates-by-day',
-        requestWithLimitAndSkip,
-      )
-
-      // Expected params from request
-      const { skip, limit } = requestWithLimitAndSkip
-
-      expect(mockSkip).toHaveBeenCalledWith(skip)
-      expect(mockLimit).toHaveBeenCalledWith(limit)
-      expect(estimates).toEqual(mockEstimates)
-    })
-
-    it('paginates estimates with default limit and skip values', async () => {
-      const requestWithLimitAndSkip = {
-        ...request,
-      }
-
-      jest.spyOn(console, 'info').mockImplementation()
-
-      const mongoDbCacheManager = new MongoDbCacheManager()
-
-      jest
-        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
-        .mockImplementation(async () => {
-          mongoDbCacheManager.mongoClient = mockClient as MongoClient
-        })
-
-      await mongoDbCacheManager.createDbConnection()
-      const estimates = await mongoDbCacheManager.loadEstimates(
-        mongoDbCacheManager.mongoClient.db(mongoDbCacheManager.mongoDbName),
-        'estimates-by-day',
-        requestWithLimitAndSkip,
-      )
-
-      expect(mockSkip).toHaveBeenCalledWith(0)
-      expect(mockLimit).toHaveBeenCalledWith(365)
-      expect(estimates).toEqual(mockEstimates)
     })
   })
 
