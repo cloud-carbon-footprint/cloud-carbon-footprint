@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment, { Moment } from 'moment'
+import moment, { Moment, unitOfTime } from 'moment'
 import R from 'ramda'
 import {
   configLoader,
@@ -61,6 +61,10 @@ export default function cache(): any {
       const cacheManager =
         cacheManagerServices[configLoader().CACHE_MODE] ||
         cacheManagerServices.LOCAL
+
+      if (configLoader().CACHE_MODE === 'MONGODB') {
+        request = paginateRequest(request)
+      }
 
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request, grouping)
@@ -230,4 +234,26 @@ const fillDates = (
   return [...emptyEstimates, ...estimates].sort(
     (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
   )
+}
+
+export const paginateRequest = (
+  request: EstimationRequest,
+): EstimationRequest => {
+  const { startDate, endDate, groupBy, limit, skip } = request
+
+  const start = moment
+    .utc(startDate)
+    .add(skip, `${groupBy}s` as unitOfTime.DurationConstructor)
+    .toDate()
+
+  const end = moment
+    .utc(start)
+    .add(limit - 1, `${groupBy}s` as unitOfTime.DurationConstructor)
+    .toDate()
+
+  return {
+    ...request,
+    startDate: start,
+    endDate: end < endDate ? end : endDate,
+  }
 }
