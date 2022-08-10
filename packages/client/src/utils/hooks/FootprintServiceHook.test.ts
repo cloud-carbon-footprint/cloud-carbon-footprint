@@ -28,7 +28,7 @@ const ignoreCache = true
 const region = 'us-east-2'
 const baseUrl = '/api'
 const minLoadTimeMs = 10
-const groupBy = 'month'
+const groupBy = 'day'
 
 describe('FootprintServiceHook', () => {
   describe('when baseUrl is null', () => {
@@ -72,7 +72,7 @@ describe('FootprintServiceHook', () => {
           start: '2020-08-26',
           ignoreCache,
           region: region,
-          groupBy: 'month',
+          groupBy: 'day',
           skip: 0,
         },
       })
