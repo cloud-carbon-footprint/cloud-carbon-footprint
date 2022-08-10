@@ -2,12 +2,10 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment, { Moment, unitOfTime } from 'moment'
-import R from 'ramda'
+import moment, { Moment } from 'moment'
 import {
   configLoader,
   EstimationResult,
-  getPeriodEndDate,
   GroupBy,
   Logger,
 } from '@cloud-carbon-footprint/common'
@@ -16,6 +14,12 @@ import GoogleCloudCacheManager from './GoogleCloudCacheManager'
 import LocalCacheManager from './LocalCacheManager'
 import CacheManager from './CacheManager'
 import MongoDbCacheManager from './MongoDbCacheManager'
+import {
+  concat,
+  fillDates,
+  getMissingDates,
+  paginateRequest,
+} from './common/helpers'
 
 /*
  This function provides a decorator. When this decorates a function, that
@@ -128,39 +132,12 @@ const getEstimatesForMissingDates = async (
   return [newEstimates, missingDates]
 }
 
-const getMissingDates = (
-  cachedEstimates: EstimationResult[],
-  request: EstimationRequest,
-): Moment[] => {
-  const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
-    return moment.utc(timestamp)
-  })
-  cachedDates.sort((a, b) => {
-    return a.valueOf() - b.valueOf()
-  })
-
-  const dates: Moment[] = []
-  const missingDates: Moment[] = []
-  const unitOfTime =
-    request.groupBy === 'week'
-      ? 'isoWeek'
-      : (request.groupBy as moment.unitOfTime.StartOf)
-  const current = moment.utc(request.startDate).startOf(unitOfTime)
-  const end = moment.utc(request.endDate)
-  while (current <= end) {
-    dates.push(moment.utc(current.toDate()))
-    current.add(1, request.groupBy as moment.unitOfTime.DurationConstructor)
-  }
-  dates.forEach((date) => {
-    const dateIsCached = !!cachedDates.find((cachedDate) => {
-      return cachedDate.toDate().getTime() == date.toDate().getTime()
-    })
-
-    if (!dateIsCached) missingDates.push(date)
-  })
-  return missingDates
-}
-
+/**
+ * Returns an array of EstimationRequests with start/end date timeframes for each missing date according to grouping method
+ * @param missingDates - Array of missing dates
+ * @param request     - Original request object with start and end date
+ * @returns           - Array of EstimationRequests with start/end date timeframes for each missing date
+ */
 const getMissingDataRequests = (
   missingDates: Moment[],
   request: EstimationRequest,
@@ -201,59 +178,4 @@ const getMissingDataRequests = (
       region: request.region,
     }
   })
-}
-
-const concat = (
-  cachedEstimates: EstimationResult[],
-  estimates: EstimationResult[],
-) => {
-  return [...cachedEstimates, ...estimates].sort((a, b) => {
-    return a.timestamp.getTime() - b.timestamp.getTime()
-  })
-}
-
-const fillDates = (
-  missingDates: Moment[],
-  estimates: EstimationResult[],
-  grouping: GroupBy,
-): EstimationResult[] => {
-  const dates: Moment[] = estimates.map(({ timestamp }) => {
-    return moment.utc(timestamp)
-  })
-
-  const difference = R.difference(missingDates, dates)
-  const emptyEstimates = difference.map((timestamp) => {
-    return {
-      timestamp: timestamp.toDate(),
-      serviceEstimates: [],
-      periodStartDate: timestamp.toDate(),
-      periodEndDate: getPeriodEndDate(timestamp.toDate(), grouping),
-      groupBy: grouping,
-    }
-  })
-  return [...emptyEstimates, ...estimates].sort(
-    (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
-  )
-}
-
-export const paginateRequest = (
-  request: EstimationRequest,
-): EstimationRequest => {
-  const { startDate, endDate, groupBy, limit, skip } = request
-
-  const start = moment
-    .utc(startDate)
-    .add(skip, `${groupBy}s` as unitOfTime.DurationConstructor)
-    .toDate()
-
-  const end = moment
-    .utc(start)
-    .add(limit - 1, `${groupBy}s` as unitOfTime.DurationConstructor)
-    .toDate()
-
-  return {
-    ...request,
-    startDate: start,
-    endDate: end < endDate ? end : endDate,
-  }
 }

@@ -6,9 +6,12 @@ import {
   getCachedData,
   writeToFile,
   getCacheFileName,
+  paginateRequest,
 } from '../../common/helpers'
 import { Readable, Stream } from 'stream'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
+import { EstimationRequest } from '../../CreateValidRequest'
+import moment from 'moment'
 
 describe('common/helpers.ts', () => {
   it('reads cached data formatted with [] and newlines separators', async () => {
@@ -72,6 +75,52 @@ describe('common/helpers.ts', () => {
       process.env.CCF_CACHE_PATH = 'my-cache-file.json'
       const cacheFile = getCacheFileName('day')
       expect(cacheFile).toEqual('my-cache-file.day.json')
+    })
+  })
+
+  describe('pagination', () => {
+    it('paginates request for skip = 7, limit = 7 and groupBy day', async () => {
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-01-01').toDate(),
+        endDate: moment.utc('2020-01-31').toDate(),
+        ignoreCache: false,
+        groupBy: GroupBy.day,
+        limit: 7,
+        skip: 7,
+      }
+
+      const updatedRawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-01-08').toDate(),
+        endDate: moment.utc('2020-01-14').toDate(),
+        ignoreCache: false,
+        groupBy: GroupBy.day,
+        limit: 7,
+        skip: 7,
+      }
+
+      expect(paginateRequest(rawRequest)).toEqual(updatedRawRequest)
+    })
+
+    it('paginates request using endDate at the end of period date range', async () => {
+      const rawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-01-01').toDate(),
+        endDate: moment.utc('2020-01-31').toDate(),
+        ignoreCache: false,
+        groupBy: GroupBy.day,
+        limit: 10,
+        skip: 25,
+      }
+
+      const updatedRawRequest: EstimationRequest = {
+        startDate: moment.utc('2020-01-26').toDate(),
+        endDate: moment.utc('2020-01-31').toDate(),
+        ignoreCache: false,
+        groupBy: GroupBy.day,
+        limit: 10,
+        skip: 25,
+      }
+
+      expect(paginateRequest(rawRequest)).toEqual(updatedRawRequest)
     })
   })
 })
