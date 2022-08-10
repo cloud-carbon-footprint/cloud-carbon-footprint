@@ -2,10 +2,16 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment from 'moment'
+import moment, { Moment, unitOfTime } from 'moment'
 import { Stream } from 'stream'
 import { DelimitedStream } from '@sovpro/delimited-stream'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  getPeriodEndDate,
+  GroupBy,
+} from '@cloud-carbon-footprint/common'
+import { EstimationRequest } from '../CreateValidRequest'
+import R from 'ramda'
 
 const DATA_WINDOW_SIZE = 100 // this roughly means 100 days per loop
 
@@ -80,4 +86,110 @@ export function getCacheFileName(grouping: string): string {
       ? cachePrefix.substr(0, existingFileExtension)
       : cachePrefix
   return `${prefix}.${grouping}.json`
+}
+
+/**
+ * Returns a modified request with only a subrange of the start/end date provided based on pagination parameters.
+ * @param request               - The original EstimationRequest
+ * @returns EstimationRequest   - The modified EstimationRequest with new start/end dates
+ */
+export const paginateRequest = (
+  request: EstimationRequest,
+): EstimationRequest => {
+  const { startDate, endDate, groupBy, limit, skip } = request
+
+  const start = moment
+    .utc(startDate)
+    .add(skip, `${groupBy}s` as unitOfTime.DurationConstructor)
+    .toDate()
+
+  const end = moment
+    .utc(start)
+    .add(limit - 1, `${groupBy}s` as unitOfTime.DurationConstructor)
+    .toDate()
+
+  return {
+    ...request,
+    startDate: start,
+    endDate: end < endDate ? end : endDate,
+  }
+}
+
+/**
+ * Grabs the estimates that should persist in the cache by removing empty estimates according to the provided missing dates
+ * @param missingDates - An array of dates that are missing from the cache
+ * @param estimates    - An array of estimates that are not in the cache
+ * @param grouping     - The unit of time that the data is grouped by
+ * @returns EstimationResult[] - An array of estimates that should be persisted in the cache
+ */
+export const fillDates = (
+  missingDates: Moment[],
+  estimates: EstimationResult[],
+  grouping: GroupBy,
+): EstimationResult[] => {
+  const dates: Moment[] = estimates.map(({ timestamp }) => {
+    return moment.utc(timestamp)
+  })
+
+  const difference = R.difference(missingDates, dates)
+  const emptyEstimates = difference.map((timestamp) => {
+    return {
+      timestamp: timestamp.toDate(),
+      serviceEstimates: [],
+      periodStartDate: timestamp.toDate(),
+      periodEndDate: getPeriodEndDate(timestamp.toDate(), grouping),
+      groupBy: grouping,
+    }
+  })
+  return [...emptyEstimates, ...estimates].sort(
+    (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+  )
+}
+
+export const concat = (
+  cachedEstimates: EstimationResult[],
+  estimates: EstimationResult[],
+) => {
+  return [...cachedEstimates, ...estimates].sort((a, b) => {
+    return a.timestamp.getTime() - b.timestamp.getTime()
+  })
+}
+
+/**
+ * Returns a list of missing dates within the request according to the provided cached estimates
+ * @param cachedEstimates - An array of cached estimates
+ * @param request         - The original EstimationRequest
+ * @returns Moment[]      - An array of missing dates
+ */
+export const getMissingDates = (
+  cachedEstimates: EstimationResult[],
+  request: EstimationRequest,
+): Moment[] => {
+  const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
+    return moment.utc(timestamp)
+  })
+  cachedDates.sort((a, b) => {
+    return a.valueOf() - b.valueOf()
+  })
+
+  const dates: Moment[] = []
+  const missingDates: Moment[] = []
+  const unitOfTime =
+    request.groupBy === 'week'
+      ? 'isoWeek'
+      : (request.groupBy as moment.unitOfTime.StartOf)
+  const current = moment.utc(request.startDate).startOf(unitOfTime)
+  const end = moment.utc(request.endDate)
+  while (current <= end) {
+    dates.push(moment.utc(current.toDate()))
+    current.add(1, request.groupBy as moment.unitOfTime.DurationConstructor)
+  }
+  dates.forEach((date) => {
+    const dateIsCached = !!cachedDates.find((cachedDate) => {
+      return cachedDate.toDate().getTime() == date.toDate().getTime()
+    })
+
+    if (!dateIsCached) missingDates.push(date)
+  })
+  return missingDates
 }
