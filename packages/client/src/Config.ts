@@ -13,6 +13,7 @@ export interface ClientConfig {
     TYPE: string
   }
   GROUP_BY: string
+  PAGE_LIMIT: number
   BASE_URL: string
   MINIMAL_DATE_AGE: string
 }
@@ -20,6 +21,16 @@ export interface ClientConfig {
 const previousYearOfUsage =
   !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE &&
   process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE !== 'false'
+
+const defaultLimitsByGrouping = {
+  day: 90,
+  week: 13,
+  month: 4,
+  quarter: 2,
+  year: 1,
+}
+
+const groupBy = process.env.REACT_APP_GROUP_BY
 
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
@@ -32,7 +43,10 @@ const appConfig: ClientConfig = {
     VALUE: process.env.REACT_APP_DATE_RANGE_VALUE || '12',
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
-  GROUP_BY: process.env.REACT_APP_GROUP_BY,
+  GROUP_BY: groupBy,
+  PAGE_LIMIT:
+    process.env.REACT_APP_PAGE_LIMIT ||
+    defaultLimitsByGrouping[groupBy || 'day'],
   BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
   MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
 }

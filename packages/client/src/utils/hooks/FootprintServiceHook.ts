@@ -21,6 +21,7 @@ export interface UseRemoteFootprintServiceParams {
   onApiError?: (e: Error) => void
   minLoadTimeMs?: number
   groupBy?: string
+  limit?: number
 }
 
 const useRemoteFootprintService = (
@@ -42,21 +43,37 @@ const useRemoteFootprintService = (
       setError(null)
       setLoading(true)
 
+      let estimates: EstimationResult[] = data
       try {
-        const res = await axios.get(`${params.baseUrl}/footprint`, {
-          params: {
-            start: start,
-            end: end,
-            region: params.region,
-            ignoreCache: params.ignoreCache,
-            groupBy: params.groupBy,
-          },
-        })
-        setData(res.data)
+        let lastDate = moment.utc(start)
+        const endDate = moment.utc(end)
+        let skip = 0
+        while (
+          !lastDate.isSame(endDate, params.groupBy as moment.unitOfTime.StartOf)
+        ) {
+          const res = await axios.get(`${params.baseUrl}/footprint`, {
+            params: {
+              start: start,
+              end: end,
+              region: params.region,
+              ignoreCache: params.ignoreCache,
+              groupBy: params.groupBy,
+              limit: params.limit,
+              skip,
+            },
+          })
+          estimates = estimates.concat(res.data)
+          lastDate =
+            moment.utc(res.data[res.data.length - 1]?.timestamp) ?? endDate
+          skip += params.limit
+        }
       } catch (e) {
         setError(e)
       } finally {
-        setTimeout(() => setLoading(false), params.minLoadTimeMs ?? 1000)
+        setData(estimates)
+        setTimeout(() => {
+          setLoading(false)
+        }, params.minLoadTimeMs ?? 1000)
       }
     }
 
@@ -69,6 +86,7 @@ const useRemoteFootprintService = (
     setError,
     params.baseUrl,
     params.groupBy,
+    params.limit,
   ])
 
   return { data, loading, error }

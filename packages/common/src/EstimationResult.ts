@@ -9,8 +9,8 @@ import { getPeriodEndDate } from './helpers'
 export interface EstimationResult {
   readonly timestamp: Date
   readonly serviceEstimates: ServiceData[]
-  periodStartDate: Date
-  periodEndDate: Date
+  periodStartDate?: Date
+  periodEndDate?: Date
   groupBy: GroupBy
 }
 
