@@ -619,11 +619,11 @@ export default class BillingExportTable {
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
-                    AND usage_start_time BETWEEN TIMESTAMP('${moment
-                      .utc(start)
-                      .format('YYYY-MM-DD')}') AND TIMESTAMP('${moment
-      .utc(end)
-      .format('YYYY-MM-DD')}')
+                    AND usage_start_time BETWEEN TIMESTAMP('${moment(
+                      start,
+                    ).format('YYYY-MM-DD')}') AND TIMESTAMP('${moment(
+      end,
+    ).format('YYYY-MM-DD')}')
                   GROUP BY
                     timestamp,
                     accountId,

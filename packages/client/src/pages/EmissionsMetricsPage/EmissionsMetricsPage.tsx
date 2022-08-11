@@ -48,7 +48,7 @@ export default function EmissionsMetricsPage({
     endDate,
     onApiError,
     groupBy: config.GROUP_BY,
-    limit: config.PAGE_LIMIT,
+    limit: parseInt(config.PAGE_LIMIT as unknown as string),
   })
 
   if (footprint.loading) {

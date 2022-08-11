@@ -44,9 +44,6 @@ const FootprintApiMiddleware = async function (
     limit: req.query.limit?.toString(),
     skip: req.query.skip?.toString(),
   }
-  apiLogger.info(
-    `Footprint API request started with Start Date: ${rawRequest.startDate} and End Date: ${rawRequest.endDate}`,
-  )
   if (!rawRequest.groupBy)
     apiLogger.warn(
       'GroupBy parameter not specified. This will be required in the future.',
