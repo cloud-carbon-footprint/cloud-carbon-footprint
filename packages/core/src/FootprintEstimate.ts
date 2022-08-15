@@ -39,7 +39,9 @@ export const aggregateEstimatesByDay = (
     estimate.timestamp.toISOString().substr(0, 10)
 
   const accumulatingFn = (acc: FootprintEstimate, value: FootprintEstimate) => {
-    acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
+    if (acc.timestamp.getTime() === new Date(0).getTime()) {
+      acc.timestamp = new Date(getDayOfEstimate(value))
+    }
     acc.kilowattHours += value.kilowattHours
     acc.co2e += value.co2e
     if (value.usesAverageCPUConstant) {
@@ -54,7 +56,7 @@ export const aggregateEstimatesByDay = (
     {
       kilowattHours: 0,
       co2e: 0,
-      timestamp: undefined,
+      timestamp: new Date(0),
       usesAverageCPUConstant: false,
     },
     getDayOfEstimate,
