@@ -18,6 +18,7 @@ import {
 import { fakeEmissionFactors, generateEstimations } from '../../utils/data'
 import { ServiceResult } from '../../Types'
 import EmissionsMetricsPage from './EmissionsMetricsPage'
+import loadConfig from '../../ConfigLoader'
 
 jest.mock('apexcharts')
 jest.mock('../../utils/hooks/FootprintServiceHook')
@@ -25,7 +26,7 @@ jest.mock('../../utils/hooks/EmissionFactorServiceHook')
 jest.mock('../../utils/themes')
 jest.mock('../../ConfigLoader', () => ({
   __esModule: true,
-  default: () => ({
+  default: jest.fn().mockImplementation(() => ({
     CURRENT_PROVIDERS: [
       { key: 'aws', name: 'AWS' },
       { key: 'gcp', name: 'GCP' },
@@ -36,7 +37,7 @@ jest.mock('../../ConfigLoader', () => ({
       TYPE: 'days',
     },
     BASE_URL: '/api',
-  }),
+  })),
 }))
 
 const mockedUseEmissionFactorService =
@@ -52,6 +53,19 @@ describe('Emissions Metrics Page', () => {
   let data: EstimationResult[]
 
   beforeEach(() => {
+    ;(loadConfig as jest.Mock).mockImplementation(() => ({
+      CURRENT_PROVIDERS: [
+        { key: 'aws', name: 'AWS' },
+        { key: 'gcp', name: 'GCP' },
+      ],
+      PREVIOUS_YEAR_OF_USAGE: true,
+      DATE_RANGE: {
+        VALUE: '7',
+        TYPE: 'days',
+      },
+      BASE_URL: '/api',
+    }))
+
     data = generateEstimations(moment.utc(), 14)
 
     const mockReturnValue: ServiceResult<EstimationResult> = {
@@ -69,8 +83,7 @@ describe('Emissions Metrics Page', () => {
   })
 
   afterEach(() => {
-    mockedUseEmissionFactorService.mockClear()
-    mockUseRemoteService.mockClear()
+    jest.clearAllMocks()
   })
 
   it('should passed in to remote service hook today and january first of the last year', () => {
@@ -83,6 +96,36 @@ describe('Emissions Metrics Page', () => {
     expect(parameters.startDate.month()).toEqual(0)
     expect(parameters.startDate.date()).toEqual(1)
     expect(parameters.endDate.isSame(moment.utc(), 'day')).toBeTruthy()
+    expect(parameters.baseUrl).toEqual('/api')
+    expect(parameters.onApiError).toEqual(onApiError)
+  })
+
+  it('should pass custom dates (when provided) into the service hook', () => {
+    const onApiError = jest.fn()
+    ;(loadConfig as jest.Mock).mockImplementation(() => ({
+      CURRENT_PROVIDERS: [
+        { key: 'aws', name: 'AWS' },
+        { key: 'gcp', name: 'GCP' },
+      ],
+      PREVIOUS_YEAR_OF_USAGE: false,
+      DATE_RANGE: {
+        VALUE: '7',
+        TYPE: 'days',
+      },
+      BASE_URL: '/api',
+      START_DATE: '2020-01-01',
+      END_DATE: '2020-01-31',
+    }))
+
+    const expectedStartDate = moment.utc('2020-01-01').toDate()
+    const expectedEndDate = moment.utc('2020-01-31').toDate()
+
+    render(<EmissionsMetricsPage onApiError={onApiError} />)
+
+    const parameters = mockUseRemoteService.mock.calls[0][0]
+
+    expect(parameters.startDate.toDate()).toEqual(expectedStartDate)
+    expect(parameters.endDate.toDate()).toEqual(expectedEndDate)
     expect(parameters.baseUrl).toEqual('/api')
     expect(parameters.onApiError).toEqual(onApiError)
   })

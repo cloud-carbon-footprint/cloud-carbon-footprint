@@ -180,7 +180,7 @@ fileignoreconfig:
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookupTable.test.ts.snap
   checksum: cc7e5bbdeca11f8a76a5bd067de7cbb63c87e77aac940064bac414b5e0db3702
 - filename: packages/client/.env.template
-  checksum: ab327736d68e90854fa46f78da7c884d2a44bbe422929c95b8da421e73a08d14
+  checksum: e66327761d2c15c9c4e3ce86f733aa55aa9f3cf7aafb9fc2dcb4e0d0c8850845
 - filename: packages/client/create_client_env_file.sh
   checksum: 2ebf0978d768edd6423a9f5f3b0f3fcdbe2c484d69152c6125575ff93e9708f4
 - filename: packages/client/src/common/FilterBar/FilterBar.tsx
@@ -225,6 +225,8 @@ fileignoreconfig:
   checksum: 7a6fee67c4d98c6d43e79fe5131389ff4691a8525725a865356c817959a076e9
 - filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsFilterBar/utils/FiltersUtil.ts
   checksum: 4a9658d657df170c27f66189a68561fb1699216c09b4513c2701508a6c06630e
+- filename: packages/client/src/pages/EmissionsMetricsPage/EmissionsMetricsPage.test.tsx
+  checksum: 16ab96f11c5fff523f3ffbcdb5c5fc5fd23daccbb5a57806f978b882259b32de
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/FilterBar.tsx
   checksum: 1afc8c8a0ee61c1b92c332db9f90cb8677d0d1fcc810135c90b8635a19609268
 - filename: packages/client/src/pages/EmissionsMetricsPage/FilterBar/Filters/ServiceFilter/ServiceFilter.test.tsx
