@@ -1,8 +1,13 @@
+import { useMemo } from 'react'
+import moment from 'moment'
+import {
+  RecommendationResult,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
 import {
   useRemoteFootprintService,
   useRemoteRecommendationsService,
 } from './index'
-import moment from 'moment'
 import {
   EmissionsAndRecommendationResults,
   FilterBarProps,
@@ -13,11 +18,7 @@ import { useFilterDataFromRecommendations } from '../helpers/transformData'
 import { RecommendationsFilters } from '../../pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters'
 import useFilters from '../../common/FilterBar/utils/FilterHook'
 import { UseRemoteRecommendationServiceParams } from './RecommendationsServiceHook'
-import { useMemo } from 'react'
-import {
-  RecommendationResult,
-  ServiceData,
-} from '@cloud-carbon-footprint/common'
+import loadConfig from '../../ConfigLoader'
 
 interface RecommendationsData {
   loading: boolean
@@ -30,15 +31,17 @@ interface RecommendationsData {
 export const useRecommendationData = (
   params: UseRemoteRecommendationServiceParams & { groupBy?: string },
 ): RecommendationsData => {
+  const config = loadConfig()
   const recommendations = useRemoteRecommendationsService(params)
 
   const footprint = useRemoteFootprintService({
     baseUrl: params.baseUrl,
     onApiError: params.onApiError,
-    startDate: moment.utc().subtract('1', 'month'),
-    endDate: moment.utc(),
+    startDate: moment.utc(config.END_DATE).subtract('1', 'month'),
+    endDate: moment.utc(config.END_DATE) || moment.utc(),
     ignoreCache: true,
-    groupBy: params.groupBy,
+    groupBy: 'month',
+    limit: parseInt(config.PAGE_LIMIT as unknown as string),
   })
 
   const combinedData: EmissionsAndRecommendationResults = useMemo(

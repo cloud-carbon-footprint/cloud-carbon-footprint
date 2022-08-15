@@ -1,5 +1,5 @@
 /*
- * © 2021 Thoughtworks, Inc.
+ * © 2022 Thoughtworks, Inc.
  */
 import { Selector } from 'testcafe'
 
@@ -15,7 +15,7 @@ class Page {
 
     //main components
     this.cloudProviders = Selector('span').withText('Cloud Providers: 3 of 3')
-    this.accounts = Selector('span').withText('Accounts: 12 of 12') //todo: minimize dataset-specific selectors
+    this.accounts = Selector('span').withText('Accounts: 15 of 15') //todo: minimize dataset-specific selectors
     this.services = Selector('span').withText('Services: 8 of 8')
     this.lineChart = Selector('#apexchartslineChart')
     this.carbonComparisonCard = Selector('#carbonComparisonCard')

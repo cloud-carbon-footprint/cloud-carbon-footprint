@@ -16,6 +16,8 @@ export interface ClientConfig {
   PAGE_LIMIT: number
   BASE_URL: string
   MINIMAL_DATE_AGE: string
+  START_DATE: string
+  END_DATE: string
 }
 
 const previousYearOfUsage =
@@ -49,6 +51,8 @@ const appConfig: ClientConfig = {
     defaultLimitsByGrouping[groupBy || 'day'],
   BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
   MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
+  START_DATE: process.env.REACT_APP_START_DATE,
+  END_DATE: process.env.REACT_APP_END_DATE,
 }
 
 export default appConfig
