@@ -37,8 +37,8 @@ export const useRecommendationData = (
   const footprint = useRemoteFootprintService({
     baseUrl: params.baseUrl,
     onApiError: params.onApiError,
-    startDate: moment.utc(config.END_DATE).subtract('1', 'month'),
-    endDate: moment.utc(config.END_DATE) || moment.utc(),
+    startDate: moment.utc().subtract('1', 'month'),
+    endDate: moment.utc(),
     ignoreCache: true,
     groupBy: 'month',
     limit: parseInt(config.PAGE_LIMIT as unknown as string),

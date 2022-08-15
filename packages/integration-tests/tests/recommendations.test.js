@@ -52,9 +52,9 @@ test('toggle changes unit of measure', async (t) => {
   await t
     .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Metric Tons CO2e')
-  await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('40') //todo: minimize dataset-specific selectors
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('0') //todo: minimize dataset-specific selectors
   await t.expect(page.co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
-  await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$32.98')
+  await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$0')
   await t.expect(page.costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
   //check first cell
   await t
@@ -70,9 +70,9 @@ test('toggle changes unit of measure', async (t) => {
   await t
     .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
     .eql('Kilograms CO2e')
-  await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('40,000') //todo: minimize dataset-specific selectors
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('0') //todo: minimize dataset-specific selectors
   await t.expect(page.co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
-  await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$32.98')
+  await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$0')
   await t.expect(page.costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
   await t
     .expect(page.tableSavingsColumn.textContent)
