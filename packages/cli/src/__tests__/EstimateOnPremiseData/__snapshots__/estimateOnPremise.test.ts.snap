@@ -2,12 +2,12 @@
 
 exports[`estimateOnPremiseData creates on premise estimates CSV creates on premise CSV file, with default output file path 1`] = `
 "cpuDescription,machineName,memory,machineType,startTime,endTime,country,region,cpuUtilization,powerUsageEffectiveness,cost,dailyUptime,dailyKilowattHours,dailyCo2e,weeklyUptime,weeklyKilowattHours,weeklyCo2e,monthlyUptime,monthlyKilowattHours,monthlyCo2e,annualUptime,annualKilowattHours,annualCo2e
-Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,test-machine-name,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,,,93.12,4,0.2528,0.000104740096,12,0.7584000000000001,0.000314220288,36,2.2752000000000003,0.0009426608640000001,36,2.2752000000000003,0.0009426608640000001
+Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,test-machine-name,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,,,93.12,4,2.597204,0.00107607356128,12,7.791612000000001,0.00322822068384,36,23.374836000000002,0.00968466205152,36,23.374836000000002,0.00968466205152
 "
 `;
 
 exports[`estimateOnPremiseData creates on premise estimates CSV creates on premise CSV file, with provided output file name 1`] = `
 "cpuDescription,machineName,memory,machineType,startTime,endTime,country,region,cpuUtilization,powerUsageEffectiveness,cost,dailyUptime,dailyKilowattHours,dailyCo2e,weeklyUptime,weeklyKilowattHours,weeklyCo2e,monthlyUptime,monthlyKilowattHours,monthlyCo2e,annualUptime,annualKilowattHours,annualCo2e
-Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,test-machine-name,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,,,93.12,4,0.2528,0.000104740096,12,0.7584000000000001,0.000314220288,36,2.2752000000000003,0.0009426608640000001,36,2.2752000000000003,0.0009426608640000001
+Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz,130690,test-machine-name,server,2022-01-17T13:38:18Z,2022-01-24T18:22:29.918423Z,United States,Texas,,,93.12,4,2.597204,0.00107607356128,12,7.791612000000001,0.00322822068384,36,23.374836000000002,0.00968466205152,36,23.374836000000002,0.00968466205152
 "
 `;
