@@ -7,7 +7,6 @@ export const validateInputData = (inputData: OnPremiseDataInput[]) => {
   inputData.map((inputRow: OnPremiseDataInput) => {
     if (
       !inputRow.cpuDescription ||
-      !inputRow.machineName ||
       !inputRow.machineType ||
       !inputRow.memory ||
       !inputRow.startTime ||
