@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
     "start-client": "BROWSER=none REACT_APP_START_DATE=2020-01-01 REACT_APP_END_DATE=2021-03-01 yarn workspace @cloud-carbon-footprint/client start",
-    "start-api": "TEST_MODE=true yarn workspace @cloud-carbon-footprint/api start",
+    "start-api": "TEST_MODE=true CACHE_MODE=LOCAL yarn workspace @cloud-carbon-footprint/api start",
     "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
     "headed": "testcafe 'chrome'",
     "precommit": "lint-staged --no-stash && yarn headless",
