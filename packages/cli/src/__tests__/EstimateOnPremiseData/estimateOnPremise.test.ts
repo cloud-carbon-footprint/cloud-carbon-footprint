@@ -4,9 +4,33 @@
 
 import fs from 'fs'
 import path from 'path'
-
-import estimateOnPremiseData from '../../EstimateOnPremiseData/estimateOnPremiseData'
 import process from 'process'
+import estimateOnPremiseData from '../../EstimateOnPremiseData/estimateOnPremiseData'
+
+jest.mock('@cloud-carbon-footprint/common', () => ({
+  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
+    string,
+    unknown
+  >),
+  configLoader: jest.fn().mockImplementation(() => {
+    return {
+      ON_PREMISE: {
+        SERVER: {
+          CPU_UTILIZATION: undefined,
+          AVERAGE_WATTS: undefined,
+        },
+        LAPTOP: {
+          CPU_UTILIZATION: undefined,
+          AVERAGE_WATTS: undefined,
+        },
+        DESKTOP: {
+          CPU_UTILIZATION: undefined,
+          AVERAGE_WATTS: undefined,
+        },
+      },
+    }
+  }),
+}))
 
 describe('estimateOnPremiseData', () => {
   let inputFilePath: string
