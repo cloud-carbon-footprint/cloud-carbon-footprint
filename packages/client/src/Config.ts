@@ -18,6 +18,7 @@ export interface ClientConfig {
   MINIMAL_DATE_AGE: string
   START_DATE: string
   END_DATE: string
+  DISABLE_CACHE: boolean
 }
 
 const previousYearOfUsage =
@@ -53,6 +54,7 @@ const appConfig: ClientConfig = {
   MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
   START_DATE: process.env.REACT_APP_START_DATE,
   END_DATE: process.env.REACT_APP_END_DATE,
+  DISABLE_CACHE: process.env.REACT_APP_DISABLE_CACHE === 'true',
 }
 
 export default appConfig

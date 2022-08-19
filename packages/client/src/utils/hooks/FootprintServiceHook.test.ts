@@ -239,7 +239,7 @@ describe('FootprintServiceHook', () => {
           baseUrl,
           startDate: start,
           endDate: end,
-          ignoreCache,
+          ignoreCache: false,
           region,
           minLoadTimeMs,
           groupBy: GroupBy.day,
@@ -251,7 +251,7 @@ describe('FootprintServiceHook', () => {
         params: {
           end: '2022-02-05',
           start: '2022-02-01',
-          ignoreCache,
+          ignoreCache: false,
           region: region,
           groupBy: 'day',
           limit: 1,
@@ -267,7 +267,7 @@ describe('FootprintServiceHook', () => {
         params: {
           end: '2022-02-05',
           start: '2022-02-01',
-          ignoreCache,
+          ignoreCache: false,
           region: region,
           groupBy: 'day',
           limit: 1,

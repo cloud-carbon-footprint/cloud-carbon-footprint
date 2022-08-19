@@ -63,8 +63,10 @@ const useRemoteFootprintService = (
             },
           })
           estimates = estimates.concat(res.data)
+          // TODO: Clean up exit condition for last date into single if-statement. If empty response or ignoreCache is true, we should exit.
           lastDate =
             moment.utc(res.data[res.data.length - 1]?.timestamp) ?? endDate
+          if (params.ignoreCache) lastDate = endDate
           skip += params.limit
         }
       } catch (e) {
