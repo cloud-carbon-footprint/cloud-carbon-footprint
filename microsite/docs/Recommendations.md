@@ -45,7 +45,7 @@ To make this easier, we have a [Cloud Formation template](https://github.com/clo
 - **CreateCentralBucket** - a true or false value that determines whether to create the central bucket when you execute the template. Defaults to true.
 - **IncludeMemberAccounts** - a true or false value that specifies whether to export Compute Optimizer recommendations for all accounts in a region. Defaults to true.
 
-This template needs to be executed as an [AWS StackSet](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/what-is-cfnstacksets.html) in the top level or administrator account, and will allow you to select the regions in which you want the above infrastructure to be created.
+This template needs to be executed as an [AWS StackSet](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/what-is-cfnstacksets.html) in the top level or administrator account, and will allow you to select the regions in which you want the above infrastructure to be created. You're welcome to modify the template to include any necessary or preferred security policies for your organization.
 
 #### Additional environment variables required by CCF
 
