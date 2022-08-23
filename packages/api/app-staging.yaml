@@ -6,6 +6,13 @@ basic_scaling:
   max_instances: 20
   idle_timeout: 30m
 
+liveness_check:
+  path: "/healthz"
+  check_interval_sec: 300
+  timeout_sec: 300
+  failure_threshold: 6
+  success_threshold: 1
+
 entrypoint: npm run start:webprod
 
 env_variables:
