@@ -131,7 +131,7 @@ export default class BillingExportTable {
     inputData.map((inputDataRow: LookupTableInput) => {
       const usageRow = {
         serviceName: inputDataRow.serviceName,
-        usageAmount: 1,
+        usageAmount: 3600,
         usageType: inputDataRow.usageType,
         usageUnit: inputDataRow.usageUnit,
         cost: 1,

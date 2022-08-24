@@ -1341,8 +1341,8 @@ describe('GCP BillingExportTable Service', () => {
 
     const expectedResult: LookupTableOutput[] = [
       {
-        co2e: 2.641818055555556e-10,
-        kilowattHours: 7.318055555555556e-7,
+        co2e: 9.510545e-7,
+        kilowattHours: 0.0026345,
         machineType: '',
         region: 'us-east4',
         serviceName: 'Compute Engine',
@@ -1350,8 +1350,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'seconds',
       },
       {
-        co2e: 1.404798642715204e-9,
-        kilowattHours: 0.000003891408982590593,
+        co2e: 0.000005057275113774734,
+        kilowattHours: 0.014009072337326133,
         machineType: 'n1-standard-4',
         region: 'us-east4',
         serviceName: 'Compute Engine',
@@ -1359,8 +1359,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'seconds',
       },
       {
-        co2e: 2.671106420492982e-9,
-        kilowattHours: 0.000007399186760368372,
+        co2e: 0.000009615983113774734,
+        kilowattHours: 0.026637072337326137,
         machineType: 'n1-standard-8',
         region: 'us-east4',
         serviceName: 'Compute Engine',
@@ -1368,8 +1368,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'seconds',
       },
       {
-        co2e: 3.7598510971292856e-23,
-        kilowattHours: 1.7735146684572102e-19,
+        co2e: 1.3535463949665428e-19,
+        kilowattHours: 6.384652806445957e-16,
         machineType: '',
         region: 'europe-west1',
         serviceName: 'Compute Engine',
@@ -1377,8 +1377,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'byte-seconds',
       },
       {
-        co2e: 2.1323561668395997e-16,
-        kilowattHours: 1.0058283805847168e-12,
+        co2e: 7.67648220062256e-13,
+        kilowattHours: 3.6209821701049808e-9,
         machineType: '',
         region: 'europe-west1',
         serviceName: 'Compute Engine',
@@ -1386,8 +1386,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'bytes',
       },
       {
-        co2e: 1.5277692000381648e-22,
-        kilowattHours: 3.3651303965598345e-19,
+        co2e: 5.499969120137394e-19,
+        kilowattHours: 1.2114469427615405e-15,
         machineType: '',
         region: 'us-central1',
         serviceName: 'Compute Engine',
@@ -1395,8 +1395,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'byte-seconds',
       },
       {
-        co2e: 1.3543683796296298e-9,
-        kilowattHours: 0.0000037517129629629636,
+        co2e: 0.0000048757261666666675,
+        kilowattHours: 0.01350616666666667,
         machineType: '',
         region: 'us-east4',
         serviceName: 'App Engine',
@@ -1404,8 +1404,8 @@ describe('GCP BillingExportTable Service', () => {
         usageUnit: 'seconds',
       },
       {
-        co2e: 3.6310404539108276e-16,
-        kilowattHours: 1.0058283805847168e-12,
+        co2e: 1.307174563407898e-12,
+        kilowattHours: 3.6209821701049804e-9,
         machineType: '',
         region: 'us-east4',
         serviceName: 'Compute Engine',
