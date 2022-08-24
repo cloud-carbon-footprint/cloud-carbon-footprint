@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# © 2022 Thoughtworks, Inc.
+# 
 
 copyright="© 202[1-2] Thoughtworks, Inc."
 errorCode=0
@@ -12,6 +15,7 @@ else
     if [[ $file = *"CHANGELOG"* ]]; then continue; fi
     if [[ $file = *".changeset"* ]]; then continue; fi
     if [[ $file = *"microsite/"* ]]; then continue; fi
+    if [[ $file = *".adr/"* ]]; then continue; fi
     holder=$(echo $file | grep -E "^.*\.(ts|tsx|js|jsx|md|sh)$" | wc -l)
     if [ $holder -eq 0 ]; then continue; fi
     if grep -E "$copyright" $file; then continue; fi

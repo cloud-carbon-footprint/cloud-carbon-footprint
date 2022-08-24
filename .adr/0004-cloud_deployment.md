@@ -1,13 +1,22 @@
-# Cloud Deployment
+# 4. Cloud Deployment
+
+Date: 2020-10-01
+
+## Status
+
+Accepted
 
 ## Decision
+
     1) Host application using Google App Engine (GAE) with 2 services:
         - default: static client assets served by express
         - server: Footprint API served by express
     2) Use container images as application artifacts
 
 ## Context
-We wanted to use GAE because it provides a stable, public URL backed by a secure load balancer, as well as serverless compute.
+
+We wanted to use GAE because it provides a stable, public URL backed by a
+secure load balancer, as well as serverless compute.
 
 In general, we value the following:
     - low cost & carbon footprint
