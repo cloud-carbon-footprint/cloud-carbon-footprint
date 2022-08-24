@@ -137,8 +137,10 @@ const setOrAccumulateByServiceAndUsageUnit = (
 
   // Usage unit exists for service - accumulate
   if (kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit]) {
-    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][accumulateBy] +=
-      accumValue
+    kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][accumulateBy] =
+      (kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit][
+        accumulateBy
+      ] || 0) + accumValue
     kilowattHoursByServiceAndUsageUnit[serviceName][usageUnit].kilowattHours +=
       kilowattHours
   }
@@ -152,7 +154,8 @@ const setOrAccumulateUsageUnitTotals = (
 ): void => {
   const { usageUnit, [accumulateBy]: accumValue } = billingDataRow
   if (kilowattHoursByServiceAndUsageUnit.total[usageUnit]) {
-    kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] +=
+    kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] =
+      (kilowattHoursByServiceAndUsageUnit.total[usageUnit][accumulateBy] || 0) +
       accumValue
     kilowattHoursByServiceAndUsageUnit.total[usageUnit].kilowattHours +=
       kilowattHours
@@ -182,37 +185,30 @@ export const appendOrAccumulateEstimatesByDay = (
     cost: rowData.cost,
   }
 
-  if (dayExistsInEstimates(results, rowData.timestamp)) {
-    const estimatesForDay = results.find(
-      (estimate) =>
-        estimate.timestamp.getTime() === rowData.timestamp.getTime(),
-    )
+  const dayFoundInEstimate = results.find(
+    (estimate) => estimate.timestamp.getTime() === rowData.timestamp.getTime(),
+  )
 
-    if (
-      estimateExistsForRegionAndServiceAndAccount(
-        results,
-        rowData.timestamp,
-        serviceEstimate,
-      )
-    ) {
-      const estimateToAcc = estimatesForDay.serviceEstimates.find(
-        (estimateForDay) => {
-          return hasSameRegionAndServiceAndAccount(
-            estimateForDay,
-            serviceEstimate,
-          )
-        },
-      )
-      estimateToAcc.kilowattHours += serviceEstimate.kilowattHours
-      estimateToAcc.co2e += serviceEstimate.co2e
-      estimateToAcc.cost += serviceEstimate.cost
+  if (dayFoundInEstimate) {
+    const estimateFoundWithSameRegionAndServiceAccount =
+      dayFoundInEstimate.serviceEstimates.find((estimateForDay) => {
+        return hasSameRegionAndServiceAndAccount(
+          estimateForDay,
+          serviceEstimate,
+        )
+      })
+    if (estimateFoundWithSameRegionAndServiceAccount) {
+      estimateFoundWithSameRegionAndServiceAccount.kilowattHours +=
+        serviceEstimate.kilowattHours
+      estimateFoundWithSameRegionAndServiceAccount.co2e += serviceEstimate.co2e
+      estimateFoundWithSameRegionAndServiceAccount.cost += serviceEstimate.cost
       if (serviceEstimate.usesAverageCPUConstant) {
-        estimateToAcc.usesAverageCPUConstant =
-          estimateToAcc.usesAverageCPUConstant ||
+        estimateFoundWithSameRegionAndServiceAccount.usesAverageCPUConstant =
+          estimateFoundWithSameRegionAndServiceAccount.usesAverageCPUConstant ||
           serviceEstimate.usesAverageCPUConstant
       }
     } else {
-      estimatesForDay.serviceEstimates.push(serviceEstimate)
+      dayFoundInEstimate.serviceEstimates.push(serviceEstimate)
     }
   } else {
     results.push({
@@ -223,28 +219,6 @@ export const appendOrAccumulateEstimatesByDay = (
       serviceEstimates: [serviceEstimate],
     })
   }
-}
-
-function dayExistsInEstimates(
-  results: MutableEstimationResult[],
-  timestamp: Date,
-): boolean {
-  return results.some(
-    (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
-  )
-}
-
-function estimateExistsForRegionAndServiceAndAccount(
-  results: MutableEstimationResult[],
-  timestamp: Date,
-  serviceEstimate: MutableServiceEstimate,
-): boolean {
-  const estimatesForDay = results.find(
-    (estimate) => estimate.timestamp.getTime() === timestamp.getTime(),
-  )
-  return estimatesForDay.serviceEstimates.some((estimateForDay) => {
-    return hasSameRegionAndServiceAndAccount(estimateForDay, serviceEstimate)
-  })
 }
 
 function hasSameRegionAndServiceAndAccount(
@@ -284,7 +258,7 @@ export function getAverage(nums: number[]): number {
 export function estimateCo2(
   estimatedKilowattHours: number,
   region: string,
-  emissionsFactors?: CloudConstantsEmissionsFactors,
+  emissionsFactors: CloudConstantsEmissionsFactors,
 ): number {
   return (
     estimatedKilowattHours *
@@ -295,7 +269,7 @@ export function estimateCo2(
 export function estimateKwh(
   estimatedCo2e: number,
   region: string,
-  emissionsFactors?: CloudConstantsEmissionsFactors,
+  emissionsFactors: CloudConstantsEmissionsFactors,
   replicationFactor = 1,
 ): number {
   return (
