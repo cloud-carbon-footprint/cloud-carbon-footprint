@@ -33,7 +33,7 @@ const defaultLimitsByGrouping = {
   year: 1,
 }
 
-const groupBy = process.env.REACT_APP_GROUP_BY
+const groupBy = process.env.REACT_APP_GROUP_BY || 'day'
 
 const appConfig: ClientConfig = {
   CURRENT_PROVIDERS: [
@@ -48,8 +48,7 @@ const appConfig: ClientConfig = {
   },
   GROUP_BY: groupBy,
   PAGE_LIMIT:
-    process.env.REACT_APP_PAGE_LIMIT ||
-    defaultLimitsByGrouping[groupBy || 'day'],
+    process.env.REACT_APP_PAGE_LIMIT || defaultLimitsByGrouping[groupBy],
   BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
   MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
   START_DATE: process.env.REACT_APP_START_DATE,
