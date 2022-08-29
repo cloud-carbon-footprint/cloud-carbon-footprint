@@ -15,15 +15,19 @@ export const aggregateCostsByDay = (
   const getDayOfEstimate = (estimate: { timestamp: Date }) =>
     estimate.timestamp.toISOString().substr(0, 10)
   const accumulatingFn = (acc: Cost, value: Cost) => {
-    acc.timestamp = acc.timestamp || new Date(getDayOfEstimate(value))
+    if (acc.timestamp.getTime() === new Date(0).getTime()) {
+      acc.timestamp = new Date(getDayOfEstimate(value))
+    }
     acc.amount += value.amount
-    acc.currency = acc.currency || value.currency
+    if (acc.currency === '') {
+      acc.currency = value.currency
+    }
     return acc
   }
 
   return reduceBy(
     accumulatingFn,
-    { amount: 0, currency: undefined, timestamp: undefined },
+    { timestamp: new Date(0), amount: 0, currency: '' },
     getDayOfEstimate,
     estimates,
   )

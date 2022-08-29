@@ -177,7 +177,7 @@ export const appendOrAccumulateEstimatesByDay = (
     cloudProvider: rowData.cloudProvider,
     kilowattHours: footprintEstimate.kilowattHours,
     co2e: footprintEstimate.co2e,
-    usesAverageCPUConstant: footprintEstimate.usesAverageCPUConstant,
+    usesAverageCPUConstant: !!footprintEstimate?.usesAverageCPUConstant,
     serviceName: rowData.serviceName,
     accountId: rowData.accountId,
     accountName: rowData.accountName,
