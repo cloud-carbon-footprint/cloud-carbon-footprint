@@ -41,10 +41,7 @@ export default class AWSMemoryEstimatesBuilder extends FootprintEstimatesDataBui
     this.usageAmount = rowData.usageAmount
     this.region = rowData.region
     this.powerUsageEffectiveness = AWS_CLOUD_CONSTANTS.getPUE(this.region)
-    this.computeProcessors = this.getComputeProcessors(
-      rowData.instanceType,
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
-    )
+    this.computeProcessors = rowData.getComputeProcessors()
     this.memoryUsage = this.getMemoryUsage()
     this.memoryConstants = this.getMemoryConstants()
     this.memoryFootprint = this.getMemoryFootprint(

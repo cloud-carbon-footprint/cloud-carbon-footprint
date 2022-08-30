@@ -49,6 +49,7 @@ import {
   athenaMockGetQueryResultsWithNoUsageAmount,
   athenaMockGetQueryResultsWithUnknownInstanceType,
   athenaMockGetQueryResultsWithGPUInstances,
+  athenaMockGetQueryResultsWithX86AndARMLambdas,
 } from './fixtures/athena.fixtures'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
@@ -1766,6 +1767,74 @@ describe('CostAndUsageReports Service', () => {
         groupBy: grouping,
         periodEndDate: new Date('2022-01-01T23:59:59.000Z'),
         periodStartDate: new Date('2022-01-01T00:00:00.000Z'),
+      },
+    ]
+
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for both x86 and ARM Lambdas', async () => {
+    mockStartQueryExecution(startQueryExecutionResponse)
+    mockGetQueryExecution(getQueryExecutionResponse)
+    mockGetQueryResults(athenaMockGetQueryResultsWithX86AndARMLambdas)
+
+    const athenaService = new CostAndUsageReports(
+      new ComputeEstimator(),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AWS_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AWS_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AWS_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AWS_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AWS_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      getServiceWrapper(),
+    )
+
+    const result = await athenaService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2022-01-01'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0000000012668275386111113,
+            cost: 8,
+            kilowattHours: 0.000003341944444444445,
+            region: 'us-east-1',
+            serviceName: 'AWSLambda',
+            usesAverageCPUConstant: true,
+          },
+        ],
+        groupBy: grouping,
+        periodStartDate: new Date('2022-01-01T00:00:00.000Z'),
+        periodEndDate: new Date('2022-01-01T23:59:59.000Z'),
+      },
+      {
+        timestamp: new Date('2022-01-02'),
+        serviceEstimates: [
+          {
+            accountId: '123456789',
+            accountName: '123456789',
+            cloudProvider: 'AWS',
+            co2e: 0.0000000009035109614999999,
+            cost: 9,
+            kilowattHours: 0.0000023834999999999997,
+            region: 'us-east-1',
+            serviceName: 'AWSLambda',
+            usesAverageCPUConstant: true,
+          },
+        ],
+        groupBy: grouping,
+        periodStartDate: new Date('2022-01-02T00:00:00.000Z'),
+        periodEndDate: new Date('2022-01-02T23:59:59.000Z'),
       },
     ]
 
