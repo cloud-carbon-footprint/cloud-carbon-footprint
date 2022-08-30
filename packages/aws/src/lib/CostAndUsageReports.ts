@@ -318,6 +318,7 @@ export default class CostAndUsageReports {
         )
       case KNOWN_USAGE_UNITS.SECONDS_1:
       case KNOWN_USAGE_UNITS.SECONDS_2:
+      case KNOWN_USAGE_UNITS.LAMBDA_SECONDS:
         // Lambda
         costAndUsageReportRow.vCpuHours =
           costAndUsageReportRow.usageAmount / 3600

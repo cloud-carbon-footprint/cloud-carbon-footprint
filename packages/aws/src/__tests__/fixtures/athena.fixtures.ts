@@ -1351,3 +1351,39 @@ export const athenaMockGetQueryResultsWithGPUInstances: Athena.GetQueryResultsOu
       Rows: [queryResultsHeaders, ...queryResultsDataEighteen],
     },
   }
+
+const queryResultsX86AndARMLambdas = [
+  {
+    Data: [
+      { VarCharValue: '2022-01-01' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AWSLambda' },
+      { VarCharValue: 'Lambda-GB-Second' },
+      { VarCharValue: 'seconds' },
+      { VarCharValue: '' },
+      { VarCharValue: '5' },
+      { VarCharValue: '8' },
+    ],
+  },
+  {
+    Data: [
+      { VarCharValue: '2022-01-02' },
+      { VarCharValue: '123456789' },
+      { VarCharValue: 'us-east-1' },
+      { VarCharValue: 'AWSLambda' },
+      { VarCharValue: 'Lambda-GB-Second-ARM' },
+      { VarCharValue: 'Lambda-GB-Second' },
+      { VarCharValue: '' },
+      { VarCharValue: '7' },
+      { VarCharValue: '9' },
+    ],
+  },
+]
+
+export const athenaMockGetQueryResultsWithX86AndARMLambdas: Athena.GetQueryResultsOutput =
+  {
+    ResultSet: {
+      Rows: [queryResultsHeaders, ...queryResultsX86AndARMLambdas],
+    },
+  }

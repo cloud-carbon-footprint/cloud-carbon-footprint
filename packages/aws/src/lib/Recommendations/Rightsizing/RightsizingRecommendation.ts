@@ -7,8 +7,13 @@ import {
 } from 'aws-sdk/clients/costexplorer'
 import { containsAny, getHoursInMonth } from '@cloud-carbon-footprint/common'
 import { AWS_MAPPED_REGION_NAMES_TO_CODES, AWS_REGIONS } from '../../AWSRegions'
-import { BURSTABLE_INSTANCE_BASELINE_UTILIZATION } from '../../AWSInstanceTypes'
+import {
+  BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
+  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  INSTANCE_TYPE_GPU_PROCESSOR_MAPPING,
+} from '../../AWSInstanceTypes'
 import { AWS_CLOUD_CONSTANTS } from '../../../domain'
+import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core'
 
 export default class RightsizingRecommendation {
   public accountId: string
@@ -48,5 +53,21 @@ export default class RightsizingRecommendation {
 
   public getMappedRegion(region: string): string {
     return AWS_MAPPED_REGION_NAMES_TO_CODES[region] || AWS_REGIONS.UNKNOWN
+  }
+
+  public getComputeProcessors(): string[] {
+    return (
+      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[this.instanceType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
+  }
+
+  public getGPUComputeProcessors(): string[] {
+    return (
+      INSTANCE_TYPE_GPU_PROCESSOR_MAPPING[this.instanceType] || [
+        COMPUTE_PROCESSOR_TYPES.UNKNOWN,
+      ]
+    )
   }
 }
