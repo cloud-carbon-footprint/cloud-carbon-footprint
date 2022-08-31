@@ -272,7 +272,6 @@ jobs:
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
 
-          cp packages/client/create_client_env_file.sh dist-workspace/packages/client
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
           # We need to set yarn to v1 because App Engine will only install with a yarn.lock file generated from this version.
@@ -285,10 +284,6 @@ jobs:
           # Generate yarn.lock file
           yarn install
           ./create_server_env_file.sh
-          cd ../../..
-
-          cd dist-workspace/packages/client
-          ./create_client_env_file.sh
           cd ../../..
 
           # Store service account
