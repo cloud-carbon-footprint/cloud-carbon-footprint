@@ -30,23 +30,29 @@ const GLUE_VCPUS_PER_USAGE = 4
 const SIMPLE_DB_VCPUS_PER_USAGE = 1
 
 export default class CostAndUsageReportsRow extends BillingDataRow {
-  constructor(usageRowsHeader: Athena.Row, rowData: Athena.datumList) {
-    const billingDataRowKeys = usageRowsHeader.Data.map((column) =>
-      Object.values(column),
-    ).flat()
-    const billingDataRowValues = rowData
-      .map((column) => Object.values(column))
-      .flat()
-    const billingDataRow = Object.fromEntries(
-      billingDataRowKeys.map((_, i) => [
-        billingDataRowKeys[i],
-        billingDataRowValues[i],
-      ]),
+  constructor(rowData: Athena.datumList, tagNames: string[]) {
+    const tags = Object.fromEntries(
+      tagNames.map((name, i) => [name, rowData[i + 7].VarCharValue]),
     )
-    super(billingDataRow)
+
+    const vCpus =
+      rowData[6].VarCharValue != '' ? parseFloat(rowData[6].VarCharValue) : null
+
+    super({
+      timestamp: new Date(rowData[0].VarCharValue),
+      accountName: rowData[1].VarCharValue,
+      region: rowData[2].VarCharValue,
+      serviceName: rowData[3].VarCharValue,
+      usageType: rowData[4].VarCharValue,
+      usageUnit: rowData[5].VarCharValue,
+      vCpus: vCpus,
+      tags: tags,
+      usageAmount: parseFloat(rowData[7 + tagNames.length].VarCharValue),
+      cost: parseFloat(rowData[8 + tagNames.length].VarCharValue),
+    })
 
     this.usageAmount = this.getUsageAmount()
-    this.vCpuHours = this.getVCpuHours(Number(this.vCpus))
+    this.vCpuHours = this.getVCpuHours(this.vCpus)
     this.gpuHours = this.getGpuHours()
     this.usageUnit = this.getUsageUnit()
     this.timestamp = new Date(this.timestamp)
@@ -54,8 +60,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.accountId = this.accountName
     this.cloudProvider = 'AWS'
     this.instanceType = this.parseInstanceTypeFromUsageType()
-    this.replicationFactor = this.getReplicationFactor(billingDataRow)
-    this.tags = {} // TODO: we currently don't support resource tags for AWS
+    this.replicationFactor = this.getReplicationFactor()
 
     const config = configLoader()
     const AWS: CCFConfig['AWS'] = config.AWS
@@ -159,12 +164,12 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
       : this.usageType.split(':').pop()
   }
 
-  private getReplicationFactor(usageRow: CostAndUsageReportsRow): number {
+  private getReplicationFactor(): number {
     return (
-      (AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName] &&
-        AWS_REPLICATION_FACTORS_FOR_SERVICES[usageRow.serviceName](
-          usageRow.usageType,
-          usageRow.region,
+      (AWS_REPLICATION_FACTORS_FOR_SERVICES[this.serviceName] &&
+        AWS_REPLICATION_FACTORS_FOR_SERVICES[this.serviceName](
+          this.usageType,
+          this.region,
         )) ||
       AWS_REPLICATION_FACTORS_FOR_SERVICES.DEFAULT()
     )

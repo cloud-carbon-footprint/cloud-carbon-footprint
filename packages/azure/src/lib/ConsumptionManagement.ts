@@ -132,6 +132,7 @@ export default class ConsumptionManagementService {
             consumptionDetailRow,
             footprintEstimate,
             grouping,
+            [],
           )
         }
         return []
@@ -146,6 +147,7 @@ export default class ConsumptionManagementService {
             rowData,
             footprintEstimate,
             grouping,
+            [],
           )
       })
     }
