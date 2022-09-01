@@ -13,9 +13,6 @@ import {
 } from '../helpers'
 
 jest.useFakeTimers()
-jest.mock('moment', () => {
-  return () => jest.requireActual('moment')('2020-04-01T00:00:00.000Z')
-})
 
 describe('Helpers', () => {
   it('contains any', () => {
@@ -67,7 +64,10 @@ describe('Helpers', () => {
       [GroupBy.quarter, new Date('2020-07-01T00:59:59.000Z')],
       [GroupBy.year, new Date('2021-03-31T23:59:59.000Z')],
     ]).it('should get period end date for %s', (grouping, expectedResult) => {
-      const result = getPeriodEndDate(new Date(), grouping)
+      const result = getPeriodEndDate(
+        new Date('2020-04-01T00:00:00.000Z'),
+        grouping,
+      )
 
       expect(result).toEqual(expectedResult)
     })
