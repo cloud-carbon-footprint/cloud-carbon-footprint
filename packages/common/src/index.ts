@@ -13,7 +13,11 @@ export {
   RecommendationsRequestValidationError,
 } from './Errors'
 export { reduceByTimestamp } from './EstimationResult'
-export type { EstimationResult, ServiceData } from './EstimationResult'
+export type {
+  EstimationResult,
+  ServiceData,
+  TagCollection,
+} from './EstimationResult'
 export type { EmissionRatioResult } from './EmissionRatioResult'
 export type {
   RecommendationResult,

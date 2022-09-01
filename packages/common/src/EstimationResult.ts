@@ -25,6 +25,11 @@ export interface ServiceData {
   accountName: string
   serviceName: string
   region: string
+  tags: TagCollection
+}
+
+export interface TagCollection {
+  [index: string]: string
 }
 
 export const reduceByTimestamp = (

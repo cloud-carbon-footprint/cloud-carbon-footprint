@@ -55,6 +55,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     this.cloudProvider = 'AWS'
     this.instanceType = this.parseInstanceTypeFromUsageType()
     this.replicationFactor = this.getReplicationFactor(billingDataRow)
+    this.tags = {} // TODO: we currently don't support resource tags for AWS
 
     const config = configLoader()
     const AWS: CCFConfig['AWS'] = config.AWS

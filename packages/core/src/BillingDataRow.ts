@@ -2,6 +2,8 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import { TagCollection } from '@cloud-carbon-footprint/common'
+
 export default abstract class BillingDataRow {
   public serviceName: string
   public accountId: string
@@ -20,6 +22,7 @@ export default abstract class BillingDataRow {
   public seriesName: string
   public instanceType: string
   public replicationFactor: number
+  public tags: TagCollection
 
   protected constructor(init: Partial<BillingDataRow>) {
     Object.assign(this, init)
