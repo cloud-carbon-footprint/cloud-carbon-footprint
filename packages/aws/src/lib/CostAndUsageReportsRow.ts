@@ -27,7 +27,7 @@ import { concat } from 'ramda'
 import { AWS_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 const GLUE_VCPUS_PER_USAGE = 4
-const SIMPLE_DB_VCPUS__PER_USAGE = 1
+const SIMPLE_DB_VCPUS_PER_USAGE = 1
 
 export default class CostAndUsageReportsRow extends BillingDataRow {
   constructor(usageRowsHeader: Athena.Row, rowData: Athena.datumList) {
@@ -94,7 +94,7 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     if (this.serviceName === 'AWSGlue')
       return GLUE_VCPUS_PER_USAGE * this.usageAmount
     if (this.serviceName === 'AmazonSimpleDB')
-      return SIMPLE_DB_VCPUS__PER_USAGE * this.usageAmount
+      return SIMPLE_DB_VCPUS_PER_USAGE * this.usageAmount
     if (this.usageType.includes('Aurora:ServerlessUsage'))
       return this.usageAmount / 4
     if (containsAny(['Fargate-vCPU-Hours', 'CPUCredits'], this.usageType))
