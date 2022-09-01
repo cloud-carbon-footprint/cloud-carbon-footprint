@@ -177,6 +177,7 @@ export const appendOrAccumulateEstimatesByDay = (
   rowData: BillingDataRow,
   footprintEstimate: FootprintEstimate,
   grouping: GroupBy,
+  tagNames: string[],
 ): void => {
   const serviceEstimate: MutableServiceEstimate = {
     cloudProvider: rowData.cloudProvider,
@@ -196,21 +197,28 @@ export const appendOrAccumulateEstimatesByDay = (
   )
 
   if (dayFoundInEstimate) {
-    const estimateFoundWithSameRegionAndServiceAccount =
+    const estimateFoundWithSameRegionAndServiceAccountAndTags =
       dayFoundInEstimate.serviceEstimates.find((estimateForDay) => {
-        return hasSameRegionAndServiceAndAccount(
+        return hasSameRegionAndServiceAndAccountAndTags(
           estimateForDay,
           serviceEstimate,
+          tagNames,
         )
       })
-    if (estimateFoundWithSameRegionAndServiceAccount) {
-      estimateFoundWithSameRegionAndServiceAccount.kilowattHours +=
+
+    if (estimateFoundWithSameRegionAndServiceAccountAndTags) {
+      estimateFoundWithSameRegionAndServiceAccountAndTags.kilowattHours +=
         serviceEstimate.kilowattHours
-      estimateFoundWithSameRegionAndServiceAccount.co2e += serviceEstimate.co2e
-      estimateFoundWithSameRegionAndServiceAccount.cost += serviceEstimate.cost
+
+      estimateFoundWithSameRegionAndServiceAccountAndTags.co2e +=
+        serviceEstimate.co2e
+
+      estimateFoundWithSameRegionAndServiceAccountAndTags.cost +=
+        serviceEstimate.cost
+
       if (serviceEstimate.usesAverageCPUConstant) {
-        estimateFoundWithSameRegionAndServiceAccount.usesAverageCPUConstant =
-          estimateFoundWithSameRegionAndServiceAccount.usesAverageCPUConstant ||
+        estimateFoundWithSameRegionAndServiceAccountAndTags.usesAverageCPUConstant =
+          estimateFoundWithSameRegionAndServiceAccountAndTags.usesAverageCPUConstant ||
           serviceEstimate.usesAverageCPUConstant
       }
     } else {
@@ -227,15 +235,28 @@ export const appendOrAccumulateEstimatesByDay = (
   }
 }
 
-function hasSameRegionAndServiceAndAccount(
+function hasSameRegionAndServiceAndAccountAndTags(
   estimateOne: MutableServiceEstimate,
   estimateTwo: MutableServiceEstimate,
+  tagNames: string[],
 ): boolean {
-  return (
-    estimateOne.region === estimateTwo.region &&
-    estimateOne.serviceName === estimateTwo.serviceName &&
-    estimateOne.accountId === estimateTwo.accountId
-  )
+  if (
+    estimateOne.region != estimateTwo.region ||
+    estimateOne.serviceName != estimateTwo.serviceName ||
+    estimateOne.accountId != estimateTwo.accountId
+  ) {
+    return false
+  }
+
+  for (const tagIndex in tagNames) {
+    const tagName = tagNames[tagIndex]
+
+    if (estimateOne.tags[tagName] != estimateTwo.tags[tagName]) {
+      return false
+    }
+  }
+
+  return true
 }
 
 // When we have a group of compute processor types, by we default calculate the average for this group of processors.

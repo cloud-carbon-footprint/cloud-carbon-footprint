@@ -81,6 +81,8 @@ describe('FootprintEstimate', () => {
   })
 
   it('appendOrAccumulateEstimatesByDay', () => {
+    const tagNames = ['Environment']
+
     // given - accumulate
     const results = [
       {
@@ -96,6 +98,9 @@ describe('FootprintEstimate', () => {
             accountName: 'test-account',
             region: 'us-east1',
             cost: 5,
+            tags: {
+              Environment: 'prod',
+            },
           },
         ],
         periodStartDate: dayOne,
@@ -121,6 +126,9 @@ describe('FootprintEstimate', () => {
       vCpuHours: 105566920704,
       instanceType: 'test',
       replicationFactor: 1,
+      tags: {
+        Environment: 'prod',
+      },
     }
 
     const footPrintEstimateOne: FootprintEstimate = {
@@ -136,6 +144,7 @@ describe('FootprintEstimate', () => {
       billingDataRowOne,
       footPrintEstimateOne,
       grouping,
+      tagNames,
     )
 
     // then - accumulate
@@ -149,6 +158,9 @@ describe('FootprintEstimate', () => {
       region: 'us-east1',
       serviceName: 'App Engine',
       usesAverageCPUConstant: false,
+      tags: {
+        Environment: 'prod',
+      },
     }
     const newResultOne = [
       {
@@ -179,6 +191,9 @@ describe('FootprintEstimate', () => {
       vCpuHours: 105566920704,
       instanceType: 'test',
       replicationFactor: 1,
+      tags: {
+        Environment: 'prod',
+      },
     }
 
     const footPrintEstimateTwo: FootprintEstimate = {
@@ -193,6 +208,7 @@ describe('FootprintEstimate', () => {
       billingDataRowTwo,
       footPrintEstimateTwo,
       grouping,
+      tagNames,
     )
     // then - append
     const newResultTwo = [
@@ -216,6 +232,9 @@ describe('FootprintEstimate', () => {
             co2e: 3.438689659573138e-8,
             cost: 10,
             kilowattHours: 0.00006877379319146276,
+            tags: {
+              Environment: 'prod',
+            },
           },
         ],
         groupBy: grouping,
@@ -243,6 +262,9 @@ describe('FootprintEstimate', () => {
       vCpuHours: 105566920704,
       instanceType: 'test',
       replicationFactor: 1,
+      tags: {
+        Environment: 'prod',
+      },
     }
 
     const footPrintEstimateThree: FootprintEstimate = {
@@ -257,6 +279,7 @@ describe('FootprintEstimate', () => {
       billingDataRowThree,
       footPrintEstimateThree,
       grouping,
+      tagNames,
     )
     // then - append
     const newResultThree = [
@@ -280,6 +303,9 @@ describe('FootprintEstimate', () => {
             co2e: 3.438689659573138e-8,
             cost: 10,
             kilowattHours: 0.00006877379319146276,
+            tags: {
+              Environment: 'prod',
+            },
           },
           {
             cloudProvider: 'GCP',
@@ -291,6 +317,9 @@ describe('FootprintEstimate', () => {
             co2e: 3.438689659573138e-8,
             cost: 10,
             kilowattHours: 0.00006877379319146276,
+            tags: {
+              Environment: 'prod',
+            },
           },
         ],
         groupBy: grouping,
@@ -299,6 +328,105 @@ describe('FootprintEstimate', () => {
       },
     ]
     expect(results).toEqual(newResultThree)
+
+    // given - append
+    const billingDataRowFour: BillingDataRow = {
+      timestamp: dayTwo,
+      accountId: 'test account id 2',
+      accountName: 'test-account',
+      region: 'us-east1',
+      serviceName: 'App Engine',
+      usageType: 'test',
+      usageUnit: 'test',
+      vCpus: undefined,
+      machineType: 'test',
+      seriesName: 'test',
+      usageAmount: 380040914534400,
+      cost: 10,
+      cloudProvider: 'GCP',
+      vCpuHours: 105566920704,
+      instanceType: 'test',
+      replicationFactor: 1,
+      tags: {
+        Environment: 'staging',
+      },
+    }
+
+    const footPrintEstimateFour: FootprintEstimate = {
+      usesAverageCPUConstant: false,
+      timestamp: dayTwo,
+      kilowattHours: 0.00006877379319146276,
+      co2e: 3.438689659573138e-8,
+    }
+    // when - accumulate
+    appendOrAccumulateEstimatesByDay(
+      results,
+      billingDataRowFour,
+      footPrintEstimateFour,
+      grouping,
+      tagNames,
+    )
+    // then - append
+    const newResultFour = [
+      {
+        timestamp: dayOne,
+        serviceEstimates: [accumulatedServicesEstimate],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-01T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-01T00:00:00.000Z'),
+      },
+      {
+        timestamp: dayTwo,
+        serviceEstimates: [
+          {
+            cloudProvider: 'GCP',
+            usesAverageCPUConstant: false,
+            serviceName: 'App Engine',
+            accountId: 'test account id',
+            accountName: 'test-account',
+            region: 'us-east1',
+            co2e: 3.438689659573138e-8,
+            cost: 10,
+            kilowattHours: 0.00006877379319146276,
+            tags: {
+              Environment: 'prod',
+            },
+          },
+          {
+            cloudProvider: 'GCP',
+            usesAverageCPUConstant: false,
+            serviceName: 'App Engine',
+            accountId: 'test account id 2',
+            accountName: 'test-account',
+            region: 'us-east1',
+            co2e: 3.438689659573138e-8,
+            cost: 10,
+            kilowattHours: 0.00006877379319146276,
+            tags: {
+              Environment: 'prod',
+            },
+          },
+          {
+            cloudProvider: 'GCP',
+            usesAverageCPUConstant: false,
+            serviceName: 'App Engine',
+            accountId: 'test account id 2',
+            accountName: 'test-account',
+            region: 'us-east1',
+            co2e: 3.438689659573138e-8,
+            cost: 10,
+            kilowattHours: 0.00006877379319146276,
+            tags: {
+              Environment: 'staging',
+            },
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2021-01-02T23:59:59.000Z'),
+        periodStartDate: new Date('2021-01-02T00:00:00.000Z'),
+      },
+    ]
+    expect(results).toEqual(newResultFour)
   })
 
   describe('accumulateKilowattHours by cost', () => {

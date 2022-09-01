@@ -104,6 +104,7 @@ export default class BillingExportTable {
           billingExportRow,
           footprintEstimate,
           grouping,
+          [],
         )
     })
 
@@ -116,6 +117,7 @@ export default class BillingExportTable {
             rowData,
             footprintEstimate,
             grouping,
+            [],
           )
       })
     }

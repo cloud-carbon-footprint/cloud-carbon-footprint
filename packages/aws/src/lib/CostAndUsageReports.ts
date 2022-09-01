@@ -93,21 +93,24 @@ export default class CostAndUsageReports {
     this.queryResultsLocation = configLoader().AWS.ATHENA_QUERY_RESULT_LOCATION
     this.costAndUsageReportsLogger = new Logger('CostAndUsageReports')
   }
+
   async getEstimates(
     start: Date,
     end: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
-    const usageRows = await this.getUsage(start, end, grouping)
-    const usageRowsHeader: Row = usageRows.shift()
+    const tagNames = configLoader().AWS.RESOURCE_TAG_NAMES
+    const usageRows = await this.getUsage(start, end, grouping, tagNames)
+
+    usageRows.shift()
 
     const results: MutableEstimationResult[] = []
     const unknownRows: CostAndUsageReportsRow[] = []
     this.costAndUsageReportsLogger.info('Mapping over Usage Rows')
     usageRows.map((rowData: Row) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(
-        usageRowsHeader,
         rowData.Data,
+        tagNames,
       )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
@@ -120,6 +123,7 @@ export default class CostAndUsageReports {
           costAndUsageReportRow,
           footprintEstimate,
           grouping,
+          tagNames,
         )
     })
 
@@ -132,6 +136,7 @@ export default class CostAndUsageReports {
             rowData,
             footprintEstimate,
             grouping,
+            tagNames,
           )
       })
     }
@@ -145,34 +150,18 @@ export default class CostAndUsageReports {
     const unknownRows: CostAndUsageReportsRow[] = []
 
     inputData.map((inputDataRow: LookupTableInput) => {
-      const usageRowsHeader = {
-        Data: [
-          { VarCharValue: 'timestamp' },
-          { VarCharValue: 'accountName' },
-          { VarCharValue: 'serviceName' },
-          { VarCharValue: 'region' },
-          { VarCharValue: 'usageType' },
-          { VarCharValue: 'usageUnit' },
-          { VarCharValue: 'vCpus' },
-          { VarCharValue: 'cost' },
-          { VarCharValue: 'usageAmount' },
-        ],
-      }
       const usageRowData = [
         { VarCharValue: '' },
         { VarCharValue: '' },
-        { VarCharValue: inputDataRow.serviceName },
         { VarCharValue: inputDataRow.region },
+        { VarCharValue: inputDataRow.serviceName },
         { VarCharValue: inputDataRow.usageType },
         { VarCharValue: inputDataRow.usageUnit },
         { VarCharValue: inputDataRow.vCpus },
         { VarCharValue: '1' },
         { VarCharValue: '1' },
       ]
-      const costAndUsageReportRow = new CostAndUsageReportsRow(
-        usageRowsHeader,
-        usageRowData,
-      )
+      const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowData, [])
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
@@ -528,25 +517,37 @@ export default class CostAndUsageReports {
     start: Date,
     end: Date,
     grouping: GroupBy,
+    tagNames: string[],
   ): Promise<Athena.Row[]> {
-    const groupBy = AWS_QUERY_GROUP_BY[grouping]
+    const dateGranularity = AWS_QUERY_GROUP_BY[grouping]
     const lineItemTypes = LINE_ITEM_TYPES.join(`', '`)
     const startDate = moment.utc(start).format('YYYY-MM-DD')
     const endDate = moment.utc(end).format('YYYY-MM-DD')
+
+    const tagColumnNames = tagNames.map(tagNameToAthenaColumn)
+    const tagSelectionExpression = tagColumnNames
+      .map((column) => `${column} as ${column},`)
+      .join('\n')
+    const groupByColumnIndices = listOfIntegers(
+      1,
+      7 + tagColumnNames.length,
+    ).join(',')
+
     const params = {
-      QueryString: `SELECT DATE(DATE_TRUNC('${groupBy}', line_item_usage_start_date)) AS timestamp,
+      QueryString: `SELECT DATE(DATE_TRUNC('${dateGranularity}', line_item_usage_start_date)) AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,
                         line_item_usage_type as usageType,
                         pricing_unit as usageUnit,
                         product_vcpu as vCpus,
-                    SUM(line_item_usage_amount) as usageAmount,
-                    SUM(line_item_blended_cost) as cost
+                        ${tagSelectionExpression}
+                        SUM(line_item_usage_amount) as usageAmount,
+                        SUM(line_item_blended_cost) as cost
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('${lineItemTypes}')
                       AND line_item_usage_start_date BETWEEN DATE ('${startDate}') AND DATE ('${endDate}')
-                    GROUP BY 1,2,3,4,5,6,7`,
+                    GROUP BY ${groupByColumnIndices}`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },
@@ -557,6 +558,7 @@ export default class CostAndUsageReports {
         OutputLocation: this.queryResultsLocation,
       },
     }
+
     const response = await this.startQuery(params)
 
     const queryExecutionInput: GetQueryExecutionInput = {
@@ -672,4 +674,38 @@ export default class CostAndUsageReports {
       largestInstancevCpu,
     }
   }
+}
+
+export const tagNameToAthenaColumn = (tagName: string): string => {
+  let columnName = 'resource_tags_'
+
+  for (const char of tagName) {
+    if (char == ':') {
+      columnName = columnName + '_'
+    } else {
+      if (isUpperCase(char) && !lastCharacterIs(columnName, '_')) {
+        columnName = columnName + '_'
+      }
+
+      columnName = columnName + char.toLowerCase()
+    }
+  }
+
+  return columnName
+}
+
+const isUpperCase = (text: string): boolean => {
+  return text.toUpperCase() === text
+}
+
+const lastCharacterIs = (text: string, char: string): boolean => {
+  if (text.length === 0) {
+    return false
+  }
+
+  return text[text.length - 1] === char
+}
+
+const listOfIntegers = (first: number, last: number): number[] => {
+  return Array.from({ length: last - first + 1 }, (_, i) => i + first)
 }
