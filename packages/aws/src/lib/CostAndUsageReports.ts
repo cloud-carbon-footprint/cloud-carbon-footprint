@@ -529,10 +529,12 @@ export default class CostAndUsageReports {
     end: Date,
     grouping: GroupBy,
   ): Promise<Athena.Row[]> {
+    const groupBy = AWS_QUERY_GROUP_BY[grouping]
+    const lineItemTypes = LINE_ITEM_TYPES.join(`', '`)
+    const startDate = moment.utc(start).format('YYYY-MM-DD')
+    const endDate = moment.utc(end).format('YYYY-MM-DD')
     const params = {
-      QueryString: `SELECT DATE(DATE_TRUNC('${
-        AWS_QUERY_GROUP_BY[grouping]
-      }', line_item_usage_start_date)) AS timestamp,
+      QueryString: `SELECT DATE(DATE_TRUNC('${groupBy}', line_item_usage_start_date)) AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,
@@ -542,16 +544,9 @@ export default class CostAndUsageReports {
                     SUM(line_item_usage_amount) as usageAmount,
                     SUM(line_item_blended_cost) as cost
                     FROM ${this.tableName}
-                    WHERE line_item_line_item_type IN ('${LINE_ITEM_TYPES.join(
-                      `', '`,
-                    )}')
-                    AND line_item_usage_start_date BETWEEN DATE('${moment
-                      .utc(start)
-                      .format('YYYY-MM-DD')}') AND DATE('${moment
-        .utc(end)
-        .format('YYYY-MM-DD')}')
-                    GROUP BY 
-                        1,2,3,4,5,6,7`,
+                    WHERE line_item_line_item_type IN ('${lineItemTypes}')
+                      AND line_item_usage_start_date BETWEEN DATE ('${startDate}') AND DATE ('${endDate}')
+                    GROUP BY 1,2,3,4,5,6,7`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },
