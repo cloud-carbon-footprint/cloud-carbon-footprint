@@ -17,6 +17,13 @@ describe('Config', () => {
     delete process.env.AWS_ACCOUNTS
   })
 
+  it('loads AWS resource tags from environment variables', () => {
+    process.env.AWS_RESOURCE_TAG_NAMES = `["Environment"]`
+    const config = getConfig()
+    expect(config.AWS.RESOURCE_TAG_NAMES).toEqual(['Environment'])
+    delete process.env.AWS_RESOURCE_TAG_NAMES // FIXME: refactor this to reset back to original value
+  })
+
   it('get GCP projects', () => {
     const id = 'id'
     const name = 'project'

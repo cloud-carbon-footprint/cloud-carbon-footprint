@@ -20,6 +20,7 @@ export interface CCFConfig {
     COMPUTE_OPTIMIZER_BUCKET?: string
     CURRENT_SERVICES?: { key: string; name: string }[]
     CURRENT_REGIONS?: string[]
+    RESOURCE_TAG_NAMES?: string[]
     accounts?: {
       id: string
       name?: string
@@ -94,6 +95,12 @@ const getAWSAccounts = () => {
   return process.env.AWS_ACCOUNTS ? process.env.AWS_ACCOUNTS : '[]'
 }
 
+const getAWSResourceTagNames = () => {
+  return process.env.AWS_RESOURCE_TAG_NAMES
+    ? process.env.AWS_RESOURCE_TAG_NAMES
+    : '[]'
+}
+
 const getGCPProjects = () => {
   return process.env.GCP_PROJECTS ? process.env.GCP_PROJECTS : '[]'
 }
@@ -134,6 +141,7 @@ const getConfig = (): CCFConfig => ({
         getEnvVar('AWS_RECOMMENDATIONS_SERVICE') as AWS_RECOMMENDATIONS_SERVICES
       ],
     COMPUTE_OPTIMIZER_BUCKET: getEnvVar('AWS_COMPUTE_OPTIMIZER_BUCKET') || '',
+    RESOURCE_TAG_NAMES: JSON.parse(getAWSResourceTagNames()),
     CURRENT_REGIONS: [
       'us-east-1',
       'us-east-2',
