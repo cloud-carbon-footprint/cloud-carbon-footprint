@@ -657,9 +657,13 @@ export default class BillingExportTable {
     try {
       ;[job] = await this.bigQuery.createQueryJob({ query: query })
     } catch (e) {
-      const { reason, location, message } = e.errors[0]
+      let errorMessage = e
+      if (e.errors) {
+        const { reason, location, message } = e.errors[0]
+        errorMessage = `${reason}, Location: ${location}, Message: ${message}`
+      }
       throw new Error(
-        `BigQuery create Query Job failed. Reason: ${reason}, Location: ${location}, Message: ${message}`,
+        `BigQuery create Query Job failed. Reason: ${errorMessage}`,
       )
     }
     return job
