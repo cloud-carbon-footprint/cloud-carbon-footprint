@@ -22,6 +22,3 @@ readiness_check:
   app_start_timeout_sec: 300
 
 entrypoint: npm run start:webprod
-
-env_variables:
-  CCF_CACHE_PATH: estimates.cache.json

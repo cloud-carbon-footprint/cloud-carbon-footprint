@@ -253,7 +253,7 @@ jobs:
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
       GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
       CACHE_MODE: ${{ secrets.CACHE_MODE }}
-      MONGODB_URL: ${{ secrets.CACHE_MODE }}
+      MONGODB_URL: ${{ secrets.MONGODB_URL }}
       MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2

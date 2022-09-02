@@ -74,7 +74,7 @@ export interface CCFConfig {
   }
   MONGODB?: {
     URI?: string
-    CREDENTIALS: string
+    CREDENTIALS?: string
   }
 }
 

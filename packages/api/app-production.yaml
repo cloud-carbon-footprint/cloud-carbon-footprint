@@ -8,5 +8,3 @@ basic_scaling:
 
 entrypoint: npm run start:webprod
 
-env_variables:
-  CCF_CACHE_PATH: estimates.cache.json
