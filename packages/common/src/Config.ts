@@ -72,7 +72,10 @@ export interface CCFConfig {
       AVERAGE_WATTS?: number
     }
   }
-  MONGO_URI?: string
+  MONGODB?: {
+    URI?: string
+    CREDENTIALS: string
+  }
 }
 
 export enum GroupBy {
@@ -238,7 +241,10 @@ const getConfig = (): CCFConfig => ({
       AVERAGE_WATTS: parseFloat(getEnvVar('ON_PREMISE_AVG_WATTS_DESKTOP')),
     },
   },
-  MONGO_URI: getEnvVar('MONGO_URI') || '',
+  MONGODB: {
+    URI: getEnvVar('MONGODB_URI') || '',
+    CREDENTIALS: getEnvVar('MONGODB_CREDENTIALS') || '',
+  },
 })
 
 export default getConfig

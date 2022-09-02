@@ -253,6 +253,8 @@ jobs:
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
       GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
       CACHE_MODE: ${{ secrets.CACHE_MODE }}
+      MONGODB_URL: ${{ secrets.CACHE_MODE }}
+      MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -264,6 +266,7 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
           apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl git
           export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -288,6 +291,9 @@ jobs:
 
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+
+          # Store mongo credentials
+          echo $MONGODB_CERTIFICATE > ${HOME}/mongo-credentials.pem
 
           # Initialize gcloud CLI
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json

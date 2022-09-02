@@ -3,7 +3,7 @@
  */
 
 import moment from 'moment'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
@@ -17,8 +17,16 @@ export default class MongoDbCacheManager extends CacheManager {
   }
 
   async createDbConnection() {
-    const mongoURI = configLoader().MONGO_URI
-    if (mongoURI) {
+    const mongoURI = configLoader().MONGODB.URI
+    const mongoCredentials = configLoader().MONGODB.CREDENTIALS
+    if (mongoCredentials) {
+      this.mongoClient = new MongoClient(mongoURI, {
+        sslKey: mongoCredentials,
+        sslCert: mongoCredentials,
+        serverApi: ServerApiVersion.v1,
+      })
+      this.cacheLogger.info('Successfully connected to the mongoDB client')
+    } else if (mongoURI) {
       this.mongoClient = new MongoClient(mongoURI)
       this.cacheLogger.info('Successfully connected to the mongoDB client')
     } else {

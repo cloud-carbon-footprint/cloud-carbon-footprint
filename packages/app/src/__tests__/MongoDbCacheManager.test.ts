@@ -27,7 +27,9 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
   >),
   configLoader: jest.fn().mockImplementation(() => {
     return {
-      MONGO_URI: 'test-mongo-uri',
+      MONGODB: {
+        URI: 'test-mongo-uri',
+      },
     }
   }),
 }))
@@ -52,7 +54,9 @@ describe('MongoDbCacheManager', () => {
   it('throws an error when there is no uri set', async () => {
     ;(configLoader as jest.Mock).mockReturnValue({
       ...configLoader(),
-      MONGO_URI: '',
+      MONGODB: {
+        URI: '',
+      },
     })
 
     jest.spyOn(Logger.prototype, 'warn').mockImplementation()
