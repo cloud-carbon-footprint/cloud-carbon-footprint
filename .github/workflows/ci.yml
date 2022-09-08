@@ -293,7 +293,7 @@ jobs:
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
           # Store mongo credentials
-          echo $MONGODB_CERTIFICATE > ${HOME}/mongo-credentials.pem
+          echo $MONGODB_CERTIFICATE > /mongo-credentials.pem
 
           # Initialize gcloud CLI
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
