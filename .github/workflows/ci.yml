@@ -301,7 +301,6 @@ jobs:
           ./deploy-staging.sh
           cd ..
       - name: Accessing-secrets-for-env-variables
-        needs: deploy-staging
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
