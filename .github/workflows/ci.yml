@@ -292,9 +292,6 @@ jobs:
           # Store service account
           echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
 
-          # Store mongo credentials
-          echo $MONGODB_CERTIFICATE > /mongo-credentials.pem
-
           # Initialize gcloud CLI
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
 
@@ -303,6 +300,14 @@ jobs:
           cd appengine
           ./deploy-staging.sh
           cd ..
+      - name: Accessing-secrets-for-env-variables
+        needs: deploy-staging
+#        name: 'gcr.io/cloud-builders/gcloud'
+        entrypoint: 'bash'
+        args:
+          - '-c'
+          - |
+            gcloud secrets versions access latest --secret=MONGODB_CERTIFICATE > ${HOME}/mongo-credentials.pem
   deploy-production:
     if: github.ref == 'refs/heads/trunk'
     needs: deploy-staging
