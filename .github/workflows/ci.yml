@@ -302,12 +302,22 @@ jobs:
           cd ..
       - name: Accessing-secrets-for-env-variables
         needs: deploy-staging
+        env:
+          GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
 #        name: 'gcr.io/cloud-builders/gcloud'
-        entrypoint: 'bash'
-        args:
-          - '-c'
-          - |
-            gcloud secrets versions access latest --secret=MONGODB_CERTIFICATE > ${HOME}/mongo-credentials.pem
+#        entrypoint: 'bash'
+        run: |
+          export PATH=$PATH:/root/google-cloud-sdk/bin
+          curl -sSL https://sdk.cloud.google.com > /tmp/gcloud-install && bash /tmp/gcloud-install --disable-prompts --install-dir=/root
+
+          # Initialize gcloud CLI
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+
+          gcloud secrets versions access latest --secret=MONGODB_CERTIFICATE > ${HOME}/mongo-credentials.pem
+
   deploy-production:
     if: github.ref == 'refs/heads/trunk'
     needs: deploy-staging
