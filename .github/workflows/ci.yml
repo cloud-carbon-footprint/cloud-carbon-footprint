@@ -266,7 +266,6 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
           apk update && apk add --no-cache  python3 py-crcmod bash libc6-compat curl git
           export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -300,12 +299,11 @@ jobs:
           cd appengine
           ./deploy-staging.sh
           cd ..
-      - name: Accessing-secrets-for-env-variables
+      - name: accessing-secrets-for-env-variables
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-#        name: 'gcr.io/cloud-builders/gcloud'
-#        entrypoint: 'bash'
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
           export PATH=$PATH:/root/google-cloud-sdk/bin
 
@@ -315,7 +313,6 @@ jobs:
           gcloud --quiet config set project $GOOGLE_PROJECT_ID
 
           gcloud secrets versions access latest --secret=MONGODB_CERTIFICATE > ${HOME}/mongo-credentials.pem
-
   deploy-production:
     if: github.ref == 'refs/heads/trunk'
     needs: deploy-staging
