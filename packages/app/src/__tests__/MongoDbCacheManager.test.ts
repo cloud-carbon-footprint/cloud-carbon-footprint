@@ -34,7 +34,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
   }),
 }))
 
-describe.skip('MongoDbCacheManager', () => {
+describe('MongoDbCacheManager', () => {
   afterEach(() => {
     jest.resetAllMocks()
   })
