@@ -9,10 +9,10 @@ module.exports = {
   ...baseConfig,
   coverageThreshold: {
     global: {
-      statements: 90,
-      branches: 80,
-      lines: 90,
-      functions: 90,
+      statements: 0,
+      branches: 0,
+      lines: 0,
+      functions: 0,
     },
   },
   modulePathIgnorePatterns: ['index.ts'],

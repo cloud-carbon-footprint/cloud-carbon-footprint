@@ -7,6 +7,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
+import fs from 'fs'
 
 export default class MongoDbCacheManager extends CacheManager {
   mongoClient: MongoClient
@@ -19,7 +20,15 @@ export default class MongoDbCacheManager extends CacheManager {
   async createDbConnection() {
     const mongoURI = configLoader().MONGODB.URI
     const mongoCredentials = configLoader().MONGODB.CREDENTIALS
-    this.cacheLogger.info(`current working directory: ${process.cwd()}`)
+    fs.readdir('/', (err, files) => {
+      if (err) this.cacheLogger.info(err as unknown as string)
+      else {
+        this.cacheLogger.info('\nCurrent directory filenames:')
+        files.forEach((file) => {
+          this.cacheLogger.info(file)
+        })
+      }
+    })
     if (mongoCredentials) {
       this.mongoClient = new MongoClient(mongoURI, {
         sslKey: mongoCredentials,
