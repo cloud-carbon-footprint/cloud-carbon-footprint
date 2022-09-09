@@ -274,6 +274,7 @@ jobs:
 
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
+          echo $MONGODB_CERTIFICATE > dist-workspace/packages/api/secrets/mongo-credentials.pem
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
@@ -287,8 +288,6 @@ jobs:
           # Generate yarn.lock file
           yarn install
           ./create_server_env_file.sh
-          # Create secrets file
-          echo $MONGODB_CERTIFICATE > secrets/mongo-credentials.pem
           cd ../../..
 
           # Store service account
