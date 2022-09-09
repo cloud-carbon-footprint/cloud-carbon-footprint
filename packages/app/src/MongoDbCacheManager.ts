@@ -19,6 +19,7 @@ export default class MongoDbCacheManager extends CacheManager {
   async createDbConnection() {
     const mongoURI = configLoader().MONGODB.URI
     const mongoCredentials = configLoader().MONGODB.CREDENTIALS
+    this.cacheLogger.info(`current working directory: ${process.cwd()}`)
     if (mongoCredentials) {
       this.mongoClient = new MongoClient(mongoURI, {
         sslKey: mongoCredentials,
