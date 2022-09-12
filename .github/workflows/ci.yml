@@ -338,6 +338,8 @@ jobs:
       GROUP_QUERY_RESULTS_BY: ${{ secrets.GROUP_QUERY_RESULTS_BY }}
       GCS_CACHE_BUCKET_NAME: ${{ secrets.GCS_CACHE_BUCKET_NAME }}
       CACHE_MODE: ${{ secrets.CACHE_MODE }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_CREDENTIALS: ${{ secrets.MONGODB_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
@@ -349,6 +351,7 @@ jobs:
         env:
           GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
           GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          MONGODB_CERTIFICATE: ${{ secrets.MONGODB_CERTIFICATE }}
         run: |
           apk update && apk add --no-cache python3 py-crcmod bash libc6-compat curl git
           export PATH=$PATH:/root/google-cloud-sdk/bin
@@ -356,6 +359,7 @@ jobs:
 
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-production.yaml dist-workspace/packages/api
+          echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
           cp packages/client/app-production.yaml dist-workspace/packages/client
 
