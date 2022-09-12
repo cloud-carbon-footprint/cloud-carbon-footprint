@@ -274,7 +274,7 @@ jobs:
 
           cp packages/api/create_server_env_file.sh dist-workspace/packages/api
           cp packages/api/app-staging.yaml dist-workspace/packages/api
-          echo $MONGODB_CERTIFICATE > dist-workspace/packages/api/mongo-credentials.pem
+          echo $MONGODB_CERTIFICATE | awk -v RS='-+(BEGIN|END) (PRIVATE KEY|CERTIFICATE)-+' '{gsub(/ +/, "\n"); ORS=RT} 1' > dist-workspace/packages/api/mongo-credentials.pem
 
           cp packages/client/app-staging.yaml dist-workspace/packages/client
 
