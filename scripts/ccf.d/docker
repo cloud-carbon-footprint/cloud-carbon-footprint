@@ -1,0 +1,36 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Docker handling shortcuts"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [ACTION] [ARGS]
+
+This command uses CCF_DOCKER_ENV environment variable to 
+know which environment to use for Docker.
+
+up             Will run docker-compose up
+
+EOH
+)
+
+CCF_ENV=${CCF_DOCKER_ENV:-local}
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (up)
+    docker-compose -f docker-compose.${CCF_ENV}.yml up --build --force-recreate
+  ;;
+  (file)
+    local pkg="${2}"
+    [[ -z ${pkg} ]] && error "Missing package name\n"
+
+    [[ ${CCF_ENV} == 'prod' ]] && docker_file='Dockerfile' || docker_file="Dockerfile.${CCF_ENV}"
+
+    (cd ${CCF_PROJ_ROOT_DIR};
+      file_path="packages/${pkg}/${docker_file}"
+      [[ -f ${file_path} ]] || error "Can't file ${file_path}\n"
+      ${EDITOR:-nvim} ${file_path})
+    ;;
+  (*) 
+    help
+  ;;
+esac

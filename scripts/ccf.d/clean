@@ -1,0 +1,34 @@
+# vim: ft=zsh
+use "exec-on"
+
+SUBCOMMAND_DESC="Execute clean"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [--all|-a] [--lerna-all] [PACKAGE]
+
+Executes yarn clean on PACKAGE, if PACKAGE is not present executes
+on current directory.
+
+-a|--all        Goes through packages: ${(@)CCF_CORE_PACKAGES}
+--lerna-all     Uses lerna to execute on all packages
+
+EOH
+)
+
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (-a|--all)
+    exec_on_core "yarn clean"
+    in_cyan "ran yarn clean on (${(@)CCF_CORE_PACKAGES})\n"
+  ;;
+  (--lerna-all) 
+    exec_lerna_run "clean"
+    in_cyan "ran npx lerna run clean\n"
+  ;;
+  (*)
+    local pkg=${1}
+    [[ -n ${pkg} ]] && exec_on_package "${pkg}" "yarn clean" || exec_on_root "yarn clean"
+  ;;
+esac
+

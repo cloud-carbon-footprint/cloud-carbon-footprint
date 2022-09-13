@@ -1,0 +1,20 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Interact with client"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [ACTION] [OPTIONS]
+
+req|r         Make a request on /api/footprint
+
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (req|r)
+    http -v :4000/api/footprint start==2022-09-10 end==2022-09-11 ignoreCache==true groupBy==day
+  ;;
+  (*) help ;;
+esac
+

@@ -1,0 +1,145 @@
+#!/usr/bin/env zsh
+
+readonly MAIN_COMMAND_VERSION="1.0"
+
+readonly MAIN_COMMAND=${0:t}
+readonly ROOT_DIR=${0:a:h}
+readonly SUBCOMMANDS_DIR=${ROOT_DIR}/${MAIN_COMMAND}.d
+
+function _color()     { tput -Txterm setaf ${1}; echo -ne ${2}; tput -Txterm sgr0; }
+function in_red()     { _color 1 "${1}"; } # use for failures
+function in_green()   { _color 2 "${1}"; } # use for successes
+function in_yellow()  { _color 3 "${1}"; } # use for warnings / attention
+function in_magenta() { _color 5 "${1}"; } # use for debug messages
+function in_cyan()    { _color 6 "${1}"; } # use for main actions / progress
+
+function log() {
+  if [[ -n ${DEBUG} ]]; then
+    tput -Txterm setaf 5 >&2
+    echo -e "debug: ${*}" >&2
+    tput -Txterm sgr0 >&2
+  fi
+}
+
+function error() {
+  in_red "ERROR: ${1}"
+  exit 1
+}
+
+function warn() {
+  in_yellow "WARN: ${1}"
+}
+
+# accept '-d' as a debug flag
+zparseopts -D -E - d=DEBUG -debug=DEBUG q=QUIET_MODE -quiet=QUIET_MODE
+
+# also accept GRIND_DEBUG=true as debug
+_DEBUG_ENV="${(U)MAIN_COMMAND}_DEBUG"
+[[ -z ${DEBUG} ]] && DEBUG=${(P)_DEBUG_ENV}
+
+# this should not run as root it is too dangerous.
+# Privileged should be asked in a definition to
+# control the scope of priviledged run.
+[[ "${EUID}" -eq 0 ]] && error "Running ${MAIN_COMMAND} as root is not supported.\n"
+
+# add itself to PATH if needed
+log "check if ${MAIN_COMMAND} is on PATH"
+type -a ${MAIN_COMMAND} &> /dev/null
+if [[ $? -ne 0 ]]; then
+  export PATH=${PATH}:${ROOT_DIR}
+fi
+
+# environment, this is a point of extension and configuration
+# it should give some ability to extend behavior
+[[ -f ${SUBCOMMANDS_DIR}/_environment ]] && . ${SUBCOMMANDS_DIR}/_environment
+
+function _list_commands() {
+  cat <<EOU
+  Usage: ${MAIN_COMMAND} [-h|--help] [-l|--list] [-q|--quiet] [-d|--debug] [-V|--version] [SUBCOMMAND]
+
+  -h|--help                Show this help message
+  -l|--list                List available libraries
+  -q|--quiet               Quiet mode, suppress extra information
+  -d|--debug               Enable debug mode, same as ${(U)MAIN_COMMAND}_DEBUG env
+  -V|--version             Display current version
+
+  Subcommands available ('${MAIN_COMMAND} SUBCOMMAND' for usage):
+
+EOU
+  for i in $(export LC_COLLATE=C; find ${SUBCOMMANDS_DIR} -maxdepth 1 -type f -or -type l | grep -vE '/_[^[:blank:]]+$' | sort); do
+    log "sourcing ${i} with: noop"
+    source "${i}" "noop"
+    local libname=$(basename ${i})
+    printf "  %.24s %-50s\n" \
+       "${libname}                                          " \
+       "${SUBCOMMAND_DESC}"
+  done
+  echo
+  exit 1
+}
+
+function _list_libraries() {
+  cat <<EOU
+
+  Libraries available ('${MAIN_COMMAND} LIBRARY' for more information):
+
+EOU
+  for i in $(export LC_COLLATE=C; ls ${SUBCOMMANDS_DIR}/* | grep -E '/_[^[:blank:]]+$' | sort); do
+    source "${i}"
+    local libname=$(basename ${i})
+    printf "  %.24s %-60s\n" \
+       "${libname}                                          " \
+       "${SUBCOMMAND_DESC}"
+  done
+  echo
+  exit 1
+}
+
+function _subcommand_help() {
+  local subcmd=${1}
+  local subhelp=${2}
+  cat <<EOU
+
+  Showing '${MAIN_COMMAND} ${subcmd}' help:
+
+  ${subhelp}
+
+EOU
+  exit 1
+}
+
+function help() {
+  log "showing subcommand:${SUBCOMMAND} help (lenght):${#SUBCOMMAND_HELP}"
+  _subcommand_help ${SUBCOMMAND} "${SUBCOMMAND_HELP}"
+}
+
+function _handle_subcommand() {
+  local SUBCOMMAND=${1}; shift 1
+  local ACTION="${@}"
+
+  log "running ${SUBCOMMANDS_DIR}/${SUBCOMMAND} ${ACTION} "
+  . "${SUBCOMMANDS_DIR}/${SUBCOMMAND}" ${=ACTION}
+}
+
+_arg_subcmd=${1}
+log "got argument '${_arg_subcmd}'"
+case ${_arg_subcmd} in
+  -l|--list)
+    log 'showing available libs'
+    _list_libraries
+  ;;
+  -h|--help|'')
+    log 'help or no argument was given'
+    _list_commands
+  ;;
+  -V|--version)
+    echo "${MAIN_COMMAND} ${MAIN_COMMAND_VERSION}"
+  ;;
+  *)
+    log "arguments '${*}'"
+    log "checking if '${SUBCOMMANDS_DIR}/${_arg_subcmd}' exists"
+    [[ ! -f "${SUBCOMMANDS_DIR}/${_arg_subcmd}" ]] && in_red "'${_arg_subcmd}' not found" && _list_commands
+    shift 1
+    _handle_subcommand ${_arg_subcmd} "${@}"
+    ;;
+esac

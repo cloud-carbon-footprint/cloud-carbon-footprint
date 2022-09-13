@@ -1,0 +1,34 @@
+# vim: ft=zsh
+use "exec-on"
+
+SUBCOMMAND_DESC="Execute build"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [--all|-a] [--lerna-all] [PACKAGE]
+
+Executes build, if PACKAGE is not defined will execute on current
+directory.
+
+-a|--all        Goes through packages: ${(@)CCF_CORE_PACKAGES}
+--lerna-all     Uses lerna to execute on all packages
+
+EOH
+)
+
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (-a|--all)
+    in_cyan "yarn build on core ccf packages\n"
+    exec_on_core "yarn build"
+  ;;
+  (--lerna-all) 
+    in_cyan "lerna run build\n"
+    exec_lerna_run "build"
+  ;;
+  (*)
+    local pkg="${1}"
+    [[ -n ${pkg} ]] && exec_on_package "${pkg}" "yarn build" || exec_on_root "yarn build"
+  ;;
+esac
+

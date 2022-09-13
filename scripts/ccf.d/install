@@ -1,0 +1,28 @@
+# vim: ft=zsh
+use "exec-on"
+
+SUBCOMMAND_DESC="Execute install"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [--all|-a] [--lerna-all] [PACKAGE]
+
+Executes install on PACKAGE, if PACKAGE is not present executes
+on current directory.
+
+-a|--all        Goes through packages: ${(@)CCF_CORE_PACKAGES}
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (-a|--all)
+    exec_on_core "yarn install"
+    in_cyan "ran yarn install on ${CCF_CORE_PACKAGES}\n"
+  ;;
+  (*)
+    # one a package or locally
+    [[ -n ${pkg} ]] && exec_on_package "${pkg}" "yarn install" || exec_on_root "yarn install"
+  ;;
+esac
+

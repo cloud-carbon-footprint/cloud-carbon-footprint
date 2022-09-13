@@ -1,0 +1,13 @@
+FROM node:18-alpine
+WORKDIR /usr/src/app
+
+COPY ./api/dist ./dist
+COPY ./api/package.json .
+
+# upgrade yarn to v2.X
+#RUN yarn set version stable
+RUN yarn install
+
+RUN rm -rf core
+
+CMD [ "yarn", "start:webprod"]
