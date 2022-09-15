@@ -86,7 +86,7 @@ export interface MutableServiceEstimate {
   cost: number
   region: string
   usesAverageCPUConstant: boolean
-  tags: TagCollection
+  tags?: TagCollection
 }
 
 export const accumulateKilowattHours = (
