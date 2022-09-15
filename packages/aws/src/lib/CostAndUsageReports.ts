@@ -520,21 +520,32 @@ export default class CostAndUsageReports {
     tagNames: string[],
   ): Promise<Athena.Row[]> {
     const dateGranularity = AWS_QUERY_GROUP_BY[grouping]
+    const dateExpression = `DATE(DATE_TRUNC('${dateGranularity}', line_item_usage_start_date))`
     const lineItemTypes = LINE_ITEM_TYPES.join(`', '`)
     const startDate = moment.utc(start).format('YYYY-MM-DD')
     const endDate = moment.utc(end).format('YYYY-MM-DD')
 
     const tagColumnNames = tagNames.map(tagNameToAthenaColumn)
+
     const tagSelectionExpression = tagColumnNames
       .map((column) => `${column} as ${column},`)
       .join('\n')
-    const groupByColumnIndices = listOfIntegers(
-      1,
-      7 + tagColumnNames.length,
-    ).join(',')
+
+    // Note that these names cannot be the column alias (AS <alias>) and must instead match the original expression (before the AS).
+    // (Athena will reject the query if the alias is used.)
+    const groupByColumnNames = [
+      dateExpression,
+      'line_item_usage_account_id',
+      'product_region',
+      'line_item_product_code',
+      'line_item_usage_type',
+      'pricing_unit',
+      'product_vcpu',
+      ...tagColumnNames,
+    ].join(', ')
 
     const params = {
-      QueryString: `SELECT DATE(DATE_TRUNC('${dateGranularity}', line_item_usage_start_date)) AS timestamp,
+      QueryString: `SELECT ${dateExpression} AS timestamp,
                         line_item_usage_account_id as accountName,
                         product_region as region,
                         line_item_product_code as serviceName,
@@ -547,7 +558,7 @@ export default class CostAndUsageReports {
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('${lineItemTypes}')
                       AND line_item_usage_start_date BETWEEN DATE ('${startDate}') AND DATE ('${endDate}')
-                    GROUP BY ${groupByColumnIndices}`,
+                    GROUP BY ${groupByColumnNames}`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
       },
