@@ -187,7 +187,6 @@ describe('App', () => {
                 cost: 5,
                 region: region,
                 usesAverageCPUConstant: false,
-                tags: {},
               },
             ],
             periodStartDate: timestamp,
@@ -267,7 +266,6 @@ describe('App', () => {
               cost: 3,
               region: region,
               usesAverageCPUConstant: false,
-              tags: {},
             },
             {
               cloudProvider: 'AWS',
@@ -279,7 +277,6 @@ describe('App', () => {
               cost: 4,
               region: region,
               usesAverageCPUConstant: false,
-              tags: {},
             },
           ],
           periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
@@ -336,7 +333,6 @@ describe('App', () => {
               cost: 0,
               region: region,
               usesAverageCPUConstant: false,
-              tags: {},
             },
           ],
           periodStartDate: new Date('2020-08-07T00:00:00.000Z'),
@@ -409,7 +405,6 @@ describe('App', () => {
                 cost: 0,
                 region: region,
                 usesAverageCPUConstant: false,
-                tags: {},
               },
             ],
             periodStartDate: timestamp,
@@ -472,7 +467,6 @@ describe('App', () => {
             cost: 0,
             region: testRegions[0],
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'AWS',
@@ -484,7 +478,6 @@ describe('App', () => {
             cost: 0,
             region: testRegions[1],
             usesAverageCPUConstant: false,
-            tags: {},
           },
         ],
         groupBy: 'day',
@@ -585,7 +578,6 @@ describe('App', () => {
             cost: 3,
             region: testRegions[0],
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'AWS',
@@ -597,7 +589,6 @@ describe('App', () => {
             cost: 3,
             region: testRegions[0],
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'AWS',
@@ -609,7 +600,6 @@ describe('App', () => {
             cost: 3,
             region: testRegions[1],
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'AWS',
@@ -621,7 +611,6 @@ describe('App', () => {
             cost: 3,
             region: testRegions[1],
             usesAverageCPUConstant: false,
-            tags: {},
           },
         ],
         groupBy: grouping,
@@ -712,7 +701,6 @@ describe('App', () => {
             cost: 0,
             region: 'us-east-1',
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'AWS',
@@ -724,7 +712,6 @@ describe('App', () => {
             cost: 0,
             region: 'us-east-2',
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'GCP',
@@ -736,7 +723,6 @@ describe('App', () => {
             cost: 0,
             region: 'us-east1',
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'GCP',
@@ -748,7 +734,6 @@ describe('App', () => {
             cost: 0,
             region: 'us-west1',
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             cloudProvider: 'GCP',
@@ -760,7 +745,6 @@ describe('App', () => {
             cost: 0,
             region: 'us-central1',
             usesAverageCPUConstant: false,
-            tags: {},
           },
           {
             accountId: testGcpAccountIdTwo,
@@ -772,7 +756,6 @@ describe('App', () => {
             serviceName: 'serviceTwo',
             usesAverageCPUConstant: false,
             kilowattHours: 4,
-            tags: {},
           },
           {
             accountId: testGcpAccountIdTwo,
@@ -784,7 +767,6 @@ describe('App', () => {
             serviceName: 'serviceTwo',
             usesAverageCPUConstant: false,
             kilowattHours: 4,
-            tags: {},
           },
           {
             accountId: testGcpAccountIdTwo,
@@ -796,7 +778,6 @@ describe('App', () => {
             serviceName: 'serviceTwo',
             usesAverageCPUConstant: false,
             kilowattHours: 4,
-            tags: {},
           },
         ],
         groupBy: grouping,

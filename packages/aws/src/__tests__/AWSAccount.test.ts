@@ -596,7 +596,6 @@ function getExpectedEstimationResult(startDate: Date = new Date()) {
           cost: 3,
           region: region,
           usesAverageCPUConstant: false,
-          tags: {},
         },
         {
           cloudProvider: 'AWS',
@@ -608,7 +607,6 @@ function getExpectedEstimationResult(startDate: Date = new Date()) {
           cost: 4,
           region: region,
           usesAverageCPUConstant: false,
-          tags: {},
         },
       ],
       periodStartDate: new Date(startDate),

@@ -25,7 +25,7 @@ export interface ServiceData {
   accountName: string
   serviceName: string
   region: string
-  tags: TagCollection
+  tags?: TagCollection
 }
 
 export interface TagCollection {
