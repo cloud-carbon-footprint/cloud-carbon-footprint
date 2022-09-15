@@ -73,7 +73,6 @@ export default class CloudProviderAccount {
                 co2e: estimate?.co2e || 0,
                 cost: cost?.amount || 0,
                 usesAverageCPUConstant: !!estimate?.usesAverageCPUConstant,
-                tags: {}, // We don't support grouping by resource tags when using the Cloud Usage API.
               },
             ],
             periodStartDate: startDate,

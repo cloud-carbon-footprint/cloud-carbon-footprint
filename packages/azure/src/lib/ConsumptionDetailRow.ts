@@ -26,7 +26,6 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     this.vCpuHours = this.usageAmount * this.getVCpus()
     this.gpuHours = this.usageAmount * this.getGpus()
     this.region = this.getRegionFromResourceLocation()
-    this.tags = {} // TODO: we currently don't support resource tags for Azure
   }
 
   public getVCpus(): number {
