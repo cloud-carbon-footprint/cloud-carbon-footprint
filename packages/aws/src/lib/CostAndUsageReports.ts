@@ -716,7 +716,3 @@ const lastCharacterIs = (text: string, char: string): boolean => {
 
   return text[text.length - 1] === char
 }
-
-const listOfIntegers = (first: number, last: number): number[] => {
-  return Array.from({ length: last - first + 1 }, (_, i) => i + first)
-}
