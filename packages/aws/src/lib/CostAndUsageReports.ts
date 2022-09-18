@@ -513,6 +513,15 @@ export default class CostAndUsageReports {
     )
   }
 
+  // A note about resource tags:
+  //
+  // AWS' Cost and Usage Reporting (CUR) translates tags' names to names that are valid Athena column names.
+  //
+  // On top of this, it also adds a prefix to distinguish between user-created tags and AWS-internal tags.
+  //
+  // This isn't documented anywhere, but the behaviour appears to be that a tag such as 'SourceRepository' will
+  // be 'user:SourceRepository' in CUR, and 'resource_tags_user_source_repository' in Athena. (AWS-internal tags
+  // will be prefixed with 'aws:' instead of 'user:' in CUR.)
   private async getUsage(
     start: Date,
     end: Date,
