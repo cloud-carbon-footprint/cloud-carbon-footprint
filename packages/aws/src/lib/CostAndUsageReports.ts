@@ -169,9 +169,9 @@ export default class CostAndUsageReports {
         inputDataRow.usageType,
         inputDataRow.usageUnit,
         inputDataRow.vCpus != '' ? parseFloat(inputDataRow.vCpus) : null,
+        1,
+        1,
         {},
-        1,
-        1,
       )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
@@ -738,9 +738,9 @@ export default class CostAndUsageReports {
       usageType,
       usageUnit,
       vCpus,
-      tags,
       usageAmount,
       cost,
+      tags,
     )
   }
 }
