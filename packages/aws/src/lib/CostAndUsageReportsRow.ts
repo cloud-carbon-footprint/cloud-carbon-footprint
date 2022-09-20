@@ -34,9 +34,9 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
     usageType: string,
     usageUnit: string,
     vCpus: number | null,
-    tags: TagCollection,
     usageAmount: number,
     cost: number,
+    tags: TagCollection,
   ) {
     super({
       timestamp,
@@ -47,9 +47,9 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
       usageType,
       usageUnit: cleanUsageUnit(usageUnit, serviceName, usageType),
       vCpus,
-      tags,
       usageAmount: cleanUsageAmount(usageAmount, usageUnit, serviceName),
       cost,
+      tags,
     })
 
     this.vCpuHours = this.getVCpuHours(this.vCpus)
