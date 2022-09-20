@@ -2,16 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { Athena } from 'aws-sdk'
 import {
   BillingDataRow,
   COMPUTE_PROCESSOR_TYPES,
 } from '@cloud-carbon-footprint/core'
-import {
-  configLoader,
-  containsAny,
-  CCFConfig,
-} from '@cloud-carbon-footprint/common'
+import { containsAny, TagCollection } from '@cloud-carbon-footprint/common'
 import {
   BURSTABLE_INSTANCE_BASELINE_UTILIZATION,
   EC2_INSTANCE_TYPES,
@@ -21,75 +16,47 @@ import {
   MSK_INSTANCE_TYPES,
   REDSHIFT_INSTANCE_TYPES,
 } from './AWSInstanceTypes'
-import { KNOWN_USAGE_UNITS } from './CostAndUsageTypes'
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import { concat } from 'ramda'
 import { AWS_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
+import { KNOWN_USAGE_UNITS } from './CostAndUsageTypes'
 
 const GLUE_VCPUS_PER_USAGE = 4
 const SIMPLE_DB_VCPUS_PER_USAGE = 1
 
 export default class CostAndUsageReportsRow extends BillingDataRow {
-  constructor(rowData: Athena.datumList, tagNames: string[]) {
-    const tags = Object.fromEntries(
-      tagNames.map((name, i) => [name, rowData[i + 7].VarCharValue]),
-    )
-
-    const vCpus =
-      rowData[6].VarCharValue != '' ? parseFloat(rowData[6].VarCharValue) : null
-
+  constructor(
+    timestamp: Date,
+    accountId: string,
+    accountName: string,
+    region: string,
+    serviceName: string,
+    usageType: string,
+    usageUnit: string,
+    vCpus: number | null,
+    tags: TagCollection,
+    usageAmount: number,
+    cost: number,
+  ) {
     super({
-      timestamp: new Date(rowData[0].VarCharValue),
-      accountName: rowData[1].VarCharValue,
-      region: rowData[2].VarCharValue,
-      serviceName: rowData[3].VarCharValue,
-      usageType: rowData[4].VarCharValue,
-      usageUnit: rowData[5].VarCharValue,
-      vCpus: vCpus,
-      tags: tags,
-      usageAmount: parseFloat(rowData[7 + tagNames.length].VarCharValue),
-      cost: parseFloat(rowData[8 + tagNames.length].VarCharValue),
+      timestamp,
+      accountId,
+      accountName,
+      region,
+      serviceName,
+      usageType,
+      usageUnit: cleanUsageUnit(usageUnit, serviceName, usageType),
+      vCpus,
+      tags,
+      usageAmount: cleanUsageAmount(usageAmount, usageUnit, serviceName),
+      cost,
     })
 
-    this.usageAmount = this.getUsageAmount()
     this.vCpuHours = this.getVCpuHours(this.vCpus)
     this.gpuHours = this.getGpuHours()
-    this.usageUnit = this.getUsageUnit()
-    this.timestamp = new Date(this.timestamp)
-    this.cost = Number(this.cost)
-    this.accountId = this.accountName
     this.cloudProvider = 'AWS'
     this.instanceType = this.parseInstanceTypeFromUsageType()
     this.replicationFactor = this.getReplicationFactor()
-
-    const config = configLoader()
-    const AWS: CCFConfig['AWS'] = config.AWS
-    if (!AWS.accounts) AWS.accounts = []
-    for (const account of AWS.accounts) {
-      if (account.id === this.accountId) {
-        this.accountName = account.name
-        break
-      }
-    }
-  }
-
-  private getUsageAmount(): number {
-    if (this.isRedshiftComputeUsage()) return this.usageAmount / 3600
-    return this.usageAmount
-  }
-
-  private getUsageUnit(): string {
-    if (this.usageType.includes('Fargate-GB-Hours'))
-      return KNOWN_USAGE_UNITS.GB_HOURS
-    if (this.isRedshiftComputeUsage()) return KNOWN_USAGE_UNITS.HOURS_1
-    return this.usageUnit
-  }
-
-  private isRedshiftComputeUsage(): boolean {
-    return (
-      this.serviceName === 'AmazonRedshift' &&
-      this.usageUnit === KNOWN_USAGE_UNITS.SECONDS_1
-    )
   }
 
   private getVCpuHours(vCpuFromReport: number): number {
@@ -202,4 +169,42 @@ export default class CostAndUsageReportsRow extends BillingDataRow {
       ]
     )
   }
+}
+
+const cleanUsageUnit = (
+  rawUsageUnit: string,
+  serviceName: string,
+  usageType: string,
+): string => {
+  if (usageType.includes('Fargate-GB-Hours')) {
+    return KNOWN_USAGE_UNITS.GB_HOURS
+  }
+
+  if (isRedshiftComputeUsage(serviceName, rawUsageUnit)) {
+    return KNOWN_USAGE_UNITS.HOURS_1
+  }
+
+  return rawUsageUnit
+}
+
+const isRedshiftComputeUsage = (
+  serviceName: string,
+  usageUnit: string,
+): boolean => {
+  return (
+    serviceName === 'AmazonRedshift' &&
+    usageUnit === KNOWN_USAGE_UNITS.SECONDS_1
+  )
+}
+
+const cleanUsageAmount = (
+  rawUsageAmount: number,
+  rawUsageUnit: string,
+  serviceName: string,
+): number => {
+  if (isRedshiftComputeUsage(serviceName, rawUsageUnit)) {
+    return rawUsageAmount / 3600
+  }
+
+  return rawUsageAmount
 }

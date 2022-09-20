@@ -21,10 +21,7 @@ export interface CCFConfig {
     CURRENT_SERVICES?: { key: string; name: string }[]
     CURRENT_REGIONS?: string[]
     RESOURCE_TAG_NAMES?: string[]
-    accounts?: {
-      id: string
-      name?: string
-    }[]
+    accounts?: AWSAccount[]
     authentication?: {
       mode: string
       options?: Record<string, string>
@@ -77,6 +74,11 @@ export interface CCFConfig {
     URI?: string
     CREDENTIALS?: string
   }
+}
+
+export interface AWSAccount {
+  id: string
+  name?: string
 }
 
 export enum GroupBy {

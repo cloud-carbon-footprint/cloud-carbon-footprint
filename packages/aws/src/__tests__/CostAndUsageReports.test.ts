@@ -57,6 +57,9 @@ import {
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
 
+const testAccountId = '123456789'
+const testAccountName = 'the-test-account'
+
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
     string,
@@ -70,6 +73,12 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
         ATHENA_QUERY_RESULT_LOCATION: 'test-location',
         ATHENA_REGION: 'test-region',
         RESOURCE_TAG_NAMES: ['user:Environment', 'aws:CreatedBy'],
+        accounts: [
+          {
+            id: testAccountId,
+            name: testAccountName,
+          },
+        ],
       },
     }
   }),
@@ -79,8 +88,6 @@ describe('CostAndUsageReports Service', () => {
   const startDate = new Date('2020-10-01')
   const endDate = new Date('2020-11-03')
   const grouping = GroupBy.day
-  const testAccountId = '123456789'
-  const testAccountName = '123456789'
   const startQueryExecutionResponse = { QueryExecutionId: 'some-execution-id' }
   const getQueryExecutionResponse = {
     QueryExecution: { Status: { State: 'SUCCEEDED' } },
@@ -453,8 +460,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000004056674208111697,
             cost: 10,
@@ -582,8 +589,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000021890779867200004,
             cost: 14,
@@ -682,8 +689,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00005058906244549772,
             cost: 4,
@@ -697,8 +704,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000009827074180887886,
             cost: 2,
@@ -712,8 +719,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00001638006587014448,
             cost: 4,
@@ -727,8 +734,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00001638006587014448,
             cost: 4,
@@ -1150,8 +1157,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00030781953536818184,
             cost: 10,
@@ -1997,8 +2004,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.000011733898965323593,
             cost: 5,
@@ -2050,8 +2057,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2022-01-01'),
         serviceEstimates: [
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.01932281153902049,
             cost: 10,
@@ -2065,8 +2072,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.054792520029449,
             cost: 10,
@@ -2118,8 +2125,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2022-01-01'),
         serviceEstimates: [
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000000012668275386111113,
             cost: 8,
@@ -2141,8 +2148,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2022-01-02'),
         serviceEstimates: [
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0000000009035109614999999,
             cost: 9,
@@ -2194,8 +2201,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2022-01-01'),
         serviceEstimates: [
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.03864562307804098,
             cost: 20,
@@ -2209,8 +2216,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.00805117147459187,
             cost: 4.2,
@@ -2224,8 +2231,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0008051171474591871,
             cost: 0.42,
@@ -2239,8 +2246,8 @@ describe('CostAndUsageReports Service', () => {
             },
           },
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0.0016102342949183741,
             cost: 0.82,
@@ -2375,8 +2382,8 @@ describe('CostAndUsageReports Service', () => {
         timestamp: new Date('2020-10-30'),
         serviceEstimates: [
           {
-            accountId: '123456789',
-            accountName: '123456789',
+            accountId: testAccountId,
+            accountName: testAccountName,
             cloudProvider: 'AWS',
             co2e: 0,
             cost: 5,
