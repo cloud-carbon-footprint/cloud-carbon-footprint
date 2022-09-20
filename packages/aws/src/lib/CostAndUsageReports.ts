@@ -161,7 +161,7 @@ export default class CostAndUsageReports {
 
     inputData.map((inputDataRow: LookupTableInput) => {
       const costAndUsageReportRow = new CostAndUsageReportsRow(
-        new Date(),
+        null,
         '',
         '',
         inputDataRow.region,
