@@ -33,6 +33,7 @@ import CostAndUsageReports, {
 } from '../lib/CostAndUsageReports'
 import { ServiceWrapper } from '../lib/ServiceWrapper'
 import {
+  testAccountId,
   athenaMockGetQueryResultsWithEC2EBSLambda,
   athenaMockGetQueryResultsWithNetworkingGlueECSDynamoDB,
   athenaMockGetQueryResultsWithS3CloudWatchRDS,
@@ -57,7 +58,6 @@ import {
 import { AWS_CLOUD_CONSTANTS } from '../domain'
 import {} from '../lib/CostAndUsageTypes'
 
-const testAccountId = '123456789'
 const testAccountName = 'the-test-account'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
