@@ -4,6 +4,8 @@
 
 import { Athena } from 'aws-sdk'
 
+export const testAccountId = '123456789'
+
 const queryResultsHeaders = {
   Data: [
     { VarCharValue: 'timestamp' },
@@ -24,7 +26,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -39,7 +41,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -54,7 +56,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -69,7 +71,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-11-03' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -84,7 +86,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-29' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'EBS:VolumeUsage.gp2' },
@@ -99,7 +101,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW1-EBS:SnapshotUsage' },
@@ -114,7 +116,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AWSLambda' },
       { VarCharValue: 'Lambda-GB-Second' },
@@ -129,7 +131,7 @@ const queryResultsDataOne = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AWSLambda' },
       { VarCharValue: 'Lambda-GB-Second' },
@@ -154,7 +156,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'TimedStorage-ByteHrs' },
@@ -169,7 +171,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonCloudWatch' },
       { VarCharValue: 'USE1-TimedStorage-ByteHrs' },
@@ -184,7 +186,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'RDS:StorageUsage' },
@@ -199,7 +201,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'RDS:GP2-Storage' },
@@ -214,7 +216,7 @@ const queryResultsDataTwo = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-2' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'InstanceUsage:db.t2.micro' },
@@ -239,7 +241,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-NatGateway-Hours' },
@@ -254,7 +256,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AWSGlue' },
       { VarCharValue: 'APS1-Crawler-DPU-Hour' },
@@ -269,7 +271,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonECS' },
       { VarCharValue: 'APN1-ECS-EC2-GB-Hours' },
@@ -284,7 +286,7 @@ const queryResultsDataThree = [
   {
     Data: [
       { VarCharValue: '2020-10-31' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonDynamoDB' },
       { VarCharValue: 'APS1-TimedBackupStorage-ByteHrs' },
@@ -309,7 +311,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonKinesisAnalytics' },
       { VarCharValue: 'APS1-RunningApplicationStorage' },
@@ -324,7 +326,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonKinesisAnalytics' },
       { VarCharValue: 'APS2-DurableApplicationBackups' },
@@ -339,7 +341,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonES' },
       { VarCharValue: 'USE2-ES:GP2-Storage' },
@@ -354,7 +356,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-31' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APN1-SpotUsage:c5.18xlarge' },
@@ -369,7 +371,7 @@ const queryResultsDataFour = [
   {
     Data: [
       { VarCharValue: '2020-10-31' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonES' },
       { VarCharValue: 'EUC1-HeavyUsage:t3.medium.elasticsearch' },
@@ -394,7 +396,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonECS' },
       { VarCharValue: 'APN1-Fargate-GB-Hours' },
@@ -409,7 +411,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonECS' },
       { VarCharValue: 'APN1-Fargate-vCPU-Hours:perCPU' },
@@ -424,7 +426,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEKS' },
       { VarCharValue: 'APE1-AmazonEKS-Hours:perCluster' },
@@ -439,7 +441,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonMSK' },
       { VarCharValue: 'APS1-Kafka.m5.large' },
@@ -454,7 +456,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ap-south-1' },
       { VarCharValue: 'AmazonMSK' },
       { VarCharValue: 'APS3-Kafka.t3.small' },
@@ -469,7 +471,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRoute53' },
       { VarCharValue: 'APS1-ResolverNetworkInterface' },
@@ -484,7 +486,7 @@ const queryResultsDataFive = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: '8icvdraalzbfrdevgamoddblf' },
       { VarCharValue: 'APS3-SoftwareUsage:t2.small' },
@@ -509,7 +511,7 @@ const queryResultsDataSix = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonDocDB' },
       { VarCharValue: 'APS1-InstanceUsage:db.r5.large' },
@@ -524,7 +526,7 @@ const queryResultsDataSix = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-EBSOptimized:c5.2xlarge' },
@@ -539,7 +541,7 @@ const queryResultsDataSix = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APN1-SpotUsage:c5.12xlarge' },
@@ -554,7 +556,7 @@ const queryResultsDataSix = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonSimpleDB' },
       { VarCharValue: 'APN1-BoxUsage' },
@@ -569,7 +571,7 @@ const queryResultsDataSix = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'ElasticMapReduce' },
       { VarCharValue: 'APN1-BoxUsage:m5.xlarge' },
@@ -584,7 +586,7 @@ const queryResultsDataSix = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-CPUCredits:t3' },
@@ -609,7 +611,7 @@ const queryResultsDataSeven = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonRedshift' },
       { VarCharValue: 'RMS:ra3.4xlarge' },
@@ -624,7 +626,7 @@ const queryResultsDataSeven = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRedshift' },
       { VarCharValue: 'CS:ra3.4xlarge' },
@@ -639,7 +641,7 @@ const queryResultsDataSeven = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
@@ -654,7 +656,7 @@ const queryResultsDataSeven = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'USE2-Aurora:ServerlessUsage' },
@@ -679,7 +681,7 @@ const queryResultsDataEight = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW2-USE1-AWS-Out-Bytes' },
@@ -694,7 +696,7 @@ const queryResultsDataEight = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonCloudWatch' },
       { VarCharValue: 'APN2-DataScanned-Bytes' },
@@ -709,7 +711,7 @@ const queryResultsDataEight = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonCloudFront' },
       { VarCharValue: 'US-DataTransfer-Out-Bytes' },
@@ -734,7 +736,7 @@ const queryResultsDataNine = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW2-SpotUsage:t3.micro' },
@@ -749,7 +751,7 @@ const queryResultsDataNine = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-SpotUsage:m5.xlarge' },
@@ -764,7 +766,7 @@ const queryResultsDataNine = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW2-SpotUsage:c5d.4xlarge' },
@@ -779,7 +781,7 @@ const queryResultsDataNine = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW2-SpotUsage:m5zn.2xlarge' },
@@ -803,7 +805,7 @@ const queryResultsDataTen = [
   {
     Data: [
       { VarCharValue: '2021-01-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'USE1-BytesDeleted-STANDARD' },
@@ -818,7 +820,7 @@ const queryResultsDataTen = [
   {
     Data: [
       { VarCharValue: '2021-01-03' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'USE1-BytesDeleted-SIA' },
@@ -833,13 +835,13 @@ const queryResultsDataTen = [
   {
     Data: [
       { VarCharValue: '2021-01-04' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-north-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'EUN1-TimedStorage-ByteHrs' },
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: '7' },
       { VarCharValue: '' },
       { VarCharValue: '' },
@@ -848,7 +850,7 @@ const queryResultsDataTen = [
   {
     Data: [
       { VarCharValue: '2021-01-05' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'TimedStorage-GDA-Staging' },
@@ -863,7 +865,7 @@ const queryResultsDataTen = [
   {
     Data: [
       { VarCharValue: '2021-01-06' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'TimedStorage-ZIA-ByteHrs' },
@@ -878,7 +880,7 @@ const queryResultsDataTen = [
   {
     Data: [
       { VarCharValue: '2021-01-07' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'TimedStorage-RRS-ByteHrs' },
@@ -903,7 +905,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ap-south-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APS3-EBS:VolumeUsage.gp2' },
@@ -918,7 +920,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APS3-EBS:SnapshotUsage' },
@@ -933,7 +935,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AmazonEFS' },
       { VarCharValue: 'EU-TimedStorage-ByteHrs' },
@@ -948,7 +950,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ap-south-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'APS3-Aurora:StorageUsage' },
@@ -963,7 +965,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'APS3-Aurora:BackupUsage' },
@@ -978,7 +980,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-central-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'EUC1-RDS:Multi-AZ-GP2-Storage' },
@@ -993,7 +995,7 @@ const queryResultsDataEleven = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonRDS' },
       { VarCharValue: 'Multi-AZUsage:db.r5.12xl' },
@@ -1018,7 +1020,7 @@ const queryResultsDataTwelve = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ap-south-1' },
       { VarCharValue: 'AmazonDocDB' },
       { VarCharValue: 'APS3-StorageUsage' },
@@ -1033,7 +1035,7 @@ const queryResultsDataTwelve = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-central-1' },
       { VarCharValue: 'AmazonDocDB' },
       { VarCharValue: 'APS3-BackupUsage' },
@@ -1048,7 +1050,7 @@ const queryResultsDataTwelve = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ap-southeast-1' },
       { VarCharValue: 'AmazonDocDB' },
       { VarCharValue: 'APS1-InstanceUsage:db.r5.large' },
@@ -1063,7 +1065,7 @@ const queryResultsDataTwelve = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonDynamoDB' },
       { VarCharValue: 'TimedStorage-ByteHrs' },
@@ -1078,13 +1080,13 @@ const queryResultsDataTwelve = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonECR' },
       { VarCharValue: 'USW1-TimedStorage-ByteHrs' },
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: '5' },
       { VarCharValue: '' },
       { VarCharValue: '' },
@@ -1093,13 +1095,13 @@ const queryResultsDataTwelve = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ap-southeast-1' },
       { VarCharValue: 'AmazonSimpleDB' },
       { VarCharValue: 'APS2-TimedStorage-ByteHrs' },
       { VarCharValue: 'GB-Mo' },
       { VarCharValue: '' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: '5' },
       { VarCharValue: '' },
       { VarCharValue: '' },
@@ -1118,7 +1120,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
@@ -1133,7 +1135,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'NatGateway-Hours' },
@@ -1148,7 +1150,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonS3' },
       { VarCharValue: 'TimedStorage-ByteHrs' },
@@ -1163,7 +1165,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonCloudWatch' },
       { VarCharValue: 'CW:GMD-Metrics' },
@@ -1178,7 +1180,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-03' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW2-USE1-AWS-Out-Bytes' },
@@ -1193,7 +1195,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-03' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'NatGateway-Bytes' },
@@ -1208,7 +1210,7 @@ const queryResultsDataThirteen = [
   {
     Data: [
       { VarCharValue: '2021-01-04' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AWSDeveloperSupport' },
       { VarCharValue: 'Dollar' },
@@ -1232,7 +1234,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'EU-SpotUsage:h1.16xlarge' },
@@ -1247,7 +1249,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AmazonFSx' },
       { VarCharValue: 'EUC1-Storage' },
@@ -1262,7 +1264,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AmazonKinesis' },
       { VarCharValue: 'EU-LongTermRetention-ByteHrs' },
@@ -1277,7 +1279,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AWSBackup' },
       { VarCharValue: 'EU-ColdStorage-ByteHrs-EFS' },
@@ -1292,7 +1294,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AWSBackup' },
       { VarCharValue: 'EU-WarmStorage-ByteHrs-EFS' },
@@ -1307,7 +1309,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AmazonApiGateway' },
       { VarCharValue: 'EU-ApiGatewayCacheUsage:0.5GB' },
@@ -1322,7 +1324,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AWSDirectConnect' },
       { VarCharValue: 'EUC1-EQMU1-PortUsage:10G' },
@@ -1337,7 +1339,7 @@ const queryResultsDataFourteen = [
   {
     Data: [
       { VarCharValue: '2021-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'eu-west-1' },
       { VarCharValue: 'AWSDirectoryService' },
       { VarCharValue: 'EUC1-Std-SharedMsftAD-Usage' },
@@ -1361,7 +1363,7 @@ const queryResultsDataFifteen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -1376,7 +1378,7 @@ const queryResultsDataFifteen = [
   {
     Data: [
       { VarCharValue: '2020-10-28' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'ElasticMapReduce' },
       { VarCharValue: 'APN1-BoxUsage:m5.xlarge' },
@@ -1391,7 +1393,7 @@ const queryResultsDataFifteen = [
   {
     Data: [
       { VarCharValue: '2020-10-29' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'ca-central-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USW2-SpotUsage:m5zn.2xlarge' },
@@ -1406,7 +1408,7 @@ const queryResultsDataFifteen = [
   {
     Data: [
       { VarCharValue: '2020-10-31' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-west-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'APE1-BoxUsage:t3.2xlarge' },
@@ -1431,7 +1433,7 @@ const queryResultsDataSixteen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:t2.micro' },
@@ -1456,7 +1458,7 @@ const queryResultsDataSeventeen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:ml.m5.xlarge' }, // usage type
@@ -1471,7 +1473,7 @@ const queryResultsDataSeventeen = [
   {
     Data: [
       { VarCharValue: '2020-10-30' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'HostBoxUsage:mac1.metal' }, // usage type
@@ -1496,7 +1498,7 @@ const queryResultsDataEighteen = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
@@ -1511,7 +1513,7 @@ const queryResultsDataEighteen = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-2' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE2-BoxUsage:p4d.24xlarge' },
@@ -1536,7 +1538,7 @@ const queryResultsX86AndARMLambdas = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AWSLambda' },
       { VarCharValue: 'Lambda-GB-Second' },
@@ -1551,7 +1553,7 @@ const queryResultsX86AndARMLambdas = [
   {
     Data: [
       { VarCharValue: '2022-01-02' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AWSLambda' },
       { VarCharValue: 'Lambda-GB-Second-ARM' },
@@ -1576,7 +1578,7 @@ const queryResultsDataTaggedResources = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
@@ -1591,7 +1593,7 @@ const queryResultsDataTaggedResources = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
@@ -1606,7 +1608,7 @@ const queryResultsDataTaggedResources = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
@@ -1621,7 +1623,7 @@ const queryResultsDataTaggedResources = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
@@ -1636,7 +1638,7 @@ const queryResultsDataTaggedResources = [
   {
     Data: [
       { VarCharValue: '2022-01-01' },
-      { VarCharValue: '123456789' },
+      { VarCharValue: testAccountId },
       { VarCharValue: 'us-east-1' },
       { VarCharValue: 'AmazonEC2' },
       { VarCharValue: 'USE1-BoxUsage:p3dn.24xlarge' },
