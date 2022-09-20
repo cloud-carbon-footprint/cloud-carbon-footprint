@@ -24,6 +24,7 @@ import {
   Logger,
   wait,
   GroupBy,
+  AWSAccount,
 } from '@cloud-carbon-footprint/common'
 
 import {
@@ -99,7 +100,8 @@ export default class CostAndUsageReports {
     end: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
-    const tagNames = configLoader().AWS.RESOURCE_TAG_NAMES
+    const awsConfig = configLoader().AWS
+    const tagNames = awsConfig.RESOURCE_TAG_NAMES
     const usageRows = await this.getUsage(start, end, grouping, tagNames)
 
     usageRows.shift()
@@ -107,16 +109,24 @@ export default class CostAndUsageReports {
     const results: MutableEstimationResult[] = []
     const unknownRows: CostAndUsageReportsRow[] = []
     this.costAndUsageReportsLogger.info('Mapping over Usage Rows')
+
+    const accounts = Object.fromEntries(
+      awsConfig.accounts.map((account) => [account.id, account]),
+    )
+
     usageRows.map((rowData: Row) => {
-      const costAndUsageReportRow = new CostAndUsageReportsRow(
-        rowData.Data,
-        tagNames,
-      )
+      const costAndUsageReportRow =
+        this.convertAthenaRowToCostAndUsageReportsRow(
+          rowData.Data,
+          tagNames,
+          accounts,
+        )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
         unknownRows,
       )
+
       if (footprintEstimate)
         appendOrAccumulateEstimatesByDay(
           results,
@@ -150,18 +160,19 @@ export default class CostAndUsageReports {
     const unknownRows: CostAndUsageReportsRow[] = []
 
     inputData.map((inputDataRow: LookupTableInput) => {
-      const usageRowData = [
-        { VarCharValue: '' },
-        { VarCharValue: '' },
-        { VarCharValue: inputDataRow.region },
-        { VarCharValue: inputDataRow.serviceName },
-        { VarCharValue: inputDataRow.usageType },
-        { VarCharValue: inputDataRow.usageUnit },
-        { VarCharValue: inputDataRow.vCpus },
-        { VarCharValue: '1' },
-        { VarCharValue: '1' },
-      ]
-      const costAndUsageReportRow = new CostAndUsageReportsRow(usageRowData, [])
+      const costAndUsageReportRow = new CostAndUsageReportsRow(
+        new Date(),
+        '',
+        '',
+        inputDataRow.region,
+        inputDataRow.serviceName,
+        inputDataRow.usageType,
+        inputDataRow.usageUnit,
+        inputDataRow.vCpus != '' ? parseFloat(inputDataRow.vCpus) : null,
+        {},
+        1,
+        1,
+      )
 
       const footprintEstimate = this.getFootprintEstimateFromUsageRow(
         costAndUsageReportRow,
@@ -694,6 +705,48 @@ export default class CostAndUsageReports {
       largestInstancevCpu,
     }
   }
+
+  private convertAthenaRowToCostAndUsageReportsRow(
+    rowData: Athena.datumList,
+    tagNames: string[],
+    accounts: AWSAccountMap,
+  ): CostAndUsageReportsRow {
+    const timestamp = new Date(rowData[0].VarCharValue)
+    const accountId = rowData[1].VarCharValue
+    const accountName = accounts[accountId].name || accountId
+    const region = rowData[2].VarCharValue
+    const serviceName = rowData[3].VarCharValue
+    const usageType = rowData[4].VarCharValue
+    const usageUnit = rowData[5].VarCharValue
+
+    const vCpus =
+      rowData[6].VarCharValue != '' ? parseFloat(rowData[6].VarCharValue) : null
+
+    const usageAmount = parseFloat(rowData[7 + tagNames.length].VarCharValue)
+    const cost = parseFloat(rowData[8 + tagNames.length].VarCharValue)
+
+    const tags = Object.fromEntries(
+      tagNames.map((name, i) => [name, rowData[i + 7].VarCharValue]),
+    )
+
+    return new CostAndUsageReportsRow(
+      timestamp,
+      accountId,
+      accountName,
+      region,
+      serviceName,
+      usageType,
+      usageUnit,
+      vCpus,
+      tags,
+      usageAmount,
+      cost,
+    )
+  }
+}
+
+interface AWSAccountMap {
+  [index: string]: AWSAccount
 }
 
 export const tagNameToAthenaColumn = (tagName: string): string => {
