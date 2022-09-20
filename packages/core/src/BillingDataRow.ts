@@ -22,7 +22,7 @@ export default abstract class BillingDataRow {
   public seriesName: string
   public instanceType: string
   public replicationFactor: number
-  public tags: TagCollection
+  public tags?: TagCollection
 
   protected constructor(init: Partial<BillingDataRow>) {
     Object.assign(this, init)
