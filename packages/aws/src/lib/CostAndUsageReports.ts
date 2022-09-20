@@ -548,7 +548,7 @@ export default class CostAndUsageReports {
     const tagColumnNames = tagNames.map(tagNameToAthenaColumn)
 
     const tagSelectionExpression = tagColumnNames
-      .map((column) => `${column} as ${column},`)
+      .map((column) => `, ${column} as ${column}`)
       .join('\n')
 
     // Note that these names cannot be the column alias (AS <alias>) and must instead match the original expression (before the AS).
@@ -572,9 +572,9 @@ export default class CostAndUsageReports {
                         line_item_usage_type as usageType,
                         pricing_unit as usageUnit,
                         product_vcpu as vCpus,
-                        ${tagSelectionExpression}
                         SUM(line_item_usage_amount) as usageAmount,
                         SUM(line_item_blended_cost) as cost
+                        ${tagSelectionExpression}
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('${lineItemTypes}')
                       AND line_item_usage_start_date BETWEEN DATE ('${startDate}') AND DATE ('${endDate}')
@@ -722,11 +722,11 @@ export default class CostAndUsageReports {
     const vCpus =
       rowData[6].VarCharValue != '' ? parseFloat(rowData[6].VarCharValue) : null
 
-    const usageAmount = parseFloat(rowData[7 + tagNames.length].VarCharValue)
-    const cost = parseFloat(rowData[8 + tagNames.length].VarCharValue)
+    const usageAmount = parseFloat(rowData[7].VarCharValue)
+    const cost = parseFloat(rowData[8].VarCharValue)
 
     const tags = Object.fromEntries(
-      tagNames.map((name, i) => [name, rowData[i + 7].VarCharValue]),
+      tagNames.map((name, i) => [name, rowData[i + 9].VarCharValue]),
     )
 
     return new CostAndUsageReportsRow(
