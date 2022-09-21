@@ -45,10 +45,10 @@ const FootprintApiMiddleware = async function (
     skip: req.query.skip?.toString(),
   }
   apiLogger.info(`Footprint API request started.`)
-  if (!rawRequest.groupBy)
-    apiLogger.warn(
-      'GroupBy parameter not specified. This will be required in the future.',
-    )
+  if (!rawRequest.groupBy) {
+    apiLogger.warn('GroupBy parameter not specified, adopting default "day"')
+    rawRequest.groupBy = 'day'
+  }
   const footprintApp = new App()
   try {
     const estimationRequest = CreateValidFootprintRequest(rawRequest)
