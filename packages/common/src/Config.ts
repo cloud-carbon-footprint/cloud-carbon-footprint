@@ -54,7 +54,6 @@ export interface CCFConfig {
     }
   }
   LOGGING_MODE?: string
-  GROUP_QUERY_RESULTS_BY?: GroupBy
   CACHE_MODE?: string
   ON_PREMISE?: {
     SERVER?: {
@@ -226,10 +225,6 @@ const getConfig = (): CCFConfig => ({
     },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
-  GROUP_QUERY_RESULTS_BY:
-    GroupBy[
-      (process.env.GROUP_QUERY_RESULTS_BY || 'day') as keyof typeof GroupBy
-    ],
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
   ON_PREMISE: {
     SERVER: {

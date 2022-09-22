@@ -48,8 +48,7 @@ export default function cache(): any {
       const getCostAndEstimates = (request: EstimationRequest) =>
         decoratedFunction.apply(target, [request])
 
-      const grouping =
-        (request.groupBy as GroupBy) || configLoader().GROUP_QUERY_RESULTS_BY
+      const grouping = request.groupBy as GroupBy
 
       // Determine if cache is ignored and get fresh estimates
       if (request.ignoreCache && !process.env.TEST_MODE) {

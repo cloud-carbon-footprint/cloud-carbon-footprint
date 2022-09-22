@@ -38,11 +38,6 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
       info: jest.fn(),
     }
   }),
-  configLoader: jest.fn().mockImplementation(() => {
-    return {
-      GROUP_QUERY_RESULTS_BY: 'day',
-    }
-  }),
 }))
 
 const dummyServiceEstimate: ServiceData[] = [

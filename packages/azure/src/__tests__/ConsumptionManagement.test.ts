@@ -5,7 +5,6 @@
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import {
-  configLoader,
   EstimationResult,
   GroupBy,
   LookupTableInput,
@@ -44,11 +43,6 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     string,
     unknown
   >),
-  configLoader: jest.fn().mockImplementation(() => {
-    return {
-      GROUP_QUERY_RESULTS_BY: 'day',
-    }
-  }),
 }))
 
 jest.mock('@azure/arm-consumption', () => {
@@ -66,11 +60,6 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     string,
     unknown
   >),
-  configLoader: jest.fn().mockImplementation(() => {
-    return {
-      GROUP_QUERY_RESULTS_BY: 'day',
-    }
-  }),
 }))
 
 describe('Azure Consumption Management Service', () => {
@@ -1142,16 +1131,6 @@ describe('Azure Consumption Management Service', () => {
   })
 
   describe('When group query results by week is true', () => {
-    beforeEach(() => {
-      ;(configLoader as jest.Mock).mockReturnValue({
-        GROUP_QUERY_RESULTS_BY: 'week',
-      })
-    })
-
-    afterEach(() => {
-      jest.restoreAllMocks()
-    })
-
     it('Returns estimates for Compute grouped by week', async () => {
       mockUsageDetails.list.mockResolvedValue(
         mockConsumptionManagementResponseOne,
