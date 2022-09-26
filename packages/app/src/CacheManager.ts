@@ -2,9 +2,9 @@
  * © 2021 Thoughtworks, Inc.
  */
 
+import moment, { Moment } from 'moment'
 import { EstimationResult, Logger } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
-import moment from 'moment'
 
 export default abstract class CacheManager {
   protected readonly cacheLogger: Logger
@@ -31,6 +31,11 @@ export default abstract class CacheManager {
    * @param grouping String representing how the data is being grouped
    */
   abstract setEstimates(data: EstimationResult[], grouping: string): void
+
+  abstract getMissingDates(
+    request: EstimationRequest,
+    grouping: string,
+  ): Promise<Moment[]>
 
   protected filterEstimatesForRequest(
     request: EstimationRequest,
