@@ -600,6 +600,10 @@ export default class BillingExportTable {
     end: Date,
     grouping: GroupBy,
   ): Promise<RowMetadata[]> {
+    const startDate = new Date(
+      moment.utc(start).startOf('day') as unknown as Date,
+    )
+    const endDate = new Date(moment.utc(end).endOf('day') as unknown as Date)
     const query = `SELECT
                     DATE_TRUNC(DATE(usage_start_time), ${
                       GCP_QUERY_GROUP_BY[grouping]
@@ -621,11 +625,11 @@ export default class BillingExportTable {
                   WHERE
                     cost_type != 'rounding_error'
                     AND usage.unit IN ('byte-seconds', 'seconds', 'bytes', 'requests')
-                    AND usage_start_time BETWEEN TIMESTAMP('${moment(
-                      start,
-                    ).format('YYYY-MM-DD')}') AND TIMESTAMP('${moment(
-      end,
-    ).format('YYYY-MM-DD')}')
+                    AND usage_start_time BETWEEN TIMESTAMP('${moment
+                      .utc(startDate)
+                      .format('YYYY-MM-DDTHH:mm:ssZ')}') AND TIMESTAMP('${moment
+      .utc(endDate)
+      .format('YYYY-MM-DDTHH:mm:ssZ')}')
                   GROUP BY
                     timestamp,
                     accountId,

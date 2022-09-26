@@ -542,8 +542,10 @@ export default class CostAndUsageReports {
     const dateGranularity = AWS_QUERY_GROUP_BY[grouping]
     const dateExpression = `DATE(DATE_TRUNC('${dateGranularity}', line_item_usage_start_date))`
     const lineItemTypes = LINE_ITEM_TYPES.join(`', '`)
-    const startDate = moment.utc(start).format('YYYY-MM-DD')
-    const endDate = moment.utc(end).format('YYYY-MM-DD')
+    const startDate = new Date(
+      moment.utc(start).startOf('day') as unknown as Date,
+    )
+    const endDate = new Date(moment.utc(end).endOf('day') as unknown as Date)
 
     const tagColumnNames = tagNames.map(tagNameToAthenaColumn)
 
@@ -577,7 +579,11 @@ export default class CostAndUsageReports {
                         ${tagSelectionExpression}
                     FROM ${this.tableName}
                     WHERE line_item_line_item_type IN ('${lineItemTypes}')
-                      AND line_item_usage_start_date BETWEEN DATE ('${startDate}') AND DATE ('${endDate}')
+                      AND line_item_usage_start_date BETWEEN from_iso8601_timestamp('${moment
+                        .utc(startDate)
+                        .toISOString()}') AND from_iso8601_timestamp('${moment
+        .utc(endDate)
+        .toISOString()}')
                     GROUP BY ${groupByColumnNames}`,
       QueryExecutionContext: {
         Database: this.dataBaseName,
