@@ -7,6 +7,7 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
 import { writeToFile, getCachedData, getCacheFileName } from './common/helpers'
+import { Moment } from 'moment'
 
 export const testCachePath = 'mock-estimates.json'
 
@@ -35,6 +36,14 @@ export default class LocalCacheManager extends CacheManager {
       : getCacheFileName(grouping)
 
     await this.fileHandle(cacheFile, cachedEstimates.concat(estimates))
+  }
+
+  async getMissingDates(
+    request: EstimationRequest,
+    grouping: string,
+  ): Promise<Moment[]> {
+    console.log(request, grouping)
+    return []
   }
 
   private async fileHandle(cacheFile: string, estimates: EstimationResult[]) {

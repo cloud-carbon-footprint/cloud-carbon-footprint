@@ -24,6 +24,45 @@ export interface UseRemoteFootprintServiceParams {
   limit?: number
 }
 
+const concatenateResults = (estimates, newEstimates) => {
+  if (!newEstimates || !(newEstimates.length > 0)) {
+    return estimates
+  }
+
+  const existingDates = estimates.reduce((dates, estimate) => {
+    dates.push(moment.utc(estimate.timestamp))
+    return dates
+  }, [])
+
+  let updatedEstimates
+  newEstimates.map((newEstimate) => {
+    const newDateExists = !!existingDates.find((date) => {
+      return (
+        new Date(date).getTime() == new Date(newEstimate.timestamp).getTime()
+      )
+    })
+
+    if (newDateExists) {
+      const elementIndex = estimates.findIndex((estimate) =>
+        moment
+          .utc(estimate.timestamp)
+          .isSame(moment.utc(newEstimate.timestamp)),
+      )
+      const filteredEstimate = estimates[elementIndex]
+      const concatenatedEstimates = filteredEstimate?.serviceEstimates.concat(
+        newEstimate.serviceEstimates,
+      )
+      filteredEstimate.serviceEstimates = concatenatedEstimates
+      estimates[elementIndex] = filteredEstimate
+      updatedEstimates = estimates
+    } else {
+      updatedEstimates = estimates.concat([newEstimate])
+    }
+  })
+
+  return updatedEstimates
+}
+
 const useRemoteFootprintService = (
   params: UseRemoteFootprintServiceParams,
 ): ServiceResult<EstimationResult> => {
@@ -45,12 +84,9 @@ const useRemoteFootprintService = (
 
       let estimates: EstimationResult[] = data
       try {
-        let lastDate = moment.utc(start)
-        const endDate = moment.utc(end)
+        let lastDataLength = 1
         let skip = 0
-        while (
-          !lastDate.isSame(endDate, params.groupBy as moment.unitOfTime.StartOf)
-        ) {
+        while (lastDataLength > 0) {
           const res = await axios.get(`${params.baseUrl}/footprint`, {
             params: {
               start: start,
@@ -62,11 +98,10 @@ const useRemoteFootprintService = (
               skip,
             },
           })
-          estimates = estimates.concat(res.data)
-          // TODO: Clean up exit condition for last date into single if-statement. If empty response or ignoreCache is true, we should exit.
-          lastDate =
-            moment.utc(res.data[res.data.length - 1]?.timestamp) ?? endDate
-          if (params.ignoreCache) lastDate = endDate
+          estimates = concatenateResults(estimates, res.data)
+          lastDataLength = res.data.length
+
+          if (params.ignoreCache) lastDataLength = 0
           skip += params.limit
         }
       } catch (e) {
