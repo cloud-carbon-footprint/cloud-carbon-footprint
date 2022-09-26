@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment, { Moment } from 'moment'
+import moment, { Moment, unitOfTime } from 'moment'
 import { Stream } from 'stream'
 import { DelimitedStream } from '@sovpro/delimited-stream'
 import {
@@ -89,6 +89,33 @@ export function getCacheFileName(grouping: string): string {
 }
 
 /**
+ * Returns a modified request with only a subrange of the start/end date provided based on pagination parameters.
+ * @param request               - The original EstimationRequest
+ * @returns EstimationRequest   - The modified EstimationRequest with new start/end dates
+ */
+export const paginateRequest = (
+  request: EstimationRequest,
+): EstimationRequest => {
+  const { startDate, endDate, groupBy, limit, skip } = request
+
+  const start = moment
+    .utc(startDate)
+    .add(skip, `${groupBy}s` as unitOfTime.DurationConstructor)
+    .toDate()
+
+  const end = moment
+    .utc(start)
+    .add(limit - 1, `${groupBy}s` as unitOfTime.DurationConstructor)
+    .toDate()
+
+  return {
+    ...request,
+    startDate: start,
+    endDate: end < endDate ? end : endDate,
+  }
+}
+
+/**
  * Grabs the estimates that should persist in the cache by removing empty estimates according to the provided missing dates
  * @param missingDates - An array of dates that are missing from the cache
  * @param estimates    - An array of estimates that are not in the cache
@@ -165,13 +192,4 @@ export const getMissingDates = (
     if (!dateIsCached) missingDates.push(date)
   })
   return missingDates
-}
-
-// Filter out empty estimates
-export const filterCachedEstimates = (
-  cachedEstimates: EstimationResult[],
-): EstimationResult[] => {
-  return cachedEstimates.filter(({ serviceEstimates }) => {
-    return serviceEstimates.length !== 0
-  })
 }

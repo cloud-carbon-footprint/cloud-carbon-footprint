@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
@@ -25,10 +25,10 @@ export default class MongoDbCacheManager extends CacheManager {
         sslCert: mongoCredentials,
         serverApi: ServerApiVersion.v1,
       })
-      this.cacheLogger.debug('Successfully connected to the mongoDB client')
+      this.cacheLogger.info('Successfully connected to the mongoDB client')
     } else if (mongoURI) {
       this.mongoClient = new MongoClient(mongoURI)
-      this.cacheLogger.debug('Successfully connected to the mongoDB client')
+      this.cacheLogger.info('Successfully connected to the mongoDB client')
     } else {
       this.cacheLogger.warn(
         `There was an error connecting to the MongoDB client, please provide a valid URI`,
@@ -50,18 +50,15 @@ export default class MongoDbCacheManager extends CacheManager {
     )
     const endDate = new Date(request.endDate)
 
-    this.cacheLogger.info(
-      `Paginating documents: ${request.skip} to ${
-        request.skip + request.limit
-      }`,
-    )
-
     return new Promise(function (resolve, reject) {
       db.listCollections({ name: collectionName }).next(
         async (err: Error, collectionInfo: any) => {
           if (err) reject(err)
           if (collectionInfo) {
             const estimates = db.collection(collectionName)
+            console.info(
+              `Successfully connected to database collection: ${collectionName}`,
+            )
 
             resolve(
               estimates
@@ -69,18 +66,6 @@ export default class MongoDbCacheManager extends CacheManager {
                   [
                     {
                       $match: { timestamp: { $gte: startDate, $lte: endDate } },
-                    },
-                    {
-                      $sort: {
-                        timestamp: 1,
-                        _id: 1,
-                      },
-                    },
-                    {
-                      $skip: request.skip,
-                    },
-                    {
-                      $limit: request.limit,
                     },
                     {
                       $group: {
@@ -105,9 +90,7 @@ export default class MongoDbCacheManager extends CacheManager {
             )
           } else {
             // The collection does not exist - so we can create it
-            this.cacheLogger.info(
-              `Creating new database collection: ${collectionName}`,
-            )
+            console.info(`Creating new database collection: ${collectionName}`)
             db.createCollection(collectionName)
             resolve([])
           }
@@ -174,109 +157,9 @@ export default class MongoDbCacheManager extends CacheManager {
       })
 
       await collection.insertMany(newEstimates)
-    } catch (e) {
-      this.cacheLogger.warn(
-        `There was an error setting estimates from MongoDB: ${e.message}`,
-      )
     } finally {
       // Ensures that the client will close when you finish/error
       await this.mongoClient.close()
     }
-  }
-
-  async getMissingDates(
-    request: EstimationRequest,
-    grouping: string,
-  ): Promise<Moment[]> {
-    const requestedDates = this.getDatesWithinRequestTimeFrame(
-      request.startDate,
-      request.endDate,
-      grouping,
-    )
-
-    try {
-      await this.createDbConnection()
-      await this.mongoClient.connect()
-
-      const collectionName = `estimates-by-${grouping}`
-      const database = this.mongoClient.db(this.mongoDbName)
-
-      const aggResult: any = await new Promise(function (resolve, reject) {
-        database
-          .listCollections({ name: collectionName })
-          .next(async (err: Error, collectionInfo: any) => {
-            if (err) reject(err)
-
-            if (!collectionInfo) {
-              // The collection does not exist - so we can create it
-              await database.createCollection(collectionName)
-            }
-
-            const estimates = database.collection(collectionName)
-            estimates.count(function (err, count) {
-              if (!err && count === 0) {
-                resolve([{ dates: [] }])
-              }
-            })
-
-            resolve(
-              await estimates
-                .aggregate(
-                  [
-                    {
-                      $group: {
-                        _id: null,
-                        dates: {
-                          $addToSet: {
-                            $dateToString: {
-                              date: '$timestamp',
-                              format: '%Y-%m-%d',
-                            },
-                          },
-                        },
-                      },
-                    },
-                  ],
-                  { allowDiskUse: true },
-                )
-                .toArray(),
-            )
-          })
-      })
-
-      const cachedDates = aggResult[0].dates
-      const missingDates = requestedDates.filter(function (a) {
-        return cachedDates.indexOf(a) < 0
-      })
-      return missingDates.map((date: string) => {
-        return moment.utc(date)
-      })
-    } catch (e) {
-      this.cacheLogger.warn(
-        `There was an error getting missing dates from MongoDB: ${e.message}`,
-      )
-      return []
-    }
-  }
-
-  getDatesWithinRequestTimeFrame = (
-    startDate: Date,
-    endDate: Date,
-    grouping: string,
-  ) => {
-    const dates: string[] = []
-
-    let currentDate = moment.utc(startDate)
-    const lastDate = moment.utc(endDate)
-
-    while (currentDate <= lastDate) {
-      dates.push(moment.utc(currentDate).format('YYYY-MM-DD'))
-      currentDate = moment(currentDate).add(
-        1,
-        grouping as moment.unitOfTime.DurationConstructor,
-      )
-    }
-
-    return dates
   }
 }

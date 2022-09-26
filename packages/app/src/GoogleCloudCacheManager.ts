@@ -7,7 +7,6 @@ import CacheManager from './CacheManager'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
 import { writeToFile, getCachedData, getCacheFileName } from './common/helpers'
-import { Moment } from 'moment'
 
 const storage = new Storage()
 
@@ -47,14 +46,6 @@ export default class GoogleCloudCacheManager extends CacheManager {
     } catch (err) {
       console.warn(`Setting estimates error: ${err.message}`)
     }
-  }
-
-  async getMissingDates(
-    request: EstimationRequest,
-    grouping: string,
-  ): Promise<Moment[]> {
-    console.log(request, grouping)
-    return []
   }
 
   private async getCloudFileContent(
