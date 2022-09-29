@@ -100,17 +100,22 @@ export const fillDates = (
   estimates: EstimationResult[],
   grouping: GroupBy,
 ): EstimationResult[] => {
-  const dates: Moment[] = estimates.map(({ timestamp }) => {
-    return moment.utc(timestamp)
+  const dates: Date[] = estimates.map(({ timestamp }) => {
+    return timestamp
   })
 
-  const difference = R.difference(missingDates, dates)
+  // converts missing dates to Date object to compare to estimate dates
+  const missingDatesConverted: Date[] = missingDates.map((timestamp) => {
+    return timestamp.toDate()
+  })
+
+  const difference = R.difference(missingDatesConverted, dates)
   const emptyEstimates = difference.map((timestamp) => {
     return {
-      timestamp: timestamp.toDate(),
+      timestamp: timestamp,
       serviceEstimates: [],
-      periodStartDate: timestamp.toDate(),
-      periodEndDate: getPeriodEndDate(timestamp.toDate(), grouping),
+      periodStartDate: timestamp,
+      periodEndDate: getPeriodEndDate(timestamp, grouping),
       groupBy: grouping,
     }
   })

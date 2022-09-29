@@ -224,7 +224,7 @@ describe('FootprintServiceHook', () => {
         groupBy: GroupBy.day,
       }
       const mockEstimateTwo: EstimationResult = {
-        timestamp: moment.utc('2022-02-05').toDate(),
+        timestamp: moment.utc('2022-02-01').toDate(),
         serviceEstimates: [],
         groupBy: GroupBy.day,
       }
@@ -277,7 +277,7 @@ describe('FootprintServiceHook', () => {
 
       await waitForNextUpdate()
       expect(result.current).toEqual({
-        data: [mockEstimate, mockEstimateTwo],
+        data: [mockEstimate],
         loading: false,
         error: null,
       })

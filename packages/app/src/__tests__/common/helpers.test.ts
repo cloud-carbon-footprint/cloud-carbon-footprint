@@ -6,7 +6,7 @@ import {
   getCachedData,
   writeToFile,
   getCacheFileName,
-  paginateRequest,
+  getMissingDates,
 } from '../../common/helpers'
 import { Readable, Stream } from 'stream'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
@@ -77,50 +77,29 @@ describe('common/helpers.ts', () => {
       expect(cacheFile).toEqual('my-cache-file.day.json')
     })
   })
-
-  describe('pagination', () => {
-    it('paginates request for skip = 7, limit = 7 and groupBy day', async () => {
-      const rawRequest: EstimationRequest = {
-        startDate: moment.utc('2020-01-01').toDate(),
-        endDate: moment.utc('2020-01-31').toDate(),
-        ignoreCache: false,
+  it('gets missing dates', () => {
+    const estimates: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-01-01'),
+        serviceEstimates: [],
+        periodStartDate: undefined,
+        periodEndDate: undefined,
         groupBy: GroupBy.day,
-        limit: 7,
-        skip: 7,
-      }
+      },
+    ]
 
-      const updatedRawRequest: EstimationRequest = {
-        startDate: moment.utc('2020-01-08').toDate(),
-        endDate: moment.utc('2020-01-14').toDate(),
-        ignoreCache: false,
-        groupBy: GroupBy.day,
-        limit: 7,
-        skip: 7,
-      }
+    const request: EstimationRequest = {
+      startDate: new Date('2022-01-02'),
+      endDate: new Date('2022-01-02'),
+      ignoreCache: false,
+      groupBy: 'day',
+      skip: 0,
+      limit: 1,
+    }
 
-      expect(paginateRequest(rawRequest)).toEqual(updatedRawRequest)
-    })
+    const missingDates = getMissingDates(estimates, request)
+    const expectedDate = moment.utc(request.startDate).startOf('day')
 
-    it('paginates request using endDate at the end of period date range', async () => {
-      const rawRequest: EstimationRequest = {
-        startDate: moment.utc('2020-01-01').toDate(),
-        endDate: moment.utc('2020-01-31').toDate(),
-        ignoreCache: false,
-        groupBy: GroupBy.day,
-        limit: 10,
-        skip: 25,
-      }
-
-      const updatedRawRequest: EstimationRequest = {
-        startDate: moment.utc('2020-01-26').toDate(),
-        endDate: moment.utc('2020-01-31').toDate(),
-        ignoreCache: false,
-        groupBy: GroupBy.day,
-        limit: 10,
-        skip: 25,
-      }
-
-      expect(paginateRequest(rawRequest)).toEqual(updatedRawRequest)
-    })
+    expect(missingDates).toEqual([moment.utc(expectedDate.toDate())])
   })
 })

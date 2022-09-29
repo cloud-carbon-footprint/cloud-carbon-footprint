@@ -14,7 +14,7 @@ import GoogleCloudCacheManager from './GoogleCloudCacheManager'
 import LocalCacheManager from './LocalCacheManager'
 import CacheManager from './CacheManager'
 import MongoDbCacheManager from './MongoDbCacheManager'
-import { fillDates } from './common/helpers'
+import { concat, fillDates, filterCachedEstimates } from './common/helpers'
 
 /*
  This function provides a decorator. When this decorates a function, that
@@ -45,13 +45,6 @@ export default function cache(): any {
 
       const grouping = request.groupBy as GroupBy
 
-      // Determine if cache is ignored and get fresh estimates
-      // TODO: Refactor this so cache isn't aware of test environment
-      if (request.ignoreCache && !process.env.TEST_MODE) {
-        cacheLogger.info('Ignoring cache...')
-        return getCostAndEstimates(request)
-      }
-
       // Configure cache manager service and load existing cached estimates (if any)
       const cacheManager =
         cacheManagerServices[configLoader().CACHE_MODE] ||
@@ -61,6 +54,17 @@ export default function cache(): any {
         request,
         grouping,
       )
+
+      // Determine if cache is ignored and get fresh estimates
+      // TODO: Refactor this so cache isn't aware of test environment
+      if (request.ignoreCache && !process.env.TEST_MODE) {
+        cacheLogger.info('Ignoring cache...')
+        return await getEstimatesForMissingDates(
+          getCostAndEstimates,
+          request,
+          missingDates,
+        )
+      }
 
       let newEstimates: EstimationResult[] = []
       if (missingDates.length > 0) {
@@ -87,8 +91,8 @@ export default function cache(): any {
       const cachedEstimates: EstimationResult[] =
         await cacheManager.getEstimates(request, grouping)
 
-      // Return new estimates with cached estimates
-      return cachedEstimates
+      // Filter out empty estimates
+      return concat(filterCachedEstimates(cachedEstimates), [])
     }
   }
 }
@@ -112,8 +116,7 @@ const getEstimatesForMissingDates = async (
       return getCostAndEstimates(request)
     },
   )
-  const newEstimates = (await Promise.all(missingEstimates)).flat()
-  return newEstimates
+  return (await Promise.all(missingEstimates)).flat()
 }
 
 /**

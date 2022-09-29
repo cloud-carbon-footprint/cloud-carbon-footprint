@@ -19,7 +19,7 @@ export default class MongoDbCacheManager extends CacheManager {
   async createDbConnection() {
     const mongoURI = configLoader().MONGODB.URI
     const mongoCredentials = configLoader().MONGODB.CREDENTIALS
-    if (mongoCredentials) {
+    if (mongoCredentials && mongoURI) {
       this.mongoClient = new MongoClient(mongoURI, {
         sslKey: mongoCredentials,
         sslCert: mongoCredentials,
@@ -105,9 +105,6 @@ export default class MongoDbCacheManager extends CacheManager {
             )
           } else {
             // The collection does not exist - so we can create it
-            this.cacheLogger.info(
-              `Creating new database collection: ${collectionName}`,
-            )
             db.createCollection(collectionName)
             resolve([])
           }
@@ -194,6 +191,15 @@ export default class MongoDbCacheManager extends CacheManager {
       grouping,
     )
 
+    if (request.ignoreCache) {
+      const missingDatesConverted: Moment[] = requestedDates.map(
+        (timestamp) => {
+          return moment.utc(timestamp)
+        },
+      )
+      return missingDatesConverted
+    }
+
     try {
       await this.createDbConnection()
       await this.mongoClient.connect()
@@ -201,19 +207,18 @@ export default class MongoDbCacheManager extends CacheManager {
       const collectionName = `estimates-by-${grouping}`
       const database = this.mongoClient.db(this.mongoDbName)
 
-      const aggResult: any = await new Promise(function (resolve, reject) {
+      const aggResult: any = await new Promise((resolve, reject) => {
         database
           .listCollections({ name: collectionName })
           .next(async (err: Error, collectionInfo: any) => {
             if (err) reject(err)
 
             if (!collectionInfo) {
-              // The collection does not exist - so we can create it
-              await database.createCollection(collectionName)
+              resolve([{ dates: [] }])
             }
 
             const estimates = database.collection(collectionName)
-            estimates.count(function (err, count) {
+            await estimates.countDocuments((err, count) => {
               if (!err && count === 0) {
                 resolve([{ dates: [] }])
               }
@@ -245,7 +250,7 @@ export default class MongoDbCacheManager extends CacheManager {
       })
 
       const cachedDates = aggResult[0].dates
-      const missingDates = requestedDates.filter(function (a) {
+      const missingDates = requestedDates.filter((a) => {
         return cachedDates.indexOf(a) < 0
       })
       return missingDates.map((date: string) => {

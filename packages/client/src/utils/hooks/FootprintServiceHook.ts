@@ -98,10 +98,10 @@ const useRemoteFootprintService = (
               skip,
             },
           })
-          estimates = concatenateResults(estimates, res.data)
-          lastDataLength = res.data.length
+          estimates = concatenateResults(estimates, res?.data)
+          lastDataLength = res?.data?.length
 
-          if (params.ignoreCache) lastDataLength = 0
+          if (params.ignoreCache || res == undefined) lastDataLength = 0
           skip += params.limit
         }
       } catch (e) {
