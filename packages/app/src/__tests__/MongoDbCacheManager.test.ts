@@ -537,9 +537,7 @@ describe('MongoDbCacheManager', () => {
         'day',
       )
 
-      expect(Logger.prototype.warn).toHaveBeenCalledWith(
-        `There was an error getting missing dates from MongoDB: Cannot read properties of undefined (reading 'filter')`,
-      )
+      expect(Logger.prototype.warn).toHaveBeenCalled()
       expect(missingDates).toEqual([])
     })
   })
