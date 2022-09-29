@@ -3,9 +3,8 @@
  */
 import moment from 'moment'
 import { PassThrough } from 'stream'
-import CacheManager from '../CacheManager'
-import GoogleCloudCacheManager from '../GoogleCloudCacheManager'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
+import GoogleCloudCacheManager from '../GoogleCloudCacheManager'
 import { EstimationRequest } from '../CreateValidRequest'
 
 const creatReadStreamMock = jest.fn()
@@ -53,7 +52,10 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
   }),
 }))
 
-function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+const buildFootprintEstimates = (
+  startDate: string,
+  consecutiveDays: number,
+) => {
   const grouping = 'day' as GroupBy
   return [...Array(consecutiveDays)].map((v, i) => {
     const timestamp = moment.utc(startDate).add(i, 'days').toDate()
@@ -68,7 +70,7 @@ function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
 }
 
 describe('CacheManager', () => {
-  let googleCloudCacheManager: CacheManager
+  let googleCloudCacheManager: GoogleCloudCacheManager
 
   beforeEach(() => {
     console.warn = jest.fn()
@@ -81,45 +83,23 @@ describe('CacheManager', () => {
     jest.clearAllMocks()
   })
 
+  const buildFootprintJSONEstimates = (startDate: string) => {
+    return JSON.stringify(buildFootprintEstimates(startDate, 1))
+      .replace(/^\[/, '[\n')
+      .replace(/]$/, '\n]')
+  }
+
   describe('getEstimates', () => {
-    function buildFootprintJSONEstimates(startDate: string) {
-      return JSON.stringify(buildFootprintEstimates(startDate, 1))
-        .replace(/^\[/, '[\n')
-        .replace(/]$/, '\n]')
-    }
-
-    it('should get estimates from GCS file', async () => {
+    it('should get estimates', async () => {
       //setup
-      const startDate = '2020-10-01'
-      const endDate = '2020-10-02'
+      const cachedEstimates = buildFootprintEstimates('2020-01-01', 1)
 
-      const mockedStream = new PassThrough()
-      const jsonString = buildFootprintJSONEstimates(startDate)
+      googleCloudCacheManager.cachedEstimates = cachedEstimates
 
-      mockedStream.push(jsonString)
-      mockedStream.end()
-
-      creatReadStreamMock.mockReturnValue(mockedStream)
-      existsMock.mockReturnValue([true])
-
-      const cachedData: EstimationResult[] = buildFootprintEstimates(
-        startDate,
-        1,
-      )
-
-      //run
-      const request: EstimationRequest = {
-        startDate: moment.utc(startDate).toDate(),
-        endDate: moment.utc(endDate).toDate(),
-        ignoreCache: false,
-      }
-      const estimates = await googleCloudCacheManager.getEstimates(
-        request,
-        'day',
-      )
+      const estimates = await googleCloudCacheManager.getEstimates()
 
       //assert
-      expect(estimates).toEqual(cachedData)
+      expect(estimates).toEqual(cachedEstimates)
     })
 
     it('should console.warn on file writing error', async () => {
@@ -141,7 +121,7 @@ describe('CacheManager', () => {
         endDate: moment.utc(endDate).toDate(),
         ignoreCache: false,
       }
-      await googleCloudCacheManager.getEstimates(request, 'day')
+      await googleCloudCacheManager.getMissingDates(request, 'day')
 
       //assert
       expect(console.warn).toHaveBeenCalled()
@@ -199,5 +179,37 @@ describe('CacheManager', () => {
       //assert
       expect(console.warn).toHaveBeenCalled()
     })
+  })
+
+  it('gets missing dates', async () => {
+    const request: EstimationRequest = {
+      startDate: new Date('2022-01-01'),
+      endDate: new Date('2022-01-03'),
+      ignoreCache: false,
+      groupBy: 'day',
+    }
+
+    const mockedStream = new PassThrough()
+    const jsonString = buildFootprintJSONEstimates('2022-01-01')
+    const estimates = buildFootprintEstimates('2022-01-01', 1)
+
+    mockedStream.push(jsonString)
+    mockedStream.end()
+
+    creatReadStreamMock.mockReturnValue(mockedStream)
+    existsMock.mockReturnValue([true])
+
+    const missingDates = await googleCloudCacheManager.getMissingDates(
+      request,
+      'day',
+    )
+
+    expect(googleCloudCacheManager.cachedEstimates).toEqual(estimates)
+    await expect(JSON.stringify(missingDates)).toEqual(
+      JSON.stringify([
+        moment.utc(new Date('2022-01-02')),
+        moment.utc(new Date('2022-01-03')),
+      ]),
+    )
   })
 })

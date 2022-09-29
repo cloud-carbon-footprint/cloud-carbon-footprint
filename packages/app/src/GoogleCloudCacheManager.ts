@@ -3,37 +3,39 @@
  */
 
 import { Storage } from '@google-cloud/storage'
+import { Moment } from 'moment'
 import CacheManager from './CacheManager'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import { EstimationRequest } from './CreateValidRequest'
-import { writeToFile, getCachedData, getCacheFileName } from './common/helpers'
-import { Moment } from 'moment'
+import {
+  writeToFile,
+  getCachedData,
+  getCacheFileName,
+  getMissingDates,
+} from './common/helpers'
 
 const storage = new Storage()
 
 export default class GoogleCloudCacheManager extends CacheManager {
+  cachedEstimates: EstimationResult[]
+  fetchedEstimates: EstimationResult[]
   constructor() {
     super()
+    this.cachedEstimates = []
+    this.fetchedEstimates = []
   }
 
-  async getEstimates(
-    request: EstimationRequest,
-    grouping: string,
-  ): Promise<EstimationResult[]> {
-    this.cacheLogger.info('Using GCS bucket cache file...')
-    const estimates = await this.getCloudFileContent(grouping)
-    return estimates ? this.filterEstimatesForRequest(request, estimates) : []
+  async getEstimates(): Promise<EstimationResult[]> {
+    return this.cachedEstimates.concat(this.fetchedEstimates)
   }
 
   async setEstimates(
     estimates: EstimationResult[],
     grouping: string,
   ): Promise<void> {
-    const cachedEstimates = await this.getCloudFileContent(grouping)
+    this.fetchedEstimates = estimates
     const bucketName = configLoader().GCP.CACHE_BUCKET_NAME
-    const mergedData = cachedEstimates
-      ? cachedEstimates.concat(estimates)
-      : estimates
+    const mergedData = this.cachedEstimates.concat(estimates)
     const cacheFileName = getCacheFileName(grouping)
 
     try {
@@ -53,8 +55,16 @@ export default class GoogleCloudCacheManager extends CacheManager {
     request: EstimationRequest,
     grouping: string,
   ): Promise<Moment[]> {
-    console.log(request, grouping)
-    return []
+    this.cacheLogger.info('Using GCS bucket cache file...')
+
+    const estimates = await this.getCloudFileContent(grouping)
+    const filteredEstimates = estimates
+      ? this.filterEstimatesForRequest(request, estimates)
+      : []
+
+    this.cachedEstimates = filteredEstimates
+
+    return getMissingDates(filteredEstimates, request, grouping)
   }
 
   private async getCloudFileContent(

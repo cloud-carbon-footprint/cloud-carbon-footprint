@@ -133,6 +133,22 @@ export const concat = (
   })
 }
 
+export const getDatesWithinRequestTimeFrame = (
+  grouping: string,
+  request: EstimationRequest,
+): Moment[] => {
+  const dates: Moment[] = []
+  const unitOfTime =
+    grouping === 'week' ? 'isoWeek' : (grouping as moment.unitOfTime.StartOf)
+  const current = moment.utc(request.startDate).startOf(unitOfTime)
+  const end = moment.utc(request.endDate)
+  while (current <= end) {
+    dates.push(current.clone())
+    current.add(1, grouping as moment.unitOfTime.DurationConstructor)
+  }
+  return dates
+}
+
 /**
  * Returns a list of missing dates within the request according to the provided cached estimates
  * @param cachedEstimates - An array of cached estimates
@@ -142,6 +158,7 @@ export const concat = (
 export const getMissingDates = (
   cachedEstimates: EstimationResult[],
   request: EstimationRequest,
+  grouping: string,
 ): Moment[] => {
   const cachedDates: Moment[] = cachedEstimates.map(({ timestamp }) => {
     return moment.utc(timestamp)
@@ -150,21 +167,12 @@ export const getMissingDates = (
     return a.valueOf() - b.valueOf()
   })
 
-  const dates: Moment[] = []
   const missingDates: Moment[] = []
-  const unitOfTime =
-    request.groupBy === 'week'
-      ? 'isoWeek'
-      : (request.groupBy as moment.unitOfTime.StartOf)
-  const current = moment.utc(request.startDate).startOf(unitOfTime)
-  const end = moment.utc(request.endDate)
-  while (current <= end) {
-    dates.push(moment.utc(current.toDate()))
-    current.add(1, request.groupBy as moment.unitOfTime.DurationConstructor)
-  }
+  const dates = getDatesWithinRequestTimeFrame(grouping, request)
+
   dates.forEach((date) => {
     const dateIsCached = !!cachedDates.find((cachedDate) => {
-      return cachedDate.toDate().getTime() == date.toDate().getTime()
+      return cachedDate.isSame(date)
     })
 
     if (!dateIsCached) missingDates.push(date)

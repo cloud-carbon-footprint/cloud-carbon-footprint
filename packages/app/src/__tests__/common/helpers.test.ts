@@ -97,7 +97,7 @@ describe('common/helpers.ts', () => {
       limit: 1,
     }
 
-    const missingDates = getMissingDates(estimates, request)
+    const missingDates = getMissingDates(estimates, request, 'day')
     const expectedDate = moment.utc(request.startDate).startOf('day')
 
     expect(missingDates).toEqual([moment.utc(expectedDate.toDate())])

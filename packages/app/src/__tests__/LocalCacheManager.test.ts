@@ -3,19 +3,18 @@
  */
 
 import moment from 'moment'
-import fs, { promises } from 'fs'
+import { promises } from 'fs'
+import { FileHandle } from 'fs/promises'
 import { env } from 'process'
 import { GroupBy } from '@cloud-carbon-footprint/common'
-import { writeToFile } from '../common/helpers'
+import { writeToFile, getCachedData } from '../common/helpers'
 import LocalCacheManager from '../LocalCacheManager'
 import { EstimationRequest } from '../CreateValidRequest'
-import { FileHandle } from 'fs/promises'
 
 jest.mock('fs', () => {
   const actual = jest.requireActual('fs')
   return {
     ...actual,
-    readFileSync: actual.readFileSync,
     promises: { access: jest.fn(), writeFile: jest.fn(), open: jest.fn() },
   }
 })
@@ -25,13 +24,18 @@ jest.mock('../common/helpers', () => {
   return {
     ...requireActual,
     writeToFile: jest.fn(),
+    getCachedData: jest.fn(),
   }
 })
 
 const mockWrite = writeToFile as jest.Mocked<never>
+const mockGetCachedData = getCachedData as jest.Mock
 const mockFs = promises as jest.Mocked<typeof promises>
 
-function buildFootprintEstimates(startDate: string, consecutiveDays: number) {
+const buildFootprintEstimates = (
+  startDate: string,
+  consecutiveDays: number,
+) => {
   const grouping = 'day' as GroupBy
   return [...Array(consecutiveDays)].map((v, i) => {
     return {
@@ -55,34 +59,16 @@ describe('Local Cache Manager', () => {
     console.warn = jest.fn()
   })
 
-  it('reads estimations from file when asked to load', async () => {
-    const mockContent = JSON.parse(
-      fs.readFileSync('mock-estimates.json', 'utf8'),
-    )
+  it('gets estimates', async () => {
+    const cachedEstimates = buildFootprintEstimates('2020-01-01', 1)
 
-    const estimates = await cacheManager.getEstimates(
-      {} as EstimationRequest,
-      'day',
-    )
+    cacheManager.cachedEstimates = cachedEstimates
+    const estimates = await cacheManager.getEstimates()
 
-    await expect(estimates).toEqual(mockContent)
+    await expect(estimates).toEqual(cachedEstimates)
   })
 
-  it('will create a new empty file if fails to load cache', async () => {
-    mockFs.access.mockImplementation(() => {
-      throw new Error('failed to open cache')
-    })
-
-    await cacheManager.getEstimates({} as EstimationRequest, 'day')
-
-    expect(mockFs.writeFile).toHaveBeenCalledWith(
-      'mock-estimates.json',
-      '[]',
-      'utf8',
-    )
-  })
-
-  it('will concatenate estimates to cache', async () => {
+  it('sets estimates', async () => {
     const estimates = buildFootprintEstimates('2020-01-01', 1)
 
     mockFs.open.mockResolvedValue({
@@ -91,10 +77,45 @@ describe('Local Cache Manager', () => {
 
     await cacheManager.setEstimates(estimates, GroupBy.day)
 
+    expect(cacheManager.fetchedEstimates).toEqual(estimates)
     await expect(mockWrite).toHaveBeenCalledWith(
       expect.anything(),
       estimates,
       expect.anything(),
+    )
+  })
+
+  it('gets missing dates', async () => {
+    const request: EstimationRequest = {
+      startDate: new Date('2022-01-01'),
+      endDate: new Date('2022-01-02'),
+      ignoreCache: false,
+      groupBy: 'day',
+    }
+
+    const estimates = buildFootprintEstimates('2022-01-01', 1)
+
+    mockGetCachedData.mockReturnValue(estimates)
+
+    const missingDates = await cacheManager.getMissingDates(request, 'day')
+
+    expect(cacheManager.cachedEstimates).toEqual(estimates)
+    expect(JSON.stringify(missingDates)).toEqual(
+      JSON.stringify([moment.utc(request.endDate)]),
+    )
+  })
+
+  it('will create a new empty file if fails to load cache', async () => {
+    mockFs.access.mockImplementation(() => {
+      throw new Error('failed to open cache')
+    })
+
+    await cacheManager.getMissingDates({} as EstimationRequest, 'day')
+
+    expect(mockFs.writeFile).toHaveBeenCalledWith(
+      'mock-estimates.json',
+      '[]',
+      'utf8',
     )
   })
 })

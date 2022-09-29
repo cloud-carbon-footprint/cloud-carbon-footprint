@@ -11,6 +11,7 @@ import {
   Logger,
 } from '@cloud-carbon-footprint/common'
 import MongoDbCacheManager from '../MongoDbCacheManager'
+import { getDatesWithinRequestTimeFrame } from '../common/helpers'
 
 jest.mock('mongodb', () => {
   return {
@@ -36,6 +37,16 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     }
   }),
 }))
+
+jest.mock('../common/helpers', () => {
+  const requireActual = jest.requireActual('../common/helpers')
+  return {
+    ...requireActual,
+    getDatesWithinRequestTimeFrame: jest.fn(),
+  }
+})
+
+const mockGetDates = getDatesWithinRequestTimeFrame as jest.Mock
 
 describe('MongoDbCacheManager', () => {
   afterEach(() => {
@@ -427,7 +438,10 @@ describe('MongoDbCacheManager', () => {
   describe('gets missing dates', () => {
     let mockClient: Partial<mongo.MongoClient>
     const testDate = new Date('2022-01-01')
-    const mockMissingDates: Moment[] = [moment.utc('2022-01-02')]
+    const mockMissingDates: Moment[] = [
+      moment.utc('2022-01-01'),
+      moment.utc('2022-01-02'),
+    ]
 
     const request = {
       startDate: testDate,
@@ -471,13 +485,17 @@ describe('MongoDbCacheManager', () => {
           mongoDbCacheManager.mongoClient = mockClient as mongo.MongoClient
         })
 
+      mockGetDates.mockReturnValue(mockMissingDates)
+
       await mongoDbCacheManager.createDbConnection()
       const missingDates = await mongoDbCacheManager.getMissingDates(
         request,
         'day',
       )
 
-      expect(missingDates).toEqual(mockMissingDates)
+      expect(JSON.stringify(missingDates)).toEqual(
+        JSON.stringify([moment.utc(new Date('2022-01-02'))]),
+      )
     })
 
     it('returns all dates in range for missing dates if ignoreCache=true', async () => {
@@ -487,29 +505,23 @@ describe('MongoDbCacheManager', () => {
         ...request,
         ignoreCache: true,
       }
-      const newMissingDates = [
-        moment.utc('2022-01-01'),
-        moment.utc('2022-01-02'),
-      ]
+
+      mockGetDates.mockReturnValue(mockMissingDates)
 
       const missingDates = await mongoDbCacheManager.getMissingDates(
         newRequest,
         'day',
       )
 
-      expect(missingDates).toEqual(newMissingDates)
+      expect(JSON.stringify(missingDates)).toEqual(
+        JSON.stringify(mockMissingDates),
+      )
     })
 
     it('hits an error getting missing dates if requested dates is undefined', async () => {
       const mongoDbCacheManager = new MongoDbCacheManager()
 
-      const getDatesWithinRequestTimeFrameSpy = jest.spyOn(
-        mongoDbCacheManager,
-        'getDatesWithinRequestTimeFrame',
-      )
-      ;(getDatesWithinRequestTimeFrameSpy as jest.Mock).mockResolvedValue(
-        undefined,
-      )
+      mockGetDates.mockReturnValue(undefined)
 
       jest.spyOn(Logger.prototype, 'warn').mockImplementation()
 
@@ -526,7 +538,7 @@ describe('MongoDbCacheManager', () => {
       )
 
       expect(Logger.prototype.warn).toHaveBeenCalledWith(
-        `There was an error getting missing dates from MongoDB: requestedDates.filter is not a function`,
+        `There was an error getting missing dates from MongoDB: Cannot read properties of undefined (reading 'filter')`,
       )
       expect(missingDates).toEqual([])
     })

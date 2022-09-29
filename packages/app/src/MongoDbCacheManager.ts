@@ -7,6 +7,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb'
 import { configLoader, EstimationResult } from '@cloud-carbon-footprint/common'
 import CacheManager from './CacheManager'
 import { EstimationRequest } from './CreateValidRequest'
+import { getDatesWithinRequestTimeFrame } from './common/helpers'
 
 export default class MongoDbCacheManager extends CacheManager {
   mongoClient: MongoClient
@@ -185,19 +186,10 @@ export default class MongoDbCacheManager extends CacheManager {
     request: EstimationRequest,
     grouping: string,
   ): Promise<Moment[]> {
-    const requestedDates = this.getDatesWithinRequestTimeFrame(
-      request.startDate,
-      request.endDate,
-      grouping,
-    )
+    const requestedDates = getDatesWithinRequestTimeFrame(grouping, request)
 
     if (request.ignoreCache) {
-      const missingDatesConverted: Moment[] = requestedDates.map(
-        (timestamp) => {
-          return moment.utc(timestamp)
-        },
-      )
-      return missingDatesConverted
+      return requestedDates
     }
 
     try {
@@ -251,10 +243,14 @@ export default class MongoDbCacheManager extends CacheManager {
 
       const cachedDates = aggResult[0].dates
       const missingDates = requestedDates.filter((a) => {
-        return cachedDates.indexOf(a) < 0
+        const index = cachedDates.findIndex((cachedDate: string) =>
+          moment.utc(cachedDate).isSame(a),
+        )
+        return index < 0
       })
-      return missingDates.map((date: string) => {
-        return moment.utc(date)
+
+      return missingDates.map((date: Moment) => {
+        return date
       })
     } catch (e) {
       this.cacheLogger.warn(
@@ -262,26 +258,5 @@ export default class MongoDbCacheManager extends CacheManager {
       )
       return []
     }
-  }
-
-  getDatesWithinRequestTimeFrame = (
-    startDate: Date,
-    endDate: Date,
-    grouping: string,
-  ) => {
-    const dates: string[] = []
-
-    let currentDate = moment.utc(startDate)
-    const lastDate = moment.utc(endDate)
-
-    while (currentDate <= lastDate) {
-      dates.push(moment.utc(currentDate).format('YYYY-MM-DD'))
-      currentDate = moment(currentDate).add(
-        1,
-        grouping as moment.unitOfTime.DurationConstructor,
-      )
-    }
-
-    return dates
   }
 }
