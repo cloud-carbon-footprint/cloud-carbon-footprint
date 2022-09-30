@@ -25,7 +25,11 @@ export interface EstimationRequest {
   groupBy?: string
   limit?: number
   skip?: number
-  //cloudProvider?:CloudProviderEnum
+  cloudProviders?: string[]
+  accounts?: string[]
+  services?: string[]
+  regions?: string[]
+  tags?: { [key: string]: string[] }
 }
 
 export interface RecommendationRequest {
@@ -36,14 +40,19 @@ export interface RecommendationRequest {
 // @ts-ignore
 moment.suppressDeprecationWarnings = true
 
-function validate(
+const validate = (
   startDate: moment.Moment,
   endDate: moment.Moment,
   region?: string,
   groupBy?: string,
   limit?: string,
   skip?: string,
-): void | EstimationRequestValidationError {
+  cloudProviders?: string,
+  accounts?: string,
+  services?: string,
+  regions?: string,
+  tags?: string,
+): void | EstimationRequestValidationError => {
   const errors = []
   if (!startDate.isValid()) {
     errors.push('Start date is not in a recognized RFC2822 or ISO format')
@@ -82,15 +91,45 @@ function validate(
     errors.push('Not a valid skip number')
   }
 
+  const filters = [cloudProviders, accounts, services, regions]
+  filters.forEach((filter) => {
+    if (filter && !Array.isArray(isJsonString(filter))) {
+      errors.push(`Filter must be an array list`)
+    }
+  })
+
+  const tagError = `Tags must be formatted correctly as an array with a key and value pairs`
+  if (tags && !isJsonString(tags)) {
+    errors.push(tagError)
+  }
+  for (const [key, value] of Object.entries(isJsonString(tags))) {
+    const keyExists = key !== '0'
+    const isArray = Array.isArray(value)
+
+    if (!keyExists || !isArray) {
+      errors.push(tagError)
+      break
+    }
+  }
+
   if (errors.length > 0) {
     throw new EstimationRequestValidationError(errors.join(', '))
   }
 }
 
-function validateDatesPresent(
+const isJsonString = (string: string) => {
+  try {
+    JSON.parse(string)
+  } catch (e) {
+    return false
+  }
+  return JSON.parse(string)
+}
+
+const validateDatesPresent = (
   startDate: string,
   endDate: string,
-): void | EstimationRequestValidationError {
+): void | EstimationRequestValidationError => {
   const errors = []
   if (!startDate) {
     errors.push('Start date must be provided')
@@ -105,9 +144,9 @@ function validateDatesPresent(
   }
 }
 
-function validateRecommendationTarget(
+const validateRecommendationTarget = (
   awsRecommendationTarget: string,
-): void | RecommendationsRequestValidationError {
+): void | RecommendationsRequestValidationError => {
   if (
     awsRecommendationTarget &&
     !Object.values(AWS_RECOMMENDATIONS_TARGETS).includes(
@@ -120,9 +159,9 @@ function validateRecommendationTarget(
   }
 }
 
-function rawRequestToEstimationRequest(
+const rawRequestToEstimationRequest = (
   request: FootprintEstimatesRawRequest,
-): EstimationRequest {
+): EstimationRequest => {
   const estimationRequest: EstimationRequest = {
     startDate: moment.utc(request.startDate).toDate(),
     endDate: moment.utc(request.endDate).toDate(),
@@ -132,14 +171,23 @@ function rawRequestToEstimationRequest(
   }
   if (request.limit) estimationRequest['limit'] = parseInt(request.limit)
   if (request.skip) estimationRequest['skip'] = parseInt(request.skip)
+  if (request.cloudProviders)
+    estimationRequest['cloudProviders'] = JSON.parse(request.cloudProviders)
+  if (request.accounts)
+    estimationRequest['accounts'] = JSON.parse(request.accounts)
+  if (request.services)
+    estimationRequest['services'] = JSON.parse(request.services)
+  if (request.regions)
+    estimationRequest['regions'] = JSON.parse(request.regions)
+  if (request.tags) estimationRequest['tags'] = JSON.parse(request.tags)
 
   return estimationRequest
 }
 
 // throws EstimationRequestValidationError if either validation fails
-export function CreateValidFootprintRequest(
+export const createValidFootprintRequest = (
   request: FootprintEstimatesRawRequest,
-): EstimationRequest {
+): EstimationRequest => {
   validateDatesPresent(request.startDate, request.endDate)
 
   const startDate = moment.utc(request.startDate)
@@ -152,13 +200,18 @@ export function CreateValidFootprintRequest(
     request.groupBy,
     request.limit,
     request.skip,
+    request.cloudProviders,
+    request.accounts,
+    request.services,
+    request.regions,
+    request.tags,
   )
   return rawRequestToEstimationRequest(request)
 }
 
-function rawRequestToRecommendationsRequest(
+const rawRequestToRecommendationsRequest = (
   request: RecommendationsRawRequest,
-): RecommendationRequest {
+): RecommendationRequest => {
   const awsRecommendationTarget =
     (request.awsRecommendationTarget as AWS_RECOMMENDATIONS_TARGETS) ||
     AWS_DEFAULT_RECOMMENDATION_TARGET
@@ -168,9 +221,9 @@ function rawRequestToRecommendationsRequest(
   }
 }
 
-export function CreateValidRecommendationsRequest(
+export const createValidRecommendationsRequest = (
   request: RecommendationsRawRequest,
-): RecommendationRequest {
+): RecommendationRequest => {
   validateRecommendationTarget(request.awsRecommendationTarget)
   return rawRequestToRecommendationsRequest(request)
 }

@@ -10,6 +10,11 @@ export interface FootprintEstimatesRawRequest {
   groupBy?: string
   limit?: string
   skip?: string
+  cloudProviders?: string
+  accounts?: string
+  services?: string
+  regions?: string
+  tags?: string
 }
 
 export interface RecommendationsRawRequest {

@@ -56,6 +56,7 @@ export default class MongoDbCacheManager extends CacheManager {
         request.skip + request.limit
       }`,
     )
+    const matchObject = this.createAggregationMatch(request, startDate, endDate)
 
     return new Promise(function (resolve, reject) {
       db.listCollections({ name: collectionName }).next(
@@ -69,7 +70,7 @@ export default class MongoDbCacheManager extends CacheManager {
                 .aggregate(
                   [
                     {
-                      $match: { timestamp: { $gte: startDate, $lte: endDate } },
+                      $match: matchObject,
                     },
                     {
                       $sort: {
@@ -112,6 +113,42 @@ export default class MongoDbCacheManager extends CacheManager {
         },
       )
     })
+  }
+
+  private createAggregationMatch(
+    request: EstimationRequest,
+    startDate: Date,
+    endDate: Date,
+  ) {
+    const { cloudProviders, accounts, services, regions, tags } = request
+    const filterTable = {
+      cloudProvider: cloudProviders,
+      accountId: accounts,
+      serviceName: services,
+      region: regions,
+    }
+    let matchObject = {
+      timestamp: { $gte: startDate, $lte: endDate },
+    }
+
+    for (const [key, value] of Object.entries(filterTable)) {
+      if (value && value.length > 0) {
+        matchObject = {
+          [key]: { $in: value },
+          ...matchObject,
+        }
+      }
+    }
+
+    if (tags && Object.entries(tags)[0])
+      for (const [key, value] of Object.entries(tags)) {
+        matchObject = {
+          [`tags.${key}`]: { $in: value },
+          ...matchObject,
+        }
+      }
+
+    return matchObject
   }
 
   async getEstimates(

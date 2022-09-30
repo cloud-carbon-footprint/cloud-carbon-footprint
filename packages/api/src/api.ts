@@ -6,8 +6,8 @@ import express from 'express'
 
 import {
   App,
-  CreateValidFootprintRequest,
-  CreateValidRecommendationsRequest,
+  createValidFootprintRequest,
+  createValidRecommendationsRequest,
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
 } from '@cloud-carbon-footprint/app'
@@ -43,6 +43,11 @@ const FootprintApiMiddleware = async function (
     groupBy: req.query.groupBy?.toString(),
     limit: req.query.limit?.toString(),
     skip: req.query.skip?.toString(),
+    cloudProviders: JSON.stringify(req.query.cloudProviders),
+    accounts: JSON.stringify(req.query.accounts),
+    services: JSON.stringify(req.query.services),
+    regions: JSON.stringify(req.query.regions),
+    tags: JSON.stringify(req.query.tags),
   }
   apiLogger.info(`Footprint API request started.`)
   if (!rawRequest.groupBy) {
@@ -51,7 +56,7 @@ const FootprintApiMiddleware = async function (
   }
   const footprintApp = new App()
   try {
-    const estimationRequest = CreateValidFootprintRequest(rawRequest)
+    const estimationRequest = createValidFootprintRequest(rawRequest)
     const estimationResults = await footprintApp.getCostAndEstimates(
       estimationRequest,
     )
@@ -96,7 +101,7 @@ const RecommendationsApiMiddleware = async function (
   apiLogger.info(`Recommendations API request started`)
   const footprintApp = new App()
   try {
-    const estimationRequest = CreateValidRecommendationsRequest(rawRequest)
+    const estimationRequest = createValidRecommendationsRequest(rawRequest)
     const recommendations = await footprintApp.getRecommendations(
       estimationRequest,
     )

@@ -12,6 +12,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import MongoDbCacheManager from '../MongoDbCacheManager'
 import { getDatesWithinRequestTimeFrame } from '../common/helpers'
+import { EstimationRequest } from '../CreateValidRequest'
 
 jest.mock('mongodb', () => {
   return {
@@ -47,6 +48,7 @@ jest.mock('../common/helpers', () => {
 })
 
 const mockGetDates = getDatesWithinRequestTimeFrame as jest.Mock
+const mockAggregation = jest.fn()
 
 describe('MongoDbCacheManager', () => {
   afterEach(() => {
@@ -217,7 +219,7 @@ describe('MongoDbCacheManager', () => {
             }),
           })),
           collection: jest.fn().mockImplementation(() => ({
-            aggregate: jest.fn().mockImplementation(() => ({
+            aggregate: mockAggregation.mockImplementation(() => ({
               toArray: jest.fn().mockResolvedValue(mockEstimates),
             })),
           })),
@@ -293,6 +295,76 @@ describe('MongoDbCacheManager', () => {
       )
 
       expect(estimates).toEqual([])
+    })
+
+    it.each([
+      [['cloudProviders', ['test-cloud-providers'], 'cloudProvider']],
+      [['accounts', ['test-accounts'], 'accountId', ,]],
+      [['services', ['test-services'], 'serviceName']],
+      [['regions', ['test-regions'], 'region']],
+      [['tags', { 'test-key': ['test-tag'] }, 'tags.test-key']],
+    ])('determines matching filters', async (filter) => {
+      const request: EstimationRequest = {
+        startDate: new Date('2022-01-01'),
+        endDate: new Date('2022-01-02'),
+        limit: 1,
+        skip: 0,
+        [`${filter[0]}`]: filter[1],
+      }
+
+      const mongoDbCacheManager = new MongoDbCacheManager()
+
+      jest
+        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
+        .mockImplementation(async () => {
+          mongoDbCacheManager.mongoClient = mockClient as mongo.MongoClient
+        })
+
+      await mongoDbCacheManager.createDbConnection()
+      const estimates = await mongoDbCacheManager.loadEstimates(
+        mongoDbCacheManager.mongoClient.db(mongoDbCacheManager.mongoDbName),
+        'estimates-by-day',
+        request,
+      )
+
+      const tagsFilter =
+        filter[0] === 'tags' ? filter[1]['test-key'] : filter[1]
+
+      const aggregation = [
+        {
+          $match: {
+            [`${filter[2]}`]: { $in: tagsFilter },
+            timestamp: {
+              $gte: new Date('2022-01-01T00:00:00.000Z'),
+              $lte: new Date('2022-01-02T00:00:00.000Z'),
+            },
+          },
+        },
+        { $sort: { _id: 1, timestamp: 1 } },
+        { $skip: 0 },
+        { $limit: 1 },
+        {
+          $group: {
+            _id: '$timestamp',
+            groupBy: { $first: '$groupBy' },
+            serviceEstimates: { $push: '$$ROOT' },
+            timestamp: { $first: '$timestamp' },
+          },
+        },
+        {
+          $unset: [
+            '_id',
+            'serviceEstimates._id',
+            'serviceEstimates.timestamp',
+            'serviceEstimates.groupBy',
+          ],
+        },
+      ]
+
+      expect(mockAggregation).toHaveBeenCalledWith(aggregation, {
+        allowDiskUse: true,
+      })
+      expect(estimates).toEqual(mockEstimates)
     })
   })
 

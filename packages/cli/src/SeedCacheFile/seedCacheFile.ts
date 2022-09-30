@@ -3,7 +3,7 @@
  */
 
 import { inputPrompt } from '../common'
-import { App, CreateValidFootprintRequest } from '@cloud-carbon-footprint/app'
+import { App, createValidFootprintRequest } from '@cloud-carbon-footprint/app'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 export default async function seedCacheFile(): Promise<void> {
@@ -13,7 +13,7 @@ export default async function seedCacheFile(): Promise<void> {
     'Please enter how to group results by [day|week|month|quarter|year]: ',
   )
 
-  const estimationRequest = CreateValidFootprintRequest({
+  const estimationRequest = createValidFootprintRequest({
     startDate,
     endDate,
     groupBy,

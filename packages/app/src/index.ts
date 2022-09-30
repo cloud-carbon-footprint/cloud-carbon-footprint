@@ -4,8 +4,8 @@
 
 export { default as App } from './App'
 export {
-  CreateValidFootprintRequest,
-  CreateValidRecommendationsRequest,
+  createValidFootprintRequest,
+  createValidRecommendationsRequest,
 } from './CreateValidRequest'
 export {
   FootprintEstimatesRawRequest,
