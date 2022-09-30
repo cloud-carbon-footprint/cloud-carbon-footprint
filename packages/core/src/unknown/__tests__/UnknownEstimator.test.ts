@@ -90,7 +90,7 @@ describe('UnknownEstimator', () => {
         },
       ])
     })
-    it('does estimates for unknown usage type for AWS, based on cost, where usage unit is not in known usage', () => {
+    it('does not estimate for unknown usage type for AWS, where usage unit is not in known usage', () => {
       const service = 'testService'
       const usageUnit = 'testUsageUnit'
       const input = [
@@ -129,9 +129,9 @@ describe('UnknownEstimator', () => {
 
       expect(result).toEqual([
         {
-          co2e: 0.332604,
+          co2e: 0,
           timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          kilowattHours: 800,
+          kilowattHours: 0,
           usesAverageCPUConstant: false,
         },
       ])

@@ -166,6 +166,7 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'SharedMsftAD-Usage',
   'Kafka.mcu.general',
   'SnapshotArchiveStorage',
+  'PaidPrivateCA',
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
