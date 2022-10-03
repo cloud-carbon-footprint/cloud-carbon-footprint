@@ -1,0 +1,21 @@
+# vim: ft=zsh
+SUBCOMMAND_DESC="Execute some common git operations"
+SUBCOMMAND_HELP=$(cat <<EOH
+Usage ${MAIN_COMMAND} ${SUBCOMMAND} [ACTION], where actions can be:
+
+pull|pr           Will 'git pull --rebase' followed by a 'yarn install'
+                  in case we need to adjust dependencies.
+
+rebase            Same as 'pull'.
+
+EOH
+)
+
+case ${1} in
+  (noop) ;;
+  (-h|--help) help;;
+  (pull|rebase|pr)
+    git pull --rebase && yarn install
+  ;;
+  (*) help ;;
+esac
