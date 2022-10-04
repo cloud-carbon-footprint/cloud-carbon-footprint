@@ -18,7 +18,7 @@ There are, however, a number of billing line items that may not meet the criteri
 
 ### Applying the Kilowatt-hour/Cost Coefficient
 
-For each “known” usage type, we dynamically build the average kilowatt-hour per usage amount (or cost for AWS) for each unique service and usage unit combination, then multiply that by the usage amount (or cost for AWS) for any unknown rows. We also track the totals to be used for unknown rows that do not match a known service and usage unit combination. Here are these steps in more detail, using GCP services and usage units as an example:
+For each “known” usage type, we dynamically build the average kilowatt-hour per usage amount (or cost for AWS) for each unique service and usage unit combination, then multiply that by the usage amount (or cost for AWS) for any unknown rows. Here are these steps in more detail, using GCP services and usage units as an example:
 
 1. For known usage rows, track usageAmount and kilowattHour per service and usage unit, accumulating the values. The result looks something like this:
 ```
@@ -48,14 +48,8 @@ For each “known” usage type, we dynamically build the average kilowatt-hour 
 |------------------|------------------|--------------|
 | kubernetesEngine | seconds          | 300          |
 
-3. If there is no same service name and usage unit, then we multiply the usage amount by KWh/usage unit ratio for total usage with that usage unit. For example, if we had this “unknown” row using the example data in the first bullet, the estimated kilowatt-hours would be 1000 / 50 * 400 = 8000 kilowatt-hours:
-
-| Service name | Usage unit Value | Usage amount |
-|--------------|------------------|--------------|
-| appEngine    | seconds          | 400          |
-
 #### Why we use cost for AWS instead:
 
-In the case of AWS, we track and accumulate known Kilowatt-hours and cost, rather than the Kilowatt-hours and usage amount. We then multiple the cost of unknown usage by these dynamic coefficients. This is because there is no column for “usage unit” in the AWS Cost and Usage Reports, only a “pricing unit”. This means we are unable to use the usage amount to estimate kilowatt hours as we don’t know what usage unit we should multiply it by to estimate Kilowatt-hours.
+In the case of AWS, we track and accumulate known Kilowatt-hours and cost, rather than the Kilowatt-hours and usage amount. We then multiply the cost of unknown usage by these dynamic coefficients. This is because there is no column for “usage unit” in the AWS Cost and Usage Reports, only a “pricing unit”. This means we are unable to use the usage amount to estimate kilowatt hours as we don’t know what usage unit we should multiply it by to estimate Kilowatt-hours.
 
 We welcome any and all feedback on this approach, or suggestions for entirely different approaches to handling Unknown cloud usage.
