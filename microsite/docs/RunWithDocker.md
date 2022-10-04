@@ -47,6 +47,7 @@ Then you can access the API at: http://localhost:4000/api/footprint?start=2021-0
 If you would like to run the client as a docker container, you can pull and run it with these commands after running API as a docker container:
 
     docker pull cloudcarbonfootprint/client:latest
+    
     cd cloud-carbon-footprint && docker run \
         -p 80:80 \
         -v ${PWD}/docker/nginx.conf:/etc/nginx/nginx.conf \
