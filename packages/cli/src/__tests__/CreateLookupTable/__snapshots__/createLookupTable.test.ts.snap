@@ -4,7 +4,7 @@ exports[`createLookupTable creates lookup table CSV creates AWS lookup table CSV
 "serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
 AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4,,0.01895949533305589,0.000007186956936406165
 AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,,,0.001135,8.038069999999999e-7
-AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,,2.0129391486989334e-15,1.5298337530111894e-18
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,,4.025878297397867e-15,3.0596675060223788e-18
 AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,GB-Mo,,,0.00099436896,2.2373301600000001e-7
 AmazonRDS,us-east-1,Aurora:StorageIOUsage,IOs,,,0,0
 "
@@ -14,7 +14,7 @@ exports[`createLookupTable creates lookup table CSV creates AWS lookup table CSV
 "serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
 AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4,,0.01895949533305589,0.000007186956936406165
 AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,,,0.001135,8.038069999999999e-7
-AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,,2.0129391486989334e-15,1.5298337530111894e-18
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,,4.025878297397867e-15,3.0596675060223788e-18
 AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,GB-Mo,,,0.00099436896,2.2373301600000001e-7
 AmazonRDS,us-east-1,Aurora:StorageIOUsage,IOs,,,0,0
 "
