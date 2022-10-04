@@ -155,7 +155,6 @@ export default class MongoDbCacheManager extends CacheManager {
     request: EstimationRequest,
     grouping: string,
   ): Promise<EstimationResult[]> {
-    this.cacheLogger.info('Using mongo database...')
     let savedEstimates: EstimationResult[] = []
     try {
       await this.createDbConnection()
@@ -223,6 +222,7 @@ export default class MongoDbCacheManager extends CacheManager {
     request: EstimationRequest,
     grouping: string,
   ): Promise<Moment[]> {
+    this.cacheLogger.info('Using mongo database...')
     const requestedDates = getDatesWithinRequestTimeFrame(grouping, request)
 
     if (request.ignoreCache) {

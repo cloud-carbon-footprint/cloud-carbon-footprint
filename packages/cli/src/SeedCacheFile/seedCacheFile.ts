@@ -17,6 +17,8 @@ export default async function seedCacheFile(): Promise<void> {
     startDate,
     endDate,
     groupBy,
+    limit: '1',
+    skip: '0',
   })
 
   await new App()

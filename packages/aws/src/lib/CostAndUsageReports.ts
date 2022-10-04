@@ -719,7 +719,7 @@ export default class CostAndUsageReports {
   ): CostAndUsageReportsRow {
     const timestamp = new Date(rowData[0].VarCharValue)
     const accountId = rowData[1].VarCharValue
-    const accountName = accounts[accountId].name || accountId
+    const accountName = accounts[accountId]?.name || accountId
     const region = rowData[2].VarCharValue
     const serviceName = rowData[3].VarCharValue
     const usageType = rowData[4].VarCharValue
