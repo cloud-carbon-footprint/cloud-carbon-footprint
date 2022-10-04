@@ -127,7 +127,7 @@ export const AWS_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   AVG_CPU_UTILIZATION_2020: 50,
   REPLICATION_FACTORS: {
-    S3: 3,
+    S3: 6,
     S3_ONE_ZONE_REDUCED_REDUNDANCY: 2,
     EC2_EBS_VOLUME: 2,
     EC2_EBS_SNAPSHOT: 3,
