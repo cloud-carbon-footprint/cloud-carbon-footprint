@@ -29,13 +29,18 @@ export default function EmissionsMetricsPage({
   const classes = useStyles()
   const dateRangeType: string = config.DATE_RANGE.TYPE
   const dateRangeValue: string = config.DATE_RANGE.VALUE
-  const endDate: moment.Moment = moment
+  let endDate: moment.Moment = moment
     .utc()
     .subtract(config.MINIMAL_DATE_AGE, 'days')
+  if (config.END_DATE) {
+    endDate = moment.utc(config.END_DATE)
+  }
 
   let startDate: moment.Moment
   if (config.PREVIOUS_YEAR_OF_USAGE) {
     startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
+  } else if (config.START_DATE) {
+    startDate = moment.utc(config.START_DATE)
   } else {
     startDate = moment
       .utc()
@@ -48,6 +53,8 @@ export default function EmissionsMetricsPage({
     endDate,
     onApiError,
     groupBy: config.GROUP_BY,
+    limit: parseInt(config.PAGE_LIMIT as unknown as string),
+    ignoreCache: config.DISABLE_CACHE,
   })
 
   if (footprint.loading) {

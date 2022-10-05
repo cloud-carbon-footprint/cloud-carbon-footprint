@@ -7,7 +7,7 @@ import moment from 'moment'
 import path from 'path'
 import * as process from 'process'
 
-import { App, CreateValidFootprintRequest } from '@cloud-carbon-footprint/app'
+import { App, createValidFootprintRequest } from '@cloud-carbon-footprint/app'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 import EmissionsByDayAndServiceTable from './EmissionsByDayAndServiceTable'
@@ -51,7 +51,7 @@ export default async function cli(argv: string[] = process.argv) {
     groupBy = programOptions.groupBy
     format = programOptions.format
   }
-  const estimationRequest = CreateValidFootprintRequest({
+  const estimationRequest = createValidFootprintRequest({
     startDate,
     endDate,
     region,
