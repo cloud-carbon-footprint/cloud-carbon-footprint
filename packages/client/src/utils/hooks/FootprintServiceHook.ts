@@ -3,6 +3,7 @@
  */
 
 import { useEffect, useState } from 'react'
+import { equals } from 'ramda'
 import axios from 'axios'
 
 import { EstimationResult } from '@cloud-carbon-footprint/common'
@@ -25,6 +26,11 @@ export interface UseRemoteFootprintServiceParams {
 }
 
 const concatenateResults = (estimates, newEstimates) => {
+  const equalsLastDataObject = checkForEqualObjects(newEstimates, estimates)
+  if (estimates.length == 0 && equalsLastDataObject) {
+    return newEstimates
+  }
+
   if (!newEstimates || !(newEstimates.length > 0)) {
     return estimates
   }
@@ -63,6 +69,40 @@ const concatenateResults = (estimates, newEstimates) => {
   return updatedEstimates
 }
 
+const checkForEqualObjects = (
+  newEstimates: EstimationResult[],
+  cachedEstimates: EstimationResult[],
+) => {
+  if (!cachedEstimates || cachedEstimates?.length == 0) return false
+  if (!newEstimates || cachedEstimates?.length == 0) return true
+
+  const newServiceEstimates =
+    newEstimates[newEstimates?.length - 1]?.serviceEstimates
+  const lastNewDataObject = newServiceEstimates[newServiceEstimates?.length - 1]
+
+  const cachedServiceEstimates =
+    cachedEstimates[cachedEstimates?.length - 1]?.serviceEstimates
+  const lastCachedDataObject =
+    cachedServiceEstimates[cachedServiceEstimates?.length - 1]
+
+  return equals(lastNewDataObject, lastCachedDataObject)
+}
+
+const checkForLoopExit = (
+  lastDataLength: number,
+  data: EstimationResult[],
+  params: UseRemoteFootprintServiceParams,
+  estimates: EstimationResult[],
+) => {
+  const equalsLastDataObject = checkForEqualObjects(data, estimates)
+
+  lastDataLength = data?.length || 0
+  if (params.ignoreCache || data == undefined || equalsLastDataObject)
+    lastDataLength = 0
+
+  return lastDataLength
+}
+
 const useRemoteFootprintService = (
   params: UseRemoteFootprintServiceParams,
 ): ServiceResult<EstimationResult> => {
@@ -98,10 +138,13 @@ const useRemoteFootprintService = (
               skip,
             },
           })
+          lastDataLength = checkForLoopExit(
+            lastDataLength,
+            res?.data,
+            params,
+            estimates,
+          )
           estimates = concatenateResults(estimates, res?.data)
-          lastDataLength = res?.data?.length
-
-          if (params.ignoreCache || res == undefined) lastDataLength = 0
           skip += params.limit
         }
       } catch (e) {

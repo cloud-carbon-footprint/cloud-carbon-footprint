@@ -220,12 +220,34 @@ describe('FootprintServiceHook', () => {
     it('should make more requests to /api endpoint if there is another page of estimates', async () => {
       const mockEstimate: EstimationResult = {
         timestamp: moment.utc('2022-02-01').toDate(),
-        serviceEstimates: [],
+        serviceEstimates: [
+          {
+            cloudProvider: 'AWS',
+            accountId: 'accountId',
+            accountName: 'accountName',
+            serviceName: 'serviceName',
+            region: 'region',
+            cost: 0,
+            kilowattHours: 0,
+            co2e: 0,
+          },
+        ],
         groupBy: GroupBy.day,
       }
       const mockEstimateTwo: EstimationResult = {
         timestamp: moment.utc('2022-02-01').toDate(),
-        serviceEstimates: [],
+        serviceEstimates: [
+          {
+            cloudProvider: 'GCP',
+            accountId: 'accountId',
+            accountName: 'accountName',
+            serviceName: 'serviceName',
+            region: 'region',
+            cost: 0,
+            kilowattHours: 0,
+            co2e: 0,
+          },
+        ],
         groupBy: GroupBy.day,
       }
 
