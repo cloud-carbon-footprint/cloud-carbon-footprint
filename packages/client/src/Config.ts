@@ -13,7 +13,7 @@ export interface ClientConfig {
     TYPE: string
   }
   GROUP_BY: string
-  PAGE_LIMIT: number
+  PAGE_LIMIT: string
   BASE_URL: string
   MINIMAL_DATE_AGE: string
   START_DATE: string
@@ -24,14 +24,6 @@ export interface ClientConfig {
 const previousYearOfUsage =
   !!process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE &&
   process.env.REACT_APP_PREVIOUS_YEAR_OF_USAGE !== 'false'
-
-const defaultLimitsByGrouping = {
-  day: 90,
-  week: 13,
-  month: 4,
-  quarter: 2,
-  year: 1,
-}
 
 const groupBy = process.env.REACT_APP_GROUP_BY || 'day'
 
@@ -47,8 +39,7 @@ const appConfig: ClientConfig = {
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
   GROUP_BY: groupBy,
-  PAGE_LIMIT:
-    process.env.REACT_APP_PAGE_LIMIT || defaultLimitsByGrouping[groupBy],
+  PAGE_LIMIT: process.env.REACT_APP_PAGE_LIMIT || '1000',
   BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
   MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
   START_DATE: process.env.REACT_APP_START_DATE,
