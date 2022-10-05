@@ -5,9 +5,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const prevMonth = new Date().getMonth() - 1
-let updatedMonth = new Date(2022, prevMonth, 26)
-updatedMonth.setUTCHours(0, 0, 0, 0)
+let updatedMonth = getPreviousMonth(new Date());
 
 async function main() {
   const data = fs.readFileSync(
