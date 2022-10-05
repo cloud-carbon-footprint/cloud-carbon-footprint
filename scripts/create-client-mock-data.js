@@ -16,19 +16,17 @@ async function main() {
   const mockData = JSON.parse(data)
 
   mockData.footprint.forEach((footprint) => {
-    let updatedMonthStr = updatedMonth.toISOString()
-    footprint.timestamp = updatedMonthStr
+    footprint.timestamp = updatedMonth.toISOString()
     updatedMonth = getPreviousMonth(updatedMonth)
     updatedMonth.setUTCHours(0, 0, 0, 0)
   })
 
-  fs.writeFile(
+  fs.writeFileSync(
     path.resolve(__dirname, `../packages/client/stub-server/mockData.json`),
     JSON.stringify(mockData),
     (err) => {
       if (err) {
         console.error(err)
-        return
       }
     },
   )
