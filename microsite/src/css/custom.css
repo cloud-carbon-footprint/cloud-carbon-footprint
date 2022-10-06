@@ -101,6 +101,10 @@ a {
   text-decoration: none;
 }
 
+td {
+  word-break: break-word;
+}
+
 @media screen and (max-width: 400px) {
   .navbar__title {
     font-size: 1.3rem;
