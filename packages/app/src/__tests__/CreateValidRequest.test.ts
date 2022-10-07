@@ -210,72 +210,84 @@ describe('CreateValidRequest', () => {
   )
 
   it.each([
-    [['cloudProviders', 'accounts', 'services', 'regions', 'tags']],
-    [['accounts', 'cloudProviders', 'services', 'regions', 'tags']],
-    [['services', 'cloudProviders', 'accounts', 'regions', 'tags']],
-    [['regions', 'cloudProviders', 'accounts', 'services', 'tags']],
-    [['tags', 'cloudProviders', 'accounts', 'services', 'regions']],
-  ])('ensures filter values are array lists', (filter: string) => {
-    const input = {
-      startDate: '2000-07-10',
-      endDate: '2020-07-10',
-      region: 'us-east-1',
-      limit: '1',
-      skip: '0',
-      [`${filter[0]}`]: '{"0": ["test"]}',
-      [`${filter[1]}`]: '[]',
-      [`${filter[2]}`]: '[]',
-      [`${filter[3]}`]: '[]',
-      [`${filter[4]}`]: '[]',
-    }
+    [
+      'cloudProviders',
+      '{aws: true}',
+      'Filter for cloud providers must be an array with appropriate values',
+    ],
+    [
+      'cloudProviders',
+      '9, gcp,aws',
+      'Filter for cloud providers must be an array with appropriate values',
+    ],
+    [
+      'accounts',
+      '$upercoolProject',
+      'Filter for accounts must be an array with appropriate values',
+    ],
+    [
+      'services',
+      '99services, n0tSql',
+      'Filter for services must be an array with appropriate values',
+    ],
+    [
+      'regions',
+      '1, southE@st',
+      'Filter for services must be an array with appropriate values',
+    ],
+  ])(
+    'ensures each filter value is a valid array list',
+    (filter, value, errorMsg) => {
+      const input = {
+        startDate: '2000-07-10',
+        endDate: '2020-07-10',
+        region: 'us-east-1',
+        limit: '1',
+        skip: '0',
+        [filter]: value,
+      }
 
-    const errMsg =
-      filter[0] == 'tags'
-        ? 'Tags must be formatted correctly as an array with a key and value pairs'
-        : 'Filter must be an array list'
-
-    expect(() => createValidFootprintRequest(input)).toThrow(errMsg)
-  })
+      expect(() => createValidFootprintRequest(input)).toThrow(errorMsg)
+    },
+  )
 
   it.each([
-    [['cloudProviders', 'accounts', 'services', 'regions', 'tags']],
-    [['accounts', 'cloudProviders', 'services', 'regions', 'tags']],
-    [['services', 'cloudProviders', 'accounts', 'regions', 'tags']],
-    [['regions', 'cloudProviders', 'accounts', 'services', 'tags']],
-    [['tags', 'cloudProviders', 'accounts', 'services', 'regions']],
-  ])('gets estimation requests with filters', (filter: string) => {
-    const input = {
-      startDate: '2000-07-10',
-      endDate: '2020-07-10',
-      region: 'us-east-1',
-      limit: '1',
-      skip: '0',
-      [`${filter[0]}`]: '[]',
-      [`${filter[1]}`]: '[]',
-      [`${filter[2]}`]: '[]',
-      [`${filter[3]}`]: '[]',
-      [`${filter[4]}`]: '[]',
-    }
+    ['cloudProviders', 'aws, gcp', ['aws', 'gcp']],
+    ['accounts', 'account1, account2', ['account1', 'account2']],
+    ['services', 'service 1, service 2', ['service 1', 'service 2']],
+    [
+      'regions',
+      'region-north-1, region-north-2',
+      ['region-north-1', 'region-north-2'],
+    ],
+    ['tags', '[{aws-user: user1}]', [{ ['aws-user']: 'user1' }]],
+  ])(
+    'creates estimation request with filters',
+    (filter, value, filterResult) => {
+      const input = {
+        startDate: '2000-07-10',
+        endDate: '2020-07-10',
+        region: 'us-east-1',
+        limit: '1',
+        skip: '0',
+        [filter]: value,
+      }
 
-    const result = {
-      startDate: new Date('2000-07-10'),
-      endDate: new Date('2020-07-10'),
-      region: 'us-east-1',
-      limit: 1,
-      skip: 0,
-      ignoreCache: false,
-      groupBy: undefined,
-      accounts: [],
-      cloudProviders: [],
-      regions: [],
-      services: [],
-      tags: [],
-    }
+      const result = {
+        startDate: new Date('2000-07-10'),
+        endDate: new Date('2020-07-10'),
+        region: 'us-east-1',
+        limit: 1,
+        skip: 0,
+        ignoreCache: false,
+        [filter]: filterResult,
+      }
 
-    const request = createValidFootprintRequest(input)
+      const request = createValidFootprintRequest(input)
 
-    expect(request).toEqual(result)
-  })
+      expect(request).toEqual(result)
+    },
+  )
 
   describe('given: groupBy param', () => {
     //use tests parametrization for the rest of the test cases

@@ -3,14 +3,14 @@
  */
 
 import moment from 'moment'
-import { values, includes } from 'ramda'
+import { includes, values } from 'ramda'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_TARGETS,
   configLoader,
   EstimationRequestValidationError,
-  RecommendationsRequestValidationError,
   GroupBy,
+  RecommendationsRequestValidationError,
 } from '@cloud-carbon-footprint/common'
 import {
   FootprintEstimatesRawRequest,
@@ -23,8 +23,8 @@ export interface EstimationRequest {
   region?: string
   ignoreCache: boolean
   groupBy?: string
-  limit?: number
-  skip?: number
+  limit?: number | string
+  skip?: number | string
   cloudProviders?: string[]
   accounts?: string[]
   services?: string[]
@@ -36,24 +36,42 @@ export interface RecommendationRequest {
   awsRecommendationTarget?: AWS_RECOMMENDATIONS_TARGETS
 }
 
+interface FormattedEstimationRequest {
+  startDate: moment.Moment
+  endDate: moment.Moment
+  region?: string
+  groupBy?: string
+  limit?: number | string
+  skip?: number | string
+  cloudProviders?: string[]
+  accounts?: string[]
+  services?: string[]
+  regions?: string[]
+  tags?: { [key: string]: string[] }
+}
+
 // eslint-disable-next-line
 // @ts-ignore
 moment.suppressDeprecationWarnings = true
 
 const validate = (
-  startDate: moment.Moment,
-  endDate: moment.Moment,
-  region?: string,
-  groupBy?: string,
-  limit?: string,
-  skip?: string,
-  cloudProviders?: string,
-  accounts?: string,
-  services?: string,
-  regions?: string,
-  tags?: string,
+  request: FormattedEstimationRequest,
 ): void | EstimationRequestValidationError => {
   const errors = []
+  const {
+    startDate,
+    endDate,
+    region,
+    groupBy,
+    limit,
+    skip,
+    cloudProviders,
+    accounts,
+    services,
+    regions,
+    tags,
+  } = request
+
   if (!startDate.isValid()) {
     errors.push('Start date is not in a recognized RFC2822 or ISO format')
   }
@@ -83,47 +101,63 @@ const validate = (
     errors.push('Please specify a valid groupBy period')
   }
 
-  if (limit && (isNaN(limit as unknown as number) || parseInt(limit) < 0)) {
+  if (limit !== undefined && (isNaN(limit as number) || limit < 0)) {
     errors.push('Not a valid limit number')
   }
 
-  if (skip && (isNaN(skip as unknown as number) || parseInt(skip) < 0)) {
+  if (skip !== undefined && (isNaN(skip as number) || skip < 0)) {
     errors.push('Not a valid skip number')
   }
 
-  const filters = [cloudProviders, accounts, services, regions]
-  filters.forEach((filter) => {
-    if (filter && !Array.isArray(isJsonString(filter))) {
-      errors.push(`Filter must be an array list`)
-    }
-  })
-
-  const tagError = `Tags must be formatted correctly as an array with a key and value pairs`
-  if (tags && !isJsonString(tags)) {
-    errors.push(tagError)
+  const filters: { [key: string]: string[] } = {
+    'cloud providers': cloudProviders,
+    accounts,
+    services,
+    regions,
   }
-  for (const [key, value] of Object.entries(isJsonString(tags))) {
-    const keyExists = key !== '0'
-    const isArray = Array.isArray(value)
+  const filterValidators: { [char: string]: RegExp } = {
+    'cloud providers': /^[A-Za-z]+$/, // only letters
+    accounts: /^[A-Za-z0-9_-]*$/, // letters, numbers, and dashes/underscores
+    services: /^[a-zA-Z\s]*$/, // letters and spaces
+    regions: /^[A-Za-z0-9-]*$/, // letters, numbers, and dashes
+  }
 
-    if (!keyExists || !isArray) {
+  for (const filter in filters) {
+    const filterValues: string[] = filters[filter]
+    const validator = filterValidators[filter]
+    if (filterValues && filterValues.length) {
+      for (const value of filterValues) {
+        if (!value.match(validator)) {
+          errors.push(
+            `Filter for ${filter} must be an array with appropriate values`,
+          )
+          break
+        }
+      }
+    }
+  }
+
+  // TODO: Create more specific validation/input
+  if (tags) {
+    const tagError = `Tags must be formatted correctly as an array with a key and value pairs`
+    if (!Array.isArray(tags)) {
       errors.push(tagError)
-      break
+    } else {
+      for (const [key, value] of Object.entries(tags)) {
+        const keyExists = key !== '0'
+        const isArray = Array.isArray(value)
+
+        if (!keyExists || !isArray) {
+          errors.push(tagError)
+          break
+        }
+      }
     }
   }
 
   if (errors.length > 0) {
     throw new EstimationRequestValidationError(errors.join(', '))
   }
-}
-
-const isJsonString = (string: string) => {
-  try {
-    JSON.parse(string)
-  } catch (e) {
-    return false
-  }
-  return JSON.parse(string)
 }
 
 const validateDatesPresent = (
@@ -159,56 +193,6 @@ const validateRecommendationTarget = (
   }
 }
 
-const rawRequestToEstimationRequest = (
-  request: FootprintEstimatesRawRequest,
-): EstimationRequest => {
-  const estimationRequest: EstimationRequest = {
-    startDate: moment.utc(request.startDate).toDate(),
-    endDate: moment.utc(request.endDate).toDate(),
-    ignoreCache: request.ignoreCache === 'true',
-    groupBy: request.groupBy,
-    region: request.region,
-  }
-  if (request.limit) estimationRequest['limit'] = parseInt(request.limit)
-  if (request.skip) estimationRequest['skip'] = parseInt(request.skip)
-  if (request.cloudProviders)
-    estimationRequest['cloudProviders'] = JSON.parse(request.cloudProviders)
-  if (request.accounts)
-    estimationRequest['accounts'] = JSON.parse(request.accounts)
-  if (request.services)
-    estimationRequest['services'] = JSON.parse(request.services)
-  if (request.regions)
-    estimationRequest['regions'] = JSON.parse(request.regions)
-  if (request.tags) estimationRequest['tags'] = JSON.parse(request.tags)
-
-  return estimationRequest
-}
-
-// throws EstimationRequestValidationError if either validation fails
-export const createValidFootprintRequest = (
-  request: FootprintEstimatesRawRequest,
-): EstimationRequest => {
-  validateDatesPresent(request.startDate, request.endDate)
-
-  const startDate = moment.utc(request.startDate)
-  const endDate = moment.utc(request.endDate)
-
-  validate(
-    startDate,
-    endDate,
-    request.region,
-    request.groupBy,
-    request.limit,
-    request.skip,
-    request.cloudProviders,
-    request.accounts,
-    request.services,
-    request.regions,
-    request.tags,
-  )
-  return rawRequestToEstimationRequest(request)
-}
-
 const rawRequestToRecommendationsRequest = (
   request: RecommendationsRawRequest,
 ): RecommendationRequest => {
@@ -218,6 +202,66 @@ const rawRequestToRecommendationsRequest = (
 
   return {
     awsRecommendationTarget,
+  }
+}
+
+/**
+ * Formats comma separated filter param into an array with whitespace removed
+ * @param filterParam - filter string from api request
+ * @returns             array if param string is present or undefined
+ */
+const filterParamToArray = (filterParam: string): string[] | undefined => {
+  if (filterParam !== undefined) {
+    return filterParam.replace(' ', '').split(',')
+  }
+  return undefined
+}
+
+/**
+ * Validates and properly formats each parameter value in the given footprint request
+ * @param request - raw request of strings to be passed from the api
+ * @throws EstimationRequestValidationError -  if any validation fails
+ */
+export const createValidFootprintRequest = (
+  request: FootprintEstimatesRawRequest,
+): EstimationRequest => {
+  validateDatesPresent(request.startDate, request.endDate)
+
+  const startDate = moment.utc(request.startDate)
+  const endDate = moment.utc(request.endDate)
+  const limit =
+    request.limit === undefined ? request.limit : parseInt(request.limit)
+  const skip =
+    request.skip === undefined ? request.skip : parseInt(request.skip)
+  // TODO: Format filter values into array, trim potential whitespace, validate using regex to check for comma separated strings/numbers (no symbols)
+
+  const cloudProviders = filterParamToArray(request.cloudProviders)
+  const accounts = filterParamToArray(request.accounts)
+  const services = filterParamToArray(request.services)
+  const regions = filterParamToArray(request.regions)
+  const tags = request.tags ? JSON.parse(request.tags) : request.tags
+
+  const formattedRequest: FormattedEstimationRequest = {
+    startDate,
+    endDate,
+    region: request.region,
+    groupBy: request.groupBy,
+    limit,
+    skip,
+    cloudProviders,
+    accounts,
+    services,
+    regions,
+    tags,
+  }
+
+  validate(formattedRequest)
+
+  return {
+    ...formattedRequest,
+    startDate: startDate.toDate(),
+    endDate: endDate.toDate(),
+    ignoreCache: request.ignoreCache === 'true',
   }
 }
 
