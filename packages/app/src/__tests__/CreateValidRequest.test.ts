@@ -233,7 +233,7 @@ describe('CreateValidRequest', () => {
     [
       'regions',
       '1, southE@st',
-      'Filter for services must be an array with appropriate values',
+      'Filter for regions must be an array with appropriate values',
     ],
   ])(
     'ensures each filter value is a valid array list',
@@ -260,7 +260,7 @@ describe('CreateValidRequest', () => {
       'region-north-1, region-north-2',
       ['region-north-1', 'region-north-2'],
     ],
-    ['tags', '[{aws-user: user1}]', [{ ['aws-user']: 'user1' }]],
+    ['tags', '[{"aws-user": "user1"}]', [{ ['aws-user']: 'user1' }]],
   ])(
     'creates estimation request with filters',
     (filter, value, filterResult) => {
