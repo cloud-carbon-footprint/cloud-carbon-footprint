@@ -75,7 +75,7 @@ _Note: This feature only works when the MONGODB cache mode is enabled. The limit
 
 _For consumers that do not anticipate reaching a memory limitation with their collection size, simply configuring the limit value to a number equal to or greater than the total expected number of documents and a skip value of 0 will allow the API to only need one request._
 
-
+<!--- Commenting out until filtering is reworked. TODO: Update with new filter schema
 ###### Filtering Estimates
 
 With the MongoDB cache mode, CCF is now supporting the capability to filter estimates by the following keys and request parameters:
@@ -103,6 +103,7 @@ As tagging for our supported cloud service providers is typically set up using k
 _Note: Filtering for Mongodb will only work to filter existing cached data in the collection. Providing these parameters for the initial request to the CSP’s will not return filtered data._
 
 _Filtering is not yet supported on the client._
+-->
 
 ### Caching Configurations
 
