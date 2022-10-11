@@ -212,57 +212,57 @@ describe('CreateValidRequest', () => {
   it.each([
     [
       'cloudProviders',
-      '{aws: true}',
+      { aws: true },
       'Filter for cloud providers must be an array with appropriate values',
     ],
     [
       'cloudProviders',
-      '9, gcp,aws',
+      ['9', 'gcp', 'aws'],
       'Filter for cloud providers must be an array with appropriate values',
     ],
     [
       'accounts',
-      '$upercoolProject',
+      ['$upercoolProject'],
       'Filter for accounts must be an array with appropriate values',
     ],
     [
       'services',
-      '99services, n0tSql',
+      ['//services', 'n+tSql'],
       'Filter for services must be an array with appropriate values',
     ],
     [
       'regions',
-      '1, southE@st',
+      ['1', 'southE@st'],
       'Filter for regions must be an array with appropriate values',
     ],
-  ])(
-    'ensures each filter value is a valid array list',
-    (filter, value, errorMsg) => {
-      const input = {
-        startDate: '2000-07-10',
-        endDate: '2020-07-10',
-        region: 'us-east-1',
-        limit: '1',
-        skip: '0',
-        [filter]: value,
-      }
+  ])('ensures %s filter is a valid array list', (filter, value, errorMsg) => {
+    const input = {
+      startDate: '2000-07-10',
+      endDate: '2020-07-10',
+      region: 'us-east-1',
+      limit: '1',
+      skip: '0',
+      [filter]: value,
+    }
 
-      expect(() => createValidFootprintRequest(input)).toThrow(errorMsg)
-    },
-  )
+    expect(() => createValidFootprintRequest(input)).toThrow(errorMsg)
+  })
+
+  //TODO: Write test for tag validations
 
   it.each([
-    ['cloudProviders', 'aws, gcp', ['aws', 'gcp']],
-    ['accounts', 'account1, account2', ['account1', 'account2']],
-    ['services', 'service 1, service 2', ['service 1', 'service 2']],
+    ['cloudProviders', ['aws', 'gcp'], ['AWS', 'GCP']],
+    ['cloudProviders', 'aws', ['AWS']],
+    ['accounts', ['account1', 'account2'], ['account1', 'account2']],
+    ['services', ['serviceOne', 'serviceTwo'], ['serviceOne', 'serviceTwo']],
     [
       'regions',
-      'region-north-1, region-north-2',
+      ['region-north-1', 'region-north-2'],
       ['region-north-1', 'region-north-2'],
     ],
     ['tags', '[{"aws-user": "user1"}]', [{ ['aws-user']: 'user1' }]],
   ])(
-    'creates estimation request with filters',
+    'creates estimation request with %s filters',
     (filter, value, filterResult) => {
       const input = {
         startDate: '2000-07-10',

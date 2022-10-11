@@ -23,13 +23,13 @@ export interface EstimationRequest {
   region?: string
   ignoreCache: boolean
   groupBy?: string
-  limit?: number | string
-  skip?: number | string
+  limit?: number
+  skip?: number
   cloudProviders?: string[]
   accounts?: string[]
   services?: string[]
   regions?: string[]
-  tags?: { [key: string]: string[] }
+  tags?: { [key: string]: string[] } | string
 }
 
 export interface RecommendationRequest {
@@ -41,13 +41,13 @@ interface FormattedEstimationRequest {
   endDate: moment.Moment
   region?: string
   groupBy?: string
-  limit?: number | string
-  skip?: number | string
+  limit?: string
+  skip?: string
   cloudProviders?: string[]
   accounts?: string[]
   services?: string[]
   regions?: string[]
-  tags?: { [key: string]: string[] }
+  tags?: { [key: string]: string[] } | string
 }
 
 // eslint-disable-next-line
@@ -101,12 +101,18 @@ const validate = (
     errors.push('Please specify a valid groupBy period')
   }
 
-  if (limit !== undefined && (isNaN(limit as number) || limit < 0)) {
-    errors.push('Not a valid limit number')
+  if (limit) {
+    const limitVal = parseInt(limit)
+    if (isNaN(limitVal) || limitVal < 0) {
+      errors.push('Not a valid limit number')
+    }
   }
 
-  if (skip !== undefined && (isNaN(skip as number) || skip < 0)) {
-    errors.push('Not a valid skip number')
+  if (skip) {
+    const skipVal = parseInt(skip)
+    if (isNaN(skipVal) || skipVal < 0) {
+      errors.push('Not a valid skip number')
+    }
   }
 
   const filters: { [key: string]: string[] } = {
@@ -116,38 +122,37 @@ const validate = (
     regions,
   }
   const filterValidators: { [char: string]: RegExp } = {
-    'cloud providers': /^[A-Za-z]+$/, // only letters
+    'cloud providers': /^[A-Z]+$/, // only capital letters
     accounts: /^[A-Za-z0-9_-]*$/, // letters, numbers, and dashes/underscores
-    services: /^[a-zA-Z\s]*$/, // letters and spaces
+    services: /^[A-Za-z0-9\s]*$/, // letters. numbers and spaces
     regions: /^[A-Za-z0-9-]*$/, // letters, numbers, and dashes
   }
 
   for (const filter in filters) {
     const filterValues: string[] = filters[filter]
     const validator = filterValidators[filter]
-    if (filterValues && filterValues.length) {
-      for (const value of filterValues) {
-        if (!value.match(validator)) {
-          errors.push(
-            `Filter for ${filter} must be an array with appropriate values`,
-          )
-          break
+    if (filterValues) {
+      const errorMsg = `Filter for ${filter} must be an array with appropriate values`
+      if (!filterValues.length) {
+        errors.push(errorMsg)
+      } else {
+        for (const value of filterValues) {
+          if (!value?.match(validator)) {
+            errors.push(errorMsg)
+            break
+          }
         }
       }
     }
   }
 
-  // TODO: Create more specific validation/input
   if (tags) {
     const tagError = `Tags must be formatted correctly as an array with a key and value pairs`
     if (!Array.isArray(tags)) {
       errors.push(tagError)
     } else {
-      for (const [key, value] of Object.entries(tags)) {
-        const keyExists = key !== '0'
-        const isArray = Array.isArray(value)
-
-        if (!keyExists || !isArray) {
+      for (const tag of tags) {
+        if (typeof tag !== 'object') {
           errors.push(tagError)
           break
         }
@@ -206,15 +211,31 @@ const rawRequestToRecommendationsRequest = (
 }
 
 /**
- * Formats comma separated filter param into an array with whitespace removed
- * @param filterParam - filter string from api request
- * @returns             array if param string is present or undefined
+ * Formats provided filter params of request into required string array for validation
+ * @param request - The formatted request object
  */
-const filterParamToArray = (filterParam: string): string[] | undefined => {
-  if (filterParam !== undefined) {
-    return filterParam.replace(' ', '').split(',')
-  }
-  return undefined
+const formatFilterParams = (
+  request: FormattedEstimationRequest,
+): FormattedEstimationRequest => {
+  const filters = ['cloudProviders', 'accounts', 'services', 'regions']
+  let formattedRequest = { ...request }
+  filters.forEach((filterParam) => {
+    const paramKey = filterParam as keyof FormattedEstimationRequest
+    if (request[paramKey]) {
+      const paramValue = request[paramKey]
+      let filterArray = Array.isArray(paramValue)
+        ? (paramValue as string[])
+        : [paramValue]
+      if (filterParam === 'cloudProviders') {
+        filterArray = filterArray.map(
+          (provider: string) => provider.toUpperCase?.(), // Capitalize valid strings (pre-validation)
+        )
+      }
+      // Spread assignment to avoid type error
+      formattedRequest = { ...formattedRequest, [paramKey]: filterArray }
+    }
+  })
+  return formattedRequest
 }
 
 /**
@@ -229,36 +250,26 @@ export const createValidFootprintRequest = (
 
   const startDate = moment.utc(request.startDate)
   const endDate = moment.utc(request.endDate)
-  const limit =
-    request.limit === undefined ? request.limit : parseInt(request.limit)
-  const skip =
-    request.skip === undefined ? request.skip : parseInt(request.skip)
-  // TODO: Format filter values into array, trim potential whitespace, validate using regex to check for comma separated strings/numbers (no symbols)
 
-  const cloudProviders = filterParamToArray(request.cloudProviders)
-  const accounts = filterParamToArray(request.accounts)
-  const services = filterParamToArray(request.services)
-  const regions = filterParamToArray(request.regions)
-  const tags = request.tags ? JSON.parse(request.tags) : request.tags
-
-  const formattedRequest: FormattedEstimationRequest = {
+  let formattedRequest: FormattedEstimationRequest = {
+    ...request,
     startDate,
     endDate,
-    region: request.region,
-    groupBy: request.groupBy,
-    limit,
-    skip,
-    cloudProviders,
-    accounts,
-    services,
-    regions,
-    tags,
   }
+
+  if (request.tags) formattedRequest.tags = JSON.parse(request.tags)
+  let limit, skip
+  if (request.limit) limit = parseInt(request.limit)
+  if (request.skip) skip = parseInt(request.skip)
+
+  formattedRequest = formatFilterParams(formattedRequest)
 
   validate(formattedRequest)
 
   return {
     ...formattedRequest,
+    limit,
+    skip,
     startDate: startDate.toDate(),
     endDate: endDate.toDate(),
     ignoreCache: request.ignoreCache === 'true',

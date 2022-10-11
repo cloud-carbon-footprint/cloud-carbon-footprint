@@ -43,13 +43,11 @@ const FootprintApiMiddleware = async function (
     groupBy: req.query.groupBy?.toString(),
     limit: req.query.limit?.toString(),
     skip: req.query.skip?.toString(),
-    // TODO: Move split to createValidFootprintRequest function. Only convert to string
-    // Handle case of empty string or invalid numbers inside of the CreateValidRequest
-    cloudProviders: req.query.cloudProviders?.toString(),
-    accounts: req.query.accounts?.toString(),
-    services: req.query.services?.toString(),
-    regions: req.query.regions?.toString(),
-    tags: JSON.stringify(req.query?.tags),
+    cloudProviders: req.query.cloudProviders as string[],
+    accounts: req.query.accounts as string[],
+    services: req.query.services as string[],
+    regions: req.query.regions as string[],
+    tags: JSON.stringify(req.query.tags),
   }
   apiLogger.info(`Footprint API request started.`)
   if (!rawRequest.groupBy) {
