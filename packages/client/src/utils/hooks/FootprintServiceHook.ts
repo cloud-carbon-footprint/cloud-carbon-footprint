@@ -25,84 +25,6 @@ export interface UseRemoteFootprintServiceParams {
   limit?: number
 }
 
-const concatenateResults = (estimates, newEstimates) => {
-  const equalsLastDataObject = checkForEqualObjects(newEstimates, estimates)
-  if (estimates.length == 0 && equalsLastDataObject) {
-    return newEstimates
-  }
-
-  if (!newEstimates || !(newEstimates.length > 0)) {
-    return estimates
-  }
-
-  const existingDates = estimates.reduce((dates, estimate) => {
-    dates.push(moment.utc(estimate.timestamp))
-    return dates
-  }, [])
-
-  let updatedEstimates
-  newEstimates.map((newEstimate) => {
-    const newDateExists = !!existingDates.find((date) => {
-      return (
-        new Date(date).getTime() == new Date(newEstimate.timestamp).getTime()
-      )
-    })
-
-    if (newDateExists) {
-      const elementIndex = estimates.findIndex((estimate) =>
-        moment
-          .utc(estimate.timestamp)
-          .isSame(moment.utc(newEstimate.timestamp)),
-      )
-      const filteredEstimate = estimates[elementIndex]
-      const concatenatedEstimates = filteredEstimate?.serviceEstimates.concat(
-        newEstimate.serviceEstimates,
-      )
-      filteredEstimate.serviceEstimates = concatenatedEstimates
-      estimates[elementIndex] = filteredEstimate
-      updatedEstimates = estimates
-    } else {
-      updatedEstimates = estimates.concat([newEstimate])
-    }
-  })
-
-  return updatedEstimates
-}
-
-const checkForEqualObjects = (
-  newEstimates: EstimationResult[],
-  cachedEstimates: EstimationResult[],
-) => {
-  if (!cachedEstimates || cachedEstimates?.length == 0) return false
-  if (!newEstimates || cachedEstimates?.length == 0) return true
-
-  const newServiceEstimates =
-    newEstimates[newEstimates?.length - 1]?.serviceEstimates
-  const lastNewDataObject = newServiceEstimates[newServiceEstimates?.length - 1]
-
-  const cachedServiceEstimates =
-    cachedEstimates[cachedEstimates?.length - 1]?.serviceEstimates
-  const lastCachedDataObject =
-    cachedServiceEstimates[cachedServiceEstimates?.length - 1]
-
-  return equals(lastNewDataObject, lastCachedDataObject)
-}
-
-const checkForLoopExit = (
-  lastDataLength: number,
-  data: EstimationResult[],
-  params: UseRemoteFootprintServiceParams,
-  estimates: EstimationResult[],
-) => {
-  const equalsLastDataObject = checkForEqualObjects(data, estimates)
-
-  lastDataLength = data?.length || 0
-  if (params.ignoreCache || data == undefined || equalsLastDataObject)
-    lastDataLength = 0
-
-  return lastDataLength
-}
-
 const useRemoteFootprintService = (
   params: UseRemoteFootprintServiceParams,
 ): ServiceResult<EstimationResult> => {
@@ -122,7 +44,11 @@ const useRemoteFootprintService = (
       setError(null)
       setLoading(true)
 
-      let estimates: EstimationResult[] = data
+      /*
+       * Estimates needs to be initialized to spread data and not data itself to avoid state mutation during concatenation
+       * This allows setState to properly set off useEffect dependencies in the filter hooks
+       */
+      let estimates: EstimationResult[] = [...data]
       try {
         let lastDataLength = 1
         let skip = 0
@@ -170,6 +96,84 @@ const useRemoteFootprintService = (
   ])
 
   return { data, loading, error }
+}
+
+const concatenateResults = (estimates, newEstimates) => {
+  const equalsLastDataObject = checkForEqualObjects(newEstimates, estimates)
+  if (estimates.length == 0 && equalsLastDataObject) {
+    return newEstimates
+  }
+
+  if (!newEstimates || !(newEstimates.length > 0)) {
+    return estimates
+  }
+
+  const existingDates = estimates.reduce((dates, estimate) => {
+    dates.push(moment.utc(estimate.timestamp))
+    return dates
+  }, [])
+
+  const updatedEstimates = estimates
+  newEstimates.forEach((newEstimate) => {
+    const newDateExists = existingDates.some(
+      (date) =>
+        new Date(date).getTime() == new Date(newEstimate.timestamp).getTime(),
+    )
+
+    if (newDateExists) {
+      const elementIndex = updatedEstimates.find((estimate) =>
+        moment
+          .utc(estimate.timestamp)
+          .isSame(moment.utc(newEstimate.timestamp)),
+      )
+      const estimateToUpdate = updatedEstimates[elementIndex]
+      if (estimateToUpdate) {
+        estimateToUpdate.serviceEstimates =
+          estimateToUpdate?.serviceEstimates.concat(
+            newEstimate.serviceEstimates,
+          )
+        updatedEstimates[elementIndex] = estimateToUpdate
+      }
+    } else {
+      updatedEstimates.push(newEstimate)
+    }
+  })
+
+  return updatedEstimates
+}
+
+const checkForEqualObjects = (
+  newEstimates: EstimationResult[],
+  cachedEstimates: EstimationResult[],
+) => {
+  if (!cachedEstimates || cachedEstimates?.length == 0) return false
+  if (!newEstimates || newEstimates?.length == 0) return true
+
+  const newServiceEstimates =
+    newEstimates[newEstimates?.length - 1]?.serviceEstimates
+  const lastNewDataObject = newServiceEstimates[newServiceEstimates?.length - 1]
+
+  const cachedServiceEstimates =
+    cachedEstimates[cachedEstimates?.length - 1]?.serviceEstimates
+  const lastCachedDataObject =
+    cachedServiceEstimates[cachedServiceEstimates?.length - 1]
+
+  return equals(lastNewDataObject, lastCachedDataObject)
+}
+
+const checkForLoopExit = (
+  lastDataLength: number,
+  data: EstimationResult[],
+  params: UseRemoteFootprintServiceParams,
+  estimates: EstimationResult[],
+) => {
+  const equalsLastDataObject = checkForEqualObjects(data, estimates)
+
+  lastDataLength = data?.length || 0
+  if (params.ignoreCache || data == undefined || equalsLastDataObject)
+    lastDataLength = 0
+
+  return lastDataLength
 }
 
 export default useRemoteFootprintService
