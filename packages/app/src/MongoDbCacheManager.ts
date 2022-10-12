@@ -51,12 +51,8 @@ export default class MongoDbCacheManager extends CacheManager {
     )
     const endDate = new Date(request.endDate)
 
-    this.cacheLogger.info(
-      `Paginating documents: ${request.skip} to ${
-        request.skip + request.limit
-      }`,
-    )
-    const matchObject = this.createAggregationMatch(request, startDate, endDate)
+    const filters = this.createAggregationFilters(request, startDate, endDate)
+    const aggregationStages = this.createAggregationStages(request, filters)
 
     return new Promise(function (resolve, reject) {
       db.listCollections({ name: collectionName }).next(
@@ -67,42 +63,7 @@ export default class MongoDbCacheManager extends CacheManager {
 
             resolve(
               estimates
-                .aggregate(
-                  [
-                    {
-                      $match: matchObject,
-                    },
-                    {
-                      $sort: {
-                        timestamp: 1,
-                        _id: 1,
-                      },
-                    },
-                    {
-                      $skip: request.skip,
-                    },
-                    {
-                      $limit: request.limit,
-                    },
-                    {
-                      $group: {
-                        _id: '$timestamp',
-                        timestamp: { $first: '$timestamp' },
-                        serviceEstimates: { $push: '$$ROOT' },
-                        groupBy: { $first: '$groupBy' },
-                      },
-                    },
-                    {
-                      $unset: [
-                        '_id',
-                        'serviceEstimates._id',
-                        'serviceEstimates.timestamp',
-                        'serviceEstimates.groupBy',
-                      ],
-                    },
-                  ],
-                  { allowDiskUse: true },
-                )
+                .aggregate(aggregationStages, { allowDiskUse: true })
                 .toArray() as EstimationResult[],
             )
           } else {
@@ -113,42 +74,6 @@ export default class MongoDbCacheManager extends CacheManager {
         },
       )
     })
-  }
-
-  private createAggregationMatch(
-    request: EstimationRequest,
-    startDate: Date,
-    endDate: Date,
-  ) {
-    const { cloudProviders, accounts, services, regions, tags } = request
-    const filterTable = {
-      cloudProvider: cloudProviders,
-      accountId: accounts,
-      serviceName: services,
-      region: regions,
-    }
-    let matchObject = {
-      timestamp: { $gte: startDate, $lte: endDate },
-    }
-
-    for (const [key, value] of Object.entries(filterTable)) {
-      if (value && value.length > 0) {
-        matchObject = {
-          [key]: { $in: value },
-          ...matchObject,
-        }
-      }
-    }
-
-    if (tags && Object.entries(tags)[0])
-      for (const [key, value] of Object.entries(tags)) {
-        matchObject = {
-          [`tags.${key}`]: { $in: value },
-          ...matchObject,
-        }
-      }
-
-    return matchObject
   }
 
   async getEstimates(
@@ -295,5 +220,91 @@ export default class MongoDbCacheManager extends CacheManager {
       )
       return []
     }
+  }
+
+  private createAggregationFilters(
+    request: EstimationRequest,
+    startDate: Date,
+    endDate: Date,
+  ) {
+    const { cloudProviders, accounts, services, regions, tags } = request
+    const filterTable = {
+      cloudProvider: cloudProviders,
+      accountId: accounts,
+      serviceName: services,
+      region: regions,
+    }
+    let aggregationFilters = {
+      timestamp: { $gte: startDate, $lte: endDate },
+    }
+
+    for (const [key, value] of Object.entries(filterTable)) {
+      if (value && value.length > 0) {
+        aggregationFilters = {
+          [key]: { $in: value },
+          ...aggregationFilters,
+        }
+      }
+    }
+
+    if (tags && Object.entries(tags)[0])
+      for (const [key, value] of Object.entries(tags)) {
+        aggregationFilters = {
+          [`tags.${key}`]: { $in: value },
+          ...aggregationFilters,
+        }
+      }
+
+    return aggregationFilters
+  }
+
+  private createAggregationStages(
+    request: EstimationRequest,
+    filters: unknown,
+  ) {
+    // Init with pre-query stages
+    const aggregationStages: unknown[] = [
+      {
+        $match: filters,
+      },
+      {
+        $sort: {
+          timestamp: 1,
+          _id: 1,
+        },
+      },
+    ]
+
+    // Optionally build pagination stages
+    if (!isNaN(request.skip)) aggregationStages.push({ $skip: request.skip })
+    if (!isNaN(request.limit)) aggregationStages.push({ $limit: request.limit })
+
+    if (request.skip || request.limit) {
+      const skip = request.skip || 0
+      const limitMsg = request.skip + request.limit || request.limit || 'end'
+      this.cacheLogger.info(`Paginating documents: ${skip} to ${limitMsg}`)
+    }
+
+    // Add remaining post-query stages
+    aggregationStages.push(
+      {
+        $group: {
+          _id: '$timestamp',
+          timestamp: { $first: '$timestamp' },
+          serviceEstimates: { $push: '$$ROOT' },
+          groupBy: { $first: '$groupBy' },
+        },
+      },
+      {
+        $unset: [
+          '_id',
+          'serviceEstimates._id',
+          'serviceEstimates.timestamp',
+          'serviceEstimates.groupBy',
+        ],
+      },
+    )
+
+    return aggregationStages
   }
 }
