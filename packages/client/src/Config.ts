@@ -39,7 +39,7 @@ const appConfig: ClientConfig = {
     TYPE: process.env.REACT_APP_DATE_RANGE_TYPE || 'months',
   },
   GROUP_BY: groupBy,
-  PAGE_LIMIT: process.env.REACT_APP_PAGE_LIMIT || '1000',
+  PAGE_LIMIT: process.env.REACT_APP_PAGE_LIMIT || '50000',
   BASE_URL: process.env.REACT_APP_BASE_URL || '/api',
   MINIMAL_DATE_AGE: process.env.REACT_APP_MINIMAL_DATE_AGE || '0',
   START_DATE: process.env.REACT_APP_START_DATE,
