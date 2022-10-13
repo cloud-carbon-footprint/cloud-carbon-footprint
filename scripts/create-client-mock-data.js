@@ -5,8 +5,6 @@
 const fs = require('fs')
 const path = require('path')
 
-let updatedMonth = getPreviousMonth(new Date());
-
 async function main() {
   const data = fs.readFileSync(
     path.resolve(__dirname, `../packages/client/stub-server/mockData.json`),
@@ -14,11 +12,11 @@ async function main() {
   )
 
   const mockData = JSON.parse(data)
+  let updatedMonth = getPreviousMonth(new Date());
 
   mockData.footprint.forEach((footprint) => {
     footprint.timestamp = updatedMonth.toISOString()
     updatedMonth = getPreviousMonth(updatedMonth)
-    updatedMonth.setUTCHours(0, 0, 0, 0)
   })
 
   fs.writeFileSync(
@@ -51,8 +49,11 @@ async function main() {
 }
 
 function getPreviousMonth(timestamp) {
-  const prevMonth = timestamp.getMonth() - 1
-  return new Date(timestamp.getFullYear(), prevMonth, 26)
+  let prevMonth = timestamp
+  prevMonth.setDate(0)
+  prevMonth.setDate(1)
+  prevMonth.setUTCHours(0, 0, 0, 0)
+  return prevMonth
 }
 
 main().catch((error) => {
