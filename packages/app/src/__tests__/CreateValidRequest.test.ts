@@ -235,6 +235,16 @@ describe('CreateValidRequest', () => {
       ['1', 'southE@st'],
       'Filter for regions must be an array with appropriate values',
     ],
+    [
+      'tags',
+      [{ 'aws:user': 'user' }, { env: 'prod' }],
+      'Tags must be formatted correctly into key/value pairs',
+    ],
+    [
+      'tags',
+      { 'aws-user': 9 },
+      'Tags must be formatted correctly into key/value pairs',
+    ],
   ])('ensures %s filter is a valid array list', (filter, value, errorMsg) => {
     const input = {
       startDate: '2000-07-10',
@@ -248,8 +258,6 @@ describe('CreateValidRequest', () => {
     expect(() => createValidFootprintRequest(input)).toThrow(errorMsg)
   })
 
-  //TODO: Write test for tag validations
-
   it.each([
     ['cloudProviders', ['aws', 'gcp'], ['AWS', 'GCP']],
     ['cloudProviders', 'aws', ['AWS']],
@@ -260,7 +268,11 @@ describe('CreateValidRequest', () => {
       ['region-north-1', 'region-north-2'],
       ['region-north-1', 'region-north-2'],
     ],
-    ['tags', '[{"aws-user": "user1"}]', [{ ['aws-user']: 'user1' }]],
+    [
+      'tags',
+      { 'aws:user': 'user1', 'aws:createdBy': 'someone' },
+      { 'aws:user': 'user1', 'aws:createdBy': 'someone' },
+    ],
   ])(
     'creates estimation request with %s filters',
     (filter, value, filterResult) => {

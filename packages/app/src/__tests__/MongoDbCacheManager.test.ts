@@ -302,13 +302,14 @@ describe('MongoDbCacheManager', () => {
       [['accounts', ['test-accounts'], 'accountId', ,]],
       [['services', ['test-services'], 'serviceName']],
       [['regions', ['test-regions'], 'region']],
-      [['tags', { 'test-key': ['test-tag'] }, 'tags.test-key']],
+      [['tags', { 'test-key': 'test-tag' }, 'tags.test-key']],
     ])('determines matching filters', async (filter) => {
       const request: EstimationRequest = {
         startDate: new Date('2022-01-01'),
         endDate: new Date('2022-01-02'),
         limit: 1,
         skip: 0,
+        ignoreCache: false,
         [`${filter[0]}`]: filter[1],
       }
 
@@ -327,13 +328,14 @@ describe('MongoDbCacheManager', () => {
         request,
       )
 
-      const tagsFilter =
+      const filterValue =
         filter[0] === 'tags' ? filter[1]['test-key'] : filter[1]
+      const matchOperator = filter[0] === 'tags' ? '$eq' : '$in'
 
       const aggregation = [
         {
           $match: {
-            [`${filter[2]}`]: { $in: tagsFilter },
+            [`${filter[2]}`]: { [matchOperator]: filterValue },
             timestamp: {
               $gte: new Date('2022-01-01T00:00:00.000Z'),
               $lte: new Date('2022-01-02T00:00:00.000Z'),

@@ -15,6 +15,7 @@ import {
 import {
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
+  Tags,
 } from './RawRequest'
 
 export interface EstimationRequest {
@@ -29,7 +30,7 @@ export interface EstimationRequest {
   accounts?: string[]
   services?: string[]
   regions?: string[]
-  tags?: { [key: string]: string[] } | string
+  tags?: Tags
 }
 
 export interface RecommendationRequest {
@@ -47,7 +48,7 @@ interface FormattedEstimationRequest {
   accounts?: string[]
   services?: string[]
   regions?: string[]
-  tags?: { [key: string]: string[] } | string
+  tags?: Tags
 }
 
 // eslint-disable-next-line
@@ -147,12 +148,12 @@ const validate = (
   }
 
   if (tags) {
-    const tagError = `Tags must be formatted correctly as an array with a key and value pairs`
-    if (!Array.isArray(tags)) {
+    const tagError = `Tags must be formatted correctly into key/value pairs`
+    if (typeof tags !== 'object') {
       errors.push(tagError)
     } else {
-      for (const tag of tags) {
-        if (typeof tag !== 'object') {
+      for (const tag in tags) {
+        if (typeof tags[tag] !== 'string') {
           errors.push(tagError)
           break
         }
@@ -257,7 +258,6 @@ export const createValidFootprintRequest = (
     endDate,
   }
 
-  if (request.tags) formattedRequest.tags = JSON.parse(request.tags)
   let limit, skip
   if (request.limit) limit = parseInt(request.limit)
   if (request.skip) skip = parseInt(request.skip)

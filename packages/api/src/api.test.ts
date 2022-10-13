@@ -59,6 +59,40 @@ describe('api', () => {
       expect(response.body).toEqual(expectedResponse)
     })
 
+    it('returns footprint estimates with filter queries', async () => {
+      //setup
+      const startDate = '2020-07-12'
+      const endDate = '2020-07-13'
+      const filters = {
+        cloudProviders: ['aws, gcp'],
+        services: ['service1', 'service2'],
+        regions: ['us-east-1', 'us-east2'],
+      }
+      const tags = { 'aws:createdby': 'user', 'aws:env': 'prod' }
+
+      // Add each filter to request url
+      let requestUrl = `/footprint?start=${startDate}&end=${endDate}`
+      for (const query in filters) {
+        filters[query].forEach(
+          (filter) => (requestUrl += `&${query}=${filter}`),
+        )
+      }
+      const tagKeys = Object.keys(tags)
+      tagKeys.forEach((key) => (requestUrl += `&tags[${key}]=${tags[key]}`))
+
+      const expectedResponse: EstimationResult[] = []
+      mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
+
+      //run
+      const response = await request(server).get(
+        encodeURI(`/footprint?start=${startDate}&end=${endDate}`),
+      )
+
+      //assert
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(expectedResponse)
+    })
+
     describe('error handling', () => {
       beforeEach(() => (console.error = jest.fn()))
       afterEach(() => (console.error = originalConsoleError))

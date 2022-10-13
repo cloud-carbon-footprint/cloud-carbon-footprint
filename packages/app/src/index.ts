@@ -10,4 +10,5 @@ export {
 export {
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
+  Tags,
 } from './RawRequest'

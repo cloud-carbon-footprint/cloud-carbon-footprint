@@ -250,7 +250,7 @@ export default class MongoDbCacheManager extends CacheManager {
     if (tags && Object.entries(tags)[0])
       for (const [key, value] of Object.entries(tags)) {
         aggregationFilters = {
-          [`tags.${key}`]: { $in: value },
+          [`tags.${key}`]: { $eq: value },
           ...aggregationFilters,
         }
       }

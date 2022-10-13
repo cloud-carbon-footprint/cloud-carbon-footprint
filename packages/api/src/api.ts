@@ -10,6 +10,7 @@ import {
   createValidRecommendationsRequest,
   FootprintEstimatesRawRequest,
   RecommendationsRawRequest,
+  Tags,
 } from '@cloud-carbon-footprint/app'
 
 import {
@@ -47,7 +48,7 @@ const FootprintApiMiddleware = async function (
     accounts: req.query.accounts as string[],
     services: req.query.services as string[],
     regions: req.query.regions as string[],
-    tags: JSON.stringify(req.query.tags),
+    tags: req.query.tags as Tags,
   }
   apiLogger.info(`Footprint API request started.`)
   if (!rawRequest.groupBy) {
