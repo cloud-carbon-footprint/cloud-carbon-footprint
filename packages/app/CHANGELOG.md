@@ -1,5 +1,26 @@
 # @cloud-carbon-footprint/app
 
+## 0.8.0
+
+### Minor Changes
+
+- ab88688e: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a5f19a0e: updates ts-node dependency
+- Updated dependencies [a5f19a0e]
+- Updated dependencies [d7da2171]
+- Updated dependencies [ab88688e]
+- Updated dependencies [225e44c5]
+- Updated dependencies [87f947cf]
+- Updated dependencies [5041a9ce]
+  - @cloud-carbon-footprint/aws@0.14.0
+  - @cloud-carbon-footprint/azure@0.12.0
+  - @cloud-carbon-footprint/common@1.8.0
+  - @cloud-carbon-footprint/gcp@0.11.0
+  - @cloud-carbon-footprint/on-premise@0.1.1
+
 ## 0.7.0
 
 ### Minor Changes

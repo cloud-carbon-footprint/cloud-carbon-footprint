@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/common",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "license": "Apache-2.0",
   "description": "Common functionality to be shared among other cloud carbon footprint packages",
   "main": "src/index.ts",
