@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/on-premise
 
+## 0.1.1
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
 ## 0.1.0
 
 ### Minor Changes

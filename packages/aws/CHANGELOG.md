@@ -1,5 +1,25 @@
 # @cloud-carbon-footprint/aws
 
+## 0.14.0
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- a6423a68: Correctly calculate emissions for AWS Lambda when using ARM architecture.
+- a6423a68: Updates the S3 standard replication factor to 6
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
 ## 0.13.0
 
 ### Minor Changes

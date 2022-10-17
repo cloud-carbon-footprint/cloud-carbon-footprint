@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/on-premise",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "description": "The core logic to gather usage data and estimate energy and carbon emissions from on-premise data centers.",
   "main": "src/index.ts",
@@ -41,8 +41,8 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/common": "^1.6.0",
-    "@cloud-carbon-footprint/core": "^0.16.1",
+    "@cloud-carbon-footprint/common": "^1.8.0",
+    "@cloud-carbon-footprint/core": "^0.17.0",
     "moment": "^2.29.1"
   },
   "devDependencies": {

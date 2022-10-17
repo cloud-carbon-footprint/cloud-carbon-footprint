@@ -1,5 +1,22 @@
 # @cloud-carbon-footprint/core
 
+## 0.17.0
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: A small refactor to fix one of the null check errors by replacing a null date.
+- a6423a68: updates ts-node dependency
+- a6423a68: Refactored to resolve null check errors and make code more efficient.
+- a6423a68: Add default values to get rid of null check errors.
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/common@1.8.0
+
 ## 0.16.1
 
 ### Patch Changes

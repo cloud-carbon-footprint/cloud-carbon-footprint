@@ -1,5 +1,23 @@
 # @cloud-carbon-footprint/azure
 
+## 0.12.0
+
+### Minor Changes
+
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/core@0.17.0
+  - @cloud-carbon-footprint/common@1.8.0
+
 ## 0.11.0
 
 ### Minor Changes

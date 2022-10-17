@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/api
 
+## 1.5.0
+
+### Minor Changes
+
+- 24c76730: Introduces new cache management logic for performance and scalability of larger data, including option for MongoDB NoSQL database as a cache
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
+### Patch Changes
+
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [e9e57da7]
+  - @cloud-carbon-footprint/app@1.0.0
+  - @cloud-carbon-footprint/common@1.8.0
+
 ## 1.4.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 1.1.4
+
+### Patch Changes
+
+- a6423a68: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
+
 ## 1.1.3
 
 ### Patch Changes
