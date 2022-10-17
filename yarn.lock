@@ -27,15 +27,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-consumption@npm:^8.0.0":
-  version: 8.0.1
-  resolution: "@azure/arm-consumption@npm:8.0.1"
+"@azure/arm-consumption@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "@azure/arm-consumption@npm:9.1.0"
   dependencies:
-    "@azure/core-auth": ^1.1.4
-    "@azure/ms-rest-azure-js": ^2.1.0
-    "@azure/ms-rest-js": ^2.2.0
-    tslib: ^1.10.0
-  checksum: 353d651e31eac9ff302f16f5fd5a1eb807e9d0e8576636dfb5c2f75b908e986ca4cd10fbc36453aef079e59b7d0166654e25c7d25265c71737aee497d4a9bc20
+    "@azure/core-auth": ^1.3.0
+    "@azure/core-client": ^1.5.0
+    "@azure/core-paging": ^1.2.0
+    "@azure/core-rest-pipeline": ^1.8.0
+    tslib: ^2.2.0
+  checksum: 4e8f8f61433e3c031c1072a627375c8e5f183c78e0ad623e00f0f04013e5a535f5dcdc7c042212871032913053dbda572b7f8982c2940cbccba7ba49166d05c5
   languageName: node
   linkType: hard
 
@@ -172,18 +173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/ms-rest-azure-js@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@azure/ms-rest-azure-js@npm:2.1.0"
-  dependencies:
-    "@azure/core-auth": ^1.1.4
-    "@azure/ms-rest-js": ^2.2.0
-    tslib: ^1.10.0
-  checksum: 0e6d6700f4ee0ad14383642b02fe86b33f4034aaff38499374ed5be59154e869ee231790d20b7557622ebcdfa9eed45dc2559391a79dee51c849a8ced0c86fed
-  languageName: node
-  linkType: hard
-
-"@azure/ms-rest-js@npm:^2.0.4, @azure/ms-rest-js@npm:^2.2.0, @azure/ms-rest-js@npm:^2.2.3":
+"@azure/ms-rest-js@npm:^2.0.4, @azure/ms-rest-js@npm:^2.2.3":
   version: 2.6.1
   resolution: "@azure/ms-rest-js@npm:2.6.1"
   dependencies:
@@ -2093,7 +2083,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
-    "@azure/arm-consumption": ^8.0.0
+    "@azure/arm-consumption": ^9.1.0
     "@azure/arm-resources-subscriptions": ^2.0.0
     "@azure/identity": ^2.0.1
     "@azure/ms-rest-js": ^2.2.3
@@ -2130,7 +2120,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
   dependencies:
-    "@azure/arm-consumption": ^8.0.0
+    "@azure/arm-consumption": ^9.1.0
     "@azure/arm-resources-subscriptions": ^2.0.0
     "@cloud-carbon-footprint/app": 1.0.0
     "@cloud-carbon-footprint/common": ^1.8.0
