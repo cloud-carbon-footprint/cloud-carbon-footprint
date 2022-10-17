@@ -1,23 +1,5 @@
 # @cloud-carbon-footprint/gcp
 
-## 0.11.0
-
-### Minor Changes
-
-- 87f947cf: Includes updates for pagination logic and mongodb implementation, as well as date range fixes and tagging logic
-
-### Patch Changes
-
-- a5f19a0e: updates ts-node dependency
-- Updated dependencies [518c63d0]
-- Updated dependencies [a5f19a0e]
-- Updated dependencies [ab88688e]
-- Updated dependencies [606f453f]
-- Updated dependencies [bc638bab]
-- Updated dependencies [225e44c5]
-  - @cloud-carbon-footprint/core@0.17.0
-  - @cloud-carbon-footprint/common@1.8.0
-
 ## 0.10.0
 
 ### Minor Changes
