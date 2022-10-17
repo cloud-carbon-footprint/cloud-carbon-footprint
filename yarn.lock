@@ -2048,7 +2048,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -2084,7 +2084,7 @@ __metadata:
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -2121,7 +2121,7 @@ __metadata:
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -2166,7 +2166,7 @@ __metadata:
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typed-prompts: ^1.5.0
     typescript: ^4.6.2
   languageName: unknown
@@ -2256,7 +2256,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
     winston: ^3.3.3
   languageName: unknown
@@ -2290,7 +2290,7 @@ __metadata:
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -2357,7 +2357,7 @@ __metadata:
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -2406,7 +2406,7 @@ __metadata:
     source-map-support: ^0.5.19
     ts-jest: ^27.1.2
     ts-node: ^10.4.0
-    ts-node-dev: ^1.1.8
+    ts-node-dev: ^2.0.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -20460,7 +20460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.12, source-map-support@npm:^0.5.16, source-map-support@npm:^0.5.17, source-map-support@npm:^0.5.19, source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.20":
+"source-map-support@npm:^0.5.12, source-map-support@npm:^0.5.16, source-map-support@npm:^0.5.19, source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.20":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
   dependencies:
@@ -22069,33 +22069,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node-dev@npm:^1.1.8":
-  version: 1.1.8
-  resolution: "ts-node-dev@npm:1.1.8"
-  dependencies:
-    chokidar: ^3.5.1
-    dynamic-dedupe: ^0.3.0
-    minimist: ^1.2.5
-    mkdirp: ^1.0.4
-    resolve: ^1.0.0
-    rimraf: ^2.6.1
-    source-map-support: ^0.5.12
-    tree-kill: ^1.2.2
-    ts-node: ^9.0.0
-    tsconfig: ^7.0.0
-  peerDependencies:
-    node-notifier: "*"
-    typescript: "*"
-  peerDependenciesMeta:
-    node-notifier:
-      optional: true
-  bin:
-    ts-node-dev: lib/bin.js
-    tsnd: lib/bin.js
-  checksum: 768a5806215ca78694d39b85ec6877ba41d33b5affcbedc8208f0e4befd5ba1cffbcc505d5d8eca82ea23a4517a79be5f5de6350cb6e249425c832f4ddf10a0f
-  languageName: node
-  linkType: hard
-
 "ts-node-dev@npm:^2.0.0":
   version: 2.0.0
   resolution: "ts-node-dev@npm:2.0.0"
@@ -22158,27 +22131,6 @@ __metadata:
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
   checksum: 1eede939beed9f4db35bcc88d78ef803815b99dcdbed1ecac728d861d74dc694918a7f0f437aa08d026193743a31e7e00e2ee34f875f909b5879981c1808e2a7
-  languageName: node
-  linkType: hard
-
-"ts-node@npm:^9.0.0":
-  version: 9.1.1
-  resolution: "ts-node@npm:9.1.1"
-  dependencies:
-    arg: ^4.1.0
-    create-require: ^1.1.0
-    diff: ^4.0.1
-    make-error: ^1.1.1
-    source-map-support: ^0.5.17
-    yn: 3.1.1
-  peerDependencies:
-    typescript: ">=2.7"
-  bin:
-    ts-node: dist/bin.js
-    ts-node-script: dist/bin-script.js
-    ts-node-transpile-only: dist/bin-transpile.js
-    ts-script: dist/bin-script-deprecated.js
-  checksum: 356e2647b8b1e6ab00380c0537fa569b63bd9b6f006cc40fd650f81fae1817bd8fecc075300036950d8f45c1d85b95be33cd1e48a1a424a7d86c3dbb42bf60e5
   languageName: node
   linkType: hard
 
