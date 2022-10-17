@@ -41,6 +41,7 @@ const useRemoteRecommendationsService = (
           : await axios.get(`${params.baseUrl}/recommendations`)
         setData(res.data)
       } catch (e) {
+        console.error(e.message, e)
         setError(e)
       } finally {
         setTimeout(() => setLoading(false), params.minLoadTimeMs ?? 1000)

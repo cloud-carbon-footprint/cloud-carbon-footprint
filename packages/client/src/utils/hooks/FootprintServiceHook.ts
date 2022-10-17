@@ -74,6 +74,7 @@ const useRemoteFootprintService = (
           skip += params.limit
         }
       } catch (e) {
+        console.error(e.message, e)
         setError(e)
       } finally {
         setData(estimates)
