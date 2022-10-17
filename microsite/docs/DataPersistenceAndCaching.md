@@ -75,25 +75,24 @@ _Note: This feature only works when the MONGODB cache mode is enabled. The limit
 
 _For consumers that do not anticipate reaching a memory limitation with their collection size, simply configuring the limit value to a number equal to or greater than the total expected number of documents and a skip value of 0 will allow the API to only need one request._
 
-<!--- Commenting out until filtering is reworked. TODO: Update with new filter schema
 ###### Filtering Estimates
 
 With the MongoDB cache mode, CCF is now supporting the capability to filter estimates by the following keys and request parameters:
 
-- cloudProviders
-- accountIds
-- serviceNames
-- regions
-- tags
+- **cloudProviders** (AWS | GCP | Azure)
+- **accounts** (via account id)
+- **services** (i.e. AmazonDynamoDB)
+- **regions** (i.e. us-east-1)
+- **tags** (via key/value pairs)
 
 A sample request to filter by cloud providers may look like:
 ```
-/footprint?start=2021-01-01&end=2021-02-01&limit=30&skip=10&cloudProviders[]=AWS
+/footprint?start=2021-01-01&end=2021-02-01&limit=30&skip=10&cloudProviders=AWS
 ```
 
-Each filter option must be supplied as an array list, and multiple filters can be provided even within the same key, for example:
+Multiple filters can be provided even within the same key, for example:
 
-`&cloudProviders[]=AWS&cloudProviders[]=GCP`
+`&cloudProviders=AWS&cloudProviders=GCP`
 
 _A note on tags:_
 As tagging for our supported cloud service providers is typically set up using key value pairs, the parameters must be set up to handle this appropriately. For example, if you have a tag in AWS called `aws:CreatedBy` and the value is the username, the request parameter should look like:
@@ -102,8 +101,7 @@ As tagging for our supported cloud service providers is typically set up using k
 
 _Note: Filtering for Mongodb will only work to filter existing cached data in the collection. Providing these parameters for the initial request to the CSP’s will not return filtered data._
 
-_Filtering is not yet supported on the client._
--->
+_Filtering is only supported via the API and is not yet supported on the client._
 
 ### Caching Configurations
 
