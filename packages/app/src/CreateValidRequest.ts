@@ -21,7 +21,7 @@ import {
 export interface EstimationRequest {
   startDate: Date
   endDate: Date
-  region?: string
+  region?: string // Deprecated param (used only for the unsupported Higher Accuracy Approach)
   ignoreCache: boolean
   groupBy?: string
   limit?: number
