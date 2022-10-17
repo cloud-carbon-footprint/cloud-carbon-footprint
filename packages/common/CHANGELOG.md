@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/common
 
+## 1.8.0
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- a6423a68: Correctly calculate period end date when the local timezone switched into or out of DST during the period
+
 ## 1.7.0
 
 ### Minor Changes

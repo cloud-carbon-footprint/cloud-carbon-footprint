@@ -1,5 +1,19 @@
 # @cloud-carbon-footprint/client
 
+## 3.3.0
+
+### Minor Changes
+
+- a6423a68: Set default value 'day' for GROUP_BY config parameter
+- e9e57da7: Introduces new cache management logic for performance and scalability of larger data, including option for MongoDB NoSQL database as a cache
+
+### Patch Changes
+
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/common@1.8.0
+
 ## 3.2.0
 
 ### Minor Changes

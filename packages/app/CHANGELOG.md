@@ -1,5 +1,30 @@
 # @cloud-carbon-footprint/app
 
+## 1.0.0
+
+### Major Changes
+
+- e9e57da7: Introduces new cache management logic for performance and scalability of larger data, including option for MongoDB NoSQL database as a cache
+
+### Minor Changes
+
+- a6423a68: Aggregate footprint estimates for AWS resources by tags.
+
+### Patch Changes
+
+- a6423a68: updates ts-node dependency
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+- Updated dependencies [a6423a68]
+  - @cloud-carbon-footprint/aws@0.14.0
+  - @cloud-carbon-footprint/azure@0.12.0
+  - @cloud-carbon-footprint/common@1.8.0
+  - @cloud-carbon-footprint/gcp@0.11.0
+  - @cloud-carbon-footprint/on-premise@0.1.1
+
 ## 0.7.0
 
 ### Minor Changes
