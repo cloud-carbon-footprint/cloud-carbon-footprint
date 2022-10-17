@@ -20,10 +20,12 @@ interface AppProps {
   config?: ClientConfig
 }
 export function App({ config = loadConfig() }: AppProps): ReactElement {
+  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
   const onApiError = useCallback(
     (e: AxiosError) => {
       console.error(e)
+      setErrorMessage(e.message)
       navigate('/error', { state: formatAxiosError(e) })
     },
     [navigate],
@@ -72,7 +74,10 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
               <RecommendationsPage config={config} onApiError={onApiError} />
             }
           />
-          <Route path="/error" element={<ErrorPage />} />
+          <Route
+            path="/error"
+            element={<ErrorPage errorMessage={errorMessage} />}
+          />
         </Routes>
       </Container>
     </>
