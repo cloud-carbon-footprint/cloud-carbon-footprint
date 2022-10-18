@@ -6,27 +6,27 @@ slug: /aws
 
 Your AWS account needs to be configured to generate Cost and Usage reports and save those reports in S3, and the application needs to authenticate with AWS and run queries on that data using Amazon Athena.
 
-1. Ensure your aws account has the correct permissions
+1.  Ensure your aws account has the correct permissions
 
     - You will need an [IAM](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) user that can create access-keys and modify your billing settings.
     - You can use the CloudFormation template file [ccf-app.yaml](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/cloudformation/ccf-app.yaml) to automate the creation of a role that allows the Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena. Note: the section that asks you to specify the "AssumeRolePolicyDocument" is where you define the user or role that will have permissions to assume the "ccf-app" role.
     - This role name will be used for the value in the environment variable: `AWS_TARGET_ACCOUNT_ROLE_NAME`
 
-2. Enable the Cost and Usage Billing AWS feature.
+2.  Enable the Cost and Usage Billing AWS feature.
 
     - This feature needs to be enabled so your account can start generating cost and usage reports. To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab. Make sure to select “Amazon Athena” for report data integration. Reference Cost and Usage Reports documentation [here.](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html)
 
-3. Setup Athena DB to save the Cost and Usage Reports.
+3.  Setup Athena DB to save the Cost and Usage Reports.
 
     - In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them. This is a standard AWS integration, outlined [here.](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html) There is a lot of helpful detail in the guides that goes beyond the specific needs for our app, but once you are able to successfully query the Cost and Usage Reports from Athena, you should be set up sufficiently.
 
-4. Configure aws credentials locally, using awscli.
+4.  Configure aws credentials locally, using awscli.
 
     - After [installing awscli](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint#optional-prerequisites), run `aws configure` and provide your access key and secret access key. Also make sure you select the same region as the one you created your cost and usage reports in.
 
     - We optionally support alternative methods of authenticating with AWS, which you can read about [here.](https://www.cloudcarbonfootprint.org/docs/aws#options-for-aws-authentication)
 
-5. Configure environmental variables for the api and client.
+5.  Configure environmental variables for the api and client.
 
     - After configuring your credentials, we need to set a number of environmental variables in the app, so it can authenticate with AWS. We use .env files to manage this. Reference [packages/api/.env.template](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template) for a template .env file. Rename this file as .env, optionally remove the comments and then set the environment variables for the “Billing Data” approach. If you are only using one of these cloud providers, you can remove the environment variables associated with the other cloud provider in your `packages/api/.env` file.
 
@@ -34,7 +34,7 @@ Your AWS account needs to be configured to generate Cost and Usage reports and s
 
     - By default, the client uses AWS, GCP and Azure. If you are only using one of these cloud providers, please update the appConfig object in the [client Config file](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/client/src/Config.ts) to only include your provider in the CURRENT_PROVIDERS array.
 
-6. Finally, after performing a `yarn install`, start up the application
+6.  Finally, after performing a `yarn install`, start up the application
 
         yarn start
 
@@ -56,6 +56,12 @@ The steps to resolve are:
 2. Add the type to the respective list in the `CostAndUsageTypes.ts` file
 3. Delete `estimates.cache.json` file and restart the application server
 4. Submit an issue or pull request with the update
+
+### Including Tags with Estimations
+
+We currently support tagging for AWS estimations, where each estimation result contains any tags associated with the usage details queried from AWS. These tags can be used to filter estimates via API parameters using the [MongoDB cache mode](https://www.cloudcarbonfootprint.org/docs/data-persistence-and-caching#filtering-estimates) (the parameters will only filter estimates that are already gathered and cached).
+
+_Note_: The AWS Cost and Usage Reporting (CUR) translates tags' names to names that are valid Athena column names. On top of this, it also adds a prefix to distinguish between user-created tags and AWS-internal tags. This isn't documented anywhere, but the behaviour appears to be that a tag such as 'SourceRepository' will be 'user:SourceRepository' in CUR, and 'resource_tags_user_source_repository' in Athena (AWS-internal tags will be prefixed with 'aws:' instead of 'user:' in CUR).
 
 ### Options for AWS Authentication
 
