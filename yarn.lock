@@ -2139,7 +2139,7 @@ __metadata:
     "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
     "@types/prompts": ^2.0.12
-    "@types/ramda": ^0.27.40
+    "@types/ramda": ^0.28.17
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
@@ -2194,7 +2194,7 @@ __metadata:
     "@types/jest": ^27.4.0
     "@types/mockdate": ^3.0.0
     "@types/node": ^17.0.8
-    "@types/ramda": ^0.27.40
+    "@types/ramda": ^0.28.17
     "@types/react": ^17.0.38
     "@types/react-dates": ^21.8.2
     "@types/react-dom": ^17.0.11
@@ -2270,7 +2270,7 @@ __metadata:
     "@types/jest": ^27.4.0
     "@types/jest-when": ^3.5.0
     "@types/node": ^17.0.8
-    "@types/ramda": ^0.27.40
+    "@types/ramda": ^0.28.17
     "@types/source-map-support": ^0.5.3
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
@@ -5809,12 +5809,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ramda@npm:^0.27.40":
-  version: 0.27.66
-  resolution: "@types/ramda@npm:0.27.66"
+"@types/ramda@npm:^0.28.17":
+  version: 0.28.17
+  resolution: "@types/ramda@npm:0.28.17"
   dependencies:
     ts-toolbelt: ^6.15.1
-  checksum: eea577e4a0934849b4103c1452a7c8ddbc9bbf0e2aafb908467212654555145f846a16fe737563b582e8fb5bd6698481ebec1237537e5e662587c47f626e4c92
+  checksum: 02e07ed5af536e5fc2d1fc3b81bebfd43d8b4caee84a579e9b866bb7883c26a6e33d920f4909e4fc6770d2cafe04e87abcca8ddbf991551d6278ffd19376a810
   languageName: node
   linkType: hard
 
