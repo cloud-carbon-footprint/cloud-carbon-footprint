@@ -42,7 +42,7 @@ function ValuePropCard({ title, description, icon, iconAlt }) {
   return (
     <Card className={styles.valuePropCard}>
       <CardContent>
-        <div>
+        <div className={styles.cardContent}>
           <div className={styles.valuePropCardHeaderContainer}>
             <div className={styles.valuePropCardIconContainer}>
               <img src={icon} alt={iconAlt} />
