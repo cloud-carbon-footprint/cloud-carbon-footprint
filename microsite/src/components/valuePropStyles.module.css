@@ -1,3 +1,8 @@
+.cardContent {
+  display: flex;
+  flex-direction: column;
+}
+
 .valuePropCardsContainer {
   display: flex;
 }
@@ -31,6 +36,7 @@
   align-items: flex-start;
   height: 5rem;
   margin-top: 1rem;
+  flex: 0;
 }
 
 .valuePropCardIconContainer {
@@ -46,6 +52,10 @@
   font-size: 16pt;
   line-height: 1.4;
   font-weight: 400;
+}
+
+.valuePropCardDescriptionContainer {
+  flex: 1;
 }
 
 @media screen and (max-width: 1280px) and (min-width: 900px) {
