@@ -43,6 +43,7 @@ const useRemoteForecastService = (
         setError(e)
       }
     }
+
     fetchOptimalDataPoints()
     return () => {
       setLoading(false)
