@@ -101,7 +101,7 @@
       "mtPerKwHour": 0.000074
     },
     {
-      "region": "us-east2",
+      "region": "us-east4",
       "mtPerKwHour": 0.000475105
     },
     {
@@ -464,7 +464,7 @@
           "kilowattHours": 50.642678514609926,
           "co2e": 4,
           "cost": 2.112304415112801,
-          "region": "us-east2",
+          "region": "us-east4",
           "usesAverageCPUConstant": false
         },
         {
@@ -1489,7 +1489,7 @@
       "cloudProvider": "GCP",
       "accountId": "gcp account 3",
       "accountName": "gcp account 3",
-      "region": "us-east2",
+      "region": "us-east4",
       "recommendationType": "DELETE_ADDRESS",
       "instanceName": "test-instance-8",
       "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-8.",

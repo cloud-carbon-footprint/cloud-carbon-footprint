@@ -12,6 +12,5 @@ export interface BestLocationData {
 
 export const useEmissionsData = (params: EmissionData): BestLocationData[] => {
   const data: BestLocationData[] = useRemoteEmissionService(params)
-
   return data
 }
