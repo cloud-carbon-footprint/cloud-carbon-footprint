@@ -16,7 +16,7 @@ import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { useFootprintData } from '../../utils/hooks'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
-import EmissionCard from '../EmissionCard/EmissionCard'
+import ForecastCard from '../CarbonHackCards/ForecastCard'
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
   onApiError?: (e: Error) => void
@@ -80,8 +80,7 @@ export default function EmissionsMetricsPage({
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />
-              {/* <EmissionCard data={footprint} filter={filterBarProps}></> */}
-              <EmissionCard data={footprint}></EmissionCard>
+              <ForecastCard data={footprint.filteredData}></ForecastCard>
             </Grid>
           </Grid>
           <CarbonIntensityMap />
