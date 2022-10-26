@@ -17,5 +17,8 @@ case ${1} in
     in_cyan "building api\n"
     ccf build api
   ;;
+  (*)
+    ccf refresh app
+  ;;
 esac
 
