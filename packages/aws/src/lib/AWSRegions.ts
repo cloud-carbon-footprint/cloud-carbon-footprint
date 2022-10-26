@@ -46,7 +46,7 @@ export const AWS_MAPPED_REGION_NAMES_TO_CODES: { [key: string]: string } = {
   'Asia Pacific (Singapore)': AWS_REGIONS.AP_SOUTHEAST_1,
   'Asia Pacific (Sydney)': AWS_REGIONS.AP_SOUTHEAST_2,
   'Asia Pacific (Tokyo)': AWS_REGIONS.AP_NORTHEAST_1,
-  'Asia Pacific (Jakarta)' : AWS_REGIONS.AP_SOUTHEAST_3,
+  'Asia Pacific (Jakarta)': AWS_REGIONS.AP_SOUTHEAST_3,
   'Canada (Central)': AWS_REGIONS.CA_CENTRAL_1,
   'EU (Frankfurt)': AWS_REGIONS.EU_CENTRAL_1,
   'EU (Ireland)': AWS_REGIONS.EU_WEST_1,
