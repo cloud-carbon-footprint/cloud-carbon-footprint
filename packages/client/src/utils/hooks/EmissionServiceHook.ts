@@ -3,42 +3,22 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { BestLocationData } from './EmissionDataHook'
-import { EmissionData } from './EmissionDataHook'
+import { useEffect } from 'react'
 import React from 'react'
 
-const useRemoteEmissionService = (params: EmissionData): BestLocationData[] => {
-  const [data, setData] = useState(params ?? {})
-  const [result, setResult] = React.useState<BestLocationData[]>([])
+const useRemoteEmissionService = (params: any): any => {
+  const [result, setResult] = React.useState<any>()
   useEffect(() => {
-    const fetchBestLocationRating = async () => {
-      let locationQueryParams = ''
-      params.location.map((location, index) => {
-        if (index == params.location.length - 1) {
-          locationQueryParams += `location=${location}`
-        } else {
-          locationQueryParams += `location=${location}&`
-        }
-      })
-
-      const res = await axios.get(
-        `http://localhost:5073/emissions/bylocations/best?${locationQueryParams}&time=${params.time}&toTime=${params.toTime}`,
+    const fetchBestLocation = async () => {
+      const response = await Promise.all(params)
+      setResult(
+        response.map((res) => {
+          return res.data
+        }),
       )
-      if (res.status === 200) {
-        setResult(
-          res.data.map((each) => {
-            return {
-              location: each.location,
-              rating: each.rating,
-            }
-          }),
-        )
-      }
     }
-    fetchBestLocationRating()
-  }, [data])
+    fetchBestLocation()
+  }, [])
 
   return result
 }
