@@ -12,6 +12,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { Typography, Box, CardContent } from '@material-ui/core'
+import InfoIcon from '@material-ui/icons/Info'
 import moment from 'moment'
 const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const convertUTCtoLocalTime = (utcTime) => {
@@ -24,19 +25,12 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const accountRegionMap = new Map()
 
   const classes = useStyles()
-  console.log(data, 'data in ln number 8 ')
   const footPrintData = data !== undefined ? data : []
-  console.log('Footprint: ', footPrintData)
   footPrintData.map((month) => {
-    console.log('Month: ', month)
     month.serviceEstimates.map((account) => {
-      console.log('Account: ', account)
       accountRegionMap.set(account.accountName, [account.region, 60])
-      console.log(accountRegionMap.get(account.accountName))
     })
   })
-
-  console.log('Account map: ', accountRegionMap)
 
   const optimalRegionTimeMap = (result) => {
     // eslint-disable-next-line prefer-const
@@ -58,6 +52,9 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
                 <TableCell>{date}</TableCell>
                 <TableCell>{time}</TableCell>
                 <TableCell>{eachOptimalTime.value}</TableCell>
+                <TableCell>
+                  <InfoIcon></InfoIcon>
+                </TableCell>
               </TableRow>
             </>,
           )
@@ -98,6 +95,7 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
                 <TableCell>Date</TableCell>
                 <TableCell>Time</TableCell>
                 <TableCell>Rating</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{optimalRegionTimeMap(result)}</TableBody>
