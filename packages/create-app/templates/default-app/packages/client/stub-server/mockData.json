@@ -1332,7 +1332,7 @@
           "accountName": "aws account 1",
           "serviceName": "ec2",
           "kilowattHours": 50.933103987612505,
-          "co2e": 3,
+          "co2e": 0.020084,
           "cost": 2.014818576889102,
           "region": "us-west-1",
           "usesAverageCPUConstant": false
@@ -1372,7 +1372,7 @@
           "accountName": "azure account 2",
           "serviceName": "virtualMachines",
           "kilowattHours": 50.773157853289746,
-          "co2e": 5,
+          "co2e": 0.020011,
           "cost": 2.2728625664822433,
           "region": "UK South",
           "usesAverageCPUConstant": false
