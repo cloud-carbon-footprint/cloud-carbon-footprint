@@ -17,6 +17,7 @@ import { useFootprintData } from '../../utils/hooks'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 import ForecastCard from '../CarbonHackCards/ForecastCard'
+import EmissionCard from '../CarbonHackCards/EmissionCard'
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
   onApiError?: (e: Error) => void
@@ -80,6 +81,7 @@ export default function EmissionsMetricsPage({
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />
+              <EmissionCard data={footprint.filteredData}></EmissionCard>
               <ForecastCard data={footprint.filteredData}></ForecastCard>
             </Grid>
           </Grid>
