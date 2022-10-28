@@ -1,4 +1,4 @@
-# @cloud-carbon-footprint/core
+# @cloud-carbon-footprint/common
 
 This package provides the common functionality to be shared among other cloud carbon footprint packages.
 
