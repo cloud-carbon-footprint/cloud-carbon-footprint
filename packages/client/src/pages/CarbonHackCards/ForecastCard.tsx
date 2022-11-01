@@ -12,8 +12,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { Typography, Box, CardContent } from '@material-ui/core'
-import InfoIcon from '@material-ui/icons/Info'
 import moment from 'moment'
+import LineChartDialog from './LineChartDialog'
 const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const convertUTCtoLocalTime = (utcTime) => {
     const stillUtc = moment.utc(utcTime).toDate()
@@ -37,7 +37,7 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
     let array = []
     for (const [key, value] of result) {
       if (value != undefined) {
-        value.map((eachOptimalTime, index) => {
+        value.optimalDataPoints.map((eachOptimalTime, index) => {
           const [date, time] = convertUTCtoLocalTime(eachOptimalTime.timestamp)
           array.push(
             <>
@@ -53,7 +53,10 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
                 <TableCell>{time}</TableCell>
                 <TableCell>{eachOptimalTime.value}</TableCell>
                 <TableCell>
-                  <InfoIcon></InfoIcon>
+                  <LineChartDialog
+                    forecastData={value.forecastData}
+                    region={accountRegionMap.get(key)[0]}
+                  ></LineChartDialog>
                 </TableCell>
               </TableRow>
             </>,
@@ -67,7 +70,6 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const dataToSend = accountRegionMap
 
   const result = useForecastData(dataToSend)
-  // based on the result you create the html code here for the card
 
   return (
     <DashboardCard>
