@@ -16,7 +16,7 @@ const useRemoteForecastService = (
     const fetchOptimalDataPoints = async () => {
       const response = await Promise.all(promiseList)
       const optimalDataPointsArray = response.map((value) => {
-        return value.data[0].optimalDataPoints
+        return value.data[0]
       })
       setResult(optimalDataPointsArray)
     }
