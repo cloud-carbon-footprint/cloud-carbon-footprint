@@ -12,19 +12,13 @@ const useRemoteForecastService = (params: RegionData): OptimalTime[] => {
   const [result, setResult] = React.useState<OptimalTime[]>([])
   useEffect(() => {
     const fetchOptimalDataPoints = async () => {
-      const res = await axios.get(
-        `http://localhost:5073/emissions/forecasts/current?location=${params.location}&windowSize=${params.workLoadExecutionTime}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        },
-      )
-      if (res.status === 200) {
-        setResult(res.data[0].optimalDataPoints)
-      }
+      const response = await Promise.all(promiseList)
+      const optimalDataPointsArray = response.map((value) => {
+        return value.data[0]
+      })
+      setResult(optimalDataPointsArray)
     }
+
     fetchOptimalDataPoints()
   }, [data])
 
