@@ -52,11 +52,7 @@ describe('Helpers', () => {
   })
 
   it('converts days in a month to hours in a month', () => {
-    // Mock date for fixed test case
-    Date.now = jest.fn(() =>
-      new Date('2020-05-13T12:33:37.000Z').getMilliseconds(),
-    )
-    const expected = 744
+    const expected = 720
 
     expect(getHoursInMonth()).toEqual(expected)
     jest.clearAllMocks()
