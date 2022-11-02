@@ -1,17 +1,4 @@
-#!/bin/sh
-# . "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-branch="$(git rev-parse --abbrev-ref HEAD)"
-root=$( git diff --pretty="" --name-only --staged -- packages/ | wc -l )
-
-if [[ "$branch" != "changeset-release/trunk" ]]; then
-    if [ ! -t 1 ]; then
-        export TALISMAN_INTERACTIVE="false"
-    fi
-
-    ./scripts/copyright_check.sh && ./scripts/branch_warning.sh && $TALISMAN_HOME/talisman_hook_script pre-commit || exit 1
-    if [[ "$root" -gt "0" ]]; then
-        echo 'Detecting modified files in packages directory...'
-        yarn lerna run precommit --stream
-    fi
-fi
+npm test
