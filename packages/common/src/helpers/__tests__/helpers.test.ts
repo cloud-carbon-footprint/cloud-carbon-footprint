@@ -48,12 +48,18 @@ describe('Helpers', () => {
 
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), waitTime)
+    jest.clearAllTimers()
   })
 
   it('converts days in a month to hours in a month', () => {
+    // Mock date for fixed test case
+    Date.now = jest.fn(() =>
+      new Date('2020-05-13T12:33:37.000Z').getMilliseconds(),
+    )
     const expected = 744
 
     expect(getHoursInMonth()).toEqual(expected)
+    jest.clearAllMocks()
   })
 
   describe('gets period end date for various grouping options', () => {
