@@ -51,7 +51,7 @@ describe('Helpers', () => {
   })
 
   it('converts days in a month to hours in a month', () => {
-    const expected = 744
+    const expected = 720
 
     expect(getHoursInMonth()).toEqual(expected)
   })
