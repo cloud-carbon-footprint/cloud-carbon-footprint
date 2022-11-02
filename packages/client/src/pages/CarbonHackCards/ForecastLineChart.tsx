@@ -67,7 +67,7 @@ export class ForecastLineChart extends React.Component<
         },
         yaxis: {
           title: {
-            text: 'Emission rating',
+            text: 'Emission rating (g/kWh)',
           },
         },
         markers: {
