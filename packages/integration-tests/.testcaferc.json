@@ -5,6 +5,8 @@
   "src": "tests/*test.js",
   "browsers": ["chrome:headless"],
   "concurrency": 3,
+  "selectorTimeout": 5000,
+  "assertionTimeout": 5000,
   "appCommand": "yarn start",
   "screenshots": {
     "takeOnFails": true
