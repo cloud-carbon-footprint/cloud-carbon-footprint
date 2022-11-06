@@ -27,7 +27,7 @@ import {
   mockEmissionsAndRecommendations,
   mockEmissionsAndRecommendationsWithUnknowns,
 } from '../data/mockData'
-import { UnknownTypes } from '../../Types'
+import { Co2eUnit, UnknownTypes } from '../../Types'
 import each from 'jest-each'
 
 const testAccountA = 'test-a'
@@ -411,21 +411,19 @@ describe('tableFormatNearZero', () => {
 
 describe('tableFormatRawCo2e', () => {
   const a = [
-    [0, false, '0'],
-    [0, true, '0'],
-    [0.0001, false, '< 0.001'],
-    [0.0001, true, '0.1'],
-    [0.00099, false, '0.001'],
-    [0.00099, true, '0.99'],
-    [1, false, '1'],
-    [1, true, '1000'],
+    [0, Co2eUnit.MetricTonnes, '0'],
+    [0, Co2eUnit.Kilograms, '0'],
+    [0.0001, Co2eUnit.MetricTonnes, '< 0.001'],
+    [0.0001, Co2eUnit.Kilograms, '0.1'],
+    [0.00099, Co2eUnit.MetricTonnes, '0.001'],
+    [0.00099, Co2eUnit.Kilograms, '0.99'],
+    [1, Co2eUnit.MetricTonnes, '1'],
+    [1, Co2eUnit.Kilograms, '1000'],
   ]
   each(a).it(
     ' formats Co2e properly',
-    (numericInput: number, useKilograms: boolean, expectedOutput: string) => {
-      expect(tableFormatRawCo2e(useKilograms, numericInput)).toEqual(
-        expectedOutput,
-      )
+    (numericInput: number, co2eUnit: Co2eUnit, expectedOutput: string) => {
+      expect(tableFormatRawCo2e(co2eUnit, numericInput)).toEqual(expectedOutput)
     },
   )
 })

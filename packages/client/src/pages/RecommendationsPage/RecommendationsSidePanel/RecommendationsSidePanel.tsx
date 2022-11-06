@@ -12,6 +12,7 @@ import {
   tableFormatNearZero,
   tableFormatRawCo2e,
 } from '../../../utils/helpers/transformData'
+import { co2eUnitLabel } from '../../../utils/helpers'
 
 export type RecommendationsSidePanelProps = {
   recommendation: RecommendationRow
@@ -80,11 +81,9 @@ const RecommendationsSidePanel: FunctionComponent<
         />
         <RecommendationsPanelColumn
           label="CO2e Savings"
-          subLabel={
-            recommendation.useKilograms ? '(kilograms)' : '(metric tons)'
-          }
+          subLabel={`(${co2eUnitLabel[recommendation.co2eUnit]})`}
           content={tableFormatRawCo2e(
-            recommendation.useKilograms,
+            recommendation.co2eUnit,
             recommendation.co2eSavings,
           )}
         />

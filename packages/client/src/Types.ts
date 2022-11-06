@@ -56,7 +56,7 @@ export type FilterBarProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
   filterOptions: FilterOptions
-  setUseKilograms?: (boolean) => void
+  setCo2eUnit?: Dispatch<SetStateAction<Co2eUnit>>
 }
 
 export interface Page<T> {
@@ -122,7 +122,7 @@ export type ComparisonItem = {
 
 export type RecommendationRow = RecommendationResult & {
   id: number
-  useKilograms: boolean
+  co2eUnit: Co2eUnit
 }
 
 export type EmissionsAndRecommendationResults = {
@@ -171,4 +171,9 @@ export const unknownOptionTypes: UnknownTypesMapping = {
   [DropdownFilterOptions.ACCOUNTS]: UnknownTypes.UNKNOWN_ACCOUNT,
   [DropdownFilterOptions.SERVICES]: UnknownTypes.UNKNOWN_SERVICE,
   [DropdownFilterOptions.REGIONS]: UnknownTypes.UNKNOWN_REGION,
+}
+
+export enum Co2eUnit {
+  Kilograms = 'Kilograms',
+  MetricTonnes = 'MetricTonnes',
 }
