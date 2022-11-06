@@ -5,6 +5,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import ForecastCard from './ForecastCard'
 import each from 'jest-each'
+import { Co2eUnit } from '../../../../Types'
 
 describe('Forecast Card', () => {
   it('should render the card', () => {
@@ -51,7 +52,7 @@ describe('Forecast Card', () => {
         title="Title"
         co2eSavings="1"
         costSavings="1"
-        useKilograms={true}
+        co2eUnit={Co2eUnit.Kilograms}
         id="test"
       />,
     )
@@ -65,7 +66,7 @@ describe('Forecast Card', () => {
         title="Title"
         co2eSavings="9"
         costSavings="1"
-        useKilograms={false}
+        co2eUnit={Co2eUnit.MetricTonnes}
         id="test"
       />,
     )
@@ -83,7 +84,6 @@ describe('Forecast Card', () => {
           costSavings="1"
           co2ePercentChange={25}
           costPercentChange={null}
-          useKilograms={false}
         />,
       )
 
@@ -112,7 +112,7 @@ describe('Forecast Card', () => {
             title="Title"
             co2eSavings="9"
             costSavings="1"
-            useKilograms={false}
+            co2eUnit={Co2eUnit.MetricTonnes}
             {...percentageProps}
           />,
         )

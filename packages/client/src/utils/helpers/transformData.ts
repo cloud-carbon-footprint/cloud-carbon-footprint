@@ -10,13 +10,15 @@ import {
   ServiceData,
 } from '@cloud-carbon-footprint/common'
 import {
-  cloudEstPerDay,
   ChartDataTypes,
-  FilterResultResponse,
+  cloudEstPerDay,
+  Co2eUnit,
   DropdownOption,
-  UnknownTypes,
   EmissionsAndRecommendationResults,
+  FilterResultResponse,
+  UnknownTypes,
 } from '../../Types'
+import { co2eUnitMultiplier } from './units'
 
 const sumServiceTotals = (
   data: EstimationResult[],
@@ -282,17 +284,14 @@ function tableFormatNearZero(rawValue: number): string {
 }
 
 /**
- * Formats the raw co2e value, optionally multiplying by 1000 if useKilograms
- * is true.
+ * Formats the raw co2e value, converting to the specified unit as required
  *
- * @param useKilograms If true, multiplies the value by 1000
- * @param rawValue     Raw numeric co2e value
+ * @param unit The target unit
+ * @param rawValue Raw numeric co2e value in metric tonnes
  */
-function tableFormatRawCo2e(useKilograms: boolean, rawValue: number): string {
-  if (useKilograms) {
-    rawValue *= 1000
-  }
-  return tableFormatNearZero(rawValue)
+function tableFormatRawCo2e(unit: Co2eUnit, rawValue: number): string {
+  const multiplier = co2eUnitMultiplier[unit]
+  return tableFormatNearZero(rawValue * multiplier)
 }
 
 export {

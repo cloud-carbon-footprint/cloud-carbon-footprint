@@ -3,6 +3,7 @@
  */
 
 import { render } from '@testing-library/react'
+import { Co2eUnit } from 'src/Types'
 import { mockRecommendationData } from '../../../utils/data'
 import RecommendationsSidePanel from './RecommendationsSidePanel'
 
@@ -11,7 +12,7 @@ describe('Recommendations Side Panel', () => {
     ...mockRecommendationData[0],
     id: 0,
     accountId: 'test-account-1-id',
-    useKilograms: false,
+    co2eUnit: Co2eUnit.MetricTonnes,
   }
   it('Renders a side panel titled "Recommendation Details"', () => {
     const { getByTestId } = render(

@@ -6,11 +6,12 @@ import React from 'react'
 import { render, within } from '@testing-library/react'
 import { ServiceData } from '@cloud-carbon-footprint/common'
 import {
-  mockRecommendationData,
   mockDataWithLargeNumbers,
   mockDataWithSmallNumbers,
+  mockRecommendationData,
 } from '../../../../utils/data'
 import Forecast, { ForecastProps } from './Forecast'
+import { Co2eUnit } from '../../../../Types'
 
 describe('Forecast', () => {
   const emissionsData: ServiceData[] =
@@ -18,7 +19,7 @@ describe('Forecast', () => {
   const testProps: ForecastProps = {
     emissionsData,
     recommendations: mockRecommendationData,
-    useKilograms: false,
+    co2eUnit: Co2eUnit.MetricTonnes,
   }
 
   it('should render the title', () => {

@@ -2,8 +2,13 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import React, { FunctionComponent, ReactElement } from 'react'
-import { DropdownOption, FilterBarProps, FilterOptions } from '../../../Types'
+import React, { FunctionComponent, ReactElement, useCallback } from 'react'
+import {
+  Co2eUnit,
+  DropdownOption,
+  FilterBarProps,
+  FilterOptions,
+} from '../../../Types'
 import {
   ALL_ACCOUNTS_DROPDOWN_OPTION,
   ALL_RECOMMENDATION_TYPES_DROPDOWN_OPTION,
@@ -22,7 +27,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   filters,
   setFilters,
   filterOptions,
-  setUseKilograms,
+  setCo2eUnit,
 }): ReactElement => {
   const getFilterOptions = (): FilterOptions => {
     const allAccountDropdownOptions = buildAndOrderDropdownOptions(
@@ -63,6 +68,13 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
     }
   }
 
+  const toggleUnit = useCallback(
+    (useKilograms: boolean) => {
+      setCo2eUnit(useKilograms ? Co2eUnit.Kilograms : Co2eUnit.MetricTonnes)
+    },
+    [setCo2eUnit],
+  )
+
   const filterComponents = [
     CloudProviderFilter,
     AccountFilter,
@@ -77,7 +89,7 @@ const RecommendationsFilterBar: FunctionComponent<FilterBarProps> = ({
   }
 
   const suffixComponents = (
-    <Toggle label="CO2e Units" handleToggle={setUseKilograms} />
+    <Toggle label="CO2e Units" handleToggle={toggleUnit} />
   )
 
   return (

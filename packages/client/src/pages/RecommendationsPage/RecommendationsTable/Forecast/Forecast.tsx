@@ -19,21 +19,23 @@ import {
 } from '../../../../utils/helpers'
 import ForecastCard from '../ForecastCard'
 import ForecastEquivalencyCard from '../ForecastEquivalencyCard'
+import { Co2eUnit } from '../../../../Types'
+import { co2eUnitMultiplier } from '../../../../utils/helpers/units'
 
 export type ForecastProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
-  useKilograms: boolean
+  co2eUnit: Co2eUnit
 }
 
 const Forecast: FunctionComponent<ForecastProps> = ({
   emissionsData,
   recommendations,
-  useKilograms,
+  co2eUnit,
 }): ReactElement => {
   const classes = useStyles()
 
-  const forecastMultiplier = useKilograms ? 1000 : 1
+  const forecastMultiplier = co2eUnitMultiplier[co2eUnit]
 
   const sumCurrentCo2e = sumEstimates(emissionsData, 'co2e')
   const sumCurrentCost = sumEstimates(emissionsData, 'cost')
@@ -86,7 +88,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           title="Last 30 Day Total"
           co2eSavings={currentCo2eFormatted}
           costSavings={currentCostFormatted}
-          useKilograms={useKilograms}
+          co2eUnit={co2eUnit}
           id="last-thirty-day-total"
         />
         <ForwardIcon className={classes.icon} />
@@ -96,7 +98,7 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           costSavings={projectedCostFormatted}
           co2ePercentChange={co2ePercentChange}
           costPercentChange={costPercentChange}
-          useKilograms={useKilograms}
+          co2eUnit={co2eUnit}
           id="projected-thirty-day-total"
         />
         <div className={clsx(classes.icon, classes.equalSign)}>=</div>

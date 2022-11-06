@@ -12,6 +12,7 @@ import { ErrorState } from '../../layout/ErrorPage/ErrorPage'
 import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
+import { Co2eUnit } from '../../Types'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
@@ -24,7 +25,7 @@ const RecommendationsPage = ({
 }): ReactElement<RecommendationsPageProps> => {
   const classes = useStyles()
 
-  const [useKilograms, setUseKilograms] = useState(false)
+  const [co2eUnit, setCo2eUnit] = useState(Co2eUnit.MetricTonnes)
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,
@@ -41,14 +42,14 @@ const RecommendationsPage = ({
     <div className={classes.pageContainer}>
       <RecommendationsFilterBar
         {...recommendations.filterBarProps}
-        setUseKilograms={setUseKilograms}
+        setCo2eUnit={setCo2eUnit}
       />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
           <RecommendationsTable
             emissionsData={recommendations.filteredEmissionsData}
             recommendations={recommendations.filteredRecommendationData}
-            useKilograms={useKilograms}
+            co2eUnit={co2eUnit}
           />
         </Grid>
       </div>

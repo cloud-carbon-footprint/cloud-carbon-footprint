@@ -8,6 +8,8 @@ import { Card, Divider, Typography } from '@material-ui/core'
 import Tooltip from '../../../../common/Tooltip'
 import useStyles from './forecastCardStyles'
 import PercentBadge from '../PercentBadge'
+import { Co2eUnit } from '../../../../Types'
+import { co2eUnitLabel } from '../../../../utils/helpers'
 
 export type ForecastCardProps = {
   title: string
@@ -15,7 +17,7 @@ export type ForecastCardProps = {
   costSavings: string
   co2ePercentChange?: number
   costPercentChange?: number
-  useKilograms?: boolean
+  co2eUnit?: Co2eUnit
   id: string
 }
 
@@ -25,7 +27,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
   costSavings,
   co2ePercentChange,
   costPercentChange,
-  useKilograms,
+  co2eUnit = Co2eUnit.MetricTonnes,
   id,
 }) => {
   const classes = useStyles({ co2ePercentChange, costPercentChange })
@@ -64,7 +66,7 @@ const ForecastCard: FunctionComponent<ForecastCardProps> = ({
             className={classes.unitsText}
             data-testid={`unit-of-measure-${id}`}
           >
-            {useKilograms ? 'Kilograms CO2e' : 'Metric Tons CO2e'}
+            {co2eUnitLabel[co2eUnit]} CO2e
           </Typography>
           {hasCo2ePercentChange && <PercentBadge amount={co2ePercentChange} />}
         </div>
