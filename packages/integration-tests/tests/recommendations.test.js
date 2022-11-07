@@ -6,10 +6,10 @@ import waitOn from 'wait-on'
 import page from './page-model'
 const getLocation = ClientFunction(() => document.location.href)
 
-fixture`Cloud Carbon Footprint Recommendations`.page`http://localhost:3000/`
+fixture`Cloud Carbon Footprint Recommendations`.page`http://127.0.0.1:3000/`
   .before(async () => {
     await waitOn({
-      resources: ['http://localhost:3000/'],
+      resources: ['http://127.0.0.1:3000/'],
     })
   })
   .beforeEach(async (t) => {

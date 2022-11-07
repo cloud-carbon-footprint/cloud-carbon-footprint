@@ -5,12 +5,12 @@
 import waitOn from 'wait-on'
 import page from './page-model'
 
-fixture`Cloud Carbon Footprint`.page`http://localhost:3000/`
+fixture`Cloud Carbon Footprint`.page`http://127.0.0.1:3000/`
   .before(async () => {
     await waitOn({
       resources: [
-        'http://localhost:3000/',
-        'http://localhost:4000/api/healthz',
+        'http://127.0.0.1:3000/',
+        'http://127.0.0.1:4000/api/healthz',
       ],
     })
   })
