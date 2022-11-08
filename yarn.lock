@@ -27,19 +27,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-consumption@npm:^8.0.0":
-  version: 8.0.1
-  resolution: "@azure/arm-consumption@npm:8.0.1"
+"@azure/arm-consumption@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "@azure/arm-consumption@npm:9.1.0"
   dependencies:
-    "@azure/core-auth": ^1.1.4
-    "@azure/ms-rest-azure-js": ^2.1.0
-    "@azure/ms-rest-js": ^2.2.0
-    tslib: ^1.10.0
-  checksum: 353d651e31eac9ff302f16f5fd5a1eb807e9d0e8576636dfb5c2f75b908e986ca4cd10fbc36453aef079e59b7d0166654e25c7d25265c71737aee497d4a9bc20
+    "@azure/core-auth": ^1.3.0
+    "@azure/core-client": ^1.5.0
+    "@azure/core-paging": ^1.2.0
+    "@azure/core-rest-pipeline": ^1.8.0
+    tslib: ^2.2.0
+  checksum: 4e8f8f61433e3c031c1072a627375c8e5f183c78e0ad623e00f0f04013e5a535f5dcdc7c042212871032913053dbda572b7f8982c2940cbccba7ba49166d05c5
   languageName: node
   linkType: hard
 
-"@azure/arm-resources-subscriptions@npm:^2.0.0":
+"@azure/arm-resources-subscriptions@npm:^2.0.1":
   version: 2.0.1
   resolution: "@azure/arm-resources-subscriptions@npm:2.0.1"
   dependencies:
@@ -104,16 +105,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-tracing@npm:1.0.0-preview.13":
-  version: 1.0.0-preview.13
-  resolution: "@azure/core-tracing@npm:1.0.0-preview.13"
-  dependencies:
-    "@opentelemetry/api": ^1.0.1
-    tslib: ^2.2.0
-  checksum: bc3ea8dce1fc6bb6e4cb2e82ec0c361b3e6f6e18e162f352eb347e6991c6461ebc249f5d1b36402cc0d295e2a6bcbaa68014445d7f4293c0792a698c430f145e
-  languageName: node
-  linkType: hard
-
 "@azure/core-tracing@npm:^1.0.0, @azure/core-tracing@npm:^1.0.1":
   version: 1.0.1
   resolution: "@azure/core-tracing@npm:1.0.1"
@@ -123,7 +114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-util@npm:^1.0.0, @azure/core-util@npm:^1.0.0-beta.1":
+"@azure/core-util@npm:^1.0.0":
   version: 1.0.0
   resolution: "@azure/core-util@npm:1.0.0"
   dependencies:
@@ -132,27 +123,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/identity@npm:^2.0.1":
-  version: 2.0.5
-  resolution: "@azure/identity@npm:2.0.5"
+"@azure/identity@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@azure/identity@npm:3.0.0"
   dependencies:
     "@azure/abort-controller": ^1.0.0
     "@azure/core-auth": ^1.3.0
     "@azure/core-client": ^1.4.0
     "@azure/core-rest-pipeline": ^1.1.0
-    "@azure/core-tracing": 1.0.0-preview.13
-    "@azure/core-util": ^1.0.0-beta.1
+    "@azure/core-tracing": ^1.0.0
+    "@azure/core-util": ^1.0.0
     "@azure/logger": ^1.0.0
-    "@azure/msal-browser": ^2.16.0
-    "@azure/msal-common": ^4.5.1
-    "@azure/msal-node": ^1.3.0
+    "@azure/msal-browser": ^2.26.0
+    "@azure/msal-common": ^7.0.0
+    "@azure/msal-node": ^1.10.0
     events: ^3.0.0
     jws: ^4.0.0
     open: ^8.0.0
     stoppable: ^1.1.0
     tslib: ^2.2.0
     uuid: ^8.3.0
-  checksum: c637dcfdc616271cfd019e8606b6d98dbf44d404b8ca0e5c8a17331072568419f5ade2026f56c471eb7ea9941dc37c07104fb17760fff0cc917ff270e2d191c7
+  checksum: 1af675d6082d86d6325aa4db5e1e75aa730ec5f39e490e94236dc043908191bac9ccbaa0a7491a41678d07101082d0de0b7f415131d471ba47b1fef0b608fc1b
   languageName: node
   linkType: hard
 
@@ -172,18 +163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/ms-rest-azure-js@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@azure/ms-rest-azure-js@npm:2.1.0"
-  dependencies:
-    "@azure/core-auth": ^1.1.4
-    "@azure/ms-rest-js": ^2.2.0
-    tslib: ^1.10.0
-  checksum: 0e6d6700f4ee0ad14383642b02fe86b33f4034aaff38499374ed5be59154e869ee231790d20b7557622ebcdfa9eed45dc2559391a79dee51c849a8ced0c86fed
-  languageName: node
-  linkType: hard
-
-"@azure/ms-rest-js@npm:^2.0.4, @azure/ms-rest-js@npm:^2.2.0, @azure/ms-rest-js@npm:^2.2.3":
+"@azure/ms-rest-js@npm:^2.0.4":
   version: 2.6.1
   resolution: "@azure/ms-rest-js@npm:2.6.1"
   dependencies:
@@ -200,7 +180,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/ms-rest-nodeauth@npm:^3.0.7":
+"@azure/ms-rest-js@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "@azure/ms-rest-js@npm:2.6.2"
+  dependencies:
+    "@azure/core-auth": ^1.1.4
+    abort-controller: ^3.0.0
+    form-data: ^2.5.0
+    node-fetch: ^2.6.7
+    tough-cookie: ^3.0.1
+    tslib: ^1.10.0
+    tunnel: 0.0.6
+    uuid: ^8.3.2
+    xml2js: ^0.4.19
+  checksum: de650dfc3928a2036923fb3bf50e0324f9f36f5d320ca6d128005b1345ad80b39ab3410073ac35fb137dec4c7d799c602b1cafdf9573b3432b6b8eee8a1e39f8
+  languageName: node
+  linkType: hard
+
+"@azure/ms-rest-nodeauth@npm:^3.1.1":
   version: 3.1.1
   resolution: "@azure/ms-rest-nodeauth@npm:3.1.1"
   dependencies:
@@ -211,39 +208,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-browser@npm:^2.16.0":
-  version: 2.27.0
-  resolution: "@azure/msal-browser@npm:2.27.0"
+"@azure/msal-browser@npm:^2.26.0":
+  version: 2.30.0
+  resolution: "@azure/msal-browser@npm:2.30.0"
   dependencies:
-    "@azure/msal-common": ^7.1.0
-  checksum: 6cafb4d41a92f1bbb82e7128f64ccd6538ec116a2521f412108d94c4173601d31ea62febb7b22206dcae691e6a01cf7f9ce92793420599437b50a24c7e6ab851
+    "@azure/msal-common": ^7.6.0
+  checksum: 571722fb4a774a7f069459c1d3af8e886f7660fa384f46a8d2eaeda98fb8eab427907f159d62dc01f5128844484bfb4401a63a9c3f7634f59f3d4e3194cc80ac
   languageName: node
   linkType: hard
 
-"@azure/msal-common@npm:^4.5.1":
-  version: 4.5.1
-  resolution: "@azure/msal-common@npm:4.5.1"
-  dependencies:
-    debug: ^4.1.1
-  checksum: 9d335771ea65e08d7610253cce68ac29839c01985bc078e2c5bdd53e76f787b2aab6a4bcc0b548ffdc005490032836ab359d2c8e661f386c8c6c4995fc9cfdfa
+"@azure/msal-common@npm:^7.0.0, @azure/msal-common@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "@azure/msal-common@npm:7.6.0"
+  checksum: b2541603c87778daad4627ddd796577651ccae18c93d518f4c0e40e42475dab8781644903ad1c7f876277e0c436d47548c82d9034b458bca00c746fd465ae184
   languageName: node
   linkType: hard
 
-"@azure/msal-common@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "@azure/msal-common@npm:7.1.0"
-  checksum: 761a8b9363c7b620d831aba7d7e7a66e341685e306034b027b57dc31dae11abdf86c3187c08fc8008448c845ffdcbbc42c767c75355625cf87aba25ba7e2832e
-  languageName: node
-  linkType: hard
-
-"@azure/msal-node@npm:^1.3.0":
-  version: 1.11.0
-  resolution: "@azure/msal-node@npm:1.11.0"
+"@azure/msal-node@npm:^1.10.0":
+  version: 1.14.2
+  resolution: "@azure/msal-node@npm:1.14.2"
   dependencies:
-    "@azure/msal-common": ^7.1.0
+    "@azure/msal-common": ^7.6.0
     jsonwebtoken: ^8.5.1
     uuid: ^8.3.0
-  checksum: b7fff0e756e9f3ba351ddbfd097a7885bc14e735f80d504f2e309c251a333c6a2f8755b0d462e5aee386439530d659c2d0d71c1345b7d3f85e87cc5b4f21299e
+  checksum: 5becc4cce60957c619b1b709f89fae5d56586e13487979474c5e50554bfa56c58edae64d88ac6141b86ccd0ebb38d813323d62bacc0703c275a1b8e5ee62b128
   languageName: node
   linkType: hard
 
@@ -2093,11 +2081,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/azure@workspace:packages/azure"
   dependencies:
-    "@azure/arm-consumption": ^8.0.0
-    "@azure/arm-resources-subscriptions": ^2.0.0
-    "@azure/identity": ^2.0.1
-    "@azure/ms-rest-js": ^2.2.3
-    "@azure/ms-rest-nodeauth": ^3.0.7
+    "@azure/arm-consumption": ^9.1.0
+    "@azure/arm-resources-subscriptions": ^2.0.1
+    "@azure/identity": ^3.0.0
+    "@azure/ms-rest-js": ^2.6.2
+    "@azure/ms-rest-nodeauth": ^3.1.1
     "@cloud-carbon-footprint/common": ^1.8.0
     "@cloud-carbon-footprint/core": ^0.17.0
     "@google-cloud/secret-manager": ^3.10.1
@@ -2130,8 +2118,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/cli@workspace:packages/cli"
   dependencies:
-    "@azure/arm-consumption": ^8.0.0
-    "@azure/arm-resources-subscriptions": ^2.0.0
+    "@azure/arm-consumption": ^9.1.0
+    "@azure/arm-resources-subscriptions": ^2.0.1
     "@cloud-carbon-footprint/app": 1.0.0
     "@cloud-carbon-footprint/common": ^1.8.0
     "@types/cli-table": ^0.3.0
@@ -4758,13 +4746,6 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": ^12.7.0
   checksum: 0e3d55e4bdef41e652a2e99a304cebada90f23a90619c49ab892a76ae908c4281316738453348c9ba30b32250ef5eda0a939c2af3aec5ca808acdf9922da420c
-  languageName: node
-  linkType: hard
-
-"@opentelemetry/api@npm:^1.0.1":
-  version: 1.1.0
-  resolution: "@opentelemetry/api@npm:1.1.0"
-  checksum: 8be8e8dd20a473639a9bb9b4185b8984f537f86e49829ba1d4c4e909f4480309cb22696b7eb7122882878dac0b5f4ce799d66ed72248568bafed085d6269e1bc
   languageName: node
   linkType: hard
 
