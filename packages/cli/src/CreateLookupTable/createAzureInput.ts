@@ -2,10 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import {
-  Subscription,
-  SubscriptionClient,
-} from '@azure/arm-resources-subscriptions'
+import { SubscriptionClient } from '@azure/arm-resources-subscriptions'
 
 // import { AzureCredentialsProvider } from '@cloud-carbon-footprint/azure'
 import commander from 'commander'
@@ -70,7 +67,6 @@ async function createAzureInput(argv: string[] = process.argv): Promise<void> {
   })
 
   const azureData = await getConsumptionUsageDetails()
-  await getConsumptionUsageDetails()
   await csvWriter.writeRecords(azureData)
   console.info('File saved to ', targetDestination)
   console.info('Azure Input CSV successfully created! Have fun out there :D')
@@ -196,7 +192,7 @@ async function getUsageRows(
 }
 
 async function pageThroughUsageRows(
-  usageRows: PagedAsyncIterableIterator<Subscription>,
+  usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
 ): Promise<Array<LegacyUsageDetail | ModernUsageDetail>> {
   const allUsageRows = usageRows
   const usageRowDetails: Array<LegacyUsageDetail | ModernUsageDetail> = []

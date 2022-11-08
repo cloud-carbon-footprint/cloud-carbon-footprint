@@ -2,12 +2,11 @@
  * © 2021 Thoughtworks, Inc.
  */
 import moment, { unitOfTime } from 'moment'
-import { ConsumptionManagementClient } from '@azure/arm-consumption'
 import {
-  LegacyUsageDetail,
-  UsageDetailsListResult,
-} from '@azure/arm-consumption/esm/models'
-
+  ConsumptionManagementClient,
+  UsageDetailUnion,
+} from '@azure/arm-consumption'
+import { PagedAsyncIterableIterator } from '@azure/core-paging'
 import {
   containsAny,
   convertGigaBytesToTerabyteHours,
@@ -69,6 +68,7 @@ import {
   UNKNOWN_SERVICES,
   UNKNOWN_USAGE_TYPES,
   UNSUPPORTED_USAGE_TYPES,
+  UsageDetailResult,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -111,11 +111,11 @@ export default class ConsumptionManagementService {
 
     allUsageRows
       .filter(
-        (consumptionRow: LegacyUsageDetail) =>
-          new Date(consumptionRow.date) >= startDate &&
-          new Date(consumptionRow.date) <= endDate,
+        (consumptionRow) =>
+          new Date(consumptionRow.properties.date) >= startDate &&
+          new Date(consumptionRow.properties.date) <= endDate,
       )
-      .map((consumptionRow: LegacyUsageDetail) => {
+      .map((consumptionRow) => {
         const consumptionDetailRow: ConsumptionDetailRow =
           new ConsumptionDetailRow(consumptionRow)
 
@@ -163,18 +163,24 @@ export default class ConsumptionManagementService {
 
     inputData.map((inputDataRow: LookupTableInput) => {
       const usageRow = {
-        date: new Date(''),
-        quantity: 1,
-        cost: 1,
-        meterDetails: {
-          meterName: inputDataRow.usageType,
-          unitOfMeasure: inputDataRow.usageUnit,
-          meterCategory: inputDataRow.serviceName,
-        },
-        subscriptionId: '',
-        subscriptionName: '',
-        resourceLocation: inputDataRow.region,
+        id: '',
+        name: '',
+        type: '',
+        tags: '',
         kind: 'legacy' as const,
+        properties: {
+          kind: 'legacy' as const,
+          date: new Date(''),
+          quantity: 1,
+          cost: 1,
+          meterDetails: {
+            meterName: inputDataRow.usageType,
+            unitOfMeasure: inputDataRow.usageUnit,
+            meterCategory: inputDataRow.serviceName,
+          },
+          subscriptionName: '',
+          resourceLocation: inputDataRow.region,
+        },
       }
 
       const consumptionDetailRow = new ConsumptionDetailRow(usageRow)
@@ -239,18 +245,18 @@ export default class ConsumptionManagementService {
   }
 
   private async pageThroughUsageRows(
-    usageRows: UsageDetailsListResult,
-  ): Promise<UsageDetailsListResult> {
-    const allUsageRows = [...usageRows]
+    usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
+  ): Promise<Array<UsageDetailResult>> {
+    const allUsageRows = usageRows
+    const usageRowDetails: Array<UsageDetailResult> = []
+    let currentRow
+    let hasNextPage = true
     let retry = false
-    while (usageRows.nextLink) {
+    while (hasNextPage) {
       try {
-        const nextUsageRows =
-          await this.consumptionManagementClient.usageDetails.listNext(
-            usageRows.nextLink,
-          )
-        allUsageRows.push(...nextUsageRows)
-        usageRows = nextUsageRows
+        currentRow = await allUsageRows.next()
+        usageRowDetails.push(currentRow.value as UsageDetailResult)
+        hasNextPage = !currentRow.done
       } catch (e) {
         // check to see if error is from exceeding the rate limit and grab retry time value
         const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
@@ -276,7 +282,7 @@ export default class ConsumptionManagementService {
       this.consumptionManagementLogger.info(
         'Retry Successful! Continuing grabbing estimates...',
       )
-    return allUsageRows
+    return usageRowDetails
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -285,19 +291,19 @@ export default class ConsumptionManagementService {
       retry: this.consumptionManagementRetryAfterHeader,
       remaining: this.consumptionManagementRateLimitRemainingHeader,
     }
-    return e.response.headers._headersMap[tenantHeaders[type]]?.value
+    return e.response.headers._headersMap.get([tenantHeaders[type]])?.value
   }
 
   private async getConsumptionUsageDetails(
     startDate: Date,
     endDate: Date,
-  ): Promise<UsageDetailsListResult> {
+  ): Promise<PagedAsyncIterableIterator<UsageDetailUnion>> {
     try {
       const options = {
         expand: 'properties/meterDetails',
         filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
       }
-      return await this.consumptionManagementClient.usageDetails.list(
+      return this.consumptionManagementClient.usageDetails.list(
         `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
         options,
       )

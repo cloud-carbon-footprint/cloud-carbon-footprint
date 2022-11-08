@@ -3,9 +3,19 @@
  */
 
 import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
+import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
 
 export type TenantHeaders = {
   [key: string]: string
+}
+
+export type UsageDetailResult = {
+  id: string
+  name: string
+  type: string
+  tags: any
+  kind: string
+  properties: LegacyUsageDetail | ModernUsageDetail
 }
 
 export const UNKNOWN_SERVICES: string[] = [

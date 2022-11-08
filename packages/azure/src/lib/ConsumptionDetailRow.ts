@@ -10,14 +10,12 @@ import {
   VIRTUAL_MACHINE_TYPE_SERIES_MAPPING,
   VIRTUAL_MACHINE_TYPE_VCPU_MEMORY_MAPPING,
 } from './VirtualMachineTypes'
-import {
-  LegacyUsageDetail,
-  ModernUsageDetail,
-} from '@azure/arm-consumption/esm/models'
 import { AZURE_REGIONS } from './AzureRegions'
+import { UsageDetailResult } from './ConsumptionTypes'
+import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
 
 export default class ConsumptionDetailRow extends BillingDataRow {
-  constructor(usageDetail: LegacyUsageDetail | ModernUsageDetail) {
+  constructor(usageDetail: UsageDetailResult) {
     const consumptionDetails = getConsumptionDetails(usageDetail)
     super(consumptionDetails)
 
@@ -76,34 +74,35 @@ export default class ConsumptionDetailRow extends BillingDataRow {
   }
 }
 
-const getConsumptionDetails = (
-  usageDetail: LegacyUsageDetail | ModernUsageDetail,
-) => {
+const getConsumptionDetails = (usageDetail: UsageDetailResult) => {
   const consumptionDetails: Partial<BillingDataRow> = {
     cloudProvider: 'AZURE',
-    accountName: usageDetail.subscriptionName,
-    timestamp: new Date(usageDetail.date),
-    usageAmount: usageDetail.quantity,
-    region: usageDetail.resourceLocation,
+    accountName: usageDetail.properties.subscriptionName,
+    timestamp: new Date(usageDetail.properties.date),
+    usageAmount: usageDetail.properties.quantity,
+    region: usageDetail.properties.resourceLocation,
   }
 
+  let properties
   if (usageDetail.kind === 'modern') {
+    properties = usageDetail.properties as ModernUsageDetail
     return {
       ...consumptionDetails,
-      accountId: usageDetail.subscriptionGuid,
-      usageType: usageDetail.meterName,
-      usageUnit: usageDetail.unitOfMeasure,
-      serviceName: usageDetail.meterCategory,
-      cost: usageDetail.costInUSD,
+      accountId: properties.subscriptionGuid,
+      usageType: properties.meterName,
+      usageUnit: properties.unitOfMeasure,
+      serviceName: properties.meterCategory,
+      cost: properties.costInUSD,
     }
   } else {
+    properties = usageDetail.properties as LegacyUsageDetail
     return {
       ...consumptionDetails,
-      accountId: usageDetail.subscriptionId,
-      usageType: usageDetail.meterDetails.meterName,
-      usageUnit: usageDetail.meterDetails.unitOfMeasure,
-      serviceName: usageDetail.meterDetails.meterCategory,
-      cost: usageDetail.cost,
+      accountId: usageDetail.id,
+      usageType: properties.meterDetails.meterName,
+      usageUnit: properties.meterDetails.unitOfMeasure,
+      serviceName: properties.meterDetails.meterCategory,
+      cost: properties.cost,
     }
   }
 }
