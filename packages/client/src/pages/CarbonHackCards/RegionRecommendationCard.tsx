@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FunctionComponent, ReactElement } from 'react'
-import { useEmissionsData } from 'src/utils/hooks/EmissionDataHook'
+import { useRegionRecommendationData } from '../../utils/hooks/RegionRecommendationDataHook'
 import useStyles from '../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
 import { AWS_REGIONS } from './AWSRegions'
 import DashboardCard from '../../layout/DashboardCard'
@@ -13,7 +11,9 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { Typography, CardContent } from '@material-ui/core'
-const EmissionCard: FunctionComponent<any> = ({ data }): ReactElement => {
+const RegionRecommendationCard: FunctionComponent<any> = ({
+  data,
+}): ReactElement => {
   const accountRegionMap = new Map()
 
   const classes = useStyles()
@@ -65,7 +65,7 @@ const EmissionCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const dataToSend = accountRegionMap
   console.log(dataToSend, ' in emussins card')
 
-  const result = useEmissionsData(dataToSend)
+  const result = useRegionRecommendationData(dataToSend)
   console.log(result, 'result of emission card')
 
   const bestLocationTable = (result) => {
@@ -148,4 +148,4 @@ const EmissionCard: FunctionComponent<any> = ({ data }): ReactElement => {
   )
 }
 
-export default EmissionCard
+export default RegionRecommendationCard
