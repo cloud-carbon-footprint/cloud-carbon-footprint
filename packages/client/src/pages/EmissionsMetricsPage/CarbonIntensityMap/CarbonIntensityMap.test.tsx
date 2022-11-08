@@ -5,6 +5,7 @@
 import CarbonIntensityMap from './CarbonIntensityMap'
 import { fireEvent, render, within } from '@testing-library/react'
 import { create } from 'react-test-renderer'
+import React from 'react'
 
 describe('Carbon Intensity Map', () => {
   it('should render with correct configuration', () => {
