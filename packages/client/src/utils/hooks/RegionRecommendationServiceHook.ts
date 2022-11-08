@@ -5,35 +5,22 @@
 
 import { useEffect } from 'react'
 import React from 'react'
-import { BestLocationData } from './RegionRecommendationDataHook'
-import { ServiceResult } from 'src/Types'
 
-const useRemoteRegionRecommendationService = (
-  params: any,
-): ServiceResult<BestLocationData[]> => {
-  const [data, setData] = React.useState<BestLocationData[][]>([])
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState<Error>(null)
+const useRemoteRegionRecommendationService = (params: any): any => {
+  const [result, setResult] = React.useState<any>()
   useEffect(() => {
     const fetchBestLocation = async () => {
-      try {
-        const response = await Promise.all(params)
-        setData(
-          response.map((res) => {
-            return res.data
-          }),
-        )
-        setLoading(false)
-      } catch (e) {
-        setError(e)
-      }
+      const response = await Promise.all(params)
+      setResult(
+        response.map((res) => {
+          return res.data
+        }),
+      )
     }
     fetchBestLocation()
-    return () => {
-      setLoading(false)
-    }
   }, [])
-  return { data, error, loading }
+
+  return result
 }
 
 export default useRemoteRegionRecommendationService
