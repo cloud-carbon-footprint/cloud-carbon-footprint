@@ -1,12 +1,12 @@
 import axios from 'axios'
-import useRemoteEmissionService from './EmissionServiceHook'
+import useRemoteEmissionService from './RegionRecommendationServiceHook'
 
 export interface BestLocationData {
   location: string
   carbonIntensity: number
 }
 
-export const useEmissionsData = (params: Map<string, any>): any => {
+export const useRegionRecommendationData = (params: Map<string, any>): any => {
   const baseUrl = 'http://localhost:5073'
 
   const promiseArray = []
