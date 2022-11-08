@@ -5,19 +5,21 @@
 import {
   LegacyUsageDetail,
   ModernUsageDetail,
-} from '@azure/arm-consumption/esm/models'
+  UsageDetailUnion,
+} from '@azure/arm-consumption'
 
-interface AzureUsageDetailsResponseWithNextLink
+interface AzureUsageDetailsResponseIterator
   extends Array<Partial<LegacyUsageDetail | ModernUsageDetail>> {
   /**
    * @member {string} [nextLink] The link (url) to the next page of results.
    * **NOTE: This property will not be serialized. It can only be populated by
    * the server.**
    */
-  nextLink?: string
+  next: () => Promise<IteratorResult<UsageDetailUnion>>
 }
 
-export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponseWithNextLink =
+// TODO: FIx mocks to new iterator result
+export const mockConsumptionManagementResponseOne: AzureUsageDetailsResponseIterator =
   [
     {
       date: new Date('2020-11-02'),
@@ -659,7 +661,7 @@ export const mockConsumptionManagementResponseEight: Partial<LegacyUsageDetail>[
     },
   ]
 
-export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseWithNextLink =
+export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseIterator =
   [
     {
       date: new Date('2020-11-02'),
@@ -714,7 +716,7 @@ export const mockConsumptionManagementResponseNine: AzureUsageDetailsResponseWit
     },
   ]
 
-export const mockConsumptionManagementResponseTen: AzureUsageDetailsResponseWithNextLink =
+export const mockConsumptionManagementResponseTen: AzureUsageDetailsResponseIterator =
   [
     {
       date: new Date('2020-11-01'),
@@ -757,7 +759,7 @@ export const mockConsumptionManagementResponseTen: AzureUsageDetailsResponseWith
     },
   ]
 
-export const mockConsumptionManagementResponseEleven: AzureUsageDetailsResponseWithNextLink =
+export const mockConsumptionManagementResponseEleven: AzureUsageDetailsResponseIterator =
   [
     {
       date: new Date('2020-11-02'),
