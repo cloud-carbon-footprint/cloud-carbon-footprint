@@ -6,7 +6,7 @@
 import { useEffect } from 'react'
 import React from 'react'
 
-const useRemoteEmissionService = (params: any): any => {
+const useRemoteRegionRecommendationService = (params: any): any => {
   const [result, setResult] = React.useState<any>()
   useEffect(() => {
     const fetchBestLocation = async () => {
@@ -23,4 +23,4 @@ const useRemoteEmissionService = (params: any): any => {
   return result
 }
 
-export default useRemoteEmissionService
+export default useRemoteRegionRecommendationService
