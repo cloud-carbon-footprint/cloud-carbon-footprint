@@ -1,18 +1,13 @@
 import axios from 'axios'
-import { DataResult } from './ForecastDataHook'
 import useRemoteEmissionService from './RegionRecommendationServiceHook'
 
 export interface BestLocationData {
   location: string
-  startTime: string
-  endTime: string
   carbonIntensity: number
 }
 
-export const useRegionRecommendationData = (
-  params: Map<string, any>,
-): DataResult<Map<string, any>> => {
-  const baseUrl = process.env.REACT_APP_CARBON_AWARE_SDK_BASE_URL
+export const useRegionRecommendationData = (params: Map<string, any>): any => {
+  const baseUrl = 'http://localhost:5073'
 
   const promiseArray = []
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,25 +31,29 @@ export const useRegionRecommendationData = (
     )
     promiseArray.push(res)
   }
-  const { data, error, loading } = useRemoteEmissionService(promiseArray)
+  const bestLocationDataArray = useRemoteEmissionService(promiseArray)
+  console.log(bestLocationDataArray, ' best location data array ')
   let index = 0
-  const result = new Map()
-  if (data != undefined && data.length > 0) {
+  const optimalLocationMap = new Map()
+  if (bestLocationDataArray !== undefined) {
     for (const [key] of params) {
       let leastCarbonIntensity = Number.MAX_VALUE
       let leastCarbonIntensityIndex = 0
-      for (let i = 0; i < data[index].length; i++) {
-        const locationCarbonIntensity = data[index][i].carbonIntensity
+      for (let i = 0; i < bestLocationDataArray[index].length; i++) {
+        const locationCarbonIntensity =
+          bestLocationDataArray[index][i].carbonIntensity
         if (leastCarbonIntensity >= locationCarbonIntensity) {
           leastCarbonIntensity = locationCarbonIntensity
           leastCarbonIntensityIndex = i
         }
       }
-      result.set(key, data[index][leastCarbonIntensityIndex])
+      optimalLocationMap.set(
+        key,
+        bestLocationDataArray[index][leastCarbonIntensityIndex],
+      )
       index++
     }
+    console.log('Optimal location map ', optimalLocationMap)
   }
-  console.log(result, 'Result')
-
-  return { result, error, loading }
+  return optimalLocationMap
 }
