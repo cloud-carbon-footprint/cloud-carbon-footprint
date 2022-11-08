@@ -41,11 +41,11 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@azure/arm-consumption": "^8.0.0",
-    "@azure/arm-resources-subscriptions": "^2.0.0",
-    "@azure/identity": "^2.0.1",
-    "@azure/ms-rest-js": "^2.2.3",
-    "@azure/ms-rest-nodeauth": "^3.0.7",
+    "@azure/arm-consumption": "^9.1.0",
+    "@azure/arm-resources-subscriptions": "^2.0.1",
+    "@azure/identity": "^3.0.0",
+    "@azure/ms-rest-js": "^2.6.2",
+    "@azure/ms-rest-nodeauth": "^3.1.1",
     "@cloud-carbon-footprint/common": "^1.8.0",
     "@cloud-carbon-footprint/core": "^0.17.0",
     "@google-cloud/secret-manager": "^3.10.1",
