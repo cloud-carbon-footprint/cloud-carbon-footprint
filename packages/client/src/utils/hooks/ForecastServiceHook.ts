@@ -6,10 +6,12 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import React from 'react'
-import { RegionData, OptimalTime } from './ForecastDataHook'
-const useRemoteForecastService = (params: RegionData): OptimalTime[] => {
-  const [data, setData] = useState(params ?? {})
-  const [result, setResult] = React.useState<OptimalTime[]>([])
+import { OptimalTime } from './ForecastDataHook'
+
+const useRemoteForecastService = (
+  promiseList: Promise<any>[],
+): OptimalTime[] => {
+  const [result, setResult] = React.useState([])
   useEffect(() => {
     const fetchOptimalDataPoints = async () => {
       const response = await Promise.all(promiseList)
