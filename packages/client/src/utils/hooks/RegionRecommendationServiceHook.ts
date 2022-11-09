@@ -19,7 +19,6 @@ const useRemoteRegionRecommendationService = (params: any): any => {
     }
     fetchBestLocation()
   }, [])
-
   return result
 }
 
