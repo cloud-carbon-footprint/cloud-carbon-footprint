@@ -45,7 +45,9 @@ export default class App {
     const AWS = config.AWS
     const GCP = config.GCP
     const AZURE = config.AZURE
-
+    if (process.env.TEST_MODE) {
+      return []
+    }
     if (request.region) {
       const estimatesForAccounts: EstimationResult[][] = []
       for (const account of AWS.accounts) {
