@@ -16,8 +16,8 @@ import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { useFootprintData } from '../../utils/hooks'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
-import ForecastCard from '../CarbonHackCards/ForecastCard'
-import RegionRecommendationCard from '../CarbonHackCards/RegionRecommendationCard'
+import ForecastCard from '../CarbonHackCards/ForecastCard/ForecastCard'
+import RegionRecommendationCard from '../CarbonHackCards/RegionRecommendationCard/RegionRecommendationCard'
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
   onApiError?: (e: Error) => void
