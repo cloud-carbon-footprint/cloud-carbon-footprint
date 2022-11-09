@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ReactElement } from 'react'
-import { useRegionRecommendationData } from '../../utils/hooks/RegionRecommendationDataHook'
-import useStyles from '../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
+import { useRegionRecommendationData } from '../../../utils/hooks/RegionRecommendationDataHook'
+import useStyles from '../../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
 import { AWS_REGIONS } from './AWSRegions'
-import DashboardCard from '../../layout/DashboardCard'
+import DashboardCard from '../../../layout/DashboardCard'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -34,7 +34,7 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
   }
 
   const truncateDecimals = function (number) {
-    return Math[number < 0 ? 'ceil' : 'floor'](number)
+    return Math.floor(number)
   }
 
   const getNearestRegionFromEnum = (accountRegion: string, REGIONS: any) => {

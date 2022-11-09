@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FunctionComponent, ReactElement } from 'react'
 import { useForecastData } from 'src/utils/hooks/ForecastDataHook'
-import useStyles from '../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
-import DashboardCard from '../../layout/DashboardCard'
+import useStyles from '../../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
+import DashboardCard from '../../../layout/DashboardCard'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'

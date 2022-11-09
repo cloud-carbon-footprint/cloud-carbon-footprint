@@ -20,6 +20,8 @@ const style = {
 }
 
 export default function LineChartDialog({ forecastData, region }) {
+  console.log(forecastData, 'forecastData')
+  console.log(region, 'region')
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -39,7 +41,7 @@ export default function LineChartDialog({ forecastData, region }) {
 
   return (
     <div>
-      <InfoIcon onClick={handleOpen}></InfoIcon>
+      <InfoIcon onClick={handleOpen} data-testid="info-icon"></InfoIcon>
       <Modal
         open={open}
         onClose={handleClose}
@@ -47,7 +49,11 @@ export default function LineChartDialog({ forecastData, region }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography
+            data-testid="modal-modal-title"
+            variant="h6"
+            component="h2"
+          >
             Forecast for {region}
           </Typography>
           <ForecastLineChart
