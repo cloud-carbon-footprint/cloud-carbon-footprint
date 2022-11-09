@@ -34,6 +34,7 @@ export const useForecastData = (
   }
 
   const optimalDataPointArray = useRemoteForecastService(promiseArray)
+  console.log(optimalDataPointArray, 'op----')
   let index = 0
   const optimalTimeMap = new Map()
   for (const [key] of params) {
