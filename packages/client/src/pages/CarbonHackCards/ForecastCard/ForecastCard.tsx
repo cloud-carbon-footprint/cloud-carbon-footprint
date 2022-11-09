@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FunctionComponent, ReactElement } from 'react'
-import { useForecastData } from '../../../utils/hooks/ForecastDataHook'
+import { useForecastData } from 'src/utils/hooks/ForecastDataHook'
 import useStyles from '../../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
 import DashboardCard from '../../../layout/DashboardCard'
 import Table from '@mui/material/Table'
@@ -14,7 +14,6 @@ import Paper from '@mui/material/Paper'
 import { Typography, CardContent } from '@material-ui/core'
 import moment from 'moment'
 import LineChartDialog from './LineChartDialog'
-import LoadingMessage from '../../../common/LoadingMessage'
 const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const convertUTCtoLocalTime = (utcTime) => {
     const stillUtc = moment.utc(utcTime).toDate()
@@ -38,28 +37,29 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
     let array = []
     for (const [key, value] of result) {
       if (value != undefined) {
-        value.optimalDataPoints.map((eachOptimalTime) => {
+        value.optimalDataPoints.map((eachOptimalTime, index) => {
           const [date, time] = convertUTCtoLocalTime(eachOptimalTime.timestamp)
           array.push(
-            <TableRow
-              key={time}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell align="center">{key}</TableCell>
-              <TableCell align="center">
-                {accountRegionMap.get(key)[0]}
-              </TableCell>
-              <TableCell align="center">{date}</TableCell>
-              <TableCell align="center">{time}</TableCell>
-              <TableCell align="center">{eachOptimalTime.value}</TableCell>
-              <TableCell align="center">
-                <LineChartDialog
-                  testId="line-chart-dialog"
-                  forecastData={value.forecastData}
-                  region={accountRegionMap.get(key)[0]}
-                ></LineChartDialog>
-              </TableCell>
-            </TableRow>,
+            <>
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell align="center">{key}</TableCell>
+                <TableCell align="center">
+                  {accountRegionMap.get(key)[0]}
+                </TableCell>
+                <TableCell align="center">{date}</TableCell>
+                <TableCell align="center">{time}</TableCell>
+                <TableCell align="center">{eachOptimalTime.value}</TableCell>
+                <TableCell align="center">
+                  <LineChartDialog
+                    forecastData={value.forecastData}
+                    region={accountRegionMap.get(key)[0]}
+                  ></LineChartDialog>
+                </TableCell>
+              </TableRow>
+            </>,
           )
         })
       }
@@ -69,27 +69,7 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
 
   const dataToSend = accountRegionMap
 
-  const { result, error, loading } = useForecastData(dataToSend)
-
-  const renderTable = () => {
-    return (
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Account</TableCell>
-              <TableCell align="center">Region</TableCell>
-              <TableCell align="center">Date</TableCell>
-              <TableCell align="center">Time</TableCell>
-              <TableCell align="center">Rating (g/kWh)</TableCell>
-              <TableCell align="center">More Info</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{optimalRegionTimeMap(result)}</TableBody>
-        </Table>
-      </TableContainer>
-    )
-  }
+  const result = useForecastData(dataToSend)
 
   return (
     <DashboardCard noPadding>
@@ -108,13 +88,21 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
           </Typography>
           <Typography className={classes.posOne}></Typography>
         </CardContent>
-        {loading ? (
-          <LoadingMessage
-            message={'Loading cloud data. This may take a while...'}
-          />
-        ) : (
-          renderTable()
-        )}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Account</TableCell>
+                <TableCell align="center">Region</TableCell>
+                <TableCell align="center">Date</TableCell>
+                <TableCell align="center">Time</TableCell>
+                <TableCell align="center">Rating (g/kWh)</TableCell>
+                <TableCell align="center">More Info</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{optimalRegionTimeMap(result)}</TableBody>
+          </Table>
+        </TableContainer>
       </React.Fragment>
     </DashboardCard>
   )
