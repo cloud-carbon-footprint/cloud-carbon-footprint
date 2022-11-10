@@ -80,10 +80,15 @@ export default function EmissionsMetricsPage({
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />
-              <RegionRecommendationCard
-                data={footprint.filteredData}
-              ></RegionRecommendationCard>
-              <ForecastCard data={footprint.filteredData}></ForecastCard>
+              {process.env.REACT_APP_ENABLE_REGION_RECOMMENDATION_FEATURE ===
+              'true' ? (
+                <RegionRecommendationCard
+                  data={footprint.filteredData}
+                ></RegionRecommendationCard>
+              ) : null}
+              {process.env.REACT_APP_ENABLE_FORECAST_FEATURE === 'true' ? (
+                <ForecastCard data={footprint.filteredData}></ForecastCard>
+              ) : null}
             </Grid>
           </Grid>
           <CarbonIntensityMap />

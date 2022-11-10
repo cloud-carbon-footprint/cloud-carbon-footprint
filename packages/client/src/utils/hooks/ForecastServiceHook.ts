@@ -4,27 +4,52 @@
  */
 
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import React from 'react'
-import { OptimalTime } from './ForecastDataHook'
+import { ServiceResult } from 'src/Types'
+
+interface ForecastResult {
+  dataEndAt: string
+  dataStartAt: string
+  forecastData: LocationData[]
+  generatedAt: string
+  location: string
+  optimalDataPoints: LocationData[]
+  requestedAt: string
+  windowSize: number
+}
+interface LocationData {
+  duration: number
+  location: string
+  timestamp: string
+  value: number
+}
 
 const useRemoteForecastService = (
   promiseList: Promise<any>[],
-): OptimalTime[] => {
-  const [result, setResult] = React.useState([])
+): ServiceResult<ForecastResult> => {
+  const [data, setData] = React.useState<ForecastResult[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   useEffect(() => {
     const fetchOptimalDataPoints = async () => {
-      const response = await Promise.all(promiseList)
-      const optimalDataPointsArray = response.map((value) => {
-        return value.data[0]
-      })
-      setResult(optimalDataPointsArray)
+      try {
+        const response = await Promise.all(promiseList)
+        const optimalDataPointsArray = response.map((value) => {
+          return value.data[0]
+        })
+        setData(optimalDataPointsArray)
+        setLoading(false)
+      } catch (e) {
+        setError(e)
+      }
     }
-
     fetchOptimalDataPoints()
-  }, [data])
+    return () => {
+      setLoading(false)
+    }
+  }, [])
 
-  return result
+  return { data, error, loading }
 }
 
 export default useRemoteForecastService
