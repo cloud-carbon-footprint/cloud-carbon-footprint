@@ -13,10 +13,15 @@ export interface OptimalTime {
   duration: number
   value: number
 }
+export interface DataResult<T> {
+  result: T
+  error: Error | null
+  loading: boolean
+}
 
 export const useForecastData = (
   params: Map<string, string[]>,
-): Map<string, OptimalTime[]> => {
+): DataResult<Map<string, OptimalTime[]>> => {
   const baseUrl = `http://localhost:5073/emissions/forecasts/current`
 
   const promiseArray = []
@@ -33,13 +38,11 @@ export const useForecastData = (
     promiseArray.push(promise)
   }
 
-  const optimalDataPointArray = useRemoteForecastService(promiseArray)
-  console.log(optimalDataPointArray, 'op----')
+  const { data, error, loading } = useRemoteForecastService(promiseArray)
   let index = 0
-  const optimalTimeMap = new Map()
+  const result = new Map()
   for (const [key] of params) {
-    optimalTimeMap.set(key, optimalDataPointArray[index++])
+    result.set(key, data[index++])
   }
-
-  return optimalTimeMap
+  return { result, error, loading }
 }

@@ -47,8 +47,8 @@ describe('Region Recommendation Service hook', () => {
 
     await waitForNextUpdate()
 
-    await waitFor(() =>
-      expect(result.current).toStrictEqual([
+    await waitFor(() => {
+      expect(result.current.data).toStrictEqual([
         {
           location: 'us-east-1',
           startTime: '2020-01-25T00:00:00+00:00',
@@ -67,7 +67,9 @@ describe('Region Recommendation Service hook', () => {
           endTime: '2020-02-25T00:00:00+05:30',
           carbonIntensity: 617.3369634751824,
         },
-      ]),
-    )
+      ])
+      expect(result.current.error).toBeNull()
+      expect(result.current.loading).toBe(false)
+    })
   })
 })

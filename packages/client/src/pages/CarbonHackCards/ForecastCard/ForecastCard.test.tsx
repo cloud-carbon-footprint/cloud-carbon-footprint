@@ -9,7 +9,7 @@ jest.mock('../../../utils/hooks/ForecastServiceHook')
 const mockUseRemoteService = useRemoteForecastService as jest.MockedFunction<
   typeof useRemoteForecastService
 >
-xdescribe('ForecastCard', () => {
+describe('ForecastCard', () => {
   beforeEach(() => {
     mockUseRemoteService.mockReturnValue(forecastServiceMockReturnValue)
   })
@@ -33,12 +33,16 @@ xdescribe('ForecastCard', () => {
     expect(tableData.getByText('Rating (g/kWh)')).not.toBeNull()
     expect(tableData.getByText('More Info')).not.toBeNull()
   })
-  it('renders the region recommendation data on the region recommendation table', async () => {
+  it('renders the forecast data on the forecast table', async () => {
     const { getByRole } = render(<ForecastCard data={mockData} />)
     const tableData = within(getByRole('table'))
     expect(tableData.getByText('test-a')).not.toBeNull()
     expect(tableData.getByText('test-b')).not.toBeNull()
     expect(tableData.getByText('test-c')).not.toBeNull()
-    expect(tableData.getByText('test-d')).not.toBeNull()
+  })
+  it('renders the line chart dialogs for all accounts on the forecast table', async () => {
+    const { getAllByTestId } = render(<ForecastCard data={mockData} />)
+    const lineCharts = getAllByTestId('line-chart-dialog')
+    expect(lineCharts).toHaveLength(3)
   })
 })
