@@ -2,17 +2,26 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { UsageDetailResult } from '@azure/arm-consumption'
+import { UsageDetailResult } from '../../lib/ConsumptionTypes'
 
-export const mockIterableResponse = (mockResponse: UsageDetailResult[]) => {
-  return mockResponse[<UsageDetailResult>Symbol.asyncIterator]()
+interface IterableMockResponse {
+  next(): Promise<IteratorResult<UsageDetailResult>>
+  [Symbol.asyncIterator](): IterableMockResponse
 }
 
-// TODO: FIx mocks to new iterator result
+export const mockIterableResponse = (
+  mockResponse: IterableMockResponse,
+): IterableMockResponse => mockResponse[Symbol.asyncIterator]()
+
 export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 17,
       cost: 5,
@@ -27,7 +36,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 0.250004,
       cost: 10,
@@ -42,7 +56,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 7,
       cost: 10,
@@ -57,7 +76,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 10,
       cost: 12,
@@ -72,7 +96,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -87,7 +116,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -102,7 +136,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -120,7 +159,12 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 0.031248,
       cost: 5,
@@ -135,7 +179,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 0.031248,
       cost: 5,
@@ -150,7 +199,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 0.031248,
       cost: 5,
@@ -165,7 +219,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 2,
       cost: 5,
@@ -180,7 +239,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 2,
       cost: 5,
@@ -195,7 +259,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 2,
       cost: 5,
@@ -210,7 +279,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 5,
       cost: 5,
@@ -225,7 +299,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 2,
       cost: 5,
@@ -240,7 +319,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 10,
       cost: 5,
@@ -258,7 +342,12 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 10,
       cost: 5,
@@ -273,7 +362,12 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 10,
       cost: 5,
@@ -288,7 +382,12 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 5,
       cost: 5,
@@ -306,7 +405,12 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -321,7 +425,12 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -336,7 +445,12 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -351,7 +465,12 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 12,
       cost: 12,
@@ -368,7 +487,12 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 5,
       cost: 20,
@@ -383,7 +507,12 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 48,
       cost: 5,
@@ -398,7 +527,12 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 0.111375,
       cost: 10,
@@ -413,7 +547,12 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 14.44976379,
       cost: 7,
@@ -431,7 +570,12 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 0.002654,
       cost: 20,
@@ -446,7 +590,12 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 0.012219,
       cost: 15,
@@ -461,7 +610,12 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 0.000015,
       cost: 10,
@@ -476,7 +630,12 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 0.027492,
       cost: 5,
@@ -491,7 +650,12 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 0.2973480663,
       cost: 2,
@@ -506,7 +670,12 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 123456789,
       cost: 2,
@@ -524,7 +693,12 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 0.01344086022,
       cost: 20,
@@ -539,7 +713,12 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 12,
       cost: 30,
@@ -554,7 +733,12 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 0.02150770413,
       cost: 35,
@@ -569,7 +753,12 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 0.006989247310827,
       cost: 40,
@@ -584,7 +773,12 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 2,
       cost: 45,
@@ -602,7 +796,12 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 5,
       cost: 5,
@@ -617,7 +816,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 5,
       cost: 1.579140496,
@@ -632,7 +836,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 0.02150770413,
       cost: 35,
@@ -647,7 +856,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-03'),
       quantity: 25,
       cost: 0.4835702479,
@@ -662,7 +876,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 10,
       cost: 5,
@@ -677,7 +896,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-04'),
       quantity: 20,
       cost: 0.006280996057,
@@ -692,7 +916,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-05'),
       quantity: 14.44976379,
       cost: 7,
@@ -707,7 +936,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-05'),
       quantity: 32,
       cost: 18,
@@ -722,7 +956,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-06'),
       quantity: 20,
       cost: 0.003168316832,
@@ -740,7 +979,12 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 5,
       cost: 10,
@@ -755,7 +999,12 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 0.250004,
       cost: 15,
@@ -770,7 +1019,12 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 17,
       cost: 5,
@@ -784,8 +1038,13 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     },
   },
   {
-    kind: 'modern',
+    id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'modern',
       date: new Date('2020-11-02'),
       quantity: 17,
       costInUSD: 5,
@@ -802,7 +1061,12 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-01'),
       quantity: 5,
       cost: 10,
@@ -817,7 +1081,12 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-07'),
       quantity: 0.250004,
       cost: 15,
@@ -832,7 +1101,12 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-08'),
       quantity: 17,
       cost: 5,
@@ -850,7 +1124,12 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
 export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
   {
     id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'legacy',
       date: new Date('2020-11-02'),
       quantity: 1,
       cost: 10,
@@ -864,8 +1143,13 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     },
   },
   {
+    id: 'test-subscription-id',
     kind: 'modern',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'modern',
       date: new Date('2020-11-03'),
       quantity: 1,
       costInUSD: 10,
@@ -878,8 +1162,13 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     },
   },
   {
+    id: 'test-subscription-id',
     kind: 'modern',
+    name: 'name',
+    type: 'type',
+    tags: '',
     properties: {
+      kind: 'modern',
       date: new Date('2020-11-03'),
       quantity: 1,
       costInUSD: 10,
