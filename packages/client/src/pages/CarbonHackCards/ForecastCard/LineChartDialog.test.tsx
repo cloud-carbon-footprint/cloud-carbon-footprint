@@ -29,13 +29,21 @@ describe('LineChartDialog', () => {
 
   it('renders line chart dialog', async () => {
     const root = create(
-      <LineChartDialog forecastData={mockInputData} region={'us-west-1'} />,
+      <LineChartDialog
+        testId="line-chart-dialog"
+        forecastData={mockInputData}
+        region={'us-west-1'}
+      />,
     )
     expect(root.toJSON()).toMatchSnapshot()
   })
   it('renders title of the dialog', async () => {
     const { getByTestId, findByText } = render(
-      <LineChartDialog forecastData={mockInputData} region={'us-west-1'} />,
+      <LineChartDialog
+        testId="line-chart-dialog"
+        forecastData={mockInputData}
+        region={'us-west-1'}
+      />,
     )
     fireEvent.click(getByTestId('info-icon'))
     const title = within(await findByText('Forecast for us-west-1'))

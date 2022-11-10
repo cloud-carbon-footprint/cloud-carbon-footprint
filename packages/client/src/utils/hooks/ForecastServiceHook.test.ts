@@ -143,8 +143,8 @@ describe('Forecast Service hook', () => {
 
     await waitForNextUpdate()
 
-    await waitFor(() =>
-      expect(result.current).toStrictEqual([
+    await waitFor(() => {
+      expect(result.current.data).toStrictEqual([
         {
           dataEndAt: '2022-11-10T10:00:00+00:00',
           dataStartAt: '2022-11-09T10:00:00+00:00',
@@ -253,7 +253,9 @@ describe('Forecast Service hook', () => {
           requestedAt: '2022-11-09T09:57:12.893661+00:00',
           windowSize: 60,
         },
-      ]),
-    )
+      ])
+      expect(result.current.error).toBeNull()
+      expect(result.current.loading).toBe(false)
+    })
   })
 })
