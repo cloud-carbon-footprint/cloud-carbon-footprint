@@ -19,9 +19,7 @@ const style = {
   borderRadius: '25px',
 }
 
-export default function LineChartDialog({ forecastData, region }) {
-  console.log(forecastData, 'forecastData')
-  console.log(region, 'region')
+export default function LineChartDialog({ testId, forecastData, region }) {
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -40,7 +38,7 @@ export default function LineChartDialog({ forecastData, region }) {
   })
 
   return (
-    <div>
+    <div data-testid={testId}>
       <InfoIcon onClick={handleOpen} data-testid="info-icon"></InfoIcon>
       <Modal
         open={open}
