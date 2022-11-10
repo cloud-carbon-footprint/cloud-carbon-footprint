@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LineChartDialog renders line chart dialog 1`] = `
-<div>
+<div
+  data-testid="line-chart-dialog"
+>
   <svg
     aria-hidden={true}
     className="MuiSvgIcon-root"
