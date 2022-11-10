@@ -255,7 +255,9 @@ export default class ConsumptionManagementService {
     while (hasNextPage) {
       try {
         currentRow = await allUsageRows.next()
-        usageRowDetails.push(currentRow.value as UsageDetailResult)
+        if (currentRow?.value) {
+          usageRowDetails.push(currentRow.value as UsageDetailResult)
+        }
         hasNextPage = !currentRow.done
       } catch (e) {
         // check to see if error is from exceeding the rate limit and grab retry time value
