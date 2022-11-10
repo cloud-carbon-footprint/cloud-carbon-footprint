@@ -1,12 +1,17 @@
 import axios from 'axios'
+import { DataResult } from './ForecastDataHook'
 import useRemoteEmissionService from './RegionRecommendationServiceHook'
 
 export interface BestLocationData {
   location: string
+  startTime: string
+  endTime: string
   carbonIntensity: number
 }
 
-export const useRegionRecommendationData = (params: Map<string, any>): any => {
+export const useRegionRecommendationData = (
+  params: Map<string, any>,
+): DataResult<Map<string, any>> => {
   const baseUrl = 'http://localhost:5073'
 
   const promiseArray = []
@@ -31,29 +36,24 @@ export const useRegionRecommendationData = (params: Map<string, any>): any => {
     )
     promiseArray.push(res)
   }
-  const bestLocationDataArray = useRemoteEmissionService(promiseArray)
-  console.log(bestLocationDataArray, ' best location data array ')
+  const { data, error, loading } = useRemoteEmissionService(promiseArray)
   let index = 0
-  const optimalLocationMap = new Map()
-  if (bestLocationDataArray !== undefined) {
+  const result = new Map()
+  if (data != undefined && data.length > 0) {
     for (const [key] of params) {
       let leastCarbonIntensity = Number.MAX_VALUE
       let leastCarbonIntensityIndex = 0
-      for (let i = 0; i < bestLocationDataArray[index].length; i++) {
-        const locationCarbonIntensity =
-          bestLocationDataArray[index][i].carbonIntensity
+      for (let i = 0; i < data[index].length; i++) {
+        const locationCarbonIntensity = data[index][i].carbonIntensity
         if (leastCarbonIntensity >= locationCarbonIntensity) {
           leastCarbonIntensity = locationCarbonIntensity
           leastCarbonIntensityIndex = i
         }
       }
-      optimalLocationMap.set(
-        key,
-        bestLocationDataArray[index][leastCarbonIntensityIndex],
-      )
+      result.set(key, data[index][leastCarbonIntensityIndex])
       index++
     }
-    console.log('Optimal location map ', optimalLocationMap)
   }
-  return optimalLocationMap
+
+  return { result, error, loading }
 }
