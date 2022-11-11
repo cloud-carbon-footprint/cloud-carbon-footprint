@@ -293,7 +293,7 @@ export default class ConsumptionManagementService {
       retry: this.consumptionManagementRetryAfterHeader,
       remaining: this.consumptionManagementRateLimitRemainingHeader,
     }
-    return e.response.headers._headersMap.get([tenantHeaders[type]])?.value
+    return e.response.headers._headersMap.get(tenantHeaders[type])?.value
   }
 
   private async getConsumptionUsageDetails(
