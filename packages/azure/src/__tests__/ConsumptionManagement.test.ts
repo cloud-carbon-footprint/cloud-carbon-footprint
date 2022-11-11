@@ -31,12 +31,13 @@ import {
   mockConsumptionManagementResponseTen,
   mockConsumptionManagementResponseThree,
   mockConsumptionManagementResponseTwo,
+  mockIterableResponse,
 } from './fixtures/consumptionManagement.fixtures'
 
 import { ConsumptionManagementService } from '../lib'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
-const mockUsageDetails = { list: jest.fn(), listNext: jest.fn() }
+const mockUsageDetails = { list: jest.fn() }
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
@@ -81,7 +82,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Compute', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseOne,
+      mockIterableResponse(mockConsumptionManagementResponseOne),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -203,7 +204,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Storage', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseTwo,
+      mockIterableResponse(mockConsumptionManagementResponseTwo),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -317,7 +318,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Networking', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseThree,
+      mockIterableResponse(mockConsumptionManagementResponseThree),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -376,7 +377,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Memory', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseFive,
+      mockIterableResponse(mockConsumptionManagementResponseFive),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -465,7 +466,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Storage services with replication factors', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseSix,
+      mockIterableResponse(mockConsumptionManagementResponseSix),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -576,7 +577,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Database and Cache services with replication factors', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseSeven,
+      mockIterableResponse(mockConsumptionManagementResponseSeven),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -676,7 +677,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Handles Unknown usage and ignores unsupported usage types', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseFour,
+      mockIterableResponse(mockConsumptionManagementResponseFour),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -703,7 +704,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for reclassified unknowns', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseEight,
+      mockIterableResponse(mockConsumptionManagementResponseEight),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -872,7 +873,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for Compute with Embodied Emissions, and modern usage type', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseNine,
+      mockIterableResponse(mockConsumptionManagementResponseNine),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -953,7 +954,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates for GPU Virtual Machines', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseEleven,
+      mockIterableResponse(mockConsumptionManagementResponseEleven),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -1069,11 +1070,11 @@ describe('Azure Consumption Management Service', () => {
   })
 
   it('Pages through results', async () => {
-    const testNextLink = 'test-next-link'
-    mockUsageDetails.list.mockResolvedValue({ nextLink: testNextLink })
-    mockUsageDetails.listNext.mockResolvedValue(
+    const mockResponse = mockIterableResponse(
       mockConsumptionManagementResponseThree,
     )
+    jest.spyOn(mockResponse, 'next')
+    mockUsageDetails.list.mockResolvedValue(mockResponse)
 
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
@@ -1127,13 +1128,13 @@ describe('Azure Consumption Management Service', () => {
       },
     ]
     expect(result).toEqual(expectedResult)
-    expect(mockUsageDetails.listNext).toHaveBeenCalledWith(testNextLink)
+    expect(mockResponse.next).toHaveBeenCalled()
   })
 
   describe('When group query results by week is true', () => {
     it('Returns estimates for Compute grouped by week', async () => {
       mockUsageDetails.list.mockResolvedValue(
-        mockConsumptionManagementResponseOne,
+        mockIterableResponse(mockConsumptionManagementResponseOne),
       )
 
       const consumptionManagementService = new ConsumptionManagementService(
@@ -1250,7 +1251,7 @@ describe('Azure Consumption Management Service', () => {
 
   it('Returns estimates filtered within the start and end date', async () => {
     mockUsageDetails.list.mockResolvedValue(
-      mockConsumptionManagementResponseTen,
+      mockIterableResponse(mockConsumptionManagementResponseTen),
     )
 
     const consumptionManagementService = new ConsumptionManagementService(
@@ -1296,21 +1297,14 @@ describe('Azure Consumption Management Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Throws an error when usageDetails.list fails', async () => {
+  // Note: Might need to consider test and try/catch retry logic.
+  // usageDetails.list synchronously returns iterator and does not do API call nor affects rate limit
+  xit('Throws an error when usageDetails.list fails', async () => {
     const errorMessage = 'Something went wrong!'
-    const testError = {
-      message: errorMessage,
-      response: {
-        headers: {
-          _headersMap: {
-            'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests': {
-              value: 10,
-            },
-          },
-        },
-      },
-    }
-    mockUsageDetails.list.mockRejectedValue(testError)
+
+    mockUsageDetails.list.mockImplementation(() => {
+      throw new Error(errorMessage)
+    })
 
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
@@ -1331,28 +1325,25 @@ describe('Azure Consumption Management Service', () => {
     )
   })
 
-  it('Throws an error when usageDetails.listNext fails', async () => {
-    const errorMessage = {
-      message: 'Something went wrong!',
+  it('Throws an error when iteration on a usageRow fails', async () => {
+    const errorMessage = 'Something went wrong!'
+    const _headersMap = new Map([
+      ["'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests':", 10],
+    ])
+    const testError = {
+      message: errorMessage,
       response: {
         headers: {
-          _headersMap: {
-            'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests': {
-              value: 1,
-            },
-            'x-ms-ratelimit-microsoft.consumption-tenant-retry-after': {
-              value: 60,
-            },
-          },
+          _headersMap,
         },
       },
     }
-
-    mockConsumptionManagementResponseOne.nextLink = 'mock next link'
-    mockUsageDetails.list.mockResolvedValue(
+    const mockResponse = mockIterableResponse(
       mockConsumptionManagementResponseOne,
     )
-    mockUsageDetails.listNext.mockRejectedValue(errorMessage)
+    const nextPageSpy = jest.spyOn(mockResponse, 'next')
+    mockUsageDetails.list.mockResolvedValue(mockResponse)
+    nextPageSpy.mockRejectedValue(testError)
 
     const consumptionManagementService = new ConsumptionManagementService(
       new ComputeEstimator(),
@@ -1370,7 +1361,7 @@ describe('Azure Consumption Management Service', () => {
     await expect(() =>
       consumptionManagementService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
-      `Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason: ${errorMessage.message}`,
+      `Azure Consumption Management UsageDetailRow.next failed. Reason: ${errorMessage}`,
     )
   })
 })

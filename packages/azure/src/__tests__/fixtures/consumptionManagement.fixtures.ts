@@ -1048,7 +1048,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
   },
   {
     id: 'test-subscription-id',
-    kind: 'legacy',
+    kind: 'modern',
     name: 'name',
     type: 'type',
     tags: '',

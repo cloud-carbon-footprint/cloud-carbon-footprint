@@ -267,7 +267,7 @@ export default class ConsumptionManagementService {
           'remaining',
         )
         const errorMsg =
-          'Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason:'
+          'Azure Consumption Management UsageDetailRow.next failed. Reason:'
         if (rateLimitRemainingValue == 0) {
           this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
           this.consumptionManagementLogger.info(
