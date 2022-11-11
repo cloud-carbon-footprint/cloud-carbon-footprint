@@ -114,7 +114,7 @@ export const MEMORY_USAGE_TYPES: string[] = [
 export const CACHE_MEMORY_GB: {
   [cacheName: string]: number
 } = {
-  C0: 250,
+  C0: 0.25,
   C1: 1,
   C2: 2.5,
   C3: 6,
