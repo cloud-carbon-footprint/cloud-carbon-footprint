@@ -9,9 +9,18 @@ interface IterableMockResponse {
   [Symbol.asyncIterator](): IterableMockResponse
 }
 
+const mockAsyncIterator = {
+  // * = fancy generator function (https://javascript.info/generators)
+  async *[Symbol.asyncIterator](mockResponse: UsageDetailResult[]) {
+    for (const response of mockResponse) yield response
+  },
+}
+
 export const mockIterableResponse = (
-  mockResponse: IterableMockResponse,
-): IterableMockResponse => mockResponse[Symbol.asyncIterator]()
+  mockResponse: UsageDetailResult[],
+): IterableMockResponse => {
+  return mockAsyncIterator[Symbol.asyncIterator](mockResponse)
+}
 
 export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
   {
