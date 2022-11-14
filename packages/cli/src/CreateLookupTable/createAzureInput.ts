@@ -3,21 +3,19 @@
  */
 
 import { SubscriptionClient } from '@azure/arm-resources-subscriptions'
-
-// import { AzureCredentialsProvider } from '@cloud-carbon-footprint/azure'
 import commander from 'commander'
 import process from 'process'
+import { createObjectCsvWriter } from 'csv-writer'
+import path from 'path'
 import { wait } from '@cloud-carbon-footprint/common'
+import { AzureCredentialsProvider } from '@cloud-carbon-footprint/azure'
+import { PagedAsyncIterableIterator } from '@azure/core-paging'
 import {
   ConsumptionManagementClient,
   LegacyUsageDetail,
   ModernUsageDetail,
   UsageDetailUnion,
 } from '@azure/arm-consumption'
-import { PagedAsyncIterableIterator } from '@azure/core-paging'
-import { createObjectCsvWriter } from 'csv-writer'
-import path from 'path'
-import { AzureCredentialsProvider } from '@cloud-carbon-footprint/azure'
 
 /**
  * Creates a csv file with input data for Azure to be used for the Lookup Table.
