@@ -2346,7 +2346,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-unused-imports: ^2.0.0
     google-gax: ^2.29.0
-    googleapis: ^96.0.0
+    googleapis: ^109.0.1
     jest: ^27.4.7
     jest-when: ^3.5.0
     lint-staged: ^12.1.7
@@ -11740,6 +11740,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gaxios@npm:^5.0.1":
+  version: 5.0.2
+  resolution: "gaxios@npm:5.0.2"
+  dependencies:
+    extend: ^3.0.2
+    https-proxy-agent: ^5.0.0
+    is-stream: ^2.0.0
+    node-fetch: ^2.6.7
+  checksum: 117036131cc0d0a268d2d99fffe6a6cc6a4e88dd5b77ce23d3f0b4aff1291b8af169dae20e88799adc986cf3ae507acfaeb70f6ceca8c5d6b8c28e3dde5c992a
+  languageName: node
+  linkType: hard
+
 "gcp-metadata@npm:^4.0.0, gcp-metadata@npm:^4.2.0":
   version: 4.3.1
   resolution: "gcp-metadata@npm:4.3.1"
@@ -12134,27 +12146,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"googleapis-common@npm:^5.0.2":
-  version: 5.1.0
-  resolution: "googleapis-common@npm:5.1.0"
+"googleapis-common@npm:^6.0.0":
+  version: 6.0.3
+  resolution: "googleapis-common@npm:6.0.3"
   dependencies:
     extend: ^3.0.2
-    gaxios: ^4.0.0
-    google-auth-library: ^7.14.0
+    gaxios: ^5.0.1
+    google-auth-library: ^8.0.2
     qs: ^6.7.0
     url-template: ^2.0.8
-    uuid: ^8.0.0
-  checksum: 025daa078583f7bf6e92cf5d6e6ea804dce6ded84b1ead210803596b0b6d1fe9693069083302603173dc0c1f5e1125a501f2553952df60c001113a78ee055009
+    uuid: ^9.0.0
+  checksum: 72b3f2f4018d96d6e5bcc08096c693e393ba1ae59be243ac409e8876d941f918aad556a62d828709956552a5940295360674b9681b7871a1b3be54ea8a588f3f
   languageName: node
   linkType: hard
 
-"googleapis@npm:^96.0.0":
-  version: 96.0.0
-  resolution: "googleapis@npm:96.0.0"
+"googleapis@npm:^109.0.1":
+  version: 109.0.1
+  resolution: "googleapis@npm:109.0.1"
   dependencies:
-    google-auth-library: ^7.0.2
-    googleapis-common: ^5.0.2
-  checksum: 77cfaf65ef29310db19a72351a97dccb7bcc3acd2c0f5f8c079f62c66b98295b620b8eed180a1c4da1f3ea74a1a8fbedbb039180adba36af6cadfeb9472f6bcb
+    google-auth-library: ^8.0.2
+    googleapis-common: ^6.0.0
+  checksum: d07b928d6003c9d4959689466f305474c3fd9e43412d6d8de57c2995a380baf70d0cdff9575559757fe76149d8edb75b1609e75ad5539548f7836c43e2b954ca
   languageName: node
   linkType: hard
 
@@ -22682,6 +22694,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
   languageName: node
   linkType: hard
 
