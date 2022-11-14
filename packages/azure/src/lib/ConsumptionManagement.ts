@@ -250,37 +250,21 @@ export default class ConsumptionManagementService {
     const allUsageRows = usageRows
     const usageRowDetails: Array<UsageDetailResult> = []
     let currentRow
-    let hasNextPage = true
-    let retry = false
-    while (hasNextPage) {
+    const pageStatus = { hasNextPage: true, retry: false }
+    while (pageStatus.hasNextPage) {
       try {
         currentRow = await allUsageRows.next()
         if (currentRow?.value) {
           usageRowDetails.push(currentRow.value as UsageDetailResult)
         }
-        hasNextPage = !currentRow.done
+        pageStatus.hasNextPage = !currentRow.done
       } catch (e) {
-        // check to see if error is from exceeding the rate limit and grab retry time value
-        const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
-        const rateLimitRemainingValue = this.getConsumptionTenantValue(
-          e,
-          'remaining',
-        )
         const errorMsg =
           'Azure Consumption Management UsageDetailRow.next failed. Reason:'
-        if (rateLimitRemainingValue == 0) {
-          this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
-          this.consumptionManagementLogger.info(
-            `Retrying after ${retryAfterValue} seconds`,
-          )
-          retry = true
-          await wait(retryAfterValue * 1000)
-        } else {
-          throw new Error(`${errorMsg} ${e.message}`)
-        }
+        await this.waitIfRateLimitExceeded(e, errorMsg, pageStatus)
       }
     }
-    retry &&
+    pageStatus.retry &&
       this.consumptionManagementLogger.info(
         'Retry Successful! Continuing grabbing estimates...',
       )
@@ -294,6 +278,34 @@ export default class ConsumptionManagementService {
       remaining: this.consumptionManagementRateLimitRemainingHeader,
     }
     return e.response.headers._headersMap.get(tenantHeaders[type])?.value
+  }
+
+  private async waitIfRateLimitExceeded(
+    errorResponse: any,
+    errorMsg: string,
+    pageStatus?: any,
+  ) {
+    // check to see if error is from exceeding the rate limit and grab retry time value
+    const retryAfterValue = this.getConsumptionTenantValue(
+      errorResponse,
+      'retry',
+    )
+    const rateLimitRemainingValue = this.getConsumptionTenantValue(
+      errorResponse,
+      'remaining',
+    )
+    if (rateLimitRemainingValue == 0) {
+      this.consumptionManagementLogger.warn(
+        `${errorMsg} ${errorResponse.message}`,
+      )
+      this.consumptionManagementLogger.info(
+        `Retrying after ${retryAfterValue} seconds`,
+      )
+      if (pageStatus) pageStatus.retry = true
+      await wait(retryAfterValue * 1000)
+    } else {
+      throw new Error(`${errorMsg} ${errorResponse.message}`)
+    }
   }
 
   private async getConsumptionUsageDetails(
@@ -310,23 +322,10 @@ export default class ConsumptionManagementService {
         options,
       )
     } catch (e) {
-      const retryAfterValue = this.getConsumptionTenantValue(e, 'retry')
-      const rateLimitRemainingValue = this.getConsumptionTenantValue(
-        e,
-        'remaining',
-      )
       const errorMsg =
         'Azure ConsumptionManagementClient.usageDetails.list failed. Reason:'
-      if (rateLimitRemainingValue == 0) {
-        this.consumptionManagementLogger.warn(`${errorMsg} ${e.message}`)
-        this.consumptionManagementLogger.info(
-          `Retrying after ${retryAfterValue} seconds`,
-        )
-        await wait(retryAfterValue * 1000)
-        return this.getConsumptionUsageDetails(startDate, endDate)
-      } else {
-        throw new Error(`${errorMsg} ${e.message}`)
-      }
+      await this.waitIfRateLimitExceeded(e, errorMsg)
+      return this.getConsumptionUsageDetails(startDate, endDate)
     }
   }
 
