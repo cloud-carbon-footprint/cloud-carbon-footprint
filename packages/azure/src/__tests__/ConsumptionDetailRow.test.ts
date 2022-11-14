@@ -3,7 +3,6 @@
  */
 
 import { LegacyUsageDetail } from '@azure/arm-consumption/esm/models'
-
 import ConsumptionDetailRow from '../lib/ConsumptionDetailRow'
 
 describe('ConsumptionDetailRow', () => {
@@ -11,8 +10,10 @@ describe('ConsumptionDetailRow', () => {
     //given
     const computeConsumptionDetails: LegacyUsageDetail = {
       kind: null,
-      meterDetails: {
-        meterName: 'test-usageType',
+      properties: {
+        meterDetails: {
+          meterName: 'test-usageType',
+        },
       },
     }
 
