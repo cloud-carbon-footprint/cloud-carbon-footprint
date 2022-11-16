@@ -5,9 +5,3 @@ exports[`ForecastLineChart renders line chart 1`] = `
   id="chart"
 />
 `;
-
-exports[`RegionRecommendationCard renders line chart 1`] = `
-<div
-  id="chart"
-/>
-`;
