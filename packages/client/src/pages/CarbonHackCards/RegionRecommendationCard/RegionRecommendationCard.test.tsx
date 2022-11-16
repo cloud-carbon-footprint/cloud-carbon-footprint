@@ -30,8 +30,8 @@ describe('RegionRecommendationCard', () => {
   })
   it('do not render anything when data is undefined', async () => {
     const { getByRole } = render(<RegionRecommendationCard />)
-    const tableElements = within(getByRole('table'))
-    expect(tableElements.getAllByRole('row')).toHaveLength(1)
+    const gridElements = within(getByRole('grid'))
+    expect(gridElements.getAllByRole('row')).toHaveLength(1)
   })
   it('renders the heading for the region recommendation card', async () => {
     const { getByText } = render(<RegionRecommendationCard data={mockData} />)
@@ -42,10 +42,10 @@ describe('RegionRecommendationCard', () => {
   })
   it('renders the table headings for the region recommendation table', async () => {
     const { getByRole } = render(<RegionRecommendationCard data={mockData} />)
-    const tableData = within(getByRole('table'))
+    const tableData = within(getByRole('grid'))
     expect(tableData.getByText('Account')).not.toBeNull()
     expect(tableData.getByText('Region')).not.toBeNull()
-    expect(tableData.getByText('Actual Emissions (Mg)')).not.toBeNull()
+    expect(tableData.getByText('Actual Emisssions (Mg)')).not.toBeNull()
     expect(tableData.getByText('Best Location')).not.toBeNull()
     expect(tableData.getByText('Expected Emissions (Mg)')).not.toBeNull()
     expect(tableData.getByText('Reduction in Emissions')).not.toBeNull()
@@ -54,10 +54,11 @@ describe('RegionRecommendationCard', () => {
     const { getByRole } = render(
       <RegionRecommendationCard data={newMockData} />,
     )
-    const tableData = within(getByRole('table'))
-    expect(tableData.getByText('test-a')).not.toBeNull()
-    expect(tableData.getByText('test-b')).not.toBeNull()
-    expect(tableData.getByText('test-c')).not.toBeNull()
-    expect(tableData.getByText('test-d')).not.toBeNull()
+    console.log(newMockData, 'new mock data', newMockData.length)
+    const gridData = within(getByRole('grid'))
+    expect(gridData.getByText('test-a')).not.toBeNull()
+    expect(gridData.getByText('test-b')).not.toBeNull()
+    expect(gridData.getByText('test-c')).not.toBeNull()
+    expect(gridData.getByText('test-d')).not.toBeNull()
   })
 })

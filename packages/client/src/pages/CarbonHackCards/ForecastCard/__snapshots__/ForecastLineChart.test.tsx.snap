@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ForecastLineChart renders line chart 1`] = `
+<div
+  id="chart"
+/>
+`;
+
 exports[`RegionRecommendationCard renders line chart 1`] = `
 <div
   id="chart"
