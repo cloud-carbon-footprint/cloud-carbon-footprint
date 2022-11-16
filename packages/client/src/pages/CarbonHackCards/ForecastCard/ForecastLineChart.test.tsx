@@ -6,7 +6,7 @@ import { data, categories } from './ForecastLineChartMockData'
 
 jest.mock('react-apexcharts')
 
-describe('RegionRecommendationCard', () => {
+describe('ForecastLineChart', () => {
   it('renders line chart', async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const root = create(
