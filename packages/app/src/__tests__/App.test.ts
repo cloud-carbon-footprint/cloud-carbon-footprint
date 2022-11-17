@@ -21,6 +21,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import { AWSAccount } from '@cloud-carbon-footprint/aws'
 import { GCPAccount } from '@cloud-carbon-footprint/gcp'
+import { AzureAccount } from '@cloud-carbon-footprint/azure'
 import App from '../App'
 import cache from '../Cache'
 import { EstimationRequest, RecommendationRequest } from '../CreateValidRequest'
@@ -32,6 +33,15 @@ const getDataForAWSRecommendations = jest.spyOn(
 const getDataForGCPRecommendations = jest.spyOn(
   GCPAccount.prototype,
   'getDataForRecommendations',
+)
+const getDataForAzureRecommendations = jest.spyOn(
+  AzureAccount.prototype,
+  'getDataFromAdvisorManagement',
+)
+
+const initializeAzureAccount = jest.spyOn(
+  AzureAccount.prototype,
+  'initializeAccount',
 )
 const getServices = jest.spyOn(AWSAccount.prototype, 'getServices')
 const getGCPServices = jest.spyOn(GCPAccount.prototype, 'getServices')
@@ -919,6 +929,7 @@ describe('App', () => {
       ]
 
       getDataForGCPRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue([])
       getDataForAWSRecommendations.mockResolvedValue(expectedRecommendations)
       const result = await app.getRecommendations(defaultRequest)
 
@@ -951,6 +962,7 @@ describe('App', () => {
       ]
 
       getDataForGCPRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue([])
       getDataForAWSRecommendations.mockResolvedValue(expectedRecommendations)
       const result = await app.getRecommendations(defaultRequest)
 
@@ -986,6 +998,7 @@ describe('App', () => {
       ]
 
       getDataForGCPRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue([])
       getDataForAWSRecommendations.mockResolvedValue(expectedRecommendations)
       const result = await app.getRecommendations(request)
 
@@ -1024,6 +1037,7 @@ describe('App', () => {
       ]
 
       getDataForGCPRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue([])
       getDataForAWSRecommendations.mockResolvedValue(expectedRecommendations)
       const result = await app.getRecommendations(request)
 
@@ -1062,6 +1076,7 @@ describe('App', () => {
       ]
 
       getDataForAWSRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue([])
       getDataForGCPRecommendations
         .mockResolvedValueOnce([expectedRecommendations[0]])
         .mockResolvedValue([expectedRecommendations[1]])
@@ -1094,7 +1109,39 @@ describe('App', () => {
       ]
 
       getDataForAWSRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue([])
       getDataForGCPRecommendations.mockResolvedValue(expectedRecommendations)
+      const result = await app.getRecommendations(defaultRequest)
+
+      expect(result).toEqual(expectedRecommendations)
+    })
+    it('returns recommendations for azure with billing data', async () => {
+      ;(configLoader as jest.Mock).mockReturnValue({
+        ...configLoader(),
+        AZURE: {
+          ...configLoader().AZURE,
+          USE_BILLING_DATA: true,
+        },
+      })
+
+      const expectedRecommendations: RecommendationResult[] = [
+        {
+          cloudProvider: 'AZURE',
+          accountId: 'account-id',
+          accountName: 'account-name',
+          region: 'useast',
+          recommendationType: 'Shutdown',
+          recommendationDetail: 'Shutdown instance: test-vm-name.',
+          kilowattHourSavings: 5,
+          co2eSavings: 20,
+          costSavings: 3,
+        },
+      ]
+
+      getDataForAWSRecommendations.mockResolvedValue([])
+      getDataForGCPRecommendations.mockResolvedValue([])
+      getDataForAzureRecommendations.mockResolvedValue(expectedRecommendations)
+      initializeAzureAccount.mockResolvedValue()
       const result = await app.getRecommendations(defaultRequest)
 
       expect(result).toEqual(expectedRecommendations)

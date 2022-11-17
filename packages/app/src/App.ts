@@ -167,7 +167,8 @@ export default class App {
     const config = configLoader()
     const AWS = config.AWS
     const GCP = config.GCP
-    const recommendations: RecommendationResult[][] = []
+    const AZURE = config.AZURE
+    const allRecommendations: RecommendationResult[][] = []
 
     const AWSRecommendations: RecommendationResult[][] = []
     if (AWS.USE_BILLING_DATA) {
@@ -190,7 +191,7 @@ export default class App {
         AWSRecommendations.push(recommendations)
       }
     }
-    recommendations.push(AWSRecommendations.flat())
+    allRecommendations.push(AWSRecommendations.flat())
 
     let GCPRecommendations: RecommendationResult[][] = []
     if (GCP.USE_BILLING_DATA) {
@@ -211,9 +212,18 @@ export default class App {
         ),
       )
     }
-    recommendations.push(GCPRecommendations.flat())
+    allRecommendations.push(GCPRecommendations.flat())
 
-    return recommendations.flat()
+    const AzureRecommendations: RecommendationResult[][] = []
+    if (AZURE?.USE_BILLING_DATA) {
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const recommendations = await azureAccount.getDataFromAdvisorManagement()
+      AzureRecommendations.push(recommendations)
+    }
+    allRecommendations.push(AzureRecommendations.flat())
+
+    return allRecommendations.flat()
   }
 
   getAwsEstimatesFromInputData(

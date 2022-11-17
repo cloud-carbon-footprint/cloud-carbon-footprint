@@ -8,6 +8,7 @@ import {
 } from '@azure/arm-resources-subscriptions'
 import { ClientSecretCredential } from '@azure/identity'
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
+import { AdvisorManagementClient } from '@azure/arm-advisor'
 
 import {
   ComputeEstimator,
@@ -23,10 +24,12 @@ import {
   GroupBy,
   Logger,
   LookupTableInput,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 import AzureCredentialsProvider from './AzureCredentialsProvider'
 
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
+import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 
 export default class AzureAccount extends CloudProviderAccount {
@@ -49,22 +52,31 @@ export default class AzureAccount extends CloudProviderAccount {
     }
   }
 
+  public async getDataFromAdvisorManagement(): Promise<RecommendationResult[]> {
+    const subscriptions = await this.getSubscriptions()
+    const recommendations = await Promise.all(
+      subscriptions.map(async (subscription: Subscription) => {
+        try {
+          return await this.getRecommendationsForSubscription(
+            subscription.subscriptionId,
+          )
+        } catch (e) {
+          this.logger.warn(
+            `Unable to get Advisor recommendations data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
+          )
+          return []
+        }
+      }),
+    )
+    return recommendations.flat()
+  }
+
   public async getDataFromConsumptionManagement(
     startDate: Date,
     endDate: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
-    const subscriptions = []
-    for await (const subscription of this.subscriptionClient.subscriptions.list()) {
-      subscriptions.push(subscription)
-    }
-
-    if (subscriptions.length === 0) {
-      this.logger.warn(
-        'No subscription returned for these Azure credentials, be sure the registered application has ' +
-          'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
-      )
-    }
+    const subscriptions = await this.getSubscriptions()
 
     this.logger.info('Mapping Over Subscriptions and Usage Rows')
     const estimationResults = await Promise.all(
@@ -88,6 +100,22 @@ export default class AzureAccount extends CloudProviderAccount {
     return estimationResults.flat()
   }
 
+  public async getSubscriptions(): Promise<Subscription[]> {
+    const subscriptions = []
+    for await (const subscription of this.subscriptionClient.subscriptions.list()) {
+      subscriptions.push(subscription)
+    }
+
+    if (subscriptions.length === 0) {
+      this.logger.warn(
+        'No subscription returned for these Azure credentials, be sure the registered application has ' +
+          'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
+      )
+    }
+
+    return subscriptions
+  }
+
   static getDataFromConsumptionManagementInputData(
     inputData: LookupTableInput[],
   ) {
@@ -103,6 +131,15 @@ export default class AzureAccount extends CloudProviderAccount {
       ),
     )
     return consumptionManagementService.getEstimatesFromInputData(inputData)
+  }
+
+  private async getRecommendationsForSubscription(subscriptionId: string) {
+    const advisorRecommendations = new AdvisorRecommendations(
+      new ComputeEstimator(),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new AdvisorManagementClient(this.credentials, subscriptionId),
+    )
+    return advisorRecommendations.getRecommendations()
   }
 
   private async getDataForSubscription(

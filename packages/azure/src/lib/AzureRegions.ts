@@ -41,11 +41,11 @@ export const AZURE_REGIONS = {
   AP_KOREA_SOUTH: { name: 'koreasouth', options: ['koreasouth'] },
   ASIA: { name: 'asia', options: ['asia'] },
   ASIA_PACIFIC: { name: 'asiapacific', options: ['asiapacific'] },
-  ASIA_EAST: { name: 'eastasia', options: ['eastasia'] },
+  ASIA_EAST: { name: 'eastasia', options: ['eastasia', 'asiaeast'] },
   ASIA_EAST_STAGE: { name: 'eastasiastage', options: ['eastasiastage'] },
   ASIA_SOUTH_EAST: {
     name: 'southeastasia',
-    options: ['southeastasia', 'AsiaSouthEast'],
+    options: ['southeastasia', 'AsiaSouthEast', 'asiasoutheast'],
   },
   ASIA_SOUTH_EAST_STAGE: {
     name: 'southeastasiastage',
@@ -105,7 +105,10 @@ export const AZURE_REGIONS = {
   US_CENTRAL: { name: 'CentralUS', options: ['CentralUS'] },
   US_CENTRAL_EUAP: { name: 'centraluseuap', options: ['centraluseuap'] },
   US_CENTRAL_STAGE: { name: 'centralusstage', options: ['centralusstage'] },
-  US_EAST: { name: 'EastUS', options: ['EastUS', 'EASTUS', 'USEast'] },
+  US_EAST: {
+    name: 'EastUS',
+    options: ['EastUS', 'EASTUS', 'USEast', 'useast'],
+  },
   US_EAST_STAGE: { name: 'eastusstage', options: ['eastusstage'] },
   US_EAST_2: { name: 'EastUS2', options: ['EastUS2', 'useast2'] },
   US_EAST_2_EUAP: { name: 'eastus2euap', options: ['eastus2euap'] },

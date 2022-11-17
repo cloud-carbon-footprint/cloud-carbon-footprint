@@ -6,11 +6,13 @@ import {
   GroupBy,
   LookupTableInput,
   LookupTableOutput,
+  RecommendationResult,
 } from '@cloud-carbon-footprint/common'
 
 import AzureAccount from '../application/AzureAccount'
 import AzureCredentialsProvider from '../application/AzureCredentialsProvider'
 import ConsumptionManagementService from '../lib/ConsumptionManagement'
+import AdvisorRecommendations from '../lib/AdvisorRecommendations'
 
 const mockListSubscriptions = { list: jest.fn() }
 
@@ -31,6 +33,11 @@ const createCredentialsSpy = jest.spyOn(AzureCredentialsProvider, 'create')
 const getEstimatesSpy = jest.spyOn(
   ConsumptionManagementService.prototype,
   'getEstimates',
+)
+
+const getRecommendationsSpy = jest.spyOn(
+  AdvisorRecommendations.prototype,
+  'getRecommendations',
 )
 
 describe('Azure Account', () => {
@@ -135,6 +142,79 @@ describe('Azure Account', () => {
       endDate,
       grouping,
     )
+  })
+
+  it('gets results from getDataFromAdvisorManagement function', async () => {
+    const mockCredentials = {
+      clientId: 'test-client-id',
+      secret: 'test-client-secret',
+      domain: 'test-tenant-id',
+    }
+    ;(createCredentialsSpy as jest.Mock).mockResolvedValue(mockCredentials)
+
+    mockListSubscriptions.list.mockReturnValue([
+      { subscriptionId: 'sub-1' },
+      { subscriptionId: 'sub-2' },
+    ])
+
+    const mockRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AZURE',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'useast',
+        recommendationType: 'Shutdown',
+        recommendationDetail:
+          'Delete this Virtual Machine: test-instance-name.',
+        kilowattHourSavings: 272.409501312,
+        resourceId: 'test-id',
+        instanceName: 'test-instance-name',
+        co2eSavings: 0.1118535205147177,
+        costSavings: 20,
+      },
+    ]
+
+    ;(getRecommendationsSpy as jest.Mock).mockResolvedValue(mockRecommendations)
+
+    // when
+    const azureAccount = new AzureAccount()
+    await azureAccount.initializeAccount()
+    const results = await azureAccount.getDataFromAdvisorManagement()
+
+    // then
+    const expectedRecommendations: RecommendationResult[] = [
+      {
+        cloudProvider: 'AZURE',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'useast',
+        recommendationType: 'Shutdown',
+        recommendationDetail:
+          'Delete this Virtual Machine: test-instance-name.',
+        kilowattHourSavings: 272.409501312,
+        resourceId: 'test-id',
+        instanceName: 'test-instance-name',
+        co2eSavings: 0.1118535205147177,
+        costSavings: 20,
+      },
+      {
+        cloudProvider: 'AZURE',
+        accountId: 'test-account',
+        accountName: 'test-account',
+        region: 'useast',
+        recommendationType: 'Shutdown',
+        recommendationDetail:
+          'Delete this Virtual Machine: test-instance-name.',
+        kilowattHourSavings: 272.409501312,
+        resourceId: 'test-id',
+        instanceName: 'test-instance-name',
+        co2eSavings: 0.1118535205147177,
+        costSavings: 20,
+      },
+    ]
+
+    expect(results).toEqual(expectedRecommendations)
+    expect(getRecommendationsSpy).toHaveBeenCalledTimes(2)
   })
 
   it('should getDataFromConsumptionManagementInputData', () => {

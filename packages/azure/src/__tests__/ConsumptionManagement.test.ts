@@ -56,13 +56,6 @@ jest.mock('@azure/arm-consumption', () => {
   }
 })
 
-jest.mock('@cloud-carbon-footprint/common', () => ({
-  ...(jest.requireActual('@cloud-carbon-footprint/common') as Record<
-    string,
-    unknown
-  >),
-}))
-
 describe('Azure Consumption Management Service', () => {
   const startDate = new Date('2020-11-02')
   const endDate = new Date('2020-11-07')
