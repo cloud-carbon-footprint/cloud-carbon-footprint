@@ -69,6 +69,7 @@ import {
   UNKNOWN_USAGE_TYPES,
   UNSUPPORTED_USAGE_TYPES,
   UsageDetailResult,
+  UsageRowPageErrorResponse,
 } from './ConsumptionTypes'
 
 import { AZURE_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
@@ -105,11 +106,10 @@ export default class ConsumptionManagementService {
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
     const usageRows = await this.getConsumptionUsageDetails(startDate, endDate)
-    const allUsageRows = await this.pageThroughUsageRows(usageRows)
     const results: MutableEstimationResult[] = []
     const unknownRows: ConsumptionDetailRow[] = []
 
-    allUsageRows
+    usageRows
       .filter(
         (consumptionRow) =>
           new Date(consumptionRow.properties.date) >= startDate &&
@@ -244,35 +244,11 @@ export default class ConsumptionManagementService {
     consumptionDetailRow.timestamp = new Date(firstDayOfGrouping.toISOString())
   }
 
-  private async pageThroughUsageRows(
-    usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
-  ): Promise<Array<UsageDetailResult>> {
-    const allUsageRows = usageRows
-    const usageRowDetails: Array<UsageDetailResult> = []
-    let currentRow
-    const pageStatus = { hasNextPage: true, retry: false }
-    while (pageStatus.hasNextPage) {
-      try {
-        currentRow = await allUsageRows.next()
-        if (currentRow?.value) {
-          usageRowDetails.push(currentRow.value as UsageDetailResult)
-        }
-        pageStatus.hasNextPage = !currentRow.done
-      } catch (e) {
-        const errorMsg =
-          'Azure Consumption Management UsageDetailRow.next failed. Reason:'
-        await this.waitIfRateLimitExceeded(e, errorMsg, pageStatus)
-      }
-    }
-    pageStatus.retry &&
-      this.consumptionManagementLogger.info(
-        'Retry Successful! Continuing grabbing estimates...',
-      )
-    return usageRowDetails
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getConsumptionTenantValue(e: any, type: string) {
+  private getConsumptionTenantValue(
+    e: UsageRowPageErrorResponse,
+    type: 'retry' | 'remaining',
+  ) {
     const tenantHeaders: TenantHeaders = {
       retry: this.consumptionManagementRetryAfterHeader,
       remaining: this.consumptionManagementRateLimitRemainingHeader,
@@ -281,9 +257,8 @@ export default class ConsumptionManagementService {
   }
 
   private async waitIfRateLimitExceeded(
-    errorResponse: any,
+    errorResponse: UsageRowPageErrorResponse,
     errorMsg: string,
-    pageStatus?: any,
   ) {
     // check to see if error is from exceeding the rate limit and grab retry time value
     const retryAfterValue = this.getConsumptionTenantValue(
@@ -301,31 +276,59 @@ export default class ConsumptionManagementService {
       this.consumptionManagementLogger.info(
         `Retrying after ${retryAfterValue} seconds`,
       )
-      if (pageStatus) pageStatus.retry = true
       await wait(retryAfterValue * 1000)
     } else {
       throw new Error(`${errorMsg} ${errorResponse.message}`)
     }
   }
 
+  private async pageThroughUsageRows(
+    usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
+  ): Promise<Array<UsageDetailResult>> {
+    const usageRowDetails: Array<UsageDetailResult> = []
+    let currentRow
+    let hasNextPage = true
+    try {
+      while (hasNextPage) {
+        currentRow = await usageRows.next()
+        if (currentRow?.value) {
+          usageRowDetails.push(currentRow.value as UsageDetailResult)
+        }
+        hasNextPage = !currentRow.done
+      }
+    } catch (error) {
+      throw error
+    }
+    return usageRowDetails
+  }
+
   private async getConsumptionUsageDetails(
     startDate: Date,
     endDate: Date,
-  ): Promise<PagedAsyncIterableIterator<UsageDetailUnion>> {
+    retry = false,
+  ): Promise<Array<UsageDetailResult>> {
     try {
       const options = {
         expand: 'properties/meterDetails',
         filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
       }
-      return this.consumptionManagementClient.usageDetails.list(
+      const usageRows = this.consumptionManagementClient.usageDetails.list(
         `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
         options,
       )
+      const usageRowDetails = await this.pageThroughUsageRows(usageRows)
+      if (retry) {
+        this.consumptionManagementLogger.info(
+          'Retry Successful! Continuing grabbing estimates...',
+        )
+      }
+      return usageRowDetails
     } catch (e) {
       const errorMsg =
-        'Azure ConsumptionManagementClient.usageDetails.list failed. Reason:'
+        'Azure ConsumptionManagementClient UsageDetailRow paging failed. Reason:'
       await this.waitIfRateLimitExceeded(e, errorMsg)
-      return this.getConsumptionUsageDetails(startDate, endDate)
+      retry = true
+      return this.getConsumptionUsageDetails(startDate, endDate, retry)
     }
   }
 

@@ -9,6 +9,20 @@ export type TenantHeaders = {
   [key: string]: string
 }
 
+export type TenantHeaderMapValue = {
+  name: string
+  value: number
+}
+
+export type UsageRowPageErrorResponse = {
+  response: {
+    headers: {
+      _headersMap: Map<string, TenantHeaderMapValue>
+    }
+  }
+  message: string
+}
+
 export type UsageDetailResult = {
   id: string
   name: string
