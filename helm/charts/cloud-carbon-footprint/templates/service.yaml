@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cloud-carbon-footprint.fullname" . }}-client
+  labels:
+    {{- include "cloud-carbon-footprint.labels" . | nindent 4 }}
+    app.kubernetes.io/component: client
+spec:
+  type: {{ .Values.client.service.type }}
+  ports:
+    - port: {{ .Values.client.service.port.number }}
+      targetPort: http
+      protocol: TCP
+      name: {{ .Values.client.service.port.name }}
+  selector:
+    {{- include "cloud-carbon-footprint.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cloud-carbon-footprint.fullname" . }}-api
+  labels:
+    {{- include "cloud-carbon-footprint.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  type: {{ .Values.client.service.type }}
+  ports:
+    - port: {{ .Values.client.service.port.number }}
+      targetPort: http
+      protocol: TCP
+      name: {{ .Values.client.service.port.name }}
+  selector:
+    {{- include "cloud-carbon-footprint.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: api

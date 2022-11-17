@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cloud-carbon-footprint.fullname" . }}-api
+  labels:
+    {{- include "cloud-carbon-footprint.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  replicas: {{ .Values.api.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cloud-carbon-footprint.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print .Template.BasePath "/configmap-api.yaml") . | sha256sum }}
+      labels:
+        {{- include "cloud-carbon-footprint.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: api
+    spec:
+      {{- with .Values.api.deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cloud-carbon-footprint.fullname" . }}-api
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.api.deployment.image.repository }}:{{ .Values.api.deployment.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.deployment.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "cloud-carbon-footprint.fullname" . }}-api
+          resources:
+            {{- toYaml .Values.api.deployment.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.api.deployment.securityContext | nindent 12 }}
+      {{- with .Values.api.deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.deployment.toleration }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.deployment.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
