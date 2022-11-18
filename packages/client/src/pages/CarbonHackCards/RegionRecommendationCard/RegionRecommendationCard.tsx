@@ -4,7 +4,7 @@ import useStyles from '../../EmissionsMetricsPage/CarbonComparisonCard/carbonCom
 import { AWS_REGIONS } from './AWSRegions'
 import DashboardCard from '../../../layout/DashboardCard'
 import { Typography, CardContent } from '@material-ui/core'
-import { DataGrid, GridColumns } from '@mui/x-data-grid'
+import { DataGrid, GridColumns, GridOverlay } from '@mui/x-data-grid'
 import LoadingMessage from '../../../common/LoadingMessage'
 import ErrorPage from '../../../layout/ErrorPage'
 
@@ -76,20 +76,20 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
     {
       field: 'region',
       headerName: 'Region',
-      width: 265,
+      flex: 0.75,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'actualEmissions',
       headerName: 'Actual Emisssions (Mg)',
-      width: 265,
+      flex: 0.75,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'bestLocation',
-      width: 265,
+      flex: 0.75,
       headerName: 'Best Location',
       headerAlign: 'center',
       align: 'center',
@@ -97,14 +97,14 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
     {
       field: 'expectedEmissions',
       headerName: 'Expected Emissions (Mg)',
-      width: 265,
+      flex: 0.75,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'reduction',
       headerName: 'Reduction in Emissions',
-      width: 265,
+      flex: 0.75,
       headerAlign: 'center',
       align: 'center',
     },
@@ -143,7 +143,7 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
 
   const renderTable = () => {
     return (
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 371, width: '100%' }}>
         <DataGrid
           rows={bestLocationTable(result)}
           columns={columns}
@@ -151,6 +151,15 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
           rowsPerPageOptions={[5]}
           columnBuffer={6}
           rowBuffer={5}
+          hideFooterSelectedRowCount={true}
+          components={{
+            NoRowsOverlay: () => (
+              <GridOverlay>
+                There's no data to display! Expand your search parameters to get
+                started. (Try adding accounts, regions or recommendation types)
+              </GridOverlay>
+            ),
+          }}
         />
       </div>
     )
