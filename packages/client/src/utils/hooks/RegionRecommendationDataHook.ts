@@ -54,6 +54,7 @@ export const useRegionRecommendationData = (
       index++
     }
   }
+  console.log(result, 'Result')
 
   return { result, error, loading }
 }
