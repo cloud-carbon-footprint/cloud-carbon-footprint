@@ -35,9 +35,7 @@ describe('RegionRecommendationCard', () => {
   })
   it('renders the heading for the region recommendation card', async () => {
     const { getByText } = render(<RegionRecommendationCard data={mockData} />)
-    const cardHeading = getByText(
-      'Best Location to Shift your Deployed Location',
-    )
+    const cardHeading = getByText('Best Location to Shift your Deployment')
     expect(cardHeading).toBeInstanceOf(HTMLElement)
   })
   it('renders the table headings for the region recommendation table', async () => {
