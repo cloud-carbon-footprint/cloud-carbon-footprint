@@ -14,6 +14,7 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
   const accountRegionMap = new Map()
 
   const classes = useStyles()
+
   const footPrintData = data !== undefined ? data : []
 
   const findNearestRegions = (
@@ -49,27 +50,42 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
       )
       const endMonth =
         date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-      accountRegionMap.set(account.accountName, [
-        account.region,
-        account.cloudProvider,
-        account.co2e,
-        account.kilowattHours,
-        findNearestRegions(account.region, account.cloudProvider),
-        month.timestamp,
-        `${date.getFullYear()}-${endMonth}-${date.getDate()}T00:00:00.000Z`,
-      ])
+      if (accountRegionMap.get(account.accountName) != undefined) {
+        const previousCo2e = accountRegionMap.get(account.accountName)[2]
+        const previouskilowattHours = accountRegionMap.get(
+          account.accountName,
+        )[3]
+        accountRegionMap.set(account.accountName, [
+          account.region,
+          account.cloudProvider,
+          account.co2e + previousCo2e,
+          account.kilowattHours + previouskilowattHours,
+          findNearestRegions(account.region, account.cloudProvider),
+          month.timestamp,
+          `${date.getFullYear()}-${endMonth}-${date.getDate()}T00:00:00.000Z`,
+        ])
+      } else {
+        accountRegionMap.set(account.accountName, [
+          account.region,
+          account.cloudProvider,
+          account.co2e,
+          account.kilowattHours,
+          findNearestRegions(account.region, account.cloudProvider),
+          month.timestamp,
+          `${date.getFullYear()}-${endMonth}-${date.getDate()}T00:00:00.000Z`,
+        ])
+      }
     })
   })
 
-  const dataToSend = accountRegionMap
-
-  const { result, error, loading } = useRegionRecommendationData(dataToSend)
+  const { result, error, loading } =
+    useRegionRecommendationData(accountRegionMap)
 
   const columns: GridColumns = [
     {
       field: 'id',
       headerName: 'Account',
-      width: 265,
+      width: 250,
       headerAlign: 'center',
       align: 'center',
     },
@@ -119,7 +135,9 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
           (value.carbonIntensity * accountRegionMap.get(key)[3]) / 1000000
         const actualEmissions = accountRegionMap.get(key)[2]
         const percentReduction =
-          100 - (expectedEmissionsForBestLocation * 100) / actualEmissions
+          actualEmissions === 0
+            ? 0
+            : 100 - (expectedEmissionsForBestLocation * 100) / actualEmissions
         const reduction =
           accountRegionMap.get(key)[0] === value.location
             ? 0
@@ -128,11 +146,13 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
           accountRegionMap.get(key)[0] === value.location
             ? actualEmissions.toFixed(5)
             : expectedEmissionsForBestLocation.toFixed(5)
+        const bestLocation =
+          actualEmissions <= expectedEmissions ? '-' : value.location
         array.push({
           id: key,
           region: accountRegionMap.get(key)[0],
           actualEmissions: actualEmissions.toFixed(5),
-          bestLocation: value.location,
+          bestLocation: bestLocation,
           expectedEmissions: expectedEmissions,
           reduction: `${reduction} %`,
         })
@@ -178,7 +198,7 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
             data-testid="co2"
           >
             {' '}
-            Best Location to Shift your Deployed Location
+            Best Location to Shift your Deployment
           </Typography>
           <Typography className={classes.posOne}></Typography>
         </CardContent>

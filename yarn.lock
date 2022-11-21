@@ -1011,7 +1011,7 @@ __metadata:
     https-proxy-agent: ^5.0.0
     tslib: ^2.2.0
     uuid: ^8.3.0
-  checksum: a8d21693251b7c2c87b52c62b4dd4a37901a82be8b050283821a56ec80257ef39cb2aa36f7f57bf0cb425ab4c04d84df74e019db8a6b404f1d40a81a08f8e260
+  checksum: 4292dd0deb57820a23bf82601b10c6c15a38e867dd0974073671f373c37766453eaa1baf17856a8259b65ce206c374752ef22c5e3a2e1b95af4df1f7a9ea3567
   languageName: node
   linkType: hard
 
@@ -1048,7 +1048,7 @@ __metadata:
   dependencies:
     "@azure/abort-controller": ^1.0.0
     tslib: ^2.2.0
-  checksum: 0c4a9e086a65e2411bf858fd36ecb8ff08b9941be081b37c6268ca0c3cfeebe18e863cced3d744201487519bb3698507096a890f63987e9179acf590c01d9561
+  checksum: a0a9cce9452f78babb224fa2ea5566811bd946c55e5c867ca75e6ecd7fcf796b2ec2aa7424e141f03d8e14141e80f048897d0d3c227a7ff0bbaa9ba3d2fc14c9
   languageName: node
   linkType: hard
 
@@ -6092,7 +6092,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/openapi-types@npm:^12.11.0":
+"@octokit/openapi-types@npm:^12.7.0":
   version: 12.11.0
   resolution: "@octokit/openapi-types@npm:12.11.0"
   checksum: 8a7d4bd6288cc4085cabe0ca9af2b87c875c303af932cb138aa1b2290eb69d32407759ac23707bb02776466e671244a902e9857896903443a69aff4b6b2b0e3b
@@ -6180,7 +6180,7 @@ __metadata:
   resolution: "@octokit/types@npm:6.41.0"
   dependencies:
     "@octokit/openapi-types": ^12.7.0
-  checksum: 0e3d55e4bdef41e652a2e99a304cebada90f23a90619c49ab892a76ae908c4281316738453348c9ba30b32250ef5eda0a939c2af3aec5ca808acdf9922da420c
+  checksum: fd6f75e0b19b90d1a3d244d2b0c323ed8f2f05e474a281f60a321986683548ef2e0ec2b3a946aa9405d6092e055344455f69f58957c60f58368c8bdda5b7d2ab
   languageName: node
   linkType: hard
 

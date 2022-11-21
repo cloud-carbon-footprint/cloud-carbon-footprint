@@ -54,7 +54,6 @@ describe('RegionRecommendationCard', () => {
     const { getByRole } = render(
       <RegionRecommendationCard data={newMockData} />,
     )
-    console.log(newMockData, 'new mock data', newMockData.length)
     const gridData = within(getByRole('grid'))
     expect(gridData.getByText('test-a')).not.toBeNull()
     expect(gridData.getByText('test-b')).not.toBeNull()
