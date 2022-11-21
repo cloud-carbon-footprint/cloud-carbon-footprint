@@ -14,7 +14,6 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
   const accountRegionMap = new Map()
 
   const classes = useStyles()
-
   const footPrintData = data !== undefined ? data : []
 
   const findNearestRegions = (
