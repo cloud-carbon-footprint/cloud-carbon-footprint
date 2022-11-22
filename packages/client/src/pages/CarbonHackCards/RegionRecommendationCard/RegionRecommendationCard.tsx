@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement } from 'react'
 import { useRegionRecommendationData } from '../../../utils/hooks/RegionRecommendationDataHook'
 import useStyles from '../../EmissionsMetricsPage/CarbonComparisonCard/carbonComparisonStyles'
-import { AWS_REGIONS } from './AWSRegions'
+import { AWS_REGIONS, AZURE_REGIONS, GCP_REGIONS } from './CloudRegions'
 import DashboardCard from '../../../layout/DashboardCard'
 import { Typography, CardContent } from '@material-ui/core'
 import { DataGrid, GridColumns, GridOverlay } from '@mui/x-data-grid'
@@ -23,18 +23,29 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
     if (cloudProvider === 'AWS') {
       return getNearestRegionFromEnum(accountRegion, AWS_REGIONS)
     } else if (cloudProvider === 'AZURE') {
-      return ['ukwest', 'UK South']
+      return getNearestRegionFromObject(accountRegion, AZURE_REGIONS)
     } else {
-      return ['us-east1', 'us-west1', 'us-east4', 'us-west2']
+      return getNearestRegionFromEnum(accountRegion, GCP_REGIONS)
     }
   }
 
   const getNearestRegionFromEnum = (accountRegion: string, REGIONS: any) => {
     const nearestRegions = []
     const countryPrefix: string = accountRegion.slice(0, 2).toUpperCase()
-    for (const awsRegionName in REGIONS) {
-      if (awsRegionName.startsWith(countryPrefix)) {
-        nearestRegions.push(REGIONS[awsRegionName])
+    for (const regionName in REGIONS) {
+      if (regionName.startsWith(countryPrefix)) {
+        nearestRegions.push(REGIONS[regionName])
+      }
+    }
+    return nearestRegions
+  }
+
+  const getNearestRegionFromObject = (accountRegion: string, REGIONS: any) => {
+    const nearestRegions = []
+    const countryPrefix: string = accountRegion.slice(0, 2).toUpperCase()
+    for (const regionPair in Object.entries(REGIONS)) {
+      if (regionPair[0].startsWith(countryPrefix)) {
+        nearestRegions.push(regionPair[1])
       }
     }
     return nearestRegions
