@@ -44,7 +44,7 @@ export class ForecastLineChart extends React.Component<
         },
         title: {
           text: '',
-          align: 'left',
+          // align: 'left',
         },
         grid: {
           row: {
@@ -53,6 +53,11 @@ export class ForecastLineChart extends React.Component<
           },
         },
         xaxis: {
+          title: {
+            text: 'Optimal time',
+            offsetX: 0,
+            offsetY: 200,
+          },
           categories: cropped_category.map(
             (category) =>
               category.toString().split(' ')[1] +
@@ -61,9 +66,6 @@ export class ForecastLineChart extends React.Component<
               '; ' +
               category.toString().split(' ')[4].slice(0, -3),
           ),
-          title: {
-            text: 'Optimal time',
-          },
         },
         yaxis: {
           title: {

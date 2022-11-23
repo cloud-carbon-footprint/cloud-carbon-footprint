@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import React from 'react'
 import { ServiceResult } from 'src/Types'
 
-interface ForecastResult {
+export interface ForecastResult {
   dataEndAt: string
   dataStartAt: string
   forecastData: LocationData[]

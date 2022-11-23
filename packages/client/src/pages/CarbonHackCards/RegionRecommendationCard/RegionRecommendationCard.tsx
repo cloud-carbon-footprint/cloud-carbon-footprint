@@ -8,15 +8,24 @@ import { DataGrid, GridColumns, GridOverlay } from '@mui/x-data-grid'
 import LoadingMessage from '../../../common/LoadingMessage'
 import ErrorPage from '../../../layout/ErrorPage'
 
+function compare(a, b) {
+  const date1 = new Date(a.timestamp)
+  const date2 = new Date(b.timestamp)
+  if (date1.getTime() > date2.getTime()) {
+    return 1
+  } else if (date1.getTime() < date2.getTime()) {
+    return -1
+  }
+  return 0
+}
+
 const RegionRecommendationCard: FunctionComponent<any> = ({
   data,
 }): ReactElement => {
   const accountRegionMap = new Map()
 
   const classes = useStyles()
-
-  const footPrintData = data !== undefined ? data : []
-
+  const footPrintData = data !== undefined ? data.sort(compare) : []
   const findNearestRegions = (
     accountRegion: string,
     cloudProvider: string,
@@ -44,11 +53,12 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
   const getNearestRegionFromObject = (accountRegion: string, REGIONS: any) => {
     const nearestRegions = []
     const countryPrefix: string = accountRegion.slice(0, 2).toUpperCase()
-    for (const regionPair in Object.entries(REGIONS)) {
-      if (regionPair[0].startsWith(countryPrefix)) {
-        nearestRegions.push(regionPair[1])
+    for (const key in REGIONS) {
+      if (key.startsWith(countryPrefix)) {
+        nearestRegions.push(REGIONS[key].name)
       }
     }
+
     return nearestRegions
   }
 
@@ -88,7 +98,6 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
       }
     })
   })
-
   const { result, error, loading } =
     useRegionRecommendationData(accountRegionMap)
 
@@ -157,11 +166,12 @@ const RegionRecommendationCard: FunctionComponent<any> = ({
           accountRegionMap.get(key)[0] === value.location
             ? actualEmissions.toFixed(5)
             : expectedEmissionsForBestLocation.toFixed(5)
+        const actualLocation = accountRegionMap.get(key)[0]
         const bestLocation =
-          actualEmissions <= expectedEmissions ? '-' : value.location
+          actualEmissions <= expectedEmissions ? actualLocation : value.location
         array.push({
           id: key,
-          region: accountRegionMap.get(key)[0],
+          region: actualLocation,
           actualEmissions: actualEmissions.toFixed(5),
           bestLocation: bestLocation,
           expectedEmissions: expectedEmissions,

@@ -30,22 +30,20 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
   const optimalRegionTimeMap = (result) => {
     const row = []
     for (const [key, value] of result) {
-      if (value != undefined) {
-        value.optimalDataPoints.map((eachOptimalTime) => {
-          const [date, time] = convertUTCtoLocalTime(eachOptimalTime.timestamp)
-          row.push({
-            id: key,
+      value.optimalDataPoints.map((eachOptimalTime) => {
+        const [date, time] = convertUTCtoLocalTime(eachOptimalTime.timestamp)
+        row.push({
+          id: key,
+          region: accountRegionMap.get(key)[0],
+          date: date,
+          time: time,
+          rating: eachOptimalTime.value,
+          moreinfo: {
+            forecastData: value.forecastData,
             region: accountRegionMap.get(key)[0],
-            date: date,
-            time: time,
-            rating: eachOptimalTime.value,
-            moreinfo: {
-              forecastData: value.forecastData,
-              region: accountRegionMap.get(key)[0],
-            },
-          })
+          },
         })
-      }
+      })
     }
     return row
   }
@@ -108,6 +106,7 @@ const ForecastCard: FunctionComponent<any> = ({ data }): ReactElement => {
 
   const renderTable = () => {
     return (
+      // <div style={{ height: 371, width: '100%' }}>
       <div style={{ height: 371, width: '100%' }}>
         <DataGrid
           rows={optimalRegionTimeMap(result)}
