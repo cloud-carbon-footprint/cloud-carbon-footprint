@@ -72,4 +72,27 @@ describe('Region Recommendation Service hook', () => {
       expect(result.current.loading).toBe(false)
     })
   })
+
+  it('Throws error', async () => {
+    const testPromise1 = new Promise((resolve, reject) => {
+      reject(new Error('reject 1'))
+    })
+    const testPromise2 = new Promise((resolve, reject) => {
+      reject(new Error('reject 1'))
+    })
+    const testPromise3 = new Promise((resolve, reject) => {
+      reject(new Error('reject 1'))
+    })
+    const params = [testPromise1, testPromise2, testPromise3]
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useRemoteRegionRecommendationService(params),
+    )
+
+    await waitForNextUpdate()
+
+    await waitFor(() => {
+      expect(result.current.error).not.toBeNull()
+    })
+  })
 })
