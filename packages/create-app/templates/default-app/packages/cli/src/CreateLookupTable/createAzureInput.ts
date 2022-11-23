@@ -64,13 +64,13 @@ async function createAzureInput(argv: string[] = process.argv): Promise<void> {
     header,
   })
 
-  const azureData = await getConsumptionUsageDetails()
+  const azureData = await getConsumptionUsageDetails(startDate, endDate)
   await csvWriter.writeRecords(azureData)
   console.info('File saved to ', targetDestination)
   console.info('Azure Input CSV successfully created! Have fun out there :D')
 }
 
-async function getConsumptionUsageDetails() {
+async function getConsumptionUsageDetails(startDate: Date, endDate: Date) {
   const credentials = await AzureCredentialsProvider.create()
   const subscriptionClient = new SubscriptionClient(credentials)
 
@@ -83,9 +83,6 @@ async function getConsumptionUsageDetails() {
       'No subscription returned for these Azure credentials, be sure the registered application has ' +
         'enough permissions. Go to https://www.cloudcarbonfootprint.org/docs/azure/ for more information.',
     )
-  const endDate = new Date()
-  const startDate = new Date()
-  startDate.setDate(endDate.getDate() - 30) // Subtract 30 days
 
   let usageDetails: Array<LegacyUsageDetail | ModernUsageDetail> = []
   console.info(
@@ -102,10 +99,12 @@ async function getConsumptionUsageDetails() {
       subscription.id,
     )
     console.info(`Getting usage rows for ${subscription.displayName}`)
-    const usageRows: PagedAsyncIterableIterator<UsageDetailUnion> =
-      await getUsageRows(startDate, endDate, consumptionManagementClient)
+    const usageRowDetails = await getUsageRows(
+      startDate,
+      endDate,
+      consumptionManagementClient,
+    )
 
-    const usageRowDetails = await pageThroughUsageRows(usageRows)
     usageDetails = usageDetails.concat(usageRowDetails)
   }
 
@@ -158,48 +157,58 @@ async function getConsumptionUsageDetails() {
 
 /* --------- Helpers ---------- */
 
-// This part is going to take a while, so grab a coffee and a good book
 async function getUsageRows(
   startDate: Date,
   endDate: Date,
   consumptionManagementClient: ConsumptionManagementClient,
-): Promise<PagedAsyncIterableIterator<UsageDetailUnion>> {
+  retry = false,
+): Promise<Array<LegacyUsageDetail | ModernUsageDetail>> {
   try {
     const options = {
       expand: 'properties/meterDetails',
       filter: `properties/usageStart ge '${startDate.toISOString()}' AND properties/usageEnd le '${endDate.toISOString()}'`,
     }
-    return consumptionManagementClient.usageDetails.list(
+    const usageRows = consumptionManagementClient.usageDetails.list(
       `/${consumptionManagementClient.subscriptionId}/`,
       options,
     )
+    const usageRowDetails = await pageThroughUsageRows(usageRows)
+    if (retry) {
+      console.log('Retry Successful! Continuing grabbing estimates...')
+    }
+    return usageRowDetails
   } catch (e) {
     const retryAfterValue = getConsumptionTenantValue(e, 'retry')
     const rateLimitRemainingValue = getConsumptionTenantValue(e, 'remaining')
     const errorMsg =
-      'Azure ConsumptionManagementClient.usageDetails.list failed. Reason:'
+      'Azure ConsumptionManagementClient UsageDetailRow paging failed. Reason:'
     if (rateLimitRemainingValue == 0) {
       console.warn(`${errorMsg} ${e.message}`)
       console.log(`Retrying after ${retryAfterValue} seconds`)
+      retry = true
       await wait(retryAfterValue * 1000)
-      return getUsageRows(startDate, endDate, consumptionManagementClient)
+      return getUsageRows(
+        startDate,
+        endDate,
+        consumptionManagementClient,
+        retry,
+      )
     } else {
       throw new Error(`${errorMsg} ${e.message}`)
     }
   }
 }
 
+// This part is going to take a while, so grab a coffee and a good book
 async function pageThroughUsageRows(
   usageRows: PagedAsyncIterableIterator<UsageDetailUnion>,
 ): Promise<Array<LegacyUsageDetail | ModernUsageDetail>> {
-  const allUsageRows = usageRows
   const usageRowDetails: Array<LegacyUsageDetail | ModernUsageDetail> = []
   let currentRow
   let hasNextPage = true
-  let retry = false
-  while (hasNextPage) {
-    try {
-      currentRow = await allUsageRows.next()
+  try {
+    while (hasNextPage) {
+      currentRow = await usageRows.next()
       if (currentRow?.value) {
         const details =
           currentRow.value.kind === 'modern'
@@ -208,23 +217,10 @@ async function pageThroughUsageRows(
         usageRowDetails.push(details)
       }
       hasNextPage = !currentRow.done
-    } catch (e) {
-      // check to see if error is from exceeding the rate limit and grab retry time value
-      const retryAfterValue = getConsumptionTenantValue(e, 'retry')
-      const rateLimitRemainingValue = getConsumptionTenantValue(e, 'remaining')
-      const errorMsg =
-        'Azure ConsumptionManagementClient.usageDetails.listNext failed. Reason:'
-      if (rateLimitRemainingValue == 0) {
-        console.warn(`${errorMsg} ${e.message}`)
-        console.log(`Retrying after ${retryAfterValue} seconds`)
-        retry = true
-        await wait(retryAfterValue * 1000)
-      } else {
-        throw new Error(`${errorMsg} ${e.message}`)
-      }
     }
+  } catch (error) {
+    throw error
   }
-  retry && console.log('Retry Successful! Continuing grabbing estimates...')
   return usageRowDetails
 }
 
@@ -238,4 +234,5 @@ function getConsumptionTenantValue(e: any, type: string) {
 
 createAzureInput().catch((error) => {
   console.error(`Something went wrong: ${error.message}`)
+  console.trace(error)
 })
