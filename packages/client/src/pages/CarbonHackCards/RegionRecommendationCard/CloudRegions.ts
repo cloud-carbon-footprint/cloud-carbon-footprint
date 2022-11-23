@@ -110,7 +110,7 @@ export const AZURE_REGIONS = {
     name: 'switzerlandwest',
     options: ['switzerlandwest'],
   },
-  UK_SOUTH: { name: 'uksouth', options: ['uksouth', 'UKSOUTH'] },
+  UK_SOUTH: { name: 'UK South', options: ['uksouth', 'UKSOUTH'] },
   UK_WEST: { name: 'ukwest', options: ['ukwest'] },
   EU_GERMANY: { name: 'germany', options: ['germany'] },
   EU_GERMANY_NORTH: { name: 'germanynorth', options: ['germanynorth'] },

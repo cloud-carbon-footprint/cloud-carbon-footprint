@@ -4,6 +4,9 @@ import RegionRecommendationCard from './RegionRecommendationCard'
 import { mockData } from '../../../utils/data/mockData'
 import useRemoteRegionRecommendationService from '../../../utils/hooks/RegionRecommendationServiceHook'
 import regionRecomendationMockReturnValue from './RegionRecommendationMockReturnValue'
+import { ServiceResult } from '../../../Types'
+import { BestLocationData } from '../../../utils/hooks/RegionRecommendationDataHook'
+import { BrowserRouter } from 'react-router-dom'
 
 jest.mock('../../../utils/hooks/RegionRecommendationServiceHook')
 const mockUseRemoteService =
@@ -57,5 +60,41 @@ describe('RegionRecommendationCard', () => {
     expect(gridData.getByText('test-b')).not.toBeNull()
     expect(gridData.getByText('test-c')).not.toBeNull()
     expect(gridData.getByText('test-d')).not.toBeNull()
+  })
+  it('should show loading icon if data has not been returned', () => {
+    const mockLoading: ServiceResult<BestLocationData[]> = {
+      loading: true,
+      data: [],
+      error: null,
+    }
+    mockUseRemoteService.mockReturnValue(mockLoading)
+
+    const { getByRole, getByText } = render(
+      <RegionRecommendationCard data={newMockData} />,
+    )
+
+    expect(getByRole('progressbar')).toBeInTheDocument()
+    expect(
+      getByText('Loading cloud data. This may take a while...'),
+    ).toBeInTheDocument()
+  })
+  it('should show error icon if data fetching caused an error', () => {
+    const mockLoading: ServiceResult<BestLocationData[]> = {
+      loading: false,
+      data: [],
+      error: new Error('Error loading cloud data'),
+    }
+    mockUseRemoteService.mockReturnValue(mockLoading)
+
+    const { getByTestId } = render(
+      <RegionRecommendationCard data={newMockData} />,
+      {
+        wrapper: BrowserRouter,
+      },
+    )
+
+    expect(getByTestId('error-message')).toHaveTextContent(
+      'Error loading cloud data',
+    )
   })
 })

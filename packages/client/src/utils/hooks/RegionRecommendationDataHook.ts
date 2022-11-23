@@ -12,7 +12,7 @@ export interface BestLocationData {
 export const useRegionRecommendationData = (
   params: Map<string, any>,
 ): DataResult<Map<string, any>> => {
-  const baseUrl = 'http://localhost:5073'
+  const baseUrl = process.env.REACT_APP_CARBON_AWARE_SDK_BASE_URL
 
   const promiseArray = []
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -54,6 +54,5 @@ export const useRegionRecommendationData = (
       index++
     }
   }
-
   return { result, error, loading }
 }
