@@ -178,6 +178,25 @@ export default class MongoDbCacheManager extends CacheManager {
               }
             })
 
+            let addToSet: unknown = {
+              $dateToString: {
+                date: '$timestamp',
+                format: '%Y-%m-%d',
+              },
+            }
+
+            if (request.cloudProviderToSeed) {
+              addToSet = {
+                $cond: {
+                  if: {
+                    $eq: ['$cloudProvider', request.cloudProviderToSeed],
+                  },
+                  then: '$timestamp',
+                  else: '$$REMOVE',
+                },
+              }
+            }
+
             resolve(
               await estimates
                 .aggregate(
@@ -186,12 +205,7 @@ export default class MongoDbCacheManager extends CacheManager {
                       $group: {
                         _id: null,
                         dates: {
-                          $addToSet: {
-                            $dateToString: {
-                              date: '$timestamp',
-                              format: '%Y-%m-%d',
-                            },
-                          },
+                          $addToSet: addToSet,
                         },
                       },
                     },

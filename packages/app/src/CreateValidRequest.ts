@@ -22,6 +22,7 @@ export interface EstimationRequest {
   startDate: Date
   endDate: Date
   region?: string // Deprecated param (used only for the unsupported Higher Accuracy Approach)
+  cloudProviderToSeed?: string // Used only for seeding cache file with MongoDB
   ignoreCache: boolean
   groupBy?: string
   limit?: number
@@ -41,6 +42,7 @@ interface FormattedEstimationRequest {
   startDate: moment.Moment
   endDate: moment.Moment
   region?: string
+  cloudProviderToSeed?: string
   groupBy?: string
   limit?: string
   skip?: string
@@ -63,6 +65,7 @@ const validate = (
     startDate,
     endDate,
     region,
+    cloudProviderToSeed,
     groupBy,
     limit,
     skip,
@@ -113,6 +116,16 @@ const validate = (
     const skipVal = parseInt(skip)
     if (isNaN(skipVal) || skipVal < 0) {
       errors.push('Not a valid skip number')
+    }
+  }
+
+  if (cloudProviderToSeed) {
+    const supportedCloudProviders = ['AWS', 'GCP', 'AZURE']
+    if (
+      typeof cloudProviderToSeed != 'string' ||
+      !supportedCloudProviders.includes(cloudProviderToSeed)
+    ) {
+      errors.push('Not a valid cloud provider to seed')
     }
   }
 

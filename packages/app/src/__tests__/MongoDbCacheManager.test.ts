@@ -536,7 +536,7 @@ describe('MongoDbCacheManager', () => {
           })),
           collection: jest.fn().mockImplementation(() => ({
             countDocuments: jest.fn().mockResolvedValue([{ dates: [] }]),
-            aggregate: jest.fn().mockImplementation(() => ({
+            aggregate: mockAggregation.mockImplementation(() => ({
               toArray: jest.fn().mockResolvedValue([{ dates: ['2022-01-01'] }]),
             })),
           })),
@@ -560,6 +560,21 @@ describe('MongoDbCacheManager', () => {
         })
 
       mockGetDates.mockReturnValue(mockMissingDates)
+      const aggregation = [
+        {
+          $group: {
+            _id: null,
+            dates: {
+              $addToSet: {
+                $dateToString: {
+                  date: '$timestamp',
+                  format: '%Y-%m-%d',
+                },
+              },
+            },
+          },
+        },
+      ]
 
       await mongoDbCacheManager.createDbConnection()
       const missingDates = await mongoDbCacheManager.getMissingDates(
@@ -567,6 +582,9 @@ describe('MongoDbCacheManager', () => {
         'day',
       )
 
+      expect(mockAggregation).toHaveBeenCalledWith(aggregation, {
+        allowDiskUse: true,
+      })
       expect(JSON.stringify(missingDates)).toEqual(
         JSON.stringify([moment.utc(new Date('2022-01-02'))]),
       )
@@ -589,6 +607,54 @@ describe('MongoDbCacheManager', () => {
 
       expect(JSON.stringify(missingDates)).toEqual(
         JSON.stringify(mockMissingDates),
+      )
+    })
+
+    it('returns only the missing dates of a specific cloud provider when configured', async () => {
+      const mongoDbCacheManager = new MongoDbCacheManager()
+
+      jest
+        .spyOn(MongoDbCacheManager.prototype, 'createDbConnection')
+        .mockImplementation(async () => {
+          mongoDbCacheManager.mongoClient = mockClient as mongo.MongoClient
+        })
+
+      mockGetDates.mockReturnValue(mockMissingDates)
+      const newRequest = {
+        ...request,
+        cloudProviderToSeed: 'AWS',
+      }
+      const aggregation = [
+        {
+          $group: {
+            _id: null,
+            dates: {
+              $addToSet: {
+                $cond: {
+                  if: {
+                    $eq: ['$cloudProvider', newRequest.cloudProviderToSeed],
+                  },
+                  then: '$timestamp',
+                  else: '$$REMOVE',
+                },
+              },
+            },
+          },
+        },
+      ]
+
+      await mongoDbCacheManager.createDbConnection()
+      const missingDates = await mongoDbCacheManager.getMissingDates(
+        newRequest,
+        'day',
+      )
+
+      expect(mockAggregation).toHaveBeenCalledWith(aggregation, {
+        allowDiskUse: true,
+      })
+
+      expect(JSON.stringify(missingDates)).toEqual(
+        JSON.stringify([moment.utc(new Date('2022-01-02'))]),
       )
     })
 
