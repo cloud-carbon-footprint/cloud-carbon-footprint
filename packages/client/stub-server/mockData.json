@@ -1332,7 +1332,7 @@
           "accountName": "aws account 1",
           "serviceName": "ec2",
           "kilowattHours": 50.933103987612505,
-          "co2e": 0.020084,
+          "co2e": 3,
           "cost": 2.014818576889102,
           "region": "us-west-1",
           "usesAverageCPUConstant": false
@@ -1352,7 +1352,7 @@
           "accountName": "aws account 2",
           "serviceName": "lambda",
           "kilowattHours": 70.47173348463286,
-          "co2e": 0.0435,
+          "co2e": 5,
           "cost": 1.8418849726705238,
           "region": "us-east-1",
           "usesAverageCPUConstant": false
@@ -1362,7 +1362,7 @@
           "accountName": "gcp account 3",
           "serviceName": "computeEngine",
           "kilowattHours": 57.666701915218034,
-          "co2e": 0.0223,
+          "co2e": 1,
           "cost": 1.611910606014586,
           "region": "us-east1",
           "usesAverageCPUConstant": false
@@ -1372,7 +1372,7 @@
           "accountName": "azure account 2",
           "serviceName": "virtualMachines",
           "kilowattHours": 50.773157853289746,
-          "co2e": 0.02011,
+          "co2e": 5,
           "cost": 2.2728625664822433,
           "region": "UK South",
           "usesAverageCPUConstant": false

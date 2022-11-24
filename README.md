@@ -26,6 +26,11 @@ Please read through our [code of conduct](CODE_OF_CONDUCT.md) for our expectatio
 ⭐️Give us a star if you like the project or find this work interesting!
 
 
+### Don’t be shy! 
+If you're using or planning to use CCF in any capacity, please add to our list of **[adopters](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/ADOPTERS.md)**. Having an understanding of the use of CCF (what it's being used for, what setup is used, cloud providers used, size of org and data, etc.) will help us better evolve the tool to meet the needs of this community.
+
+Additionally, please fill out our **[feedback form](https://forms.gle/Sp58KuwvGiYNS7ko6)** to provide us more insight about your use of CCF and how we can best support your needs.
+
 Reach out with any questions, support requests, and further discussions in our **[discussion google group](https://groups.google.com/g/cloud-carbon-footprint)**.
 
 
@@ -34,9 +39,3 @@ Reach out with any questions, support requests, and further discussions in our *
 Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 © 2021 Thoughtworks, Inc.
-
-
-
-
-
-

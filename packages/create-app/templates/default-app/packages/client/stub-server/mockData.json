@@ -1332,7 +1332,7 @@
           "accountName": "aws account 1",
           "serviceName": "ec2",
           "kilowattHours": 50.933103987612505,
-          "co2e": 0.020084,
+          "co2e": 5,
           "cost": 2.014818576889102,
           "region": "us-west-1",
           "usesAverageCPUConstant": false

@@ -22,12 +22,12 @@ export interface DataResult<T> {
 export const useForecastData = (
   params: Map<string, string[]>,
 ): DataResult<Map<string, OptimalTime[]>> => {
-  const baseUrl = `http://localhost:5073/emissions/forecasts/current`
+  const baseUrl = process.env.REACT_APP_CARBON_AWARE_SDK_BASE_URL
 
   const promiseArray = []
   for (const parameter of params) {
     const promise = axios.get(
-      `${baseUrl}?location=${parameter[1][0]}&windowSize=${parameter[1][1]}`,
+      `${baseUrl}/emissions/forecasts/current?location=${parameter[1][0]}&windowSize=${parameter[1][1]}`,
       {
         headers: {
           'Content-Type': 'application/json',
