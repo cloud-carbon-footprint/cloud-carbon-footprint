@@ -20,10 +20,8 @@ Parameters:
     AllowedValues: ["True", "False"]
 
 Conditions:
-  USWest2: !Equals [ !Ref "AWS::Region", 'us-west-2' ]
-  CreateCentralBucketCond: !And
+  CreateCentralBucketCond:
     - !Equals [ !Ref CreateCentralBucket, "True" ]
-    - !Condition USWest2
 Resources:
   centralBucket:
     Condition: CreateCentralBucketCond
@@ -75,7 +73,6 @@ Resources:
               Bool:
                 'aws:SecureTransport': false
   LambdaExecutionRole:
-    Condition: USWest2
     Type: AWS::IAM::Role
     Properties:
       RoleName: ComputeOptimizerExportRole
@@ -89,7 +86,6 @@ Resources:
           Action: "sts:AssumeRole"
       Path: "/"
   LambdaPolicy:
-    Condition: USWest2
     Type: AWS::IAM::Policy
     Properties:
       Roles:
@@ -137,7 +133,7 @@ Resources:
     Properties:
       Runtime: nodejs14.x
       Timeout: 300
-      Role: !If [USWest2, !GetAtt LambdaExecutionRole.Arn, !Sub 'arn:aws:iam::${AWS::AccountId}:role/ComputeOptimizerExportRole']
+      Role: !GetAtt LambdaExecutionRole.Arn
       Handler: index.handler
       Code:
         ZipFile: |
@@ -208,7 +204,7 @@ Resources:
     Properties:
       Runtime: nodejs14.x
       Timeout: 300
-      Role: !If [USWest2, !GetAtt LambdaExecutionRole.Arn, !Sub 'arn:aws:iam::${AWS::AccountId}:role/ComputeOptimizerExportRole']
+      Role: !GetAtt LambdaExecutionRole.Arn
       Handler: index.handler
       Code:
         ZipFile: |
