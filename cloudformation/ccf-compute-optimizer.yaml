@@ -20,8 +20,7 @@ Parameters:
     AllowedValues: ["True", "False"]
 
 Conditions:
-  CreateCentralBucketCond:
-    - !Equals [ !Ref CreateCentralBucket, "True" ]
+  CreateCentralBucketCond: !Equals [ !Ref CreateCentralBucket, "True" ]
 Resources:
   centralBucket:
     Condition: CreateCentralBucketCond
