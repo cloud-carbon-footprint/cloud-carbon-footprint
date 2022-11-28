@@ -149,7 +149,7 @@ When we don’t know the underlying processor micro-architecture, we use the ave
 **AWS:**
 
 - Average Min Watts: 0.74
-- Average Max Matts: 3.5
+- Average Max Watts: 3.5
 
 **GCP:**
 
@@ -159,7 +159,7 @@ When we don’t know the underlying processor micro-architecture, we use the ave
 **Azure:**
 
 - Average Min Watts: 0.78
-- Average Max Matts: 3.76
+- Average Max Watts: 3.76
 
 #### Graphic Processing Units (GPUs)
 
