@@ -125,6 +125,8 @@ From the root directory, run:
 
 `yarn seed-cache-file`
 
-You will then be prompted enter a start date, end date and groupBy parameter. Once this process is finished running. A new cache file will be created in the CLI directory. In order to use the cache file to run with the front-end client package, you will have to copy the cache file to the API directory before starting the application.
+You will then be prompted enter a start date, end date and groupBy parameter. Optionally, you can specify a specific cloud provider to seed. This will allow you to append estimations to given dates in your requested time frame that may be missing from a newly configured cloud provider.
+
+Once this process is finished running. A new cache file will be created in the CLI directory. In order to use the cache file to run with the front-end client package, you will have to copy the cache file to the API directory before starting the application.
 
 _Note: If you end up seeing an error due to memory limitations, you will either have to adjust to a smaller date range or change the grouping method._

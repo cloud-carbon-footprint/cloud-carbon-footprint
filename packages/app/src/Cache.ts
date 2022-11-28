@@ -163,6 +163,7 @@ const getMissingDataRequests = (
       ignoreCache: false,
       groupBy: request.groupBy,
       region: request.region,
+      cloudProviderToSeed: request.cloudProviderToSeed,
     }
   })
 }

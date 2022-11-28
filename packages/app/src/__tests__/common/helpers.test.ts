@@ -7,6 +7,7 @@ import {
   writeToFile,
   getCacheFileName,
   getMissingDates,
+  includeCloudProviders,
 } from '../../common/helpers'
 import { Readable, Stream } from 'stream'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
@@ -77,6 +78,7 @@ describe('common/helpers.ts', () => {
       expect(cacheFile).toEqual('my-cache-file.day.json')
     })
   })
+
   it('gets missing dates', () => {
     const estimates: EstimationResult[] = [
       {
@@ -101,5 +103,26 @@ describe('common/helpers.ts', () => {
     const expectedDate = moment.utc(request.startDate).startOf('day')
 
     expect(missingDates).toEqual([moment.utc(expectedDate.toDate())])
+  })
+
+  it('modifies config for included cloud providers based on seed value', () => {
+    const config = {
+      AWS: {
+        INCLUDE_ESTIMATES: false,
+      },
+      GCP: {
+        INCLUDE_ESTIMATES: true,
+      },
+      AZURE: {
+        INCLUDE_ESTIMATES: true,
+      },
+    }
+    const cloudProviderToSeed = 'AWS'
+
+    includeCloudProviders(cloudProviderToSeed, config)
+
+    expect(config.AWS.INCLUDE_ESTIMATES).toBe(true)
+    expect(config.GCP.INCLUDE_ESTIMATES).toBe(false)
+    expect(config.AZURE.INCLUDE_ESTIMATES).toBe(false)
   })
 })

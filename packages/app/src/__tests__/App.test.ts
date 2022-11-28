@@ -52,11 +52,16 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
     string,
     unknown
   >),
-  Logger: jest.fn(),
+  Logger: jest.fn().mockImplementation(() => {
+    return {
+      info: jest.fn(),
+    }
+  }),
   cache: jest.fn(),
   configLoader: jest.fn().mockImplementation(() => {
     return {
       AWS: {
+        INCLUDE_ESTIMATES: true,
         accounts: [{ id: '12345678', name: 'test AWS account' }],
         NAME: 'AWS',
         CURRENT_SERVICES: [{ key: 'testService', name: 'service' }],
@@ -71,6 +76,7 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
         },
       },
       GCP: {
+        INCLUDE_ESTIMATES: true,
         projects: [
           { id: '987654321', name: 'test GCP account' },
           { id: '11223344', name: 'test GCP account 2' },

@@ -188,3 +188,19 @@ export const filterCachedEstimates = (
     return serviceEstimates.length !== 0
   })
 }
+
+export const includeCloudProviders = (
+  cloudProviderToSeed: string,
+  config: any,
+) => {
+  const supportedCloudProviders = ['AWS', 'GCP', 'AZURE']
+  if (cloudProviderToSeed) {
+    supportedCloudProviders.forEach((cloudProvider: string) => {
+      if (cloudProvider === cloudProviderToSeed) {
+        config[cloudProvider].INCLUDE_ESTIMATES = true
+      } else {
+        config[cloudProvider].INCLUDE_ESTIMATES = false
+      }
+    })
+  }
+}
