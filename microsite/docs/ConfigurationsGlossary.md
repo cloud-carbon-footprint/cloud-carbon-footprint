@@ -107,7 +107,7 @@ slug: /configurations-glossary
 
 <br/>
 
-## Optionally set these custom configurations for On-Premise calculations
+### Optionally set these custom configurations for On-Premise calculations
 
 | Variable              | Example Value  | Type   | Notes                                                                               |
 | --------------------- | -------------- | ------ | ----------------------------------------------------------------------------------- |
@@ -120,12 +120,22 @@ slug: /configurations-glossary
 
 <br/>
 
+### Optionally set these variables to configure CORS
+
+| Varibale          | Example Value                            | Type    | Notes                                                                                                      |
+|-------------------|------------------------------------------|---------|------------------------------------------------------------------------------------------------------------|
+| ENABLE_CORS       | true                                     | boolean | Enables default CORS headers on all API requests. By default all origins, methods and headers are allowed. |
+| CORS_ALLOW_ORIGIN | https://example.com,https://example2.com | string  | A list of one or more origins to allow for CORS requests, comma separated.                                 |
+
+<br />
+
 ## Client Package - all variables are optional
 
-| Variable                         | Example Value | Type    | Notes                                                                                                                                               |
-|----------------------------------|---------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| REACT_APP_PREVIOUS_YEAR_OF_USAGE | true          | boolean | Use this to ensure the application requests usage data from the entire previous calendar year to today. Unset to make this false. Defaults to true. |
-| REACT_APP_GROUP_BY               | month         | string  | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year). Defaults to day.                                                   |
-| REACT_APP_DATE_RANGE_VALUE       | 1             | number  | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.                                                                                               |
-| REACT_APP_DATE_RANGE_TYPE        | year          | string  | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s)                                                    |
-| REACT_APP_MINIMAL_DATE_AGE       | 1             | number  | The amount of days to subtract from current date as end date.                                                                                       |
+| Variable                         | Example Value           | Type    | Notes                                                                                                                                               |
+|----------------------------------|-------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| REACT_APP_PREVIOUS_YEAR_OF_USAGE | true                    | boolean | Use this to ensure the application requests usage data from the entire previous calendar year to today. Unset to make this false. Defaults to true. |
+| REACT_APP_GROUP_BY               | month                   | string  | Value to set how the cloud provider queries should return data (e.g. day/week/month/quarter/year). Defaults to day.                                 |
+| REACT_APP_DATE_RANGE_VALUE       | 1                       | number  | The quantity of REACT_APP_DATE_RANGE_TYPE to be used.                                                                                               |
+| REACT_APP_DATE_RANGE_TYPE        | year                    | string  | The type of time period to be used. Values can be day(s), week(s), month(s), quarter(s), year(s)                                                    |
+| REACT_APP_MINIMAL_DATE_AGE       | 1                       | number  | The amount of days to subtract from current date as end date.                                                                                       |
+| REACT_APP_BASE_URL               | https://example.com/api | string  | The base URL used to make API requests.                                                                                                             |ACT_APP_BASE_URL               | https://example.com/api | string  | The base URL used to make API requests.                                                                                                             | The base URL tused to make API requests. |
