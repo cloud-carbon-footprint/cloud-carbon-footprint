@@ -14,6 +14,11 @@ module.exports = {
   projectName: 'www.cloudcarbonfootprint.org', // Usually your repo name.
   plugins: [require.resolve('docusaurus-plugin-image-zoom')],
   themeConfig: {
+    algolia: {
+      appId: 'L8RY6HBDJZ',
+      apiKey: '2b50463b5c42cbd54bd17edc2cfd153b',
+      indexName: 'cloudcarbonfootprint',
+    },
     sidebarCollapsible: true,
     navbar: {
       title: 'Cloud Carbon Footprint',
