@@ -6,19 +6,19 @@ slug: /tagging
 
 ## Overview
 Sometimes it may be necessary to organize your data in ways that will allow for better breakdown and visibility across specific organizations, teams, or shared resources.
-Cloud providers allow for this custom separation of data through the use of tags. These serve as custom key/value pairs that can be assigned to resources in addition to internally-assigned tags by the cloud provider, and both are available for visibility and use within CCF. 
+Cloud providers allow for this custom separation of data through the use of tags. These serve as custom key/value pairs that can be assigned to resources in addition to any internally-assigned tags by the cloud provider, and both are available for visibility and use within CCF. 
 These tags allow for better comparison and insights of carbon emissions across different internal teams or products.
 
 ### Support
 Each estimation result currently includes the associated tags listed for that resource included from the initial cloud provider query. Currently, the visibility of these tags are
 only supported through results queried directly from the API/CLI, and is not yet supported on the client dashboard.
 
-_**Important Note**: Tagging visibility and features are currently only supported for AWS, but we are hard at work with including them in other cloud providers._
+_**Important Note**: Tagging visibility and features are currently only supported for AWS, but we are hard at work with including them for other cloud providers._
 
 ### Filtering Estimates Using Tags
 CCF also allows for resource tags to be specified as a parameter for filtering estimates. This feature is currently only available for cached estimates
-when using the MongoDB cache option. In addition, the desired tags need to have been specified and [included in the cached estimation results](#including-tags-with-estimations)
-in order to be available as a filtering option. To learn more about how to filter data by tags, take a look at [filtering estimates.](./DataPersistenceAndCaching.md#filtering-estimates)
+when using the [MongoDB](./DataPersistenceAndCaching.md#mongodb-storage) cache option. In addition, the desired tags need to have been specified and [included in the cached estimation results](#including-tags-with-estimations)
+prior to your request in order to be available as a filtering option. To learn more about how to filter data by tags, take a look at [filtering estimates.](./DataPersistenceAndCaching.md#filtering-estimates)
 
 ## Including Tags With Estimations
 CCF provides the option to specify a desired list of assigned resource tags in your estimation results. In doing so, this will allow for
