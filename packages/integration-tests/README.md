@@ -12,7 +12,7 @@ All packages need to be installed before running the test. In a fresh clone of t
 yarn install
 ```
 
-Once this task is completed, you can now navigate to the `packages/integration-tests` directory. Start the development server with `yarn start`. You can then run the tests using either `yarn headless` or `yarn headed` to see the tests run in a chrome browser.
+Once this task is completed, you can now navigate to the `packages/integration-tests` directory and run the tests using either `yarn headless` or `yarn headed` to see the tests run in a chrome browser.
 
 ## Documentation
 

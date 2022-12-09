@@ -31,7 +31,7 @@ if (process.env.ENABLE_CORS) {
 
   if (process.env.CORS_ALLOW_ORIGIN) {
     serverLogger.info(
-      'Allowing CORS to origin ' + process.env.CORS_ALLOW_ORIGIN,
+      'Allowing CORS requests from origin(s) ' + process.env.CORS_ALLOW_ORIGIN,
     )
     corsOptions.origin = process.env.CORS_ALLOW_ORIGIN.split(',')
   }
