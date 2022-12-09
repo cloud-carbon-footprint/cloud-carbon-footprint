@@ -39,7 +39,7 @@ module.exports = {
           type: 'category',
           label: 'Configuration Options',
           collapsed: false,
-          items: ['data-persistence-and-caching', 'performance-considerations', 'configurations-glossary'],
+          items: ['data-persistence-and-caching', 'performance-considerations', 'tagging', 'configurations-glossary'],
         },
         'deploying',
       ],

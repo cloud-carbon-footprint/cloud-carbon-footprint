@@ -57,12 +57,6 @@ The steps to resolve are:
 3. Delete `estimates.cache.json` file and restart the application server
 4. Submit an issue or pull request with the update
 
-### Including Tags with Estimations
-
-We currently support tagging for AWS estimations, where each estimation result contains any tags associated with the usage details queried from AWS. These tags can be used to filter estimates via API parameters using the [MongoDB cache mode](https://www.cloudcarbonfootprint.org/docs/data-persistence-and-caching#filtering-estimates) (the parameters will only filter estimates that are already gathered and cached).
-
-_Note_: The AWS Cost and Usage Reporting (CUR) translates tags' names to names that are valid Athena column names. On top of this, it also adds a prefix to distinguish between user-created tags and AWS-internal tags. This isn't documented anywhere, but the behaviour appears to be that a tag such as 'SourceRepository' will be 'user:SourceRepository' in CUR, and 'resource_tags_user_source_repository' in Athena (AWS-internal tags will be prefixed with 'aws:' instead of 'user:' in CUR).
-
 ### Options for AWS Authentication
 
 We currently support three modes of authentication with AWS, that you can see in [packages/aws/src/application/AWSCredentialsProvider.ts:](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/aws/src/application/AWSCredentialsProvider.ts)
