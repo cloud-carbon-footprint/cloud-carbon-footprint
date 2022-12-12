@@ -31,10 +31,10 @@ If you would like to run with Docker, you'll need install docker and docker-comp
 If you would like to only run the API as a docker container, for example to deploy this as a service for your organization, you can pull and run it with these commands:
 
     docker pull cloudcarbonfootprint/api
-        docker run \
+    
+    docker run \
         --env-file packages/api/.env \
-        --env
-    GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/service-account-keys.json \
+        --env GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/service-account-keys.json \
         -p 4000:4000 \
         -v $HOME/.aws/credentials:/root/.aws/credentials \
         -v $HOME/.config/gcloud/service-account-keys.json:/root/.config/gcloud/service-account-keys.json \
