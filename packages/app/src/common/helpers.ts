@@ -196,7 +196,7 @@ export const includeCloudProviders = (
   const supportedCloudProviders = ['AWS', 'GCP', 'AZURE']
   if (cloudProviderToSeed) {
     supportedCloudProviders.forEach((cloudProvider: string) => {
-      if (cloudProvider === cloudProviderToSeed) {
+      if (cloudProvider === cloudProviderToSeed.toUpperCase()) {
         config[cloudProvider].INCLUDE_ESTIMATES = true
       } else {
         config[cloudProvider].INCLUDE_ESTIMATES = false

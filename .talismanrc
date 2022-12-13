@@ -112,7 +112,7 @@ fileignoreconfig:
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
 - filename: packages/api/.env.template
-  checksum: d03181cabc8f5892fc53166916062bd64e4f7dbfe1e1bef06e5009bec3254aa7
+  checksum: ec94dc4f50d599e64405562c74b0ba2d1f49781dba1d0fbc9f5011eeea7e2101
 - filename: packages/api/create_docker_secrets.sh
   checksum: c34b49c2f48a01a21f5a86bc2cc76980231d780fb884d5b829dc595c9ba6d9dd
 - filename: packages/api/create_server_env_file.sh
@@ -176,7 +176,7 @@ fileignoreconfig:
 - filename: packages/azure/src/lib/ConsumptionManagement.ts
   checksum: 42fc6ed4df06fb61f5077f3192d8b8aa8162016621da79f369247fac612afbd6
 - filename: packages/cli/.env.template
-  checksum: 28266ade37e49623d9b0d5270a1e1658c652453f6316ea6bc62dc740bf9ccc7c
+  checksum: 698cfcaab558a76335309ee251a2180312cdf93214c371afe0dc6f8254ccd7b6
 - filename: packages/cli/src/CreateLookupTable/createAzureInput.ts
   checksum: b5deddd45ffaceb0ff503797a3a6401541821fee39cb8d6a48601c971fce4566
 - filename: packages/cli/src/CreateLookupTable/createLookupTable.ts

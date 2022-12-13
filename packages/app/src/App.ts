@@ -127,9 +127,9 @@ export default class App {
             endDate,
             grouping,
           )
+          AzureEstimatesByRegion.push(estimates)
         }
         appLogger.info('Finished Azure Estimations')
-        AzureEstimatesByRegion.push(estimates)
       }
 
       return reduceByTimestamp(

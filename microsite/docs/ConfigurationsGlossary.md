@@ -18,7 +18,8 @@ slug: /configurations-glossary
 
 | Variable                         | Example Value                           | Type    | Notes                                                                                                                             |
 | -------------------------------- | --------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| AWS_USE_BILLING_DATA             | true                                    | boolean | Use this to configure the application to query Cost and Usage Reports via AWS Athena. Unset to make this false. Defaults to true. |
+| AWS_INCLUDE_ESTIMATES            | true                                    | boolean | Use this to include AWS estimations. Unset to make this false. Defaults to true.                                                  |
+| AWS_USE_BILLING_DATA             | true                                    | boolean | Use this to configure the application to query Cost and Usage Reports via AWS Athena.                                             |
 | AWS_ATHENA_DB_NAME               | your-athena-db-name                     | string  | The name of your AWS Athena Database with Cost and Usage Reports data                                                             |
 | AWS_ATHENA_DB_TABLE              | your-athena-db-table                    | string  | The name of your AWS Athena Table with Cost and Usage Reports data                                                                |
 | AWS_ATHENA_REGION                | your-athena-region                      | string  | The region your AWS Athena Database/Table were created in.                                                                        |
@@ -53,7 +54,8 @@ slug: /configurations-glossary
 
 | Variable                       | Example Value                  | Type    | Notes                                                                                                                                                                                                                                                                                                 |
 |--------------------------------|--------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GCP_USE_BILLING_DATA           | true                           | boolean | Use this to configure the application to query Billing Export Data via Google BigQuery. Unset to make this false. Defaults to true.                                                                                                                                                                   |
+| GCP_INCLUDE_ESTIMATES          | true                           | boolean | Use this to include GCP estimations. Unset to make this false. Defaults to true.                                                                                                                                                                                                                      |
+| GCP_USE_BILLING_DATA           | true                           | boolean | Use this to configure the application to query Billing Export Data via Google BigQuery.                                                                                                                                                                                                               |
 | GOOGLE_APPLICATION_CREDENTIALS | /path/to/your/credentials.json | string  | The absolute path to your service account private key file. This service account needs to have permission to query Billing Data using BigQuery.                                                                                                                                                       |
 | GCP_BIG_QUERY_TABLE            | project.dataset.BQ_table_name  | string  | The name of your BigQuery table configured to consume Billing Export data in the format: `PROJECT_ID.DATASET_NAME.TABLE_NAME`. Don't forget to replace the colon in the table id if you copy it from BigQuery. See [here](https://cloud.google.com/billing/docs/how-to/bq-examples) for more details. |
 | GCP_BILLING_PROJECT_ID         | your-project-id                | string  | The GCP Project ID that your service account exists in that has permission to query Billing Data using BigQuery.                                                                                                                                                                                      |
@@ -81,12 +83,13 @@ slug: /configurations-glossary
 
 ### Variables needed for the Billing Data (Holistic) approach with Azure:
 
-| Variable               | Example Value            | Type    | Notes                                                                                                             |     |
-| ---------------------- | ------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------- | --- |
-| AZURE_USE_BILLING_DATA | true                     | boolean | Use this to configure the application to query Azure Consumption API. Unset to make this false. Defaults to true. |
-| AZURE_CLIENT_ID        | your-azure-client-id     | string  | The Azure Service Principal ID with permission to read the Consumption API from your Subscriptions.               |
-| AZURE_CLIENT_SECRET    | your-azure-client-secret | string  | The Azure Service Principal Secret with permission to read the Consumption API from your Subscriptions.           |
-| AZURE_TENANT_ID        | your-azure-tenant-id     | string  | Your Azure tenant ID.                                                                                             |
+| Variable                | Example Value            | Type    | Notes                                                                                                             |     |
+| ----------------------- | ------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------- | --- |
+| AZURE_INCLUDE_ESTIMATES | true                     | boolean | Use this to include GCP estimations. Unset to make this false. Defaults to true.                                  |
+| AZURE_USE_BILLING_DATA  | true                     | boolean | Use this to configure the application to query Azure Consumption API.                                             |
+| AZURE_CLIENT_ID         | your-azure-client-id     | string  | The Azure Service Principal ID with permission to read the Consumption API from your Subscriptions.               |
+| AZURE_CLIENT_SECRET     | your-azure-client-secret | string  | The Azure Service Principal Secret with permission to read the Consumption API from your Subscriptions.           |
+| AZURE_TENANT_ID         | your-azure-tenant-id     | string  | Your Azure tenant ID.                                                                                             |
 
 <br/>
 

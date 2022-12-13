@@ -2,12 +2,12 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import seedCacheFile from '../../SeedCacheFile/seedCacheFile'
-import * as common from '../../common'
 import {
   EstimationRequestValidationError,
   EstimationResult,
 } from '@cloud-carbon-footprint/common'
+import seedCacheFile from '../../SeedCacheFile/seedCacheFile'
+import * as common from '../../common'
 
 const mockGetCostAndEstimates = jest.fn()
 jest.mock('../../common')
@@ -46,12 +46,16 @@ describe('seedCacheFile', () => {
       const expectedResponse: EstimationResult[] = []
       mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
       jest.spyOn(console, 'info').mockImplementation()
+      jest.spyOn(process, 'exit').mockImplementation((number) => {
+        return number
+      })
       await seedCacheFile()
 
       expect(mockInputPrompts.mock.calls).toMatchSnapshot()
       expect(console.info).toBeCalledWith(
         'Cache file has successfully been seeded!',
       )
+      expect(process.exit).toBeCalledWith(0)
     })
   })
 
@@ -91,7 +95,7 @@ describe('seedCacheFile', () => {
           .mockClear()
           .mockResolvedValueOnce('day')
           .mockClear()
-          .mockResolvedValueOnce('aws')
+          .mockResolvedValueOnce('asw')
       })
 
       it('throws an estimation validation error', async () => {

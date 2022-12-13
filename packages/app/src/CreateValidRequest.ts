@@ -123,7 +123,7 @@ const validate = (
     const supportedCloudProviders = ['AWS', 'GCP', 'AZURE']
     if (
       typeof cloudProviderToSeed != 'string' ||
-      !supportedCloudProviders.includes(cloudProviderToSeed)
+      !supportedCloudProviders.includes(cloudProviderToSeed.toUpperCase())
     ) {
       errors.push('Not a valid cloud provider to seed')
     }
