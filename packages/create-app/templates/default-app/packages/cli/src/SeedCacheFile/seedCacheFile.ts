@@ -13,7 +13,7 @@ export default async function seedCacheFile(): Promise<void> {
     'Please enter how to group results by [day|week|month|quarter|year]: ',
   )
   const cloudProviderToSeed = await inputPrompt(
-    'If you are using the MongoDB cache mode and only want to seed data from a specific cloud provider, please enter cloud provider [AWS|GCP|AZURE] or press enter to skip: ',
+    'If you are using the MongoDB cache mode and only want to seed data from a specific cloud provider, please enter cloud provider [aws|gcp|azure] or press enter to skip: ',
     false,
   )
 
@@ -31,6 +31,7 @@ export default async function seedCacheFile(): Promise<void> {
     .then((estimations: EstimationResult[]) => {
       if (estimations) {
         console.info('Cache file has successfully been seeded!')
+        process.exit(0)
       }
     })
 }
