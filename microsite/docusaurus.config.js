@@ -19,7 +19,6 @@ module.exports = {
       apiKey: '2b50463b5c42cbd54bd17edc2cfd153b',
       indexName: 'cloudcarbonfootprint',
     },
-    sidebarCollapsible: true,
     navbar: {
       title: 'Cloud Carbon Footprint',
       logo: {
@@ -28,27 +27,27 @@ module.exports = {
       },
       items: [
         {
-          to: 'https://demo.cloudcarbonfootprint.org/',
-          label: 'Demo',
-          position: 'right',
-          className: 'navbar__link',
-        },
-        {
           to: 'docs/getting-started',
           label: 'Get Started',
-          position: 'right',
+          position: 'left',
           className: 'navbar__link',
         },
         {
           to: 'docs/overview',
           label: 'Docs',
-          position: 'right',
+          position: 'left',
+          className: 'navbar__link',
+        },
+        {
+          to: 'https://demo.cloudcarbonfootprint.org/',
+          label: 'Demo',
+          position: 'left',
           className: 'navbar__link',
         },
         {
           to: 'https://github.com/cloud-carbon-footprint/cloud-carbon-footprint',
           label: 'Github',
-          position: 'right',
+          position: 'left',
           className: 'navbar__link',
         },
       ],
@@ -73,27 +72,6 @@ module.exports = {
       // Should we use the prefers-color-scheme media-query,
       // using user system preferences, instead of the hardcoded defaultMode
       respectPrefersColorScheme: true,
-
-      // Dark/light switch icon options
-      switchConfig: {
-        // Icon for the switch while in dark mode
-        darkIcon: '🌙',
-
-        // CSS to apply to dark icon,
-        // React inline style object
-        // see https://reactjs.org/docs/dom-elements.html#style
-        darkIconStyle: {
-          marginLeft: '1px',
-        },
-
-        // Unicode icons such as '\u2600' will work
-        // Unicode with 5 chars require brackets: '\u{1F602}'
-        lightIcon: '☀️',
-
-        lightIconStyle: {
-          marginLeft: '1px',
-        },
-      },
     },
   },
   presets: [
@@ -102,8 +80,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-
-          // Please change this to your repo.
+          sidebarCollapsible: true,
         },
         blog: {
           showReadingTime: true,
