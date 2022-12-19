@@ -7,5 +7,5 @@
   <Image width="16" height="16" type="image/x-icon">https://cloud-carbon-footprint.github.io/img/favicon.png</Image>
   <Url type="text/html" method="get" template="https://cloud-carbon-footprint.github.io/search?q={searchTerms}"/>
   <Url type="application/opensearchdescription+xml" rel="self" template="https://cloud-carbon-footprint.github.io/opensearch.xml" />
-  <moz:SearchForm>https://cloud-carbon-footprint.github.io</moz:SearchForm>
+  <moz:SearchForm>https://cloud-carbon-footprint.github.io/</moz:SearchForm>
 </OpenSearchDescription>
