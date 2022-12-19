@@ -1,13 +1,9 @@
 import { useMemo } from 'react'
-import moment from 'moment'
 import {
   RecommendationResult,
   ServiceData,
 } from '@cloud-carbon-footprint/common'
-import {
-  useRemoteFootprintService,
-  useRemoteRecommendationsService,
-} from './index'
+import { useRemoteRecommendationsService } from './index'
 import {
   EmissionsAndRecommendationResults,
   FilterBarProps,
@@ -18,7 +14,6 @@ import { useFilterDataFromRecommendations } from '../helpers/transformData'
 import { RecommendationsFilters } from '../../pages/RecommendationsPage/RecommendationsFilterBar/utils/RecommendationsFilters'
 import useFilters from '../../common/FilterBar/utils/FilterHook'
 import { UseRemoteRecommendationServiceParams } from './RecommendationsServiceHook'
-import loadConfig from '../../ConfigLoader'
 
 interface RecommendationsData {
   loading: boolean
@@ -27,31 +22,44 @@ interface RecommendationsData {
   filteredEmissionsData: ServiceData[]
   filteredRecommendationData: RecommendationResult[]
 }
-
+/** this is actual hook for recomendations page API request?  or type declaration ?*/
 export const useRecommendationData = (
   params: UseRemoteRecommendationServiceParams & { groupBy?: string },
 ): RecommendationsData => {
-  const config = loadConfig()
+  // const config = loadConfig()
   const recommendations = useRemoteRecommendationsService(params)
 
-  const footprint = useRemoteFootprintService({
-    baseUrl: params.baseUrl,
-    onApiError: params.onApiError,
-    startDate: moment.utc().subtract('1', 'month'),
-    endDate: moment.utc(),
-    ignoreCache: true,
-    groupBy: 'month',
-    limit: parseInt(config.PAGE_LIMIT as unknown as string),
-  })
+  /** I need to get rid of this API call and get from App component through recommendations page first and invoke here as an aprameter? */
+  // const footprint = useRemoteFootprintService({
+  //   baseUrl: params.baseUrl,
+  //   onApiError: params.onApiError,
+  //   startDate: moment.utc().subtract('1', 'month'),
+  //   endDate: moment.utc(),
+  //   ignoreCache: true,
+  //   groupBy: 'month',
+  //   limit: parseInt(config.PAGE_LIMIT as unknown as string),
+  // })
+
+  // I need to chnage values on startDate be month to subtract, endDate just a moment, groupBy to month
+
+  // const footprint = useFootprintData({
+  //   baseUrl: config.BASE_URL,
+  //   startDate,
+  //   endDate,
+  //   onApiError,
+  //   groupBy: config.GROUP_BY,
+  //   limit: parseInt(config.PAGE_LIMIT as unknown as string),
+  //   ignoreCache: config.DISABLE_CACHE,
+  // })
 
   const combinedData: EmissionsAndRecommendationResults = useMemo(
     () => ({
       recommendations: recommendations.data,
-      emissions: footprint.data.flatMap(
+      emissions: params.footprint.data.flatMap(
         (estimationResult) => estimationResult.serviceEstimates,
       ),
     }),
-    [recommendations.data, footprint.data],
+    [recommendations.data, params.footprint.data],
   )
 
   const filterOptions: FilterResultResponse =
@@ -70,8 +78,8 @@ export const useRecommendationData = (
   } = filteredData as EmissionsAndRecommendationResults
 
   return {
-    loading: recommendations.loading || footprint.loading,
-    error: recommendations.error || footprint.error,
+    loading: recommendations.loading || params.footprint.loading,
+    error: recommendations.error || params.footprint.error,
     filterBarProps: {
       filters,
       setFilters,
