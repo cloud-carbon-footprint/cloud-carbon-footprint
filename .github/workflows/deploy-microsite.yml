@@ -8,7 +8,7 @@ on:
       - '.github/workflows/deploy-microsite.yml'
       - 'microsite/**'
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}
   cancel-in-progress: true
 jobs:
   deploy-microsite:
