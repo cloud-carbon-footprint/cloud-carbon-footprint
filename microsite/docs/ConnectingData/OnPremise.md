@@ -2,6 +2,7 @@
 id: on-premise
 title: On-Premise
 slug: /on-premise
+sidebar_position: 4
 ---
 
 ## Summary
@@ -41,7 +42,7 @@ This data model currently requires up-time figures per day, week, month and year
 
 Based on our analysis to date, CCF is currently only able to make on-premise estimations for Compute and Memory usage. We welcome any insight and collaboration to determine estimations for other usage types such as Storage or Networking. Currently, only these operational emissions are supported. In the future, we hope to incorporate embodied emissions for on-premise as well.
 
-Our application parses the provided input CSV file and is able to iterate over each row through the same Compute and Memory formulas laid out in the main [Methodology](https://www.cloudcarbonfootprint.org/docs/methodology). It is able to map the machineName column to the associated microarchitecture and leverage the SpecPower Database to determine average compute and memory coefficients, like min/max watts and memory (GB), similar to how we grab these values for cloud providers.
+Our application parses the provided input CSV file and is able to iterate over each row through the same Compute and Memory formulas laid out in the main [Methodology](docs/HowItWorks/Methodology.md). It is able to map the machineName column to the associated microarchitecture and leverage the SpecPower Database to determine average compute and memory coefficients, like min/max watts and memory (GB), similar to how we grab these values for cloud providers.
 
 The main differences for the on-premise methodology are:
 
@@ -77,7 +78,7 @@ ON_PREMISE?: {
     }
 }
 ```
-You can also view these configurations in more detail in our [Configurations Glossary](https://www.cloudcarbonfootprint.org/docs/configurations-glossary#optionally-set-these-custom-configurations-for-on-premise-calculations).
+You can also view these configurations in more detail in our [Configurations Glossary](docs/ConfigurationOptions/ConfigurationsGlossary.md#optionally-set-these-custom-configurations-for-on-premise-calculations).
 
 ### Accessing the Data
 

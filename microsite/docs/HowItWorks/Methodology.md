@@ -2,6 +2,7 @@
 id: methodology
 title: Methodology
 slug: /methodology
+sidebar_position: 1
 ---
 
 ## Summary
@@ -66,7 +67,7 @@ By default, we query cloud provider billing and usage APIs to provide a holistic
 - GCP Billing Export Table using BigQuery.
 - Azure Consumption Management API
 
-Please see the [Alternative Data Approaches](./AlternativeDataApproaches.md) page for additional information and other data sourcing options.
+Please see the [Alternative Data Approaches](docs/ConnectingData/AlternativeDataApproaches.md) page for additional information and other data sourcing options.
 
 This pulls usage and cost data from all linked accounts in your AWS, GCP, or Azure Organization. This approach provides us with a more holistic estimation of your cloud energy and carbon consumption, but may be less accurate as we use an average constant (rather than measured) CPU Utilization.
 
@@ -225,7 +226,7 @@ multiply the average number of vCPUs provisioned per cluster by the usage amount
 
 By default, our application assumes 3 vCPUs provisioned because the default number of nodes is 3, and the default machine 
 type of e2-medium has 1 vCPU. However, you can override this default using the `GCP_VCPUS_PER_GKE_CLUSTER` [configuration 
-option](./ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 3 vCPUs per cluster.     
+option](docs/ConfigurationOptions/ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 3 vCPUs per cluster.     
 
 ##### A note on GCP Cloud Composer Compute Estimates
 
@@ -237,7 +238,7 @@ provisioned per environment by the usage amount in hours, to get the total vCPU 
 
 By default, our application assumes 14 vCPUs provisioned because this is the default option for the medium environment size.
 However, you can override this default using the `GCP_VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT` [configuration
-option](./ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 14 vCPUs per 
+option](docs/ConfigurationOptions/ConfigurationsGlossary.md#optionally-set-these-gcp-variables), which we recommend if you know you're provisioning more or less than 14 vCPUs per 
 environment.
 
 #### Storage
@@ -412,7 +413,7 @@ To do this, we have leveraged the Software Carbon Intensity Standard recently pu
 
 Right now, we are only including embodied emissions estimates for compute usage types due to limited public data being available, but welcome any contributions to apply embodied emissions to other types of cloud usage.
 
-To understand in more detail how we are calculating embodied emissions, please read the [Embodied Emissions page](https://www.cloudcarbonfootprint.org/docs/embodied-emissions).
+To understand in more detail how we are calculating embodied emissions, please read the [Embodied Emissions page](./EmbodiedEmissions.md).
 
 
 ### Appendix I: Energy Coefficients:

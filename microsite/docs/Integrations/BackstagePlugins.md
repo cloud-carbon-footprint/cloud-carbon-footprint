@@ -6,7 +6,7 @@ slug: /backstage-plugins
 
 ### CCF Backstage Plugins
 
-![](../static/img/ccf-backstage-plugin.png)
+![](../../static/img/ccf-backstage-plugin.png)
 
 Understand how your cloud usage impacts our environment and what you can do about it via the [Backstage](https://backstage.io/) developer portal.
 

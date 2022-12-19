@@ -2,13 +2,14 @@
 id: classifying-usage-types
 title: Classifying Usage Types
 slug: /classifying-usage-types
+sidebar_position: 3
 ---
 
-In order to estimate the energy and carbon emissions for a given amount of cloud provider usage, we need to first classify a row of usage as either Compute, SSD Storage, HDD Storage, Networking or Memory. It's also possible that the usage row is unknown, which we have a process or reclassify [here](./ClassifyingUsageTypes.md#handling-unknown-usage-types), or unsupported, in which case the application ignores these rows. To understand the steps involved in the classification, please see the [methodology page](./Methodology.md#1-using-billing-data-for-cloud-usage-holistic). Once the application has classified the usage row, it then uses the associated usage amount when estimating energy and carbon emissions.
+In order to estimate the energy and carbon emissions for a given amount of cloud provider usage, we need to first classify a row of usage as either Compute, SSD Storage, HDD Storage, Networking or Memory. It's also possible that the usage row is unknown, which we have a process or reclassify [here](#handling-unknown-usage-types), or unsupported, in which case the application ignores these rows. To understand the steps involved in the classification, please see the [methodology page](./Methodology.md#using-billing-data-for-cloud-usage-holistic). Once the application has classified the usage row, it then uses the associated usage amount when estimating energy and carbon emissions.
 
 In order to make these classification decisions, we pulled all the various types of usage rows that Thoughtworks has utilized into a spreadsheet for analysis. We then researched each type of usage using publicly available information from the cloud providers about the underlying services, often looking at documentation regarding payment/costs as this often gives hints as to the usage type. We have published these usage types and the various classifications in [this spreadsheet](https://docs.google.com/spreadsheets/d/1rMt1lb3G23JnwbAODCka1ohrbl-4pELFSqi6xwwW4q4/) with detailed notes and links to sources when available. 
 
-Given that these usage types have been derived from Thoughtworks' usage, there may be usage types missing that aren't currently supported. If this is case for when using the application, please see instructions for adding unsupported usage types in the documentation for your cloud provider: [AWS](./AWS.md#unsupported-usage-types), [GCP](./GCP.md#unsupported-usage-types) and [Azure](./Azure.md#unsupported-usage-types). We welcome feedback any/all on these classifications.
+Given that these usage types have been derived from Thoughtworks' usage, there may be usage types missing that aren't currently supported. If this is case for when using the application, please see instructions for adding unsupported usage types in the documentation for your cloud provider: [AWS](../ConnectingData/AWS.md#unsupported-usage-types), [GCP](../ConnectingData/GCP.md#unsupported-usage-types) and [Azure](../ConnectingData/Azure.md#unsupported-usage-types). We welcome feedback any/all on these classifications.
 
 ## Handling Unknown Usage Types
 

@@ -2,6 +2,7 @@
 id: creating-a-lookup-table
 title: Creating a Lookup Table
 slug: /creating-a-lookup-table
+sidebar_position: 7
 ---
 
 In order to support the big data processing requirements that some organizations have, it may be more practical or efficient for you to compute carbon metrics within your existing processing. To do so, we support the generation of a lookup table that can be utilized as an additional step in your pipeline.
@@ -65,7 +66,7 @@ We would like to thank [@mfulleratlassian](https://github.com/mfulleratlassian) 
 
 ### Azure - Yarn Script
 Creating an input file for Azure using billing data requires the use of the Consumption Management API rather than a direct query.
-To assist with this, we have created a script that makes use of your configured [credentials](./Azure.md) in the `packages/cli/.env` file to query and output the needed mappings to a CSV file.
+To assist with this, we have created a script that makes use of your configured [credentials](docs/ConnectingData/Azure.md) in the `packages/cli/.env` file to query and output the needed mappings to a CSV file.
 
 To use this script, run the following yarn command with the provided parameters:
    

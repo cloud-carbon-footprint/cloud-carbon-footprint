@@ -2,6 +2,7 @@
 id: data-persistence-and-caching
 title: Data Persistence and Caching
 slug: /data-persistence-and-caching
+sidebar_position: 1
 ---
 
 Calculating estimates can take time and you may wish for a way to persist data to speed up performance of subsequent calls to the API.

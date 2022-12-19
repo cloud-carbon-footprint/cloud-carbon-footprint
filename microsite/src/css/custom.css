@@ -28,6 +28,7 @@ html[data-theme='light'] {
 
 html[data-theme='dark'] {
   --ifm-navbar-background-color: #242526;
+  --ifm-navbar-link-hover-color: #25c2a0;
 }
 
 

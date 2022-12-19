@@ -2,6 +2,7 @@
 id: tagging
 title: Tagging
 slug: /tagging
+sidebar_position: 3
 ---
 
 ## Overview
@@ -17,8 +18,8 @@ _**Important Note**: Tagging visibility and features are currently only supporte
 
 ### Filtering Estimates Using Tags
 CCF also allows for resource tags to be specified as a parameter for filtering estimates. This feature is currently only available for cached estimates
-when using the [MongoDB](./DataPersistenceAndCaching.md#mongodb-storage) cache option. In addition, the desired tags need to have been specified and [included in the cached estimation results](#including-tags-with-estimations)
-prior to your request in order to be available as a filtering option. To learn more about how to filter data by tags, take a look at [filtering estimates.](./DataPersistenceAndCaching.md#filtering-estimates)
+when using the [MongoDB](docs/ConfigurationOptions/DataPersistenceAndCaching.md#mongodb-storage) cache option. In addition, the desired tags need to have been specified and [included in the cached estimation results](#including-tags-with-estimations)
+prior to your request in order to be available as a filtering option. To learn more about how to filter data by tags, take a look at [filtering estimates.](docs/ConfigurationOptions/DataPersistenceAndCaching.md#filtering-estimates)
 
 ## Including Tags With Estimations
 CCF provides the option to specify a desired list of assigned resource tags in your estimation results. In doing so, this will allow for

@@ -2,6 +2,7 @@
 id: getting-started
 title: Getting Started
 slug: /getting-started
+sidebar_position: 2
 ---
 
 There are three different ways to get started with Cloud Carbon Footprint:
@@ -28,7 +29,7 @@ If you want to run project in a disposable development environment to see how Cl
 
 We provide the @cloud-carbon-footprint/create-app package to create standalone instances of Cloud Carbon Footprint.
 
-This option offers a quick setup, but has @cloud-carbon-footprint packages as dependencies. This means you will inherit the core estimation logic, but will have less freedom over customizing that logic. If you want to explore linking in local Cloud Carbon Footprint packages to your created app, you can refer to [this section](./CreateApp.md#linking-in-local-cloud-carbon-footprint-packages).
+This option offers a quick setup, but has @cloud-carbon-footprint packages as dependencies. This means you will inherit the core estimation logic, but will have less freedom over customizing that logic. If you want to explore linking in local Cloud Carbon Footprint packages to your created app, you can refer to [this section](CreateApp.md#linking-in-local-cloud-carbon-footprint-packages).
 
 Using npx, you can then run the following command to create an app within your current working directory:
 
@@ -36,7 +37,7 @@ Using npx, you can then run the following command to create an app within your c
 npx @cloud-carbon-footprint/create-app
 ```
 
-You can read more about this process in [Create an app](./CreateApp.md).
+You can read more about this process in [Create an app](CreateApp.md).
 
 ## Configuring the App Locally
 
@@ -75,7 +76,7 @@ A standard installation gives you more visibility and control around your partic
 yarn install
 ```
 
-You can now continue by running with [mocked data](./RunWithMockedData.md) or [manually configuring your cloud providers](./AWS.md)
+You can now continue by running with [mocked data](RunWithMockedData.md) or [manually configuring your cloud providers](GettingStartedIntro.md#connecting-your-data)
 
 ### Starting the App
 

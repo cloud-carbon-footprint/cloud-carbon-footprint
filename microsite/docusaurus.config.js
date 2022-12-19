@@ -33,7 +33,7 @@ module.exports = {
           className: 'navbar__link',
         },
         {
-          to: 'docs/overview',
+          to: 'docs/',
           label: 'Docs',
           position: 'left',
           className: 'navbar__link',
@@ -79,15 +79,14 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
           sidebarCollapsible: true,
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        },
+        // blog: {
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   editUrl:
+        //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+        // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },

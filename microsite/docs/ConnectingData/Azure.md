@@ -2,6 +2,7 @@
 id: azure
 title: Azure
 slug: /azure
+sidebar_position: 3
 ---
 
 Your Microsoft Azure account needs to have an App registered and Service Principal with permissions to read billing and usage data from your Subscriptions

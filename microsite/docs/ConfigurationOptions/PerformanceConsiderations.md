@@ -2,6 +2,7 @@
 id: performance-considerations
 title: Performance Considerations
 slug: /performance-considerations
+sidebar_position: 2
 ---
 
 ### Options to Improve Query Performance

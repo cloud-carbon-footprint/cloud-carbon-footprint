@@ -2,6 +2,7 @@
 id: run-with-docker
 title: Run with Docker
 slug: /run-with-docker
+sidebar_position: 5
 ---
 
 If you would like to run with Docker, you'll need install docker and docker-compose:

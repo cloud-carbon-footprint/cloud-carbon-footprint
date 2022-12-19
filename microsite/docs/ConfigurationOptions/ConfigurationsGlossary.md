@@ -2,6 +2,7 @@
 id: configurations-glossary
 title: Configurations Glossary
 slug: /configurations-glossary
+sidebar_position: 4
 ---
 
 ## Api/cli Packages

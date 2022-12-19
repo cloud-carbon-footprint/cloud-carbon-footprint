@@ -1,11 +1,12 @@
 ---
-id: get-recommendations
-title: Get Recommendations
-slug: /get-recommendations
+id: recommendations
+title: Recommendations
+slug: /recommendations
+sidebar_position: 5
 ---
 
 If users would like to view a list of recommendations to lower their energy consumption, co2e emissions as well as potential costs from their cloud usage, we have provided a `/recommendations` route to view the data in JSON format.
-Utilizing API's from AWS and GCP, we are able to grab the necessary data to use our [Methodology](https://www.cloudcarbonfootprint.org/docs/methodology) and calculate potential energy savings in kilowatt-hours as well as co2e emissions savings in metric tons.
+Utilizing API's from AWS and GCP, we are able to grab the necessary data to use our [Methodology](docs/HowItWorks/Methodology.md) and calculate potential energy savings in kilowatt-hours as well as co2e emissions savings in metric tons.
 
 
 ## AWS
@@ -27,13 +28,13 @@ In order to retrieve AWS Right-sizing recommendations, access for Cost Explorer 
 
 In addition to Rightsizing recommendations, AWS has a service called [Compute Optimizer](https://aws.amazon.com/compute-optimizer/) that provides recommendations for reducing the cost of EC2 instances, Autoscaling Groups, EBS Volumes and Lambda functions.
 
-There is some overlap with the RIghtsizing recommendations above when it comes to EC2. By default, when our application finds a recommendation for the same EC2 instance type, our recommendations API returns the recommendation that has the highest amount of carbon savings, which could be from either the Rightsizing or Compute Optimizer recommendations.
+There is some overlap with the Rightsizing recommendations above when it comes to EC2. By default, when our application finds a recommendation for the same EC2 instance type, our recommendations API returns the recommendation that has the highest amount of carbon savings, which could be from either the Rightsizing or Compute Optimizer recommendations.
 
 To include Compute Optimizer recommendations across all your AWS accounts and regions, there is some serverless infrastructure that is required to be deployed. This is because the Compute Optimizer API requires you to make individual requests for recommendations in each region and account, which isn’t performant enough with larger AWS organizations. There may be a small cost associated with running this infrastructure.
 
 Here is a diagram of the infrastructure that needs to be deployed:
 
-![CCF Compute Optimizer Architecture](./../static/img/ccf_compute_optimizer.svg)
+![CCF Compute Optimizer Architecture](../../static/img/ccf_compute_optimizer.svg)
 
 To summarize: this infrastructure triggers an export of all Compute Optimizer recommendations for each region you are using into region-specific buckets using a CloudWatch Event and Lambda function. Then, using an S3 Event on those buckets, another Lambda function is triggered to copy the recommendations into a central bucket that the Cloud Carbon Footprint (CCF) application will read from.
 

@@ -2,6 +2,7 @@
 id: deploying
 title: Deploying
 slug: /deploying
+sidebar_position: 8
 ---
 
 ### Deploy to Google App Engine

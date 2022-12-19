@@ -2,13 +2,14 @@
 id: create-app
 title: Create an App
 slug: /create-app
+sidebar_position: 3
 ---
 
 Creating a Cloud Carbon Footprint App is a good way to quickly set up your own project.
 
 Containing everything you need to run in your own environment, a Cloud Carbon Footprint App is a monorepo that is setup utilizing lerna.
 
-If you wish to have more control over the configuration of the app and all of its packages or contribute to the Cloud Carbon Footprint project, you may want to [Run Cloud Carbon Footprint Locally](./GettingStarted.md#configuring-the-app-locally) instead.
+If you wish to have more control over the configuration of the app and all of its packages or contribute to the Cloud Carbon Footprint project, you may want to [Run Cloud Carbon Footprint Locally](GettingStarted.md#configuring-the-app-locally) instead.
 
 ### Create an App
 
@@ -68,7 +69,7 @@ yarn guided-install
 
 Note: If you used the `--skip-install` flag, you will need to run `yarn install` before running `yarn guided-install`.
 
-The `yarn guided-install` command will lead you through a guided installation as referenced [here](./GettingStarted.md). You can also choose to configure your app manually as referenced [here](./AWS.md).
+The `yarn guided-install` command will lead you through a guided installation as referenced [here](GettingStarted.md#guided-install). You can also choose to configure your app manually as referenced [here](docs/ConnectingData/AWS.md).
 
 Once you are finished with the installation you are ready to start the application!
 

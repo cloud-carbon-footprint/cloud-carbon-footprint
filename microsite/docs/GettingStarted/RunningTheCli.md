@@ -2,6 +2,7 @@
 id: running-the-cli
 title: Running the CLI
 slug: /running-the-cli
+sidebar_position: 6
 ---
 
 We believe that getting your cloud emissions data should be easy. If you are looking to quickly get an output of data, the CLI is a great option. It allows you to specify exactly what data you’re looking for, including the date range, regions, groupings and output type.

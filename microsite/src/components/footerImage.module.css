@@ -7,6 +7,10 @@
   padding: 3rem 0;
 }
 
+.footerImageContainer a {
+  text-decoration: none;
+}
+
 .footerImageTitle {
   text-align: center;
   font-size: 18pt;

@@ -2,6 +2,7 @@
 id: embodied-emissions
 title: Embodied Emissions
 slug: /embodied-emissions
+sidebar_position: 2
 ---
 
 Embodied Carbon Emissions or [Embedded Emissions](https://en.wikipedia.org/wiki/Embedded_emissions) is the amount of carbon emitted during the creation and disposal of a hardware device. In order to estimate embodied emissions in the cloud, we need to calculate the fraction of the total embodied emissions that should be allocated to your particular amount of usage or workload. For example, if you are only utilizing a subset of virtual CPUs that are available on a given physical server, then we need to allocate a relative amount of embodied emissions to represent this.

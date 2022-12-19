@@ -2,6 +2,7 @@
 id: alternative-data-approaches
 title: Alternative Data Approaches
 slug: /alternative-data-approaches
+sidebar_position: 6
 ---
 
 ## Cloud Provider Usage and Cost Data
@@ -35,4 +36,4 @@ GCP
 - Compute Engine (compute)
 
 
-For a more comprehensive read on the various calculations and constants that we use for the emissions estimates, check out the [Methodology page](./Methodology.md).
+For a more comprehensive read on the various calculations and constants that we use for the emissions estimates, check out the [Methodology page](docs/HowItWorks/Methodology.md).
