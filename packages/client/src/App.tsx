@@ -15,6 +15,9 @@ import { AxiosError } from 'axios'
 import { formatAxiosError } from './layout/ErrorPage/ErrorPage'
 import { ClientConfig } from './Config'
 import loadConfig from './ConfigLoader'
+import { useFootprintData } from './utils/hooks'
+import { handleEmissionDateRange } from './utils/helpers/handleDates'
+import { Moment } from 'moment'
 
 interface AppProps {
   config?: ClientConfig
@@ -30,6 +33,23 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     },
     [navigate],
   )
+
+  const endDate: Moment = handleEmissionDateRange({
+    config: loadConfig(),
+  }).end
+  const startDate: Moment = handleEmissionDateRange({
+    config: loadConfig(),
+  }).start
+
+  const footprint = useFootprintData({
+    baseUrl: config.BASE_URL,
+    startDate,
+    endDate,
+    onApiError,
+    groupBy: config.GROUP_BY,
+    limit: parseInt(config.PAGE_LIMIT as unknown as string),
+    ignoreCache: config.DISABLE_CACHE,
+  })
 
   const [mobileWarningEnabled, setMobileWarningEnabled] = useState(
     window.innerWidth < 768,
@@ -65,13 +85,21 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
           <Route
             path="/"
             element={
-              <EmissionsMetricsPage config={config} onApiError={onApiError} />
+              <EmissionsMetricsPage
+                config={config}
+                onApiError={onApiError}
+                footprint={footprint}
+              />
             }
           />
           <Route
             path="/recommendations"
             element={
-              <RecommendationsPage config={config} onApiError={onApiError} />
+              <RecommendationsPage
+                config={config}
+                onApiError={onApiError}
+                footprint={footprint}
+              />
             }
           />
           <Route
