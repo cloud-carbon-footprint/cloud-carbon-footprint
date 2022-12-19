@@ -17,11 +17,13 @@ import { Co2eUnit } from '../../Types'
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
   config?: ClientConfig
+  footprint: any
 }
 
 const RecommendationsPage = ({
   onApiError,
   config = loadConfig(),
+  footprint,
 }): ReactElement<RecommendationsPageProps> => {
   const classes = useStyles()
 
@@ -31,8 +33,9 @@ const RecommendationsPage = ({
     baseUrl: config.BASE_URL,
     onApiError,
     groupBy: config.GROUP_BY,
+    footprint,
   })
-
+  /** Maybe here we need to take an account of loading state of footprint too?  */
   if (recommendations.loading)
     return (
       <LoadingMessage message="Loading recommendations. This may take a while..." />
