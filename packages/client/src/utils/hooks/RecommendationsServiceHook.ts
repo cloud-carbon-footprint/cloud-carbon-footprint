@@ -13,6 +13,7 @@ export interface UseRemoteRecommendationServiceParams {
   onApiError?: (e: Error) => void
   awsRecommendationTarget?: string
   minLoadTimeMs?: number
+  footprint?: any
 }
 
 const useRemoteRecommendationsService = (
