@@ -25,7 +25,14 @@ To manually configure your cloud provider(s), check out the steps for each cloud
 - [GCP](docs/ConnectingData/GCP.md)
 - [Azure](docs/ConnectingData/Azure.md)
 
-If you have a lot of data and begin to experience performance issues, check out our [Performance Considerations](docs/ConfigurationOptions/PerformanceConsiderations.md) page for some options you can set up to improve it.
+### Storing your Data
+By default, the app uses a [local cache system](docs/ConfigurationOptions/DataPersistenceAndCaching.md#json-file) to store your estimate data as a JSON file.
+For users or organizations with large amounts of services and usage, you may wish for an alternative method to persist a larger scale of data. For this case, we allow
+the option to [set up and connect a MongoDB instance](docs/ConfigurationOptions/DataPersistenceAndCaching.md#mongodb-storage) as a storage method.
+
+You can view the full range of these options and the features that come with them in the [Data Persistence and Caching](docs/ConfigurationOptions/DataPersistenceAndCaching.md) section.
+
+If you still begin to experience performance issues, check out our [Performance Considerations](docs/ConfigurationOptions/PerformanceConsiderations.md) page for some options you can set up to improve it.
 
 ### Your Setup - Defaults and Customizations
 
