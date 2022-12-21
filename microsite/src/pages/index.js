@@ -7,6 +7,7 @@ import {
   Differentiator,
   InnovationPartners,
   MetaData,
+  DiscussionGroup
 } from '../components'
 
 function Home() {
@@ -17,6 +18,7 @@ function Home() {
       <Overview />
       <ValueProp />
       <Differentiator />
+      <DiscussionGroup />
       <InnovationPartners />
     </MainLayout>
   )

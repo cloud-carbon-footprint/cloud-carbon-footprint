@@ -44,10 +44,6 @@ html[data-theme='dark'] {
   color: white;
 }
 
-.toggleButton_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module:hover {
-  /*color: black*/
-}
-
 .navbar__brand {
   text-decoration: none;
   height: 2rem;
