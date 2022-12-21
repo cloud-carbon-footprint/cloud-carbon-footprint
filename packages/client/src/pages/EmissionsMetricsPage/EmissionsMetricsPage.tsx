@@ -14,6 +14,11 @@ import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
+import { FilterOptions, FilterResultResponse } from 'src/Types'
+import { buildFilters } from 'src/utils/hooks'
+import useFilters from 'src/common/FilterBar/utils/FilterHook'
+import { useFilterDataFromEstimates } from 'src/utils/helpers'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
@@ -36,18 +41,35 @@ export default function EmissionsMetricsPage({
     )
   }
 
+  const filterOptions: FilterResultResponse = useFilterDataFromEstimates(
+    footprint.data,
+  )
+
+  const { filteredData, filters, setFilters } = useFilters(
+    footprint.data,
+    buildFilters,
+    filterOptions,
+  )
+
+  const filterBarProps = {
+    filterOptions: filterOptions as unknown as FilterOptions,
+    filters,
+    setFilters,
+    filteredData: filteredData as EstimationResult[],
+  }
+
   return (
     <div className={classes.pageContainer}>
       <EmissionsSidePanel />
-      <EmissionsFilterBar {...footprint.filterBarProps} />
+      <EmissionsFilterBar {...filterBarProps} />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          <EmissionsOverTimeCard data={footprint.filteredData} />
+          <EmissionsOverTimeCard data={filterBarProps.filteredData} />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
-              <CarbonComparisonCard data={footprint.filteredData} />
+              <CarbonComparisonCard data={filterBarProps.filteredData} />
               <EmissionsBreakdownCard
-                data={footprint.filteredData}
+                data={filterBarProps.filteredData}
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />
