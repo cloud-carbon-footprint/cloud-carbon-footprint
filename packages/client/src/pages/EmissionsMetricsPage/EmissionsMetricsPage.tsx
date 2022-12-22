@@ -33,14 +33,6 @@ export default function EmissionsMetricsPage({
 }: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
   const classes = useStyles()
 
-  if (footprint.loading) {
-    return (
-      <LoadingMessage
-        message={'Loading cloud data. This may take a while...'}
-      />
-    )
-  }
-
   const filterOptions: FilterResultResponse = useFilterDataFromEstimates(
     footprint.data,
   )
@@ -56,6 +48,14 @@ export default function EmissionsMetricsPage({
     filters,
     setFilters,
     filteredData: filteredData as EstimationResult[],
+  }
+
+  if (footprint.loading) {
+    return (
+      <LoadingMessage
+        message={'Loading cloud data. This may take a while...'}
+      />
+    )
   }
 
   return (
