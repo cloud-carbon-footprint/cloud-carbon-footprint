@@ -6,7 +6,7 @@
 
 [Cloud Carbon Footprint](https://www.cloudcarbonfootprint.org) is an application that estimates the energy (kilowatt hours) and carbon emissions (metric tons CO2e) of public cloud provider utilization.
 
-If you would like to learn more about the various calculations and constants that we use for the emissions estimates, check out the [Methodology page](https://www.cloudcarbonfootprint.org/docs/methodology)
+If you would like to learn more about the various calculations and constants that we use for the emissions estimates, check out the [Methodology page](https://www.cloudcarbonfootprint.org/docs/methodology).
 
 ## Getting Started
 
