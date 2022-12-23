@@ -45,7 +45,7 @@ const CarbonIntensityMap = (): ReactElement => {
             handleChange={handleChange}
           />
         </Box>
-        <Box paddingX={3} textAlign="center">
+        <Box textAlign="center">
           <img
             src={intensityMaps[cloudProvider]}
             className={classes.map}
