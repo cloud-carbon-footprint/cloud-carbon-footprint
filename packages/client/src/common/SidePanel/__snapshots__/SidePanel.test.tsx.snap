@@ -90,12 +90,12 @@ exports[`Side Bar renders 1`] = `
         className="MuiTypography-root makeStyles-contentTitle-8 MuiTypography-body1"
         data-testid="sideBarTitle"
       >
-
+        
       </h3>
       <hr
         className="MuiDivider-root"
       />
-
+      
     </div>
   </div>
 </div>
