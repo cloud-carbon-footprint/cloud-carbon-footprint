@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: '1',
     fontWeight: 900,
     color: 'rgba(0, 0, 0, 0.87)',
-    paddingLeft: 0,
+    padding: '24px',
   },
   contentContainer: {
     height: '100%',

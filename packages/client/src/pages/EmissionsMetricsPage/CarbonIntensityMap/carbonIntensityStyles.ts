@@ -19,10 +19,11 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    marginBottom: '24px',
+    padding: '24px',
   },
   map: {
-    maxHeight: 700,
+    height: '100%',
+    width: '100%',
   },
 }))
 

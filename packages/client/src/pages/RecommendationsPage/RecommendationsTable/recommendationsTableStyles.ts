@@ -37,11 +37,10 @@ const useStyles = makeStyles(({ spacing }) => ({
     opacity: '1',
     fontWeight: 900,
     color: 'rgba(0, 0, 0, 0.87)',
-    padding: '.2em',
-    paddingLeft: 0,
   },
   recommendationsContainer: {
     marginTop: 65,
+    padding: '24px',
   },
   rowsPerPage: {
     paddingRight: '.5em',
