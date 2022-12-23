@@ -60,11 +60,7 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
   return (
     <>
       <HeaderBar />
-      <Container
-        disableGutters
-        maxWidth={false}
-        className={classes.appContainer}
-      >
+      <Container maxWidth={false} className={classes.appContainer}>
         <Routes>
           <Route
             path="/"
