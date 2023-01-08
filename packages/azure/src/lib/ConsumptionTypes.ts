@@ -107,6 +107,7 @@ export const STORAGE_USAGE_TYPES: string[] = [
   '10 DTUs',
   'S0 DTUs',
   'B DTUs',
+  'B DTU',
   'eDTUs',
   'On Premises Server Protected Instances',
   'Standard Trial Nodes',
