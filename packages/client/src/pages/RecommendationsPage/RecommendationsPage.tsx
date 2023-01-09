@@ -4,7 +4,6 @@
 
 import React, { ReactElement, useState } from 'react'
 import { Grid } from '@material-ui/core'
-import LoadingMessage from '../../common/LoadingMessage'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
@@ -13,6 +12,7 @@ import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 import { Co2eUnit } from '../../Types'
+import LoadingMessage from 'src/common/LoadingMessage/LoadingMessage'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
@@ -35,8 +35,11 @@ const RecommendationsPage = ({
     groupBy: config.GROUP_BY,
     footprint,
   })
-  /** Maybe here we need to take an account of loading state of footprint too?  */
-  if (recommendations.loading)
+
+  if (
+    recommendations.loading &&
+    recommendations.filteredRecommendationData.length === 0
+  )
     return (
       <LoadingMessage message="Loading recommendations. This may take a while..." />
     )

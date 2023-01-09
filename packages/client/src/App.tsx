@@ -18,6 +18,7 @@ import loadConfig from './ConfigLoader'
 import { useFootprintData } from './utils/hooks'
 import { handleEmissionDateRange } from './utils/helpers/handleDates'
 import { Moment } from 'moment'
+import LoadingMessage from './common/LoadingMessage'
 
 interface AppProps {
   config?: ClientConfig
@@ -77,6 +78,11 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     )
   }
 
+  if (footprint.loading)
+    return (
+      <LoadingMessage message="Loading cloud data. This may take a while..." />
+    )
+
   return (
     <>
       <HeaderBar />
@@ -85,6 +91,7 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
           <Route
             path="/"
             element={
+              // If checkDataLoad true show loading message
               <EmissionsMetricsPage
                 config={config}
                 onApiError={onApiError}

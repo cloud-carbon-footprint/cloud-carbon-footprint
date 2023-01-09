@@ -4,7 +4,6 @@
 
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
-import LoadingMessage from '../../common/LoadingMessage'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
@@ -48,14 +47,6 @@ export default function EmissionsMetricsPage({
     filters,
     setFilters,
     filteredData: filteredData as EstimationResult[],
-  }
-
-  if (footprint.loading) {
-    return (
-      <LoadingMessage
-        message={'Loading cloud data. This may take a while...'}
-      />
-    )
   }
 
   return (
