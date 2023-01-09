@@ -22,35 +22,11 @@ interface RecommendationsData {
   filteredEmissionsData: ServiceData[]
   filteredRecommendationData: RecommendationResult[]
 }
-/** this is actual hook for recomendations page API request?  or type declaration ?*/
+
 export const useRecommendationData = (
   params: UseRemoteRecommendationServiceParams & { groupBy?: string },
 ): RecommendationsData => {
-  // const config = loadConfig()
   const recommendations = useRemoteRecommendationsService(params)
-
-  /** I need to get rid of this API call and get from App component through recommendations page first and invoke here as an aprameter? */
-  // const footprint = useRemoteFootprintService({
-  //   baseUrl: params.baseUrl,
-  //   onApiError: params.onApiError,
-  //   startDate: moment.utc().subtract('1', 'month'),
-  //   endDate: moment.utc(),
-  //   ignoreCache: true,
-  //   groupBy: 'month',
-  //   limit: parseInt(config.PAGE_LIMIT as unknown as string),
-  // })
-
-  // I need to chnage values on startDate be month to subtract, endDate just a moment, groupBy to month
-
-  // const footprint = useFootprintData({
-  //   baseUrl: config.BASE_URL,
-  //   startDate,
-  //   endDate,
-  //   onApiError,
-  //   groupBy: config.GROUP_BY,
-  //   limit: parseInt(config.PAGE_LIMIT as unknown as string),
-  //   ignoreCache: config.DISABLE_CACHE,
-  // })
 
   const combinedData: EmissionsAndRecommendationResults = useMemo(
     () => ({
