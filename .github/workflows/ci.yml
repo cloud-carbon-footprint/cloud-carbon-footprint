@@ -12,6 +12,9 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
+concurrency:
+  group: ${{ github.workflow || github.run_id }}
+  cancel-in-progress: true
 jobs:
   lint-test:
     runs-on: ubuntu-latest

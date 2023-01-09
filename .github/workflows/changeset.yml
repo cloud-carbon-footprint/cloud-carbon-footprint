@@ -7,7 +7,9 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   create-release-pr:
     name: Create Changeset PR
