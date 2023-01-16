@@ -2360,7 +2360,7 @@ __metadata:
     aws-sdk: ^2.910.0
     aws-sdk-mock: ^5.1.0
     cli-table: ^0.3.6
-    commander: ^8.0.0
+    commander: ^10.0.0
     csv-writer: ^1.6.0
     csvtojson: ^2.0.10
     dotenv: ^16.0.0
@@ -2519,7 +2519,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.9.0
     "@typescript-eslint/parser": ^5.9.0
     chalk: ^4.1.1
-    commander: ^8.0.0
+    commander: ^10.0.0
     eslint: ^8.6.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
@@ -8808,6 +8808,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "commander@npm:10.0.0"
+  checksum: 9f6495651f878213005ac744dd87a85fa3d9f2b8b90d1c19d0866d666bda7f735adfd7c2f10dfff345782e2f80ea258f98bb4efcef58e4e502f25f883940acfd
+  languageName: node
+  linkType: hard
+
 "commander@npm:^2.20.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
@@ -8822,7 +8829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^8.0.0, commander@npm:^8.3.0":
+"commander@npm:^8.3.0":
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 0f82321821fc27b83bd409510bb9deeebcfa799ff0bf5d102128b500b7af22872c0c92cb6a0ebc5a4cf19c6b550fba9cedfa7329d18c6442a625f851377bacf0
