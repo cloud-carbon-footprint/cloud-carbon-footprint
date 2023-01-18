@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: setup node 14
+      - name: setup node 16
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
@@ -74,7 +74,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
       # Cache every node_modules folder inside the monorepo
       - name: cache all node_modules
         id: cache-modules
@@ -133,10 +133,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # Beginning of yarn setup, keep in sync between all workflows, see ci.yml
-      - name: use node.js 14
+      - name: use node.js 16
         uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: '16'
           registry-url: https://registry.npmjs.org/ # Needed for auth
       - name: cache all node_modules
         id: cache-modules
@@ -310,7 +310,7 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.13
+      image: node:16.19-alpine3.17
     environment:
       name: production
     env:
