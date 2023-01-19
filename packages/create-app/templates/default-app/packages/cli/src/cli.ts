@@ -43,7 +43,7 @@ export default async function cli(argv: string[] = process.argv) {
   let format: string
 
   if (program.opts().interactive) {
-    ;[startDate, endDate, region, groupBy, format] = await CliPrompts()
+    [startDate, endDate, region, groupBy, format] = await CliPrompts()
   } else {
     const programOptions = program.opts()
     startDate = programOptions.startDate
