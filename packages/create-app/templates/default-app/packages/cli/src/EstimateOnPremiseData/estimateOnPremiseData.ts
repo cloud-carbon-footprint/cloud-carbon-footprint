@@ -11,7 +11,7 @@ import {
   OnPremiseDataInput,
   OnPremiseDataOutput,
 } from '@cloud-carbon-footprint/common'
-import { validateInputData } from './validateInputData'
+import { validateOnPremiseInput } from '../common/inputValidation'
 import { writeToCsv } from './writeToCsv'
 
 export default async function estimateOnPremiseData(
@@ -45,7 +45,7 @@ export default async function estimateOnPremiseData(
     const onPremiseInputData: OnPremiseDataInput[] = await csv().fromFile(
       onPremiseInputFile,
     )
-    validateInputData(onPremiseInputData)
+    validateOnPremiseInput(onPremiseInputData)
     const onPremiseEstimatesData: OnPremiseDataOutput[] =
       new App().getOnPremiseEstimatesFromInputData(onPremiseInputData)
     await writeToCsv(onPremiseOutputFile, onPremiseEstimatesData)

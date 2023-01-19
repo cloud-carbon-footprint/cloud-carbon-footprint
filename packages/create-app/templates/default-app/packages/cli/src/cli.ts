@@ -15,6 +15,7 @@ import EmissionsByServiceTable from './EmissionsByServiceTable'
 import EmissionsByDayTable from './EmissionsByDayTable'
 import CliPrompts from './CliPrompts'
 import { exportToCSV } from './CSV'
+import { validateCliInput } from './common/inputValidation'
 
 export default async function cli(argv: string[] = process.argv) {
   const program = new commander.Command()
@@ -42,7 +43,7 @@ export default async function cli(argv: string[] = process.argv) {
   let format: string
 
   if (program.opts().interactive) {
-    [startDate, endDate, region, groupBy, format] = await CliPrompts()
+    ;[startDate, endDate, region, groupBy, format] = await CliPrompts()
   } else {
     const programOptions = program.opts()
     startDate = programOptions.startDate
@@ -50,12 +51,23 @@ export default async function cli(argv: string[] = process.argv) {
     region = programOptions.region
     groupBy = programOptions.groupBy
     format = programOptions.format
+
+    if (!groupBy) {
+      console.warn(
+        'GroupBy parameter not specified, adopting "day" as the default.',
+      )
+      groupBy = 'day'
+    }
   }
+  validateCliInput({ groupBy })
+
   const estimationRequest = createValidFootprintRequest({
     startDate,
     endDate,
     region,
+    groupBy: 'day', // So that estimates are cached the same regardless of table grouping method
   })
+
   const { table, colWidths } = await new App()
     .getCostAndEstimates(estimationRequest)
     .then((estimations: EstimationResult[]) => {
