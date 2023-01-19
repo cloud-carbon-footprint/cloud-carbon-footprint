@@ -7,6 +7,7 @@ import AWS from 'aws-sdk'
 import {
   EstimationRequestValidationError,
   EstimationResult,
+  GroupBy,
 } from '@cloud-carbon-footprint/common'
 import {
   mockAwsCloudWatchGetMetricData,
@@ -21,6 +22,7 @@ import {
 } from './fixtures/cloudmonitoring.fixtures'
 import cli from '../cli'
 
+let mockWarn: jest.SpyInstance
 const mockListTimeSeries = jest.fn()
 
 jest.mock('@google-cloud/monitoring', () => {
@@ -128,6 +130,10 @@ beforeAll(() => {
   AWSMock.setSDKInstance(AWS)
 })
 
+beforeEach(() => {
+  mockWarn = jest.spyOn(console, 'warn').mockImplementation()
+})
+
 afterEach(() => {
   AWSMock.restore()
 })
@@ -135,6 +141,7 @@ afterEach(() => {
 describe('cli', () => {
   const start = '2020-07-01'
   const end = '2020-07-07'
+  const grouping = 'day'
   const rawRequest = [
     'executable',
     'file',
@@ -142,6 +149,8 @@ describe('cli', () => {
     start,
     '--endDate',
     end,
+    '--groupBy',
+    grouping,
   ]
 
   beforeEach(() => {
@@ -151,6 +160,22 @@ describe('cli', () => {
 
   afterEach(() => {
     jest.restoreAllMocks()
+  })
+
+  describe('request parameters', () => {
+    const expectedValidatedParams = {
+      startDate: new Date(start),
+      endDate: new Date(end),
+      groupBy: GroupBy.day,
+      ignoreCache: false,
+    }
+
+    it('passes all required request parameters to App request', async () => {
+      await cli([...rawRequest])
+      expect(mockGetCostAndEstimates).toHaveBeenCalledWith(
+        expectedValidatedParams,
+      )
+    })
   })
 
   describe('ebs, s3, ec3, elasticache, rds', () => {
@@ -198,7 +223,7 @@ describe('cli', () => {
     })
   })
 
-  describe('start and end date parameter validation', () => {
+  describe('parameter validation', () => {
     describe('given: invalid dates', () => {
       it('throws an estimation validation error', async () => {
         // setup
@@ -217,6 +242,47 @@ describe('cli', () => {
         await expect(() => {
           return cli([...command])
         }).rejects.toThrow(EstimationRequestValidationError)
+      })
+    })
+
+    describe('given: invalid table grouping parameter', () => {
+      it('throws an estimation request validation error', async () => {
+        const grouping = 'year'
+        const command = [
+          'executable',
+          'file',
+          '--startDate',
+          start,
+          '--endDate',
+          end,
+          '--groupBy',
+          grouping,
+        ]
+
+        const validGroupByParams = ['day', 'dayAndService', 'service']
+        const errorMessage = `GroupBy param is incorrect. Please specify one of the following grouping methods: ${validGroupByParams.join(
+          ' | ',
+        )}`
+
+        await expect(() => {
+          return cli([...command])
+        }).rejects.toThrow(new EstimationRequestValidationError(errorMessage))
+      })
+
+      it('assigns a default value of "day" along with a warning when not provided', async () => {
+        const command = [
+          'executable',
+          'file',
+          '--startDate',
+          start,
+          '--endDate',
+          end,
+        ]
+
+        await cli([...command])
+        expect(mockWarn).toHaveBeenCalledWith(
+          'GroupBy parameter not specified, adopting "day" as the default.',
+        )
       })
     })
   })

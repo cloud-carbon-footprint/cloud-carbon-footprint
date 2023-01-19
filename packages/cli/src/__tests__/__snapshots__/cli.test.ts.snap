@@ -11,7 +11,7 @@ exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grou
 `;
 
 exports[`cli ebs, s3, ec3, elasticache, rds ebs, s3, ec2, elasticache, rds, grouped by day and service 1`] = `
-"| Date (UTC)   | SUM kilowatt hours| SUM metric tons CO2e Emissions
+"| Date         | kilowatt hours    | metric tons CO2e Emissions
 | Total        | 0.00              | 0.000000               "
 `;
 
