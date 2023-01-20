@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/aws",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Amazon Web Services.",
   "main": "src/index.ts",
