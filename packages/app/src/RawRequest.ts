@@ -6,6 +6,7 @@ export interface FootprintEstimatesRawRequest {
   startDate?: string
   endDate?: string
   region?: string
+  cloudProviderToSeed?: string
   ignoreCache?: string
   groupBy?: string
   limit?: string

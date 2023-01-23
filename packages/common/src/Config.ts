@@ -8,6 +8,7 @@ dotenv.config()
 
 export interface CCFConfig {
   AWS?: {
+    INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
     BILLING_ACCOUNT_ID?: string
     BILLING_ACCOUNT_NAME?: string
@@ -36,6 +37,7 @@ export interface CCFConfig {
       name?: string
     }[]
     USE_CARBON_FREE_ENERGY_PERCENTAGE?: boolean
+    INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
     BIG_QUERY_TABLE?: string
     BILLING_PROJECT_ID?: string
@@ -45,6 +47,7 @@ export interface CCFConfig {
     VCPUS_PER_GKE_CLUSTER?: number
   }
   AZURE?: {
+    INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
     authentication?: {
       mode: string
@@ -117,6 +120,9 @@ const getEnvVar = (envVar: string): string => {
 
 const getConfig = (): CCFConfig => ({
   AWS: {
+    INCLUDE_ESTIMATES: process.env.AWS_INCLUDE_ESTIMATES
+      ? !!process.env.AWS_INCLUDE_ESTIMATES
+      : true,
     USE_BILLING_DATA:
       !!process.env.AWS_USE_BILLING_DATA &&
       process.env.AWS_USE_BILLING_DATA !== 'false',
@@ -201,6 +207,9 @@ const getConfig = (): CCFConfig => ({
     USE_CARBON_FREE_ENERGY_PERCENTAGE:
       !!process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE &&
       process.env.GCP_USE_CARBON_FREE_ENERGY_PERCENTAGE !== 'false',
+    INCLUDE_ESTIMATES: process.env.GCP_INCLUDE_ESTIMATES
+      ? !!process.env.GCP_INCLUDE_ESTIMATES
+      : true,
     USE_BILLING_DATA:
       !!process.env.GCP_USE_BILLING_DATA &&
       process.env.GCP_USE_BILLING_DATA !== 'false',
@@ -214,6 +223,9 @@ const getConfig = (): CCFConfig => ({
     CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
   },
   AZURE: {
+    INCLUDE_ESTIMATES: process.env.AZURE_INCLUDE_ESTIMATES
+      ? !!process.env.AZURE_INCLUDE_ESTIMATES
+      : true,
     USE_BILLING_DATA:
       !!process.env.AZURE_USE_BILLING_DATA &&
       process.env.AZURE_USE_BILLING_DATA !== 'false',

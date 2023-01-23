@@ -1,0 +1,50 @@
+.footerImageContainer {
+  display: flex;
+  gap: 50pt;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerImageContainer a {
+  text-decoration: none;
+}
+
+.footerImageTitle {
+  text-align: center;
+  font-size: 28pt;
+  font-weight: bold;
+  color:  #067a3e;
+  margin-bottom: 20px;
+}
+
+.twLogoContainer {
+  display: flex;
+  height: 72px;
+}
+
+.twLogo {
+  object-fit: contain;
+}
+
+.line {
+  border-left: 3px solid rgba(0, 0, 0, 25%);
+  height: 120px;
+  width: 0;
+}
+
+.discussionBtn {
+  margin-bottom: 8px;
+}
+
+@media screen and (max-width: 966px) {
+  .footerImageContainer {
+    flex-direction: column;
+    gap: 32pt;
+  }
+
+  .line {
+    border-top: 3px solid rgba(0, 0, 0, 25%);
+    width: 200px;
+    height: 0;
+  }
+}

@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 
 import express from 'express'
 import helmet from 'helmet'
+import cors, { CorsOptions } from 'cors'
 
 import { createRouter } from './api'
 import auth from './auth'
@@ -22,6 +23,21 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 httpApp.use(helmet())
+
+if (process.env.ENABLE_CORS) {
+  const corsOptions: CorsOptions = {
+    optionsSuccessStatus: 200,
+  }
+
+  if (process.env.CORS_ALLOW_ORIGIN) {
+    serverLogger.info(
+      'Allowing CORS requests from origin(s) ' + process.env.CORS_ALLOW_ORIGIN,
+    )
+    corsOptions.origin = process.env.CORS_ALLOW_ORIGIN.split(',')
+  }
+
+  httpApp.use(cors(corsOptions))
+}
 
 httpApp.use('/api', createRouter())
 

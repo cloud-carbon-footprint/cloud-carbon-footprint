@@ -97,6 +97,7 @@ export const HDD_USAGE_TYPES: string[] = [
   'WarmStorage-ByteHrs-EFS', //AWSBackup
   'WarmStorage-ByteHrs-DynamoDB', //AWSBackup
   'MagneticStore-ByteHrs', // EBS Backup
+  'ColdStorage-ByteHrs-DynamoDB', //AWSBackup
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -124,6 +125,7 @@ export const BYTE_HOURS_USAGE_TYPES: string[] = [
   'EarlyDelete-ZIA',
   'GlacierByteHrs',
   'ByteHrs-EFS',
+  'ByteHrs-DynamoDB',
 ]
 
 export const UNKNOWN_USAGE_TYPES: string[] = [

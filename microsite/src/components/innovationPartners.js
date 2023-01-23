@@ -9,11 +9,6 @@ import styles from './innovationPartnersStyles.module.css'
 
 const logosArray = [
   {
-    path: 'img/logos/TWLogo-small.webp',
-    alt: 'Thoughtworks logo',
-    url: 'https://www.thoughtworks.com',
-  },
-  {
     path: 'img/logos/TomorrowLogo-small.webp',
     alt: 'Tomorrow logo',
     url: 'https://www.tmrow.com',
@@ -77,9 +72,11 @@ function InnovationPartners() {
   return (
     <section id="innovation-partners">
       <div className="home__subsection-box-format">
+        <div className={styles.innovationPartnerContainer}>
         <h2 className="home__subsection-title">INNOVATION PARTNERS</h2>
         <div className={styles.logosContainer}>
           <Logos />
+        </div>
         </div>
       </div>
     </section>

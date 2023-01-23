@@ -190,6 +190,18 @@ describe('CreateValidRequest', () => {
     )
   })
 
+  it('ensures the seeded cloud provider is valid', () => {
+    const input = {
+      startDate: '2000-07-10',
+      endDate: '2020-07-10',
+      cloudProviderToSeed: 'TEST',
+    }
+
+    expect(() => createValidFootprintRequest(input)).toThrow(
+      'Not a valid cloud provider',
+    )
+  })
+
   it.each([
     ['1', 'test', 'Not a valid skip number'],
     ['test', '1', 'Not a valid limit number'],

@@ -37,10 +37,14 @@
 }
 
 .differentiatorListTitle {
-  color: #067a3e;
   font-size: 22pt;
   font-weight: bold;
 }
+
+html[data-theme='light'] .differentiatorListTitle {
+  color: #067a3e;
+}
+
 
 .differentiatorCheckContainer {
   display: flex;

@@ -8,13 +8,15 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   deploy-demo-app:
     if: github.event.pull_request.head.ref == 'changeset-release/trunk'
     runs-on: ubuntu-latest
     container:
-      image: node:14.18-alpine3.13
+      image: node:16.19-alpine3.17
     environment:
       name: staging
     env:

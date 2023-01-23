@@ -16,13 +16,19 @@
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
   --ifm-navbar-background-color: #146133;
-  --ifm-navbar-link-hover-color: #ffffff;
+  --ifm-navbar-link-hover-color: #8fd9a2;
 }
 
 html[data-theme='light'] {
   --ifm-link-color: #146133;
   --ifm-menu-color-active: #146133;
   --ifm-color-primary: #146133;
+  --ifm-color-emphasis-200: var(--ifm-navbar-link-hover-color)
+}
+
+html[data-theme='dark'] {
+  --ifm-navbar-background-color: #242526;
+  --ifm-navbar-link-hover-color: #25c2a0;
 }
 
 
@@ -33,8 +39,14 @@ html[data-theme='light'] {
   padding: 0 var(--ifm-pre-padding);
 }
 
+/* Color mode toggle (light icon) */
+.toggleButton_node_modules-\@docusaurus-theme-classic-lib-theme-ColorModeToggle-styles-module {
+  color: white;
+}
+
 .navbar__brand {
   text-decoration: none;
+  height: 2rem;
 }
 
 .navbar__title {
@@ -49,12 +61,11 @@ html[data-theme='light'] {
   margin-bottom: 5px;
   height: initial;
   width: 58px;
+  height: 58px;
 }
 
-.navbar__link--active,
-.navbar__link--active:hover {
+.navbar__link--active{
   color: white;
-  text-decoration: underline;
 }
 
 .navbar__toggle > svg {
@@ -77,6 +88,7 @@ html[data-theme='light'] {
 .navbar__link {
   color: white;
   margin-right: -10px;
+  text-decoration: none;
 }
 
 .sidebar_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocSidebar- {

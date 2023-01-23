@@ -1,5 +1,25 @@
 # @cloud-carbon-footprint/client
 
+## 4.0.0
+
+### Major Changes
+
+- 382814e2: Migrates to React 18
+
+  For updates to your create-app templates, please see the following [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/531c35c878ac947020ad154accd06cfa820ec009).
+
+### Minor Changes
+
+- 81aac6a8: client error page and console now shows exact error message and detail
+
+### Patch Changes
+
+- 7afae983: Refactors useKilograms to an enum for Co2e unit (for easier extensibility of units)
+
+  For updates to your create-app template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/55cc6dcd3de97a245265634c8b2c1806ff934907).
+
+- fd4ec19b: Adds new AWS regions and emissions factors for ap-southeast-3 and me-central-1
+
 ## 3.3.0
 
 ### Minor Changes

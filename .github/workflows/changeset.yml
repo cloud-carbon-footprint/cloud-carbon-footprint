@@ -7,7 +7,9 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   create-release-pr:
     name: Create Changeset PR
@@ -19,10 +21,10 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - name: Setup Node.js 12.x
+      - name: Setup Node.js 16.x
         uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: 16.x
 
       - name: Install Dependencies
         run:  yarn install --immutable

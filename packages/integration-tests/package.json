@@ -1,12 +1,12 @@
 {
   "name": "@cloud-carbon-footprint/integration-tests",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "private": true,
   "description": "Test repository to run integration tests",
   "scripts": {
     "start": "concurrently \"yarn start-client\" \"yarn start-api\"",
-    "start-client": "BROWSER=none REACT_APP_START_DATE=2020-01-01 REACT_APP_END_DATE=2021-03-01 REACT_APP_GROUP_BY=month REACT_APP_PAGE_LIMIT=1000 yarn workspace @cloud-carbon-footprint/client start",
-    "start-api": "TEST_MODE=true CACHE_MODE=LOCAL yarn workspace @cloud-carbon-footprint/api start",
+    "start-client": "BROWSER=none REACT_APP_START_DATE=2020-01-01 REACT_APP_END_DATE=2021-03-01 REACT_APP_GROUP_BY=month REACT_APP_PAGE_LIMIT=1000 REACT_APP_BASE_URL=http://127.0.0.1:3000/api yarn workspace @cloud-carbon-footprint/client start",
+    "start-api": "TEST_MODE=true CACHE_MODE=LOCAL ENABLE_CORS=false yarn workspace @cloud-carbon-footprint/api start",
     "headless": "testcafe 'chromium:headless' 'tests/*test.js'",
     "headed": "testcafe 'chrome'",
     "precommit": "lint-staged --no-stash && yarn headless",
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
-    "@testing-library/testcafe": "^4.4.0",
+    "@testing-library/testcafe": "^5.0.0",
     "concurrently": "^7.0.0",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",

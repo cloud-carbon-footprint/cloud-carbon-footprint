@@ -107,6 +107,7 @@ export const STORAGE_USAGE_TYPES: string[] = [
   '10 DTUs',
   'S0 DTUs',
   'B DTUs',
+  'B DTU',
   'eDTUs',
   'On Premises Server Protected Instances',
   'Standard Trial Nodes',
@@ -138,7 +139,7 @@ export const MEMORY_USAGE_TYPES: string[] = [
 export const CACHE_MEMORY_GB: {
   [cacheName: string]: number
 } = {
-  C0: 250,
+  C0: 0.25,
   C1: 1,
   C2: 2.5,
   C3: 6,
