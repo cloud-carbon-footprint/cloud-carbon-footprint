@@ -111,6 +111,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.002863085156621724,
@@ -122,6 +125,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 10,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.0683736557005491,
@@ -133,6 +139,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure App Service',
             cost: 10,
             region: 'CentralUS',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -152,6 +161,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Container Instances',
             cost: 12,
             region: 'SouthCentralUS',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.18258479999999996,
@@ -163,6 +175,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Database for MySQL',
             cost: 12,
             region: 'Unknown',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: 'test-subscription-id',
@@ -174,6 +189,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'ukwest',
             serviceName: 'Virtual Machines Licenses',
             usesAverageCPUConstant: false,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: 'test-subscription-id',
@@ -185,6 +203,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'Unknown',
             serviceName: 'VPN Gateway',
             usesAverageCPUConstant: false,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -233,6 +254,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             cost: 10,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.011157869359725106,
@@ -244,6 +268,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             cost: 10,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.000204768,
@@ -255,6 +282,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Database for MySQL',
             cost: 5,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.00034127999999999996,
@@ -266,6 +296,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Container Registry',
             cost: 5,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.018929664000000002,
@@ -277,6 +310,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'HDInsight',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.068256,
@@ -288,6 +324,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Synapse Analytics',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.0010238399999999998,
@@ -299,6 +338,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             cost: 5,
             region: 'centralindia',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.003276288,
@@ -358,6 +400,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 11.850000000000001,
@@ -369,6 +414,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Bandwidth',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -417,6 +465,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             usesAverageCPUConstant: true,
             kilowattHours: 0.18258564019771067,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -428,6 +479,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Redis Cache',
             usesAverageCPUConstant: false,
             kilowattHours: 0.04459392,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -447,6 +501,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Functions',
             usesAverageCPUConstant: false,
             kilowattHours: 0.0000000143710875,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -458,6 +515,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Container Instances',
             usesAverageCPUConstant: false,
             kilowattHours: 0.0067122042757308,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -506,6 +566,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
             kilowattHours: 0.000000271727136,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -517,6 +580,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
             kilowattHours: 0.0000012510300960000003,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -528,6 +594,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
             kilowattHours: 3.07152e-9,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -539,6 +608,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
             kilowattHours: 0.000005629481856,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -558,6 +630,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
             kilowattHours: 0.013105152,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -569,6 +644,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
             kilowattHours: 0.0017746560000000003,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -617,6 +695,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Database for MySQL',
             usesAverageCPUConstant: false,
             kilowattHours: 0.00000137612903276448,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -628,6 +709,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'SQL Database',
             usesAverageCPUConstant: true,
             kilowattHours: 0.015215399999999999,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -647,6 +731,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Database for MySQL',
             usesAverageCPUConstant: true,
             kilowattHours: 0.18258479999999996,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -658,6 +745,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Cosmos DB',
             usesAverageCPUConstant: false,
             kilowattHours: 0.00000293605970619456,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: subscriptionId,
@@ -669,6 +759,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'SQL Database',
             usesAverageCPUConstant: false,
             kilowattHours: 7.155870966717116e-7,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -744,6 +837,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0,
@@ -755,6 +851,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'API Management',
             cost: 1.579140496,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -774,6 +873,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
             serviceName: 'Azure Cosmos DB',
             usesAverageCPUConstant: false,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0,
@@ -785,6 +887,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Advanced Data Security',
             cost: 0.4835702479,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -804,6 +909,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
             serviceName: 'Storage',
             usesAverageCPUConstant: false,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0,
@@ -815,6 +923,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Load Balancer',
             cost: 0.006280996057,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -834,6 +945,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'northeurope',
             serviceName: 'Container Instances',
             usesAverageCPUConstant: false,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0,
@@ -845,6 +959,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Azure Databricks',
             cost: 18,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -864,6 +981,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'All Regions',
             serviceName: 'Azure DNS',
             usesAverageCPUConstant: false,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -913,6 +1033,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 10,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.013126433307939065,
@@ -924,6 +1047,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 15,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 0.2614738305048199,
@@ -935,6 +1061,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             accountId: 'test-subscription-id',
@@ -946,6 +1075,9 @@ describe('Azure Consumption Management Service', () => {
             region: 'EastUS',
             serviceName: 'Virtual Machines',
             usesAverageCPUConstant: true,
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -994,6 +1126,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 10,
             region: 'northeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -1013,6 +1148,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 10,
             region: 'EastUS',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 2.774591597330377,
@@ -1024,6 +1162,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 10,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -1112,6 +1253,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
           {
             kilowattHours: 11.850000000000001,
@@ -1123,6 +1267,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Bandwidth',
             cost: 5,
             region: 'uksouth',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -1175,6 +1322,9 @@ describe('Azure Consumption Management Service', () => {
               serviceName: 'Virtual Machines',
               cost: 5,
               region: 'uksouth',
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
             {
               kilowattHours: 0.002863085156621724,
@@ -1186,6 +1336,9 @@ describe('Azure Consumption Management Service', () => {
               serviceName: 'Virtual Machines',
               cost: 10,
               region: 'westeurope',
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
             {
               kilowattHours: 0.0683736557005491,
@@ -1197,6 +1350,9 @@ describe('Azure Consumption Management Service', () => {
               serviceName: 'Azure App Service',
               cost: 10,
               region: 'CentralUS',
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
             {
               kilowattHours: 0.025359,
@@ -1208,6 +1364,9 @@ describe('Azure Consumption Management Service', () => {
               serviceName: 'Container Instances',
               cost: 12,
               region: 'SouthCentralUS',
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
             {
               kilowattHours: 0.18258479999999996,
@@ -1219,6 +1378,9 @@ describe('Azure Consumption Management Service', () => {
               serviceName: 'Azure Database for MySQL',
               cost: 12,
               region: 'Unknown',
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
             {
               accountId: 'test-subscription-id',
@@ -1230,6 +1392,9 @@ describe('Azure Consumption Management Service', () => {
               region: 'ukwest',
               serviceName: 'Virtual Machines Licenses',
               usesAverageCPUConstant: false,
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
             {
               accountId: 'test-subscription-id',
@@ -1241,6 +1406,9 @@ describe('Azure Consumption Management Service', () => {
               region: 'Unknown',
               serviceName: 'VPN Gateway',
               usesAverageCPUConstant: false,
+              tags: {
+                resourceGroup: 'test-resource-group',
+              },
             },
           ],
           groupBy: GroupBy.week,
@@ -1290,6 +1458,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Virtual Machines',
             cost: 15,
             region: 'westeurope',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
@@ -1331,7 +1502,7 @@ describe('Azure Consumption Management Service', () => {
   it('Throws an error when iteration on a usageRow fails', async () => {
     const errorMessage = 'Something went wrong!'
     const _headersMap = new Map([
-      ["'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests':", 1],
+      ['\'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests\':', 1],
     ])
     const testError = {
       message: errorMessage,

@@ -41,6 +41,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -61,6 +62,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -81,6 +83,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'CentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -101,6 +104,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'SouthCentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -121,6 +125,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unknown',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -141,6 +146,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'ukwest',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -161,6 +167,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unknown',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -184,6 +191,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -204,6 +212,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -224,6 +233,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -244,6 +254,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -264,6 +275,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -284,6 +296,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -304,6 +317,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -324,6 +338,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -344,6 +359,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'centralindia',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -387,6 +403,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -407,6 +424,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -427,6 +445,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -450,6 +469,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unassigned',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -470,6 +490,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -490,6 +511,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -510,6 +532,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -532,6 +555,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -552,6 +576,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'apsoutheast',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -572,6 +597,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'EastUS2',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -592,6 +618,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'ukwest',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -615,6 +642,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'WestUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -635,6 +663,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'SouthCentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -655,6 +684,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -675,6 +705,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uswest2',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -695,6 +726,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -715,6 +747,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westindia',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -738,6 +771,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -758,6 +792,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -778,6 +813,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'CentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -798,6 +834,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -818,6 +855,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -841,6 +879,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -861,6 +900,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -881,6 +921,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -901,6 +942,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -921,6 +963,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -941,6 +984,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -961,6 +1005,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -981,6 +1026,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1001,6 +1047,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'All Regions',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -1024,6 +1071,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1044,6 +1092,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1064,6 +1113,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1083,6 +1133,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -1106,6 +1157,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1126,6 +1178,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1146,6 +1199,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -1169,6 +1223,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1188,6 +1243,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1207,6 +1263,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'WESTEUROPE',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]

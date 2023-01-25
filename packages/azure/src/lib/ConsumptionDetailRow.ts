@@ -24,6 +24,10 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     this.vCpuHours = this.usageAmount * this.getVCpus()
     this.gpuHours = this.usageAmount * this.getGpus()
     this.region = this.getRegionFromResourceLocation()
+    this.tags = {
+      ...usageDetail.tags,
+      resourceGroup: usageDetail.properties.resourceGroup,
+    }
   }
 
   public getVCpus(): number {
