@@ -1,65 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`createLookupTable creates lookup table CSV creates AWS lookup table CSV file, with default output file path 1`] = `
-"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4,,0.01895949533305589,0.000007186956936406165
-AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,,,0.001135,8.038069999999999e-7
-AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,,4.025878297397867e-15,3.0596675060223788e-18
-AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,GB-Mo,,,0.00099436896,2.2373301600000001e-7
-AmazonRDS,us-east-1,Aurora:StorageIOUsage,IOs,,,0,0
+"serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
+AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,4,,0.01895949533305589,0.000007186956936406165
+AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,,,0.001135,8.038069999999999e-7
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,,,4.025878297397867e-15,3.0596675060223788e-18
+AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,,,0.00099436896,2.2373301600000001e-7
+AmazonRDS,us-east-1,Aurora:StorageIOUsage,,,0,0
 "
 `;
 
 exports[`createLookupTable creates lookup table CSV creates AWS lookup table CSV file, with provided output file name 1`] = `
-"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,Hrs,4,,0.01895949533305589,0.000007186956936406165
-AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,GB,,,0.001135,8.038069999999999e-7
-AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,GB-Mo,,,4.025878297397867e-15,3.0596675060223788e-18
-AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,GB-Mo,,,0.00099436896,2.2373301600000001e-7
-AmazonRDS,us-east-1,Aurora:StorageIOUsage,IOs,,,0,0
+"serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
+AmazonEC2,us-east-1,USE1-EBSOptimized:m4.xlarge,4,,0.01895949533305589,0.000007186956936406165
+AmazonEC2,ap-south-1,APS3-EUW3-AWS-Out-Bytes,,,0.001135,8.038069999999999e-7
+AmazonS3,ap-southeast-2,APS2-TimedStorage-ByteHrs,,,4.025878297397867e-15,3.0596675060223788e-18
+AmazonRDS,eu-west-2,EUW2-RDS:GP2-Storage,,,0.00099436896,2.2373301600000001e-7
+AmazonRDS,us-east-1,Aurora:StorageIOUsage,,,0,0
 "
 `;
 
 exports[`createLookupTable creates lookup table CSV creates Azure lookup table CSV file, with default output file path 1`] = `
-"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-Virtual Machines,uksouth,D2 v2/DS2 v2,10 Hours,,,0.015380813559107052,0.0000034606830507990865
-Virtual Machines,westeurope,D4as v4 Spot,1 Hour,,,0.011452157391968623,0.000003760888487522496
-Azure App Service,CentralUS,F1,1 Hour,,,0.00976766510007844,0.000004163506319568836
-Container Instances,SouthCentralUS,vCPU Duration,1000 Hours,,,0.0025359,9.464764929e-7
-Azure Database for MySQL,Unknown,2 vCore,100 Hours,,,0.015215399999999999,0.000005344865126207099
-VPN Gateway,Unknown,VpnGw1,100 Hours,,,0.015215399999999999,0.000005344865126207099
+"serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
+Virtual Machines,uksouth,D2 v2/DS2 v2,,,0.015380813559107052,0.0000034606830507990865
+Virtual Machines,westeurope,D4as v4 Spot,,,0.011452157391968623,0.000003760888487522496
+Azure App Service,CentralUS,F1,,,0.00976766510007844,0.000004163506319568836
+Container Instances,SouthCentralUS,vCPU Duration,,,0.0025359,9.464764929e-7
+Azure Database for MySQL,Unknown,2 vCore,,,0.015215399999999999,0.000005344865126207099
+VPN Gateway,Unknown,VpnGw1,,,0.015215399999999999,0.000005344865126207099
 "
 `;
 
 exports[`createLookupTable creates lookup table CSV creates Azure lookup table CSV file, with provided output file name 1`] = `
-"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-Virtual Machines,uksouth,D2 v2/DS2 v2,10 Hours,,,0.015380813559107052,0.0000034606830507990865
-Virtual Machines,westeurope,D4as v4 Spot,1 Hour,,,0.011452157391968623,0.000003760888487522496
-Azure App Service,CentralUS,F1,1 Hour,,,0.00976766510007844,0.000004163506319568836
-Container Instances,SouthCentralUS,vCPU Duration,1000 Hours,,,0.0025359,9.464764929e-7
-Azure Database for MySQL,Unknown,2 vCore,100 Hours,,,0.015215399999999999,0.000005344865126207099
-VPN Gateway,Unknown,VpnGw1,100 Hours,,,0.015215399999999999,0.000005344865126207099
+"serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
+Virtual Machines,uksouth,D2 v2/DS2 v2,,,0.015380813559107052,0.0000034606830507990865
+Virtual Machines,westeurope,D4as v4 Spot,,,0.011452157391968623,0.000003760888487522496
+Azure App Service,CentralUS,F1,,,0.00976766510007844,0.000004163506319568836
+Container Instances,SouthCentralUS,vCPU Duration,,,0.0025359,9.464764929e-7
+Azure Database for MySQL,Unknown,2 vCore,,,0.015215399999999999,0.000005344865126207099
+VPN Gateway,Unknown,VpnGw1,,,0.015215399999999999,0.000005344865126207099
 "
 `;
 
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with default output file path 1`] = `
-"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,0.014009072337326133,0.000005057275113774734
-Compute Engine,europe-west1,Storage PD Capacity,byte-seconds,,,6.384652806445957e-16,1.3535463949665428e-19
-Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,bytes,,,3.6209821701049808e-9,7.67648220062256e-13
-Compute Engine,us-central1,SSD backed PD Capacity,byte-seconds,,,1.2114469427615405e-15,5.499969120137394e-19
-App Engine,us-east4,Backend Instances,seconds,,,0.012628000000000002,0.000004558708
-Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,bytes,,,3.6209821701049804e-9,1.307174563407898e-12
+"serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,,n1-standard-4,0.014009072337326133,0.000005057275113774734
+Compute Engine,europe-west1,Storage PD Capacity,,,6.384652806445957e-16,1.3535463949665428e-19
+Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,,,3.6209821701049808e-9,7.67648220062256e-13
+Compute Engine,us-central1,SSD backed PD Capacity,,,1.2114469427615405e-15,5.499969120137394e-19
+App Engine,us-east4,Backend Instances,,,0.012628000000000002,0.000004558708
+Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,,,3.6209821701049804e-9,1.307174563407898e-12
 "
 `;
 
 exports[`createLookupTable creates lookup table CSV creates GCP lookup table CSV file, with provided output file name 1`] = `
-"serviceName,region,usageType,usageUnit,vCpus,machineType,kilowattHours,co2e
-Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,seconds,,n1-standard-4,0.014009072337326133,0.000005057275113774734
-Compute Engine,europe-west1,Storage PD Capacity,byte-seconds,,,6.384652806445957e-16,1.3535463949665428e-19
-Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,bytes,,,3.6209821701049808e-9,7.67648220062256e-13
-Compute Engine,us-central1,SSD backed PD Capacity,byte-seconds,,,1.2114469427615405e-15,5.499969120137394e-19
-App Engine,us-east4,Backend Instances,seconds,,,0.012628000000000002,0.000004558708
-Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,bytes,,,3.6209821701049804e-9,1.307174563407898e-12
+"serviceName,region,usageType,vCpus,machineType,kilowattHours,co2e
+Compute Engine,us-east4,N1 Predefined Instance Core running in Virginia,,n1-standard-4,0.014009072337326133,0.000005057275113774734
+Compute Engine,europe-west1,Storage PD Capacity,,,6.384652806445957e-16,1.3535463949665428e-19
+Compute Engine,europe-west1,Network Internet Egress from EMEA to Americas,,,3.6209821701049808e-9,7.67648220062256e-13
+Compute Engine,us-central1,SSD backed PD Capacity,,,1.2114469427615405e-15,5.499969120137394e-19
+App Engine,us-east4,Backend Instances,,,0.012628000000000002,0.000004558708
+Compute Engine,us-east4,Network Inter Region Ingress from Netherlands to Americas,,,3.6209821701049804e-9,1.307174563407898e-12
 "
 `;

@@ -188,7 +188,7 @@ fileignoreconfig:
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookupTable.test.ts.snap
-  checksum: cc7e5bbdeca11f8a76a5bd067de7cbb63c87e77aac940064bac414b5e0db3702
+  checksum: fe21b93664ffbf61c7120fbda819f6e5ff9f5719c27220425b0e724daea0b9ce
 - filename: packages/client/.env.template
   checksum: 1c4486bc5eeefefaa52481541884e38a9cb984fc6f90c56ffc1e7ad57ddd2c05
 - filename: packages/client/create_client_env_file.sh

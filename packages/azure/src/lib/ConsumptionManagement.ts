@@ -194,7 +194,6 @@ export default class ConsumptionManagementService {
           serviceName: inputDataRow.serviceName,
           region: inputDataRow.region,
           usageType: inputDataRow.usageType,
-          usageUnit: inputDataRow.usageUnit,
           kilowattHours: footprintEstimate.kilowattHours,
           co2e: footprintEstimate.co2e,
         })
@@ -209,7 +208,6 @@ export default class ConsumptionManagementService {
             serviceName: inputDataRow.serviceName,
             region: inputDataRow.region,
             usageType: inputDataRow.usageType,
-            usageUnit: inputDataRow.usageUnit,
             kilowattHours: footprintEstimate.kilowattHours,
             co2e: footprintEstimate.co2e,
           })

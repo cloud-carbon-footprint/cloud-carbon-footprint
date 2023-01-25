@@ -15,7 +15,6 @@ export type LookupTableOutput = {
   serviceName: string
   region: string
   usageType: string
-  usageUnit: string
   vCpus?: string | number
   machineType?: string
   kilowattHours: number
