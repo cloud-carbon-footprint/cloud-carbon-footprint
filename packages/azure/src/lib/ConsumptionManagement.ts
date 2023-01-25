@@ -166,7 +166,7 @@ export default class ConsumptionManagementService {
         id: '',
         name: '',
         type: '',
-        tags: '',
+        tags: {},
         kind: 'legacy' as const,
         properties: {
           kind: 'legacy' as const,
