@@ -6,6 +6,7 @@ import { UsageDetailResult } from '../../lib/ConsumptionTypes'
 
 interface IterableMockResponse {
   next(): Promise<IteratorResult<UsageDetailResult>>
+
   [Symbol.asyncIterator](): IterableMockResponse
 }
 
@@ -1210,7 +1211,10 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: {},
+    tags: {
+      custom: 'custom-tag-value',
+      other: 'other-custom-tag-value',
+    },
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1223,7 +1227,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
-      resourceGroup: 'test-resource-group',
+      resourceGroup: 'first-resource-group',
     },
   },
   {
@@ -1231,7 +1235,10 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: {},
+    tags: {
+      custom: 'custom-tag-value',
+      'created-by': 'created-by-tag-value',
+    },
     properties: {
       kind: 'modern',
       date: new Date('2020-11-03'),
@@ -1243,7 +1250,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
-      resourceGroup: 'test-resource-group',
+      resourceGroup: 'second-resource-group',
     },
   },
   {
@@ -1263,7 +1270,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'WESTEUROPE',
-      resourceGroup: 'test-resource-group',
+      resourceGroup: 'third-resource-group',
     },
   },
 ]
