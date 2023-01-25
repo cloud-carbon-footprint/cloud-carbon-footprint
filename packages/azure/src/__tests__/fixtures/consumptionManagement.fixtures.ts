@@ -28,7 +28,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -49,7 +49,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -70,7 +70,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -91,7 +91,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -112,7 +112,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -133,7 +133,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -154,7 +154,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -178,7 +178,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -199,7 +199,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -220,7 +220,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -241,7 +241,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -262,7 +262,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -283,7 +283,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -304,7 +304,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -325,7 +325,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -346,7 +346,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -390,7 +390,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -411,7 +411,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -432,7 +432,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -456,7 +456,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -477,7 +477,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -498,7 +498,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -519,7 +519,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -542,7 +542,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -563,7 +563,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -584,7 +584,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -605,7 +605,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -629,7 +629,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -650,7 +650,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -671,7 +671,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -692,7 +692,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -713,7 +713,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -734,7 +734,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -758,7 +758,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -779,7 +779,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -800,7 +800,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -821,7 +821,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -842,7 +842,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -866,7 +866,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -887,7 +887,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -908,7 +908,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -929,7 +929,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -950,7 +950,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -971,7 +971,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -992,7 +992,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-05'),
@@ -1013,7 +1013,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-05'),
@@ -1034,7 +1034,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-06'),
@@ -1058,7 +1058,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1079,7 +1079,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1100,7 +1100,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1121,7 +1121,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'modern',
       date: new Date('2020-11-02'),
@@ -1144,7 +1144,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-01'),
@@ -1165,7 +1165,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-07'),
@@ -1186,7 +1186,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-08'),
@@ -1210,7 +1210,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1231,7 +1231,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'modern',
       date: new Date('2020-11-03'),
@@ -1251,7 +1251,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'modern',
       date: new Date('2020-11-03'),

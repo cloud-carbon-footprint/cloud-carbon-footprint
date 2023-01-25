@@ -23,11 +23,15 @@ export type UsageRowPageErrorResponse = {
   message: string
 }
 
+type AzureTags = {
+  [tagKey: string]: string
+}
+
 export type UsageDetailResult = {
   id: string
   name: string
   type: string
-  tags: any
+  tags: AzureTags
   kind: string
   properties: LegacyUsageDetail | ModernUsageDetail
 }
