@@ -1127,7 +1127,9 @@ describe('Azure Consumption Management Service', () => {
             cost: 10,
             region: 'northeurope',
             tags: {
-              resourceGroup: 'test-resource-group',
+              custom: 'custom-tag-value',
+              other: 'other-custom-tag-value',
+              resourceGroup: 'first-resource-group',
             },
           },
         ],
@@ -1149,7 +1151,9 @@ describe('Azure Consumption Management Service', () => {
             cost: 10,
             region: 'EastUS',
             tags: {
-              resourceGroup: 'test-resource-group',
+              custom: 'custom-tag-value',
+              'created-by': 'created-by-tag-value',
+              resourceGroup: 'second-resource-group',
             },
           },
           {
@@ -1163,7 +1167,7 @@ describe('Azure Consumption Management Service', () => {
             cost: 10,
             region: 'westeurope',
             tags: {
-              resourceGroup: 'test-resource-group',
+              resourceGroup: 'third-resource-group',
             },
           },
         ],
@@ -1502,7 +1506,7 @@ describe('Azure Consumption Management Service', () => {
   it('Throws an error when iteration on a usageRow fails', async () => {
     const errorMessage = 'Something went wrong!'
     const _headersMap = new Map([
-      ['\'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests\':', 1],
+      ["'x-ms-ratelimit-remaining-microsoft.consumption-tenant-requests':", 1],
     ])
     const testError = {
       message: errorMessage,
