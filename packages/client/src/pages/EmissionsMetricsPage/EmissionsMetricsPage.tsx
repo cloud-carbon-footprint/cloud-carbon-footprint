@@ -14,7 +14,7 @@ import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 import { FilterOptions, FilterResultResponse } from 'src/Types'
-import { buildFilters } from 'src/utils/hooks'
+import { buildFilters, FootprintData } from 'src/utils/hooks'
 import useFilters from 'src/common/FilterBar/utils/FilterHook'
 import { useFilterDataFromEstimates } from 'src/utils/helpers'
 import { EstimationResult } from '@cloud-carbon-footprint/common'
@@ -22,7 +22,7 @@ import { EstimationResult } from '@cloud-carbon-footprint/common'
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
   onApiError?: (e: Error) => void
-  footprint: any
+  footprint: FootprintData
 }
 
 export default function EmissionsMetricsPage({

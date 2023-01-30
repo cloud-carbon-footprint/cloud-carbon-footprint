@@ -42,7 +42,6 @@ jest.mock('./ConfigLoader', () => ({
   })),
 }))
 
-
 const mockedUseRemoteService = useRemoteFootprintService as jest.MockedFunction<
   typeof useRemoteFootprintService
 >
@@ -129,10 +128,11 @@ describe('App', () => {
   })
 
   it('should passed in to remote service hook today and january first of the last year', () => {
-    render( 
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>)
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
     const parameters = mockedUseRemoteService.mock.calls[0][0]
 
     expect(parameters.startDate.year()).toEqual(parameters.endDate.year() - 1)
@@ -161,7 +161,11 @@ describe('App', () => {
     const expectedStartDate = moment.utc('2020-01-01').toDate()
     const expectedEndDate = moment.utc('2020-01-31').toDate()
 
-    render( <MemoryRouter><App /></MemoryRouter>)
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
 
     const parameters = mockedUseRemoteService.mock.calls[0][0]
 
@@ -192,4 +196,3 @@ describe('App', () => {
     })
   })
 })
-

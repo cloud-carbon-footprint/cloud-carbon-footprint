@@ -2,18 +2,19 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from '../../Types'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import { ServiceResult } from '../../Types'
 import { useAxiosErrorHandling } from '../../layout/ErrorPage'
+import { FootprintData } from './FootprintDataHook'
 
 export interface UseRemoteRecommendationServiceParams {
   baseUrl: string | null
   onApiError?: (e: Error) => void
   awsRecommendationTarget?: string
   minLoadTimeMs?: number
-  footprint?: any
+  footprint?: FootprintData
 }
 
 const useRemoteRecommendationsService = (

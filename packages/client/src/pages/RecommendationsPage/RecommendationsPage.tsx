@@ -13,11 +13,12 @@ import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 import { Co2eUnit } from '../../Types'
 import LoadingMessage from 'src/common/LoadingMessage/LoadingMessage'
+import { FootprintData } from '../../utils/hooks'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
   config?: ClientConfig
-  footprint: any
+  footprint: FootprintData
 }
 
 const RecommendationsPage = ({
