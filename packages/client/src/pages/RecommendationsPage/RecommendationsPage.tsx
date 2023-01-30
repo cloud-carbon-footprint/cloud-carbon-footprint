@@ -14,6 +14,7 @@ import loadConfig from '../../ConfigLoader'
 import { Co2eUnit } from '../../Types'
 import LoadingMessage from 'src/common/LoadingMessage/LoadingMessage'
 import { FootprintData } from '../../utils/hooks'
+import { checkFootprintDates } from '../../utils/helpers/handleDates'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
@@ -29,6 +30,14 @@ const RecommendationsPage = ({
   const classes = useStyles()
 
   const [co2eUnit, setCo2eUnit] = useState(Co2eUnit.MetricTonnes)
+
+  const missingFootprintDatesForForecast = checkFootprintDates(footprint)
+  if (missingFootprintDatesForForecast.length > 0) {
+    footprint = {
+      ...footprint,
+      data: [],
+    }
+  }
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,

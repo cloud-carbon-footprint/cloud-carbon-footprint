@@ -83,31 +83,40 @@ const Forecast: FunctionComponent<ForecastProps> = ({
   return (
     <>
       <Typography className={classes.title}>Forecast</Typography>
-      <div className={classes.forecastContainer}>
-        <ForecastCard
-          title="Last 30 Day Total"
-          co2eSavings={currentCo2eFormatted}
-          costSavings={currentCostFormatted}
-          co2eUnit={co2eUnit}
-          id="last-thirty-day-total"
-        />
-        <ForwardIcon className={classes.icon} />
-        <ForecastCard
-          title="Projected 30 Day Total"
-          co2eSavings={projectedCo2eFormatted}
-          costSavings={projectedCostFormatted}
-          co2ePercentChange={co2ePercentChange}
-          costPercentChange={costPercentChange}
-          co2eUnit={co2eUnit}
-          id="projected-thirty-day-total"
-        />
-        <div className={clsx(classes.icon, classes.equalSign)}>=</div>
-        <ForecastEquivalencyCard
-          title="Monthly Savings Equal To"
-          treeSeedlings={treeSeedlings}
-          yearCostSavings={monthlyCostSavings}
-        />
-      </div>
+      {emissionsData.length > 0 ? (
+        <div className={classes.forecastContainer}>
+          <ForecastCard
+            title="Last 30 Day Total"
+            co2eSavings={currentCo2eFormatted}
+            costSavings={currentCostFormatted}
+            co2eUnit={co2eUnit}
+            id="last-thirty-day-total"
+          />
+          <ForwardIcon className={classes.icon} />
+          <ForecastCard
+            title="Projected 30 Day Total"
+            co2eSavings={projectedCo2eFormatted}
+            costSavings={projectedCostFormatted}
+            co2ePercentChange={co2ePercentChange}
+            costPercentChange={costPercentChange}
+            co2eUnit={co2eUnit}
+            id="projected-thirty-day-total"
+          />
+          <div className={clsx(classes.icon, classes.equalSign)}>=</div>
+          <ForecastEquivalencyCard
+            title="Monthly Savings Equal To"
+            treeSeedlings={treeSeedlings}
+            yearCostSavings={monthlyCostSavings}
+          />
+        </div>
+      ) : (
+        <div id="errorMessage">
+          <h2>
+            Not enough data available in request for Forecast. Please adjust
+            your start/end date to include at least 30 days of data.
+          </h2>
+        </div>
+      )}
     </>
   )
 }

@@ -94,4 +94,20 @@ describe('Forecast', () => {
 
     expect(current).toBeInTheDocument()
   })
+
+  it('should render error message instead of forecast if no emissions data', () => {
+    const emissionsData: ServiceData[] = []
+    const testProps: ForecastProps = {
+      emissionsData,
+      recommendations: mockRecommendationData,
+      co2eUnit: Co2eUnit.MetricTonnes,
+    }
+
+    const getByTextValue =
+      'Not enough data available in request for Forecast. Please adjust your start/end date to include at least 30 days of data.'
+    const { getByText } = render(<Forecast {...testProps} />)
+    const forecast = getByText(getByTextValue)
+
+    expect(forecast).toBeInTheDocument()
+  })
 })
