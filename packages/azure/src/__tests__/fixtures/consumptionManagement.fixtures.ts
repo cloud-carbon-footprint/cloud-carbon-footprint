@@ -1238,6 +1238,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     tags: {
       custom: 'custom-tag-value',
       'created-by': 'created-by-tag-value',
+      ignored: 'this-tag-should-not-be-visible',
     },
     properties: {
       kind: 'modern',
