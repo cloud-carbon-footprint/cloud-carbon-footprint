@@ -76,20 +76,6 @@ describe('Emissions Metrics Page', () => {
     jest.clearAllMocks()
   })
 
-  xit('should show loading icon if data has not been returned', () => {
-    const mockLoading: ServiceResult<EstimationResult> = {
-      loading: true,
-      data: data,
-      error: null,
-    }
-
-    const { getByRole } = render(
-      <EmissionsMetricsPage footprint={mockLoading} />,
-    )
-
-    expect(getByRole('progressbar')).toBeInTheDocument()
-  })
-
   it('should render all components in the page', () => {
     const { getByText, getByTestId } = render(
       <EmissionsMetricsPage footprint={mockFootprintData} />,

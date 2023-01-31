@@ -41,6 +41,31 @@ describe('Recommendations Side Panel', () => {
     ).toBeInTheDocument()
   })
 
+  it('displays the correct resource name for EBS', () => {
+    const newMockRecommendationRow = {
+      ...mockRecommendationRow,
+      recommendationType: 'Modify EBS',
+    }
+    const { getAllByText } = render(
+      <RecommendationsSidePanel recommendation={newMockRecommendationRow} />,
+    )
+    expect(
+      getAllByText(newMockRecommendationRow.resourceId)[1],
+    ).toBeInTheDocument()
+  })
+
+  it('displays the correct resource name for Lambda', () => {
+    const newMockRecommendationRow = {
+      ...mockRecommendationRow,
+      recommendationType: 'Modify Lambda',
+      resourceId: 'resourceId:test',
+    }
+    const { getByText } = render(
+      <RecommendationsSidePanel recommendation={newMockRecommendationRow} />,
+    )
+    expect(getByText('resourceId')).toBeInTheDocument()
+  })
+
   it('displays the potential savings for the given recommendation', () => {
     const { getByText } = render(
       <RecommendationsSidePanel recommendation={mockRecommendationRow} />,

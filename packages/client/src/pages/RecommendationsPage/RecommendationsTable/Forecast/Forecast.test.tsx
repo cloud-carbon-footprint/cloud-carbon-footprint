@@ -104,7 +104,7 @@ describe('Forecast', () => {
     }
 
     const getByTextValue =
-      'Not enough data available in request for Forecast. Please adjust your start/end date to include at least 30 days of data.'
+      'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.'
     const { getByText } = render(<Forecast {...testProps} />)
     const forecast = getByText(getByTextValue)
 

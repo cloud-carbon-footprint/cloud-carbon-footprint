@@ -42,6 +42,8 @@ export const checkFootprintDates = (footprint: FootprintData): Moment[] => {
     day: 30,
     week: 4,
     month: 1,
+    quarter: 1,
+    year: 1,
   }
 
   const lastThirtyDays = [...new Array(groupByAmount[groupBy])].map((i, n) =>

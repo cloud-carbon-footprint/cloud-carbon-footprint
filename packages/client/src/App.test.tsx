@@ -55,6 +55,22 @@ const mockedUseRecommendationsService =
   >
 
 describe('App', () => {
+  const mockReturnValue: ServiceResult<EstimationResult> = {
+    loading: false,
+    data: generateEstimations(moment.utc(), 14),
+    error: null,
+  }
+  const mockEmissionsReturnValue: ServiceResult<EmissionRatioResult> = {
+    loading: false,
+    data: fakeEmissionFactors,
+    error: null,
+  }
+  const mockRecommendationsReturnValue: ServiceResult<RecommendationResult> = {
+    loading: false,
+    data: [],
+    error: null,
+  }
+
   beforeEach(() => {
     ;(loadConfig as jest.Mock).mockImplementation(() => ({
       CURRENT_PROVIDERS: [
@@ -68,23 +84,6 @@ describe('App', () => {
       },
       BASE_URL: '/api',
     }))
-
-    const mockReturnValue: ServiceResult<EstimationResult> = {
-      loading: false,
-      data: generateEstimations(moment.utc(), 14),
-      error: null,
-    }
-    const mockEmissionsReturnValue: ServiceResult<EmissionRatioResult> = {
-      loading: false,
-      data: fakeEmissionFactors,
-      error: null,
-    }
-    const mockRecommendationsReturnValue: ServiceResult<RecommendationResult> =
-      {
-        loading: false,
-        data: [],
-        error: null,
-      }
     mockedUseEmissionFactorService.mockReturnValue(mockEmissionsReturnValue)
     mockedUseRemoteService.mockReturnValue(mockReturnValue)
     mockedUseRecommendationsService.mockReturnValue(
@@ -96,6 +95,23 @@ describe('App', () => {
     mockedUseEmissionFactorService.mockClear()
     mockedUseRemoteService.mockClear()
     mockedUseRecommendationsService.mockClear()
+  })
+
+  it('should show loading icon if data has not been returned', () => {
+    const newMockReturnValue = {
+      ...mockReturnValue,
+      loading: true,
+    }
+
+    mockedUseRemoteService.mockReturnValue(newMockReturnValue)
+
+    const { getByRole } = render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
+
+    expect(getByRole('progressbar')).toBeInTheDocument()
   })
 
   it('renders the page title', () => {

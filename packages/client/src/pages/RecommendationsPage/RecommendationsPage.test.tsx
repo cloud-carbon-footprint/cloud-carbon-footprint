@@ -10,10 +10,7 @@ import {
 } from '@cloud-carbon-footprint/common'
 import RecommendationsPage from './RecommendationsPage'
 import { generateEstimations, mockRecommendationData } from '../../utils/data'
-import {
-  useRemoteFootprintService,
-  useRemoteRecommendationsService,
-} from '../../utils/hooks'
+import { useRemoteRecommendationsService } from '../../utils/hooks'
 import { ServiceResult } from '../../Types'
 import moment from 'moment'
 
@@ -39,10 +36,6 @@ const mockedUseRecommendationsService =
   useRemoteRecommendationsService as jest.MockedFunction<
     typeof useRemoteRecommendationsService
   >
-
-const mockUseRemoteService = useRemoteFootprintService as jest.MockedFunction<
-  typeof useRemoteFootprintService
->
 
 // Set Test Date for Moment
 moment.now = () => +new Date('2021-12-01T00:00:00.000Z')
@@ -70,6 +63,24 @@ describe('Recommendations Page', () => {
     mockedUseRecommendationsService.mockClear()
   })
 
+  it('renders an error message for forecast when missing emissions data', () => {
+    const newMockFootprintData: ServiceResult<EstimationResult> = {
+      loading: false,
+      data: [],
+      error: null,
+    }
+    const { getByText } = render(
+      <RecommendationsPage
+        onApiError={null}
+        footprint={newMockFootprintData}
+      />,
+    )
+    const getByTextValue =
+      'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.'
+
+    expect(getByText(getByTextValue)).toBeInTheDocument()
+  })
+
   it('renders a table with recommendations', () => {
     const { getByRole } = render(
       <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
@@ -86,32 +97,12 @@ describe('Recommendations Page', () => {
     expect(mockedUseRecommendationsService).toHaveBeenCalled()
   })
 
-  xit('should pass in to remote service hook today and one month prior', () => {
-    render(
-      <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
-    )
-    const onApiError = jest.fn()
-    const parameters = mockUseRemoteService.mock.calls[0][0]
-
-    expect(parameters.startDate.month()).toEqual(parameters.endDate.month() - 1)
-    expect(parameters.endDate.isSame(moment.utc(), 'day')).toBeTruthy()
-    expect(parameters.ignoreCache).toBeTruthy()
-    expect(parameters.onApiError).toEqual(onApiError)
-    expect(parameters.baseUrl).toEqual('/api')
-  })
-
-  xit('should show loading icon if data has not been returned', () => {
+  it('should show loading icon if data has not been returned', () => {
     const mockRecommendationsLoading: ServiceResult<RecommendationResult> = {
       loading: true,
-      data: mockRecommendationData,
+      data: [],
       error: null,
     }
-
-    // const mockEmissionsLoading: ServiceResult<EstimationResult> = {
-    //   loading: true,
-    //   data,
-    //   error: null,
-    // }
 
     mockedUseRecommendationsService.mockReturnValue(mockRecommendationsLoading)
 

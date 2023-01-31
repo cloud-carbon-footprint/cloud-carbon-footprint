@@ -110,10 +110,11 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           />
         </div>
       ) : (
-        <div id="errorMessage">
+        <div id="errorMessage" style={{ textAlign: 'center' }}>
           <h2>
-            Not enough data available in request for Forecast. Please adjust
-            your start/end date to include at least 30 days of data.
+            There is not enough data available to properly forecast. Please
+            adjust your start/end date or groupBy parameter to include at least
+            the prior 30 days of data.
           </h2>
         </div>
       )}
