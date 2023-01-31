@@ -1,5 +1,26 @@
 # @cloud-carbon-footprint/app
 
+## 1.1.0
+
+### Minor Changes
+
+- 40a8f3d1: updates cli and app for seed cache file with csp and updates create app templates
+  Refer to create app changes [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/618bf389d373743212f5b6615d00ba4665c8f491) and [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/c821b98e14d6fb31e9da8319ba441b0603400c91)
+- 692d6aaf: implements advisor recommendations for azure package
+- 09e72585: adds include estimates variable and logic to include estimations based on csp seed value
+
+### Patch Changes
+
+- 222bfed3: Updates to get integration tests running locally and on CI
+- Updated dependencies [b4bf5bbb]
+- Updated dependencies [a1ad994d]
+- Updated dependencies [692d6aaf]
+- Updated dependencies [441ec2fe]
+- Updated dependencies [f9123277]
+- Updated dependencies [fd4ec19b]
+  - @cloud-carbon-footprint/azure@1.0.0
+  - @cloud-carbon-footprint/aws@0.14.1
+
 ## 1.0.0
 
 ### Major Changes

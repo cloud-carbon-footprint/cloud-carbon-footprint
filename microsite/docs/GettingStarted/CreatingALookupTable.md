@@ -11,6 +11,12 @@ The lookup table maps the estimated energy (kilowatt-hours) and carbon emissions
 
 Once generated, this lookup table (CSV file) can be deployed to your ETL or other data processing pipeline. Then when processing your billing data, you can simply multiply your usage amount by the values in the lookup tables to estimate energy and CO2e. This approach avoids having to use the Cloud Carbon Footprint application code directly, and works regardless of the programming language or environment used in your pipeline.
 
+For each service categorization, here are the standard usage units that the lookup table results represent and how you should multiply your usage amount:
+- Compute: _Hours_
+- Storage: _Terabyte-hours_
+- Memory: _Gigabyte-hours_
+- Networking: _Gigabytes_
+
 To generate this lookup table:
 
 1. Make sure you have a CSV file inside the `cli` package, that contains all the unique region, service name, usage type and usage unit variations in your billing data, along with the vCPUs for that line item, if it exists. You can see an example of this using AWS data [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/cli/src/__tests__/CreateLookupTable/aws_input.test.csv), and [below](#example-queries-to-create-input-csv-file) for example queries to create this file.

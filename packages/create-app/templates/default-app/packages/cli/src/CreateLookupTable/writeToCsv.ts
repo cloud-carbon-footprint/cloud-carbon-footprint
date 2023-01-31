@@ -14,7 +14,6 @@ export async function writeToCsv(
       { id: 'serviceName', title: 'serviceName' },
       { id: 'region', title: 'region' },
       { id: 'usageType', title: 'usageType' },
-      { id: 'usageUnit', title: 'usageUnit' },
       { id: 'vCpus', title: 'vCpus' },
       { id: 'machineType', title: 'machineType' },
       { id: 'kilowattHours', title: 'kilowattHours' },

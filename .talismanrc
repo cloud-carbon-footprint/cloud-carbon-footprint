@@ -21,6 +21,8 @@ fileignoreconfig:
   checksum: 3561e3fca3c4d5897cb862a17a81244554cccf88ca50025e4aff9f2667aa68d3
 - filename: .changeset/poor-keys-double.md
   checksum: 88c0ceebebad70603b9ddf1fa6943394efc1867a6acd674ee1dbc205cb7b3526
+- filename: .changeset/selfish-mice-remember.md
+  checksum: 7cb39c9d2af995813f2d64cfe9058095587272a5844bc5d71115155d2ecf54c4
 - filename: .changeset/silent-turtles-breathe.md
   checksum: 93eb7d9f09dc8535e42065ab86021e41dfa12a2e72d94d07086d64190441a270
 - filename: .changeset/sixty-peas-design.md
@@ -188,7 +190,7 @@ fileignoreconfig:
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookup.test.ts.snap
   checksum: 9077c63b83fbbc67f3a91eade08769cb5349a4743e1fd31386aa58b073234908
 - filename: packages/cli/src/__tests__/CreateLookupTable/__snapshots__/createLookupTable.test.ts.snap
-  checksum: cc7e5bbdeca11f8a76a5bd067de7cbb63c87e77aac940064bac414b5e0db3702
+  checksum: fe21b93664ffbf61c7120fbda819f6e5ff9f5719c27220425b0e724daea0b9ce
 - filename: packages/client/.env.template
   checksum: 1c4486bc5eeefefaa52481541884e38a9cb984fc6f90c56ffc1e7ad57ddd2c05
 - filename: packages/client/create_client_env_file.sh

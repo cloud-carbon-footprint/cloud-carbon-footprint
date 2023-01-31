@@ -21,7 +21,7 @@ If you want to run project in a disposable development environment to see how Cl
 
 - Git
 
-- Node.js >= 14.18.1 (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
+- Node.js [Active LTS Release](https://nodejs.org/en/blog/release/) (tip: use [nvm](https://github.com/nvm-sh/nvm) or [n](https://github.com/tj/n) to manage multiple Node versions)
 
 - Yarn (latest)
 

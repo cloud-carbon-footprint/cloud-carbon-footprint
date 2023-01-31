@@ -1347,7 +1347,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'us-east4',
         serviceName: 'Compute Engine',
         usageType: 'N1 Predefined Instance Core running in Virginia',
-        usageUnit: 'seconds',
       },
       {
         co2e: 0.000005057275113774734,
@@ -1356,7 +1355,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'us-east4',
         serviceName: 'Compute Engine',
         usageType: 'N1 Predefined Instance Core running in Virginia',
-        usageUnit: 'seconds',
       },
       {
         co2e: 0.000009615983113774734,
@@ -1365,7 +1363,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'us-east4',
         serviceName: 'Compute Engine',
         usageType: 'N1 Predefined Instance Core running in Virginia',
-        usageUnit: 'seconds',
       },
       {
         co2e: 1.3535463949665428e-19,
@@ -1374,7 +1371,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'europe-west1',
         serviceName: 'Compute Engine',
         usageType: 'Storage PD Capacity',
-        usageUnit: 'byte-seconds',
       },
       {
         co2e: 7.67648220062256e-13,
@@ -1383,7 +1379,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'europe-west1',
         serviceName: 'Compute Engine',
         usageType: 'Network Internet Egress from EMEA to Americas',
-        usageUnit: 'bytes',
       },
       {
         co2e: 5.499969120137394e-19,
@@ -1392,7 +1387,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'us-central1',
         serviceName: 'Compute Engine',
         usageType: 'SSD backed PD Capacity',
-        usageUnit: 'byte-seconds',
       },
       {
         co2e: 0.0000048757261666666675,
@@ -1401,7 +1395,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'us-east4',
         serviceName: 'App Engine',
         usageType: 'Backend Instances',
-        usageUnit: 'seconds',
       },
       {
         co2e: 1.307174563407898e-12,
@@ -1410,7 +1403,6 @@ describe('GCP BillingExportTable Service', () => {
         region: 'us-east4',
         serviceName: 'Compute Engine',
         usageType: 'Network Inter Region Ingress from Netherlands to Americas',
-        usageUnit: 'bytes',
       },
     ]
     expect(result).toEqual(expectedResult)

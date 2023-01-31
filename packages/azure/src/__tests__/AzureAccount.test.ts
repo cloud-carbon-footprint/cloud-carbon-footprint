@@ -237,7 +237,6 @@ describe('Azure Account', () => {
         serviceName: 'Virtual Machines',
         region: 'uksouth',
         usageType: 'D2 v2/DS2 v2',
-        usageUnit: '10 Hours',
         kilowattHours: 0.015380813559107052,
         co2e: 0.0000034606830507990865,
       },

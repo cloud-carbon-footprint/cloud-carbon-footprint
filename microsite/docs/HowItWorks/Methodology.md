@@ -3,6 +3,7 @@ id: methodology
 title: Methodology
 slug: /methodology
 sidebar_position: 1
+toc_max_heading_level: 4
 ---
 
 ## Summary
@@ -324,7 +325,7 @@ from a given cloud provider has a higher amount of memory allocated per physical
 
 The way in which we apply this coefficient is slightly different per cloud provider:
 
-#### AWS
+##### AWS
 
 Our approach to estimating memory for AWS is as follows:
 
@@ -339,7 +340,7 @@ Here is that formula summarized:
 
 `Kilowatt hours = Memory (GB) exceeding SPECPower database average x Memory coefficient x usage amount (Hours)`
 
-#### GCP
+##### GCP
 
 Because Google Cloud provides memory specific usage rows in the Billing Export data, the approach is a lot simpler. 
 We take the usage amount in byte-seconds, convert this to gigabyte-hours, then multiply it by the chosen memory 
@@ -355,7 +356,7 @@ for compute estimates. We think this approach is still more accurate than not ta
 rows at all, and are researching a better way to factor this in for compute estimates. 
 We welcome any and all feedback/suggestions on how to improve this.  
 
-#### Azure
+##### Azure
 
 Our approach to estimating memory for Azure is very similar to AWS. When it comes to compute instances, it is exactly 
 the same approach, and [here](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients/blob/main/data/azure-instances.csv) 

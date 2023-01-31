@@ -1,5 +1,12 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 1.1.5
+
+### Patch Changes
+
+- c1684f40: updates for handling CORS. Please refer to create app template updates [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/9afbcf704797f20867b54c6a627415674f49db96)
+- 222bfed3: Updates to get integration tests running locally and on CI
+
 ## 1.1.4
 
 ### Patch Changes

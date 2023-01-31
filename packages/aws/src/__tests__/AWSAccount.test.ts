@@ -223,7 +223,6 @@ describe('AWSAccount', () => {
         serviceName: 'AmazonEC2',
         region: 'us-east-1',
         usageType: 'USE2-BoxUsage:t2.micro',
-        usageUnit: 'Hrs',
         vCpus: '2',
         kilowattHours: 0.014425250356994983,
         co2e: 0.000005468165227575731,

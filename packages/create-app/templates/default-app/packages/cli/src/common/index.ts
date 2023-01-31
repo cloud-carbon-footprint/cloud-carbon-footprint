@@ -17,7 +17,7 @@ import {
 
 export type EnvConfig = { [key: string]: string }
 
-export const microsite = 'https://cloud-carbon-footprint.org'
+export const microsite = 'https://cloudcarbonfootprint.org'
 
 export const listPrompt = (
   message: string,
