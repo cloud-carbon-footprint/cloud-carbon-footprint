@@ -9,6 +9,7 @@ import {
   GroupBy,
   LookupTableInput,
   LookupTableOutput,
+  setConfig,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -71,6 +72,12 @@ describe('Azure Consumption Management Service', () => {
     AZURE_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
       total: {},
     }
+
+    setConfig({
+      AZURE: {
+        RESOURCE_TAG_NAMES: ['resourceGroup', 'custom', 'created-by', 'other'],
+      },
+    })
   })
 
   it('Returns estimates for Compute', async () => {

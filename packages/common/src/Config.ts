@@ -55,6 +55,7 @@ export interface CCFConfig {
       clientSecret?: string
       tenantId?: string
     }
+    RESOURCE_TAG_NAMES?: string[]
   }
   LOGGING_MODE?: string
   CACHE_MODE?: string
@@ -102,6 +103,12 @@ const getAWSAccounts = () => {
 const getAWSResourceTagNames = () => {
   return process.env.AWS_RESOURCE_TAG_NAMES
     ? process.env.AWS_RESOURCE_TAG_NAMES
+    : '[]'
+}
+
+const getAzureResourceTagNames = () => {
+  return process.env.AZURE_RESOURCE_TAG_NAMES
+    ? process.env.AZURE_RESOURCE_TAG_NAMES
     : '[]'
 }
 
@@ -235,6 +242,7 @@ const getConfig = (): CCFConfig => ({
       clientSecret: getEnvVar('AZURE_CLIENT_SECRET') || '',
       tenantId: getEnvVar('AZURE_TENANT_ID') || '',
     },
+    RESOURCE_TAG_NAMES: JSON.parse(getAzureResourceTagNames()),
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
