@@ -346,6 +346,26 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       resourceLocation: 'centralindia',
     },
   },
+  {
+    id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: '',
+    properties: {
+      kind: 'legacy',
+      date: new Date('2020-11-02'),
+      quantity: 1,
+      cost: 1,
+      meterDetails: {
+        meterName: 'P4 LRS Disk',
+        unitOfMeasure: '1 /Month',
+        meterCategory: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'Unknown',
+    },
+  },
 ]
 
 export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
