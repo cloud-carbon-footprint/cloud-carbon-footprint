@@ -88,6 +88,7 @@ class Page {
     this.costSavingsPerMonth = Selector(
       "[data-testid='cost-savings-per-month']",
     )
+    this.errorMessage = Selector("[data-testid='forecast-error-message']")
 
     //table components
     this.searchInput = Selector("[data-testid='search-input']")

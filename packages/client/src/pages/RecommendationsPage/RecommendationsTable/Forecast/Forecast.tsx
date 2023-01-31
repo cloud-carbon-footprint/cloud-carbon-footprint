@@ -110,7 +110,11 @@ const Forecast: FunctionComponent<ForecastProps> = ({
           />
         </div>
       ) : (
-        <div id="errorMessage" style={{ textAlign: 'center' }}>
+        <div
+          id="errorMessage"
+          data-testid="forecast-error-message"
+          style={{ textAlign: 'center' }}
+        >
           <h2>
             There is not enough data available to properly forecast. Please
             adjust your start/end date or groupBy parameter to include at least
