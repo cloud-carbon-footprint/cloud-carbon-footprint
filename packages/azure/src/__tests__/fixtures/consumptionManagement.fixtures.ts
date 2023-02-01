@@ -368,7 +368,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -381,6 +381,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unknown',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
