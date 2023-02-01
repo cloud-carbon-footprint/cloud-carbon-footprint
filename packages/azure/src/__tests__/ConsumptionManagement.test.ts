@@ -359,6 +359,9 @@ describe('Azure Consumption Management Service', () => {
             serviceName: 'Storage',
             cost: 1,
             region: 'Unknown',
+            tags: {
+              resourceGroup: 'test-resource-group',
+            },
           },
         ],
         groupBy: grouping,
