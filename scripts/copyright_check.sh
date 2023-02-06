@@ -3,7 +3,7 @@
 # © 2022 Thoughtworks, Inc.
 # 
 
-copyright="© 202[1-2] Thoughtworks, Inc."
+copyright="© 202[1-3] Thoughtworks, Inc."
 errorCode=0
 domain=`git config user.email`
 
