@@ -2199,7 +2199,7 @@ __metadata:
   resolution: "@cloud-carbon-footprint/api@workspace:packages/api"
   dependencies:
     "@cloud-carbon-footprint/app": ^1.1.0
-    "@cloud-carbon-footprint/common": ^1.8.0
+    "@cloud-carbon-footprint/common": ^1.9.0
     "@types/cors": ^2.8.12
     "@types/express": ^4.17.12
     "@types/jest": ^27.4.0
@@ -2270,7 +2270,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/aws@workspace:packages/aws"
   dependencies:
-    "@cloud-carbon-footprint/common": ^1.8.0
+    "@cloud-carbon-footprint/common": ^1.9.0
     "@cloud-carbon-footprint/core": ^0.17.0
     "@google-cloud/iam-credentials": ^1.1.1
     "@types/jest": ^27.4.0
@@ -2312,7 +2312,7 @@ __metadata:
     "@azure/identity": ^3.0.0
     "@azure/ms-rest-js": ^2.6.2
     "@azure/ms-rest-nodeauth": ^3.1.1
-    "@cloud-carbon-footprint/common": ^1.8.0
+    "@cloud-carbon-footprint/common": ^1.9.0
     "@cloud-carbon-footprint/core": ^0.17.0
     "@google-cloud/secret-manager": ^3.10.1
     "@types/jest": ^27.4.0
@@ -2347,7 +2347,7 @@ __metadata:
     "@azure/arm-consumption": ^9.1.0
     "@azure/arm-resources-subscriptions": ^2.0.1
     "@cloud-carbon-footprint/app": 1.1.0
-    "@cloud-carbon-footprint/common": ^1.8.0
+    "@cloud-carbon-footprint/common": ^1.9.0
     "@types/cli-table": ^0.3.0
     "@types/jest": ^27.4.0
     "@types/jest-when": ^3.5.0
@@ -2449,7 +2449,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cloud-carbon-footprint/common@^1.8.0, @cloud-carbon-footprint/common@workspace:packages/common":
+"@cloud-carbon-footprint/common@^1.8.0, @cloud-carbon-footprint/common@^1.9.0, @cloud-carbon-footprint/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/common@workspace:packages/common"
   dependencies:
@@ -2543,7 +2543,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cloud-carbon-footprint/gcp@workspace:packages/gcp"
   dependencies:
-    "@cloud-carbon-footprint/common": ^1.8.0
+    "@cloud-carbon-footprint/common": ^1.9.0
     "@cloud-carbon-footprint/core": ^0.17.0
     "@google-cloud/bigquery": ^5.9.3
     "@google-cloud/monitoring": ^2.3.5

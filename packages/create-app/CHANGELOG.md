@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.2.1
+
+### Patch Changes
+
+- 2223c7d2: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- 86703471: Fix outdated dependencies in create-app client template
+
+  To see which dependencies to bump in your created app, please see [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/996bd98f17094bd5826bbd6b47382858943d940e`).
+
 ## 2.2.0
 
 ### Minor Changes

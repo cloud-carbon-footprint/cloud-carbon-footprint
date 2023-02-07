@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/aws",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "license": "Apache-2.0",
   "description": "The core logic to get cloud usage data and estimate energy and carbon emissions from Amazon Web Services.",
   "main": "src/index.ts",
@@ -41,7 +41,7 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/common": "^1.8.0",
+    "@cloud-carbon-footprint/common": "^1.9.0",
     "@cloud-carbon-footprint/core": "^0.17.0",
     "@google-cloud/iam-credentials": "^1.1.1",
     "aws-sdk": "^2.927.0",
