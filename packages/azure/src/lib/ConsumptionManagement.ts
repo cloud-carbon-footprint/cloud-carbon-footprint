@@ -166,7 +166,7 @@ export default class ConsumptionManagementService {
         id: '',
         name: '',
         type: '',
-        tags: '',
+        tags: {},
         kind: 'legacy' as const,
         properties: {
           kind: 'legacy' as const,
@@ -699,10 +699,11 @@ export default class ConsumptionManagementService {
       this.isSSDStorage(consumptionDetailRow) &&
       this.isManagedDiskStorage(consumptionDetailRow)
     ) {
+      // Extract disk type according to pattern of Managed SSD names
+      const matchingDiskType =
+        consumptionDetailRow.usageType.match(/(P|E)\d{1,2}/)[0]
       return convertGigaBytesToTerabyteHours(
-        SSD_MANAGED_DISKS_STORAGE_GB[
-          consumptionDetailRow.usageType.replace(/Disks?/, '').trim()
-        ],
+        SSD_MANAGED_DISKS_STORAGE_GB[matchingDiskType],
       )
     }
 

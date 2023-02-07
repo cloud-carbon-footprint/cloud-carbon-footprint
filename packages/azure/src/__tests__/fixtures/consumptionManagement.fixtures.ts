@@ -6,6 +6,7 @@ import { UsageDetailResult } from '../../lib/ConsumptionTypes'
 
 interface IterableMockResponse {
   next(): Promise<IteratorResult<UsageDetailResult>>
+
   [Symbol.asyncIterator](): IterableMockResponse
 }
 
@@ -28,7 +29,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -41,6 +42,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -48,7 +50,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -61,6 +63,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -68,7 +71,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -81,6 +84,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'CentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -88,7 +92,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -101,6 +105,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'SouthCentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -108,7 +113,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -121,6 +126,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unknown',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -128,7 +134,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -141,6 +147,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'ukwest',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -148,7 +155,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -161,6 +168,7 @@ export const mockConsumptionManagementResponseOne: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unknown',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -171,7 +179,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -184,6 +192,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -191,7 +200,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -204,6 +213,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -211,7 +221,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -224,6 +234,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -231,7 +242,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -244,6 +255,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -251,7 +263,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -264,6 +276,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -271,7 +284,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -284,6 +297,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -291,7 +305,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -304,6 +318,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -311,7 +326,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -324,6 +339,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -331,7 +347,7 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -344,6 +360,28 @@ export const mockConsumptionManagementResponseTwo: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'centralindia',
+      resourceGroup: 'test-resource-group',
+    },
+  },
+  {
+    id: 'test-subscription-id',
+    kind: 'legacy',
+    name: 'name',
+    type: 'type',
+    tags: {},
+    properties: {
+      kind: 'legacy',
+      date: new Date('2020-11-02'),
+      quantity: 1,
+      cost: 1,
+      meterDetails: {
+        meterName: 'P4 LRS Disk',
+        unitOfMeasure: '1 /Month',
+        meterCategory: 'Storage',
+      },
+      subscriptionName: 'test-subscription',
+      resourceLocation: 'Unknown',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -354,7 +392,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -367,6 +405,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -374,7 +413,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -387,6 +426,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -394,7 +434,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -407,6 +447,7 @@ export const mockConsumptionManagementResponseThree: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -417,7 +458,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -430,6 +471,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'Unassigned',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -437,7 +479,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -450,6 +492,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -457,7 +500,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -470,6 +513,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -477,7 +521,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -490,6 +534,7 @@ export const mockConsumptionManagementResponseFour: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -499,7 +544,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -512,6 +557,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -519,7 +565,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -532,6 +578,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'apsoutheast',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -539,7 +586,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -552,6 +599,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'EastUS2',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -559,7 +607,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -572,6 +620,7 @@ export const mockConsumptionManagementResponseFive: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'ukwest',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -582,7 +631,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -595,6 +644,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'WestUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -602,7 +652,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -615,6 +665,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'SouthCentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -622,7 +673,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -635,6 +686,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -642,7 +694,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -655,6 +707,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uswest2',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -662,7 +715,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -675,6 +728,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -682,7 +736,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -695,6 +749,7 @@ export const mockConsumptionManagementResponseSix: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westindia',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -705,7 +760,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -718,6 +773,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -725,7 +781,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -738,6 +794,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -745,7 +802,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -758,6 +815,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'CentralUS',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -765,7 +823,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -778,6 +836,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -785,7 +844,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -798,6 +857,7 @@ export const mockConsumptionManagementResponseSeven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -808,7 +868,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -821,6 +881,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -828,7 +889,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -841,6 +902,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -848,7 +910,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -861,6 +923,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -868,7 +931,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-03'),
@@ -881,6 +944,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -888,7 +952,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -901,6 +965,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -908,7 +973,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-04'),
@@ -921,6 +986,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -928,7 +994,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-05'),
@@ -941,6 +1007,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -948,7 +1015,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-05'),
@@ -961,6 +1028,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -968,7 +1036,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-06'),
@@ -981,6 +1049,7 @@ export const mockConsumptionManagementResponseEight: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'All Regions',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -991,7 +1060,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1004,6 +1073,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1011,7 +1081,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1024,6 +1094,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1031,7 +1102,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1044,6 +1115,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1051,7 +1123,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'modern',
       date: new Date('2020-11-02'),
@@ -1063,6 +1135,7 @@ export const mockConsumptionManagementResponseNine: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -1073,7 +1146,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-01'),
@@ -1086,6 +1159,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1093,7 +1167,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-07'),
@@ -1106,6 +1180,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'westeurope',
+      resourceGroup: 'test-resource-group',
     },
   },
   {
@@ -1113,7 +1188,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-08'),
@@ -1126,6 +1201,7 @@ export const mockConsumptionManagementResponseTen: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'uksouth',
+      resourceGroup: 'test-resource-group',
     },
   },
 ]
@@ -1136,7 +1212,10 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'legacy',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {
+      custom: 'custom-tag-value',
+      other: 'other-custom-tag-value',
+    },
     properties: {
       kind: 'legacy',
       date: new Date('2020-11-02'),
@@ -1149,6 +1228,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       },
       subscriptionName: 'test-subscription',
       resourceLocation: 'northeurope',
+      resourceGroup: 'first-resource-group',
     },
   },
   {
@@ -1156,7 +1236,11 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {
+      custom: 'custom-tag-value',
+      'created-by': 'created-by-tag-value',
+      ignored: 'this-tag-should-not-be-visible',
+    },
     properties: {
       kind: 'modern',
       date: new Date('2020-11-03'),
@@ -1168,6 +1252,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'EASTUS',
+      resourceGroup: 'second-resource-group',
     },
   },
   {
@@ -1175,7 +1260,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
     kind: 'modern',
     name: 'name',
     type: 'type',
-    tags: '',
+    tags: {},
     properties: {
       kind: 'modern',
       date: new Date('2020-11-03'),
@@ -1187,6 +1272,7 @@ export const mockConsumptionManagementResponseEleven: UsageDetailResult[] = [
       subscriptionGuid: 'test-subscription-id',
       subscriptionName: 'test-subscription',
       resourceLocation: 'WESTEUROPE',
+      resourceGroup: 'third-resource-group',
     },
   },
 ]

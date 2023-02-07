@@ -13,6 +13,9 @@ import {
 import { AZURE_REGIONS } from './AzureRegions'
 import { UsageDetailResult } from './ConsumptionTypes'
 import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
+import { configLoader } from '@cloud-carbon-footprint/common'
+
+const RESOURCE_GROUP_TAG_NAME = 'resourceGroup'
 
 export default class ConsumptionDetailRow extends BillingDataRow {
   constructor(usageDetail: UsageDetailResult) {
@@ -24,6 +27,20 @@ export default class ConsumptionDetailRow extends BillingDataRow {
     this.vCpuHours = this.usageAmount * this.getVCpus()
     this.gpuHours = this.usageAmount * this.getGpus()
     this.region = this.getRegionFromResourceLocation()
+
+    this.tags = {}
+
+    const tagNames = configLoader()?.AZURE?.RESOURCE_TAG_NAMES ?? []
+
+    for (const resourceTagName of tagNames) {
+      if (usageDetail?.tags?.[resourceTagName]) {
+        this.tags[resourceTagName] = usageDetail.tags[resourceTagName]
+      }
+    }
+
+    if (tagNames.includes(RESOURCE_GROUP_TAG_NAME)) {
+      this.tags.resourceGroup = usageDetail.properties.resourceGroup
+    }
   }
 
   public getVCpus(): number {

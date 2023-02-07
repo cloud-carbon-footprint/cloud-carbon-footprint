@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cloud-carbon-footprint.fullname" . }}-api
+  labels:
+    {{ include "cloud-carbon-footprint.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+data:
+  {{- range $key, $val := .Values.api.configmap }}
+  {{ $key }}: {{ tpl $val $ | quote }}
+  {{- end}}
