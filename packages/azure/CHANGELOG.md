@@ -1,5 +1,21 @@
 # @cloud-carbon-footprint/azure
 
+## 1.1.0
+
+### Minor Changes
+
+- eb66c0e6: Add support for Azure Tags and resource groups
+
+### Patch Changes
+
+- 86161534: Fixes parsing issue with some Azure Storage service that was causing invalid estimation results
+- 2223c7d2: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- Updated dependencies [b0795d17]
+- Updated dependencies [eb66c0e6]
+- Updated dependencies [2223c7d2]
+  - @cloud-carbon-footprint/common@1.9.0
+
 ## 1.0.0
 
 ### Major Changes
