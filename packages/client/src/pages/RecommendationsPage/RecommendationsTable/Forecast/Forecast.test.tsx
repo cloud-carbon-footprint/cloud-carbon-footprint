@@ -10,16 +10,21 @@ import {
   mockDataWithSmallNumbers,
   mockRecommendationData,
 } from '../../../../utils/data'
-import Forecast, { ForecastProps } from './Forecast'
+import Forecast, { ForecastDetails, ForecastProps } from './Forecast'
 import { Co2eUnit } from '../../../../Types'
 
 describe('Forecast', () => {
   const emissionsData: ServiceData[] =
     mockDataWithLargeNumbers[0].serviceEstimates
+  const forecastDetails: ForecastDetails = {
+    missingDates: [],
+    groupBy: 'day',
+  }
   const testProps: ForecastProps = {
     emissionsData,
     recommendations: mockRecommendationData,
     co2eUnit: Co2eUnit.MetricTonnes,
+    forecastDetails,
   }
 
   it('should render the title', () => {
@@ -95,18 +100,19 @@ describe('Forecast', () => {
     expect(current).toBeInTheDocument()
   })
 
-  it('should render error message instead of forecast if no emissions data', () => {
-    const emissionsData: ServiceData[] = []
-    const testProps: ForecastProps = {
-      emissionsData,
-      recommendations: mockRecommendationData,
-      co2eUnit: Co2eUnit.MetricTonnes,
+  it('should render error message instead of forecast if invalid groupBy parameter', () => {
+    const newForecastDetails: ForecastDetails = {
+      ...forecastDetails,
+      groupBy: 'year',
+    }
+    const newTestProps: ForecastProps = {
+      ...testProps,
+      forecastDetails: newForecastDetails,
     }
 
-    const getByTextValue =
-      'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.'
-    const { getByText } = render(<Forecast {...testProps} />)
-    const forecast = getByText(getByTextValue)
+    const getByTextIdValue = 'forecast-error-message'
+    const { getByTestId } = render(<Forecast {...newTestProps} />)
+    const forecast = getByTestId(getByTextIdValue)
 
     expect(forecast).toBeInTheDocument()
   })

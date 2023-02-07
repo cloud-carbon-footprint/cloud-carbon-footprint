@@ -4,6 +4,11 @@
 
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { FilterOptions, FilterResultResponse } from 'src/Types'
+import { buildFilters, FootprintData } from 'src/utils/hooks'
+import useFilters from 'src/common/FilterBar/utils/FilterHook'
+import { useFilterDataFromEstimates } from 'src/utils/helpers'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
@@ -13,11 +18,6 @@ import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
-import { FilterOptions, FilterResultResponse } from 'src/Types'
-import { buildFilters, FootprintData } from 'src/utils/hooks'
-import useFilters from 'src/common/FilterBar/utils/FilterHook'
-import { useFilterDataFromEstimates } from 'src/utils/helpers'
-import { EstimationResult } from '@cloud-carbon-footprint/common'
 
 interface EmissionsMetricsPageProps {
   config?: ClientConfig

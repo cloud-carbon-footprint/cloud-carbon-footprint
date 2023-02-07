@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import moment from 'moment'
 import { render } from '@testing-library/react'
 import {
   EstimationResult,
@@ -12,7 +13,6 @@ import RecommendationsPage from './RecommendationsPage'
 import { generateEstimations, mockRecommendationData } from '../../utils/data'
 import { useRemoteRecommendationsService } from '../../utils/hooks'
 import { ServiceResult } from '../../Types'
-import moment from 'moment'
 
 jest.mock('../../utils/hooks/RecommendationsServiceHook')
 jest.mock('../../utils/hooks/FootprintServiceHook')
@@ -69,16 +69,16 @@ describe('Recommendations Page', () => {
       data: [],
       error: null,
     }
-    const { getByText } = render(
+    const { getByTestId } = render(
       <RecommendationsPage
         onApiError={null}
         footprint={newMockFootprintData}
       />,
     )
-    const getByTextValue =
-      'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.'
+    // const getByTextValue =
+    //   'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.'
 
-    expect(getByText(getByTextValue)).toBeInTheDocument()
+    expect(getByTestId('forecast-error-message')).toBeInTheDocument()
   })
 
   it('renders a table with recommendations', () => {

@@ -52,7 +52,7 @@ test('toggle changes unit of measure', async (t) => {
   await t
     .expect(page.errorMessage.textContent)
     .eql(
-      'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.',
+      'In order to see a savings forecast that is relevant to you, please ensure you include data from the past 30 days',
     )
 
   // await t

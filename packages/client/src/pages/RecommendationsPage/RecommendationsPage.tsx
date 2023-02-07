@@ -4,6 +4,7 @@
 
 import React, { ReactElement, useState } from 'react'
 import { Grid } from '@material-ui/core'
+import LoadingMessage from 'src/common/LoadingMessage/LoadingMessage'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
@@ -12,7 +13,6 @@ import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 import { Co2eUnit } from '../../Types'
-import LoadingMessage from 'src/common/LoadingMessage/LoadingMessage'
 import { FootprintData } from '../../utils/hooks'
 import { checkFootprintDates } from '../../utils/helpers/handleDates'
 
@@ -31,13 +31,11 @@ const RecommendationsPage = ({
 
   const [co2eUnit, setCo2eUnit] = useState(Co2eUnit.MetricTonnes)
 
-  const missingFootprintDatesForForecast = checkFootprintDates(footprint)
-  if (missingFootprintDatesForForecast.length > 0) {
-    footprint = {
-      ...footprint,
-      data: [],
-    }
-  }
+  const groupBy = footprint?.data[0]?.groupBy
+  const forecastDetails = checkFootprintDates({
+    footprint,
+    groupBy,
+  })
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,
@@ -46,10 +44,7 @@ const RecommendationsPage = ({
     footprint,
   })
 
-  if (
-    recommendations.loading &&
-    recommendations.filteredRecommendationData.length === 0
-  )
+  if (recommendations.loading)
     return (
       <LoadingMessage message="Loading recommendations. This may take a while..." />
     )
@@ -66,6 +61,7 @@ const RecommendationsPage = ({
             emissionsData={recommendations.filteredEmissionsData}
             recommendations={recommendations.filteredRecommendationData}
             co2eUnit={co2eUnit}
+            forecastDetails={forecastDetails}
           />
         </Grid>
       </div>

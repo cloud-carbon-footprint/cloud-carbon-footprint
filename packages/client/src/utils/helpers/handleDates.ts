@@ -1,11 +1,19 @@
 import moment, { Moment, unitOfTime } from 'moment'
+import { GroupBy } from '@cloud-carbon-footprint/common'
 import { ClientConfig } from 'src/Config'
 import loadConfig from 'src/ConfigLoader'
-import { FootprintData } from '../hooks'
+import { ForecastDetails } from '../../pages/RecommendationsPage/RecommendationsTable/Forecast/Forecast'
 
 interface dateProps {
   config?: ClientConfig
 }
+
+const groupByAmount = {
+  day: 30,
+  week: 4,
+  month: 1,
+}
+
 export const handleEmissionDateRange = ({
   config = loadConfig(),
 }: dateProps) => {
@@ -36,32 +44,37 @@ export const handleEmissionDateRange = ({
   }
 }
 
-export const checkFootprintDates = (footprint: FootprintData): Moment[] => {
-  const groupBy = footprint?.data[0]?.groupBy || 'day'
-  const groupByAmount = {
-    day: 30,
-    week: 4,
-    month: 1,
-    quarter: 1,
-    year: 1,
-  }
-
+export const checkFootprintDates = ({
+  footprint,
+  groupBy = 'day' as GroupBy,
+}): ForecastDetails => {
   const lastThirtyDays = [...new Array(groupByAmount[groupBy])].map((i, n) =>
     moment
       .utc()
-      .startOf(groupBy)
+      .startOf(groupBy as moment.unitOfTime.StartOf)
       .subtract(n, `${groupBy}s` as unitOfTime.DurationConstructor),
   )
 
   const footprintDates = []
   footprint?.data?.map((data) => {
-    footprintDates.push(moment.utc(data.timestamp).startOf(groupBy))
+    footprintDates.push(
+      moment.utc(data.timestamp).startOf(groupBy as moment.unitOfTime.StartOf),
+    )
   })
 
-  return lastThirtyDays.filter((a) => {
+  const missingDates: Moment[] = lastThirtyDays.filter((a) => {
     const index = footprintDates.findIndex((date: string) =>
       moment.utc(date).isSame(a),
     )
     return index < 0
   })
+
+  return {
+    missingDates,
+    groupBy,
+  }
+}
+
+export const checkIfAllDatesExistForForecast = ({ missingDates, groupBy }) => {
+  return groupByAmount[groupBy] == missingDates.length
 }
