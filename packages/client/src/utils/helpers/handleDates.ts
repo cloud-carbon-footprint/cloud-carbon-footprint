@@ -75,6 +75,5 @@ export const checkFootprintDates = ({
   }
 }
 
-export const checkIfAllDatesExistForForecast = ({ missingDates, groupBy }) => {
-  return groupByAmount[groupBy] == missingDates.length
-}
+export const checkIfAllDatesExistForForecast = ({ missingDates, groupBy }) =>
+  groupByAmount[groupBy] == missingDates.length

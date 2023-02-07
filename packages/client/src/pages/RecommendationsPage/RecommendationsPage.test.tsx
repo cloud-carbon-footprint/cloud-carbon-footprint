@@ -75,8 +75,6 @@ describe('Recommendations Page', () => {
         footprint={newMockFootprintData}
       />,
     )
-    // const getByTextValue =
-    //   'There is not enough data available to properly forecast. Please adjust your start/end date or groupBy parameter to include at least the prior 30 days of data.'
 
     expect(getByTestId('forecast-error-message')).toBeInTheDocument()
   })

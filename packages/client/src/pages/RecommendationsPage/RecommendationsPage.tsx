@@ -4,10 +4,10 @@
 
 import React, { ReactElement, useState } from 'react'
 import { Grid } from '@material-ui/core'
-import LoadingMessage from 'src/common/LoadingMessage/LoadingMessage'
 import RecommendationsTable from './RecommendationsTable'
 import useStyles from './recommendationsPageStyles'
 import RecommendationsFilterBar from './RecommendationsFilterBar'
+import LoadingMessage from '../../common/LoadingMessage'
 import { ErrorState } from '../../layout/ErrorPage/ErrorPage'
 import { useRecommendationData } from '../../utils/hooks/RecommendationsDataHook'
 import { ClientConfig } from '../../Config'
