@@ -1,11 +1,5 @@
 # @cloud-carbon-footprint/integration-tests
 
-## 1.1.6
-
-### Patch Changes
-
-- 7ade429e: fixes error in app.test.js
-
 ## 1.1.5
 
 ### Patch Changes
