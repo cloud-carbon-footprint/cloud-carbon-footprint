@@ -124,6 +124,9 @@ export const STORAGE_USAGE_TYPES: string[] = [
   'Basic User',
   'Standard Nodes',
   'Microsoft-hosted CI',
+  'Data Processing Unit',
+  'Pay as you go Warm Storage',
+  'Standard Unit',
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [

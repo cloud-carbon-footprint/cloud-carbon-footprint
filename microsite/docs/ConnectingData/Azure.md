@@ -50,6 +50,19 @@ The steps to resolve are:
 3. Delete `estimates.cache.json` file and restart the application server
 4. Submit an issue or pull request with the update
 
+### Unknown Regions
+
+Similar to the supported usage types, a file including all known regions and their aliases is located [here](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/azure/src/lib/AzureRegions.ts). When querying your data, you may come across unknown regions with a warning like this: 
+
+`2023-02-07T11:54:39.875Z [AzureRegions] warn: Found unknown azure region 'EU North', please add it to the AzureRegions.ts file and submit a PR, thank you!`
+
+This has the effect that all resources in this unknown region cannot be assigned to their correct region, as this alias is unknown. To get accurate data and help improve Cloud Carbon Footprint please follow these steps:
+
+1. Determine the region alias in question based on the warning message
+2. Add the region alias to the respective region in the `AzureRegions.ts` file
+3. Delete `estimates.cache.json` file and restart the application server
+4. Submit an issue or pull request with the update
+
 ### Options for Azure Authentication
 
 By default, the application authenticates with Azure using environment variables set in the api/.env file. However, if you want to store these secrets is Google Secrets Manager we also provide that option, if you want to set the AZURE_AUTH_MODE environment variable to “GCP”.
