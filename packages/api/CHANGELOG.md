@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/api
 
+## 1.6.0
+
+### Minor Changes
+
+- 689c973e: Add support for Azure Tags and resource groups
+
+### Patch Changes
+
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
 ## 1.5.1
 
 ### Patch Changes

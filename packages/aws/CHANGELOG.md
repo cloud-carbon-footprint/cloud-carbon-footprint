@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/aws
 
+## 0.14.2
+
+### Patch Changes
+
+- 689c973e: removes usageUnit from lookup table result
+  Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+  - @cloud-carbon-footprint/common@1.9.0
+
 ## 0.14.1
 
 ### Patch Changes
