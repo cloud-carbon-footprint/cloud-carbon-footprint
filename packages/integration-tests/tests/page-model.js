@@ -68,11 +68,11 @@ class Page {
 
     //recommendations - main components
     this.recommendationsButton = Selector('a').withText('RECOMMENDATIONS')
-    this.regions = Selector('span').withText('Regions: 8 of 8')
+    this.regions = Selector('span').withText('Regions: 9 of 9')
     this.recommendationTypes = Selector('span').withText(
       'Recommendation Types: 8 of 8',
     )
-    this.recAccounts = Selector('span').withText('Accounts: 10 of 10') //todo: minimize dataset-specific selectors
+    this.recAccounts = Selector('span').withText('Accounts: 15 of 15') //todo: minimize dataset-specific selectors
 
     //forecast card components
     this.lastThirtyDayTotal = Selector(
