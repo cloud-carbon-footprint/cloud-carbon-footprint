@@ -5,6 +5,7 @@
 import { ConsumptionManagementClient } from '@azure/arm-consumption'
 
 import {
+  CCFConfig,
   EstimationResult,
   GroupBy,
   LookupTableInput,
@@ -49,13 +50,22 @@ jest.mock('@cloud-carbon-footprint/common', () => ({
 
 jest.mock('@azure/arm-consumption', () => {
   return {
-    ConsumptionManagementClient: jest.fn().mockImplementation(() => {
-      return {
-        usageDetails: mockUsageDetails,
-      }
-    }),
+    ConsumptionManagementClient: jest
+      .fn()
+      .mockImplementation((_, subscriptionId: string) => {
+        return {
+          usageDetails: mockUsageDetails,
+          subscriptionId: subscriptionId,
+        }
+      }),
   }
 })
+
+const DEFAULT_CONFIG: CCFConfig = {
+  AZURE: {
+    RESOURCE_TAG_NAMES: ['resourceGroup', 'custom', 'created-by', 'other'],
+  },
+}
 
 describe('Azure Consumption Management Service', () => {
   const startDate = new Date('2020-11-02')
@@ -73,11 +83,7 @@ describe('Azure Consumption Management Service', () => {
       total: {},
     }
 
-    setConfig({
-      AZURE: {
-        RESOURCE_TAG_NAMES: ['resourceGroup', 'custom', 'created-by', 'other'],
-      },
-    })
+    setConfig(DEFAULT_CONFIG)
   })
 
   it('Returns estimates for Compute', async () => {
@@ -1485,6 +1491,65 @@ describe('Azure Consumption Management Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
+  it('splits and queries time ranges correctly', async () => {
+    setConfig({
+      ...DEFAULT_CONFIG,
+      AZURE: {
+        ...DEFAULT_CONFIG.AZURE,
+        CONSUMPTION_CHUNKS_DAYS: 7,
+      },
+    })
+
+    mockUsageDetails.list.mockClear()
+
+    const consumptionManagementService = new ConsumptionManagementService(
+      new ComputeEstimator(),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(AZURE_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(AZURE_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(AZURE_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(AZURE_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        AZURE_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new ConsumptionManagementClient(mockCredentials, subscriptionId),
+    )
+
+    const startDate = new Date('2022-01-01')
+    const endDate = new Date('2022-02-01')
+
+    const result = await consumptionManagementService.getEstimates(
+      startDate,
+      endDate,
+      GroupBy.day,
+    )
+
+    const expectedScope = `/subscriptions/${subscriptionId}/`
+
+    expect(mockUsageDetails.list).toHaveBeenNthCalledWith(1, expectedScope, {
+      expand: 'properties/meterDetails',
+      filter: `properties/usageStart ge '2022-01-01T00:00:00.000Z' AND properties/usageEnd lt '2022-01-07T23:59:59.999Z'`,
+    })
+    expect(mockUsageDetails.list).toHaveBeenNthCalledWith(2, expectedScope, {
+      expand: 'properties/meterDetails',
+      filter: `properties/usageStart ge '2022-01-08T00:00:00.000Z' AND properties/usageEnd lt '2022-01-14T23:59:59.999Z'`,
+    })
+    expect(mockUsageDetails.list).toHaveBeenNthCalledWith(3, expectedScope, {
+      expand: 'properties/meterDetails',
+      filter: `properties/usageStart ge '2022-01-15T00:00:00.000Z' AND properties/usageEnd lt '2022-01-21T23:59:59.999Z'`,
+    })
+    expect(mockUsageDetails.list).toHaveBeenNthCalledWith(4, expectedScope, {
+      expand: 'properties/meterDetails',
+      filter: `properties/usageStart ge '2022-01-22T00:00:00.000Z' AND properties/usageEnd lt '2022-01-28T23:59:59.999Z'`,
+    })
+    expect(mockUsageDetails.list).toHaveBeenNthCalledWith(5, expectedScope, {
+      expand: 'properties/meterDetails',
+      // here it is important, that the last call uses 'le' to include the last date!
+      filter: `properties/usageStart ge '2022-01-29T00:00:00.000Z' AND properties/usageEnd le '2022-02-01T00:00:00.000Z'`,
+    })
+    expect(result).toEqual([])
+  })
+
   // Note: Might need to consider test and try/catch retry logic.
   // usageDetails.list synchronously returns iterator and does not do API call nor affects rate limit
   xit('Throws an error when usageDetails.list fails', async () => {
@@ -1549,7 +1614,7 @@ describe('Azure Consumption Management Service', () => {
     await expect(() =>
       consumptionManagementService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
-      `Azure ConsumptionManagementClient UsageDetailRow paging failed. Reason: ${errorMessage}`,
+      `Azure ConsumptionManagementClient UsageDetailRow paging for time range 2020-11-02T00:00:00.000Z to 2020-11-07T00:00:00.000Z failed. Reason: ${errorMessage}`,
     )
   })
 })
