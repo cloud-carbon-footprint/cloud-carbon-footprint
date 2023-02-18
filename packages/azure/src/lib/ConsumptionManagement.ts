@@ -333,8 +333,6 @@ export default class ConsumptionManagementService {
         )
         return await this.pageThroughUsageRows(usageRows)
       } catch (e) {
-        const errorMsg =
-          'Azure ConsumptionManagementClient UsageDetailRow paging failed. Reason:'
         await this.waitIfRateLimitExceeded(e, errorMsg)
       }
     }
