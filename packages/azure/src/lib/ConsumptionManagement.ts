@@ -311,7 +311,7 @@ export default class ConsumptionManagementService {
   ): Promise<Array<UsageDetailResult>> {
     let currentTry = 0
 
-    const errorMsg = `Azure ConsumptionManagementClient UsageDetailRow paging for time range ${startDate.toISOString()} to ${endDate.getTime()} failed. Reason:`
+    const errorMsg = `Azure ConsumptionManagementClient UsageDetailRow paging for time range ${startDate.toISOString()} to ${endDate.toISOString()} failed. Reason:`
 
     while (currentTry <= maxRetries) {
       currentTry++
