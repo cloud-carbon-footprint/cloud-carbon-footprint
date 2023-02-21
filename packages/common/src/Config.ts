@@ -16,6 +16,7 @@ export interface CCFConfig {
     ATHENA_DB_TABLE?: string
     ATHENA_QUERY_RESULT_LOCATION?: string
     ATHENA_REGION?: string
+    IS_AWS_GLOBAL?: boolean
     NAME?: string
     RECOMMENDATIONS_SERVICE?: AWS_RECOMMENDATIONS_SERVICES
     COMPUTE_OPTIMIZER_BUCKET?: string
@@ -140,6 +141,8 @@ const getConfig = (): CCFConfig => ({
     ATHENA_QUERY_RESULT_LOCATION:
       getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
     ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
+    // default is aws global
+    IS_AWS_GLOBAL: process.env.IS_AWS_GLOBAL?(process.env.IS_AWS_GLOBAL === 'true'):true,
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
