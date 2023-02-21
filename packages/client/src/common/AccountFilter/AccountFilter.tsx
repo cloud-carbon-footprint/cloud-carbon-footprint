@@ -1,8 +1,8 @@
-/*
- * © 2021 Thoughtworks, Inc.
- */
+// /*
+//  * © 2021 Thoughtworks, Inc.
+//  */
 
-import React, { FunctionComponent } from 'react'
+import { FunctionComponent } from 'react'
 import FilterDropdown from '../../common/FilterDropdown'
 import { DropdownFilterOptions, DropdownOption, FilterProps } from '../../Types'
 

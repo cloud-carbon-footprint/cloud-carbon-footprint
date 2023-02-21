@@ -101,7 +101,7 @@
       "mtPerKwHour": 0.000074
     },
     {
-      "region": "us-east2",
+      "region": "us-east4",
       "mtPerKwHour": 0.000475105
     },
     {
@@ -464,7 +464,7 @@
           "kilowattHours": 50.642678514609926,
           "co2e": 4,
           "cost": 2.112304415112801,
-          "region": "us-east2",
+          "region": "us-east4",
           "usesAverageCPUConstant": false
         },
         {
@@ -1332,7 +1332,7 @@
           "accountName": "aws account 1",
           "serviceName": "ec2",
           "kilowattHours": 50.933103987612505,
-          "co2e": 3,
+          "co2e": 5,
           "cost": 2.014818576889102,
           "region": "us-west-1",
           "usesAverageCPUConstant": false
@@ -1372,7 +1372,7 @@
           "accountName": "azure account 2",
           "serviceName": "virtualMachines",
           "kilowattHours": 50.773157853289746,
-          "co2e": 5,
+          "co2e": 0.020011,
           "cost": 2.2728625664822433,
           "region": "UK South",
           "usesAverageCPUConstant": false
@@ -1489,7 +1489,7 @@
       "cloudProvider": "GCP",
       "accountId": "gcp account 3",
       "accountName": "gcp account 3",
-      "region": "us-east2",
+      "region": "us-east4",
       "recommendationType": "DELETE_ADDRESS",
       "instanceName": "test-instance-8",
       "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-8.",

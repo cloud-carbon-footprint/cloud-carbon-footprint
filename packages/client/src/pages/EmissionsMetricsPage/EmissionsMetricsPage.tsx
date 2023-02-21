@@ -16,7 +16,8 @@ import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
 import { useFootprintData } from '../../utils/hooks'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
-
+import ForecastCard from '../CarbonHackCards/ForecastCard/ForecastCard'
+import RegionRecommendationCard from '../CarbonHackCards/RegionRecommendationCard/RegionRecommendationCard'
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
   onApiError?: (e: Error) => void
@@ -64,7 +65,6 @@ export default function EmissionsMetricsPage({
       />
     )
   }
-
   return (
     <div className={classes.pageContainer}>
       <EmissionsSidePanel />
@@ -80,6 +80,15 @@ export default function EmissionsMetricsPage({
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />
+              {process.env.REACT_APP_ENABLE_REGION_RECOMMENDATION_FEATURE ===
+              'true' ? (
+                <RegionRecommendationCard
+                  data={footprint.filteredData}
+                ></RegionRecommendationCard>
+              ) : null}
+              {process.env.REACT_APP_ENABLE_FORECAST_FEATURE === 'true' ? (
+                <ForecastCard data={footprint.filteredData}></ForecastCard>
+              ) : null}
             </Grid>
           </Grid>
           <CarbonIntensityMap />

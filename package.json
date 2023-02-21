@@ -5,6 +5,7 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.18.6",
     "@changesets/cli": "^2.18.0",
     "@types/fs-extra": "^9.0.13",
     "concurrently": "^7.0.0",
@@ -54,6 +55,7 @@
     "docs": "docsify serve --port 3001",
     "release": "changeset version && yarn install",
     "postinstall": "husky install",
-    "version": "yarn changeset version && yarn install --no-immutable"
+    "version": "yarn changeset version && yarn install --no-immutable",
+    "prepare": "husky install"
   }
 }
