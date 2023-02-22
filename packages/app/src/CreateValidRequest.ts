@@ -109,6 +109,8 @@ const validate = (
     const limitVal = parseInt(limit)
     if (isNaN(limitVal) || limitVal < 0) {
       errors.push('Not a valid limit number')
+    } else if (limitVal > 50000) {
+      errors.push('Page limit must not exceed 50000')
     }
   }
 

@@ -281,17 +281,10 @@ export default class MongoDbCacheManager extends CacheManager {
       {
         $match: filters,
       },
-      {
-        $sort: {
-          timestamp: 1,
-          _id: 1,
-        },
-      },
     ]
 
-    // Optionally build pagination stages
+    // Optionally build pagination stage
     if (!isNaN(request.skip)) aggregationStages.push({ $skip: request.skip })
-    if (!isNaN(request.limit)) aggregationStages.push({ $limit: request.limit })
 
     if (request.skip || request.limit) {
       const skip = request.skip || 0
@@ -301,6 +294,15 @@ export default class MongoDbCacheManager extends CacheManager {
 
     // Add remaining post-query stages
     aggregationStages.push(
+      {
+        $limit: isNaN(request.limit) ? 50000 : request.limit,
+      },
+      {
+        $sort: {
+          timestamp: 1,
+          _id: 1,
+        },
+      },
       {
         $group: {
           _id: '$timestamp',
