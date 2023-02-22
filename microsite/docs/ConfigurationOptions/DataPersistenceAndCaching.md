@@ -70,11 +70,12 @@ A sample request using limit and skip parameters may look like:
 /footprint?start=2021-01-01&end=2021-02-01&limit=30&skip=10
 ```
 - Skip: The number of estimates (MongoDB documents) to skip over
-- Limit: The maximum number of estimates (MongoDB documents) to include in the request
+- Limit: The maximum number of estimates (MongoDB documents) to include in the request (<=50000)
 
 _Note: This feature only works when the MONGODB cache mode is enabled. The limit and skip parameters will be ignored for other cache modes._
 
-_For consumers that do not anticipate reaching a memory limitation with their collection size, simply configuring the limit value to a number equal to or greater than the total expected number of documents and a skip value of 0 will allow the API to only need one request._
+_To avoid potential issues with memory limitations when loading and aggregating estimates from the cache, a default value of 50,000 documents will be used for the page limit.
+This ensures that individual timestamps with significantly large amount of estimates are handled properly. Custom limit values that exceed this number will result in a validation error._
 
 ###### Filtering Estimates
 
