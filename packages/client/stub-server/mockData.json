@@ -101,10 +101,6 @@
       "mtPerKwHour": 0.000074
     },
     {
-      "region": "us-east2",
-      "mtPerKwHour": 0.000475105
-    },
-    {
       "region": "us-central1",
       "mtPerKwHour": 0.000540461
     },
@@ -122,7 +118,7 @@
     },
     {
       "region": "us-west1",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000228876
     },
     {
       "region": "us-west2",
@@ -222,7 +218,7 @@
     },
     {
       "region": "UK South",
-      "mtPerKwHour": 0.000228
+      "mtPerKwHour": 0.0004545
     },
     {
       "region": "UK West",
@@ -464,7 +460,7 @@
           "kilowattHours": 50.642678514609926,
           "co2e": 4,
           "cost": 2.112304415112801,
-          "region": "us-east2",
+          "region": "us-east1",
           "usesAverageCPUConstant": false
         },
         {
@@ -1489,7 +1485,7 @@
       "cloudProvider": "GCP",
       "accountId": "gcp account 3",
       "accountName": "gcp account 3",
-      "region": "us-east2",
+      "region": "us-east1",
       "recommendationType": "DELETE_ADDRESS",
       "instanceName": "test-instance-8",
       "recommendationDetail": "Save cost by performing a DELETE_ADDRESS for instance: test-instance-8.",
