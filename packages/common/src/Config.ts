@@ -97,6 +97,11 @@ export type QUERY_DATE_TYPES = {
   [key in GroupBy]: string
 }
 
+const checkAthenaRegionISAWSGlobal = (athena_region: string): boolean => {
+  let AWS_CN_REGIONS = ['cn-north-1','cn-northwest-1']
+  return !AWS_CN_REGIONS.includes(athena_region)
+}
+
 const getAWSAccounts = () => {
   return process.env.AWS_ACCOUNTS ? process.env.AWS_ACCOUNTS : '[]'
 }
@@ -141,8 +146,7 @@ const getConfig = (): CCFConfig => ({
     ATHENA_QUERY_RESULT_LOCATION:
       getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
     ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
-    // default is aws global
-    IS_AWS_GLOBAL: process.env.IS_AWS_GLOBAL?(process.env.IS_AWS_GLOBAL === 'true'):true,
+    IS_AWS_GLOBAL: checkAthenaRegionISAWSGlobal(getEnvVar('AWS_ATHENA_REGION')),
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
