@@ -81,50 +81,35 @@ export default class AzureAccount extends CloudProviderAccount {
 
     const AZURE = configLoader().AZURE
 
-    if (AZURE.CONSUMPTION_CHUNKS_DAYS) {
-      // chunking - sequential
-      this.logger.info('Mapping Over Subscriptions and Usage Rows sequentially')
-      const estimationResults: Array<Array<EstimationResult>> = []
-
-      for (const subscription of subscriptions) {
+    const requests = subscriptions.map((subscription) => {
+      return async () => {
         try {
           this.logger.info(`Getting data for ${subscription.displayName}...`)
-          const subscriptionResults = await this.getDataForSubscription(
+          return await this.getDataForSubscription(
             startDate,
             endDate,
             subscription.subscriptionId,
             grouping,
           )
-          estimationResults.push(subscriptionResults)
         } catch (e) {
           this.logger.warn(
             `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
           )
+          return []
         }
+      }
+    })
+
+    if (AZURE.CONSUMPTION_CHUNKS_DAYS) {
+      const estimationResults: Array<Array<EstimationResult>> = []
+      for (const request of requests) {
+        estimationResults.push(await request())
       }
       return estimationResults.flat()
     } else {
-      // no chunking so do in parallel
-      this.logger.info('Mapping Over Subscriptions and Usage Rows in parallel')
-      const estimationResults = await Promise.all(
-        subscriptions.map(async (subscription: Subscription) => {
-          try {
-            this.logger.info(`Getting data for ${subscription.displayName}...`)
-            return await this.getDataForSubscription(
-              startDate,
-              endDate,
-              subscription.subscriptionId,
-              grouping,
-            )
-          } catch (e) {
-            this.logger.warn(
-              `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
-            )
-            return []
-          }
-        }),
-      )
-      return estimationResults.flat()
+      return (
+        await Promise.all(requests.map(async (request) => request()))
+      ).flat()
     }
   }
 
