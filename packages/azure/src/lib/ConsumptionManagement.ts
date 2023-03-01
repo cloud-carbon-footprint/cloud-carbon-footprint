@@ -354,12 +354,12 @@ export default class ConsumptionManagementService {
     const AZURE = configLoader().AZURE
 
     // no chunking is wished for
-    if (!AZURE.CONSUMPTION_CHUNKS_DAYS || AZURE.CONSUMPTION_CHUNKS_DAYS === 0) {
+    if (!AZURE.CONSUMPTION_CHUNKS_DAYS) {
       return await this.queryConsumptionUsageDetails(startDate, endDate)
     }
 
     this.consumptionManagementLogger.info(
-      `Time range is going to be requested in chunks of ${AZURE.CONSUMPTION_CHUNKS_DAYS} days`,
+      `Time range will be requested in chunks of ${AZURE.CONSUMPTION_CHUNKS_DAYS} days`,
     )
 
     const stepMs = AZURE.CONSUMPTION_CHUNKS_DAYS * 24 * 60 * 60 * 1000 // step size in ms to request at once
