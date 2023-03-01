@@ -7,29 +7,33 @@ sidebar_position: 1
 
 Calculating estimates can take time and you may wish for a way to persist data to speed up performance of subsequent calls to the API.
 We offer the following data caching methods of varying levels of simplicity and power for saving estimates after they are calculated:
+
 - JSON File (default, but will be deprecated)
   - Local filesystem (default, no configuration needed)
   - Google Cloud Storage
 - MongoDB (local or cloud database)
 
-
 ### JSON File
+
 #### Local Filesystem
-To make local development a pleasant experience with a quick feedback loop, we have a no-setup local caching method that uses a JSON file that is automatically generated. This file will be created in either the packages/api or packages/cli directory – typically with the name of the grouping method included (i.e. `estimates.month.cache.json`. If you would like to see up-to-date estimates, you will have to delete packages/cli/estimates.[grouping].cache.json and/or packages/api/estimates.[grouping].cache.json. Depending on how much usage you have, it could take several minutes to fetch up-to-date estimates and regenerate the cache file.
+
+To make local development a pleasant experience with a quick feedback loop, we have a no-setup local caching method that uses a JSON file that is automatically generated. This file will be created in either the packages/api or packages/cli directory – typically with the name of the grouping method included (i.e. `estimates.month.cache.json`. If you would like to see up-to-date estimates, you will have to delete `packages/cli/estimates.[grouping].cache.json` and/or `packages/api/estimates.[grouping].cache.json`. Depending on how much usage you have, it could take several minutes to fetch up-to-date estimates and regenerate the cache file.
 Note: If you don’t see one of these files, don’t worry. Simply start the server, and load the app for the first time.
 
 Currently, this caching method is planned to be deprecated and will receive decreased support for incoming features made to the app. This is due to its poor scalability which creates issues for those with very large usage data on a typical enterprise or organizational scale. However, it is a great way to get up and start with the app quickly and still appropriate for small-scale users.
 
 #### Google Cloud Storage
-As an expansion to the local cache method, you can use the same JSON file generation within a Google Cloud Storage bucket. If you are experiencing long load times in your staging or production environments, or simply wish to forego the local filesystem, the option to store a JSON cache file in the cloud may be the best option for you. This could be especially helpful in improving re-estimate speeds for your deployed environments. In order to use the Google Cloud option, you have to set the following variables in your packages/api or packages/cli/.env file:
-```
+
+As an expansion to the local cache method, you can use the same JSON file generation within a Google Cloud Storage bucket. If you are experiencing long load times in your staging or production environments, or simply wish to forego the local filesystem, the option to store a JSON cache file in the cloud may be the best option for you. This could be especially helpful in improving re-estimate speeds for your deployed environments. In order to use the Google Cloud option, you have to set the following variables in your `packages/api/.env` or `packages/cli/.env` file:
+
+``` Dotenv
 CACHE_MODE=GCS
 GCS_CACHE_BUCKET_NAME=”some-bucket-name”
 ```
+
 _Note: The Google service account that you are using must have access and permissions to read/write into the bucket._
 
-###### Note on memory limitations:
-
+**Note on Memory Limitations:**
 For JSON Filesystem cache modes, CCF uses read and write streams to get and set estimates. Ultimately, this helps avoid running into JS memory limitations when inevitably needing to stringify the data. The set back for this approach as the data scales is when sending through the REST API result. With express, the JSON response value passed through will need to get stringified. Usually once the data size reaches around 500 mb is when you might see an issue like:
 
 `RangeError: Invalid string length`
@@ -43,21 +47,25 @@ Users or organizations with large amounts of usage data may have difficulty usin
 CCF currently supports either a manual local instance via MongoDB Community/Enterprise, or an automated cloud instance via MongoDB Atlas or similar platform.
 
 To use this configuration, first set up a MongoDB instance of your choice:
-- Local Instance Manual Setup
-- MongoDB Atlas Setup
+
+- [Local Instance Manual Setup](https://www.mongodb.com/docs/atlas/getting-started/)
+- [MongoDB Atlas Setup](https://www.mongodb.com/docs/v6.0/installation/)
 
 After setting up a new instance or collection to be used for CCF, configure the following environment variables in your packages/api or packages/cli/.env file:
-```
+
+``` .env
 CACHE_MODE=MONGODB
 MONGO_URI=mongodb://example-uri
 MONGO_CREDENTIALS=/path-to-credentials.pem
 ```
-- The MONGO_URI variable should be set to the connection URI of your MongoDB instance. If using Atlas, you should find this option in the Connect section of your Atlas cluster. For a local instance, the default string is usually “mongodb://localhost:27017” while the service is running.
+
+- The MONGO_URI variable should be set to the connection URI of your MongoDB instance. If using Atlas, you should find this option in the Connect section of your Atlas cluster. For a local instance, the default string is usually `mongodb://localhost:27017` while the service is running.
 - The MONGO_CREDENTIALS variable is optionally used when configuring MongoDB Atlas. CCF will need the credentials to be stored and referenced in order to connect.
 
 After calculating estimates for the first time, the app will create a new collection titled “ccf”. Estimates will be separated into timestamps and stored into a collection that is named according to the current grouping method (i.e. “estimates-by-month).
 
-###### Paginating Estimates
+#### Paginating Estimates
+
 Since the MongoDB storage method is capable of storing a large amount of estimates, it is possible the estimates for a requested date range will exceed the ideal size of a REST API response. To accommodate this, we have enabled pagination when fetching estimates using this method alongside the CCF client or querying the API directly.
 
 We have added a configurable limit value used to paginate the data through the client package. `REACT_APP_PAGE_LIMIT` will default to paginating through 1000 documents at a time, but depending on the overall collection size, the limit value can be set to whatever makes the most sense.
@@ -66,9 +74,11 @@ When consuming the API directly, you can still take advantage of the paginated f
 There will need to be additional logic written to loop through multiple requests and paginate the data depending on the specified limit value.
 
 A sample request using limit and skip parameters may look like:
-```
+
+``` http
 /footprint?start=2021-01-01&end=2021-02-01&limit=30&skip=10
 ```
+
 - Skip: The number of estimates (MongoDB documents) to skip over
 - Limit: The maximum number of estimates (MongoDB documents) to include in the request (<=50000)
 
@@ -77,7 +87,7 @@ _Note: This feature only works when the MONGODB cache mode is enabled. The limit
 _To avoid potential issues with memory limitations when loading and aggregating estimates from the cache, a default value of 50,000 documents will be used for the page limit.
 This ensures that individual timestamps with significantly large amount of estimates are handled properly. Custom limit values that exceed this number will result in a validation error._
 
-###### Filtering Estimates
+#### Filtering Estimates
 
 With the MongoDB cache mode, CCF is now supporting the capability to filter estimates by the following keys and request parameters:
 
@@ -88,7 +98,8 @@ With the MongoDB cache mode, CCF is now supporting the capability to filter esti
 - **tags** (via key/value pairs)
 
 A sample request to filter by cloud providers may look like:
-```
+
+``` http
 /footprint?start=2021-01-01&end=2021-02-01&limit=30&skip=10&cloudProviders=AWS
 ```
 
