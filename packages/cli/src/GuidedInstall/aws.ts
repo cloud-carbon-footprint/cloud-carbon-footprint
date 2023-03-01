@@ -15,18 +15,18 @@ export async function AWSSetup(): Promise<EnvConfig> {
   lineBreak()
 
   await confirmPrompt(
-    `Ensure your AWS account has the correct permissions.\n\t- You will need an [IAM user](https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) that can create access-keys and modify your billing settings.`,
+    `Ensure your AWS account has the correct permissions.\n\t- You will need an IAM user (https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/) that can create access-keys and modify your billing settings.`,
   )
 
   env.AWS_TARGET_ACCOUNT_ROLE_NAME = await inputPrompt('Enter AWS role name:')
   lineBreak()
 
   await confirmPrompt(
-    `Enable the Cost and Usage Reports Billing AWS feature.\n\t- This feature needs to be enabled so your account can start generating cost and usage reports.\n\t- To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab.\n\t- Make sure to select “Amazon Athena” for report data integration.\n\t- Reference Cost and Usage Reports documentation [here](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html).`,
+    `Enable the Cost and Usage Reports Billing AWS feature.\n\t- This feature needs to be enabled so your account can start generating cost and usage reports.\n\t- To enable, navigate to your account's billing section, and click on the "Cost and Usage Reports" tab.\n\t- Make sure to select “Amazon Athena” for report data integration.\n\t- Reference Cost and Usage Reports documentation here: https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html.`,
   )
 
   await confirmPrompt(
-    `Setup Athena DB to save the Cost and Usage Reports.\n\t- In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them.\n\t- This is a standard AWS integration, outlined [here](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)`,
+    `Setup Athena DB to save the Cost and Usage Reports.\n\t- In addition to generating reports, we use Athena DB to save the details of those reports in a DB, so we can run queries on them.\n\t- This is a standard AWS integration, outlined here: https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html`,
   )
 
   env.AWS_ATHENA_DB_NAME = await inputPrompt('Enter Athena DB name:')
