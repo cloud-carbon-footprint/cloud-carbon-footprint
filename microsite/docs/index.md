@@ -13,7 +13,7 @@ The vision for this product is to be a trusted tool for its accuracy and compreh
 
 As an open source project, we hope that its evolution and direction is community driven and meets the needs and use cases identified. We welcome all feedback and input on how this product can grow, in terms of directions, features, methodology changes, and code updates.  
 
-For more visibility into the work planned and happening, please visit the [project board](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/projects/1) or [create an issue.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/issues/new/choose) If you have feedback, questions, or if you’d like to collaborate on shaping the product direction, please reach out to green-cloud@thoughtworks.com.
+For more visibility into the work planned and happening, please visit the [project board](https://github.com/orgs/cloud-carbon-footprint/projects/4/views/1) or [create an issue.](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/issues/new/choose) If you have feedback, questions, or if you’d like to collaborate on shaping the product direction, please reach out to green-cloud@thoughtworks.com.
 
 ## How it works
 
