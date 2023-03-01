@@ -66,6 +66,8 @@ yarn install && yarn guided-install
 
 This will install dependencies for all packages, then guide you through setting up credentials and environment variables to analyze the footprint of your AWS, GCP, or Azure account.
 
+You can also use this method to setup a connection to a MongoDB instance for [storing your estimates](../ConfigurationOptions/DataPersistenceAndCaching.md#mongodb-storage).
+
 If you have any problems with the guided install, you can instead choose to do a standard install.
 
 ### Standard Install
