@@ -235,4 +235,54 @@ describe('GuidedInstall', () => {
       })
     })
   })
+
+  describe('MongoDB', () => {
+    describe('with auth certificate', () => {
+      beforeEach(() => {
+        mockListPrompt.mockResolvedValue('MongoDB')
+        mockConfirmPrompt
+          .mockResolvedValueOnce(true)
+          .mockResolvedValueOnce(true)
+          .mockResolvedValueOnce(true)
+        mockInputPrompt.mockResolvedValueOnce('mongodb://localhost:27017')
+        mockInputPrompt.mockResolvedValueOnce('~/keys/mongodb-certificate.pem')
+      })
+
+      it('creates an env file for cli and api with the given config', async () => {
+        await GuidedInstall()
+
+        const expectedEnv = {
+          CACHE_MODE: 'MONGODB',
+          MONGODB_URI: 'mongodb://localhost:27017',
+          MONGODB_CREDENTIALS: '~/keys/mongodb-certificate.pem',
+        }
+
+        expect(mockCreateEnvFile).toHaveBeenCalledWith('./', expectedEnv)
+        expect(mockCreateEnvFile).toHaveBeenCalledWith('../api/', expectedEnv)
+      })
+    })
+  })
+
+  describe('without auth certificate', () => {
+    beforeEach(() => {
+      mockListPrompt.mockResolvedValue('MongoDB')
+      mockConfirmPrompt
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false)
+      mockInputPrompt.mockResolvedValueOnce('mongodb://localhost:27017')
+    })
+
+    it('creates an env file for cli and api with the given config', async () => {
+      await GuidedInstall()
+
+      const expectedEnv = {
+        CACHE_MODE: 'MONGODB',
+        MONGODB_URI: 'mongodb://localhost:27017',
+      }
+
+      expect(mockCreateEnvFile).toHaveBeenCalledWith('./', expectedEnv)
+      expect(mockCreateEnvFile).toHaveBeenCalledWith('../api/', expectedEnv)
+    })
+  })
 })
