@@ -20,6 +20,7 @@ import {
   EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
+  configLoader,
   EstimationResult,
   GroupBy,
   Logger,
@@ -78,26 +79,53 @@ export default class AzureAccount extends CloudProviderAccount {
   ): Promise<EstimationResult[]> {
     const subscriptions = await this.getSubscriptions()
 
-    this.logger.info('Mapping Over Subscriptions and Usage Rows')
-    const estimationResults = await Promise.all(
-      subscriptions.map(async (subscription: Subscription) => {
+    const AZURE = configLoader().AZURE
+
+    if (AZURE.CONSUMPTION_CHUNKS_DAYS) {
+      // chunking - sequential
+      this.logger.info('Mapping Over Subscriptions and Usage Rows sequentially')
+      const estimationResults: Array<Array<EstimationResult>> = []
+
+      for (const subscription of subscriptions) {
         try {
           this.logger.info(`Getting data for ${subscription.displayName}...`)
-          return await this.getDataForSubscription(
+          const subscriptionResults = await this.getDataForSubscription(
             startDate,
             endDate,
             subscription.subscriptionId,
             grouping,
           )
+          estimationResults.push(subscriptionResults)
         } catch (e) {
           this.logger.warn(
             `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
           )
-          return []
         }
-      }),
-    )
-    return estimationResults.flat()
+      }
+      return estimationResults.flat()
+    } else {
+      // no chunking so do in parallel
+      this.logger.info('Mapping Over Subscriptions and Usage Rows in parallel')
+      const estimationResults = await Promise.all(
+        subscriptions.map(async (subscription: Subscription) => {
+          try {
+            this.logger.info(`Getting data for ${subscription.displayName}...`)
+            return await this.getDataForSubscription(
+              startDate,
+              endDate,
+              subscription.subscriptionId,
+              grouping,
+            )
+          } catch (e) {
+            this.logger.warn(
+              `Unable to get estimate data for Azure subscription ${subscription.subscriptionId}: ${e.message}`,
+            )
+            return []
+          }
+        }),
+      )
+      return estimationResults.flat()
+    }
   }
 
   public async getSubscriptions(): Promise<Subscription[]> {
