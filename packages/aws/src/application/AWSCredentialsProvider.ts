@@ -23,7 +23,7 @@ export default class AWSCredentialsProvider {
           configLoader().AWS.authentication.options.proxyRoleName,
         )
       case 'AWS':
-        let partition = configLoader().AWS.IS_AWS_GLOBAL ? `aws`:`aws-cn`
+        const partition = configLoader().AWS.IS_AWS_GLOBAL ? `aws`:`aws-cn`
         return new ChainableTemporaryCredentials({
           params: {
             RoleArn: `arn:${partition}:iam::${accountId}:role/${
