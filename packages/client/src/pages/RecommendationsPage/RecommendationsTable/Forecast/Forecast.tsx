@@ -40,7 +40,7 @@ export type ForecastProps = {
 
 export type ForecastDetails = {
   missingDates: Moment[]
-  groupBy: GroupBy
+  groupBy: GroupBy | string
 }
 
 const Forecast: FunctionComponent<ForecastProps> = ({

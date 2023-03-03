@@ -14,7 +14,10 @@ import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 import { Co2eUnit } from '../../Types'
 import { FootprintData } from '../../utils/hooks'
-import { checkFootprintDates } from '../../utils/helpers/handleDates'
+import {
+  checkFootprintDates,
+  sliceFootprintDataByLastMonth,
+} from '../../utils/helpers/handleDates'
 
 interface RecommendationsPageProps {
   onApiError?: (e: ErrorState) => void
@@ -31,16 +34,15 @@ const RecommendationsPage = ({
 
   const [co2eUnit, setCo2eUnit] = useState(Co2eUnit.MetricTonnes)
 
-  const groupBy = footprint?.data[0]?.groupBy
-  const forecastDetails = checkFootprintDates({
-    footprint,
-    groupBy,
-  })
+  const groupBy = config.GROUP_BY
+
+  const slicedFootprint = sliceFootprintDataByLastMonth(footprint.data, groupBy)
+  const forecastDetails = checkFootprintDates(slicedFootprint.data, groupBy)
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,
     onApiError,
-    groupBy: config.GROUP_BY,
+    groupBy,
     footprint,
   })
 

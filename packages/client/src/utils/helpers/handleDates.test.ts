@@ -4,17 +4,28 @@
 
 import moment from 'moment'
 import { EstimationResult, GroupBy } from '@cloud-carbon-footprint/common'
-import { checkFootprintDates } from './handleDates'
+import {
+  checkFootprintDates,
+  sliceFootprintDataByLastMonth,
+} from './handleDates'
+
+const compileDates = (groupBy: GroupBy, arrLength: number) => {
+  return [...new Array(arrLength)].map((i, n) =>
+    moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
+  )
+}
 
 describe('checks footprint dates', () => {
-  const error: Error | null = null
+  moment.now = function () {
+    return +new Date('2023-01-31T00:00:00.000Z')
+  }
+
   describe('no data', () => {
     it('does not have last 30 day total', () => {
       const data: EstimationResult[] = []
 
-      const footprint = { data, error, loading: false }
       const groupBy = 'day' as GroupBy.day
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(true)
     })
@@ -23,9 +34,7 @@ describe('checks footprint dates', () => {
   describe('groupBy day', () => {
     const groupBy = 'day' as GroupBy.day
     it('does not have last 30 day total', () => {
-      const dates = [...new Array(2)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 2)
 
       const data = dates.map((date) => {
         return {
@@ -37,16 +46,13 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(true)
     })
 
     it('has last 30 day total', () => {
-      const dates = [...new Array(30)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 30)
 
       const data = dates.map((date) => {
         return {
@@ -58,19 +64,37 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(false)
+    })
+
+    it('slices footprint data', () => {
+      const data = [...new Array(35)].map((i, n) => {
+        return {
+          timestamp: moment
+            .utc()
+            .startOf(groupBy)
+            .subtract(34, `${groupBy}s`)
+            .add(n, `${groupBy}s`)
+            .toDate(),
+          serviceEstimates: [],
+          periodStartDate: new Date(''),
+          periodEndDate: new Date(''),
+          groupBy: groupBy,
+        }
+      })
+
+      const slicedFootprintData = sliceFootprintDataByLastMonth(data, groupBy)
+
+      expect(slicedFootprintData).toEqual(data.slice(data.length - 30))
     })
   })
 
   describe('groupBy week', () => {
     const groupBy = 'week' as GroupBy.week
     it('does not have last 30 day total', () => {
-      const dates = [...new Array(2)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 2)
 
       const data = dates.map((date) => {
         return {
@@ -82,16 +106,13 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(true)
     })
 
     it('has last 30 day total', () => {
-      const dates = [...new Array(4)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 4)
 
       const data = dates.map((date) => {
         return {
@@ -103,10 +124,30 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(false)
+    })
+
+    it('slices footprint data', () => {
+      const data = [...new Array(6)].map((i, n) => {
+        return {
+          timestamp: moment
+            .utc()
+            .startOf(groupBy)
+            .subtract(5, `${groupBy}s`)
+            .add(n, `${groupBy}s`)
+            .toDate(),
+          serviceEstimates: [],
+          periodStartDate: new Date(''),
+          periodEndDate: new Date(''),
+          groupBy: groupBy,
+        }
+      })
+
+      const slicedFootprintData = sliceFootprintDataByLastMonth(data, groupBy)
+
+      expect(slicedFootprintData).toEqual(data.slice(data.length - 4))
     })
   })
 
@@ -123,16 +164,13 @@ describe('checks footprint dates', () => {
         },
       ]
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(true)
     })
 
     it('has last 30 day total', () => {
-      const dates = [...new Array(1)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 1)
 
       const data = dates.map((date) => {
         return {
@@ -144,10 +182,30 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(false)
+    })
+
+    it('slices footprint data', () => {
+      const data = [...new Array(3)].map((i, n) => {
+        return {
+          timestamp: moment
+            .utc()
+            .startOf(groupBy)
+            .subtract(2, `${groupBy}s`)
+            .add(n, `${groupBy}s`)
+            .toDate(),
+          serviceEstimates: [],
+          periodStartDate: new Date(''),
+          periodEndDate: new Date(''),
+          groupBy: groupBy,
+        }
+      })
+
+      const slicedFootprintData = sliceFootprintDataByLastMonth(data, groupBy)
+
+      expect(slicedFootprintData).toEqual(data.slice(data.length - 1))
     })
   })
 
@@ -164,16 +222,13 @@ describe('checks footprint dates', () => {
         },
       ]
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(true)
     })
 
     it('has last 30 day total', () => {
-      const dates = [...new Array(1)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 1)
 
       const data = dates.map((date) => {
         return {
@@ -185,10 +240,30 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(false)
+    })
+
+    it('slices footprint data', () => {
+      const data = [...new Array(3)].map((i, n) => {
+        return {
+          timestamp: moment
+            .utc()
+            .startOf(groupBy)
+            .subtract(2, `${groupBy}s`)
+            .add(n, `${groupBy}s`)
+            .toDate(),
+          serviceEstimates: [],
+          periodStartDate: new Date(''),
+          periodEndDate: new Date(''),
+          groupBy: groupBy,
+        }
+      })
+
+      const slicedFootprintData = sliceFootprintDataByLastMonth(data, groupBy)
+
+      expect(slicedFootprintData).toEqual(data.slice(data.length - 1))
     })
   })
 
@@ -205,16 +280,13 @@ describe('checks footprint dates', () => {
         },
       ]
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(true)
     })
 
     it('has last 30 day total', () => {
-      const dates = [...new Array(1)].map((i, n) =>
-        moment.utc().startOf(groupBy).subtract(n, `${groupBy}s`).toDate(),
-      )
+      const dates = compileDates(groupBy, 1)
 
       const data = dates.map((date) => {
         return {
@@ -226,10 +298,30 @@ describe('checks footprint dates', () => {
         }
       })
 
-      const footprint = { data, error, loading: false }
-      const { missingDates } = checkFootprintDates({ footprint, groupBy })
+      const { missingDates } = checkFootprintDates(data, groupBy)
 
       expect(missingDates.length > 0).toBe(false)
+    })
+
+    it('slices footprint data', () => {
+      const data = [...new Array(3)].map((i, n) => {
+        return {
+          timestamp: moment
+            .utc()
+            .startOf(groupBy)
+            .subtract(2, `${groupBy}s`)
+            .add(n, `${groupBy}s`)
+            .toDate(),
+          serviceEstimates: [],
+          periodStartDate: new Date(''),
+          periodEndDate: new Date(''),
+          groupBy: groupBy,
+        }
+      })
+
+      const slicedFootprintData = sliceFootprintDataByLastMonth(data, groupBy)
+
+      expect(slicedFootprintData).toEqual(data.slice(data.length - 1))
     })
   })
 })

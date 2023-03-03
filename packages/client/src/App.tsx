@@ -17,7 +17,7 @@ import { formatAxiosError } from './layout/ErrorPage/ErrorPage'
 import { ClientConfig } from './Config'
 import loadConfig from './ConfigLoader'
 import { useFootprintData } from './utils/hooks'
-import { handleEmissionDateRange } from './utils/helpers/handleDates'
+import { getEmissionDateRange } from './utils/helpers/handleDates'
 import LoadingMessage from './common/LoadingMessage'
 
 interface AppProps {
@@ -35,10 +35,10 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
     [navigate],
   )
 
-  const endDate: Moment = handleEmissionDateRange({
+  const endDate: Moment = getEmissionDateRange({
     config: loadConfig(),
   }).end
-  const startDate: Moment = handleEmissionDateRange({
+  const startDate: Moment = getEmissionDateRange({
     config: loadConfig(),
   }).start
 
