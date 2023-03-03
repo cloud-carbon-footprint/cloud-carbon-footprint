@@ -7,6 +7,7 @@ import {
 } from './fixtures/advisor.fixtures'
 import { AZURE_CLOUD_CONSTANTS } from '../domain'
 import AdvisorRecommendations from '../lib/AdvisorRecommendations'
+import moment from 'moment'
 
 const mockListRecommendations = { list: jest.fn() }
 
@@ -21,6 +22,9 @@ jest.mock('@azure/arm-advisor', () => {
 })
 
 describe('Azure Advisor Recommendations Service', () => {
+  moment.now = function () {
+    return +new Date('2023-02-01T00:00:00.000Z')
+  }
   const subscriptionId = 'test-subscription-id'
   const mockCredentials = {
     msalFlow: jest.fn(),

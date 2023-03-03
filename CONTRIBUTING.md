@@ -13,7 +13,8 @@ Issues will be closed if they have been inactive and the latest affected version
 _If an issue has been closed and you still feel it's relevant, feel free to ping a maintainer or add a comment!_
 
 ## Picking Up an Issue
-We aim to be transparent in the work we are doing and have it posted on the [project board](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/projects/1).
+
+We aim to be transparent in the work we are doing and have it posted on the [project board](https://github.com/orgs/cloud-carbon-footprint/projects/4/views/1).
 If a particular card interests you, feel free to comment on it to inform us you'd like to collaborate so we can begin conversations about it.
 Cards in the `Ready to Do` are properly prepared to be worked on.
 If a card has the marker `Good First Issue`, it is a great option to start with. Please indicate via a comment in the card that you are working on it, and we will assign it to you and move it into the `In Progress` column. When you have finished, please submit a PR and we will review and merge it.
@@ -332,14 +333,14 @@ has been caused by either out of date credentials on GCP, or the GCP credentials
   path `/Users/username/.talisman/bin`. If not, please refer to the README.md for instructions to install talisman
 - If this variable is set, check to make sure you have the /talisman_hook_script within that directory
 
-#### Overwritting Checks
+#### Overriding Checks
 
 - If there is an invalid check from Talisman, the failed commit will contain a checksum that you can add to
   the .talismanrc, which will allow it to pass for that commit.
 - However this checksum is only valid for that specific commit, if the file changed, and it has a talisman check, it
   will run a new checksum for the .talismanrc that will have to be updated
 
-#### Failing integration tests.
+#### Failing integration tests
 
 - If you have another process running on localhost:3000 when the integration tests run, they will fail.
   This can happen when you are already running the client package, or the microsite.

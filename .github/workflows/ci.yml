@@ -12,9 +12,7 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-concurrency:
-  group: ${{ github.workflow || github.run_id }}
-  cancel-in-progress: true
+concurrency: ${{ github.workflow || github.run_id }}
 jobs:
   lint-test:
     runs-on: ubuntu-latest
@@ -30,7 +28,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: '**/node_modules'
-          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache.
+          # We use both yarn.lock and package.json as cache keys to ensure that changes to local monorepo packages bust the cache
           key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
       - name: find location of global yarn cache
         id: yarn-cache

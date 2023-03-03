@@ -65,8 +65,14 @@ export const AZURE_REGIONS = {
   IN_WEST: { name: 'westindia', options: ['westindia'] },
 
   // EU regions
-  EU_NORTH: { name: 'northeurope', options: ['northeurope', 'europenorth'] },
-  EU_WEST: { name: 'westeurope', options: ['westeurope', 'WESTEUROPE'] },
+  EU_NORTH: {
+    name: 'northeurope',
+    options: ['northeurope', 'europenorth', 'NORTHEUROPE', 'EU North'],
+  },
+  EU_WEST: {
+    name: 'westeurope',
+    options: ['westeurope', 'WESTEUROPE', 'EU West'],
+  },
   EU_FRANCE_CENTRAL: { name: 'francecentral', options: ['francecentral'] },
   EU_FRANCE_SOUTH: { name: 'francesouth', options: ['francesouth'] },
   EU_FRANCE: { name: 'france', options: ['france'] },
@@ -86,7 +92,7 @@ export const AZURE_REGIONS = {
   EU_GERMANY_NORTH: { name: 'germanynorth', options: ['germanynorth'] },
   EU_GERMANY_WESTCENTRAL: {
     name: 'germanywestcentral',
-    options: ['germanywestcentral'],
+    options: ['germanywestcentral', 'GERMANYWESTCENTRAL', 'DE West Central'],
   },
   EU_NORWAY: { name: 'norway', options: ['norway'] },
   EU_NORWAY_EAST: { name: 'norwayeast', options: ['norwayeast'] },
@@ -102,21 +108,21 @@ export const AZURE_REGIONS = {
   US_CANADA: { name: 'canada', options: ['canada'] },
   US_CANADA_CENTRAL: { name: 'canadacentral', options: ['canadacentral'] },
   US_CANADA_EAST: { name: 'canadaeast', options: ['canadaeast'] },
-  US_CENTRAL: { name: 'CentralUS', options: ['CentralUS'] },
+  US_CENTRAL: { name: 'CentralUS', options: ['CentralUS', 'US Central'] },
   US_CENTRAL_EUAP: { name: 'centraluseuap', options: ['centraluseuap'] },
   US_CENTRAL_STAGE: { name: 'centralusstage', options: ['centralusstage'] },
   US_EAST: {
     name: 'EastUS',
-    options: ['EastUS', 'EASTUS', 'USEast', 'useast'],
+    options: ['EastUS', 'EASTUS', 'USEast', 'useast', 'US East'],
   },
   US_EAST_STAGE: { name: 'eastusstage', options: ['eastusstage'] },
-  US_EAST_2: { name: 'EastUS2', options: ['EastUS2', 'useast2'] },
+  US_EAST_2: { name: 'EastUS2', options: ['EastUS2', 'useast2', 'US East 2'] },
   US_EAST_2_EUAP: { name: 'eastus2euap', options: ['eastus2euap'] },
   US_EAST_2_STAGE: { name: 'eastus2stage', options: ['eastus2stage'] },
   US_EAST_3: { name: 'EastUS3', options: ['EastUS3'] },
   US_NORTH_CENTRAL: {
     name: 'NorthCentralUs',
-    options: ['NorthCentralUs', 'northcentralus'],
+    options: ['NorthCentralUs', 'northcentralus', 'US North Central'],
   },
   US_NORTH_CENTRAL_STAGE: {
     name: 'northcentralusstage',
@@ -134,16 +140,22 @@ export const AZURE_REGIONS = {
     options: ['WestCentralUS', 'westcentralus'],
   },
   US_NORTH: { name: 'USNorth', options: ['USNorth'] },
-  US_WEST: { name: 'WestUS', options: ['WestUS', 'westus'] },
+  US_WEST: { name: 'WestUS', options: ['WestUS', 'westus', 'US West'] },
   US_WEST_STAGE: { name: 'westusstage', options: ['westusstage'] },
-  US_WEST_2: { name: 'westus2', options: ['westus2', 'uswest2', 'WESTUS2'] },
+  US_WEST_2: {
+    name: 'westus2',
+    options: ['westus2', 'uswest2', 'WESTUS2', 'US West 2'],
+  },
   US_WEST_2_STAGE: { name: 'westus2stage', options: ['westus2stage'] },
   US_WEST_3: { name: 'westus3', options: ['westus3', 'uswest3'] },
   BRAZIL: { name: 'brazil', options: ['brazil'] },
   BRAZIL_SOUTH: { name: 'brazilsouth', options: ['brazilsouth'] },
   BRAZIL_SOUTH_EAST: { name: 'brazilsoutheast', options: ['brazilsoutheast'] },
 
-  ALL: { name: 'All Regions', options: ['All Regions'] },
+  ALL: {
+    name: 'All Regions',
+    options: ['All Regions', 'GLOBAL', 'Intercontinental'],
+  },
   UNASSIGNED: { name: 'Unassigned', options: ['Unassigned'] },
   UNKNOWN: { name: 'Unknown', options: ['Unknown'] },
 }

@@ -13,9 +13,11 @@ import {
 import { AZURE_REGIONS } from './AzureRegions'
 import { UsageDetailResult } from './ConsumptionTypes'
 import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
-import { configLoader } from '@cloud-carbon-footprint/common'
+import { configLoader, Logger } from '@cloud-carbon-footprint/common'
 
 const RESOURCE_GROUP_TAG_NAME = 'resourceGroup'
+
+const unknownAzureRegions: string[] = []
 
 export default class ConsumptionDetailRow extends BillingDataRow {
   constructor(usageDetail: UsageDetailResult) {
@@ -66,6 +68,14 @@ export default class ConsumptionDetailRow extends BillingDataRow {
         return region.name
       }
     }
+
+    if (!unknownAzureRegions.includes(this.region)) {
+      new Logger('AzureRegions').warn(
+        `Found unknown azure region '${this.region}', please add it to the AzureRegions.ts file and submit a PR, thank you!`,
+      )
+      unknownAzureRegions.push(this.region)
+    }
+
     return AZURE_REGIONS.UNKNOWN.name
   }
 

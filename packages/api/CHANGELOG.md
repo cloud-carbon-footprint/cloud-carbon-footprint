@@ -4,13 +4,13 @@
 
 ### Minor Changes
 
-- eb66c0e6: Add support for Azure Tags and resource groups
+- 689c973e: Add support for Azure Tags and resource groups
 
 ### Patch Changes
 
-- Updated dependencies [b0795d17]
-- Updated dependencies [eb66c0e6]
-- Updated dependencies [2223c7d2]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
+- Updated dependencies [689c973e]
   - @cloud-carbon-footprint/common@1.9.0
 
 ## 1.5.1

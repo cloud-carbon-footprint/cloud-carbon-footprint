@@ -4,12 +4,12 @@
 
 ### Minor Changes
 
-- eb66c0e6: Add support for Azure Tags and resource groups
+- 689c973e: Add support for Azure Tags and resource groups
 
 ### Patch Changes
 
-- b0795d17: Adds config and default values for including individual cloud providers
-- 2223c7d2: removes usageUnit from lookup table result
+- 689c973e: Adds config and default values for including individual cloud providers
+- 689c973e: removes usageUnit from lookup table result
   Please refer to [this commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/dca81101d2b6d33beef2385faea6cf76bda3484f) for create app template updates
 
 ## 1.8.0

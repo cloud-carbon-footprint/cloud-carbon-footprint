@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- 7ade429e: fixes error in app.test.js
+- 689c973e: fixes error in app.test.js
 
 ## 1.1.5
 
