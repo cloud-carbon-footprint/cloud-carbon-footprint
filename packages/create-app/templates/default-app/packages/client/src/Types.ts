@@ -56,6 +56,7 @@ export type FilterBarProps = {
   filters: Filters
   setFilters: Dispatch<SetStateAction<Filters>>
   filterOptions: FilterOptions
+  filteredData?: FilterResults
   setCo2eUnit?: Dispatch<SetStateAction<Co2eUnit>>
 }
 

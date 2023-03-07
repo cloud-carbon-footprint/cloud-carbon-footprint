@@ -19,7 +19,7 @@ const useFilters = (
   isDataLoaded?: boolean,
 ): UseFiltersResults => {
   const [filteredData, setFilteredData] = useState(data)
-  const [filters, setFilters] = useState(buildFilters(filteredResponse))
+  const [filters, setFilters] = useState(() => buildFilters(filteredResponse))
 
   /*
     TODO: Clean up Recommendations dependency check.

@@ -27,7 +27,7 @@ import useStyles from './recommendationsTableStyles'
 import DateRange from '../../../common/DateRange'
 import Tooltip from '../../../common/Tooltip'
 import SearchBar from '../SearchBar'
-import Forecast from './Forecast/Forecast'
+import Forecast, { ForecastDetails } from './Forecast/Forecast'
 import CustomPagination from './CustomPagination'
 import {
   tableFormatNearZero,
@@ -41,6 +41,7 @@ type RecommendationsTableProps = {
   emissionsData: ServiceData[]
   recommendations: RecommendationResult[]
   co2eUnit: Co2eUnit
+  forecastDetails: ForecastDetails
 }
 
 const getColumns = (co2eUnit: Co2eUnit): GridColDef[] => [
@@ -94,6 +95,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
   emissionsData,
   recommendations,
   co2eUnit,
+  forecastDetails,
 }): ReactElement => {
   const [searchBarValue, setSearchBarValue] = useState('')
   const [rows, setRows] = useState([])
@@ -219,6 +221,7 @@ const RecommendationsTable: FunctionComponent<RecommendationsTableProps> = ({
             emissionsData={emissionsData}
             recommendations={recommendations}
             co2eUnit={co2eUnit}
+            forecastDetails={forecastDetails}
           />
           <div className={classes.recommendationsContainer}>
             <Typography className={classes.title}>Recommendations</Typography>
