@@ -18,7 +18,6 @@ export interface UseRemoteFootprintServiceParams {
   endDate: moment.Moment
   initial?: EstimationResult[]
   ignoreCache?: boolean
-  region?: string
   onApiError?: (e: Error) => void
   minLoadTimeMs?: number
   groupBy?: string
@@ -57,7 +56,6 @@ const useRemoteFootprintService = (
             params: {
               start: start,
               end: end,
-              region: params.region,
               ignoreCache: params.ignoreCache,
               groupBy: params.groupBy,
               limit: params.limit,

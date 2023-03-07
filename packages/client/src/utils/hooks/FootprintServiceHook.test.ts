@@ -25,7 +25,6 @@ const mockEstimationResult: EstimationResult = {
   groupBy: GroupBy.day,
 }
 const ignoreCache = true
-const region = 'us-east-2'
 const baseUrl = '/api'
 const minLoadTimeMs = 10
 const groupBy = 'day'
@@ -60,7 +59,6 @@ describe('FootprintServiceHook', () => {
           startDate,
           endDate,
           ignoreCache,
-          region,
           minLoadTimeMs,
           groupBy,
         }),
@@ -71,7 +69,6 @@ describe('FootprintServiceHook', () => {
           end: '2020-08-27',
           start: '2020-08-26',
           ignoreCache,
-          region: region,
           groupBy: 'day',
           skip: 0,
         },
@@ -184,7 +181,6 @@ describe('FootprintServiceHook', () => {
           startDate: start,
           endDate: end,
           ignoreCache,
-          region,
           minLoadTimeMs,
           groupBy: GroupBy.day,
           limit: 90,
@@ -196,7 +192,6 @@ describe('FootprintServiceHook', () => {
           end: '2022-02-05',
           start: '2022-02-01',
           ignoreCache,
-          region: region,
           groupBy: 'day',
           limit: 90,
           skip: 0,
@@ -226,7 +221,6 @@ describe('FootprintServiceHook', () => {
             accountId: 'accountId',
             accountName: 'accountName',
             serviceName: 'serviceName',
-            region: 'region',
             cost: 0,
             kilowattHours: 0,
             co2e: 0,
@@ -242,7 +236,6 @@ describe('FootprintServiceHook', () => {
             accountId: 'accountId',
             accountName: 'accountName',
             serviceName: 'serviceName',
-            region: 'region',
             cost: 0,
             kilowattHours: 0,
             co2e: 0,
@@ -262,7 +255,6 @@ describe('FootprintServiceHook', () => {
           startDate: start,
           endDate: end,
           ignoreCache: false,
-          region,
           minLoadTimeMs,
           groupBy: GroupBy.day,
           limit: 1,
@@ -274,7 +266,6 @@ describe('FootprintServiceHook', () => {
           end: '2022-02-05',
           start: '2022-02-01',
           ignoreCache: false,
-          region: region,
           groupBy: 'day',
           limit: 1,
           skip: 0,
@@ -290,7 +281,6 @@ describe('FootprintServiceHook', () => {
           end: '2022-02-05',
           start: '2022-02-01',
           ignoreCache: false,
-          region: region,
           groupBy: 'day',
           limit: 1,
           skip: 1,

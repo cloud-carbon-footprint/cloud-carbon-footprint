@@ -123,7 +123,6 @@ describe('Cache', () => {
     const rawRequest: EstimationRequest = {
       startDate: moment.utc('2019-12-31').toDate(),
       endDate: moment.utc('2020-01-02').toDate(),
-      region: 'us-east-1',
       ignoreCache: false,
       groupBy: GroupBy.day,
     }
@@ -153,7 +152,6 @@ describe('Cache', () => {
       endDate: moment.utc('2020-01-02').endOf(GroupBy.day).toDate(),
       ignoreCache: false,
       groupBy: GroupBy.day,
-      region: 'us-east-1',
     })
   })
 
@@ -162,7 +160,6 @@ describe('Cache', () => {
     const rawRequest: EstimationRequest = {
       startDate: moment.utc('2019-12-31').toDate(),
       endDate: moment.utc('2020-01-02').toDate(),
-      region: 'us-east-1',
       ignoreCache: false,
       groupBy: GroupBy.day,
     }
@@ -192,7 +189,6 @@ describe('Cache', () => {
     const rawRequest: EstimationRequest = {
       startDate: moment.utc('2020-07-31').toDate(),
       endDate: moment.utc('2020-08-01').toDate(),
-      region: 'us-east-1',
       ignoreCache: false,
       groupBy: GroupBy.day,
     }
@@ -227,7 +223,6 @@ describe('Cache', () => {
     const rawRequest: EstimationRequest = {
       startDate: moment.utc('2019-12-31').toDate(),
       endDate: moment.utc('2020-01-01').toDate(),
-      region: 'us-east-1',
       ignoreCache: false,
       groupBy: GroupBy.day,
     }
@@ -257,7 +252,6 @@ describe('Cache', () => {
     const rawRequest: EstimationRequest = {
       startDate: moment.utc('2019-12-31').toDate(),
       endDate: moment.utc('2020-01-01').toDate(),
-      region: 'us-east-1',
       ignoreCache: false,
       groupBy: GroupBy.day,
     }
@@ -558,7 +552,6 @@ describe('Cache', () => {
               endDate: range.end,
               ignoreCache: false,
               groupBy: grouping,
-              region: rawRequest.region,
             },
           ],
         )
@@ -612,7 +605,6 @@ describe('Cache', () => {
             endDate: range.end,
             ignoreCache: false,
             groupBy: GroupBy.week,
-            region: undefined,
           },
         ],
       ])

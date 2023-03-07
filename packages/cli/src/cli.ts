@@ -24,7 +24,6 @@ export default async function cli(argv: string[] = process.argv) {
   program
     .option('-s, --startDate <string>', 'Start date in ISO format')
     .option('-e, --endDate <string>', 'End date in ISO format')
-    .option('-r, --region <string>', 'AWS region to analyze')
     .option(
       '-g, --groupBy <string>',
       'Group results by day or service. Default is day.',
@@ -38,17 +37,15 @@ export default async function cli(argv: string[] = process.argv) {
   program.parse(argv)
 
   let startDate, endDate
-  let region
   let groupBy: string
   let format: string
 
   if (program.opts().interactive) {
-    ;[startDate, endDate, region, groupBy, format] = await CliPrompts()
+    ;[startDate, endDate, groupBy, format] = await CliPrompts()
   } else {
     const programOptions = program.opts()
     startDate = programOptions.startDate
     endDate = programOptions.endDate
-    region = programOptions.region
     groupBy = programOptions.groupBy
     format = programOptions.format
 
@@ -64,7 +61,6 @@ export default async function cli(argv: string[] = process.argv) {
   const estimationRequest = createValidFootprintRequest({
     startDate,
     endDate,
-    region,
     groupBy: 'day', // So that estimates are cached the same regardless of table grouping method
   })
 
