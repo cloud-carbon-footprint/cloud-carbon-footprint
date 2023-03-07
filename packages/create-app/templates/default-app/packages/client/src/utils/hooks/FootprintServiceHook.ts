@@ -18,7 +18,6 @@ export interface UseRemoteFootprintServiceParams {
   endDate: moment.Moment
   initial?: EstimationResult[]
   ignoreCache?: boolean
-  region?: string
   onApiError?: (e: Error) => void
   minLoadTimeMs?: number
   groupBy?: string

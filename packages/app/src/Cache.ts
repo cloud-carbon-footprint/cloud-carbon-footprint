@@ -162,7 +162,6 @@ const getMissingDataRequests = (
       endDate: dates.end.utc().toDate(),
       ignoreCache: false,
       groupBy: request.groupBy,
-      region: request.region,
       cloudProviderToSeed: request.cloudProviderToSeed,
     }
   })

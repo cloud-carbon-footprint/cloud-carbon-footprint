@@ -47,97 +47,79 @@ export default class App {
     if (process.env.TEST_MODE) {
       return []
     }
-    if (request.region) {
-      const estimatesForAccounts: EstimationResult[][] = []
-      for (const account of AWS.accounts) {
-        const estimates: EstimationResult[] = await Promise.all(
-          await new AWSAccount(
-            account.id,
-            account.name,
-            AWS.CURRENT_REGIONS,
-          ).getDataForRegion(request.region, startDate, endDate, grouping),
-        )
-        estimatesForAccounts.push(estimates)
-      }
-      return estimatesForAccounts.flat()
-    } else {
-      const AWSEstimatesByRegion: EstimationResult[][] = []
-      if (AWS?.INCLUDE_ESTIMATES) {
-        if (AWS?.USE_BILLING_DATA) {
-          appLogger.info('Starting AWS Estimations')
-          const estimates = await new AWSAccount(
-            AWS.BILLING_ACCOUNT_ID,
-            AWS.BILLING_ACCOUNT_NAME,
-            [AWS.ATHENA_REGION],
-          ).getDataFromCostAndUsageReports(startDate, endDate, grouping)
+
+    const AWSEstimatesByRegion: EstimationResult[][] = []
+    if (AWS?.INCLUDE_ESTIMATES) {
+      appLogger.info('Starting AWS Estimations')
+      if (AWS?.USE_BILLING_DATA) {
+        const estimates = await new AWSAccount(
+          AWS.BILLING_ACCOUNT_ID,
+          AWS.BILLING_ACCOUNT_NAME,
+          [AWS.ATHENA_REGION],
+        ).getDataFromCostAndUsageReports(startDate, endDate, grouping)
+        AWSEstimatesByRegion.push(estimates)
+      } else if (AWS?.accounts.length) {
+        // Resolve AWS Estimates synchronously in order to avoid hitting API limits
+        for (const account of AWS.accounts) {
+          const estimates = await Promise.all(
+            await new AWSAccount(
+              account.id,
+              account.name,
+              AWS.CURRENT_REGIONS,
+            ).getDataForRegions(startDate, endDate, grouping),
+          )
           AWSEstimatesByRegion.push(estimates)
-          appLogger.info('Finished AWS Estimations')
-        } else if (AWS?.accounts.length) {
-          appLogger.info('Starting AWS Estimations')
-          // Resolve AWS Estimates synchronously in order to avoid hitting API limits
-          for (const account of AWS.accounts) {
-            const estimates = await Promise.all(
-              await new AWSAccount(
-                account.id,
-                account.name,
-                AWS.CURRENT_REGIONS,
-              ).getDataForRegions(startDate, endDate, grouping),
-            )
-            AWSEstimatesByRegion.push(estimates)
-          }
-          appLogger.info('Finished AWS Estimations')
         }
       }
-
-      const GCPEstimatesByRegion: EstimationResult[][] = []
-      if (GCP?.INCLUDE_ESTIMATES) {
-        if (GCP?.USE_BILLING_DATA) {
-          appLogger.info('Starting GCP Estimations')
-          const estimates = await new GCPAccount(
-            GCP.BILLING_PROJECT_ID,
-            GCP.BILLING_PROJECT_NAME,
-            [],
-          ).getDataFromBillingExportTable(startDate, endDate, grouping)
-          GCPEstimatesByRegion.push(estimates)
-          appLogger.info('Finished GCP Estimations')
-        } else if (GCP?.projects.length) {
-          appLogger.info('Starting GCP Estimations')
-          // Resolve GCP Estimates asynchronously
-          for (const project of GCP.projects) {
-            const estimates = await Promise.all(
-              await new GCPAccount(
-                project.id,
-                project.name,
-                GCP.CURRENT_REGIONS,
-              ).getDataForRegions(startDate, endDate, grouping),
-            )
-            GCPEstimatesByRegion.push(estimates)
-          }
-          appLogger.info('Finished GCP Estimations')
-        }
-      }
-
-      const AzureEstimatesByRegion: EstimationResult[][] = []
-      if (AZURE?.INCLUDE_ESTIMATES && AZURE?.USE_BILLING_DATA) {
-        appLogger.info('Starting Azure Estimations')
-        const azureAccount = new AzureAccount()
-        await azureAccount.initializeAccount()
-        const estimates = await azureAccount.getDataFromConsumptionManagement(
-          startDate,
-          endDate,
-          grouping,
-        )
-        AzureEstimatesByRegion.push(estimates)
-        appLogger.info('Finished Azure Estimations')
-      }
-
-      return reduceByTimestamp(
-        AWSEstimatesByRegion.flat()
-          .flat()
-          .concat(GCPEstimatesByRegion.flat())
-          .concat(AzureEstimatesByRegion.flat()),
-      )
+      appLogger.info('Finished AWS Estimations')
     }
+
+    const GCPEstimatesByRegion: EstimationResult[][] = []
+    if (GCP?.INCLUDE_ESTIMATES) {
+      appLogger.info('Starting GCP Estimations')
+      if (GCP?.USE_BILLING_DATA) {
+        const estimates = await new GCPAccount(
+          GCP.BILLING_PROJECT_ID,
+          GCP.BILLING_PROJECT_NAME,
+          [],
+        ).getDataFromBillingExportTable(startDate, endDate, grouping)
+        GCPEstimatesByRegion.push(estimates)
+      } else if (GCP?.projects.length) {
+        // Resolve GCP Estimates asynchronously
+        for (const project of GCP.projects) {
+          const estimates = await Promise.all(
+            await new GCPAccount(
+              project.id,
+              project.name,
+              GCP.CURRENT_REGIONS,
+            ).getDataForRegions(startDate, endDate, grouping),
+          )
+          GCPEstimatesByRegion.push(estimates)
+        }
+      }
+      appLogger.info('Finished GCP Estimations')
+    }
+
+    const AzureEstimatesByRegion: EstimationResult[][] = []
+    if (AZURE?.INCLUDE_ESTIMATES && AZURE?.USE_BILLING_DATA) {
+      appLogger.info('Starting Azure Estimations')
+      const azureAccount = new AzureAccount()
+      await azureAccount.initializeAccount()
+      const estimates = await azureAccount.getDataFromConsumptionManagement(
+        startDate,
+        endDate,
+        grouping,
+      )
+      AzureEstimatesByRegion.push(estimates)
+      appLogger.info('Finished Azure Estimations')
+    }
+
+    return reduceByTimestamp(
+      AWSEstimatesByRegion.flat()
+        .flat()
+        .concat(GCPEstimatesByRegion.flat())
+        .concat(AzureEstimatesByRegion.flat()),
+    )
   }
 
   getEmissionsFactors(): EmissionRatioResult[] {

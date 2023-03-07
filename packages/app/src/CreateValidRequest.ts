@@ -3,11 +3,9 @@
  */
 
 import moment from 'moment'
-import { includes, values } from 'ramda'
 import {
   AWS_DEFAULT_RECOMMENDATION_TARGET,
   AWS_RECOMMENDATIONS_TARGETS,
-  configLoader,
   EstimationRequestValidationError,
   GroupBy,
   RecommendationsRequestValidationError,
@@ -21,7 +19,6 @@ import {
 export interface EstimationRequest {
   startDate: Date
   endDate: Date
-  region?: string // Deprecated param (used only for the unsupported Higher Accuracy Approach)
   cloudProviderToSeed?: string // Used only for seeding cache file with MongoDB
   ignoreCache: boolean
   groupBy?: string
@@ -41,7 +38,6 @@ export interface RecommendationRequest {
 interface FormattedEstimationRequest {
   startDate: moment.Moment
   endDate: moment.Moment
-  region?: string
   cloudProviderToSeed?: string
   groupBy?: string
   limit?: string
@@ -64,7 +60,6 @@ const validate = (
   const {
     startDate,
     endDate,
-    region,
     cloudProviderToSeed,
     groupBy,
     limit,
@@ -82,10 +77,6 @@ const validate = (
 
   if (!endDate.isValid()) {
     errors.push('End date is not in a recognized RFC2822 or ISO format')
-  }
-
-  if (region && !includes(region, values(configLoader().AWS.CURRENT_REGIONS))) {
-    errors.push('Not a valid region for this account')
   }
 
   if (startDate.isAfter(endDate)) {
