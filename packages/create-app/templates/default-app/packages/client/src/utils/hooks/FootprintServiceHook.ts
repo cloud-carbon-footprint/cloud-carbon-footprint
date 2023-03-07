@@ -29,7 +29,7 @@ const useRemoteFootprintService = (
   params: UseRemoteFootprintServiceParams,
 ): ServiceResult<EstimationResult> => {
   const [data, setData] = useState(params.initial ?? [])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const { error, setError } = useAxiosErrorHandling(params.onApiError)
 
@@ -39,10 +39,10 @@ const useRemoteFootprintService = (
   useEffect(() => {
     const fetchEstimates = async () => {
       if (!params.baseUrl) {
+        setLoading(false)
         return
       }
       setError(null)
-      setLoading(true)
 
       /*
        * Estimates needs to be initialized to spread data and not data itself to avoid state mutation during concatenation
@@ -78,9 +78,13 @@ const useRemoteFootprintService = (
         setError(e)
       } finally {
         setData(estimates)
-        setTimeout(() => {
+        if (params.minLoadTimeMs) {
+          setTimeout(() => {
+            setLoading(false)
+          }, params.minLoadTimeMs)
+        } else {
           setLoading(false)
-        }, params.minLoadTimeMs ?? 1000)
+        }
       }
     }
 
