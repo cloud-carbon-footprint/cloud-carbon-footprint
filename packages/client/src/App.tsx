@@ -80,7 +80,10 @@ export function App({ config = loadConfig() }: AppProps): ReactElement {
 
   if (footprint.loading)
     return (
-      <LoadingMessage message="Loading cloud data. This may take a while..." />
+      <>
+        <HeaderBar />
+        <LoadingMessage message="Loading cloud data. This may take a while..." />
+      </>
     )
 
   return (
