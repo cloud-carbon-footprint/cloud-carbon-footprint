@@ -568,6 +568,8 @@ function expectAWSService(key: string) {
   setConfig({
     AWS: {
       CURRENT_SERVICES: [{ key: key, name: '' }],
+      ATHENA_REGION: 'us-east-1',
+      IS_AWS_GLOBAL: true,
     },
   })
   const testRegion = 'some-region'

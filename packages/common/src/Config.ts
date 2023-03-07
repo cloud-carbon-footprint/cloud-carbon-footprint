@@ -98,8 +98,9 @@ export type QUERY_DATE_TYPES = {
   [key in GroupBy]: string
 }
 
+// this check allows for aws auth to determine how to correctly partition by region when credentializing
 const checkAthenaRegionISAWSGlobal = (athena_region: string): boolean => {
-  const AWS_CN_REGIONS = ['cn-north-1','cn-northwest-1']
+  const AWS_CN_REGIONS = ['cn-north-1', 'cn-northwest-1']
   return !AWS_CN_REGIONS.includes(athena_region)
 }
 
@@ -147,7 +148,7 @@ const getConfig = (): CCFConfig => ({
     ATHENA_QUERY_RESULT_LOCATION:
       getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
     ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
-    IS_AWS_GLOBAL: checkAthenaRegionISAWSGlobal(getEnvVar('AWS_ATHENA_REGION') || 'us-east-1'),
+    IS_AWS_GLOBAL: checkAthenaRegionISAWSGlobal(getEnvVar('AWS_ATHENA_REGION')),
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
