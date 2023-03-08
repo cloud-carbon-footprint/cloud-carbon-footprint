@@ -2,34 +2,36 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { RecommendationResult } from '@cloud-carbon-footprint/common'
-import { ServiceResult } from '../../Types'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { RecommendationResult } from '@cloud-carbon-footprint/common'
+import { ServiceResult } from '../../Types'
 import { useAxiosErrorHandling } from '../../layout/ErrorPage'
+import { FootprintData } from './FootprintDataHook'
 
 export interface UseRemoteRecommendationServiceParams {
   baseUrl: string | null
   onApiError?: (e: Error) => void
   awsRecommendationTarget?: string
   minLoadTimeMs?: number
+  footprint?: FootprintData
 }
 
 const useRemoteRecommendationsService = (
   params: UseRemoteRecommendationServiceParams,
 ): ServiceResult<RecommendationResult> => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const { error, setError } = useAxiosErrorHandling(params.onApiError)
 
   useEffect(() => {
     const fetchRecommendations = async () => {
       if (!params.baseUrl) {
+        setLoading(false)
         return
       }
       setError(null)
-      setLoading(true)
 
       try {
         const res = params.awsRecommendationTarget
@@ -44,7 +46,11 @@ const useRemoteRecommendationsService = (
         console.error(e.message, e)
         setError(e)
       } finally {
-        setTimeout(() => setLoading(false), params.minLoadTimeMs ?? 1000)
+        if (params.minLoadTimeMs) {
+          setTimeout(() => setLoading(false), params.minLoadTimeMs)
+        } else {
+          setLoading(false)
+        }
       }
     }
 

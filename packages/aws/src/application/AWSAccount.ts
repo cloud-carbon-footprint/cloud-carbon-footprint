@@ -199,7 +199,9 @@ export default class AWSAccount extends CloudProviderAccount {
       new CloudWatch(options),
       new CloudWatchLogs(options),
       new CostExplorer({
-        region: configLoader().AWS.IS_AWS_GLOBAL?'us-east-1':'cn-northwest-1',
+        region: configLoader().AWS.IS_AWS_GLOBAL
+          ? 'us-east-1'
+          : 'cn-northwest-1',
         credentials: options.credentials,
       }),
       new S3Service(options),

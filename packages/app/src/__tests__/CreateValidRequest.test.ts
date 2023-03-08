@@ -203,13 +203,14 @@ describe('CreateValidRequest', () => {
   })
 
   it.each([
-    ['1', 'test', 'Not a valid skip number'],
-    ['test', '1', 'Not a valid limit number'],
-    ['-1', '1', 'Not a valid limit number'],
-    ['1', '-1', 'Not a valid skip number'],
+    ['Not a valid skip number', '1', 'test'],
+    ['Not a valid limit number', 'test', '1'],
+    ['Not a valid limit number', '-1', '1'],
+    ['Page limit must not exceed 50000', '60000', '1'],
+    ['Not a valid skip number', '1', '-1'],
   ])(
-    'ensures limit and skip values are numbers',
-    (limit: number | string, skip: number | string, errorMsg: string) => {
+    'ensures %s is thrown when given "%s" as limit and "%s" as skip',
+    (errorMsg: string, limit: number | string, skip: number | string) => {
       const input = {
         startDate: '2000-07-10',
         endDate: '2020-07-10',

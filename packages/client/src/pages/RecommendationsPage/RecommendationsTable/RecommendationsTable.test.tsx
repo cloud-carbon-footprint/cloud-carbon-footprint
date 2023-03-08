@@ -30,6 +30,10 @@ const testProps = {
   recommendations: [],
   handleRowClick: jest.fn(),
   co2eUnit: Co2eUnit.MetricTonnes,
+  forecastDetails: {
+    missingDates: [],
+    groupBy: 'day',
+  },
 }
 
 describe('Recommendations Table', () => {

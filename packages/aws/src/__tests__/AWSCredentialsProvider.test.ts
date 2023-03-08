@@ -108,6 +108,7 @@ describe('AWSCredentialsProvider', () => {
             proxyRoleName: proxyRoleName,
           },
         },
+        IS_AWS_GLOBAL: true,
       },
     })
     const mockedChainableTemporaryCredentials =

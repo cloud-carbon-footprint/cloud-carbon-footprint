@@ -20,6 +20,7 @@ import {
   EmbodiedEmissionsEstimator,
 } from '@cloud-carbon-footprint/core'
 import {
+  configLoader,
   EstimationResult,
   GroupBy,
   Logger,
@@ -78,9 +79,10 @@ export default class AzureAccount extends CloudProviderAccount {
   ): Promise<EstimationResult[]> {
     const subscriptions = await this.getSubscriptions()
 
-    this.logger.info('Mapping Over Subscriptions and Usage Rows')
-    const estimationResults = await Promise.all(
-      subscriptions.map(async (subscription: Subscription) => {
+    const AZURE = configLoader().AZURE
+
+    const requests = subscriptions.map((subscription) => {
+      return async () => {
         try {
           this.logger.info(`Getting data for ${subscription.displayName}...`)
           return await this.getDataForSubscription(
@@ -95,9 +97,20 @@ export default class AzureAccount extends CloudProviderAccount {
           )
           return []
         }
-      }),
-    )
-    return estimationResults.flat()
+      }
+    })
+
+    if (AZURE.CONSUMPTION_CHUNKS_DAYS) {
+      const estimationResults: Array<Array<EstimationResult>> = []
+      for (const request of requests) {
+        estimationResults.push(await request())
+      }
+      return estimationResults.flat()
+    } else {
+      return (
+        await Promise.all(requests.map(async (request) => request()))
+      ).flat()
+    }
   }
 
   public async getSubscriptions(): Promise<Subscription[]> {

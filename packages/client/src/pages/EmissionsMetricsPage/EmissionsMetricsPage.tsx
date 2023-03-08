@@ -4,8 +4,11 @@
 
 import React, { ReactElement } from 'react'
 import { Grid } from '@material-ui/core'
-import moment, { unitOfTime } from 'moment'
-import LoadingMessage from '../../common/LoadingMessage'
+import { EstimationResult } from '@cloud-carbon-footprint/common'
+import { FilterOptions, FilterResultResponse } from 'src/Types'
+import { buildFilters, FootprintData } from 'src/utils/hooks'
+import useFilters from 'src/common/FilterBar/utils/FilterHook'
+import { useFilterDataFromEstimates } from 'src/utils/helpers'
 import EmissionsFilterBar from './EmissionsFilterBar'
 import CarbonIntensityMap from './CarbonIntensityMap'
 import CarbonComparisonCard from './CarbonComparisonCard'
@@ -13,70 +16,51 @@ import EmissionsBreakdownCard from './EmissionsBreakdownCard'
 import EmissionsOverTimeCard from './EmissionsOverTimeCard'
 import useStyles from './emissionsMetricsStyles'
 import EmissionsSidePanel from './EmissionsSidePanel/EmissionsSidePanel'
-import { useFootprintData } from '../../utils/hooks'
 import { ClientConfig } from '../../Config'
 import loadConfig from '../../ConfigLoader'
 
 interface EmissionsMetricsPageProps {
   config?: ClientConfig
   onApiError?: (e: Error) => void
+  footprint: FootprintData
 }
 
 export default function EmissionsMetricsPage({
   config = loadConfig(),
   onApiError,
+  footprint,
 }: EmissionsMetricsPageProps): ReactElement<EmissionsMetricsPageProps> {
   const classes = useStyles()
-  const dateRangeType: string = config.DATE_RANGE.TYPE
-  const dateRangeValue: string = config.DATE_RANGE.VALUE
-  let endDate: moment.Moment = moment
-    .utc()
-    .subtract(config.MINIMAL_DATE_AGE, 'days')
-  if (config.END_DATE) {
-    endDate = moment.utc(config.END_DATE)
-  }
 
-  let startDate: moment.Moment
-  if (config.PREVIOUS_YEAR_OF_USAGE) {
-    startDate = moment.utc(Date.UTC(endDate.year() - 1, 0, 1, 0, 0, 0, 0))
-  } else if (config.START_DATE) {
-    startDate = moment.utc(config.START_DATE)
-  } else {
-    startDate = moment
-      .utc()
-      .subtract(dateRangeValue, dateRangeType as unitOfTime.DurationConstructor)
-  }
+  const filterOptions: FilterResultResponse = useFilterDataFromEstimates(
+    footprint.data,
+  )
 
-  const footprint = useFootprintData({
-    baseUrl: config.BASE_URL,
-    startDate,
-    endDate,
-    onApiError,
-    groupBy: config.GROUP_BY,
-    limit: parseInt(config.PAGE_LIMIT as unknown as string),
-    ignoreCache: config.DISABLE_CACHE,
-  })
+  const { filteredData, filters, setFilters } = useFilters(
+    footprint.data,
+    buildFilters,
+    filterOptions,
+  )
 
-  if (footprint.loading) {
-    return (
-      <LoadingMessage
-        message={'Loading cloud data. This may take a while...'}
-      />
-    )
+  const filterBarProps = {
+    filterOptions: filterOptions as unknown as FilterOptions,
+    filters,
+    setFilters,
+    filteredData: filteredData as EstimationResult[],
   }
 
   return (
     <div className={classes.pageContainer}>
       <EmissionsSidePanel />
-      <EmissionsFilterBar {...footprint.filterBarProps} />
+      <EmissionsFilterBar {...filterBarProps} />
       <div className={classes.boxContainer}>
         <Grid container spacing={3}>
-          <EmissionsOverTimeCard data={footprint.filteredData} />
+          <EmissionsOverTimeCard data={filterBarProps.filteredData} />
           <Grid item xs={12}>
             <Grid container spacing={3} className={classes.gridCardRow}>
-              <CarbonComparisonCard data={footprint.filteredData} />
+              <CarbonComparisonCard data={filterBarProps.filteredData} />
               <EmissionsBreakdownCard
-                data={footprint.filteredData}
+                data={filterBarProps.filteredData}
                 baseUrl={config.BASE_URL}
                 onApiError={onApiError}
               />

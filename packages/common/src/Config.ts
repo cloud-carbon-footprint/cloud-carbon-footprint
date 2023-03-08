@@ -57,6 +57,7 @@ export interface CCFConfig {
       tenantId?: string
     }
     RESOURCE_TAG_NAMES?: string[]
+    CONSUMPTION_CHUNKS_DAYS?: number
   }
   LOGGING_MODE?: string
   CACHE_MODE?: string
@@ -97,8 +98,9 @@ export type QUERY_DATE_TYPES = {
   [key in GroupBy]: string
 }
 
+// this check allows for aws auth to determine how to correctly partition by region when credentializing
 const checkAthenaRegionISAWSGlobal = (athena_region: string): boolean => {
-  const AWS_CN_REGIONS = ['cn-north-1','cn-northwest-1']
+  const AWS_CN_REGIONS = ['cn-north-1', 'cn-northwest-1']
   return !AWS_CN_REGIONS.includes(athena_region)
 }
 
@@ -146,7 +148,7 @@ const getConfig = (): CCFConfig => ({
     ATHENA_QUERY_RESULT_LOCATION:
       getEnvVar('AWS_ATHENA_QUERY_RESULT_LOCATION') || '',
     ATHENA_REGION: getEnvVar('AWS_ATHENA_REGION'),
-    IS_AWS_GLOBAL: checkAthenaRegionISAWSGlobal(getEnvVar('AWS_ATHENA_REGION') || 'us-east-1'),
+    IS_AWS_GLOBAL: checkAthenaRegionISAWSGlobal(getEnvVar('AWS_ATHENA_REGION')),
     accounts: JSON.parse(getAWSAccounts()) || [],
     authentication: {
       mode: getEnvVar('AWS_AUTH_MODE') || 'default',
@@ -250,6 +252,9 @@ const getConfig = (): CCFConfig => ({
       tenantId: getEnvVar('AZURE_TENANT_ID') || '',
     },
     RESOURCE_TAG_NAMES: JSON.parse(getAzureResourceTagNames()),
+    CONSUMPTION_CHUNKS_DAYS: parseInt(
+      getEnvVar('AZURE_CONSUMPTION_CHUNKS_DAYS') || '0',
+    ),
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',

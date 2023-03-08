@@ -307,7 +307,6 @@ describe('MongoDbCacheManager', () => {
       const request: EstimationRequest = {
         startDate: new Date('2022-01-01'),
         endDate: new Date('2022-01-02'),
-        limit: 1,
         skip: 0,
         ignoreCache: false,
         [`${filter[0]}`]: filter[1],
@@ -342,9 +341,9 @@ describe('MongoDbCacheManager', () => {
             },
           },
         },
-        { $sort: { _id: 1, timestamp: 1 } },
         { $skip: 0 },
-        { $limit: 1 },
+        { $limit: 50000 },
+        { $sort: { _id: 1, timestamp: 1 } },
         {
           $group: {
             _id: '$timestamp',

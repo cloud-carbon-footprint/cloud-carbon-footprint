@@ -3,6 +3,7 @@
  */
 
 import React from 'react'
+import moment from 'moment'
 import { render } from '@testing-library/react'
 import {
   EstimationResult,
@@ -10,12 +11,8 @@ import {
 } from '@cloud-carbon-footprint/common'
 import RecommendationsPage from './RecommendationsPage'
 import { generateEstimations, mockRecommendationData } from '../../utils/data'
-import {
-  useRemoteFootprintService,
-  useRemoteRecommendationsService,
-} from '../../utils/hooks'
+import { useRemoteRecommendationsService } from '../../utils/hooks'
 import { ServiceResult } from '../../Types'
-import moment from 'moment'
 
 jest.mock('../../utils/hooks/RecommendationsServiceHook')
 jest.mock('../../utils/hooks/FootprintServiceHook')
@@ -40,15 +37,16 @@ const mockedUseRecommendationsService =
     typeof useRemoteRecommendationsService
   >
 
-const mockUseRemoteService = useRemoteFootprintService as jest.MockedFunction<
-  typeof useRemoteFootprintService
->
-
 // Set Test Date for Moment
 moment.now = () => +new Date('2021-12-01T00:00:00.000Z')
 
 describe('Recommendations Page', () => {
-  let data: EstimationResult[]
+  const data: EstimationResult[] = generateEstimations(moment.utc(), 12)
+  const mockFootprintData: ServiceResult<EstimationResult> = {
+    loading: false,
+    data: data,
+    error: null,
+  }
   beforeEach(() => {
     const mockRecommendationsReturnValue: ServiceResult<RecommendationResult> =
       {
@@ -59,73 +57,72 @@ describe('Recommendations Page', () => {
     mockedUseRecommendationsService.mockReturnValue(
       mockRecommendationsReturnValue,
     )
-
-    data = generateEstimations(moment.utc(), 12)
-    const mockReturnValue: ServiceResult<EstimationResult> = {
-      loading: false,
-      data: data,
-      error: null,
-    }
-    mockUseRemoteService.mockReturnValue(mockReturnValue)
   })
 
   afterEach(() => {
-    mockUseRemoteService.mockClear()
     mockedUseRecommendationsService.mockClear()
   })
 
+  it('renders an error message for forecast when missing emissions data', () => {
+    const newMockFootprintData: ServiceResult<EstimationResult> = {
+      loading: false,
+      data: [],
+      error: null,
+    }
+    const { getByTestId } = render(
+      <RecommendationsPage
+        onApiError={null}
+        footprint={newMockFootprintData}
+      />,
+    )
+
+    expect(getByTestId('forecast-error-message')).toBeInTheDocument()
+  })
+
   it('renders a table with recommendations', () => {
-    const { getByRole } = render(<RecommendationsPage />)
+    const { getByRole } = render(
+      <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
+    )
 
     expect(getByRole('grid')).toBeInTheDocument()
   })
 
   it('retrieves data from the remote Recommendations hook', () => {
-    render(<RecommendationsPage />)
+    render(
+      <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
+    )
 
     expect(mockedUseRecommendationsService).toHaveBeenCalled()
-  })
-
-  it('should pass in to remote service hook today and one month prior', () => {
-    const onApiError = jest.fn()
-    render(<RecommendationsPage onApiError={onApiError} />)
-
-    const parameters = mockUseRemoteService.mock.calls[0][0]
-
-    expect(parameters.startDate.month()).toEqual(parameters.endDate.month() - 1)
-    expect(parameters.endDate.isSame(moment.utc(), 'day')).toBeTruthy()
-    expect(parameters.ignoreCache).toBeTruthy()
-    expect(parameters.onApiError).toEqual(onApiError)
-    expect(parameters.baseUrl).toEqual('/api')
   })
 
   it('should show loading icon if data has not been returned', () => {
     const mockRecommendationsLoading: ServiceResult<RecommendationResult> = {
       loading: true,
-      data: mockRecommendationData,
-    }
-
-    const mockEmissionsLoading: ServiceResult<EstimationResult> = {
-      loading: true,
-      data,
+      data: [],
+      error: null,
     }
 
     mockedUseRecommendationsService.mockReturnValue(mockRecommendationsLoading)
-    mockUseRemoteService.mockReturnValue(mockEmissionsLoading)
 
-    const { getByRole } = render(<RecommendationsPage />)
+    const { getByRole } = render(
+      <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
+    )
 
     expect(getByRole('progressbar')).toBeInTheDocument()
   })
 
   it('should render a filter bar on the page', () => {
-    const { getByTestId } = render(<RecommendationsPage />)
+    const { getByTestId } = render(
+      <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
+    )
 
     expect(getByTestId('filterBar')).toBeInTheDocument()
   })
 
   it('should render a toggle bar on the page', () => {
-    const { getByTestId } = render(<RecommendationsPage />)
+    const { getByTestId } = render(
+      <RecommendationsPage onApiError={null} footprint={mockFootprintData} />,
+    )
 
     expect(getByTestId('toggle')).toBeInTheDocument()
   })
