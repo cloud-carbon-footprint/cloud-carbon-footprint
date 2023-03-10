@@ -1,26 +1,36 @@
 import React, { FunctionComponent } from 'react'
-import useStyles from './errorStyles'
 import { Warning } from '@material-ui/icons'
 import { Typography } from '@material-ui/core'
+import useStyles from './errorStyles'
+import { ForecastErrorType } from '../Forecast'
+import clsx from 'clsx'
 
 type ErrorProps = {
-  errorType: string
+  errorType: ForecastErrorType
+  hasContainer?: boolean
 }
 
-const Error: FunctionComponent<ErrorProps> = ({ errorType }) => {
-  const classes = useStyles()
+type ErrorMessages = {
+  [key in ForecastErrorType]: string
+}
 
-  const errorMessages = {
+const Error: FunctionComponent<ErrorProps> = ({ errorType, hasContainer }) => {
+  const classes = useStyles()
+  const containerClasses = clsx(classes.container, {
+    [classes.noBackground]: hasContainer,
+  })
+
+  const errorMessages: ErrorMessages = {
     GROUPING:
-      'In order to see a savings forecast that is relevant to you, please ensure your data is grouped by month, week, or day, and includes data from the past 30 days',
+      'In order to see a relevant savings forecast, please ensure your data is grouped by month, week, or day, and includes data from the past 30 days',
     RANGE:
-      'In order to see a savings forecast that is relevant to you, please ensure you include data from the past 30 days',
-    DAYS: 'It appears you are missing data for from the past 30 days. Please consider including the following dates for the most relevant forecast:',
+      'In order to see a relevant savings forecast, please adjust your date range to include data from the past 30 days',
+    DAYS: 'It appears you are missing data from the past 30 days. Please consider including the following dates for the most accurate forecast:',
   }
 
   return (
     <div
-      className={classes.container}
+      className={containerClasses}
       id="errorMessage"
       data-testid="forecast-error-message"
     >

@@ -44,7 +44,7 @@ export const ForecastError = {
   MISSING_DAYS: 'DAYS',
 } as const
 
-export type ForecastErrorType = typeof Error[keyof typeof Error]
+export type ForecastErrorType = typeof ForecastError[keyof typeof ForecastError]
 
 const Forecast: FunctionComponent<ForecastProps> = ({
   emissionsData,
@@ -108,19 +108,19 @@ const Forecast: FunctionComponent<ForecastProps> = ({
     return a.valueOf() - b.valueOf()
   })
 
-  let errorType
+  let error: ForecastErrorType
 
   if (groupBy === 'quarter' || groupBy === 'year') {
-    errorType = ForecastError.GROUPING_METHOD
+    error = ForecastError.GROUPING_METHOD
   } else if (missingDates.length > 0 && allDatesExistForForecast) {
-    errorType = ForecastError.DATE_RANGE
+    error = ForecastError.DATE_RANGE
   }
 
-  if (errorType) {
+  if (error) {
     return (
       <>
         <Typography className={classes.title}>Forecast</Typography>
-        <Error errorType={errorType} />
+        <Error errorType={error} />
       </>
     )
   } else {
