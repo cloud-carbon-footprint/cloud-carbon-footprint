@@ -13,9 +13,9 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     maxWidth: 1200,
   },
-  noBackground: {
+  noContainer: {
     background: 'none',
-    paddingBottom: 'container',
+    paddingBottom: 0,
     maxWidth: '100%',
   },
   icon: {
@@ -30,8 +30,13 @@ const useStyles = makeStyles(() => ({
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     backgroundColor: 'rgb(255, 152, 0, 0.05)',
+    maxWidth: 1200,
+    margin: '25px auto 0 auto !important',
     '&::before': {
       backgroundColor: 'white',
+    },
+    '& ul': {
+      margin: 0,
     },
   },
 }))

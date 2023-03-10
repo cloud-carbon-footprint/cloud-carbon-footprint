@@ -151,10 +151,10 @@ const Forecast: FunctionComponent<ForecastProps> = ({
             treeSeedlings={treeSeedlings}
             yearCostSavings={monthlyCostSavings}
           />
-          {missingDates.length > 0 && (
-            <ErrorList missingDates={sortedMissingDates} />
-          )}
         </div>
+        {missingDates.length > 0 && (
+          <ErrorList missingDates={sortedMissingDates} />
+        )}
       </>
     )
   }

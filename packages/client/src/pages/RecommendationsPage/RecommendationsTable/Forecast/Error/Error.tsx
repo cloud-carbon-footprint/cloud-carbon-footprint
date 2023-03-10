@@ -17,7 +17,7 @@ type ErrorMessages = {
 const Error: FunctionComponent<ErrorProps> = ({ errorType, hasContainer }) => {
   const classes = useStyles()
   const containerClasses = clsx(classes.container, {
-    [classes.noBackground]: hasContainer,
+    [classes.noContainer]: hasContainer,
   })
 
   const errorMessages: ErrorMessages = {
