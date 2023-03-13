@@ -22,8 +22,11 @@ export const microsite = 'https://cloudcarbonfootprint.org'
 export const listPrompt = (
   message: string,
   options: string[],
+  defaultOption?: string,
 ): Promise<string> =>
-  prompt<{ key: string }>(list('key', message, options)).then(prop('key'))
+  prompt<{ key: string }>(
+    list('key', message, options, { default: defaultOption }),
+  ).then(prop('key'))
 
 export const confirmPrompt = (
   message: string,
