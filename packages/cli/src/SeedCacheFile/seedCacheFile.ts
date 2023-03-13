@@ -26,7 +26,6 @@ export default async function seedCacheFile(): Promise<void> {
   )
 
   const app = new App()
-  let daysSeeded = 0
 
   let currentDate = moment.utc(startDate)
   const finalDate = moment.utc(endDate)
@@ -41,6 +40,7 @@ export default async function seedCacheFile(): Promise<void> {
     console.info(
       `Fetching estimates for ${currentDate.format('YYYY-MM-DD')}...`,
     )
+
     const currentEndDate =
       fetchMethod === 'single' ? finalDate : moment(currentDate).add(1, 'day')
     const estimationRequest = createValidFootprintRequest({
@@ -51,15 +51,12 @@ export default async function seedCacheFile(): Promise<void> {
       limit: '1',
       skip: '0',
     })
-    const estimates: EstimationResult[] = await app.getCostAndEstimates(
-      estimationRequest,
-    )
-    daysSeeded += estimates.length
+
+    await app.getCostAndEstimates(estimationRequest)
     currentDate = currentEndDate
   }
-
   console.info(
-    `Success! Estimates for ${daysSeeded} days have been seeded to the cache file!`,
+    `Done! Estimates have been successfully seeded to the cache file!`,
   )
   process.exit(0)
 }
