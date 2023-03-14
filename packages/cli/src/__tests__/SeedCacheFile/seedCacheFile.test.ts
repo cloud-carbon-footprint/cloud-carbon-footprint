@@ -12,6 +12,9 @@ import * as common from '../../common'
 const mockGetCostAndEstimates = jest.fn()
 jest.mock('../../common')
 const mockInputPrompts: jest.Mock = common.inputPrompt as jest.Mock
+const mockListPrompts: jest.Mock = common.listPrompt as jest.Mock
+
+const defaultConsoleInfo = console.info
 
 jest.mock('@cloud-carbon-footprint/app', () => ({
   ...(jest.requireActual('@cloud-carbon-footprint/app') as Record<
@@ -27,35 +30,55 @@ jest.mock('@cloud-carbon-footprint/app', () => ({
 }))
 
 describe('seedCacheFile', () => {
+  beforeEach(() => {
+    console.info = jest.fn()
+  })
+  afterEach(() => {
+    console.info = defaultConsoleInfo
+  })
   describe('given: successful request', () => {
     beforeEach(() => {
       mockInputPrompts
-        .mockClear()
         .mockResolvedValueOnce('2020-07-01')
-        .mockClear()
         .mockResolvedValueOnce('2020-07-07')
-        .mockClear()
+        .mockResolvedValueOnce('')
+
+      mockListPrompts
         .mockResolvedValueOnce('day')
+        .mockResolvedValueOnce('single')
     })
 
     afterEach(() => {
       jest.restoreAllMocks()
     })
 
-    it('logs success when cache file is seeded', async () => {
+    it('logs success when cache file is seeded using the app', async () => {
       const expectedResponse: EstimationResult[] = []
       mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
-      jest.spyOn(console, 'info').mockImplementation()
-      jest.spyOn(process, 'exit').mockImplementation((number) => {
-        return number
-      })
       await seedCacheFile()
 
-      expect(mockInputPrompts.mock.calls).toMatchSnapshot()
-      expect(console.info).toBeCalledWith(
-        'Cache file has successfully been seeded!',
+      expect(mockGetCostAndEstimates).toHaveBeenCalledWith({
+        startDate: new Date('2020-07-01T00:00:00.000Z'),
+        endDate: new Date('2020-07-07T00:00:00.000Z'),
+        groupBy: 'day',
+        limit: 1,
+        skip: 0,
+        cloudProviderToSeed: '',
+        ignoreCache: false,
+      })
+
+      expect(console.info).toHaveBeenNthCalledWith(
+        1,
+        'Seeding cache file using a single request...',
       )
-      expect(process.exit).toBeCalledWith(0)
+      expect(console.info).toHaveBeenNthCalledWith(
+        2,
+        'Fetching estimates from 2020-07-01 to 2020-07-07...',
+      )
+      expect(console.info).toHaveBeenNthCalledWith(
+        3,
+        'Done! Estimates have been successfully seeded to the cache file!',
+      )
     })
   })
 
@@ -64,19 +87,22 @@ describe('seedCacheFile', () => {
       beforeEach(() => {
         mockInputPrompts
           .mockResolvedValueOnce('2020-07-08')
-          .mockClear()
           .mockResolvedValueOnce('2020-07-07')
-          .mockClear()
-          .mockResolvedValueOnce('day')
-          .mockClear()
           .mockResolvedValueOnce('AWS')
+
+        mockListPrompts
+          .mockResolvedValueOnce('day')
+          .mockResolvedValueOnce('single')
+      })
+
+      afterEach(() => {
+        jest.restoreAllMocks()
       })
 
       it('throws an estimation validation error', async () => {
         const expectedResponse: EstimationResult[] = []
         mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
 
-        expect(mockInputPrompts.mock.calls).toMatchSnapshot()
         await expect(() => seedCacheFile()).rejects.toThrow(
           'Start date is after end date',
           EstimationRequestValidationError,
@@ -90,22 +116,106 @@ describe('seedCacheFile', () => {
       beforeEach(() => {
         mockInputPrompts
           .mockResolvedValueOnce('2020-07-01')
-          .mockClear()
           .mockResolvedValueOnce('2020-07-08')
-          .mockClear()
-          .mockResolvedValueOnce('day')
-          .mockClear()
           .mockResolvedValueOnce('asw')
+
+        mockListPrompts
+          .mockResolvedValueOnce('day')
+          .mockResolvedValueOnce('single')
+      })
+
+      afterEach(() => {
+        jest.restoreAllMocks()
       })
 
       it('throws an estimation validation error', async () => {
         const expectedResponse: EstimationResult[] = []
         mockGetCostAndEstimates.mockResolvedValueOnce(expectedResponse)
 
-        expect(mockInputPrompts.mock.calls).toMatchSnapshot()
         await expect(() => seedCacheFile()).rejects.toThrow(
           'Not a valid cloud provider to seed',
           EstimationRequestValidationError,
+        )
+      })
+    })
+  })
+
+  describe('request splitting', () => {
+    describe('given: split request option', () => {
+      beforeEach(() => {
+        mockInputPrompts
+          .mockResolvedValueOnce('2020-07-01')
+          .mockResolvedValueOnce('2020-07-03')
+
+        mockListPrompts
+          .mockResolvedValueOnce('day')
+          .mockResolvedValueOnce('split')
+      })
+
+      afterEach(() => {
+        jest.restoreAllMocks()
+      })
+
+      it('makes separate requests for each day by default', async () => {
+        mockInputPrompts.mockResolvedValueOnce('') // No option given for daysPerRequest
+        mockInputPrompts.mockResolvedValueOnce('') // No option given for cloud provider to seed
+
+        const expectedResponse: EstimationResult[] = []
+        mockGetCostAndEstimates.mockRestore()
+        mockGetCostAndEstimates.mockResolvedValue(expectedResponse)
+
+        await seedCacheFile()
+
+        expect(mockGetCostAndEstimates).toHaveBeenCalledTimes(3)
+
+        expect(console.info).toHaveBeenNthCalledWith(
+          1,
+          'Seeding cache file using split requests...',
+        )
+        expect(console.info).toHaveBeenNthCalledWith(
+          2,
+          'Fetching estimates for 2020-07-01...',
+        )
+        expect(console.info).toHaveBeenNthCalledWith(
+          3,
+          'Fetching estimates for 2020-07-02...',
+        )
+        expect(console.info).toHaveBeenNthCalledWith(
+          4,
+          'Fetching estimates for 2020-07-03...',
+        )
+
+        expect(console.info).lastCalledWith(
+          'Done! Estimates have been successfully seeded to the cache file!',
+        )
+      })
+      it('makes separate requests for a specified per day frequency', async () => {
+        mockInputPrompts.mockResolvedValueOnce(2) // option given for daysPerRequest
+        mockInputPrompts.mockResolvedValueOnce('') // No option given for cloud provider to seed
+
+        const expectedResponse: EstimationResult[] = []
+        mockGetCostAndEstimates.mockRestore()
+        mockGetCostAndEstimates.mockResolvedValue(expectedResponse)
+
+        await seedCacheFile()
+
+        expect(mockGetCostAndEstimates).toHaveBeenCalledTimes(2)
+
+        expect(console.info).toHaveBeenNthCalledWith(
+          1,
+          'Seeding cache file using split requests...',
+        )
+        expect(console.info).toHaveBeenNthCalledWith(
+          2,
+          'Fetching estimates from 2020-07-01 to 2020-07-02...',
+        )
+        expect(console.info).toHaveBeenNthCalledWith(
+          3,
+          'Fetching estimates for 2020-07-03...',
+        )
+
+        expect(console.info).lastCalledWith(
+          'Done! Estimates have been successfully seeded to the cache file!',
         )
       })
     })
