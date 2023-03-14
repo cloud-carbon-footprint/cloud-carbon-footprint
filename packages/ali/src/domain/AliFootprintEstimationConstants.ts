@@ -118,7 +118,7 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
   MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
-  PUE_AVG: 1.135,
+  PUE_AVG: 1.3,
   getPUE: (): number => {
     return ALI_CLOUD_CONSTANTS.PUE_AVG
   },
