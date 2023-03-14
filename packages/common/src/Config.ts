@@ -290,6 +290,10 @@ const getConfig = (): CCFConfig => ({
     USE_BILLING_DATA:
       !!process.env.ALI_USE_BILLING_DATA &&
       process.env.ALI_USE_BILLING_DATA !== 'false',
+    authentication: {
+      accessKeyId: process.env.ALI_ACCESS_KEY,
+      accessKeySecret: process.env.ALI_ACCESS_SECRET,
+    },
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
