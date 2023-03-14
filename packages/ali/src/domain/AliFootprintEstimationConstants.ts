@@ -148,5 +148,5 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SERVER_EXPECTED_LIFESPAN: 35040, // 4 years in hours
 }
 
-export const AWS_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
+export const ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
   {}

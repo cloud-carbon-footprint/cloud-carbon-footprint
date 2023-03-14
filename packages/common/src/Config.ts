@@ -60,6 +60,13 @@ export interface CCFConfig {
     RESOURCE_TAG_NAMES?: string[]
     CONSUMPTION_CHUNKS_DAYS?: number
   }
+  ALI?: {
+    NAME?: string
+    CURRENT_SERVICES?: { key: string; name: string }[]
+    CURRENT_REGIONS?: string[]
+    INCLUDE_ESTIMATES?: boolean
+    USE_BILLING_DATA?: boolean
+  }
   LOGGING_MODE?: string
   CACHE_MODE?: string
   ON_PREMISE?: {
@@ -263,6 +270,22 @@ const getConfig = (): CCFConfig => ({
     CONSUMPTION_CHUNKS_DAYS: parseInt(
       getEnvVar('AZURE_CONSUMPTION_CHUNKS_DAYS') || '0',
     ),
+  },
+  ALI: {
+    NAME: 'ALI',
+    CURRENT_REGIONS: ['us-east1', 'us-central1', 'us-west1'],
+    CURRENT_SERVICES: [
+      {
+        key: 'computeEngine',
+        name: 'ComputeEngine',
+      },
+    ],
+    INCLUDE_ESTIMATES: process.env.ALI_INCLUDE_ESTIMATES
+      ? !!process.env.ALI_INCLUDE_ESTIMATES
+      : true,
+    USE_BILLING_DATA:
+      !!process.env.ALI_USE_BILLING_DATA &&
+      process.env.ALI_USE_BILLING_DATA !== 'false',
   },
   LOGGING_MODE: process.env.LOGGING_MODE || '',
   CACHE_MODE: getEnvVar('CACHE_MODE') || '',
