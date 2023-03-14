@@ -41,6 +41,7 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
+    "@alicloud/bssopenapi20171214": "^1.0.12",
     "@cloud-carbon-footprint/common": "^1.9.0",
     "@cloud-carbon-footprint/core": "^0.17.0",
     "@google-cloud/iam-credentials": "^1.1.1",

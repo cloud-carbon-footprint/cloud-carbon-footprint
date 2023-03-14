@@ -66,6 +66,10 @@ export interface CCFConfig {
     CURRENT_REGIONS?: string[]
     INCLUDE_ESTIMATES?: boolean
     USE_BILLING_DATA?: boolean
+    authentication?: {
+      accessKeyId: string
+      accessKeySecret: string
+    }
   }
   LOGGING_MODE?: string
   CACHE_MODE?: string

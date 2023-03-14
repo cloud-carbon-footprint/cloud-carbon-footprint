@@ -113,6 +113,8 @@ fileignoreconfig:
   checksum: 4271fca662d95372f0f1439c4a5f82424a06e2c38790a8806e1031dc74387016
 - filename: package.json
   checksum: ba58128b0b71af8219a05b5cf27fcad837639fdb85c8846be7ef8248b5124f1c
+- filename: packages/ali/src/lib/AliCostAndUsageReports.ts
+  checksum: c968ea408b49bf483ce3e5906c2220f9c9c5b2624fb78633a8f9aa4ab24470bf
 - filename: packages/api/.env.template
   checksum: ec94dc4f50d599e64405562c74b0ba2d1f49781dba1d0fbc9f5011eeea7e2101
 - filename: packages/api/create_docker_secrets.sh
