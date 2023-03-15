@@ -11,7 +11,11 @@ import {
   StorageEstimator,
   UnknownEstimator,
 } from '@cloud-carbon-footprint/core'
-import { EstimationResult, GroupBy, Logger } from '@cloud-carbon-footprint/common'
+import {
+  EstimationResult,
+  GroupBy,
+  Logger,
+} from '@cloud-carbon-footprint/common'
 import AliCostAndUsageService from '../lib/AliCostAndUsageService'
 import { ALI_CLOUD_CONSTANTS } from '../domain'
 
