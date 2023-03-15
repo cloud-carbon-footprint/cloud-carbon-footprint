@@ -23,6 +23,7 @@ import * as $OpenApi from '@alicloud/openapi-client'
 import * as $BssOpenApi20171214 from '@alicloud/bssopenapi20171214'
 import moment from 'moment/moment'
 import * as $Util from '@alicloud/tea-util'
+import AliCalculateRow from './AliCalculateRow'
 
 export default class AliCostAndUsageService {
   private readonly logger: Logger
@@ -59,6 +60,8 @@ export default class AliCostAndUsageService {
         aliConfig.authentication.accessKeySecret,
       )
       if (response.body.data.totalCount <= 0) break
+      const row = new AliCalculateRow(response)
+      this.logger.info(row.serviceName)
       response.body.data.items.forEach((cur) => {
         serviceEstimates.push({
           cloudProvider: 'ALI',
