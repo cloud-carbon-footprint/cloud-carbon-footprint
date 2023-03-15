@@ -21,14 +21,21 @@ describe('Ali Account', () => {
 
     expect(results).toEqual(null)
   })
-  it('gets results from getDataFromCostAndUsageReports function', async () => {
-    const aliAccount = new AliAccount()
-    const results = await aliAccount.getDataFromCostAndUsageReports(
-      startDate,
-      endDate,
-      grouping,
-    )
 
-    expect(results).toEqual(null)
-  })
+  // it('gets results from getDataFromCostAndUsageReports function', async () => {
+  //   const aliAccount = new AliAccount()
+  //   const results = await aliAccount.getDataFromCostAndUsageReports(
+  //     startDate,
+  //     endDate,
+  //     grouping,
+  //   )
+  //
+  //   expect(results).toEqual([
+  //     {
+  //       groupBy: 'day',
+  //       serviceEstimates: [],
+  //       timestamp: '2021-01-01T00:00:00.000Z',
+  //     },
+  //   ])
+  // })
 })

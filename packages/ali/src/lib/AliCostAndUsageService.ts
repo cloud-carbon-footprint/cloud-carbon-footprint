@@ -52,26 +52,26 @@ export default class AliCostAndUsageService {
     const serviceEstimates: ServiceData[] = []
     const aliConfig = configLoader().ALI
 
-    this.getDates(start, end).forEach((date) => {
-      this.getUsage(
+    for (const date of this.getDates(start, end)) {
+      const response = await this.getUsage(
         date,
         aliConfig.authentication.accessKeyId,
         aliConfig.authentication.accessKeySecret,
-      ).then((response) => {
-        response.body.data.items.forEach((cur) => {
-          serviceEstimates.push({
-            cloudProvider: 'ALI',
-            accountName: cur.billAccountName,
-            serviceName: cur.nickName,
-            accountId: cur.billAccountID,
-            // todo calculate
-            kilowattHours: 0,
-            co2e: 0,
-            cost: 0,
-            // todo chinese to english?
-            region: cur.region,
-            usesAverageCPUConstant: false,
-          })
+      )
+      if (response.body.data.totalCount <= 0) break
+      response.body.data.items.forEach((cur) => {
+        serviceEstimates.push({
+          cloudProvider: 'ALI',
+          accountName: cur.billAccountName,
+          serviceName: cur.nickName,
+          accountId: cur.billAccountID,
+          // todo calculate
+          kilowattHours: 0,
+          co2e: 0,
+          cost: 0,
+          // todo chinese to english?
+          region: cur.region,
+          usesAverageCPUConstant: false,
         })
       })
       result.push({
@@ -79,8 +79,7 @@ export default class AliCostAndUsageService {
         timestamp: date,
         serviceEstimates,
       })
-    })
-
+    }
     return result
   }
 
