@@ -44,9 +44,11 @@ export default async function seedCacheFile(): Promise<void> {
   let daysPerRequest = endDate.diff(currentDate, 'days') + 1
   if (fetchMethod === 'split') {
     daysPerRequest =
-      (await inputPrompt(
-        'How many days would you like to fetch per request? [1]',
-      )) || '1'
+      parseInt(
+        await inputPrompt(
+          'How many days would you like to fetch per request? [1]',
+        ),
+      ) || 1
   }
 
   const cloudProviderToSeed = await inputPrompt(
