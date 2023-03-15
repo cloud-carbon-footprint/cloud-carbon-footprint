@@ -11,7 +11,7 @@ import GCPMap from './GCPMap.png'
 import AzureMap from './AzureMap.png'
 import useStyles from './carbonIntensityStyles'
 
-type CloudProvider = 'AWS' | 'GCP' | 'Azure' | 'ALI'
+type CloudProvider = 'AWS' | 'GCP' | 'Azure' | 'AliCloud'
 
 type IntensityMaps = {
   [provider in CloudProvider]: React.ReactNode
@@ -25,7 +25,7 @@ const CarbonIntensityMap = (): ReactElement => {
     AWS: AWSMap,
     GCP: GCPMap,
     Azure: AzureMap,
-    ALI: AWSMap,
+    AliCloud: AWSMap,
   }
 
   const handleChange = (event: React.ChangeEvent<{ value: string }>) => {

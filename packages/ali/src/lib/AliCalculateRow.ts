@@ -3,32 +3,51 @@
  */
 
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
-import { configLoader } from '@cloud-carbon-footprint/common'
-import { DescribeInstanceBillResponse } from '@alicloud/bssopenapi20171214'
+import { DescribeInstanceBillResponseBodyDataItems } from '@alicloud/bssopenapi20171214/src/client'
 
 export default class AliCalculateRow extends BillingDataRow {
-  constructor(usageDetail: DescribeInstanceBillResponse) {
+  constructor(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     // const consumptionDetails = getConsumptionDetails(usageDetail)
     super({})
 
     // this.usageType = this.parseUsageType()
-    // this.seriesName = this.getSeriesFromInstanceType()
-    // this.vCpuHours = this.usageAmount * this.getVCpus()
-    // this.gpuHours = this.usageAmount * this.getGpus()
-    // this.region = this.getRegionFromResourceLocation()
+    this.serviceName = usageDetail.productCode
+    this.seriesName = this.getSeriesName(usageDetail)
+    this.vCpuHours = this.getVCpuHours(usageDetail)
+    this.gpuHours = this.getGpuHours(usageDetail)
+    this.region = usageDetail.region
+  }
 
-    this.tags = {}
+  private getSeriesName(
+    usageDetail: DescribeInstanceBillResponseBodyDataItems,
+  ) {
+    return usageDetail.instanceSpec
+  }
 
-    const tagNames = configLoader()?.AZURE?.RESOURCE_TAG_NAMES ?? []
+  private getVCpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
+    const instanceConfig = usageDetail.instanceConfig
+    return (
+      this.getUsage() *
+      parseInt(this.getJsonValue('CPU', instanceConfig).split('核')[0])
+    )
+  }
 
-    for (const resourceTagName of tagNames) {
-      if (usageDetail?.tags?.[resourceTagName]) {
-        this.tags[resourceTagName] = usageDetail.tags[resourceTagName]
-      }
-    }
+  private getGpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
+    const instanceConfig = usageDetail.instanceConfig
+    const gpuStr = this.getJsonValue('GPU', instanceConfig)
+    return (
+      this.getUsage() * parseInt(gpuStr == null ? '0' : gpuStr.split('核')[0])
+    )
+  }
 
-    // if (tagNames.includes(RESOURCE_GROUP_TAG_NAME)) {
-    //   this.tags.resourceGroup = usageDetail.properties.resourceGroup
-    // }
+  private getUsage() {
+    return 30 * 24
+  }
+
+  public getJsonValue(key: string, jsonStr: string): string {
+    const str = `(?<=(${key}):).*?(?=(;|$))`
+    const regExp = new RegExp(str, 'g')
+    const result = jsonStr.match(regExp)
+    return result && result.length != 0 ? result[0] : null
   }
 }

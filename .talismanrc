@@ -425,6 +425,10 @@ fileignoreconfig:
   checksum: 45284a826ebfb0c0f0b32ac161f5cab278b4f0516230f3dfbaf1990a764057d2
 - filename: wn-parrots-hug.md
   checksum: 1f12bbb3fcb87debd6463cc3d5eb46ff5848d21b492993f92bf408dcf6007b94
+- filename: packages/client/src/Config.ts
+  checksum: e095500f4f411c1921612c55d3ed536f5fd612a6d5072bd2b32c34e54b404ca7
+- filename: packages/ali/src/lib/AliCalculateRow.ts
+  checksum: d02de37f943221c994878ebf1113850a070d67892cf56a12706b5034664618ec
 scopeconfig:
 - scope: node
 version: "1.0"
