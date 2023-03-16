@@ -124,21 +124,7 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   AVG_CPU_UTILIZATION_2020: 50,
   REPLICATION_FACTORS: {
-    S3: 6,
-    S3_ONE_ZONE_REDUCED_REDUNDANCY: 2,
-    EC2_EBS_VOLUME: 2,
-    EC2_EBS_SNAPSHOT: 3,
-    EFS: 3,
-    EFS_ONE_ZONE: 2,
-    RDS_BACKUP: 3,
-    RDS_AURORA: 6,
-    RDS_MULTI_AZ: 2,
-    DOCUMENT_DB_BACKUP: 3,
-    DOCUMENT_DB_STORAGE: 2,
-    DYNAMO_DB: 2,
-    ECR_STORAGE: 3,
-    DOCUMENT_ELASTICACHE_BACKUP: 3,
-    SIMPLE_DB: 2,
+    ECS: 6,
     DEFAULT: 1,
   },
   KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {
@@ -149,4 +135,6 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
 }
 
 export const ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
-  {}
+  {
+    ['Unknown']: 0.0003512799615, // Average of above regions
+  }

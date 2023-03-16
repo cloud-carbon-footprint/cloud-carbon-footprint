@@ -4,6 +4,7 @@
 
 import { BillingDataRow } from '@cloud-carbon-footprint/core'
 import { DescribeInstanceBillResponseBodyDataItems } from '@alicloud/bssopenapi20171214/src/client'
+import { ALI_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class AliCalculateRow extends BillingDataRow {
   constructor(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
@@ -16,6 +17,10 @@ export default class AliCalculateRow extends BillingDataRow {
     this.vCpuHours = this.getVCpuHours(usageDetail)
     this.gpuHours = this.getGpuHours(usageDetail)
     this.region = usageDetail.region
+    this.replicationFactor = this.getReplicationFactor()
+    this.cost = usageDetail.cashAmount
+    this.accountName = usageDetail.billAccountName
+    this.accountId = usageDetail.billAccountID
   }
 
   private getSeriesName(
@@ -26,18 +31,20 @@ export default class AliCalculateRow extends BillingDataRow {
 
   private getVCpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     const instanceConfig = usageDetail.instanceConfig
-    return (
-      this.getUsage() *
-      parseInt(this.getJsonValue('CPU', instanceConfig).split('核')[0])
-    )
+    return this.getUsage() * this.parseCpuAndGpu(instanceConfig, 'CPU')
   }
 
   private getGpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     const instanceConfig = usageDetail.instanceConfig
-    const gpuStr = this.getJsonValue('GPU', instanceConfig)
-    return (
-      this.getUsage() * parseInt(gpuStr == null ? '0' : gpuStr.split('核')[0])
-    )
+    return this.getUsage() * this.parseCpuAndGpu(instanceConfig, 'GPU')
+  }
+
+  private parseCpuAndGpu(instanceConfig: string, key: string): number {
+    const keyValue = this.getJsonValue(key, instanceConfig)
+    if (keyValue == null) {
+      return 1
+    }
+    return parseInt(keyValue.split('核')[0])
   }
 
   private getUsage() {
@@ -49,5 +56,16 @@ export default class AliCalculateRow extends BillingDataRow {
     const regExp = new RegExp(str, 'g')
     const result = jsonStr.match(regExp)
     return result && result.length != 0 ? result[0] : null
+  }
+
+  private getReplicationFactor(): number {
+    return (
+      (ALI_REPLICATION_FACTORS_FOR_SERVICES[this.serviceName] &&
+        ALI_REPLICATION_FACTORS_FOR_SERVICES[this.serviceName](
+          this.usageType,
+          this.region,
+        )) ||
+      ALI_REPLICATION_FACTORS_FOR_SERVICES.DEFAULT()
+    )
   }
 }

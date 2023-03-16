@@ -69,6 +69,7 @@ export default class AliCostAndUsageService {
         aliConfig.authentication.accessKeyId,
         aliConfig.authentication.accessKeySecret,
       )
+      this.logger.info('response:' + JSON.stringify(response))
       if (response.body.data.totalCount <= 0) break
       response.body.data.items.forEach((cur) => {
         const row = new AliCalculateRow(cur)
@@ -79,17 +80,16 @@ export default class AliCostAndUsageService {
           emissionsFactors,
         )
 
+        this.logger.info('row:' + JSON.stringify(row))
         serviceEstimates.push({
-          cloudProvider: 'ALI',
-          accountName: cur.billAccountName,
-          serviceName: cur.nickName,
-          accountId: cur.billAccountID,
-          // todo calculate
+          cloudProvider: 'AliCloud',
+          accountName: row.accountName,
+          serviceName: row.serviceName,
+          accountId: row.accountId,
           kilowattHours: computeFootprintEstimate.kilowattHours,
           co2e: computeFootprintEstimate.co2e,
-          cost: 0,
-          // todo chinese to english?
-          region: cur.region,
+          cost: row.cost,
+          region: row.region,
           usesAverageCPUConstant: false,
         })
       })
@@ -159,8 +159,13 @@ export default class AliCostAndUsageService {
       minWatts: ALI_CLOUD_CONSTANTS.getMinWatts(processors),
       maxWatts: ALI_CLOUD_CONSTANTS.getMaxWatts(processors),
       powerUsageEffectiveness: pue,
-      replicationFactor: this.getReplicationFactor(row),
+      replicationFactor: row.replicationFactor,
     }
+    this.logger.info(
+      'cpuComputeConstants:' + JSON.stringify(cpuComputeConstants),
+    )
+    this.logger.info('computeUsage:' + JSON.stringify(computeUsage))
+    this.logger.info('processors:' + JSON.stringify(processors))
     return this.computeEstimator.estimate(
       [computeUsage],
       row.region,
@@ -175,10 +180,5 @@ export default class AliCostAndUsageService {
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
-  }
-
-  private getReplicationFactor(row: AliCalculateRow) {
-    this.logger.info('getReplicationFactor' + row)
-    return 0
   }
 }
