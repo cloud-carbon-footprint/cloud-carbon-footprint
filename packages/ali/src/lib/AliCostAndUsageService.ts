@@ -59,11 +59,11 @@ export default class AliCostAndUsageService {
       `startDate: ${start}, endDate: ${end}, grouping: ${grouping}`,
     )
     const result: EstimationResult[] = []
-    const serviceEstimates: ServiceData[] = []
     const aliConfig = configLoader().ALI
     const emissionsFactors: CloudConstantsEmissionsFactors =
       ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH
     for (const date of this.getDates(start, end)) {
+      const serviceEstimates: ServiceData[] = []
       const response = await this.getUsage(
         date,
         aliConfig.authentication.accessKeyId,
