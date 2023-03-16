@@ -3,6 +3,8 @@
  */
 
 import {
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
   CloudConstants,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
@@ -11,6 +13,7 @@ import {
   EmbodiedEmissionsEstimator,
   FootprintEstimate,
   MemoryEstimator,
+  MemoryUsage,
   NetworkingEstimator,
   StorageEstimator,
   UnknownEstimator,
@@ -36,6 +39,9 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
 } from './AliTypes'
 import { AZURE_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/azure'
+import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AliTypes'
+import { AZURE_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/azure'
+import { ALI_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class AliCostAndUsageService {
   private readonly logger: Logger
@@ -79,14 +85,22 @@ export default class AliCostAndUsageService {
           emissionsFactors,
         )
 
+        const memoryFootprintEstimate = this.getMemoryFootprintEstimate(
+          row,
+          pue,
+          emissionsFactors,
+        )
+
         this.logger.info('row:' + JSON.stringify(row))
         serviceEstimates.push({
           cloudProvider: 'AliCloud',
           accountName: row.accountName,
           serviceName: row.serviceName,
           accountId: row.accountId,
-          kilowattHours: computeFootprintEstimate.kilowattHours,
-          co2e: computeFootprintEstimate.co2e,
+          kilowattHours:
+            computeFootprintEstimate.kilowattHours +
+            memoryFootprintEstimate.kilowattHours,
+          co2e: computeFootprintEstimate.co2e + memoryFootprintEstimate.co2e,
           cost: row.cost,
           region: row.region,
           usesAverageCPUConstant: false,
@@ -214,6 +228,33 @@ export default class AliCostAndUsageService {
       gpuComputeFootprintEstimate.kilowattHours
     computeFootprintEstimate.co2e += gpuComputeFootprintEstimate.co2e
     return computeFootprintEstimate
+  }
+
+  private getMemoryFootprintEstimate(
+    consumptionDetailRow: AliCalculateRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ): FootprintEstimate {
+    const usage: MemoryUsage = {
+      timestamp: consumptionDetailRow.timestamp,
+      gigabyteHours: consumptionDetailRow.usageAmount,
+    }
+
+    const memoryConstants: CloudConstants = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
+    }
+
+    const memoryEstimate = this.memoryEstimator.estimate(
+      [usage],
+      consumptionDetailRow.region,
+      emissionsFactors,
+      memoryConstants,
+    )[0]
+
+    memoryEstimate.usesAverageCPUConstant = false
+
+    return memoryEstimate
   }
 
   private getComputeProcessorsFromAliInstanceType(instanceType: string) {
