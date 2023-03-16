@@ -9,6 +9,7 @@ import {
   getAverage,
   getWattsByAverageOrMedian,
 } from '@cloud-carbon-footprint/core'
+import { ALI_REGIONS } from '../lib/AliRegions'
 
 export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   SSDCOEFFICIENT: 1.2, // watt hours / terabyte hour
@@ -119,8 +120,16 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   NETWORKING_COEFFICIENT: 0.001, // kWh / Gb
   MEMORY_COEFFICIENT: 0.000392, // kWh / Gb
   PUE_AVG: 1.3,
-  getPUE: (): number => {
-    return ALI_CLOUD_CONSTANTS.PUE_AVG
+  PUE_TRAILING_TWELVE_MONTH: {
+    [ALI_REGIONS.EAST_CHINA]: 1.3,
+    [ALI_REGIONS.SOUTH_CHINA]: 1.3,
+    [ALI_REGIONS.NORTH_CHINA]: 1.2,
+    [ALI_REGIONS.UNKNOWN]: 1.3,
+  },
+  getPUE: (region: string): number => {
+    return ALI_CLOUD_CONSTANTS.PUE_TRAILING_TWELVE_MONTH[region]
+      ? ALI_CLOUD_CONSTANTS.PUE_TRAILING_TWELVE_MONTH[region]
+      : ALI_CLOUD_CONSTANTS.PUE_AVG
   },
   AVG_CPU_UTILIZATION_2020: 50,
   REPLICATION_FACTORS: {
@@ -136,5 +145,9 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
 
 export const ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH: CloudConstantsEmissionsFactors =
   {
+    ['华东']: 0.000626,
+    ['华南']: 0.000585,
+    ['华北']: 0.000665,
+    ['香港']: 0.000429,
     ['Unknown']: 0.0003512799615, // Average of above regions
   }
