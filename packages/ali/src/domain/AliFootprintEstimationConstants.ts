@@ -124,7 +124,7 @@ export const ALI_CLOUD_CONSTANTS: CloudConstantsByProvider = {
   },
   AVG_CPU_UTILIZATION_2020: 50,
   REPLICATION_FACTORS: {
-    ECS: 6,
+    ECS: 1,
     DEFAULT: 1,
   },
   KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT: {

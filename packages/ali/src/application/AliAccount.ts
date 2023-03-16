@@ -44,10 +44,6 @@ export default class AliAccount extends CloudProviderAccount {
     endDate: Date,
     grouping: GroupBy,
   ): Promise<EstimationResult[]> {
-    this.logger.info(
-      `startDate: ${startDate}, endDate: ${endDate}, grouping: ${grouping}`,
-    )
-
     const aliCostAndUsageService = new AliCostAndUsageService(
       new ComputeEstimator(),
       new StorageEstimator(ALI_CLOUD_CONSTANTS.SSDCOEFFICIENT),

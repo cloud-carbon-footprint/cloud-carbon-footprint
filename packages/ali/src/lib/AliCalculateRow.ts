@@ -7,20 +7,23 @@ import { DescribeInstanceBillResponseBodyDataItems } from '@alicloud/bssopenapi2
 import { ALI_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class AliCalculateRow extends BillingDataRow {
+  readonly specificationFamily: string
   constructor(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     // const consumptionDetails = getConsumptionDetails(usageDetail)
-    super({})
+    super({
+      accountId: usageDetail.billAccountID,
+      accountName: usageDetail.billAccountName,
+      cost: usageDetail.cashAmount,
+      region: usageDetail.region,
+      serviceName: usageDetail.productCode,
+    })
 
     // this.usageType = this.parseUsageType()
-    this.serviceName = usageDetail.productCode
     this.seriesName = this.getSeriesName(usageDetail)
     this.vCpuHours = this.getVCpuHours(usageDetail)
     this.gpuHours = this.getGpuHours(usageDetail)
-    this.region = usageDetail.region
     this.replicationFactor = this.getReplicationFactor()
-    this.cost = usageDetail.cashAmount
-    this.accountName = usageDetail.billAccountName
-    this.accountId = usageDetail.billAccountID
+    this.specificationFamily = this.seriesName.split('.').slice(0, 2).join('.')
   }
 
   private getSeriesName(
@@ -42,7 +45,7 @@ export default class AliCalculateRow extends BillingDataRow {
   private parseCpuAndGpu(instanceConfig: string, key: string): number {
     const keyValue = this.getJsonValue(key, instanceConfig)
     if (keyValue == null) {
-      return 1
+      return 0
     }
     return parseInt(keyValue.split('核')[0])
   }
