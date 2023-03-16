@@ -16,13 +16,22 @@ import {
   UnknownEstimator,
 } from '@cloud-carbon-footprint/core'
 import { ServiceWrapper } from '@cloud-carbon-footprint/aws'
-import { configLoader, EstimationResult, GroupBy, Logger, ServiceData } from '@cloud-carbon-footprint/common'
+import {
+  configLoader,
+  EstimationResult,
+  GroupBy,
+  Logger,
+  ServiceData,
+} from '@cloud-carbon-footprint/common'
 import BssOpenApi20171214, * as $BssOpenApi20171214 from '@alicloud/bssopenapi20171214'
 import * as $OpenApi from '@alicloud/openapi-client'
 import moment from 'moment/moment'
 import * as $Util from '@alicloud/tea-util'
 import AliCalculateRow from './AliCalculateRow'
-import { ALI_CLOUD_CONSTANTS, ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH } from '../domain'
+import {
+  ALI_CLOUD_CONSTANTS,
+  ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+} from '../domain'
 import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AliTypes'
 
 export default class AliCostAndUsageService {
@@ -98,7 +107,7 @@ export default class AliCostAndUsageService {
     const currentDate = new Date(startDate)
     while (currentDate <= endDate) {
       dates.push(new Date(currentDate))
-      currentDate.setDate(currentDate.getDate() + 1)
+      currentDate.setMonth(currentDate.getMonth() + 1)
     }
     return dates
   }
