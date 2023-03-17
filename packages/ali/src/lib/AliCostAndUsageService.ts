@@ -75,7 +75,7 @@ export default class AliCostAndUsageService {
         aliConfig.authentication.accessKeySecret,
       )
       this.logger.info('response:' + JSON.stringify(response))
-      if (response.body.data.totalCount <= 0) break
+      if (response.body.data.totalCount <= 0) continue
       response.body.data.items.forEach((cur) => {
         const row = new AliCalculateRow(cur)
         const pue = ALI_CLOUD_CONSTANTS.getPUE()
