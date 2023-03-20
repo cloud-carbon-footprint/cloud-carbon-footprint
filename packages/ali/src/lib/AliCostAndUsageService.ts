@@ -3,8 +3,6 @@
  */
 
 import {
-  accumulateKilowattHours,
-  AccumulateKilowattHoursBy,
   CloudConstants,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
@@ -39,9 +37,6 @@ import {
   INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
 } from './AliTypes'
 import { AZURE_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/azure'
-import { INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING } from './AliTypes'
-import { AZURE_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/azure'
-import { ALI_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class AliCostAndUsageService {
   private readonly logger: Logger
@@ -242,7 +237,7 @@ export default class AliCostAndUsageService {
 
     const memoryConstants: CloudConstants = {
       powerUsageEffectiveness: powerUsageEffectiveness,
-      replicationFactor: this.getReplicationFactor(consumptionDetailRow),
+      replicationFactor: consumptionDetailRow.replicationFactor,
     }
 
     const memoryEstimate = this.memoryEstimator.estimate(

@@ -23,6 +23,10 @@ export default class AliCalculateRow extends BillingDataRow {
     this.vCpuHours = this.getVCpuHours(usageDetail)
     this.gpuHours = this.getGpuHours(usageDetail)
     this.replicationFactor = this.getReplicationFactor()
+    this.cost = usageDetail.cashAmount
+    this.accountName = usageDetail.billAccountName
+    this.accountId = usageDetail.billAccountID
+    this.usageAmount = this.getMemoryHours(usageDetail)
     this.specificationFamily = this.seriesName.split('.').slice(0, 2).join('.')
   }
 
@@ -37,6 +41,13 @@ export default class AliCalculateRow extends BillingDataRow {
     return this.getUsage() * this.parseCpuAndGpu(instanceConfig, 'CPU')
   }
 
+  private getMemoryHours(
+    usageDetail: DescribeInstanceBillResponseBodyDataItems,
+  ) {
+    const instanceConfig = usageDetail.instanceConfig
+    return this.getUsage() * this.parseMemory(instanceConfig)
+  }
+
   private getGpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     const instanceConfig = usageDetail.instanceConfig
     return this.getUsage() * this.parseCpuAndGpu(instanceConfig, 'GPU')
@@ -48,6 +59,14 @@ export default class AliCalculateRow extends BillingDataRow {
       return 0
     }
     return parseInt(keyValue.split('核')[0])
+  }
+
+  private parseMemory(instanceConfig: string): number {
+    const keyValue = this.getJsonValue('内存', instanceConfig)
+    if (keyValue == null) {
+      return 1
+    }
+    return parseInt(keyValue.split('GB')[0])
   }
 
   private getUsage() {
