@@ -55,12 +55,12 @@ After setting up a new instance or collection to be used for CCF, configure the 
 
 ``` .env
 CACHE_MODE=MONGODB
-MONGO_URI=mongodb://example-uri
-MONGO_CREDENTIALS=/path-to-credentials.pem
+MONGODB_URI=mongodb://example-uri
+MONGODB_CREDENTIALS=/path-to-credentials.pem
 ```
 
-- The MONGO_URI variable should be set to the connection URI of your MongoDB instance. If using Atlas, you should find this option in the Connect section of your Atlas cluster. For a local instance, the default string is usually `mongodb://localhost:27017` while the service is running.
-- The MONGO_CREDENTIALS variable is optionally used when configuring MongoDB Atlas. CCF will need the credentials to be stored and referenced in order to connect.
+- The MONGODB_URI variable should be set to the connection URI of your MongoDB instance. If using Atlas, you should find this option in the Connect section of your Atlas cluster. For a local instance, the default string is usually `mongodb://localhost:27017` while the service is running.
+- The MONGODB_CREDENTIALS variable is optionally used when configuring MongoDB Atlas. CCF will need the credentials to be stored and referenced in order to connect.
 
 After calculating estimates for the first time, the app will create a new collection titled “ccf”. Estimates will be separated into timestamps and stored into a collection that is named according to the current grouping method (i.e. “estimates-by-month).
 

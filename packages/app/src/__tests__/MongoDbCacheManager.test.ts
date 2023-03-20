@@ -137,7 +137,7 @@ describe('MongoDbCacheManager', () => {
     beforeEach(() => {
       ;(configLoader as jest.Mock).mockReturnValue({
         ...configLoader(),
-        MONGO_URI: 'test-mongo-uri',
+        MONGODB_URI: 'test-mongo-uri',
       })
     })
 
@@ -426,7 +426,7 @@ describe('MongoDbCacheManager', () => {
     beforeEach(() => {
       ;(configLoader as jest.Mock).mockReturnValue({
         ...configLoader(),
-        MONGO_URI: 'test-mongo-uri',
+        MONGODB_URI: 'test-mongo-uri',
       })
     })
 
