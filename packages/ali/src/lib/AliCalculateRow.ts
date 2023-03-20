@@ -20,6 +20,7 @@ export default class AliCalculateRow extends BillingDataRow {
 
     // this.usageType = this.parseUsageType()
     this.seriesName = this.getSeriesName(usageDetail)
+    this.instanceType = usageDetail.productCode
     this.vCpuHours = this.getVCpuHours(usageDetail)
     this.gpuHours = this.getGpuHours(usageDetail)
     this.replicationFactor = this.getReplicationFactor()

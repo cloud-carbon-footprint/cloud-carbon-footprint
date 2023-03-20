@@ -9,6 +9,7 @@ import {
   ComputeEstimator,
   ComputeUsage,
   EmbodiedEmissionsEstimator,
+  EmbodiedEmissionsUsage,
   FootprintEstimate,
   MemoryEstimator,
   MemoryUsage,
@@ -86,6 +87,11 @@ export default class AliCostAndUsageService {
           emissionsFactors,
         )
 
+        const embodiedEmissions = this.getEmbodiedEmissions(
+          row,
+          emissionsFactors,
+        )
+
         this.logger.info('row:' + JSON.stringify(row))
         serviceEstimates.push({
           cloudProvider: 'AliCloud',
@@ -94,8 +100,12 @@ export default class AliCostAndUsageService {
           accountId: row.accountId,
           kilowattHours:
             computeFootprintEstimate.kilowattHours +
-            memoryFootprintEstimate.kilowattHours,
-          co2e: computeFootprintEstimate.co2e + memoryFootprintEstimate.co2e,
+            memoryFootprintEstimate.kilowattHours +
+            embodiedEmissions.kilowattHours,
+          co2e:
+            computeFootprintEstimate.co2e +
+            memoryFootprintEstimate.co2e +
+            embodiedEmissions.co2e,
           cost: row.cost,
           region: row.region,
           usesAverageCPUConstant: false,
@@ -270,5 +280,39 @@ export default class AliCostAndUsageService {
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
+  }
+
+  private getEmbodiedEmissions(
+    row: AliCalculateRow,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ): FootprintEstimate {
+    const { instancevCpu, scopeThreeEmissions, largestInstancevCpu } =
+      this.getDataFromSeriesName(row.seriesName)
+
+    if (!instancevCpu || !scopeThreeEmissions || !largestInstancevCpu)
+      return {
+        timestamp: new Date(),
+        kilowattHours: 0,
+        co2e: 0,
+      }
+
+    const embodiedEmissionsUsage: EmbodiedEmissionsUsage = {
+      instancevCpu,
+      largestInstancevCpu,
+      usageTimePeriod: row.usageAmount / instancevCpu,
+      scopeThreeEmissions,
+    }
+
+    return this.embodiedEmissionsEstimator.estimate(
+      [embodiedEmissionsUsage],
+      row.region,
+      emissionsFactors,
+    )[0]
+  }
+
+  private getDataFromSeriesName(seriesName: string) {
+    this.logger.info('getDataFromSeriesName seriesName:' + seriesName)
+    // 阿里云各个服务的scope 3 emissions 数据拿不到
+    return {}
   }
 }
