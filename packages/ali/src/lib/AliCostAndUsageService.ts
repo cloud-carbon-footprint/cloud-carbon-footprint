@@ -35,7 +35,7 @@ import {
 } from '../domain'
 import {
   GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING,
-  INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING,
+  SPECIFICATION_FAMILY_COMPUTE_PROCESSOR_MAPPING,
 } from './AliTypes'
 import { AZURE_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/azure'
 
@@ -172,7 +172,7 @@ export default class AliCostAndUsageService {
       vCpuHours: row.vCpuHours,
       usesAverageCPUConstant: true,
     }
-    const processors = this.getComputeProcessorsFromAliInstanceType(
+    const processors = this.getComputeProcessorsFromAliSpecificationFamily(
       row.specificationFamily,
     )
     const cpuComputeConstants: CloudConstants = {
@@ -262,9 +262,11 @@ export default class AliCostAndUsageService {
     return memoryEstimate
   }
 
-  private getComputeProcessorsFromAliInstanceType(instanceType: string) {
+  private getComputeProcessorsFromAliSpecificationFamily(
+    specificationFamily: string,
+  ) {
     return (
-      INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING[instanceType] || [
+      SPECIFICATION_FAMILY_COMPUTE_PROCESSOR_MAPPING[specificationFamily] || [
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
@@ -286,6 +288,8 @@ export default class AliCostAndUsageService {
     row: AliCalculateRow,
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const { instancevCpu, scopeThreeEmissions, largestInstancevCpu } =
       this.getDataFromSeriesName(row.seriesName)
 

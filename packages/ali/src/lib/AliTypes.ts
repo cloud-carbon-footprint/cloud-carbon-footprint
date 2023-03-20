@@ -4,7 +4,7 @@
 
 import { COMPUTE_PROCESSOR_TYPES } from '@cloud-carbon-footprint/core'
 
-export const INSTANCE_TYPE_COMPUTE_PROCESSOR_MAPPING: {
+export const SPECIFICATION_FAMILY_COMPUTE_PROCESSOR_MAPPING: {
   [series: string]: string[]
 } = {
   'ecs.g8ae': [COMPUTE_PROCESSOR_TYPES.AMD_EPYC_1ST_GEN],

@@ -39,19 +39,28 @@ export default class AliCalculateRow extends BillingDataRow {
 
   private getVCpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     const instanceConfig = usageDetail.instanceConfig
-    return this.getUsage() * this.parseCpuAndGpu(instanceConfig, 'CPU')
+    return (
+      this.getUsage(usageDetail.servicePeriod, usageDetail.servicePeriodUnit) *
+      this.parseCpuAndGpu(instanceConfig, 'CPU')
+    )
   }
 
   private getMemoryHours(
     usageDetail: DescribeInstanceBillResponseBodyDataItems,
   ) {
     const instanceConfig = usageDetail.instanceConfig
-    return this.getUsage() * this.parseMemory(instanceConfig)
+    return (
+      this.getUsage(usageDetail.servicePeriod, usageDetail.servicePeriodUnit) *
+      this.parseMemory(instanceConfig)
+    )
   }
 
   private getGpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     const instanceConfig = usageDetail.instanceConfig
-    return this.getUsage() * this.parseCpuAndGpu(instanceConfig, 'GPU')
+    return (
+      this.getUsage(usageDetail.servicePeriod, usageDetail.servicePeriodUnit) *
+      this.parseCpuAndGpu(instanceConfig, 'GPU')
+    )
   }
 
   private parseCpuAndGpu(instanceConfig: string, key: string): number {
@@ -70,8 +79,43 @@ export default class AliCalculateRow extends BillingDataRow {
     return parseInt(keyValue.split('GB')[0])
   }
 
-  private getUsage() {
-    return 30 * 24
+  private getUsage(servicePeriod: string, servicePeriodUnit: string) {
+    let ratio = 1
+    switch (servicePeriodUnit) {
+      case '秒':
+        {
+          ratio = 1 / 3600
+        }
+        break
+      case '分':
+        {
+          ratio = 1 / 60
+        }
+        break
+      case '时':
+        {
+          ratio = 1
+        }
+        break
+      case '天':
+        {
+          ratio = 24
+        }
+        break
+      case '月':
+        {
+          ratio = 24 * 30
+        }
+        break
+      case '年':
+        {
+          ratio = 24 * 30 * 12
+        }
+        break
+      default:
+        break
+    }
+    return parseInt(servicePeriod) * ratio
   }
 
   public getJsonValue(key: string, jsonStr: string): string {
