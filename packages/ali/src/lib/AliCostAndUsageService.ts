@@ -3,6 +3,8 @@
  */
 
 import {
+  accumulateKilowattHours,
+  AccumulateKilowattHoursBy,
   CloudConstants,
   CloudConstantsEmissionsFactors,
   COMPUTE_PROCESSOR_TYPES,
@@ -14,11 +16,15 @@ import {
   MemoryEstimator,
   MemoryUsage,
   NetworkingEstimator,
+  NetworkingUsage,
   StorageEstimator,
+  StorageUsage,
   UnknownEstimator,
+  UnknownUsage,
 } from '@cloud-carbon-footprint/core'
 import {
   configLoader,
+  containsAny,
   EstimationResult,
   GroupBy,
   Logger,
@@ -36,8 +42,13 @@ import {
 import {
   GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING,
   SPECIFICATION_FAMILY_COMPUTE_PROCESSOR_MAPPING,
+  NETWORKING_USAGE_TYPES,
+  UNKNOWN_SERVICES,
+  UNKNOWN_USAGE_TYPES,
+  SSD_MANAGED_DISKS_STORAGE_GB,
+  STORAGE_USAGE_TYPES,
+  HDD_MANAGED_DISKS_STORAGE_GB,
 } from './AliTypes'
-import { AZURE_CLOUD_CONSTANTS } from '@cloud-carbon-footprint/azure'
 
 export default class AliCostAndUsageService {
   private readonly logger: Logger
@@ -91,6 +102,21 @@ export default class AliCostAndUsageService {
           row,
           emissionsFactors,
         )
+
+        const storageFootprintEstimate = this.getStorageFootprintEstimate(
+          row,
+          pue,
+          emissionsFactors,
+        )
+
+        const networkingFootprintEstimate = this.getNetworkingFootprintEstimate(
+          row,
+          pue,
+          emissionsFactors,
+        )
+
+        const unknownFootprintEstimate = this.getEstimateForUnknownUsage(row)
+
         this.logger.info(
           'computeFootprintEstimate:' +
             JSON.stringify(computeFootprintEstimate),
@@ -107,10 +133,16 @@ export default class AliCostAndUsageService {
           kilowattHours:
             computeFootprintEstimate.kilowattHours +
             memoryFootprintEstimate.kilowattHours +
+            storageFootprintEstimate.kilowattHours +
+            networkingFootprintEstimate.kilowattHours +
+            unknownFootprintEstimate.kilowattHours +
             embodiedEmissions.kilowattHours,
           co2e:
             computeFootprintEstimate.co2e +
             memoryFootprintEstimate.co2e +
+            storageFootprintEstimate.co2e +
+            networkingFootprintEstimate.co2e +
+            unknownFootprintEstimate.co2e +
             embodiedEmissions.co2e,
           cost: row.cost,
           region: row.region,
@@ -216,14 +248,14 @@ export default class AliCostAndUsageService {
 
     const gpuComputeUsage: ComputeUsage = {
       timestamp: row.timestamp,
-      cpuUtilizationAverage: AZURE_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
+      cpuUtilizationAverage: ALI_CLOUD_CONSTANTS.AVG_CPU_UTILIZATION_2020,
       vCpuHours: row.gpuHours,
       usesAverageCPUConstant: true,
     }
 
     const gpuComputeConstants: CloudConstants = {
-      minWatts: AZURE_CLOUD_CONSTANTS.getMinWatts(gpuComputeProcessors),
-      maxWatts: AZURE_CLOUD_CONSTANTS.getMaxWatts(gpuComputeProcessors),
+      minWatts: ALI_CLOUD_CONSTANTS.getMinWatts(gpuComputeProcessors),
+      maxWatts: ALI_CLOUD_CONSTANTS.getMaxWatts(gpuComputeProcessors),
       powerUsageEffectiveness: powerUsageEffectiveness,
       replicationFactor: row.replicationFactor,
     }
@@ -326,5 +358,125 @@ export default class AliCostAndUsageService {
     this.logger.info('getDataFromSeriesName seriesName:' + seriesName)
     // 阿里云各个服务的scope 3 emissions 数据拿不到
     return {}
+  }
+
+  private getStorageFootprintEstimate(
+    row: AliCalculateRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ) {
+    const storageUsage: StorageUsage = {
+      timestamp: row.timestamp,
+      terabyteHours: row.usageAmount,
+    }
+
+    const storageConstants: CloudConstants = {
+      powerUsageEffectiveness: powerUsageEffectiveness,
+      replicationFactor: row.replicationFactor,
+    }
+
+    let estimate: FootprintEstimate
+    if (this.isSSDStorage(row))
+      estimate = this.ssdStorageEstimator.estimate(
+        [storageUsage],
+        row.region,
+        emissionsFactors,
+        storageConstants,
+      )[0]
+    else if (this.isHDDStorage(row))
+      estimate = this.hddStorageEstimator.estimate(
+        [storageUsage],
+        row.region,
+        emissionsFactors,
+        storageConstants,
+      )[0]
+    if (estimate) {
+      estimate.usesAverageCPUConstant = false
+      accumulateKilowattHours(
+        ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        row,
+        estimate.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
+      )
+    }
+    return estimate
+  }
+
+  private getNetworkingFootprintEstimate(
+    consumptionDetailRow: AliCalculateRow,
+    powerUsageEffectiveness: number,
+    emissionsFactors: CloudConstantsEmissionsFactors,
+  ): FootprintEstimate {
+    let networkingEstimate: FootprintEstimate
+    if (containsAny(NETWORKING_USAGE_TYPES, consumptionDetailRow.usageType)) {
+      const networkingUsage: NetworkingUsage = {
+        timestamp: consumptionDetailRow.timestamp,
+        gigabytes: consumptionDetailRow.usageAmount,
+      }
+
+      const networkingConstants: CloudConstants = {
+        powerUsageEffectiveness: powerUsageEffectiveness,
+      }
+
+      networkingEstimate = this.networkingEstimator.estimate(
+        [networkingUsage],
+        consumptionDetailRow.region,
+        emissionsFactors,
+        networkingConstants,
+      )[0]
+    }
+    if (networkingEstimate) {
+      networkingEstimate.usesAverageCPUConstant = false
+      accumulateKilowattHours(
+        ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        consumptionDetailRow,
+        networkingEstimate.kilowattHours,
+        AccumulateKilowattHoursBy.USAGE_AMOUNT,
+      )
+    }
+    return networkingEstimate
+  }
+
+  private getEstimateForUnknownUsage(
+    rowData: AliCalculateRow,
+  ): FootprintEstimate {
+    if (
+      containsAny(UNKNOWN_SERVICES, rowData.serviceName) ||
+      containsAny(UNKNOWN_USAGE_TYPES, rowData.usageType)
+    ) {
+      const unknownUsage: UnknownUsage = {
+        timestamp: rowData.timestamp,
+        usageAmount: rowData.usageAmount,
+        usageUnit: rowData.usageUnit,
+      }
+
+      const unknownConstants: CloudConstants = {
+        kilowattHoursByServiceAndUsageUnit:
+          ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+      }
+      return this.unknownEstimator.estimate(
+        [unknownUsage],
+        rowData.region,
+        ALI_EMISSIONS_FACTORS_METRIC_TON_PER_KWH,
+        unknownConstants,
+      )[0]
+    }
+    return {
+      timestamp: rowData.timestamp,
+      kilowattHours: 0,
+      co2e: 0,
+      usesAverageCPUConstant: false,
+    }
+  }
+
+  private isSSDStorage(row: AliCalculateRow): boolean {
+    return (
+      containsAny(Object.keys(SSD_MANAGED_DISKS_STORAGE_GB), row.usageType) ||
+      containsAny(STORAGE_USAGE_TYPES, row.usageType)
+    )
+  }
+
+  private isHDDStorage(row: AliCalculateRow): boolean {
+    return containsAny(Object.keys(HDD_MANAGED_DISKS_STORAGE_GB), row.usageType)
   }
 }

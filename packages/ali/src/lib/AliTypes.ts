@@ -158,3 +158,19 @@ export const GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING: {
   'ecs.gn5': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P100],
   'ecs.gn5i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4],
 }
+
+export const SSD_MANAGED_DISKS_STORAGE_GB: {
+  [diskType: string]: number
+} = {}
+
+export const HDD_MANAGED_DISKS_STORAGE_GB: {
+  [diskType: string]: number
+} = {}
+
+export const STORAGE_USAGE_TYPES: string[] = []
+
+export const NETWORKING_USAGE_TYPES: string[] = []
+
+export const UNKNOWN_SERVICES: string[] = []
+
+export const UNKNOWN_USAGE_TYPES: string[] = []
