@@ -84,7 +84,7 @@ export default class AliCalculateRow extends BillingDataRow {
   private parseMemory(instanceConfig: string): number {
     const keyValue = this.getJsonValue('内存', instanceConfig)
     if (keyValue == null) {
-      return 1
+      return 0
     }
     return parseInt(keyValue.split('GB')[0])
   }
