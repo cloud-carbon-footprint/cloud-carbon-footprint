@@ -429,6 +429,8 @@ fileignoreconfig:
   checksum: a1c04f96a9be8e217e535f25a61a5cae1c40933129a05dac81243bb2caa92c60
 - filename: packages/ali/src/lib/AliCalculateRow.ts
   checksum: 77997e1e88c3fe9bbafbda63d4c1c9b83df439417664cf0d080488b01c8c0c51
+- filename: packages/ali/src/__tests__/AliCostAndUsageService.test.ts
+  checksum: 5f7313007ca6a4eae2a608faa11dbb0be97712371703b618e28093138a345363
 scopeconfig:
 - scope: node
 version: "1.0"
