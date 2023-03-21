@@ -90,7 +90,6 @@ const useRemoteFootprintService = (
   }, [
     end,
     start,
-    params.region,
     params.ignoreCache,
     setError,
     params.baseUrl,

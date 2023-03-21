@@ -56,7 +56,6 @@ const useRemoteFootprintService = (
             params: {
               start: start,
               end: end,
-              region: params.region,
               ignoreCache: params.ignoreCache,
               groupBy: params.groupBy,
               limit: params.limit,
@@ -91,7 +90,6 @@ const useRemoteFootprintService = (
   }, [
     end,
     start,
-    params.region,
     params.ignoreCache,
     setError,
     params.baseUrl,
