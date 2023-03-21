@@ -8,6 +8,7 @@ import { ALI_REPLICATION_FACTORS_FOR_SERVICES } from './ReplicationFactors'
 
 export default class AliCalculateRow extends BillingDataRow {
   readonly specificationFamily: string
+
   constructor(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
     // const consumptionDetails = getConsumptionDetails(usageDetail)
     super({
@@ -28,7 +29,16 @@ export default class AliCalculateRow extends BillingDataRow {
     this.accountName = usageDetail.billAccountName
     this.accountId = usageDetail.billAccountID
     this.usageAmount = this.getMemoryHours(usageDetail)
-    this.specificationFamily = this.seriesName.split('.').slice(0, 2).join('.')
+    this.specificationFamily = this.getSpecificationFamily()
+  }
+
+  private getSpecificationFamily() {
+    const seriesNameArr = this.seriesName.split('.')
+    if (seriesNameArr.length <= 1) {
+      return seriesNameArr[0]
+    }
+    const second = seriesNameArr[1].split('-')[0]
+    return seriesNameArr[0] + '.' + second
   }
 
   private getSeriesName(

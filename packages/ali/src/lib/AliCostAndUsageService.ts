@@ -91,7 +91,13 @@ export default class AliCostAndUsageService {
           row,
           emissionsFactors,
         )
-
+        this.logger.info(
+          'computeFootprintEstimate:' +
+            JSON.stringify(computeFootprintEstimate),
+        )
+        this.logger.info(
+          'memoryFootprintEstimate:' + JSON.stringify(memoryFootprintEstimate),
+        )
         this.logger.info('row:' + JSON.stringify(row))
         serviceEstimates.push({
           cloudProvider: 'AliCloud',
@@ -276,9 +282,11 @@ export default class AliCostAndUsageService {
     return gpuHours != 0
   }
 
-  private getGPUComputeProcessorsFromAliInstanceType(instanceType: string) {
+  private getGPUComputeProcessorsFromAliInstanceType(
+    specificationFamily: string,
+  ) {
     return (
-      GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING[instanceType] || [
+      GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING[specificationFamily] || [
         COMPUTE_PROCESSOR_TYPES.UNKNOWN,
       ]
     )
