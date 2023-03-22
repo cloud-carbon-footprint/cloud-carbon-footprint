@@ -375,7 +375,11 @@ export default class AliCostAndUsageService {
       replicationFactor: row.replicationFactor,
     }
 
-    let estimate: FootprintEstimate
+    let estimate: FootprintEstimate = {
+      timestamp: undefined,
+      kilowattHours: 0,
+      co2e: 0,
+    }
     if (this.isSSDStorage(row))
       estimate = this.ssdStorageEstimator.estimate(
         [storageUsage],
@@ -407,7 +411,11 @@ export default class AliCostAndUsageService {
     powerUsageEffectiveness: number,
     emissionsFactors: CloudConstantsEmissionsFactors,
   ): FootprintEstimate {
-    let networkingEstimate: FootprintEstimate
+    let networkingEstimate: FootprintEstimate = {
+      timestamp: undefined,
+      kilowattHours: 0,
+      co2e: 0,
+    }
     if (containsAny(NETWORKING_USAGE_TYPES, consumptionDetailRow.usageType)) {
       const networkingUsage: NetworkingUsage = {
         timestamp: consumptionDetailRow.timestamp,

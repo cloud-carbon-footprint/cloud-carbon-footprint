@@ -48,6 +48,9 @@ export default class AliCalculateRow extends BillingDataRow {
   }
 
   private getVCpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
+    if (this.serviceName == 'fc') {
+      return this.getFunctionComputeVcpuHours(usageDetail.instanceConfig)
+    }
     const instanceConfig = usageDetail.instanceConfig
     return (
       this.getUsage(usageDetail.servicePeriod, usageDetail.servicePeriodUnit) *
@@ -55,14 +58,65 @@ export default class AliCalculateRow extends BillingDataRow {
     )
   }
 
+  private getFunctionComputeVcpuHours(instanceConfig: string) {
+    const vcpuHoursStr = this.getJsonValue('vCPU资源包', instanceConfig)?.split(
+      'vCPU*秒',
+    )[0]
+    if (vcpuHoursStr == undefined) {
+      return 0
+    }
+    const resultArr = vcpuHoursStr.split(' ')
+    if (resultArr.length <= 1) {
+      return 0
+    } else {
+      const quantity = parseInt(resultArr[0])
+      let unitValue = 0
+      const unit = resultArr[1]
+      if (unit == '万') {
+        unitValue = 10000
+      } else {
+        unitValue = 100000000
+      }
+      return (quantity * unitValue) / 3600
+    }
+  }
+
   private getMemoryHours(
     usageDetail: DescribeInstanceBillResponseBodyDataItems,
   ) {
     const instanceConfig = usageDetail.instanceConfig
+    if (this.serviceName == 'fc') {
+      return this.getFunctionComputeMemoryHours(instanceConfig)
+    }
+
     return (
       this.getUsage(usageDetail.servicePeriod, usageDetail.servicePeriodUnit) *
       this.parseMemory(instanceConfig)
     )
+  }
+
+  private getFunctionComputeMemoryHours(instanceConfig: string) {
+    const memoryHoursStr = this.getJsonValue(
+      '内存资源包',
+      instanceConfig,
+    )?.split('GB*秒')[0]
+    if (memoryHoursStr == undefined) {
+      return 0
+    }
+    const resultArr = memoryHoursStr.split(' ')
+    if (resultArr.length <= 1) {
+      return 0
+    } else {
+      const quantity = parseInt(resultArr[0])
+      let unitValue = 0
+      const unit = resultArr[1]
+      if (unit == '万') {
+        unitValue = 10000
+      } else {
+        unitValue = 100000000
+      }
+      return (quantity * unitValue) / 3600
+    }
   }
 
   private getGpuHours(usageDetail: DescribeInstanceBillResponseBodyDataItems) {
