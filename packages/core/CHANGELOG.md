@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/core
 
+## 0.17.2
+
+### Patch Changes
+
+- f1818030: Fixes pointer for main file
+
 ## 0.17.1
 
 ### Patch Changes
