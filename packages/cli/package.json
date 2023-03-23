@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/cli",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "license": "Apache-2.0",
   "description": "Command Line Interface as an entrypoint to get cloud energy and carbon emissions.",
   "main": "src/index.ts",
@@ -70,8 +70,8 @@
   "dependencies": {
     "@azure/arm-consumption": "^9.1.0",
     "@azure/arm-resources-subscriptions": "^2.0.1",
-    "@cloud-carbon-footprint/app": "1.1.0",
-    "@cloud-carbon-footprint/common": "^1.9.0",
+    "@cloud-carbon-footprint/app": "1.2.0",
+    "@cloud-carbon-footprint/common": "^1.10.0",
     "@types/cli-table": "^0.3.0",
     "@types/prompts": "^2.0.12",
     "@types/ramda": "^0.27.40",

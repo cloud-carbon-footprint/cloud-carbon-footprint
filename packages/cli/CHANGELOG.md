@@ -1,5 +1,25 @@
 # @cloud-carbon-footprint/cli
 
+## 1.10.0
+
+### Minor Changes
+
+- 793ccd53: Adds option to seed cache file using split requests (ideal for large usage data)
+
+  For updates to the create-app templates, please see this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8e91fd704096d3a786c857d4e82f6935c236ef1b)
+
+- 003c8892: removes regions from request parameter and updates app logic
+- 3e84626a: Adds MongoDB config option for the guided installation
+
+### Patch Changes
+
+- Updated dependencies [84fa2da1]
+- Updated dependencies [1d297700]
+- Updated dependencies [003c8892]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/app@1.2.0
+  - @cloud-carbon-footprint/common@1.10.0
+
 ## 1.9.1
 
 ### Patch Changes
