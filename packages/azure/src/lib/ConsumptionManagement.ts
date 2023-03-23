@@ -311,7 +311,9 @@ export default class ConsumptionManagementService {
   ): Promise<Array<UsageDetailResult>> {
     let currentTry = 0
 
-    const errorMsg = `Azure ConsumptionManagementClient UsageDetailRow paging for time range ${startDate.toISOString()} to ${endDate.toISOString()} failed. Reason:`
+    const errorMsg = `Azure ConsumptionManagementClient UsageDetailRow ${
+      configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS ? 'paging' : 'query'
+    } for time range ${startDate.toISOString()} to ${endDate.toISOString()} failed. Reason:`
 
     while (currentTry <= maxRetries) {
       currentTry++
@@ -324,9 +326,13 @@ export default class ConsumptionManagementService {
             includeEnd ? 'le' : 'lt'
           } '${endDate.toISOString()}'`,
         }
-        this.consumptionManagementLogger.debug(
-          `Querying consumption usage details from ${startDate.toISOString()} to ${endDate.toISOString()}`,
-        )
+        if (configLoader().AZURE.CONSUMPTION_CHUNKS_DAYS) {
+          this.consumptionManagementLogger.debug(
+            `Querying consumption usage details from ${startDate.toISOString()} to ${endDate.toISOString()} for ${
+              this.consumptionManagementClient.subscriptionId
+            }`,
+          )
+        }
         const usageRows = this.consumptionManagementClient.usageDetails.list(
           `/subscriptions/${this.consumptionManagementClient.subscriptionId}/`,
           options,

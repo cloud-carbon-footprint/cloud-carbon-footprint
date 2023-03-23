@@ -1614,7 +1614,7 @@ describe('Azure Consumption Management Service', () => {
     await expect(() =>
       consumptionManagementService.getEstimates(startDate, endDate, grouping),
     ).rejects.toThrow(
-      `Azure ConsumptionManagementClient UsageDetailRow paging for time range 2020-11-02T00:00:00.000Z to 2020-11-07T00:00:00.000Z failed. Reason: ${errorMessage}`,
+      `Azure ConsumptionManagementClient UsageDetailRow query for time range 2020-11-02T00:00:00.000Z to 2020-11-07T00:00:00.000Z failed. Reason: ${errorMessage}`,
     )
   })
 })
