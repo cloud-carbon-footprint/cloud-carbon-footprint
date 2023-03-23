@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/client
 
+## 4.1.0
+
+### Minor Changes
+
+- 003c8892: removes regions from request parameter and updates app logic
+- 877f0145: Moves footprint data to be globally shared across the app, and adds performance improvements for rendering
+
+  For updates to the create-app template, please review this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/pull/1027/commits/37066a9f92a3fe6bdda4f16b5e372f07c3e214d5).
+
+### Patch Changes
+
+- Updated dependencies [1d297700]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/common@1.10.0
+
 ## 4.0.0
 
 ### Major Changes

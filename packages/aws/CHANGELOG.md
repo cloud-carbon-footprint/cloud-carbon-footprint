@@ -1,5 +1,16 @@
 # @cloud-carbon-footprint/aws
 
+## 0.14.3
+
+### Patch Changes
+
+- 1d297700: adds support for aws china during aws account authorization
+- Updated dependencies [9e929f03]
+- Updated dependencies [1d297700]
+- Updated dependencies [3f17990d]
+  - @cloud-carbon-footprint/core@0.17.1
+  - @cloud-carbon-footprint/common@1.10.0
+
 ## 0.14.2
 
 ### Patch Changes

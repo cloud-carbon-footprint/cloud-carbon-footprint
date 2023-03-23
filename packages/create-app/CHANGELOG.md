@@ -1,5 +1,20 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.3.0
+
+### Minor Changes
+
+- 793ccd53: Adds option to seed cache file using split requests (ideal for large usage data)
+
+  For updates to the create-app templates, please see this [commit](https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/commit/8e91fd704096d3a786c857d4e82f6935c236ef1b)
+
+- 3e84626a: Adds MongoDB config option for the guided installation
+
+### Patch Changes
+
+- ea0bb5bd: Updates styling for Forecast component errors and warnings
+- 003c8892: removes regions from request parameter and updates app logic
+
 ## 2.2.1
 
 ### Patch Changes

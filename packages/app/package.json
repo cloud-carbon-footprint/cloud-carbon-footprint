@@ -1,6 +1,6 @@
 {
   "name": "@cloud-carbon-footprint/app",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "Apache-2.0",
   "description": "The logic to bootstrap the cloud-carbon-footprint server-side application",
   "main": "src/index.ts",
@@ -40,9 +40,9 @@
     "lint:fix": "eslint '*/**/*.ts' --quiet --fix"
   },
   "dependencies": {
-    "@cloud-carbon-footprint/aws": "^0.14.1",
-    "@cloud-carbon-footprint/azure": "^1.0.0",
-    "@cloud-carbon-footprint/common": "^1.8.0",
+    "@cloud-carbon-footprint/aws": "^0.14.3",
+    "@cloud-carbon-footprint/azure": "^1.2.0",
+    "@cloud-carbon-footprint/common": "^1.10.0",
     "@cloud-carbon-footprint/gcp": "^0.11.0",
     "@cloud-carbon-footprint/on-premise": "^0.1.1",
     "@google-cloud/monitoring": "^2.3.5",

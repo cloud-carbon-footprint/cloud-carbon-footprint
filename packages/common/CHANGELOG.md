@@ -1,5 +1,15 @@
 # @cloud-carbon-footprint/common
 
+## 1.10.0
+
+### Minor Changes
+
+- 3f17990d: Add option to chunk time range in azure requests to avoid infinite rate limit retries
+
+### Patch Changes
+
+- 1d297700: adds support for aws china during aws account authorization
+
 ## 1.9.0
 
 ### Minor Changes
