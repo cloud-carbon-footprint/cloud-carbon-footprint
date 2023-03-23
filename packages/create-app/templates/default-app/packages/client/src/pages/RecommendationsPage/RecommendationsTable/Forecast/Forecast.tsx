@@ -5,14 +5,8 @@
 import React, { FunctionComponent, ReactElement } from 'react'
 import clsx from 'clsx'
 import { Moment } from 'moment'
-import {
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@material-ui/core'
 import ForwardIcon from '@material-ui/icons/Forward'
-import ExpandMore from '@material-ui/icons/ExpandMore'
+import { Typography } from '@material-ui/core'
 import {
   GroupBy,
   RecommendationResult,
@@ -26,10 +20,11 @@ import {
   sumRecommendations,
   calculatePercentChange,
   formattedNumberWithCommas,
+  checkIfAllDatesExistForForecast,
+  co2eUnitMultiplier,
 } from '../../../../utils/helpers'
 import { Co2eUnit } from '../../../../Types'
-import { co2eUnitMultiplier } from '../../../../utils/helpers/units'
-import { checkIfAllDatesExistForForecast } from '../../../../utils/helpers/handleDates'
+import { Error, ErrorList } from './Error'
 
 export type ForecastProps = {
   emissionsData: ServiceData[]
@@ -42,6 +37,14 @@ export type ForecastDetails = {
   missingDates: Moment[]
   groupBy: GroupBy | string
 }
+
+export const ForecastError = {
+  GROUPING_METHOD: 'GROUPING',
+  DATE_RANGE: 'RANGE',
+  MISSING_DAYS: 'DAYS',
+} as const
+
+export type ForecastErrorType = typeof ForecastError[keyof typeof ForecastError]
 
 const Forecast: FunctionComponent<ForecastProps> = ({
   emissionsData,
@@ -105,27 +108,25 @@ const Forecast: FunctionComponent<ForecastProps> = ({
     return a.valueOf() - b.valueOf()
   })
 
-  let errorMessage
-  const errorMessages = {
-    a: 'In order to see a savings forecast that is relevant to you, please ensure your data is grouped by month, week, or day, and includes data from the past 30 days',
-    b: 'In order to see a savings forecast that is relevant to you, please ensure you include data from the past 30 days',
-    c: 'It appears you are missing data for from the past 30 days. Please consider including the following dates for the most relevant forecast:',
-  }
+  let error: ForecastErrorType
 
   if (groupBy === 'quarter' || groupBy === 'year') {
-    errorMessage = errorMessages['a']
+    error = ForecastError.GROUPING_METHOD
   } else if (missingDates.length > 0 && allDatesExistForForecast) {
-    errorMessage = errorMessages['b']
+    error = ForecastError.DATE_RANGE
   }
 
-  return (
-    <>
-      <Typography className={classes.title}>Forecast</Typography>
-      {errorMessage ? (
-        <div id="errorMessage" data-testid="forecast-error-message">
-          <p>{errorMessage}</p>
-        </div>
-      ) : (
+  if (error) {
+    return (
+      <>
+        <Typography className={classes.title}>Forecast</Typography>
+        <Error errorType={error} />
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Typography className={classes.title}>Forecast</Typography>
         <div className={classes.forecastContainer}>
           <ForecastCard
             title="Last 30 Day Total"
@@ -150,30 +151,13 @@ const Forecast: FunctionComponent<ForecastProps> = ({
             treeSeedlings={treeSeedlings}
             yearCostSavings={monthlyCostSavings}
           />
-          {missingDates.length > 0 && (
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>{errorMessages['c']}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  <ul>
-                    {sortedMissingDates.map((date, i) => (
-                      <li key={i}>{date.format('LL').toString()}</li>
-                    ))}
-                  </ul>
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          )}
         </div>
-      )}
-    </>
-  )
+        {missingDates.length > 0 && (
+          <ErrorList missingDates={sortedMissingDates} />
+        )}
+      </>
+    )
+  }
 }
 
 export default Forecast

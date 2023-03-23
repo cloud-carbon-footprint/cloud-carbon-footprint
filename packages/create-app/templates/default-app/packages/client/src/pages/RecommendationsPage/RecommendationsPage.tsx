@@ -37,7 +37,7 @@ const RecommendationsPage = ({
   const groupBy = config.GROUP_BY
 
   const slicedFootprint = sliceFootprintDataByLastMonth(footprint.data, groupBy)
-  const forecastDetails = checkFootprintDates(slicedFootprint.data, groupBy)
+  const forecastDetails = checkFootprintDates(slicedFootprint, groupBy)
 
   const recommendations = useRecommendationData({
     baseUrl: config.BASE_URL,

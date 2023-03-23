@@ -18,3 +18,5 @@ export {
   co2eUnitLabel,
   co2eUnitAbbreviation,
 } from './units'
+
+export * from './handleDates'
