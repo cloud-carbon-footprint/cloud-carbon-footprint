@@ -47,7 +47,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/arm-consumption@npm:^9.1.0":
+"@azure/arm-consumption@npm:9.1.0":
   version: 9.1.0
   resolution: "@azure/arm-consumption@npm:9.1.0"
   dependencies:
@@ -83,17 +83,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/core-auth@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@azure/core-auth@npm:1.4.0"
-  dependencies:
-    "@azure/abort-controller": ^1.0.0
-    tslib: ^2.2.0
-  checksum: 1c76c296fe911ad39fc780b033c25a92c41c5a15f011b816d42c13584f627a4dd153dfb4334900ec93eb5b006e14bdda37e8412a7697c5a9636a0abaccffad39
-  languageName: node
-  linkType: hard
-
-"@azure/core-client@npm:^1.4.0, @azure/core-client@npm:^1.5.0":
+"@azure/core-client@npm:1.6.0":
   version: 1.6.0
   resolution: "@azure/core-client@npm:1.6.0"
   dependencies:
@@ -105,21 +95,6 @@ __metadata:
     "@azure/logger": ^1.0.0
     tslib: ^2.2.0
   checksum: 5f9c0d48d03f382ac04e34dbfbcd846f829f5df668b8d357927da75d2c8e4a06460f6e51a843abea0ed39e0c0d4a53a1dfe6134c7dadd14c5f96ece601a44ea2
-  languageName: node
-  linkType: hard
-
-"@azure/core-client@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "@azure/core-client@npm:1.6.1"
-  dependencies:
-    "@azure/abort-controller": ^1.0.0
-    "@azure/core-auth": ^1.4.0
-    "@azure/core-rest-pipeline": ^1.9.1
-    "@azure/core-tracing": ^1.0.0
-    "@azure/core-util": ^1.0.0
-    "@azure/logger": ^1.0.0
-    tslib: ^2.2.0
-  checksum: 400890a9b5f0c8801ff92005c3cba7bb5124634e321735406731bef33688a79f23d28b49fccdfab90814dade41a13f3d3cb99f80151a2bff17628416e811afb6
   languageName: node
   linkType: hard
 
@@ -147,24 +122,6 @@ __metadata:
     tslib: ^2.2.0
     uuid: ^8.3.0
   checksum: a8d21693251b7c2c87b52c62b4dd4a37901a82be8b050283821a56ec80257ef39cb2aa36f7f57bf0cb425ab4c04d84df74e019db8a6b404f1d40a81a08f8e260
-  languageName: node
-  linkType: hard
-
-"@azure/core-rest-pipeline@npm:^1.9.1":
-  version: 1.10.0
-  resolution: "@azure/core-rest-pipeline@npm:1.10.0"
-  dependencies:
-    "@azure/abort-controller": ^1.0.0
-    "@azure/core-auth": ^1.4.0
-    "@azure/core-tracing": ^1.0.1
-    "@azure/core-util": ^1.0.0
-    "@azure/logger": ^1.0.0
-    form-data: ^4.0.0
-    http-proxy-agent: ^5.0.0
-    https-proxy-agent: ^5.0.0
-    tslib: ^2.2.0
-    uuid: ^8.3.0
-  checksum: 4292dd0deb57820a23bf82601b10c6c15a38e867dd0974073671f373c37766453eaa1baf17856a8259b65ce206c374752ef22c5e3a2e1b95af4df1f7a9ea3567
   languageName: node
   linkType: hard
 
