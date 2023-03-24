@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.3.2
+
+### Patch Changes
+
+- bb8bf10b: Fix resolved package versions
+
 ## 2.3.1
 
 ### Patch Changes
