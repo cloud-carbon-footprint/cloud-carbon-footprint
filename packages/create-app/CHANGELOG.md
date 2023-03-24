@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.3.3
+
+### Patch Changes
+
+- 0339a2fe: Fixes client template tsconfig
+
 ## 2.3.2
 
 ### Patch Changes
