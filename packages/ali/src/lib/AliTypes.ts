@@ -159,6 +159,75 @@ export const GPU_VIRTUAL_MACHINE_TYPE_PROCESSOR_MAPPING: {
   'ecs.gn5i': [COMPUTE_PROCESSOR_TYPES.NVIDIA_TESLA_P4],
 }
 
+export const INSTANCE_SPECIFICATION_MAPPING: {
+  [instanceFamily: string]: { [instanceSize: string]: number[] } // [vcpus, memory, scope3 emissions ]
+} = {
+  'ecs.g8ae': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g7se': {
+    large: [2, 8, 1.2],
+    xlarge: [4, 16, 1.2],
+    '2xlarge': [8, 32, 1.2],
+    '3xlarge': [12, 48, 1.2],
+    '4xlarge': [16, 64, 1.2],
+    '6xlarge': [24, 96, 1.2],
+    '8xlarge': [32, 128, 1.2],
+    '16xlarge': [64, 256, 1.2],
+    '32xlarge': [128, 512, 1.2],
+  },
+  'ecs.g7': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '3xlarge': [12, 48, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g7t': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '3xlarge': [12, 48, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g7ne': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '12xlarge': [48, 192, 1.1],
+    '16xlarge': [64, 256, 1.1],
+    '32xlarge': [128, 512, 1.1],
+  },
+  'ecs.g6': {
+    large: [2, 8, 1.1],
+    xlarge: [4, 16, 1.1],
+    '2xlarge': [8, 32, 1.1],
+    '3xlarge': [12, 48, 1.1],
+    '4xlarge': [16, 64, 1.1],
+    '6xlarge': [24, 96, 1.1],
+    '8xlarge': [32, 128, 1.1],
+    '13xlarge': [52, 192, 1.1],
+    '26xlarge': [104, 384, 1.1],
+  },
+}
+
 export const SSD_MANAGED_DISKS_STORAGE_GB: {
   [diskType: string]: number
 } = {}

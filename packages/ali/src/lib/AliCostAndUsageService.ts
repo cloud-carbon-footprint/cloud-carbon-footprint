@@ -47,8 +47,9 @@ import {
   UNKNOWN_USAGE_TYPES,
   SSD_MANAGED_DISKS_STORAGE_GB,
   STORAGE_USAGE_TYPES,
-  HDD_MANAGED_DISKS_STORAGE_GB,
+  HDD_MANAGED_DISKS_STORAGE_GB, INSTANCE_SPECIFICATION_MAPPING,
 } from './AliTypes'
+import * as console from 'console'
 
 export default class AliCostAndUsageService {
   private readonly logger: Logger
@@ -119,7 +120,7 @@ export default class AliCostAndUsageService {
 
         this.logger.info(
           'computeFootprintEstimate:' +
-            JSON.stringify(computeFootprintEstimate),
+          JSON.stringify(computeFootprintEstimate),
         )
         this.logger.info(
           'memoryFootprintEstimate:' + JSON.stringify(memoryFootprintEstimate),
@@ -355,9 +356,34 @@ export default class AliCostAndUsageService {
   }
 
   private getDataFromSeriesName(seriesName: string) {
-    this.logger.info('getDataFromSeriesName seriesName:' + seriesName)
-    // 阿里云各个服务的scope 3 emissions 数据拿不到
-    return {}
+    const instanceTypeDetails = seriesName.split('.')
+    if (instanceTypeDetails.length <= 1) {
+      return {
+        instancevCpu: 0,
+        scopeThreeEmissions: 0,
+        largestInstancevCpu: 0,
+      }
+    }
+    const instanceSize = instanceTypeDetails[instanceTypeDetails.length - 1]
+    const instanceFamily = instanceTypeDetails.slice(0, 2).join('.')
+
+    const instancevCpu =
+      INSTANCE_SPECIFICATION_MAPPING[instanceFamily]?.[instanceSize]?.[0]
+
+    const scopeThreeEmissions =
+      INSTANCE_SPECIFICATION_MAPPING[instanceFamily]?.[instanceSize]?.[2]
+    const familyInstanceTypes: number[][] = Object.values(
+      INSTANCE_SPECIFICATION_MAPPING[instanceFamily] || {},
+    )
+
+    const [largestInstancevCpu] =
+      familyInstanceTypes[familyInstanceTypes.length - 1] || []
+
+    return {
+      instancevCpu,
+      scopeThreeEmissions,
+      largestInstancevCpu,
+    }
   }
 
   private getStorageFootprintEstimate(
@@ -460,7 +486,7 @@ export default class AliCostAndUsageService {
 
       const unknownConstants: CloudConstants = {
         kilowattHoursByServiceAndUsageUnit:
-          ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
+        ALI_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT,
       }
       return this.unknownEstimator.estimate(
         [unknownUsage],
