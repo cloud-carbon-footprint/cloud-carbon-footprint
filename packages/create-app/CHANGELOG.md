@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/create-app
 
+## 2.3.1
+
+### Patch Changes
+
+- 4872bc98: Fix incompatible @azure/arm-consumption version
+
 ## 2.3.0
 
 ### Minor Changes
