@@ -179,7 +179,6 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'IPAddressManager-IP-Hours',
   'Gateway:VTL-Storage',
   'Aurora:ServerlessV2Usage', // RDS Aurora
-
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
