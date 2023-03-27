@@ -46,6 +46,7 @@ export const SSD_USAGE_TYPES: string[] = [
   'ra3.16xlarge', // Redshift SSD
   'Storage.SSD.50', // Fsx
   'Storage.MultiAZ:SSD', // Fsx
+  'RDS:GP3-Storage', // RDS
 ]
 
 export const HDD_USAGE_TYPES: string[] = [
@@ -98,6 +99,10 @@ export const HDD_USAGE_TYPES: string[] = [
   'WarmStorage-ByteHrs-DynamoDB', //AWSBackup
   'MagneticStore-ByteHrs', // EBS Backup
   'ColdStorage-ByteHrs-DynamoDB', //AWSBackup
+  'WarmStorage-ByteHrs-S3', // S3
+  'AMP:MetricStorageByteHrs',
+  'TimedStorage-INT-AIA-ByteHrs', // S3 Glacier
+  'TimedStorage-GIR-ByteHrs', // S3 Glacier
 ]
 
 export const NETWORKING_USAGE_TYPES: string[] = [
@@ -169,6 +174,11 @@ export const UNKNOWN_USAGE_TYPES: string[] = [
   'Kafka.mcu.general',
   'SnapshotArchiveStorage',
   'PaidPrivateCA',
+  'Firehose-VpcDelivery-Hours',
+  'Airflow-MediumEnvironment',
+  'IPAddressManager-IP-Hours',
+  'Gateway:VTL-Storage',
+  'Aurora:ServerlessV2Usage', // RDS Aurora
 ]
 
 export const UNSUPPORTED_USAGE_TYPES: string[] = [
