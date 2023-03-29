@@ -209,7 +209,7 @@ export default class CostAndUsageReports {
     return result
   }
 
-  private getFootprintEstimateFromUsageRow(
+  getFootprintEstimateFromUsageRow(
     costAndUsageReportRow: CostAndUsageReportsRow,
     unknownRows: CostAndUsageReportsRow[],
   ): FootprintEstimate | void {

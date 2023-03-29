@@ -12,6 +12,7 @@ export { default as RDSStorage } from './RDSStorage'
 export { default as Lambda } from './Lambda'
 export { ServiceWrapper } from './ServiceWrapper'
 export { default as CostAndUsageReports } from './CostAndUsageReports'
+export * from './CostAndUsageTypes'
 export { AWS_REGIONS } from './AWSRegions'
 export {
   RightsizingRecommendations,
