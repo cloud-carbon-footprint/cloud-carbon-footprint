@@ -57,5 +57,8 @@
     "release": "changeset version && yarn install",
     "postinstall": "husky install",
     "version": "yarn changeset version && yarn install --no-immutable"
+  },
+  "dependencies": {
+    "node-fetch": "2"
   }
 }
