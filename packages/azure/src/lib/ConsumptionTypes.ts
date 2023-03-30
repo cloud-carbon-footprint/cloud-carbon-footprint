@@ -2,7 +2,7 @@
  * © 2021 Thoughtworks, Inc.
  */
 
-import { QUERY_DATE_TYPES } from '@cloud-carbon-footprint/common'
+import { QUERY_DATE_TYPES, TagCollection } from '@cloud-carbon-footprint/common'
 import { LegacyUsageDetail, ModernUsageDetail } from '@azure/arm-consumption'
 
 export type TenantHeaders = {
@@ -23,15 +23,11 @@ export type UsageRowPageErrorResponse = {
   message: string
 }
 
-type AzureTags = {
-  [tagKey: string]: string
-}
-
 export type UsageDetailResult = {
   id: string
   name: string
   type: string
-  tags: AzureTags
+  tags: TagCollection
   kind: string
   properties: LegacyUsageDetail | ModernUsageDetail
 }
