@@ -46,6 +46,7 @@ export interface CCFConfig {
     CACHE_BUCKET_NAME?: string
     VCPUS_PER_CLOUD_COMPOSER_ENVIRONMENT?: number
     VCPUS_PER_GKE_CLUSTER?: number
+    RESOURCE_TAG_NAMES?: string[]
   }
   AZURE?: {
     INCLUDE_ESTIMATES?: boolean
@@ -111,6 +112,12 @@ const getAWSAccounts = () => {
 const getAWSResourceTagNames = () => {
   return process.env.AWS_RESOURCE_TAG_NAMES
     ? process.env.AWS_RESOURCE_TAG_NAMES
+    : '[]'
+}
+
+const getGCPResourceTagNames = () => {
+  return process.env.GCP_RESOURCE_TAG_NAMES
+    ? process.env.GCP_RESOURCE_TAG_NAMES
     : '[]'
 }
 
@@ -237,6 +244,7 @@ const getConfig = (): CCFConfig => ({
     BILLING_PROJECT_ID: getEnvVar('GCP_BILLING_PROJECT_ID') || '',
     BILLING_PROJECT_NAME: getEnvVar('GCP_BILLING_PROJECT_NAME') || '',
     CACHE_BUCKET_NAME: getEnvVar('GCS_CACHE_BUCKET_NAME') || '',
+    RESOURCE_TAG_NAMES: JSON.parse(getGCPResourceTagNames()),
   },
   AZURE: {
     INCLUDE_ESTIMATES: process.env.AZURE_INCLUDE_ESTIMATES
