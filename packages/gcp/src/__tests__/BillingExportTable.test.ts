@@ -7,6 +7,7 @@ import {
   EstimationResult,
   GroupBy,
   LookupTableOutput,
+  setConfig,
 } from '@cloud-carbon-footprint/common'
 import {
   ComputeEstimator,
@@ -35,6 +36,7 @@ import {
   mockQueryResultsGPUMachineTypes,
   mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryResultsUnknownUsages,
+  mockQueryResultsWithTags,
 } from './fixtures/bigQuery.fixtures'
 import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
 
@@ -62,6 +64,7 @@ describe('GCP BillingExportTable Service', () => {
     GCP_CLOUD_CONSTANTS.KILOWATT_HOURS_BY_SERVICE_AND_USAGE_UNIT = {
       total: {},
     }
+    jest.clearAllMocks()
   })
 
   it('Returns estimation results for App Engine SSD Storage & GCS Storage accumulated', async () => {
@@ -104,6 +107,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'App Engine',
             cost: 15,
+            tags: {},
             region: 'us-east1',
           },
         ],
@@ -154,6 +158,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud SQL',
             cost: 7,
+            tags: {},
             region: 'us-east1',
           },
           {
@@ -165,6 +170,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 7,
+            tags: {},
             region: 'us-east1',
           },
         ],
@@ -184,6 +190,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud Dataflow',
             cost: 12,
+            tags: {},
             region: 'us-west1',
           },
         ],
@@ -234,6 +241,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud Storage',
             cost: 10,
+            tags: {},
             region: 'nam4',
           },
           {
@@ -243,6 +251,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 1.9419763604819328e-8,
             cost: 120,
             kilowattHours: 0.000042774809702245215,
+            tags: {},
             region: 'us-central1',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
@@ -262,6 +271,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 2.0858679274940342e-13,
             cost: 220,
             kilowattHours: 5.585721305881937e-10,
+            tags: {},
             region: 'us',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
@@ -314,6 +324,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 150,
+            tags: {},
             region: 'us-east1',
           },
           {
@@ -325,6 +336,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 150,
+            tags: {},
             region: 'asia-northeast1',
           },
           {
@@ -336,6 +348,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 150,
+            tags: {},
             region: 'asia',
           },
           {
@@ -347,6 +360,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 150,
+            tags: {},
             region: 'asia-south1',
           },
           {
@@ -358,6 +372,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud Filestore',
             cost: 70,
+            tags: {},
             region: 'us-central1',
           },
           {
@@ -369,6 +384,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud SQL',
             cost: 80,
+            tags: {},
             region: 'us-east4',
           },
           {
@@ -380,6 +396,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud SQL',
             cost: 80,
+            tags: {},
             region: 'asia-south1',
           },
         ],
@@ -430,6 +447,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud Memorystore for Redis',
             cost: 170,
+            tags: {},
             region: 'us-central1',
           },
           {
@@ -441,6 +459,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud Memorystore for Redis',
             cost: 170,
+            tags: {},
             region: 'us-central2',
           },
         ],
@@ -491,6 +510,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 10,
+            tags: {},
             region: 'us-east1',
           },
           {
@@ -502,6 +522,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 7,
+            tags: {},
             region: 'us-west1',
           },
         ],
@@ -521,6 +542,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 10,
+            tags: {},
             region: 'us-east1',
           },
         ],
@@ -571,6 +593,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 0.758656,
+            tags: {},
             region: 'us-central1',
           },
         ],
@@ -590,6 +613,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 1.570404,
+            tags: {},
             region: 'us-central1',
           },
         ],
@@ -609,6 +633,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 0.959995,
+            tags: {},
             region: 'us-central1',
           },
         ],
@@ -628,6 +653,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 0.681886,
+            tags: {},
             region: 'asia-south1',
           },
         ],
@@ -647,6 +673,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Compute Engine',
             cost: 0.681886,
+            tags: {},
             region: 'asia-south1',
           },
         ],
@@ -725,6 +752,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             serviceName: 'Cloud SQL',
             cost: 49,
+            tags: {},
             region: 'us-east1',
           },
           {
@@ -734,6 +762,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0.0010415086271501168,
             cost: 20,
             kilowattHours: 13.352674707052781,
+            tags: {},
             region: 'us-west1',
             serviceName: 'Cloud SQL',
             usesAverageCPUConstant: false,
@@ -781,6 +810,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.0004018621663586667,
             cost: 190,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Cloud Dataflow',
             usesAverageCPUConstant: true,
@@ -792,6 +822,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.0000021042472983585367,
             cost: 5,
+            tags: {},
             region: 'Unknown',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
@@ -804,6 +835,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0.000005120574505333334,
             cost: 10,
             kilowattHours: 0.010667863552777778,
+            tags: {},
             region: 'us-east1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
@@ -852,6 +884,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 7.6772109375e-9,
             cost: 170,
             kilowattHours: 0.00001691015625,
+            tags: {},
             region: 'us-central1',
             serviceName: 'Cloud Memorystore for Redis',
             usesAverageCPUConstant: false,
@@ -863,6 +896,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 2.19789390425157,
             cost: 150,
             kilowattHours: 3048.3965384903886,
+            tags: {},
             region: 'asia-south1',
             serviceName: 'Kubernetes Engine',
             usesAverageCPUConstant: true,
@@ -874,6 +908,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0.12238588237226934,
             cost: 350,
             kilowattHours: 269.5724281327519,
+            tags: {},
             region: 'us-central1',
             serviceName: 'Kubernetes Engine',
             usesAverageCPUConstant: true,
@@ -884,6 +919,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.2087717970211498,
             cost: 50,
+            tags: {},
             region: 'asia-south1',
             serviceName: 'Cloud Spanner',
             usesAverageCPUConstant: false,
@@ -895,6 +931,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 4.238710334472657e-7,
             cost: 150,
+            tags: {},
             region: 'asia-east1',
             serviceName: 'Cloud Spanner',
             usesAverageCPUConstant: false,
@@ -905,6 +942,7 @@ describe('GCP BillingExportTable Service', () => {
             accountName: accountName,
             cloudProvider: 'GCP',
             co2e: 0,
+            tags: {},
             region: 'europe',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
@@ -952,6 +990,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 1.3125386856487022e-8,
             cost: 10,
+            tags: {},
             region: 'us-west1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
@@ -963,6 +1002,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.0000012795859171217682,
             cost: 10,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
@@ -975,6 +1015,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0.0000016551207737725232,
             cost: 10,
             kilowattHours: 0.0026609658742323523,
+            tags: {},
             region: 'europe-central2',
             serviceName: 'Cloud Pub/Sub',
             usesAverageCPUConstant: false,
@@ -986,6 +1027,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 1.3195092691219494e-8,
             cost: 10,
             kilowattHours: 0.00016916785501563453,
+            tags: {},
             region: 'us-west1',
             serviceName: 'Compute Engine',
             usesAverageCPUConstant: false,
@@ -1031,6 +1073,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 1.0393783450126647e-18,
             cost: 10,
+            tags: {},
             region: 'us-west1',
             serviceName: 'Compute engine',
             usesAverageCPUConstant: false,
@@ -1042,6 +1085,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 6.0369372367858886e-18,
             cost: 8,
+            tags: {},
             region: 'europe-west1',
             serviceName: 'Compute engine',
             usesAverageCPUConstant: false,
@@ -1053,6 +1097,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 1.9419861336549123e-17,
             cost: 5,
+            tags: {},
             region: 'us-central1',
             serviceName: 'Compute engine',
             usesAverageCPUConstant: false,
@@ -1099,6 +1144,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.000014562404999999998,
             cost: 10,
+            tags: {},
             region: 'us-west1',
             serviceName: 'Compute engine',
             usesAverageCPUConstant: true,
@@ -1110,6 +1156,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.00005185944,
             cost: 8,
+            tags: {},
             region: 'europe-west1',
             serviceName: 'Compute engine',
             usesAverageCPUConstant: true,
@@ -1121,6 +1168,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.00003131982,
             cost: 8,
+            tags: {},
             region: 'europe-west1',
             serviceName: 'Notebooks',
             usesAverageCPUConstant: true,
@@ -1167,6 +1215,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.003249840474753334,
             cost: 456,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Compute Engine',
             usesAverageCPUConstant: true,
@@ -1178,6 +1227,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.15353438643927866,
             cost: 6018.6968,
+            tags: {},
             region: 'us-east1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
@@ -1197,6 +1247,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.0000024561671112909644,
             cost: 789,
+            tags: {},
             region: 'us-east1',
             serviceName: 'App Engine',
             usesAverageCPUConstant: false,
@@ -1208,6 +1259,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 8.025428493835144e-18,
             cost: 0.012744,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Stackdriver Monitoring',
             usesAverageCPUConstant: false,
@@ -1227,6 +1279,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.0000012795859171217682,
             cost: 123,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
@@ -1238,6 +1291,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 0.000003604108730299473,
             cost: 0.816998,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Cloud Run',
             usesAverageCPUConstant: false,
@@ -1257,6 +1311,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 5.2944844961166387e-17,
             cost: 10,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Compute Engine',
             usesAverageCPUConstant: false,
@@ -1268,6 +1323,7 @@ describe('GCP BillingExportTable Service', () => {
             cloudProvider: 'GCP',
             co2e: 4.1842706470923184e-13,
             cost: 25,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Cloud Run',
             usesAverageCPUConstant: false,
@@ -1288,6 +1344,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0,
             cost: 0.000004,
             kilowattHours: 0,
+            tags: {},
             region: 'asia-south1',
             serviceName: 'Cloud Storage',
             usesAverageCPUConstant: false,
@@ -1299,6 +1356,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0,
             cost: 200,
             kilowattHours: 0,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Secret Manager',
             usesAverageCPUConstant: false,
@@ -1310,6 +1368,7 @@ describe('GCP BillingExportTable Service', () => {
             co2e: 0,
             cost: 200,
             kilowattHours: 0,
+            tags: {},
             region: 'us-east1',
             serviceName: 'Cloud Key Management Service (KMS)',
             usesAverageCPUConstant: false,
@@ -1405,6 +1464,81 @@ describe('GCP BillingExportTable Service', () => {
         usageType: 'Network Inter Region Ingress from Netherlands to Americas',
       },
     ]
+    expect(result).toEqual(expectedResult)
+  })
+
+  it('returns estimates for instances with tags', async () => {
+    // given
+    setConfig({
+      GCP: {
+        RESOURCE_TAG_NAMES: ['tag:environment, label:project'],
+      },
+    })
+
+    mockJob.getQueryResults.mockResolvedValue(mockQueryResultsWithTags)
+
+    // when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    const result = await billingExportTableService.getEstimates(
+      startDate,
+      endDate,
+      grouping,
+    )
+
+    // then
+    const expectedResult: EstimationResult[] = [
+      {
+        timestamp: new Date('2020-11-02'),
+        serviceEstimates: [
+          {
+            kilowattHours: 0.00512128634808404,
+            co2e: 0.0000024582174470803393,
+            usesAverageCPUConstant: false,
+            cloudProvider: 'GCP',
+            accountId: accountId,
+            accountName: accountName,
+            serviceName: 'App Engine',
+            cost: 5,
+            region: 'us-east1',
+            tags: {
+              environment: 'dev',
+              project: 'ccf',
+            },
+          },
+          {
+            accountId: 'test-account-id',
+            accountName: 'test-account-name',
+            cloudProvider: 'GCP',
+            co2e: 0.00002815242666666667,
+            cost: 7,
+            kilowattHours: 0.05865088888888889,
+            region: 'us-east1',
+            serviceName: 'Compute Engine',
+            tags: {
+              environment: 'prod',
+              team: 'thoughtworks',
+            },
+            usesAverageCPUConstant: true,
+          },
+        ],
+        groupBy: grouping,
+        periodEndDate: new Date('2020-11-02T23:59:59.000Z'),
+        periodStartDate: new Date('2020-11-02T00:00:00.000Z'),
+      },
+    ]
+
     expect(result).toEqual(expectedResult)
   })
 
