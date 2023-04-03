@@ -6,6 +6,7 @@ import { BigQuery } from '@google-cloud/bigquery'
 import {
   EstimationResult,
   GroupBy,
+  Logger,
   LookupTableOutput,
   setConfig,
 } from '@cloud-carbon-footprint/common'
@@ -36,6 +37,7 @@ import {
   mockQueryResultsGPUMachineTypes,
   mockQueryResultsUnknownAndCloudSQLCompute,
   mockQueryResultsUnknownUsages,
+  mockQueryResultsWithNoTags,
   mockQueryResultsWithTags,
 } from './fixtures/bigQuery.fixtures'
 import { lookupTableInputData } from './fixtures/lookupTable.fixtures'
@@ -1471,7 +1473,7 @@ describe('GCP BillingExportTable Service', () => {
     // given
     setConfig({
       GCP: {
-        RESOURCE_TAG_NAMES: ['tag:environment, label:project'],
+        RESOURCE_TAG_NAMES: ['tag:environment, label:project', 'project:team'],
       },
     })
 
@@ -1540,6 +1542,44 @@ describe('GCP BillingExportTable Service', () => {
     ]
 
     expect(result).toEqual(expectedResult)
+  })
+
+  it('logs warning and ignores tags with incorrect prefix', async () => {
+    // given
+    const badTagName = 'beetlejuice:environment'
+
+    setConfig({
+      GCP: {
+        RESOURCE_TAG_NAMES: [badTagName],
+      },
+    })
+
+    mockJob.getQueryResults.mockResolvedValueOnce(mockQueryResultsWithNoTags)
+    const loggerSpy = jest.spyOn(Logger.prototype, 'warn')
+
+    // when
+    const billingExportTableService = new BillingExportTable(
+      new ComputeEstimator(),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
+      new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
+      new NetworkingEstimator(GCP_CLOUD_CONSTANTS.NETWORKING_COEFFICIENT),
+      new MemoryEstimator(GCP_CLOUD_CONSTANTS.MEMORY_COEFFICIENT),
+      new UnknownEstimator(GCP_CLOUD_CONSTANTS.ESTIMATE_UNKNOWN_USAGE_BY),
+      new EmbodiedEmissionsEstimator(
+        GCP_CLOUD_CONSTANTS.SERVER_EXPECTED_LIFESPAN,
+      ),
+      new BigQuery(),
+    )
+
+    // Not testing the actual result here since it's redundant, just that the logger is called
+    await billingExportTableService.getEstimates(startDate, endDate, grouping)
+
+    //then
+    const badPrefix = badTagName.split(':')[0]
+
+    expect(loggerSpy).toHaveBeenCalledWith(
+      `Unknown tag prefix: ${badPrefix}. Ignoring tag: ${badTagName}`,
+    )
   })
 
   it('throws an error when get query results fails', async () => {

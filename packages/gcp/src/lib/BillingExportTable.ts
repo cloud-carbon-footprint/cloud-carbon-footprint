@@ -714,7 +714,7 @@ export default class BillingExportTable {
     tagNames.forEach((tag) => {
       const [prefix, key] = tag.split(':')
       const column = tagColumns[prefix]
-      if (tagColumns) {
+      if (column) {
         column.push(key)
       } else {
         this.billingExportTableLogger.warn(

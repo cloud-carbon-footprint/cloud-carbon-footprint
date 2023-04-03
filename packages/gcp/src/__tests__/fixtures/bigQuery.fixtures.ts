@@ -943,3 +943,32 @@ export const mockQueryResultsWithTags: any[][] = [
     },
   ],
 ]
+
+export const mockQueryResultsWithNoTags: any[][] = [
+  [
+    {
+      timestamp: bigQueryDateOne,
+      accountId: accountId,
+      accountName: accountName,
+      region: 'us-east1',
+      serviceName: 'App Engine',
+      usageType: 'Cloud Datastore Storage',
+      usageUnit: 'byte-seconds',
+      usageAmount: 2.83e16,
+      cost: 5,
+      machineType: null,
+    },
+    {
+      timestamp: bigQueryDateOne,
+      accountId: accountId,
+      accountName: accountName,
+      region: 'us-east1',
+      serviceName: 'Compute Engine',
+      usageType: 'Compute optimized Core running in Americas',
+      usageUnit: 'seconds',
+      usageAmount: 80000,
+      cost: 7,
+      machineType: null,
+    },
+  ],
+]
