@@ -728,7 +728,7 @@ export default class BillingExportTable {
 
   private rawTagsToTagCollection(usageRow: any): TagCollection {
     const parsedTags: TagCollection = {}
-    const options = ['tags', 'labels', 'projectLabels']
+    const options = ['tags', 'projectLabels', 'labels']
 
     options.forEach((option) => {
       const tags: string = usageRow[option]
