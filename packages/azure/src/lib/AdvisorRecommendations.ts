@@ -81,9 +81,11 @@ export default class AdvisorRecommendations
             co2eSavings += currentMemoryFootprint.co2e
           }
 
+          const resizingTypes = ['Right-size', 'SkuChange']
           if (
-            recommendation.extendedProperties.recommendationType ===
-            'Right-size'
+            resizingTypes.includes(
+              recommendation.extendedProperties.recommendationType,
+            )
           ) {
             const rightsizingTargetRecommendation =
               new RightsizingTargetRecommendation(recommendation)
@@ -134,13 +136,14 @@ export default class AdvisorRecommendations
     rightsizingTargetRecommendation?: RightsizingTargetRecommendation,
   ): string {
     const modifyDetail = `Update instance type ${rightsizingCurrentRecommendation.instanceType} to ${rightsizingTargetRecommendation?.instanceType}`
-    let defaultDetail = `${rightsizingCurrentRecommendation.type} instance: ${rightsizingCurrentRecommendation.instanceName}.`
+    let defaultDetail = `${rightsizingCurrentRecommendation.type}: ${rightsizingCurrentRecommendation.instanceName}.`
     if (!rightsizingCurrentRecommendation.instanceName) {
       defaultDetail = `${rightsizingCurrentRecommendation.type} instance with Resource ID: ${rightsizingCurrentRecommendation.resourceId}.`
     }
     const recommendationTypes: { [key: string]: string } = {
       Shutdown: defaultDetail,
-      'Right-size': `${defaultDetail} ${modifyDetail}`,
+      ['Right-size']: `${defaultDetail} ${modifyDetail}`,
+      SkuChange: `${defaultDetail} ${modifyDetail}`,
     }
     return recommendationTypes[rightsizingCurrentRecommendation.type]
   }
