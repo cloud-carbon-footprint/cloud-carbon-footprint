@@ -32,7 +32,10 @@ Example: Specifying `AWS_RESOURCE_TAG_NAMES=["user:Environment", “aws:createdB
 }
 ```
 
-### AWS Tagging Conventions
+## Tagging Conventions
+
+### AWS
+
 The AWS Cost and Usage Reporting (CUR) translates tag names to names that are valid Athena column names. On top of this, it also adds a prefix to distinguish between user-created tags and AWS-internal tags. While not documented, we have found that a tag such as SourceRepository will be `user:SourceRepository` in CUR, and `resource_tags_user_source_repository` in Athena (AWS-internal tags will be prefixed with `aws:` instead of `user:` in CUR).
 To include a list of resource tags for AWS, you must set the `AWS_RESOURCE_TAG_NAMES` with the appropriate prefixes included.
 
@@ -41,7 +44,45 @@ Example:
 
 For more information on AWS tags, you can refer to the [official AWS tagging documentation](https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html).
 
-### Azure Tagging Conventions
+### GCP
+
+The exported billing data for Google Cloud includes both tags and labels for listed resources. We support both properties as configurable tagging options. This includes organization-level tags, in addition to both project and resource-level labels.
+To include a list of resource tags/labels for GCP, you must set the GCP_RESOURCE_TAG_NAMES. Each tag type will need to be specified using the same variable, but using a colon-separated prefix similar to AWS to specify the label/tag type that the key refers to.
+
+Example: `GCP_RESOURCE_TAG_NAMES=["label:example-label", "project:example-projectLabel", "tag:example-tag" ]` will respectively represent the desired label, project label, and tag keys to include.
+
+_Note_: Regardless of the type of tag specified, the resulting key/value pairs for a resource will be aggregated all under the `tags` property for each result. Therefore, the example above, will yield the following results:
+
+```JSON
+{
+  "cloudProvider": "GCP",
+  ...FootprintEstimate,
+  "tags": {
+        "example-label": "value",
+        "example-tag": "value",
+        "example-projectLabel": "value"
+    }
+}
+```
+
+With this in mind, it is recommended to use unique keys when including multiple types in order to avoid potential conflicts. If a duplication occurs, the lowest-level type will take precedence (labels > project labels > tags).
+
+#### Permissions
+
+Including tags and labels in query results requires the following roles assigned to a service account:
+
+```text
+roles/resourcemanager.tagUser
+roles/bigquery.dataOwner
+roles/bigquery.user
+```
+
+If the service account you're using does not have the correct permissions to view these properties in BigQuery, then you may experience your requests hanging after adding tags to the config variable.
+
+For more information on GCP tags and labels, you can refer to the [official GCP tagging documentation](https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing).
+
+### Azure 
+
 The [Azure Consumption API](https://learn.microsoft.com/en-us/rest/api/consumption/) exposes a resource's `tag` property as a field in each row of billing data. This field allows for access to the `resourceGroup` property as well.
 Both of these properties can be accessed as tagging configs within CCF. To include a list of resource tags for Azure, you must set the `Azure_Resource_Tag_Names`.
 
