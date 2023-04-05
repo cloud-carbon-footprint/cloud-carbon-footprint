@@ -3,8 +3,7 @@
  */
 
 import { ProjectsClient } from '@google-cloud/resource-manager'
-import { compute_v1 } from 'googleapis'
-import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
+import Compute, { protos as googleCompute } from '@google-cloud/compute'
 import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { GoogleAuthClient, wait } from '@cloud-carbon-footprint/common'
@@ -19,17 +18,15 @@ import {
   mockedInstanceResultItems,
   mockedMachineTypesGetItems,
 } from './fixtures/googleapis.fixtures'
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
-
+import { mockedProjects } from './fixtures/resourceManager.fixtures'
+import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixtures'
+import Instance = googleCompute.google.cloud.compute.v1.Instance
+import MachineType = googleCompute.google.cloud.compute.v1.MachineType
 import ServiceWrapper from '../lib/ServiceWrapper'
 import {
   ActiveProject,
   RecommenderRecommendations,
 } from '../lib/RecommendationsTypes'
-
-import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixtures'
-import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { setupSpy, setupSpyWithRejectedValue } from './helpers'
 
 jest.mock('@cloud-carbon-footprint/common', () => ({
@@ -67,7 +64,7 @@ describe('GCP Service Wrapper', () => {
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 
     const googleAuthClient: GoogleAuthClient = await auth.getClient()
-    const googleComputeClient = googleCompute('v1')
+    const googleComputeClient = Compute.v1
 
     serviceWrapper = new ServiceWrapper(
       new ProjectsClient(),
@@ -77,29 +74,45 @@ describe('GCP Service Wrapper', () => {
     )
 
     setupSpy(
-      googleComputeClient.instances,
-      'aggregatedList',
+      googleComputeClient.InstancesClient.prototype,
+      'aggregatedListAsync',
       mockedInstanceResultItems,
     )
     setupSpy(
-      googleComputeClient.disks,
-      'aggregatedList',
+      googleComputeClient.DisksClient.prototype,
+      'aggregatedListAsync',
       mockedDisksResultItems,
     )
-    setupSpy(googleComputeClient.disks, 'get', mockedDisksGetSSDDetails)
     setupSpy(
-      googleComputeClient.addresses,
-      'aggregatedList',
+      googleComputeClient.DisksClient.prototype,
+      'get',
+      mockedDisksGetSSDDetails,
+    )
+    setupSpy(
+      googleComputeClient.AddressesClient.prototype,
+      'aggregatedListAsync',
       mockedAddressesResultItems,
     )
     setupSpy(
-      googleComputeClient.machineTypes,
+      googleComputeClient.MachineTypesClient.prototype,
       'get',
       mockedMachineTypesGetItems,
     )
-    setupSpy(googleComputeClient.instances, 'get', mockedInstanceGetItems)
-    setupSpy(googleComputeClient.images, 'get', mockedImageGetDetails)
-    setupSpy(googleComputeClient.addresses, 'get', mockedAddressGetDetails)
+    setupSpy(
+      googleComputeClient.InstancesClient.prototype,
+      'get',
+      mockedInstanceGetItems,
+    )
+    setupSpy(
+      googleComputeClient.ImagesClient.prototype,
+      'get',
+      mockedImageGetDetails,
+    )
+    setupSpy(
+      googleComputeClient.AddressesClient.prototype,
+      'get',
+      mockedAddressGetDetails,
+    )
   })
 
   it('gets active projects', async () => {
@@ -148,12 +161,11 @@ describe('GCP Service Wrapper', () => {
   })
 
   it('gets instance details', async () => {
-    const instanceDetails: Schema$Instance =
-      await serviceWrapper.getInstanceDetails(
-        'project',
-        'test-instance',
-        'us-west1-b',
-      )
+    const instanceDetails: Instance = await serviceWrapper.getInstanceDetails(
+      'project',
+      'test-instance',
+      'us-west1-b',
+    )
 
     const expectedResult: InstanceData = {
       data: {
@@ -169,7 +181,7 @@ describe('GCP Service Wrapper', () => {
   })
 
   it('gets machine type details', async () => {
-    const machineTypeDetails: Schema$MachineType =
+    const machineTypeDetails: MachineType =
       await serviceWrapper.getMachineTypeDetails(
         'project',
         'test-instance',
@@ -241,7 +253,7 @@ describe('GCP Service Wrapper', () => {
 
   describe('error handling', () => {
     let serviceWrapper: ServiceWrapper
-    const googleComputeClient = googleCompute('v1')
+    const googleComputeClient = Compute.v1
 
     beforeEach(async () => {
       const auth = new GoogleAuth({
@@ -264,7 +276,7 @@ describe('GCP Service Wrapper', () => {
 
     it('fails to get active zones for project', async () => {
       setupSpyWithRejectedValue(
-        googleComputeClient.instances,
+        googleComputeClient.InstancesClient,
         'aggregatedList',
         'error',
       )

@@ -2,35 +2,33 @@
  * © 2021 Thoughtworks, Inc.
  */
 import R from 'ramda'
-import { ProjectsClient, protos } from '@google-cloud/resource-manager'
-import { APIEndpoint } from 'googleapis-common'
+import {
+  ProjectsClient,
+  protos as googleResource,
+} from '@google-cloud/resource-manager'
 import { RecommenderClient } from '@google-cloud/recommender'
-import { compute_v1 } from 'googleapis'
-import Project = protos.google.cloud.resourcemanager.v3.IProject
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
-import Schema$Disk = compute_v1.Schema$Disk
-import Schema$Image = compute_v1.Schema$Image
-import Schema$Address = compute_v1.Schema$Address
-import Schema$InstancesScopedList = compute_v1.Schema$InstancesScopedList
-import Schema$DisksScopedList = compute_v1.Schema$DisksScopedList
-import Schema$AddressesScopedList = compute_v1.Schema$AddressesScopedList
+import Compute, { protos as googleCompute } from '@google-cloud/compute'
+import Project = googleResource.google.cloud.resourcemanager.v3.IProject
 import { GoogleAuthClient, Logger, wait } from '@cloud-carbon-footprint/common'
 import { InstanceData } from '../__tests__/fixtures/googleapis.fixtures'
 import {
   ActiveProject,
   RecommenderRecommendations,
 } from './RecommendationsTypes'
+import Instance = googleCompute.google.cloud.compute.v1.Instance
+import MachineType = googleCompute.google.cloud.compute.v1.MachineType
+import Disk = googleCompute.google.cloud.compute.v1.Disk
+import Image = googleCompute.google.cloud.compute.v1.Image
+import Address = googleCompute.google.cloud.compute.v1.Address
+import InstancesScopedList = googleCompute.google.cloud.compute.v1.InstancesScopedList
+import DisksScopedList = googleCompute.google.cloud.compute.v1.DisksScopedList
+import AddressesScopedList = googleCompute.google.cloud.compute.v1.AddressesScopedList
 
 const RETRY_AFTER = 10
 
 type Zone = [
   string,
-  (
-    | Schema$InstancesScopedList
-    | Schema$DisksScopedList
-    | Schema$AddressesScopedList
-  ),
+  InstancesScopedList | DisksScopedList | AddressesScopedList,
 ]
 
 export default class ServiceWrapper {
@@ -39,7 +37,7 @@ export default class ServiceWrapper {
   constructor(
     private readonly googleProjectsClient: ProjectsClient,
     private readonly googleAuthClient: GoogleAuthClient,
-    private readonly googleComputeClient: APIEndpoint,
+    private readonly googleComputeClient: typeof Compute,
     private readonly googleRecommenderClient: RecommenderClient,
   ) {
     this.serviceWrapperLogger = new Logger('GCP Service Wrapper')
@@ -161,7 +159,7 @@ export default class ServiceWrapper {
     projectId: string,
     instanceId: string,
     zone: string,
-  ): Promise<Schema$Instance> {
+  ): Promise<Instance> {
     const computeEngineRequest = {
       project: projectId,
       zone: zone,
@@ -178,7 +176,7 @@ export default class ServiceWrapper {
     projectId: string,
     machineType: string,
     zone: string,
-  ): Promise<Schema$MachineType> {
+  ): Promise<MachineType> {
     const machineTypeRequest = {
       project: projectId,
       zone: zone,
@@ -199,7 +197,7 @@ export default class ServiceWrapper {
     projectId: string,
     diskId: string,
     zone: string,
-  ): Promise<Schema$Disk> {
+  ): Promise<Disk> {
     const diskDetailsRequest = {
       project: projectId,
       zone: zone,
@@ -210,10 +208,7 @@ export default class ServiceWrapper {
     return result.data
   }
 
-  async getImageDetails(
-    projectId: string,
-    imageId: string,
-  ): Promise<Schema$Image> {
+  async getImageDetails(projectId: string, imageId: string): Promise<Image> {
     const ImageDetailsRequest = {
       project: projectId,
       image: imageId,
@@ -229,7 +224,7 @@ export default class ServiceWrapper {
     projectId: string,
     addressId: string,
     zone: string,
-  ): Promise<Schema$Address> {
+  ): Promise<Address> {
     const AddressDetailsRequest = {
       project: projectId,
       region: zone,

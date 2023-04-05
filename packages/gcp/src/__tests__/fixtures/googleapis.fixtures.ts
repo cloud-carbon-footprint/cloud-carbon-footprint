@@ -1,49 +1,51 @@
 /*
  * © 2021 Thoughtworks, Inc.
  */
-import { compute_v1 } from 'googleapis'
-import Schema$Instance = compute_v1.Schema$Instance
-import Schema$MachineType = compute_v1.Schema$MachineType
-import Schema$Image = compute_v1.Schema$Image
-import Schema$InstanceAggregatedList = compute_v1.Schema$InstanceAggregatedList
-import Schema$Disk = compute_v1.Schema$Disk
-import Schema$DiskAggregatedList = compute_v1.Schema$DiskAggregatedList
-import Schema$AddressAggregatedList = compute_v1.Schema$AddressAggregatedList
-import Schema$Address = compute_v1.Schema$Address
+
+import { protos as googleCompute } from '@google-cloud/compute'
+import Instance = googleCompute.google.cloud.compute.v1.Instance
+import MachineType = googleCompute.google.cloud.compute.v1.MachineType
+import Disk = googleCompute.google.cloud.compute.v1.Disk
+import Image = googleCompute.google.cloud.compute.v1.Image
+import Address = googleCompute.google.cloud.compute.v1.Address
+import InstanceAggregatedList = google.cloud.compute.v1.InstanceAggregatedList
+import DiskAggregatedList = google.cloud.compute.v1.DiskAggregatedList
+import AddressAggregatedList = google.cloud.compute.v1.AddressAggregatedList
+import { google } from '@google-cloud/compute/build/protos/protos'
 
 export type InstanceData = {
-  data: Schema$Instance
+  data: Partial<Instance>
 }
 
 type MachineTypeData = {
-  data: Schema$MachineType
+  data: Partial<MachineType>
 }
 
 type ImageDetails = {
-  data: Schema$Image
+  data: Partial<Image>
 }
 
 type DiskData = {
-  data: Schema$Disk
+  data: Partial<Disk>
 }
 
 type AddressDetails = {
-  data: Schema$Address
+  data: Partial<Address>
 }
 
-type InstanceAggregatedList = {
-  data: Schema$InstanceAggregatedList
+type InstanceAggregatedListData = {
+  data: Partial<InstanceAggregatedList>
 }
 
-type DiskAggregatedList = {
-  data: Schema$DiskAggregatedList
+type DiskAggregatedListData = {
+  data: Partial<DiskAggregatedList>
 }
 
-type AddressAggregatedList = {
-  data: Schema$AddressAggregatedList
+type AddressAggregatedListData = {
+  data: Partial<AddressAggregatedList>
 }
 
-export const mockedInstanceResultItems: InstanceAggregatedList = {
+export const mockedInstanceResultItems: InstanceAggregatedListData = {
   data: {
     items: {
       'zones/us-west1-a': {
@@ -57,7 +59,7 @@ export const mockedInstanceResultItems: InstanceAggregatedList = {
   },
 }
 
-export const mockedInstanceRegionsResultItems: InstanceAggregatedList = {
+export const mockedInstanceRegionsResultItems: InstanceAggregatedListData = {
   data: {
     items: {
       'regions/us-west1': {
@@ -67,7 +69,7 @@ export const mockedInstanceRegionsResultItems: InstanceAggregatedList = {
   },
 }
 
-export const mockedInstanceGlobalResultItems: InstanceAggregatedList = {
+export const mockedInstanceGlobalResultItems: InstanceAggregatedListData = {
   data: {
     items: {
       global: {
@@ -77,11 +79,11 @@ export const mockedInstanceGlobalResultItems: InstanceAggregatedList = {
   },
 }
 
-export const mockedAddressesResultItems: AddressAggregatedList = {
+export const mockedAddressesResultItems: AddressAggregatedListData = {
   data: { items: {} },
 }
 
-export const mockedDisksResultItems: DiskAggregatedList = {
+export const mockedDisksResultItems: DiskAggregatedListData = {
   data: { items: {} },
 }
 
