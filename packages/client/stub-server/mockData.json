@@ -2,251 +2,247 @@
   "emissions": [
     {
       "region": "us-east-1",
-      "mtPerKwHour": 0.0004545
+      "mtPerKwHour": 0.000379069
     },
     {
       "region": "us-east-2",
-      "mtPerKwHour": 0.000475105
+      "mtPerKwHour": 0.000410608
     },
     {
       "region": "us-west-1",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000322167
     },
     {
       "region": "us-west-2",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000322167
     },
     {
       "region": "us-gov-east-1",
-      "mtPerKwHour": 0.0004545
+      "mtPerKwHour": 0.000379069
     },
     {
       "region": "us-gov-west-1",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000322167
     },
     {
       "region": "af-south-1",
-      "mtPerKwHour": 0.000928
+      "mtPerKwHour": 0.0009006
     },
     {
       "region": "ap-east-1",
-      "mtPerKwHour": 0.00081
+      "mtPerKwHour": 0.00071
     },
     {
       "region": "ap-south-1",
-      "mtPerKwHour": 0.000708
+      "mtPerKwHour": 0.0007082
     },
     {
       "region": "ap-northeast-3",
-      "mtPerKwHour": 0.000506
+      "mtPerKwHour": 0.0004658
     },
     {
       "region": "ap-northeast-2",
-      "mtPerKwHour": 0.0005
+      "mtPerKwHour": 0.0004156
     },
     {
       "region": "ap-southeast-1",
-      "mtPerKwHour": 0.0004085
+      "mtPerKwHour": 0.000408
     },
     {
       "region": "ap-southeast-2",
-      "mtPerKwHour": 0.00079
+      "mtPerKwHour": 0.00076
     },
     {
       "region": "ap-northeast-1",
-      "mtPerKwHour": 0.000506
+      "mtPerKwHour": 0.0004658
     },
     {
       "region": "ca-central-1",
-      "mtPerKwHour": 0.00013
+      "mtPerKwHour": 0.00012
     },
     {
       "region": "cn-north-1",
-      "mtPerKwHour": 0.000555
+      "mtPerKwHour": 0.0005374
     },
     {
       "region": "cn-northwest-1",
-      "mtPerKwHour": 0.000555
+      "mtPerKwHour": 0.0005374
     },
     {
       "region": "eu-central-1",
-      "mtPerKwHour": 0.000338
+      "mtPerKwHour": 0.000311
     },
     {
       "region": "eu-west-1",
-      "mtPerKwHour": 0.000316
+      "mtPerKwHour": 0.0002786
     },
     {
       "region": "eu-west-2",
-      "mtPerKwHour": 0.000228
+      "mtPerKwHour": 0.000225
     },
     {
       "region": "eu-south-1",
-      "mtPerKwHour": 0.000233
+      "mtPerKwHour": 0.0002134
     },
     {
       "region": "eu-west-3",
-      "mtPerKwHour": 0.000052
+      "mtPerKwHour": 0.0000511
     },
     {
       "region": "eu-north-1",
-      "mtPerKwHour": 0.000008
+      "mtPerKwHour": 0.0000088
     },
     {
       "region": "me-south-1",
-      "mtPerKwHour": 0.000732
+      "mtPerKwHour": 0.0005059
     },
     {
       "region": "sa-east-1",
-      "mtPerKwHour": 0.000074
+      "mtPerKwHour": 0.0000617
     },
     {
       "region": "us-central1",
-      "mtPerKwHour": 0.000540461
+      "mtPerKwHour": 0.000454
     },
     {
       "region": "us-central2",
-      "mtPerKwHour": 0.000540461
+      "mtPerKwHour": 0.000454
     },
     {
       "region": "us-east1",
-      "mtPerKwHour": 0.0004545
+      "mtPerKwHour": 0.00048
     },
     {
       "region": "us-east4",
-      "mtPerKwHour": 0.0004545
+      "mtPerKwHour": 0.000361
     },
     {
       "region": "us-west1",
-      "mtPerKwHour": 0.000228876
+      "mtPerKwHour": 0.000078
     },
     {
       "region": "us-west2",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000253
     },
     {
       "region": "us-west3",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000533
     },
     {
       "region": "us-west4",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000455
     },
     {
       "region": "asia-east1",
-      "mtPerKwHour": 0.000509
+      "mtPerKwHour": 0.00054
     },
     {
       "region": "asia-east2",
-      "mtPerKwHour": 0.00081
+      "mtPerKwHour": 0.000453
     },
     {
       "region": "asia-northeast1",
-      "mtPerKwHour": 0.000506
+      "mtPerKwHour": 0.000554
     },
     {
       "region": "asia-northeast2",
-      "mtPerKwHour": 0.000506
+      "mtPerKwHour": 0.000442
     },
     {
       "region": "asia-northeast3",
-      "mtPerKwHour": 0.0005
+      "mtPerKwHour": 0.000457
     },
     {
       "region": "asia-south1",
-      "mtPerKwHour": 0.000708
+      "mtPerKwHour": 0.000721
     },
     {
       "region": "asia-southeast1",
-      "mtPerKwHour": 0.0004085
+      "mtPerKwHour": 0.000493
     },
     {
       "region": "asia-southeast2",
-      "mtPerKwHour": 0.000761
+      "mtPerKwHour": 0.000647
     },
     {
       "region": "australia-southeast1",
-      "mtPerKwHour": 0.00079
+      "mtPerKwHour": 0.000727
     },
     {
       "region": "europe-north1",
-      "mtPerKwHour": 0.000086
+      "mtPerKwHour": 0.000133
     },
     {
       "region": "europe-west1",
-      "mtPerKwHour": 0.000167
+      "mtPerKwHour": 0.000212
     },
     {
       "region": "europe-west2",
-      "mtPerKwHour": 0.000228
+      "mtPerKwHour": 0.000231
     },
     {
       "region": "europe-west3",
-      "mtPerKwHour": 0.000338
+      "mtPerKwHour": 0.000293
     },
     {
       "region": "europe-west4",
-      "mtPerKwHour": 0.00039
+      "mtPerKwHour": 0.00041
     },
     {
       "region": "europe-west6",
-      "mtPerKwHour": 0.00001182
+      "mtPerKwHour": 0.000087
     },
     {
       "region": "northamerica-northeast1",
-      "mtPerKwHour": 0.00013
+      "mtPerKwHour": 0.000027
     },
     {
       "region": "southamerica-east1",
-      "mtPerKwHour": 0.000074
-    },
-    {
-      "region": "unknown",
-      "mtPerKwHour": 0.0004108907
+      "mtPerKwHour": 0.000103
     },
     {
       "region": "AP East",
-      "mtPerKwHour": 0.00081
+      "mtPerKwHour": 0.00071
     },
     {
       "region": "EU West",
-      "mtPerKwHour": 0.00039
+      "mtPerKwHour": 0.0003284
     },
     {
       "region": "IN Central",
-      "mtPerKwHour": 0.000708
+      "mtPerKwHour": 0.0007082
     },
     {
       "region": "UK South",
-      "mtPerKwHour": 0.0004545
+      "mtPerKwHour": 0.000225
     },
     {
       "region": "UK West",
-      "mtPerKwHour": 0.000228
+      "mtPerKwHour": 0.000225
     },
     {
       "region": "US Central",
-      "mtPerKwHour": 0.000540461
+      "mtPerKwHour": 0.000426254
     },
     {
       "region": "US East",
-      "mtPerKwHour": 0.0004545
+      "mtPerKwHour": 0.000379069
     },
     {
       "region": "US South Central",
-      "mtPerKwHour": 0.000424877
+      "mtPerKwHour": 0.000373231
     },
     {
       "region": "US West",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000322167
     },
     {
       "region": "US West 2",
-      "mtPerKwHour": 0.000351533
+      "mtPerKwHour": 0.000322167
     },
     {
       "region": "Unknown",
-      "mtPerKwHour": 0.0004074
+      "mtPerKwHour": 0.0003852304903666667
     }
   ],
   "footprint": [
@@ -1542,9 +1538,9 @@
       "instanceName": "test-instance-9",
       "recommendationDetail": "Save cost by performing a STOP_VM for instance: test-instance-9.",
       "resourceId": 8928403120086348000,
-      "kilowattHourSavings": 0.0,
-      "costSavings": 0.0,
-      "co2eSavings": 0.0
+      "kilowattHourSavings": 0,
+      "costSavings": 0,
+      "co2eSavings": 0
     },
     {
       "cloudProvider": "GCP",
