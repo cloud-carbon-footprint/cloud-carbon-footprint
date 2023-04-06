@@ -103,7 +103,7 @@ describe('Azure Advisor Recommendations Service', () => {
     expect(result).toEqual(expectedResult)
   })
 
-  it('Get recommendations from Advisor API type: Right-size', async () => {
+  it('Get rightsizing recommendations from Advisor API', async () => {
     mockListRecommendations.list.mockReturnValue(
       mockRightsizeVmRecommendationsResults,
     )
@@ -128,6 +128,20 @@ describe('Azure Advisor Recommendations Service', () => {
         recommendationDetail:
           'Right-size: test-vm-name. Update instance type M16ms to M8ms',
         recommendationType: 'Right-size',
+        region: 'EastUS',
+        resourceId: 'test-resource-id',
+      },
+      {
+        accountId: subscriptionId,
+        accountName: subscriptionId,
+        cloudProvider: 'AZURE',
+        co2eSavings: 0.018786648191339524,
+        costSavings: 30,
+        instanceName: 'test-vm-name',
+        kilowattHourSavings: 49.55996979795109,
+        recommendationDetail:
+          'SkuChange: test-vm-name. Update instance type M16ms to M8ms',
+        recommendationType: 'SkuChange',
         region: 'EastUS',
         resourceId: 'test-resource-id',
       },
