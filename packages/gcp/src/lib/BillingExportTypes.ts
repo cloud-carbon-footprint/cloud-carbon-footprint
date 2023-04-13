@@ -95,6 +95,7 @@ export const COMPUTE_STRING_FORMATS: string[] = [
   'CPUs',
   'Kubernetes Clusters',
   'GPU',
+  'DCU',
 ]
 
 export const NETWORKING_STRING_FORMATS: string[] = [
