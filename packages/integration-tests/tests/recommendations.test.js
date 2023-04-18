@@ -32,13 +32,13 @@ test('filter components render with correct data when app loads', async (t) => {
 })
 
 test('card components render with correct data when app loads', async (t) => {
-  //todo: refactor this test to inspect forecast component without error message
-  await t.expect(page.errorMessage.exists).ok()
-  // await t.expect(page.lastThirtyDayTotal.exists).ok()
-  // await t.expect(page.projectedThirtyDayTotal.exists).ok()
-  // await t.expect(page.forecastEquivalencyCard.exists).ok()
-  // await t.expect(page.treeSeedlingsGrown.textContent).eql('1,037') //todo: minimize dataset-specific selectors
-  // await t.expect(page.costSavingsPerMonth.textContent).eql('$69.01')
+  // commented out because the error message is not always present
+  // await t.expect(page.errorMessage.exists).ok()
+  await t.expect(page.lastThirtyDayTotal.exists).ok()
+  await t.expect(page.projectedThirtyDayTotal.exists).ok()
+  await t.expect(page.forecastEquivalencyCard.exists).ok()
+  await t.expect(page.treeSeedlingsGrown.exists).ok()
+  await t.expect(page.costSavingsPerMonth.exists).ok()
 })
 
 test('table components render with correct data when app loads', async (t) => {
@@ -48,43 +48,39 @@ test('table components render with correct data when app loads', async (t) => {
 
 test('toggle changes unit of measure', async (t) => {
   //check projected totals
-  //todo: refactor this test to inspect forecast component without error message
-  await t
-    .expect(page.errorMessage.textContent)
-    .eql(
-      'In order to see a savings forecast that is relevant to you, please ensure you include data from the past 30 days',
-    )
+  // commented out because the error message is not always present
+  // await t.expect(page.errorMessage.exists).ok()
 
-  // await t
-  //   .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
-  //   .eql('Metric Tons CO2e')
-  // await t
-  //   .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
-  //   .eql('Metric Tons CO2e')
-  // await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('0') //todo: minimize dataset-specific selectors
-  // await t.expect(page.co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
-  // await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  // await t.expect(page.costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
+  await t
+    .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
+    .eql('Metric Tons CO2e')
+  await t
+    .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
+    .eql('Metric Tons CO2e')
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.exists).ok()
+  await t.expect(page.co2eSavingsProjectedThirtyDayTotal.exists).ok()
+  await t.expect(page.costSavingsLastThirtyDayTotal.exists).ok()
+  await t.expect(page.costSavingsProjectedThirtyDayTotal.exists).ok()
   //check first cell
   await t
     .expect(page.tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (t)')
-  await t.expect(page.firstSavingsCell.textContent).eql('11.492') //todo: minimize dataset-specific selectors
+  await t.expect(page.firstSavingsCell.exists).ok()
   //click kilogram toggle
   await t.click(page.toggle, { isTrusted: true })
   //recheck data in - kg instead of metric tons, so 1000
-  // await t
-  //   .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
-  //   .eql('Kilograms CO2e')
-  // await t
-  //   .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
-  //   .eql('Kilograms CO2e')
-  // await t.expect(page.co2eSavingsLastThirtyDayTotal.textContent).eql('0') //todo: minimize dataset-specific selectors
-  // await t.expect(page.co2eSavingsProjectedThirtyDayTotal.textContent).eql('0')
-  // await t.expect(page.costSavingsLastThirtyDayTotal.textContent).eql('$0')
-  // await t.expect(page.costSavingsProjectedThirtyDayTotal.textContent).eql('$0')
+  await t
+    .expect(page.unitOfMeasureLastThirtyDayTotal.textContent)
+    .eql('Kilograms CO2e')
+  await t
+    .expect(page.unitOfMeasureProjectedThirtyDayTotal.textContent)
+    .eql('Kilograms CO2e')
+  await t.expect(page.co2eSavingsLastThirtyDayTotal.exists).ok()
+  await t.expect(page.co2eSavingsProjectedThirtyDayTotal.exists).ok()
+  await t.expect(page.costSavingsLastThirtyDayTotal.exists).ok()
+  await t.expect(page.costSavingsProjectedThirtyDayTotal.exists).ok()
   await t
     .expect(page.tableSavingsColumn.textContent)
     .eql('Potential Carbon Savings (kg)')
-  await t.expect(page.firstSavingsCell.textContent).eql('11492') //todo: minimize dataset-specific selectors
+  await t.expect(page.firstSavingsCell.exists).ok()
 })
