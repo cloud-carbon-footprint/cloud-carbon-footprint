@@ -7,9 +7,13 @@ import { ClientOptions } from 'google-gax'
 import { BigQuery } from '@google-cloud/bigquery'
 import { ProjectsClient } from '@google-cloud/resource-manager'
 import { RecommenderClient } from '@google-cloud/recommender'
-import { APIEndpoint } from 'googleapis-common'
-import { compute as googleCompute } from 'googleapis/build/src/apis/compute'
-import { auth as googleAuth } from 'googleapis/build/src/apis/iam'
+import {
+  InstancesClient,
+  DisksClient,
+  AddressesClient,
+  ImagesClient,
+  MachineTypesClient,
+} from '@google-cloud/compute'
 import {
   ICloudService,
   Region,
@@ -30,6 +34,7 @@ import {
   LookupTableOutput,
   GroupBy,
 } from '@cloud-carbon-footprint/common'
+import { GoogleAuth } from 'google-auth-library'
 import ServiceWrapper from '../lib/ServiceWrapper'
 import { BillingExportTable, ComputeEngine, Recommendations } from '../lib'
 import { GCP_CLOUD_CONSTANTS, getGCPEmissionsFactors } from '../domain'
@@ -126,21 +131,27 @@ export default class GCPAccount extends CloudProviderAccount {
   }
 
   async getDataForRecommendations(): Promise<RecommendationResult[]> {
-    const googleAuthClient: GoogleAuthClient = await googleAuth.getClient({
+    const auth = new GoogleAuth({
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     })
-    const googleComputeClient: APIEndpoint = googleCompute('v1')
+    const googleAuthClient: GoogleAuthClient = await auth.getClient()
+
+    const serviceWrapper = new ServiceWrapper(
+      new ProjectsClient(),
+      googleAuthClient,
+      new InstancesClient(),
+      new DisksClient(),
+      new AddressesClient(),
+      new ImagesClient(),
+      new MachineTypesClient(),
+      new RecommenderClient(),
+    )
 
     const recommendations = new Recommendations(
       new ComputeEstimator(),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.HDDCOEFFICIENT),
       new StorageEstimator(GCP_CLOUD_CONSTANTS.SSDCOEFFICIENT),
-      new ServiceWrapper(
-        new ProjectsClient(),
-        googleAuthClient,
-        googleComputeClient,
-        new RecommenderClient(),
-      ),
+      serviceWrapper,
     )
 
     return await recommendations.getRecommendations()
