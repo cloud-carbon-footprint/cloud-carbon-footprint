@@ -7,8 +7,8 @@ import { google as googleRecommender } from '@google-cloud/recommender/build/pro
 import { protos as googleCompute } from '@google-cloud/compute'
 import IRecommendation = googleRecommender.cloud.recommender.v1.IRecommendation
 import IImpact = googleRecommender.cloud.recommender.v1.IImpact
-import Instance = googleCompute.google.cloud.compute.v1.Instance
-import Disk = googleCompute.google.cloud.compute.v1.Disk
+import Instance = googleCompute.google.cloud.compute.v1.IInstance
+import Disk = googleCompute.google.cloud.compute.v1.IDisk
 import {
   COMPUTE_PROCESSOR_TYPES,
   ComputeEstimator,

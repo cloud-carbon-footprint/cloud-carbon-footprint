@@ -3,7 +3,14 @@
  */
 
 import { ProjectsClient } from '@google-cloud/resource-manager'
-import Compute, { protos as googleCompute } from '@google-cloud/compute'
+import {
+  AddressesClient,
+  DisksClient,
+  ImagesClient,
+  InstancesClient,
+  MachineTypesClient,
+  protos as googleCompute,
+} from '@google-cloud/compute'
 import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { GoogleAuthClient, wait } from '@cloud-carbon-footprint/common'
@@ -20,8 +27,8 @@ import {
 } from './fixtures/googleapis.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
 import { mockStopVMRecommendationsResults } from './fixtures/recommender.fixtures'
-import Instance = googleCompute.google.cloud.compute.v1.Instance
-import MachineType = googleCompute.google.cloud.compute.v1.MachineType
+import Instance = googleCompute.google.cloud.compute.v1.IInstance
+import MachineType = googleCompute.google.cloud.compute.v1.IMachineType
 import ServiceWrapper from '../lib/ServiceWrapper'
 import {
   ActiveProject,
@@ -64,55 +71,38 @@ describe('GCP Service Wrapper', () => {
     ;(getClientSpy as jest.Mock).mockResolvedValue(jest.fn())
 
     const googleAuthClient: GoogleAuthClient = await auth.getClient()
-    const googleComputeClient = Compute.v1
 
     serviceWrapper = new ServiceWrapper(
       new ProjectsClient(),
       googleAuthClient,
-      googleComputeClient,
+      new InstancesClient(),
+      new DisksClient(),
+      new AddressesClient(),
+      new ImagesClient(),
+      new MachineTypesClient(),
       new RecommenderClient(),
     )
 
     setupSpy(
-      googleComputeClient.InstancesClient.prototype,
+      InstancesClient.prototype,
       'aggregatedListAsync',
       mockedInstanceResultItems,
     )
     setupSpy(
-      googleComputeClient.DisksClient.prototype,
+      DisksClient.prototype,
       'aggregatedListAsync',
       mockedDisksResultItems,
     )
+    setupSpy(DisksClient.prototype, 'get', mockedDisksGetSSDDetails)
     setupSpy(
-      googleComputeClient.DisksClient.prototype,
-      'get',
-      mockedDisksGetSSDDetails,
-    )
-    setupSpy(
-      googleComputeClient.AddressesClient.prototype,
+      AddressesClient.prototype,
       'aggregatedListAsync',
       mockedAddressesResultItems,
     )
-    setupSpy(
-      googleComputeClient.MachineTypesClient.prototype,
-      'get',
-      mockedMachineTypesGetItems,
-    )
-    setupSpy(
-      googleComputeClient.InstancesClient.prototype,
-      'get',
-      mockedInstanceGetItems,
-    )
-    setupSpy(
-      googleComputeClient.ImagesClient.prototype,
-      'get',
-      mockedImageGetDetails,
-    )
-    setupSpy(
-      googleComputeClient.AddressesClient.prototype,
-      'get',
-      mockedAddressGetDetails,
-    )
+    setupSpy(MachineTypesClient.prototype, 'get', mockedMachineTypesGetItems)
+    setupSpy(InstancesClient.prototype, 'get', mockedInstanceGetItems)
+    setupSpy(ImagesClient.prototype, 'get', mockedImageGetDetails)
+    setupSpy(AddressesClient.prototype, 'get', mockedAddressGetDetails)
   })
 
   it('gets active projects', async () => {
@@ -253,7 +243,6 @@ describe('GCP Service Wrapper', () => {
 
   describe('error handling', () => {
     let serviceWrapper: ServiceWrapper
-    const googleComputeClient = Compute.v1
 
     beforeEach(async () => {
       const auth = new GoogleAuth({
@@ -269,15 +258,19 @@ describe('GCP Service Wrapper', () => {
       serviceWrapper = new ServiceWrapper(
         new ProjectsClient(),
         googleAuthClient,
-        googleComputeClient,
+        new InstancesClient(),
+        new DisksClient(),
+        new AddressesClient(),
+        new ImagesClient(),
+        new MachineTypesClient(),
         new RecommenderClient(),
       )
     })
 
     it('fails to get active zones for project', async () => {
       setupSpyWithRejectedValue(
-        googleComputeClient.InstancesClient,
-        'aggregatedList',
+        InstancesClient.prototype,
+        'aggregatedListAsync',
         'error',
       )
       const activeProjectsAndZones: ActiveProject[] =

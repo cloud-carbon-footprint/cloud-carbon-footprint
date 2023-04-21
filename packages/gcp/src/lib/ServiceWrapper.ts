@@ -27,15 +27,9 @@ import MachineType = googleCompute.google.cloud.compute.v1.IMachineType
 import Disk = googleCompute.google.cloud.compute.v1.IDisk
 import Image = googleCompute.google.cloud.compute.v1.IImage
 import Address = googleCompute.google.cloud.compute.v1.IAddress
-import InstancesScopedList = googleCompute.google.cloud.compute.v1.IInstancesScopedList
-import DisksScopedList = googleCompute.google.cloud.compute.v1.IDisksScopedList
-import AddressesScopedList = googleCompute.google.cloud.compute.v1.IAddressesScopedList
+import { IterableScopedList } from './ServiceWrapperTypes'
 
 const RETRY_AFTER = 10
-
-type IterableScopedList = AsyncIterable<
-  [string, InstancesScopedList | DisksScopedList | AddressesScopedList]
->
 
 export default class ServiceWrapper {
   private readonly serviceWrapperLogger: Logger
