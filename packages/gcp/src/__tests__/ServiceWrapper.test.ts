@@ -15,14 +15,13 @@ import { GoogleAuth } from 'google-auth-library'
 import { RecommenderClient } from '@google-cloud/recommender'
 import { GoogleAuthClient, wait } from '@cloud-carbon-footprint/common'
 import {
-  InstanceData,
-  mockedAddressesResultItems,
+  mockAddressesResultItems,
   mockedAddressGetDetails,
   mockedDisksGetSSDDetails,
-  mockedDisksResultItems,
+  mockDisksResultItems,
   mockedImageGetDetails,
   mockedInstanceGetItems,
-  mockedInstanceResultItems,
+  mockInstanceResultItems,
   mockedMachineTypesGetItems,
 } from './fixtures/googleapis.fixtures'
 import { mockedProjects } from './fixtures/resourceManager.fixtures'
@@ -86,18 +85,18 @@ describe('GCP Service Wrapper', () => {
     setupSpy(
       InstancesClient.prototype,
       'aggregatedListAsync',
-      mockedInstanceResultItems,
+      mockInstanceResultItems(),
     )
     setupSpy(
       DisksClient.prototype,
       'aggregatedListAsync',
-      mockedDisksResultItems,
+      mockDisksResultItems(),
     )
     setupSpy(DisksClient.prototype, 'get', mockedDisksGetSSDDetails)
     setupSpy(
       AddressesClient.prototype,
       'aggregatedListAsync',
-      mockedAddressesResultItems,
+      mockAddressesResultItems(),
     )
     setupSpy(MachineTypesClient.prototype, 'get', mockedMachineTypesGetItems)
     setupSpy(InstancesClient.prototype, 'get', mockedInstanceGetItems)
@@ -157,17 +156,15 @@ describe('GCP Service Wrapper', () => {
       'us-west1-b',
     )
 
-    const expectedResult: InstanceData = {
-      data: {
-        machineType:
-          'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
-        disks: [],
-        id: '12456789012',
-        name: 'test-resource-name',
-      },
+    const expectedResult: Instance = {
+      machineType:
+        'https://www.googleapis.com/compute/v1/projects/test-project/zones/us-west1-b/machineTypes/n2-standard-32',
+      disks: [],
+      id: '12456789012',
+      name: 'test-resource-name',
     }
 
-    expect(instanceDetails).toEqual(expectedResult.data)
+    expect(instanceDetails).toEqual(expectedResult)
   })
 
   it('gets machine type details', async () => {

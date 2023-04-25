@@ -27,43 +27,46 @@ export const mockIterableResponse = (
   return mockAsyncIterator[Symbol.asyncIterator](mockResponse)
 }
 
-export const mockedInstanceResultItems = mockIterableResponse([
-  [
-    'zones/us-west1-a',
-    {
-      instances: [{ id: 'test-instance' }],
-    },
-  ],
-  [
-    'zones/us-east1-a',
-    {
-      instances: [{ id: 'test-instance-1' }],
-    },
-  ],
-  ['zones/us-west1-b', { warning: { code: 'NO_RESULTS_ON_PAGE' } }],
-])
+export const mockInstanceResultItems = () =>
+  mockIterableResponse([
+    [
+      'zones/us-west1-a',
+      {
+        instances: [{ id: 'test-instance' }],
+      },
+    ],
+    [
+      'zones/us-east1-a',
+      {
+        instances: [{ id: 'test-instance-1' }],
+      },
+    ],
+    ['zones/us-west1-b', { warning: { code: 'NO_RESULTS_ON_PAGE' } }],
+  ])
 
-export const mockedInstanceRegionsResultItems = mockIterableResponse([
-  [
-    'regions/us-west1',
-    {
-      instances: [{ id: 'test-instance' }],
-    },
-  ],
-])
+export const mockInstanceRegionsResultItems = () =>
+  mockIterableResponse([
+    [
+      'regions/us-west1',
+      {
+        instances: [{ id: 'test-instance' }],
+      },
+    ],
+  ])
 
-export const mockedInstanceGlobalResultItems = mockIterableResponse([
-  [
-    'global',
-    {
-      instances: [{ id: 'test-instance-global' }],
-    },
-  ],
-])
+export const mockInstanceGlobalResultItems = () =>
+  mockIterableResponse([
+    [
+      'global',
+      {
+        instances: [{ id: 'test-instance-global' }],
+      },
+    ],
+  ])
 
-export const mockedAddressesResultItems = mockIterableResponse([])
+export const mockAddressesResultItems = () => mockIterableResponse([])
 
-export const mockedDisksResultItems = mockIterableResponse([])
+export const mockDisksResultItems = () => mockIterableResponse([])
 
 export const mockedDisksGetSSDDetails: [IDisk] = [
   {
