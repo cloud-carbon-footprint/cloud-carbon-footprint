@@ -15,7 +15,7 @@ on:
       - '.github/workflows/deploy-microsite.yml'
 concurrency:
   group: ${{ github.workflow }}
-  cancel-in-progress: true
+  # cancel-in-progress: true
 jobs:
   deploy-demo-app:
     if: github.event.pull_request.head.ref == 'changeset-release/trunk'
