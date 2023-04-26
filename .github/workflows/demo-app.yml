@@ -13,8 +13,8 @@ on:
     paths-ignore:
       - 'microsite/**'
       - '.github/workflows/deploy-microsite.yml'
-concurrency:
-  group: ${{ github.workflow }}
+# concurrency:
+#   group: ${{ github.workflow }}
   # cancel-in-progress: true
 jobs:
   deploy-demo-app:
