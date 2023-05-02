@@ -37,7 +37,7 @@ export const AZURE_REGIONS = {
     options: ['apsoutheast', 'AP Southeast'],
   },
   AP_JAPAN_EAST: { name: 'japaneast', options: ['japaneast', 'JA East'] },
-  AP_JAPAN_WEST: { name: 'japanwest', options: ['japanwest'] },
+  AP_JAPAN_WEST: { name: 'japanwest', options: ['japanwest', 'JA West'] },
   AP_JAPAN: { name: 'japan', options: ['japan'] },
   AP_KOREA: { name: 'korea', options: ['korea'] },
   AP_KOREA_EAST: {
@@ -143,7 +143,7 @@ export const AZURE_REGIONS = {
   US_US_EAP: { name: 'unitedstateseuap', options: ['unitedstateseuap'] },
   US_WEST_CENTRAL: {
     name: 'WestCentralUS',
-    options: ['WestCentralUS', 'westcentralus'],
+    options: ['WestCentralUS', 'westcentralus', 'US West Central'],
   },
   US_NORTH: { name: 'USNorth', options: ['USNorth'] },
   US_WEST: { name: 'WestUS', options: ['WestUS', 'westus', 'US West'] },
