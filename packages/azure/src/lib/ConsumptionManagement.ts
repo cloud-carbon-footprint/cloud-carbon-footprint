@@ -114,8 +114,8 @@ export default class ConsumptionManagementService {
     usageRows
       .filter(
         (consumptionRow) =>
-          new Date(consumptionRow.properties.date) >= startDate &&
-          new Date(consumptionRow.properties.date) <= endDate,
+          new Date(consumptionRow.date) >= startDate &&
+          new Date(consumptionRow.date) <= endDate,
       )
       .map((consumptionRow) => {
         const consumptionDetailRow: ConsumptionDetailRow =
@@ -170,16 +170,13 @@ export default class ConsumptionManagementService {
         type: '',
         tags: {},
         kind: 'legacy' as const,
-        properties: {
-          kind: 'legacy' as const,
-          date: new Date(''),
-          quantity: 1,
-          cost: 1,
-          meterDetails: {
-            meterName: inputDataRow.usageType,
-            unitOfMeasure: inputDataRow.usageUnit,
-            meterCategory: inputDataRow.serviceName,
-          },
+        date: new Date(''),
+        quantity: 1,
+        cost: 1,
+        meterDetails: {
+          meterName: inputDataRow.usageType,
+          unitOfMeasure: inputDataRow.usageUnit,
+          meterCategory: inputDataRow.serviceName,
           subscriptionName: '',
           resourceLocation: inputDataRow.region,
         },
