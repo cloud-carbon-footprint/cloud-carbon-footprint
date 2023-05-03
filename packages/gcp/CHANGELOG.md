@@ -1,5 +1,18 @@
 # @cloud-carbon-footprint/gcp
 
+## 0.12.0
+
+### Minor Changes
+
+- e0299c2c: Replaces the use of googleapis with separate package clients
+- efbcad00: Adds support for including tags and labels in queries via config
+
+### Patch Changes
+
+- 56273914: adds DCU to gcp compute types
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/core@0.17.3
+
 ## 0.11.1
 
 ### Patch Changes

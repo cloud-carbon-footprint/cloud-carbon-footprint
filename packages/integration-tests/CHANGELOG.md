@@ -1,5 +1,11 @@
 # @cloud-carbon-footprint/integration-tests
 
+## 1.1.7
+
+### Patch Changes
+
+- bcb77429: fixes mock data and integration tests
+
 ## 1.1.6
 
 ### Patch Changes

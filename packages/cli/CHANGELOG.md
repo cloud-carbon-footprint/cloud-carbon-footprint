@@ -1,5 +1,13 @@
 # @cloud-carbon-footprint/cli
 
+## 1.10.1
+
+### Patch Changes
+
+- 65386330: bumps ramda dependency
+- Updated dependencies [65386330]
+  - @cloud-carbon-footprint/app@1.2.1
+
 ## 1.10.0
 
 ### Minor Changes
